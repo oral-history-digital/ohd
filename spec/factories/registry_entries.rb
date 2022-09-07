@@ -40,9 +40,10 @@ FactoryBot.define do
 
   factory :registry_reference do
     registry_entry
-    interview
-    association :ref_object, factory: :segment
     registry_reference_type 
+    interview
+    workflow_state { 'checked' }
+    ref_position { 0 }
   end
 
 end

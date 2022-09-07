@@ -75,6 +75,8 @@ describe EditTableImport do
       expect(interview.segments.first.registry_references.first.registry_entry.descriptor(:de)).to eq('Deutschland')
       expect(interview.segments.first.annotations.count).to eq(1)
       expect(interview.segments.first(2).last.annotations.first.text(:de)).to eq("Für die Unterbringung der Ostarbeiter errichtetes Barackenlager")
+      expect(interview.tapes.first.segments.count).to eq(1)
+      expect(interview.tapes.last.segments.count).to eq(1)
     end
   end
 

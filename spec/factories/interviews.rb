@@ -7,20 +7,13 @@ FactoryBot.define do
     collection
     language factory: :language, code: "rus"
     translation_language factory: :language, code: "ger"
-    after :create do |interview|
-      create_list :tape, 2, interview: interview
-    end
     properties {{}}
-    # the following leads to stack level too deep errors:
-    #association :segments, factory: :segment
-    #association :tapes, factory: :tape
   end
 
   factory :tape do
     interview
     sequence(:media_id){|n| "#{interview.archive_id.upcase}_01_01_0#{n}" }
-    # the following leads to stack level too deep errors:
-    #association :segments, factory: :segment
+    number { 1 }
   end
 
   factory :collection do
@@ -46,18 +39,62 @@ FactoryBot.define do
   end
 end
 
-def interview_with_contributions
-  FactoryBot.create(:interview) do |interview|
+def interview_with_contributions(interview_attibutes={})
+  FactoryBot.create(:interview, interview_attibutes) do |interview|
     %w(INT AB KAM).each do |speaker_designation|
       person = FactoryBot.create :person
-      FactoryBot.create(:contribution, interview: interview, speaker_designation: speaker_designation)
+      FactoryBot.create(:contribution, interview: interview, speaker_designation: speaker_designation, person: person)
     end
     interview.reload
   end
 end
 
-def interview_with_everything
-  interview = interview_with_contributions
-  # TODO: fill
+def interview_with_everything(interview_attibutes={})
+  interview = interview_with_contributions(interview_attibutes)
+  first_tape = FactoryBot.create(:tape, interview: interview)
+  second_tape = FactoryBot.create(:tape, interview: interview, number: 2)
+  first_speaker = interview.contributions.first.person
+  second_speaker = interview.contributions.first(2).last.person
+  germany = registry_entry_with_names
+  france = registry_entry_with_names({de: 'Frankreich', ru: 'Фра́нция'})
+  poland = registry_entry_with_names({de: 'Polen', ru: 'По́льша'})
+  segment_with_everything(
+    "00:00:02.00",
+    interview,
+    first_tape,
+    first_speaker,
+    [{
+      locale: :ru,
+      text: "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
+      mainheading: "Вступление",
+      subheading: nil
+    }, {
+      locale: :de,
+      text: "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
+      mainheading: "Einleitung",
+      subheading: nil,
+    }],
+    [germany],
+    [{de: "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", ru: "Главное местонахождение — Берлин Филиал по добыче"}]
+  )
+  segment_with_everything(
+    "00:02:02.00",
+    interview,
+    second_tape,
+    second_speaker,
+    [{
+      locale: :ru,
+      text: "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
+      mainheading: nil,
+      subheading: "жизнь" 
+    }, {
+      locale: :de,
+      text: "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
+      mainheading: nil,
+      subheading: "Leben",
+    }],
+    [france, poland],
+    [{de: "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", ru: "Построенный для размещения восточных рабочих барачный"}]
+  )
   interview.reload
 end

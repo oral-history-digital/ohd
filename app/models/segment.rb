@@ -62,8 +62,9 @@ class Segment < ApplicationRecord
 
     after_commit do
       # run this only after commit of original e.g. 'de' version!
-      if (text_previously_changed?) && locale.length == 2
+      if text_previously_changed? && locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
+        segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
       end
       if (mainheading_previously_changed? || subheading_previously_changed?)
         has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
