@@ -4,6 +4,7 @@ FactoryBot.define do
     project
     sequence(:archive_id){|n| "#{project.shortname}#{format('%03d', n)}" }
     media_type { 'video' }
+    observations { '1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch' }
     collection
     language factory: :language, code: "rus"
     translation_language factory: :language, code: "ger"
@@ -33,16 +34,12 @@ FactoryBot.define do
     project
   end
 
-  factory :person do
-    gender { 'female' }
-    project
-  end
 end
 
 def interview_with_contributions(interview_attibutes={})
   FactoryBot.create(:interview, interview_attibutes) do |interview|
     %w(INT AB KAM).each do |speaker_designation|
-      person = FactoryBot.create :person
+      person = person_with_biographical_entries
       FactoryBot.create(:contribution, interview: interview, speaker_designation: speaker_designation, person: person)
     end
     interview.reload
@@ -55,11 +52,14 @@ def interview_with_everything(interview_attibutes={})
 
   first_tape = FactoryBot.create(:tape, interview: interview)
   second_tape = FactoryBot.create(:tape, interview: interview, number: 2)
+
   first_speaker = interview.contributions.first.person
   second_speaker = interview.contributions.first(2).last.person
+
   germany = registry_entry_with_names
   france = registry_entry_with_names({de: 'Frankreich', ru: 'Фра́нция'})
   poland = registry_entry_with_names({de: 'Polen', ru: 'По́льша'})
+
   segment_with_everything(
     "00:00:02.00",
     interview,

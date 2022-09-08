@@ -87,6 +87,8 @@ group :test do
   gem 'rspec-snapshot', '~> 0.1.2'
   # Faster tests:
   gem 'spork'
+  gem 'pdf-inspector', require: "pdf/inspector"
+  gem 'pdf-reader'
   #gem 'rest-client'
   #gem 'json'
   #gem 'pry'

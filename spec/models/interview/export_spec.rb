@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'stringio'
 
 describe Interview::Export do
 
@@ -102,4 +103,40 @@ describe Interview::Export do
       expect(@first_row_entries[9]).to eq('ja')
     end
   end
+
+  describe 'export transcript PDF' do
+    it 'should write PDF correctly' do
+      pdf = interview.to_pdf(:ru, :de)
+      # analyze returns strings without whitespace
+      #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+      #expect(pdf_analysis.strings.include?("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez".gsub(/\s+/, ""))).to be_truthy
+      reader = PDF::Reader.new(StringIO.new(pdf))
+      expect(reader.pages[0].text).to match /Das Interview-Archiv/
+      expect(reader.pages[4].text).to match /Also gut, heute ist der 10. September 2005, und wir sind bei/
+      expect(reader.pages[4].text).to match /Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte/
+    end
+  end
+
+  describe 'export biography PDF' do
+    it 'should write PDF correctly' do
+      pdf = interview.biography_pdf(:de, :de)
+      #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+      #expect(pdf_analysis.strings.include?("15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister".gsub(/\s+/, ""))).to be_truthy
+      reader = PDF::Reader.new(StringIO.new(pdf))
+      expect(reader.pages[0].text).to match /Das Interview-Archiv/
+      expect(reader.pages[0].text).to match /15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet /
+    end
+  end
+
+  describe 'export observations PDF' do
+    it 'should write PDF correctly' do
+      pdf = interview.observations_pdf(:ru, :de)
+      #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+      #expect(pdf_analysis.strings.include?('1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch'.gsub(/\s+/, ""))).to be_truthy
+      reader = PDF::Reader.new(StringIO.new(pdf))
+      expect(reader.pages[0].text).to match /Das Interview-Archiv/
+      expect(reader.pages[0].text).to match /International Slave- und Forced Labourers Documentation Project/
+    end
+  end
+
 end
