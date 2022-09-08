@@ -5,6 +5,8 @@ import { usePathBase } from 'modules/routes';
 import { CopyText } from 'modules/ui';
 import { formatTimecode } from 'modules/interview-helpers';
 
+import interviewUrl from './interviewUrl';
+
 export default function SegmentLink({
     interviewId,
     tape,
@@ -13,11 +15,9 @@ export default function SegmentLink({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const protocol = window.location.protocol;
-    const host = window.location.host;
     const timecode = formatTimecode(time, true);
 
-    const url = `${protocol}//${host}${pathBase}/interviews/${interviewId}?tape=${tape}&time=${timecode}`;
+    const url = `${interviewUrl(pathBase, interviewId)}?tape=${tape}&time=${timecode}`;
 
     return (
         <section className={className}>

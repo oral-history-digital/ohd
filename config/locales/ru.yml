@@ -1804,7 +1804,7 @@ ru:
         actions: Actions
       copy_link: Копировать URL
     workbook:
-      from: from
+      from: с
       delete: Удалить из Рабочей тетради
       edit: Редактировать
       note: Примечание
