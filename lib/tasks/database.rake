@@ -19,7 +19,7 @@
 #
 # 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
-# 5. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions]
+# 5. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions|norm_data_providers]
 
 namespace :database do
 
@@ -141,6 +141,18 @@ namespace :database do
           other_institution.collections.update_all(institution_id: first_institution.id)
           other_institution.institution_projects.update_all(institution_id: first_institution.id)
           other_institution.destroy
+        end
+      end
+    end
+
+    desc 'unify norm_data_providers'
+    task :unify_norm_data_providers, [:max_id] => :environment do |t, args|
+      NormDataProvider.all.each do |norm_data_provider|
+        first_norm_data_provider = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id <= ?", args.max_id).first
+        other_norm_data_providers = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id > ?", args.max_id)
+        other_norm_data_providers.each do |other_norm_data_provider|
+          other_norm_data_provider.norm_data.update_all(norm_data_provider_id: first_norm_data_provider.id)
+          other_norm_data_provider.destroy
         end
       end
     end
