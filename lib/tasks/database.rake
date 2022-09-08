@@ -47,7 +47,9 @@ namespace :database do
             puts "updating #{col}"
             sql = "UPDATE #{model.table_name} SET #{col} = #{col} + #{args.max_id.to_i}"
             puts sql
+            ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=0")
             ActiveRecord::Base.connection.execute(sql)
+            ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=1")
           end
         end
         puts "---"
