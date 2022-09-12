@@ -39,7 +39,7 @@ namespace :database do
     desc 'add x to all id and *_id fields' 
     task :add_to_all_id_fields, [:max_id] => :environment do |t, args|
       Rails.application.eager_load!
-      ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq.each do |model|
+      ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq{|a| a.table_name}.each do |model|
         puts "updating #{model}"
         id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id'])
         id_columns.each do |col|
@@ -80,9 +80,10 @@ namespace :database do
 
     desc 'unify user_accounts'
     task :unify_user_accounts, [:max_id] => :environment do |t, args|
+      raise 'Please provide max_id-parameter' unless args.max_id
       UserRegistration.group(:email).count.select{|k,v| v > 1}.each do |email, count|
         first_ur = UserRegistration.where(email: email).where("id <= ?", args.max_id).first
-        first_user_account = first_ur.user_account
+        first_user_account = first_ur && first_ur.user_account
         if first_ur
           other_urs = UserRegistration.where(email: email).where("id > ?", args.max_id)
 
@@ -106,6 +107,7 @@ namespace :database do
 
     desc 'unify languages'
     task :unify_languages, [:max_id] => :environment do |t, args|
+      raise 'Please provide max_id-parameter' unless args.max_id
       Language.all.each do |language|
         first_language = Language.where(name: language.name).where("languages.id <= ?", args.max_id).first
         other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
@@ -118,6 +120,7 @@ namespace :database do
 
     desc 'unify permissions'
     task :unify_permissions, [:max_id] => :environment do |t, args|
+      raise 'Please provide max_id-parameter' unless args.max_id
       Permission.group(:klass, :action_name).count.select{|k,v| v > 1}.each do |(klass, action_name), count|
         first_perm = Permission.where(klass: klass, action_name: action_name).where("id <= ?", args.max_id).first
         if first_perm
@@ -134,10 +137,11 @@ namespace :database do
 
     desc 'unify institutions'
     task :unify_institutions, [:max_id] => :environment do |t, args|
+      raise 'Please provide max_id-parameter' unless args.max_id
       Institution.all.each do |institution|
         first_institution = Institution.where(name: institution.name).where("institutions.id <= ?", args.max_id).first
         other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
-        other_institutions.each do |other_institution|
+        first_institution && other_institutions.each do |other_institution|
           other_institution.collections.update_all(institution_id: first_institution.id)
           other_institution.institution_projects.update_all(institution_id: first_institution.id)
           other_institution.destroy
@@ -147,6 +151,7 @@ namespace :database do
 
     desc 'unify norm_data_providers'
     task :unify_norm_data_providers, [:max_id] => :environment do |t, args|
+      raise 'Please provide max_id-parameter' unless args.max_id
       NormDataProvider.all.each do |norm_data_provider|
         first_norm_data_provider = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id <= ?", args.max_id).first
         other_norm_data_providers = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id > ?", args.max_id)
