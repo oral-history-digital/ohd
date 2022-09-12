@@ -46,25 +46,25 @@ class EditTableImport
     sheet.each do |row|
       speaker_id = contributions[row[:speaker_designation]]
 
+      translations_attributes = [{
+        locale: original_locale,
+        text: row[:text_orig],
+        mainheading: row[:mainheading_orig],
+        subheading: row[:subheading_orig],
+      }]
+      translations_attributes << {
+        locale: translation_locale,
+        text: row[:text_trans],
+        mainheading: row[:mainheading_trans],
+        subheading: row[:subheading_trans],
+      } if translation_locale && (row[:text_trans] || row[:mainheading_trans] || row[:subheading_trans])
+
       segment = Segment.create(
         interview_id: interview.id,
         tape_id: interview.tapes.where(number: row[:tape_number]).first.id,
         speaker_id: speaker_id,
         timecode: row[:timecode],
-        translations_attributes: [
-          {
-            locale: original_locale,
-            text: row[:text_orig],
-            mainheading: row[:mainheading_orig],
-            subheading: row[:subheading_orig],
-          },
-          {
-            locale: translation_locale,
-            text: row[:text_trans],
-            mainheading: row[:mainheading_trans],
-            subheading: row[:subheading_trans],
-          }
-        ]
+        translations_attributes: translations_attributes
       )
       create_references(row, interview, segment)
       create_annotations(row, interview, segment)
