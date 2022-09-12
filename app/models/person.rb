@@ -28,6 +28,7 @@ class Person < ApplicationRecord
   serialize :properties
 
   after_create :set_public_attributes_to_properties
+
   def set_public_attributes_to_properties
     atts = %w(first_name last_name alias_names other_first_names gender date_of_birth description)
     update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
@@ -143,5 +144,16 @@ class Person < ApplicationRecord
   def biography=(text)
     biographical_entries.destroy_all
     biographical_entries.build({text: text})
+  end
+
+  def contributions_with_interviews(project_id)
+    person_id = self.id
+
+    result = Contribution
+      .joins(:contribution_type)
+      .where(person_id: person_id)
+      .where('contribution_types.project_id' => project_id)
+
+    result
   end
 end

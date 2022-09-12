@@ -1275,6 +1275,12 @@ de:
   interview_title_patterns:
 
   modules:
+    admin:
+      person_details:
+        contributions:
+          title: Mitwirkungen
+          at: bei
+          error: Fehler beim Laden der Mitwirkungen
     catalog:
       title: Katalog
       part_of_institution: Teil der Institution

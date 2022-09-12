@@ -74,6 +74,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  def contributions
+    person = Person.find params[:person_id]
+    authorize person
+    project_id = current_project.id
+
+    contributions = person.contributions_with_interviews(project_id)
+
+    render json: contributions, each_serializer: ContributionWithInterviewSerializer
+  end
+
   def index
     policy_scope Person
 

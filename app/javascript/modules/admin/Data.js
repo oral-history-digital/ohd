@@ -8,6 +8,7 @@ import { DeleteItemForm } from 'modules/forms';
 import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
+import PersonDetails from './PersonDetails';
 
 const Item = AdminMenu.Item;
 
@@ -73,12 +74,15 @@ export default function Data({
                             label={t('edit.default.show')}
                             dialogTitle={name}
                         >
-                            <DataDetails
-                                detailsAttributes={detailsAttributes}
-                                data={data}
-                                scope={scope}
-                                optionsScope={optionsScope}
-                            />
+                            {scope === 'person' ?
+                                <PersonDetails data={data} /> :
+                                <DataDetails
+                                    detailsAttributes={detailsAttributes}
+                                    data={data}
+                                    scope={scope}
+                                    optionsScope={optionsScope}
+                                />
+                            }
                         </Item>
                     )}
                     {!hideEdit && (
