@@ -7,7 +7,7 @@ class Annotation < ApplicationRecord
 
   belongs_to :segment, counter_cache: true
 
-  translates :text, touch: true
+  translates :text, fallbacks_for_empty_translations: false, touch: true
   accepts_nested_attributes_for :translations
 
   # Validation: either interview_id or user_content_id must be nil

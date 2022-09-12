@@ -106,7 +106,7 @@ class EditTableImport
         locale: original_locale
       }
 
-      translated_annotation = translation && {
+      translated_annotation = translation && translation_locale && {
         text: translation,
         locale: translation_locale
       }
