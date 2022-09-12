@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -6,6 +7,7 @@ import { useArchiveSearch } from 'modules/search';
 import DeleteInterviews from './DeleteInterviews';
 import UpdateInterviews from './UpdateInterviews';
 import SubmitInterviewIds from './SubmitInterviewIds';
+import { Spinner } from 'modules/spinners';
 import DOIText from './DOIText';
 
 export default function AdminActions({
@@ -16,7 +18,15 @@ export default function AdminActions({
     addRemoveArchiveId,
 }) {
     const { t } = useI18n();
-    const { interviews } = useArchiveSearch();
+    const { interviews, total, size, setSize } = useArchiveSearch();
+    const [checkAll, setCheckAll] = useState(false);
+
+    useEffect(() => {
+        if (total === interviews?.length && checkAll) {
+            setArchiveIds(interviews.map(i => i.archive_id));
+            setCheckAll(false);
+        }
+    }, [interviews]);
 
     const selectedArchiveIds = archiveIds.filter(
         archiveId => archiveId !== 'dummy');
@@ -106,13 +116,15 @@ export default function AdminActions({
             >
                 {t('reset')}
             </button>{' '}
-            <button
-                type="button"
-                className="Button"
-                onClick={() => setArchiveIds(interviews?.map(i => i.archive_id))}
-            >
-                {t('set_all')}
-            </button>{' '}
+            { checkAll ? <Spinner small /> : 
+                <button
+                    type="button"
+                    className="Button"
+                    onClick={() => { setSize(total); setCheckAll(true) }}
+                >
+                    {t('set_all')}
+                </button>
+            }
         </div>
     );
 }
