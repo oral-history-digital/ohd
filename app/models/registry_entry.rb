@@ -405,7 +405,6 @@ class RegistryEntry < ApplicationRecord
         norm_datum = self.send("#{provider}_norm_data").first_or_initialize
         norm_datum.nid = nid
         norm_datum.save
-        binding.pry
       end
     end
 
