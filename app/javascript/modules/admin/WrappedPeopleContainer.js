@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
         sortAttributeTranslated: true,
         baseTabIndex: 4 + getProjectHasMap(state),
         //detailsAttributes: ['name'],
-        detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth'],
+        detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'description'],
         initialFormValues: {project_id: project.id},
         formElements: [
             {
@@ -64,6 +64,11 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'date_of_birth',
             },
+            {
+                elementType: 'textarea',
+                attribute: 'description',
+                multiLocale: true,
+            }
         ],
         joinedData: { },
     }

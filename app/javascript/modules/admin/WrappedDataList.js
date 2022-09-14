@@ -2,6 +2,7 @@ import { createElement, Component } from 'react';
 import Observer from 'react-intersection-observer'
 import { FaPlus } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
@@ -15,7 +16,6 @@ import statifiedQuery from './statifiedQuery';
 import DataContainer from './DataContainer';
 
 export default class WrappedDataList extends Component {
-
     constructor(props) {
         super(props);
         this.form = this.form.bind(this);
@@ -79,13 +79,14 @@ export default class WrappedDataList extends Component {
     }
 
     sortedData() {
-        let _this = this;
+        const { data, sortAttribute, sortAttributeTranslated, locale } = this.props;
+
         let sorted = [];
-        if (this.props.data) {
-            if (this.props.sortAttribute) {
-                sorted = Object.values(this.props.data).sort(function(a, b){
-                    let aa = _this.props.sortAttributeTranslated ? a[_this.props.sortAttribute][_this.props.locale] : a[_this.props.sortAttribute]
-                    let bb = _this.props.sortAttributeTranslated ? b[_this.props.sortAttribute][_this.props.locale] : b[_this.props.sortAttribute]
+        if (data) {
+            if (sortAttribute) {
+                sorted = Object.values(data).sort((a, b) => {
+                    let aa = sortAttributeTranslated ? a[sortAttribute][locale] : a[sortAttribute]
+                    let bb = sortAttributeTranslated ? b[sortAttribute][locale] : b[sortAttribute]
                     if (aa < bb)
                         return -1;
                     if ( aa > bb)
@@ -93,7 +94,7 @@ export default class WrappedDataList extends Component {
                     return 0;
                 })
             } else {
-                sorted = Object.values(this.props.data)
+                sorted = Object.values(data)
             }
         }
         return sorted.filter(s => s);
@@ -165,14 +166,16 @@ export default class WrappedDataList extends Component {
     }
 
     render() {
+        const { scope } = this.props;
+
         return (
             <div className='wrapper-content register'>
                 <Helmet>
-                    <title>{t(this.props, `activerecord.models.${this.props.scope}.other`)}</title>
+                    <title>{t(this.props, `activerecord.models.${scope}.other`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1 className='registry-entries-title'>
-                        {t(this.props, `activerecord.models.${this.props.scope}.other`)}
+                        {t(this.props, `activerecord.models.${scope}.other`)}
                     </h1>
                     {this.add()}
                     {this.data()}
@@ -186,3 +189,9 @@ export default class WrappedDataList extends Component {
         );
     }
 }
+
+WrappedDataList.propTypes = {
+    interview: PropTypes.object,
+    scope: PropTypes.string.isRequired,
+    hideAdd: PropTypes.bool,
+};

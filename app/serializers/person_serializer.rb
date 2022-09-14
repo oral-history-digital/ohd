@@ -1,14 +1,22 @@
 class PersonSerializer < ApplicationSerializer
   attributes [
-    :id, 
-    :names, 
+    :id,
+    :names,
     :name,
     :text,
     :date_of_birth,
     :year_of_birth,
     :gender,
+    :description,
     :associations_loaded
   ]
+
+  def description
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.description(locale)
+      mem
+    end
+  end
 
   # dummy. will be filled in search
   def text
