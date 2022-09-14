@@ -250,7 +250,7 @@ en:
   transcript_title: Transcript (%{lang}) of the interview with
   translation_title: Translation (%{lang}) of the interview with
   transcript_footer: 'Citation: Transcript of the Interview with'
-  transcript_template: Vorlage für den Import von .ods Dateien
+  transcript_template: Vorlage für den Import von .csv Dateien
   biographical_entries_header: 'Short biography (english): %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Short biography (english) of %{interviewee_name}'
   biographical_entries_footer: 'Citation: Short biography of'
@@ -663,9 +663,9 @@ en:
         file and upload. No subfolders in the zip-archive allowed. File names
         must be like InterviewID_Type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
       transcript:
-        Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
-        Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
-        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher/innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
+        Es können Transkripte in den Formaten .csv, .ods, .odt, .vtt, .srt hochgeladen werden.
+        Im .csv- und .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
+        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher*innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
