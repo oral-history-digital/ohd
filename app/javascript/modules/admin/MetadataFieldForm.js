@@ -12,7 +12,7 @@ const NAME_VALUES = {
         "signature_original", "startpage_position"
     ],
     Person: [
-        "date_of_birth", "year_of_birth", "gender"
+        "date_of_birth", "year_of_birth", "gender", "description"
     ],
 }
 

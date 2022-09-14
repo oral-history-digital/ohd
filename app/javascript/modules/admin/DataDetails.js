@@ -8,10 +8,8 @@ export default function DataDetails({
     data,
     scope,
     optionsScope,
-    locale,
-    translations,
 }) {
-    const { t } = useI18n();
+    const { t, locale, translations } = useI18n();
 
     return (
         <div className="details">
@@ -36,7 +34,10 @@ export default function DataDetails({
                                     {t(`activerecord.attributes.${scope}.${attribute}`) + ': '}
                                 </span>
                                 <span className='content'>
-                                    {humanReadable(data, attribute, { locale, translations, optionsScope }, {})}
+                                    {humanReadable(data, attribute,
+                                        { locale, translations, optionsScope },
+                                        {})
+                                    }
                                 </span>
                             </p>
                         )
@@ -52,6 +53,4 @@ DataDetails.propTypes = {
     data: PropTypes.object.isRequired,
     scope: PropTypes.string.isRequired,
     optionsScope: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 };
