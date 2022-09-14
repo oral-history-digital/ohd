@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer,
+import { AccountPage, OrderNewPasswordContainer, RegisterContainer,
     ActivateAccount } from 'modules/account';
 import { UserRegistrationsContainer } from 'modules/users';
 import { SearchPage } from 'modules/search';
@@ -28,7 +28,7 @@ const RoutesWithProjectId = () => (
         <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
         <Route exact path="/:locale/user_registrations/new" element={<RegisterContainer />} />
         <Route exact path="/:locale/user_registrations" element={<UserRegistrationsContainer />} />
-        <Route path="/:locale/accounts/current" element={<WrappedAccountContainer />} />
+        <Route path="/:locale/accounts/current" element={<AccountPage />} />
         <Route path="/:locale/searches/archive" element={<SearchPage />} />
         <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
         <Route exact path="/:locale" element={<ProjectIndex />} />

@@ -6,7 +6,7 @@ export { default as accountReducer } from './reducer';
 
 export { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from './selectors';
 
-export { default as WrappedAccountContainer } from './components/WrappedAccountContainer';
+export { default as AccountPage } from './components/AccountPage';
 export { default as AccountContainer } from './components/AccountContainer';
 export { default as OrderNewPasswordContainer } from './components/OrderNewPasswordContainer';
 export { default as RegisterContainer } from './components/RegisterContainer';
