@@ -32,6 +32,12 @@ class CatalogController < ApplicationController
       format.html do
         render template: '/react/app.html'
       end
+      format.json do
+        collection = Collection.find(params[:id])
+        data_gatherer = CollectionDataGatherer.new(collection)
+
+        render json: data_gatherer.perform
+      end
     end
   end
 end

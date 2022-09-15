@@ -19,6 +19,17 @@ class Collection < ApplicationRecord
     name(I18n.locale)
   end
 
+  def linkable?
+    # Collection is linkable if its archive has collection_id as a facet.
+    if project_id.blank?
+      return false
+    end
+
+    MetadataField
+      .where(project_id: project_id, use_as_facet: true, name: 'collection_id')
+      .exists?
+  end
+
   def self.human_name
     I18n.t(:collection)
   end

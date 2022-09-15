@@ -930,7 +930,7 @@ de:
         responsibles: Verantwortliche
         interviewers: Interviewende
         homepage: Homepage
-        notes: Weitere Anmerkungen
+        notes: Beschreibung
         interviews: Interviewte
       language:
         code: Code
@@ -1289,6 +1289,13 @@ de:
       part_of_institution: Teil der Institution
       volume: Umfang
       web_page: Webseite
+      media_type: Medientyp
+      videos: "%{numVideos} Videos"
+      audios: "%{numAudios} Audios"
+      period: Zeitraum
+      birthyears: Geburtsjahre
+      languages: Interviewsprachen
+      go_to_collection: Zur Sammlung
       table:
         name_header:
           main: Institution/Archiv/Sammlung

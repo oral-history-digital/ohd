@@ -904,10 +904,10 @@ en:
         name: Name
         countries: Interviews in
         institution: Durchgeführt von
-        responsibles: Verantwortliche
+        responsibles: Responsibles
         interviewers: Interviewende
         homepage: Homepage
-        notes: Weitere Anmerkungen
+        notes: Description
         interviews: Interviewte
       language:
         code: Code
@@ -1294,6 +1294,13 @@ en:
       part_of_institution: Part of institution
       volume: Volume
       web_page: Web page
+      media_type: Media type
+      videos: "%{numVideos} videos"
+      audios: "%{numAudios} audios"
+      period: Period
+      birthyears: Years of birth
+      languages: Interview languages
+      go_to_collection: Go to collection
       table:
         name_header:
           main: Institution/Archive/Collection

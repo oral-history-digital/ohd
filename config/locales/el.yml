@@ -1297,6 +1297,13 @@ el:
       part_of_institution: Part of institution
       volume: Volume
       web_page: Web page
+      media_type: Media type
+      videos: "%{numVideos} videos"
+      audios: "%{numAudios} audios"
+      period: Period
+      birthyears: Years of birth
+      languages: Interview languages
+      go_to_collection: Go to collection
       table:
         name_header:
           main: Institution/Archive/Collection

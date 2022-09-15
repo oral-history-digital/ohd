@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -16,10 +17,10 @@ export default function Breadcrumbs({
                             </span>
                         );
                     } else {
-                        return (<>
+                        return (<Fragment key={index}>
                             {child}
                             <span className="Breadcrumbs-separator">/</span>
-                        </>);
+                        </Fragment>);
                     }
                 }) :
                 children

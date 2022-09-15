@@ -5,9 +5,11 @@ class CollectionSerializer < ApplicationSerializer
     :project_id,
     :homepage,
     :notes,
+    :responsibles,
     :num_interviews
+  attribute :linkable?, key: :is_linkable
 
-  %w(name homepage notes).each do |m|
+  %w(name homepage notes responsibles).each do |m|
     define_method m do
       object.localized_hash(m)
     end
