@@ -2,6 +2,7 @@ FactoryBot.define do
 
   factory :person do
     gender { 'female' }
+    date_of_birth { '1.1.1950' }
     #association :biographical_entries, factory: :biographical_entry
     project
   end
@@ -10,7 +11,7 @@ FactoryBot.define do
     locale { 'de' }
     first_name { 'Konstantin' }
     last_name { 'Adamez' }
-    birth_name { '' }
+    birth_name { 'Hans' }
     other_first_names { 'Wojtowitsch' }
     alias_names { 'Адамец Константин Войтович Adamez Konstantin' }
   end
@@ -32,7 +33,7 @@ def person_with_biographical_entries(entries=[[:de, "15.09.1925: Geburt im Dorf 
   FactoryBot.create(:person_translation, person_id: person.id)
   FactoryBot.create(:person_translation, person_id: person.id, locale: :ru,
                     first_name: "Константин", last_name: "Адамец",
-                    birth_name: "",
+                    birth_name: "Hans",
                     other_first_names: "Войтович", alias_names: "Адамец Константин Войтович Adamez Konstantin")
   FactoryBot.create(:biographical_entry,  person: person) do |biographical_entry|
     entries.each do |locale, text|
@@ -40,6 +41,7 @@ def person_with_biographical_entries(entries=[[:de, "15.09.1925: Geburt im Dorf 
     end
     biographical_entry.reload
   end
+
   person.reload
 end
 
