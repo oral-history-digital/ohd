@@ -149,7 +149,8 @@ class MetadataImport
   end
 
   def create_contributions(interview, contributors_string, contribution_type)
-    contributors_string && contributors_string.gsub('"', '').split(/#\s*/).each do |contributor_string|
+    contributors_string && contributors_string.split(/#\s*/).each do |contributor_string|
+      contributor_string.sub(/\"/, '') if contributor_string.count("\"") == 1
       last_name, first_name = contributor_string.split(/,\s*/)
       contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
       Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: interview.project.contribution_types.find_by_code(contribution_type).id
@@ -165,6 +166,7 @@ class MetadataImport
       (row[sub_category_col_key] && field_rrt_re.create_child(row[sub_category_col_key], locale))
 
     registry_entries = row[col_key] && row[col_key].split('#').map do |name|
+      name.sub(/\"/, '') if name.count("\"") == 1
       field_rrt_re.find_descendant_by_name(name, locale) || 
         (sub_category_registry_entry || field_rrt_re).create_child(name, locale)
     end || []
