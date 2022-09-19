@@ -78,7 +78,7 @@ export default function SidebarTabs({
         }
     }
 
-    const showAccountTab = !isCampscapesProject;
+    const showAccountTab = true //!isCampscapesProject;
     const showCatalogTab = !project;
     const showInterviewTab = !!interview;
     const showRegistryTab = project && (
