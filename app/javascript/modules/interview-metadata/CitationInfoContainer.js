@@ -14,7 +14,6 @@ const mapStateToProps = (state) => {
         collections: getCollectionsForCurrentProject(state),
         projectDoi: project && project.doi,
         projectName: project && project.name,
-        archiveDomain: project && project.archive_domain,
     }
 };
 

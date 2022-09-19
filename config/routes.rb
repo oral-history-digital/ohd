@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       resources :biographical_entries, only: [:destroy]
       resources :registry_references, only: [:create, :update, :destroy]
       get 'landing_page_metadata'
+      get 'contributions'
     end
 
     resources :collections do

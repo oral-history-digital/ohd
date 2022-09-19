@@ -74,6 +74,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  def contributions
+    person = Person.find params[:person_id]
+    authorize person
+    project_id = current_project.id
+
+    contributions = person.contributions_with_interviews(project_id)
+
+    render json: contributions, each_serializer: ContributionWithInterviewSerializer
+  end
+
   def index
     policy_scope Person
 
@@ -101,7 +111,7 @@ class PeopleController < ApplicationController
             paginate = true
             extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
           end
-          
+
           {
             data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             nested_data_type: "people",
@@ -158,7 +168,8 @@ class PeopleController < ApplicationController
         'gender',
         'date_of_birth',
         'project_id',
-        translations_attributes: [:locale, :id, :first_name, :last_name, :birth_name, :other_first_names, :alias_names]
+        translations_attributes: [:locale, :id, :first_name, :last_name,
+            :birth_name, :other_first_names, :alias_names, :description]
     )
   end
 

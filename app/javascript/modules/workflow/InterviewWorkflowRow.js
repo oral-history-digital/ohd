@@ -105,8 +105,8 @@ export default function InterviewWorkflowRow({
                             alt=""
                         />
                         <span className='workflow' >
-                            {interviewee.names[locale].lastname + ', '}<br />
-                            {interviewee.names[locale].firstname }
+                            {interviewee.names[locale].last_name + ', '}<br />
+                            {interviewee.names[locale].first_name }
                         </span>
                     </Link>
                 )}

@@ -1280,6 +1280,12 @@ en:
   interview_title_patterns:
 
   modules:
+    admin:
+      person_details:
+        contributions:
+          title: Contributions
+          at: at
+          error: Error loading person contributions
     catalog:
       title: Catalog
       part_of_institution: Part of institution

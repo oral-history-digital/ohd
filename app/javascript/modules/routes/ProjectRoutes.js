@@ -19,7 +19,7 @@ import { WrappedRolesContainer,
     UploadsContainer, EditProjectDisplay, EditProjectConfig, EditProjectInfo,
     MetadataFieldsContainer
 } from 'modules/admin';
-import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
+import { AccountPage, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
     from 'modules/account';
 import { UserRegistrationsContainer } from 'modules/users';
 
@@ -49,7 +49,7 @@ export default function ProjectRoutes() {
                 <Route path="searches/archive" element={<SearchPage />} />
                 <Route path="searches/map" element={<SearchMap />} />
                 <Route path="registry_entries" element={<RegistryContainer />} />
-                <Route path="accounts/current" element={<WrappedAccountContainer />} />
+                <Route path="accounts/current" element={<AccountPage />} />
                 <Route path="user_accounts/password/new" element={<OrderNewPasswordContainer />} />
                 <Route path="user_accounts/password/edit" element={<ActivateAccount />} />
                 <Route path="user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
