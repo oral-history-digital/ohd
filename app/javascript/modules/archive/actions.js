@@ -93,12 +93,12 @@ const receiveResult = (result) => ({
     result: result
 });
 
-export function submitSelectedArchiveIds(archiveIds, action, pathBase, filename) {
+export function submitSelectedArchiveIds(archiveIds, action, pathBase, filename, format) {
     return dispatch => {
         if (filename) {
             const link = document.createElement('a');
             const params = archiveIds.map((aid) => `archive_ids[]=${aid}`).join('&');
-            link.href = `${pathBase}/${action}.zip?${params}`;
+            link.href = `${pathBase}/interviews/${action}.${format}?${params}`;
             link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();

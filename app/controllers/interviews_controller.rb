@@ -294,6 +294,17 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def export_metadata
+    authorize Interview, :download?
+    respond_to do |format|
+      format.csv do
+        send_data MetadataExport.new(params[:archive_ids], current_project, :de).process,
+        type: "application/csv",
+        filename: "metadata_#{current_project.shortname}_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
+      end
+    end
+  end
+
   def dois
     results = {}
 
@@ -473,9 +484,9 @@ class InterviewsController < ApplicationController
   end
 
   def doi_json(archive_id)
-    @interview = Interview.find_by_archive_id(archive_id)
-    @locale = params[:locale]
-    xml = render_to_string(template: "/interviews/metadata.xml", layout: false)
+    interview = Interview.find_by_archive_id(archive_id)
+    locale = params[:locale]
+    xml = render_to_string(template: "/interviews/metadata.xml", layout: false, locals: {interview: interview, locale: locale})
     {
       "data": {
         "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",

@@ -351,6 +351,9 @@ el:
       export_photos:
         title: Fotos exportieren
         confirm_text: "Der Download vieler Fotos kann lange dauern oder sogar abbrechen. Wollen Sie den Export der Fotos der Interviews %{archive_ids} starten?"
+      export_metadata:
+        title: Metadaten exportieren
+        confirm_text: "Wollen Sie den Export der Metadaten der Interviews %{archive_ids} starten?"
       dois:
         title: DOI registrieren
     language:

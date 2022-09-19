@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       end
       collection do
         post :dois
+        get :export_metadata
       end
       resources :contributions, only: [:create, :destroy]
       resources :photos, only: [:create, :update, :destroy]

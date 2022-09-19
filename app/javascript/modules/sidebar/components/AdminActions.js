@@ -31,19 +31,6 @@ export default function AdminActions({
     const selectedArchiveIds = archiveIds.filter(
         archiveId => archiveId !== 'dummy');
 
-                //{
-                    //selectedArchiveIds.map(archiveId => {
-                        //if (statuses[archiveId] !== undefined) {
-                            //return (
-                                //<div key={archiveId}>
-                                    //{' '}
-                                    //{`${archiveId}: ${statuses[archiveId]}`}{' '}
-                                //</div>
-                            //);
-                        //}
-                    //})
-                //}
-
     return (
         <div>
             {Object.keys(doiResult).length > 0 && (
@@ -66,6 +53,18 @@ export default function AdminActions({
                             selectedArchiveIds={selectedArchiveIds}
                             action="dois"
                             confirmText={<DOIText selectedArchiveIds={selectedArchiveIds} />}
+                            format='zip'
+                        />
+                    </li>
+                </AuthorizedContent>{' '}
+
+                <AuthorizedContent object={{ type: 'Interview' }} action='download'>
+                    <li>
+                        <SubmitInterviewIds
+                            selectedArchiveIds={selectedArchiveIds}
+                            action="export_metadata"
+                            filename='metdata.csv'
+                            format='csv'
                         />
                     </li>
                 </AuthorizedContent>{' '}
