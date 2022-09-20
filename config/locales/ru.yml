@@ -1834,6 +1834,6 @@ ru:
       full_text_search: Полнотекстовый поиск
       filter: фильтр
       default_titles:
-        search_for_term: 'Search for "%{searchTerm}"'
-        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
-        and_filters_more: 'and %{numFilters} more'
+        search_for_term: 'Искать "%{searchTerm}"'
+        search_for_term_and_filters: 'Искать "%{searchTerm}", %{numFilters} фильтров'
+        and_filters_more: 'и еще %{numFilters}'

@@ -1421,6 +1421,6 @@ el:
       full_text_search: Αναζήτηση πλήρους κειμένου
       filter: Φίλτρο
       default_titles:
-        search_for_term: 'Search for "%{searchTerm}"'
-        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
-        and_filters_more: 'and %{numFilters} more'
+        search_for_term: 'Αναζήτηση για "%{searchTerm}"'
+        search_for_term_and_filters: 'Αναζήτηση για "%{searchTerm}", %{numFilters} φίλτρα'
+        and_filters_more: 'και άλλα %{numFilters}'
