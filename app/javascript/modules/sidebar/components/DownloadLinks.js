@@ -10,15 +10,17 @@ export default function DownloadLinks({
 }) {
     const pathBase = usePathBase();
     const translationLocale = interview.languages?.filter(locale => locale !== interview.lang)[0];
+    const hasTranscript = interview.transcript_locales.indexOf(interview.lang) > -1;
+    const hasTranslation = interview.transcript_locales.indexOf(translationLocale) > -1;
 
     return (
         <div>
             <ul>
-                { LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'csv') }
-                { LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'vtt') }
-                { translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'csv') }
-                { translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'vtt') }
-                { dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
+                { hasTranscript && LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'csv') }
+                { hasTranscript && LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'vtt') }
+                { hasTranslation && translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'csv') }
+                { hasTranslation && translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'vtt') }
+                { hasTranscript && dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos (alle)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip?only_public=true`, 'Fotos (nur öffentliche)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/download_metadata.xml`, 'Metadaten (DataCite)') }

@@ -19,6 +19,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :registry_references,
     :startpage_position,
     :properties,
+    :transcript_locales,
   ]
 
   def attributes(*args)
@@ -86,4 +87,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.properties || {}
   end
 
+  def transcript_locales
+    object.languages.select{|l| object.has_transcript?(l)}
+  end
 end
