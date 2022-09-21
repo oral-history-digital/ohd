@@ -1711,8 +1711,8 @@ ru:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{numVideos} videos"
-      audios: "%{numAudios} audios"
+      videos: "%{number} videos"
+      audios: "%{number} audios"
       period: Period
       birthyears: Years of birth
       languages: Interview languages

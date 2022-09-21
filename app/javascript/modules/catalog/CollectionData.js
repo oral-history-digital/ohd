@@ -4,6 +4,29 @@ import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import useCollectionData from './useCollectionData';
 
+function getMinMaxYear(dates) {
+    const filteredDates = dates
+        .map(d => Date.parse(d))
+        .filter(d => !Number.isNaN(d));
+
+    if (filteredDates.length === 0) {
+        return null;
+    }
+
+    const minDate = new Date(Math.min(...filteredDates));
+    const maxDate = new Date(Math.max(...filteredDates));
+
+    return [minDate.getFullYear(), maxDate.getFullYear()];
+}
+
+function formatYearRange(year1, year2) {
+    if (year1 === year2) {
+        return `${year1}`;
+    } else {
+        return `${year1}–${year2}`;
+    }
+}
+
 export default function CollectionData({
     id,
     className
@@ -23,47 +46,54 @@ export default function CollectionData({
         return null;
     }
 
-    const dateMin = collectionData.date_min ?
-        (new Date(collectionData.date_min)).toLocaleDateString(locale, { dateStyle: 'medium' }) :
-        null;
-    const dateMax = collectionData.date_max ?
-        (new Date(collectionData.date_max)).toLocaleDateString(locale, { dateStyle: 'medium' }) :
-        null;
+    const interviewYears = getMinMaxYear(collectionData.interview_dates);
+    const birthYears = getMinMaxYear(collectionData.birthdays);
 
-    const birthdays = collectionData.birthdays
-        .map(d => Date.parse(d))
-        .filter(d => !Number.isNaN(d));
-    const minBirthday = birthdays.length > 0 ?
-        new Date(Math.min(...birthdays)) :
-        null;
-    const maxBirthday = birthdays.length > 0 ?
-        new Date(Math.max(...birthdays)) :
-        null;
+    const mediaTypes = [
+        {
+            type: 'videos',
+            num: collectionData.num_videos,
+        },
+        {
+            type: 'audios',
+            num: collectionData.num_audios,
+        },
+    ];
+
+    const mediaTypesStr = mediaTypes
+      .filter(mt => mt.num > 0)
+      .sort((a, b) => b.num - a.num)
+      .map(mt => t(`modules.catalog.${mt.type}`, { number: mt.num }))
+      .join(', ');
 
     return (
         <>
-            <dt className="DescriptionList-term">
-                {t('modules.catalog.media_type')}
-            </dt>
-            <dd className="DescriptionList-description">
-                {t('modules.catalog.videos', { numVideos: collectionData.num_videos })}
-                {', '}
-                {t('modules.catalog.audios', { numAudios: collectionData.num_audios })}
-            </dd>
+            {mediaTypesStr && (<>
+                <dt className="DescriptionList-term">
+                    {t('modules.catalog.media_type')}
+                </dt>
+                <dd className="DescriptionList-description">
+                    {mediaTypesStr}
+                </dd>
+            </>)}
 
-            <dt className="DescriptionList-term">
-                {t('modules.catalog.period')}
-            </dt>
-            <dd className="DescriptionList-description">
-                {dateMin}–{dateMax}
-            </dd>
+            {interviewYears && (<>
+                <dt className="DescriptionList-term">
+                    {t('modules.catalog.period')}
+                </dt>
+                <dd className="DescriptionList-description">
+                    {formatYearRange(...interviewYears)}
+                </dd>
+            </>)}
 
-            <dt className="DescriptionList-term">
-                {t('modules.catalog.birthyears')}
-            </dt>
-            <dd className="DescriptionList-description">
-                {minBirthday?.getFullYear()}–{maxBirthday?.getFullYear()}
-            </dd>
+            {birthYears && (<>
+                <dt className="DescriptionList-term">
+                    {t('modules.catalog.birthyears')}
+                </dt>
+                <dd className="DescriptionList-description">
+                    {formatYearRange(...birthYears)}
+                </dd>
+            </>)}
 
             <dt className="DescriptionList-term">
                 {t('modules.catalog.languages')}

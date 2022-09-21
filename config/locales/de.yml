@@ -1290,8 +1290,8 @@ de:
       volume: Umfang
       web_page: Webseite
       media_type: Medientyp
-      videos: "%{numVideos} Videos"
-      audios: "%{numAudios} Audios"
+      videos: "%{number} Videos"
+      audios: "%{number} Audios"
       period: Zeitraum
       birthyears: Geburtsjahre
       languages: Interviewsprachen

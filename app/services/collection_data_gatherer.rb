@@ -5,19 +5,15 @@ class CollectionDataGatherer
   end
 
   def perform
-    date_range = interview_date_range
-
-    collection_data = {
+    {
       id: @collection.id,
       num_interviews: @interviews.size,
       num_videos: num_videos,
       num_audios: num_audios,
-      date_min: date_range.begin,
-      date_max: date_range.end,
+      interview_dates: interview_dates,
       birthdays: birthdays,
       languages: languages
     }
-    collection_data
   end
 
   def num_videos
@@ -32,21 +28,31 @@ class CollectionDataGatherer
     @interviews.map { |i| i.language.name }.uniq
   end
 
-  def interview_date_range
-    dates = @interviews.map do |i|
-      begin
-        Date.parse(i.interview_date)
-      rescue => e
-        nil
+  def interview_dates
+    # First try to parse the dates in Ruby, later in JavaScript.
+    # JavaScript for example can parse simple years like '1940'.
+    @interviews
+      .map do |i|
+        date_str = i.interview_date
+        begin
+          Date.parse(date_str)
+        rescue => e
+          date_str
+        end
       end
-    end
-    filtered_dates = dates.reject { |date| date.nil? }
-    (filtered_dates.min..filtered_dates.max)
+      .reject { |date| date.nil? }.uniq
   end
 
   def birthdays
     @interviews
-      .map { |i| i.interviewee&.date_of_birth }
+      .map do |i|
+        date_str = i.interviewee&.date_of_birth
+        begin
+          Date.parse(date_str)
+        rescue => e
+          date_str
+        end
+      end
       .reject { |date| date.nil? }.uniq
   end
 end
