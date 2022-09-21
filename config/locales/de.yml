@@ -1287,6 +1287,8 @@ de:
     catalog:
       title: Katalog
       part_of_institution: Teil der Institution
+      description: Beschreibung
+      address: Adresse
       volume: Umfang
       web_page: Webseite
       media_type: Medientyp

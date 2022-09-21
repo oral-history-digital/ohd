@@ -75,7 +75,7 @@ export default function ArchiveCatalogPage() {
 
                     {projectTranslation?.introduction && (<>
                         <dt className="DescriptionList-term">
-                            {t('activerecord.attributes.project.introduction')}
+                            {t('modules.catalog.description')}
                         </dt>
                         <dd
                             className="DescriptionList-description"

@@ -32,6 +32,21 @@ export default function InstitutionCatalogPage() {
         parentInstitution = allInstitutions[institution.parent_id];
     }
 
+    const cityParts = [
+        institution.zip,
+        institution.city
+    ];
+
+    const addressParts = [
+        institution.street,
+        cityParts.filter(part => part?.length > 0).join(' '),
+        institution.country,
+    ];
+
+    const address = addressParts
+        .filter(part => part?.length > 0)
+        .join(', ');
+
     return (
         <ScrollToTop>
             <Helmet>
@@ -50,38 +65,61 @@ export default function InstitutionCatalogPage() {
                     <h1 className="search-results-title u-mb">
                         {title}
                     </h1>
-                    {parentInstitution && (
-                        <p className="Paragraph u-mb">
-                            {t('modules.catalog.part_of_institution')}
+
+                    <dl className="DescriptionList">
+                        {parentInstitution && (<>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.part_of_institution')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                <Link to={`/${locale}/catalog/institutions/${parentInstitution.id}`}>
+                                    {parentInstitution.name[locale]}
+                                </Link>
+                            </dd>
+                        </>)}
+
+                        {institution.description[locale] && (<>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.description')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {institution.description[locale]}
+                            </dd>
+                        </>)}
+
+                        {address && (<>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.address')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {address}
+                            </dd>
+                        </>)}
+
+                        {institution.website && (<>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.web_page')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                <a
+                                    href={institution.website}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {institution.website}
+                                </a>
+                            </dd>
+                        </>)}
+
+                        <dt className="DescriptionList-term">
+                            {t('modules.catalog.volume')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            {institution.num_interviews}
                             {' '}
-                            <Link to={`/${locale}/catalog/institutions/${parentInstitution.id}`}
-                            >
-                                {parentInstitution.name[locale]}
-                            </Link>
-                        </p>
-                    )}
-
-                    <p className="Paragraph u-mb">
-                        {institution.description[locale]}
-                    </p>
-
-                    <p className="Paragraph u-mb">
-                        {t('modules.catalog.web_page')}
-                        {': '}
-                        <a
-                            href={institution.website}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {institution.website}
-                        </a>
-                    </p>
-
-                    <p className="Paragraph u-mb">
-                        {`${t('modules.catalog.volume')}: ${institution.num_interviews}`}
-                        {' '}
-                        {t('activerecord.models.interview.other')}
-                    </p>
+                            {t('activerecord.models.interview.other')}
+                        </dd>
+                    </dl>
 
                     <div>
                         <InstitutionCatalog id={Number.parseInt(id)} />

@@ -1708,6 +1708,8 @@ ru:
     catalog:
       title: Catalog
       part_of_institution: Part of institution
+      description: Description
+      address: Address
       volume: Volume
       web_page: Web page
       media_type: Media type
@@ -1716,6 +1718,7 @@ ru:
       period: Period
       birthyears: Years of birth
       languages: Interview languages
+      go_to_archive: Go to archive
       go_to_collection: Go to collection
       table:
         name_header:
