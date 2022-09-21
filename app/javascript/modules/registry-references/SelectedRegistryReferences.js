@@ -60,7 +60,7 @@ export default function SelectedRegistryReferences({
                     </span>
                     <RegistryReferencesContainer
                         refObject={refObject}
-                        lowestAllowedRegistryEntryId={(field.registry_entry_id) || 1}
+                        lowestAllowedRegistryEntryId={(field.registry_entry_id) || project.root_registry_entry_id}
                         registryReferenceTypeId={field.registry_reference_type_id}
                         locale={locale}
                     />
