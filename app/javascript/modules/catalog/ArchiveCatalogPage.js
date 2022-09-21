@@ -52,47 +52,107 @@ export default function ArchiveCatalogPage() {
                     <h1 className="search-results-title u-mb">
                         {title}
                     </h1>
-                    <p className="Paragraph u-mb">
-                        {institutions.length === 1 ?
-                            t('activerecord.models.institution.one') :
-                            t('activerecord.models.institution.other')
-                        }
-                        {' '}
-                        {institutions.map((institution, index) => (
-                            <>
-                                <Link
-                                    key={institution.id}
-                                    to={`/${locale}/catalog/institutions/${institution.id}`}
-                                >
-                                    {institution.name[locale]}
-                                </Link>
-                                {index < (institutions.length - 1) && ', '}
-                            </>
-                        ))}
-                    </p>
 
-                    <p
-                        className="Paragraph u-mb"
-                        dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}}
-                    />
+                    <dl className="DescriptionList">
+                        <dt className="DescriptionList-term">
+                            {institutions.length === 1 ?
+                                t('activerecord.models.institution.one') :
+                                t('activerecord.models.institution.other')
+                            }
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            <ul className="UnorderedList">
+                                {institutions.map(institution => (
+                                    <li key={institution.id}>
+                                        <Link to={`/${locale}/catalog/institutions/${institution.id}`}>
+                                            {institution.name[locale]}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </dl>
 
-                    <p className="Paragraph u-mb">
-                        <a
-                            href={project.archive_domain}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {project.archive_domain}
-                        </a>
-                    </p>
+                    {projectTranslation?.introduction && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.introduction')}
+                        </dt>
+                        <dd
+                            className="DescriptionList-description"
+                            dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}}
+                        />
+                    </>)}
 
-                    <p className="Paragraph u-mb">
+                    {project.cooperation_partner && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.cooperation_partner')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            {project.cooperation_partner}
+                        </dd>
+                    </>)}
+
+                    {project.leader && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.leader')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            {project.leader}
+                        </dd>
+                    </>)}
+
+                    {project.manager && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.manager')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            {project.manager}
+                        </dd>
+                    </>)}
+
+                    {project.pseudo_funder_names?.length > 0 && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.pseudo_funder_names')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            <ul className="UnorderedList">
+                                {project.pseudo_funder_names.map(name =>
+                                    <li key={name}>{name}</li>
+                                )}
+                            </ul>
+                        </dd>
+                    </>)}
+
+                    {project.archive_domain && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.archive_domain')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            <a
+                                href={project.archive_domain}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {project.archive_domain}
+                            </a>
+                        </dd>
+                    </>)}
+
+                    <dt className="DescriptionList-term">
                         {t('modules.catalog.volume')}
-                        {': '}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {project.num_interviews}
+                        {' '}
+                        {project.num_interviews === 1 ?
+                            t('activerecord.models.interview.one') :
+                            t('activerecord.models.interview.other')
+                        }
+                    </dd>
+
+                    <p className="Paragraph u-mb">
                         <LinkOrA project={project} to="">
-                            {project.num_interviews}
-                            {' '}
-                            {t('activerecord.models.interview.other')}
+                            {t('modules.catalog.go_to_archive')}
                         </LinkOrA>
                     </p>
 

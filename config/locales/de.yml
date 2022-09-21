@@ -1010,7 +1010,7 @@ de:
         leader: Projektleitung
         manager: Projektmanagement
         hosting_institution: Institution
-        pseudo_funder_names: Finanzierung
+        pseudo_funder_names: Förderung
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
@@ -1295,6 +1295,7 @@ de:
       period: Zeitraum
       birthyears: Geburtsjahre
       languages: Interviewsprachen
+      go_to_archive: Zum Archiv
       go_to_collection: Zur Sammlung
       table:
         name_header:
