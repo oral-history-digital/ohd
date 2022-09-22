@@ -1295,8 +1295,18 @@ el:
     catalog:
       title: Catalog
       part_of_institution: Part of institution
+      description: Description
+      address: Address
       volume: Volume
       web_page: Web page
+      media_type: Media type
+      videos: "%{number} videos"
+      audios: "%{number} audios"
+      period: Period
+      birthyears: Years of birth
+      languages: Interview languages
+      go_to_archive: Go to archive
+      go_to_collection: Go to collection
       table:
         name_header:
           main: Institution/Archive/Collection
@@ -1414,6 +1424,6 @@ el:
       full_text_search: Αναζήτηση πλήρους κειμένου
       filter: Φίλτρο
       default_titles:
-        search_for_term: 'Search for "%{searchTerm}"'
-        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
-        and_filters_more: 'and %{numFilters} more'
+        search_for_term: 'Αναζήτηση για "%{searchTerm}"'
+        search_for_term_and_filters: 'Αναζήτηση για "%{searchTerm}", %{numFilters} φίλτρα'
+        and_filters_more: 'και άλλα %{numFilters}'

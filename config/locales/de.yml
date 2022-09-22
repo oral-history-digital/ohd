@@ -930,7 +930,7 @@ de:
         responsibles: Verantwortliche
         interviewers: Interviewende
         homepage: Homepage
-        notes: Weitere Anmerkungen
+        notes: Beschreibung
         interviews: Interviewte
       language:
         code: Code
@@ -1010,7 +1010,7 @@ de:
         leader: Projektleitung
         manager: Projektmanagement
         hosting_institution: Institution
-        pseudo_funder_names: Finanzierung
+        pseudo_funder_names: Förderung
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
@@ -1287,8 +1287,18 @@ de:
     catalog:
       title: Katalog
       part_of_institution: Teil der Institution
+      description: Beschreibung
+      address: Adresse
       volume: Umfang
       web_page: Webseite
+      media_type: Medientyp
+      videos: "%{number} Videos"
+      audios: "%{number} Audios"
+      period: Zeitraum
+      birthyears: Geburtsjahre
+      languages: Interviewsprachen
+      go_to_archive: Zum Archiv
+      go_to_collection: Zur Sammlung
       table:
         name_header:
           main: Institution/Archiv/Sammlung
