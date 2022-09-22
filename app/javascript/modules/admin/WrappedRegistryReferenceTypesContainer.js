@@ -34,9 +34,9 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'registryEntrySelect',
                 attribute: 'registry_entry_id',
-                lowestAllowedRegistryEntryId: project?.root_registry_entry_id,
                 goDeeper: true,
                 help: 'help_texts.registry_reference_types.registry_entry_id',
+                validate: function(v){return /^\d+$/.test(parseInt(v) && parseInt(v) !== parseInt(project?.root_registry_entry_id))},
             },
             {
                 attribute: 'use_in_transcript',

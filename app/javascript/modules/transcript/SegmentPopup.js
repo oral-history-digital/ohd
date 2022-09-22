@@ -54,7 +54,6 @@ export default function SegmentPopup({
                             >
                                 <RegistryReferencesContainer
                                     refObject={data}
-                                    lowestAllowedRegistryEntryId={1}
                                     inTranscript={true}
                                     contentLocale={contentLocale}
                                     setOpenReference={setOpenReference}

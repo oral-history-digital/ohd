@@ -17,7 +17,7 @@ export default class Select extends Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            valid: !this.props.validate,
+            valid: props.valid !== undefined ? props.valid : !props.validate,
         };
 
         this.handleChange = this.handleChange.bind(this);

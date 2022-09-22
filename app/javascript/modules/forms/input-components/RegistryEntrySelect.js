@@ -8,7 +8,12 @@ export default class RegistryEntrySelect extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {selectedRegistryEntryId: (this.props.data && this.props.data[this.props.attribute]) || this.props.lowestAllowedRegistryEntryId};
+        const selectedRegistryEntryId = (this.props.data && this.props.data[this.props.attribute]) || this.props.project?.root_registry_entry_id;
+        this.state = {
+            selectedRegistryEntryId: selectedRegistryEntryId,
+            valid: selectedRegistryEntryId !== this.props.project?.root_registry_entry_id,
+        };
+
         this.handleSelectedRegistryEntry = this.handleSelectedRegistryEntry.bind(this);
     }
 
@@ -92,7 +97,7 @@ export default class RegistryEntrySelect extends Component {
         if (this.props.goDeeper) {
             if (!this.props.registryEntries[value] || !this.props.registryEntries[value].associations_loaded)
                 this.props.fetchData(this.props, 'registry_entries', value, null, 'with_associations=true');
-            this.setState({selectedRegistryEntryId: value});
+            this.setState({selectedRegistryEntryId: parseInt(value)});
         }
     }
 
@@ -110,9 +115,10 @@ export default class RegistryEntrySelect extends Component {
     }
 
     goUp() {
+        const valid = parseInt(this.state.selectedRegistryEntryId) !== this.props.project?.root_registry_entry_id;
         if (
             this.selectedRegistryEntry() &&
-            this.selectedRegistryEntry().id !== this.props.lowestAllowedRegistryEntryId &&
+            parseInt(this.state.selectedRegistryEntryId) !== this.props.project?.root_registry_entry_id &&
             this.selectedRegistryEntry().associations_loaded
         ) {
             return (
@@ -120,7 +126,13 @@ export default class RegistryEntrySelect extends Component {
                     type="button"
                     className="Button Button--transparent Button--icon"
                     title={t(this.props, 'edit.registry_entry.go_up')}
-                    onClick={() => this.setState({selectedRegistryEntryId: this.parentRegistryEntryId()})}
+                    onClick={() => {
+                        this.setState({
+                            valid: valid,
+                            selectedRegistryEntryId: this.parentRegistryEntryId(),
+                        });
+                        this.props.handleErrors(this.props.attribute, valid);
+                    }}
                 >
                     {t(this.props, 'edit.registry_entry.go_up')}
                     <FaArrowUp className="Icon Icon--editorial" />
@@ -130,6 +142,7 @@ export default class RegistryEntrySelect extends Component {
     }
 
     goDown() {
+        const valid = parseInt(this.state.selectedRegistryEntryId) !== this.props.project?.root_registry_entry_id;
         if (
             this.selectedRegistryEntry() &&
             this.selectedRegistryEntry().associations_loaded &&
@@ -139,9 +152,12 @@ export default class RegistryEntrySelect extends Component {
                 <Select
                     attribute={this.props.attribute}
                     scope={this.props.scope}
+                    value={this.state.selectedRegistryEntryId}
                     values={this.registryEntries()}
                     withEmpty={true}
-                    validate={function(v){return v !== ''}}
+                    validate={function(v){return /\d+/.test(parseInt(v))}}
+                    valid={valid}
+                    showErrors={true}
                     individualErrorMsg={'empty'}
                     handlechangecallback={this.handleSelectedRegistryEntry}
                     handleChange={this.props.handleChange}
