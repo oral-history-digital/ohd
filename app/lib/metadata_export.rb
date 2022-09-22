@@ -18,12 +18,12 @@ class MetadataExport
           interview.archive_id,
           interview.signature_original,
           interview.language.name(locale),
-          interview.collection.name(locale),
+          interview.collection && interview.collection.name(locale),
           interview.interview_date,
           interview.media_type,
           Timecode.new(interview.duration).timecode,
-          interview.observations(locale),
-          interview.description(locale),
+          interview.observations(locale) && interview.observations(locale).gsub(/[\r\n]/, ' '),
+          interview.description(locale) && interview.description(locale).gsub(/[\r\n]/, ' '),
           interview.tape_count,
           interview.properties[:link],
           interview.interviewee.first_name,
@@ -33,7 +33,7 @@ class MetadataExport
           interview.interviewee.other_first_names,
           interview.interviewee.gender,
           interview.interviewee.date_of_birth,
-          interview.interviewee.biography(locale),
+          interview.interviewee.biography(locale) && interview.interviewee.biography(locale).gsub(/[\r\n]/, ' '),
           interview.interviewers.count > 0 ? interview.interviewers.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
           interview.transcriptors.count > 0 ? interview.transcriptors.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
           interview.translators.count > 0 ? interview.translators.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
@@ -43,9 +43,11 @@ class MetadataExport
         project.registry_reference_type_import_metadata_fields.inject(line) do |mem, field|
           registry_entries = interview.send(field.name).map{|rid| RegistryEntry.find(rid)}.compact.uniq
           mem << registry_entries.map(&:descriptor).join('#')
-          parent = registry_entries.first.parents.first
+          parent = registry_entries.first && registry_entries.first.parents.first
           if parent
             mem << parent.descriptor
+          else
+            mem << nil
           end
           mem
         end
