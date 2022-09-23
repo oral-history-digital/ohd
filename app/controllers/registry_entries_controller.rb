@@ -127,7 +127,7 @@ class RegistryEntriesController < ApplicationController
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
           csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
             CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
-              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID'] 
+              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews'] 
               root.on_all_descendants do |entry|
                 entry.parents.each do |parent|
                   row << [
@@ -135,11 +135,12 @@ class RegistryEntriesController < ApplicationController
                     parent && parent.id,
                     entry.descriptor(params[:lang]),
                     entry.id,
-                    entry.notes(params[:lang]),
+                    entry.notes(params[:lang]).gsub(/[\r\n\t]/, ' '),
                     entry.latitude,
                     entry.longitude,
                     entry.gnd_id,
-                    entry.osm_id
+                    entry.osm_id,
+                    entry.registry_references.map(&:archive_id).compact.uniq.join('#')
                   ]
                 end
               end
