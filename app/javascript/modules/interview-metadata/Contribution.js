@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { fullname } from 'modules/people';
+import { fullName } from 'modules/people';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
 import { Modal } from 'modules/ui';
 import ContributionFormContainer from './ContributionFormContainer';
 
@@ -26,10 +27,14 @@ export default function Contribution({
         deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'contributions', contribution.id);
     };
 
+    if (!person) {
+        return <Spinner small />;
+    }
+
     if (isAuthorized(contribution, 'update') || contribution.workflow_state === 'public' ) {
         return (
             <span className="flyout-content-data">
-                {fullname({ locale }, person)}
+                {fullName(person, locale)}
 
                 {
                     withSpeakerDesignation ?
@@ -62,7 +67,7 @@ export default function Contribution({
                                     onSubmit={() => { destroy(); close(); }}
                                     onCancel={close}
                                 >
-                                    <p>{fullname({ locale }, person)}</p>
+                                    <p>{fullName(person, locale)}</p>
                                 </DeleteItemForm>
                             )}
                         </Modal>

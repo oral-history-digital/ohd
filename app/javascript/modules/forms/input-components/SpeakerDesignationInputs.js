@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useI18n } from 'modules/i18n';
 import { getPeopleForCurrentProject, getPeopleForCurrentProjectFetched,
     getCurrentProject, Fetch } from 'modules/data';
-import { fullname } from 'modules/people';
+import { fullName } from 'modules/people';
 import InputContainer from './InputContainer';
 
 export default function SpeakerDesignationInputs({
@@ -41,14 +41,17 @@ export default function SpeakerDesignationInputs({
             <div className="speaker-designation-input">
                 <h4>{t('speaker_designations')}</h4>
                 {
-                    contributions.map(contribution => createElement(InputContainer, {
-                        key: contribution.id,
-                        scope: attribute,
-                        attribute: contribution.id,
-                        label: fullname({ locale }, people[contribution.person_id]),
-                        value: contribution.speaker_designation,
-                        handleChange: onChange,
-                    }))
+                    contributions.map(contribution => {
+                        const label = fullName(people[contribution.person_id], locale);
+                        return createElement(InputContainer, {
+                            key: contribution.id,
+                            scope: attribute,
+                            attribute: contribution.id,
+                            label,
+                            value: contribution.speaker_designation,
+                            handleChange: onChange,
+                        });
+                    })
                 }
             </div>
         </Fetch>

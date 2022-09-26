@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { fullname } from 'modules/people';
+import { fullName } from 'modules/people';
+import { Spinner } from 'modules/spinners';
 import MediaControlsContainer from './MediaControlsContainer';
 import MediaElementContainer from './MediaElementContainer';
 import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
@@ -15,13 +16,17 @@ export default function MediaPlayer({
         return null;
     }
 
+    if (!interviewee) {
+        return <Spinner />;
+    }
+
     return (
         <div
             className={classNames('Layout-mediaPlayer', 'MediaPlayer')}
         >
             <header className="MediaHeader">
                 <h1 className="MediaHeader-title">
-                    {fullname({ locale }, interviewee, true)}
+                    {fullName(interviewee, locale, true)}
                 </h1>
                 <MediaControlsContainer className="MediaHeader-controls" />
             </header>

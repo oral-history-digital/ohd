@@ -6,9 +6,10 @@ import { ContentField } from 'modules/forms';
 import Biography from './Biography';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { Modal } from 'modules/ui';
+import { Spinner } from 'modules/spinners';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
-import { fullname } from 'modules/people';
+import { fullName } from 'modules/people';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus } from 'modules/auth';
 
@@ -39,10 +40,14 @@ export default function PersonData({
         field => field.source === 'Person' && ((projectAccessGranted && field.use_in_details_view) || (!projectAccessGranted && field.display_on_landing_page))
     )
 
+    if (!interviewee) {
+        return <Spinner />;
+    }
+
     return (
         <>
             <AuthShowContainer ifLoggedIn>
-                <ContentField label={t('interviewee_name')} value={fullname({locale}, interviewee, true)} >
+                <ContentField label={t('interviewee_name')} value={fullName(interviewee, locale, true)} >
                     <AuthorizedContent object={interviewee} action='update'>
                         <Modal
                             title={t('edit.contribution.edit')}
