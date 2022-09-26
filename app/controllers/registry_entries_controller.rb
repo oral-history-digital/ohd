@@ -135,11 +135,11 @@ class RegistryEntriesController < ApplicationController
                     parent && parent.id,
                     entry.descriptor(params[:lang]),
                     entry.id,
-                    entry.notes(params[:lang]).gsub(/[\r\n\t]/, ' '),
+                    entry.notes(params[:lang]) && entry.notes(params[:lang]).gsub(/[\r\n\t]/, ''),
                     entry.latitude,
                     entry.longitude,
-                    entry.gnd_id,
-                    entry.osm_id,
+                    entry.gnd_id.gsub(/[\r\n\t]/, ''),
+                    entry.osm_id.gsub(/[\r\n\t]/, ''),
                     entry.registry_references.map(&:archive_id).compact.uniq.join('#')
                   ]
                 end
