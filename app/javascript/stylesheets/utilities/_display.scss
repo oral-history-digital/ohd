@@ -4,13 +4,21 @@
  */
 
 .u-block {
-  display: block;
+  display: block !important;
+}
+
+.u-inline {
+  display: inline !important;
+}
+
+.u-inline-block {
+  display: inline-block !important;
 }
 
 .u-flex {
-  display: flex;
+  display: flex !important;
 }
 
 .u-none {
-  display: none;
+  display: none !important;
 }

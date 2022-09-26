@@ -35,12 +35,12 @@ export default class WorkbookItemForm extends Component {
         const name = interview.anonymous_title?.[locale];
         const interviewStr = t({ locale, translations }, 'activerecord.models.interview.one');
         const archiveId = interview.archive_id;
-        const tapeStr = t({ locale, translations }, 'activerecord.models.tape.one');
+        const tapeStr = t({ locale, translations }, 'tape');
 
         switch (type) {
         case 'Search':
         case 'UserAnnotation':
-            return `${name}, ${interviewStr} ${archiveId}, ${tapeStr} ${properties.tape_nbr}, ${formatTimecode(properties.time)}`;
+            return `${name}, ${interviewStr} ${archiveId}, ${tapeStr} ${properties.tape_nbr} – ${formatTimecode(properties.time)}`;
         case 'InterviewReference':
         default:
             return `${name}, ${interviewStr} ${archiveId}`;

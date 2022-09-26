@@ -1,1 +1,1 @@
-export { default as fullname } from './fullname';
+export { default as fullName } from './fullName';

@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { getStatuses } from 'modules/data';
-import { formatTimecode } from 'modules/interview-helpers';
+import { Spinner } from 'modules/spinners';
+import { TapeAndTime } from 'modules/interview-helpers';
 
 export default function RefObjectLink({
     registryReference,
@@ -21,13 +21,9 @@ export default function RefObjectLink({
     setArchiveId,
     fetchData,
 }) {
-    const { t } = useI18n();
     const pathBase = usePathBase();
     const statuses = useSelector(getStatuses);
     const segment = registryReference.ref_object_type === 'Segment' && segments[registryReference.ref_object_id];
-
-    const tape = `${t('tape')} ${segment?.tape_nbr}`;
-    const title = segment && `${tape} - ${formatTimecode(segment.time)}`;
 
     const fetchingSegment = !!statuses['segments'][registryReference.ref_object_id];
 
@@ -41,6 +37,10 @@ export default function RefObjectLink({
         }
     }, [segment, isLoggedIn]);
 
+    if (!segment) {
+        return <Spinner small className="u-inline-block" />;
+    }
+
     return (
         <Link className={'small'}
             key={registryReference.id}
@@ -53,7 +53,7 @@ export default function RefObjectLink({
             }}
             to={pathBase + '/interviews/' + registryReference.archive_id}
         >
-            {title}
+            <TapeAndTime tape={segment.tape_nbr} time={segment.time} />
         </Link>
     )
 }

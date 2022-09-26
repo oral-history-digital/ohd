@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
 
-import { fullname } from 'modules/people';
+import { fullName } from 'modules/people';
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -90,6 +90,11 @@ function Segment({
         return null;
     }
 
+    let person;
+    if (people && data.speaker_id) {
+        person = people[data.speaker_id];
+    }
+
     return (
         <>
             <div
@@ -102,7 +107,7 @@ function Segment({
                     data.speakerIdChanged && (
                         <FaUser
                             className={classNames('Segment-icon', data.speaker_is_interviewee ? 'Segment-icon--primary' : 'Segment-icon--secondary')}
-                            title={(people && data.speaker_id) ? fullname({ locale }, people[data.speaker_id]) : data.speaker}
+                            title={person ? fullName(person, locale) : data.speaker}
                         />
                     )
                 }

@@ -959,7 +959,7 @@ de:
         home_locations: Wohnort
         duration: Dauer
         interview_date: geführt am
-        tape_count: Anzahl der Tapes
+        tape_count: Anzahl der Bänder
         interviewers: Interviewführung
         transcriptors: Transkription
         translators: Übersetzung
@@ -981,10 +981,10 @@ de:
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
-        tape_count: Geamtzahl der Tapes
+        tape_count: Gesamtzahl der Bänder
         tape_number: Tape Nr.
         tape_durations: Tape-Dauer
-        tape_durations_explanation: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
+        tape_durations_explanation: Dauer der Bänder (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         time_shifts: Sprechbeginn
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: vorhandenes Transkript löschen
