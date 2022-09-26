@@ -29,3 +29,15 @@
 .u-line-height {
   line-height: $base-unit !important;
 }
+
+.u-color-text {
+  color: $body-text-color !important;
+}
+
+.u-color-ui {
+  color: $ui-background-color !important;
+}
+
+.u-uppercase {
+  text-transform: uppercase !important;
+}

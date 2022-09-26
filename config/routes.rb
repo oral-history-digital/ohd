@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     get "norm_data_api" => "registry_entries#norm_data_api"
-    get 'catalog', to: 'catalog#index'
+    get 'catalog',                  to: 'catalog#index'
+    get 'catalog/stats',            to: 'catalog#stats'
     get 'catalog/institutions/:id', to: 'catalog#institution'
     get 'catalog/archives/:id',     to: 'catalog#archive'
     get 'catalog/collections/:id',  to: 'catalog#collection'

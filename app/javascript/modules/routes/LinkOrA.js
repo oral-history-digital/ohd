@@ -7,6 +7,7 @@ import { getLocale, setProjectId, getProjectId } from 'modules/archive';
 function LinkOrA({
     to = '',
     className,
+    style,
     project,
     children,
     onLinkClick = f => f,
@@ -30,6 +31,7 @@ function LinkOrA({
         (onOHD && !projectHasOtherDomain) || projectIsCurrentProject ?
             <Link
                 className={className}
+                style={style}
                 to={path}
                 onClick={() => dispatch( setProjectId(project.identifier), onLinkClick(pathBase) )}
             >
@@ -37,6 +39,7 @@ function LinkOrA({
             </Link> :
             <a
                 className={className}
+                style={style}
                 href={`${domain}${path}${params ? '?' + params : ''}`}
             >
                 { children }

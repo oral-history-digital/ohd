@@ -273,8 +273,8 @@ export default function SidebarTabs({
 
 SidebarTabs.propTypes = {
     interview: PropTypes.object,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string,
+    project: PropTypes.object,
     archiveId: PropTypes.string,
     hasMap: PropTypes.bool,
     isLoggedIn: PropTypes.bool,

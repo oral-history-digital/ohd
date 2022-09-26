@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import shuffle from 'lodash.shuffle';
 
 import { getArchiveId, getProjectId, getLocale  } from 'modules/archive';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
@@ -284,6 +285,16 @@ export const getProjectHasMap = createSelector(
     [getCurrentProject],
     (currentProject) => {
         return currentProject?.has_map;
+    }
+);
+
+export const getStartpageProjects = createSelector(
+    [getProjects],
+    projectObject => {
+        const filteredProjects = Object.values(projectObject)
+            .filter(project => project.num_interviews > 0);
+
+        return shuffle(filteredProjects);
     }
 );
 

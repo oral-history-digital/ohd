@@ -1,0 +1,53 @@
+.ArchiveTile {
+  display: block;
+  transition: opacity $transition-duration;
+}
+
+.ArchiveTile:link,
+.ArchiveTile:hover,
+.ArchiveTile:active,
+.ArchiveTile:visited {
+  color: $body-text-color;
+}
+
+.ArchiveTile:hover,
+.ArchiveTile:focus {
+  opacity: 0.75;
+}
+
+.ArchiveTile-inner {
+}
+
+.ArchiveTile-image {
+  background-color: white;
+  border-bottom: none;
+  border: 1px solid lightgrey;
+  padding-bottom: 100%;
+  // padding-bottom: 0;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  // background-size: cover;
+  background-size: contain;
+}
+
+.ArchiveTile-body {
+  padding: $base-unit / 2;
+}
+
+.ArchiveTile-title {
+  color: black;
+  font-weight: bold;
+  line-height: $base-unit;
+  margin: 0;
+}
+
+.ArchiveTile-text {
+  color: $body-text-color;
+  margin: 0;
+}
+
+.ArchiveTile-text--ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
