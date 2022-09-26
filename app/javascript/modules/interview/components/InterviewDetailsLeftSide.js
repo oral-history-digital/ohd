@@ -29,7 +29,7 @@ export default function InterviewDetailsLeftSide({
     }
 
     return (
-        <div>
+        <div className={classNames('flyout-folder')} >
             <div style={{ padding: "5%" }} >
                 <h3>{t('person_info')}</h3>
                 <div>
