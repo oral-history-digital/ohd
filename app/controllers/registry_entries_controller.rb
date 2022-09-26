@@ -4,17 +4,7 @@ class RegistryEntriesController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:norm_data_api]
 
   def norm_data_api
-    uri = URI.parse("https://c105-230.cloud.gwdg.de/transformation/api/610819aba6ab26663fe6163d")
-    results = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
-      request.body = {
-        expression: params[:expression],
-        placeType: params[:place_type],
-        geoFilter: params[:geo_filter]
-      }.to_json
-      response = http.request request
-      response.body
-    end
+    results = NormDataApi.new(params[:expression], params[:place_type], params[:geo_filter]).process
 
     respond_to do |format|
       format.json do
