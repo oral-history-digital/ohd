@@ -6,7 +6,7 @@ import formatTimecode from './formatTimecode';
 export default function TapeAndTime({
     tape,
     time,
-    separator = ' | ',
+    separator = ' – ',
     className,
     style,
 }) {

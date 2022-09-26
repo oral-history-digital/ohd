@@ -25,7 +25,7 @@ export default function interviewCitation(interview, project, pathBase, locale,
     citation += `${interview.archive_id}, `;
     citation += `${interview.interview_date}, `;
     if (tape && time) {
-        citation += `${t({ locale, translations }, 'modules.workbook.position')}: ${tape} – ${formatTimecode(time)}, `;
+        citation += `${t({ locale, translations }, 'tape')} ${tape} – ${formatTimecode(time)}, `;
     }
     if (projectName) {
         citation += `${projectName[locale]}, `;

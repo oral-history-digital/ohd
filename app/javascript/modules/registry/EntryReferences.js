@@ -66,7 +66,7 @@ export default function EntryReferences({
             <br/>
             {
                 loaded < archiveIds.length ? <PixelLoader/> :
-                <ul>
+                <ul className="UnorderedList">
                     {
                         archiveIds.map(archiveId => {
                             return (

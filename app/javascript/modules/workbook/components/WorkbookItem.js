@@ -59,7 +59,7 @@ export default function WorkbookItem({
 
     const facetValues = queryToFacets(convertLegacyQuery(data.properties),
         facets, locale);
-    const date = (new Date(data.created_at)).toLocaleDateString(undefined, { dateStyle: 'medium' });
+    const date = (new Date(data.created_at)).toLocaleDateString(locale, { dateStyle: 'medium' });
 
     return (
         <div className={classNames('WorkbookEntry', className)}>
@@ -96,7 +96,6 @@ export default function WorkbookItem({
                                 <TapeAndTime
                                     tape={data.properties.tape_nbr}
                                     time={data.properties.time}
-                                    separator=", "
                                 />
                             </dd>
                         </div>
