@@ -35,7 +35,6 @@ function NormDataSelect({
                     name_position: 1,
                     translations_attributes: [{
                         descriptor: value.Entry.Name,
-                        notes: `ID: ${value.Entry.ID}; Info: ${value.Entry.Label}`,
                         locale: 'de'
                     }],
                 }],
