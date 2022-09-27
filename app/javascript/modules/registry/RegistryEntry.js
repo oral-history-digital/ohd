@@ -60,6 +60,25 @@ export default class RegistryEntry extends Component {
         return this.props.data.parent_registry_hierarchy_ids[this.props.registryEntryParent.id];
     }
 
+    normDataLinks() {
+        return this.props.data.norm_data.map( normDatum => {
+            return (
+                <>
+                    <a
+                        href={`${normDatum.norm_data_provider.url_without_id}${normDatum.nid}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="Link flyout-sub-tabs-content-ico-link"
+                        title={`${normDatum.norm_data_provider.name}`}
+                    >
+                        {`${normDatum.norm_data_provider.name}`}
+                    </a>
+                    {' '}
+                </>
+            )
+        })
+    }
+
     osmLink() {
         if((this.props.data.latitude + this.props.data.longitude) !== 0 ) {
             return (
@@ -82,6 +101,7 @@ export default class RegistryEntry extends Component {
     buttons() {
         return (
             <div>
+                {this.normDataLinks()}
                 {this.osmLink()}
                 {this.editButtons()}
             </div>
@@ -198,7 +218,7 @@ export default class RegistryEntry extends Component {
         const displayName = (<>
             {name}
             <AuthorizedContent object={data} action='update'>
-                {` (ID: ${data.id})`}
+                {` (ID: ${data.id})`}&nbsp;
             </AuthorizedContent>
         </>);
 
