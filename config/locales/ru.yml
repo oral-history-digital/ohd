@@ -1188,14 +1188,14 @@ ru:
         biography: Biographie
       registry_entry:
         descriptor: Name
-        notes: Anmerkungen
+        notes: Beschreibung
         born: урожд.
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
       registry_name:
         descriptor: Name
-        notes: Anmerkungen
+        notes: Beschreibung
         registry_name_type_id: Registernamensart
         name_position: Position
       norm_datum:
