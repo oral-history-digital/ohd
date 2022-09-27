@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
         sortAttribute: 'name',
         sortAttributeTranslated: true,
         baseTabIndex: 4 + project.has_map,
-        detailsAttributes: ['code'],
+        detailsAttributes: ['name'],
         initialFormValues: {project_id: project.id},
         formElements: [
             {
@@ -42,11 +42,6 @@ const mapStateToProps = (state) => {
                 attribute: 'use_in_transcript',
                 elementType: 'input',
                 type: 'checkbox',
-            },
-            {
-                attribute: 'code',
-                help: 'help_texts.registry_reference_types.code',
-                validate: function(v){return /^\w+$/.test(v)}
             },
             {
                 attribute: 'name',
