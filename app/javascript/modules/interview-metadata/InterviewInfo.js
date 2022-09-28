@@ -46,6 +46,7 @@ export default function InterviewInfo({
                 projectAccessGranted={projectAccessGranted}
                 elementType="textarea"
                 multiLocale
+                linkUrls
             />
             <SingleValueWithFormContainer
                 obj={interview}

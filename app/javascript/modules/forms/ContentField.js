@@ -1,13 +1,26 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import ContentValueWithLinks from './ContentValueWithLinks';
+
 function ContentField({
     label,
-    noLabel = false,
     value,
+    noLabel = false,
+    linkUrls = false,
     className,
     children,
 }) {
+    let displayedValue = '---';
+
+    if (value) {
+        if (linkUrls) {
+            displayedValue = <ContentValueWithLinks>{value}</ContentValueWithLinks>;
+        } else {
+            displayedValue = value;
+        }
+    }
+
     return (
         <div className={classNames('ContentField', className)}>
             {
@@ -16,7 +29,7 @@ function ContentField({
                     <span className="flyout-content-label">{label}:</span>
             }
             <span className={classNames('flyout-content-data', className)}>
-                {value || '---'}
+                {displayedValue}
             </span>
             {children}
         </div>
@@ -26,6 +39,7 @@ function ContentField({
 ContentField.propTypes = {
     label: PropTypes.string.isRequired,
     noLabel: PropTypes.bool,
+    linkUrls: PropTypes.bool,
     value: PropTypes.string.isRequired,
     className: PropTypes.string,
     children: PropTypes.node,

@@ -93,7 +93,8 @@ export default class SingleValueWithForm extends Component {
     }
 
     show() {
-        const { readOnly, projectAccessGranted, obj, attribute, noLabel, collapse, children } = this.props;
+        const { readOnly, projectAccessGranted, obj, attribute, noLabel, linkUrls,
+            collapse, children } = this.props;
         const { collapsed, editing } = this.state;
 
         const metadataField = this.metadataField();
@@ -110,7 +111,12 @@ export default class SingleValueWithForm extends Component {
         ) {
             let value = humanReadable(obj, attribute, this.props, this.state);
             return (
-                <ContentField noLabel={noLabel} label={this.label()} value={value} >
+                <ContentField
+                    noLabel={noLabel}
+                    label={this.label()}
+                    value={value}
+                    linkUrls={linkUrls}
+                >
                     {
                         !readOnly && (
                             <>
@@ -165,4 +171,5 @@ SingleValueWithForm.propTypes = {
     obj: PropTypes.object,
     attribute: PropTypes.string,
     readOnly: PropTypes.bool,
+    linkUrls: PropTypes.bool,
 };

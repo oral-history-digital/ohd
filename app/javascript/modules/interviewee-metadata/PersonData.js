@@ -85,6 +85,7 @@ export default function PersonData({
                             key={field.name}
                             label={label}
                             value={value}
+                            linkUrls={field.name === 'description'}
                         />
                     );
                 })
