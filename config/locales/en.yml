@@ -1411,6 +1411,7 @@ en:
       delete: Remove from workbook
       edit: Edit
       note: Note
+      bookmark: Bookmark
       project_unavailable: Archive not available anymore.
       segment: Segment
       segment_link: Segment Link

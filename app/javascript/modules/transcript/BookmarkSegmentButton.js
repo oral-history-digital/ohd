@@ -34,6 +34,7 @@ export default function BookmarkSegmentButton({
                     segment={segment}
                     type="UserAnnotation"
                     workflow_state="private"
+                    submitLabel={t('modules.workbook.bookmark')}
                     onSubmit={closeModal}
                     onCancel={closeModal}
                 />

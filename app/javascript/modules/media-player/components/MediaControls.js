@@ -63,7 +63,7 @@ export default function MediaControls({
                             reference_type='Interview'
                             media_id={interview.archive_id}
                             type='InterviewReference'
-                            submitLabel={t('notice')}
+                            submitLabel={t('modules.workbook.bookmark')}
                             onSubmit={closeModal}
                             onCancel={closeModal}
                         />

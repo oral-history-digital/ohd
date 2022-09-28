@@ -236,8 +236,8 @@ el:
   annotation_confirmation: Επιθυμώ να δημοσιευτεί το σχόλιό μου σε όλους τους χρήστες.
     Συμφωνώ με τις  <a class="conditions-link" href="%{link}"
     target="_blank">οδηγίες συγγραφής σχολίων</a>.
-  save: Αποθηκεύστε
-  cancel: Διακοπή
+  save: Αποθήκευση
+  cancel: Ακύρωση
   assign_speakers: Ανάθεση ομιλητών
   speaker_designations: Sprecher*innen-Kürzel
   person_info: Σχετικά με το άτομο
@@ -1414,11 +1414,12 @@ el:
       delete: Διαγραφή από φάκελο εργασίας
       edit: Επεξεργασία
       note: Σημείωση
+      bookmark: Προσθήκη
       project_unavailable: Archive not available anymore.
       segment: Segment
       segment_link: Segment Link
       cite: απόσπασμα
-      citation: citation
+      citation: Τρόπος παραπομπής
       copy_citation: Copy citation
       position: Position
       full_text_search: Αναζήτηση πλήρους κειμένου
