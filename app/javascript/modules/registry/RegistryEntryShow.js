@@ -1,12 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaGlobeEurope } from 'react-icons/fa';
 
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
-import { admin } from 'modules/auth';
-import { formatTimecode } from 'modules/interview-helpers';
 import EntryReferencesContainer from './EntryReferencesContainer';
 
 export default class RegistryEntryShow extends Component {
@@ -68,24 +63,31 @@ export default class RegistryEntryShow extends Component {
     }
 
     osmLink() {
-        if((this.registryEntry().latitude + this.registryEntry().longitude) !== 0 ) {
-            return(
-                <small style={{float: 'right'}}>
-                    <FaGlobeEurope className="Icon Icon--text Icon--small" />
-                    &nbsp;
-                    <a
-                        href={`https://www.openstreetmap.org/?mlat=${this.registryEntry().latitude}&mlon=${this.registryEntry().longitude}&zoom=6`}
-                        target="_blank"
-                        rel="noreferrer"
-                        >
-                        {`${this.registryEntry().latitude}, ${this.registryEntry().longitude}`}
-                        &nbsp;
-                    </a>
-                </small>
-            )
-        } else {
+        const { locale } = this.props;
+        const re = this.registryEntry();
+
+        if ((re.latitude + re.longitude === 0) ||
+            typeof re.latitude !== 'number' ||
+            typeof re.longitude !== 'number'
+        ) {
             return null;
         }
+
+        return(
+            <small className="u-ml-small">
+                <a
+                    href={`https://www.openstreetmap.org/?mlat=${re.latitude}&mlon=${re.longitude}&zoom=6`}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <FaGlobeEurope className="Icon Icon--text Icon--small" />
+                    {' '}
+                    {re.latitude.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {'; '}
+                    {re.longitude.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </a>
+            </small>
+        );
     }
 
     render() {
@@ -98,11 +100,11 @@ export default class RegistryEntryShow extends Component {
         return (
             <div>
                 <div>
-                    {this.osmLink()}
                     {this.breadCrumb()}
                 </div>
                 <h3>
                     {this.registryEntry().name[locale]}
+                    {this.osmLink()}
                 </h3>
                 <p>
                     {this.registryEntry().notes[locale]}
