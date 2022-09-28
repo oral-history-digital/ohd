@@ -160,12 +160,12 @@ class PeopleController < ApplicationController
   def person_params
     params.require(:person).
       permit(
-        'appellation',
         'first_name',
         'last_name',
         'middle_names',
         'birth_name',
         'gender',
+        'title',
         'date_of_birth',
         'project_id',
         translations_attributes: [:locale, :id, :first_name, :last_name,

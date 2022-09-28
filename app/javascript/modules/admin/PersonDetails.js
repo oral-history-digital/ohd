@@ -11,6 +11,8 @@ export default function PersonDetails({
     const { t, locale, translations } = useI18n();
 
     const attributes = [
+        'gender',
+        'title',
         'first_name',
         'last_name',
         'birth_name',

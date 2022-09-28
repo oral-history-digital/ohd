@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
 
-  #serialize :typology, Array
+  enum title: { doctor: 0, professor: 1, professor_with_promotion: 2 }
 
   belongs_to :project, touch: true
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { fullName } from 'modules/people';
+import { formatPersonName } from 'modules/person';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -10,7 +10,6 @@ import { Modal } from 'modules/ui';
 import ContributionFormContainer from './ContributionFormContainer';
 
 export default function Contribution({
-    locale,
     person,
     projectId,
     projects,
@@ -20,7 +19,7 @@ export default function Contribution({
     deleteData,
     submitData
 }) {
-    const { t } = useI18n();
+    const { t, locale, translations } = useI18n();
     const { isAuthorized } = useAuthorization();
 
     const destroy = () => {
@@ -34,7 +33,7 @@ export default function Contribution({
     if (isAuthorized(contribution, 'update') || contribution.workflow_state === 'public' ) {
         return (
             <span className="flyout-content-data">
-                {fullName(person, locale)}
+                {formatPersonName(person, translations, { locale, withTitle: true })}
 
                 {
                     withSpeakerDesignation ?
@@ -67,7 +66,7 @@ export default function Contribution({
                                     onSubmit={() => { destroy(); close(); }}
                                     onCancel={close}
                                 >
-                                    <p>{fullName(person, locale)}</p>
+                                    <p>{formatPersonName(person, { locale, withTitle: true })}</p>
                                 </DeleteItemForm>
                             )}
                         </Modal>
@@ -85,7 +84,6 @@ Contribution.propTypes = {
     contribution: PropTypes.object.isRequired,
     withSpeakerDesignation: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,

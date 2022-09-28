@@ -5,6 +5,14 @@ import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/a
 import { setQueryParams, getPeopleQuery } from 'modules/search';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getPeopleForCurrentProject, getPeopleStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
+import {
+    PERSON_GENDER_MALE,
+    PERSON_GENDER_FEMALE,
+    PERSON_GENDER_DIVERSE,
+    PERSON_TITLE_DOCTOR,
+    PERSON_TITLE_PROFESSOR,
+    PERSON_TITLE_PROFESSOR_WITH_PROMOTION
+} from 'modules/person';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -28,16 +36,31 @@ const mapStateToProps = (state) => {
         sortAttributeTranslated: true,
         baseTabIndex: 4 + getProjectHasMap(state),
         //detailsAttributes: ['name'],
-        detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'description'],
+        detailsAttributes: ['gender', 'title', 'first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'description'],
         initialFormValues: {project_id: project.id},
         formElements: [
             {
                 elementType: 'select',
                 attribute: 'gender',
-                values: ['male', 'female', 'diverse'],
+                values: [
+                    PERSON_GENDER_MALE,
+                    PERSON_GENDER_FEMALE,
+                    PERSON_GENDER_DIVERSE
+                ],
                 optionsScope: 'gender',
                 withEmpty: true,
                 //validate: function(v){return v !== ''}
+            },
+            {
+                elementType: 'select',
+                attribute: 'title',
+                values: [
+                    PERSON_TITLE_DOCTOR,
+                    PERSON_TITLE_PROFESSOR,
+                    PERSON_TITLE_PROFESSOR_WITH_PROMOTION
+                ],
+                optionsScope: 'title',
+                withEmpty: true,
             },
             {
                 attribute: 'first_name',

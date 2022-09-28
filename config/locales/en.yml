@@ -721,6 +721,10 @@ en:
     female: female
     male: male
     diverse: diverse
+  title:
+    doctor: Dr.
+    professor: Professor
+    professor_with_promotion: Professor (with promotion)
   search_facets:
     language: Language
     collection: Collection
@@ -1131,6 +1135,7 @@ en:
         receiver_id: Empfänger*in
       person:
         gender: Gender
+        title: Title
         first_name: First Name
         last_name: Last Name
         birth_name: Birth Name
@@ -1139,6 +1144,7 @@ en:
         other_first_names: Other First Names
         typology: Erfahrungen
         biography: Biographie
+        description: Description
       registry_entry:
         descriptor: Name
         notes: Beschreibung
@@ -1358,6 +1364,14 @@ en:
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
       copy_position_tooltip: Copy current timestamp as URL
+    person:
+      abbr_titles:
+        doctor_female: Dr.
+        professor_female: Professor
+        professor_with_promotion_female: Professor
+        doctor_male: Dr.
+        professor_male: Professor
+        professor_with_promotion_male: Professor
     registry:
       name_missing: "registry name missing"
     routes:

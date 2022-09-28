@@ -21,6 +21,7 @@ export default class Select extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.selectTextAndValueFunction = this.selectTextAndValueFunction.bind(this);
     }
 
     handleChange(event) {
@@ -44,19 +45,28 @@ export default class Select extends Component {
         }
     }
 
-    selectTextAndValueFunction(value, props) {
+    selectTextAndValueFunction(value) {
+        const {
+            doNotTranslate,
+            locale,
+            translations,
+            optionsScope,
+            scope,
+            attribute
+        } = this.props;
+
         if (typeof value === 'string') {
-            let translationPrefix = props.optionsScope || `${props.scope}.${props.attribute}`;
-            return function(value, props) {
+            let translationPrefix = optionsScope || `${scope}.${attribute}`;
+            return function(value) {
                 return {
-                    text: props.doNotTranslate ? value : t(props, `${translationPrefix}.${value}`),
+                    text: doNotTranslate ? value : t({ locale, translations }, `${translationPrefix}.${value}`),
                     value: value
                 }
             }
         } else {
-            return function(value, props) {
+            return function(value) {
                 return {
-                    text: (value.name && value.name[props.locale]) || (typeof value.name === 'string') && value.name,
+                    text: (value.name && value.name[locale]) || (typeof value.name === 'string') && value.name,
                     value: value.value || value.id
                 }
             }
@@ -80,14 +90,13 @@ export default class Select extends Component {
         }
 
         if (values) {
-            let getTextAndValue = this.selectTextAndValueFunction(values[0], this.props);
-            let _this = this;
+            let getTextAndValue = this.selectTextAndValueFunction(values[0]);
             if (!this.props.keepOrder === true) {
                 values.
-                sort(function(a,b){
-                  let textA = getTextAndValue(a, _this.props).text;
-                  let textB = getTextAndValue(b, _this.props).text;
-                  return(new Intl.Collator(_this.props.locale).compare(textA, textB))
+                sort((a,b) => {
+                  let textA = getTextAndValue(a,).text;
+                  let textB = getTextAndValue(b).text;
+                  return (new Intl.Collator(this.props.locale).compare(textA, textB))
              })
            }
 
@@ -116,28 +125,47 @@ export default class Select extends Component {
     }
 
     render() {
-        let value = this.props.value || this.props.data && this.props.data[this.props.attribute] || '';
+        const {
+            data,
+            attribute,
+            scope,
+            className,
+            validate,
+            hidden,
+            label,
+            labelKey,
+            showErrors,
+            help,
+            individualErrorMsg,
+            handlechangecallback
+        } = this.props;
+
+        console.log(this.props.value, data, scope, attribute)
+        console.log(this.options())
+
+        let value = this.props.value || data?.[attribute] || '';
+
         return (
             <Element
-                scope={this.props.scope}
-                attribute={this.props.attribute}
-                label={this.props.label}
-                labelKey={this.props.labelKey}
-                showErrors={this.props.showErrors}
-                className={this.props.className}
-                hidden={this.props.hidden}
+                scope={scope}
+                attribute={attribute}
+                label={label}
+                labelKey={labelKey}
+                showErrors={showErrors}
+                className={className}
+                hidden={hidden}
                 valid={this.state.valid}
-                mandatory={typeof(this.props.validate) === 'function'}
+                mandatory={typeof(validate) === 'function'}
                 elementType='select'
-                individualErrorMsg={this.props.individualErrorMsg}
-                help={this.props.help}
+                individualErrorMsg={individualErrorMsg}
+                help={help}
             >
                 <select
-                    name={this.props.attribute}
+                    name={attribute}
                     className="Input"
                     value={value}
                     onChange={this.handleChange}
-                    handlechangecallback={this.props.handlechangecallback}
+                    handlechangecallback={handlechangecallback}
                 >
                     {this.options()}
                 </select>

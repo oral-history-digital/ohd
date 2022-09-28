@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
 
-import { fullName } from 'modules/people';
+import { formatPersonName } from 'modules/person';
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -17,7 +17,6 @@ function Segment({
     data,
     autoScroll,
     contentLocale,
-    locale,
     editView,
     active,
     people,
@@ -31,7 +30,7 @@ function Segment({
 }) {
     const divEl = useRef();
     const { isAuthorized } = useAuthorization();
-    const { t } = useI18n();
+    const { t, locale, translations } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
 
     useEffect(() => {
@@ -107,7 +106,7 @@ function Segment({
                     data.speakerIdChanged && (
                         <FaUser
                             className={classNames('Segment-icon', data.speaker_is_interviewee ? 'Segment-icon--primary' : 'Segment-icon--secondary')}
-                            title={person ? fullName(person, locale) : data.speaker}
+                            title={person ? formatPersonName(person, translations, { locale }) : data.speaker}
                         />
                     )
                 }

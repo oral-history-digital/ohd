@@ -1,7 +1,7 @@
 import { Component } from 'react';
 
 import { Form } from 'modules/forms';
-import { fullName } from 'modules/people';
+import { formatPersonName } from 'modules/person';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ContributionFormContainer } from 'modules/interview-metadata';
@@ -34,12 +34,18 @@ export default class AssignSpeakersForm extends Component {
     }
 
     showContribution(value) {
-        const { locale, people } = this.props;
+        const { locale, people, translations, contributionTypes } = this.props;
+
+        const person = people[Number.parseInt(value.person_id)];
 
         return (
             <span>
-                <span>{fullName(people[Number.parseInt(value.person_id)], locale) + ', '}</span>
-                <span>{this.props.contributionTypes[value.contribution_type_id].label[this.props.locale] + ', '}</span>
+                <span>
+                    {formatPersonName(person, translations, { locale, withTitle: true }) + ', '}
+                </span>
+                <span>
+                    {contributionTypes[value.contribution_type_id].label[locale] + ', '}
+                </span>
                 <span>{value.speaker_designation}</span>
             </span>
         )

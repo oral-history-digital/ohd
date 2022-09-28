@@ -1,17 +1,19 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { fullName } from 'modules/people';
+import { formatPersonName } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import { useI18n } from 'modules/i18n';
 import MediaControlsContainer from './MediaControlsContainer';
 import MediaElementContainer from './MediaElementContainer';
 import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
 
 export default function MediaPlayer({
     interviewee,
-    locale,
     projectId,
 }) {
+    const { locale, translations } = useI18n();
+
     if (!projectId) {
         return null;
     }
@@ -26,7 +28,7 @@ export default function MediaPlayer({
         >
             <header className="MediaHeader">
                 <h1 className="MediaHeader-title">
-                    {fullName(interviewee, locale, true)}
+                    {formatPersonName(interviewee, translations, { locale, withBirthName: true, withTitle: true })}
                 </h1>
                 <MediaControlsContainer className="MediaHeader-controls" />
             </header>
@@ -40,6 +42,5 @@ export default function MediaPlayer({
 
 MediaPlayer.propTypes = {
     interviewee: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
 };

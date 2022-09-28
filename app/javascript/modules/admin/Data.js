@@ -9,6 +9,7 @@ import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
 import PersonDetails from './PersonDetails';
+import getDataDisplayName from './getDataDisplayName';
 
 const Item = AdminMenu.Item;
 
@@ -54,13 +55,12 @@ export default function Data({
         return null;
     }
 
-    const name = data.title ||
-        (data.name?.hasOwnProperty(locale) ? data.name[locale] : data.name);
+    const displayName = getDataDisplayName(data, locale);
 
     return (
         <div className="data boxes">
             <BaseData
-                name={name}
+                name={displayName}
                 data={data}
                 scope={scope}
                 showComponent={showComponent}
@@ -72,7 +72,7 @@ export default function Data({
                         <Item
                             name="show"
                             label={t('edit.default.show')}
-                            dialogTitle={name}
+                            dialogTitle={displayName}
                         >
                             {scope === 'person' ?
                                 <PersonDetails data={data} /> :
@@ -89,7 +89,7 @@ export default function Data({
                         <Item
                             name="edit"
                             label={t('edit.default.edit')}
-                            dialogTitle={`${name} ${t(`edit.${scope}.edit`)}`}
+                            dialogTitle={`${displayName} ${t(`edit.${scope}.edit`)}`}
                         >
                             {close => (
                                 <>
@@ -113,7 +113,7 @@ export default function Data({
                                     onSubmit={() => destroy(close)}
                                     onCancel={close}
                                 >
-                                    <p>{name}</p>
+                                    <p>{displayName}</p>
                                 </DeleteItemForm>
                             )}
                         </Item>

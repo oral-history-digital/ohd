@@ -714,6 +714,10 @@ es:
     female: feminino
     male: masculino
     diverse: diverso
+  title:
+    doctor: Dr./Dra.
+    professor: Prof./Profa.
+    professor_with_promotion: Prof./Profa. (with promotion)
   search_facets:
     forced_labor_field: Area de trabajo
     forced_labor_group: Grupo
@@ -1115,6 +1119,7 @@ es:
         receiver_id: Empfänger*in
       person:
         gender: Género
+        title: Title
         first_name: Nombre
         last_name: Apellido
         birth_name: Nombre de nacimiento
@@ -1123,6 +1128,7 @@ es:
         other_first_names: Otros nombres
         typology: Experiencias
         biography: Biographie
+        description: Description
       registry_entry:
         descriptor: Name
         notes: Beschreibung
@@ -1320,6 +1326,14 @@ es:
         disable: "disable auto-scrolling transcript"
       copy_position: Copiar posición
       copy_position_tooltip: Copiar codigo de tiempo como enlace
+    person:
+      abbr_titles:
+        doctor_female: Dra.
+        professor_female: Profa.
+        professor_with_promotion_female: Profa.
+        doctor_male: Dr.
+        professor_male: Prof.
+        professor_with_promotion_male: Prof.
     registry:
       name_missing: "registry name missing"
     routes:

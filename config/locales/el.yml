@@ -725,6 +725,10 @@ el:
     female: θήλυ
     male: άρρεν
     diverse: Άλλο
+  title:
+    doctor: Δρ.
+    professor: Καθηγητής/Καθηγήτρια
+    professor_with_promotion: Καθηγητής/Καθηγήτρια (with promotion)
   search_facets:
     forced_labor_field: Τύπος εργασίας
     forced_labor_group: Ομάδα
@@ -1150,6 +1154,7 @@ el:
         receiver_id: Empfänger*in
       person:
         gender: Φύλο
+        title: Title
         first_name: Όνομα
         last_name: Επώνυμο
         birth_name: Βαφτιστικό όνομα
@@ -1158,6 +1163,7 @@ el:
         other_first_names: Άλλα ονόματα
         typology: Εμπειρίες
         biography: Biographie
+        description: Description
       registry_entry:
         descriptor: Name
         notes: Beschreibung
@@ -1361,6 +1367,14 @@ el:
         disable: "disable auto-scrolling transcript"
       copy_position: Αντιγραφή θέσης
       copy_position_tooltip: Αντιγραφή της χρονοσφραγίδας ως URL
+    person:
+      abbr_titles:
+        doctor_female: Δρ.
+        professor_female: Καθηγήτρια
+        professor_with_promotion_female: Καθηγήτρια
+        doctor_male: Δρ.
+        professor_male: Καθηγητής
+        professor_with_promotion_male: Καθηγητής
     registry:
       name_missing: registry name missing
     routes:

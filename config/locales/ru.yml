@@ -768,6 +768,10 @@ ru:
     female: женщина
     male: мужчина
     diverse: другие
+  title:
+    doctor: д-р.
+    professor: проф.
+    professor_with_promotion: проф. (with promotion)
   search_facets:
     forced_labor_field: Сфера деятельности
     forced_labor_group: Группа
@@ -1178,6 +1182,7 @@ ru:
         receiver_id: Empfänger*in
       person:
         gender: Geschlecht
+        title: Title
         first_name: Vorname
         last_name: Nachname
         birth_name: Geburtsname
@@ -1186,6 +1191,7 @@ ru:
         other_first_names: Other First Names
         typology: Erfahrungen
         biography: Biographie
+        description: Description
       registry_entry:
         descriptor: Name
         notes: Beschreibung
@@ -1774,6 +1780,14 @@ ru:
         disable: "disable auto-scrolling transcript"
       copy_position: Копировать позицию
       copy_position_tooltip: Копировать актуальную отметку времени как URL
+    person:
+      abbr_titles:
+        doctor_female: д-р.
+        professor_female: проф.
+        professor_with_promotion_female: проф.
+        doctor_male: д-р.
+        professor_male: проф.
+        professor_with_promotion_male: проф.
     registry:
       name_missing: "registry name missing"
     routes:

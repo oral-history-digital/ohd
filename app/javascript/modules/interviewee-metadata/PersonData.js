@@ -9,7 +9,7 @@ import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
-import { fullName } from 'modules/people';
+import { formatPersonName } from 'modules/person';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus } from 'modules/auth';
 
@@ -47,7 +47,10 @@ export default function PersonData({
     return (
         <>
             <AuthShowContainer ifLoggedIn>
-                <ContentField label={t('interviewee_name')} value={fullName(interviewee, locale, true)} >
+                <ContentField
+                    label={t('interviewee_name')}
+                    value={formatPersonName(interviewee, translations, { locale, withBirthName: true, withTitle: true })}
+                >
                     <AuthorizedContent object={interviewee} action='update'>
                         <Modal
                             title={t('edit.contribution.edit')}

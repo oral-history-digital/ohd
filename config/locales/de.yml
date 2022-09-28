@@ -737,11 +737,15 @@ de:
       university_teaching: universitäre Lehre
       scientific_paper: wissenschaftliche Publikation
       other: Sonstige
-  # this is needed for PersonData.js:66
+  # this is needed for PersonData.js
   gender:
     female: weiblich
     male: männlich
     diverse: divers
+  title:
+    doctor: Dr.
+    professor: Prof.
+    professor_with_promotion: Prof. Dr.
   # this is needed for forms
   search_facets:
     accessibility: Zugänglichkeit
@@ -1147,6 +1151,7 @@ de:
         receiver_id: Empfänger*in
       person:
         gender: Geschlecht
+        title: Titel
         first_name: Vorname
         last_name: Nachname
         birth_name: Geburtsname
@@ -1156,6 +1161,7 @@ de:
         date_of_birth: Geburtsdatum
         typology: Erfahrungen
         biography: Biographie
+        description: Beschreibung
       registry_entry:
         descriptor: Name
         notes: Beschreibung
@@ -1353,6 +1359,14 @@ de:
         disable: "mitlaufendes Transkript aus"
       copy_position: Position kopieren
       copy_position_tooltip: Aktuelle Zeitmarke als URL kopieren
+    person:
+      abbr_titles:
+        doctor_female: Dr.
+        professor_female: Prof.
+        professor_with_promotion_female: Prof. Dr.
+        doctor_male: Dr.
+        professor_male: Prof.
+        professor_with_promotion_male: Prof. Dr.
     search:
       sorting:
         label: Sortierung

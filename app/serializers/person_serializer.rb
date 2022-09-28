@@ -7,6 +7,7 @@ class PersonSerializer < ApplicationSerializer
     :date_of_birth,
     :year_of_birth,
     :gender,
+    :title,
     :description,
     :associations_loaded
   ]
