@@ -15,7 +15,7 @@ export default function DownloadLinks({
 
     return (
         <div>
-            <ul>
+            <ul className="UnorderedList">
                 {hasTranscript && (
                     <LinksForTapes
                         archiveId={archiveId}
@@ -32,7 +32,7 @@ export default function DownloadLinks({
                         format="vtt"
                     />
                 )}
-                {hasTranslation && translationLocale (
+                {hasTranslation && translationLocale && (
                     <LinksForTapes
                         archiveId={archiveId}
                         numTapes={numTapes}
