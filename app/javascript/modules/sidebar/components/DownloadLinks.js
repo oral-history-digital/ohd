@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
+import LinksForTapes from './LinksForTapes';
 
 export default function DownloadLinks({
     archiveId,
@@ -16,10 +16,38 @@ export default function DownloadLinks({
     return (
         <div>
             <ul>
-                { hasTranscript && LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'csv') }
-                { hasTranscript && LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'vtt') }
-                { hasTranslation && translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'csv') }
-                { hasTranslation && translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'vtt') }
+                {hasTranscript && (
+                    <LinksForTapes
+                        archiveId={archiveId}
+                        numTapes={numTapes}
+                        locale={interview.lang}
+                        format="csv"
+                    />
+                )}
+                {hasTranscript && (
+                    <LinksForTapes
+                        archiveId={archiveId}
+                        numTapes={numTapes}
+                        locale={interview.lang}
+                        format="vtt"
+                    />
+                )}
+                {hasTranslation && translationLocale (
+                    <LinksForTapes
+                        archiveId={archiveId}
+                        numTapes={numTapes}
+                        locale={translationLocale}
+                        format="csv"
+                    />
+                )}
+                {hasTranslation && translationLocale && (
+                    <LinksForTapes
+                        archiveId={archiveId}
+                        numTapes={numTapes}
+                        locale={translationLocale}
+                        format="vtt"
+                    />
+                )}
                 { hasTranscript && dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos (alle)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip?only_public=true`, 'Fotos (nur öffentliche)') }
@@ -28,25 +56,6 @@ export default function DownloadLinks({
             </ul>
         </div>
     );
-}
-
-function LinksForTapes(pathBase, archiveId, numTapes, locale, format) {
-
-    const { t } = useI18n();
-    const tapeNumbers = Array.from({length: numTapes}, (_, index) => index + 1);
-
-    return (
-        tapeNumbers.map(tapeNumber => (
-            <li key={`${tapeNumber}-${locale}`}>
-                <a
-                    href={`${pathBase}/interviews/${archiveId}.${format}?lang=${locale}&tape_number=${tapeNumber}`}
-                    download
-                >
-                    {`${t('transcript')} ${t('tape')} ${tapeNumber}: ${t(locale)} (${format})`}
-                </a>
-            </li>
-        ))
-    )
 }
 
 function dataLink(link, title) {

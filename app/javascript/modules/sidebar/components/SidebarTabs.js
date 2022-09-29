@@ -203,17 +203,21 @@ export default function SidebarTabs({
 
             <TabPanels>
                 <TabPanel key="1">
-                    <AccountContainer/>
+                    {tabIndex === indexes.INDEX_ACCOUNT && (
+                        <AccountContainer/>
+                    )}
                 </TabPanel>
 
                 <TabPanel key="2">
-                    <ArchiveSearchTabPanelContainer selectedArchiveIds={selectedArchiveIds} />
+                    {tabIndex === indexes.INDEX_SEARCH && (
+                        <ArchiveSearchTabPanelContainer selectedArchiveIds={selectedArchiveIds} />
+                    )}
                 </TabPanel>
 
                 <TabPanel key="3" />
 
                 <TabPanel key="4">
-                    {showInterviewTab && (
+                    {showInterviewTab && tabIndex === indexes.INDEX_INTERVIEW && (
                         <StateCheck
                             testSelector={getCurrentInterviewFetched}
                             fallback={<Spinner withPadding />}
@@ -224,52 +228,44 @@ export default function SidebarTabs({
                 </TabPanel>
 
                 <TabPanel key="5">
-                    {showRegistryTab && (
+                    {showRegistryTab && tabIndex === indexes.INDEX_REGISTRY_ENTRIES && (
                         <RegistryEntriesTabPanelContainer />
                     )}
                 </TabPanel>
 
                 <TabPanel key="6">
-                    {showMapTab && (
+                    {showMapTab && tabIndex === indexes.INDEX_MAP && (
                         <MapTabPanelContainer />
                     )}
                 </TabPanel>
 
                 <TabPanel key="7">
-                    {showWorkbookTab && (
+                    {showWorkbookTab && tabIndex === indexes.INDEX_WORKBOOK && (
                         <WorkbookTabPanel />
                     )}
                 </TabPanel>
 
                 <TabPanel key="8">
-                    {showIndexingTab && (
+                    {showIndexingTab && tabIndex === indexes.INDEX_INDEXING && (
                         <IndexingTabPanel />
                     )}
                 </TabPanel>
 
                 <TabPanel key="9">
-                    {showAdministrationTab && (
+                    {showAdministrationTab && tabIndex === indexes.INDEX_ADMINISTRATION && (
                         <UsersAdminTabPanelContainer />
                     )}
                 </TabPanel>
 
                 <TabPanel key="10">
-                    {showProjectAdminTab && (
+                    {showProjectAdminTab && tabIndex === indexes.INDEX_PROJECT_ACCESS && (
                         <ProjectConfigTabPanel />
                     )}
                 </TabPanel>
 
-                <TabPanel key="11">
-                    {false && showProjectsTab && (
-                        <div className='flyout-tab-title'>{t('edit.projects.admin')}</div>
-                    )}
-                </TabPanel>
+                <TabPanel key="11" />
 
-                <TabPanel key="12">
-                    {false && showInstitutionsTab && (
-                        <div className='flyout-tab-title'>{t('edit.institution.admin')}</div>
-                    )}
-                </TabPanel>
+                <TabPanel key="12" />
             </TabPanels>
         </Tabs>
     );

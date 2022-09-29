@@ -1,7 +1,8 @@
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthShowContainer } from 'modules/auth';
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { Modal } from 'modules/ui';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
@@ -99,7 +100,7 @@ export default class Account extends Component {
 
     render() {
         return (
-            <Fragment>
+            <ErrorBoundary small>
                 <h3 className="SidebarTabs-title">
                     { t(this.props, this.props.isLoggedIn ? 'account_page' : 'login_page') }
                 </h3>
@@ -171,7 +172,7 @@ export default class Account extends Component {
                         </div>
                     </AuthShowContainer>
                 </div>
-            </Fragment>
+            </ErrorBoundary>
         )
     }
 }

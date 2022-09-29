@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { FaDownload } from 'react-icons/fa';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { UserRegistrationSearchFormContainer } from 'modules/admin';
 import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
@@ -49,7 +50,7 @@ export default function UsersAdminTabPanel({
     }
 
     return (
-        <>
+        <ErrorBoundary small>
             <h3 className='SidebarTabs-title'>
                 { t('edit.administration') }
             </h3>
@@ -86,7 +87,7 @@ export default function UsersAdminTabPanel({
                     </div>
                 </AdminSubTab>
             </div>
-        </>
+        </ErrorBoundary>
     );
 }
 

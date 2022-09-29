@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { AccountContainer } from 'modules/account';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
@@ -44,7 +45,7 @@ export default function InterviewTabPanel({
     const showGallerySection = hasPhotos || editView;
 
     return (
-        <>
+        <ErrorBoundary small>
             <h3 className='SidebarTabs-title'>
                 {t('interview')}
             </h3>
@@ -167,7 +168,7 @@ export default function InterviewTabPanel({
                     />
                 </AdminSubTab>
             </div>
-        </>
+        </ErrorBoundary>
     );
 }
 

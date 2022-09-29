@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
+
 export default function SubTab({
     title,
     open = false,
@@ -47,7 +49,9 @@ export default function SubTab({
             {
                 children && (
                     <div className={classNames('panel', { 'open': isOpen })}>
-                        {children}
+                        <ErrorBoundary small>
+                            {isOpen && children}
+                        </ErrorBoundary>
                     </div>
                 )
             }

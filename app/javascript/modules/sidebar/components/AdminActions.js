@@ -46,7 +46,7 @@ export default function AdminActions({
                 </div>
             )}
 
-            <ul>
+            <ul className="UnorderedList u-mb">
                 <AuthorizedContent object={{ type: 'Interview' }} action="dois">
                     <li>
                         <SubmitInterviewIds
@@ -115,7 +115,7 @@ export default function AdminActions({
             >
                 {t('reset')}
             </button>{' '}
-            { checkAll ? <Spinner small /> : 
+            { checkAll ? <Spinner small /> :
                 <button
                     type="button"
                     className="Button"

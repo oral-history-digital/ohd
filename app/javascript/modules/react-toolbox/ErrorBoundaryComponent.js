@@ -15,14 +15,19 @@ export default class ErrorBoundaryComponent extends Component {
     }
 
     render() {
-        const { locale, translations } = this.props;
+        const { locale, translations, small } = this.props;
         const { error } = this.state;
 
         if (error) {
+            const message = `${t({ locale, translations }, 'error')}: ${error.message}`;
+
             return (
                 <div className="wrapper-content">
-                    <h1>{ t({ locale, translations }, 'error') }</h1>
-                    <p>{error.message}</p>
+                    {small ?
+                        <p>{message}</p> :
+                        <h1>{message}</h1>
+                    }
+                    <p></p>
                 </div>
             );
         }
@@ -33,6 +38,7 @@ export default class ErrorBoundaryComponent extends Component {
 ErrorBoundaryComponent.propTypes = {
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
+    small: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

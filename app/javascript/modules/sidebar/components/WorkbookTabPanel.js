@@ -1,19 +1,21 @@
-import { useI18n } from 'modules/i18n';import { AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { AuthShowContainer } from 'modules/auth';
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { WorkbookContainer } from 'modules/workbook';
 
-function WorkbookTabPanel() {
+export default function WorkbookTabPanel() {
     const { t } = useI18n();
 
     return (
-        <AuthShowContainer ifLoggedIn ifNoProject>
-            <h3 className='SidebarTabs-title'>
-                { t('user_content') }
-            </h3>
-            <div className='flyout-sub-tabs-container flyout-folder'>
-                <WorkbookContainer />
-            </div>
-        </AuthShowContainer>
+        <ErrorBoundary small>
+            <AuthShowContainer ifLoggedIn ifNoProject>
+                <h3 className='SidebarTabs-title'>
+                    { t('user_content') }
+                </h3>
+                <div className='flyout-sub-tabs-container flyout-folder'>
+                    <WorkbookContainer />
+                </div>
+            </AuthShowContainer>
+        </ErrorBoundary>
     );
 }
-
-export default WorkbookTabPanel;

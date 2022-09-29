@@ -1,7 +1,12 @@
-import { CollectionsSearchFormContainer, LanguagesSearchFormContainer,
-    RegistryNameTypesSearchFormContainer, ContributionTypesSearchFormContainer,
-    PeopleSearchFormContainer, RegistryReferenceTypesSearchFormContainer }
-    from 'modules/admin';
+import {
+    CollectionsSearchFormContainer,
+    LanguagesSearchFormContainer,
+    RegistryNameTypesSearchFormContainer,
+    ContributionTypesSearchFormContainer,
+    PeopleSearchFormContainer,
+    RegistryReferenceTypesSearchFormContainer
+} from 'modules/admin';
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -17,7 +22,7 @@ export default function IndexingTabPanel() {
     }
 
     return (
-        <>
+        <ErrorBoundary small>
             <h3 className='SidebarTabs-title'>
                 { t('edit.indexing') }
             </h3>
@@ -83,6 +88,6 @@ export default function IndexingTabPanel() {
                     <LanguagesSearchFormContainer/>
                 </AdminSubTab>
             </div>
-        </>
+        </ErrorBoundary>
     );
 }

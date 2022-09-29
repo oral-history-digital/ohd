@@ -1,5 +1,9 @@
-import { PermissionSearchFormContainer, RoleSearchFormContainer,
-    TaskTypeSearchFormContainer } from 'modules/admin';
+import {
+    PermissionSearchFormContainer,
+    RoleSearchFormContainer,
+    TaskTypeSearchFormContainer
+} from 'modules/admin';
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -15,7 +19,7 @@ export default function ProjectConfigTabPanel() {
     }
 
     return (
-        <>
+        <ErrorBoundary small>
             <h3 className='SidebarTabs-title'>
                 { t('edit.project.admin') }
             </h3>
@@ -69,6 +73,6 @@ export default function ProjectConfigTabPanel() {
                     <TaskTypeSearchFormContainer/>
                 </AdminSubTab>
             </div>
-        </>
+        </ErrorBoundary>
     );
 }

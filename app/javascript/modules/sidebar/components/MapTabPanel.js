@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { MapFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import SubTab from './SubTab';
@@ -12,7 +13,7 @@ function MapTabPanel({
     const { t } = useI18n();
 
     return (
-        <>
+        <ErrorBoundary small>
             <h3 className='SidebarTabs-title'>
                 { t('map') }
             </h3>
@@ -26,7 +27,7 @@ function MapTabPanel({
                     </SubTab>
                 </AuthorizedContent>
             </div>
-        </>
+        </ErrorBoundary>
     );
 }
 

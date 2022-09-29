@@ -1,7 +1,7 @@
-import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { RegistrySearchFormContainer } from 'modules/registry';
@@ -10,19 +10,15 @@ import { PROJECT_MOG } from 'modules/constants';
 
 function RegistryEntriesTabPanel({
     projectId,
-    projects,
     showRegistryEntriesSearchResults,
     locale,
     locales,
-    translations,
-    account,
-    editView,
     changeRegistryEntriesViewMode,
 }) {
     const { t } = useI18n();
 
     return (
-        <Fragment>
+        <ErrorBoundary small>
             <h3 className='SidebarTabs-title'>
                 {t('registry')}
             </h3>
@@ -67,7 +63,7 @@ function RegistryEntriesTabPanel({
                         null
                 }
             </div>
-        </Fragment>
+        </ErrorBoundary>
     );
 }
 
