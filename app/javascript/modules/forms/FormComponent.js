@@ -195,13 +195,13 @@ export default class FormComponent extends Component {
                     onSubmit={this.handleSubmit}
                 >
 
+                    {children}
+
                     {elements.map(props => {
                         if(props.condition === undefined || props.condition === true) {
                             return this.elementComponent(props);
                         }
                     })}
-
-                    {children}
 
                     <div className="Form-footer u-mt">
                         { nested ?
