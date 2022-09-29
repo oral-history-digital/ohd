@@ -9,6 +9,8 @@ export default function NormDatumForm({
     data,
     nested,
     registryEntryId,
+    normDataProviderId,
+    nid,
     projectId,
     projects,
     normDataProviders,
@@ -32,11 +34,13 @@ export default function NormDatumForm({
                 {
                     attribute: 'norm_data_provider_id',
                     elementType: 'select',
+                    value: normDataProviderId,
                     values: normDataProviders,
                     withEmpty: true,
                 },
                 {
                     attribute: 'nid',
+                    value: nid,
                 },
             ]}
         />
