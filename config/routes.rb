@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   concern :archive do
+    get "norm_data_api" => "registry_entries#norm_data_api"
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
 
