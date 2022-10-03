@@ -19,7 +19,7 @@ module Interview::Export
       ).each do |segment|
         contribution = contributions.where(person_id: segment.speaker_id).first
         speaker_designation = contribution && contribution.speaker_designation
-        csv << [segment.timecode, speaker_designation || "", segment.text_translations[locale] || segment.text_translations["#{locale}-public"]]
+        csv << [segment.timecode, speaker_designation || "", (segment.text_translations[locale] || segment.text_translations["#{locale}-public"]).gsub(/[\r\n\t]/, '')]
       end
     end
   end
@@ -35,7 +35,7 @@ module Interview::Export
           archive_id,
           photo.public_id,
           photo.photo_file_name,
-          photo.caption(locale),
+          photo.caption(locale).gsub(/[\r\n\t]/, ''),
           photo.date(locale),
           photo.place(locale),
           photo.photographer(locale),
