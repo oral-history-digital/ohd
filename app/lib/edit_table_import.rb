@@ -4,10 +4,7 @@ class EditTableImport
 
   def initialize(public_interview_id, file_path)
     @interview = Interview.find_by_archive_id(public_interview_id)
-    @contributions = @interview.contributions.inject({}) do |mem, c|
-      mem[c.speaker_designation] = c.person_id
-      mem
-    end
+    @contributions = @interview.contributions_hash
     @original_locale = @interview.lang
     @translation_locale = (@interview.languages - [@interview.lang]).first ||
       (@interview.project.available_locales - [@interview.lang]).first

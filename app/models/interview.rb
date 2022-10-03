@@ -246,6 +246,13 @@ class Interview < ApplicationRecord
     end
   end
 
+  def contributions_hash
+    contributions.inject({}) do |mem, c|
+      mem[c.person_id] = c.speaker_designation if c.speaker_designation
+      mem
+    end
+  end
+
   def biographies_workflow_state=(change)
     interviewees.each do |interviewee|
       interviewee.biographical_entries.each do |bio|

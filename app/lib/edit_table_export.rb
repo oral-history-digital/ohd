@@ -4,10 +4,7 @@ class EditTableExport
 
   def initialize(public_interview_id)
     @interview = Interview.find_by_archive_id(public_interview_id)
-    @contributions = @interview.contributions.inject({}) do |mem, c|
-      mem[c.person_id] = c.speaker_designation
-      mem
-    end
+    @contributions = @interview.contributions_hash
     @original_locale = @interview.lang.to_s
     @translation_locale = (@interview.languages - [@interview.lang]).first ||
       (@interview.project.available_locales - [@interview.lang]).first.to_s
