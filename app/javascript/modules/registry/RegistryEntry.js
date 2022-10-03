@@ -71,7 +71,7 @@ export default class RegistryEntry extends Component {
                         className="Link flyout-sub-tabs-content-ico-link"
                         title={`${normDatum.norm_data_provider.name}`}
                     >
-                        {`${normDatum.norm_data_provider.name}`}
+                        {` ${normDatum.norm_data_provider.name}`}
                     </a>
                     {' '}
                 </>
