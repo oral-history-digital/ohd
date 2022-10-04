@@ -69,11 +69,10 @@ export default class RegistryEntry extends Component {
                         target="_blank"
                         rel="noreferrer"
                         className="Link flyout-sub-tabs-content-ico-link"
-                        title={`${normDatum.norm_data_provider.name}`}
+                        title={normDatum.norm_data_provider.name}
                     >
-                        {` ${normDatum.norm_data_provider.name}`}
+                        &nbsp;{normDatum.norm_data_provider.name}&nbsp;
                     </a>
-                    {' '}
                 </>
             )
         })
@@ -218,7 +217,7 @@ export default class RegistryEntry extends Component {
         const displayName = (<>
             {name}
             <AuthorizedContent object={data} action='update'>
-                {` (ID: ${data.id})`}&nbsp;
+                {` (ID: ${data.id})`}
             </AuthorizedContent>
         </>);
 
