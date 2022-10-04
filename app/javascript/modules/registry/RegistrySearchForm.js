@@ -28,6 +28,7 @@ export default class RegistrySearchForm extends Component {
         }
         let url = `${pathBase(this.props)}/searches/registry_entry`;
         this.props.searchRegistryEntry(url, {fulltext: this.state.value});
+        this.props.changeRegistryEntriesViewMode(true, this.props.projectId);
     }
 
     loader(){
