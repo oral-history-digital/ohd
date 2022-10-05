@@ -23,6 +23,12 @@ export default function RegistryEntryForm({
     const { t } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({})
+    const initalValues = {
+        parent_id: registryEntryParent?.id,
+        workflow_state: registryEntry?.workflow_state || 'preliminary',
+        norm_data_attributes: registryEntryAttributes.norm_data_attributes,
+        ...registryEntryAttributes,
+    }
 
     function showRegistryName(registryName) {
         if (!registryName)
@@ -32,6 +38,7 @@ export default function RegistryEntryForm({
     }
 
     function showNormDatum(normDatum) {
+        debugger
         return (<span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>);
     }
 
@@ -60,22 +67,18 @@ export default function RegistryEntryForm({
                 }}
                 onCancel={onCancel}
                 data={registryEntry}
-                values={{
-                    parent_id: registryEntryParent?.id,
-                    workflow_state: registryEntry?.workflow_state || 'preliminary',
-                    norm_data_attributes: registryEntryAttributes.normDataAttributes,
-                }}
+                values={initalValues}
                 elements={[
                     {
                         attribute: 'latitude',
-                        value: registryEntryAttributes.latitude,
+                        value: registryEntry ? registryEntry.latitude : registryEntryAttributes.latitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
                     {
                         attribute: 'longitude',
-                        value: registryEntryAttributes.longitude,
+                        value: registryEntry ? registryEntry.longitude : registryEntryAttributes.longitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
@@ -106,7 +109,7 @@ export default function RegistryEntryForm({
                         formComponent: NormDatumFormContainer,
                         formProps: {
                             registryEntryId: registryEntryId,
-                            ...(registryEntryAttributes.normDataAttributes)
+                            ...(registryEntryAttributes.norm_data_attributes)
                         },
                         parent: registryEntry,
                         scope: 'norm_datum',

@@ -44,8 +44,8 @@ export default function RegistryNameForm({
             const preparedAttributes = {
                 latitude: value.Entry.Location?.Latitude,
                 longitude: value.Entry.Location?.Longitude,
-                normDataAttributes: {
-                    normDataProviderId: Object.values(normDataProviders).find( p => p.api_name === value.Entry.Provider ).id,
+                norm_data_attributes: {
+                    norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === value.Entry.Provider ).id,
                     nid: value.Entry.ID,
                 },
             };
