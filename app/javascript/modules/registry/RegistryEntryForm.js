@@ -33,7 +33,6 @@ export default function RegistryEntryForm({
 
     function showNormDatum(normDatum) {
         return (<span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>);
-        //return (<span>{`${normDataProviders[normDatum.normDataProviderId].name} - ${normDatum.nid} `}</span>);
     }
 
     function parentRegistryEntry() {
