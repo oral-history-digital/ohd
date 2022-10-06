@@ -111,7 +111,7 @@ export default function RegistryEntryForm({
                         formComponent: NormDatumFormContainer,
                         formProps: {
                             registryEntryId: registryEntryId,
-                            ...(registryEntryAttributes.norm_data_attributes)
+                            ...(registryEntryAttributes.norm_data_attributes?.[0])
                         },
                         parent: registryEntry,
                         scope: 'norm_datum',

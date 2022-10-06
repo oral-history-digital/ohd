@@ -9,7 +9,7 @@ export default function NormDatumForm({
     data,
     nested,
     registryEntryId,
-    normDataProviderId,
+    norm_data_provider_id,
     nid,
     projectId,
     projects,
@@ -28,13 +28,15 @@ export default function NormDatumForm({
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
+                norm_data_provider_id: norm_data_provider_id,
+                nid:  nid,
             }}
             submitText='submit'
             elements={[
                 {
                     attribute: 'norm_data_provider_id',
                     elementType: 'select',
-                    value: normDataProviderId,
+                    value: norm_data_provider_id,
                     values: normDataProviders,
                     withEmpty: true,
                 },
