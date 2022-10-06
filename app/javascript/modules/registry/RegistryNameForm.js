@@ -26,6 +26,7 @@ export default function RegistryNameForm({
     foundRegistryEntries,
 }) {
     const [selectedValue, setSelectedValue] = useState(null);
+    const [descriptor, setDescriptor] = useState(null);
     const [inputValue, setValue] = useState('');
     const [geoFilter, setGeoFilter] = useState(null);
     const [placeType, setPlaceType] = useState(null);
@@ -39,6 +40,8 @@ export default function RegistryNameForm({
 
     const handleChange = value => {
         setSelectedValue(value);
+        setDescriptor(value.Entry.Name);
+
         if (value) {
             setValue(value.Entry.Name);
             const preparedAttributes = {
@@ -48,7 +51,7 @@ export default function RegistryNameForm({
                     registry_name_type_id: defaultNameType.id,
                     name_position: 1,
                     translations_attributes: [{
-                        descriptor: value.Entry.Name,
+                        descriptor: descriptor,
                         locale: locale,
                     }],
                 }],
@@ -72,7 +75,20 @@ export default function RegistryNameForm({
     return (
         <Form
             scope='registry_name'
-            onSubmit={function(params){submitData({projectId, projects, locale}, params, index);}}
+            onSubmit={params => {
+                const paramsWithSelectedEntryValues = {
+                    registry_name: Object.assign({}, params.registry_name, {
+                        translations_attributes: [{
+                            descriptor: descriptor,
+                            locale: locale,
+                        }],
+                    })
+                };
+                submitData({projectId, locale, projects}, paramsWithSelectedEntryValues, index);
+                if (typeof onSubmit === 'function') {
+                    onSubmit();
+                }
+            }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}
@@ -122,7 +138,7 @@ export default function RegistryNameForm({
                     defaultOptions
                     isClearable
                     backspaceRemovesValue
-                    defaultInputValue={data?.descriptor?.[locale]}
+                    defaultInputValue={data?.translations_attributes?.find(t => t.locale === locale)?.descriptor}
                     value={selectedValue}
                     getOptionLabel={e => `${e.Entry.Name}: ${e.Entry.Label}`}
                     getOptionValue={e => e.Entry.ID}
