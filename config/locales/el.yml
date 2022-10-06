@@ -1371,6 +1371,7 @@ el:
       copy_position: Αντιγραφή θέσης
       copy_position_tooltip: Αντιγραφή της χρονοσφραγίδας ως URL
     person:
+      no_interviewee: No interviewee
       abbr_titles:
         doctor_female: Δρ.
         professor_female: Καθηγήτρια

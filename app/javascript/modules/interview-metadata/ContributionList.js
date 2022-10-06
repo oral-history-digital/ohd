@@ -1,15 +1,21 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { getPeopleForCurrentProject, getGroupedContributions } from 'modules/data';
+import { getGroupedContributions } from 'modules/data';
+import { usePeople } from 'modules/person';
+import { Spinner } from 'modules/spinners';
 import ContributionGroup from './ContributionGroup';
 import ContributionContainer from './ContributionContainer';
 
 export default function ContributionList({
-    withSpeakerDesignation,
+    withSpeakerDesignation = false,
 }) {
-    const people = useSelector(getPeopleForCurrentProject);
+    const { data: people, isLoading } = usePeople();
     const groupedContributions = useSelector(getGroupedContributions);
+
+    if (isLoading) {
+        return (<Spinner />);
+    }
 
     return (
         <ul className="ContributionList">
@@ -38,9 +44,5 @@ export default function ContributionList({
 }
 
 ContributionList.propTypes = {
-    withSpeakerDesignation: PropTypes.bool.isRequired,
-};
-
-ContributionList.defaultProps = {
-    withSpeakerDesignation: false,
+    withSpeakerDesignation: PropTypes.bool,
 };

@@ -1784,6 +1784,7 @@ ru:
       copy_position: Копировать позицию
       copy_position_tooltip: Копировать актуальную отметку времени как URL
     person:
+      no_interviewee: No interviewee
       abbr_titles:
         doctor_female: д-р.
         professor_female: проф.

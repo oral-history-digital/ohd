@@ -8,6 +8,7 @@ function ContentField({
     value,
     noLabel = false,
     linkUrls = false,
+    fetching = false,
     className,
     children,
 }) {
@@ -22,7 +23,9 @@ function ContentField({
     }
 
     return (
-        <div className={classNames('ContentField', className)}>
+        <div className={classNames('ContentField', 'LoadingOverlay', className, {
+            'is-loading': fetching,
+        })}>
             {
                 noLabel ?
                     null :
@@ -41,6 +44,7 @@ ContentField.propTypes = {
     noLabel: PropTypes.bool,
     linkUrls: PropTypes.bool,
     value: PropTypes.string.isRequired,
+    fetching: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
 };

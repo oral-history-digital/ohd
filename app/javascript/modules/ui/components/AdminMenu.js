@@ -24,6 +24,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function AdminMenu({
     className,
+    disabled = false,
     children,
 }) {
     const { t } = useI18n();
@@ -40,7 +41,10 @@ export default function AdminMenu({
     return (
         <>
             <Menu className={classNames(className)}>
-                <MenuButton className="Button Button--transparent Button--icon">
+                <MenuButton
+                    className="Button Button--transparent Button--icon"
+                    disabled={disabled}
+                >
                     <VisuallyHidden>
                         {t('modules.ui.admin_menu.actions')}
                     </VisuallyHidden>
@@ -73,6 +77,7 @@ export default function AdminMenu({
 
 AdminMenu.propTypes = {
     className: PropTypes.string,
+    disabled: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
@@ -96,10 +101,9 @@ function AdminMenuItem({
                 {dialogTitle || label}
             </h3>
 
-            {
-                typeof children === 'function' ?
-                    children(onClose) :
-                    children
+            {typeof children === 'function' ?
+                children(onClose) :
+                children
             }
 
             <button

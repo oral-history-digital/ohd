@@ -8,7 +8,8 @@ import { Modal } from 'modules/ui';
 import { InterviewInfoContainer, InterviewContributorsContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { ContentField } from 'modules/forms';
-import { PersonDataContainer } from 'modules/interviewee-metadata';
+import { Spinner } from 'modules/spinners';
+import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useSearchSuggestions } from 'modules/search';
@@ -17,12 +18,14 @@ import { getNextInterview, getPreviousInterview } from '../getInterviews';
 export default function InterviewDetailsLeftSide({
     archiveId,
     interview,
-    interviewee,
+    intervieweeId,
     projectId,
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
     const { sortedArchiveIds } = useSearchSuggestions();
+    const { data: interviewee, isLoading: intervieweeIsLoading } =
+        usePersonWithAssociations(intervieweeId);
 
     let nextArchiveId, prevArchiveId;
     if (sortedArchiveIds) {
@@ -59,9 +62,10 @@ export default function InterviewDetailsLeftSide({
             <h3>{t('person_info')}</h3>
             <div>
                 <PersonDataContainer />
-                {interviewee && (
+                {intervieweeIsLoading ?
+                    <Spinner /> :
                     <SelectedRegistryReferencesContainer refObject={interviewee} />
-                )}
+                }
             </div>
             <h3>{t('interview_info')}</h3>
             <InterviewInfoContainer />
@@ -115,7 +119,7 @@ export default function InterviewDetailsLeftSide({
 
 InterviewDetailsLeftSide.propTypes = {
     interview: PropTypes.object.isRequired,
+    intervieweeId: PropTypes.number,
     archiveId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    interviewee: PropTypes.object.isRequired,
 };

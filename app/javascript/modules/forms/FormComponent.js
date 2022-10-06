@@ -1,7 +1,7 @@
 import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
-import { FaCheckCircle, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { TreeSelectContainer } from 'modules/tree-select';
@@ -182,10 +182,12 @@ export default class FormComponent extends Component {
 
     render() {
         const { onCancel, className, children, elements, formId, formClasses,
-            scope, submitText, nested } = this.props;
+            scope, submitText, nested, fetching } = this.props;
 
         return (
-            <div className={className}>
+            <div className={classNames(className, 'LoadingOverlay', {
+                'is-loading': fetching
+            })}>
                 {this.nestedScopes()}
                 <form
                     id={formId || scope}
@@ -215,6 +217,7 @@ export default class FormComponent extends Component {
                             <input
                                 type="submit"
                                 className="Button Button--primaryAction"
+                                disabled={fetching}
                                 value={t(this.props, submitText || 'submit')}
                             />
                         }
@@ -230,6 +233,7 @@ export default class FormComponent extends Component {
                                 <input
                                     type="button"
                                     className="Button Button--secondaryAction"
+                                    disabled={fetching}
                                     value={t(this.props, 'cancel')}
                                     onClick={onCancel}
                                 />
@@ -243,6 +247,7 @@ export default class FormComponent extends Component {
 
 FormComponent.propTypes = {
     className: PropTypes.string,
+    fetching: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

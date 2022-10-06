@@ -8,7 +8,6 @@ import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayerContainer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { INDEX_INTERVIEW } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import { getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
@@ -18,7 +17,6 @@ import InterviewLoggedOut from './InterviewLoggedOut';
 export default function Interview({
     interview,
     interviewIsFetched,
-    contributorsAreFetched,
     interviewEditView,
     isCatalog,
     projectId,
@@ -57,13 +55,6 @@ export default function Interview({
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'reload_translations');
         }
     }, [archiveId, isLoggedIn]);
-
-    useEffect(() => {
-        if (projectAccessGranted && !contributorsAreFetched && interview?.id) {
-            fetchData({ projectId, locale, projects }, 'people', null, null, `contributors_for_interview=${interview.id}`);
-        }
-    }, [archiveId, isLoggedIn, contributorsAreFetched, interview?.id]);
-
 
     // Do not render InterviewTabs component as long as interview.lang is absent.
     // (Strangely, it sometimes becomes present only shortly after this component is rendered.)

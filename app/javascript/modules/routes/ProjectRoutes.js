@@ -11,13 +11,12 @@ import { InterviewContainer } from 'modules/interview';
 import { SearchPage } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
 import { RegistryContainer } from 'modules/registry';
-import { EditInterviewContainer } from 'modules/admin';
 import { WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedContributionTypesContainer, WrappedRegistryNameTypesContainer,
-    WrappedPeopleContainer, WrappedLanguagesContainer, WrappedCollectionsContainer,
+    WrappedLanguagesContainer, WrappedCollectionsContainer,
     UploadsContainer, EditProjectDisplay, EditProjectConfig, EditProjectInfo,
-    MetadataFieldsContainer
+    MetadataFieldsContainer, EditInterview, PeopleAdminPage
 } from 'modules/admin';
 import { AccountPage, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
     from 'modules/account';
@@ -44,7 +43,7 @@ export default function ProjectRoutes() {
     return (
         <ErrorBoundary>
             <Routes>
-                <Route exact path="interviews/new" element={<EditInterviewContainer />} />
+                <Route exact path="interviews/new" element={<EditInterview />} />
                 <Route path="interviews/:archiveId" element={<InterviewContainer />} />
                 <Route path="searches/archive" element={<SearchPage />} />
                 <Route path="searches/map" element={<SearchMap />} />
@@ -60,7 +59,7 @@ export default function ProjectRoutes() {
                 <Route path="project/edit-config" element={<EditProjectConfig />} />
                 <Route path="project/edit-display" element={<EditProjectDisplay />} />
                 <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
-                <Route path="people" element={<WrappedPeopleContainer />} />
+                <Route path="people" element={<PeopleAdminPage />} />
                 <Route path="registry_reference_types" element={<WrappedRegistryReferenceTypesContainer />} />
                 <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
                 <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />

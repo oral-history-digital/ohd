@@ -1,11 +1,9 @@
 import { createElement } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { getPeopleForCurrentProject, getPeopleForCurrentProjectFetched,
-    getCurrentProject, Fetch } from 'modules/data';
-import { formatPersonName } from 'modules/person';
+import { formatPersonName, usePeople } from 'modules/person';
+import { Spinner } from 'modules/spinners';
 import InputContainer from './InputContainer';
 
 export default function SpeakerDesignationInputs({
@@ -14,8 +12,7 @@ export default function SpeakerDesignationInputs({
     handleChange,
 }) {
     const { t, locale, translations } = useI18n();
-    const people = useSelector(getPeopleForCurrentProject);
-    const project = useSelector(getCurrentProject);
+    const { data: people, isLoading } = usePeople();
 
     const onChange = (name, v) => {
         const index = contributions.findIndex(c => c.id.toString() === name);
@@ -33,28 +30,27 @@ export default function SpeakerDesignationInputs({
         handleChange(attribute, updatedContributions);
     }
 
+    if (isLoading) {
+        return <Spinner />;
+    }
+
     return (
-        <Fetch
-            fetchParams={['people', null, null, `for_projects=${project?.id}`]}
-            testSelector={getPeopleForCurrentProjectFetched}
-        >
-            <div className="speaker-designation-input">
-                <h4>{t('speaker_designations')}</h4>
-                {
-                    contributions.map(contribution => {
-                        const label = formatPersonName(people[contribution.person_id], translations, { locale, withTitle: true });
-                        return createElement(InputContainer, {
-                            key: contribution.id,
-                            scope: attribute,
-                            attribute: contribution.id,
-                            label,
-                            value: contribution.speaker_designation,
-                            handleChange: onChange,
-                        });
-                    })
-                }
-            </div>
-        </Fetch>
+        <div className="speaker-designation-input">
+            <h4>{t('speaker_designations')}</h4>
+            {
+                contributions.map(contribution => {
+                    const label = formatPersonName(people[contribution.person_id], translations, { locale, withTitle: true });
+                    return createElement(InputContainer, {
+                        key: contribution.id,
+                        scope: attribute,
+                        attribute: contribution.id,
+                        label,
+                        value: contribution.speaker_designation,
+                        handleChange: onChange,
+                    });
+                })
+            }
+        </div>
     );
 }
 

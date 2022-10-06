@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
@@ -7,45 +6,33 @@ import queryString from 'query-string';
 import { Checkbox } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
-import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
-    'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
 import { useInterviewSearch } from 'modules/interview-search';
 import { useArchiveSearch } from 'modules/search';
+import { usePersonWithAssociations } from 'modules/person';
 
 export default function InterviewListRow({
     project,
-    projectId,
-    projects,
     interview,
-    interviewee,
     selectedArchiveIds,
-    locale,
-    translations,
     languages,
     collections,
-    peopleStatus,
     setArchiveId,
     addRemoveArchiveId,
-    fetchData,
-    isLoggedIn,
 }) {
+    const { locale, translations } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
     const { fulltext } = useArchiveSearch();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
 
+    const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
+
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
     const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
-
-    useEffect(() => {
-        if (!projectAccessGranted) {
-            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
-        } else if (projectAccessGranted && !interviewee?.associations_loaded) {
-            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
-        }
-    }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
 
     return (
         <tr className="Table-row">
@@ -111,16 +98,11 @@ export default function InterviewListRow({
 }
 
 InterviewListRow.propTypes = {
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     interview: PropTypes.object,
-    interviewee: PropTypes.object,
     project: PropTypes.object.isRequired,
-    peopleStatus: PropTypes.object.isRequired,
+    languages: PropTypes.object.isRequired,
+    collections: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
 };

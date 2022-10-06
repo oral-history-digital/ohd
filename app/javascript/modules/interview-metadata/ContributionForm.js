@@ -1,17 +1,14 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { Fetch, getPeopleForCurrentProjectFetched } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { usePeople } from 'modules/person';
+import { Spinner } from 'modules/spinners';
 
 export default function ContributionForm({
-    people,
-    peopleStatus,
     withSpeakerDesignation,
-    project,
     projects,
     projectId,
     locale,
@@ -24,23 +21,21 @@ export default function ContributionForm({
     onSubmitCallback,
     index,
     onCancel,
-    fetchData,
     submitData,
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
+    const { data: peopleData, isLoading } = usePeople();
 
-    useEffect(() => {
-        if (!peopleStatus[`for_projects_${project?.id}`]) {
-            fetchData({ locale, projectId, projects }, 'people', null, null, `for_projects=${project?.id}`);
-        }
-    });
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     const formElements = [
         {
             elementType: 'select',
             attribute: 'person_id',
-            values: people && Object.values(people),
+            values: peopleData,
             value: data?.person_id,
             withEmpty: true,
             validate: v => v !== '',
@@ -72,10 +67,7 @@ export default function ContributionForm({
     }
 
     return (
-        <Fetch
-            fetchParams={['people', null, null, `for_projects=${project?.id}`]}
-            testSelector={getPeopleForCurrentProjectFetched}
-        >
+        <>
             <Form
                 scope='contribution'
                 data={data}
@@ -109,7 +101,7 @@ export default function ContributionForm({
             >
                 {t("edit.person.admin")}
             </Link>
-        </Fetch>
+        </>
     );
 }
 
@@ -119,15 +111,12 @@ ContributionForm.propTypes = {
     data: PropTypes.object,
     contributionTypes: PropTypes.object.isRequired,
     formClasses: PropTypes.string,
-    people: PropTypes.object,
-    peopleStatus: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };

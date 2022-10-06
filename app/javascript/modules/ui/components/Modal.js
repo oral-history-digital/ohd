@@ -10,6 +10,7 @@ export default function Modal({
     className,
     triggerClassName,
     trigger = <FaEllipsisH className="Icon Icon--primary" />,
+    disabled = false,
     children,
 }) {
     const [showDialog, setShowDialog] = useState(false);
@@ -35,6 +36,7 @@ export default function Modal({
                 className={classNames('Modal-trigger', triggerClassName)}
                 title={title}
                 onClick={open}
+                disabled={disabled}
             >
                 {trigger}
             </button>
@@ -78,6 +80,7 @@ Modal.propTypes = {
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
     triggerClassName: PropTypes.string,
+    disabled: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

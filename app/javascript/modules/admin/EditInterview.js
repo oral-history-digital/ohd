@@ -1,71 +1,47 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer } from 'modules/auth';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import InterviewFormContainer from './InterviewFormContainer';
 
-export default class EditInterview extends Component {
+export default function EditInterview() {
+    const [showForm, setShowForm] = useState(true);
+    const { t } = useI18n();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showForm: true
-        };
-        this.returnToForm = this.returnToForm.bind(this);
-        this.hideForm = this.hideForm.bind(this);
-    }
-
-    returnToForm() {
-        this.setState({showForm: true});
-    }
-
-    hideForm() {
-        this.setState({showForm: false});
-    }
-
-    content() {
-        if (
-            !this.state.showForm
-        ) {
-            //<Link to={'/' + this.props.locale + '/interviews/' + this.props.processed}>
-                //{this.props.processed}
-            //</Link>
-            return (
-                <div>
-                    <p>
-                        {t(this.props, 'edit.interview.processed')}
-                    </p>
-                    <button
-                        type="button"
-                        className='Button return-to-upload'
-                        onClick={() => this.returnToForm()}
-                    >
-                        {t(this.props, 'edit.interview.return')}
-                    </button>
-                </div>
-            )
-        } else {
-            return (
-                <InterviewFormContainer submitText='edit.interview.new' withContributions={true} onSubmitCallback={this.hideForm} />
-            )
-        }
-    }
-
-    render() {
-        return (
-            <div className='wrapper-content register'>
-                <Helmet>
-                    <title>{t(this.props, `edit.interview.new`)}</title>
-                </Helmet>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>{t(this.props, `edit.interview.new`)}</h1>
-                    {this.content()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
-            </div>
-        );
-    }
+    return (
+        <div className='wrapper-content register'>
+            <Helmet>
+                <title>{t('edit.interview.new')}</title>
+            </Helmet>
+            <AuthShowContainer ifLoggedIn>
+                <h1 className='registry-entries-title'>
+                    {t('edit.interview.new')}
+                </h1>
+                {showForm ? (
+                    <InterviewFormContainer
+                        submitText="edit.interview.new"
+                        withContributions
+                        onSubmitCallback={() => setShowForm(false)}
+                    />
+                ) : (
+                    <div>
+                        <p>
+                            {t('edit.interview.processed')}
+                        </p>
+                        <button
+                            type="button"
+                            className='Button return-to-upload'
+                            onClick={() => setShowForm(true)}
+                        >
+                            {t('edit.interview.return')}
+                        </button>
+                    </div>
+                )}
+            </AuthShowContainer>
+            <AuthShowContainer ifLoggedOut ifNoProject>
+                {t('devise.failure.unauthenticated')}
+            </AuthShowContainer>
+        </div>
+    );
 }

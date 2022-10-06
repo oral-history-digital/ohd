@@ -5,7 +5,12 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { Modal } from 'modules/ui';
 import { useAuthorization } from 'modules/auth'
 import { useI18n } from 'modules/i18n';
+import {
+    useMutatePersonWithAssociations,
+    useMutatePersonLandingPageMetadata
+} from 'modules/person';
 import { DeleteItemForm } from 'modules/forms';
+import { useRegistryReferenceApi } from 'modules/api';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
 export default function RegistryReference({
@@ -27,6 +32,9 @@ export default function RegistryReference({
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
+    const { deleteRegistryReference } = useRegistryReferenceApi();
+    const mutatePersonWithAssociations = useMutatePersonWithAssociations();
+    const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
 
     useEffect(() => {
         loadRegistryEntry();
@@ -44,13 +52,23 @@ export default function RegistryReference({
         }
     }
 
-    function destroy() {
-        if (refObject.type === 'Interview') {
+    async function destroy() {
+        switch (refObject.type) {
+        case 'Interview':
             deleteData({ locale, projectId, projects }, 'interviews', refObject.archiveId || refObject.archive_id || refObject.id,
                 'registry_references', registryReference.id);
-        } else {
-            // refObject.type === Person || Segment
+            break;
+        case 'Person':
+            mutatePersonWithAssociations(refObject.id, async () => {
+                const result = await deleteRegistryReference(registryReference.id);
+                mutatePersonLandingPageMetadata(refObject.id);
+                return result;
+            });
+            break;
+        case 'Segment':
+        default:
             deleteData({ locale, projectId, projects }, 'registry_references', registryReference.id, null, null, true);
+            break;
         }
     }
 

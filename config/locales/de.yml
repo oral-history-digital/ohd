@@ -1363,6 +1363,7 @@ de:
       copy_position: Position kopieren
       copy_position_tooltip: Aktuelle Zeitmarke als URL kopieren
     person:
+      no_interviewee: Keine interviewte Person
       abbr_titles:
         doctor_female: Dr.
         professor_female: Prof.

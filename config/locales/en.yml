@@ -1368,6 +1368,7 @@ en:
       copy_position: Copy position
       copy_position_tooltip: Copy current timestamp as URL
     person:
+      no_interviewee: No interviewee
       abbr_titles:
         doctor_female: Dr.
         professor_female: Professor

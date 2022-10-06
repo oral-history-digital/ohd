@@ -1,34 +1,18 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 
-import { humanReadable } from 'modules/data';
-import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
-import { useProjectAccessStatus } from 'modules/auth';
+import { humanReadable, getLanguages } from 'modules/data';
+import { usePersonWithAssociations } from 'modules/person';
+import { useI18n } from 'modules/i18n';
 
 export default function ThumbnailMetadata({
     interview,
     project,
-    projects,
-    locale,
-    translations,
-    languages,
-    isLoggedIn,
-    peopleStatus,
-    fetchData,
 }) {
-    const intervieweeId = interview.interviewee_id;
-    const interviewee = project.people[intervieweeId];
-    const projectId = project.identifier;
-    const { projectAccessGranted } = useProjectAccessStatus(project);
-
-    useEffect(() => {
-        if (!projectAccessGranted) {
-            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
-        } else if (projectAccessGranted && !interviewee?.associations_loaded) {
-            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
-        }
-    }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
+    const languages = useSelector(getLanguages);
+    const { locale, translations } = useI18n();
+    const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
 
     return (
         <ul className="DetailList" lang={locale}>
@@ -69,6 +53,8 @@ ThumbnailMetadata.propTypes = {
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object,
     project: PropTypes.object.isRequired,
+    projects: PropTypes.object.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,

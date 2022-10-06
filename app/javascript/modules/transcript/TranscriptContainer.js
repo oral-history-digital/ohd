@@ -2,8 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentInterviewee, getProjects, getTranscriptFetched,
-    getTranscriptLocale, getHasTranscript } from 'modules/data';
+import {
+    fetchData,
+    getCurrentInterview,
+    getCurrentIntervieweeId,
+    getHasTranscript,
+    getProjects,
+    getTranscriptFetched,
+    getTranscriptLocale
+} from 'modules/data';
 import { getCurrentTape, getMediaTime, getIsIdle } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
 import { getWorkbookIsLoading, getWorkbookLoaded, fetchWorkbook } from 'modules/workbook';
@@ -15,7 +22,7 @@ const mapStateToProps = (state, props) => ({
     projects: getProjects(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
-    interviewee: getCurrentInterviewee(state),
+    intervieweeId: getCurrentIntervieweeId(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
     isIdle: getIsIdle(state),

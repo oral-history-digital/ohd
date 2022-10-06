@@ -46,17 +46,17 @@ const Loader = {
             });
     },
 
-    put: function(url, params, dispatch, successCallback, errorCallback) {
+    put: function(url, params, dispatch, successCallback, errorCallback, callback) {
         let req = request.put(url);
-        Loader.submit(req, url, params, dispatch, successCallback, errorCallback);
+        Loader.submit(req, url, params, dispatch, successCallback, errorCallback, callback);
     },
 
-    post: function(url, params, dispatch, successCallback, errorCallback) {
+    post: function(url, params, dispatch, successCallback, errorCallback, callback) {
         let req = request.post(url);
-        Loader.submit(req, url, params, dispatch, successCallback, errorCallback);
+        Loader.submit(req, url, params, dispatch, successCallback, errorCallback, callback);
     },
 
-    submit: function(req, url, params, dispatch, successCallback, errorCallback) {
+    submit: function(req, url, params, dispatch, successCallback, errorCallback, callback) {
         let scope = Object.keys(params)[0];
         Object.keys(params[scope]).map((param, index) => {
             if (params[scope][param] !== undefined && params[scope][param] !== null) {
@@ -130,6 +130,9 @@ const Loader = {
                 } else {
                     if (typeof successCallback === "function") {
                         dispatch(successCallback(json));
+                    }
+                    if (typeof callback === 'function') {
+                        callback(json);
                     }
                 }
             }

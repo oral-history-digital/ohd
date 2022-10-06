@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 
 import { underscore } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
-import RegistryReferencesContainer from './RegistryReferencesContainer';
 import { useProjectAccessStatus } from 'modules/auth';
+import RegistryReferencesContainer from './RegistryReferencesContainer';
 
 export default function SelectedRegistryReferences({
-    project,
-    projects,
-    projectId,
-    locale,
-    refObject,
-    fetchData,
-    registryEntriesStatus,
     editView,
+    fetchData,
+    locale,
+    project,
+    projectId,
+    projects,
+    refObject,
+    registryEntriesStatus,
 }) {
     const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
@@ -73,9 +73,12 @@ export default function SelectedRegistryReferences({
 }
 
 SelectedRegistryReferences.propTypes = {
+    editView: PropTypes.bool,
+    fetchData: PropTypes.func.isRequired,
+    locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     refObject: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
+    registryEntriesStatus: PropTypes.object.isRequired,
 };

@@ -1330,6 +1330,7 @@ es:
       copy_position: Copiar posición
       copy_position_tooltip: Copiar codigo de tiempo como enlace
     person:
+      no_interviewee: No interviewee
       abbr_titles:
         doctor_female: Dra.
         professor_female: Profa.

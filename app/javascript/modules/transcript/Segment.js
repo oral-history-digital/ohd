@@ -15,11 +15,11 @@ import BookmarkSegmentButton from './BookmarkSegmentButton';
 
 function Segment({
     data,
+    speaker,
     autoScroll,
     contentLocale,
     editView,
     active,
-    people,
     popupType,
     openReference,
     openPopup,
@@ -89,11 +89,6 @@ function Segment({
         return null;
     }
 
-    let person;
-    if (people && data.speaker_id) {
-        person = people[data.speaker_id];
-    }
-
     return (
         <>
             <div
@@ -106,7 +101,7 @@ function Segment({
                     data.speakerIdChanged && (
                         <FaUser
                             className={classNames('Segment-icon', data.speaker_is_interviewee ? 'Segment-icon--primary' : 'Segment-icon--secondary')}
-                            title={person ? formatPersonName(person, translations, { locale }) : data.speaker}
+                            title={speaker ? formatPersonName(speaker, translations, { locale }) : data.speaker}
                         />
                     )
                 }
@@ -154,6 +149,7 @@ function Segment({
 
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
+    speaker: PropTypes.object,
     autoScroll: PropTypes.bool.isRequired,
     editView: PropTypes.bool.isRequired,
     contentLocale: PropTypes.string.isRequired,
@@ -163,7 +159,6 @@ Segment.propTypes = {
     closePopup: PropTypes.func.isRequired,
     setOpenReference: PropTypes.func.isRequired,
     active: PropTypes.bool.isRequired,
-    people: PropTypes.object.isRequired,
     tabIndex: PropTypes.number.isRequired,
     locale: PropTypes.string.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,

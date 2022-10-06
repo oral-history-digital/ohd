@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getIsCatalog } from 'modules/data';
+import {
+    getCurrentInterview,
+    getCurrentIntervieweeId,
+    getCurrentProject,
+    getIsCatalog
+} from 'modules/data';
 import { setViewMode, getArchiveId, getProjectId, getEditView } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/account';
 import InterviewTabPanel from './InterviewTabPanel';
@@ -12,7 +17,7 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     editView: getEditView(state),
     interview: getCurrentInterview(state),
-    interviewee: getCurrentInterviewee(state),
+    intervieweeId: getCurrentIntervieweeId(state),
     hasMap: getCurrentProject(state)?.has_map === 1,
     isCatalog: getIsCatalog(state),
     isLoggedIn: getIsLoggedIn(state),

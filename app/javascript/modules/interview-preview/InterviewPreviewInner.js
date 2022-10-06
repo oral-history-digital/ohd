@@ -3,7 +3,7 @@ import { FaEyeSlash } from 'react-icons/fa';
 
 import { useProjectAccessStatus } from 'modules/auth';
 import missingStill from 'assets/images/missing_still.png';
-import ThumbnailMetadataContainer from './ThumbnailMetadataContainer';
+import ThumbnailMetadata from './ThumbnailMetadata';
 
 export default function InterviewPreviewInner({
     interview,
@@ -35,7 +35,7 @@ export default function InterviewPreviewInner({
             </p>
 
             {!isExpanded && (
-                <ThumbnailMetadataContainer
+                <ThumbnailMetadata
                     interview={interview}
                     project={project}
                 />
