@@ -1,5 +1,6 @@
 class EventType < ApplicationRecord
   belongs_to :project, touch: true
+  has_many :events, dependent: :destroy
 
   translates :name, fallbacks_for_empty_translations: true, touch: true
 

@@ -175,6 +175,16 @@ ActiveRecord::Schema.define(version: 2022_11_03_125255) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "event_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_date"
+    t.index ["event_id"], name: "index_event_translations_on_event_id"
+    t.index ["locale"], name: "index_event_translations_on_locale"
+  end
+
   create_table "event_type_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "event_type_id", null: false
     t.string "locale", null: false
@@ -191,6 +201,17 @@ ActiveRecord::Schema.define(version: 2022_11_03_125255) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_event_types_on_project_id"
+  end
+
+  create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.bigint "event_type_id", null: false
+    t.bigint "person_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_type_id"], name: "index_events_on_event_type_id"
+    t.index ["person_id"], name: "index_events_on_person_id"
   end
 
   create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
