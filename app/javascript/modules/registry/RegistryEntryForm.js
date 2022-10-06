@@ -23,7 +23,7 @@ export default function RegistryEntryForm({
     const { t } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({})
-    const initalValues = {
+    const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
         norm_data_attributes: registryEntryAttributes.norm_data_attributes,
@@ -38,7 +38,6 @@ export default function RegistryEntryForm({
     }
 
     function showNormDatum(normDatum) {
-        debugger
         return (<span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>);
     }
 
@@ -60,14 +59,17 @@ export default function RegistryEntryForm({
                 key={registryEntryId}
                 scope='registry_entry'
                 onSubmit={params => {
-                    submitData({projectId, locale, projects}, params);
+                    const paramsWithNormDataAttributes = {
+                        registry_entry: Object.assign({}, params.registry_entry, registryEntryAttributes)
+                    };
+                    submitData({projectId, locale, projects}, paramsWithNormDataAttributes);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
                 }}
                 onCancel={onCancel}
                 data={registryEntry}
-                values={initalValues}
+                values={values}
                 elements={[
                     {
                         attribute: 'latitude',

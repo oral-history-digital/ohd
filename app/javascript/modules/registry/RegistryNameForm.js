@@ -44,10 +44,19 @@ export default function RegistryNameForm({
             const preparedAttributes = {
                 latitude: value.Entry.Location?.Latitude,
                 longitude: value.Entry.Location?.Longitude,
-                norm_data_attributes: {
+                registry_names_attributes: [{
+                    registry_name_type_id: defaultNameType.id,
+                    name_position: 1,
+                    translations_attributes: [{
+                        descriptor: value.Entry.Name,
+                        locale: locale,
+                    }],
+                }],
+                norm_data_attributes: [{
                     norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === value.Entry.Provider ).id,
                     nid: value.Entry.ID,
-                },
+                    registry_entry_id: registryEntryId,
+                }],
             };
             setRegistryEntryAttributes(preparedAttributes);
         }
@@ -75,7 +84,7 @@ export default function RegistryNameForm({
                 name_position: 1,
                 translations_attributes: [{
                     descriptor: inputValue,
-                    locale: 'de'
+                    locale: locale,
                 }],
             }}
             submitText='submit'
