@@ -120,6 +120,9 @@ export default function RegistryNameForm({
                 <AsyncSelect
                     cacheOptions
                     defaultOptions
+                    isClearable
+                    backspaceRemovesValue
+                    defaultInputValue={data?.descriptor?.[locale]}
                     value={selectedValue}
                     getOptionLabel={e => `${e.Entry.Name}: ${e.Entry.Label}`}
                     getOptionValue={e => e.Entry.ID}
