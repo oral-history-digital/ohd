@@ -20,7 +20,19 @@ export default function NormDatumForm({
     return (
         <Form
             scope='norm_datum'
-            onSubmit={function(params){submitData({projectId, projects, locale}, params, index);}}
+            onSubmit={params => {
+                const paramsWithSelectedEntryValues = {
+                    norm_datum: Object.assign({}, params.norm_datum, {
+                        registry_entry_id: (data?.registry_entry_id) || registryEntryId,
+                        norm_data_provider_id: norm_data_provider_id,
+                        nid:  nid,
+                    }),
+                };
+                submitData({projectId, locale, projects}, paramsWithSelectedEntryValues, index);
+                if (typeof onSubmit === 'function') {
+                    onSubmit();
+                }
+            }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}
@@ -28,8 +40,6 @@ export default function NormDatumForm({
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
-                norm_data_provider_id: norm_data_provider_id,
-                nid:  nid,
             }}
             submitText='submit'
             elements={[
