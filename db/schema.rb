@@ -207,11 +207,12 @@ ActiveRecord::Schema.define(version: 2022_11_03_125255) do
     t.date "start_date", null: false
     t.date "end_date", null: false
     t.bigint "event_type_id", null: false
-    t.bigint "person_id", null: false
+    t.string "eventable_type", null: false
+    t.bigint "eventable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_type_id"], name: "index_events_on_event_type_id"
-    t.index ["person_id"], name: "index_events_on_person_id"
+    t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
   end
 
   create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
