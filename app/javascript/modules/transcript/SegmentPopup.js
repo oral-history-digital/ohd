@@ -9,6 +9,7 @@ import { RegistryReferencesContainer } from 'modules/registry-references';
 export default function SegmentPopup({
     contentLocale,
     data,
+    project,
     openReference,
     popupType,
     workbookAnnotations,
@@ -52,12 +53,18 @@ export default function SegmentPopup({
                                 testDataType='registry_entries'
                                 testIdOrDesc={`ref_object_type_Segment_ref_object_id_${data.id}`}
                             >
-                                <RegistryReferencesContainer
-                                    refObject={data}
-                                    inTranscript={true}
-                                    contentLocale={contentLocale}
-                                    setOpenReference={setOpenReference}
-                                />
+                                <Fetch
+                                    fetchParams={['registry_entries', project.root_registry_entry_id]}
+                                    testDataType='registry_entries'
+                                    testIdOrDesc={project.root_registry_entry_id}
+                                >
+                                    <RegistryReferencesContainer
+                                        refObject={data}
+                                        inTranscript={true}
+                                        contentLocale={contentLocale}
+                                        setOpenReference={setOpenReference}
+                                    />
+                                </Fetch>
                             </Fetch>
                         )
                     }
