@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Form } from 'modules/forms';
-import AsyncSelect from 'react-select/async';
 
-import { Label } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
 import { RegistrySearchResultContainer } from 'modules/registry';
+import NormDataSelectContainer from './NormDataSelectContainer';
 
 export default function RegistryNameForm({
     index,
@@ -22,55 +20,34 @@ export default function RegistryNameForm({
     projectId,
     projects,
     locale,
-    searchRegistryEntry,
     foundRegistryEntries,
 }) {
-    const [selectedValue, setSelectedValue] = useState(null);
-    const [descriptor, setDescriptor] = useState(null);
-    const [inputValue, setValue] = useState('');
-    const [geoFilter, setGeoFilter] = useState(null);
-    const [placeType, setPlaceType] = useState(null);
+    const translation = data?.translations_attributes?.find(t => t.locale === locale);
+    const [descriptor, setDescriptor] = useState(translation?.descriptor);
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
-    const pathBase = usePathBase();
 
-    const handleInputChange = value => {
-        setValue(value);
-    };
+    const isNew = !translation?.descriptor; //!data?.registry_entry_id; //!registryEntryId;
 
-    const handleChange = value => {
-        setSelectedValue(value);
-        setDescriptor(value.Entry.Name);
+    const baseFormElements = [
+        {
+            elementType: 'textarea',
+            multiLocale: true,
+            attribute: 'notes',
+        },
+        {
+            elementType: 'select',
+            attribute: 'registry_name_type_id',
+            value: (data?.registry_name_type_id) || defaultNameType.id,
+            values: registryNameTypes && Object.values(registryNameTypes),
+            validate: function(v){return /^\d+$/.test(v)}
+        },
+    ];
 
-        if (value) {
-            setValue(value.Entry.Name);
-            const preparedAttributes = {
-                latitude: value.Entry.Location?.Latitude,
-                longitude: value.Entry.Location?.Longitude,
-                registry_names_attributes: [{
-                    registry_name_type_id: defaultNameType.id,
-                    name_position: 1,
-                    translations_attributes: [{
-                        descriptor: descriptor,
-                        locale: locale,
-                    }],
-                }],
-                norm_data_attributes: [{
-                    norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === value.Entry.Provider ).id,
-                    nid: value.Entry.ID,
-                    registry_entry_id: registryEntryId,
-                }],
-            };
-            setRegistryEntryAttributes(preparedAttributes);
-        }
-    }
-
-    function loadOptions(inputValue) {
-        if (inputValue?.length > 3) {
-            searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: inputValue});
-        }
-        return fetch(`${pathBase}/norm_data_api?expression=${inputValue}&geo_filter=${geoFilter}&place_type=${placeType}`).then(res => res.json());
-    };
+    const extendedFormElements = [{
+        attribute: 'descriptor',
+        multiLocale: true
+    }].concat(baseFormElements);
 
     return (
         <Form
@@ -81,6 +58,7 @@ export default function RegistryNameForm({
                         translations_attributes: [{
                             descriptor: descriptor,
                             locale: locale,
+                            id: translation?.id,
                         }],
                     })
                 };
@@ -98,55 +76,23 @@ export default function RegistryNameForm({
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
                 registry_name_type_id: (data?.registry_name_type_id) || defaultNameType.id,
                 name_position: 1,
-                translations_attributes: [{
-                    descriptor: inputValue,
-                    locale: locale,
-                }],
             }}
             submitText='submit'
-            elements={[
-                //{
-                    //attribute: 'descriptor',
-                    //multiLocale: true
-                //},
-                {
-                    elementType: 'textarea',
-                    multiLocale: true,
-                    attribute: 'notes',
-                },
-                {
-                    elementType: 'select',
-                    attribute: 'registry_name_type_id',
-                    value: (data?.registry_name_type_id) || defaultNameType.id,
-                    values: registryNameTypes && Object.values(registryNameTypes),
-                    validate: function(v){return /^\d+$/.test(v)}
-                },
-            ]}
+            elements={isNew ? baseFormElements : extendedFormElements}
         >
             <ul className="RegistryEntryList RegistryEntryList--root">
                 {
                     foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
                 }
             </ul>
-            <div className='form-group'>
-                <Label
-                    labelKey={'activerecord.attributes.registry_name.descriptor'}
-                    mandatory={true}
+            { isNew &&
+                <NormDataSelectContainer
+                    setRegistryEntryAttributes={setRegistryEntryAttributes}
+                    descriptor={translation?.descriptor}
+                    setDescriptor={setDescriptor}
+                    registryEntryParent={registryEntryParent}
                 />
-                <AsyncSelect
-                    cacheOptions
-                    defaultOptions
-                    isClearable
-                    backspaceRemovesValue
-                    defaultInputValue={data?.translations_attributes?.find(t => t.locale === locale)?.descriptor}
-                    value={selectedValue}
-                    getOptionLabel={e => `${e.Entry.Name}: ${e.Entry.Label}`}
-                    getOptionValue={e => e.Entry.ID}
-                    loadOptions={value => loadOptions(value)}
-                    onInputChange={handleInputChange}
-                    onChange={handleChange}
-                />
-            </div>
+            }
         </Form>
     );
 }

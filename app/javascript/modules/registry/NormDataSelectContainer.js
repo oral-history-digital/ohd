@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getNormDataProviders, getRegistryNameTypesForCurrentProject } from 'modules/data';
 import { getLocale } from 'modules/archive';
+import { searchRegistryEntry } from 'modules/search';
 import NormDataSelect from './NormDataSelect';
 
 const mapStateToProps = state => ({
@@ -10,4 +12,8 @@ const mapStateToProps = state => ({
     registryNameTypes: getRegistryNameTypesForCurrentProject(state),
 });
 
-export default connect(mapStateToProps)(NormDataSelect);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    searchRegistryEntry,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(NormDataSelect);
