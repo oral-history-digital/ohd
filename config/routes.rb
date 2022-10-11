@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
     resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
+    resources :event_types
+    resources :events
     resources :help_texts, only: [:index]
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"

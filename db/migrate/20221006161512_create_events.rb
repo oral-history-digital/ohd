@@ -2,7 +2,7 @@ class CreateEvents < ActiveRecord::Migration[5.2]
   def change
     create_table :events do |t|
       t.date :start_date, null: false
-      t.date :end_date, null: false
+      t.date :end_date
       t.belongs_to :event_type, null: false, index: true
       t.belongs_to :eventable, polymorphic: true, null: false, index: true
 

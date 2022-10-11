@@ -5,22 +5,26 @@ class Event < ApplicationRecord
   translates :display_date, fallbacks_for_empty_translations: true, touch: true
 
   validates :start_date, presence: true
-  validates :end_date, presence: true
   validates :display_date, length: { maximum: 100 }, allow_blank: true
   validates :eventable, presence: true
   validates :event_type, presence: true
   validate :end_date_after_start_date
 
   def single_day?
-    start_date == end_date
+    start_date.present? && start_date == end_date
   end
 
   def period?
     !single_day?
   end
 
+  def ongoing?
+    start_date.present? && end_date.blank?
+  end
+
   def duration
-    difference = (end_date - start_date).to_i
+    actual_end_date = end_date.present? ? end_date : Date.today
+    difference = (actual_end_date - start_date).to_i
     difference + 1
   end
 
