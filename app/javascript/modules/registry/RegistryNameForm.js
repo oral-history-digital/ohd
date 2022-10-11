@@ -27,7 +27,7 @@ export default function RegistryNameForm({
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
 
-    const isNew = !translation?.descriptor; //!data?.registry_entry_id; //!registryEntryId;
+    const isNew = !translation?.descriptor;
 
     const baseFormElements = [
         {
