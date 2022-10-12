@@ -24,7 +24,12 @@ function NormDataSelect({
     const [placeType, setPlaceType] = useState(null);
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
-    const handleInputChange = value => { setValue(value); };
+    const handleInputChange = value => {
+        setValue(value);
+        if (value?.length > 0) {
+            setDescriptor(value);
+        }
+    };
 
     const handleChange = value => {
         setSelectedValue(value);
