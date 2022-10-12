@@ -11,7 +11,6 @@ import { DeleteItemForm } from 'modules/forms';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
-import RegistryEntryFromNormDataFormContainer from './RegistryEntryFromNormDataFormContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
 
 const Item = AdminMenu.Item;
@@ -148,18 +147,6 @@ export default class RegistryEntry extends Component {
                     >
                         {close => (
                             <RegistryEntryFormContainer
-                                registryEntryParent={data}
-                                onSubmit={close}
-                                onCancel={close}
-                            />
-                        )}
-                    </Item>
-                    <Item
-                        name="new_child_from_normdata"
-                        label={t(this.props, `edit.registry_entry.from_norm_data`)}
-                    >
-                        {close => (
-                            <RegistryEntryFromNormDataFormContainer
                                 registryEntryParent={data}
                                 onSubmit={close}
                                 onCancel={close}
