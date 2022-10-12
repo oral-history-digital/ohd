@@ -159,6 +159,7 @@ el:
   download: Αποθήκευση
   download_user_statistics: Benutzerstatistik herunterladen
   back: πίσω
+  search_in_normdata: Nach Einträgen in Normdaten-API suchen
   export_search_results: Εξαγωγή αποτελεσμάτων αναζήτησης
   language_de: γερμανικά
   language_elde: ελληνική με γερμανική μετάφραση

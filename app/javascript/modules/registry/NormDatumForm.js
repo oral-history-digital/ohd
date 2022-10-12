@@ -30,7 +30,7 @@ export default function NormDatumForm({
     const fetchAPIResults = async() => {
         fetch(`${pathBase}/norm_data_api?expression=${descriptor}`)
             .then(res => res.json())
-            .then(json => { console.log(`json = ${json}`); setApiResults(json)});
+            .then(json => setApiResults(json));
     };
 
     return (
@@ -38,13 +38,13 @@ export default function NormDatumForm({
             { registryEntryId &&
                 <button
                     type="button"
-                    className="Button Button--primaryAction"
+                    className="Button any-button"
                     onClick={() => {
                         !fromAPI && fetchAPIResults();
                         setFromAPI(!fromAPI);
                     }}
                 >
-                    {t('search_in_normdata')}
+                    {fromAPI ? t('back') : t('search_in_normdata')}
                 </button>
             }
             { fromAPI ?
