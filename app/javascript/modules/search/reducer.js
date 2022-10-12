@@ -31,12 +31,11 @@ const search = (state = initialState, action) => {
     case RECEIVE_REGISTRY_ENTRY_SEARCH:
         return Object.assign({}, state, {
             isRegistryEntrySearching: false,
-            registryEntries: {
-                [action.project]: {
-                    showRegistryEntriesSearchResults: true,
-                    results: action.registryEntries
-                }
-            }
+            registryEntries: Object.assign({}, state.registryEntries, {
+                [action.project]: Object.assign({}, state.registryEntries[action.project], {
+                    results: action.registryEntries,
+                })
+            })
         })
     case SET_QUERY_PARAMS :
         return Object.assign({}, state, {

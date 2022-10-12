@@ -8,7 +8,6 @@ import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
-import RegistryEntryFromNormDataFormContainer from './RegistryEntryFromNormDataFormContainer';
 
 export default class RegistryEntries extends Component {
     componentDidMount() {
@@ -115,7 +114,6 @@ export default class RegistryEntries extends Component {
                     {this.registryEntries()}
                 </ul>
                 {this.addRegistryEntry(RegistryEntryFormContainer, 'new')}
-                {this.addRegistryEntry(RegistryEntryFromNormDataFormContainer, 'from_norm_data')}
             </div>
         )
     }

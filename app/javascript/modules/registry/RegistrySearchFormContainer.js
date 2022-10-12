@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { searchRegistryEntry } from 'modules/search';
+import { changeRegistryEntriesViewMode, searchRegistryEntry } from 'modules/search';
 import { hideSidebar } from 'modules/sidebar';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { getProjects } from 'modules/data';
@@ -20,6 +20,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     searchRegistryEntry,
+    changeRegistryEntriesViewMode,
     hideSidebar,
 }, dispatch);
 

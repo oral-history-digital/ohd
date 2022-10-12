@@ -144,10 +144,7 @@ class ApplicationController < ActionController::Base
 
   def initial_search_redux_state
     {
-      registryEntries: {
-        showRegistryEntriesTree: true,
-        results: []
-      },
+      registryEntries: {},
       user_registrations: {
         query: {
           'user_registrations.workflow_state': 'account_confirmed',

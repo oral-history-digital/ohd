@@ -4,26 +4,31 @@ import request from 'superagent';
 
 import { Element } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
 function NormDataSelect({
     setRegistryEntryAttributes,
     registryEntryParent,
     registryNameTypes,
     normDataProviders,
+    locale,
+    searchRegistryEntry,
+    descriptor,
+    setDescriptor,
 }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
     const [geoFilter, setGeoFilter] = useState(null);
     const [placeType, setPlaceType] = useState(null);
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
-    const handleInputChange = value => {
-        setValue(value);
-    };
+    const handleInputChange = value => { setValue(value); };
 
     const handleChange = value => {
         setSelectedValue(value);
+        setDescriptor(value.Entry.Name);
         if (value) {
             const preparedAttributes = {
                 parent_id: registryEntryParent?.id,
@@ -35,7 +40,7 @@ function NormDataSelect({
                     name_position: 1,
                     translations_attributes: [{
                         descriptor: value.Entry.Name,
-                        locale: 'de'
+                        locale: locale,
                     }],
                 }],
                 norm_data_attributes: [{
@@ -47,62 +52,64 @@ function NormDataSelect({
         }
     }
 
-    function loadOptions(inputValue) {
-        return fetch(`/de/norm_data_api?expression=${inputValue}&geo_filter=${geoFilter}&place_type=${placeType}`).then(res => res.json());
+    const loadOptions = inputValue => {
+        if (inputValue?.length > 3) {
+            searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: inputValue});
+        }
+        return fetch(`${pathBase}/norm_data_api?expression=${inputValue}&geo_filter=${geoFilter}&place_type=${placeType}`).then(res => res.json());
     };
 
     return (
-        <div className="NormData">
-            <form className='Form default'>
-                <Element
-                    labelKey='normdata.geo_filter'
+        <div className='form-group'>
+            <Element
+                labelKey='normdata.geo_filter'
+            >
+                <select
+                    key={'geoFilter-select'}
+                    className="Input"
+                    onChange={e => setGeoFilter(e.target.value)}
                 >
-                    <select
-                        key={'geoFilter-select'}
-                        className="Input"
-                        onChange={e => setGeoFilter(e.target.value)}
-                    >
-                        <option value='' key={'geoFilter-choose'}>
-                            {t('choose')}
+                    <option value='' key={'geoFilter-choose'}>
+                        {t('choose')}
+                    </option>
+                    { ['de', 'eu'].map( v => (
+                        <option value={v} key={`geoFilter-${v}`}>
+                            {t(`normdata.${v}`)}
                         </option>
-                        { ['de', 'eu'].map( v => (
-                            <option value={v} key={`geoFilter-${v}`}>
-                                {t(`normdata.${v}`)}
-                            </option>
-                        ))}
-                    </select>
-                </Element>
-                <Element
-                    labelKey='normdata.place_type'
+                    ))}
+                </select>
+            </Element>
+            <Element
+                labelKey='normdata.place_type'
+            >
+                <select
+                    key={'placeType-select'}
+                    className="Input"
+                    onChange={e => setPlaceType(e.target.value)}
                 >
-                    <select
-                        key={'placeType-select'}
-                        className="Input"
-                        onChange={e => setPlaceType(e.target.value)}
-                    >
-                        <option value='' key={'placeType-choose'}>
-                            {t('choose')}
+                    <option value='' key={'placeType-choose'}>
+                        {t('choose')}
+                    </option>
+                    { ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'].map( v => (
+                        <option value={v} key={`geoFilter-${v}`}>
+                            {t(`normdata.${v}`)}
                         </option>
-                        { ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'].map( v => (
-                            <option value={v} key={`geoFilter-${v}`}>
-                                {t(`normdata.${v}`)}
-                            </option>
-                        ))}
-                    </select>
-                </Element>
-                {/*<pre>Input Value: "{inputValue}"</pre>*/}
-                <AsyncSelect
-                    cacheOptions
-                    defaultOptions
-                    value={selectedValue}
-                    getOptionLabel={e => `${e.Entry.Name}: ${e.Entry.Label}`}
-                    getOptionValue={e => e.Entry.ID}
-                    loadOptions={value => loadOptions(value)}
-                    onInputChange={handleInputChange}
-                    onChange={handleChange}
-                />
-                {/*<pre>Selected Value: {JSON.stringify(selectedValue || {}, null, 2)}</pre>*/}
-            </form>
+                    ))}
+                </select>
+            </Element>
+            <AsyncSelect
+                cacheOptions
+                defaultOptions
+                isClearable
+                backspaceRemovesValue
+                defaultInputValue={descriptor}
+                value={selectedValue}
+                getOptionLabel={e => `${e.Entry.Name}: ${e.Entry.Label}`}
+                getOptionValue={e => e.Entry.ID}
+                loadOptions={value => loadOptions(value)}
+                onInputChange={handleInputChange}
+                onChange={handleChange}
+            />
         </div>
     );
 }

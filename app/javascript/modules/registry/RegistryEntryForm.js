@@ -1,117 +1,129 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form, validateGeoCoordinate } from 'modules/forms';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 import NormDatumFormContainer from './NormDatumFormContainer';
 
-export default class RegistryEntryForm extends Component {
+export default function RegistryEntryForm({
+    locale,
+    projectId,
+    projects,
+    normDataProviders,
+    translations,
+    registryEntries,
+    registryEntryId,
+    registryEntryParent,
+    submitData,
+    onSubmit,
+    onCancel,
+}){
 
-    constructor(props) {
-        super(props);
-        this.showRegistryName = this.showRegistryName.bind(this);
-        this.showNormDatum = this.showNormDatum.bind(this);
+    const { t } = useI18n();
+    const registryEntry = registryEntries[registryEntryId];
+    const descriptor = registryEntry?.registry_names[0].descriptor[locale];
+    const [registryEntryAttributes, setRegistryEntryAttributes] = useState({})
+    const values = {
+        parent_id: registryEntryParent?.id,
+        workflow_state: registryEntry?.workflow_state || 'preliminary',
+        norm_data_attributes: registryEntryAttributes.norm_data_attributes,
+        ...registryEntryAttributes,
     }
 
-    // get registry_entry via it`s id from state.
-    // like this it will always be the newest version.
-    //
-    registryEntry() {
-        return this.props.registryEntries[this.props.registryEntryId];
-    }
-
-    showRegistryName(registryName) {
+    function showRegistryName(registryName) {
         if (!registryName)
             return null;
-        let translation = registryName.translations_attributes.find(t => t.locale === this.props.locale);
-        return (
-            <span>{translation.descriptor}</span>
-        )
+        const translation = registryName.translations_attributes.find(t => t.locale === locale);
+        return (<span>{translation.descriptor}</span>);
     }
 
-    showNormDatum(normDatum) {
-        const { normDataProviders } = this.props;
-        return (
-            <span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>
-        )
+    function showNormDatum(normDatum) {
+        return (<span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>);
     }
 
-    parentRegistryEntry() {
-        if (this.props.registryEntryParent){
+    function parentRegistryEntry() {
+        if (registryEntryParent){
             return (
                 <div>
-                    <span><b>{t(this.props, 'edit.registry_entry.parent') + ': '}</b></span>
-                    <span>{this.props.registryEntryParent.name[this.props.locale]}</span>
+                    <span><b>{t('edit.registry_entry.parent') + ': '}</b></span>
+                    <span>{registryEntryParent.name[locale]}</span>
                 </div>
             )
         }
     }
 
-    render() {
-        const { submitData, onSubmit, onCancel } = this.props;
+    return (
+        <div>
+            {parentRegistryEntry()}
+            <Form
+                key={registryEntryId}
+                scope='registry_entry'
+                onSubmit={params => {
+                    const paramsWithNormDataAttributes = {
+                        registry_entry: Object.assign({}, params.registry_entry, registryEntryAttributes)
+                    };
+                    submitData({projectId, locale, projects}, paramsWithNormDataAttributes);
+                    if (typeof onSubmit === 'function') {
+                        onSubmit();
+                    }
+                }}
+                onCancel={onCancel}
+                data={registryEntry}
+                values={values}
+                elements={[
+                    {
+                        attribute: 'latitude',
+                        value: registryEntry?.latitude || registryEntryAttributes.latitude,
+                        validate: validateGeoCoordinate,
+                        optional: true,
+                        individualErrorMsg: 'format',
+                    },
+                    {
+                        attribute: 'longitude',
+                        value: registryEntry?.longitude || registryEntryAttributes.longitude,
+                        validate: validateGeoCoordinate,
+                        optional: true,
+                        individualErrorMsg: 'format',
+                    },
+                    {
+                        elementType: 'select',
+                        attribute: 'workflow_state',
+                        values: ['preliminary', 'public', 'rejected'],
+                        value: registryEntry?.workflow_state || 'preliminary',
+                        withEmpty: true,
+                        optionsScope: 'workflow_states',
+                    }
+                ]}
 
-        return (
-            <div>
-                {this.parentRegistryEntry()}
-                <Form
-                    key={this.props.registryEntryId}
-                    scope='registry_entry'
-                    onSubmit={params => {
-                        submitData(this.props, params);
-                        if (typeof onSubmit === 'function') {
-                            onSubmit();
-                        }
-                    }}
-                    onCancel={onCancel}
-                    data={this.registryEntry()}
-                    values={{
-                        parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
-                        workflow_state: this.registryEntry() && this.registryEntry().workflow_state || 'preliminary',
-                    }}
-                    elements={[
-                        {
-                            attribute: 'latitude',
-                            validate: validateGeoCoordinate,
-                            optional: true,
-                            individualErrorMsg: 'format',
+                nestedScopeProps={[
+                    {
+                        formComponent: RegistryNameFormContainer,
+                        formProps: {
+                            registryEntryId: registryEntryId,
+                            registryEntryParent: registryEntryParent,
+                            setRegistryEntryAttributes: setRegistryEntryAttributes,
                         },
-                        {
-                            attribute: 'longitude',
-                            validate: validateGeoCoordinate,
-                            optional: true,
-                            individualErrorMsg: 'format',
+                        parent: registryEntry,
+                        scope: 'registry_name',
+                        elementRepresentation: showRegistryName,
+                    },
+                    {
+                        formComponent: NormDatumFormContainer,
+                        formProps: {
+                            descriptor: descriptor,
+                            registryEntryId: registryEntryId,
+                            ...(registryEntryAttributes.norm_data_attributes?.[0]),
+                            setRegistryEntryAttributes: setRegistryEntryAttributes,
                         },
-                        {
-                            elementType: 'select',
-                            attribute: 'workflow_state',
-                            values: ['preliminary', 'public', 'rejected'],
-                            value: (this.registryEntry() && this.registryEntry().workflow_state) || 'preliminary',
-                            withEmpty: true,
-                            optionsScope: 'workflow_states',
-                        }
-                    ]}
-
-                    nestedScopeProps={[
-                        {
-                            formComponent: RegistryNameFormContainer,
-                            formProps: {registryEntryId: this.props.registryEntryId},
-                            parent: this.registryEntry(),
-                            scope: 'registry_name',
-                            elementRepresentation: this.showRegistryName,
-                        },
-                        {
-                            formComponent: NormDatumFormContainer,
-                            formProps: {registryEntryId: this.props.registryEntryId},
-                            parent: this.registryEntry(),
-                            scope: 'norm_datum',
-                            elementRepresentation: this.showNormDatum,
-                        }
-                    ]}
-                />
-            </div>
-        );
-    }
+                        parent: registryEntry,
+                        scope: 'norm_datum',
+                        elementRepresentation: showNormDatum,
+                    }
+                ]}
+            />
+        </div>
+    );
 }
 
 RegistryEntryForm.propTypes = {
