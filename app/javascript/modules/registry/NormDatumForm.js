@@ -19,12 +19,12 @@ export default function NormDatumForm({
     projects,
     normDataProviders,
     locale,
+    setRegistryEntryAttributes,
 }) {
 
     const { t } = useI18n();
     const pathBase = usePathBase();
     const [fromAPI, setFromAPI] = useState(false);
-    const [selected, setSelected] = useState(null);
     const [apiResults, setApiResults] = useState([]);
 
     const fetchAPIResults = async() => {
@@ -51,8 +51,20 @@ export default function NormDatumForm({
                 <ul>
                     {apiResults.map( result => {
                         return (
-                            <li onClick={ result => setSelected(result) } >
-                                {`${result.Entry.Name}: ${result.Entry.Label}`}
+                            <li>
+                                <a onClick={ () => {
+                                    setRegistryEntryAttributes({
+                                        latitude: result.Entry.Location?.Latitude,
+                                        longitude: result.Entry.Location?.Longitude,
+                                        norm_data_attributes: [{
+                                            norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === result.Entry.Provider ).id,
+                                            nid: result.Entry.ID,
+                                        }],
+                                    });
+                                    setFromAPI(false);
+                                }} >
+                                    {`${result.Entry.Name}: ${result.Entry.Label}`}
+                                </a>
                             </li>
                         )
                     })}

@@ -74,14 +74,14 @@ export default function RegistryEntryForm({
                 elements={[
                     {
                         attribute: 'latitude',
-                        value: registryEntry ? registryEntry.latitude : registryEntryAttributes.latitude,
+                        value: registryEntry?.latitude || registryEntryAttributes.latitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
                     {
                         attribute: 'longitude',
-                        value: registryEntry ? registryEntry.longitude : registryEntryAttributes.longitude,
+                        value: registryEntry?.longitude || registryEntryAttributes.longitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
