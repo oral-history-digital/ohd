@@ -28,6 +28,16 @@ function NormDataSelect({
         setValue(value);
         if (value?.length > 0) {
             setDescriptor(value);
+            setRegistryEntryAttributes({
+                registry_names_attributes: [{
+                    registry_name_type_id: defaultNameType.id,
+                    name_position: 1,
+                    translations_attributes: [{
+                        descriptor: value,
+                        locale: locale,
+                    }],
+                }],
+            })
         }
     };
 
