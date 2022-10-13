@@ -1,3 +1,4 @@
+require 'globalize'
 require 'tsort'
 # require 'i18n/core_ext/string/interpolate'
 
@@ -79,6 +80,9 @@ class RegistryEntry < ApplicationRecord
       #errors[:base] << 'Ein Registereintrag braucht mindestens eine Klassifizierung.'
     #end
   #end
+
+  translates :notes, touch: true, fallbacks_for_empty_translations: true
+  accepts_nested_attributes_for :translations
 
   WORKFLOW_STATES = [:preliminary, :public, :hidden, :rejected]
   validates_inclusion_of :workflow_state, :in => WORKFLOW_STATES.map(&:to_s)
@@ -428,31 +432,9 @@ class RegistryEntry < ApplicationRecord
     to_s(locale)
   end
 
-  def notes(locale)
-    registry_names.first && registry_names.first.notes(locale)
-  end
-
-  def notes=(notes)
-    # do not overwrite the first names note with the
-    # joined notes of all other names (gathered from e.g. registry_entries-export)
-    #
-    if registry_names.count == 1
-      name = registry_names.first
-      name && name.update_attributes(notes: notes)
-    end
-  end
-
   def parent_id=(pid)
     unless parents.map(&:id).include? pid.to_i
       parents << RegistryEntry.find(pid)
-    end
-  end
-
-  def localized_notes_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      name = registry_names.first
-      mem[locale] = name && name.notes(locale)
-      mem
     end
   end
 

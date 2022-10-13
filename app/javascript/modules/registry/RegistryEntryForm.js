@@ -73,6 +73,11 @@ export default function RegistryEntryForm({
                 values={values}
                 elements={[
                     {
+                        elementType: 'textarea',
+                        multiLocale: true,
+                        attribute: 'notes',
+                    },
+                    {
                         attribute: 'latitude',
                         value: registryEntry?.latitude || registryEntryAttributes.latitude,
                         validate: validateGeoCoordinate,

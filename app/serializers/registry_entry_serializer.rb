@@ -21,7 +21,7 @@ class RegistryEntrySerializer < ApplicationSerializer
   end
 
   def notes
-    object.localized_notes_hash
+    object.localized_hash(:notes)
   end
 
   def latitude

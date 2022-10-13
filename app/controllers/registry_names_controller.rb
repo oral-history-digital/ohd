@@ -48,8 +48,7 @@ class RegistryNamesController < ApplicationController
       translations_attributes: [
         :locale,
         :id, 
-        :descriptor,
-        :notes
+        :descriptor
       ]
     )
   end

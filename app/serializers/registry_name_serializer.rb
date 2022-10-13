@@ -3,15 +3,10 @@ class RegistryNameSerializer < ApplicationSerializer
              :registry_entry_id,
              :registry_name_type_id,
              :name_position,
-             :descriptor,
-             :notes
+             :descriptor
 
   def descriptor
     object.localized_hash(:descriptor)
-  end
-
-  def notes
-    object.localized_hash(:notes)
   end
 
   def project_id

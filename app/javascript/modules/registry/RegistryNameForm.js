@@ -33,11 +33,6 @@ export default function RegistryNameForm({
 
     const baseFormElements = [
         {
-            elementType: 'textarea',
-            multiLocale: true,
-            attribute: 'notes',
-        },
-        {
             elementType: 'select',
             attribute: 'registry_name_type_id',
             value: (data?.registry_name_type_id) || defaultNameType.id,
