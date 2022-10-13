@@ -159,6 +159,7 @@ es:
   download_user_statistics: Benutzerstatistik herunterladen
   back: atrás
   search_in_normdata: Nach Einträgen in Normdaten-API suchen
+  existing_registry_entries: Bereits existierende Registereinträge
   export_search_results: Exportar los resultados de la búsqueda
   language_de: alemán
   language_esde: Español con traducción al alemán

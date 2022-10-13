@@ -3,6 +3,7 @@ import { Form } from 'modules/forms';
 
 import { RegistrySearchResultContainer } from 'modules/registry';
 import NormDataSelectContainer from './NormDataSelectContainer';
+import { useI18n } from 'modules/i18n';
 
 export default function RegistryNameForm({
     index,
@@ -22,6 +23,7 @@ export default function RegistryNameForm({
     locale,
     foundRegistryEntries,
 }) {
+    const { t } = useI18n();
     const translation = data?.translations_attributes?.find(t => t.locale === locale);
     const [descriptor, setDescriptor] = useState(translation?.descriptor);
 
@@ -80,18 +82,25 @@ export default function RegistryNameForm({
             submitText='submit'
             elements={isNew ? baseFormElements : extendedFormElements}
         >
-            <ul className="RegistryEntryList RegistryEntryList--root">
-                {
-                    foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
-                }
-            </ul>
             { isNew &&
-                <NormDataSelectContainer
-                    setRegistryEntryAttributes={setRegistryEntryAttributes}
-                    descriptor={translation?.descriptor}
-                    setDescriptor={setDescriptor}
-                    registryEntryParent={registryEntryParent}
-                />
+                <>
+                    { foundRegistryEntries?.results?.length > 0 &&
+                        <>
+                            <h6>{`${t('existing_registry_entries')}:`}</h6>
+                            <ul className="RegistryEntryList RegistryEntryList--root">
+                                {
+                                    foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox />)
+                                }
+                            </ul>
+                        </>
+                    }
+                    <NormDataSelectContainer
+                        setRegistryEntryAttributes={setRegistryEntryAttributes}
+                        descriptor={translation?.descriptor}
+                        setDescriptor={setDescriptor}
+                        registryEntryParent={registryEntryParent}
+                    />
+                </>
             }
         </Form>
     );

@@ -154,6 +154,7 @@ en:
   download_user_statistics: Benutzerstatistik herunterladen
   back: Back
   search_in_normdata: Nach Einträgen in Normdaten-API suchen
+  existing_registry_entries: Bereits existierende Registereinträge
   export_search_results: Export search results
   language_de: Deutsch
   language_elde: Griechisch mit deutscher Übersetzung

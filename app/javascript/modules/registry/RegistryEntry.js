@@ -274,13 +274,13 @@ export default class RegistryEntry extends Component {
                 className={classNames('RegistryEntry', className)}
             >
                 <div className="RegistryEntry-content">
-                    <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                    { !this.props.hideCheckbox && <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                         <Checkbox
                             className='select-checkbox'
                             checked={selectedRegistryEntryIds.includes(data.id)}
                             onChange={() => addRemoveRegistryEntryId(data.id)}
                         />
-                    </AuthorizedContent>
+                    </AuthorizedContent> }
                     {this.showHideChildren()}
                     {this.entry()}
                     {this.buttons()}
