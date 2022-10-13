@@ -47,6 +47,11 @@ const mapStateToProps = (state) => {
                 attribute: 'name',
                 multiLocale: true,
             },
+            {
+                attribute: 'code',
+                help: 'help_texts.registry_reference_types.code',
+                validate: function(v){return /^\w+$/.test(v)}
+            },
         ],
         joinedData: { },
     }

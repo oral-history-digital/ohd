@@ -10,6 +10,7 @@ class RegistryReferenceType < ApplicationRecord
   # of the entry pointed to here.
   belongs_to :registry_entry
   belongs_to :project, touch: true
+  validates_uniqueness_of :code, scope: :project_id
 
   # The relation to registry references defines "assigned"
   # reference types for registry references. These are reference
