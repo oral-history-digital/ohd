@@ -103,14 +103,18 @@ class RegistryEntriesController < ApplicationController
         render plain: json
       end
       format.pdf do
-        @locale = params[:lang]
-        @project = current_project
-
         pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
-          @registry_entries = RegistryEntry.pdf_entries(current_project)
-          render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
+          render_to_string(
+            template: "/registry_entries/index.pdf.erb",
+            layout: "latex.pdf.erbtex",
+            locals: {
+              locale: params[:lang],
+              project: current_project,
+              registry_entries: RegistryEntry.pdf_entries(current_project)
+            }
+          )
         end
-        send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", :type => "application/pdf" #, :disposition => "attachment"
+        send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", type: "application/pdf" #, :disposition => "attachment"
       end
       format.csv do
         if current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'RegistryEntry', 'show'))
@@ -128,8 +132,8 @@ class RegistryEntriesController < ApplicationController
                     entry.notes(params[:lang]) && entry.notes(params[:lang]).gsub(/[\r\n\t]/, ''),
                     entry.latitude,
                     entry.longitude,
-                    entry.gnd_id.gsub(/[\r\n\t]/, ''),
-                    entry.osm_id.gsub(/[\r\n\t]/, ''),
+                    entry.gnd_id && entry.gnd_id.gsub(/[\r\n\t]/, ''),
+                    entry.osm_id && entry.osm_id.gsub(/[\r\n\t]/, ''),
                     entry.registry_references.map(&:archive_id).compact.uniq.join('#')
                   ]
                 end

@@ -3,7 +3,9 @@
 \fancyhead[L]{
 <%
   logo = false
-  logo_record = interview.project.logos.where(locale: header_locale).first
+  interview ||= nil
+  project ||= (interview && interview.project)
+  logo_record = project.logos.where(locale: header_locale).first
 
   if logo_record.present?
     logo_tmp_path = File.join(Rails.root, 'tmp', 'files', "#{logo_record.file.blob.filename}")
@@ -26,13 +28,13 @@
   footer_text = ""
   footer_text += "#{I18n.t("#{doc_type}_footer", locale: header_locale)} #{interviewee_name}" if interview
   footer_text += ", #{I18n.t('interview', locale: header_locale)} #{interview.archive_id}, #{interview.interview_date && Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date}" if interview && interview.interview_date
-  footer_text += ", #{interview.project.name(header_locale)}"
+  footer_text += ", #{project.name(header_locale)}"
   footer_text += ", Teilsammlung \"Deutsche Seelen\"" if interview && interview.collection && interview.collection.name =~ /Deutsche Seelen/
-  footer_text += ", #{interview.project.domain_with_optional_identifier}/#{header_locale}/interviews/#{interview.archive_id}" if interview
+  footer_text += ", #{project.domain_with_optional_identifier}/#{header_locale}/interviews/#{interview.archive_id}" if interview
 %>
 
 <% if interview && interview.doi_status == 'created'
-     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{interview.project.shortname}.#{interview.archive_id}, (#{I18n.t('called', locale: header_locale)}: #{Date.today.strftime("%d.%m.%Y")})."
+     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{project.shortname}.#{interview.archive_id}, (#{I18n.t('called', locale: header_locale)}: #{Date.today.strftime("%d.%m.%Y")})."
    else
      footer_text += "."
    end

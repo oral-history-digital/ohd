@@ -65,7 +65,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               entry.update_attributes(entry_attributes)
             else
               entry = RegistryEntry.create(entry_attributes)
-              RegistryName.create registry_entry_id: entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, notes: description, locale: locale
+              RegistryName.create registry_entry_id: entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, locale: locale
             end
 
             #

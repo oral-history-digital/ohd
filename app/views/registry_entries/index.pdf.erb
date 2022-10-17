@@ -1,5 +1,6 @@
+\definecolor{primaryColor}{HTML}{<%= "#{(project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
 <%
-  title = I18n.t('registry', locale: @locale)
+  title = I18n.t('registry', locale: locale)
   last_entry = nil
 %>
 
@@ -7,11 +8,14 @@
 
 \begin{document}
 
-<%= render partial: "./latex/header_footer",
-           locals: {
-               header_text: title
-           } %>
-
+<%=
+  render partial: "./latex/header_footer",
+    locals: {
+      header_text: title,
+      project: project,
+      header_locale: locale,
+  } 
+%>
 <%= render partial: "./latex/title",
            locals: {
                title: title,
@@ -20,9 +24,10 @@
                font_size: 18
            } %>
 
-<% if @project.shortname.to_sym == :mog %> 
+<% if project.shortname.to_sym == :mog %> 
 <%= render partial: "./latex/authors",
            locals: {
+               locale: locale,
                space_above: 3,
                space_below: 3,
                font_size: 18
@@ -33,6 +38,7 @@
 
 <%= render partial: "./latex/explanation",
            locals: {
+               locale: locale,
                space_above: 20,
                space_below: 3,
                font_size: 18
@@ -41,7 +47,7 @@
 \newpage
 
 <%# set title of  tableofcontents: %>
-\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}
+\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: locale) %>}
 \tableofcontents
 
 \newpage
@@ -54,17 +60,17 @@
                font_size: 13
            } %>
 
-<% @registry_entries.each do |registry_entry| %>
-  <% unless registry_entry.descriptor(@locale).blank? %>
+<% registry_entries.each do |registry_entry| %>
+  <% unless registry_entry.descriptor(locale).blank? %>
     <%# get first char for table of contents %>
-    <% if !last_entry || last_entry.descriptor(@locale)[0] != registry_entry.descriptor(@locale)[0] %>
-      \section*{<%= registry_entry.descriptor(@locale)[0].upcase %>}
-      \addcontentsline{toc}{section}{<%= registry_entry.descriptor(@locale)[0].upcase %>}
+    <% if !last_entry || last_entry.descriptor(locale)[0] != registry_entry.descriptor(locale)[0] %>
+      \section*{<%= registry_entry.descriptor(locale)[0].upcase %>}
+      \addcontentsline{toc}{section}{<%= registry_entry.descriptor(locale)[0].upcase %>}
     <% end %>
 
-    <%= @locale.to_s == 'el' ? 'ΠΟ' : 'BB' %> \textbf{<%= latex_escape(registry_entry.descriptor(@locale)) %>}\\
-    <% unless registry_entry.registry_names.first.notes(@locale).blank? %>
-      <%= @locale.to_s == 'el' ? 'Σε' : 'SH' %> <%= latex_escape(registry_entry.registry_names.first.notes(@locale)) %>\\
+    <%= locale.to_s == 'el' ? 'ΠΟ' : 'BB' %> \textbf{<%= latex_escape(registry_entry.descriptor(locale)) %>}\\
+    <% unless registry_entry.notes(locale).blank? %>
+      <%= locale.to_s == 'el' ? 'Σε' : 'SH' %> <%= latex_escape(registry_entry.notes(locale)) %>\\
     <% end %>
 
     <% last_entry = registry_entry %>
