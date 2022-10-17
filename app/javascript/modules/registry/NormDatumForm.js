@@ -35,7 +35,7 @@ export default function NormDatumForm({
 
     return (
         <>
-            { registryEntryId &&
+            { registryEntryId && !data?.nid && !nid &&
                 <button
                     type="button"
                     className="Button any-button"
@@ -79,7 +79,7 @@ export default function NormDatumForm({
                                 nid:  nid,
                             }),
                         };
-                        submitData({projectId, locale, projects}, paramsWithSelectedEntryValues, index);
+                        submitData({projectId, locale, projects}, nid ? paramsWithSelectedEntryValues : params, index);
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
@@ -99,11 +99,13 @@ export default function NormDatumForm({
                             elementType: 'select',
                             value: norm_data_provider_id,
                             values: normDataProviders,
+                            validate: function(v){return /^\d+$/.test(v)},
                             withEmpty: true,
                         },
                         {
                             attribute: 'nid',
                             value: nid,
+                            validate: function(v){return /^[a-zA-Z0-9/]+$/.test(v)},
                         },
                     ]}
                 />
