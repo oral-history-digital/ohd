@@ -69,6 +69,7 @@ export default function RegistryEntryForm({
                     }
                 }}
                 onCancel={onCancel}
+                helpTextCode="registry_entry_form"
                 data={registryEntry}
                 values={values}
                 elements={[

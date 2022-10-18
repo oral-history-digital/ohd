@@ -88,6 +88,7 @@ export default function AssignSpeakersForm({
                         submitData({ locale, projectId, projects }, params);
                         setShowForm(false);
                     }}
+                    helpTextCode="assign_speakers_form"
                     values={{ id: interview.archive_id }}
                     elements={formElements()}
                     nestedScopeProps={[{

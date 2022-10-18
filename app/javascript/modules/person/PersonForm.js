@@ -88,6 +88,7 @@ export default function PersonForm({
             data={data}
             values={{ project_id: project.id }}
             scope="person"
+            helpTextCode="person_form"
             onSubmit={async (params) => {
                 mutatePeople(async people => {
                     const id = params.person.id;

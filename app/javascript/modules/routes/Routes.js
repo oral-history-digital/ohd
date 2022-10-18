@@ -5,7 +5,7 @@ import { AccountPage, OrderNewPasswordContainer, RegisterContainer,
     ActivateAccount } from 'modules/account';
 import { UserRegistrationsContainer } from 'modules/users';
 import { SearchPage } from 'modules/search';
-import { WrappedInstitutionsContainer, ArchivePage } from 'modules/admin';
+import { WrappedInstitutionsContainer, ArchivePage, HelpTextAdminPage } from 'modules/admin';
 import { SiteStartpage } from 'modules/site-startpage';
 import ProjectRoutes from './ProjectRoutes';
 import CatalogRoutes from './CatalogRoutes';
@@ -34,6 +34,7 @@ const RoutesWithProjectId = () => (
         <Route exact path="/:locale" element={<SiteStartpage />} />
         <Route exact path="/:locale/projects" element={<ArchivePage />} />
         <Route exact path="/:locale/institutions" element={<WrappedInstitutionsContainer />} />
+        <Route exact path="/:locale/help_texts" element={<HelpTextAdminPage />} />
         <Route path="/:projectId/:locale/*" element={<ProjectRoutes />} />
     </Routes>
 );

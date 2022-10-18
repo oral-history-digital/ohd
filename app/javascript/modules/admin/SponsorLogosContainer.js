@@ -41,6 +41,7 @@ const mapStateToProps = state => {
                 attribute: 'title',
             },
         ],
+        helpTextCode: 'sponsor_logo_form'
     }
 }
 

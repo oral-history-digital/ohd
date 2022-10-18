@@ -88,6 +88,7 @@ export default function ContributionForm({
                 onCancel={onCancel}
                 formClasses={formClasses}
                 elements={formElements}
+                helpTextCode="contribution_form"
             />
             <p />
             <Link
@@ -106,7 +107,7 @@ export default function ContributionForm({
 }
 
 ContributionForm.propTypes = {
-    interview: PropTypes.object.isRequired,
+    interview: PropTypes.object,
     withSpeakerDesignation: PropTypes.bool,
     data: PropTypes.object,
     contributionTypes: PropTypes.object.isRequired,
@@ -115,7 +116,6 @@ ContributionForm.propTypes = {
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,

@@ -71,6 +71,7 @@ export default function NormDatumForm({
                 </ul> :
                 <Form
                     scope='norm_datum'
+                    helpTextCode="norm_datum_form"
                     onSubmit={params => {
                         const paramsWithSelectedEntryValues = {
                             norm_datum: Object.assign({}, params.norm_datum, {

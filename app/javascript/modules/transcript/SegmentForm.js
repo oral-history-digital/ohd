@@ -27,6 +27,7 @@ export default function SegmentForm({
                 onSubmit={(params) => { submitData({ locale, projectId, projects }, params); onSubmit(); }}
                 onCancel={onCancel}
                 data={segment}
+                helpTextCode="segment_form"
                 values={{locale: contentLocale}}
                 submitText='submit'
                 elements={[

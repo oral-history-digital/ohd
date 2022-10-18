@@ -21,6 +21,7 @@ export default function BiographicalEntryForm({
             }}
             onCancel={onCancel}
             data={biographicalEntry}
+            helpTextCode="biographical_entry_form"
             values={{
                 person_id: (person?.id) || (biographicalEntry?.person_id)
             }}

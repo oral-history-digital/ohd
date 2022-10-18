@@ -800,6 +800,9 @@ de:
     startpage_position: Startseitenposition
   activerecord:
     models:
+      help_text:
+        one: Hilfstext
+        other: Hilfstexte
       interview:
         one: Interview
         other: Interviews
@@ -1328,6 +1331,9 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    help_text:
+      more: Mehr…
+      wiki_link: Hilfstext im Wiki
     interview:
       video_preview: Video-Vorschau
       audio_preview: Audio-Vorschau

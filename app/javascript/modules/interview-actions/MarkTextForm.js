@@ -33,6 +33,7 @@ export default class MarkTextForm extends Component {
                 <Form
                     scope='mark_text'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
+                    helpTextCode="mark_text_form"
                     values={{
                         id: this.props.interview.archive_id
                     }}

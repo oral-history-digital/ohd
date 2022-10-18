@@ -82,6 +82,7 @@ export default class Uploads extends Component {
                             scope='upload'
                             onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                             submitText='edit.upload.upload'
+                            helpTextCode="import_form"
                             elements={[
                                 {
                                     elementType: 'select',

@@ -83,6 +83,7 @@ export default function RegistryReferenceForm({
                     ref_position: 1,
                     workflow_state: 'preliminary'
                 }}
+                helpTextCode="registry_reference_form"
                 onSubmit={async params => {
                     const refObjectType = refObject ? refObject.type : registryReference.ref_object_type;
                     const refObjectId = refObject ? refObject.id : registryReference.ref_object_id;

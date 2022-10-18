@@ -47,6 +47,7 @@ const mapStateToProps = (state) => {
             },
         ],
         joinedData: {task_type_permission: TaskTypePermissionsContainer},
+        helpTextCode: 'task_type_form'
     }
 }
 

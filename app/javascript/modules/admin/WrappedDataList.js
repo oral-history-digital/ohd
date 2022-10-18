@@ -81,7 +81,8 @@ export default class WrappedDataList extends Component {
     }
 
     form(data, onSubmit, onCancel) {
-        const { form, initialFormValues, scope, formElements, submitData } = this.props;
+        const { form, initialFormValues, scope, formElements, helpTextCode,
+            submitData } = this.props;
 
         if (form) {
             return createElement(form, {
@@ -105,6 +106,7 @@ export default class WrappedDataList extends Component {
                     onCancel={onCancel}
                     submitText="submit"
                     elements={formElements}
+                    helpTextCode={helpTextCode}
                 />
             );
         }

@@ -65,6 +65,7 @@ export default function PhotoForm({
     return (
         <Form
             scope='photo'
+            helpTextCode="photo_form"
             onSubmit={params => {
                 submitData({ projectId, projects, locale }, params);
                 if (onSubmit) {

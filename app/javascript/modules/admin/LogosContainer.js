@@ -30,6 +30,7 @@ const mapStateToProps = state => {
                 type: 'file',
             },
         ],
+        helpTextCode: 'logo_form'
     }
 }
 

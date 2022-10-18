@@ -40,6 +40,7 @@ const mapStateToProps = state => ({
             validate: function(v){return v.length > 1}
         },
     ],
+    helpTextCode: 'permission_form'
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -74,6 +74,7 @@ const mapStateToProps = state => ({
     ],
     joinedData: { logo: LogosContainer },
     showComponent: InstitutionTile,
+    helpTextCode: 'institution_form'
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -145,7 +145,8 @@ export default function InterviewForm({
             data: interview,
             onSubmit: handleSubmit,
             submitText: submitText,
-            elements: elements
+            elements: elements,
+            helpTextCode: 'interview_form',
         }
 
         if (withContributions) {
@@ -190,7 +191,7 @@ export default function InterviewForm({
 InterviewForm.propTypes = {
     interview: PropTypes.object,
     project: PropTypes.object.isRequired,
-    projectId: PropTypes.number.isRequired,
+    projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,

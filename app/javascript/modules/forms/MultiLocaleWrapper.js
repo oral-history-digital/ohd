@@ -95,5 +95,5 @@ export default class MultiLocaleWrapper extends Component {
 }
 
 MultiLocaleWrapper.propTypes = {
-    data: PropTypes.object.isRequired,
+    data: PropTypes.object,
 };

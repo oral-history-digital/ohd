@@ -1749,6 +1749,9 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    help_text:
+      more: More…
+      wiki_link: Wiki help text
     interview:
       video_preview: Video preview
       audio_preview: Audio preview

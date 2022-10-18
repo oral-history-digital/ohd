@@ -39,6 +39,7 @@ const mapStateToProps = (state) => {
             },
         ],
         joinedData: {role_permission: RolePermissionsContainer},
+        helpTextCode: 'role_form'
     }
 }
 
