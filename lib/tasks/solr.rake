@@ -7,7 +7,7 @@ namespace :solr do
       start = Time.now
       interview_count = Interview.count
       segment_count = Segment.count
-      p "starting to reindex approx. #{segment_count} segments for #{interview_count} interviews ..."
+      puts "Starting to reindex approx. #{segment_count} segments for #{interview_count} interviews ..."
       Interview.all.each_with_index do |interview, index|
         start_interview = Time.now
         interview_segment_count = interview.segments.count
@@ -16,10 +16,10 @@ namespace :solr do
         end
         finish_interview = Time.now
         delta = finish_interview - start_interview
-        p "#{index + 1}/#{interview_count}: finished #{interview_segment_count} segments for interview #{interview.archive_id} in #{delta.round(1)} seconds."
+        puts "#{index + 1}/#{interview_count}: Finished #{interview_segment_count} segments for interview #{interview.archive_id} in #{delta.round(1)} seconds."
       end
       finish = Time.now
-      p "finished approx. #{segment_count} segments in #{(finish - start)} seconds."
+      puts "Finished approx. #{segment_count} segments in #{(finish - start)} seconds."
     end
 
     %w(interview person biographical_entry photo registry_entry annotation).each do |that|
@@ -27,11 +27,11 @@ namespace :solr do
       task that.pluralize.to_sym => :environment do
         start = Time.now
         record_count = that.classify.constantize.count
-        p "starting to reindex #{record_count} #{that.pluralize} ..."
+        puts "Starting to reindex #{record_count} #{that.pluralize} ..."
         that.classify.constantize.reindex
         finish = Time.now
         delta = finish - start
-        p "finished #{record_count} #{that.pluralize} in #{delta.round(1)} seconds."
+        puts "Finished #{record_count} #{that.pluralize} in #{delta.round(1)} seconds."
       end
     end
 
