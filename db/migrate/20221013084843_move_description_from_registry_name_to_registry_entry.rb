@@ -1,6 +1,6 @@
 class MoveDescriptionFromRegistryNameToRegistryEntry < ActiveRecord::Migration[5.2]
   def up
-    #RegistryEntry.create_translation_table! notes: :text
+    RegistryEntry.create_translation_table! notes: :text
     RegistryName::Translation.where.not(notes: nil).each do |rnt|
       RegistryEntry.find(RegistryName.find(rnt.registry_name_id).registry_entry_id).update_attributes(
         locale: rnt.locale,
