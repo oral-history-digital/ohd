@@ -409,11 +409,20 @@ class Interview < ApplicationRecord
   end
 
   def has_transcript?(locale)
-    segment_count = Segment
+    segment_count = segments
       .joins(:translations)
-      .where('segments.interview_id': id, 'segment_translations.locale': "#{locale}-public")
+      .where('segment_translations.locale': "#{locale}-public")
       .count
     segment_count > 0
+  end
+
+  def has_heading?(locale)
+    heading_count = segments
+      .with_heading
+      .joins(:translations)
+      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
+      .count
+    heading_count > 0
   end
 
   def has_protocol?(locale)

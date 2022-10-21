@@ -42,6 +42,10 @@ class Language < ApplicationRecord
     @direction ||= RTL_LANGUAGES.include?(name) ? 'RTL' : 'LTR'
   end
 
+  def alpha2
+    ISO_639.find(code).alpha2
+  end
+
   private
 
   def touch_interviews
