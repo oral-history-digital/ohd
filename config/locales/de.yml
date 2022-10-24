@@ -522,6 +522,11 @@ de:
       edit: 'Aufgabenart bearbeiten'
       delete: 'Aufgabenart löschen'
       admin: 'Aufgabenarten bearbeiten'
+    event_type:
+      new: 'Ereignistyp hinzufügen'
+      edit: 'Ereignistyp bearbeiten'
+      delete: 'Ereignistyp löschen'
+      admin: 'Ereignistypen bearbeiten'
     task_type_permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
@@ -908,6 +913,12 @@ de:
       person:
         one: Person
         other: Personen
+      event_type:
+        one: Ereignistyp
+        other: Ereignistypen
+      event:
+        one: Ereignis
+        other: Ereignisse
       metadata_field:
         one: Metadatum
         other: Metadaten

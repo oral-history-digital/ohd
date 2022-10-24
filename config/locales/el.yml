@@ -506,6 +506,11 @@ el:
       edit: 'Aufgabenart bearbeiten'
       delete: 'Aufgabenart löschen'
       admin: 'Aufgabenarten bearbeiten'
+    event_type:
+      new: 'Add event type'
+      edit: 'Edit event type'
+      delete: 'Delete event type'
+      admin: 'Edit event types'
     task_type_permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
@@ -885,6 +890,12 @@ el:
       person:
         one: Person
         other: Personen
+      event_type:
+        one: Event type
+        other: Event types
+      event:
+        one: Event
+        other: Events
       metadata_field:
         one: Metadatum
         other: Metadaten
