@@ -2,11 +2,12 @@ import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { getCurrentProject } from 'modules/data';
+import { useEventTypeApi } from 'modules/api';
 import { AuthShowContainer } from 'modules/auth';
+import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
-import { useEventTypes, EventTypeForm } from 'modules/event-types';
+import { useEventTypes, EventTypeForm, useMutateEventTypes } from 'modules/event-types';
 import DataContainer from './DataContainer';
 import AddButton from './AddButton';
 
@@ -14,6 +15,8 @@ export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
     const { data, isLoading, isValidating } = useEventTypes();
+    const mutateEventTypes = useMutateEventTypes();
+    const { deleteEventType } = useEventTypeApi();
 
     const scope = 'event_type';
     const hideAdd = false, hideEdit = false, hideDelete = false;
@@ -45,6 +48,13 @@ export default function EventTypesAdminPage() {
     }
 
     async function handleDeleteEventType(id, callback) {
+        mutateEventTypes(async eventTypes => {
+            await deleteEventType(id);
+
+            const updatedEventTypes = eventTypes.filter(et => et.id !== id);
+            return updatedEventTypes;
+        });
+
         if (typeof callback === 'function') {
             callback();
         }

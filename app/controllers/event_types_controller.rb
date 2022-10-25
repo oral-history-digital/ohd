@@ -15,30 +15,30 @@ class EventTypesController < ApplicationController
 
   def create
     authorize EventType
-    @event_type = EventType.create(event_type_params)
+    event_type = EventType.create(event_type_params)
 
-    respond @event_type
+    render json: event_type
   end
 
   def show
-    @event_type = EventType.find(params[:id])
-    authorize @event_type
+    event_type = EventType.find(params[:id])
+    authorize event_type
 
-    respond @event_type
+    render json: event_type
   end
 
   def update
-    @event_type = EventType.find(params[:id])
-    authorize @event_type
-    @event_type.update_attributes(event_type_params)
+    event_type = EventType.find(params[:id])
+    authorize event_type
+    event_type.update_attributes(event_type_params)
 
-    respond @event_type
+    render json: event_type
   end
 
   def destroy
-    @event_type = EventType.find(params[:id])
-    authorize @event_type
-    @event_type.destroy
+    event_type = EventType.find(params[:id])
+    authorize event_type
+    event_type.destroy
 
     render json: {}, status: :ok
   end
