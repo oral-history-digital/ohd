@@ -8,6 +8,7 @@ import { Spinner } from 'modules/spinners';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { formatPersonName } from 'modules/person';
+import { usePersonEvents, EventAlt } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus } from 'modules/auth';
 import usePersonWithAssociations from './usePersonWithAssociations';
@@ -22,6 +23,7 @@ export default function PersonData({
     const { projectAccessGranted } = useProjectAccessStatus(project);
 
     const { data: person, isLoading, isValidating } = usePersonWithAssociations(intervieweeId);
+    const { data: events, isLoading: eventsAreLoading } = usePersonEvents(intervieweeId);
 
     const metadataFields = Object.values(project.metadata_fields)
         .filter(field =>
@@ -96,6 +98,15 @@ export default function PersonData({
                     />
                 );
             })}
+
+            <ul className="UnorderedList UnorderedList--plain">
+                {events?.map(event => (
+                    <EventAlt
+                        key={event.id}
+                        event={event}
+                    />
+                ))}
+            </ul>
 
             {!project.is_catalog && person && <Biography />}
         </>
