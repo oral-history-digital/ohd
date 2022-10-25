@@ -22,6 +22,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.7.0",
     "datalist-polyfill": "^1.23.3",
+    "date-fns": "^2.29.3",
     "dotenv": "^16.0.1",
     "form-serialize": "^0.7.2",
     "glob": "^7.1.2",

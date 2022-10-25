@@ -45,9 +45,13 @@ export default function PersonDetails({
             ) : (
                 <article>
                     <h4>{t('activerecord.models.event.other')}</h4>
-                    <ul className="UnorderedList">
+                    <ul className="UnorderedList UnorderedList--plain u-flex">
                         {events?.map(event => (
-                            <Event key={event.id} event={event} />
+                            <Event
+                                className="u-mr-small"
+                                key={event.id}
+                                event={event}
+                            />
                         ))}
                     </ul>
                 </article>

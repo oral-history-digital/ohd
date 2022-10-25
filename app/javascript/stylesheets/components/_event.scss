@@ -1,0 +1,15 @@
+.Event {
+  background-color: $gray-lightest;
+  border: 1px solid $ui-background-color;
+  border-radius: $border-radius;
+  padding: 0 ($base-unit / 4);
+}
+
+.Event-type {
+  color: var(--secondary-color);
+  font-size: 0.875rem;
+}
+
+.Event-text {
+  color: $ui-background-color;
+}

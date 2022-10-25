@@ -4116,6 +4116,11 @@ datalist-polyfill@^1.23.3:
   resolved "https://registry.npmjs.org/datalist-polyfill/-/datalist-polyfill-1.24.4.tgz"
   integrity sha512-KUWCETm2vcqbQQj1VjrOzqHPz4TKVOrcMAsHihxaMQMF8QKYJID9egEX1gVneenB0oqw1fYjqYf+15leyYPM3g==
 
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
+
 dayjs@^1.10.4:
   version "1.11.2"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.2.tgz"
