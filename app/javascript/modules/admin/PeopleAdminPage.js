@@ -53,6 +53,10 @@ export default function PeopleAdminPage() {
         );
     }
 
+    if (!peopleData) {
+        return null;
+    }
+
     function renderForm(data, onSubmit, onCancel) {
         return (
             <PersonForm
