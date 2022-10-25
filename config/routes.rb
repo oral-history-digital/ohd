@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     resources :people do
       resources :biographical_entries, only: [:destroy]
       resources :registry_references, only: [:create, :update, :destroy]
+      resources :events, only: [:index, :show, :create, :update, :destroy]
       get 'landing_page_metadata'
       get 'contributions'
     end

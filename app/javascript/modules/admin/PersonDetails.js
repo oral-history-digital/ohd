@@ -3,24 +3,27 @@ import PropTypes from 'prop-types';
 
 import { humanReadable } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { usePersonEvents, Event } from 'modules/events';
+import { Spinner } from 'modules/spinners';
 import PersonContributions from './PersonContributions';
+
+const attributes = [
+    'gender',
+    'title',
+    'first_name',
+    'last_name',
+    'birth_name',
+    'alias_names',
+    'other_first_names',
+    'date_of_birth',
+    'description'
+];
 
 export default function PersonDetails({
     data
 }) {
     const { t, locale, translations } = useI18n();
-
-    const attributes = [
-        'gender',
-        'title',
-        'first_name',
-        'last_name',
-        'birth_name',
-        'alias_names',
-        'other_first_names',
-        'date_of_birth',
-        'description'
-    ];
+    const { data: events, isLoading: eventsAreLoading } = usePersonEvents(data.id);
 
     return (
         <div className="details">
@@ -36,6 +39,19 @@ export default function PersonDetails({
                     </Fragment>
                 ))}
             </dl>
+
+            {eventsAreLoading ? (
+                <Spinner small />
+            ) : (
+                <article>
+                    <h4>{t('activerecord.models.event.other')}</h4>
+                    <ul className="UnorderedList">
+                        {events?.map(event => (
+                            <Event key={event.id} event={event} />
+                        ))}
+                    </ul>
+                </article>
+            )}
 
             <PersonContributions personId={data.id} />
         </div>
