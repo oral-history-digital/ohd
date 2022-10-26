@@ -658,6 +658,8 @@ de:
     quality_manager_research: Qualitätsmanagement Erschließung
     other_attendees: Sonstige Anwesende
     transcript: Transkription
+  events:
+    title: Ereignisse
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen
@@ -956,6 +958,11 @@ de:
         homepage: Homepage
         notes: Beschreibung
         interviews: Interviewte
+      event:
+        event_type_id: Ereignistyp
+        start_date: Anfangsdatum
+        end_date: Enddatum
+        display_date: Anzeigename
       language:
         code: Code
       institution:

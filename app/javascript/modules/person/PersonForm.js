@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { submitDataWithFetch } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
+import { EventForm } from 'modules/events';
 import { usePathBase } from 'modules/routes';
 import {
     PERSON_GENDER_MALE,
@@ -72,7 +73,8 @@ const formElements = [
 ];
 
 export default function PersonForm({
-    data,
+    data: person,
+    withEvents = false,
     onSubmit,
     onCancel
 }) {
@@ -83,11 +85,30 @@ export default function PersonForm({
     const pathBase = usePathBase();
     const project = useSelector(getCurrentProject);
 
+    function showEvent(event) {
+        return (
+            <span>
+                {event.start_date}
+            </span>
+        );
+    }
+
+    const nestedScopeProps = withEvents ?
+        [{
+            formComponent: EventForm,
+            formProps: { personId: person?.id },
+            parent: person,
+            scope: 'event',
+            elementRepresentation: showEvent,
+        }] :
+        undefined;
+
     return (
         <Form
-            data={data}
+            data={person}
             values={{ project_id: project.id }}
             scope="person"
+            nestedScopeProps={nestedScopeProps}
             helpTextCode="person_form"
             onSubmit={async (params) => {
                 mutatePeople(async people => {
@@ -127,6 +148,7 @@ export default function PersonForm({
 
 PersonForm.propTypes = {
     data: PropTypes.object,
+    withEvents: PropTypes.bool,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };

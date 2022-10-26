@@ -61,6 +61,7 @@ export default function PeopleAdminPage() {
         return (
             <PersonForm
                 data={data}
+                withEvents
                 onSubmit={onSubmit}
                 onCancel={onCancel}
             />

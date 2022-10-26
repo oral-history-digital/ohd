@@ -681,6 +681,8 @@ ru:
     quality_manager_research: Qualitätsmangement Erschließung
     other_attendees: Other attendees
     transcript: Transcript
+  events:
+    title: Events
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen
@@ -976,6 +978,11 @@ ru:
         homepage: Сайт
         notes: Дальнейшие примечания
         interviews: Интервьюируемый
+      event:
+        event_type_id: Event type
+        start_date: Start date
+        end_date: End date
+        display_date: Display name
       language:
         code: Code
         name: Name

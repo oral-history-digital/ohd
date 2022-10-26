@@ -631,6 +631,8 @@ es:
     quality_manager_research: Gestión de calidad Edición científica
     other_attendees: Other attendees
     transcript: Transcript
+  events:
+    title: Events
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen
@@ -922,6 +924,11 @@ es:
         homepage: Página web
         notes: Otras anotaciones
         interviews: Entrevistada/os
+      event:
+        event_type_id: Event type
+        start_date: Start date
+        end_date: End date
+        display_date: Display name
       language:
         code: Código
       institution:
