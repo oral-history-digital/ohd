@@ -1,12 +1,13 @@
 .DescriptionList {
-
 }
 
+.DescriptionList > dt,
 .DescriptionList-term {
   font-weight: bold;
 }
 
+.DescriptionList > dd,
 .DescriptionList-description {
   margin-bottom: $base-unit;
-  margin-left: 0;//$base-unit;
+  margin-left: 0;
 }

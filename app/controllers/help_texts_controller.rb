@@ -15,7 +15,7 @@ class HelpTextsController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        help_texts = HelpText.all
+        help_texts = HelpText.includes(:translations)
 
         render json: help_texts
       end

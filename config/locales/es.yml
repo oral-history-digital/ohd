@@ -1181,6 +1181,7 @@ es:
         code: Code
         registry_entry_id: Registereintrag
       default:
+        id: ID
         name: Name
         title: Name
         label: Label
@@ -1207,7 +1208,8 @@ es:
         publish: Público
         project_id: Archive
         key: Schlüssel
-        created_at: Angelegt am
+        created_at: Created at
+        updated_at: Updated at
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
@@ -1374,6 +1376,9 @@ es:
     sidebar:
       catalog: Catalog
       search: Search
+    tables:
+      actions: Actions
+      search: Search…
     toc:
       collapse: Collapse
       expand: Expand
@@ -1389,6 +1394,11 @@ es:
       admin_menu:
         actions: Actions
       copy_link: Copiar enlace
+      pagination:
+        page: "Page %{current} of %{total}"
+        prev: previous page
+        next: next page
+        show: "Show %{pageSize}"
     workbook:
       from: del
       delete: Eliminar de la carpeta

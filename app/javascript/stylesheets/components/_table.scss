@@ -12,6 +12,10 @@
   text-align: left;
 }
 
+.Table-headerButton {
+  font-weight: bold;
+}
+
 .Table-body > .Table-row:nth-child(odd) {
   background-color: $gray-lightest;
 }

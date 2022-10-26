@@ -1245,6 +1245,7 @@ ru:
         code: Code
         registry_entry_id: Registereintrag
       default:
+        id: ID
         name: Name
         title: Name
         label: Label
@@ -1271,7 +1272,8 @@ ru:
         publish: Öffentlich
         project_id: Archive
         key: Schlüssel
-        created_at: Angelegt am
+        created_at: Created at
+        updated_at: Updated at
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
@@ -1828,6 +1830,9 @@ ru:
     sidebar:
       catalog: Catalog
       search: Search
+    tables:
+      actions: Actions
+      search: Search…
     toc:
       collapse: Collapse
       expand: Expand
@@ -1843,6 +1848,11 @@ ru:
       admin_menu:
         actions: Actions
       copy_link: Копировать URL
+      pagination:
+        page: "Page %{current} of %{total}"
+        prev: previous page
+        next: next page
+        show: "Show %{pageSize}"
     workbook:
       from: с
       delete: Удалить из Рабочей тетради
