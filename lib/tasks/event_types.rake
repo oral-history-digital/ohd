@@ -9,9 +9,9 @@ namespace :event_types do
     puts "Creating default event types for project #{project.name}…"
 
     default_event_types.each do |key, name|
-      event_type = EventType.find_by_code(key)
+      event_type = project.event_types.find_by_code(key)
       if event_type.blank?
-        EventType.create(code: key, name: name)
+        EventType.create(code: key, name: name, project: project)
         puts "Creating event type #{key}."
       else
         puts "Skipping event type #{key}."
