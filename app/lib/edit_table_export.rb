@@ -45,7 +45,7 @@ class EditTableExport
           translation = segment.translations.where(locale: segment_translation_locale).first
 
           text_orig = original && original.text && original.text.gsub(/[\t\n\r]+/, ' ')
-          text_trans = translation && translation && translation.text.gsub(/[\t\n\r]+/, ' ')
+          text_trans = translation && translation.text && translation.text.gsub(/[\t\n\r]+/, ' ')
           mainheading_orig = original && original.mainheading
           subheading_orig = original && original.subheading
           mainheading_trans = translation && translation.mainheading
