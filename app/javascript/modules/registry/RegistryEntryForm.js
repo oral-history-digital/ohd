@@ -22,7 +22,7 @@ export default function RegistryEntryForm({
 
     const { t } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
-    const descriptor = registryEntry?.registry_names[0].descriptor[locale];
+    const [descriptor, setDescriptor] = useState(registryEntry?.registry_names[0].descriptor[locale]);
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({})
     const values = {
         parent_id: registryEntryParent?.id,
@@ -39,7 +39,7 @@ export default function RegistryEntryForm({
     }
 
     function showNormDatum(normDatum) {
-        return (<span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>);
+        return (<span>{`${normDataProviders[normDatum.norm_data_provider_id]?.name} - ${normDatum.nid} `}</span>);
     }
 
     function parentRegistryEntry() {
@@ -108,6 +108,7 @@ export default function RegistryEntryForm({
                             registryEntryId: registryEntryId,
                             registryEntryParent: registryEntryParent,
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
+                            setDescriptor: setDescriptor,
                         },
                         parent: registryEntry,
                         scope: 'registry_name',

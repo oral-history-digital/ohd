@@ -35,7 +35,7 @@ export default function NormDatumForm({
 
     return (
         <>
-            { registryEntryId && !data?.nid && !nid &&
+            { descriptor &&
                 <button
                     type="button"
                     className="Button any-button"

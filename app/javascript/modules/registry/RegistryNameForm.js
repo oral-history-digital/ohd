@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Form } from 'modules/forms';
 
 import { RegistrySearchResultContainer } from 'modules/registry';
-import NormDataSelectContainer from './NormDataSelectContainer';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
 export default function RegistryNameForm({
     index,
@@ -22,44 +22,42 @@ export default function RegistryNameForm({
     projects,
     locale,
     foundRegistryEntries,
+    searchRegistryEntry,
+    setDescriptor,
 }) {
     const { t } = useI18n();
-    const translation = data?.translations_attributes?.find(t => t.locale === locale);
-    const [descriptor, setDescriptor] = useState(translation?.descriptor);
+    const pathBase = usePathBase();
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
 
-    const isNew = !translation?.descriptor;
+    const handleDescriptorChange = (name, value) => {
+        setDescriptor(value);
+        if (value?.length > 3) {
+            searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});
+        }
+    }
 
-    const baseFormElements = [
+    const formElements = [
+        {
+            attribute: 'descriptor',
+            multiLocale: true,
+            validate: function(v){return v && v.length > 1},
+            handlechangecallback: handleDescriptorChange,
+        },
         {
             elementType: 'select',
             attribute: 'registry_name_type_id',
             value: (data?.registry_name_type_id) || defaultNameType.id,
             values: registryNameTypes && Object.values(registryNameTypes),
-            validate: function(v){return /^\d+$/.test(v)}
+            validate: function(v){return /^\d+$/.test(v)},
         },
-    ];
-
-    const extendedFormElements = [{
-        attribute: 'descriptor',
-        multiLocale: true
-    }].concat(baseFormElements);
+    ]
 
     return (
         <Form
             scope='registry_name'
             onSubmit={params => {
-                const paramsWithSelectedEntryValues = {
-                    registry_name: Object.assign({}, params.registry_name, {
-                        translations_attributes: [{
-                            descriptor: descriptor,
-                            locale: locale,
-                            id: translation?.id,
-                        }],
-                    })
-                };
-                submitData({projectId, locale, projects}, paramsWithSelectedEntryValues, index);
+                submitData({projectId, locale, projects}, params, index);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
@@ -75,26 +73,16 @@ export default function RegistryNameForm({
                 name_position: 1,
             }}
             submitText='submit'
-            elements={isNew ? baseFormElements : extendedFormElements}
+            elements={formElements}
         >
-            { isNew &&
+            { foundRegistryEntries?.results?.length > 0 &&
                 <>
-                    { foundRegistryEntries?.results?.length > 0 &&
-                        <>
-                            <h6>{`${t('existing_registry_entries')}:`}</h6>
-                            <ul className="RegistryEntryList RegistryEntryList--root">
-                                {
-                                    foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox />)
-                                }
-                            </ul>
-                        </>
-                    }
-                    <NormDataSelectContainer
-                        setRegistryEntryAttributes={setRegistryEntryAttributes}
-                        descriptor={translation?.descriptor}
-                        setDescriptor={setDescriptor}
-                        registryEntryParent={registryEntryParent}
-                    />
+                    <h6>{`${t('existing_registry_entries')}:`}</h6>
+                    <ul className="RegistryEntryList RegistryEntryList--root">
+                        {
+                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox />)
+                        }
+                    </ul>
                 </>
             }
         </Form>

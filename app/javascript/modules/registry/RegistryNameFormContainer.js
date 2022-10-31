@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { getNormDataProviders, getProjects, getRegistryNameTypesForCurrentProject } from 'modules/data';
 import RegistryNameForm from './RegistryNameForm';
-import { getRegistryEntriesSearch } from 'modules/search';
+import { getRegistryEntriesSearch, searchRegistryEntry } from 'modules/search';
 
 const mapStateToProps = (state) => {
     return {
@@ -18,4 +18,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(RegistryNameForm);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    searchRegistryEntry,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistryNameForm);
