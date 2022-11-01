@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FaUserPlus, FaUserEdit } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import { usePeople } from 'modules/person';
+import { usePeople, PersonForm } from 'modules/person';
+import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 
 export default function ContributionForm({
@@ -24,12 +24,14 @@ export default function ContributionForm({
     submitData,
 }) {
     const { t } = useI18n();
-    const pathBase = usePathBase();
     const { data: peopleData, isLoading } = usePeople();
 
     if (isLoading) {
         return <Spinner />;
     }
+
+    const contributorId = data?.person_id;
+    const contributor = peopleData[contributorId];
 
     const formElements = [
         {
@@ -89,19 +91,43 @@ export default function ContributionForm({
                 formClasses={formClasses}
                 elements={formElements}
                 helpTextCode="contribution_form"
-            />
-            <p />
-            <Link
-                to={`${pathBase}/people`}
-                className='Link admin'
-                onClick={() => {
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
-                    }
-                }}
             >
-                {t("edit.person.admin")}
-            </Link>
+            </Form>
+            <div className="u-mt">
+                <Modal
+                    title={t('edit.person.new')}
+                    trigger={(
+                        <>
+                            <FaUserPlus className="Icon Icon--editorial" />
+                            {' '}
+                            {t('edit.person.new')}
+                        </>
+                    )}
+                >
+                    {close => (
+                        <PersonForm onSubmit={close} onCancel={close} />
+                    )}
+                </Modal>
+                {contributor && (
+                    <>
+                        {' | '}
+                        <Modal
+                            title={t('edit.person.edit')}
+                            trigger={(
+                                <>
+                                    <FaUserEdit className="Icon Icon--editorial" />
+                                    {' '}
+                                    {t('edit.person.edit')}
+                                </>
+                            )}
+                        >
+                            {close => (
+                                <PersonForm data={contributor} onSubmit={close} onCancel={close} />
+                            )}
+                        </Modal>
+                    </>
+                )}
+            </div>
         </>
     );
 }
@@ -112,11 +138,14 @@ ContributionForm.propTypes = {
     data: PropTypes.object,
     contributionTypes: PropTypes.object.isRequired,
     formClasses: PropTypes.string,
+    index: PropTypes.number,
+    nested: PropTypes.bool,
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onSubmitCallback: PropTypes.func,
     onCancel: PropTypes.func,
 };
