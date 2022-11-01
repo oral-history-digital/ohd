@@ -18,6 +18,7 @@ export default function RegistryNameForm({
     registryNameTypes,
     normDataProviders,
     setRegistryEntryAttributes,
+    registryEntryAttributes,
     projectId,
     projects,
     locale,
@@ -34,17 +35,28 @@ export default function RegistryNameForm({
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
 
-    const handleDescriptorChange = (name, value) => {
+    const handleDescriptorChange = (name, value, params) => {
         setDescriptor(value);
+        const registryNamesAttributes = registryEntryAttributes.registry_names_attributes || [data] || [];
+        const registryNamesIndex = 0;
+        const translationsAttributes = registryNamesAttributes[registryNamesIndex]?.translations_attributes || [];
+        let translationIndex = translationsAttributes.findIndex(t => t.locale === params.locale);
+        translationIndex = translationIndex === -1 ? 0 : translationIndex;
+        const translation = translationsAttributes[translationIndex];
         setRegistryEntryAttributes({
-            registry_names_attributes: [{
-                registry_name_type_id: defaultNameType.id,
-                name_position: 1,
-                translations_attributes: [{
-                    descriptor: value,
-                    locale: locale,
-                }],
-            }],
+            registry_names_attributes: Object.assign([], registryNamesAttributes, {
+                [registryNamesIndex]: Object.assign({}, registryNamesAttributes[registryNamesIndex], {
+                    registry_name_type_id: defaultNameType.id,
+                    name_position: 1,
+                    translations_attributes: Object.assign([], translationsAttributes, {
+                        [translationIndex]: Object.assign({}, translation, {
+                            descriptor: value,
+                            locale: translation?.locale || params.locale,
+                            id: translation?.id,
+                        })
+                    }),
+                })
+            })
         });
         if (value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});

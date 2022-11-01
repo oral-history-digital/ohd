@@ -224,7 +224,6 @@ class RegistryEntriesController < ApplicationController
         :registry_entry_id,
         :registry_name_type_id,
         :name_position,
-        :descriptor,
         translations_attributes: [:locale, :id, :descriptor]
       ],
       translations_attributes: [

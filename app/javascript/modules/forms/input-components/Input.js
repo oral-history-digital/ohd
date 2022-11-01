@@ -38,7 +38,7 @@ export default class Input extends Component {
         this.props.handleChange(name, value, this.props.data);
 
         if (typeof this.props.handlechangecallback === 'function') {
-            this.props.handlechangecallback(name, value);
+            this.props.handlechangecallback(name, value, this.props.data);
         }
 
         if (typeof(this.props.validate) === 'function') {

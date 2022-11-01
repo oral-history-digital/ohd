@@ -108,6 +108,7 @@ export default function RegistryEntryForm({
                             registryEntryId: registryEntryId,
                             registryEntryParent: registryEntryParent,
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
+                            registryEntryAttributes,
                             setDescriptor: setDescriptor,
                         },
                         parent: registryEntry,
