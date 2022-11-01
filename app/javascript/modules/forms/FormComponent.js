@@ -21,6 +21,7 @@ import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
     input: InputContainer,
+    date: DatePicker,
     registryEntrySelect: RegistryEntrySelectContainer,
     registryEntryTreeSelect: TreeSelectContainer,
     richTextEditor: RichTextEditor,
