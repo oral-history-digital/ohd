@@ -30,6 +30,7 @@ el:
     en: englisch
     es: spanisch
   normdata:
+    filter_select: optionale Filterauswahl
     geo_filter: Geofilter
     place_type: Art der Lokalität
     town: Ort
@@ -41,6 +42,7 @@ el:
     placeOfWorship: Kultstätte
     de: Deutschland
     eu: Europa
+    none: keine
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: στο
   request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
