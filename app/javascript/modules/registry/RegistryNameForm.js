@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form } from 'modules/forms';
 
 import { RegistrySearchResultContainer } from 'modules/registry';
@@ -27,6 +27,10 @@ export default function RegistryNameForm({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
+
+    useEffect(() => {
+        searchRegistryEntry(`${pathBase}/searches/registry_entry`, {});
+    }, [])
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
 
