@@ -4,6 +4,7 @@ import { Form } from 'modules/forms';
 import { RegistrySearchResultContainer } from 'modules/registry';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { updateRegistryNameAttributes } from './updateRegistryNameAttributes';
 
 export default function RegistryNameForm({
     index,
@@ -37,27 +38,9 @@ export default function RegistryNameForm({
 
     const handleDescriptorChange = (name, value, params) => {
         setDescriptor(value);
-        const registryNamesAttributes = registryEntryAttributes.registry_names_attributes || [data] || [];
-        const registryNamesIndex = 0;
-        const translationsAttributes = registryNamesAttributes[registryNamesIndex]?.translations_attributes || [];
-        let translationIndex = translationsAttributes.findIndex(t => t.locale === params.locale);
-        translationIndex = translationIndex === -1 ? 0 : translationIndex;
-        const translation = translationsAttributes[translationIndex];
-        setRegistryEntryAttributes({
-            registry_names_attributes: Object.assign([], registryNamesAttributes, {
-                [registryNamesIndex]: Object.assign({}, registryNamesAttributes[registryNamesIndex], {
-                    registry_name_type_id: defaultNameType.id,
-                    name_position: 1,
-                    translations_attributes: Object.assign([], translationsAttributes, {
-                        [translationIndex]: Object.assign({}, translation, {
-                            descriptor: value,
-                            locale: translation?.locale || params.locale,
-                            id: translation?.id,
-                        })
-                    }),
-                })
-            })
-        });
+        setRegistryEntryAttributes(
+            updateRegistryNameAttributes(value, defaultNameType.id, registryEntryAttributes, data, params.locale)
+        );
         if (value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});
         }
