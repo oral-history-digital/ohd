@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import NormDataForDescriptorContainer from './NormDataForDescriptorContainer';
 
 export default function NormDatumForm({
     index,
@@ -25,13 +26,6 @@ export default function NormDatumForm({
     const { t } = useI18n();
     const pathBase = usePathBase();
     const [fromAPI, setFromAPI] = useState(false);
-    const [apiResults, setApiResults] = useState([]);
-
-    const fetchAPIResults = async() => {
-        fetch(`${pathBase}/norm_data_api?expression=${descriptor}`)
-            .then(res => res.json())
-            .then(json => setApiResults(json));
-    };
 
     return (
         <>
@@ -40,35 +34,18 @@ export default function NormDatumForm({
                     type="button"
                     className="Button any-button"
                     onClick={() => {
-                        !fromAPI && fetchAPIResults();
                         setFromAPI(!fromAPI);
                     }}
                 >
-                    {fromAPI ? t('back') : t('search_in_normdata')}
+                    {fromAPI ? t('back') : t('search_in_normdata', {descriptor: descriptor})}
                 </button>
             }
             { fromAPI ?
-                <ul>
-                    {apiResults.map( result => {
-                        return (
-                            <li>
-                                <a onClick={ () => {
-                                    setRegistryEntryAttributes({
-                                        latitude: result.Entry.Location?.Latitude,
-                                        longitude: result.Entry.Location?.Longitude,
-                                        norm_data_attributes: [{
-                                            norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === result.Entry.Provider ).id,
-                                            nid: result.Entry.ID,
-                                        }],
-                                    });
-                                    setFromAPI(false);
-                                }} >
-                                    {`${result.Entry.Name}: ${result.Entry.Label}`}
-                                </a>
-                            </li>
-                        )
-                    })}
-                </ul> :
+                <NormDataForDescriptorContainer
+                    descriptor={descriptor}
+                    setRegistryEntryAttributes={setRegistryEntryAttributes}
+                    setFromAPI={setFromAPI}
+                /> :
                 <Form
                     scope='norm_datum'
                     onSubmit={params => {
