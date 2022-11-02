@@ -107,7 +107,11 @@ export default class RegistryEntry extends Component {
     }
 
     editButtons() {
-        const { data, registryEntryParent, locale } = this.props;
+        const { data, registryEntryParent, locale, hideEditButtons } = this.props;
+
+        if (hideEditButtons) {
+            return null;
+        }
 
         return (
             <AuthorizedContent object={data} action='update'>

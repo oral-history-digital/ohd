@@ -90,7 +90,7 @@ export default function RegistryNameForm({
                     <h6>{`${t('existing_registry_entries')}:`}</h6>
                     <ul className="RegistryEntryList RegistryEntryList--root">
                         {
-                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox />)
+                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox hideEditButtons />)
                         }
                     </ul>
                 </>

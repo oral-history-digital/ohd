@@ -45,6 +45,7 @@ export default class RegistrySearchResult extends Component {
                 className="RegistryEntry--searchResult"
                 data={this.props.result}
                 hideCheckbox={this.props.hideCheckbox}
+                hideEditButtons={this.props.hideEditButtons} 
             >
                 {this.breadCrumb()}
             </RegistryEntryContainer>
