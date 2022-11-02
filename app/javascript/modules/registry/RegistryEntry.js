@@ -270,7 +270,7 @@ export default class RegistryEntry extends Component {
 
     render() {
         const { className, selectedRegistryEntryIds, data, addRemoveRegistryEntryId,
-            children } = this.props;
+            children, hideEditButtons } = this.props;
 
         return (
             <li
@@ -285,7 +285,7 @@ export default class RegistryEntry extends Component {
                             onChange={() => addRemoveRegistryEntryId(data.id)}
                         />
                     </AuthorizedContent> }
-                    {this.showHideChildren()}
+                    {!hideEditButtons && this.showHideChildren()}
                     {this.entry()}
                     {this.buttons()}
                 </div>
