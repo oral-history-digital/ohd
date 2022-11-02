@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaUserPlus, FaUserEdit } from 'react-icons/fa';
 
@@ -24,14 +25,33 @@ export default function ContributionForm({
     submitData,
 }) {
     const { t } = useI18n();
+    const [selectedPersonId, setSelectedPersonId] = useState(null);
+
     const { data: peopleData, isLoading } = usePeople();
 
     if (isLoading) {
         return <Spinner />;
     }
 
-    const contributorId = data?.person_id;
-    const contributor = peopleData[contributorId];
+    if (data && selectedPersonId === null) {
+        setSelectedPersonId(data.person_id);
+    }
+
+    const selectedPerson = selectedPersonId !== null ?
+        peopleData[selectedPersonId] :
+        null;
+
+    function handlePersonChange(attribute, value) {
+        if (attribute !== 'person_id') {
+            return;
+        }
+
+        if (value) {
+            setSelectedPersonId(Number(value));
+        } else {
+            setSelectedPersonId(null);
+        }
+    }
 
     const formElements = [
         {
@@ -42,6 +62,7 @@ export default function ContributionForm({
             withEmpty: true,
             validate: v => v !== '',
             individualErrorMsg: 'empty',
+            handlechangecallback: handlePersonChange,
         },
         {
             elementType: 'select',
@@ -105,10 +126,13 @@ export default function ContributionForm({
                     )}
                 >
                     {close => (
-                        <PersonForm onSubmit={close} onCancel={close} />
+                        <PersonForm
+                            onSubmit={close}
+                            onCancel={close}
+                        />
                     )}
                 </Modal>
-                {contributor && (
+                {selectedPerson && (
                     <>
                         {' | '}
                         <Modal
@@ -117,12 +141,16 @@ export default function ContributionForm({
                                 <>
                                     <FaUserEdit className="Icon Icon--editorial" />
                                     {' '}
-                                    {t('edit.person.edit')}
+                                    {t('edit.default.edit_record', { name: selectedPerson.name[locale]}) }
                                 </>
                             )}
                         >
                             {close => (
-                                <PersonForm data={contributor} onSubmit={close} onCancel={close} />
+                                <PersonForm
+                                    data={selectedPerson}
+                                    onSubmit={close}
+                                    onCancel={close}
+                                />
                             )}
                         </Modal>
                     </>

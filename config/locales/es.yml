@@ -511,6 +511,7 @@ es:
     default:
       show: Display
       edit: Bearbeiten
+      edit_record: "Edit %{name}"
       new: Hinzufügen
       return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '

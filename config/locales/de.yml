@@ -542,6 +542,7 @@ de:
     default:
       show: Ansicht
       edit: Bearbeiten
+      edit_record: "%{name} bearbeiten"
       new: Hinzufügen
       return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
