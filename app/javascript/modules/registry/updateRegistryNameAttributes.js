@@ -3,7 +3,9 @@ export function updateRegistryNameAttributes(value, nameTypeId, registryEntryAtt
     const registryNamesIndex = 0;
     const translationsAttributes = registryNamesAttributes[registryNamesIndex]?.translations_attributes || [];
     let translationIndex = translationsAttributes.findIndex(t => t.locale === locale);
-    translationIndex = translationIndex === -1 ? 0 : translationIndex;
+    translationIndex = translationIndex === -1 ?
+        (translationsAttributes.length === 0 ? 0 : translationsAttributes.length) :
+        translationIndex;
     const translation = translationsAttributes[translationIndex];
     return ({
         registry_names_attributes: Object.assign([], registryNamesAttributes, {
