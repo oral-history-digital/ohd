@@ -122,6 +122,7 @@ export default function RegistryEntryForm({
                             registryEntryId: registryEntryId,
                             ...(registryEntryAttributes.norm_data_attributes?.[0]),
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
+                            registryEntryAttributes: registryEntryAttributes,
                         },
                         parent: registryEntry,
                         scope: 'norm_datum',
