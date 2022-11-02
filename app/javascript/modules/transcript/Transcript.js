@@ -5,18 +5,19 @@ import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
 import { isSegmentActive } from 'modules/interview-helpers';
+import { usePeople } from 'modules/person';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
 
 export default function Transcript({
     interview,
+    intervieweeId,
     archiveId,
     transcriptFetched,
     transcriptLocale,
     hasTranscript,
     originalLocale,
     loadSegments,
-    interviewee,
     mediaTime,
     isIdle,
     tape,
@@ -34,6 +35,7 @@ export default function Transcript({
         popupType: null,
         openReference: null,
     });
+    const { data: people } = usePeople();
     const { t } = useI18n();
     const pathBase = usePathBase();
 
@@ -95,7 +97,7 @@ export default function Transcript({
         <div className="Transcript">
             {
                 shownSegments.map((segment, index, array) => {
-                    segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
+                    segment.speaker_is_interviewee = intervieweeId === segment.speaker_id;
                     if (
                         (currentSpeakerId !== segment.speaker_id && segment.speaker_id !== null) ||
                         (currentSpeakerName !== segment.speaker && segment.speaker !== null && segment.speaker_id === null)
@@ -115,10 +117,16 @@ export default function Transcript({
                         currentTime: mediaTime,
                     });
 
+                    let speaker;
+                    if (people && segment.speaker_id) {
+                        speaker = people[segment.speaker_id];
+                    }
+
                     return (
                         <SegmentContainer
                             key={segment.id}
                             data={segment}
+                            speaker={speaker}
                             contentLocale={transcriptLocale}
                             popupType={popupSegmentId === segment.id ? popupType : null}
                             openReference={popupSegmentId === segment.id ? openReference : null}
@@ -147,7 +155,7 @@ Transcript.propTypes = {
     tape: PropTypes.number.isRequired,
     autoScroll: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
-    interviewee: PropTypes.object.isRequired,
+    intervieweeId: PropTypes.number,
     transcriptFetched: PropTypes.bool.isRequired,
     hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,

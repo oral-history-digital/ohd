@@ -1,17 +1,15 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FaUserPlus, FaUserEdit } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
-import { Fetch, getPeopleForCurrentProjectFetched } from 'modules/data';
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { usePeople, PersonForm } from 'modules/person';
+import { Modal } from 'modules/ui';
+import { Spinner } from 'modules/spinners';
 
 export default function ContributionForm({
-    people,
-    peopleStatus,
     withSpeakerDesignation,
-    project,
     projects,
     projectId,
     locale,
@@ -24,27 +22,47 @@ export default function ContributionForm({
     onSubmitCallback,
     index,
     onCancel,
-    fetchData,
     submitData,
 }) {
     const { t } = useI18n();
-    const pathBase = usePathBase();
+    const [selectedPersonId, setSelectedPersonId] = useState(null);
 
-    useEffect(() => {
-        if (!peopleStatus[`for_projects_${project?.id}`]) {
-            fetchData({ locale, projectId, projects }, 'people', null, null, `for_projects=${project?.id}`);
+    const { data: peopleData, isLoading } = usePeople();
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    if (data && selectedPersonId === null) {
+        setSelectedPersonId(data.person_id);
+    }
+
+    const selectedPerson = selectedPersonId !== null ?
+        peopleData[selectedPersonId] :
+        null;
+
+    function handlePersonChange(attribute, value) {
+        if (attribute !== 'person_id') {
+            return;
         }
-    });
+
+        if (value) {
+            setSelectedPersonId(Number(value));
+        } else {
+            setSelectedPersonId(null);
+        }
+    }
 
     const formElements = [
         {
             elementType: 'select',
             attribute: 'person_id',
-            values: people && Object.values(people),
+            values: peopleData,
             value: data?.person_id,
             withEmpty: true,
             validate: v => v !== '',
             individualErrorMsg: 'empty',
+            handlechangecallback: handlePersonChange,
         },
         {
             elementType: 'select',
@@ -72,10 +90,7 @@ export default function ContributionForm({
     }
 
     return (
-        <Fetch
-            fetchParams={['people', null, null, `for_projects=${project?.id}`]}
-            testSelector={getPeopleForCurrentProjectFetched}
-        >
+        <>
             <Form
                 scope='contribution'
                 data={data}
@@ -96,38 +111,69 @@ export default function ContributionForm({
                 onCancel={onCancel}
                 formClasses={formClasses}
                 elements={formElements}
-            />
-            <p />
-            <Link
-                to={`${pathBase}/people`}
-                className='Link admin'
-                onClick={() => {
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
-                    }
-                }}
+                helpTextCode="contribution_form"
             >
-                {t("edit.person.admin")}
-            </Link>
-        </Fetch>
+            </Form>
+            <div className="u-mt">
+                <Modal
+                    title={t('edit.person.new')}
+                    trigger={(
+                        <>
+                            <FaUserPlus className="Icon Icon--editorial" />
+                            {' '}
+                            {t('edit.person.new')}
+                        </>
+                    )}
+                >
+                    {close => (
+                        <PersonForm
+                            onSubmit={close}
+                            onCancel={close}
+                        />
+                    )}
+                </Modal>
+                {selectedPerson && (
+                    <>
+                        {' | '}
+                        <Modal
+                            title={t('edit.person.edit')}
+                            trigger={(
+                                <>
+                                    <FaUserEdit className="Icon Icon--editorial" />
+                                    {' '}
+                                    {t('edit.default.edit_record', { name: selectedPerson.name[locale]}) }
+                                </>
+                            )}
+                        >
+                            {close => (
+                                <PersonForm
+                                    data={selectedPerson}
+                                    onSubmit={close}
+                                    onCancel={close}
+                                />
+                            )}
+                        </Modal>
+                    </>
+                )}
+            </div>
+        </>
     );
 }
 
 ContributionForm.propTypes = {
-    interview: PropTypes.object.isRequired,
+    interview: PropTypes.object,
     withSpeakerDesignation: PropTypes.bool,
     data: PropTypes.object,
     contributionTypes: PropTypes.object.isRequired,
     formClasses: PropTypes.string,
-    people: PropTypes.object,
-    peopleStatus: PropTypes.object.isRequired,
+    index: PropTypes.number,
+    nested: PropTypes.bool,
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onSubmitCallback: PropTypes.func,
     onCancel: PropTypes.func,
 };

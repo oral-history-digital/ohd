@@ -544,6 +544,7 @@ de:
     default:
       show: Ansicht
       edit: Bearbeiten
+      edit_record: "%{name} bearbeiten"
       new: Hinzufügen
       return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
@@ -802,6 +803,9 @@ de:
     startpage_position: Startseitenposition
   activerecord:
     models:
+      help_text:
+        one: Hilfstext
+        other: Hilfstexte
       interview:
         one: Interview
         other: Interviews
@@ -1216,6 +1220,7 @@ de:
         code: Code
         registry_entry_id: Registereintrag
       default:
+        id: ID
         name: Name
         title: Name
         label: Label
@@ -1243,6 +1248,7 @@ de:
         project_id: Archiv
         key: Schlüssel
         created_at: Angelegt am
+        updated_at: Bearbeitet am
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
@@ -1330,6 +1336,9 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    help_text:
+      more: Mehr…
+      wiki_link: Hilfstext im Wiki
     interview:
       video_preview: Video-Vorschau
       audio_preview: Audio-Vorschau
@@ -1365,6 +1374,7 @@ de:
       copy_position: Position kopieren
       copy_position_tooltip: Aktuelle Zeitmarke als URL kopieren
     person:
+      no_interviewee: Keine interviewte Person
       abbr_titles:
         doctor_female: Dr.
         professor_female: Prof.
@@ -1405,6 +1415,16 @@ de:
     sidebar:
       catalog: Katalog
       search: Suche
+    site_startpage:
+      introduction: Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen.
+      stats: Derzeit verzeichnet Oral-History.Digital %{numProjects} Archive mit %{numCollections} Sammlungen und %{numInterviews} Interviews von %{numInstitutions} Institutionen.
+      under_construction: Das Portal ist noch im Aufbau.
+      instructions: Anleitung für die Redaktionsansicht
+      more_results: Mehr Ergebnisse laden
+      sample_archives: Beispielarchive
+    tables:
+      actions: Aktionen
+      search: Suchen…
     toc:
       collapse: Einklappen
       expand: Ausklappen
@@ -1420,6 +1440,11 @@ de:
       admin_menu:
         actions: Aktionen
       copy_link: URL kopieren
+      pagination:
+        page: "Seite %{current} von %{total}"
+        prev: vorherige Seite
+        next: nächste Seite
+        show: "%{pageSize} anzeigen"
     workbook:
       from: vom
       delete: Aus Arbeitsmappe entfernen

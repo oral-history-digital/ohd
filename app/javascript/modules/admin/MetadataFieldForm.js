@@ -61,6 +61,7 @@ export default function MetadataFieldForm({
                     }
                 }}
                 onCancel={onCancel}
+                helpTextCode="metadata_form"
                 data={data}
                 values={{
                     project_id: project.id

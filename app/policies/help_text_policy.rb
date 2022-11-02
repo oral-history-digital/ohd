@@ -1,0 +1,2 @@
+class HelpTextPolicy < ApplicationPolicy
+end

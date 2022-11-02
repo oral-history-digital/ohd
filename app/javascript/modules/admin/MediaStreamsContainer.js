@@ -39,6 +39,7 @@ const mapStateToProps = state => {
                 elementType: 'input',
             },
         ],
+        helpTextCode: 'mediapath_form'
     }
 }
 

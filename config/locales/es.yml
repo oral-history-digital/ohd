@@ -513,6 +513,7 @@ es:
     default:
       show: Display
       edit: Bearbeiten
+      edit_record: "Edit %{name}"
       new: Hinzufügen
       return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
@@ -1183,6 +1184,7 @@ es:
         code: Code
         registry_entry_id: Registereintrag
       default:
+        id: ID
         name: Name
         title: Name
         label: Label
@@ -1209,7 +1211,8 @@ es:
         publish: Público
         project_id: Archive
         key: Schlüssel
-        created_at: Angelegt am
+        created_at: Created at
+        updated_at: Updated at
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
@@ -1297,6 +1300,9 @@ es:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    help_text:
+      more: More…
+      wiki_link: Wiki help text
     interview:
       video_preview: Video preview
       audio_preview: Audio preview
@@ -1332,6 +1338,7 @@ es:
       copy_position: Copiar posición
       copy_position_tooltip: Copiar codigo de tiempo como enlace
     person:
+      no_interviewee: No interviewee
       abbr_titles:
         doctor_female: Dra.
         professor_female: Profa.
@@ -1372,6 +1379,9 @@ es:
     sidebar:
       catalog: Catalog
       search: Search
+    tables:
+      actions: Actions
+      search: Search…
     toc:
       collapse: Collapse
       expand: Expand
@@ -1387,6 +1397,11 @@ es:
       admin_menu:
         actions: Actions
       copy_link: Copiar enlace
+      pagination:
+        page: "Page %{current} of %{total}"
+        prev: previous page
+        next: next page
+        show: "Show %{pageSize}"
     workbook:
       from: del
       delete: Eliminar de la carpeta

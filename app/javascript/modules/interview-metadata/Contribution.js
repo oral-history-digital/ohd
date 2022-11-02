@@ -24,6 +24,8 @@ export default function Contribution({
 
     const destroy = () => {
         deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'contributions', contribution.id);
+        // TODO: Mutate after getting response.
+        //mutatePersonWithAssociations(person.id);
     };
 
     if (!person) {

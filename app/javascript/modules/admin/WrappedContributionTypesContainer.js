@@ -55,6 +55,7 @@ const mapStateToProps = (state) => {
             //},
         ],
         joinedData: { },
+        helpTextCode: 'contribution_type_form'
     }
 }
 

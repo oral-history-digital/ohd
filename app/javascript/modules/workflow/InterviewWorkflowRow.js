@@ -5,19 +5,18 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
-import missingStill from 'assets/images/missing_still.png';
-import { loadIntervieweeWithAssociations } from 'modules/interview-preview';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { usePeople } from 'modules/person';
 import { useArchiveSearch } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import TaskContainer from './TaskContainer';
+import missingStill from 'assets/images/missing_still.png';
 
 export default function InterviewWorkflowRow({
     interview,
-    interviewee,
-    intervieweeId,
     locale,
     translations,
     languages,
@@ -27,7 +26,6 @@ export default function InterviewWorkflowRow({
     projects,
     tasks,
     tasksStatus,
-    peopleStatus,
     userAccountsStatus,
     fetchData,
     setArchiveId,
@@ -36,6 +34,7 @@ export default function InterviewWorkflowRow({
     const { t } = useI18n();
     const pathBase = usePathBase();
     const { fulltext } = useArchiveSearch();
+    const { data: people, isLoading } = usePeople();
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
@@ -44,23 +43,16 @@ export default function InterviewWorkflowRow({
     useEffect(() => {
         loadUserAccounts();
         loadTasks();
-        loadIntervieweeWithAssociations({ interviewee, intervieweeId,
-            peopleStatus, locale, projectId, projects, fetchData });
-
     }, []);
 
     function loadUserAccounts() {
-        if (
-            !userAccountsStatus.all
-        ) {
+        if (!userAccountsStatus.all) {
             fetchData({ projectId, projects, locale }, 'accounts');
         }
     }
 
     function loadTasks() {
-        if (
-            !tasksStatus[`for_interview_${interview.archive_id}`]
-        ) {
+        if (!tasksStatus[`for_interview_${interview.archive_id}`]) {
             fetchData({ projectId, projects, locale }, 'tasks', null, null, `for_interview=${interview.archive_id}`);
         }
     }
@@ -88,10 +80,15 @@ export default function InterviewWorkflowRow({
     const tasksFetched = tasksStatus[`for_interview_${interview.archive_id}`] &&
         tasksStatus[`for_interview_${interview.archive_id}`].split('-')[0] === 'fetched';
 
+    let interviewee;
+    if (people) {
+        interviewee = people[interview.interviewee_id];
+    }
+
     return (
         <div className='border-top'>
             <div className='search-result-workflow data boxes'>
-                {interviewee?.names?.[locale] && (
+                {isLoading ? <Spinner small /> : (
                     <Link className="Link search-result-link box-10"
                         onClick={() => {
                             setArchiveId(interview.archive_id);
@@ -105,8 +102,8 @@ export default function InterviewWorkflowRow({
                             alt=""
                         />
                         <span className='workflow' >
-                            {interviewee.names[locale].last_name + ', '}<br />
-                            {interviewee.names[locale].first_name }
+                            {interviewee?.names?.[locale]?.last_name + ', '}<br />
+                            {interviewee?.names?.[locale]?.first_name }
                         </span>
                     </Link>
                 )}
@@ -187,9 +184,6 @@ export default function InterviewWorkflowRow({
 
 InterviewWorkflowRow.propTypes = {
     interview: PropTypes.object.isRequired,
-    interviewee: PropTypes.object,
-    intervieweeId: PropTypes.number,
-    peopleStatus: PropTypes.object.isRequired,
     userAccountsStatus: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,

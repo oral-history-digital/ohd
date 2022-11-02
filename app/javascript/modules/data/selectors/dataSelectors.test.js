@@ -275,10 +275,6 @@ test('getCollectionsForCurrentProject gets collections object', () => {
     expect(selectors.getCollectionsForCurrentProject(state)).toEqual(state.data.projects[1].collections);
 });
 
-test('getPeopleForCurrentProject gets people object', () => {
-    expect(selectors.getPeopleForCurrentProject(state)).toEqual(state.data.projects[1].people);
-});
-
 test('getTaskTypesForCurrentProject gets task_types object', () => {
     expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.projects[1].task_types);
 });
@@ -526,29 +522,6 @@ test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
     };
 
     expect(actual).toEqual(expected);
-});
-
-test('getCurrentInterviewee retrieves first interviewee of current interview', () => {
-    expect(selectors.getCurrentInterviewee(state)).toEqual(state.data.projects[1].people[4]);
-});
-
-test('getInterviewee retrieves first interviewee of a given interview', () => {
-    const props = {
-        interview: {
-            id: 22,
-            type: 'Interview',
-            contributions: {
-                1345: {
-                    id: 1345,
-                    type: 'Contribution',
-                    contribution_type: 'interviewee',
-                    person_id: 4,
-                    interview_id: 22,
-                },
-            },
-        },
-    };
-    expect(selectors.getInterviewee(state, props)).toEqual(state.data.projects[1].people[4]);
 });
 
 describe('getTranscriptFetched', () => {

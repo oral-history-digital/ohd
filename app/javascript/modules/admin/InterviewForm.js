@@ -1,42 +1,49 @@
-import { createElement, Component } from 'react';
+import { createElement, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
-import { formatPersonName } from 'modules/person';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { formatPersonName, usePeople } from 'modules/person';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 
-export default class InterviewForm extends Component {
+export default function InterviewForm({
+    collections,
+    contributionTypes,
+    interview,
+    languages,
+    project,
+    projectId,
+    projects,
+    submitData,
+    submitText,
+    withContributions,
+}) {
+    const [showForm, setShowForm] = useState(true);
+    const [archiveId, setArchiveId] = useState(null);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showForm: true,
-            archiveId: null
-        };
-        this.returnToForm = this.returnToForm.bind(this);
-        this.setArchiveId = this.setArchiveId.bind(this);
-        this.showContribution = this.showContribution.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+    const { t, locale, translations } = useI18n();
+    const pathBase = usePathBase();
+
+    const { data: people, isLoading } = usePeople();
+
+    function returnToForm() {
+        setShowForm(true);
     }
 
-    returnToForm() {
-        this.setState({showForm: true});
+    function handleArchiveIdChange(name, value) {
+        setArchiveId(value);
     }
 
-    setArchiveId(name, value) {
-        this.setState({archiveId: value})
-    }
-
-    showContribution(value) {
-        const { locale, people, translations, contributionTypes } = this.props;
-
+    function showContribution(value) {
         return (
             <span>
                 <span>
-                    {formatPersonName(people[parseInt(value.person_id)], translations, { locale, withTitle: true }) + ', '}
+                    {formatPersonName(people?.[Number.parseInt(value.person_id)],
+                        translations, { locale, withTitle: true })}
                 </span>
+                {', '}
                 <span>
                     {contributionTypes[value.contribution_type_id].name[locale]}
                 </span>
@@ -44,38 +51,37 @@ export default class InterviewForm extends Component {
         )
     }
 
-    onSubmit(params){
-        this.setState({showForm: false});
-        this.props.submitData(this.props, params);
-        //if (typeof this.props.onSubmitCallback === "function") {this.props.onSubmitCallback()}
+    function handleSubmit(params){
+        setShowForm(false);
+
+        submitData({ locale, projectId, projects }, params);
     }
 
-    form() {
-        let _this = this;
+    function renderForm() {
         let elements = [
             {
                 attribute: 'archive_id',
-                value: this.props.interview && this.props.interview.archive_id,
-                handlechangecallback: this.setArchiveId,
-                validate: function(v){
-                    let regexp = new RegExp(`^${_this.props.project.shortname}\\d{${_this.props.project.archive_id_number_length}}$`);
+                value: interview?.archive_id,
+                handlechangecallback: handleArchiveIdChange,
+                validate: v => {
+                    let regexp = new RegExp(`^${project.shortname}\\d{${project.archive_id_number_length}}$`);
                     return regexp.test(v);
                 },
             },
             {
                 attribute: 'interview_date',
-                value: this.props.interview && this.props.interview.interview_date,
+                value: interview?.interview_date,
                 elementType: 'input',
             },
             {
                 attribute: 'description',
-                value: this.props.interview?.description,
+                value: interview?.description,
                 elementType: 'textarea',
                 multiLocale: true,
             },
             {
                 attribute: 'media_type',
-                value: this.props.interview && this.props.interview.media_type,
+                value: interview?.media_type,
                 optionsScope: 'search_facets',
                 elementType: 'select',
                 withEmpty: true,
@@ -85,24 +91,24 @@ export default class InterviewForm extends Component {
             {
                 elementType: 'select',
                 attribute: 'language_id',
-                values: this.props.languages,
-                value: this.props.interview && this.props.interview.language_id,
+                values: languages,
+                value: interview?.language_id,
                 withEmpty: true,
                 validate: function(v){return /^\d+$/.test(v)},
             },
             {
                 elementType: 'select',
                 attribute: 'translation_language_id',
-                values: this.props.languages,
-                value: this.props.interview && this.props.interview.language_id,
+                values: languages,
+                value: interview?.language_id,
                 withEmpty: true,
                 //validate: function(v){return /^\d+$/.test(v)},
             },
             {
                 elementType: 'select',
                 attribute: 'collection_id',
-                values: this.props.collections,
-                value: this.props.interview && this.props.interview.collection_id,
+                values: collections,
+                value: interview?.collection_id,
                 withEmpty: true,
                 //validate: function(v){return /^\d+$/.test(v)},
                 individualErrorMsg: 'empty'
@@ -110,24 +116,24 @@ export default class InterviewForm extends Component {
             {
                 // tape_count is important to calculate the video-path
                 attribute: 'tape_count',
-                value: this.props.interview && this.props.interview.tape_count,
+                value: interview?.tape_count,
                 elementType: 'input',
                 validate: function(v){return /^\d+$/.test(v)}
             },
             {
                 attribute: 'observations',
-                value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
+                value: interview?.observations?.[locale],
                 elementType: 'textarea',
             },
         ]
 
-        if (this.props.interview) {
+        if (interview) {
             elements.push(
                 {
                     elementType: 'select',
                     attribute: 'workflow_state',
-                    values: this.props.interview && Object.values(this.props.interview.workflow_states),
-                    value: this.props.interview.workflow_state,
+                    values: interview && Object.values(interview.workflow_states),
+                    value: interview.workflow_state,
                     optionsScope: 'workflow_states',
                 }
             )
@@ -135,53 +141,62 @@ export default class InterviewForm extends Component {
 
         let props = {
             scope: 'interview',
-            values: {
-                project_id: this.props.project.id
-            },
-            data: this.props.interview,
-            onSubmit: this.onSubmit,
-            submitText: this.props.submitText,
-            elements: elements
+            values: { project_id: project.id },
+            data: interview,
+            onSubmit: handleSubmit,
+            submitText: submitText,
+            elements: elements,
+            helpTextCode: 'interview_form',
         }
 
-        if (this.props.withContributions) {
+        if (withContributions) {
             props['nestedScopeProps'] = [{
                 formComponent: ContributionFormContainer,
                 formProps: {withSpeakerDesignation: true},
-                parent: this.props.interview,
+                parent: interview,
                 scope: 'contribution',
-                elementRepresentation: this.showContribution,
+                elementRepresentation: showContribution,
             }]
         }
 
         return createElement(Form, props);
     }
 
-    render() {
-        if (this.state.showForm) {
-            return this.form();
-        } else {
-            return (
-                <div>
-                    <p>
-                        {t(this.props, 'edit.interview.processing')}
-                    </p>
-                    <p>
-                        <Link
-                            to={pathBase(this.props) + '/interviews/' + this.state.archiveId}>
-                            {t(this.props,  'edit.interview.edit')}
-                        </Link>
-                    </p>
-                    <button
-                        type="button"
-                        className='Button return-to-form'
-                        onClick={() => this.returnToForm()}
-                    >
-                        {t(this.props, 'edit.interview.return')}
-                    </button>
-                </div>
-            )
-        }
+    if (showForm) {
+        return renderForm();
     }
 
+    return (
+        <div>
+            <p>
+                {t('edit.interview.processing')}
+            </p>
+            <p>
+                <Link
+                    to={`${pathBase}/interviews/${archiveId}`}>
+                    {t('edit.interview.edit')}
+                </Link>
+            </p>
+            <button
+                type="button"
+                className='Button return-to-form'
+                onClick={returnToForm}
+            >
+                {t('edit.interview.return')}
+            </button>
+        </div>
+    );
 }
+
+InterviewForm.propTypes = {
+    interview: PropTypes.object,
+    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    languages: PropTypes.object.isRequired,
+    collections: PropTypes.object.isRequired,
+    withContributions: PropTypes.bool,
+    contributionTypes: PropTypes.object.isRequired,
+    submitText: PropTypes.string,
+    submitData: PropTypes.func.isRequired,
+};

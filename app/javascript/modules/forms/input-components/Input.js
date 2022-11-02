@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createElement, Component } from 'react';
 import { FaPencilAlt} from 'react-icons/fa';
 
@@ -59,6 +60,7 @@ export default class Input extends Component {
             className: 'Input',
             type: this.props.type,
             name: this.props.attribute,
+            readOnly: this.props.readOnly,
             defaultChecked: value,
             defaultValue: value,
             value: value,
@@ -113,5 +115,8 @@ export default class Input extends Component {
             </Element>
         );
     }
-
 }
+
+Input.propTypes = {
+    readOnly: PropTypes.bool,
+};

@@ -11,6 +11,7 @@ export default function AddButton({
     interview,
     task,
     onClose,
+    disabled = false,
 }) {
     const { t } = useI18n();
 
@@ -22,6 +23,7 @@ export default function AddButton({
             <Modal
                 title={t(`edit.${scope}.new`)}
                 trigger={<><FaPlus className="Icon Icon--editorial" /> {t(`edit.${scope}.new`)}</>}
+                disabled={disabled}
             >
                 {onClose}
             </Modal>
@@ -34,4 +36,5 @@ AddButton.propTypes = {
     interview: PropTypes.object,
     task: PropTypes.object,
     onClose: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
 };

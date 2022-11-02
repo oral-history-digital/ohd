@@ -60,6 +60,7 @@ const mapStateToProps = (state) => {
             },
         ],
         joinedData: { },
+        helpTextCode: 'collection_form'
     }
 }
 

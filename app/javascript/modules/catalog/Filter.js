@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
-import DebouncedInput from './DebouncedInput';
+import { DebouncedInput } from 'modules/ui';
 
 export default function Filter({
     column,

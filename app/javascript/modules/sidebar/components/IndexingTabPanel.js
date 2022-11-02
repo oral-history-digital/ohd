@@ -3,7 +3,6 @@ import {
     LanguagesSearchFormContainer,
     RegistryNameTypesSearchFormContainer,
     ContributionTypesSearchFormContainer,
-    PeopleSearchFormContainer,
     RegistryReferenceTypesSearchFormContainer
 } from 'modules/admin';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -44,9 +43,7 @@ export default function IndexingTabPanel() {
                     url={`${pathBase}/people`}
                     obj={{type: 'Person'}}
                     action='update'
-                >
-                    <PeopleSearchFormContainer />
-                </AdminSubTab>
+                />
                 <AdminSubTab
                     title= 'edit.registry_reference_type.admin'
                     url={`${pathBase}/registry_reference_types`}

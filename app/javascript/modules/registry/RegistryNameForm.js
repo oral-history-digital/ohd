@@ -71,6 +71,7 @@ export default function RegistryNameForm({
                     onSubmit();
                 }
             }}
+            helpTextCode="registry_name_form"
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}

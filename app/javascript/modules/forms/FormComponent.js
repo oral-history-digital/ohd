@@ -1,50 +1,71 @@
-import { createElement, Component } from 'react';
+import { createElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
-import { FaCheckCircle, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
+import { useI18n } from 'modules/i18n';
 import { TreeSelectContainer } from 'modules/tree-select';
-import NestedScope from './NestedScope';
+import { HelpText } from 'modules/help-text';
+import { pluralize } from 'modules/strings';
 import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
 import SelectContainer from './input-components/SelectContainer';
 import ColorPicker from './input-components/ColorPicker';
 import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
 import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
+import NestedScope from './NestedScope';
 import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
-import { pluralize } from 'modules/strings';
-import { t } from 'modules/i18n';
 
-export default class FormComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            values: this.initValues(),
-            errors: this.initErrors()
-        };
+const elementTypeToComponent = {
+    colorPicker: ColorPicker,
+    input: InputContainer,
+    registryEntrySelect: RegistryEntrySelectContainer,
+    registryEntryTreeSelect: TreeSelectContainer,
+    richTextEditor: RichTextEditor,
+    select: SelectContainer,
+    speakerDesignationInputs: SpeakerDesignationInputs,
+    textarea: Textarea
+};
 
-        this.handleErrors = this.handleErrors.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleNestedFormSubmit = this.handleNestedFormSubmit.bind(this);
-        this.writeNestedObjectToStateValues = this.writeNestedObjectToStateValues.bind(this);
-        this.deleteNestedObject = this.deleteNestedObject.bind(this);
-    }
+export default function FormComponent({
+    children,
+    className,
+    data,
+    elements,
+    fetching,
+    formClasses,
+    formId,
+    helpTextCode,
+    index,
+    nested,
+    nestedScopeProps,
+    onCancel,
+    onSubmit,
+    onSubmitCallback,
+    scope,
+    submitScope,
+    submitText,
+    values: initialValues,
+}) {
+    const [values, setValues] = useState(initValues());
+    const [errors, setErrors] = useState(initErrors());
+    const { t } = useI18n();
 
-    initValues() {
-        let values = { ...this.props.values };
-        if (this.props.data)
-            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id;
+    function initValues() {
+        const values = { ...initialValues };
+        if (data) {
+            values.id = data.type === 'Interview' ? data.archive_id : data.id;
+        }
         return values;
     }
 
-    initErrors() {
+    function initErrors() {
         let errors = {};
-        this.props.elements.map((element) => {
+        elements.map((element) => {
             let error = false;
             if (typeof(element.validate) === 'function') {
-                let value = element.value || (this.props.data && this.props.data[element.attribute]);
+                let value = element.value || (data && data[element.attribute]);
                 error = !(value && element.validate(value));
             }
             errors[element.attribute] = error;
@@ -52,26 +73,25 @@ export default class FormComponent extends Component {
         return errors;
     }
 
-    handleErrors(name, bool) {
-        this.setState({
-            errors: Object.assign({}, this.state.errors, {[name]: bool})
-        })
+    function handleErrors(name, hasError) {
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: hasError
+        }));
     }
 
-    handleChange(name, value, params, identifier) {
+    function handleChange(name, value, params, identifier) {
         if (params && !name && !value) {
-            this.writeNestedObjectToStateValues(params, identifier);
+            writeNestedObjectToStateValues(params, identifier);
         } else {
-            this.setState({
-                values: Object.assign({}, this.state.values, {[name]: value})
-            })
+            setValues(prevValues => ({
+                ...prevValues,
+                [name]: value
+            }));
         }
     }
 
-    valid() {
-        const { elements } = this.props;
-        const { errors } = this.state;
-
+    function valid() {
         let hasErrors = false;
 
         Object.keys(errors).forEach(name => {
@@ -86,88 +106,73 @@ export default class FormComponent extends Component {
         return !hasErrors;
     }
 
-    handleSubmit(event) {
-        let _this = this;
+    function handleSubmit(event) {
         event.preventDefault();
 
-        if(this.valid()) {
-            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.index);
-            if (typeof(this.props.onSubmitCallback) === "function") {
-                this.props.onSubmitCallback()
+        if(valid()) {
+            onSubmit({[scope || submitScope]: values}, index);
+            if (typeof onSubmitCallback === "function") {
+                onSubmitCallback();
             }
         }
     }
 
-    deleteNestedObject(index, scope) {
-        let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)];
-        this.setState({
-            values: Object.assign({}, this.state.values, {
-                [this.nestedRailsScopeName(scope)]: nestedObjects.slice(0,index).concat(nestedObjects.slice(index+1))
-            })
-        })
+    function deleteNestedObject(index, scope) {
+        let nestedObjects = values[nestedRailsScopeName(scope)];
+
+        setValues(prevValues => ({
+            ...prevValues,
+            [nestedRailsScopeName(scope)]: nestedObjects.slice(0, index).concat(nestedObjects.slice(index + 1))
+        }));
     }
 
-    nestedRailsScopeName(scope) {
+    function nestedRailsScopeName(scope) {
         return `${pluralize(scope)}_attributes`;
     }
 
-    writeNestedObjectToStateValues(params, identifier, index) {
+    function writeNestedObjectToStateValues(params, identifier, index) {
         // for translations identifier is 'locale' to not multiply translations
         identifier ||= 'id';
         let scope = Object.keys(params)[0];
         let nestedObject = params[scope];
-        let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)] || [];
+        let nestedObjects = values[nestedRailsScopeName(scope)] || [];
         if (index === undefined)
             index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
         index = index === -1 ? nestedObjects.length : index;
 
-        this.setState({values: Object.assign({}, this.state.values, {
-            [this.nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {
+        setValues(prevValues => ({
+            ...prevValues,
+            [nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {
                 [index]: Object.assign({}, nestedObjects[index], nestedObject)
             })
-        })})
+        }));
     }
 
     // props is a dummy here
-    handleNestedFormSubmit(props, params, index) {
-        this.writeNestedObjectToStateValues(params, null, index);
+    function handleNestedFormSubmit(props, params, index) {
+        writeNestedObjectToStateValues(params, null, index);
     }
 
-    nestedScopes() {
-        return this.props.nestedScopeProps?.map(props => {
-            return (
-                <NestedScope key={props.scope} {...props}
-                    onSubmit={this.handleNestedFormSubmit}
-                    onDelete={this.deleteNestedObject}
-                    getNewElements={() => this.state.values[this.nestedRailsScopeName(props.scope)]}
-                />
-            )
-        })
+    function nestedScopes() {
+        return nestedScopeProps?.map(props => (
+            <NestedScope key={props.scope} {...props}
+                onSubmit={handleNestedFormSubmit}
+                onDelete={deleteNestedObject}
+                getNewElements={() => values[nestedRailsScopeName(props.scope)]}
+            />
+        ))
     }
 
-    components() {
-        return {
-            select: SelectContainer,
-            registryEntrySelect: RegistryEntrySelectContainer,
-            registryEntryTreeSelect: TreeSelectContainer,
-            input: InputContainer,
-            richTextEditor: RichTextEditor,
-            textarea: Textarea,
-            speakerDesignationInputs: SpeakerDesignationInputs,
-            colorPicker: ColorPicker,
-        }
-    }
-
-    elementComponent(props) {
-        props.scope = props.scope || this.props.scope;
-        props.showErrors = this.state.errors[props.attribute];
-        props.handleChange = this.handleChange;
-        props.handleErrors = this.handleErrors;
+    function elementComponent(props) {
+        props.scope = props.scope || scope;
+        props.showErrors = errors[props.attribute];
+        props.handleChange = handleChange;
+        props.handleErrors = handleErrors;
         props.key = props.attribute;
-        props.value = this.state.values[props.attribute] || props.value;
-        props.data = this.props.data;
+        props.value = values[props.attribute] || props.value;
+        props.data = data;
 
-        // set defaults for the possibillity to shorten elements list
+        // set defaults for the possibility to shorten elements list
         if (!props.elementType) {
             props.elementType = 'input';
             props.type = 'text';
@@ -176,76 +181,92 @@ export default class FormComponent extends Component {
         if (props.multiLocale) {
             return createElement(MultiLocaleWrapperContainer, props);
         } else {
-            return createElement(this.components()[props.elementType], props);
+            return createElement(elementTypeToComponent[props.elementType], props);
         }
     }
 
-    render() {
-        const { onCancel, className, children, elements, formId, formClasses,
-            scope, submitText, nested } = this.props;
+    return (
+        <div className={classNames(className, 'LoadingOverlay', {
+            'is-loading': fetching
+        })}>
+            {nestedScopes()}
+            <form
+                id={formId || scope}
+                className={classNames('Form', formClasses, {
+                    [`${scope} default`]: !formClasses,
+                })}
+                onSubmit={handleSubmit}
+            >
+                {helpTextCode && <HelpText code={helpTextCode} />}
 
-        return (
-            <div className={className}>
-                {this.nestedScopes()}
-                <form
-                    id={formId || scope}
-                    className={classNames('Form', formClasses, {
-                        [`${scope} default`]: !formClasses,
-                    })}
-                    onSubmit={this.handleSubmit}
-                >
+                {children}
 
-                    {children}
+                {elements.map(props => {
+                    if (props.condition === undefined || props.condition === true) {
+                        return elementComponent(props);
+                    }
+                })}
 
-                    {elements.map(props => {
-                        if(props.condition === undefined || props.condition === true) {
-                            return this.elementComponent(props);
-                        }
-                    })}
-
-                    <div className="Form-footer u-mt">
-                        { nested ?
+                <div className="Form-footer u-mt">
+                    { nested ?
+                        <button
+                            type="submit"
+                            className="Button Button--transparent Button--icon"
+                            value={t(submitText || 'submit')}
+                        >
+                            <FaCheckCircle className="Icon Icon--editorial" />
+                        </button> :
+                        <input
+                            type="submit"
+                            className="Button Button--primaryAction"
+                            disabled={fetching}
+                            value={t(submitText || 'submit')}
+                        />
+                    }
+                    {typeof onCancel === 'function' && (
+                        nested ?
                             <button
-                                type="submit"
                                 className="Button Button--transparent Button--icon"
-                                value={t(this.props, submitText || 'submit')}
+                                title={t('edit.default.cancel')}
+                                onClick={onCancel}
                             >
-                                <FaCheckCircle className="Icon Icon--editorial" />
+                                <FaTimes className="Icon Icon--editorial" />
                             </button> :
                             <input
-                                type="submit"
-                                className="Button Button--primaryAction"
-                                value={t(this.props, submitText || 'submit')}
+                                type="button"
+                                className="Button Button--secondaryAction"
+                                disabled={fetching}
+                                value={t('cancel')}
+                                onClick={onCancel}
                             />
-                        }
-                        {typeof onCancel === 'function' && (
-                            nested ?
-                                <button
-                                    className="Button Button--transparent Button--icon"
-                                    title={t(this.props, 'edit.default.cancel')}
-                                    onClick={onCancel}
-                                >
-                                    <FaTimes className="Icon Icon--editorial" />
-                                </button> :
-                                <input
-                                    type="button"
-                                    className="Button Button--secondaryAction"
-                                    value={t(this.props, 'cancel')}
-                                    onClick={onCancel}
-                                />
-                        )}
-                    </div>
-                </form>
-            </div>
-        );
-    }
+                    )}
+                </div>
+            </form>
+        </div>
+    );
 }
 
 FormComponent.propTypes = {
-    className: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
+    className: PropTypes.string,
+    data: PropTypes.object,
+    elements: PropTypes.array.isRequired,
+    fetching: PropTypes.bool,
+    formClasses: PropTypes.string,
+    formId: PropTypes.string,
+    helpTextCode: PropTypes.string,
+    index: PropTypes.number,
+    locale: PropTypes.string,
+    nested: PropTypes.bool,
+    nestedScopeProps: PropTypes.array,
     onCancel: PropTypes.func,
+    onSubmit: PropTypes.func,
+    onSubmitCallback: PropTypes.func,
+    scope: PropTypes.string,
+    submitScope: PropTypes.string,
+    submitText: PropTypes.string,
+    values: PropTypes.object,
 };

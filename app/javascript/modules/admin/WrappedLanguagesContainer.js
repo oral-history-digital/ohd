@@ -36,6 +36,7 @@ const mapStateToProps = state => ({
         },
     ],
     joinedData: { },
+    helpTextCode: 'language_form'
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

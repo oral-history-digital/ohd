@@ -2,15 +2,25 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
+import {
+    AssignSpeakersFormContainer,
+    MarkTextFormContainer,
+    UploadTranscriptContainer,
+    UploadEditTableContainer
+} from 'modules/interview-actions';
+import {
+    InterviewInfoContainer,
+    InterviewContributorsContainer,
+    InterviewTextMaterialsContainer,
+    CitationInfoContainer
+} from 'modules/interview-metadata';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AccountContainer } from 'modules/account';
-import { PersonDataContainer } from 'modules/interviewee-metadata';
+import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMaterialsContainer,
-    CitationInfoContainer } from 'modules/interview-metadata';
+import { Spinner } from 'modules/spinners';
 import { InterviewMap } from 'modules/interview-map';
 import { GalleryContainer } from 'modules/gallery';
-import { AssignSpeakersFormContainer, MarkTextFormContainer, UploadTranscriptContainer, UploadEditTableContainer } from 'modules/interview-actions';
 import { usePathBase } from 'modules/routes';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -25,7 +35,7 @@ export default function InterviewTabPanel({
     projectId,
     editView,
     interview,
-    interviewee,
+    intervieweeId,
     hasMap,
     isCatalog,
     setViewMode,
@@ -34,6 +44,8 @@ export default function InterviewTabPanel({
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
+    const { data: interviewee, isLoading: intervieweeIsLoading } =
+        usePersonWithAssociations(intervieweeId);
 
     const searchPath = `${pathBase}/searches/archive?fulltext=${archiveId}`;
 
@@ -75,8 +87,10 @@ export default function InterviewTabPanel({
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <SubTab title={t('person_info')} open={!isLoggedIn}>
                                 <PersonDataContainer/>
-                                {
-                                    interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
+                                {intervieweeIsLoading ?
+                                    <Spinner /> : (
+                                        interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
+                                    )
                                 }
                             </SubTab>
                         </AuthorizedContent>
@@ -177,7 +191,7 @@ InterviewTabPanel.propTypes = {
     projectId: PropTypes.string.isRequired,
     editView: PropTypes.bool,
     interview: PropTypes.object,
-    interviewee: PropTypes.object,
+    intervieweeId: PropTypes.number,
     hasMap: PropTypes.bool.isRequired,
     isCatalog: PropTypes.bool.isRequired,
     setViewMode: PropTypes.func.isRequired,

@@ -15,3 +15,4 @@ export const INDEX_ADMINISTRATION = 8;
 export const INDEX_PROJECT_ACCESS = 9;
 export const INDEX_PROJECTS = 10;
 export const INDEX_INSTITUTIONS = 11;
+export const INDEX_HELP_TEXTS = 12;

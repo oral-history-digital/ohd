@@ -29,12 +29,20 @@ export default function Data({
     hideEdit,
     hideDelete,
     optionsScope,
+    disabled = false,
     detailsAttributes,
     deleteData,
+    handleDelete,
 }) {
     const { t } = useI18n();
 
     function destroy(close) {
+        // Use custom delete handler if available, skip the rest.
+        if (typeof handleDelete === 'function') {
+            handleDelete(data.id, close);
+            return;
+        }
+
         // skip remove from state, only remove server-side
         deleteData({ locale, projectId, projects }, pluralize(scope), data.id,
             null, null, true);
@@ -67,7 +75,7 @@ export default function Data({
             />
 
             <AuthorizedContent object={[data, task]} action='update'>
-                <AdminMenu>
+                <AdminMenu disabled={disabled}>
                     {!hideShow && (
                         <Item
                             name="show"
@@ -148,6 +156,8 @@ Data.propTypes = {
     hideShow: PropTypes.bool,
     hideEdit: PropTypes.bool,
     hideDelete: PropTypes.bool,
+    disabled: PropTypes.bool,
     detailsAttributes: PropTypes.array,
     deleteData: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func,
 };

@@ -1,18 +1,25 @@
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { usePeople } from 'modules/person';
+import { Spinner } from 'modules/spinners';
 
 export default function SegmentForm({
     locale,
     projectId,
     projects,
     contentLocale,
-    people,
     segment,
     submitData,
     onSubmit,
     onCancel,
 }) {
+    const { data: people, isLoading } = usePeople();
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
     return (
         <div>
             <Form
@@ -20,6 +27,7 @@ export default function SegmentForm({
                 onSubmit={(params) => { submitData({ locale, projectId, projects }, params); onSubmit(); }}
                 onCancel={onCancel}
                 data={segment}
+                helpTextCode="segment_form"
                 values={{locale: contentLocale}}
                 submitText='submit'
                 elements={[
@@ -47,7 +55,6 @@ SegmentForm.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
-    people: PropTypes.object.isRequired,
     segment: PropTypes.object,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

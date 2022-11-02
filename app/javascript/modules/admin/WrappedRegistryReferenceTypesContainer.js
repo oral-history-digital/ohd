@@ -54,6 +54,7 @@ const mapStateToProps = (state) => {
             },
         ],
         joinedData: { },
+        helpTextCode: 'registry_reference_type_form'
     }
 }
 

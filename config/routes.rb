@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     get "norm_data_api" => "registry_entries#norm_data_api"
-    get 'catalog', to: 'catalog#index'
+    get 'catalog',                  to: 'catalog#index'
+    get 'catalog/stats',            to: 'catalog#stats'
     get 'catalog/institutions/:id', to: 'catalog#institution'
     get 'catalog/archives/:id',     to: 'catalog#archive'
     get 'catalog/collections/:id',  to: 'catalog#collection'
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
     resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
+    resources :help_texts, only: [:index]
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"
     get "location_references", to: "registry_references#location_references"
@@ -225,6 +227,7 @@ Rails.application.routes.draw do
       #root to: redirect {|params, request| "/#{params[:locale]}/projects"}
       resources :projects, only: [:create, :destroy, :index]
       resources :institutions
+      resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
       concerns :account
       concerns :unnamed_devise_routes, :search

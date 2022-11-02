@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { useRegistryReferenceApi } from 'modules/api';
 import { Form } from 'modules/forms';
+import {
+    useMutatePersonWithAssociations,
+    useMutatePersonLandingPageMetadata
+} from 'modules/person';
 
 export default function RegistryReferenceForm({
     registryReference,
@@ -21,6 +26,10 @@ export default function RegistryReferenceForm({
     onSubmit,
     onCancel,
 }) {
+    const { createRegistryReference, updateRegistryReference } = useRegistryReferenceApi();
+    const mutatePersonWithAssociations = useMutatePersonWithAssociations();
+    const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
+
     useEffect(() => {
         if (!registryReferenceTypesStatus[`for_projects_${project?.id}`]) {
             fetchData({ locale, projectId, projects }, 'registry_reference_types', null, null, `for_projects=${project?.id}`);
@@ -74,8 +83,30 @@ export default function RegistryReferenceForm({
                     ref_position: 1,
                     workflow_state: 'preliminary'
                 }}
-                onSubmit={params => {
-                    submitData({ locale, projectId, projects }, params);
+                helpTextCode="registry_reference_form"
+                onSubmit={async params => {
+                    const refObjectType = refObject ? refObject.type : registryReference.ref_object_type;
+                    const refObjectId = refObject ? refObject.id : registryReference.ref_object_id;
+
+                    if (refObjectType === 'Person') {
+                        mutatePersonWithAssociations(refObjectId, async () => {
+                            const referenceData = {...params.registry_reference};
+                            let result;
+                            if ('id' in referenceData) {
+                                const referenceId = referenceData.id;
+                                delete referenceData.id;
+                                result = await updateRegistryReference(referenceId, referenceData);
+                            } else {
+                                result = await createRegistryReference(referenceData);
+                            }
+                            mutatePersonLandingPageMetadata(refObjectId);
+
+                            return result;
+                        });
+                    } else {
+                        submitData({ locale, projectId, projects }, params);
+                    }
+
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }

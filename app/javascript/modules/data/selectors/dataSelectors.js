@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
+import shuffle from 'lodash.shuffle';
 
 import { getArchiveId, getProjectId, getLocale  } from 'modules/archive';
+import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { DEFAULT_LOCALES } from 'modules/constants';
 
 export const getData = state => state.data;
@@ -270,21 +272,6 @@ export const getRootRegistryEntryReload = createSelector(
     }
 );
 
-export const getPeopleForCurrentProjectFetched = createSelector(
-    [getPeopleStatus, getCurrentProject],
-    (peopleStatus, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(peopleStatus[`for_projects_${currentProject?.id}`]);
-    }
-);
-
-export const getPeopleForCurrentProject = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.people;
-    }
-);
-
 export const getProjectLocales = createSelector(
     [getCurrentProject],
     (currentProject) => {
@@ -298,6 +285,16 @@ export const getProjectHasMap = createSelector(
     [getCurrentProject],
     (currentProject) => {
         return currentProject?.has_map;
+    }
+);
+
+export const getStartpageProjects = createSelector(
+    [getProjects],
+    projectObject => {
+        const filteredProjects = Object.values(projectObject)
+            .filter(project => project.num_interviews > 0);
+
+        return shuffle(filteredProjects);
     }
 );
 
@@ -382,29 +379,21 @@ export const getContributionTypesForCurrentProject = createSelector(
     }
 );
 
-export const getCurrentInterviewee = createSelector(
-    [getCurrentInterview, getPeopleForCurrentProject],
-    (interview, people) => {
-        if (interview?.contributions && people) {
-            const intervieweeContribution = Object.values(interview.contributions)
-                .find(c => c.contribution_type === 'interviewee');
-            return people[intervieweeContribution?.person_id];
+export const getCurrentIntervieweeId = createSelector(
+    getCurrentInterview,
+    interview => {
+        if (!interview?.contributions) {
+            return undefined;
         }
-    }
-);
 
-const getInterviewFromProps = (_, props) =>
-    props.interview;
+        const intervieweeContribution = Object.values(interview.contributions)
+            .find(c => c.contribution_type === CONTRIBUTION_INTERVIEWEE);
 
-// Eventually, only use getCurrentInterviewee above.
-export const getInterviewee = createSelector(
-    [getInterviewFromProps, getPeopleForCurrentProject],
-    (interview, people) => {
-        if (interview?.contributions && people) {
-            const intervieweeContribution = Object.values(interview.contributions)
-                .find(c => c.contribution_type === 'interviewee');
-            return people[intervieweeContribution?.person_id];
+        if (!intervieweeContribution) {
+            return null;
         }
+
+        return intervieweeContribution.person_id;
     }
 );
 

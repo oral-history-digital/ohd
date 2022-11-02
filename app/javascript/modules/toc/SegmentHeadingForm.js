@@ -23,6 +23,7 @@ export default function SegmentHeadingForm({
                 }}
                 onCancel={onCancel}
                 data={segment}
+                helpTextCode="language_form"
                 submitText='submit'
                 elements={[
                     {

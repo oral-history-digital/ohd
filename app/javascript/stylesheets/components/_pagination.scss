@@ -1,0 +1,33 @@
+/*
+ * Pagination component.
+ *
+ * 1. Disabled page button is the active page button.
+ */
+
+.Pagination {
+  display: flex;
+}
+
+.Pagination-browse {
+
+}
+
+.Pagination-page {
+  padding: 0 ($base-unit / 4);
+}
+
+.Pagination-page:disabled {
+  color: var(--primary-color);
+  font-weight: bold;  /* 1 */
+}
+
+.Pagination-ellipsis {
+
+}
+
+.Pagination-pageSize {
+  border: 1px solid $ui-background-color;
+  font-family: $font-family;
+  line-height: $base-unit;
+  padding: 0.1rem ($base-unit / 4);
+}

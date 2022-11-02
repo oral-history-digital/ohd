@@ -1,41 +1,36 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { formatPersonName } from 'modules/person';
-import { t } from 'modules/i18n';
+import { formatPersonName, usePeople } from 'modules/person';
+import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 
-export default class AssignSpeakersForm extends Component {
+export default function AssignSpeakersForm({
+    archiveId,
+    contributionTypes,
+    fetchData,
+    interview,
+    projectId,
+    projects,
+    speakerDesignationsStatus,
+    submitData,
+}) {
+    const [showForm, setShowForm] = useState(true);
+    const { t, locale, translations } = useI18n();
+    const { data: people, isLoading: peopleAreLoading } = usePeople();
 
-    constructor(props) {
-        super(props);
-        this.showContribution = this.showContribution.bind(this);
-        this.state = {
-            showForm: true
-        };
-    }
-
-    componentDidMount() {
-        this.loadSpeakerDesignations();
-    }
-
-    componentDidUpdate() {
-        this.loadSpeakerDesignations();
-    }
-
-    loadSpeakerDesignations() {
+    useEffect(() => {
         if (
-            !this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] ||
-            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'reload'
+            !speakerDesignationsStatus[`for_interviews_${archiveId}`] ||
+            speakerDesignationsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'speaker_designations');
+            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'speaker_designations');
         }
-    }
+    });
 
-    showContribution(value) {
-        const { locale, people, translations, contributionTypes } = this.props;
-
+    function showContribution(value) {
         const person = people[Number.parseInt(value.person_id)];
 
         return (
@@ -51,81 +46,71 @@ export default class AssignSpeakersForm extends Component {
         )
     }
 
-    returnToForm() {
-        this.setState({showForm: true});
-    }
-
-    formElements() {
+    function formElements() {
         let elements = [];
-        for (var i in this.props.interview.speaker_designations) {
+        for (var i in interview.speaker_designations) {
             elements.push({
                 elementType: 'select',
-                attribute: `[speakers]${this.props.interview.speaker_designations[i]}`,
-                label: `${t(this.props, 'edit.update_speaker.speaker_for_speaker_designation')} ${this.props.interview.speaker_designations[i]}`,
-                values: Object.values(this.props.people),
+                attribute: `[speakers]${interview.speaker_designations[i]}`,
+                label: `${t('edit.update_speaker.speaker_for_speaker_designation')} ${interview.speaker_designations[i]}`,
+                values: Object.values(people),
                 withEmpty: true,
             });
         }
         return elements;
     }
 
-    form() {
-        if (this.state.showForm) {
-            let _this = this;
-            return (
-                <Form
-                    scope='update_speaker'
-                    onSubmit={function(params){_this.props.submitData(_this.props, params);_this.setState({showForm: false})}}
-                    values={{
-                        id: this.props.interview.archive_id
-                    }}
-                    elements={this.formElements()}
-                    nestedScopeProps={[{
-                        formComponent: this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer,
-                        formProps: {withSpeakerDesignation: true, interview: this.props.interview},
-                        parent: this.props.interview,
-                        scope: 'contribution',
-                        elementRepresentation: this.showContribution,
-                    }]}
-                />
-            )
-        }
-    }
-
-    msg() {
-        //if (!this.state.showForm) {
-        if (true) {
-            return (
-                <div>
-                    <p>
-                        {t(this.props, 'edit.update_speaker.' + this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`])}
-                    </p>
-                </div>
-            )
-        }
-    }
-
     //
     // hidden speaker designations are those written in column 'speaker' from table 'segments'
     //
-    allHiddenSpeakerDesignationsAssigned() {
-        return Object.keys(this.props.interview.speaker_designations).length < 1;
+    function allHiddenSpeakerDesignationsAssigned() {
+        return Object.keys(interview.speaker_designations).length < 1;
     }
 
-    render() {
-        if (
-            // speaker designations used in this interview`s segments loaded?
-            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] &&
-            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] != 'fetching'
-        ) {
-            return (
-                <div>
-                    {this.msg()}
-                    {this.form()}
-                </div>
-            )
-         } else {
-            return <Spinner withPadding />
-         }
+    const speakerDesignationsLoaded = speakerDesignationsStatus[`for_interviews_${archiveId}`] &&
+        speakerDesignationsStatus[`for_interviews_${archiveId}`] != 'fetching';
+
+    if (!speakerDesignationsLoaded || peopleAreLoading) {
+        return <Spinner withPadding />;
     }
+
+    return (
+        <div>
+            <div>
+                <p>
+                    {t('edit.update_speaker.' + speakerDesignationsStatus[`for_interviews_${archiveId}`])}
+                </p>
+            </div>
+            {showForm && (
+                <Form
+                    scope='update_speaker'
+                    onSubmit={params => {
+                        submitData({ locale, projectId, projects }, params);
+                        setShowForm(false);
+                    }}
+                    helpTextCode="assign_speakers_form"
+                    values={{ id: interview.archive_id }}
+                    elements={formElements()}
+                    nestedScopeProps={[{
+                        formComponent: allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer,
+                        formProps: {withSpeakerDesignation: true, interview: interview},
+                        parent: interview,
+                        scope: 'contribution',
+                        elementRepresentation: showContribution,
+                    }]}
+                />
+            )}
+        </div>
+    );
 }
+
+AssignSpeakersForm.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    contributionTypes: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    interview: PropTypes.object.isRequired,
+    projectId: PropTypes.number.isRequired,
+    projects: PropTypes.object.isRequired,
+    speakerDesignationsStatus: PropTypes.object.isRequired,
+    submitData: PropTypes.func.isRequired,
+};

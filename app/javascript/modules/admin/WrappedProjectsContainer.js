@@ -56,6 +56,7 @@ const mapStateToProps = (state) => {
             },
         ],
         showComponent: ProjectTile,
+        helpTextCode: 'archive_form'
     }
 }
 

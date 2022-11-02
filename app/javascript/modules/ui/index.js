@@ -1,7 +1,10 @@
-export { default as AdminMenu } from './components/AdminMenu';
-export { default as Checkbox } from './components/Checkbox';
-export { default as CopyText } from './components/CopyText';
-export { default as Disclosure } from './components/Disclosure';
-export { default as Modal } from './components/Modal';
-export { default as PhotoModal } from './components/PhotoModal';
-export { default as Breadcrumbs } from './components/Breadcrumbs';
+export { default as AdminMenu } from './AdminMenu';
+export { default as Checkbox } from './Checkbox';
+export { default as CopyText } from './CopyText';
+export { default as Disclosure } from './Disclosure';
+export { default as Modal } from './Modal';
+export { default as PhotoModal } from './PhotoModal';
+export { default as Breadcrumbs } from './Breadcrumbs';
+export { default as DebouncedInput } from './DebouncedInput';
+export { default as Pagination } from './Pagination';
+export { PAGINATION_DEFAULT_PAGE_SIZE } from './constants';

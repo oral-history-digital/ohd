@@ -11,6 +11,24 @@ class CatalogController < ApplicationController
     end
   end
 
+  def stats
+    respond_to do |format|
+      format.json do
+        num_institutions = Institution.count
+        num_projects = Project.count
+        num_collections = Collection.count
+        num_interviews = Interview.shared.count
+
+        render json: {
+          num_institutions: num_institutions,
+          num_projects: num_projects,
+          num_collections: num_collections,
+          num_interviews: num_interviews
+        }
+      end
+    end
+  end
+
   def institution
     respond_to do |format|
       format.html do

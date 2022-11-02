@@ -1,0 +1,32 @@
+$help-text-color: #004d00;
+$help-text-background-color: #e6ffe6;
+
+.HelpText {
+  display: flex;
+}
+
+.HelpText-inner {
+  background-color: $help-text-background-color;
+  border: 0.1rem solid $help-text-color;
+  display: flex;
+  margin-left: auto;
+  max-width: 30 * $base-unit;
+  padding: $base-unit / 2;
+}
+
+.HelpText-icon {
+  color: $help-text-color;
+  flex-shrink: 0;
+}
+
+.HelpText-body {
+
+}
+
+.HelpText-text {
+  line-height: $base-unit;
+  margin: 0;
+}
+
+.HelpText-link {
+}

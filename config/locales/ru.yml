@@ -563,6 +563,7 @@ ru:
     default:
       show: Display
       edit: Bearbeiten
+      edit_record: "Edit %{name}"
       new: Hinzufügen
       return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
@@ -1247,6 +1248,7 @@ ru:
         code: Code
         registry_entry_id: Registereintrag
       default:
+        id: ID
         name: Name
         title: Name
         label: Label
@@ -1273,7 +1275,8 @@ ru:
         publish: Öffentlich
         project_id: Archive
         key: Schlüssel
-        created_at: Angelegt am
+        created_at: Created at
+        updated_at: Updated at
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
@@ -1751,6 +1754,9 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    help_text:
+      more: More…
+      wiki_link: Wiki help text
     interview:
       video_preview: Video preview
       audio_preview: Audio preview
@@ -1786,6 +1792,7 @@ ru:
       copy_position: Копировать позицию
       copy_position_tooltip: Копировать актуальную отметку времени как URL
     person:
+      no_interviewee: No interviewee
       abbr_titles:
         doctor_female: д-р.
         professor_female: проф.
@@ -1826,6 +1833,9 @@ ru:
     sidebar:
       catalog: Catalog
       search: Search
+    tables:
+      actions: Actions
+      search: Search…
     toc:
       collapse: Collapse
       expand: Expand
@@ -1841,6 +1851,11 @@ ru:
       admin_menu:
         actions: Actions
       copy_link: Копировать URL
+      pagination:
+        page: "Page %{current} of %{total}"
+        prev: previous page
+        next: next page
+        show: "Show %{pageSize}"
     workbook:
       from: с
       delete: Удалить из Рабочей тетради

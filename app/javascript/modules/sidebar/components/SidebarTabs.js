@@ -74,6 +74,9 @@ export default function SidebarTabs({
         case indexes.INDEX_INSTITUTIONS:
             navigate(`/${locale}/institutions`);
             break;
+        case indexes.INDEX_HELP_TEXTS:
+            navigate(`/${locale}/help_texts`);
+            break;
         default:
         }
     }
@@ -92,6 +95,7 @@ export default function SidebarTabs({
     const showProjectAdminTab = project && isAuthorized({type: 'Project'}, 'update');
     const showProjectsTab = !project && isAuthorized({type: 'Project'}, 'create');
     const showInstitutionsTab = !project && isAuthorized({type: 'Institution'}, 'create');
+    const showHelpTextsTab = !project && isAuthorized({type: 'HelpText'}, 'create');
 
     return (
         <Tabs
@@ -199,6 +203,14 @@ export default function SidebarTabs({
                 >
                     {t('edit.institution.admin')}
                 </Tab>
+
+                <Tab
+                    key="13"
+                    className="SidebarTabs-tab SidebarTabs-tab--admin"
+                    disabled={!showHelpTextsTab}
+                >
+                    {t('activerecord.models.help_text.other')}
+                </Tab>
             </TabList>
 
             <TabPanels>
@@ -266,6 +278,8 @@ export default function SidebarTabs({
                 <TabPanel key="11" />
 
                 <TabPanel key="12" />
+
+                <TabPanel key="13" />
             </TabPanels>
         </Tabs>
     );
@@ -273,8 +287,8 @@ export default function SidebarTabs({
 
 SidebarTabs.propTypes = {
     interview: PropTypes.object,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string,
+    project: PropTypes.object,
     archiveId: PropTypes.string,
     hasMap: PropTypes.bool,
     isLoggedIn: PropTypes.bool,

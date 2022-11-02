@@ -69,6 +69,7 @@ export default class DataList extends Component {
                     data={data}
                     values={this.props.initialFormValues}
                     scope={this.props.scope}
+                    helpTextCode={this.props.helpTextCode}
                     onSubmit={(params) => {
                         this.props.submitData(this.props, params);
                         if (typeof onSubmit === 'function') {
@@ -111,6 +112,7 @@ export default class DataList extends Component {
 }
 
 DataList.propTypes = {
+    helpTextCode: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
 };
