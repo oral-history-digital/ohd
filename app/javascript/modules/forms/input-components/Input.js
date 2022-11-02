@@ -61,6 +61,7 @@ export default class Input extends Component {
             name: this.props.attribute,
             defaultChecked: value,
             defaultValue: value,
+            value: value,
             onChange: this.handleChange,
             onClick: this.handleChange, // otherwise checkboxes would not fire
         };

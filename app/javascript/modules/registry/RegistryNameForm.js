@@ -74,7 +74,7 @@ export default function RegistryNameForm({
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}
-            data={data}
+            data={registryEntryAttributes?.registry_names_attributes?.[0] || data}
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
