@@ -4,10 +4,12 @@ import classNames from 'classnames';
 import { Element } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { updateRegistryNameAttributes } from './updateRegistryNameAttributes';
 
 function NormDataForDescriptor({
     locale,
     setRegistryEntryAttributes,
+    registryEntryAttributes,
     registryNameTypes,
     normDataProviders,
     descriptor,
@@ -38,14 +40,7 @@ function NormDataForDescriptor({
                             setRegistryEntryAttributes({
                                 latitude: result.Entry.Location?.Latitude,
                                 longitude: result.Entry.Location?.Longitude,
-                                registry_names_attributes: [{
-                                    registry_name_type_id: defaultNameType.id,
-                                    name_position: 1,
-                                    translations_attributes: [{
-                                        descriptor: result.Entry.Name,
-                                        locale: locale,
-                                    }],
-                                }],
+                                ...updateRegistryNameAttributes(result.Entry.Name, defaultNameType.id, registryEntryAttributes, null, locale),
                                 norm_data_attributes: [{
                                     norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === result.Entry.Provider ).id,
                                     nid: result.Entry.ID,

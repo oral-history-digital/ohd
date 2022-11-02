@@ -21,6 +21,7 @@ export default function NormDatumForm({
     normDataProviders,
     locale,
     setRegistryEntryAttributes,
+    registryEntryAttributes,
 }) {
 
     const { t } = useI18n();
@@ -44,6 +45,7 @@ export default function NormDatumForm({
                 <NormDataForDescriptorContainer
                     descriptor={descriptor}
                     setRegistryEntryAttributes={setRegistryEntryAttributes}
+                    registryEntryAttributes={registryEntryAttributes}
                     setFromAPI={setFromAPI}
                 /> :
                 <Form
