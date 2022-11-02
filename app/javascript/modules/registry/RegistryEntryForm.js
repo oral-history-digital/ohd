@@ -35,7 +35,7 @@ export default function RegistryEntryForm({
         if (!registryName)
             return null;
         const translation = registryName.translations_attributes.find(t => t.locale === locale);
-        return (<span>{translation.descriptor}</span>);
+        return (<span>{translation?.descriptor}</span>);
     }
 
     function showNormDatum(normDatum) {
@@ -124,6 +124,7 @@ export default function RegistryEntryForm({
                             ...(registryEntryAttributes.norm_data_attributes?.[0]),
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes: registryEntryAttributes,
+                            registryName: registryEntry?.registry_names?.[0],
                         },
                         parent: registryEntry,
                         scope: 'norm_datum',

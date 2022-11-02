@@ -11,6 +11,7 @@ function NormDataForDescriptor({
     setRegistryEntryAttributes,
     registryEntryAttributes,
     registryNameTypes,
+    registryName,
     normDataProviders,
     descriptor,
     setFromAPI,
@@ -40,7 +41,7 @@ function NormDataForDescriptor({
                             setRegistryEntryAttributes({
                                 latitude: result.Entry.Location?.Latitude,
                                 longitude: result.Entry.Location?.Longitude,
-                                ...updateRegistryNameAttributes(result.Entry.Name, defaultNameType.id, registryEntryAttributes, null, locale),
+                                ...updateRegistryNameAttributes(result.Entry.Name, defaultNameType.id, registryEntryAttributes, registryName, locale),
                                 norm_data_attributes: [{
                                     norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === result.Entry.Provider ).id,
                                     nid: result.Entry.ID,

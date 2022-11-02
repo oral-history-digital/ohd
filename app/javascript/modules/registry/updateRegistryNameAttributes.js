@@ -12,6 +12,7 @@ export function updateRegistryNameAttributes(value, nameTypeId, registryEntryAtt
             [registryNamesIndex]: Object.assign({}, registryNamesAttributes[registryNamesIndex], {
                 registry_name_type_id: nameTypeId,
                 name_position: 1,
+                id: data?.id,
                 translations_attributes: Object.assign([], translationsAttributes, {
                     [translationIndex]: Object.assign({}, translation, {
                         descriptor: value,
