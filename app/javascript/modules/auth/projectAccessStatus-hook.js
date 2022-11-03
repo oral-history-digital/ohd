@@ -5,7 +5,7 @@ import { getCurrentAccount } from 'modules/data';
 export function useProjectAccessStatus(project) {
     const account = useSelector(getCurrentAccount);
 
-    const projectRegistration = account &&
+    const projectRegistration = account && project &&
         Object.values(account.user_registration_projects).find(urp => urp.project_id === project.id);
     const projectAccessStatus = projectRegistration?.workflow_state;
 
