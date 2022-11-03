@@ -95,7 +95,7 @@ export default function SidebarTabs({
     const showProjectAdminTab = project && isAuthorized({type: 'Project'}, 'update');
     const showProjectsTab = !project && isAuthorized({type: 'Project'}, 'create');
     const showInstitutionsTab = !project && isAuthorized({type: 'Institution'}, 'create');
-    const showHelpTextsTab = !project && isAuthorized({type: 'HelpText'}, 'create');
+    const showHelpTextsTab = !project && isAuthorized({type: 'HelpText'}, 'update');
 
     return (
         <Tabs

@@ -8,7 +8,7 @@ class ApplicationPolicy
   end
 
   def index?
-    user
+    user.present?
   end
 
   def show?
@@ -31,17 +31,13 @@ class ApplicationPolicy
     end
 
     def resolve
-      #if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
-        if project && scope.attribute_names.include?('project_id')
-          scope.where(project_id: project.id)
-        elsif project && scope.attribute_names.include?('interview_id')
-          scope.joins(:interview).where("interviews.project_id = ?", project.id)
-        else
-          scope.all
-        end
-      #else
-        #scope.none
-      #end
+      if project && scope.attribute_names.include?('project_id')
+        scope.where(project_id: project.id)
+      elsif project && scope.attribute_names.include?('interview_id')
+        scope.joins(:interview).where("interviews.project_id = ?", project.id)
+      else
+        scope.all
+      end
     end
   end
 
