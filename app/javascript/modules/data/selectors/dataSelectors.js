@@ -13,6 +13,14 @@ export const getInstitutions = state => getData(state).institutions;
 
 export const getProjects = state => getData(state).projects;
 
+export const getPublicProjects = createSelector(
+    getProjects,
+    projectObject => {
+        return Object.values(projectObject)
+            .filter(project => project.workflow_state === 'public');
+    }
+);
+
 export const getCollections = state => getData(state).collections;
 
 export const getNormDataProviders = state => getData(state).norm_data_providers;
@@ -289,13 +297,8 @@ export const getProjectHasMap = createSelector(
 );
 
 export const getStartpageProjects = createSelector(
-    [getProjects],
-    projectObject => {
-        const filteredProjects = Object.values(projectObject)
-            .filter(project => project.num_interviews > 0);
-
-        return shuffle(filteredProjects);
-    }
+    [getPublicProjects],
+    projects => shuffle(projects)
 );
 
 export const getCollectionsForCurrentProjectFetched = createSelector(

@@ -5,20 +5,20 @@ import { Link } from 'react-router-dom';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
-import { getProjects, getInstitutions } from 'modules/data';
+import { getPublicProjects, getInstitutions } from 'modules/data';
 import { usePathBase, LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
 import ArchiveCatalog from './ArchiveCatalog';
 
 export default function ArchiveCatalogPage() {
-    const projects = useSelector(getProjects);
+    const projects = useSelector(getPublicProjects);
     const allInstitutions = useSelector(getInstitutions);
     const { t, locale } = useI18n();
-    const { id } = useParams();
+    const id = Number(useParams().id);
     const pathBase = usePathBase();
 
-    const project = projects[id];
+    const project = projects.find(p => p.id === id);
 
     if (!project) {
         return (

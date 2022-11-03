@@ -69,6 +69,10 @@ class Project < ApplicationRecord
   validates :aspect_y, numericality: { only_integer: true },  allow_nil: true
   validates :archive_id_number_length, numericality: { only_integer: true },  allow_nil: true
   validates :shortname, format: { with: /\A[\-a-z0-9]{1,11}[a-z]\z/ },  uniqueness: true,  presence: true
+  validates :workflow_state, inclusion: { in: %w(public unshared),
+    message: "%{value} is not a valid workflow state" }
+
+  scope :shared, -> { where(workflow_state: 'public' )}
 
   before_save :touch_interviews
   def touch_interviews
@@ -126,7 +130,7 @@ class Project < ApplicationRecord
   end
 
   def num_interviews
-    interviews.where('workflow_state': 'public').count
+    interviews.shared.count
   end
 
   def domain_with_optional_identifier

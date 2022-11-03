@@ -225,7 +225,7 @@ Rails.application.routes.draw do
     scope "/:locale" do
       root to: "projects#index"
       #root to: redirect {|params, request| "/#{params[:locale]}/projects"}
-      resources :projects, only: [:create, :destroy, :index]
+      resources :projects, only: [:create, :update, :destroy, :index]
       resources :institutions
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]

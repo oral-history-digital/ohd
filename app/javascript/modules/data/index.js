@@ -43,6 +43,7 @@ export {
     getProjectLocales,
     getProjects,
     getProjectsStatus,
+    getPublicProjects,
     getRefTreeStatus,
     getRegistryEntries,
     getRegistryEntriesStatus,
