@@ -22,7 +22,8 @@ export default class Input extends Component {
         super(props);
         this.state = {
             valid: (typeof this.props.validate !== 'function') || this.props.optional,
-            changeFile: false
+            changeFile: false,
+            value: this.props.data && this.props.data[this.props.attribute] || this.props.value,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -33,6 +34,8 @@ export default class Input extends Component {
         if (event.target.type === 'checkbox') {
             value = event.target.checked;
         }
+
+        this.setState({value: value});
 
         const name =  event.target.name;
 
@@ -54,19 +57,20 @@ export default class Input extends Component {
     }
 
     cleanProps() {
-        let value = this.props.data && this.props.data[this.props.attribute] || this.props.value;
         let props = {
             id: `${this.props.scope}_${this.props.attribute}`,
             className: 'Input',
             type: this.props.type,
             name: this.props.attribute,
             readOnly: this.props.readOnly,
-            defaultChecked: value,
-            defaultValue: value,
-            value: value,
+            defaultChecked: this.state.value,
+            defaultValue: this.state.value,
             onChange: this.handleChange,
             onClick: this.handleChange, // otherwise checkboxes would not fire
         };
+
+        if (this.props.type !== 'file')
+            props.value = this.props.data && this.props.data[this.props.attribute] || this.props.value || this.state.value;
 
         return props;
     }
