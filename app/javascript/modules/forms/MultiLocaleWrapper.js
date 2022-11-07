@@ -67,9 +67,13 @@ export default class MultiLocaleWrapper extends Component {
     }
 
     preparedProps(locale) {
+        const translation = this.findTranslation(locale) || {locale: locale};
+        const value = translation[this.props.attribute];
+
         return Object.assign({}, this.props, {
             handleChange: this.handleChange,
-            data: this.findTranslation(locale) || {locale: locale},
+            data: translation,
+            value: value,
             label: this.label(locale),
             key: `${this.props.attribute}-${locale}`
         })

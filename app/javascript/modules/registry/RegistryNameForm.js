@@ -52,6 +52,7 @@ export default function RegistryNameForm({
             multiLocale: true,
             validate: function(v){return v && v.length > 1},
             handlechangecallback: handleDescriptorChange,
+            forceUpdateFromProps: true,
         },
         {
             elementType: 'select',

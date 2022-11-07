@@ -1,124 +1,129 @@
 import PropTypes from 'prop-types';
-import { createElement, Component } from 'react';
+import { createElement, useState, useEffect } from 'react';
 import { FaPencilAlt} from 'react-icons/fa';
 
 import { Checkbox } from 'modules/ui';
 import Element from '../Element';
 
-export default class Input extends Component {
+export default function Input({
+    scope,
+    attribute,
+    type,
+    value,
+    data,
+    validate,
+    label,
+    labelKey,
+    showErrors,
+    optional,
+    handleChange,
+    handlechangecallback,
+    handleErrors,
+    help,
+    individualErrorMsg,
+    hidden,
+    className,
+    readOnly,
+    forceUpdateFromProps,
+}) {
 
-    // props are:
-    //   @scope
-    //   @attribute = attribute name
-    //   @type
-    //   @value = default value
-    //   @validate = function
-    //   @optional = boolean
-    //   @handleChange = function
-    //   @handleErrors = function
-    //   @help
+    const [valid, setValid] = useState((typeof validate !== 'function') || optional);
+    const [changeFile, setChangeFile] = useState(false);
+    const [val, setVal] = useState(data?.[attribute] || value);
 
-    constructor(props, context) {
-        super(props);
-        this.state = {
-            valid: (typeof this.props.validate !== 'function') || this.props.optional,
-            changeFile: false,
-            value: this.props.data && this.props.data[this.props.attribute] || this.props.value,
-        };
+    useEffect(() => {
+        //console.log('input ' + attribute + ' value: ' + value + ' data: ' + JSON.stringify(data));
+        setVal(data?.[attribute] || value);
+        //cleanProps.value = data?.[attribute] || value;
+    }, [value, data?.[attribute]]);
 
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        let value =  event.target.files ? event.target.files[0] : event.target.value;
+    const onChange = (event) => {
+        let v =  event.target.files ? event.target.files[0] : event.target.value;
         if (event.target.type === 'checkbox') {
-            value = event.target.checked;
+            v = event.target.checked;
         }
 
-        this.setState({value: value});
+        setVal(v);
 
         const name =  event.target.name;
 
-        this.props.handleChange(name, value, this.props.data);
+        handleChange(name, v, data);
 
-        if (typeof this.props.handlechangecallback === 'function') {
-            this.props.handlechangecallback(name, value, this.props.data);
+        if (typeof handlechangecallback === 'function') {
+            handlechangecallback(name, v, data);
         }
 
-        if (typeof(this.props.validate) === 'function') {
-            if (this.props.validate(value)) {
-                this.props.handleErrors(name, false);
-                this.setState({valid: true})
+        if (typeof(validate) === 'function') {
+            if (validate(v)) {
+                handleErrors(name, false);
+                setValid(true)
             } else {
-                this.props.handleErrors(name, true);
-                this.setState({valid: false})
+                handleErrors(name, true);
+                setValid(false)
             }
         }
     }
 
-    cleanProps() {
-        let props = {
-            id: `${this.props.scope}_${this.props.attribute}`,
+    const cleanProps = () => {
+        const props = {
+            id: `${scope}_${attribute}`,
             className: 'Input',
-            type: this.props.type,
-            name: this.props.attribute,
-            readOnly: this.props.readOnly,
-            defaultChecked: this.state.value,
-            defaultValue: this.state.value,
-            onChange: this.handleChange,
-            onClick: this.handleChange, // otherwise checkboxes would not fire
-        };
+            type: type,
+            name: attribute,
+            readOnly: readOnly,
+            defaultChecked: val,
+            defaultValue: val,
+            onChange: onChange,
+            onClick: onChange,
+        }
 
-        if (this.props.type !== 'file')
-            props.value = this.props.data && this.props.data[this.props.attribute] || this.props.value || this.state.value;
+        if (forceUpdateFromProps)
+            props.value = val; //data && data[attribute] || val;
 
         return props;
-    }
+    };
 
-    inputOrImg() {
-        if (this.props.type === 'file' && this.props.data && this.props.data.src && !this.state.changeFile) {
+
+    const inputOrImg = () => {
+        if (type === 'file' && data && data.src && !changeFile) {
             return (
                 <div>
-                    <img src={this.props.data.thumb_src} alt="" />
+                    <img src={data.thumb_src} alt="" />
                     <button
                         type="button"
                         className="Button Button--transparent Button--icon"
-                        onClick={() => this.setState({ changeFile: true })}
+                        onClick={() => setChangeFile(true)}
                     >
                         <FaPencilAlt className="Icon Icon--primary" />
                     </button>
                 </div>
             )
-        } else if (this.props.type === 'checkbox') {
-            return createElement(Checkbox, this.cleanProps());
+        } else if (type === 'checkbox') {
+            return createElement(Checkbox, cleanProps());
         } else {
-            return createElement('input', this.cleanProps());
+            return createElement('input', cleanProps());
         }
     }
 
-    render() {
-        const { validate, optional } = this.props;
-
-        return (
-            <Element
-                scope={this.props.scope}
-                attribute={this.props.attribute}
-                label={this.props.label}
-                labelKey={this.props.labelKey}
-                htmlFor={`${this.props.scope}_${this.props.attribute}`}
-                showErrors={this.props.showErrors}
-                className={this.props.className}
-                hidden={this.props.hidden}
-                valid={this.state.valid}
-                mandatory={typeof validate === 'function' && !optional}
-                elementType={`${this.props.type}_input`}
-                individualErrorMsg={this.props.individualErrorMsg}
-                help={this.props.help}
-            >
-                {this.inputOrImg()}
-            </Element>
-        );
-    }
+    return (
+        <Element
+            scope={scope}
+            attribute={attribute}
+            label={label}
+            labelKey={labelKey}
+            htmlFor={`${scope}_${attribute}`}
+            showErrors={showErrors}
+            className={className}
+            hidden={hidden}
+            valid={valid}
+            mandatory={typeof validate === 'function' && !optional}
+            elementType={`${type}_input`}
+            individualErrorMsg={individualErrorMsg}
+            help={help}
+        >
+            {inputOrImg()}
+        </Element>
+    );
 }
 
 Input.propTypes = {
