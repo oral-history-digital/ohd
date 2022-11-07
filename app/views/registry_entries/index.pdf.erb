@@ -68,9 +68,9 @@
       \addcontentsline{toc}{section}{<%= registry_entry.descriptor(locale)[0].upcase %>}
     <% end %>
 
-    <%= locale.to_s == 'el' ? 'ΠΟ' : 'BB' %> \textbf{<%= latex_escape(registry_entry.descriptor(locale)) %>}\\
+    <%= locale.to_s == 'el' ? 'ΠΟ' : 'BB' %> \textbf{<%= latex_escape(registry_entry.descriptor(locale).gsub(/[\r\n\t]/, '')) %>}\\
     <% unless registry_entry.notes(locale).blank? %>
-      <%= locale.to_s == 'el' ? 'Σε' : 'SH' %> <%= latex_escape(registry_entry.notes(locale)) %>\\
+      <%= locale.to_s == 'el' ? 'Σε' : 'SH' %> <%= latex_escape(registry_entry.notes(locale).gsub(/[\r\n\t]/, '')) %>\\
     <% end %>
 
     <% last_entry = registry_entry %>
