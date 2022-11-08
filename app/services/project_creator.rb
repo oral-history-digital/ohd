@@ -10,8 +10,7 @@ class ProjectCreator < ApplicationService
   def perform(*args)
     @project = Project.create(project_params)
     grant_access_to_creating_user
-    create_default_registry_name_type
-    create_norm_data_registry_name_type
+    create_default_registry_name_types
     create_root_registry_entry
     create_default_registry_entries
     create_default_registry_reference_types
@@ -37,22 +36,26 @@ class ProjectCreator < ApplicationService
     user_registration_project.grant_project_access!
   end
 
-  def create_default_registry_name_type
-    @default_registry_name_type = RegistryNameType.create(
-      code: "spelling",
-      name: "Bezeichner",
-      order_priority: 3,
-      project_id: project.id
-    )
+  def create_default_registry_name_types
+    {
+      spelling: 'Bezeichner',
+      original: 'Originalbezeichnung',
+      ancient: 'Ehemalige Bezeichnung'
+    }.each do |code, name|
+      RegistryNameType.create(
+        code: code,
+        name: name,
+        order_priority: 3,
+        project_id: project.id
+      )
+    end
   end
 
-  def create_norm_data_registry_name_type
-    RegistryNameType.create(
-      code: "norm_data",
-      name: "Normdaten",
-      order_priority: 3,
+  def default_registry_name_type
+    @default_registry_name_type ||= RegistryNameType.where(
+      code: "spelling",
       project_id: project.id
-    )
+    ).first
   end
 
   def create_root_registry_entry
