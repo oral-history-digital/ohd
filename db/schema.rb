@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_03_125255) do
+ActiveRecord::Schema.define(version: 2022_11_08_161512) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_125255) do
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "start_date", null: false
-    t.date "end_date"
+    t.date "end_date", null: false
     t.bigint "event_type_id", null: false
     t.string "eventable_type", null: false
     t.bigint "eventable_id", null: false
