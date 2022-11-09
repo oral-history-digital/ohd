@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   belongs_to :eventable, polymorphic: true, touch: true
 
   translates :display_date, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 
   validates :start_date, presence: true
   validates :end_date, presence: true

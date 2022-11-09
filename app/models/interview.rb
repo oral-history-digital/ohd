@@ -123,6 +123,12 @@ class Interview < ApplicationRecord
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
     string :workflow_state, stored: true
 
+    dynamic_date :events do
+      interviewee&.events&.inject({}) do |hash, e|
+        hash.merge(e.event_type.code => e.start_date)
+      end
+    end
+
     # in order to find pseudonyms with fulltextsearch (dg)
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
 
