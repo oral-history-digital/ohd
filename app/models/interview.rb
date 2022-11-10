@@ -829,6 +829,10 @@ class Interview < ApplicationRecord
               facet facet_name, limit: -1, exclude: [filter].reject(&:blank?)
             end
           end
+
+          dynamic :events do
+            with(:date_of_birth).between(Date.new(1980,1,1)..Date.new(2022,1,1))
+          end
         end
 
         sort_by =    params.fetch(:sort, 'title').to_sym
