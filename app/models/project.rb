@@ -351,6 +351,9 @@ class Project < ApplicationRecord
       facet[:subfacets].delete_if { |k, subfacet| subfacet[:count] == 0 }
     end
 
+    # TODO: For testing, remove soon.
+    facets[:date_of_birth] = 'date_of_birth'
+
     facets
   end
 

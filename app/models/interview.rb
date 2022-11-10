@@ -814,6 +814,11 @@ class Interview < ApplicationRecord
     end
 
     def archive_search(user_account, project, locale, params, per_page = 12)
+      date_of_birth_from = params[:date_of_birth_from] ?
+        Date.parse(params[:date_of_birth_from]) : nil
+      date_of_birth_until = params[:date_of_birth_until] ?
+        Date.parse(params[:date_of_birth_until]) : nil
+
       search = Interview.search do
         fulltext params[:fulltext]
         with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
@@ -831,7 +836,7 @@ class Interview < ApplicationRecord
           end
 
           dynamic :events do
-            with(:date_of_birth).between(Date.new(1980,1,1)..Date.new(2022,1,1))
+            with(:date_of_birth).between(date_of_birth_from..date_of_birth_until)
           end
         end
 

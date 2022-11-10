@@ -71,6 +71,13 @@ export default function useSearchParams() {
         pushToHistory(newParams);
     }
 
+    function setEventParams(name, from, until) {
+        setParams({
+            [`${name}_from`]: from !== '' ? from : undefined,
+            [`${name}_until`]: until !== '' ? until : undefined
+        });
+    }
+
     function setYearOfBirthRange(min, max) {
         setParams({
             year_of_birth_min: min,
@@ -153,6 +160,13 @@ export default function useSearchParams() {
         return params[name] || [];
     }
 
+    function getEventParams(name) {
+        return [
+            params[`${name}_from`] || '',
+            params[`${name}_until`] || ''
+        ];
+    }
+
     function resetSearchParams() {
         const newParams = {};
         pushToHistory(newParams);
@@ -183,6 +197,8 @@ export default function useSearchParams() {
             setFulltext,
             setFulltextAndSort,
             setYearOfBirthRange,
+            setEventParams,
+            getEventParams,
             setParam,
             addFacetParam,
             deleteFacetParam,

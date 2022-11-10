@@ -5,11 +5,13 @@ class SearchesController < ApplicationController
 
   def facets
     search = Interview.archive_search(current_user_account, current_project, locale, params)
-    json = { facets: current_project ? current_project.updated_search_facets(search) : {} }.to_json
+    facets = current_project ?
+      current_project.updated_search_facets(search) :
+      {}
 
     respond_to do |format|
       format.json do
-        render plain: json
+        render json: { facets: facets }
       end
     end
   end

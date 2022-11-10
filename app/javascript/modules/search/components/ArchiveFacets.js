@@ -2,7 +2,9 @@ import classNames from 'classnames';
 
 import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
+import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
+import DateFacet from './DateFacet';
 import YearOfBirthFacet from './YearOfBirthFacet';
 import useFacets from '../useFacets';
 
@@ -24,7 +26,7 @@ export default function ArchiveFacets() {
         <div className={classNames('LoadingOverlay', {
             'is-loading': isLoading,
         })}>
-            {Object.keys(facets).map((facet, index) => {
+            {Object.keys(facets).map(facet => {
                 if (facet === 'year_of_birth') {
                     const years = Object.keys(facets[facet]['subfacets'])
                         .map(year => Number.parseInt(year));
@@ -32,17 +34,27 @@ export default function ArchiveFacets() {
                     return (
                         <YearOfBirthFacet
                             data={facets[facet]}
-                            key={index}
+                            key={facet}
                             sliderMin={Math.min(...years)}
                             sliderMax={Math.max(...years)}
                         />
+                    );
+                } else if (facet === 'date_of_birth') {
+                    return (
+                        <FacetDropdown key={facet} label="Geburtsdatum">
+                            <DateFacet
+                                data={facets[facet]}
+                                name={facet}
+                                className="u-mt-small"
+                            />
+                        </FacetDropdown>
                     );
                 } else {
                     return (
                         <Facet
                             data={facets[facet]}
                             facet={facet}
-                            key={index}
+                            key={facet}
                             show={(adminFacets.indexOf(facet) > -1 && isAuthorized({type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
                             admin={(adminFacets.indexOf(facet) > -1)}
                         />
