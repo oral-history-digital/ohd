@@ -23,12 +23,10 @@ export default function RegistryEntryForm({
     const { t } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [descriptor, setDescriptor] = useState(registryEntry?.registry_names[0].descriptor[locale]);
-    const [registryEntryAttributes, setRegistryEntryAttributes] = useState({})
+    const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
     const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
-        norm_data_attributes: registryEntryAttributes.norm_data_attributes,
-        ...registryEntryAttributes,
     }
 
     function showRegistryName(registryName) {
@@ -80,14 +78,14 @@ export default function RegistryEntryForm({
                     },
                     {
                         attribute: 'latitude',
-                        value: registryEntry?.latitude || registryEntryAttributes.latitude,
+                        value: registryEntryAttributes.latitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
                     {
                         attribute: 'longitude',
-                        value: registryEntry?.longitude || registryEntryAttributes.longitude,
+                        value: registryEntryAttributes.longitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
@@ -124,7 +122,6 @@ export default function RegistryEntryForm({
                             ...(registryEntryAttributes.norm_data_attributes?.[0]),
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes: registryEntryAttributes,
-                            registryName: registryEntry?.registry_names?.[0],
                         },
                         parent: registryEntry,
                         scope: 'norm_datum',

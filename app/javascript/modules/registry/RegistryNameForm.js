@@ -22,6 +22,7 @@ export default function RegistryNameForm({
     registryEntryAttributes,
     projectId,
     projects,
+    project,
     locale,
     foundRegistryEntries,
     searchRegistryEntry,
@@ -39,7 +40,7 @@ export default function RegistryNameForm({
     const handleDescriptorChange = (name, value, params) => {
         setDescriptor(value);
         setRegistryEntryAttributes(
-            updateRegistryNameAttributes(value, defaultNameType.id, registryEntryAttributes, data, params.locale)
+            updateRegistryNameAttributes({Name: value}, registryNameTypes, registryEntryAttributes, project, params.locale)
         );
         if (value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});
