@@ -162,6 +162,7 @@ class ProjectsController < ApplicationController
           "has_map",
           "is_catalog",
           "display_ohd_link",
+          "show_preview_img",
           "workflow_state",
           translations_attributes: [:locale, :name, :id, :introduction, :more_text, :landing_page_text]
       )

@@ -1016,6 +1016,7 @@ el:
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
         display_ohd_link: OHD-Link zeigen
+        show_preview_img: Vorschaubild auf Landing-Page zeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color

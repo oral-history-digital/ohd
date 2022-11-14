@@ -56,6 +56,11 @@ const mapStateToProps = state => ({
             type: "checkbox"
         },
         {
+            elementType: 'input',
+            attribute: "show_preview_img",
+            type: "checkbox"
+        },
+        {
             attribute: "doi"
         },
         {
