@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Element } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import { updateRegistryNameAttributes, updateNormDataAttributes } from './updateRegistryNameAttributes';
+import { updateRegistryNameAttributes, updateNormDataAttributes } from './updateRegistryEntryAttributes';
 
 function NormDataForDescriptor({
     locale,
