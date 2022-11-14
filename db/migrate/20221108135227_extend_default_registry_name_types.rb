@@ -3,7 +3,6 @@ class ExtendDefaultRegistryNameTypes < ActiveRecord::Migration[5.2]
     Project.all.each do |project|
       {
         spelling: 'Bezeichner',
-        original: 'Originalbezeichnung',
         ancient: 'Ehemalige Bezeichnung'
       }.each do |code, name|
         registry_name_type = RegistryNameType.where(
