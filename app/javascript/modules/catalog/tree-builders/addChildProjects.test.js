@@ -5,11 +5,18 @@ test('adds projects for each institution', () => {
         1: {
             id: 1,
             shortname: 'zwar',
+            workflow_state: 'public'
         },
         2: {
             id: 2,
             shortname: 'cdoh',
+            workflow_state: 'public'
         },
+        3: {
+            id: 3,
+            shortname: 'test',
+            workflow_state: 'unshared'
+        }
     };
 
     const institution = {
@@ -20,6 +27,11 @@ test('adds projects for each institution', () => {
                 id: 1,
                 institution_id: 1,
                 project_id: 1,
+            },
+            2: {
+                id: 2,
+                institution_id: 1,
+                project_id: 3,
             },
         },
     };
@@ -34,10 +46,16 @@ test('adds projects for each institution', () => {
                 institution_id: 1,
                 project_id: 1,
             },
+            2: {
+                id: 2,
+                institution_id: 1,
+                project_id: 3,
+            },
         },
         projects: [{
             id: 1,
             shortname: 'zwar',
+            workflow_state: 'public'
         }],
     };
 

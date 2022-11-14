@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
-        detailsAttributes: ['title'],
+        detailsAttributes: ['title', 'workflow_state'],
         initialFormValues: {display_ohd_link: true, pseudo_view_modes: 'grid,list,workflow'},
         formElements: [
             {
@@ -54,6 +54,11 @@ const mapStateToProps = (state) => {
                 //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
                 help: 'activerecord.attributes.project.archive_domain_help'
             },
+            {
+                elementType: 'select',
+                attribute: 'workflow_state',
+                values: ['public', 'unshared'],
+            }
         ],
         showComponent: ProjectTile,
         helpTextCode: 'archive_form'

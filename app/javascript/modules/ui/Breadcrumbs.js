@@ -12,7 +12,7 @@ export default function Breadcrumbs({
                 children.map((child, index) => {
                     if (index === children.length - 1) {
                         return (
-                            <span className="Breadcrumbs-lastItem">
+                            <span key={index} className="Breadcrumbs-lastItem">
                                 {child}
                             </span>
                         );

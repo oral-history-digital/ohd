@@ -55,13 +55,13 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.index ["segment_id"], name: "index_annotations_on_segment_id"
   end
 
-  create_table "archiving_batches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "archiving_batches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "number", null: false
     t.bigint "project_id", null: false
     t.index ["project_id"], name: "index_archiving_batches_on_project_id"
   end
 
-  create_table "archiving_batches_interviews", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "archiving_batches_interviews", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "interview_id", null: false
     t.bigint "archiving_batch_id", null: false
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
@@ -243,14 +243,14 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", length: { importable_type: 191 }
   end
 
-  create_table "institution_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "institution_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "institution_id"
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "institution_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "institution_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "institution_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -261,7 +261,7 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.index ["locale"], name: "index_institution_translations_on_locale"
   end
 
-  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "shortname"
     t.string "street"
     t.string "zip"
@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.datetime "updated_at"
   end
 
-  create_table "map_section_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "map_section_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "map_section_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -344,7 +344,7 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.index ["map_section_id"], name: "index_map_section_translations_on_map_section_id"
   end
 
-  create_table "map_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "map_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.decimal "corner1_lat", precision: 10, scale: 6, null: false
     t.decimal "corner1_lon", precision: 10, scale: 6, null: false
@@ -396,7 +396,7 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.boolean "use_in_metadata_import", default: false
   end
 
-  create_table "norm_data", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "norm_data", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "nid"
     t.integer "registry_entry_id"
     t.datetime "created_at", null: false
@@ -404,7 +404,7 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.integer "norm_data_provider_id"
   end
 
-  create_table "norm_data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "norm_data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "api_name"
     t.string "url_without_id"
@@ -519,6 +519,8 @@ ActiveRecord::Schema.define(version: 2022_11_08_135227) do
     t.boolean "display_ohd_link", default: false
     t.integer "default_search_order", default: 0, null: false
     t.string "logged_out_visible_registry_entry_ids"
+    t.string "workflow_state", default: "public", null: false
+    t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

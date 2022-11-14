@@ -14,7 +14,7 @@ import InstitutionCatalog from './InstitutionCatalog';
 export default function InstitutionCatalogPage() {
     const allInstitutions = useSelector(getInstitutions);
     const { t, locale } = useI18n();
-    const { id } = useParams();
+    const id = Number(useParams().id);
     const pathBase = usePathBase();
 
     const institution = allInstitutions[id];

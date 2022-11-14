@@ -9,7 +9,7 @@ class Institution < ApplicationRecord
   accepts_nested_attributes_for :translations
 
   def num_projects
-    projects.count
+    projects.shared.count
   end
 
   def num_interviews
@@ -17,6 +17,7 @@ class Institution < ApplicationRecord
     all_interviews = Institution.where(id: id)
       .or(Institution.where(parent_id: id))
       .joins(projects: :interviews)
+      .where('projects.workflow_state': 'public')
       .where('interviews.workflow_state': 'public')
       .select(:archive_id)
       .distinct

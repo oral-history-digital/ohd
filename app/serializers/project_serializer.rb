@@ -60,7 +60,8 @@ class ProjectSerializer < ApplicationSerializer
     :grid_fields,
     :root_registry_entry_id,
     :display_ohd_link,
-    :default_search_order
+    :default_search_order,
+    :workflow_state
 
   def title
     object.shortname

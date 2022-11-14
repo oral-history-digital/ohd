@@ -15,7 +15,7 @@ class CatalogController < ApplicationController
     respond_to do |format|
       format.json do
         num_institutions = Institution.count
-        num_projects = Project.count
+        num_projects = Project.shared.count
         num_collections = Collection.count
         num_interviews = Interview.shared.count
 
