@@ -7,6 +7,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function FacetDropdown({
     label,
+    admin = false,
     children
 }) {
     const { locale } = useI18n();
@@ -19,21 +20,26 @@ export default function FacetDropdown({
     }
 
     return (
-        <div className="subfacet-container">
+        <div className={classNames('Facet', {
+            'Facet--admin': admin,
+            'is-open': open
+        })}>
             <button
-                className={classNames('Button', 'accordion', { 'active': open })}
+                className={classNames('Button', 'Facet-button')}
                 type="button"
                 onClick={handleClick}
             >
-                {label}
+                <span className="Facet-label">
+                    {label}
+                </span>
                 {open ?
-                    <FaMinus className="Icon Icon--primary" /> :
-                    <FaPlus className="Icon Icon--primary" />
+                    <FaMinus className="Facet-icon Icon Icon--primary" /> :
+                    <FaPlus className="Facet-icon Icon Icon--primary" />
                 }
             </button>
 
-            <div className={classNames('panel', { 'open': open })}>
-                {children}
+            <div className="Facet-panel">
+                {open && children}
             </div>
         </div>
     );
@@ -41,6 +47,7 @@ export default function FacetDropdown({
 
 FacetDropdown.propTypes = {
     label: PropTypes.string.isRequired,
+    admin: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

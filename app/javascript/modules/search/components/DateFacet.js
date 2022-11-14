@@ -50,7 +50,16 @@ export default function DateFacet({
 
     return (
         <form className={classNames(className)}>
-            <div className="subfacet-entry">
+            <p>
+                Werte von
+                {' '}
+                {(new Date(minDate)).toLocaleDateString(locale, { dateStyle: 'medium' })}
+                {' '}
+                bis
+                {' '}
+                {(new Date(maxDate)).toLocaleDateString(locale, { dateStyle: 'medium' })}
+            </p>
+            <p className="subfacet-entry">
                 <label htmlFor="facet_date_from" >
                     von:
                 </label>
@@ -63,8 +72,8 @@ export default function DateFacet({
                     value={fromValue}
                     onChange={handleFromInputChange}
                 />
-            </div>
-            <div className="subfacet-entry">
+            </p>
+            <p className="subfacet-entry">
                 <label htmlFor="facet_date_until">
                     bis:
                 </label>
@@ -77,7 +86,7 @@ export default function DateFacet({
                     value={untilValue}
                     onChange={handleUntilInputChange}
                 />
-            </div>
+            </p>
         </form>
     );
 }

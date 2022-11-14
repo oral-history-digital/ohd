@@ -28,42 +28,57 @@ export default function ArchiveFacets() {
         <div className={classNames('LoadingOverlay', {
             'is-loading': isLoading,
         })}>
-            {Object.keys(facets).map(facet => {
-                if (facet === 'year_of_birth') {
-                    const years = Object.keys(facets[facet]['subfacets'])
+            {Object.keys(facets).map(facetName => {
+                const facetData = facets[facetName];
+
+                if (facetName === 'year_of_birth') {
+                    const years = Object.keys(facetData.subfacets)
                         .map(year => Number.parseInt(year));
 
                     return (
-                        <YearOfBirthFacet
-                            data={facets[facet]}
-                            key={facet}
-                            sliderMin={Math.min(...years)}
-                            sliderMax={Math.max(...years)}
-                        />
+                        <FacetDropdown
+                            key={facetName}
+                            label={facetData.name[locale]}
+                        >
+                            <YearOfBirthFacet
+                                sliderMin={Math.min(...years)}
+                                sliderMax={Math.max(...years)}
+                            />
+                        </FacetDropdown>
                     );
-                } else if (facet === 'date_of_birth') {
+                } else if (facetName === 'date_of_birth') {
                     return (
                         <FacetDropdown
-                            key={facet}
-                            label={facets[facet].name[locale]}
+                            key={facetName}
+                            label={facetData.name[locale]}
                         >
                             <DateFacet
-                                minDate={facets[facet].min_date}
-                                maxDate={facets[facet].max_date}
-                                name={facet}
+                                minDate={facetData.min_date}
+                                maxDate={facetData.max_date}
+                                name={facetName}
                                 className="u-mt-small"
                             />
                         </FacetDropdown>
                     );
                 } else {
+                    const isAdminFacet = adminFacets.includes(facetName);
+                    const isVisible = !isAdminFacet || isAuthorized({ type: 'General' }, 'edit');
+
+                    if (!isVisible) {
+                        return null;
+                    }
+
                     return (
-                        <Facet
-                            data={facets[facet]}
-                            facet={facet}
-                            key={facet}
-                            show={(adminFacets.indexOf(facet) > -1 && isAuthorized({type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
-                            admin={(adminFacets.indexOf(facet) > -1)}
-                        />
+                        <FacetDropdown
+                            key={facetName}
+                            label={facetData.name[locale]}
+                            admin={isAdminFacet}
+                        >
+                            <Facet
+                                facet={facetName}
+                                data={facetData}
+                            />
+                        </FacetDropdown>
                     );
                 }
             })}

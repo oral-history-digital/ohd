@@ -92,22 +92,21 @@ export default function SubFacets({
         return (
             <div
                 key={index}
-                className={classNames('subfacet-entry', {
-                    'checked': checkedState,
+                className={classNames('Facet-value', {
+                    'is-checked': checkedState,
                 })}
             >
                 <label>
                     <Checkbox
-                        className={classNames('Input', 'with-font', facet, 'checkbox')}
+                        className={classNames('Input', 'with-font', facet, 'checkbox', 'u-mr-tiny')}
                         id={facet + "_" + subfacetId}
                         name={facet}
                         checked={checkedState}
                         value={subfacetId}
                         onChange={handleCheckboxChange}
                     />
-                    {' '}
                     {localDescriptor(subfacetId)}
-                    <span className='flyout-radio-container-facet-count'>
+                    <span className="Facet-count">
                         {data.subfacets[subfacetId].count}
                     </span>
                 </label>
