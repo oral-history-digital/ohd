@@ -843,6 +843,7 @@ class Interview < ApplicationRecord
             elsif date_of_birth_until.present?
               with(:date_of_birth).less_than_or_equal_to(date_of_birth_until)
             end
+            facet :date_of_birth
           end
         end
 

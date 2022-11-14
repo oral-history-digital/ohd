@@ -1,6 +1,7 @@
 class EventType < ApplicationRecord
   belongs_to :project, touch: true
   has_many :events, dependent: :destroy
+  has_one :metadata_field
 
   translates :name, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations

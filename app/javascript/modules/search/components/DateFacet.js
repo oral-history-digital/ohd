@@ -6,8 +6,7 @@ import { useSearchParams } from 'modules/query-string';
 
 export default function DateFacet({
     name,
-    minDate,
-    maxDate,
+    data,
     className,
 }) {
     const { locale } = useI18n();
@@ -48,8 +47,19 @@ export default function DateFacet({
         }
     }
 
+    const values = Object.keys(data.subfacets)
+        .map(dateStr => new Date(dateStr));
+
+    let minDate, maxDate;
+
+    if (values.length > 0) {
+        minDate = Math.min(...values);
+        maxDate = Math.max(...values);
+    }
+
     return (
         <form className={classNames(className)}>
+            {minDate && maxDate && (
             <p>
                 Werte von
                 {' '}
@@ -59,6 +69,7 @@ export default function DateFacet({
                 {' '}
                 {(new Date(maxDate)).toLocaleDateString(locale, { dateStyle: 'medium' })}
             </p>
+            )}
             <p className="subfacet-entry">
                 <label htmlFor="facet_date_from" >
                     von:
@@ -93,7 +104,6 @@ export default function DateFacet({
 
 DateFacet.propTypes = {
     name: PropTypes.string.isRequired,
-    minDate: PropTypes.string.isRequired,
-    maxDate: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
     className: PropTypes.string,
 };

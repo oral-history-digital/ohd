@@ -151,7 +151,8 @@ class Project < ApplicationRecord
 
   def search_facets
     metadata_fields.where(use_as_facet: true).
-      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+      includes(:translations, :event_type,
+        registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
   end
 
@@ -218,7 +219,13 @@ class Project < ApplicationRecord
           end
         end
       when "EventType"
-        # TODO
+        et = facet.event_type
+        if et
+          cache_key_date = [et.updated_at, facet.updated_at, Event.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+            ::FacetSerializer.new(et).as_json
+          end
+        end
       when "Person", "Interview"
         facet_label_hash = facet.localized_hash(:label)
         name = facet_label_hash || localized_hash_for("search_facets", facet.name)
@@ -339,26 +346,36 @@ class Project < ApplicationRecord
 
   def updated_search_facets(search)
     facets = search_facets_hash.deep_dup
-    search_facets_names.each do |facet|
-      search.facet("search_facets:#{facet}").rows.each do |row|
-        facets[facet][:subfacets][row.value][:count] = row.count if facets[facet][:subfacets][row.value]
-      rescue StandardError => e
-        p "*** facet: #{facet}, row.value: #{row.value}"
-        p "*** error: #{e.message}"
+
+    # String facets.
+    search_facets_names.each do |facet_name|
+      facet = search.facet("search_facets:#{facet_name}")
+      if facet.present?
+        search.facet("search_facets:#{facet_name}").rows.each do |row|
+          facets[facet_name][:subfacets][row.value][:count] = row.count if facets[facet_name][:subfacets][row.value]
+        rescue StandardError => e
+          p "*** facet: #{facet_name}, row.value: #{row.value}"
+          p "*** error: #{e.message}"
+        end
+      end
+    end
+
+    # Date facets.
+    search_facets_names.each do |facet_name|
+      facet = search.facet("events:#{facet_name}")
+      if facet.present?
+        facet.rows.each do |row|
+          facets[facet_name][:subfacets][row.value] = row.count
+        end
       end
     end
 
     # Delete facet values with zero count.
     facets.each do |k, facet|
-      facet[:subfacets].delete_if { |k, subfacet| subfacet[:count] == 0 }
+      if facet[:type] != 'EventType'
+        facet[:subfacets].delete_if { |k, subfacet| subfacet[:count] == 0 }
+      end
     end
-
-    # TODO: For testing, remove soon.
-    facets[:date_of_birth] = {
-      name: { de: 'Geburtsdatum', en: 'Date of birth', es: 'Date of birth' },
-      min_date: Event.where(event_type_id: 1).minimum(:start_date),
-      max_date: Event.where(event_type_id: 1).maximum(:end_date)
-    }
 
     facets
   end

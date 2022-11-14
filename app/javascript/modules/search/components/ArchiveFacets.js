@@ -53,9 +53,8 @@ export default function ArchiveFacets() {
                             label={facetData.name[locale]}
                         >
                             <DateFacet
-                                minDate={facetData.min_date}
-                                maxDate={facetData.max_date}
                                 name={facetName}
+                                data={facetData}
                                 className="u-mt-small"
                             />
                         </FacetDropdown>
