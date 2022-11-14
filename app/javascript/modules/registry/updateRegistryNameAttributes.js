@@ -19,7 +19,7 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
             project.available_locales.map( lang => {
                 const alternativeName = alternativeNames.find(n => n.Lang === lang && n.IsOld === isOld);
                 if (alternativeName) {
-                    const translation = findOrCreateTranslation(name, lang);
+                    const translation = findOrCreate(name.translations_attributes, 'locale', lang);
                     translation.descriptor = alternativeName.Name;
                 }
             })
@@ -36,7 +36,7 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
 
 function setDescriptor(value, registryNameTypes, registryNamesAttributes, nameTypeCode, locale) {
     const { name } = findOrCreateName(registryNameTypes, registryNamesAttributes, nameTypeCode);
-    const translation = findOrCreateTranslation(name, locale);
+    const translation = findOrCreate(name.translations_attributes, 'locale', locale);
     translation.descriptor = value;
 };
 
@@ -64,45 +64,29 @@ function findOrCreateName(registryNameTypes, registryNamesAttributes, nameTypeCo
     return {name: name, nameIndex: nameIndex};
 };
 
-function findOrCreateTranslation(name, lang) {
-    let newTranslation = true;
-    const translation = name.translations_attributes.find(t => {
-        if (t.locale === lang) {
-            newTranslation = false;
-            return true;
-        }
-        return false;
-    }) || { locale: lang };
-
-    if (newTranslation) name.translations_attributes.push(translation);
-
-    return translation;
-};
-
-
 export function updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes) {
     let normDataAttributes = registryEntryAttributes.norm_data_attributes || registryEntryAttributes.norm_data;
     normDataAttributes ||= [];
 
     const normDataProvider = Object.values(normDataProviders).find( p => p.api_name === entry.Provider );
 
-    const normDatum = findOrCreateNormData(normDataAttributes, normDataProvider.id);
+    const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
     normDatum.nid = entry.ID;
 
     return ({norm_data_attributes: normDataAttributes});
 }
 
-function findOrCreateNormData(normDataAttributes, normDataProviderId) {
-    let newNormDatum = true;
-    const normDatum = normDataAttributes.find(t => {
-        if (t.norm_data_provider_id === normDataProviderId) {
-            newNormDatum = false;
+function findOrCreate(attributes, selectPropertyName, selectedPropertyValue) {
+    let isNew = true;
+    const datum = attributes.find(t => {
+        if (t[selectPropertyName] === selectedPropertyValue) {
+            isNew = false;
             return true;
         }
         return false;
-    }) || { norm_data_provider_id: normDataProviderId };
+    }) || { [selectPropertyName]: selectedPropertyValue };
 
-    if (newNormDatum) normDataAttributes.push(normDatum);
+    if (isNew) attributes.push(datum);
 
-    return normDatum;
+    return datum;
 };
