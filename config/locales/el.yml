@@ -304,6 +304,8 @@ el:
     birth_location: Birth location
     interview_location: Interview location
     home_location: Home location
+  event_types:
+    date_of_birth: Date of birth
   metadata_labels:
     link_to_interview: Link to interview
     tape_count: Tape count
@@ -611,6 +613,8 @@ el:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
       ref_object_type: Die andere Seite der Verknüpfung vom Register aus gesehen.
+      event_type_id: Event type, e.g. date of birth
+      eventable_type: Data type to which the event relates
     registry_reference_types:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Verknüpfungsart)
       registry_entry_id: tiefst möglicher, z.B. der Registereintrag 'Orte' für die Verknüpfungsart 'Geburtsort'
@@ -1057,9 +1061,12 @@ el:
         label: Label
         values: Werte
         registry_reference_type_id: Verknüpfungsart
+        event_type_id: Event type
+        eventable_type: Event of
         Person: Interviewte*r
         Interview: Interview
         RegistryReferenceType: Register (Verknüpfung)
+        EventType: Event
       external_link:
         internal_name: Internal Name
       upload:

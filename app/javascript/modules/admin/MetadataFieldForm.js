@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { Fetch, getRegistryReferenceTypesForCurrentProjectFetched } from 'modules/data';
+import { Spinner } from 'modules/spinners';
+import { useEventTypes } from 'modules/event-types';
+
+const METADATA_SOURCE_INTERVIEW = 'Interview';
+const METADATA_SOURCE_PERSON = 'Person';
+const METADATA_SOURCE_REGISTRY_REFERENCE_TYPE = 'RegistryReferenceType';
+const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 
 const NAME_VALUES = {
     Interview: [
@@ -29,6 +36,9 @@ export default function MetadataFieldForm({
 }) {
     const [source, setSource] = useState(data?.source);
     const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(data?.registry_reference_type_id);
+    const [eventTypeId, setEventTypeId] = useState(data?.event_type_id);
+
+    const { isLoading: eventTypesAreLoading, data: eventTypes } = useEventTypes();
 
     const handleSourceChange = (name, value) => {
         setSource(value);
@@ -38,9 +48,19 @@ export default function MetadataFieldForm({
         setRegistryReferenceTypeId(value);
     };
 
+    const handleEventTypeIdChange = (name, value) => {
+        setEventTypeId(value);
+    };
+
+    if (eventTypesAreLoading) {
+        return <Spinner />;
+    }
+
     const nameValuesForSource = () => {
-        if (source === 'RegistryReferenceType') {
+        if (source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE) {
             return registryReferenceTypes && registryReferenceTypes[registryReferenceTypeId]?.code;
+        } else if (source === METADATA_SOURCE_EVENT_TYPE) {
+            return eventTypes.find(et => et.id === eventTypeId)?.code;
         } else {
             return NAME_VALUES[source];
         }
@@ -70,7 +90,12 @@ export default function MetadataFieldForm({
                     {
                         elementType: 'select',
                         attribute: 'source',
-                        values: ['Interview', 'Person', 'RegistryReferenceType'],
+                        values: [
+                            METADATA_SOURCE_INTERVIEW,
+                            METADATA_SOURCE_PERSON,
+                            METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+                            METADATA_SOURCE_EVENT_TYPE
+                        ],
                         optionsScope: 'activerecord.attributes.metadata_field',
                         withEmpty: true,
                         handlechangecallback: handleSourceChange,
@@ -81,7 +106,7 @@ export default function MetadataFieldForm({
                         values: registryReferenceTypes,
                         withEmpty: true,
                         handlechangecallback: handleRegistryReferenceTypeIdChange,
-                        hidden: source !== 'RegistryReferenceType',
+                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
                         help: 'help_texts.metadata_fields.registry_reference_type_id',
                         validate: function(v){return /\d+/.test(v)}
                     },
@@ -91,9 +116,29 @@ export default function MetadataFieldForm({
                         values: ['Interview', 'Person'],
                         optionsScope: 'activerecord.attributes.metadata_field',
                         withEmpty: true,
-                        hidden: source !== 'RegistryReferenceType',
+                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
                         help: 'help_texts.metadata_fields.ref_object_type',
                         validate: function(v){return /\w+/.test(v)}
+                    },
+                    {
+                        elementType: 'select',
+                        attribute: 'event_type_id',
+                        values: eventTypes,
+                        withEmpty: true,
+                        handlechangecallback: handleEventTypeIdChange,
+                        hidden: source !== METADATA_SOURCE_EVENT_TYPE,
+                        help: 'help_texts.metadata_fields.event_type_id',
+                        validate: v => /\d+/.test(v)
+                    },
+                    {
+                        elementType: 'select',
+                        attribute: 'eventable_type',
+                        values: ['Person'],
+                        optionsScope: 'activerecord.attributes.metadata_field',
+                        withEmpty: true,
+                        hidden: source !== METADATA_SOURCE_EVENT_TYPE,
+                        help: 'help_texts.metadata_fields.eventable_type',
+                        validate: v => /\w+/.test(v)
                     },
                     {
                         elementType: 'select',
@@ -101,7 +146,7 @@ export default function MetadataFieldForm({
                         values: nameValuesForSource(),
                         optionsScope: 'search_facets',
                         withEmpty: true,
-                        hidden: source === 'RegistryReferenceType',
+                        hidden: source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE || source === METADATA_SOURCE_EVENT_TYPE,
                         validate: function(v){return /\w+/.test(v)}
                     },
                     {
@@ -140,12 +185,12 @@ export default function MetadataFieldForm({
                         elementType: 'input',
                         attribute: 'use_in_map_search',
                         type: 'checkbox',
-                        hidden: source !== 'RegistryReferenceType',
+                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
                     },
                     {
                         elementType: 'colorPicker',
                         attribute: 'map_color',
-                        hidden: source !== 'RegistryReferenceType',
+                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
                     },
                     {
                         elementType: 'input',
@@ -156,7 +201,7 @@ export default function MetadataFieldForm({
                         elementType: 'input',
                         attribute: 'use_in_metadata_import',
                         type: 'checkbox',
-                        hidden: source !== 'RegistryReferenceType',
+                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
                     },
                 ]}
             />
@@ -165,11 +210,13 @@ export default function MetadataFieldForm({
 }
 
 MetadataFieldForm.propTypes = {
+    data: PropTypes.object,
     projects: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     registryReferenceTypes: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };
