@@ -240,12 +240,6 @@ class Interview < ApplicationRecord
     interviewees.first && interviewees.first.id
   end
 
-  %w(interviewee interviewer transcriptor translator cinematographer quality_manager proofreader segmentator research).each do |contributor|
-    define_method contributor.pluralize do
-      contributions.joins(:contribution_type).where("contribution_types.code = ?", contributor).map(&:person)
-    end
-  end
-
   def contributions_hash
     contributions.inject({}) do |mem, c|
       mem[c.person_id] = c.speaker_designation if c.speaker_designation
@@ -379,6 +373,12 @@ class Interview < ApplicationRecord
           else
             []
           end
+        end
+      end
+
+      project.contribution_types.each do |contribution_type|
+        define_singleton_method contribution_type.code.pluralize do
+          contributions.where(contribution_type_id: contribution_type.id).map(&:person)
         end
       end
 

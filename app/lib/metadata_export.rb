@@ -34,11 +34,15 @@ class MetadataExport
           interview.interviewee.gender,
           interview.interviewee.date_of_birth,
           interview.interviewee.biography(locale) && interview.interviewee.biography(locale).gsub(/[\r\n\t]/, ' '),
-          interview.interviewers.count > 0 ? interview.interviewers.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
-          interview.transcriptors.count > 0 ? interview.transcriptors.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
-          interview.translators.count > 0 ? interview.translators.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
-          interview.researches.count > 0 ? interview.researches.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil,
         ]
+
+        project.contribution_types.inject(line) do |mem, contribution_type|
+          if contribution_type.use_in_export && contribution_type.code != 'interviewee'
+            contributors = interview.send(contribution_type.code.pluralize)
+            mem << (contributors.count > 0 ? contributors.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil)
+          end
+          mem
+        end
 
         project.registry_reference_type_import_metadata_fields.inject(line) do |mem, field|
           registry_entries = interview.send(field.name).map{|rid| RegistryEntry.find(rid)}.compact.uniq

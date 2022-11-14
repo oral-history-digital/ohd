@@ -1235,6 +1235,7 @@ en:
         updated_at: Updated at
         code: Code
         use_in_details_view: in der Detailansicht zeigen
+        use_in_export: im Im-/Export benutzen
         order: Reihenfolge
         data: Datei
     errors:
