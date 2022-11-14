@@ -6,6 +6,8 @@ import { useSearchParams } from 'modules/query-string';
 
 export default function DateFacet({
     name,
+    minDate,
+    maxDate,
     className,
 }) {
     const { locale } = useI18n();
@@ -56,8 +58,8 @@ export default function DateFacet({
                     id="facet_date_from"
                     type="date"
                     name="from"
-                    min="1900-01-01"
-                    max="2025-01-01"
+                    min={minDate}
+                    max={maxDate}
                     value={fromValue}
                     onChange={handleFromInputChange}
                 />
@@ -70,8 +72,8 @@ export default function DateFacet({
                     id="facet_date_until"
                     type="date"
                     name="until"
-                    min="1900-01-01"
-                    max="2025-01-01"
+                    min={minDate}
+                    max={maxDate}
                     value={untilValue}
                     onChange={handleUntilInputChange}
                 />
@@ -82,5 +84,7 @@ export default function DateFacet({
 
 DateFacet.propTypes = {
     name: PropTypes.string.isRequired,
+    minDate: PropTypes.string.isRequired,
+    maxDate: PropTypes.string.isRequired,
     className: PropTypes.string,
 };

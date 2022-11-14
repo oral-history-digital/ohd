@@ -217,6 +217,8 @@ class Project < ApplicationRecord
             ::FacetSerializer.new(rr).as_json
           end
         end
+      when "EventType"
+        # TODO
       when "Person", "Interview"
         facet_label_hash = facet.localized_hash(:label)
         name = facet_label_hash || localized_hash_for("search_facets", facet.name)
@@ -352,7 +354,11 @@ class Project < ApplicationRecord
     end
 
     # TODO: For testing, remove soon.
-    facets[:date_of_birth] = 'date_of_birth'
+    facets[:date_of_birth] = {
+      name: { de: 'Geburtsdatum', en: 'Date of birth', es: 'Date of birth' },
+      min_date: Event.where(event_type_id: 1).minimum(:start_date),
+      max_date: Event.where(event_type_id: 1).maximum(:end_date)
+    }
 
     facets
   end

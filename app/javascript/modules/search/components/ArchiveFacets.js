@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
 import { useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
@@ -9,6 +10,7 @@ import YearOfBirthFacet from './YearOfBirthFacet';
 import useFacets from '../useFacets';
 
 export default function ArchiveFacets() {
+    const { locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { facets, isLoading, isValidating } = useFacets();
 
@@ -41,9 +43,13 @@ export default function ArchiveFacets() {
                     );
                 } else if (facet === 'date_of_birth') {
                     return (
-                        <FacetDropdown key={facet} label="Geburtsdatum">
+                        <FacetDropdown
+                            key={facet}
+                            label={facets[facet].name[locale]}
+                        >
                             <DateFacet
-                                data={facets[facet]}
+                                minDate={facets[facet].min_date}
+                                maxDate={facets[facet].max_date}
                                 name={facet}
                                 className="u-mt-small"
                             />
