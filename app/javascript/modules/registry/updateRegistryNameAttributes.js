@@ -1,9 +1,11 @@
 export function updateRegistryNameAttributes(entry, registryNameTypes, registryEntryAttributes, project, locale) {
 
-    const registryNamesAttributes = registryEntryAttributes.registry_names_attributes ||= [];
+    let registryNamesAttributes = registryEntryAttributes.registry_names_attributes || registryEntryAttributes.registry_names;
+    registryNamesAttributes ||= [];
+
     const alternativeNames = entry.AlternativeNames?.AlternativeName;
 
-    if (alternativeNames) { // this means entry comes from Normdata-API
+    if (Array.isArray(alternativeNames)) { // this means entry comes from Normdata-API
         ['spelling', 'ancient'].map(nameTypeCode => {
 
             const { name , nameIndex } = findOrCreateName(registryNameTypes, registryNamesAttributes, nameTypeCode);
@@ -75,4 +77,32 @@ function findOrCreateTranslation(name, lang) {
     if (newTranslation) name.translations_attributes.push(translation);
 
     return translation;
+};
+
+
+export function updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes) {
+    let normDataAttributes = registryEntryAttributes.norm_data_attributes || registryEntryAttributes.norm_data;
+    normDataAttributes ||= [];
+
+    const normDataProvider = Object.values(normDataProviders).find( p => p.api_name === entry.Provider );
+
+    const normDatum = findOrCreateNormData(normDataAttributes, normDataProvider.id);
+    normDatum.nid = entry.ID;
+
+    return ({norm_data_attributes: normDataAttributes});
+}
+
+function findOrCreateNormData(normDataAttributes, normDataProviderId) {
+    let newNormDatum = true;
+    const normDatum = normDataAttributes.find(t => {
+        if (t.norm_data_provider_id === normDataProviderId) {
+            newNormDatum = false;
+            return true;
+        }
+        return false;
+    }) || { norm_data_provider_id: normDataProviderId };
+
+    if (newNormDatum) normDataAttributes.push(normDatum);
+
+    return normDatum;
 };

@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import { Element } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import { updateRegistryNameAttributes } from './updateRegistryNameAttributes';
+import { updateRegistryNameAttributes, updateNormDataAttributes } from './updateRegistryNameAttributes';
 
 function NormDataForDescriptor({
+    locale,
     project,
     setRegistryEntryAttributes,
     registryEntryAttributes,
@@ -38,11 +39,8 @@ function NormDataForDescriptor({
                             setRegistryEntryAttributes({
                                 latitude: result.Entry.Location?.Latitude,
                                 longitude: result.Entry.Location?.Longitude,
-                                ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project),
-                                norm_data_attributes: [{
-                                    norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === result.Entry.Provider ).id,
-                                    nid: result.Entry.ID,
-                                }],
+                                ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project, locale),
+                                ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
                             });
                             setFromAPI(false);
                         }} >
