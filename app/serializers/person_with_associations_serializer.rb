@@ -3,6 +3,7 @@ class PersonWithAssociationsSerializer < PersonSerializer
   attributes [
                :biographical_entries,
                :registry_references,
+               :events
              ]
              #MetadataField.where(source: "Person").map(&:name)
 
@@ -30,6 +31,10 @@ class PersonWithAssociationsSerializer < PersonSerializer
     # caching results in 'singleton can't be dumped'-error here. Why?
     #
     #object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
+  end
+
+  def events
+    object.events.map { |e| EventSerializer.new(e) }
   end
 
   def registry_references

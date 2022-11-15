@@ -8,6 +8,7 @@ import localeToLocaleObject from './localeToLocaleObject';
 
 export default function EventAlt({
     event,
+    withLabel = true,
     className,
 }) {
     const { locale } = useI18n();
@@ -44,20 +45,24 @@ export default function EventAlt({
             className={classNames('ContentField', className)}
             title={title}
         >
-            <span className="flyout-content-label">
-                {`${eventType.name}:`}
-            </span>
-            <span className="flyout-content-data">
-                <time dateTime={startDate.toISOString().split('T')[0]}>
-                    {dateStr}
-                </time>
-                {event.display_date && (
+            {withLabel && (
+                <span>
+                    {`${eventType.name}:`}
+                </span>
+            )}
+            <span>
+                {event.display_date ? (
                     <>
-                        {' '}
                         <i>
-                            ({event.display_date})
+                            {event.display_date}
                         </i>
                     </>
+                ) : (
+                    <time
+                        dateTime={startDate.toISOString().split('T')[0]}
+                    >
+                        {dateStr}
+                    </time>
                 )}
             </span>
         </li>

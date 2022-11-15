@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { humanReadable, getLanguages } from 'modules/data';
 import { usePersonWithAssociations } from 'modules/person';
+import { Spinner } from 'modules/spinners';
+import { EventAlt } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 
 export default function ThumbnailMetadata({
@@ -14,6 +16,10 @@ export default function ThumbnailMetadata({
     const { locale, translations } = useI18n();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
 
+    if (isLoading) {
+        return <Spinner />;
+    }
+
     return (
         <ul className="DetailList" lang={locale}>
             {
@@ -21,6 +27,25 @@ export default function ThumbnailMetadata({
                     const obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
                         interview :
                         interviewee;
+
+                    if (field.source === 'EventType') {
+                        const event = interviewee?.events?.find(e =>
+                            e.event_type_id === field.event_type_id);
+
+                        if (!event) {
+                            return null;
+                        }
+
+                        return (
+                            <EventAlt
+                                event={event}
+                                withLabel={false}
+                                className={classNames('DetailList-item', {
+                                    'DetailList-item--shortened': field.name === 'description',
+                                })}
+                            />
+                        );
+                    }
 
                     if (obj) {
                         return (
