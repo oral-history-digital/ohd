@@ -745,19 +745,19 @@ class Interview < ApplicationRecord
     end
     oai_contributors << "Projektleiter: #{project.leader}"
     oai_contributors << "Projektmanager: #{project.manager}"
-    oai_contributors << "Hosting Institution: #{project.hosting_institution}"
+    oai_contributors << "Hosting Institution: #{project.institutions.map(&:name).join(', ')}"
     oai_contributors.join('. ')
   end
 
   def oai_dc_date
-    self.interview_date && Date.parse(self.interview_date).strftime("%d.%m.%Y")
+    interview_date && Date.parse(interview_date).strftime("%d.%m.%Y") rescue interview_date
   end
 
   #def oai_dc_type
   #end
 
   def oai_dc_format
-    self.video
+    video
   end
 
   #def oai_dc_source
