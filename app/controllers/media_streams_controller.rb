@@ -12,6 +12,15 @@ class MediaStreamsController < ApplicationController
     redirect_to url, allow_other_host: true
   end
 
+  def hls
+    authorize MediaStream, :hls?
+    respond_to do |format|
+      format.key do
+        send_file File.join(Rails.root, 'config', 'hls', 'file_2022-10-18_13-31-31.key'), filename: 'hls.key'
+      end
+    end
+  end
+
   def create
     authorize MediaStream
     @media_stream = MediaStream.create(media_stream_params)
