@@ -830,20 +830,25 @@ class Interview < ApplicationRecord
             end
           end
 
-          date_of_birth_from = params[:date_of_birth_from] ?
-            Date.parse(params[:date_of_birth_from]) : nil
-          date_of_birth_until = params[:date_of_birth_until] ?
-            Date.parse(params[:date_of_birth_until]) : nil
-
           dynamic :events do
-            if date_of_birth_from.present? && date_of_birth_until.present?
-              with(:date_of_birth).between(date_of_birth_from..date_of_birth_until)
-            elsif date_of_birth_from.present?
-              with(:date_of_birth).greater_than_or_equal_to(date_of_birth_from)
-            elsif date_of_birth_until.present?
-              with(:date_of_birth).less_than_or_equal_to(date_of_birth_until)
+            project.event_facet_names.each do |facet_name|
+              event_from_param = params["#{facet_name}_from"]
+              event_until_param = params["#{facet_name}_until"]
+              event_from = event_from_param.present? ?
+                Date.parse(event_from_param) : nil
+              event_until = event_until_param.present? ?
+                Date.parse(event_until_param) : nil
+
+              if event_from.present? && event_until.present?
+                with(facet_name).between(event_from..event_until)
+              elsif event_from.present?
+                with(facet_name).greater_than_or_equal_to(event_from)
+              elsif event_until.present?
+                with(facet_name).less_than_or_equal_to(event_until)
+              end
+
+              facet facet_name, limit: -1
             end
-            facet :date_of_birth
           end
         end
 

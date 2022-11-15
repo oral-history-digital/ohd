@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { useEventTypes } from 'modules/event-types';
 import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
 import DateFacet from './DateFacet';
@@ -13,8 +14,9 @@ export default function ArchiveFacets() {
     const { locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { facets, isLoading, isValidating } = useFacets();
+    const { isLoading: eventTypesAreLoading, data: eventTypes } = useEventTypes();
 
-    if (!facets) {
+    if (!facets || eventTypesAreLoading) {
         return <Spinner withPadding />;
     }
 
@@ -46,11 +48,14 @@ export default function ArchiveFacets() {
                             />
                         </FacetDropdown>
                     );
-                } else if (facetName === 'date_of_birth') {
+                } else if (facetData.type === 'EventType') {
+                    const eventType = eventTypes.find(et =>
+                        `events:${et.code}` === facetData.name)
+
                     return (
                         <FacetDropdown
                             key={facetName}
-                            label={facetData.name[locale]}
+                            label={eventType.name}
                         >
                             <DateFacet
                                 name={facetName}

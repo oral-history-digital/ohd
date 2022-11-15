@@ -22,6 +22,7 @@ namespace :event_types do
   def default_event_types
     {
       date_of_birth: 'Geburtsdatum',
+      studies: 'Studium'
     }
   end
 end

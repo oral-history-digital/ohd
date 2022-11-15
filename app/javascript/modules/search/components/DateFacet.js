@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
+import DateFacetValues from './DateFacetValues';
 
 export default function DateFacet({
     name,
     data,
     className,
 }) {
-    const { locale } = useI18n();
     const { allParams, setParam } = useSearchParams();
 
     const fromValue = allParams[`${name}_from`] || '';
@@ -47,58 +46,37 @@ export default function DateFacet({
         }
     }
 
-    const values = Object.keys(data.subfacets)
-        .map(dateStr => new Date(dateStr));
-
-    let minDate, maxDate;
-
-    if (values.length > 0) {
-        minDate = Math.min(...values);
-        maxDate = Math.max(...values);
-    }
-
     return (
-        <form className={classNames(className)}>
-            {minDate && maxDate && (
-            <p>
-                Werte von
-                {' '}
-                {(new Date(minDate)).toLocaleDateString(locale, { dateStyle: 'medium' })}
-                {' '}
-                bis
-                {' '}
-                {(new Date(maxDate)).toLocaleDateString(locale, { dateStyle: 'medium' })}
-            </p>
-            )}
-            <p className="subfacet-entry">
-                <label htmlFor="facet_date_from" >
-                    von:
-                </label>
-                <input
-                    id="facet_date_from"
-                    type="date"
-                    name="from"
-                    min={minDate}
-                    max={maxDate}
-                    value={fromValue}
-                    onChange={handleFromInputChange}
-                />
-            </p>
-            <p className="subfacet-entry">
-                <label htmlFor="facet_date_until">
-                    bis:
-                </label>
-                <input
-                    id="facet_date_until"
-                    type="date"
-                    name="until"
-                    min={minDate}
-                    max={maxDate}
-                    value={untilValue}
-                    onChange={handleUntilInputChange}
-                />
-            </p>
-        </form>
+        <>
+            <form className={classNames(className)}>
+                <p>
+                    <label htmlFor="facet_date_from" >
+                        von:
+                    </label>
+                    <input
+                        id="facet_date_from"
+                        type="date"
+                        name="from"
+                        value={fromValue}
+                        onChange={handleFromInputChange}
+                    />
+                    <label className="u-ml-tiny" htmlFor="facet_date_until">
+                        bis:
+                    </label>
+                    <input
+                        id="facet_date_until"
+                        type="date"
+                        name="until"
+                        value={untilValue}
+                        onChange={handleUntilInputChange}
+                    />
+                </p>
+            </form>
+            <DateFacetValues
+                className="u-mt-small"
+                data={data}
+            />
+        </>
     );
 }
 

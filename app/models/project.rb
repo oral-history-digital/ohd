@@ -150,14 +150,28 @@ class Project < ApplicationRecord
   end
 
   def search_facets
-    metadata_fields.where(use_as_facet: true).
-      includes(:translations, :event_type,
-        registry_reference_type: {registry_entry: {registry_names: :translations}}).
+    metadata_fields.
+      where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
   end
 
   def search_facets_names
-    metadata_fields.where(use_as_facet: true).map(&:name)
+    metadata_fields.
+      where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
+      map(&:name)
+  end
+
+  def event_facets
+    metadata_fields.
+      where(source: 'EventType', use_as_facet: true).
+      order(:facet_order)
+  end
+
+  def event_facet_names
+    metadata_fields.
+      where(source: 'EventType', use_as_facet: true).
+      map(&:name)
   end
 
   def grid_fields
@@ -216,14 +230,6 @@ class Project < ApplicationRecord
           cache_key_date = [rr.updated_at, facet.updated_at, RegistryEntry.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
           mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
-          end
-        end
-      when "EventType"
-        et = facet.event_type
-        if et
-          cache_key_date = [et.updated_at, facet.updated_at, Event.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
-            ::FacetSerializer.new(et).as_json
           end
         end
       when "Person", "Interview"
@@ -361,11 +367,16 @@ class Project < ApplicationRecord
     end
 
     # Date facets.
-    search_facets_names.each do |facet_name|
+    event_facet_names.each do |facet_name|
       facet = search.facet("events:#{facet_name}")
       if facet.present?
+        facets[facet_name] = {
+          name: facet.name,
+          values: {},
+          type: 'EventType'
+        }
         facet.rows.each do |row|
-          facets[facet_name][:subfacets][row.value] = row.count
+          facets[facet_name][:values][row.value] = row.count
         end
       end
     end
