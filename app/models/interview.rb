@@ -123,9 +123,16 @@ class Interview < ApplicationRecord
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
     string :workflow_state, stored: true
 
-    dynamic_date :events do
+    dynamic_date_range :events, multiple: true do
       interviewee&.events&.inject({}) do |hash, e|
-        hash.merge(e.event_type.code => e.start_date)
+        event_type = e.event_type.code
+        puts hash, event_type
+        if hash.has_key?(event_type)
+          hash[event_type] << (e.start_date..e.end_date)
+        else
+          hash[event_type] = [e.start_date..e.end_date]
+        end
+        hash
       end
     end
 
@@ -821,7 +828,9 @@ class Interview < ApplicationRecord
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project
           dynamic :search_facets do
-            # By default Sunspot will only return the first 100 facet values. You can increase this limit, or force it to return all facets by setting limit to -1.
+            # By default Sunspot will only return the first 100 facet values.
+            # You can increase this limit, or force it to return all facets by
+            # setting limit to -1.
             project.search_facets_names.each do |facet_name|
               facet_value = params[facet_name]
               facet_value.reject(&:blank?) if facet_value.is_a?(Array)
