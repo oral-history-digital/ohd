@@ -371,7 +371,7 @@ class Project < ApplicationRecord
       facet = search.facet("events:#{facet_name}")
       if facet.present?
         facets[facet_name] = {
-          name: facet.name,
+          name: facet_name,
           values: {},
           type: 'EventType'
         }

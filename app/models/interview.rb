@@ -856,7 +856,8 @@ class Interview < ApplicationRecord
                 with(facet_name).less_than_or_equal_to(event_until)
               end
 
-              facet facet_name, limit: -1
+              facet facet_name, range: Date.new(1900)..Date.today,
+                range_interval: '+5YEAR', limit: -1
             end
           end
         end

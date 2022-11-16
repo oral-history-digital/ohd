@@ -50,7 +50,7 @@ export default function ArchiveFacets() {
                     );
                 } else if (facetData.type === 'EventType') {
                     const eventType = eventTypes.find(et =>
-                        `events:${et.code}` === facetData.name)
+                        et.code === facetData.name)
 
                     return (
                         <FacetDropdown
