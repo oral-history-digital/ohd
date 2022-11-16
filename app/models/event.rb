@@ -25,6 +25,12 @@ class Event < ApplicationRecord
     difference + 1
   end
 
+  searchable do
+    date_range :start_date, as: :start_date_dr do
+      start_date..end_date
+    end
+  end
+
   private
 
   def end_date_after_start_date
