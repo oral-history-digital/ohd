@@ -867,13 +867,13 @@ class Interview < ApplicationRecord
         case sort_by
         when :random
           order_by(:random, seed: Date.today.to_s)
-        when :title
-          order_by("person_name_#{locale}".to_sym, sort_order)
+        #when :title
+          #order_by("person_name_#{locale}".to_sym, sort_order)
         else
           # e.g. score, media_type, duration, etc.
           # First sort according to sort_by, then alphabetically.
           order_by(sort_by, sort_order)
-          order_by("person_name_#{locale}".to_sym, :asc)
+          #order_by("person_name_#{locale}".to_sym, :asc)
         end
 
         # Pagination
