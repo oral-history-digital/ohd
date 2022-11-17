@@ -6,7 +6,7 @@ import { Spinner } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
 import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
-import DateFacet from './DateFacet';
+import DateRangeFacet from './DateRangeFacet';
 import YearOfBirthFacet from './YearOfBirthFacet';
 import useFacets from '../useFacets';
 
@@ -57,7 +57,7 @@ export default function ArchiveFacets() {
                             key={facetName}
                             label={eventType.name}
                         >
-                            <DateFacet
+                            <DateRangeFacet
                                 name={facetName}
                                 data={facetData}
                                 className="u-mt-small"

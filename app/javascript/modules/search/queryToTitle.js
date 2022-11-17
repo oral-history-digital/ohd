@@ -19,7 +19,8 @@ export default function queryToTitle(query, facetStructure, locale, translations
 
         for (let [name, values] of Object.entries(facets)) {
             values.forEach((value) => {
-                const valueObject = facetStructure?.[name]?.['subfacets'][value];
+                // TODO: Does not work for date facets yet.
+                const valueObject = facetStructure?.[name]?.['subfacets']?.[value];
                 const translatedValue = valueObject ? valueObject['name'][locale] : value;
                 translatedFacetValues.push(translatedValue);
             })

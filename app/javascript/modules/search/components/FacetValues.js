@@ -5,7 +5,7 @@ import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
 import { Checkbox } from 'modules/ui';
 import { useSearchParams } from 'modules/query-string';
 
-export default function SubFacets({
+export default function FacetValues({
     data,
     facet,
     filter,
@@ -117,7 +117,7 @@ export default function SubFacets({
     })
 }
 
-SubFacets.propTypes = {
+FacetValues.propTypes = {
     data: PropTypes.object.isRequired,
     facet: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,

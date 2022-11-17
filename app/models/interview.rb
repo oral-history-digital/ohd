@@ -841,23 +841,25 @@ class Interview < ApplicationRecord
 
           dynamic :events do
             project.event_facet_names.each do |facet_name|
-              event_from_param = params["#{facet_name}_from"]
-              event_until_param = params["#{facet_name}_until"]
-              event_from = event_from_param.present? ?
-                Date.parse(event_from_param) : nil
-              event_until = event_until_param.present? ?
-                Date.parse(event_until_param) : nil
+              facet_value = params[facet_name]
 
-              if event_from.present? && event_until.present?
-                with(facet_name).between(event_from..event_until)
-              elsif event_from.present?
-                with(facet_name).greater_than_or_equal_to(event_from)
-              elsif event_until.present?
-                with(facet_name).less_than_or_equal_to(event_until)
+              if facet_value.present?
+                facet_values = facet_value.is_a?(Array) ? facet_value : [facet_value]
+                filter = any_of do
+                  facet_values.each do |value|
+                    start_year = Date.new(value.split('-')[0].to_i)
+                    end_year = (Date.new(value.split('-')[1].to_i)).prev_day
+                    with(facet_name.to_sym).between(start_year..end_year)
+                  end
+                end
               end
 
-              facet facet_name, range: Date.new(1900)..Date.today,
-                range_interval: '+5YEAR', limit: -1
+              facet facet_name,
+                    range: Date.new(1900)..Date.today,
+                    range_interval: '+5YEAR',
+                    limit: -1,
+                    exclude: [filter].reject(&:blank?)
+
             end
           end
         end

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import FacetFilterInput from './FacetFilterInput';
-import SubFacets from './SubFacets';
+import FacetValues from './FacetValues';
 
 export default function Facet({
     data,
@@ -26,7 +26,7 @@ export default function Facet({
                 filter={filter}
                 onChange={handleFilterChange}
             />
-            <SubFacets
+            <FacetValues
                 data={data}
                 facet={facet}
                 filter={filter}
