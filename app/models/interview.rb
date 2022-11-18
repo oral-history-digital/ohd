@@ -115,9 +115,11 @@ class Interview < ApplicationRecord
   searchable do
     integer :project_id, :stored => true, :references => Project
     integer :language_id, :stored => true, :references => Language
-    string :archive_id, :stored => true, :references => Interview
+    string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
-    text :archive_id, :stored => true
+    text :archive_id_fulltext, :stored => true do
+      archive_id
+    end
     integer :interviewee_id, :stored => true#, :references => Person
     integer :collection_id, :stored => true, :references => Collection
     integer :tasks_user_account_ids, :stored => true, :multiple => true
@@ -134,6 +136,13 @@ class Interview < ApplicationRecord
         mem
       end
     end
+
+    dynamic_string :person_name do
+      Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
+        hash.merge(locale => full_title(locale))
+      end
+    end
+
     string :media_type, :stored => true
     integer :duration, :stored => true
     string :language, :stored => true do
@@ -174,13 +183,6 @@ class Interview < ApplicationRecord
         end
       end
 
-      string :"person_name_#{locale}", :stored => true do
-        if full_title(locale)
-          title = full_title(locale).mb_chars.normalize(:kd)
-          Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
-          title.downcase.to_s
-        end
-      end
       text :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
@@ -756,12 +758,16 @@ class Interview < ApplicationRecord
         when :random
           order_by(:random, seed: Date.today.to_s)
         when :title
-          order_by("person_name_#{locale}".to_sym, sort_order)
+          dynamic :person_name do
+            order_by(locale, sort_order)
+          end
         else
           # e.g. score, media_type, duration, etc.
           # First sort according to sort_by, then alphabetically.
           order_by(sort_by, sort_order)
-          order_by("person_name_#{locale}".to_sym, :asc)
+          dynamic :person_name do
+            order_by(locale, :asc)
+          end
         end
 
         # Pagination
