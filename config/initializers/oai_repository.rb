@@ -6,7 +6,7 @@ OaiRepository.setup do |config|
   # If you're deploying to different hostnames (e.g. development, QA and
   # production environments, each with different hostnames), you could
   # dynamically set this.
-  #config.repository_url = Project.first.archive_domain
+  config.repository_url = Rails.env.development? ? "http://portal.oral-history.localhost:3000" : "https://portal.oral-history.digital"
 
   # By default the (unique) identifier of each record will be composed as
   # #{record_prefix}/#{record.id}
@@ -20,10 +20,10 @@ OaiRepository.setup do |config|
   # This is your repository administrator's email address.
   # This will appear in the information returned from an "Identify" call to
   # your repository
-  #config.admin_email = Project.first.contact_email
+  config.admin_email = "herdis.kley@cedis.fu-berlin.de"
 
   # The number of records shown at a time (when doing a ListRecords)
-  config.limit = 100
+  config.limit = 10000
 
   # The values for "models" should be the class name of the ActiveRecord model 
   # class that is being identified with the given set. It doesn't actually have
@@ -51,9 +51,6 @@ OaiRepository.setup do |config|
   #   }
   # ]
   #
-  config.sets = []
-  # TODO: reuse the following line after having run project-migrations
-  # and created a project
   config.sets = [
      {
        spec: 'class:interview',

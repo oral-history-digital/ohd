@@ -23,15 +23,10 @@ module Interview::OAI
   end
 
   def oai_dc_contributor
-    oai_contributors = [
-      %w(interviewers Interviewführung),
-      %w(cinematographers Kamera),
-      %w(transcriptors Transkripteur),
-      %w(translators Übersetzer),
-      %w(segmentators Erschließer)
-    ].inject([]) do |mem, (contributors, contribution)|
-      if self.send(contributors).length > 0
-        "#{contribution}: " + self.send(contributors).map{|contributor| "#{contributor.last_name(project.default_locale)}, #{contributor.first_name(project.default_locale)}"}.join('; ')
+    oai_contributors = project.contribution_types.inject([]) do |mem, contribution_type|
+      contributors = self.send(contribution_type.code.pluralize)
+      if contributors.length > 0
+        "#{I18n.translate(contribution_type.code, locale: :de)}: " + contributors.map{|contributor| "#{contributor.last_name(project.default_locale)}, #{contributor.first_name(project.default_locale)}"}.join('; ')
       end
       mem
     end
@@ -40,19 +35,19 @@ module Interview::OAI
     end
     oai_contributors << "Projektleiter: #{project.leader}"
     oai_contributors << "Projektmanager: #{project.manager}"
-    oai_contributors << "Hosting Institution: #{project.hosting_institution}"
+    oai_contributors << "Hosting Institution: #{project.institutions.map(&:name).join(', ')}"
     oai_contributors.join('. ')
   end
 
   def oai_dc_date
-    self.interview_date && Date.parse(self.interview_date).strftime("%d.%m.%Y")
+    interview_date && Date.parse(interview_date).strftime("%d.%m.%Y") rescue interview_date
   end
 
   #def oai_dc_type
   #end
 
   def oai_dc_format
-    self.video
+    media_type.classify
   end
 
   #def oai_dc_source
