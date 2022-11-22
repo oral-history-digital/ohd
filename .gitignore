@@ -6,11 +6,8 @@ config/project.yml
 config/project_config
 log/
 public/javascripts/translations.js
-solr/data
-sunspot-solr.pid
 tmp/
 /node_modules
-solr/pids/
 /public/assets
 /public/packs
 /public/packs-test
@@ -28,3 +25,10 @@ coverage
 /storage/*
 !/storage/.keep
 /.env
+
+# Sunspot
+solr/data
+solr/test/data
+solr/development/data
+solr/default/data
+solr/pids

@@ -43,7 +43,6 @@ gem 'rack-brotli', '~> 1.0'
 gem 'rack-cors'
 
 # Gems specific to public archive app:
-gem 'sunspot_rails'
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids'
 gem 'localized_country_select'
@@ -51,7 +50,8 @@ gem 'route_translator'
 gem 'devise'
 gem 'rack-maintenance'
 gem 'celluloid'
-gem 'sunspot_solr', '2.1.0' # A simple Solr installation with good defaults for development and testing.
+gem 'sunspot_rails', '~> 2.6.0'
+gem 'sunspot_solr', '~> 2.6.0'
 
 
 group :test, :development do
