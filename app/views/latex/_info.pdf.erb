@@ -19,7 +19,7 @@
     translators: 'translation',
     segmentators: 'segmentation'
   }.each do |contribution_type, translation_key|
-    contributors = interview.send(contribution_type).compact
+    contributors = interview.respond_to?(contribution_type) ? interview.send(contribution_type).compact : []
     names = contributors.map{|i| "#{i.first_name(header_locale)} #{i.last_name(header_locale)}" }.join(", ")
     unless names.blank?
 %>
