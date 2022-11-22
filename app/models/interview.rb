@@ -2,7 +2,8 @@ require 'globalize'
 require 'webvtt'
 
 class Interview < ApplicationRecord
-  include OaiRepository::Set
+  include OAI
+  #include OaiRepository::Set
   include ActiveModel::Validations
   include Export
 
@@ -114,9 +115,11 @@ class Interview < ApplicationRecord
   searchable do
     integer :project_id, :stored => true, :references => Project
     integer :language_id, :stored => true, :references => Language
-    string :archive_id, :stored => true, :references => Interview
+    string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
-    text :archive_id, :stored => true
+    text :archive_id_fulltext, :stored => true do
+      archive_id
+    end
     integer :interviewee_id, :stored => true#, :references => Person
     integer :collection_id, :stored => true, :references => Collection
     integer :tasks_user_account_ids, :stored => true, :multiple => true
@@ -146,6 +149,13 @@ class Interview < ApplicationRecord
         mem
       end
     end
+
+    dynamic_string :person_name do
+      Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
+        hash.merge(locale => full_title(locale))
+      end
+    end
+
     string :media_type, :stored => true
     integer :duration, :stored => true
     string :language, :stored => true do
@@ -186,13 +196,6 @@ class Interview < ApplicationRecord
         end
       end
 
-      string :"person_name_#{locale}", :stored => true do
-        if full_title(locale)
-          title = full_title(locale).mb_chars.normalize(:kd)
-          Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
-          title.downcase.to_s
-        end
-      end
       text :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
@@ -251,12 +254,6 @@ class Interview < ApplicationRecord
 
   def interviewee_id
     interviewees.first && interviewees.first.id
-  end
-
-  %w(interviewee interviewer transcriptor translator cinematographer quality_manager proofreader segmentator research).each do |contributor|
-    define_method contributor.pluralize do
-      contributions.joins(:contribution_type).where("contribution_types.code = ?", contributor).map(&:person)
-    end
   end
 
   def contributions_hash
@@ -395,10 +392,11 @@ class Interview < ApplicationRecord
         end
       end
 
-      OaiRepository.repository_name = project.name[project.default_locale]
-      OaiRepository.repository_url = project.archive_domain
-      OaiRepository.record_prefix = project.archive_domain
-      OaiRepository.admin_email = project.contact_email
+      project.contribution_types.each do |contribution_type|
+        define_singleton_method contribution_type.code.pluralize do
+          contributions.where(contribution_type_id: contribution_type.id).map(&:person)
+        end
+      end
     end
   end
 
@@ -717,78 +715,6 @@ class Interview < ApplicationRecord
     end
   end
 
-  def oai_dc_identifier
-    archive_id
-    "oai:#{project.identifier}:#{archive_id}"
-  end
-
-  def oai_dc_creator
-    anonymous_title
-  end
-
-  def oai_dc_subject
-    project.registry_reference_type_metadata_fields.where(use_in_results_table: true, ref_object_type: 'Interview').each do |field|
-      "#{field.label(project.default_locale)}: #{self.send(field.name).map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(';')}"
-    end
-  end
-
-  def oai_dc_description
-    "Lebensgeschichtliches #{self.video}-Interview in #{self.language.name.downcase}er Sprache mit Transkription, deutscher Übersetzung, Erschließung, Kurzbiografie und Fotografien"
-  end
-
-  def oai_dc_publisher
-    "Interview-Archiv \"#{project.name('de')}\""
-  end
-
-  def oai_dc_contributor
-    oai_contributors = [
-      %w(interviewers Interviewführung),
-      %w(cinematographers Kamera),
-      %w(transcriptors Transkripteur),
-      %w(translators Übersetzer),
-      %w(segmentators Erschließer)
-    ].inject([]) do |mem, (contributors, contribution)|
-      if self.send(contributors).length > 0
-        "#{contribution}: " + self.send(contributors).map{|contributor| "#{contributor.last_name(project.default_locale)}, #{contributor.first_name(project.default_locale)}"}.join('; ')
-      end
-      mem
-    end
-    if !project.cooperation_partner.blank?
-      oai_contributors << "Kooperationspartner: #{project.cooperation_partner}"
-    end
-    oai_contributors << "Projektleiter: #{project.leader}"
-    oai_contributors << "Projektmanager: #{project.manager}"
-    oai_contributors << "Hosting Institution: #{project.hosting_institution}"
-    oai_contributors.join('. ')
-  end
-
-  def oai_dc_date
-    self.interview_date && Date.parse(self.interview_date).strftime("%d.%m.%Y")
-  end
-
-  #def oai_dc_type
-  #end
-
-  def oai_dc_format
-    self.video
-  end
-
-  #def oai_dc_source
-  #end
-
-  def oai_dc_language
-    language && language.name
-  end
-
-  #def oai_dc_relation
-  #end
-
-  #def oai_dc_coverage
-  #end
-
-  #def oai_dc_rights
-  #end
-
   def type
     'Interview'
   end
@@ -870,13 +796,17 @@ class Interview < ApplicationRecord
         case sort_by
         when :random
           order_by(:random, seed: Date.today.to_s)
-        #when :title
-          #order_by("person_name_#{locale}".to_sym, sort_order)
+        when :title
+          dynamic :person_name do
+            order_by(locale, sort_order)
+          end
         else
           # e.g. score, media_type, duration, etc.
           # First sort according to sort_by, then alphabetically.
           order_by(sort_by, sort_order)
-          #order_by("person_name_#{locale}".to_sym, :asc)
+          dynamic :person_name do
+            order_by(locale, :asc)
+          end
         end
 
         # Pagination

@@ -1034,6 +1034,7 @@ en:
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
         display_ohd_link: OHD-Link zeigen
+        show_preview_img: Vorschaubild auf Landing-Page zeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
@@ -1259,6 +1260,7 @@ en:
         updated_at: Updated at
         code: Code
         use_in_details_view: in der Detailansicht zeigen
+        use_in_export: im Im-/Export benutzen
         order: Reihenfolge
         data: Datei
     errors:

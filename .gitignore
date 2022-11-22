@@ -26,7 +26,7 @@ coverage
 !/storage/.keep
 /.env
 
-# Solr files
+# Sunspot
 solr/data
 solr/test/data
 solr/development/data

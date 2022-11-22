@@ -29,11 +29,12 @@ class MetadataImport
 
       update_or_create_interviewee(project, interview, row)
 
-      create_contributions(interview, row[:interviewer], 'interviewer')
-      create_contributions(interview, row[:transcriptor], 'transcriptor')
-      create_contributions(interview, row[:translator], 'translator')
-      create_contributions(interview, row[:research], 'research')
-            
+      project.contribution_types.each do |contribution_type|
+        if contribution_type.use_in_export && contribution_type.code != 'interviewee'
+          create_contributions(interview, row[contribution_type.code.to_sym], contribution_type.code)
+        end
+      end
+
       project.registry_reference_type_import_metadata_fields.each do |field|
         registry_entries = find_or_create_registry_entries(field, row, locale)
         ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee

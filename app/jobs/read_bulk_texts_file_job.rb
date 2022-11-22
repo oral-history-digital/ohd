@@ -22,7 +22,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       name_parts = File.basename(text_file_name, File.extname(text_file_name)).split('_')
       archive_id = name_parts.first
       kind = name_parts[1] # protocoll or biographie (bg)
-      locale = name_parts[2] ? ISO_639.find(name_parts[2]).send(Project.alpha) : 'de'
+      locale = name_parts[2] ? ISO_639.find(name_parts[2]).alpha2 : 'de'
 
       data = File.read text_file_name
       text = Yomu.read :text, data
@@ -81,6 +81,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       File.delete(text_file_name) if File.exist?(text_file_name)
     rescue StandardError => e
       jobs_logger.info("*** #{archive_id}: #{e.message}!!!")
+      jobs_logger.info("*** #{archive_id}: #{e.backtrace}!!!")
     end
     File.delete(file_path) if File.exist?(file_path)
 
@@ -91,7 +92,7 @@ class ReadBulkTextsFileJob < ApplicationJob
     #)
 
     jobs_logger.info "*** uploaded #{file_path} text-files"
-    AdminMailer.with(interview: interview, receiver: receiver, type: 'read_bulk_texts', file: file_path).finished_job.deliver_now
+    AdminMailer.with(receiver: receiver, type: 'read_bulk_texts', file: file_path).finished_job.deliver_now
   end
 
 end

@@ -12,13 +12,14 @@ export default function InterviewPreviewInner({
     isExpanded
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const showImg = project.show_preview_img || projectAccessGranted;
 
     return (
         <>
             <div className="InterviewCard-image aspect-ratio">
                 <img
                     className="aspect-ratio__inner"
-                    src={interview.still_url || 'missing_still'}
+                    src={showImg ? (interview.still_url || 'missing_still') : 'missing_still'}
                     onError={ (e) => { e.target.src = missingStill; }}
                     alt=""
                 />

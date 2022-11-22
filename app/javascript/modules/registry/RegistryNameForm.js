@@ -4,7 +4,7 @@ import { Form } from 'modules/forms';
 import { RegistrySearchResultContainer } from 'modules/registry';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import { updateRegistryNameAttributes } from './updateRegistryNameAttributes';
+import { updateRegistryNameAttributes } from './updateRegistryEntryAttributes';
 
 export default function RegistryNameForm({
     index,
@@ -22,6 +22,7 @@ export default function RegistryNameForm({
     registryEntryAttributes,
     projectId,
     projects,
+    project,
     locale,
     foundRegistryEntries,
     searchRegistryEntry,
@@ -39,7 +40,7 @@ export default function RegistryNameForm({
     const handleDescriptorChange = (name, value, params) => {
         setDescriptor(value);
         setRegistryEntryAttributes(
-            updateRegistryNameAttributes(value, defaultNameType.id, registryEntryAttributes, data, params.locale)
+            updateRegistryNameAttributes({Name: value}, registryNameTypes, registryEntryAttributes, project, params.locale)
         );
         if (value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});
