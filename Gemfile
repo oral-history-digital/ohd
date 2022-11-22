@@ -52,6 +52,7 @@ gem 'rack-maintenance'
 gem 'celluloid'
 gem 'sunspot_rails', '~> 2.6.0'
 gem 'sunspot_solr', '~> 2.6.0'
+gem 'progress_bar'
 
 
 group :test, :development do
@@ -74,7 +75,6 @@ group :development do
   gem 'capistrano-passenger'
   gem 'puma'
   gem 'foreman'
-  gem 'progress_bar'
   gem 'rb-readline'
   gem 'pry'
   gem 'meta_request'
