@@ -28,8 +28,10 @@ RSpec.describe ProjectCreator do
   describe 'creation' do
     subject(:project){ @project }
 
-    it 'creates default registry_name_type' do
+    it 'creates default registry_name_types' do
       expect(project.registry_name_types.where(code: 'spelling')).to exist
+      expect(project.registry_name_types.where(code: 'ancient')).to exist
+      expect(project.registry_name_types.where(code: 'original')).to exist
     end
 
     %w(root places people subjects).each do |code|

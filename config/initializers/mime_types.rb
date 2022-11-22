@@ -6,3 +6,4 @@ Mime::Type.register "text/vtt", :vtt
 Mime::Type.register "application/vnd.oasis.opendocument.spreadsheet", :ods
 Mime::Type.register "application/pdf", :pdf, ['text/pdf'], ['pdf']
 Mime::Type.register "application/zip", :zip
+Mime::Type.register "application/data", :key

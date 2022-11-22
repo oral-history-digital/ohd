@@ -266,7 +266,9 @@ Rails.application.routes.draw do
   get "photos/src/:name" => "photos#src"
   get "photos/thumb/:name" => "photos#thumb"
 
-  mount OaiRepository::Engine => "/oai_repository"
+  get "/de/hls.key" => "media_streams#hls"
+
+  mount OaiRepository::Engine => "/de/oai_repository"
   root to: redirect("#{OHD_DOMAIN}/de")
 
   devise_for :user_accounts,

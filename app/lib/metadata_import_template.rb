@@ -57,13 +57,8 @@ class MetadataImportTemplate
   end
 
   def default_contributor_columns
-    [
-      :interviewer,
-      :transcriptor,
-      :translator,
-      :research,
-    ].inject({}) do |mem, c| 
-      mem[c] = I18n.t("contributions.#{c}", locale: @locale)
+    @project.contribution_types.where(use_in_export: true).inject({}) do |mem, c| 
+      mem[c.code.to_sym] = I18n.t("contributions.#{c.code}", locale: @locale)
       mem
     end
   end

@@ -96,6 +96,7 @@ class ContributionTypesController < ApplicationController
         :code,
         #:use_as_speaker,
         :use_in_details_view,
+        :use_in_export,
         :order,
         :project_id,
         translations_attributes: [:locale, :id, :label]

@@ -51,7 +51,8 @@ gem 'devise'
 gem 'rack-maintenance'
 gem 'celluloid'
 gem 'sunspot_rails', '~> 2.6.0'
-gem 'sunspot_solr', '~> 2.6.0' # A simple Solr installation with good defaults for development and testing.
+gem 'sunspot_solr', '~> 2.6.0'
+gem 'progress_bar'
 
 
 group :test, :development do
@@ -74,13 +75,11 @@ group :development do
   gem 'capistrano-passenger'
   gem 'puma'
   gem 'foreman'
-  gem 'progress_bar'
   gem 'rb-readline'
   gem 'pry'
   gem 'meta_request'
 end
 
-#
 group :test do
   gem 'rspec', '~> 3.10.0'
   gem 'rspec-rails', '~> 4.0.2'

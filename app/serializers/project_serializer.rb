@@ -60,6 +60,7 @@ class ProjectSerializer < ApplicationSerializer
     :grid_fields,
     :root_registry_entry_id,
     :display_ohd_link,
+    :show_preview_img,
     :default_search_order,
     :workflow_state
 
