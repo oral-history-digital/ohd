@@ -22,8 +22,7 @@ export default function MediaPlayerTitle({
     return (
         <h1 className={className}>
             {formatPersonName(
-                interviewee, translations, { locale, withBirthName: true,
-                withTitle: true }
+                interviewee, translations, { locale, withTitle: true }
             )}
         </h1>
     );
