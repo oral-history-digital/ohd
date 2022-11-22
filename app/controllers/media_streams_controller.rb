@@ -16,7 +16,7 @@ class MediaStreamsController < ApplicationController
     authorize MediaStream, :hls?
     respond_to do |format|
       format.key do
-        send_file File.join(Rails.root, 'config', 'hls', 'file_2022-10-18_13-31-31.key'), filename: 'hls.key'
+        send_file File.join(Rails.root, 'config', 'hls', 'file_single_encryption.key'), filename: 'hls.key'
       end
     end
   end
