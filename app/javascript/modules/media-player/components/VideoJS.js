@@ -25,6 +25,7 @@ export default function VideoJS({
     type,
     options,
     onReady,
+    onEnded,
 }) {
     const videoRef = useRef(null);
     const playerRef = useRef(null);
@@ -45,8 +46,15 @@ export default function VideoJS({
             // const player = playerRef.current;
             // player.autoplay(options.autoplay);
             // player.src(options.sources);
+
+            const player = playerRef.current;
+            // Update the event handler because it is cached by Videojs.
+            if (typeof onEnded === 'function') {
+                player.off('ended');
+                player.on('ended', onEnded);
+            }
         }
-    }, [options, videoRef]);
+    }, [options, videoRef, onEnded]);
 
     // Dispose the Video.js player when the functional component unmounts
     useEffect(() => {
@@ -86,4 +94,5 @@ VideoJS.propTypes = {
     type: PropTypes.oneOf(['audio', 'video']).isRequired,
     options: PropTypes.object,
     onReady: PropTypes.func,
+    onEnded: PropTypes.func
 };
