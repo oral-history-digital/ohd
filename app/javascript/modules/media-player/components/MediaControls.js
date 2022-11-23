@@ -19,7 +19,7 @@ export default function MediaControls({
     const pathBase = usePathBase();
 
     function handleTapeChange(e) {
-        setTape(Number.parseInt(e.target.value));
+        setTape(Number(e.target.value));
     }
 
     const tapes = [...Array(Number.parseInt(interview.tape_count)).keys()]

@@ -22,6 +22,8 @@ const KEYCODE_DOWN = 40;
 const FORWARD_STEP = 5;
 const BACKWARD_STEP = 5;
 
+const READY_STATE_HAVE_CURRENT_DATA = 2;
+
 export default function MediaElement({
     archiveId,
     className,
@@ -223,7 +225,7 @@ export default function MediaElement({
 
             player.currentTime(timeChangeRequest);
 
-            if (player.readyState() >= 2) {
+            if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
                 player.play();
             } else {
                 player.autoplay(true);
@@ -246,9 +248,11 @@ export default function MediaElement({
     }
 
     function handleEndedEvent() {
-        if (tape < interview.tape_count) {
-            sendTimeChangeRequest(tape + 1, 0);
+        if (tape >= Number(interview.tape_count)) {
+            return;
         }
+
+        sendTimeChangeRequest(tape + 1, 0);
     }
 
     function handleContextMenuEvent(e) {
@@ -280,6 +284,7 @@ export default function MediaElement({
                 type={interview.media_type}
                 options={videoJsOptions}
                 onReady={handlePlayerReady}
+                onEnded={handleEndedEvent}
             />
         </div>
     );
