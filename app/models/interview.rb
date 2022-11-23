@@ -573,8 +573,6 @@ class Interview < ApplicationRecord
 
       # Build last name with a locale-specific pattern.
       last_name = first_interviewee.last_name(locale) || first_interviewee.last_name(I18n.default_locale)
-      birth_name = first_interviewee.birth_name(locale) || first_interviewee.birth_name(I18n.default_locale)
-      lastname_with_birthname = [last_name, birth_name].compact.join(' ')
 
       # Build first name.
       first_names = []
@@ -585,9 +583,9 @@ class Interview < ApplicationRecord
 
       # Combine first and last name with a locale-specific pattern.
       if first_names.empty?
-        lastname_with_birthname
+        last_name
       else
-        "#{lastname_with_birthname}, #{first_names.join(' ')}"
+        "#{last_name}, #{first_names.join(' ')}"
       end
     else
       'no interviewee given'
