@@ -85,7 +85,7 @@ export default function NormDatumForm({
                         {
                             attribute: 'nid',
                             value: nid,
-                            validate: function(v){return /^[a-zA-Z0-9/]+$/.test(v)},
+                            validate: function(v){return /^[a-zA-Z0-9-_/]+$/.test(v)},
                         },
                     ]}
                 />
