@@ -1,6 +1,8 @@
 require "globalize"
 
 class Project < ApplicationRecord
+  include Oai
+
   enum default_search_order: [:title, :random]
 
   has_many :logos, as: :ref, dependent: :destroy
