@@ -2,8 +2,7 @@ require 'globalize'
 require 'webvtt'
 
 class Interview < ApplicationRecord
-  include OAI
-  #include OaiRepository::Set
+  include Oai
   include ActiveModel::Validations
   include Export
 
@@ -698,10 +697,6 @@ class Interview < ApplicationRecord
       save
       changed
     end
-  end
-
-  def type
-    'Interview'
   end
 
   class << self
