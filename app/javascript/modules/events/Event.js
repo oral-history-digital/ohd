@@ -4,6 +4,7 @@ import { formatDistance } from 'date-fns';
 
 import { useI18n } from 'modules/i18n';
 import { useEventTypes } from 'modules/event-types';
+import { Spinner } from 'modules/spinners';
 import localeToLocaleObject from './localeToLocaleObject';
 
 export default function Event({
@@ -11,13 +12,15 @@ export default function Event({
     className,
 }) {
     const { locale } = useI18n();
-    const { data: eventTypes } = useEventTypes();
+    const { data: eventTypes, isLoading } = useEventTypes();
 
-    if (!eventTypes) {
-        return null;
+    if (isLoading) {
+        return <Spinner small />;
     }
 
-    const eventType = eventTypes.find(et => et.id === event.event_type_id);
+    const eventType = eventTypes.find(et => et.id === Number(event.event_type_id));
+
+    console.log(event, eventType, Number(event.event_type_id), eventTypes)
 
     const isInterval = event.start_date !== event.end_date;
 
@@ -39,25 +42,29 @@ export default function Event({
         title = startDate.toLocaleDateString(locale, { dateStyle: 'full' });
     }
 
+    const showDisplayDate = event.display_date !== null;
+
     return (
-        <li
-            className={classNames('Event', className)}
-            title={title}
-        >
-            <div className="Event-type">
+        <div className={classNames('Event', className)}>
+            <div className="Event-category">
                 {eventType.name}
             </div>
-            <div className="Event-date">
-                <time dateTime={startDate.toISOString().split('T')[0]}>
+            {showDisplayDate && (
+                <div className="Event-text">
+                    {event.display_date}
+                </div>
+            )}
+            <div className={classNames('Event-text', {
+                'Event-text--slight': showDisplayDate
+            })}>
+                <time
+                    dateTime={startDate.toISOString().split('T')[0]}
+                    title={title}
+                >
                     {dateStr}
                 </time>
             </div>
-            {event.display_date && (
-                <div className="Event-text">
-                    ({event.display_date})
-                </div>
-            )}
-        </li>
+        </div>
     );
 }
 

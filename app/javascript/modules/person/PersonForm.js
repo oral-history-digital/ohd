@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { submitDataWithFetch } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
-import { EventForm } from 'modules/events';
+import { EventForm, Event } from 'modules/events';
 import { usePathBase } from 'modules/routes';
 import {
     PERSON_GENDER_MALE,
@@ -86,11 +86,7 @@ export default function PersonForm({
     const project = useSelector(getCurrentProject);
 
     function showEvent(event) {
-        return (
-            <span>
-                {event.start_date}
-            </span>
-        );
+        return <Event event={event} />;
     }
 
     const nestedScopeProps = withEvents ?
