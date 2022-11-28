@@ -5,11 +5,14 @@
   padding: 0 ($base-unit / 4);
 }
 
-.Event-type {
-  color: var(--secondary-color);
+.Event-category {
   font-size: 0.875rem;
+  font-weight: bold;
 }
 
 .Event-text {
+}
+
+.Event-text--slight {
   color: $ui-background-color;
 }

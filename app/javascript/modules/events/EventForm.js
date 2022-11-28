@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-import { Form } from 'modules/forms';
+import { getProjectId } from 'modules/archive';
+import { getProjects } from 'modules/data';
 import { useEventTypes } from 'modules/event-types';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 
 export default function EventForm({
@@ -15,6 +19,10 @@ export default function EventForm({
     onCancel,
 }) {
     console.log(event);
+
+    const projectId = useSelector(getProjectId);
+    const projects = useSelector(getProjects);
+    const { locale } = useI18n();
 
     const { data: eventTypes, isLoading } = useEventTypes();
 
@@ -35,16 +43,21 @@ export default function EventForm({
         {
             elementType: 'date',
             attribute: 'start_date',
+            validate: v => v !== '',
+            required: true,
             value: event?.start_date,
         },
         {
             elementType: 'date',
             attribute: 'end_date',
+            validate: v => v !== '',
+            required: true,
             value: event?.end_date,
         },
         {
             elementType: 'input',
             attribute: 'display_date',
+            multiLocale: true,
             value: event?.display_date,
         },
     ];
@@ -58,8 +71,10 @@ export default function EventForm({
                 eventable_id: personId,
             }}
             onSubmit={params => {
+                console.log(params, submitData, onSubmit)
+
                 if (typeof submitData === 'function') {
-                    submitData({ /*locale, projectId, projects*/ }, params, index);
+                    submitData({ locale, projectId, projects }, params, index);
                 }
                 if (typeof onSubmit === 'function') {
                     onSubmit();

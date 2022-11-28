@@ -26,6 +26,8 @@ export default function NestedScopeElement({
 
     const cancel = () => setEditing(false);
 
+    console.log(elementRepresentation)
+
     return (
         <div className={classNames('nested-scope-element', scope)} >
             { editing ?
