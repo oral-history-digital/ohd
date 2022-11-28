@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 
-import { Element } from 'modules/forms';
+import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { updateRegistryNameAttributes, updateNormDataAttributes } from './updateRegistryEntryAttributes';
@@ -18,14 +18,64 @@ function NormDataForDescriptor({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const [geoFilter, setGeoFilter] = useState(null);
     const [filter, setFilter] = useState(null);
-    const [placeType, setPlaceType] = useState(null);
+    const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResults, setApiResults] = useState([]);
 
-    const fetchAPIResults = async() => {
-        fetch(`${pathBase}/norm_data_api?expression=${descriptor}`)
+    let formElements = [
+        {
+            elementType: 'select',
+            attribute: 'filter_select',
+            labelKey: 'normdata.filter_select',
+            values: ['none', 'geo'],
+            withEmpty: true,
+            optionsScope: 'normdata',
+            handlechangecallback: (name, value) => setFilter(value),
+        }
+    ];
+
+    if (filter === 'geo') {
+        formElements = formElements.concat([
+            {
+                elementType: 'select',
+                attribute: 'geo_filter',
+                labelKey: 'normdata.geo_filter',
+                values: ['de', 'eu'],
+                withEmpty: true,
+                optionsScope: 'normdata',
+            },
+            {
+                elementType: 'select',
+                attribute: 'place_type',
+                labelKey: 'normdata.place_type',
+                values: ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'],
+                withEmpty: true,
+                optionsScope: 'normdata',
+                handlechangecallback: (name, value) => setPlaceTypeFilter(value),
+            },
+        ])
+    }
+
+    //if (placeTypeFilter === 'town') {
+        //formElements = formElements.concat([
+            //{
+                //elementType: 'select',
+                //attribute: 'place_extended',
+                //values: ['continent', 'state', 'country'],
+                //withEmpty: true,
+                //optionsScope: 'normdata',
+            //},
+        //])
+    //}
+
+    const fetchAPIResults = async(params) => {
+        const filters = [
+            `geo_filter=${params.geo_filter}`,
+            `place_type=${params.place_type}`,
+            //`place=${params.place_extended}`,
+        ]
+        fetch(`${pathBase}/norm_data_api?expression=${descriptor}&` + filters.join('&'))
             .then(res => res.json())
             .then(json => setApiResults(json));
     };
@@ -44,85 +94,22 @@ function NormDataForDescriptor({
                             });
                             setFromAPI(false);
                         }} >
-                            {`${result.Entry.Name}: ${result.Entry.Label}`}
+                            {`${result.Entry.Name}: ${result.Entry.Label}, ${result.Entry.Type}`}
                         </a>
                     </li>
                 )
             })}
         </ul> :
-        <form
-            className={classNames('Form', 'nested-form', 'default')}
-            onSubmit={() => {
-                !showResults && fetchAPIResults();
+        <Form
+            scope='normdata'
+            formClasses={'nested-form default'}
+            onSubmit={(params) => {
+                !showResults && fetchAPIResults(params.normdata);
                 setShowResults(!showResults);
             }}
-        >
-            <div className='form-group'>
-                <Element
-                    labelKey='normdata.filter_select'
-                >
-                    <select
-                        key={'filter-select'}
-                        className="Input"
-                        onChange={e => setFilter(e.target.value)}
-                    >
-                        <option value='' key={'filter-choose'}>
-                            {t('choose')}
-                        </option>
-                        { ['none', 'geo'].map( v => (
-                            <option value={v} key={`filter-${v}`}>
-                                {t(`normdata.${v}`)}
-                            </option>
-                        ))}
-                    </select>
-                </Element>
-                { filter === 'geo' &&
-                    <>
-                        <Element
-                            labelKey='normdata.geo_filter'
-                        >
-                            <select
-                                key={'geoFilter-select'}
-                                className="Input"
-                                onChange={e => setGeoFilter(e.target.value)}
-                            >
-                                <option value='' key={'geoFilter-choose'}>
-                                    {t('choose')}
-                                </option>
-                                { ['de', 'eu'].map( v => (
-                                    <option value={v} key={`geoFilter-${v}`}>
-                                        {t(`normdata.${v}`)}
-                                    </option>
-                                ))}
-                            </select>
-                        </Element>
-                        <Element
-                            labelKey='normdata.place_type'
-                        >
-                            <select
-                                key={'placeType-select'}
-                                className="Input"
-                                onChange={e => setPlaceType(e.target.value)}
-                            >
-                                <option value='' key={'placeType-choose'}>
-                                    {t('choose')}
-                                </option>
-                                { ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'].map( v => (
-                                    <option value={v} key={`geoFilter-${v}`}>
-                                        {t(`normdata.${v}`)}
-                                    </option>
-                                ))}
-                            </select>
-                        </Element>
-                    </>
-                }
-            </div>
-            <input
-                type="submit"
-                className="Button Button--primaryAction"
-                value={t('search')}
-            />
-        </form>
+            elements={formElements}
+            helpTextCode="normdata_form"
+        />
     );
 }
 

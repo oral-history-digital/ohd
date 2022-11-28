@@ -47,7 +47,7 @@ export default function PersonData({
     }
 
     const personName = formatPersonName(person, translations,
-        { locale, withBirthName: true, withTitle: true });
+        { locale, withTitle: true });
 
     return (
         <>
