@@ -34,7 +34,7 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
 
 function setDescriptor(value, registryNamesAttributes, nameTypeId, locale) {
     const name = findOrCreate(registryNamesAttributes, 'registry_name_type_id', nameTypeId);
-    name.position ||= 1;
+    name.name_position ||= 1;
     name.translations_attributes ||= [];
     const translation = findOrCreate(name.translations_attributes, 'locale', locale);
     translation.descriptor = value;
