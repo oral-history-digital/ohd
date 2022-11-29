@@ -10,7 +10,6 @@ import { HelpText } from 'modules/help-text';
 import { pluralize } from 'modules/strings';
 import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
-import DatePicker from './input-components/DatePicker';
 import SelectContainer from './input-components/SelectContainer';
 import ColorPicker from './input-components/ColorPicker';
 import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
@@ -21,7 +20,6 @@ import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
     input: InputContainer,
-    date: DatePicker,
     registryEntrySelect: RegistryEntrySelectContainer,
     registryEntryTreeSelect: TreeSelectContainer,
     richTextEditor: RichTextEditor,
