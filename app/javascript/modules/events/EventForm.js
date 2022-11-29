@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { getProjectId } from 'modules/archive';
 import { getProjects } from 'modules/data';
 import { useEventTypes } from 'modules/event-types';
-import { Form } from 'modules/forms';
+import { Form, validateDate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 
@@ -41,17 +41,17 @@ export default function EventForm({
             individualErrorMsg: 'empty',
         },
         {
-            elementType: 'date',
+            elementType: 'input',
+            type: 'date',
             attribute: 'start_date',
-            validate: v => v !== '',
-            required: true,
+            validate: validateDate,
             value: event?.start_date,
         },
         {
-            elementType: 'date',
+            elementType: 'input',
+            type: 'date',
             attribute: 'end_date',
-            validate: v => v !== '',
-            required: true,
+            validate: validateDate,
             value: event?.end_date,
         },
         {

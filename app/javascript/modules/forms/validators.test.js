@@ -1,5 +1,9 @@
-import { validateTapeNumber, validateColor, validateGeoCoordinate }
-    from './validators';
+import {
+    validateTapeNumber,
+    validateColor,
+    validateGeoCoordinate,
+    validateDate
+} from './validators';
 
 describe('validateTapeNumber', () => {
     it('returns true for 0', () => {
@@ -58,6 +62,23 @@ describe('validateGeoCoordinate', () => {
 
     it('rejects a large integer', () => {
         const result = validateGeoCoordinate('513889312744');
+        expect(result).toBeFalsy();
+    });
+});
+
+describe('validateDate', () => {
+    it('accepts standard format', () => {
+        const result = validateDate('2017-05-13');
+        expect(result).toBeTruthy();
+    });
+
+    it('rejects non-standard format', () => {
+        const result = validateDate('17-5-13');
+        expect(result).toBeFalsy();
+    });
+
+    it('rejects another non-standard format', () => {
+        const result = validateDate('13.05.2017');
         expect(result).toBeFalsy();
     });
 });

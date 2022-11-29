@@ -38,7 +38,7 @@ export default function Input({
     }, [value, data?.[attribute]]);
 
     const onChange = (event) => {
-        let v =  event.target.files ? event.target.files[0] : event.target.value;
+        let v = event.target.files ? event.target.files[0] : event.target.value;
         if (event.target.type === 'checkbox') {
             v = event.target.checked;
         }
