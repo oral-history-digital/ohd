@@ -32,7 +32,7 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
     return ({registry_names_attributes: registryNamesAttributes});
 };
 
-function setDescriptor(value, registryNamesAttributes, nameTypeId, locale) {
+export function setDescriptor(value, registryNamesAttributes, nameTypeId, locale) {
     const name = findOrCreate(registryNamesAttributes, 'registry_name_type_id', nameTypeId);
     name.name_position ||= 1;
     name.translations_attributes ||= [];
@@ -52,7 +52,7 @@ export function updateNormDataAttributes(entry, normDataProviders, registryEntry
     return ({norm_data_attributes: normDataAttributes});
 }
 
-function findOrCreate(attributes, selectPropertyName, selectedPropertyValue) {
+export function findOrCreate(attributes, selectPropertyName, selectedPropertyValue) {
     let isNew = true;
     const datum = attributes.find(t => {
         if (t[selectPropertyName] === selectedPropertyValue) {
