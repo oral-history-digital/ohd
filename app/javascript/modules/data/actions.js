@@ -92,14 +92,15 @@ export function submitData(props, params, opts={}, callback) {
     }
 }
 
-export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove=false, onlyRemove=false) {
+export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove=false, onlyRemove=false, callback) {
     let url = `${pathBase(props)}/${dataType}/${id}`
-    if  (nestedDataType)
-        url += `/${nestedDataType}/${nestedId}`
+    if (nestedDataType) {
+        url += `/${nestedDataType}/${nestedId}`;
+    }
 
     if (skipRemove) {
         return dispatch => {
-            Loader.delete(url, dispatch, receiveData);
+            Loader.delete(url, dispatch, receiveData, callback);
         }
     } else if (onlyRemove) {
         return dispatch => {
@@ -108,7 +109,7 @@ export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRe
     } else {
         return dispatch => {
             dispatch(removeData(id, dataType, nestedDataType, nestedId))
-            Loader.delete(url, dispatch, receiveData);
+            Loader.delete(url, dispatch, receiveData, callback);
         }
     }
 }

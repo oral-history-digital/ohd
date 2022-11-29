@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
 import { createElement, useState } from 'react';
 import classNames from 'classnames';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 
@@ -12,6 +14,7 @@ export default function NestedScopeElement({
     onDelete,
     submitData,
     deleteData,
+    onDeleteCallback,
     formComponent,
     showForm,
     scope,
@@ -25,8 +28,6 @@ export default function NestedScopeElement({
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
     const cancel = () => setEditing(false);
-
-    console.log(elementRepresentation)
 
     return (
         <div className={classNames('nested-scope-element', scope)} >
@@ -59,9 +60,14 @@ export default function NestedScopeElement({
                         className="Button Button--transparent Button--icon"
                         title={t('really_destroy')}
                         onClick={() => {
-                            !!element.id ?
-                            deleteData({locale, projectId, projects}, pluralize(scope), element.id, null, null, false) :
-                            onDelete(index, scope)
+                            if (typeof element.id === 'undefined') {
+                                onDelete(index, scope);
+                            } else {
+                                deleteData({locale, projectId, projects},
+                                    pluralize(scope), element.id, null, null,
+                                    false, false, onDeleteCallback
+                                );
+                            }
                         }}
                     >
                         <FaTrash className="Icon Icon--danger" />
@@ -80,3 +86,7 @@ export default function NestedScopeElement({
         </div>
     )
 }
+
+NestedScopeElement.propTypes = {
+    onDeleteCallback: PropTypes.func,
+};

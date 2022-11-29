@@ -96,6 +96,9 @@ export default function PersonForm({
             parent: person,
             scope: 'event',
             elementRepresentation: showEvent,
+            onDeleteCallback: () => {
+                mutatePeople();
+            }
         }] :
         undefined;
 
