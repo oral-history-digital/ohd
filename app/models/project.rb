@@ -171,7 +171,8 @@ class Project < ApplicationRecord
   def event_facet_names
     metadata_fields.
       where(source: 'EventType', use_as_facet: true).
-      map(&:name)
+      map(&:name).
+      map(&:to_sym)
   end
 
   def grid_fields

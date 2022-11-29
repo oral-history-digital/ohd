@@ -120,7 +120,7 @@ class Interview < ApplicationRecord
     text :archive_id_fulltext, :stored => true do
       archive_id
     end
-    integer :interviewee_id, :stored => true#, :references => Person
+    integer :interviewee_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
     integer :tasks_user_account_ids, :stored => true, :multiple => true
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
@@ -128,13 +128,7 @@ class Interview < ApplicationRecord
 
     dynamic_date_range :events, multiple: true do
       interviewee&.events&.inject({}) do |hash, e|
-        event_type = e.event_type.code
-        puts hash, event_type
-        if hash.has_key?(event_type)
-          hash[event_type] << (e.start_date..e.end_date)
-        else
-          hash[event_type] = [e.start_date..e.end_date]
-        end
+        (hash[e.event_type.code.to_sym] ||= []) << (e.start_date..e.end_date)
         hash
       end
     end
