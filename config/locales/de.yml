@@ -664,6 +664,7 @@ de:
     transcript: Transkription
   events:
     title: Ereignisse
+    add: Ereignis hinzufügen
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen

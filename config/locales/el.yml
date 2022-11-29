@@ -645,6 +645,7 @@ el:
     transcript: Transcript
   events:
     title: Events
+    add: Add event
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen
