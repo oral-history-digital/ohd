@@ -41,7 +41,7 @@ class EventsController < ApplicationController
     authorize event
     event.destroy
 
-    render json: {}, status: :ok
+    render json: event.id, status: :ok
   end
 
   private

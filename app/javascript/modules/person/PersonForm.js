@@ -96,8 +96,29 @@ export default function PersonForm({
             parent: person,
             scope: 'event',
             elementRepresentation: showEvent,
-            onDeleteCallback: () => {
-                mutatePeople();
+            onDeleteCallback: (id) => {
+                // In case of server error.
+                if (typeof id !== 'number') {
+                    return;
+                }
+
+                mutatePeople(async people => {
+                    const eventHolder = people.data[person.id];
+
+                    const updatedPeople = {
+                        ...people,
+                        data: {
+                            ...people.data,
+                            [person.id]: {
+                                ...eventHolder,
+                                events: eventHolder.events.filter(event => event.id !== id)
+                            }
+                        }
+                    };
+                    delete updatedPeople.data[id];
+
+                    return updatedPeople;
+                });
             }
         }] :
         undefined;

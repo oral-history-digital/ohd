@@ -78,6 +78,11 @@ class Person < ApplicationRecord
     end
   end
 
+  after_touch do
+    interviews = self.interviews
+    Sunspot.index! [interviews]
+  end
+
   def interviews
     contributions.joins(:contribution_type).where("contribution_types.code = ?", 'interviewee').map(&:interview)
   end
