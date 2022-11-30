@@ -18,11 +18,9 @@ export default function EventForm({
     onSubmitCallback,
     onCancel,
 }) {
-    console.log(event);
-
     const projectId = useSelector(getProjectId);
     const projects = useSelector(getProjects);
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
 
     const { data: eventTypes, isLoading } = useEventTypes();
 
@@ -58,6 +56,7 @@ export default function EventForm({
             elementType: 'input',
             attribute: 'display_date',
             multiLocale: true,
+            placeholder: t('modules.events.display_date_placeholder'),
             value: event?.display_date,
         },
     ];

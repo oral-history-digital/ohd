@@ -1366,6 +1366,8 @@ el:
         references: "references"
         annotations: "annotations"
       segments: "segments"
+    events:
+      display_date_placeholder: 'e.g. November 1979'
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"

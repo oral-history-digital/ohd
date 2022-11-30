@@ -24,6 +24,7 @@ export default function Input({
     hidden,
     className,
     readOnly,
+    placeholder,
     forceUpdateFromProps,
 }) {
 
@@ -70,7 +71,8 @@ export default function Input({
             className: 'Input',
             type: type,
             name: attribute,
-            readOnly: readOnly,
+            readOnly,
+            placeholder,
             defaultChecked: val,
             defaultValue: val,
             onChange: onChange,
@@ -128,4 +130,5 @@ export default function Input({
 
 Input.propTypes = {
     readOnly: PropTypes.bool,
+    placeholder: PropTypes.string,
 };
