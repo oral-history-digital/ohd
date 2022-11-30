@@ -1361,6 +1361,8 @@ de:
         references: "Verknüpfungen"
         annotations: "Anmerkungen"
       segments: "Segmente"
+    events:
+      display_date_placeholder: 'z.B. November 1979'
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
