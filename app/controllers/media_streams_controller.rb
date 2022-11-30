@@ -6,8 +6,8 @@ class MediaStreamsController < ApplicationController
     authorize interview
     url = current_project.media_streams.where(resolution: params[:resolution]).first.path.
       gsub('INTERVIEW_ID', interview.archive_id).
-      sub('TAPE_COUNT', format('%02d', interview.tape_count.to_s)).
-      sub('TAPE_NUMBER', format('%02d', params[:tape].to_s))
+      gsub('TAPE_COUNT', format('%02d', interview.tape_count.to_s)).
+      gsub('TAPE_NUMBER', format('%02d', params[:tape].to_s))
 
     redirect_to url, allow_other_host: true
   end
@@ -35,7 +35,7 @@ class MediaStreamsController < ApplicationController
     respond @media_stream
   end
 
-  def destroy 
+  def destroy
     @media_stream = MediaStream.find(params[:id])
     authorize @media_stream
     @media_stream.destroy
@@ -75,9 +75,9 @@ class MediaStreamsController < ApplicationController
 
   def media_stream_params
     params.require(:media_stream).permit(
-      :id, 
+      :id,
       :media_type,
-      :path, 
+      :path,
       :resolution,
       :tape,
       :archive_id,
