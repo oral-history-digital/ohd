@@ -109,4 +109,17 @@ Rails.application.configure do
     return_path: 'da-bounce@cedis.fu-berlin.de'
   }
 
+  config.hosts = [
+    "https://oral-history.digital",
+    "https://test.oral-history.digital",
+    "https://test1.oral-history.digital",
+    "https://test2.oral-history.digital",
+    "https://archiv.eiserner-vorhang.de",
+    "https://deutsches-gedaechtnis.fernuni-hagen.de",
+    "https://archiv.zwangsarbeit-archiv.de",
+    "https://archiv.cdoh.net",
+    "https://archive.occupation-memories.org",
+    "da03.cedis.fu-berlin.de",
+    "http://testimonies.campscapes.org",
+  ]
 end
