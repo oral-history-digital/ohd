@@ -81,7 +81,7 @@ class UserRegistrationsController < ApplicationController
     @project = current_project
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
-    @user_registration.update_attributes(user_registration_params)
+    @user_registration.update(user_registration_params)
 
     respond_to do |format|
       format.json do

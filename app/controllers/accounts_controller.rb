@@ -19,9 +19,9 @@ class AccountsController < ApplicationController
 
   def update
     authorize(current_user_account)
-    current_user_account.update_attributes account_params
+    current_user_account.update account_params
     # FIXME: we have to update duplicated data here
-    current_user_account.user_registration.update_attributes account_params
+    current_user_account.user_registration.update account_params
     respond_to do |format|
       format.html {}
       format.json do

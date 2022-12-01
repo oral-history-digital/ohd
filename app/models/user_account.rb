@@ -127,7 +127,7 @@ class UserAccount < ApplicationRecord
       self.deactivated_at = nil
       # theoretically we do not need this check, but unfortunately we have some legacy accounts without UserRegistration
       unless self.user_registration.nil?
-        self.user_registration.update_attributes activated_at: Time.now
+        self.user_registration.update activated_at: Time.now
         self.user_registration.projects.each do |project|
           AdminMailer.with(registration: self, project: project).new_registration_info.deliver_now
         end

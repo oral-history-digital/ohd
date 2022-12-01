@@ -11,7 +11,7 @@ class AssignSpeakersJob < ApplicationJob
       contribution_data.each do |c|
         speaker_designation = c.delete(:speaker_designation)
         contribution = Contribution.find_or_create_by c
-        contribution.update_attributes speaker_designation: speaker_designation
+        contribution.update speaker_designation: speaker_designation
       end
 
       interview.segments.each do |segment|

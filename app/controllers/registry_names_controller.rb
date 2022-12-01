@@ -16,7 +16,7 @@ class RegistryNamesController < ApplicationController
   def update
     registry_name = RegistryName.find params[:id]
     authorize registry_name
-    registry_name.update_attributes registry_name_params
+    registry_name.update registry_name_params
 
     respond_to do |format|
       format.json do

@@ -82,7 +82,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           # publication state:
           photo_params.update(workflow_state: 'public') if %w(yes y ja j true t).include?(data[9] && data[9].downcase)
 
-          photo.update_attributes photo_params
+          photo.update photo_params
 
           tmp_photo_path = File.join(Rails.root, 'tmp', 'files', data[2])
           photo.photo.attach(io: File.open(tmp_photo_path), filename: data[2])

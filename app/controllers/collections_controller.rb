@@ -18,7 +18,7 @@ class CollectionsController < ApplicationController
   def update
     @collection = Collection.find params[:id]
     authorize @collection
-    @collection.update_attributes collection_params
+    @collection.update collection_params
 
     respond @collection
   end
