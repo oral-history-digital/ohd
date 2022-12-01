@@ -11,7 +11,7 @@ class UserRegistrationsController < ApplicationController
     @user_registration = UserRegistration.new
     respond_to do |format|
       format.html do
-        render :template => '/react/app.html'
+        render :template => '/react/app'
       end
     end
   end
