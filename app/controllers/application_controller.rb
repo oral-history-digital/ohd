@@ -1,5 +1,3 @@
-require 'exception_notification'
-
 class ApplicationController < ActionController::Base
   include Pundit
 

@@ -199,6 +199,10 @@ GEM
     git-version-bump (0.17.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    globalize (6.2.1)
+      activemodel (>= 4.2, < 7.1)
+      activerecord (>= 4.2, < 7.1)
+      request_store (~> 1.0)
     guard (2.14.2)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -266,9 +270,6 @@ GEM
     mini_racer (0.2.0)
       libv8 (>= 6.3)
     minitest (5.16.3)
-    mobility (1.2.9)
-      i18n (>= 0.6.10, < 2)
-      request_store (~> 1.0)
     multi_json (1.13.1)
     multi_test (0.1.2)
     multipart-post (2.0.0)
@@ -456,7 +457,7 @@ GEM
       rails (>= 3)
       sunspot (= 2.6.0)
     sunspot_solr (2.6.0)
-    temple (0.8.0)
+    temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.8)
     timeout (0.3.0)
@@ -512,6 +513,7 @@ DEPENDENCIES
   fastercsv
   font-awesome-rails
   foreman
+  globalize
   guard-cucumber
   guard-rspec
   guard-spork
@@ -524,7 +526,6 @@ DEPENDENCIES
   mini_exiftool
   mini_magick
   mini_racer
-  mobility (~> 1.2.9)
   mysql2
   nokogiri
   oai_repository!
