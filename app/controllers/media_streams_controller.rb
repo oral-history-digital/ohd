@@ -31,7 +31,7 @@ class MediaStreamsController < ApplicationController
   def update
     @media_stream = MediaStream.find(params[:id])
     authorize @media_stream
-    @media_stream.update_attributes(media_stream_params)
+    @media_stream.update(media_stream_params)
     respond @media_stream
   end
 

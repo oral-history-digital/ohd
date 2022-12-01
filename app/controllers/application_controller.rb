@@ -261,7 +261,7 @@ class ApplicationController < ActionController::Base
   def update_contributions(interview, contribution_attributes)
     (contribution_attributes || []).each do |attributes|
       contribution = Contribution.find(attributes[:id])
-      contribution.update_attributes(speaker_designation: attributes[:speaker_designation])
+      contribution.update(speaker_designation: attributes[:speaker_designation])
     end
   end
 

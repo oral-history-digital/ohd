@@ -11,7 +11,7 @@ class TaskTypesController < ApplicationController
   def update
     @task_type = TaskType.find params[:id]
     authorize @task_type
-    @task_type.update_attributes task_type_params
+    @task_type.update task_type_params
 
     respond @task_type
   end

@@ -56,7 +56,7 @@ class UserContentsController < ApplicationController
   def update
     @user_content = UserContent.find(params[:id])
     authorize @user_content
-    @user_content.update_attributes(user_content_params)
+    @user_content.update(user_content_params)
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
 
     respond_to do |format|

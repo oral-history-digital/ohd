@@ -35,7 +35,7 @@ namespace :import do
       begin
         language = Language.find_by_code(data[1]) 
         interview = Interview.find_by_archive_id(data[0])
-        interview.update_attributes language_id: language.id
+        interview.update language_id: language.id
       rescue StandardError => e
         puts "#{data[0]}: #{data[1]}"
         puts ("#{e.message}: #{e.backtrace}")
@@ -172,47 +172,47 @@ namespace :import do
           I18n.locale = :en 
           person = Person.find_or_create_by(first_name: data[2], last_name: data[3])
           history = person.histories.first || History.create(person_id: person.id)
-          history.update_attributes(
+          history.update(
             return_date: data[20],
             forced_labor_details: data[21],
           )
-          person.update_attributes(
+          person.update(
             birth_name: data[19],
             other_first_names: data[22] # middle_names
           )
 
           # de
           I18n.locale = :de 
-          person.update_attributes(first_name: data[0], last_name: data[1])
-          history.update_attributes(
+          person.update(first_name: data[0], last_name: data[1])
+          history.update(
             return_date: data[16],
             forced_labor_details: data[17],
           )
-          person.update_attributes(
+          person.update(
             birth_name: data[15],
             other_first_names: data[18] # middle_names
           )
 
           # ru
           I18n.locale = :ru 
-          person.update_attributes(first_name: data[4], last_name: data[5])
-          history.update_attributes(
+          person.update(first_name: data[4], last_name: data[5])
+          history.update(
             return_date: data[24],
             forced_labor_details: data[25],
           )
-          person.update_attributes(
+          person.update(
             birth_name: data[23],
             other_first_names: data[26] # middle_names
           )
 
           # untranslated
-          person.update_attributes(
+          person.update(
             gender: data[7],
             alias_names: data[8],
             date_of_birth: data[9],
           )
 
-          history.update_attributes(
+          history.update(
             deportation_date: data[10],
             #forced_labor_industry: data[11],
             #forced_labor_habitation_details: data[12],

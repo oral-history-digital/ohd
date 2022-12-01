@@ -18,7 +18,7 @@ class RegistryReferenceTypesController < ApplicationController
   def update
     @registry_reference_type = RegistryReferenceType.find params[:id]
     authorize @registry_reference_type
-    @registry_reference_type.update_attributes registry_reference_type_params
+    @registry_reference_type.update registry_reference_type_params
 
     respond @registry_reference_type
   end

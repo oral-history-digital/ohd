@@ -9,7 +9,7 @@ class MarkTextJob < ApplicationJob
         regexp = Regexp.new(Regexp.quote(t['text_to_mark']))
         if text =~ regexp
           text = text.gsub(regexp, t['replacement'])
-          segment.update_attributes(text: text, locale: locale)
+          segment.update(text: text, locale: locale)
         end
       end
     end

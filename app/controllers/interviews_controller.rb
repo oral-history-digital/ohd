@@ -35,7 +35,7 @@ class InterviewsController < ApplicationController
   def update
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    @interview.update_attributes interview_params
+    @interview.update interview_params
     @interview.find_or_create_tapes(interview_params[:tape_count]) if interview_params[:tape_count]
 
     respond_to do |format|
@@ -325,7 +325,7 @@ class InterviewsController < ApplicationController
         response = http.request(request)
 
         status = response.code == "201" ? "created" : JSON.parse(response.body)["errors"][0]["title"]
-        interview.update_attributes doi_status: status
+        interview.update doi_status: status
       else
         status = "created"
       end

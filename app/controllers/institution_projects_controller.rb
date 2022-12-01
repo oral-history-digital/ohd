@@ -20,7 +20,7 @@ class InstitutionProjectsController < ApplicationController
   end
 
   def update
-    @institution_project.update_attributes(institution_project_params)
+    @institution_project.update(institution_project_params)
     @institution_project.project.touch
 
     respond_to do |format|

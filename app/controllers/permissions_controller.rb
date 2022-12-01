@@ -14,7 +14,7 @@ class PermissionsController < ApplicationController
   def update
     @permission = Permission.find params[:id]
     authorize @permission
-    @permission.update_attributes permission_params
+    @permission.update permission_params
     respond_to do |format|
       format.json do
         render json: data_json(@permission, msg: 'processed')

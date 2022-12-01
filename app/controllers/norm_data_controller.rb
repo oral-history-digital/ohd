@@ -14,7 +14,7 @@ class NormDataController < ApplicationController
   def update
     norm_datum = NormDatum.find params[:id]
     authorize norm_datum
-    norm_datum.update_attributes norm_datum_params
+    norm_datum.update norm_datum_params
 
     respond_to do |format|
       format.json do

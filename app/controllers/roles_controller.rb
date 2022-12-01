@@ -10,7 +10,7 @@ class RolesController < ApplicationController
   def update
     @role = Role.find params[:id]
     authorize @role
-    @role.update_attributes role_params
+    @role.update role_params
     respond @role
   end
 

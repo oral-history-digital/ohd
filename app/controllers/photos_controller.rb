@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
   def update
     @photo = Photo.find(params[:id])
     authorize @photo
-    @photo.update_attributes(photo_params)
+    @photo.update(photo_params)
     @photo.write_iptc_metadata
 
     respond_to do |format|

@@ -15,7 +15,7 @@ class Admin::UsersController < Admin::BaseController
   def update
     @user = UserAccount.find(params[:id])
     authorize @user
-    @user.update_attributes(user_params)
+    @user.update(user_params)
 
     respond_to do |format|
       format.html do
