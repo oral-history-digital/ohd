@@ -33,5 +33,10 @@ module Archive
 
     config.middleware.use Rack::Deflater
     config.middleware.use Rack::Brotli
+
+    config.active_record.yaml_column_permitted_classes = [
+      ActiveSupport::HashWithIndifferentAccess,
+      Symbol
+    ]
   end
 end
