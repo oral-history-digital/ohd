@@ -208,7 +208,7 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     respond_to do |format|
       format.html do
-        render :template => '/react/app.html'
+        render :template => '/react/app'
       end
       format.json do
         render json: {msg: 'not_authorized'}, status: :ok

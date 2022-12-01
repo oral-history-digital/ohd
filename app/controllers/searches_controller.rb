@@ -24,7 +24,7 @@ class SearchesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render :template => "/react/app.html"
+        render :template => "/react/app"
       end
       format.json do
         render json: {
@@ -118,7 +118,7 @@ class SearchesController < ApplicationController
   def map
     respond_to do |format|
       format.html do
-        render :template => "/react/app.html"
+        render :template => "/react/app"
       end
       format.json do
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
@@ -179,7 +179,7 @@ class SearchesController < ApplicationController
   def archive
     respond_to do |format|
       format.html do
-        render :template => "/react/app.html"
+        render :template => "/react/app"
       end
       format.json do
         search = Interview.archive_search(current_user_account, current_project, locale, params)

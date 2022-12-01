@@ -20,7 +20,7 @@ class TaskTypesController < ApplicationController
     policy_scope(TaskType)
 
     respond_to do |format|
-      format.html { render :template => '/react/app.html' }
+      format.html { render :template => '/react/app' }
       format.json do
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-#{current_user_account.id}-#{cache_key_params}-#{TaskType.count}-#{TaskType.maximum(:updated_at)}" do
           if params[:for_projects]
