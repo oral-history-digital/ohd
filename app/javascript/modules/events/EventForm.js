@@ -58,6 +58,7 @@ export default function EventForm({
             multiLocale: true,
             placeholder: t('modules.events.display_date_placeholder'),
             value: event?.display_date,
+            help: 'help_texts.events.display_date'
         },
     ];
 

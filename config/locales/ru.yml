@@ -664,6 +664,8 @@ ru:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Mitwirkungsart)
     media_streams:
       path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
+    events:
+      display_date: optional, if date is fuzzy
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
@@ -987,7 +989,7 @@ ru:
         event_type_id: Event type
         start_date: Start date
         end_date: End date
-        display_date: Display name
+        display_date: Display date
       language:
         code: Code
         name: Name
@@ -1319,10 +1321,15 @@ ru:
         file_input: Bitte Datei auswählen
         password_input: Ваш пароль должен содержать не менее семи символов. Убедитесь, что оба пароля совпадают.
         email_input: пожалуйста, укажите Ваш ел. адрес
+        date_input: Please select a date.
       template:
         header: Мы не можем обработать Ваш запрос
         body: 'Возникла следующая проблема:'
       models:
+        event:
+          attributes:
+            event_type_id:
+              empty: Please select an event type.
         interview:
           attributes:
             collection_id:

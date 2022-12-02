@@ -622,6 +622,8 @@ el:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Mitwirkungsart)
     media_streams:
       path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
+    events:
+      display_date: optional, if date is fuzzy
   contributions:
     title: Συνεργάτης
     add: Προσθήκη συνεργάτη
@@ -944,7 +946,7 @@ el:
         event_type_id: Event type
         start_date: Start date
         end_date: End date
-        display_date: Display name
+        display_date: Display date
       language:
         code: Κωδικός
         name: Name
@@ -1290,10 +1292,15 @@ el:
         file_input: Παρακαλώ συμπληρώστε
         password_input: Ο κωδικός σας πρέπει να αποτελείται από τουλάχιστον επτά χαρακτήρες. Οι δύο κωδικοί πρόσβασης θα πρέπει να είναι οι ίδιοι.
         email_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
+        date_input: Please select a date.
       template:
         header: Δεν ήταν δυνατή η επεξεργασία του αιτήματός σας
         body: 'Παρουσιάστηκε το εξής πρόβλημα:'
       models:
+        event:
+          attributes:
+            event_type_id:
+              empty: Please select an event type.
         interview:
           attributes:
             collection_id:

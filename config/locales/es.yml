@@ -614,6 +614,8 @@ es:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Mitwirkungsart)
     media_streams:
       path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
+    events:
+      display_date: optional, if date is fuzzy
   contributions:
     title: Colaborador/a
     add: Añadir colaborador/a
@@ -933,7 +935,7 @@ es:
         event_type_id: Event type
         start_date: Start date
         end_date: End date
-        display_date: Display name
+        display_date: Display date
       language:
         code: Código
       institution:
@@ -1255,10 +1257,15 @@ es:
         file_input: Seleccionar archivo
         password_input: Por favor elija una contraseña adecuada para activar su cuenta.
         email_input: Por favor corrija su dirección de correo electrónico
+        date_input: Please select a date.
       template:
         header: Su solicitud no se ha podido procesar
         body: 'Se ha presentado el siguiente problema:'
       models:
+        event:
+          attributes:
+            event_type_id:
+              empty: Please select an event type.
         interview:
           attributes:
             collection_id:
