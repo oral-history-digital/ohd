@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { getProjectId } from 'modules/archive';
 import { getProjects } from 'modules/data';
 import { useEventTypes } from 'modules/event-types';
+import { useMutatePeople } from 'modules/person';
 import { Form, validateDate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
@@ -20,6 +21,7 @@ export default function EventForm({
 }) {
     const projectId = useSelector(getProjectId);
     const projects = useSelector(getProjects);
+    const mutatePeople = useMutatePeople();
     const { t, locale } = useI18n();
 
     const { data: eventTypes, isLoading } = useEventTypes();
@@ -71,10 +73,34 @@ export default function EventForm({
                 eventable_id: personId,
             }}
             onSubmit={params => {
-                console.log(params, submitData, onSubmit)
-
                 if (typeof submitData === 'function') {
-                    submitData({ locale, projectId, projects }, params, index);
+                    submitData({ locale, projectId, projects }, params, index, (updatedEvent) => {
+                        const eventHolderId = updatedEvent.eventable_id;
+
+                        mutatePeople(async people => {
+                            const eventHolder = people.data[eventHolderId];
+                            const events = eventHolder.events;
+                            const updatedEventIndex = events.findIndex(event =>
+                                event.id === updatedEvent.id);
+
+                            const updatedPeople = {
+                                ...people,
+                                data: {
+                                    ...people.data,
+                                    [eventHolderId]: {
+                                        ...eventHolder,
+                                        events: [
+                                            ...events.splice(0, updatedEventIndex),
+                                            updatedEvent,
+                                            ...events.splice(updatedEventIndex + 1)
+                                        ]
+                                    }
+                                }
+                            };
+
+                            return updatedPeople;
+                        });
+                    });
                 }
                 if (typeof onSubmit === 'function') {
                     onSubmit();
