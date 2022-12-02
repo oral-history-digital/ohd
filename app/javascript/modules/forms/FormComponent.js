@@ -109,8 +109,6 @@ export default function FormComponent({
     function handleSubmit(event) {
         event.preventDefault();
 
-        console.log('handleSubmit', valid(), scope, submitScope, values, index)
-
         if(valid()) {
             onSubmit({[scope || submitScope]: values}, index);
             if (typeof onSubmitCallback === "function") {

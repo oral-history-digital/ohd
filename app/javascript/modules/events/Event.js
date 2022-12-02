@@ -20,8 +20,6 @@ export default function Event({
 
     const eventType = eventTypes.find(et => et.id === Number(event.event_type_id));
 
-    console.log(event, eventType, Number(event.event_type_id), eventTypes)
-
     const isInterval = event.start_date !== event.end_date;
 
     const startDate = new Date(event.start_date);
