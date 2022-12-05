@@ -288,7 +288,7 @@ namespace :import do
       #
       raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file.to_s)
       #
-      @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file))
+      @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXmlImport.new(file))
 
       read_file = File.read(file)
 
