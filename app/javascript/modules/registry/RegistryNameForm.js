@@ -38,6 +38,7 @@ export default function RegistryNameForm({
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
 
     const handleDescriptorChange = (name, value, params) => {
+        setDescriptor(value);
         if (!registryEntryId && value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});
         }
