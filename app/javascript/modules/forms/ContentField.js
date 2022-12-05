@@ -12,14 +12,14 @@ function ContentField({
     className,
     children,
 }) {
-    let displayedValue = '---';
+    let valueArray;
 
-    if (value) {
-        if (linkUrls) {
-            displayedValue = <ContentValueWithLinks>{value}</ContentValueWithLinks>;
-        } else {
-            displayedValue = value;
-        }
+    if (!value) {
+        valueArray = ['---'];
+    } else if (Array.isArray(value)) {
+        valueArray = value;
+    } else {
+        valueArray = [value];
     }
 
     return (
@@ -31,9 +31,18 @@ function ContentField({
                     null :
                     <span className="flyout-content-label">{label}:</span>
             }
-            <span className={classNames('flyout-content-data', className)}>
-                {displayedValue}
-            </span>
+            {valueArray.map(value => {
+                return (
+                    <span
+                        key={value}
+                        className={classNames('flyout-content-data', className)}
+                    >
+                        {linkUrls ? (
+                            <ContentValueWithLinks>{value}</ContentValueWithLinks>
+                        ) : value}
+                    </span>
+                );
+            })}
             {children}
         </div>
     );
