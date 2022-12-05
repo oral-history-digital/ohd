@@ -5,6 +5,7 @@ import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { updateRegistryNameAttributes, updateNormDataAttributes } from './updateRegistryEntryAttributes';
+import { Spinner } from 'modules/spinners';
 
 function NormDataForDescriptor({
     locale,
@@ -21,7 +22,7 @@ function NormDataForDescriptor({
     const [filter, setFilter] = useState(null);
     const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
-    const [apiResults, setApiResults] = useState([]);
+    const [apiResult, setApiResult] = useState({});
 
     let formElements = [
         {
@@ -77,29 +78,47 @@ function NormDataForDescriptor({
         ]
         fetch(`${pathBase}/norm_data_api?expression=${descriptor}&` + filters.join('&'))
             .then(res => res.json())
-            .then(json => setApiResults(json));
+            .then(json => setApiResult(json));
     };
 
+    const displayResults = () => {
+        if (apiResult.success) {
+            return (
+                apiResult.response?.items?.length === 0 ?
+                    <p className='notifications'>
+                       {t('modules.interview_search.no_results')}
+                    </p> :
+                    <ul>
+                        {apiResult.response.items.map( result => {
+                            return (
+                                <li>
+                                    <a onClick={ () => {
+                                        setRegistryEntryAttributes({
+                                            latitude: result.Entry.Location?.Latitude,
+                                            longitude: result.Entry.Location?.Longitude,
+                                            ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project, locale),
+                                            ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
+                                        });
+                                        setFromAPI(false);
+                                    }} >
+                                        {`${result.Entry.Name}: ${result.Entry.Label}, ${result.Entry.Type}`}
+                                    </a>
+                                </li>
+                            )
+                        })}
+                    </ul>
+            );
+        } else if (apiResult.error) {
+            return (<p className='notifications'>
+                {t('error')}
+            </p>);
+        } else {
+            return (<Spinner />);
+        }
+    }
+
     return ( showResults ?
-        <ul>
-            {apiResults.map( result => {
-                return (
-                    <li>
-                        <a onClick={ () => {
-                            setRegistryEntryAttributes({
-                                latitude: result.Entry.Location?.Latitude,
-                                longitude: result.Entry.Location?.Longitude,
-                                ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project, locale),
-                                ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
-                            });
-                            setFromAPI(false);
-                        }} >
-                            {`${result.Entry.Name}: ${result.Entry.Label}, ${result.Entry.Type}`}
-                        </a>
-                    </li>
-                )
-            })}
-        </ul> :
+        displayResults() :
         <Form
             scope='normdata'
             formClasses={'nested-form default'}

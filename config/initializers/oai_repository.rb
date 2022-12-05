@@ -1,6 +1,6 @@
 OaiRepository.setup do |config|
 
-  #config.repository_name = Project.first.name[Project.first.default_locale]
+  config.repository_name = 'Oral History Digital'
 
   # The URL from which this OAI Repository is served.
   # If you're deploying to different hostnames (e.g. development, QA and
@@ -15,7 +15,7 @@ OaiRepository.setup do |config|
   #
   # Most probably you'll create an oai_dc_identifier attribute or method in
   # the AR models you intend to serve. That value will supplant the default.
-  #config.record_prefix = Project.first.archive_domain
+  config.record_prefix = 'OHD'
 
   # This is your repository administrator's email address.
   # This will appear in the information returned from an "Identify" call to
@@ -30,10 +30,9 @@ OaiRepository.setup do |config|
   # to be a ActiveRecord model class, but it should act like one.
   #
   # You must supply at least one model.
-  config.models = [ ]
   # TODO: reuse the following line after having run project-migrations
   # and created a project
-  config.models = [ Interview ]
+  config.models = [ Interview, Project ]
 
   # List the sets (and the ActiveRecord model they belong to). E.g.
   #
@@ -56,6 +55,13 @@ OaiRepository.setup do |config|
        spec: 'class:interview',
        name: 'Interviews',
        model: Interview,
+       description: 'Interviews'
+     },
+     {
+       spec: 'class:project',
+       name: 'Archive',
+       model: Project,
+       description: 'Archive'
      }
   ]
 
