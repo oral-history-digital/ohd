@@ -6,6 +6,7 @@ import { useEventTypes } from 'modules/event-types';
 import formatEventShort from './formatEventShort';
 
 export default function EventContentField({
+    label,
     events,
     className,
 }) {
@@ -21,7 +22,7 @@ export default function EventContentField({
 
     return (
         <ContentField
-            label={eventType.name}
+            label={label || eventType.name}
             value={formattedEvents}
             className={className}
         />
@@ -29,6 +30,7 @@ export default function EventContentField({
 }
 
 EventContentField.propTypes = {
+    label: PropTypes.string,
     events: PropTypes.array.isRequired,
     className: PropTypes.string,
 };

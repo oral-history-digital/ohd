@@ -101,7 +101,12 @@ export default function PersonData({
                         return null;
                     }
 
-                    return <EventContentField events={events} />;
+                    return (
+                        <EventContentField
+                            label={field.label?.[locale]}
+                            events={events}
+                        />
+                    );
                 }
 
                 const label = field.label?.[locale] || t(field.name);
