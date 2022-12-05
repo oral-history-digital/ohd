@@ -8,7 +8,7 @@ class RegistryEntriesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: JSON.parse(results)["response"]["items"].to_json
+        render json: JSON.parse(results).to_json
       end
     end
   end

@@ -39,10 +39,7 @@ export default function RegistryNameForm({
 
     const handleDescriptorChange = (name, value, params) => {
         setDescriptor(value);
-        setRegistryEntryAttributes(
-            updateRegistryNameAttributes({Name: value}, registryNameTypes, registryEntryAttributes, project, params.locale)
-        );
-        if (value?.length > 3) {
+        if (!registryEntryId && value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: value});
         }
     }
@@ -77,7 +74,7 @@ export default function RegistryNameForm({
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}
-            data={registryEntryAttributes?.registry_names_attributes?.[0] || data}
+            data={registryEntryAttributes?.registry_names_attributes?.[index] || data}
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
@@ -87,7 +84,7 @@ export default function RegistryNameForm({
             submitText='submit'
             elements={formElements}
         >
-            { foundRegistryEntries?.results?.length > 0 &&
+            { !registryEntryId && foundRegistryEntries?.results?.length > 0 &&
                 <>
                     <h6>{`${t('existing_registry_entries')}:`}</h6>
                     <ul className="RegistryEntryList RegistryEntryList--root">
