@@ -32,3 +32,5 @@ solr/test/data
 solr/development/data
 solr/default/data
 solr/pids
+
+/config/master.key
