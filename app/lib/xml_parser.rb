@@ -1,4 +1,4 @@
-module XMLParser
+module XmlParser
 
   require 'nokogiri'
 
