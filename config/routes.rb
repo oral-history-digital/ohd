@@ -223,7 +223,7 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
-      get "/", to: redirect {|params, request| binding.pry; "/#{params[:locale]}/projects"}
+      get "/", to: redirect {|params, request| "/#{params[:locale]}/projects"}
       resources :projects, only: [:create, :update, :destroy, :index]
       resources :institutions
       resources :help_texts, only: [:index, :update]
@@ -232,7 +232,7 @@ Rails.application.routes.draw do
       concerns :unnamed_devise_routes, :search
     end
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
-      get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); binding.pry; "/#{project.identifier}/#{project.default_locale}"}
+      get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/:locale", to: "projects#show"
         resources :projects, only: [:update, :destroy]
@@ -249,7 +249,7 @@ Rails.application.routes.draw do
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
-    get "/", to: redirect {|params, request| binding.pry; "/#{Project.by_host(request.host).default_locale}"}
+    get "/", to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
     get "/:locale", to: "projects#show"
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       resources :projects, only: [:update, :destroy]
