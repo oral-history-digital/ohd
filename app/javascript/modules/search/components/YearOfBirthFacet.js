@@ -6,10 +6,8 @@ export default function YearOfBirthFacet({
     sliderMin,
     sliderMax,
 }) {
-    const style = { width: 400, paddingLeft: 11, paddingRight: 15 };
-
     return (
-        <div className="flyout-radio-container" style={style}>
+        <div className="flyout-radio-container">
             <YearRange
                 sliderMin={sliderMin}
                 sliderMax={sliderMax}
