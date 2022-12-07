@@ -769,7 +769,7 @@ class Interview < ApplicationRecord
 
               facet facet_name,
                     range: Date.new(1900)..Date.today,
-                    range_interval: '+5YEAR',
+                    range_interval: '+1YEAR',
                     limit: -1,
                     exclude: [filter].reject(&:blank?)
 

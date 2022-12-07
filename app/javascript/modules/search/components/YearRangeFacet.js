@@ -8,7 +8,8 @@ import getRangeMarks from './getRangeMarks';
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 
-export default function YearRange({
+export default function YearRangeFacet({
+    name,
     sliderMin,
     sliderMax,
 }) {
@@ -30,7 +31,7 @@ export default function YearRange({
     };
 
     return (
-        <>
+        <div className="flyout-radio-container">
             <div className="u-mb">
                 {currentValue[0] || sliderMin}–{currentValue[1] || sliderMax}
             </div>
@@ -46,11 +47,12 @@ export default function YearRange({
                     value={[currentValue[0] || sliderMin, currentValue[1] || sliderMax]}
                 />
             </div>
-        </>
+        </div>
     );
 }
 
-YearRange.propTypes = {
+YearRangeFacet.propTypes = {
+    name: PropTypes.string.isRequired,
     sliderMin: PropTypes.number,
     sliderMax: PropTypes.number,
 };

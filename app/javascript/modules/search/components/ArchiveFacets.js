@@ -6,8 +6,7 @@ import { Spinner } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
 import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
-import DateRangeFacet from './DateRangeFacet';
-import YearOfBirthFacet from './YearOfBirthFacet';
+import YearRangeFacet from './YearRangeFacet';
 import useFacets from '../useFacets';
 
 export default function ArchiveFacets() {
@@ -42,7 +41,8 @@ export default function ArchiveFacets() {
                             key={facetName}
                             label={facetData.name[locale]}
                         >
-                            <YearOfBirthFacet
+                            <YearRangeFacet
+                                name={facetName}
                                 sliderMin={Math.min(...years)}
                                 sliderMax={Math.max(...years)}
                             />
@@ -52,15 +52,28 @@ export default function ArchiveFacets() {
                     const eventType = eventTypes.find(et =>
                         et.code === facetData.name)
 
+                    const values = Object.keys(facetData.subfacets);
+                    if (values.length === 0) {
+                        return null;
+                    }
+
+                    // Facet values are formatted like:
+                    // 1955.0..1960.0
+                    // ^       ^
+                    // |       |
+                    // 0       8
+                    const min = Number(values.at(0).slice(0, 4));
+                    const max = Number(values.at(-1).slice(8, 12));
+
                     return (
                         <FacetDropdown
                             key={facetName}
                             label={eventType.name}
                         >
-                            <DateRangeFacet
+                            <YearRangeFacet
                                 name={facetName}
-                                data={facetData}
-                                className="u-mt-small"
+                                sliderMin={min}
+                                sliderMax={max}
                             />
                         </FacetDropdown>
                     );
