@@ -375,11 +375,11 @@ class Project < ApplicationRecord
       if facet.present?
         facets[facet_name] = {
           name: facet_name,
-          values: {},
+          subfacets: {},
           type: 'EventType'
         }
         facet.rows.each do |row|
-          facets[facet_name][:values][row.value] = row.count
+          facets[facet_name][:subfacets][row.value] = row.count
         end
       end
     end
