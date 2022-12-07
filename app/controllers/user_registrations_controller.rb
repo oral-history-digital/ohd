@@ -21,7 +21,7 @@ class UserRegistrationsController < ApplicationController
     if @user_registration.save
       UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id if current_project
       @user_registration.register
-      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
+      render json: {registration_status: render_to_string("submitted", formats: :html, variants: params[:locale].to_sym, layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.user_account
@@ -29,11 +29,11 @@ class UserRegistrationsController < ApplicationController
         @user_registration.user_account.resend_confirmation_instructions
         @email = @user_registration.email
       end
-      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
+      render json: {registration_status: render_to_string("registered", formats: :html, variants: params[:locale].to_sym, layout: false)}
     else
       @email = @user_registration.email
       @user_registration = nil
-      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
+      render json: {registration_status: render_to_string("registered", formats: :html, variants: params[:locale].to_sym, layout: false)}
     end
   end
 
