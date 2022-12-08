@@ -71,43 +71,11 @@ export default function useSearchParams() {
         pushToHistory(newParams);
     }
 
-    function setEventParams(name, from, until) {
-        setParams({
-            [`${name}_from`]: from !== '' ? from : undefined,
-            [`${name}_until`]: until !== '' ? until : undefined
-        });
-    }
-
     function setYearOfBirthRange(min, max) {
         setParams({
             year_of_birth_min: min,
             year_of_birth_max: max,
         });
-    }
-
-    function setParam(name, value) {
-        const newParams = {
-            ...params,
-           [name]: value,
-        };
-        pushToHistory(newParams);
-    }
-
-    function setParams(object) {
-        const newParams = {
-            ...params,
-            ...object,
-        };
-        pushToHistory(newParams);
-    }
-
-    function deleteParam(name) {
-        const newParams = {
-            ...params,
-        };
-        delete newParams[name];
-
-        pushToHistory(newParams);
     }
 
     function addFacetParam(name, value) {
@@ -160,15 +128,52 @@ export default function useSearchParams() {
         return params[name] || [];
     }
 
-    function getEventParams(name) {
-        return [
-            params[`${name}_from`] || '',
-            params[`${name}_until`] || ''
-        ];
+    function setRangeParam(name, range) {
+        setParam(name, `${range[0]}-${range[1]}`);
+    }
+
+    function deleteRangeParam(name) {
+        deleteParam(name);
+    }
+
+    function getRangeParam(name) {
+        const value = params[name];
+        if (!value) {
+            return undefined;
+        }
+
+        const range = value.split('-')
+            .map(year => Number(year));
+        return range;
     }
 
     function resetSearchParams() {
         const newParams = {};
+        pushToHistory(newParams);
+    }
+
+    function setParam(name, value) {
+        const newParams = {
+            ...params,
+           [name]: value,
+        };
+        pushToHistory(newParams);
+    }
+
+    function setParams(object) {
+        const newParams = {
+            ...params,
+            ...object,
+        };
+        pushToHistory(newParams);
+    }
+
+    function deleteParam(name) {
+        const newParams = {
+            ...params,
+        };
+        delete newParams[name];
+
         pushToHistory(newParams);
     }
 
@@ -197,8 +202,9 @@ export default function useSearchParams() {
             setFulltext,
             setFulltextAndSort,
             setYearOfBirthRange,
-            setEventParams,
-            getEventParams,
+            setRangeParam,
+            getRangeParam,
+            deleteRangeParam,
             setParam,
             addFacetParam,
             deleteFacetParam,

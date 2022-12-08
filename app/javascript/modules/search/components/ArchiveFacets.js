@@ -6,7 +6,8 @@ import { Spinner } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
 import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
-import YearRangeFacet from './YearRangeFacet';
+import BirthYearFacet from './BirthYearFacet';
+import RangeFacet from './RangeFacet';
 import useFacets from '../useFacets';
 
 export default function ArchiveFacets() {
@@ -41,8 +42,7 @@ export default function ArchiveFacets() {
                             key={facetName}
                             label={facetData.name[locale]}
                         >
-                            <YearRangeFacet
-                                name={facetName}
+                            <BirthYearFacet
                                 sliderMin={Math.min(...years)}
                                 sliderMax={Math.max(...years)}
                             />
@@ -70,7 +70,7 @@ export default function ArchiveFacets() {
                             key={facetName}
                             label={eventType.name}
                         >
-                            <YearRangeFacet
+                            <RangeFacet
                                 name={facetName}
                                 sliderMin={min}
                                 sliderMax={max}
