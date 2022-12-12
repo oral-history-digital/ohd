@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import { Checkbox } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
+import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
 import { useInterviewSearch } from 'modules/interview-search';
@@ -70,9 +71,24 @@ export default function InterviewListRow({
             </td>
             {
                 project.list_columns.map(column => {
-                    let obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
+                    const obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
                         interview :
                         interviewee;
+
+                    if (column.source === 'EventType') {
+                        const events = interviewee?.events?.filter(e =>
+                            e.event_type_id === column.event_type_id);
+
+                        const formattedEvents = events
+                            ?.map(e => formatEventShort(e, locale))
+                            ?.join(', ');
+
+                        return (
+                            <td key={column.name} className="Table-cell">
+                                {formattedEvents}
+                            </td>
+                        );
+                    }
 
                     return (
                         <td key={column.name} className="Table-cell">
