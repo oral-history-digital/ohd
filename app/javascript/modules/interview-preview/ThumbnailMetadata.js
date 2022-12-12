@@ -29,19 +29,19 @@ export default function ThumbnailMetadata({
                         interviewee;
 
                     if (field.source === 'EventType') {
-                        const event = interviewee?.events?.find(e =>
+                        const events = interviewee?.events?.filter(e =>
                             e.event_type_id === field.event_type_id);
 
-                        if (!event) {
-                            return null;
-                        }
+                        const formattedEvents = events
+                            ?.map(e => formatEventShort(e, locale))
+                            ?.join(', ');
 
                         return (
                             <li
                                 key={field.name}
                                 className="DetailList-item"
                             >
-                                {formatEventShort(event, locale)}
+                                {formattedEvents}
                             </li>
                         );
                     }
