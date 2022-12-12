@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { humanReadable, getLanguages } from 'modules/data';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
-import { EventAlt } from 'modules/events';
+import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 
 export default function ThumbnailMetadata({
@@ -37,17 +37,28 @@ export default function ThumbnailMetadata({
                         }
 
                         return (
-                            <EventAlt
-                                event={event}
-                                withLabel={false}
-                                className={classNames('DetailList-item', {
-                                    'DetailList-item--shortened': field.name === 'description',
-                                })}
-                            />
+                            <li
+                                key={field.name}
+                                className="DetailList-item"
+                            >
+                                {formatEventShort(event, locale)}
+                            </li>
                         );
                     }
 
                     if (obj) {
+                        const value = humanReadable(obj, field.name, {
+                            locale,
+                            translations,
+                            languages,
+                            optionsScope: 'search_facets',
+                            collections: project.collections,
+                        }, {}, '');
+
+                        if (!value) {
+                            return null;
+                        }
+
                         return (
                             <li
                                 key={field.name}
@@ -55,14 +66,7 @@ export default function ThumbnailMetadata({
                                     'DetailList-item--shortened': field.name === 'description',
                                 })}
                             >
-                                {humanReadable(obj, field.name, {
-                                    locale,
-                                    translations,
-                                    languages,
-                                    optionsScope: 'search_facets',
-                                    collections: project.collections,
-                                }, {}, '')}
-                                {' '}
+                                {value}
                             </li>
                         );
                     } else {
