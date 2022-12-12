@@ -2,22 +2,25 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
 import { ContentField } from 'modules/forms';
-import Biography from './Biography';
 import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
+import { AuthorizedContent, AuthShowContainer, useProjectAccessStatus } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { formatPersonName } from 'modules/person';
 import { EventContentField } from 'modules/events';
 import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus } from 'modules/auth';
+import {
+    METADATA_SOURCE_EVENT_TYPE,
+    METADATA_SOURCE_PERSON
+} from 'modules/constants';
 import usePersonWithAssociations from './usePersonWithAssociations';
 import PersonForm from './PersonForm';
+import Biography from './Biography';
 
 function getDisplayedMetadataFields(metadataFields, isProjectAccessGranted) {
     const filteredFields = metadataFields.filter(field => {
-        const isPersonType = field.source === 'Person' ||
-            field.source === 'EventType' && field.eventable_type === 'Person';
+        const isPersonType = field.source === METADATA_SOURCE_PERSON ||
+            field.source === METADATA_SOURCE_EVENT_TYPE && field.eventable_type === 'Person';
 
         const isAllowed = isProjectAccessGranted && field.use_in_details_view ||
             !isProjectAccessGranted && field.display_on_landing_page;

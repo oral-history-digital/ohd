@@ -7,6 +7,10 @@ import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
+import {
+    METADATA_SOURCE_EVENT_TYPE,
+    METADATA_SOURCE_INTERVIEW
+} from '../constants';
 
 export default function ThumbnailMetadata({
     interview,
@@ -24,11 +28,11 @@ export default function ThumbnailMetadata({
         <ul className="DetailList" lang={locale}>
             {
                 project.grid_fields.map((field) => {
-                    const obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
+                    const obj = (field.ref_object_type === 'Interview' || field.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
 
-                    if (field.source === 'EventType') {
+                    if (field.source === METADATA_SOURCE_EVENT_TYPE) {
                         const events = interviewee?.events?.filter(e =>
                             e.event_type_id === field.event_type_id);
 
