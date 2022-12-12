@@ -12,6 +12,10 @@ import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
 import { useInterviewSearch } from 'modules/interview-search';
 import { useArchiveSearch } from 'modules/search';
 import { usePersonWithAssociations } from 'modules/person';
+import {
+    METADATA_SOURCE_EVENT_TYPE,
+    METADATA_SOURCE_INTERVIEW
+} from 'modules/constants';
 
 export default function InterviewListRow({
     project,
@@ -71,11 +75,11 @@ export default function InterviewListRow({
             </td>
             {
                 project.list_columns.map(column => {
-                    const obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
+                    const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
 
-                    if (column.source === 'EventType') {
+                    if (column.source === METADATA_SOURCE_EVENT_TYPE) {
                         const events = interviewee?.events?.filter(e =>
                             e.event_type_id === column.event_type_id);
 

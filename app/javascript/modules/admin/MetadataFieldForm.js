@@ -5,11 +5,12 @@ import { Form } from 'modules/forms';
 import { Fetch, getRegistryReferenceTypesForCurrentProjectFetched } from 'modules/data';
 import { Spinner } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
-
-const METADATA_SOURCE_INTERVIEW = 'Interview';
-const METADATA_SOURCE_PERSON = 'Person';
-const METADATA_SOURCE_REGISTRY_REFERENCE_TYPE = 'RegistryReferenceType';
-const METADATA_SOURCE_EVENT_TYPE = 'EventType';
+import {
+    METADATA_SOURCE_INTERVIEW,
+    METADATA_SOURCE_PERSON,
+    METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+    METADATA_SOURCE_EVENT_TYPE
+} from 'modules/constants';
 
 const NAME_VALUES = {
     Interview: [
