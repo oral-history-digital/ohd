@@ -297,14 +297,14 @@ es:
     interview_location: Interview location
     home_location: Home location
   event_types:
-    date_of_birth: Date of birth
+    date_of_birth: Fecha de nacimiento
   metadata_labels:
     link_to_interview: Link to interview
     tape_count: Tape count
     description: Description
     duration: Duration
     biography: Biographie
-    date_of_birth: Date of birth
+    date_of_birth: Fecha de nacimiento
     year_of_birth: Year of birth
     birth_location: Birth location
     gender: Gender
@@ -781,7 +781,7 @@ es:
     tasks_supervisor_ids: Qualitätsmanagement
     tasks_user_account_ids: Bearbeiter*innen
     workflow_state: Status
-    date_of_birth: Geburtsdatum
+    date_of_birth: Fecha de nacimiento
     signature_original: Originalsignatur
     startpage_position: Startpage position
   activerecord:

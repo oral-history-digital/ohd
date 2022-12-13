@@ -1,6 +1,0 @@
----
-:date_of_birth:
-  eventable_type: Person
-  use_as_facet: true
-  facet_order: 9.0
-  use_in_details_view: true

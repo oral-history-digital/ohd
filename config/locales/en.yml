@@ -238,7 +238,7 @@ en:
   assign_speakers: Sprecher*innen zuordnen
   speaker_designations: Sprecher*innen-Kürzel
   person_info: About the Person
-  date_of_birth: Date of Birth
+  date_of_birth: Date of birth
   year_of_birth: Year of Birth
   place_of_birth: Place of Birth
   country_of_birth: Country of Birth
@@ -1177,7 +1177,7 @@ en:
         first_name: First Name
         last_name: Last Name
         birth_name: Birth Name
-        date_of_birth: Date of Birth
+        date_of_birth: Date of birth
         alias_names: Additional Names
         other_first_names: Other First Names
         typology: Erfahrungen
