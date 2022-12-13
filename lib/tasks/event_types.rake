@@ -1,28 +1,38 @@
 # E.g.:
-# bundle exec rake event_types:create['cd']
+# bundle exec rake event_types:create
 
 namespace :event_types do
   desc 'create default event_types'
-  task :create, [:project_shortname] => :environment do |t, args|
-    project = Project.where(shortname: args.project_shortname).first
-    I18n.locale = project.default_locale
-    puts "Creating default event types for project #{project.name}…"
+  task :create => :environment do |t, args|
+    Project.all.each do |project|
+      puts "Creating default event types for project #{project.shortname}…"
 
-    default_event_types.each do |key, name|
-      event_type = project.event_types.find_by_code(key)
-      if event_type.blank?
-        EventType.create(code: key, name: name, project: project)
-        puts "Creating event type #{key}."
-      else
-        puts "Skipping event type #{key}."
+      default_event_types.each do |key, translation_key|
+        # Create event type.
+        event_type = project.event_types.find_by_code(key)
+        if event_type.blank?
+          event_type = EventType.create(code: key, project: project)
+          puts "Creating event type #{key}."
+        else
+          puts "Skipping event type #{key}."
+        end
+
+        # Create translations.
+        project.available_locales.each do |locale|
+          I18n.locale = locale.to_sym
+          event_type.name = I18n.t(translation_key)
+        end
+
+        event_type.save
       end
     end
+
+    I18n.locale = :de
   end
 
   def default_event_types
     {
-      date_of_birth: 'Geburtsdatum',
-      studies: 'Studium'
+      date_of_birth: 'event_types.date_of_birth',
     }
   end
 end

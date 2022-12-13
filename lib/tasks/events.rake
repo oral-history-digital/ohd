@@ -1,3 +1,5 @@
+# This is for testing purposes only!
+#
 # E.g.:
 # bundle exec rake events:create
 
