@@ -7,6 +7,7 @@ import { getCurrentProject } from 'modules/data';
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { useEventTypes } from 'modules/event-types';
 import {
     usePeople,
     useMutatePeople,
@@ -20,6 +21,7 @@ import AddButton from './AddButton';
 export default function PeopleAdminPage() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
+    const { data: eventTypes, isLoading: eventTypesAreLoading } = useEventTypes();
     const { data: peopleData, isLoading, isValidating } = usePeople();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
@@ -45,7 +47,7 @@ export default function PeopleAdminPage() {
     const joinedData = {};
     const showComponent = undefined;
 
-    if (isLoading) {
+    if (isLoading || eventTypesAreLoading) {
         return (
             <div className='wrapper-content register'>
                 <Spinner />
@@ -61,7 +63,7 @@ export default function PeopleAdminPage() {
         return (
             <PersonForm
                 data={data}
-                withEvents
+                withEvents={eventTypes.length > 0}
                 onSubmit={onSubmit}
                 onCancel={onCancel}
             />
