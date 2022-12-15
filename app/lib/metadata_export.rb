@@ -37,7 +37,7 @@ class MetadataExport
         ]
 
         project.contribution_types.inject(line) do |mem, contribution_type|
-          if contribution_type.use_in_export && contribution_type.code != 'interviewee'
+          if contribution_type.use_in_export# && contribution_type.code != 'interviewee'
             contributors = interview.send(contribution_type.code.pluralize)
             mem << (contributors.count > 0 ? contributors.map{|c| "#{c.last_name}, #{c.first_name}"}.join('#') : nil)
           end
