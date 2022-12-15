@@ -169,7 +169,9 @@ export default function FormComponent({
         props.handleChange = handleChange;
         props.handleErrors = handleErrors;
         props.key = props.attribute;
-        props.value = values[props.attribute] || props.value;
+        props.value = values[props.attribute] !== undefined ?
+            values[props.attribute] :
+            props.value;
         props.data = data;
 
         // set defaults for the possibility to shorten elements list
