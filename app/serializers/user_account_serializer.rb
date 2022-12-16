@@ -10,7 +10,8 @@ class UserAccountSerializer < ApplicationSerializer
     :supervised_tasks,
     :user_roles,
     :permissions,
-    :user_registration_projects
+    :user_registration_projects,
+    :access_token
 
   has_one :user_registration
 
@@ -38,4 +39,7 @@ class UserAccountSerializer < ApplicationSerializer
     object.user_registration && object.user_registration.user_registration_projects.inject({}){|mem, c| mem[c.id] = UserRegistrationProjectSerializer.new(c); mem}
   end
 
+  def access_token
+    object.access_tokens.last.token
+  end
 end
