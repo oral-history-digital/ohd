@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  use_doorkeeper do
-    skip_controllers :authorizations, :applications, :authorized_applications
-  end
-
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'

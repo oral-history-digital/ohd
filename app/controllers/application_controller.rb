@@ -5,15 +5,8 @@ class ApplicationController < ActionController::Base
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  #before_action :doorkeeper_authorize!
   before_action :authenticate_user_account!
-  before_action :user_account_by_token
-  def user_account_by_token
-    if doorkeeper_token && !current_user_account
-      user = UserAccount.find(doorkeeper_token.resource_owner_id) 
-      sign_in(user)
-    end
-  end
+  #before_action :set_variant
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -46,6 +39,10 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_project
+
+  #def set_variant
+    #request.variant = current_project.identifier.to_sym
+  #end
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
