@@ -33,7 +33,7 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def transcript?
-    download?
+    user && user.accessible_projects.include?(project)
   end
 
   def observations?
