@@ -12,6 +12,7 @@ export default function AssignSpeakersForm({
     contributionTypes,
     fetchData,
     interview,
+    project,
     projectId,
     projects,
     speakerDesignationsStatus,
@@ -36,7 +37,11 @@ export default function AssignSpeakersForm({
         return (
             <span>
                 <span>
-                    {formatPersonName(person, translations, { locale, withTitle: true }) + ', '}
+                    {formatPersonName(person, translations, {
+                        locale,
+                        fallbackLocale: project.default_locale,
+                        withTitle: true
+                    }) + ', '}
                 </span>
                 <span>
                     {contributionTypes[value.contribution_type_id].label[locale] + ', '}

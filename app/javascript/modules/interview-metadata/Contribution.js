@@ -13,6 +13,7 @@ export default function Contribution({
     person,
     projectId,
     projects,
+    project,
     archiveId,
     contribution,
     withSpeakerDesignation,
@@ -35,7 +36,11 @@ export default function Contribution({
     if (isAuthorized(contribution, 'update') || contribution.workflow_state === 'public' ) {
         return (
             <span className="flyout-content-data">
-                {formatPersonName(person, translations, { locale, withTitle: true })}
+                {formatPersonName(person, translations, {
+                    locale,
+                    fallbackLocale: project.default_locale,
+                    withTitle: true
+                })}
 
                 {
                     withSpeakerDesignation ?
@@ -68,7 +73,11 @@ export default function Contribution({
                                     onSubmit={() => { destroy(); close(); }}
                                     onCancel={close}
                                 >
-                                    <p>{formatPersonName(person, { locale, withTitle: true })}</p>
+                                    <p>{formatPersonName(person, translations, {
+                                        locale,
+                                        fallbackLocale: project.default_locale,
+                                        withTitle: true
+                                    })}</p>
                                 </DeleteItemForm>
                             )}
                         </Modal>
@@ -88,6 +97,7 @@ Contribution.propTypes = {
     archiveId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
 
