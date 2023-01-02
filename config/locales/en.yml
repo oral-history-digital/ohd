@@ -29,6 +29,9 @@ en:
     el: Greek
     en: English
     es: Spanish
+  workflow_state:
+    public: public
+    unshared: not public
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geo Filter
