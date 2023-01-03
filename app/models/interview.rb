@@ -238,10 +238,6 @@ class Interview < ApplicationRecord
   scope :shared, -> {where(workflow_state: 'public')}
   scope :with_media_type, -> {where.not(media_type: nil)}
 
-  def interviewees
-    contributions.where(contribution_type_id: project.contribution_types.where(code: 'interviewee').first).map(&:person)
-  end
-
   def interviewee_id
     interviewees.first && interviewees.first.id
   end
