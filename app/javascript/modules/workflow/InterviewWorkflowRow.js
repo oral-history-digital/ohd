@@ -8,6 +8,7 @@ import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
 import { useArchiveSearch } from 'modules/search';
@@ -170,6 +171,7 @@ export default function InterviewWorkflowRow({
                 )}
                 {!collapsed && tasksFetched && (
                     <div className='workflow-active tasks'>
+                        <HelpText code="workflow_tasks" />
                         {interview.task_ids.map(taskId => {
                             if (project.task_types[tasks[taskId].task_type.id]?.use) {
                                 return <TaskContainer task={tasks[taskId]} interview={interview} />

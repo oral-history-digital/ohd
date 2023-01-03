@@ -9,6 +9,7 @@ import { useI18n } from 'modules/i18n';
 export default function EditData({
     data,
     formElements,
+    helpTextCode,
     initialFormValues,
     translations,
     locale,
@@ -28,6 +29,7 @@ export default function EditData({
         (
             <Form
                 data={data}
+                helpTextCode={helpTextCode}
                 values={initialFormValues}
                 scope={scope}
                 onSubmit={params => {
@@ -70,6 +72,7 @@ export default function EditData({
 EditData.propTypes = {
     data: PropTypes.object.isRequired,
     formElements: PropTypes.array.isRequired,
+    helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
     locale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,

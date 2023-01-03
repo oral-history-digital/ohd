@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useDispatch } from 'react-redux';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
@@ -9,7 +7,6 @@ import ArchiveSearch from './ArchiveSearch';
 
 export default function SearchPage() {
     const { t } = useI18n();
-    const dispatch = useDispatch();
 
     return (
         <ScrollToTop>

@@ -78,9 +78,7 @@ export default function ArchiveSearchTabs({
                             case VIEWMODE_WORKFLOW:
                                 tabContent = (
                                     <AuthorizedContent object={{type: 'General'}} action="edit">
-                                        <WorkflowResultsContainer
-                                            interviews={interviews}
-                                        />
+                                        <WorkflowResultsContainer interviews={interviews} />
                                     </AuthorizedContent>
                                 );
                                 break;

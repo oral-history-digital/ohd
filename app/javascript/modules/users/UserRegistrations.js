@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthShowContainer } from 'modules/auth';
 import { parametrizedQuery } from 'modules/admin';
+import { HelpText } from 'modules/help-text';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import UserRegistrationContainer from './UserRegistrationContainer';
@@ -66,6 +67,8 @@ export default class UserRegistrations extends Component {
                 </Helmet>
                 <ErrorBoundary>
                     <AuthShowContainer ifLoggedIn={true}>
+                        <HelpText code="user_admin_page" />
+
                         <h1 className='registry-entries-title'>
                             {t(this.props, `edit.users.admin`)}
                         </h1>

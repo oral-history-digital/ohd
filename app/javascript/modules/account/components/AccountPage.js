@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { getEditView } from 'modules/archive';
+import { HelpText } from 'modules/help-text';
 import { getCurrentAccount } from 'modules/data';
 import { Features } from 'modules/features';
 import { useI18n } from 'modules/i18n';
@@ -12,6 +14,7 @@ import UserDetailsContainer from './UserDetailsContainer';
 export default function AccountPage() {
     const { t } = useI18n();
     const account = useSelector(getCurrentAccount);
+    const editView = useSelector(getEditView);
 
     return (
         <div className='wrapper-content register'>
@@ -20,7 +23,10 @@ export default function AccountPage() {
             </Helmet>
             <ErrorBoundary>
                 <AuthShowContainer ifLoggedIn ifNoProject >
+                    {editView && <HelpText code="account_page" />}
+
                     <h1>{t('account_page')}</h1>
+
                     <div className='user-registration boxes'>
                         {
                             account && <UserDetailsContainer />

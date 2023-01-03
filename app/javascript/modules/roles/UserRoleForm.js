@@ -39,6 +39,7 @@ export default class UserRoleForm extends Component {
                             validate: function(v){return v !== ''}
                         },
                     ]}
+                    helpTextCode="user_role_form"
                 />
             </div>
         );
