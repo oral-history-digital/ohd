@@ -9,14 +9,14 @@
 \begin{document}
 
 <%=
-  render partial: "./latex/header_footer",
+  render partial: "latex/header_footer",
     locals: {
       header_text: title,
       project: project,
       header_locale: locale,
   } 
 %>
-<%= render partial: "./latex/title",
+<%= render partial: "latex/title",
            locals: {
                title: title,
                space_above: 3,
@@ -25,7 +25,7 @@
            } %>
 
 <% if project.shortname.to_sym == :mog %> 
-<%= render partial: "./latex/authors",
+<%= render partial: "latex/authors",
            locals: {
                locale: locale,
                space_above: 3,
@@ -36,7 +36,7 @@
    \vspace{2cm}
 <% end %>
 
-<%= render partial: "./latex/explanation",
+<%= render partial: "latex/explanation",
            locals: {
                locale: locale,
                space_above: 20,
@@ -52,7 +52,7 @@
 
 \newpage
 
-<%= render partial: "./latex/title",
+<%= render partial: "latex/title",
            locals: {
                title: title,
                space_above: 0,

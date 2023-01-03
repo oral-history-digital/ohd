@@ -75,7 +75,6 @@ Rails.application.routes.draw do
 
     resources :interviews do
       member do
-        get :doi_contents
         get :metadata
         get 'cmdi_metadata', action: :cmdi_metadata
         get :headings

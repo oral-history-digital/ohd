@@ -51,8 +51,9 @@ module Interview::Export
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     first_segment_with_heading = segments.with_heading.first
     ApplicationController.new.render_to_string(
-      template: '/latex/interview_transcript.pdf.erb',
-      layout: 'latex.pdf.erbtex',
+      template: 'latex/interview_transcript',
+      formats: :pdf,
+      layout: 'latex',
       locals: {
         interview: self,
         doc_type: 'transcript',
@@ -69,8 +70,9 @@ module Interview::Export
   def biography_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     ApplicationController.new.render_to_string(
-      template: '/latex/biographical_entries.pdf.erb',
-      layout: 'latex.pdf.erbtex',
+      template: 'latex/biographical_entries',
+      formats: :pdf,
+      layout: 'latex',
       locals: {
         interview: self,
         doc_type: 'biographical_entries',
@@ -84,8 +86,9 @@ module Interview::Export
   def observations_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     ApplicationController.new.render_to_string(
-      template: '/latex/interview_observations.pdf.erb',
-      layout: 'latex.pdf.erbtex',
+      template: 'latex/interview_observations',
+      formats: :pdf,
+      layout: 'latex',
       locals: {
         interview: self,
         doc_type: 'observations',
@@ -97,7 +100,8 @@ module Interview::Export
 
   def metadata_xml(locale)
     ApplicationController.new.render_to_string(
-      template: 'interviews/metadata.xml',
+      template: 'interviews/metadata',
+      formats: :xml,
       locals: {
         interview: self,
         locale: locale,
