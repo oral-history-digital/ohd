@@ -140,7 +140,9 @@ export default class Select extends Component {
             handlechangecallback
         } = this.props;
 
-        let value = this.props.value || data?.[attribute] || '';
+        const value = this.props.value !== undefined ?
+            this.props.value :
+            (data?.[attribute] || '');
 
         return (
             <Element

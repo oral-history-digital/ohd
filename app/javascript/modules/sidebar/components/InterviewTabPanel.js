@@ -124,11 +124,12 @@ export default function InterviewTabPanel({
                     </SubTab>
                 </AuthorizedContent>
 
+                {/* TODO: rework assign speaker functionality
                 <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
                     <SubTab title={t('assign_speakers')}>
                         <AssignSpeakersFormContainer interview={interview} />
                     </SubTab>
-                </AuthorizedContent>
+                </AuthorizedContent>*/}
 
                 <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
                     <SubTab title={t('mark_texts')}>
