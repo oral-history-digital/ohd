@@ -102,6 +102,12 @@ const mapStateToProps = state => ({
         {
             attribute: "pseudo_pdf_registry_entry_ids"
         },
+        {
+            attribute: 'workflow_state',
+            elementType: 'select',
+            values: ['public', 'unshared'],
+            optionsScope: 'workflow_states'
+        }
     ],
 });
 
