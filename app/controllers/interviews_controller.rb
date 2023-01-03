@@ -486,7 +486,12 @@ class InterviewsController < ApplicationController
   def doi_json(archive_id)
     interview = Interview.find_by_archive_id(archive_id)
     locale = params[:locale]
-    xml = render_to_string(template: "/interviews/metadata.xml", layout: false, locals: {interview: interview, locale: locale})
+    xml = render_to_string(
+      template: "interviews/metadata",
+      layout: false,
+      formats: :xml,
+      locals: {interview: interview, locale: locale}
+    )
     {
       "data": {
         "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
@@ -501,8 +506,4 @@ class InterviewsController < ApplicationController
     }.to_json
   end
 
-  def doi_content(locale, interview)
-    template = "/interviews/_doi.#{locale}.html+#{current_project.identifier.to_s}"
-    render_to_string(template: template, locals: { interview: interview }, layout: false)
-  end
 end
