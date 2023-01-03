@@ -8,8 +8,6 @@ class UserAccount < ApplicationRecord
          :trackable
 
   has_one :user_registration, dependent: :destroy
-  has_many :projects,
-           through: :user_registration_projects
 
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
@@ -40,6 +38,10 @@ class UserAccount < ApplicationRecord
 
   def active_projects
     user_registration.user_registration_projects.where.not(activated_at: nil).map(&:project)
+  end
+
+  def accessible_projects
+    user_registration.user_registration_projects.where(workflow_state: 'project_access_granted').map(&:project)
   end
 
   def all_tasks

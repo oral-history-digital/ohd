@@ -132,6 +132,9 @@
   - :name: Upload create
     :klass: Upload
     :action_name: create
+  - :name: NormDatum destroy
+    :klass: NormDatum
+    :action_name: destroy
 - :name: Qualitätsmanagement
   :permissions:
   - :name: Annotation create
@@ -298,6 +301,9 @@
     :action_name: create
   - :name: UserRole destroy
     :klass: UserRole
+    :action_name: destroy
+  - :name: NormDatum destroy
+    :klass: NormDatum
     :action_name: destroy
 - :name: Sammlungsmanagement
   :permissions:
@@ -594,6 +600,9 @@
     :action_name: create
   - :name: UserRole destroy
     :klass: UserRole
+    :action_name: destroy
+  - :name: NormDatum destroy
+    :klass: NormDatum
     :action_name: destroy
 - :name: Benutzer*innenverwaltung
   :permissions:

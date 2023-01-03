@@ -58,6 +58,7 @@ const mapStateToProps = (state) => {
                 elementType: 'select',
                 attribute: 'workflow_state',
                 values: ['public', 'unshared'],
+                optionsScope: 'workflow_states'
             }
         ],
         showComponent: ProjectTile,
