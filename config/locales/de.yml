@@ -30,6 +30,9 @@ de:
     en: englisch
     es: spanisch
     ru: russisch
+  workflow_state:
+    public: öffentlich
+    unshared: nicht öffentlich
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
