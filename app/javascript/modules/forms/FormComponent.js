@@ -210,7 +210,7 @@ export default function FormComponent({
                 })}
                 onSubmit={handleSubmit}
             >
-                {helpTextCode && <HelpText code={helpTextCode} />}
+                {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
 
                 {children}
 

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
+import { HelpText } from 'modules/help-text';
 import { isMobile } from 'modules/user-agent';
 import { pluralize } from 'modules/strings';
 import { t } from 'modules/i18n';
@@ -80,26 +81,34 @@ export default class DataSearchForm extends Component {
     }
 
     render() {
+        const { helpTextCode, scope, searchableAttributes, submitText } = this.props;
+
         return (
             <form
                 ref={(form) => { this.form = form; }}
-                id={`${this.props.scope}_search_form`}
+                id={`${scope}_search_form`}
                 className="flyout-search default"
                 onSubmit={this.handleSubmit}
             >
-                {this.props.searchableAttributes.map((element) => {
+                {helpTextCode && <HelpText code={helpTextCode} />}
+
+                {searchableAttributes.map((element) => {
                     return (
-                        <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
+                        <FormElement label={t(this.props, `activerecord.attributes.${scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
                             {this.searchFormElement(element)}
                         </FormElement>
                     )
                 })}
                 <input
                     className="lonely-search-button"
-                    value={t(this.props, this.props.submitText || 'search')}
+                    value={t(this.props, submitText || 'search')}
                     type="submit"
                 />
             </form>
         );
     }
 }
+
+DataSearchForm.propTypes = {
+    helpTextCode: PropTypes.string,
+};

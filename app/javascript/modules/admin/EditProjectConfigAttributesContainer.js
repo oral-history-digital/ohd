@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
     editView: getEditView(state),
     data: getCurrentProject(state),
     scope: 'project',
+    helpTextCode: 'archive_config_form',
     formElements: [
         {
             attribute: 'shortname',
