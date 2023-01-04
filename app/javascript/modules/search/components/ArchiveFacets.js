@@ -53,7 +53,7 @@ export default function ArchiveFacets() {
                         et.code === facetData.name)
 
                     const values = Object.keys(facetData.subfacets);
-                    if (values.length === 0) {
+                    if (!Array.isArray(values) || values.length === 0) {
                         return null;
                     }
 
