@@ -8,6 +8,7 @@ import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { useEventTypes, EventTypeForm, useMutateEventTypes } from 'modules/event-types';
+import { useMutatePeople } from 'modules/person';
 import DataContainer from './DataContainer';
 import AddButton from './AddButton';
 
@@ -16,6 +17,7 @@ export default function EventTypesAdminPage() {
     const project = useSelector(getCurrentProject);
     const { data, isLoading, isValidating } = useEventTypes();
     const mutateEventTypes = useMutateEventTypes();
+    const mutatePeople = useMutatePeople();
     const { deleteEventType } = useEventTypeApi();
 
     const scope = 'event_type';
@@ -50,6 +52,10 @@ export default function EventTypesAdminPage() {
     async function handleDeleteEventType(id, callback) {
         mutateEventTypes(async eventTypes => {
             await deleteEventType(id);
+
+            // TODO: Unvalidate more person data:
+            // personLandingPage and personWithAssociations
+            mutatePeople();
 
             const updatedEventTypes = eventTypes.filter(et => et.id !== id);
             return updatedEventTypes;
