@@ -170,8 +170,10 @@ class PeopleController < ApplicationController
         'project_id',
         translations_attributes: [:locale, :id, :first_name, :last_name,
           :birth_name, :other_first_names, :alias_names, :description],
-        events_attributes: [:eventable_id, :event_type_id, :start_date,
-          :end_date, :display_date],
+        events_attributes: [
+          :eventable_id, :event_type_id, :start_date, :end_date,
+          translations_attributes: [:id, :locale, :display_date]
+        ]
     )
   end
 
