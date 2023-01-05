@@ -19,6 +19,9 @@ export default function PersonDetails({
         'birth_name',
         'alias_names',
         'other_first_names',
+        'pseudonym_first_name',
+        'pseudonym_last_name',
+        'use_pseudonym',
         'date_of_birth',
         'description'
     ];

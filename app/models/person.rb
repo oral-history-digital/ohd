@@ -19,7 +19,7 @@ class Person < ApplicationRecord
   validates :gender, inclusion: %w(male female diverse), allow_nil: true
 
   translates :first_name, :last_name, :birth_name, :other_first_names,
-    :alias_names, :description,
+    :alias_names, :description, :pseudonym_first_name, :pseudonym_last_name,
     fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
@@ -118,6 +118,8 @@ class Person < ApplicationRecord
         last_name: translation.last_name || last_name(I18n.default_locale),
         alias_name: translation.alias_names || alias_names(I18n.default_locale),
         birth_name: translation.birth_name || birth_name(I18n.default_locale),
+        pseudonym_first_name: translation.pseudonym_first_name || pseudonym_first_name(I18n.default_locale),
+        pseudonym_last_name: translation.pseudonym_last_name || pseudonym_last_name(I18n.default_locale)
       }
       mem
     end
