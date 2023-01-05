@@ -168,8 +168,10 @@ class PeopleController < ApplicationController
         'title',
         'date_of_birth',
         'project_id',
+        :use_pseudonym,
         translations_attributes: [:locale, :id, :first_name, :last_name,
-            :birth_name, :other_first_names, :alias_names, :description]
+          :birth_name, :other_first_names, :alias_names, :description,
+          :pseudonym_first_name, :pseudonym_last_name]
     )
   end
 
@@ -178,7 +180,9 @@ class PeopleController < ApplicationController
       :first_name,
       :last_name,
       :birth_name,
-      :alias_names
+      :alias_names,
+      :pseudonym_first_name,
+      :pseudonym_last_name
     ).to_h.select{|k,v| !v.blank? }
   end
 end

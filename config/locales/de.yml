@@ -1172,6 +1172,9 @@ de:
         alias_names: Weitere Namen
         pseudonym: Pseudonym
         other_first_names: Weitere Vornamen
+        pseudonym_first_name: Pseudonym Vorname
+        pseudonym_last_name: Pseudonym Nachname
+        use_pseudonym: Pseudonym benutzen
         date_of_birth: Geburtsdatum
         typology: Erfahrungen
         biography: Biographie

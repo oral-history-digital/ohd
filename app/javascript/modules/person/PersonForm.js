@@ -64,6 +64,19 @@ const formElements = [
         multiLocale: true,
     },
     {
+        attribute: 'pseudonym_first_name',
+        multiLocale: true,
+    },
+    {
+        attribute: 'pseudonym_last_name',
+        multiLocale: true,
+    },
+    {
+        attribute: 'use_pseudonym',
+        elementType: 'input',
+        type: 'checkbox',
+    },
+    {
         attribute: 'date_of_birth',
     },
     {

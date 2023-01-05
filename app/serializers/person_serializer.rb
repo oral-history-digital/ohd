@@ -12,6 +12,7 @@ class PersonSerializer < ApplicationSerializer
     :associations_loaded,
     :created_at,
     :updated_at
+    :use_pseudonym
   ]
 
   def description
