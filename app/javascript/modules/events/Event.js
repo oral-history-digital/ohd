@@ -45,7 +45,7 @@ export default function Event({
     return (
         <div className={classNames('Event', className)}>
             <div className="Event-category">
-                {eventType.name}
+                {eventType?.name}
             </div>
             {showDisplayDate && (
                 <div className="Event-text">

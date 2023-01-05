@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
+import { mutate } from 'swr';
 import classNames from 'classnames';
 
 import { useEventTypeApi } from 'modules/api';
 import { AuthShowContainer } from 'modules/auth';
 import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { useEventTypes, EventTypeForm, useMutateEventTypes } from 'modules/event-types';
 import { useMutatePeople } from 'modules/person';
@@ -14,6 +16,7 @@ import AddButton from './AddButton';
 
 export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
+    const pathBase = usePathBase();
     const project = useSelector(getCurrentProject);
     const { data, isLoading, isValidating } = useEventTypes();
     const mutateEventTypes = useMutateEventTypes();
@@ -56,6 +59,12 @@ export default function EventTypesAdminPage() {
             // TODO: Unvalidate more person data:
             // personLandingPage and personWithAssociations
             mutatePeople();
+
+            mutate(
+                key => typeof key === 'string' && key.startsWith(`${pathBase}/people/`),
+                undefined,
+                { revalidate: true }
+            );
 
             const updatedEventTypes = eventTypes.filter(et => et.id !== id);
             return updatedEventTypes;
