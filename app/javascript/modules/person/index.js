@@ -17,3 +17,4 @@ export { default as useMutatePersonLandingPageMetadata } from './useMutatePerson
 export { default as usePeople } from './usePeople';
 export { default as useMutatePersonWithAssociations } from './useMutatePersonWithAssociations';
 export { default as useMutatePeople } from './useMutatePeople';
+export { default as useInvalidateAllPersonData } from './useInvalidateAllPersonData';
