@@ -129,6 +129,50 @@ class Person < ApplicationRecord
     "#{last_name(locale)}, #{first_name(locale)}"
   end
 
+  def display_title_part
+    used_gender = gender == 'female' ? 'female' : 'male'
+
+    if title
+      I18n.t("modules.person.abbr_titles.#{title}_#{used_gender}")
+    else
+      nil
+    end
+  end
+
+  def display_salutation
+    'Herr'
+  end
+
+  def display_name
+    if use_pseudonym
+      used_first_name = pseudonym_first_name
+      used_last_name = pseudonym_last_name
+    else
+      used_first_name = first_name
+      used_last_name = last_name
+    end
+
+    used_title = display_title_part
+
+    if used_first_name.blank?
+      used_title.blank? ?
+        "#{display_salutation} #{used_last_name}" :
+        "#{display_salutation} #{used_title} #{used_last_name}"
+    else
+      used_title.blank? ?
+        "#{used_first_name} #{used_last_name}" :
+        "#{used_title} #{used_first_name} #{used_last_name}"
+    end
+  end
+
+  def alphabetical_display_name
+    if use_pseudonym
+      "#{pseudonym_last_name}, #{pseudonym_first_name}"
+    else
+      "#{last_name}, #{first_name}"
+    end
+  end
+
   def identifier
     id
   end

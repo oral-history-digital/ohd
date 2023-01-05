@@ -3,6 +3,8 @@ class PersonSerializer < ApplicationSerializer
     :id,
     :names,
     :name,
+    :display_name,
+    :alphabetical_display_name,
     :text,
     :date_of_birth,
     :year_of_birth,
