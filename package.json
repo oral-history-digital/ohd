@@ -70,7 +70,7 @@
     "slick-carousel": "^1.8.1",
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1",
-    "swr": "^2.0.0-rc.0",
+    "swr": "^2.0.0",
     "video.js": "^7.18.1"
   },
   "devDependencies": {
