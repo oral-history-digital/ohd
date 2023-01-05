@@ -3,7 +3,12 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getCurrentInterview, getCurrentRefTree,
     getCurrentRefTreeStatus } from 'modules/data';
-import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
+import {
+    getArchiveId,
+    getLocale,
+    getProjectId,
+    getEditView
+} from 'modules/archive';
 import RefTree from './RefTree';
 
 const mapStateToProps = state => ({
@@ -14,6 +19,7 @@ const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     refTree: getCurrentRefTree(state),
     refTreeStatus: getCurrentRefTreeStatus(state),
+    editView: getEditView(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -38,7 +38,8 @@ def project_with_contribution_types_and_metadata_fields
   FactoryBot.create(:project) do |project|
 
     %w(interviewee interviewer translator transcriptor research).each do |code|
-      FactoryBot.create(:contribution_type, project: project, code: code)
+      use_in_export = code != 'interviewee'
+      FactoryBot.create(:contribution_type, project: project, code: code, use_in_export: use_in_export)
     end
 
     places = FactoryBot.create :registry_entry, code: 'places', project: project

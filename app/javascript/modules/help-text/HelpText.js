@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import useSWRImmutable from 'swr/immutable';
 
@@ -7,7 +8,10 @@ import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 
 export default function HelpText({
+    className,
+    style,
     code,
+    small = false
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
@@ -28,7 +32,9 @@ export default function HelpText({
     }
 
     return (
-        <aside className="HelpText u-mb">
+        <aside style={style} className={classNames('HelpText', className, {
+            'HelpText--small': small
+        })}>
             <div className="HelpText-inner">
                 <div className="HelpText-body">
                     {helpText.text && (
@@ -59,5 +65,8 @@ export default function HelpText({
 }
 
 HelpText.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
     code: PropTypes.string.isRequired,
+    small: PropTypes.bool,
 }

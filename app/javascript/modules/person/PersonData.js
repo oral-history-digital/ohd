@@ -56,8 +56,11 @@ export default function PersonData({
         return <Spinner />;
     }
 
-    const personName = formatPersonName(person, translations,
-        { locale, withTitle: true });
+    const personName = formatPersonName(person, translations, {
+        locale,
+        fallbackLocale: project.default_locale,
+        withTitle: true,
+    });
 
     return (
         <>

@@ -1,6 +1,7 @@
-import { createElement, useState } from 'react';
+import { createElement, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
+import cloneDeep from 'lodash.clonedeep';
 import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
@@ -48,8 +49,18 @@ export default function FormComponent({
     submitText,
     values: initialValues,
 }) {
-    const [values, setValues] = useState(initValues());
-    const [errors, setErrors] = useState(initErrors());
+    const clonedElements = useRef([]);
+
+    useEffect(() => {
+        clonedElements.current = cloneDeep(elements);
+
+        setValues(initValues());
+        setErrors(initErrors());
+    }, []);
+
+    const [values, setValues] = useState({});
+    const [errors, setErrors] = useState({});
+
     const { t } = useI18n();
 
     function initValues() {
@@ -62,7 +73,7 @@ export default function FormComponent({
 
     function initErrors() {
         let errors = {};
-        elements.map((element) => {
+        clonedElements.current.map((element) => {
             let error = false;
             if (typeof(element.validate) === 'function') {
                 let value = element.value || (data && data[element.attribute]);
@@ -95,7 +106,7 @@ export default function FormComponent({
         let hasErrors = false;
 
         Object.keys(errors).forEach(name => {
-            const element = elements.find(element => element.attribute === name);
+            const element = clonedElements.current.find(element => element.attribute === name);
 
             const isHidden = element?.hidden;
             const isOptional = element?.optional;
@@ -169,7 +180,9 @@ export default function FormComponent({
         props.handleChange = handleChange;
         props.handleErrors = handleErrors;
         props.key = props.attribute;
-        props.value = values[props.attribute] || props.value;
+        props.value = values[props.attribute] !== undefined ?
+            values[props.attribute] :
+            props.value;
         props.data = data;
 
         // set defaults for the possibility to shorten elements list
@@ -197,11 +210,11 @@ export default function FormComponent({
                 })}
                 onSubmit={handleSubmit}
             >
-                {helpTextCode && <HelpText code={helpTextCode} />}
+                {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
 
                 {children}
 
-                {elements.map(props => {
+                {clonedElements.current.map(props => {
                     if (props.condition === undefined || props.condition === true) {
                         return elementComponent(props);
                     }

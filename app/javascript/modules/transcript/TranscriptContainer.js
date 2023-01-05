@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
+import {
+    getLocale,
+    getProjectId,
+    getArchiveId,
+    getEditView
+} from 'modules/archive';
 import {
     fetchData,
     getCurrentInterview,
@@ -20,6 +25,7 @@ const mapStateToProps = (state, props) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
+    editView: getEditView(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),
