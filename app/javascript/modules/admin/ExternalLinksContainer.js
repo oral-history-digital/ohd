@@ -33,6 +33,7 @@ const mapStateToProps = state => {
                 multiLocale: true,
             },
         ],
+        helpTextCode: 'external_link_form'
     }
 }
 

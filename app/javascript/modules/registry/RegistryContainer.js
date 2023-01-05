@@ -1,13 +1,22 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { getRootRegistryEntry, getCurrentProject, getProjects } from 'modules/data';
-import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesSearchResults } from 'modules/search';
+import { getEditView } from 'modules/archive';
+import {
+    getCurrentProject,
+    getProjects,
+    getRootRegistryEntry
+} from 'modules/data';
+import {
+    getIsRegistryEntrySearching,
+    getRegistryEntriesSearch,
+    getShowRegistryEntriesSearchResults
+} from 'modules/search';
 import { getIsLoggedIn } from 'modules/account';
 import Registry from './Registry';
 
 const mapStateToProps = (state) => ({
     rootRegistryEntry: getRootRegistryEntry(state),
+    editView: getEditView(state),
     projects: getProjects(state),
     currentProject: getCurrentProject(state),
     foundRegistryEntries: getRegistryEntriesSearch(state),

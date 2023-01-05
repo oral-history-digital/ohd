@@ -3,6 +3,7 @@ import { PERSON_GENDER_FEMALE, PERSON_GENDER_MALE } from './constants';
 
 const defaultOptions = {
     locale: 'de',
+    fallbackLocale: 'de',
     withBirthName: false,
     withTitle: false
 };
@@ -17,15 +18,24 @@ export default function formatPersonName(person, translations, userOptions) {
         return '';
     }
 
-    const namesObject = person.names?.[options.locale] || person.names?.de;
-    if (!namesObject) {
-        return '';
+    let firstName = person.names?.[options.locale]?.first_name;
+    let lastName = person.names?.[options.locale]?.last_name;
+    let birthName = person.names?.[options.locale]?.birth_name;
+
+    if (!firstName) {
+        firstName = person.names?.[options.fallbackLocale]?.first_name;
+    }
+    if (!lastName) {
+        lastName = person.names?.[options.fallbackLocale]?.last_name;
+    }
+    if (!birthName) {
+        birthName = person.names?.[options.fallbackLocale]?.birth_name;
     }
 
-    let name = `${namesObject.first_name} ${namesObject.last_name}`;
+    let name = `${firstName} ${lastName}`;
 
-    if (options.withBirthName && namesObject.birth_name) {
-        name += ` ${namesObject.birth_name}`;
+    if (options.withBirthName && birthName) {
+        name += ` ${birthName}`;
     }
 
     if (options.withTitle) {

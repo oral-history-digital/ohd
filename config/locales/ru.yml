@@ -29,6 +29,9 @@ ru:
     el: griechisch
     en: englisch
     es: spanisch
+  workflow_state:
+    public: public
+    unshared: not public
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -685,7 +688,7 @@ ru:
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
-    other_attendees: Other attendees
+    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events

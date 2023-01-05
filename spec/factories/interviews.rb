@@ -35,6 +35,7 @@ FactoryBot.define do
   factory :contribution_type do
     code { 'interviewee' }
     project
+    use_in_export { true }
   end
 
 end

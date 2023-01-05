@@ -28,16 +28,31 @@ namespace :help_texts do
 
   def help_texts
     [
+      ['account_page', 'Account page for editors'],
+      ['archive_config_form', 'Configure archive form'],
+      ['archive_display_form', 'Edit archive display options form'],
       ['archive_form', 'New/edit archive form'],
+      ['archive_info_form', 'Edit archive information form'],
       ['assign_speakers_form', 'Assign speakers form'],
       ['biographical_entry_form', 'Biographical entry form'],
       ['collection_form', 'New/edit collection form'],
       ['contribution_form', 'Contribution form'],
       ['contribution_type_form', 'New/edit contribution type form'],
+      ['edit_table', 'Interview editorial table'],
+      ['external_link_form', 'New/edit external link form'],
       ['heading_form', 'Heading or table of contents form'],
       ['help_text_form', 'Help text form'],
+      ['import_form', 'New import (upload) form'],
       ['institution_form', 'New/edit institution form'],
+      ['interview_actions', 'Interview actions tab for editors'],
       ['interview_form', 'New interview form'],
+      ['interview_interview_data', 'Interview metadata tab for editors'],
+      ['interview_map', 'Interview map tab for editors'],
+      ['interview_person_data', 'Person metadata tab for editors'],
+      ['interview_registry', 'Interview registry entries tab for editors'],
+      ['interview_search', 'Interview search tab for editors'],
+      ['interview_transcript', 'Interview transcript tab for editors'],
+      ['interview_upload_transcript', 'Upload transcript tab for editors'],
       ['language_form', 'New/edit language form'],
       ['logo_form', 'New/edit logo form'],
       ['mark_text_form', 'Mark text form'],
@@ -50,13 +65,19 @@ namespace :help_texts do
       ['registry_entry_form', 'Registry entry form'],
       ['registry_name_form', 'Registry name sub form'],
       ['registry_name_type_form', 'New/edit registry name type form'],
+      ['registry_page', 'Registry page for editors'],
       ['registry_reference_form', 'Registry reference form'],
       ['registry_reference_type_form', 'New/edit registry reference type form'],
       ['role_form', 'New/edit role form'],
+      ['search_map', 'Search map page for editors'],
       ['segment_form', 'Segment form within transcripts'],
       ['sponsor_logo_form', 'New/edit sponsor logo form'],
       ['task_type_form', 'New/edit task type form'],
-      ['import_form', 'New import (upload) form']
+      ['user_admin_page', 'User admin page'],
+      ['user_role_form', 'Add role to user form'],
+      ['user_search_form', 'User search form on user admin page'],
+      ['workflow_management', 'Workflow management table'],
+      ['workflow_tasks', 'Tasks section in workflow management table']
     ]
   end
 end

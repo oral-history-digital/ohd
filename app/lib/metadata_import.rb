@@ -25,12 +25,12 @@ class MetadataImport
 
       interview = update_or_create_interview(project, row)
 
-      interview.find_or_create_tapes(row[:tape_count]) #create_default_tape(interview) unless interview.tapes.any?
+      interview.find_or_create_tapes(row[:tape_count])
 
       update_or_create_interviewee(project, interview, row)
 
       project.contribution_types.each do |contribution_type|
-        if contribution_type.use_in_export && contribution_type.code != 'interviewee'
+        if contribution_type.use_in_export# && contribution_type.code != 'interviewee'
           create_contributions(interview, row[contribution_type.code.to_sym], contribution_type.code)
         end
       end
