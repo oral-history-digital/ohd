@@ -48,4 +48,8 @@ class Photo < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_representation_path(signed_blob_id, variation_key, filename)
   end
 
+  def recalculate_checksum
+    blob = photo.blob
+    blob.update_column(:checksum, Digest::MD5.base64digest(File.read(blob.service.path_for(blob.key))))
+  end
 end
