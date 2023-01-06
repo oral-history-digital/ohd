@@ -15,6 +15,8 @@ module Archive
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
+    config.active_storage.variant_processor = :mini_magick
+
     config.active_job.queue_adapter = :delayed_job
     config.action_cable.mount_path = '/cable'
 
@@ -38,5 +40,8 @@ module Archive
       ActiveSupport::HashWithIndifferentAccess,
       Symbol
     ]
+
+    config.action_dispatch.cookies_serializer = :hybrid
+    config.active_support.cache_format_version = 7.0
   end
 end
