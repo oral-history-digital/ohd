@@ -303,6 +303,10 @@ el:
   call_user_annotation: Προβολή τμήματος
   title: Τίτλος
   description: Περιγραφή
+  honorific:
+    male: Κύριε
+    female: Κυρία
+    diverse: '*'
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location

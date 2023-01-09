@@ -295,6 +295,10 @@ es:
   call_user_annotation: Ir al segmento
   title: Título
   description: Descripción
+  honorific:
+    male: Sr
+    female: Sra
+    diverse: '*'
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
