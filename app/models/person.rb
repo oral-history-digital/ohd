@@ -140,7 +140,7 @@ class Person < ApplicationRecord
   end
 
   def display_salutation
-    'Herr'
+    I18n.t("honorific.#{gender}")
   end
 
   def display_name

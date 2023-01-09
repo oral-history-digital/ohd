@@ -308,6 +308,10 @@ de:
   call_user_annotation: Segment aufrufen
   title: Titel
   description: Beschreibung
+  honorific:
+    male: Herr
+    female: Frau
+    diverse: Person
   jobs:
     read_transcript: Transkript Upload
     read_bulk_metadata: Import von Metadaten

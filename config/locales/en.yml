@@ -300,6 +300,10 @@ en:
   call_user_annotation: Show segment
   title: Title
   description: Description
+  honorific:
+    male: Mr
+    female: Ms
+    diverse: Mx
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
