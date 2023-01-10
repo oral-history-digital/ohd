@@ -26,7 +26,7 @@ export default function Select({
     withEmpty,
 }) {
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     const [valid, setValid] = useState((typeof validate !== 'function'));
     const [val, setVal] = useState(data?.[attribute] || value);
