@@ -1,4 +1,4 @@
-import { createElement, useState, useEffect, useRef } from 'react';
+import { createElement, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
 import cloneDeep from 'lodash.clonedeep';
@@ -49,11 +49,8 @@ export default function FormComponent({
     submitText,
     values: initialValues,
 }) {
-    const clonedElements = useRef([]);
 
     useEffect(() => {
-        clonedElements.current = cloneDeep(elements);
-
         setValues(initValues());
         setErrors(initErrors());
     }, []);
@@ -73,7 +70,7 @@ export default function FormComponent({
 
     function initErrors() {
         let errors = {};
-        clonedElements.current.map((element) => {
+        elements.map((element) => {
             let error = false;
             if (typeof(element.validate) === 'function') {
                 let value = element.value || (data && data[element.attribute]);
@@ -106,7 +103,7 @@ export default function FormComponent({
         let hasErrors = false;
 
         Object.keys(errors).forEach(name => {
-            const element = clonedElements.current.find(element => element.attribute === name);
+            const element = elements.find(element => element.attribute === name);
 
             const isHidden = element?.hidden;
             const isOptional = element?.optional;
@@ -175,26 +172,27 @@ export default function FormComponent({
     }
 
     function elementComponent(props) {
-        props.scope = props.scope || scope;
-        props.showErrors = errors[props.attribute];
-        props.handleChange = handleChange;
-        props.handleErrors = handleErrors;
-        props.key = props.attribute;
-        props.value = values[props.attribute] !== undefined ?
+        const preparedProps = {...props};
+        preparedProps.scope = props.scope || scope;
+        preparedProps.showErrors = errors[props.attribute];
+        preparedProps.handleChange = handleChange;
+        preparedProps.handleErrors = handleErrors;
+        preparedProps.key = props.attribute;
+        preparedProps.value = values[props.attribute] !== undefined ?
             values[props.attribute] :
             props.value;
-        props.data = data;
+        preparedProps.data = data;
 
         // set defaults for the possibility to shorten elements list
         if (!props.elementType) {
-            props.elementType = 'input';
-            props.type = 'text';
+            preparedProps.elementType = 'input';
+            preparedProps.type = 'text';
         }
 
-        if (props.multiLocale) {
-            return createElement(MultiLocaleWrapperContainer, props);
+        if (preparedProps.multiLocale) {
+            return createElement(MultiLocaleWrapperContainer, preparedProps);
         } else {
-            return createElement(elementTypeToComponent[props.elementType], props);
+            return createElement(elementTypeToComponent[preparedProps.elementType], preparedProps);
         }
     }
 
@@ -214,7 +212,7 @@ export default function FormComponent({
 
                 {children}
 
-                {clonedElements.current.map(props => {
+                {elements.map(props => {
                     if (props.condition === undefined || props.condition === true) {
                         return elementComponent(props);
                     }
