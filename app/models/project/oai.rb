@@ -36,7 +36,7 @@ module Project::Oai
   end
 
   def type
-    'Archiv'
+    'Project'
   end
 
   def oai_dc_format
