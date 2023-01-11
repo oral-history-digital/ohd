@@ -1,15 +1,24 @@
 import { Component } from 'react';
+
 import { Form } from 'modules/forms';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import findExternalLink from '../findExternalLink';
 
-export default class RegisterForm extends Component {
+export default function RegisterForm({
+    projectId,
+    project,
+    countryKeys,
+    submitRegister,
+}) {
 
-    formElements() {
-        const conditionsLink = findExternalLink(this.props.project, 'conditions');
-        const privacyLink = findExternalLink(this.props.project, 'privacy_protection');
+    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
 
+    const conditionsLink = findExternalLink(project, 'conditions');
+    const privacyLink = findExternalLink(project, 'privacy_protection');
+
+    const formElements = () => {
         let firstElements = [
             {
                 elementType: 'select',
@@ -75,7 +84,7 @@ export default class RegisterForm extends Component {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
+                validate: projectId !== 'mog' && function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
@@ -86,7 +95,7 @@ export default class RegisterForm extends Component {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
+                validate: projectId !== 'mog' && function(v){return v && v.length > 1}
             }
         ];
 
@@ -95,9 +104,9 @@ export default class RegisterForm extends Component {
                 elementType: 'select',
                 attribute: 'country',
                 optionsScope: 'countries',
-                values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
+                values: countryKeys && countryKeys[locale],
                 withEmpty: true,
-                validate: this.props.projectId !== 'mog' && function(v){return v !== ''}
+                validate: projectId !== 'mog' && function(v){return v !== ''}
             },
         ];
 
@@ -120,11 +129,11 @@ export default class RegisterForm extends Component {
                 help: (
                     <a
                         className="Link"
-                        href={conditionsLink[this.props.locale]}
+                        href={conditionsLink[locale]}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer">
-                        {t(this.props, 'user_registration.notes_on_tos_agreement')}
+                        {t('user_registration.notes_on_tos_agreement')}
                     </a>
                 )
             },
@@ -137,33 +146,30 @@ export default class RegisterForm extends Component {
                 help: (
                     <a
                         className="Link"
-                        href={privacyLink[this.props.locale]}
+                        href={privacyLink[locale]}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer"
                     >
-                        {t(this.props, 'user_registration.notes_on_priv_agreement')}
+                        {t('user_registration.notes_on_priv_agreement')}
                     </a>
                 )
             },
         ];
 
-        if (this.props.locale === 'de') {
+        if (locale === 'de') {
             return firstElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(otherElements);
         } else {
             return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
         }
     }
 
-    render() {
-        let _this = this;
-        return (
-            <Form
-                scope='user_registration'
-                onSubmit={function(params){_this.props.submitRegister(`${pathBase(_this.props)}/user_registrations`, params)}}
-                submitText='user_registration.register'
-                elements={this.formElements()}
-            />
-        );
-    }
+    return (
+        <Form
+            scope='user_registration'
+            onSubmit={function(params){submitRegister(`${pathBase}/user_registrations`, params)}}
+            submitText='user_registration.register'
+            elements={formElements()}
+        />
+    );
 }

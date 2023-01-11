@@ -1,18 +1,15 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations, getCountryKeys } from 'modules/archive';
-import { getCurrentProject, getProjects } from 'modules/data';
+import { getProjectId, getCountryKeys } from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
 import { submitRegister } from '../actions';
 import RegisterForm from './RegisterForm';
 
 const mapStateToProps = (state) => {
     return {
         projectId: getProjectId(state),
-        projects: getProjects(state),
         project: getCurrentProject(state),
-        locale: getLocale(state),
-        translations: getTranslations(state),
         countryKeys: getCountryKeys(state),
     }
 }
