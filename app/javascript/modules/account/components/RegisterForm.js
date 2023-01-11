@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import request from 'superagent';
 
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
@@ -18,8 +19,34 @@ export default function RegisterForm({
     const conditionsLink = findExternalLink(project, 'conditions');
     const privacyLink = findExternalLink(project, 'privacy_protection');
 
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    const [emailCheckResponse, setEmailCheckResponse] = useState({email_taken: false, msg: null});
+
+    const handleEmailChange = async(name, value) => {
+        if (emailRegex.test(value)) {
+            fetch(`${pathBase}/accounts/check_email?email=${value}`)
+                .then(res => res.json())
+                .then(json => {setEmailCheckResponse(json); console.log(emailCheckResponse.email_taken)});
+        }
+    }
+
     const formElements = () => {
         let firstElements = [
+            {
+                elementType: 'input',
+                attribute: 'email',
+                type: 'email',
+                handlechangecallback: handleEmailChange,
+                validate: function(v){return (emailRegex.test(v) && emailCheckResponse.email_taken)},
+                //help: emailCheckResponse.email_taken && (
+                    //<p className='notifications'>
+                        //t(emailCheckResponse.msg)
+                    //</p>
+                //),
+                individualErrorMsg: emailCheckResponse.email_taken ? t(emailCheckResponse.msg) :
+                                t('activerecord.errors.default.email_input')
+            },
             {
                 elementType: 'select',
                 attribute: 'appellation',
@@ -38,12 +65,6 @@ export default function RegisterForm({
                 attribute: 'last_name',
                 type: 'text',
                 validate: function(v){return v && v.length > 1}
-            },
-            {
-                elementType: 'input',
-                attribute: 'email',
-                type: 'email',
-                validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
             },
             {
                 elementType: 'select',

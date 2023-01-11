@@ -1,8 +1,8 @@
 class AccountsController < ApplicationController
 
-  skip_before_action :authenticate_user_account!, only: [:show]
-  skip_after_action :verify_authorized, only: [:show]
-  skip_after_action :verify_policy_scoped, only: [:show]
+  skip_before_action :authenticate_user_account!, only: [:show, :check_email]
+  skip_after_action :verify_authorized, only: [:show, :check_email]
+  skip_after_action :verify_policy_scoped, only: [:show, :check_email]
 
   def show
     respond_to do |format|
@@ -62,6 +62,39 @@ class AccountsController < ApplicationController
     end
   end
 
+  def check_email
+    email = params[:email]
+    registration = UserRegistration.where(email: email).first
+
+    if registration
+      email_taken = true
+      msg = 'login_or_change_password'
+
+      if !registration.user_account.confirmed?
+        msg = 'account_confirmation_missing'
+      elsif current_project
+        project_access = registration.user_registration_projects.where(project: current_project).first
+        if project_access
+          msg = project_access.workflow_state
+        else
+          msg = 'login_and_request_project_access'
+        end
+      end
+    else
+      msg = nil
+      email_taken = false
+    end
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          msg: msg,
+          email_taken: email_taken
+        }
+      end
+    end
+  end
+  
   private
 
   def account_params
