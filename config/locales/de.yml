@@ -1300,6 +1300,14 @@ de:
   interview_title_patterns:
 
   modules:
+    registration:
+      messages:
+        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
+        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
+        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
+        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
+        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
+        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
     admin:
       person_details:
         contributions:

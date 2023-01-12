@@ -155,6 +155,9 @@ Rails.application.routes.draw do
       member do
         get :confirm_new_email
       end
+      collection do
+        get :check_email
+      end
     end
     resources :user_registrations do
       member do

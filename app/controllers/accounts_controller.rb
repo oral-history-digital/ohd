@@ -66,12 +66,16 @@ class AccountsController < ApplicationController
     email = params[:email]
     registration = UserRegistration.where(email: email).first
 
+    msg = nil
+    email_taken = false
+
     if registration
       email_taken = true
-      msg = 'login_or_change_password'
 
       if !registration.user_account.confirmed?
         msg = 'account_confirmation_missing'
+        # re-send the activation instructions
+        registration.user_account.resend_confirmation_instructions
       elsif current_project
         project_access = registration.user_registration_projects.where(project: current_project).first
         if project_access
@@ -80,15 +84,19 @@ class AccountsController < ApplicationController
           msg = 'login_and_request_project_access'
         end
       end
-    else
-      msg = nil
-      email_taken = false
     end
+
+    translated_msg = msg && I18n.backend.translate(
+      params[:locale],
+      "modules.registration.messages.#{msg}",
+      email: email,
+      project: current_project.name
+    )
 
     respond_to do |format|
       format.json do
         render json: {
-          msg: msg,
+          msg: translated_msg,
           email_taken: email_taken
         }
       end
