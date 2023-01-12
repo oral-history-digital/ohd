@@ -38,14 +38,15 @@ export default function RegisterForm({
                 attribute: 'email',
                 type: 'email',
                 handlechangecallback: handleEmailChange,
-                validate: function(v){return (emailRegex.test(v) && emailCheckResponse.email_taken)},
-                //help: emailCheckResponse.email_taken && (
-                    //<p className='notifications'>
-                        //t(emailCheckResponse.msg)
-                    //</p>
-                //),
-                individualErrorMsg: emailCheckResponse.email_taken ? t(emailCheckResponse.msg) :
-                                t('activerecord.errors.default.email_input')
+                validate: function(v){return emailRegex.test(v)},
+                help: emailCheckResponse.email_taken && (
+                    <p className='notifications'>
+                        {emailCheckResponse.msg}
+                    </p>
+                ),
+                //validate: function(v){return (emailRegex.test(v) && !emailCheckResponse.email_taken)},
+                //individualErrorMsg: emailCheckResponse.email_taken ? emailCheckResponse.msg :
+                                //t('activerecord.errors.default.email_input')
             },
             {
                 elementType: 'select',
