@@ -27,7 +27,7 @@ export default function RegisterForm({
         if (emailRegex.test(value)) {
             fetch(`${pathBase}/accounts/check_email?email=${value}`)
                 .then(res => res.json())
-                .then(json => {setEmailCheckResponse(json); console.log(emailCheckResponse.email_taken)});
+                .then(json => setEmailCheckResponse(json));
         }
     }
 
@@ -44,9 +44,9 @@ export default function RegisterForm({
                         {emailCheckResponse.msg}
                     </p>
                 ),
-                //validate: function(v){return (emailRegex.test(v) && !emailCheckResponse.email_taken)},
-                //individualErrorMsg: emailCheckResponse.email_taken ? emailCheckResponse.msg :
-                                //t('activerecord.errors.default.email_input')
+                emailTaken: emailCheckResponse.email_taken,
+                validate: function(v, t){console.log(`email_taken = ${t}`); return (emailRegex.test(v) && t)},
+                //individualErrorMsg: emailCheckResponse.msg || t('activerecord.errors.default.email_input'),
             },
             {
                 elementType: 'select',
