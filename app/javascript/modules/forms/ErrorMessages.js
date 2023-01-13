@@ -14,6 +14,7 @@ export default function ErrorMessages({
 
     return (
         <p className='notifications'>
+            <h5>{t('modules.registration.messages.header')}</h5>
             <ul>
                 {elements.map((element) => {
                     if (errors[element.attribute]) {
