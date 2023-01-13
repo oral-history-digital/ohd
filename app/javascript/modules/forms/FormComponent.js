@@ -17,6 +17,7 @@ import RegistryEntrySelectContainer from './input-components/RegistryEntrySelect
 import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
 import NestedScope from './NestedScope';
 import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
+import ErrorMessages from './ErrorMessages';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -49,6 +50,8 @@ export default function FormComponent({
     submitText,
     values: initialValues,
 }) {
+
+    const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
         setValues(initValues());
@@ -122,6 +125,8 @@ export default function FormComponent({
             if (typeof onSubmitCallback === "function") {
                 onSubmitCallback();
             }
+        } else {
+            setSubmitted(true);
         }
     }
 
@@ -217,6 +222,8 @@ export default function FormComponent({
                         return elementComponent(props);
                     }
                 })}
+
+                { submitted && <ErrorMessages errors={errors} elements={elements} scope={scope} />}
 
                 <div className="Form-footer u-mt">
                     { nested ?
