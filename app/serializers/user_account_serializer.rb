@@ -40,6 +40,7 @@ class UserAccountSerializer < ApplicationSerializer
   end
 
   def access_token
-    object.access_tokens.last.token
+    last_access_token = object.access_tokens.last
+    last_access_token && last_access_token.token
   end
 end
