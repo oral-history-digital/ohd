@@ -12,6 +12,7 @@ export default function Input({
     value,
     data,
     validate,
+    emailTaken,
     label,
     labelKey,
     showErrors,
@@ -54,7 +55,7 @@ export default function Input({
         }
 
         if (typeof(validate) === 'function') {
-            if (validate(v)) {
+            if (validate(v, emailTaken)) {
                 handleErrors(name, false);
                 setValid(true)
             } else {

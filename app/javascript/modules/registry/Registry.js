@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { INDEX_REGISTRY_ENTRIES, INDEX_ACCOUNT } from 'modules/sidebar';
+import { AuthorizedContent } from 'modules/auth';
 import { Fetch, getRootRegistryEntryFetched, getRootRegistryEntryReload } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { HelpText } from 'modules/help-text';
 import { ScrollToTop } from 'modules/user-agent';
 import RegistrySearchResultContainer from './RegistrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
@@ -13,6 +12,7 @@ import RegistryEntriesContainer from './RegistryEntriesContainer';
 
 export default function Registry({
     currentProject,
+    editView,
     rootRegistryEntry,
     foundRegistryEntries,
     showRegistryEntriesSearchResults,
@@ -34,6 +34,8 @@ export default function Registry({
                     <h1 className='registry-entries-title'>
                         {t('registry')}
                     </h1>
+
+                    {editView && <HelpText code="registry_page" className="u-mb" />}
 
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                         <MergeRegistryEntriesButtonContainer />
@@ -65,6 +67,7 @@ export default function Registry({
 
 Registry.propTypes = {
     currentProject: PropTypes.object,
+    editView: PropTypes.bool.isRequired,
     rootRegistryEntry: PropTypes.object,
     foundRegistryEntries: PropTypes.object.isRequired,
     showRegistryEntriesSearchResults: PropTypes.bool.isRequired,

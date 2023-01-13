@@ -41,7 +41,7 @@ class EditTableImport
 
   def process
     sheet.each do |row|
-      speaker_id = contributions[row[:speaker_designation]]
+      speaker_id = contributions.key(row[:speaker_designation])
 
       translations_attributes = [{
         locale: original_locale,

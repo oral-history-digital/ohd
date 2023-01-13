@@ -16,6 +16,7 @@ import {
 } from 'modules/interview-metadata';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AccountContainer } from 'modules/account';
+import { HelpText } from 'modules/help-text';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { Spinner } from 'modules/spinners';
@@ -86,6 +87,7 @@ export default function InterviewTabPanel({
                     <>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <SubTab title={t('person_info')} open={!isLoggedIn}>
+                                {editView && <HelpText code="interview_person_data" className="u-mb" />}
                                 <PersonDataContainer/>
                                 {intervieweeIsLoading ?
                                     <Spinner /> : (
@@ -104,6 +106,7 @@ export default function InterviewTabPanel({
                         <AuthShowContainer ifLoggedIn>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('interview_info')}>
+                                    {editView && <HelpText code="interview_interview_data" className="u-mb" />}
                                     <InterviewInfoContainer/>
                                     <InterviewContributorsContainer/>
                                     <InterviewTextMaterialsContainer/>
@@ -114,6 +117,7 @@ export default function InterviewTabPanel({
                 )}
                 <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
                     <SubTab title={t('edit.upload_transcript.title')}>
+                        <HelpText code="interview_upload_transcript" className="u-mb" />
                         <UploadTranscriptContainer />
                     </SubTab>
                 </AuthorizedContent>
@@ -142,6 +146,7 @@ export default function InterviewTabPanel({
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('map')}>
+                                    {editView && <HelpText code="interview_map" className="u-mb" />}
                                     <InterviewMap/>
                                 </SubTab>
                             </AuthorizedContent>

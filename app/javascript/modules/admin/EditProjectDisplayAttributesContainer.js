@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
     editView: getEditView(state),
     data: getCurrentProject(state),
     scope: 'project',
+    helpTextCode: 'archive_display_form',
     formElements: [
         {
             attribute: "primary_color",

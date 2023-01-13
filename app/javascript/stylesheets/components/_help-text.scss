@@ -2,6 +2,7 @@ $help-text-color: #004d00;
 $help-text-background-color: #e6ffe6;
 
 .HelpText {
+  color: $help-text-color;
   display: flex;
 }
 
@@ -12,6 +13,11 @@ $help-text-background-color: #e6ffe6;
   margin-left: auto;
   max-width: 30 * $base-unit;
   padding: $base-unit / 2;
+}
+
+.HelpText--small > .HelpText-inner {
+  border: 0;
+  padding: 0 ($base-unit / 4);
 }
 
 .HelpText-icon {
@@ -25,7 +31,7 @@ $help-text-background-color: #e6ffe6;
 
 .HelpText-text {
   line-height: $base-unit;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .HelpText-link {
