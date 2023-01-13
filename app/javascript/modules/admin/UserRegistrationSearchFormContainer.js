@@ -39,6 +39,7 @@ const mapStateToProps = state => ({
             values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'project_access_rejected', 'account_deactivated']
         }
     ],
+    helpTextCode: 'user_search_form'
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

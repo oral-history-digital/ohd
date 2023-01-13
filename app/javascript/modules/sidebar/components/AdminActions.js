@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { useArchiveSearch } from 'modules/search';
 import DeleteInterviews from './DeleteInterviews';
@@ -33,6 +34,8 @@ export default function AdminActions({
 
     return (
         <div>
+            <HelpText code="interview_actions" className="u-mb" />
+
             {Object.keys(doiResult).length > 0 && (
                 <div>
                     <h4>DOI Status:</h4>

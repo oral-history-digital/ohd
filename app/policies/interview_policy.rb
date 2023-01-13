@@ -37,7 +37,7 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def observations?
-    download?
+    transcript?
   end
 
   def export_photos?

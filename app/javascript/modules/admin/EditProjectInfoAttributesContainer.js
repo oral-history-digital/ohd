@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
     translations: getTranslations(state),
     data: getCurrentProject(state),
     scope: 'project',
+    helpTextCode: 'archive_info_form',
     formElements: [
         {
             attribute: 'name',
