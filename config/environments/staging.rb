@@ -107,4 +107,11 @@ Rails.application.configure do
     return_path: 'da-bounce@cedis.fu-berlin.de'
   }
 
+  config.require_master_key = true
+
+  config.hosts = [
+    "https://staging.oral-history.digital",
+    "https://staging1.oral-history.digital",
+    "https://staging2.oral-history.digital",
+  ]
 end
