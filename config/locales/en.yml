@@ -1307,6 +1307,7 @@ en:
   modules:
     registration:
       messages:
+        header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
         project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
         project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
