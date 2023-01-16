@@ -6,8 +6,13 @@ import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { isSegmentActive } from 'modules/interview-helpers';
-import { EDIT_TABLE_FILTER_ALL, EDIT_TABLE_FILTER_SOME, EDIT_TABLE_FILTER_HEADINGS,
-    EDIT_TABLE_FILTER_REFERENCES, EDIT_TABLE_FILTER_ANNOTATIONS } from '../constants';
+import {
+    EDIT_TABLE_FILTER_ALL,
+    EDIT_TABLE_FILTER_SOME,
+    EDIT_TABLE_FILTER_HEADINGS,
+    EDIT_TABLE_FILTER_REFERENCES,
+    EDIT_TABLE_FILTER_ANNOTATIONS
+} from '../constants';
 import EditTableRowContainer from './EditTableRowContainer';
 import EditTableHeaderContainer from './EditTableHeaderContainer';
 
