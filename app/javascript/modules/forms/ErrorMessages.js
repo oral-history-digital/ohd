@@ -13,7 +13,7 @@ export default function ErrorMessages({
     if (!atLeastOneError) return null;
 
     return (
-        <p className='notifications'>
+        <div className='notifications'>
             <h5>{t('modules.registration.messages.header')}</h5>
             <ul>
                 {elements.map((element) => {
@@ -34,7 +34,7 @@ export default function ErrorMessages({
                     }
                 })}
             </ul>
-        </p>
+        </div>
     )
 }
 
