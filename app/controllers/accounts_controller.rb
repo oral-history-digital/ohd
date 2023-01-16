@@ -71,6 +71,7 @@ class AccountsController < ApplicationController
 
     if registration
       email_taken = true
+      msg = 'login'
 
       if !registration.user_account.confirmed?
         msg = 'account_confirmation_missing'
@@ -90,7 +91,7 @@ class AccountsController < ApplicationController
       params[:locale],
       "modules.registration.messages.#{msg}",
       email: email,
-      project: current_project.name
+      project: current_project ? current_project.name : 'Oral-History.Digital'
     )
 
     respond_to do |format|
