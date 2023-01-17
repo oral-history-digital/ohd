@@ -110,8 +110,8 @@ Rails.application.configure do
   config.require_master_key = true
 
   config.hosts = [
-    "https://staging.oral-history.digital",
-    "https://staging1.oral-history.digital",
-    "https://staging2.oral-history.digital",
+    "staging.oral-history.digital",
+    "staging1.oral-history.digital",
+    "staging2.oral-history.digital",
   ]
 end
