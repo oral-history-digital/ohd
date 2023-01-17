@@ -1,7 +1,6 @@
-import { createElement, useState, useEffect } from 'react';
+import { createElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
-import cloneDeep from 'lodash.clonedeep';
 import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
@@ -50,16 +49,10 @@ export default function FormComponent({
     submitText,
     values: initialValues,
 }) {
-
     const [submitted, setSubmitted] = useState(false);
 
-    useEffect(() => {
-        setValues(initValues());
-        setErrors(initErrors());
-    }, []);
-
-    const [values, setValues] = useState({});
-    const [errors, setErrors] = useState({});
+    const [values, setValues] = useState(initValues());
+    const [errors, setErrors] = useState(initErrors());
 
     const { t } = useI18n();
 
