@@ -640,6 +640,7 @@ en:
     add: Registernamen hinzufügen
   norm_data:
     title: Normdaten
+    link_hover: Link zum Begriff in der Gemeinsamen Normdatei/bei Open Street Map
     new: Normdaten hinzufügen
     add: Normdaten hinzufügen
   texts:
