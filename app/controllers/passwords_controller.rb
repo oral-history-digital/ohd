@@ -45,4 +45,39 @@ class PasswordsController < Devise::PasswordsController
     #params.require(resource_name).permit(:password, :password_confirmation, :reset_password_token)
   #end
 
+  def check_email
+    email = params[:email]
+    registration = UserRegistration.where(email: email).first
+
+    if registration
+      if !registration.user_account.confirmed?
+        msg = 'account_confirmation_missing'
+        # re-send the activation instructions
+        registration.user_account.resend_confirmation_instructions
+        error = true
+      else
+        msg = nil
+        error = false
+      end
+    else
+      msg = 'still_not_registered'
+      error = true
+    end
+
+    translated_msg = msg && I18n.backend.translate(
+      params[:locale],
+      "modules.registration.messages.#{msg}",
+      email: email,
+    )
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          msg: translated_msg,
+          error: error
+        }
+      end
+    end
+  end
+  
 end

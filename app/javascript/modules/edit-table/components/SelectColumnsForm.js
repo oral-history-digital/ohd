@@ -12,22 +12,6 @@ export default function SelectColumnsForm({
 }) {
     const { permittedColumns } = useColumns(interview);
 
-    const selectedValues = () => {
-        let values = {};
-        selectedColumns.forEach(column => {
-            values[column] = true;
-        })
-        return values;
-    };
-
-    const formElements = () => permittedColumns
-        .map(column => ({
-            elementType: 'input',
-            type: 'checkbox',
-            attribute: column,
-            labelKey: `edit_column_header.${column}`,
-        }));
-
     const handleSelect = (params) => {
         let values = [];
         Object.keys(params.select_interview_edit_columns).map( column => {
@@ -38,14 +22,26 @@ export default function SelectColumnsForm({
         onSubmit();
     };
 
+    const formElements = permittedColumns.map(column => ({
+        elementType: 'input',
+        type: 'checkbox',
+        attribute: column,
+        labelKey: `edit_column_header.${column}`,
+    }));
+
+    const selectedValues = {};
+    permittedColumns.forEach(column => {
+        selectedValues[column] = selectedColumns.includes(column);
+    });
+
     return (
         <div>
             <Form
                 scope="select_interview_edit_columns"
                 onSubmit={handleSelect}
                 onCancel={onCancel}
-                values={selectedValues()}
-                elements={formElements()}
+                values={selectedValues}
+                elements={formElements}
             />
         </div>
     );
