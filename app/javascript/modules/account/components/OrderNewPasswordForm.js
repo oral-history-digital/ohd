@@ -1,91 +1,67 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import request from 'superagent';
 
 import { InputContainer } from 'modules/forms';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 
-export default class OrderNewPasswordForm extends Component {
+export default function OrderNewPasswordForm ({
+    account,
+    submitOrderNewPassword,
+}) {
+    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
 
-    static contextTypes = {
-        router: PropTypes.object
+    const [emailCheckResponse, setEmailCheckResponse] = useState({email_taken: false, msg: null});
+
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    const [email, setEmail] =  useState(account && emailRegex.test(account.email) ? account.email : null);
+    const [error, setError] =  useState(!(account && emailRegex.test(account.email)));
+
+    const handleChange = (name, value) => {
+        if (emailRegex.test(value)) {
+            fetch(`${pathBase}/passwords/check_email?email=${value}`)
+                .then(res => res.json())
+                .then(json => setEmailCheckResponse(json));
+        }
+        setEmail(value);
     }
 
-    constructor(props, context) {
-        super(props);
-        this.state = {
-            showErrors: false,
-            values: {
-                email: this.props.account && this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : null
-            },
-            errors: {
-                email: !(this.props.account && this.props.account.email && this.props.account.email.includes('@'))
-            }
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleErrors = this.handleErrors.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(name, value) {
-        this.setState({
-            values: Object.assign({}, this.state.values, {[name]: value})
-        })
-    }
-
-    handleSubmit(event) {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        if(this.valid()) {
-            this.props.submitOrderNewPassword(`${pathBase(this.props)}/user_accounts/password`, {user_account: this.state.values});
+        if(!error && !emailCheckResponse.error) {
+            submitOrderNewPassword(`${pathBase}/user_accounts/password`, {user_account: {email: email}});
         }
     }
 
-    handleErrors(name, bool) {
-        this.setState({
-            errors: Object.assign({}, this.state.errors, {[name]: bool})
-        })
+    const handleErrors = (name, bool) => {
+        setError(bool);
     }
 
-    valid() {
-        let errors = false;
-        Object.keys(this.state.errors).map((name, index) => {
-            errors = this.state.errors[name] || errors;
-        })
-        this.setState({showErrors: errors});
-        return !errors;
-    }
-
-    texts() {
-        let t = {}
-        try {
-            t.display_name = this.props.account.display_name;
-            t.accountLogin = this.props.account.login;
-        } catch(e) {
-        } finally {
-            return t;
-        }
-    }
-
-    render() {
-        return (
-            <form className='default' onSubmit={this.handleSubmit}>
-                <InputContainer
-                    scope='user_registration'
-                    attribute='email'
-                    value={this.props.account && this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : ''}
-                    type='text'
-                    showErrors={this.state.showErrors}
-                    validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(v)}}
-                    handleChange={this.handleChange}
-                    handleErrors={this.handleErrors}
-                />
-                <input
-                    type="submit"
-                    className="Button Button--primaryAction"
-                    value={t(this.props, 'devise.registrations.activate_submit')}
-                />
-            </form>
-        );
-    }
+    return (
+        <form className='default' onSubmit={handleSubmit}>
+            <InputContainer
+                scope='user_registration'
+                attribute='email'
+                value={account && emailRegex.test(account.email) ? account.email : ''}
+                type='text'
+                showErrors={error || emailCheckResponse.error}
+                help={emailCheckResponse.error && (
+                    <p className='notifications'>
+                        {emailCheckResponse.msg}
+                    </p>
+                )}
+                validate={function(v, t){return (emailRegex.test(v) && !t)}}
+                handleChange={handleChange}
+                handleErrors={handleErrors}
+            />
+            <input
+                type="submit"
+                className="Button Button--primaryAction"
+                value={t('devise.registrations.activate_submit')}
+            />
+        </form>
+    );
 }
