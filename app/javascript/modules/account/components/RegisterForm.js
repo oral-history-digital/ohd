@@ -44,8 +44,8 @@ export default function RegisterForm({
                         {emailCheckResponse.msg}
                     </p>
                 ),
-                emailTaken: emailCheckResponse.email_taken,
-                validate: function(v, t){console.log(`email_taken = ${t}`); return (emailRegex.test(v) && t)},
+                otherError: emailCheckResponse.email_taken,
+                validate: function(v, t){return (emailRegex.test(v) && !t)},
                 //individualErrorMsg: emailCheckResponse.msg || t('activerecord.errors.default.email_input'),
             },
             {

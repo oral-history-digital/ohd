@@ -184,7 +184,6 @@ Rails.application.routes.draw do
         get :publish_notice
       end
     end
-
   end
 
   concern :search do
@@ -217,6 +216,7 @@ Rails.application.routes.draw do
       post "user_accounts/password", to: "passwords#create"
       get "user_accounts/confirmation", to: "devise/confirmations#show"
       post "user_accounts/confirmation", to: "devise/confirmations#create"
+      get "passwords/check_email", to: "passwords#check_email"
     end
   end
 
