@@ -12,6 +12,8 @@ import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
+import DataDetails from 'modules/admin/DataDetails';
+import getDataDisplayName from 'modules/admin/getDataDisplayName';
 
 const Item = AdminMenu.Item;
 
@@ -68,7 +70,7 @@ export default class RegistryEntry extends Component {
                         target="_blank"
                         rel="noreferrer"
                         className="Link flyout-sub-tabs-content-ico-link"
-                        title={normDatum.norm_data_provider.name}
+                        title={t(this.props, 'norm_data.link_hover')}
                     >
                         &nbsp;{normDatum.norm_data_provider.name}&nbsp;
                     </a>
@@ -99,7 +101,9 @@ export default class RegistryEntry extends Component {
     buttons() {
         return (
             <div>
-                {this.normDataLinks()}
+                <AuthorizedContent object={this.props.data} action='update'>
+                    {this.normDataLinks()}
+                </AuthorizedContent>
                 {this.osmLink()}
                 {this.editButtons()}
             </div>
@@ -108,6 +112,7 @@ export default class RegistryEntry extends Component {
 
     editButtons() {
         const { data, registryEntryParent, locale, hideEditButtons } = this.props;
+        const displayName = getDataDisplayName(data, locale);
 
         if (hideEditButtons) {
             return null;
@@ -116,6 +121,18 @@ export default class RegistryEntry extends Component {
         return (
             <AuthorizedContent object={data} action='update'>
                 <AdminMenu>
+                    <Item
+                        name="show"
+                        label={t(this.props, 'edit.default.show')}
+                        dialogTitle={displayName}
+                    >
+                        <DataDetails
+                            detailsAttributes={['name', 'notes', 'latitude', 'longitude']}
+                            data={data}
+                            scope={'registry_entry'}
+                        />
+                        {this.normDataLinks()}
+                    </Item>
                     <Item
                         name="edit"
                         label={t(this.props, 'edit.registry_entry.edit')}
