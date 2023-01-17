@@ -112,16 +112,16 @@ Rails.application.configure do
   config.require_master_key = true
 
   config.hosts = [
-    "https://oral-history.digital",
-    "https://test.oral-history.digital",
-    "https://test1.oral-history.digital",
-    "https://test2.oral-history.digital",
-    "https://archiv.eiserner-vorhang.de",
-    "https://deutsches-gedaechtnis.fernuni-hagen.de",
-    "https://archiv.zwangsarbeit-archiv.de",
-    "https://archiv.cdoh.net",
-    "https://archive.occupation-memories.org",
+    "oral-history.digital",
+    "test.oral-history.digital",
+    "test1.oral-history.digital",
+    "test2.oral-history.digital",
+    "archiv.eiserner-vorhang.de",
+    "deutsches-gedaechtnis.fernuni-hagen.de",
+    "archiv.zwangsarbeit-archiv.de",
+    "archiv.cdoh.net",
+    "archive.occupation-memories.org",
     "da03.cedis.fu-berlin.de",
-    "http://testimonies.campscapes.org",
+    "testimonies.campscapes.org",
   ]
 end
