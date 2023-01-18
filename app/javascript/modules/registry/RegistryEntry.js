@@ -12,8 +12,6 @@ import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
-import DataDetails from 'modules/admin/DataDetails';
-import getDataDisplayName from 'modules/admin/getDataDisplayName';
 
 const Item = AdminMenu.Item;
 
@@ -112,7 +110,6 @@ export default class RegistryEntry extends Component {
 
     editButtons() {
         const { data, registryEntryParent, locale, hideEditButtons } = this.props;
-        const displayName = getDataDisplayName(data, locale);
 
         if (hideEditButtons) {
             return null;
@@ -121,18 +118,6 @@ export default class RegistryEntry extends Component {
         return (
             <AuthorizedContent object={data} action='update'>
                 <AdminMenu>
-                    <Item
-                        name="show"
-                        label={t(this.props, 'edit.default.show')}
-                        dialogTitle={displayName}
-                    >
-                        <DataDetails
-                            detailsAttributes={['name', 'notes', 'latitude', 'longitude']}
-                            data={data}
-                            scope={'registry_entry'}
-                        />
-                        {this.normDataLinks()}
-                    </Item>
                     <Item
                         name="edit"
                         label={t(this.props, 'edit.registry_entry.edit')}
@@ -241,6 +226,7 @@ export default class RegistryEntry extends Component {
                             registryEntryId={data.id}
                             registryEntryParent={registryEntryParent}
                             onSubmit={close}
+                            normDataLinks={this.normDataLinks()}
                         />
                     )}
                 </Modal>
