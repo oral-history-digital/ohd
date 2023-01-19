@@ -1160,6 +1160,9 @@ en:
         date_of_birth: Date of Birth
         alias_names: Additional Names
         other_first_names: Other First Names
+        pseudonym_first_name: Pseudonym first name
+        pseudonym_last_name: Pseudonym last name
+        use_pseudonym: Use pseudonym
         typology: Erfahrungen
         biography: Biographie
         description: Description

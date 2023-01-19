@@ -1176,6 +1176,9 @@ el:
         date_of_birth: Ημερομηνία γέννησης
         alias_names: Alias Names
         other_first_names: Άλλα ονόματα
+        pseudonym_first_name: Pseudonym first name
+        pseudonym_last_name: Pseudonym last name
+        use_pseudonym: Use pseudonym
         typology: Εμπειρίες
         biography: Biographie
         description: Description
