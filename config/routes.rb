@@ -240,7 +240,7 @@ Rails.application.routes.draw do
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
       get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-        get "/:locale", to: "projects#show"
+        get "/", to: "projects#show"
         resources :projects, only: [:update, :destroy]
         concerns :archive
         concerns :account
