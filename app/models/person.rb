@@ -16,7 +16,8 @@ class Person < ApplicationRecord
   has_many :histories, dependent: :destroy
   has_many :biographical_entries, dependent: :destroy
 
-  validates :gender, inclusion: %w(male female diverse), allow_nil: true
+  validates :gender, inclusion: %w(male female diverse not_specified),
+    allow_nil: true
 
   translates :first_name, :last_name, :birth_name, :other_first_names,
     :alias_names, :description, :pseudonym_first_name, :pseudonym_last_name,
