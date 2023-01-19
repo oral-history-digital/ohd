@@ -1,34 +1,22 @@
 class DisplayNameCreator < ApplicationService
-  def initialize(first_name: '', last_name: '', pseudonym_first_name: '',
-    pseudonym_last_name: '', use_pseudonym: false, gender: :male, title: '')
+  def initialize(first_name: '', last_name: '', gender: :male, title: '')
     @first_name = first_name
     @last_name = last_name
-    @pseudonym_first_name = pseudonym_first_name
-    @pseudonym_last_name = pseudonym_last_name
-    @use_pseudonym = use_pseudonym
-    @gender = gender
-    @title = title
+    @gender = gender&.to_sym
+    @title = title&.to_sym
   end
 
   def perform
-    if @use_pseudonym
-      used_first_name = @pseudonym_first_name
-      used_last_name = @pseudonym_last_name
-    else
-      used_first_name = @first_name
-      used_last_name = @last_name
-    end
-
     used_title = display_title_part
 
-    if used_first_name.blank?
+    if @first_name.blank?
       used_title.blank? ?
-        "#{I18n.t("honorific.#{@gender}")} #{used_last_name}" :
-        "#{I18n.t("honorific.#{@gender}")} #{used_title} #{used_last_name}"
+        "#{I18n.t("honorific.#{@gender}")} #{@last_name}" :
+        "#{I18n.t("honorific.#{@gender}")} #{used_title} #{@last_name}"
     else
       used_title.blank? ?
-        "#{used_first_name} #{used_last_name}" :
-        "#{used_title} #{used_first_name} #{used_last_name}"
+        "#{@first_name} #{@last_name}" :
+        "#{used_title} #{@first_name} #{@last_name}"
     end
   end
 
