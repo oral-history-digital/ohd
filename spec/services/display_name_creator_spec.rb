@@ -5,27 +5,13 @@ describe 'DisplayNameCreator' do
     expect(DisplayNameCreator.perform(
       first_name: 'Alice',
       last_name: 'Henderson',
-      pseudonym_first_name: 'George',
-      pseudonym_last_name: 'Sand'
     )).to eq('Alice Henderson')
-  end
-
-  it "displays pseudonym if option is set" do
-    expect(DisplayNameCreator.perform(
-      first_name: 'Alice',
-      last_name: 'Henderson',
-      pseudonym_first_name: 'George',
-      pseudonym_last_name: 'Sand',
-      use_pseudonym: true
-    )).to eq('George Sand')
   end
 
   it 'displays title if present' do
     expect(DisplayNameCreator.perform(
       first_name: 'Alice',
       last_name: 'Henderson',
-      pseudonym_first_name: 'George',
-      pseudonym_last_name: 'Sand',
       title: :doctor
     )).to eq('Dr. Alice Henderson')
   end
@@ -37,17 +23,6 @@ describe 'DisplayNameCreator' do
         last_name: 'Henderson',
         gender: :female
       )).to eq('Frau Henderson')
-    end
-
-    it 'displays a pseudonym if set' do
-      expect(DisplayNameCreator.perform(
-        first_name: 'Alice',
-        last_name: 'Henderson',
-        pseudonym_first_name: '',
-        pseudonym_last_name: 'Sand',
-        use_pseudonym: true,
-        gender: :female
-      )).to eq('Frau Sand')
     end
 
     it 'displays title if present' do

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { formatPersonName, usePeople } from 'modules/person';
+import { usePeople } from 'modules/person';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ContributionFormContainer } from 'modules/interview-metadata';
@@ -12,14 +12,13 @@ export default function AssignSpeakersForm({
     contributionTypes,
     fetchData,
     interview,
-    project,
     projectId,
     projects,
     speakerDesignationsStatus,
     submitData,
 }) {
     const [showForm, setShowForm] = useState(true);
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
     const { data: people, isLoading: peopleAreLoading } = usePeople();
 
     useEffect(() => {
@@ -32,16 +31,12 @@ export default function AssignSpeakersForm({
     });
 
     function showContribution(value) {
-        const person = people[Number.parseInt(value.person_id)];
+        const contributor = people[Number.parseInt(value.person_id)];
 
         return (
             <span>
                 <span>
-                    {formatPersonName(person, translations, {
-                        locale,
-                        fallbackLocale: project.default_locale,
-                        withTitle: true
-                    }) + ', '}
+                    {`${contributor?.display_name}, `}
                 </span>
                 <span>
                     {contributionTypes[value.contribution_type_id].label[locale] + ', '}

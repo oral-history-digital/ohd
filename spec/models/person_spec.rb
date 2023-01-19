@@ -18,6 +18,30 @@ describe Person do
     expect(person.biographical_entries.first.text).to eq('Geboren und gestorben')
   end
 
+  describe '#first_name_used' do
+    it 'returns real first name' do
+      expect(person.first_name_used).to eq('Alice')
+    end
+
+    it 'returns pseudonym first name if use_pseudonym is set' do
+      person.use_pseudonym = true
+
+      expect(person.first_name_used).to eq('George')
+    end
+  end
+
+  describe '#last_name_used' do
+    it 'returns real last name' do
+      expect(person.last_name_used).to eq('Henderson')
+    end
+
+    it 'returns pseudonym last name if use_pseudonym is set' do
+      person.use_pseudonym = true
+
+      expect(person.last_name_used).to eq('Sand')
+    end
+  end
+
   describe "#alphabetical_display_name" do
     it "displays a valid name" do
       expect(person.alphabetical_display_name).to eq('Henderson, Alice')
@@ -35,6 +59,25 @@ describe Person do
 
         expect(person.alphabetical_display_name).to eq('Henderson')
       end
+    end
+  end
+
+  describe "#initials" do
+    it 'returns initials for simple names' do
+      expect(person.initials).to eq('AH')
+    end
+
+    it 'returns initials for complex names' do
+      person.first_name = 'Maria Gonzales'
+      person.last_name = 'Rodriguez'
+
+      expect(person.initials).to eq('MGR')
+    end
+
+    it 'returns empty string if first name is missing' do
+      person.first_name = ''
+
+      expect(person.initials).to eq('')
     end
   end
 end

@@ -131,26 +131,48 @@ class Person < ApplicationRecord
   end
 
   def display_name
-    DisplayNameCreator.perform(first_name: first_name, last_name: last_name,
-      pseudonym_first_name: pseudonym_first_name, pseudonym_last_name: pseudonym_last_name,
-      use_pseudonym: use_pseudonym, gender: gender, title: title
-    )
+    DisplayNameCreator.perform(first_name: first_name_used, last_name: last_name_used,
+      gender: gender, title: title)
   end
 
   def alphabetical_display_name
-    if use_pseudonym
-      if pseudonym_first_name.blank?
-        pseudonym_last_name
-      else
-        "#{pseudonym_last_name}, #{pseudonym_first_name}"
-      end
+    if first_name_used.blank?
+      last_name_used
     else
-      if first_name.blank?
-        last_name
-      else
-        "#{last_name}, #{first_name}"
-      end
+      "#{last_name_used}, #{first_name_used}"
     end
+  end
+
+  def initials
+    first_part = initials_from_name_part(first_name_used)
+    last_part = initials_from_name_part(last_name_used)
+
+    if first_part.present? && last_part.present?
+      first_part + last_part
+    else
+      ''
+    end
+  end
+
+  def initials_from_name_part(part)
+    if part.blank?
+      return ''
+    end
+
+    part
+      .strip
+      .split(' ')
+      .map { |word | word[0] }
+      .join
+      .upcase
+  end
+
+  def first_name_used
+    use_pseudonym ? pseudonym_first_name : first_name
+  end
+
+  def last_name_used
+    use_pseudonym ? pseudonym_last_name : last_name
   end
 
   def identifier
