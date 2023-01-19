@@ -48,5 +48,13 @@ describe Person do
 
       expect(person.alphabetical_display_name).to eq('Sand, George')
     end
+
+    context 'when first name is missing' do
+      it 'just displays the last name' do
+        person.first_name = nil
+
+        expect(person.alphabetical_display_name).to eq('Henderson')
+      end
+    end
   end
 end
