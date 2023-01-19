@@ -304,6 +304,7 @@ en:
     male: Mr
     female: Ms
     diverse: Mx
+    not_specified: Mx
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
@@ -735,6 +736,7 @@ en:
     female: female
     male: male
     diverse: diverse
+    not_specified: not specified
   title:
     doctor: Dr.
     professor: Professor
@@ -755,6 +757,7 @@ en:
     male: Male
     female: Female
     diverse: Diverse
+    not_specified: Not specified
     video: Video
     audio: Audio
     born: née

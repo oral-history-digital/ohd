@@ -11,6 +11,7 @@ import {
     PERSON_GENDER_MALE,
     PERSON_GENDER_FEMALE,
     PERSON_GENDER_DIVERSE,
+    PERSON_GENDER_NOT_SPECIFIED,
     PERSON_TITLE_DOCTOR,
     PERSON_TITLE_PROFESSOR,
     PERSON_TITLE_PROFESSOR_WITH_PROMOTION,
@@ -27,7 +28,8 @@ const formElements = [
         values: [
             PERSON_GENDER_MALE,
             PERSON_GENDER_FEMALE,
-            PERSON_GENDER_DIVERSE
+            PERSON_GENDER_DIVERSE,
+            PERSON_GENDER_NOT_SPECIFIED
         ],
         optionsScope: 'gender',
         withEmpty: true,

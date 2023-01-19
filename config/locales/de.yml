@@ -312,6 +312,7 @@ de:
     male: Herr
     female: Frau
     diverse: Person
+    not_specified: Person
   jobs:
     read_transcript: Transkript Upload
     read_bulk_metadata: Import von Metadaten
@@ -756,6 +757,7 @@ de:
     female: weiblich
     male: männlich
     diverse: divers
+    not_specified: keine Angabe
   title:
     doctor: Dr.
     professor: Prof.
@@ -778,6 +780,7 @@ de:
     male: männlich
     female: weiblich
     diverse: divers
+    not_specified: keine Angabe
     video: Video
     audio: Audio
     born: geb.

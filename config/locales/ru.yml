@@ -349,6 +349,7 @@ ru:
     male: г-н
     female: г-жа
     diverse: '*'
+    not_specified: '*'
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
@@ -782,6 +783,7 @@ ru:
     female: женщина
     male: мужчина
     diverse: другие
+    not_specified: нет данных
   title:
     doctor: д-р.
     professor: проф.
@@ -801,6 +803,7 @@ ru:
     male: " мужчина"
     female: женщина
     diverse: другие
+    not_specified: нет данных
     video: Видео
     audio: Аудио
     born: урожд.
