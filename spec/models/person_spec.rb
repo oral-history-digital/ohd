@@ -42,6 +42,30 @@ describe Person do
     end
   end
 
+  describe '#display_name' do
+    it "displays a valid name" do
+      expect(person.display_name).to eq('Alice Henderson')
+    end
+
+    it 'displays title if present' do
+      person.title = 'doctor'
+      expect(person.display_name).to eq('Dr. Alice Henderson')
+    end
+
+    context 'when first name is missing' do
+      it 'displays a salutation according to gender' do
+        person.first_name = ''
+        expect(person.display_name).to eq('Frau Henderson')
+      end
+
+      it 'displays title if present' do
+        person.first_name = ''
+        person.title = 'doctor'
+        expect(person.display_name).to eq('Frau Dr. Henderson')
+      end
+    end
+  end
+
   describe "#alphabetical_display_name" do
     it "displays a valid name" do
       expect(person.alphabetical_display_name).to eq('Henderson, Alice')
