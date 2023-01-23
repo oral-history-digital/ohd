@@ -131,8 +131,29 @@ class Person < ApplicationRecord
   end
 
   def display_name
-    DisplayNameCreator.perform(first_name: first_name_used, last_name: last_name_used,
-      gender: gender, title: title)
+    used_title = display_title_part
+    fn = first_name_used
+    ln = last_name_used
+
+    if fn.blank?
+      used_title.blank? ?
+        "#{I18n.t("honorific.#{gender}")} #{ln}" :
+        "#{I18n.t("honorific.#{gender}")} #{used_title} #{ln}"
+    else
+      used_title.blank? ?
+        "#{fn} #{ln}" :
+        "#{used_title} #{fn} #{ln}"
+    end
+  end
+
+  def display_title_part
+    used_gender = gender == 'female' ? 'female' : 'male'
+
+    if title.present?
+      I18n.t("modules.person.abbr_titles.#{title}_#{used_gender}")
+    else
+      ''
+    end
   end
 
   def alphabetical_display_name
