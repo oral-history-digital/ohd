@@ -106,8 +106,13 @@ class Person < ApplicationRecord
 
   def name(last_name_as_inital = false)
     I18n.available_locales.inject({}) do |mem, locale|
-      inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
-      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}"
+      orig_locale = I18n.locale
+      I18n.locale = locale
+
+      inital_or_last_name = last_name_as_inital ? "#{last_name_used.first}." : last_name_used
+      mem[locale] = "#{inital_or_last_name}, #{first_name_used}"
+
+      I18n.locale = orig_locale
       mem
     end
   end
@@ -153,14 +158,6 @@ class Person < ApplicationRecord
       I18n.t("modules.person.abbr_titles.#{title}_#{used_gender}")
     else
       ''
-    end
-  end
-
-  def alphabetical_display_name
-    if first_name_used.blank?
-      last_name_used
-    else
-      "#{last_name_used}, #{first_name_used}"
     end
   end
 

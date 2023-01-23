@@ -66,26 +66,6 @@ describe Person do
     end
   end
 
-  describe "#alphabetical_display_name" do
-    it "displays a valid name" do
-      expect(person.alphabetical_display_name).to eq('Henderson, Alice')
-    end
-
-    it "displays pseudonym if option is set" do
-      person.use_pseudonym = true
-
-      expect(person.alphabetical_display_name).to eq('Sand, George')
-    end
-
-    context 'when first name is missing' do
-      it 'just displays the last name' do
-        person.first_name = nil
-
-        expect(person.alphabetical_display_name).to eq('Henderson')
-      end
-    end
-  end
-
   describe "#initials" do
     it 'returns initials for simple names' do
       expect(person.initials).to eq('AH')
