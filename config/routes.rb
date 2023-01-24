@@ -160,6 +160,7 @@ Rails.application.routes.draw do
       end
       collection do
         get :check_email
+        get :access_token
       end
     end
     resources :user_registrations do
