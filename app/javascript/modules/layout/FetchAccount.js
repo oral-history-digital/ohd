@@ -1,29 +1,27 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { OHD_DOMAINS } from 'modules/layout';
 
-import { getLocale, getProjectId } from 'modules/archive';
-import { fetchData, deleteData, getCurrentAccount, getProjects,
-    getAccountsStatus, getCurrentProject } from 'modules/data';
-import { getIsLoggedIn, getIsLoggedOut } from 'modules/account';
+export default function FetchAccount({
+    account,
+    accountsStatus,
+    isLoggedIn,
+    isLoggedOut,
+    projectId,
+    projects,
+    locale,
+    fetchData,
+    deleteData,
+}) {
 
-export default function FetchAccount() {
-    const dispatch = useDispatch();
-
-    const account = useSelector(getCurrentAccount);
-    const accountsStatus = useSelector(getAccountsStatus);
-    const isLoggedIn = useSelector(getIsLoggedIn);
-    const isLoggedOut = useSelector(getIsLoggedOut);
-    const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
-    const locale = useSelector(getLocale);
-
-    if (
+    if (!isLoggedIn && window.location !== OHD_DOMAINS[railsMode]) {
+        window.location = `${OHD_DOMAINS[railsMode]}/de/accounts/access_token?href=${location.href}`;
+    } else if (
         !accountsStatus.current ||
-        accountsStatus.current.split('-')[0] === 'reload' ||
-        (isLoggedIn && !account && accountsStatus.current.split('-')[0] === 'fetched')
+        /^reload/.test(accountsStatus.current) ||
+        (isLoggedIn && !account && /^fetched/.test(accountsStatus.current))
     ) {
-        dispatch(fetchData({ projectId, locale, projects }, 'accounts', 'current'));
+        fetchData({ projectId, locale, projects }, 'accounts', 'current');
     } else if (isLoggedOut && account) {
-        dispatch(deleteData({ projectId, locale, projects }, 'accounts', 'current', null, null, false, true));
+        deleteData({ projectId, locale, projects }, 'accounts', 'current', null, null, false, true);
     }
 
     return null;
