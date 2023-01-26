@@ -104,22 +104,6 @@ class AccountsController < ApplicationController
     end
   end
   
-  def access_token
-    authorize(current_user_account)
-
-    token = current_user_account && current_user_account.access_tokens.last
-
-    respond_to do |format|
-      format.html do
-        if params[:href]
-          redirect_to("#{params[:href]}?access_token=#{token && token.token}")
-        else
-          redirect_to("#{OHD_DOMAIN[Rails.env]}/de")
-        end
-      end
-    end
-  end
-
   private
 
   def account_params

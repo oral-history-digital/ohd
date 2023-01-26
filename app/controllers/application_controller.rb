@@ -69,6 +69,8 @@ class ApplicationController < ActionController::Base
         isLoggingIn: false,
         isLoggedIn: !!current_user_account,
         isLoggedOut: !current_user_account,
+        accessToken: params[:access_token],
+        checkedOhdSession: params[:checked_ohd_session],
         firstName: current_user_account && current_user_account.first_name,
         lastName: current_user_account && current_user_account.last_name,
         email: current_user_account && current_user_account.email,

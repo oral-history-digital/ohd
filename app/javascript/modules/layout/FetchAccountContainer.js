@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getProjectId } from 'modules/archive';
 import { fetchData, deleteData, getCurrentAccount, getProjects,
     getAccountsStatus, getCurrentProject } from 'modules/data';
-import { getIsLoggedIn, getIsLoggedOut } from 'modules/account';
+import { getIsLoggedIn, getIsLoggedOut, getCheckedOhdSession } from 'modules/account';
 import FetchAccount from './FetchAccount';
 
 const mapStateToProps = state => ({
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
     accountsStatus: getAccountsStatus(state),
     isLoggedIn: getIsLoggedIn(state),
     isLoggedOut: getIsLoggedOut(state),
+    checkedOhdSession: getCheckedOhdSession(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
     locale: getLocale(state),
