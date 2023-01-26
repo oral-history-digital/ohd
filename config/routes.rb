@@ -210,6 +210,7 @@ Rails.application.routes.draw do
   concern :unnamed_devise_routes do
     devise_scope :user_account do
       post "user_accounts/sign_in", to: "sessions#create"
+      get "user_accounts/sign_in", to: "sessions#new"
       delete "user_accounts/sign_out", to: "sessions#destroy"
       patch "user_accounts/password", to: "passwords#update"
       get "user_accounts/password/edit", to: "passwords#edit"
@@ -272,7 +273,7 @@ Rails.application.routes.draw do
   get "/de/hls.key" => "media_streams#hls"
 
   mount OaiRepository::Engine => "/de/oai_repository"
-  root to: redirect("#{OHD_DOMAIN}/de")
+  root to: redirect("#{OHD_DOMAIN}/de/projects")
 
   devise_for :user_accounts,
     controllers: { sessions: "sessions", passwords: "passwords" },

@@ -5,6 +5,7 @@ export default function FetchAccount({
     accountsStatus,
     isLoggedIn,
     isLoggedOut,
+    checkedOhdSession,
     projectId,
     projects,
     locale,
@@ -12,12 +13,18 @@ export default function FetchAccount({
     deleteData,
 }) {
 
-    if (!isLoggedIn && window.location !== OHD_DOMAINS[railsMode]) {
-        window.location = `${OHD_DOMAINS[railsMode]}/de/accounts/access_token?href=${location.href}`;
+    if (
+        !isLoggedIn &&
+        !checkedOhdSession &&
+        location.origin !== OHD_DOMAINS[railsMode] &&
+        ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1
+    ) {
+        debugger
+        location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/sign_in?href=${location.href}`;
     } else if (
         !accountsStatus.current ||
         /^reload/.test(accountsStatus.current) ||
-        (isLoggedIn && !account && /^fetched/.test(accountsStatus.current))
+        (isLoggedIn && !account && !/^fetch/.test(accountsStatus.current))
     ) {
         fetchData({ projectId, locale, projects }, 'accounts', 'current');
     } else if (isLoggedOut && account) {
