@@ -7,10 +7,14 @@ class UserAccount < ApplicationRecord
          :recoverable,
          :trackable
 
+  has_many :sessions,
+           class_name: 'ActiveRecord::SessionStore::Session',
+           dependent: :delete_all
+
   has_many :access_tokens,
            class_name: 'Doorkeeper::AccessToken',
            foreign_key: :resource_owner_id,
-           dependent: :delete_all # or :destroy if you need callbacks
+           dependent: :delete_all
 
   has_one :user_registration, dependent: :destroy
 

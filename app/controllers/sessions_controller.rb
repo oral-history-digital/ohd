@@ -35,9 +35,8 @@ class SessionsController < Devise::SessionsController
   end
 
   def destroy
-    #binding.pry
-    #current_user_account.access_tokens.destroy_all
-    #sign_out current_user_account
+    current_user_account.access_tokens.destroy_all
+    current_user_account.sessions.destroy_all
     super
   end
 
