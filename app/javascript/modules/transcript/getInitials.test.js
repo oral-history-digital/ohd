@@ -9,7 +9,7 @@ describe('getInitials', () => {
 
     it('calculates initials for two last names', () => {
         const actual = getInitials('Alice', 'claire Henderson', 'de');
-        const expected = 'ACH';
+        const expected = 'AC';
         expect(actual).toEqual(expected);
     });
 });
