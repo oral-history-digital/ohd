@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { OHD_DOMAINS } from 'modules/layout';
 import { AuthShowContainer } from 'modules/auth';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
@@ -91,7 +92,19 @@ export default function Account ({
                         {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
                         {(error || projectId === 'campscapes') ? '' : t('registration_needed')}
                     </p>
-                    <LoginForm />
+                    { 
+                        (['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) !== -1) ?
+                            <LoginForm /> :
+                            <button
+                                type="button"
+                                className='Button Button--fullWidth Button--secondaryAction u-mt-small'
+                                onClick={() => {
+                                    location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/sign_in?href=${location.href}`;
+                                }}
+                            >
+                                {t('login')}
+                            </button>
+                    }
                     <div
                         className="register-link"
                         onClick={handleLinkClick}
