@@ -12,6 +12,10 @@ export default function getContributorInformation(contributions, people, locale,
     contributionArray.forEach(contribution => {
         const contributor = people[contribution.person_id];
 
+        if (typeof contributor === 'undefined') {
+            throw new ReferenceError(`The below contribution references person ${contribution.person_id} which does not exist: ${JSON.stringify(contribution)}`);
+        }
+
         if (contributor.id in contributorInfo) {
           return;
         }
