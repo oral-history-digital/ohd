@@ -211,6 +211,7 @@ Rails.application.routes.draw do
     devise_scope :user_account do
       post "user_accounts/sign_in", to: "sessions#create"
       get "user_accounts/sign_in", to: "sessions#new"
+      get "user_accounts/is_logged_in", to: "sessions#is_logged_in"
       delete "user_accounts/sign_out", to: "sessions#destroy"
       patch "user_accounts/password", to: "passwords#update"
       get "user_accounts/password/edit", to: "passwords#edit"
