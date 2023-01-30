@@ -22,8 +22,7 @@ export default function FetchAccount({
             location.origin !== OHD_DOMAINS[railsMode] &&
             ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1
         ) {
-            debugger
-            location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/sign_in?href=${location.href}`;
+            location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/is_logged_in?href=${location.href}`;
         }
     }, [checkedOhdSession, isLoggedIn]);
 
@@ -32,7 +31,6 @@ export default function FetchAccount({
             /^reload/.test(accountsStatus.current) ||
             (isLoggedIn && !account && !/^fetching/.test(accountsStatus.current))
         ) {
-            debugger
             fetchData({ projectId, locale, projects }, 'accounts', 'current');
         }
     }, [accountsStatus.current, isLoggedIn]);

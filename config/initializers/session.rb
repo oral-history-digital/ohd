@@ -2,7 +2,7 @@ class ActiveRecord::SessionStore::Session
 
   belongs_to :user_account, optional: true
   
-  before_create :set_user_account_id
+  before_update :set_user_account_id
   after_commit :limit_active_sessions
 
   ACTIVE_SESSION_LIMIT = 100
