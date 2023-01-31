@@ -60,6 +60,7 @@ export default function PersonData({
                 >
                     <AuthorizedContent object={person} action='update'>
                         <Modal
+                            hideHeading
                             title={t('edit.contribution.edit')}
                             trigger={(<>
                                 <FaPencilAlt className="Icon Icon--editorial Icon--small" />

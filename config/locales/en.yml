@@ -374,11 +374,11 @@ en:
         edit: verknüpfte Registereinträge
       speaker_string: Sprecher*in (als String)
     person:
-      admin: Personen bearbeiten
-      new: Person hinzufügen
-      edit: Person bearbeiten
-      processed: 'Person angelegt: '
-      return: Weitere Person anlegen
+      admin: Edit people
+      new: New person
+      edit: Edit person
+      processed: 'Person created: '
+      return: Create another person
     language:
       new: Sprache hinzufügen
       edit: Sprache bearbeiten
@@ -888,7 +888,7 @@ en:
         other: Archives
       person:
         one: Person
-        other: Personen
+        other: People
       metadata_field:
         one: Metadatum
         other: Metadaten
@@ -1447,6 +1447,9 @@ en:
     tables:
       actions: Actions
       search: Search…
+      show: Show item
+      edit: Edit item
+      delete: Delete item
     toc:
       collapse: Collapse
       expand: Expand

@@ -1442,6 +1442,9 @@ de:
     tables:
       actions: Aktionen
       search: Suchen…
+      show: Eintrag anzeigen
+      edit: Eintrag bearbeiten
+      delete: Eintrag löschen
     toc:
       collapse: Einklappen
       expand: Ausklappen

@@ -1399,6 +1399,9 @@ es:
     tables:
       actions: Actions
       search: Search…
+      show: Show item
+      edit: Edit item
+      delete: Delete item
     toc:
       collapse: Collapse
       expand: Expand
