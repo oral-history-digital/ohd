@@ -8,7 +8,6 @@ log/
 public/javascripts/translations.js
 tmp/
 /node_modules
-/public/assets
 /public/packs
 /public/packs-test
 /node_modules

@@ -1,24 +1,27 @@
-p.notice = notice
-p.alert = alert
-
 h2= t('login')
 
-= form_for(resource, as: resource_name, url: '/de/user_accounts/sign_in') do |f|
-  = hidden_field_tag :href, @href
-  .field
-    = f.label :email
-    = f.email_field :login, autofocus: true, autocomplete: "email"
+= form_for(resource, as: resource_name, url: '/de/user_accounts/sign_in', html: {class: 'Form default'}) do |f|
 
-  .field
-    = f.label :password
-    = f.password_field :password, autocomplete: "current-password"
+  = hidden_field_tag :path, @path
+  - if @project
+    = hidden_field_tag :project, @project.shortname
 
-  - if devise_mapping.rememberable?
-    .field
-      = f.check_box :remember_me
-      = f.label :remember_me
+  .form-group
+    .form-label
+      = f.label :email, class: 'FormLabel'
+    .form-input
+      = f.email_field :login, autofocus: true, autocomplete: "email", class: 'Input'
 
-  .actions
-    = f.submit "Log in"
+  .form-group
+    .form-label
+      = f.label :password, class: 'FormLabel'
+    .form-input
+      = f.password_field :password, autocomplete: "current-password", class: 'Input'
 
-= link_to t('forget_password'), "#{@origin}/#{@locale}/passwords/new"
+  .Form-footer.u-mt
+    = f.submit t(:login), class: 'Button Button--primaryAction'
+
+.register-link
+  = link_to t('user_registration.registration'), "#{@origin}/#{@locale}/passwords/new", class: 'Link'
+.order-new-password-link
+  = link_to t('forget_password'), "#{@origin}/#{@locale}/passwords/new", class: 'Link'

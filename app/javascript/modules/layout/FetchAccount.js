@@ -22,7 +22,7 @@ export default function FetchAccount({
             location.origin !== OHD_DOMAINS[railsMode] &&
             ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1
         ) {
-            location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/is_logged_in?href=${location.href}`;
+            location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/is_logged_in?path=${location.pathname}&project=${projectId}`;
         }
     }, [checkedOhdSession, isLoggedIn]);
 
