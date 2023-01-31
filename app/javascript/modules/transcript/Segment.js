@@ -100,7 +100,7 @@ function Segment({
                 {
                     data.speakerIdChanged && (
                         <Initials
-                            initials={speakerInitials}
+                            initials={speakerInitials || data.speaker}
                             className={classNames('Segment-icon',
                                 data.speaker_is_interviewee ? 'Segment-icon--primary' :
                                     'Segment-icon--secondary')}
