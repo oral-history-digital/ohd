@@ -11,8 +11,7 @@ export default function HelpTextRowActions({
         <RowActions
             row={row}
             displayComponent={HelpTextDisplay}
-            formComponent={HelpTextForm}
-            showDelete={false}
+            editComponent={HelpTextForm}
         />
     );
 }
