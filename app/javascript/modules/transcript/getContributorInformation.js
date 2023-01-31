@@ -13,7 +13,11 @@ export default function getContributorInformation(contributions, people, locale,
         const contributor = people[contribution.person_id];
 
         if (typeof contributor === 'undefined') {
-            throw new ReferenceError(`The below contribution references person ${contribution.person_id} which does not exist: ${JSON.stringify(contribution)}`);
+            const message = `The below contribution references person ${contribution.person_id} which does not exist: ${JSON.stringify(contribution)}`;
+            console.warn(message);
+            return;
+            // TODO: Clean up MOG database and throw error again:
+            //throw new ReferenceError(message);
         }
 
         if (contributor.id in contributorInfo) {
