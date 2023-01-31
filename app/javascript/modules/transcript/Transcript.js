@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
+import { useEditorialView } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
 import { isSegmentActive } from 'modules/interview-helpers';
@@ -14,7 +15,6 @@ import getContributorInformation from './getContributorInformation';
 export default function Transcript({
     interview,
     intervieweeId,
-    editView,
     archiveId,
     transcriptFetched,
     transcriptLocale,
@@ -41,6 +41,7 @@ export default function Transcript({
     const { data: people, isLoading: peopleAreLoading } = usePeople();
     const { t, translations } = useI18n();
     const pathBase = usePathBase();
+    const isEditorialView = useEditorialView();
 
     const contributorInformation = useMemo(() => getContributorInformation(
         interview.contributions, people, locale, translations),
@@ -102,7 +103,7 @@ export default function Transcript({
 
     return (
         <>
-            {editView && <HelpText code="interview_transcript" className="u-mb" />}
+            {isEditorialView && <HelpText code="interview_transcript" className="u-mb" />}
             <div className="Transcript">
                 {
                     shownSegments.map((segment, index, array) => {
