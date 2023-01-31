@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import {
     getLocale,
     getProjectId,
-    getArchiveId,
-    getEditView
+    getArchiveId
 } from 'modules/archive';
 import {
     fetchData,
@@ -25,7 +24,6 @@ const mapStateToProps = (state, props) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
-    editView: getEditView(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),
