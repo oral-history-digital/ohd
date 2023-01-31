@@ -21,7 +21,7 @@ html
             = image_tag  "/ohd-logo-gr.png", class: 'SiteHeader-logo'
 
             - if @project
-              = image_tag @project.logos.first, class: 'SiteHeader-logo'
+              = image_tag @project.logos.first.file, class: 'SiteHeader-logo'
 
           main.Site-content
             .wrapper-content
