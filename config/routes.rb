@@ -215,6 +215,7 @@ Rails.application.routes.draw do
       delete "user_accounts/sign_out", to: "sessions#destroy"
       patch "user_accounts/password", to: "passwords#update"
       get "user_accounts/password/edit", to: "passwords#edit"
+      get "user_accounts/password/new", to: "passwords#new"
       put "user_accounts/password", to: "passwords#update"
       post "user_accounts/password", to: "passwords#create"
       get "user_accounts/confirmation", to: "devise/confirmations#show"

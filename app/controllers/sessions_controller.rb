@@ -5,6 +5,8 @@ class SessionsController < Devise::SessionsController
 
   before_action :set_project, only: [:new, :create, :is_logged_in]
   before_action :set_path, only: [:new, :create, :is_logged_in]
+  before_action :set_domain, only: [:new, :create, :is_logged_in]
+  before_action :set_locale, only: [:new, :create, :is_logged_in]
 
   respond_to :json, :html
 
@@ -52,15 +54,15 @@ class SessionsController < Devise::SessionsController
   end
 
   def url
-    "#{domain}#{@path}"
+    "#{@domain}#{@path}"
   end
 
   def path
     @path.blank? ? "/#{params[:locale]}/projects" : @path
   end
 
-  def domain
-    @project ? @project.domain_with_optional_identifier : OHD_DOMAIN
+  def set_domain
+    @domain = @project ? @project.domain_with_optional_identifier : OHD_DOMAIN
   end
 
   def set_project
@@ -69,6 +71,10 @@ class SessionsController < Devise::SessionsController
 
   def set_path
     @path = params[:path]
+  end
+
+  def set_locale
+    @locale = params[:locale]
   end
 
   def last_token

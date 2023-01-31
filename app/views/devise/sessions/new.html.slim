@@ -22,6 +22,6 @@ h2= t('login')
     = f.submit t(:login), class: 'Button Button--primaryAction'
 
 .register-link
-  = link_to t('user_registration.registration'), "#{@origin}/#{@locale}/passwords/new", class: 'Link'
+  = link_to t('user_registration.registration'), "#{@domain}/#{@locale}/user_registrations/new", class: 'Link'
 .order-new-password-link
-  = link_to t('forget_password'), "#{@origin}/#{@locale}/passwords/new", class: 'Link'
+  = link_to t('forget_password'), "#{@domain}/#{@locale}/user_accounts/password/new", class: 'Link'
