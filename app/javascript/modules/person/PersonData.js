@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
+import {
+    AuthorizedContent,
+    AuthShowContainer,
+    useProjectAccessStatus
+} from 'modules/auth';
+import { useIsEditor } from 'modules/archive';
 import { ContentField } from 'modules/forms';
-import Biography from './Biography';
 import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { formatPersonName } from 'modules/person';
 import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus } from 'modules/auth';
 import usePersonWithAssociations from './usePersonWithAssociations';
+import Biography from './Biography';
 import PersonForm from './PersonForm';
 
 export default function PersonData({
@@ -20,6 +24,7 @@ export default function PersonData({
 }) {
     const { t, locale, translations } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const isEditor = useIsEditor();
 
     const { data: person, isLoading, isValidating } = usePersonWithAssociations(intervieweeId);
 
@@ -90,6 +95,10 @@ export default function PersonData({
             {person && metadataFields.map(field => {
                 const label = field.label?.[locale] || t(field.name);
                 const value = humanReadable(person, field.name, { locale, translations }, {});
+
+                if (value === '---' && !isEditor) {
+                    return null;
+                }
 
                 return (
                     <ContentField

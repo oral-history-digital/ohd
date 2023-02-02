@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useEditorialView } from 'modules/archive';
+import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { Spinner } from 'modules/spinners';
@@ -21,7 +21,7 @@ export default function RefTree({
     fetchData,
 }) {
     const { t } = useI18n();
-    const isEditorialView = useEditorialView();
+    const isEditor = useIsEditor();
 
     useEffect(() => {
         if (refTreeStatus === 'n/a') {
@@ -60,7 +60,7 @@ export default function RefTree({
 
     return (
         <ScrollToTop>
-            {isEditorialView && <HelpText code="interview_registry" className="u-mb" />}
+            {isEditor && <HelpText code="interview_registry" className="u-mb" />}
             <div className="content-index content-ref-tree">
                 {refTree?.children ?
                     renderChildren(refTree.children) :

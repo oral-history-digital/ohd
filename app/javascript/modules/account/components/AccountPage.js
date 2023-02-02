@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { useEditorialView } from 'modules/archive';
+import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { getCurrentAccount } from 'modules/data';
 import { Features } from 'modules/features';
@@ -13,7 +13,7 @@ import UserDetailsContainer from './UserDetailsContainer';
 
 export default function AccountPage() {
     const { t } = useI18n();
-    const isEditorialView = useEditorialView();
+    const isEditor = useIsEditor();
     const account = useSelector(getCurrentAccount);
 
     return (
@@ -23,7 +23,7 @@ export default function AccountPage() {
             </Helmet>
             <ErrorBoundary>
                 <AuthShowContainer ifLoggedIn ifNoProject >
-                    {isEditorialView && <HelpText code="account_page" />}
+                    {isEditor && <HelpText code="account_page" />}
 
                     <h1>{t('account_page')}</h1>
 
