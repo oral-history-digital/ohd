@@ -25,7 +25,7 @@ export default function Home({
                     <h1>{projectTranslation?.name}</h1>
                     {Object.values(project.institution_projects).map(ip => (
                         <p key={ip.id}>
-                            <b>{institutions[ip.institution_id].name[projectTranslation.locale]}</b>
+                            <b>{institutions[ip.institution_id].name[projectTranslation?.locale]}</b>
                         </p>
                     ))}
                     <div dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
