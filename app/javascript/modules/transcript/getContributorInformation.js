@@ -26,8 +26,8 @@ export default function getContributorInformation(contributions, people, locale,
 
         const info = {};
 
-        const firstName = contributor.names[locale].first_name;
-        const lastName = contributor.names[locale].last_name;
+        const firstName = contributor.names[locale]?.first_name;
+        const lastName = contributor.names[locale]?.last_name;
 
         if (firstName && lastName) {
             info.initials = getInitials(firstName, lastName);
