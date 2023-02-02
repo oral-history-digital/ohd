@@ -75,13 +75,13 @@ describe Person do
       person.first_name = 'Maria Gonzales'
       person.last_name = 'Rodriguez'
 
-      expect(person.initials).to eq('MGR')
+      expect(person.initials).to eq('MR')
     end
 
-    it 'returns empty string if first name is missing' do
-      person.first_name = ''
+    it 'returns just the last name if the first name is missing' do
+      person.first_name = nil
 
-      expect(person.initials).to eq('')
+      expect(person.initials).to eq('H')
     end
   end
 end
