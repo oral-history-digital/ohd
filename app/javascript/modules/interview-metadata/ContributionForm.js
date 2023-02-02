@@ -137,6 +137,7 @@ export default function ContributionForm({
                         {' | '}
                         <Modal
                             title={t('edit.person.edit')}
+                            hideHeading
                             trigger={(
                                 <>
                                     <FaUserEdit className="Icon Icon--editorial" />
