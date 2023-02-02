@@ -35,7 +35,7 @@ export default function NestedScope({
                         formComponent={formComponent}
                         formProps={formProps}
                         scope={scope}
-                        showForm={index === 0 && newElements.length === 0}
+                        showForm={index === 0 && newElements.length === 0 && !editing}
                         elementRepresentation={elementRepresentation}
                     />
                 )
