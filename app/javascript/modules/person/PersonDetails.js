@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { humanReadable } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PersonContributions from './PersonContributions';
-import formatPersonName from './formatPersonName';
 
 export default function PersonDetails({
     data
@@ -29,7 +28,7 @@ export default function PersonDetails({
     return (
         <div>
             <h3 className="u-mt-none u-mb">
-                {formatPersonName(data, translations, { locale })}
+                {data.display_name}
             </h3>
             <dl>
                 {attributes.map(attribute => (

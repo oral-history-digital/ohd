@@ -12,7 +12,7 @@ import AddButton from './AddButton';
 
 export default function PeopleAdminPage() {
     const { t } = useI18n();
-    const { isLoading, isValidating, data: people } = usePeople();
+    const { isLoading, data: people } = usePeople();
 
     function renderForm(data, onSubmit, onCancel) {
         return (

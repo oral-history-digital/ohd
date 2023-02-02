@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { submitDataWithFetch } from 'modules/api';
-import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
@@ -19,7 +18,6 @@ import {
 import useMutatePeople from './useMutatePeople';
 import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
 import useMutatePersonLandingPageMetadata from './useMutatePersonLandingPageMetadata';
-import formatPersonName from './formatPersonName';
 
 const formElements = [
     {
@@ -98,14 +96,13 @@ export default function PersonForm({
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
-    const { locale, translations } = useI18n();
     const project = useSelector(getCurrentProject);
 
     return (
         <div>
             {data && (
                 <h3 className="u-mt-none u-mb">
-                    {formatPersonName(data, translations, { locale })}
+                    {data.display_name}
                 </h3>
             )}
 
