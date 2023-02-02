@@ -165,11 +165,7 @@ class Person < ApplicationRecord
     first_part = initials_from_name_part(first_name_used)
     last_part = initials_from_name_part(last_name_used)
 
-    if first_part.present? && last_part.present?
-      first_part + last_part
-    else
-      ''
-    end
+    first_part + last_part
   end
 
   def initials_from_name_part(part)
@@ -177,12 +173,7 @@ class Person < ApplicationRecord
       return ''
     end
 
-    part
-      .strip
-      .split(' ')
-      .map { |word | word[0] }
-      .join
-      .upcase
+    part.strip[0].upcase
   end
 
   def first_name_used
