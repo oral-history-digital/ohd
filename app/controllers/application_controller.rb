@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || (current_project ? current_project.default_locale : :de)).to_sym
+    locale = current_project && !current_project.available_locales.include?(locale) ? current_project.default_locale : locale
     #valid_locales = current_project.available_locales if valid_locales.empty?
     #locale = I18n.default_locale unless valid_locales.include?(locale)
     I18n.locale = locale
