@@ -635,6 +635,7 @@ es:
     add: Registernamen hinzufügen
   norm_data:
     title: Normdaten
+    link_hover: Link zum Begriff in der Gemeinsamen Normdatei/bei Open Street Map
     new: Normdaten hinzufügen
     add: Normdaten hinzufügen
   texts:
@@ -992,7 +993,7 @@ es:
         doi: DOI
         cooperation_partner: colaborador/a
         leader: Director/a del proyecto
-        manager: Coordinador/a del proyecto
+        manager: Contact person
         hosting_institution: Institución
         funder_names: Financiamiento
         contact_email: Correo electrónico de contacto
@@ -1398,6 +1399,9 @@ es:
     tables:
       actions: Actions
       search: Search…
+      show: Show item
+      edit: Edit item
+      delete: Delete item
     toc:
       collapse: Collapse
       expand: Expand

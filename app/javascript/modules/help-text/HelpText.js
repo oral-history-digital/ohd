@@ -31,10 +31,28 @@ export default function HelpText({
         return null;
     }
 
+    if (small) {
+        return (
+            <aside style={style} className={classNames('HelpText', 'HelpText--small',
+                className)}>
+                <div className="HelpText-inner">
+                    <a
+                        className="HelpText-link"
+                        href={helpText.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={t('modules.help_text.wiki_link')}
+                        aria-label={t('modules.help_text.wiki_link')}
+                    >
+                        <FaRegQuestionCircle className="HelpText-icon" />
+                    </a>
+                </div>
+            </aside>
+        );
+    }
+
     return (
-        <aside style={style} className={classNames('HelpText', className, {
-            'HelpText--small': small
-        })}>
+        <aside style={style} className={classNames('HelpText', className)}>
             <div className="HelpText-inner">
                 <div className="HelpText-body">
                     {helpText.text && (

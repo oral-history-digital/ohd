@@ -685,6 +685,7 @@ ru:
     add: Registernamen hinzufügen
   norm_data:
     title: Normdaten
+    link_hover: Link zum Begriff in der Gemeinsamen Normdatei/bei Open Street Map
     new: Normdaten hinzufügen
     add: Normdaten hinzufügen
   texts:
@@ -1046,7 +1047,7 @@ ru:
         doi: DOI
         cooperation_partner: Kooperationspartner
         leader: Projektleitung
-        manager: Projektmanagement
+        manager: Contact person
         hosting_institution: Institution
         pseudo_funder_names: Finanzierung
         contact_email: Kontaktemail
@@ -1852,6 +1853,9 @@ ru:
     tables:
       actions: Actions
       search: Search…
+      show: Show item
+      edit: Edit item
+      delete: Delete item
     toc:
       collapse: Collapse
       expand: Expand

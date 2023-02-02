@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { getEditView } from 'modules/archive';
 import {
     getCurrentProject,
     getProjects,
@@ -16,7 +15,6 @@ import Registry from './Registry';
 
 const mapStateToProps = (state) => ({
     rootRegistryEntry: getRootRegistryEntry(state),
-    editView: getEditView(state),
     projects: getProjects(state),
     currentProject: getCurrentProject(state),
     foundRegistryEntries: getRegistryEntriesSearch(state),

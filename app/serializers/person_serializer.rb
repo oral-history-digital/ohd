@@ -9,7 +9,9 @@ class PersonSerializer < ApplicationSerializer
     :gender,
     :title,
     :description,
-    :associations_loaded
+    :associations_loaded,
+    :created_at,
+    :updated_at
   ]
 
   def description

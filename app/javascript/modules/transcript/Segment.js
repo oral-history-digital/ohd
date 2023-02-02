@@ -1,9 +1,7 @@
 import { useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaUser } from 'react-icons/fa';
 
-import { formatPersonName } from 'modules/person';
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -12,10 +10,12 @@ import { useTranscriptQueryString } from 'modules/query-string';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
+import Initials from './Initials';
 
 function Segment({
     data,
-    speaker,
+    speakerInitials,
+    speakerName,
     autoScroll,
     contentLocale,
     editView,
@@ -30,7 +30,7 @@ function Segment({
 }) {
     const divEl = useRef();
     const { isAuthorized } = useAuthorization();
-    const { t, locale, translations } = useI18n();
+    const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
 
     useEffect(() => {
@@ -99,9 +99,12 @@ function Segment({
                 })}>
                 {
                     data.speakerIdChanged && (
-                        <FaUser
-                            className={classNames('Segment-icon', data.speaker_is_interviewee ? 'Segment-icon--primary' : 'Segment-icon--secondary')}
-                            title={speaker ? formatPersonName(speaker, translations, { locale }) : data.speaker}
+                        <Initials
+                            initials={speakerInitials || data.speaker}
+                            className={classNames('Segment-icon',
+                                data.speaker_is_interviewee ? 'Segment-icon--primary' :
+                                    'Segment-icon--secondary')}
+                            title={speakerName || data.speaker}
                         />
                     )
                 }
@@ -149,7 +152,8 @@ function Segment({
 
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
-    speaker: PropTypes.object,
+    speakerInitials: PropTypes.string,
+    speakerName: PropTypes.string,
     autoScroll: PropTypes.bool.isRequired,
     editView: PropTypes.bool.isRequired,
     contentLocale: PropTypes.string.isRequired,

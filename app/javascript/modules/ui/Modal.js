@@ -7,6 +7,7 @@ import '@reach/dialog/styles.css';
 
 export default function Modal({
     title,
+    hideHeading = false,
     className,
     triggerClassName,
     trigger = <FaEllipsisH className="Icon Icon--primary" />,
@@ -55,7 +56,9 @@ export default function Modal({
                 onTouchMove={handleClick}
                 onTouchCancel={handleClick}
             >
-                <h3 className="Modal-heading">{title}</h3>
+                {!hideHeading &&
+                    <h3 className="Modal-heading">{title}</h3>
+                }
 
                 {
                     typeof children === 'function' ?
@@ -78,6 +81,7 @@ export default function Modal({
 Modal.propTypes = {
     trigger: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
+    hideHeading: PropTypes.bool,
     className: PropTypes.string,
     triggerClassName: PropTypes.string,
     disabled: PropTypes.bool,
