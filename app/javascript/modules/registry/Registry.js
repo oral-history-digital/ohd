@@ -2,7 +2,12 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import { AuthorizedContent } from 'modules/auth';
-import { Fetch, getRootRegistryEntryFetched, getRootRegistryEntryReload } from 'modules/data';
+import {
+    Fetch,
+    getRootRegistryEntryFetched,
+    getRootRegistryEntryReload
+} from 'modules/data';
+import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { ScrollToTop } from 'modules/user-agent';
@@ -12,13 +17,13 @@ import RegistryEntriesContainer from './RegistryEntriesContainer';
 
 export default function Registry({
     currentProject,
-    editView,
     rootRegistryEntry,
     foundRegistryEntries,
     showRegistryEntriesSearchResults,
     isRegistryEntrySearching,
 }) {
     const { t } = useI18n();
+    const isEditor = useIsEditor();
 
     return (
         <ScrollToTop>
@@ -35,7 +40,7 @@ export default function Registry({
                         {t('registry')}
                     </h1>
 
-                    {editView && <HelpText code="registry_page" className="u-mb" />}
+                    {isEditor && <HelpText code="registry_page" className="u-mb" />}
 
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                         <MergeRegistryEntriesButtonContainer />

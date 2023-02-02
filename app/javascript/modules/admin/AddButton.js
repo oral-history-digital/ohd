@@ -7,6 +7,7 @@ import { Modal } from 'modules/ui';
 import { camelCase } from 'modules/strings';
 
 export default function AddButton({
+    className,
     scope,
     interview,
     task,
@@ -21,6 +22,7 @@ export default function AddButton({
             action="create"
         >
             <Modal
+                triggerClassName={className}
                 title={t(`edit.${scope}.new`)}
                 trigger={<><FaPlus className="Icon Icon--editorial" /> {t(`edit.${scope}.new`)}</>}
                 disabled={disabled}
@@ -32,6 +34,7 @@ export default function AddButton({
 }
 
 AddButton.propTypes = {
+    className: PropTypes.string,
     scope: PropTypes.string.isRequired,
     interview: PropTypes.object,
     task: PropTypes.object,

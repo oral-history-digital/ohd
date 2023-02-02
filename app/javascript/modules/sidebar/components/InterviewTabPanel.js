@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 import {
-    AssignSpeakersFormContainer,
     MarkTextFormContainer,
     UploadTranscriptContainer,
     UploadEditTableContainer
@@ -16,6 +15,7 @@ import {
 } from 'modules/interview-metadata';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AccountContainer } from 'modules/account';
+import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
@@ -34,7 +34,6 @@ import DownloadLinks from './DownloadLinks';
 export default function InterviewTabPanel({
     archiveId,
     projectId,
-    editView,
     interview,
     intervieweeId,
     hasMap,
@@ -44,6 +43,7 @@ export default function InterviewTabPanel({
     isLoggedIn,
 }) {
     const pathBase = usePathBase();
+    const isEditor = useIsEditor();
     const { t } = useI18n();
     const { data: interviewee, isLoading: intervieweeIsLoading } =
         usePersonWithAssociations(intervieweeId);
@@ -55,7 +55,7 @@ export default function InterviewTabPanel({
     }
 
     const hasPhotos = interview.photos && Object.values(interview.photos).length > 0;
-    const showGallerySection = hasPhotos || editView;
+    const showGallerySection = hasPhotos || isEditor;
 
     return (
         <ErrorBoundary small>
@@ -87,7 +87,7 @@ export default function InterviewTabPanel({
                     <>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <SubTab title={t('person_info')} open={!isLoggedIn}>
-                                {editView && <HelpText code="interview_person_data" className="u-mb" />}
+                                {isEditor && <HelpText code="interview_person_data" className="u-mb" />}
                                 <PersonDataContainer/>
                                 {intervieweeIsLoading ?
                                     <Spinner /> : (
@@ -106,7 +106,7 @@ export default function InterviewTabPanel({
                         <AuthShowContainer ifLoggedIn>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('interview_info')}>
-                                    {editView && <HelpText code="interview_interview_data" className="u-mb" />}
+                                    {isEditor && <HelpText code="interview_interview_data" className="u-mb" />}
                                     <InterviewInfoContainer/>
                                     <InterviewContributorsContainer/>
                                     <InterviewTextMaterialsContainer/>
@@ -146,7 +146,7 @@ export default function InterviewTabPanel({
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('map')}>
-                                    {editView && <HelpText code="interview_map" className="u-mb" />}
+                                    {isEditor && <HelpText code="interview_map" className="u-mb" />}
                                     <InterviewMap/>
                                 </SubTab>
                             </AuthorizedContent>
@@ -195,7 +195,6 @@ export default function InterviewTabPanel({
 InterviewTabPanel.propTypes = {
     archiveId: PropTypes.string,
     projectId: PropTypes.string.isRequired,
-    editView: PropTypes.bool,
     interview: PropTypes.object,
     intervieweeId: PropTypes.number,
     hasMap: PropTypes.bool.isRequired,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import Element from '../Element';
@@ -28,12 +28,9 @@ export default function Select({
 
     const { t, locale } = useI18n();
 
-    const [valid, setValid] = useState((typeof validate !== 'function'));
-    const [val, setVal] = useState(data?.[attribute] || value);
+    const defaultValue = data?.[attribute] || value;
 
-    useEffect(() => {
-        setVal(data?.[attribute] || value);
-    }, [value, data?.[attribute]]);
+    const [valid, setValid] = useState((typeof validate !== 'function'));
 
     const onChange = (event) => {
         const value =  event.target.value;
@@ -145,7 +142,7 @@ export default function Select({
             <select
                 name={attribute}
                 className="Input"
-                defaultValue={val}
+                defaultValue={defaultValue}
                 onChange={onChange}
                 handlechangecallback={handlechangecallback}
             >
@@ -153,5 +150,4 @@ export default function Select({
             </select>
         </Element>
     );
-
 }

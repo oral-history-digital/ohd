@@ -374,11 +374,11 @@ en:
         edit: verknüpfte Registereinträge
       speaker_string: Sprecher*in (als String)
     person:
-      admin: Personen bearbeiten
-      new: Person hinzufügen
-      edit: Person bearbeiten
-      processed: 'Person angelegt: '
-      return: Weitere Person anlegen
+      admin: Edit people
+      new: New person
+      edit: Edit person
+      processed: 'Person created: '
+      return: Create another person
     language:
       new: Sprache hinzufügen
       edit: Sprache bearbeiten
@@ -640,6 +640,7 @@ en:
     add: Registernamen hinzufügen
   norm_data:
     title: Normdaten
+    link_hover: Link zum Begriff in der Gemeinsamen Normdatei/bei Open Street Map
     new: Normdaten hinzufügen
     add: Normdaten hinzufügen
   texts:
@@ -887,7 +888,7 @@ en:
         other: Archives
       person:
         one: Person
-        other: Personen
+        other: People
       metadata_field:
         one: Metadatum
         other: Metadaten
@@ -1002,7 +1003,7 @@ en:
         doi: DOI
         cooperation_partner: Kooperationspartner
         leader: Projektleitung
-        manager: Projektmanagement
+        manager: Contact person
         hosting_institution: Institution
         pseudo_funder_names: Finanzierung
         contact_email: Kontaktemail
@@ -1446,6 +1447,9 @@ en:
     tables:
       actions: Actions
       search: Search…
+      show: Show item
+      edit: Edit item
+      delete: Delete item
     toc:
       collapse: Collapse
       expand: Expand

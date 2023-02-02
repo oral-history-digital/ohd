@@ -11,9 +11,11 @@ export {
 } from './constants';
 
 export { default as PersonForm } from './PersonForm';
+export { default as PersonDetails } from './PersonDetails';
 export { default as PersonDataContainer } from './PersonDataContainer';
 export { default as usePersonWithAssociations } from './usePersonWithAssociations';
 export { default as useMutatePersonLandingPageMetadata } from './useMutatePersonLandingPageMetadata';
 export { default as usePeople } from './usePeople';
 export { default as useMutatePersonWithAssociations } from './useMutatePersonWithAssociations';
 export { default as useMutatePeople } from './useMutatePeople';
+export { default as PersonTable } from './PersonTable';

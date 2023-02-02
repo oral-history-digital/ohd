@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { submitDataWithFetch } from 'modules/api';
+import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
@@ -17,6 +18,7 @@ import {
 import useMutatePeople from './useMutatePeople';
 import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
 import useMutatePersonLandingPageMetadata from './useMutatePersonLandingPageMetadata';
+import formatPersonName from './formatPersonName';
 
 const formElements = [
     {
@@ -81,47 +83,56 @@ export default function PersonForm({
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
+    const { locale, translations } = useI18n();
     const project = useSelector(getCurrentProject);
 
     return (
-        <Form
-            data={data}
-            values={{ project_id: project.id }}
-            scope="person"
-            helpTextCode="person_form"
-            onSubmit={async (params) => {
-                mutatePeople(async people => {
-                    const id = params.person.id;
-                    setIsFetching(true);
-                    const result = await submitDataWithFetch(pathBase, params);
-                    const updatedPerson = result.data;
+        <div>
+            {data && (
+                <h3 className="u-mt-none u-mb">
+                    {formatPersonName(data, translations, { locale })}
+                </h3>
+            )}
 
-                    // Other stuff that needs to be done after result is returned.
-                    setIsFetching(false);
-                    if (id) {
-                        mutatePersonWithAssociations(id);
-                        mutatePersonLandingPageMetadata(id);
-                    }
+            <Form
+                data={data}
+                values={{ project_id: project.id }}
+                scope="person"
+                helpTextCode="person_form"
+                onSubmit={async (params) => {
+                    mutatePeople(async people => {
+                        const id = params.person.id;
+                        setIsFetching(true);
+                        const result = await submitDataWithFetch(pathBase, params);
+                        const updatedPerson = result.data;
 
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
-                    }
-
-                    const updatedPeople = {
-                        ...people,
-                        data: {
-                            ...people.data,
-                            [updatedPerson.id]: updatedPerson
+                        // Other stuff that needs to be done after result is returned.
+                        setIsFetching(false);
+                        if (id) {
+                            mutatePersonWithAssociations(id);
+                            mutatePersonLandingPageMetadata(id);
                         }
-                    };
-                    return updatedPeople;
-                });
-            }}
-            onCancel={onCancel}
-            submitText="submit"
-            elements={formElements}
-            fetching={isFetching}
-        />
+
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
+
+                        const updatedPeople = {
+                            ...people,
+                            data: {
+                                ...people.data,
+                                [updatedPerson.id]: updatedPerson
+                            }
+                        };
+                        return updatedPeople;
+                    });
+                }}
+                onCancel={onCancel}
+                submitText="submit"
+                elements={formElements}
+                fetching={isFetching}
+            />
+        </div>
     );
 }
 

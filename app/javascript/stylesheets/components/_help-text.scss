@@ -15,11 +15,6 @@ $help-text-background-color: #e6ffe6;
   padding: $base-unit / 2;
 }
 
-.HelpText--small > .HelpText-inner {
-  border: 0;
-  padding: 0 ($base-unit / 4);
-}
-
 .HelpText-icon {
   color: $help-text-color;
   flex-shrink: 0;
@@ -35,4 +30,19 @@ $help-text-background-color: #e6ffe6;
 }
 
 .HelpText-link {
+}
+
+
+/* Variants */
+
+.HelpText--small .HelpText-inner {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.HelpText--small .HelpText-icon {
+  color: $help-text-background-color;
+  font-size: 1.25rem;
+  vertical-align: middle;
 }
