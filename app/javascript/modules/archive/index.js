@@ -10,4 +10,4 @@ export { getArchiveId, getEditView, getInterviewEditView, getLocale, getProjectI
     getSelectedRegistryEntryIds, getTranslations, getDoiResult, getCountryKeys,
     getSelectedArchiveIds, getViewModes, getViewMode } from './selectors';
 
-export { default as useEditorialView } from './useEditorialView';
+export { default as useIsEditor } from './useIsEditor';

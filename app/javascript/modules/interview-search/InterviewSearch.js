@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useEditorialView } from 'modules/archive';
+import { useIsEditor } from 'modules/archive';
 import { ScrollToTop } from 'modules/user-agent';
 import { HelpText } from 'modules/help-text';
 import InterviewSearchForm from './InterviewSearchForm';
@@ -15,7 +15,7 @@ export default function InterviewSearch({
     refTreeStatus,
     fetchData,
 }) {
-    const isEditorialView = useEditorialView();
+    const isEditor = useIsEditor();
 
     useEffect(() => {
         if (refTreeStatus === 'n/a') {
@@ -25,7 +25,7 @@ export default function InterviewSearch({
 
     return (
         <ScrollToTop>
-            {isEditorialView && <HelpText code="interview_search" className="u-mb" />}
+            {isEditor && <HelpText code="interview_search" className="u-mb" />}
             <InterviewSearchForm archiveId={archiveId} />
             <InterviewSearchResultsContainer archiveId={archiveId} />
         </ScrollToTop>
