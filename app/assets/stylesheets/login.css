@@ -161,3 +161,10 @@ a:link, a:visited {
   background-color: transparent;
   text-decoration: none;
 }
+
+p.notice, p.alert {
+  color: #e01217 !important;
+  background-color: #fff;
+  border: .125rem solid #e01217 !important;
+  padding: .625rem 1.375rem;
+}
