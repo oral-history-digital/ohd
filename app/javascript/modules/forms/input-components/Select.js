@@ -145,7 +145,7 @@ export default function Select({
             <select
                 name={attribute}
                 className="Input"
-                defaultValue={value}
+                defaultValue={val}
                 onChange={onChange}
                 handlechangecallback={handlechangecallback}
             >
