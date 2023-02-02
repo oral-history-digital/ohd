@@ -27,9 +27,9 @@ class SessionsController < Devise::SessionsController
     #access_token = Doorkeeper::AccessToken.create!(application_id: application_id, resource_owner_id: resource.id)
     #render json: Doorkeeper::OAuth::TokenResponse.new(access_token).body
 
+    set_flash_message!(:notice, :signed_in)
     sign_in(resource_name, resource)
     yield resource if block_given?
-
     respond_with resource, location: url_with_access_token
   rescue BCrypt::Errors::InvalidHash
     respond_to do |format|
