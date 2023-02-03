@@ -17,7 +17,7 @@ class PhotoExport
       photos = only_public ? interview.photos.where(workflow_state: 'public') :
         interview.photos
       photos.each do |photo|
-        zip.put_next_entry(photo.photo_file_name || photo.photo.blob.filename)
+        zip.put_next_entry(photo.name)
         zip.write IO.read(ActiveStorage::Blob.service.path_for(photo.photo.key))
       end
     end

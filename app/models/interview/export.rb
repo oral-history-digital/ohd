@@ -34,7 +34,7 @@ module Interview::Export
         f << [
           archive_id,
           photo.public_id,
-          photo.photo_file_name,
+          photo.name,
           photo.caption(locale).gsub(/[\r\n\t]/, ''),
           photo.date(locale),
           photo.place(locale),
