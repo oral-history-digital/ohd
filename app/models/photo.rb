@@ -52,4 +52,13 @@ class Photo < ApplicationRecord
     blob = photo.blob
     blob.update_column(:checksum, Digest::MD5.base64digest(File.read(blob.service.path_for(blob.key))))
   end
+
+  def name
+    n = photo_file_name || photo.blob.filename
+    unless %w(jpg jpeg png gif tiff pdf psd eps ai indd raw).include?(n.split('.').last.downcase)
+      n += ".#{photo.blob.content_type.split('/').last}"
+    end
+    n
+  end
+
 end
