@@ -62,7 +62,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def set_domain
-    @domain = @project ? @project.domain_with_optional_identifier : OHD_DOMAIN
+    @domain = @project && !@project.archive_domain.blank? ? @project.archive_domain : OHD_DOMAIN
   end
 
   def set_project
