@@ -14,7 +14,7 @@ export default function ProjectAccessAlert ({
 
     const unactivatedProject = account?.user_registration_projects &&
         Object.values(account.user_registration_projects).find( urp => {
-            urp.project_id === project?.id && urp.activated_at === null
+            return urp.project_id === project?.id && urp.activated_at === null
         });
 
     if (unactivatedProject) {
