@@ -8,28 +8,7 @@
     <MdCollectionDisplayName>Bavarian Archive for Speech Signals (BAS)</MdCollectionDisplayName>
   </Header>
   <Resources>
-    <ResourceProxyList>
-      <ResourceProxy id="r_0000000001">
-        <ResourceType mimetype="video/mp4">Resource</ResourceType>
-        <ResourceRef>za001/za001_03_01.mp4</ResourceRef>
-      </ResourceProxy>
-      <ResourceProxy id="r_0000000002">
-        <ResourceType mimetype="video/mp4">Resource</ResourceType>
-        <ResourceRef>za001/za001_03_02.mp4</ResourceRef>
-      </ResourceProxy>
-      <ResourceProxy id="r_0000000003">
-        <ResourceType mimetype="video/mp4">Resource</ResourceType>
-        <ResourceRef>za001/za001_03_03.mp4</ResourceRef>
-      </ResourceProxy>
-      <ResourceProxy id="m_0000000001">
-        <ResourceType mimetype="application/pdf">Resource</ResourceType>
-        <ResourceRef>za001/transcript_de.pdf</ResourceRef>
-      </ResourceProxy>
-      <ResourceProxy id="m_0000000002">
-        <ResourceType mimetype="application/pdf">Resource</ResourceType>
-        <ResourceRef>za001/transcript_en.pdf</ResourceRef>
-      </ResourceProxy>
-    </ResourceProxyList>
+    <ResourceProxyList/>
     <JournalFileProxyList/>
     <ResourceRelationList/>
     <IsPartOfList>
@@ -99,37 +78,6 @@
         <Description>
           <Description LanguageID="ISO639-3:eng">This is the interview za001 of the Oral History collection 'OH.D Test collection'.</Description>
         </Description>
-        <media-annotation-bundle>
-          <media-file ref="r_0000000001" actor-ref="s_0000000001 s_0000000002 s_0000000003">
-            <Type>video</Type>
-          </media-file>
-        </media-annotation-bundle>
-        <media-annotation-bundle>
-          <media-file ref="r_0000000002" actor-ref="s_0000000001 s_0000000002 s_0000000003">
-            <Type>video</Type>
-          </media-file>
-        </media-annotation-bundle>
-        <media-annotation-bundle>
-          <media-file ref="r_0000000003" actor-ref="s_0000000001 s_0000000002 s_0000000003">
-            <Type>video</Type>
-          </media-file>
-        </media-annotation-bundle>
-        <WrittenResource ref="m_0000000001" actor-ref="s_0000000001 s_0000000002 s_0000000003">
-          <AnnotationType>
-            <AnnotationType>Orthography</AnnotationType>
-          </AnnotationType>
-          <AnnotationFormat>
-            <AnnotationFormat>application/pdf</AnnotationFormat>
-          </AnnotationFormat>
-        </WrittenResource>
-        <WrittenResource ref="m_0000000002" actor-ref="s_0000000001 s_0000000002 s_0000000003">
-          <AnnotationType>
-            <AnnotationType>Orthography</AnnotationType>
-          </AnnotationType>
-          <AnnotationFormat>
-            <AnnotationFormat>application/pdf</AnnotationFormat>
-          </AnnotationFormat>
-        </WrittenResource>
       </media-session>
     </media-session-profile>
   </Components>
