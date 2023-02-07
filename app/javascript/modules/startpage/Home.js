@@ -23,7 +23,7 @@ export default function Home({
                 }
                 <div className="home-text">
                     <h1>{projectTranslation?.name}</h1>
-                    {Object.values(project.institution_projects).map(ip => (
+                    {project && Object.values(project.institution_projects).map(ip => (
                         <p key={ip.id}>
                             <b>{institutions[ip.institution_id].name[projectTranslation?.locale]}</b>
                         </p>
