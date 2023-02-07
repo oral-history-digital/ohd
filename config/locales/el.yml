@@ -1458,6 +1458,8 @@ el:
       admin_menu:
         actions: Actions
       copy_link: Αντιγραφή URL
+      error_message:
+        error: Error
       pagination:
         page: "Page %{current} of %{total}"
         prev: previous page

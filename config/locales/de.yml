@@ -1460,6 +1460,8 @@ de:
       admin_menu:
         actions: Aktionen
       copy_link: URL kopieren
+      error_message:
+        error: Fehler
       pagination:
         page: "Seite %{current} von %{total}"
         prev: vorherige Seite

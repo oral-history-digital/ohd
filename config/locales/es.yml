@@ -1417,6 +1417,8 @@ es:
       admin_menu:
         actions: Actions
       copy_link: Copiar enlace
+      error_message:
+        error: Error
       pagination:
         page: "Page %{current} of %{total}"
         prev: previous page
