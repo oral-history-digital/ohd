@@ -330,10 +330,10 @@ en:
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
-      new: Neues Interview
+      new: Neues Interview anlegen
       edit: Interview bearbeiten
       processed: 'Interview angelegt: '
-      processing: Das Interview wurde bearbeitet
+      processing: Das Interview wurde angelegt.
       return: Weiteres Interview anlegen
       goto: Zum Interview
     interviews:

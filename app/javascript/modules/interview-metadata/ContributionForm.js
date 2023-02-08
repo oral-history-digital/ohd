@@ -61,7 +61,6 @@ export default function ContributionForm({
             value: data?.person_id,
             withEmpty: true,
             validate: v => v !== '',
-            individualErrorMsg: 'empty',
             handlechangecallback: handlePersonChange,
         },
         {
