@@ -1,9 +1,10 @@
 class ProjectsController < ApplicationController
   skip_before_action :authenticate_user_account!,
-    only: [:show, :cmdi_metadata, :archiving_batches, :index, :edit_info, :edit_display, :edit_config]
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index,
+      :edit_info, :edit_display, :edit_config]
   before_action :set_project,
-    only: [:show, :cmdi_metadata, :archiving_batches, :edit_info, :edit_display,
-           :edit_config, :edit, :update, :destroy]
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
+      :edit_display, :edit_config, :edit, :update, :destroy]
 
   # GET /projects
   def index
@@ -52,19 +53,26 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def archiving_batches
+  def archiving_batches_show
     respond_to do |format|
       format.json do
         batch_number = params[:number].to_i
-        archiving_batch = @project.archiving_batches
-          .where(number: batch_number).first
+        batch = @project.archiving_batches.where(number: batch_number).first
 
-        if archiving_batch.blank?
-          render json: []
+        if batch.blank?
+          not_found
         else
-          interview_ids = archiving_batch.interviews.map(&:archive_id).sort
-          render json: interview_ids
+          render json: batch
         end
+      end
+    end
+  end
+
+  def archiving_batches_index
+    respond_to do |format|
+      format.json do
+        batches = @project.archiving_batches.order(:number)
+        render json: batches
       end
     end
   end
