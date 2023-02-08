@@ -915,10 +915,9 @@ en:
         person_id: Person
         speaker_designation: speaker designation (e.g. *CG:*)
       collection:
+        name: Collection name
         project_id: Archive
         institution_id: Institution
-        homepage: Website
-        name: Name
         countries: Interviews in
         institution: Durchgeführt von
         responsibles: Responsibles

@@ -905,9 +905,9 @@ es:
         person_id: persona
         speaker_designation: Especificación del/la hablante (p.ej. *CG:*)
       collection:
+        name: Collection name
         project_id: Archive
         institution_id: Institution
-        homepage: Página web
         countries: Entrevistas en
         institution: Realizado por
         responsibles: Responsables

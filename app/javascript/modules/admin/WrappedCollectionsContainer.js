@@ -3,8 +3,11 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjectLocales, getProjects, getCurrentAccount,
-    getCollectionsForCurrentProject, getCollectionsStatus, getInstitutions } from 'modules/data';
+import {
+    fetchData, deleteData, submitData, getCurrentProject,
+    getProjectLocales, getProjects, getCurrentAccount,
+    getCollectionsForCurrentProject, getCollectionsStatus
+} from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
 
@@ -26,40 +29,30 @@ const mapStateToProps = (state) => {
         outerScopeId: project.id,
         scope: 'collection',
         baseTabIndex: 4 + project.has_map,
-        detailsAttributes: ['name', 'homepage', 'institution', 'responsibles', 'notes', 'countries'],
-        initialFormValues: {project_id: project.id},
+        detailsAttributes: ['name', 'homepage', 'responsibles', 'notes'],
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
                 attribute: 'name',
                 multiLocale: true,
-                //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'homepage',
                 multiLocale: true,
-                //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
-            },
-            {
-                attribute: 'institution_id',
-                elementType: 'select',
-                values: getInstitutions(state),
-                withEmpty: true,
             },
             {
                 attribute: 'responsibles',
                 multiLocale: true,
+                elementType: 'textarea',
+                htmlOptions: { maxLength: 255 }
             },
             {
                 attribute: 'notes',
                 multiLocale: true,
                 elementType: 'textarea',
-            },
-            {
-                attribute: 'countries',
-                multiLocale: true,
-            },
+            }
         ],
-        joinedData: { },
+        joinedData: {},
         helpTextCode: 'collection_form'
     }
 }

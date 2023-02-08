@@ -958,10 +958,9 @@ ru:
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
+        name: Collection name
         project_id: Archive
         institution_id: Institution
-        homepage: Website
-        name: Имя
         countries: Страна
         institution: Организация
         responsibles: Ответственные
