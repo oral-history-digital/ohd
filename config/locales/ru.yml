@@ -1031,6 +1031,7 @@ ru:
         update_only_speakers: nur Sprecher aktualisieren
         update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
+        name: Archive name
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
@@ -1042,7 +1043,7 @@ ru:
         shortname: Kürzel
         initials: Initials (interview ID)
         archive_id_number_length: Number of figures (interview ID)
-        domain: Projektdomain
+        domain: Project website
         archive_domain: Archivdomain
         doi: DOI
         cooperation_partner: Kooperationspartner
@@ -1050,7 +1051,7 @@ ru:
         manager: Contact person
         hosting_institution: Institution
         pseudo_funder_names: Finanzierung
-        contact_email: Kontaktemail
+        contact_email: Contact email (generic)
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
         has_map: Karte anzeigen
@@ -1067,8 +1068,9 @@ ru:
         aspect_x: Bildformat x-Wert
         aspect_y: Bildformat y-Wert
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
-        domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        domain_help: "Website with further information about the project"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        contact_email_help: "This email address is used for communication with users, e.g. to confirm registrations."
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: order in search facets and map filter
