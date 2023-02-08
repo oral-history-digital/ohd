@@ -939,9 +939,9 @@ de:
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
+        name: Name der Sammlung
         project_id: Archiv
         institution_id: Institution
-        homepage: Website
         countries: Interviews in
         institution: Durchgeführt von
         responsibles: Verantwortliche

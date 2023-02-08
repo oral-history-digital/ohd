@@ -915,10 +915,9 @@ el:
         person_id: Άτομο
         speaker_designation: Υπόδειξη ομιλιτών (π.χ. *CG:*)
       collection:
+        name: Collection name
         project_id: Archive
         institution_id: Institution
-        homepage: Ιστοσελίδα
-        name: Name
         countries: Συνεντεύξεις στην
         institution: Διεξαγωγή από
         responsibles: Υπεύθυνοι
