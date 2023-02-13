@@ -5,6 +5,7 @@ class UserRegistrationProjectsController < ApplicationController
     @user_registration_project = UserRegistrationProject.new user_registration_project_params
     @user_registration_project.user_registration_id = current_user_account.user_registration.id
     @user_registration_project.save
+    @user_registration_project.grant_project_access_instantly! if current_project.grant_project_access_instantly?
     current_user_account.touch
     current_user_account.user_registration.touch
 

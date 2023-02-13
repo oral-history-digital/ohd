@@ -1019,6 +1019,7 @@ el:
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
+        grant_project_access_instantly: Keine manuelle Freischaltung nötig
         display_ohd_link: OHD-Link zeigen
         show_preview_img: Vorschaubild auf Landing-Page zeigen
         primary_color: Primary color

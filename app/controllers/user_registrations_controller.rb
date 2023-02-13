@@ -19,7 +19,14 @@ class UserRegistrationsController < ApplicationController
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id if current_project
+      user_registration_project = UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id if current_project
+      user_registration_project.grant_project_access_instantly! if current_project.grant_project_access_instantly?
+      # grant access to ohd
+      ohd = Project.ohd
+      if ohd && !current_project.is_ohd?
+        user_registration_ohd = UserRegistrationProject.create project_id: ohd.id, user_registration_id: @user_registration.id
+        user_registration_ohd.grant_project_access_instantly!
+      end
       @user_registration.register
       render json: {registration_status: render_to_string("submitted", formats: :html, variants: params[:locale].to_sym, layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
