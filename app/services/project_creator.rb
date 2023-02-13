@@ -1,10 +1,11 @@
 class ProjectCreator < ApplicationService
   attr_accessor :project_params, :user, :project, :default_registry_name_type,
-    :root_registry_entry
+    :root_registry_entry, :is_ohd
 
-  def initialize(project_params, user)
+  def initialize(project_params, user, is_ohd = false)
     @project_params = project_params
     @user = user
+    @is_ohd = is_ohd
   end
 
   def perform(*args)
@@ -13,16 +14,16 @@ class ProjectCreator < ApplicationService
     create_default_registry_name_types
     create_root_registry_entry
     create_default_registry_entries
-    create_default_registry_reference_types
-    create_default_registry_reference_type_metadata_fields
-    create_default_interviewee_metadata_fields
-    create_default_interview_metadata_fields
-    create_default_contribution_types
-    create_default_task_types
+    create_default_registry_reference_types unless is_ohd
+    create_default_registry_reference_type_metadata_fields unless is_ohd
+    create_default_interviewee_metadata_fields unless is_ohd
+    create_default_interview_metadata_fields unless is_ohd
+    create_default_contribution_types unless is_ohd
+    create_default_task_types unless is_ohd
     create_default_roles
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
-    )
+    ) unless is_ohd
     project
   end
 
