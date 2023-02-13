@@ -11,16 +11,7 @@ import ProjectRoutes from './ProjectRoutes';
 import CatalogRoutes from './CatalogRoutes';
 import NotFoundPage from './NotFoundPage';
 
-const RoutesWithoutProjectId = () => (
-    <Routes>
-        <Route path="/:locale/not_found" element={<NotFoundPage />} />
-        <Route path="/:locale/*" element={<ProjectRoutes />} />
-    </Routes>
-);
-
-export const MemoizedRoutesWithoutProjectId = memo(RoutesWithoutProjectId);
-
-const RoutesWithProjectId = () => (
+const AllRoutes = () => (
     <Routes>
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
         <Route path="/:locale/user_accounts/password/new" element={<OrderNewPasswordContainer />} />
@@ -39,4 +30,4 @@ const RoutesWithProjectId = () => (
     </Routes>
 );
 
-export const MemoizedRoutesWithProjectId = memo(RoutesWithProjectId);
+export const MemoizedRoutes = memo(AllRoutes);

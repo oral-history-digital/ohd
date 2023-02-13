@@ -82,20 +82,20 @@ export default function SidebarTabs({
     }
 
     const showAccountTab = true //!isCampscapesProject;
-    const showCatalogTab = !project;
+    const showCatalogTab = project.is_ohd;
     const showInterviewTab = !!interview;
-    const showRegistryTab = project && (
+    const showRegistryTab = !project.is_ohd && (
         (!isLoggedIn && project.logged_out_visible_registry_entry_ids?.length > 0) ||
         isLoggedIn
     )
-    const showMapTab = hasMap && project;
+    const showMapTab = hasMap && !project.is_ohd;
     const showWorkbookTab = isLoggedIn;
-    const showIndexingTab = project && isAuthorized({type: 'General'}, 'edit');
-    const showAdministrationTab = project && isAuthorized({type: 'General'}, 'edit');
-    const showProjectAdminTab = project && isAuthorized({type: 'Project'}, 'update');
-    const showProjectsTab = !project && isAuthorized({type: 'Project'}, 'create');
-    const showInstitutionsTab = !project && isAuthorized({type: 'Institution'}, 'create');
-    const showHelpTextsTab = !project && isAuthorized({type: 'HelpText'}, 'update');
+    const showIndexingTab = !project.is_ohd && isAuthorized({type: 'General'}, 'edit');
+    const showAdministrationTab = isAuthorized({type: 'General'}, 'edit');
+    const showProjectAdminTab = isAuthorized({type: 'Project'}, 'update');
+    const showProjectsTab = project.is_ohd && isAuthorized({type: 'Project'}, 'create');
+    const showInstitutionsTab = project.is_ohd && isAuthorized({type: 'Institution'}, 'create');
+    const showHelpTextsTab = project.is_ohd && isAuthorized({type: 'HelpText'}, 'update');
 
     return (
         <Tabs
@@ -120,7 +120,7 @@ export default function SidebarTabs({
                 >
                     {t((isCampscapesProject && !archiveId) ?
                         'user_registration.notes_on_tos_agreement' :
-                        (project ? 'archive_search' : 'modules.sidebar.search')
+                        (!project.is_ohd ? 'archive_search' : 'modules.sidebar.search')
                     )}
                 </Tab>
 

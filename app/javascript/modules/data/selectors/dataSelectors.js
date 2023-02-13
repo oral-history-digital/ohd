@@ -130,8 +130,8 @@ function projectByDomain(projects) {
 export const getCurrentProject = createSelector(
     [getProjectId, getProjects],
     (projectId, projects) => {
-        const currentProject = projectByDomain(projects) ||
-            Object.values(projects).find(project => project.identifier === projectId);
+        const currentProject = Object.values(projects).find(project => project.identifier === projectId) ||
+            projectByDomain(projects);
 
         return currentProject || null;
     }

@@ -17,6 +17,7 @@ class UserRegistrationProject < ApplicationRecord
     # admin workflow
     state :account_confirmed do
       event :grant_project_access, :transitions_to => :project_access_granted
+      event :grant_project_access_instantly, :transitions_to => :project_access_granted
       event :reject_project_access,    :transitions_to => :project_access_rejected
       event :postpone_project_access,  :transitions_to => :project_access_postponed
     end
@@ -57,6 +58,10 @@ class UserRegistrationProject < ApplicationRecord
     self.update_attribute(:activated_at, Time.now)
     subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: project.name(user_account.locale_with_project_fallback), locale: user_account.locale_with_project_fallback)
     CustomDeviseMailer.project_access_granted(user_account, {subject: subject, project: project}).deliver_now
+  end
+
+  def grant_project_access_instantly
+    self.update_attribute(:activated_at, Time.now)
   end
 
   def reject_project_access

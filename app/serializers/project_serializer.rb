@@ -62,7 +62,8 @@ class ProjectSerializer < ApplicationSerializer
     :display_ohd_link,
     :show_preview_img,
     :default_search_order,
-    :workflow_state
+    :workflow_state,
+    :is_ohd
 
   def title
     object.shortname
@@ -132,4 +133,7 @@ class ProjectSerializer < ApplicationSerializer
     object.root_registry_entry.id
   end
 
+  def is_ohd
+    object.shortname == 'ohd'
+  end
 end

@@ -103,9 +103,8 @@ class Project < ApplicationRecord
       end
     end
 
-    # TODO: fit this method
-    def current
-      first
+    def ohd
+      where(shortname: 'ohd').first
     end
 
     def archive_domains
@@ -125,6 +124,10 @@ class Project < ApplicationRecord
     def by_identifier(identifier)
       where(["lower(shortname) = :value", { value: identifier.downcase }]).first
     end
+  end
+
+  def is_ohd?
+    shortname.downcase == 'ohd'
   end
 
   def identifier
