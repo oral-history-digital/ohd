@@ -13,7 +13,7 @@
 \begin{document}
 
 <%=
-  render partial: "./latex/header_footer",
+  render partial: "latex/header_footer",
     locals: {
       header_text: header_text,
       interview: interview,
@@ -23,7 +23,7 @@
 %>
 
 <%=
-  render partial: "./latex/title",
+  render partial: "latex/title",
     locals: {
       title: title,
       space_above: 3,
@@ -33,17 +33,17 @@
 %>
 
 <%=
-  render partial: "./latex/info",
+  render partial: "latex/info",
     locals: {
       interview: interview,
       header_locale: header_locale
   }
 %>
-<%#= render partial: "./latex/citation", locals: { interviewee_name: interviewee_name } %>
+<%#= render partial: "latex/citation", locals: { interviewee_name: interviewee_name } %>
            
 \newpage
 
-<%#= render partial: "./latex/observation" if @interview.observations(header_locale) && @interview.project.identifier != 'zwar' %>
+<%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.identifier != 'zwar' %>
 
 <%# set section fontsize: %>
 \titleformat{\section}
@@ -60,7 +60,7 @@
 \newpage
 
 <%=
-  render partial: "./latex/legend",
+  render partial: "latex/legend",
     locals: {
       header_locale: header_locale,
       interview: interview
@@ -69,7 +69,7 @@
 
 \newpage
 
-<%= render partial: "./latex/title",
+<%= render partial: "latex/title",
            locals: {
                title: title,
                space_above: 0,
@@ -86,14 +86,14 @@
       \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(content_locale_public)) %>}
       <% if tape != segment.tape.number %> 
         <% space_above = 0 %>
-        <%= render partial: "./latex/title", locals: {title: "#{I18n.t('tape', locale: header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
+        <%= render partial: "latex/title", locals: {title: "#{I18n.t('tape', locale: header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
       <% end %>
-      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
+      <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
     <% end %>
 
     <% if !segment.subheading(content_locale_public).blank? %>
       \subsection{<%= latex_escape(CGI::unescapeHTML segment.subheading(content_locale_public)) %>}
-      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
+      <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
     <% end %>
 
     <% if segment.speaker_id != speaker_id && segment.speaking_person %>

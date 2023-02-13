@@ -72,7 +72,7 @@ class MetadataImport
 
     if interview
       interview_properties = interview.properties.update(properties)
-      interview.update_attributes interview_data.select{|k,v| v != nil}.update(properties: interview_properties)
+      interview.update interview_data.select{|k,v| v != nil}.update(properties: interview_properties)
     else
       interview = Interview.create interview_data.update(properties: properties)
     end
@@ -97,10 +97,10 @@ class MetadataImport
     }.select{|k,v| v != nil}
 
     if interview.interviewee
-      interview.interviewee.update_attributes interviewee_data
+      interview.interviewee.update interviewee_data
     else
       interviewee = Person.find_or_create_by project_id: project.id, first_name: row[:first_name], last_name: row[:last_name]
-      interviewee.update_attributes interviewee_data
+      interviewee.update interviewee_data
       Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: project.contribution_types.find_by_code('interviewee').id
     end
   end

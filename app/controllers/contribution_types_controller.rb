@@ -18,7 +18,7 @@ class ContributionTypesController < ApplicationController
   def update
     @contribution_type = ContributionType.find params[:id]
     authorize @contribution_type
-    @contribution_type.update_attributes contribution_type_params
+    @contribution_type.update contribution_type_params
 
     respond @contribution_type
   end

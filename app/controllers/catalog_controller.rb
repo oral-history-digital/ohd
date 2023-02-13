@@ -6,7 +6,7 @@ class CatalogController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        render template: '/react/app.html'
+        render template: '/react/app'
       end
     end
   end
@@ -32,7 +32,7 @@ class CatalogController < ApplicationController
   def institution
     respond_to do |format|
       format.html do
-        render template: '/react/app.html'
+        render template: '/react/app'
       end
     end
   end
@@ -40,7 +40,7 @@ class CatalogController < ApplicationController
   def archive
     respond_to do |format|
       format.html do
-        render template: '/react/app.html'
+        render template: '/react/app'
       end
     end
   end
@@ -48,7 +48,7 @@ class CatalogController < ApplicationController
   def collection
     respond_to do |format|
       format.html do
-        render template: '/react/app.html'
+        render template: '/react/app'
       end
       format.json do
         collection = Collection.find(params[:id])

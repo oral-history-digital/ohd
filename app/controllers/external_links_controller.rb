@@ -20,7 +20,7 @@ class ExternalLinksController < ApplicationController
   end
 
   def update
-    @external_link.update_attributes(external_link_params)
+    @external_link.update(external_link_params)
     @external_link.project.touch
 
     respond_to do |format|

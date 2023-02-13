@@ -1,12 +1,17 @@
-require 'exception_notification'
-
 class ApplicationController < ActionController::Base
   include Pundit
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  #before_action :doorkeeper_authorize!
   before_action :authenticate_user_account!
-  #before_action :set_variant
+  before_action :user_account_by_token
+  def user_account_by_token
+    if doorkeeper_token && !current_user_account
+      user = UserAccount.find(doorkeeper_token.resource_owner_id) 
+      sign_in(user)
+    end
+  end
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -20,6 +25,7 @@ class ApplicationController < ActionController::Base
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || (current_project ? current_project.default_locale : :de)).to_sym
+    locale = current_project && !current_project.available_locales.include?(locale) ? current_project.default_locale : locale
     #valid_locales = current_project.available_locales if valid_locales.empty?
     #locale = I18n.default_locale unless valid_locales.include?(locale)
     I18n.locale = locale
@@ -39,10 +45,6 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_project
-
-  #def set_variant
-    #request.variant = current_project.identifier.to_sym
-  #end
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
@@ -68,6 +70,8 @@ class ApplicationController < ActionController::Base
         isLoggingIn: false,
         isLoggedIn: !!current_user_account,
         isLoggedOut: !current_user_account,
+        accessToken: params[:access_token],
+        checkedOhdSession: params[:checked_ohd_session],
         firstName: current_user_account && current_user_account.first_name,
         lastName: current_user_account && current_user_account.last_name,
         email: current_user_account && current_user_account.email,
@@ -210,7 +214,7 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     respond_to do |format|
       format.html do
-        render :template => '/react/app.html'
+        render :template => '/react/app'
       end
       format.json do
         render json: {msg: 'not_authorized'}, status: :ok
@@ -263,7 +267,7 @@ class ApplicationController < ActionController::Base
   def update_contributions(interview, contribution_attributes)
     (contribution_attributes || []).each do |attributes|
       contribution = Contribution.find(attributes[:id])
-      contribution.update_attributes(speaker_designation: attributes[:speaker_designation])
+      contribution.update(speaker_designation: attributes[:speaker_designation])
     end
   end
 

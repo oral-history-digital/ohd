@@ -20,7 +20,7 @@ class HistoriesController < ApplicationController
   def update
     @history = History.find(params[:id])
     updated_at = @history.updated_at
-    @history.update_attributes(history_params)
+    @history.update(history_params)
     clear_person_cache @history.person
     clear_history_cache @history.id, updated_at
 

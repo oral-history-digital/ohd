@@ -14,7 +14,7 @@ require 'globalize'
 #
 # skip_invalid: do not cause an error on invalid objects, just skip them
 
-class ArchiveXMLImport < Nokogiri::XML::SAX::Document
+class ArchiveXmlImport < Nokogiri::XML::SAX::Document
 
   MAPPING_FILE = File.join(Rails.root, 'config/xml_import_mappings.yml')
 

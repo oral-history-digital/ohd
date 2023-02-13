@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        render :template => "/react/app.html"
+        render :template => "/react/app"
       end
     end
   end
@@ -81,7 +81,7 @@ class ProjectsController < ApplicationController
     define_method m do
       respond_to do |format|
         format.html do
-          render :template => "/react/app.html"
+          render :template => "/react/app"
         end
       end
     end

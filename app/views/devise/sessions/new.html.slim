@@ -1,0 +1,27 @@
+h2= t('login')
+
+= form_for(resource, as: resource_name, url: '/de/user_accounts/sign_in', html: {class: 'Form default'}) do |f|
+
+  = hidden_field_tag :path, @path
+  - if @project
+    = hidden_field_tag :project, @project.shortname
+
+  .form-group
+    .form-label
+      = f.label :email, class: 'FormLabel'
+    .form-input
+      = f.email_field :login, autofocus: true, autocomplete: "email", class: 'Input'
+
+  .form-group
+    .form-label
+      = f.label :password, class: 'FormLabel'
+    .form-input
+      = f.password_field :password, autocomplete: "current-password", class: 'Input'
+
+  .Form-footer.u-mt
+    = f.submit t(:login), class: 'Button Button--primaryAction'
+
+.register-link
+  = link_to t('user_registration.registration'), "#{@domain}/#{@locale}/user_registrations/new", class: 'Link'
+.order-new-password-link
+  = link_to t('forget_password'), "#{@domain}/#{@locale}/user_accounts/password/new", class: 'Link'

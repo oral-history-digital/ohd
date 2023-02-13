@@ -11,7 +11,7 @@ class LogosController < ApplicationController
   def update
     @uploaded_file = UploadedFile.find(params[:id])
     authorize @uploaded_file
-    @uploaded_file.update_attributes(logo_params)
+    @uploaded_file.update(logo_params)
     respond @uploaded_file
   end
 
