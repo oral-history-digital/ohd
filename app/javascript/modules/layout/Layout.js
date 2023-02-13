@@ -65,14 +65,16 @@ export default function Layout({
 
     function loadCollections() {
         if (
-            project && !collectionsStatus[`for_projects_${project?.id}`]
+            project &&
+            !collectionsStatus[`for_projects_${project?.id}`] &&
+            !project.is_ohd
         ) {
             fetchData({ projectId, locale, projects }, 'collections', null, null, `for_projects=${project?.id}`);
         }
     }
 
     function loadProjects() {
-        if (projectId && !projectsStatus.all) {
+        if (projectId &&!projectsStatus.all) {
             fetchData({ projectId, locale, projects }, 'projects', null, null, 'all');
         }
     }
