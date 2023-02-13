@@ -161,6 +161,7 @@ class ProjectsController < ApplicationController
           "has_newsletter",
           "has_map",
           "is_catalog",
+          "grant_project_access_instantly",
           "display_ohd_link",
           "show_preview_img",
           "workflow_state",
