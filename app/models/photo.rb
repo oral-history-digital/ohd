@@ -41,7 +41,7 @@ class Photo < ApplicationRecord
   end
 
   def variant_path(resolution)
-    if photo.vaiable?
+    if photo.variable?
       variant = photo.variant(resize: resolution, auto_orient: true, strip: true)
       signed_blob_id = variant.blob.signed_id
       variation_key  = variant.variation.key
