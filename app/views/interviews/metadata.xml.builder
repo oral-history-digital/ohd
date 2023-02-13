@@ -22,7 +22,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.titles do
-    xml.title "Interview mit #{interview.anonymous_title(locale)}, interviewt von #{interview.interviewers.first.first_name(locale)} #{interview.interviewers.first.last_name(locale)} am #{interview.interview_date && Date.parse(interview.interview_date).strftime('%d.%m.%Y')}"
+    xml.title "Interview mit #{interview.anonymous_title(locale)}, interviewt von #{interview.interviewers.first && interview.interviewers.first.first_name(locale)} #{interview.interviewers.first && interview.interviewers.first.last_name(locale)} am #{interview.interview_date && Date.parse(interview.interview_date).strftime('%d.%m.%Y')}"
   end
 
   xml.publisher "Interview-Archiv \"#{interview.project.name(locale)}\""

@@ -27,7 +27,7 @@ class AnnotationsController < ApplicationController
   def update
     @annotation = Annotation.find params[:id]
     authorize @annotation
-    @annotation.update_attributes annotation_params
+    @annotation.update annotation_params
 
     @annotation.segment.touch
 

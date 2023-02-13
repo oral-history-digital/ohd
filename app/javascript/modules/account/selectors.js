@@ -8,6 +8,8 @@ export const getIsLoggedOut = state => getAccount(state).isLoggedOut;
 
 export const getIsLoggingIn = state => getAccount(state).isLoggingIn;
 
+export const getCheckedOhdSession = state => getAccount(state).checkedOhdSession;
+
 export const getFirstName = state => getAccount(state).firstName;
 
 export const getLastName = state => getAccount(state).lastName;

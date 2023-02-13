@@ -53,7 +53,7 @@ class RegistryEntriesController < ApplicationController
   def update
     @registry_entry = RegistryEntry.find params[:id]
     authorize @registry_entry
-    @registry_entry.update_attributes registry_entry_params
+    @registry_entry.update registry_entry_params
     current_project.touch
 
     respond_to do |format|
@@ -105,8 +105,9 @@ class RegistryEntriesController < ApplicationController
       format.pdf do
         pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           render_to_string(
-            template: "/registry_entries/index.pdf.erb",
-            layout: "latex.pdf.erbtex",
+            template: 'registry_entries/index',
+            formats: :pdf,
+            layout: 'latex',
             locals: {
               locale: params[:lang],
               project: current_project,

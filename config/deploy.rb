@@ -18,7 +18,7 @@ set :branch, ENV.fetch('BRANCH', 'development')
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/datacite.yml", "config/storage.yml"
+append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/datacite.yml", "config/storage.yml", "config/master.key"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"

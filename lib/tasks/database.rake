@@ -101,7 +101,7 @@ namespace :database do
           ur.user_account.searches.update_all(user_account_id: first_ur.user_account_id)
 
           if first_user_account && !first_user_account.activated_at && ur.user_account.activated_at
-            first_user_account.update_attributes(activated_at: ur.user_account.activated_at)
+            first_user_account.update(activated_at: ur.user_account.activated_at)
           end
           ur.user_account.destroy
           ur.destroy

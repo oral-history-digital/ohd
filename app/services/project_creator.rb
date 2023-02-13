@@ -20,7 +20,7 @@ class ProjectCreator < ApplicationService
     create_default_contribution_types
     create_default_task_types
     create_default_roles
-    project.update_attributes(
+    project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
     )
     project

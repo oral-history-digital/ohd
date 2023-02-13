@@ -9,7 +9,7 @@ class ContributionsController < ApplicationController
   def update
     @contribution = Contribution.find(params[:id])
     authorize @contribution
-    @contribution.update_attributes(contribution_params)
+    @contribution.update(contribution_params)
     respond @contribution
   end
 

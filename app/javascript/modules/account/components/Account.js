@@ -1,178 +1,134 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { OHD_DOMAINS } from 'modules/layout';
 import { AuthShowContainer } from 'modules/auth';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { Modal } from 'modules/ui';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
+import ProjectAccessAlert from './ProjectAccessAlert';
+import EditViewButtonContainer from './EditViewButtonContainer';
 import LoginForm from './LoginForm';
-import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
-export default class Account extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { editView: this.props.editViewCookie };
+export default function Account ({
+    account,
+    error,
+    isLoggedIn,
+    archiveId,
+    project,
+    projectId,
+    projects,
+    firstName,
+    lastName,
+    submitLogout,
+    hideSidebar,
+    clearStateData,
+    editViewCookie,
+}) {
 
-        this.handleLinkClick = this.handleLinkClick.bind(this);
-    }
+    const { t } = useI18n();
+    const pathBase = usePathBase();
 
-    componentDidMount() {
-        this.props.changeToEditView(this.props.editViewCookie)
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.editView !== this.props.editView) {
-            this.setState({editView: this.props.editView})
-        }
-    }
-
-    handleLinkClick() {
+    const handleLinkClick = () => {
         if (isMobile()) {
-            this.props.hideSidebar();
+            hideSidebar();
         }
     }
 
-    changeToEditView() {
-        if (
-            this.props.account && Object.keys(this.props.account).length > 0 && (
-                this.props.account.admin ||
-                Object.keys(this.props.account.tasks).length > 0 ||
-                Object.keys(this.props.account.supervised_tasks).length > 0 ||
-                Object.keys(this.props.account.permissions).length > 0
-            )
-        ) {
-            return (
-                <button
-                    type="button"
-                    className="Button Button--transparent switch switch-light"
-                    onClick={() => this.props.changeToEditView(!this.state.editView)}
-                >
-                    <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
-                    <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
-                    <span className="switch-handle"></span>
-                </button>
-            )
+    const errorMsg = () => {
+        if (error) {
+            return <div className='error' dangerouslySetInnerHTML={{__html: t(error)}}/>;
         } else {
             return null;
         }
     }
 
-    errorMsg() {
-        if (this.props.error) {
-            return <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.error)}}/>;
-        } else {
-            return null;
-        }
-    }
+    return (
+        <ErrorBoundary small>
+            <h3 className="SidebarTabs-title">
+                { t(isLoggedIn ? 'account_page' : 'login_page') }
+            </h3>
 
-    // FIXME: show this alert ifLoggedIn && ifNoProject
-    projectAccessAlert() {
-        const { account, project } = this.props;
-        const unactivatedProject = account?.user_registration_projects && Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at === null);
-
-        if (unactivatedProject) {
-            return <div className='error'>{`${t(this.props, 'project_access_in_process')}`}</div>
-        } else {
-            return (
-                <>
-                    <p className='error'>
-                        {t(this.props, 'request_project_access_explanation')}
-                    </p>
-                    <Modal
-                        title={t(this.props, 'request_project_access_link')}
-                        triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-                        trigger={t(this.props, 'request_project_access_link')}
+            <div className={'flyout-login-container'}>
+                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
+                    <div className='info'>
+                        {`${t('logged_in_as')} ${firstName} ${lastName}`}
+                    </div>
+                    <EditViewButtonContainer />
+                    <button
+                        type="button"
+                        className='Button Button--fullWidth Button--secondaryAction u-mt-small'
+                        onClick={() => {
+                            // clear non-public data
+                            if (archiveId) {
+                                clearStateData('interviews', archiveId, 'title');
+                                clearStateData('interviews', archiveId, 'short_title');
+                                clearStateData('interviews', archiveId, 'description');
+                                clearStateData('interviews', archiveId, 'observations');
+                                clearStateData('interviews', archiveId, 'photos');
+                                clearStateData('interviews', archiveId, 'segments');
+                                clearStateData('statuses', 'people');
+                                Object.keys(projects).map(pid => {
+                                    clearStateData('projects', pid, 'people');
+                                })
+                            }
+                            clearStateData('accounts');
+                            clearStateData('user_registrations');
+                            submitLogout(`${pathBase}/user_accounts/sign_out`);
+                        }}
                     >
-                        {close => (
-                            <RequestProjectAccessFormContainer
-                                project={project}
-                                onSubmit={close}
-                                onCancel={close}
-                            />
-                        )}
-                    </Modal>
-                </>
-            )
-        }
-    }
+                        {t('logout')}
+                    </button>
+                </AuthShowContainer>
+                <AuthShowContainer ifNoProject={!!project}>
+                    <ProjectAccessAlert />
+                </AuthShowContainer>
 
-    render() {
-        return (
-            <ErrorBoundary small>
-                <h3 className="SidebarTabs-title">
-                    { t(this.props, this.props.isLoggedIn ? 'account_page' : 'login_page') }
-                </h3>
+                {errorMsg()}
 
-                <div className={'flyout-login-container'}>
-                    <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
-                        <div className='info'>
-                            {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
-                        </div>
-                        {this.changeToEditView()}
-                        <button
-                            type="button"
-                            className='Button Button--fullWidth Button--secondaryAction u-mt-small'
-                            onClick={() => {
-                                // clear non-public data
-                                if (this.props.archiveId) {
-                                    this.props.clearStateData('interviews', this.props.archiveId, 'title');
-                                    this.props.clearStateData('interviews', this.props.archiveId, 'short_title');
-                                    this.props.clearStateData('interviews', this.props.archiveId, 'description');
-                                    this.props.clearStateData('interviews', this.props.archiveId, 'observations');
-                                    this.props.clearStateData('interviews', this.props.archiveId, 'photos');
-                                    this.props.clearStateData('interviews', this.props.archiveId, 'segments');
-                                    this.props.clearStateData('statuses', 'people');
-                                    Object.keys(this.props.projects).map(pid => {
-                                        this.props.clearStateData('projects', pid, 'people');
-                                    })
-                                }
-                                this.props.clearStateData('accounts');
-                                this.props.clearStateData('user_registrations');
-                                this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`);
-                            }}
-                        >
-                            {t(this.props, 'logout')}
-                        </button>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifNoProject={!!this.props.project}>
-                        {this.projectAccessAlert()}
-                    </AuthShowContainer>
-
-                    {this.errorMsg()}
-
-                    <AuthShowContainer ifLoggedOut={true}>
-                        <p>
-                            {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
-                            {(this.props.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
-                        </p>
-                        <LoginForm />
-                        <div
-                            className="register-link"
-                            onClick={this.handleLinkClick}
-                        >
-                            <Link
-                                className="Link"
-                                to={pathBase(this.props) + '/user_registrations/new'}
+                <AuthShowContainer ifLoggedOut={true}>
+                    <p>
+                        {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
+                        {(error || projectId === 'campscapes') ? '' : t('registration_needed')}
+                    </p>
+                    { 
+                        (['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) !== -1) ?
+                            <LoginForm /> :
+                            <button
+                                type="button"
+                                className='Button Button--fullWidth Button--secondaryAction u-mt-small'
+                                onClick={() => {
+                                    location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/sign_in?path=${location.pathname}&project=${projectId}`;
+                                }}
                             >
-                                {t(this.props, 'user_registration.registration')}
-                            </Link>
-                        </div>
-                        <div
-                            className="order-new-password-link"
-                            onClick={this.handleLinkClick}
+                                {t('login')}
+                            </button>
+                    }
+                    <div
+                        className="register-link"
+                        onClick={handleLinkClick}
+                    >
+                        <Link
+                            className="Link"
+                            to={pathBase + '/user_registrations/new'}
                         >
-                            <Link
-                                className="Link"
-                                to={pathBase(this.props) + '/user_accounts/password/new'}
-                            >
-                                {t(this.props, 'forget_password')}
-                            </Link>
-                        </div>
-                    </AuthShowContainer>
-                </div>
-            </ErrorBoundary>
-        )
-    }
+                            {t('user_registration.registration')}
+                        </Link>
+                    </div>
+                    <div
+                        className="order-new-password-link"
+                        onClick={handleLinkClick}
+                    >
+                        <Link
+                            className="Link"
+                            to={pathBase + '/user_accounts/password/new'}
+                        >
+                            {t('forget_password')}
+                        </Link>
+                    </div>
+                </AuthShowContainer>
+            </div>
+        </ErrorBoundary>
+    )
 }

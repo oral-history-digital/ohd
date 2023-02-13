@@ -1,0 +1,33 @@
+doctype html
+
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="x-ua-compatible" content="ie=edge"
+    meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"
+
+    == stylesheet_link_tag 'login'
+
+    == favicon_link_tag "/favicon-#{current_project ? current_project.identifier : 'ohd'}.ico"
+
+    title == @project ? @project.name(I18n.locale.to_s) : 'OHD'
+
+  body
+    .layout-indicator style="display: block;"
+      .Layout
+        .Layout-page.Site
+          header.SiteHeader
+
+            = image_tag  "/ohd-logo-gr.png", class: 'SiteHeader-logo'
+
+            - if @project && @project.logos.first
+              = image_tag @project.logos.first.file, class: 'SiteHeader-logo'
+
+          main.Site-content
+            .wrapper-content
+              - if notice
+                p.notice = notice
+              - if alert
+                p.alert = alert
+
+              = yield
