@@ -27,7 +27,7 @@ export default function Account ({
     editViewCookie,
 }) {
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
     const handleLinkClick = () => {
@@ -99,7 +99,7 @@ export default function Account ({
                                 type="button"
                                 className='Button Button--fullWidth Button--secondaryAction u-mt-small'
                                 onClick={() => {
-                                    location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/sign_in?path=${location.pathname}&project=${projectId}`;
+                                    location = `${OHD_DOMAINS[railsMode]}/${locale}/user_accounts/sign_in?path=${location.pathname}&project=${projectId}`;
                                 }}
                             >
                                 {t('login')}
