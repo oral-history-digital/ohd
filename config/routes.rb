@@ -234,7 +234,7 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
-      get "/", to: "projects#show"
+      get "/", to: redirect {|params, request| "/#{params[:locale]}/projects"}
       resources :projects, only: [:create, :update, :destroy, :index]
       resources :institutions
       resources :help_texts, only: [:index, :update]
@@ -276,7 +276,7 @@ Rails.application.routes.draw do
   get "/de/hls.key" => "media_streams#hls"
 
   mount OaiRepository::Engine => "/de/oai_repository"
-  root to: redirect("#{OHD_DOMAIN}/de")
+  root to: redirect("#{OHD_DOMAIN}/de/projects")
 
   devise_for :user_accounts,
     controllers: { sessions: "sessions", passwords: "passwords" },
