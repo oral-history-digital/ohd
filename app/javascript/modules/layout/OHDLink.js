@@ -28,13 +28,13 @@ function OHDLink({ className }) {
             (projectHasOwnDomain ?
                 <a
                     title='OHD'
-                    href={`${OHD_DOMAINS[railsMode]}/${locale}/projects` + (!!accessTokenParam ? `?${accessTokenParam}` : '')}
+                    href={`${OHD_DOMAINS[railsMode]}/${locale}` + (!!accessTokenParam ? `?${accessTokenParam}` : '')}
                     className={classNames(className, 'u-mr')}
                 >
                     <img className="SiteHeader-logo" src='/ohd-logo-gr.png' alt="" />
                 </a> :
                 <Link
-                    to={`/${locale}/projects`}
+                    to={`/${locale}`}
                     title='OHD'
                     onClick={unsetProjectId}
                     className={classNames(className, 'u-mr')}
