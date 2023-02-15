@@ -234,7 +234,7 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
-      get "/", to: redirect {|params, request| "/#{params[:locale]}/projects"}
+      get "/", to: "projects#index"
       resources :projects, only: [:create, :update, :destroy, :index]
       resources :institutions
       resources :help_texts, only: [:index, :update]
@@ -261,8 +261,8 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
     get "/", to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
-    get "/:locale", to: "projects#show"
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      get "/", to: "projects#show"
       resources :projects, only: [:update, :destroy]
       concerns :archive
       concerns :account
@@ -276,7 +276,7 @@ Rails.application.routes.draw do
   get "/de/hls.key" => "media_streams#hls"
 
   mount OaiRepository::Engine => "/de/oai_repository"
-  root to: redirect("#{OHD_DOMAIN}/de/projects")
+  root to: redirect("#{OHD_DOMAIN}/de")
 
   devise_for :user_accounts,
     controllers: { sessions: "sessions", passwords: "passwords" },
