@@ -34,8 +34,7 @@ export const getShowStartPageVideo = state => {
 export const getProjectTranslation = createSelector(
     [getLocale, getCurrentProject],
     (locale, currentProject) => {
-        const selectedLocale = currentProject?.available_locales.indexOf(locale) === -1 ? currentProject.default_locale : locale
-        return currentProject?.translations_attributes.find(t => t.locale === selectedLocale);
+        return currentProject?.translations_attributes.find(t => t.locale === locale);
     }
 );
 
