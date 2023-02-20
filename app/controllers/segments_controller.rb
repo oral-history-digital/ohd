@@ -2,7 +2,7 @@ class SegmentsController < ApplicationController
   def update
     @segment = Segment.find params[:id]
     authorize @segment
-    @segment.update_attributes(segment_params)
+    @segment.update(segment_params)
     @segment.reload
 
     respond_to do |format|

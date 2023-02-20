@@ -31,7 +31,7 @@ class BiographicalEntriesController < ApplicationController
     @biographical_entry = BiographicalEntry.find(params[:id])
     authorize @biographical_entry
     updated_at = @biographical_entry.updated_at
-    @biographical_entry.update_attributes(biographical_entry_params)
+    @biographical_entry.update(biographical_entry_params)
 
     respond_to do |format|
       format.json do

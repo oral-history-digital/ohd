@@ -32,7 +32,7 @@ class Person < ApplicationRecord
 
   def set_public_attributes_to_properties
     atts = %w(first_name last_name alias_names other_first_names gender date_of_birth description)
-    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
+    update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
   end
 
   searchable do

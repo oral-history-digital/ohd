@@ -7,6 +7,15 @@ class UserAccount < ApplicationRecord
          :recoverable,
          :trackable
 
+  has_many :sessions,
+           class_name: 'ActiveRecord::SessionStore::Session',
+           dependent: :delete_all
+
+  has_many :access_tokens,
+           class_name: 'Doorkeeper::AccessToken',
+           foreign_key: :resource_owner_id,
+           dependent: :delete_all
+
   has_one :user_registration, dependent: :destroy
 
   has_many :user_account_ips,
@@ -129,7 +138,7 @@ class UserAccount < ApplicationRecord
       self.deactivated_at = nil
       # theoretically we do not need this check, but unfortunately we have some legacy accounts without UserRegistration
       unless self.user_registration.nil?
-        self.user_registration.update_attributes activated_at: Time.now
+        self.user_registration.update activated_at: Time.now
         self.user_registration.projects.each do |project|
           AdminMailer.with(registration: self, project: project).new_registration_info.deliver_now
         end

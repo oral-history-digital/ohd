@@ -1,19 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
+import { useIsEditor } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
 import { isSegmentActive } from 'modules/interview-helpers';
 import { usePeople } from 'modules/person';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
+import getContributorInformation from './getContributorInformation';
 
 export default function Transcript({
     interview,
     intervieweeId,
-    editView,
     archiveId,
     transcriptFetched,
     transcriptLocale,
@@ -37,9 +38,15 @@ export default function Transcript({
         popupType: null,
         openReference: null,
     });
-    const { data: people } = usePeople();
-    const { t } = useI18n();
+    const { data: people, isLoading: peopleAreLoading } = usePeople();
+    const { t, translations } = useI18n();
     const pathBase = usePathBase();
+    const isEditor = useIsEditor();
+
+    const contributorInformation = useMemo(() => getContributorInformation(
+        interview.contributions, people, locale, translations),
+        [interview.contributions, people, locale, translations]
+    );
 
     useEffect(() => {
         // Only scroll to top if media has not started yet and auto scroll is off.
@@ -61,7 +68,6 @@ export default function Transcript({
         }
     }, [loadSegments, transcriptFetched, archiveId]);
 
-
     const openSegmentPopup = useCallback((segmentId, popupType) => setPopupState({
         popupSegmentId: segmentId,
         popupType,
@@ -81,7 +87,7 @@ export default function Transcript({
 
     const { popupSegmentId, popupType, openReference } = popupState;
 
-    if (!transcriptFetched) {
+    if (!transcriptFetched || peopleAreLoading) {
         return <Spinner />;
     }
 
@@ -97,7 +103,7 @@ export default function Transcript({
 
     return (
         <>
-            {editView && <HelpText code="interview_transcript" className="u-mb" />}
+            {isEditor && <HelpText code="interview_transcript" className="u-mb" />}
             <div className="Transcript">
                 {
                     shownSegments.map((segment, index, array) => {
@@ -121,16 +127,12 @@ export default function Transcript({
                             currentTime: mediaTime,
                         });
 
-                        let speaker;
-                        if (people && segment.speaker_id) {
-                            speaker = people[segment.speaker_id];
-                        }
-
                         return (
                             <SegmentContainer
                                 key={segment.id}
                                 data={segment}
-                                speaker={speaker}
+                                speakerInitials={contributorInformation[segment.speaker_id]?.initials}
+                                speakerName={contributorInformation[segment.speaker_id]?.fullname}
                                 contentLocale={transcriptLocale}
                                 popupType={popupSegmentId === segment.id ? popupType : null}
                                 openReference={popupSegmentId === segment.id ? openReference : null}
@@ -153,6 +155,7 @@ Transcript.propTypes = {
     originalLocale: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
     loadSegments: PropTypes.bool,
+    contributionTypes: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,

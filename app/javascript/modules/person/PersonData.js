@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
+import {
+    AuthorizedContent,
+    AuthShowContainer,
+    useProjectAccessStatus
+} from 'modules/auth';
+import { useIsEditor } from 'modules/archive';
 import { ContentField } from 'modules/forms';
 import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
-import { AuthorizedContent, AuthShowContainer, useProjectAccessStatus } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { formatPersonName } from 'modules/person';
 import { EventContentField } from 'modules/events';
@@ -14,8 +19,8 @@ import {
     METADATA_SOURCE_PERSON
 } from 'modules/constants';
 import usePersonWithAssociations from './usePersonWithAssociations';
-import PersonForm from './PersonForm';
 import Biography from './Biography';
+import PersonForm from './PersonForm';
 
 function getDisplayedMetadataFields(metadataFields, isProjectAccessGranted) {
     const filteredFields = metadataFields.filter(field => {
@@ -38,6 +43,7 @@ export default function PersonData({
 }) {
     const { t, locale, translations } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const isEditor = useIsEditor();
 
     const { data: person, isLoading, isValidating } = usePersonWithAssociations(intervieweeId);
 
@@ -72,6 +78,7 @@ export default function PersonData({
                 >
                     <AuthorizedContent object={person} action='update'>
                         <Modal
+                            hideHeading
                             title={t('edit.contribution.edit')}
                             trigger={(<>
                                 <FaPencilAlt className="Icon Icon--editorial Icon--small" />
@@ -117,6 +124,10 @@ export default function PersonData({
 
                 const label = field.label?.[locale] || t(field.name);
                 const value = humanReadable(person, field.name, { locale, translations }, {});
+
+                if (value === '---' && !isEditor) {
+                    return null;
+                }
 
                 return (
                     <ContentField

@@ -83,7 +83,7 @@ class Interview < ApplicationRecord
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
     atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id description)
-    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
+    update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
   after_create :create_tasks
@@ -294,7 +294,7 @@ class Interview < ApplicationRecord
       if tape.segments.count == 0
         tape.destroy
       else
-        tape.update_attributes media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', tape.number)}"
+        tape.update media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', tape.number)}"
       end
     end
 
@@ -484,7 +484,7 @@ class Interview < ApplicationRecord
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
           if update_only_speakers && speaker_id
             segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
-            segment.update_attributes speaker_id: speaker_id
+            segment.update speaker_id: speaker_id
           else
             Segment.create_or_update_by({
               interview_id: id,

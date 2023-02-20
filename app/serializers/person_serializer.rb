@@ -11,6 +11,8 @@ class PersonSerializer < ApplicationSerializer
     :description,
     :associations_loaded,
     :events
+    :created_at,
+    :updated_at
   ]
 
   def description

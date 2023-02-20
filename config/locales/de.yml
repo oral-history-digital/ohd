@@ -350,10 +350,10 @@ de:
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
-      new: Neues Interview
+      new: Neues Interview anlegen
       edit: Interview bearbeiten
       processed: 'Interview angelegt: '
-      processing: Das Interview wurde bearbeitet
+      processing: Das Interview wurde angelegt.
       return: Weiteres Interview anlegen
       goto: Zum Interview
     interviews:
@@ -676,6 +676,7 @@ de:
     add: Registernamen hinzufügen
   norm_data:
     title: Normdaten
+    link_hover: Link zum Begriff in der Gemeinsamen Normdatei/bei Open Street Map
     new: Normdaten hinzufügen
     add: Normdaten hinzufügen
   texts:
@@ -958,9 +959,9 @@ de:
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
+        name: Name der Sammlung
         project_id: Archiv
         institution_id: Institution
-        homepage: Website
         countries: Interviews in
         institution: Durchgeführt von
         responsibles: Verantwortliche
@@ -1033,6 +1034,7 @@ de:
         update_only_speakers: nur Sprecher aktualisieren
         update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
+        name: Name des Archivs
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
@@ -1044,15 +1046,15 @@ de:
         shortname: Kürzel
         initials: Initialen (Interview-ID)
         archive_id_number_length: Anzahl der Ziffern (Interview-ID)
-        domain: Projektdomain
+        domain: Projektwebseite
         archive_domain: Archivdomain
         doi: DOI
         cooperation_partner: Kooperationspartner
         leader: Projektleitung
-        manager: Projektmanagement
+        manager: Ansprechpartner*in
         hosting_institution: Institution
         pseudo_funder_names: Förderung
-        contact_email: Kontaktemail
+        contact_email: E-Mail-Kontaktadresse (generisch)
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
         has_map: Karte anzeigen
@@ -1069,8 +1071,9 @@ de:
         aspect_x: Bildformat x-Wert
         aspect_y: Bildformat y-Wert
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
-        domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        domain_help: "Webseite mit weiterführenden Informationen zum Projekt"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        contact_email_help: "Diese E-Mail-Adresse wird für die Kommunikation mit den Nutzer*innen verwendet, z.B. für die Bestätigung der Freischaltung."
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in Suchfacetten und Kartenfilter
@@ -1333,6 +1336,17 @@ de:
   interview_title_patterns:
 
   modules:
+    registration:
+      messages:
+        header: 'Bitte korrigieren Sie die folgenden Fehler:'
+        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
+        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
+        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
+        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
+        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
+        login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
+        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
     admin:
       person_details:
         contributions:
@@ -1465,6 +1479,9 @@ de:
     tables:
       actions: Aktionen
       search: Suchen…
+      show: Eintrag anzeigen
+      edit: Eintrag bearbeiten
+      delete: Eintrag löschen
     toc:
       collapse: Einklappen
       expand: Ausklappen
@@ -1480,6 +1497,8 @@ de:
       admin_menu:
         actions: Aktionen
       copy_link: URL kopieren
+      error_message:
+        error: Fehler
       pagination:
         page: "Seite %{current} von %{total}"
         prev: vorherige Seite

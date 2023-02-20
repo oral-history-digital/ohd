@@ -33,11 +33,11 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def transcript?
-    user && user.accessible_projects.include?(project)
+    user && (user.accessible_projects.include?(project) || user.admin?)
   end
 
   def observations?
-    download?
+    transcript?
   end
 
   def export_photos?

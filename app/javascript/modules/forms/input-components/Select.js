@@ -1,65 +1,65 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import Element from '../Element';
 
-export default class Select extends Component {
+export default function Select({
+    scope,
+    attribute,
+    value,
+    values,
+    keepOrder,
+    data,
+    validate,
+    label,
+    labelKey,
+    showErrors,
+    handleChange,
+    handlechangecallback,
+    handleErrors,
+    help,
+    individualErrorMsg,
+    hidden,
+    className,
+    doNotTranslate,
+    optionsScope,
+    withEmpty,
+}) {
 
-    // props are:
-    //   @scope
-    //   @attribute
-    //   @values
-    //   @validate = function
-    //   @handleChange = function
-    //   @handleErrors = function
-    //   @help
+    const { t, locale } = useI18n();
 
-    constructor(props, context) {
-        super(props);
-        this.state = {
-            valid: props.valid !== undefined ? props.valid : !props.validate,
-        };
+    const defaultValue = data?.[attribute] || value;
 
-        this.handleChange = this.handleChange.bind(this);
-        this.selectTextAndValueFunction = this.selectTextAndValueFunction.bind(this);
-    }
+    const [valid, setValid] = useState((typeof validate !== 'function'));
 
-    handleChange(event) {
+    const onChange = (event) => {
         const value =  event.target.value;
         const name =  event.target.name;
 
-        this.props.handleChange(name, value, this.props.data);
+        handleChange(name, value, data);
 
-        if (typeof this.props.handlechangecallback === 'function') {
-            this.props.handlechangecallback(name, value);
+        if (typeof handlechangecallback === 'function') {
+            handlechangecallback(name, value);
         }
 
-        if (typeof(this.props.validate) === 'function') {
-            if (this.props.validate(value)) {
-                this.props.handleErrors(name, false);
-                this.setState({valid: true})
+        if (typeof(validate) === 'function') {
+            if (validate(value)) {
+                handleErrors(name, false);
+                setValid(true)
             } else {
-                this.props.handleErrors(name, true);
-                this.setState({valid: false})
+                handleErrors(name, true);
+                setValid(false)
             }
         }
     }
 
-    selectTextAndValueFunction(value) {
-        const {
-            doNotTranslate,
-            locale,
-            translations,
-            optionsScope,
-            scope,
-            attribute
-        } = this.props;
+    const selectTextAndValueFunction = (value) => {
 
         if (typeof value === 'string') {
             let translationPrefix = optionsScope || `${scope}.${attribute}`;
             return function(value) {
                 return {
-                    text: doNotTranslate ? value : t({ locale, translations }, `${translationPrefix}.${value}`),
+                    text: doNotTranslate ? value : t(`${translationPrefix}.${value}`),
                     value: value
                 }
             }
@@ -73,39 +73,39 @@ export default class Select extends Component {
         }
     }
 
-    options() {
+    const options = () => {
         let opts = [];
-        let values;
-
-        if (this.props.values) {
-            if (Array.isArray(this.props.values)) {
-                values = this.props.values;
-            } else {
-                values = Object.keys(this.props.values).map((id, i) => {
-                    return {id: id, name: this.props.values[id].name}
-                })
-            }
-        } else if (this.props.data && this.props.attribute === 'workflow_state') {
-            values = this.props.data.workflow_states;
-        }
+        let rawOpts;
 
         if (values) {
-            let getTextAndValue = this.selectTextAndValueFunction(values[0]);
-            if (!this.props.keepOrder === true) {
-                values.
+            if (Array.isArray(values)) {
+                rawOpts = values;
+            } else {
+                rawOpts = Object.keys(values).map((id, i) => {
+                    return {id: id, name: values[id].name}
+                })
+            }
+        } else if (data && attribute === 'workflow_state') {
+            rawOpts = data.workflow_states;
+        }
+
+        if (rawOpts) {
+            let getTextAndValue = selectTextAndValueFunction(rawOpts[0]);
+            if (!!keepOrder) {
+                rawOpts.
                 sort((a,b) => {
-                  let textA = getTextAndValue(a,).text;
+                  let textA = getTextAndValue(a).text;
                   let textB = getTextAndValue(b).text;
-                  return (new Intl.Collator(this.props.locale).compare(textA, textB))
+                  return (new Intl.Collator(locale).compare(textA, textB))
              })
            }
 
-            opts = values.
+            opts = rawOpts.
                 map((value, index) => {
                     if (value) {
-                        let textAndValue = getTextAndValue(value, this.props);
+                        let textAndValue = getTextAndValue(value);
                         return (
-                            <option value={textAndValue.value} key={`${this.props.scope}-${index}`}>
+                            <option value={textAndValue.value} key={`${scope}-${index}`}>
                                 {textAndValue.text}
                             </option>
                         )
@@ -114,62 +114,40 @@ export default class Select extends Component {
             )
         }
 
-        if (this.props.withEmpty) {
+        if (withEmpty) {
             opts.unshift(
-                <option value='' key={`${this.props.scope}-choose`}>
-                    {t(this.props, 'choose')}
+                <option value='' key={`${scope}-choose`}>
+                    {t('choose')}
                 </option>
             )
         }
         return opts;
     }
 
-    render() {
-        const {
-            data,
-            attribute,
-            scope,
-            className,
-            validate,
-            hidden,
-            label,
-            labelKey,
-            showErrors,
-            help,
-            individualErrorMsg,
-            handlechangecallback
-        } = this.props;
-
-        const value = this.props.value !== undefined ?
-            this.props.value :
-            (data?.[attribute] || '');
-
-        return (
-            <Element
-                scope={scope}
-                attribute={attribute}
-                label={label}
-                labelKey={labelKey}
-                showErrors={showErrors}
-                className={className}
-                hidden={hidden}
-                valid={this.state.valid}
-                mandatory={typeof(validate) === 'function'}
-                elementType='select'
-                individualErrorMsg={individualErrorMsg}
-                help={help}
+    return (
+        <Element
+            scope={scope}
+            attribute={attribute}
+            label={label}
+            labelKey={labelKey}
+            showErrors={showErrors}
+            className={className}
+            hidden={hidden}
+            valid={valid}
+            mandatory={typeof(validate) === 'function'}
+            elementType='select'
+            individualErrorMsg={individualErrorMsg}
+            help={help}
+        >
+            <select
+                name={attribute}
+                className="Input"
+                defaultValue={defaultValue}
+                onChange={onChange}
+                handlechangecallback={handlechangecallback}
             >
-                <select
-                    name={attribute}
-                    className="Input"
-                    value={value}
-                    onChange={this.handleChange}
-                    handlechangecallback={handlechangecallback}
-                >
-                    {this.options()}
-                </select>
-            </Element>
-        );
-    }
-
+                {options()}
+            </select>
+        </Element>
+    );
 }

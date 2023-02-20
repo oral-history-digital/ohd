@@ -377,10 +377,10 @@ ru:
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
-      new: Neues Interview
+      new: Neues Interview anlegen
       edit: Interview bearbeiten
       processed: 'Interview angelegt: '
-      processing: Das Interview wurde bearbeitet
+      processing: Das Interview wurde angelegt.
       return: Weiteres Interview anlegen
       goto: Zum Interview
     interviews:
@@ -699,6 +699,7 @@ ru:
     add: Registernamen hinzufügen
   norm_data:
     title: Normdaten
+    link_hover: Link zum Begriff in der Gemeinsamen Normdatei/bei Open Street Map
     new: Normdaten hinzufügen
     add: Normdaten hinzufügen
   texts:
@@ -977,10 +978,9 @@ ru:
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
+        name: Collection name
         project_id: Archive
         institution_id: Institution
-        homepage: Website
-        name: Имя
         countries: Страна
         institution: Организация
         responsibles: Ответственные
@@ -1055,6 +1055,7 @@ ru:
         update_only_speakers: nur Sprecher aktualisieren
         update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
+        name: Archive name
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
@@ -1066,15 +1067,15 @@ ru:
         shortname: Kürzel
         initials: Initials (interview ID)
         archive_id_number_length: Number of figures (interview ID)
-        domain: Projektdomain
+        domain: Project website
         archive_domain: Archivdomain
         doi: DOI
         cooperation_partner: Kooperationspartner
         leader: Projektleitung
-        manager: Projektmanagement
+        manager: Contact person
         hosting_institution: Institution
         pseudo_funder_names: Finanzierung
-        contact_email: Kontaktemail
+        contact_email: Contact email (generic)
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
         has_map: Karte anzeigen
@@ -1091,8 +1092,9 @@ ru:
         aspect_x: Bildformat x-Wert
         aspect_y: Bildformat y-Wert
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
-        domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        domain_help: "Website with further information about the project"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        contact_email_help: "This email address is used for communication with users, e.g. to confirm registrations."
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: order in search facets and map filter
@@ -1751,6 +1753,17 @@ ru:
   interview_title_patterns:
 
   modules:
+    registration:
+      messages:
+        header: 'Bitte korrigieren Sie die folgenden Fehler:'
+        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
+        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
+        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
+        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
+        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
+        login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
+        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
     admin:
       person_details:
         contributions:
@@ -1876,6 +1889,9 @@ ru:
     tables:
       actions: Actions
       search: Search…
+      show: Show item
+      edit: Edit item
+      delete: Delete item
     toc:
       collapse: Collapse
       expand: Expand
@@ -1891,6 +1907,8 @@ ru:
       admin_menu:
         actions: Actions
       copy_link: Копировать URL
+      error_message:
+        error: Error
       pagination:
         page: "Page %{current} of %{total}"
         prev: previous page

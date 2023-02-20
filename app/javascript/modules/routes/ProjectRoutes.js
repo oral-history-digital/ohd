@@ -50,14 +50,14 @@ export default function ProjectRoutes() {
 
     useEffect(() => {
         // Set project-specific redux data here.
-        dispatch(setAvailableViewModes(project.view_modes));
-        dispatch(setViewMode(project.view_modes?.[0] || null));
+        dispatch(setAvailableViewModes(project?.view_modes));
+        dispatch(setViewMode(project?.view_modes?.[0] || null));
 
         return function unsetCurrentProjectData() {
             // Unset project-specific redux data here.
             dispatch(clearViewModes());
             dispatch(setArchiveId(null));
-            dispatch(setProjectId(null));
+            //dispatch(setProjectId(null));
         };
     }, [projectId, dispatch]);
 

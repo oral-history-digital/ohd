@@ -36,26 +36,29 @@ export default function HelpTextForm({
     const pathBase = usePathBase();
 
     return (
-        <Form
-            data={data}
-            values={{}}
-            scope="help_text"
-            helpTextCode="help_text_form"
-            onSubmit={async (params) => {
-                setIsFetching(true);
-                await submitDataWithFetch(pathBase, params);
-                setIsFetching(false);
-                mutateHelpTexts();
+        <div>
+            <h3 className="u-mt-none u-mb">{data.code}</h3>
+            <Form
+                data={data}
+                values={{}}
+                scope="help_text"
+                helpTextCode="help_text_form"
+                onSubmit={async (params) => {
+                    setIsFetching(true);
+                    await submitDataWithFetch(pathBase, params);
+                    setIsFetching(false);
+                    mutateHelpTexts();
 
-                if (typeof onSubmit === 'function') {
-                    onSubmit();
-                }
-            }}
-            onCancel={onCancel}
-            submitText="submit"
-            elements={formElements}
-            fetching={isFetching}
-        />
+                    if (typeof onSubmit === 'function') {
+                        onSubmit();
+                    }
+                }}
+                onCancel={onCancel}
+                submitText="submit"
+                elements={formElements}
+                fetching={isFetching}
+            />
+        </div>
     );
 }
 

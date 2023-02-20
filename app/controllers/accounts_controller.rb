@@ -1,8 +1,8 @@
 class AccountsController < ApplicationController
 
-  skip_before_action :authenticate_user_account!, only: [:show]
-  skip_after_action :verify_authorized, only: [:show]
-  skip_after_action :verify_policy_scoped, only: [:show]
+  skip_before_action :authenticate_user_account!, only: [:show, :check_email]
+  skip_after_action :verify_authorized, only: [:show, :check_email]
+  skip_after_action :verify_policy_scoped, only: [:show, :check_email]
 
   def show
     respond_to do |format|
@@ -19,9 +19,9 @@ class AccountsController < ApplicationController
 
   def update
     authorize(current_user_account)
-    current_user_account.update_attributes account_params
+    current_user_account.update account_params
     # FIXME: we have to update duplicated data here
-    current_user_account.user_registration.update_attributes account_params
+    current_user_account.user_registration.update account_params
     respond_to do |format|
       format.html {}
       format.json do
@@ -62,6 +62,48 @@ class AccountsController < ApplicationController
     end
   end
 
+  def check_email
+    email = params[:email]
+    registration = UserRegistration.where(email: email).first
+
+    msg = nil
+    email_taken = false
+
+    if registration
+      email_taken = true
+      msg = 'login'
+
+      if !registration.user_account.confirmed?
+        msg = 'account_confirmation_missing'
+        # re-send the activation instructions
+        registration.user_account.resend_confirmation_instructions
+      elsif current_project
+        project_access = registration.user_registration_projects.where(project: current_project).first
+        if project_access
+          msg = project_access.workflow_state
+        else
+          msg = 'login_and_request_project_access'
+        end
+      end
+    end
+
+    translated_msg = msg && I18n.backend.translate(
+      params[:locale],
+      "modules.registration.messages.#{msg}",
+      email: email,
+      project: current_project ? current_project.name : 'Oral-History.Digital'
+    )
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          msg: translated_msg,
+          email_taken: email_taken
+        }
+      end
+    end
+  end
+  
   private
 
   def account_params

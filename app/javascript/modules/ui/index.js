@@ -7,4 +7,5 @@ export { default as PhotoModal } from './PhotoModal';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as DebouncedInput } from './DebouncedInput';
 export { default as Pagination } from './Pagination';
+export { default as ErrorMessage } from './ErrorMessage';
 export { PAGINATION_DEFAULT_PAGE_SIZE } from './constants';

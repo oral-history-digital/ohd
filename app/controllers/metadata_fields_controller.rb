@@ -20,7 +20,7 @@ class MetadataFieldsController < ApplicationController
   end
 
   def update
-    @metadata_field.update_attributes(metadata_field_params)
+    @metadata_field.update(metadata_field_params)
 
     respond_to do |format|
       format.json do

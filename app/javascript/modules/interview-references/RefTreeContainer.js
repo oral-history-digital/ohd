@@ -6,8 +6,7 @@ import { fetchData, getProjects, getCurrentInterview, getCurrentRefTree,
 import {
     getArchiveId,
     getLocale,
-    getProjectId,
-    getEditView
+    getProjectId
 } from 'modules/archive';
 import RefTree from './RefTree';
 
@@ -18,8 +17,7 @@ const mapStateToProps = state => ({
     projects: getProjects(state),
     archiveId: getArchiveId(state),
     refTree: getCurrentRefTree(state),
-    refTreeStatus: getCurrentRefTreeStatus(state),
-    editView: getEditView(state)
+    refTreeStatus: getCurrentRefTreeStatus(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

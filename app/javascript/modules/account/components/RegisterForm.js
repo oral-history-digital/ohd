@@ -1,16 +1,53 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import request from 'superagent';
+
 import { Form } from 'modules/forms';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import findExternalLink from '../findExternalLink';
 
-export default class RegisterForm extends Component {
+export default function RegisterForm({
+    projectId,
+    project,
+    countryKeys,
+    submitRegister,
+}) {
 
-    formElements() {
-        const conditionsLink = findExternalLink(this.props.project, 'conditions');
-        const privacyLink = findExternalLink(this.props.project, 'privacy_protection');
+    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
 
+    const conditionsLink = findExternalLink(project, 'conditions');
+    const privacyLink = findExternalLink(project, 'privacy_protection');
+
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    const [emailCheckResponse, setEmailCheckResponse] = useState({email_taken: false, msg: null});
+
+    const handleEmailChange = async(name, value) => {
+        if (emailRegex.test(value)) {
+            fetch(`${pathBase}/accounts/check_email?email=${value}`)
+                .then(res => res.json())
+                .then(json => setEmailCheckResponse(json));
+        }
+    }
+
+    const formElements = () => {
         let firstElements = [
+            {
+                elementType: 'input',
+                attribute: 'email',
+                type: 'email',
+                handlechangecallback: handleEmailChange,
+                validate: function(v){return emailRegex.test(v)},
+                help: emailCheckResponse.email_taken && (
+                    <p className='notifications'>
+                        {emailCheckResponse.msg}
+                    </p>
+                ),
+                otherError: emailCheckResponse.email_taken,
+                validate: function(v, t){return (emailRegex.test(v) && !t)},
+                //individualErrorMsg: emailCheckResponse.msg || t('activerecord.errors.default.email_input'),
+            },
             {
                 elementType: 'select',
                 attribute: 'appellation',
@@ -29,12 +66,6 @@ export default class RegisterForm extends Component {
                 attribute: 'last_name',
                 type: 'text',
                 validate: function(v){return v && v.length > 1}
-            },
-            {
-                elementType: 'input',
-                attribute: 'email',
-                type: 'email',
-                validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
             },
             {
                 elementType: 'select',
@@ -75,7 +106,7 @@ export default class RegisterForm extends Component {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
+                validate: projectId !== 'mog' && function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
@@ -86,7 +117,7 @@ export default class RegisterForm extends Component {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
+                validate: projectId !== 'mog' && function(v){return v && v.length > 1}
             }
         ];
 
@@ -95,9 +126,9 @@ export default class RegisterForm extends Component {
                 elementType: 'select',
                 attribute: 'country',
                 optionsScope: 'countries',
-                values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
+                values: countryKeys && countryKeys[locale],
                 withEmpty: true,
-                validate: this.props.projectId !== 'mog' && function(v){return v !== ''}
+                validate: projectId !== 'mog' && function(v){return v !== ''}
             },
         ];
 
@@ -120,11 +151,11 @@ export default class RegisterForm extends Component {
                 help: (
                     <a
                         className="Link"
-                        href={conditionsLink[this.props.locale]}
+                        href={conditionsLink[locale]}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer">
-                        {t(this.props, 'user_registration.notes_on_tos_agreement')}
+                        {t('user_registration.notes_on_tos_agreement')}
                     </a>
                 )
             },
@@ -137,33 +168,30 @@ export default class RegisterForm extends Component {
                 help: (
                     <a
                         className="Link"
-                        href={privacyLink[this.props.locale]}
+                        href={privacyLink[locale]}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer"
                     >
-                        {t(this.props, 'user_registration.notes_on_priv_agreement')}
+                        {t('user_registration.notes_on_priv_agreement')}
                     </a>
                 )
             },
         ];
 
-        if (this.props.locale === 'de') {
+        if (locale === 'de') {
             return firstElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(otherElements);
         } else {
             return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
         }
     }
 
-    render() {
-        let _this = this;
-        return (
-            <Form
-                scope='user_registration'
-                onSubmit={function(params){_this.props.submitRegister(`${pathBase(_this.props)}/user_registrations`, params)}}
-                submitText='user_registration.register'
-                elements={this.formElements()}
-            />
-        );
-    }
+    return (
+        <Form
+            scope='user_registration'
+            onSubmit={function(params){submitRegister(`${pathBase}/user_registrations`, params)}}
+            submitText='user_registration.register'
+            elements={formElements()}
+        />
+    );
 }

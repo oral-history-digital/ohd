@@ -35,7 +35,7 @@ class InterviewsController < ApplicationController
   def update
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    @interview.update_attributes interview_params
+    @interview.update interview_params
     @interview.find_or_create_tapes(interview_params[:tape_count]) if interview_params[:tape_count]
 
     respond_to do |format|
@@ -325,7 +325,7 @@ class InterviewsController < ApplicationController
         response = http.request(request)
 
         status = response.code == "201" ? "created" : JSON.parse(response.body)["errors"][0]["title"]
-        interview.update_attributes doi_status: status
+        interview.update doi_status: status
       else
         status = "created"
       end
@@ -486,7 +486,12 @@ class InterviewsController < ApplicationController
   def doi_json(archive_id)
     interview = Interview.find_by_archive_id(archive_id)
     locale = params[:locale]
-    xml = render_to_string(template: "/interviews/metadata.xml", layout: false, locals: {interview: interview, locale: locale})
+    xml = render_to_string(
+      template: "interviews/metadata",
+      layout: false,
+      formats: :xml,
+      locals: {interview: interview, locale: locale}
+    )
     {
       "data": {
         "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
@@ -501,8 +506,4 @@ class InterviewsController < ApplicationController
     }.to_json
   end
 
-  def doi_content(locale, interview)
-    template = "/interviews/_doi.#{locale}.html+#{current_project.identifier.to_s}"
-    render_to_string(template: template, locals: { interview: interview }, layout: false)
-  end
 end
