@@ -72,6 +72,12 @@ export default function ProjectConfigTabPanel() {
                 >
                     <TaskTypeSearchFormContainer/>
                 </AdminSubTab>
+                <AdminSubTab
+                    title='edit.event_type.admin'
+                    url={`${pathBase}/event_types`}
+                    obj={{type: 'EventType'}}
+                    action='update'
+                />
             </div>
         </ErrorBoundary>
     );

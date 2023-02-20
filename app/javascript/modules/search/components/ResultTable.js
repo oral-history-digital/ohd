@@ -25,7 +25,7 @@ export default function ResultTable({
                     {
                         project.list_columns.map(column => (
                             <th key={column.name} className="Table-header">
-                                {project?.metadata_fields[column.id].label[locale] || t(column.name)}
+                                {project?.metadata_fields[column.id]?.label?.[locale] || t(column.name)}
                             </th>
                         ))
                     }

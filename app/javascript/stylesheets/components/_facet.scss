@@ -1,0 +1,51 @@
+.Facet {
+
+}
+
+.Facet-button {
+  align-items: center;
+  border-top: 1px solid var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  display: flex;
+  justify-content: space-between;
+  padding: ($base-unit / 4) 0;
+  text-align: left;
+  text-transform: uppercase !important;
+  width: 100%;
+}
+
+.Facet--admin .Facet-button {
+  color: var(--editorial-color) !important;
+}
+
+.Facet-label {
+  flex-grow: 1;
+}
+
+.Facet-icon {
+  margin-left: auto;
+  margin-right: 0.5 * $base-unit;
+}
+
+.Facet-panel {
+  display: none;
+  line-height: $base-unit;
+  padding-bottom: $base-unit / 2;
+}
+
+.Facet.is-open .Facet-panel {
+  display: block;
+}
+
+.Facet-value {
+  line-height: $base-unit;
+  font-size: 0.875rem;
+}
+
+.Facet-value.is-checked {
+  font-weight: bold;
+}
+
+.Facet-count {
+  margin-left: $base-unit / 4;
+}

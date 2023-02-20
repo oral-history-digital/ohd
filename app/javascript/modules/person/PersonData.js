@@ -12,10 +12,29 @@ import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 import { humanReadable } from 'modules/data';
 import { formatPersonName } from 'modules/person';
+import { EventContentField } from 'modules/events';
 import { useI18n } from 'modules/i18n';
+import {
+    METADATA_SOURCE_EVENT_TYPE,
+    METADATA_SOURCE_PERSON
+} from 'modules/constants';
 import usePersonWithAssociations from './usePersonWithAssociations';
 import Biography from './Biography';
 import PersonForm from './PersonForm';
+
+function getDisplayedMetadataFields(metadataFields, isProjectAccessGranted) {
+    const filteredFields = metadataFields.filter(field => {
+        const isPersonType = field.source === METADATA_SOURCE_PERSON ||
+            field.source === METADATA_SOURCE_EVENT_TYPE && field.eventable_type === 'Person';
+
+        const isAllowed = isProjectAccessGranted && field.use_in_details_view ||
+            !isProjectAccessGranted && field.display_on_landing_page;
+
+        return isPersonType && isAllowed;
+    });
+
+    return filteredFields;
+}
 
 export default function PersonData({
     interview,
@@ -28,14 +47,8 @@ export default function PersonData({
 
     const { data: person, isLoading, isValidating } = usePersonWithAssociations(intervieweeId);
 
-    const metadataFields = Object.values(project.metadata_fields)
-        .filter(field =>
-            field.source === 'Person' &&
-                (
-                    (projectAccessGranted && field.use_in_details_view) ||
-                    (!projectAccessGranted && field.display_on_landing_page)
-                )
-    );
+    const displayedMetadataFields = getDisplayedMetadataFields(
+        Object.values(project.metadata_fields), projectAccessGranted);
 
     if (intervieweeId === null) {
         return (
@@ -76,6 +89,7 @@ export default function PersonData({
                             {close => (
                                 <PersonForm
                                     data={person}
+                                    withEvents={false}
                                     onSubmit={close}
                                     onCancel={close}
                                 />
@@ -92,7 +106,23 @@ export default function PersonData({
                 />
             </AuthShowContainer>
 
-            {person && metadataFields.map(field => {
+            {person && displayedMetadataFields.map(field => {
+                if (field.source === 'EventType') {
+                    const events = person.events.filter(event =>
+                        event.event_type_id === field.event_type_id);
+
+                    if (events.length === 0) {
+                        return null;
+                    }
+
+                    return (
+                        <EventContentField
+                            label={field.label?.[locale]}
+                            events={events}
+                        />
+                    );
+                }
+
                 const label = field.label?.[locale] || t(field.name);
                 const value = humanReadable(person, field.name, { locale, translations }, {});
 

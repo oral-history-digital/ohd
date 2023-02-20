@@ -25,6 +25,7 @@ export default function Input({
     hidden,
     className,
     readOnly,
+    placeholder,
     forceUpdateFromProps,
 }) {
 
@@ -39,7 +40,7 @@ export default function Input({
     }, [value, data?.[attribute]]);
 
     const onChange = (event) => {
-        let v =  event.target.files ? event.target.files[0] : event.target.value;
+        let v = event.target.files ? event.target.files[0] : event.target.value;
         if (event.target.type === 'checkbox') {
             v = event.target.checked;
         }
@@ -71,7 +72,8 @@ export default function Input({
             className: 'Input',
             type: type,
             name: attribute,
-            readOnly: readOnly,
+            readOnly,
+            placeholder,
             defaultChecked: val,
             defaultValue: val,
             onChange: onChange,
@@ -129,4 +131,5 @@ export default function Input({
 
 Input.propTypes = {
     readOnly: PropTypes.bool,
+    placeholder: PropTypes.string,
 };

@@ -83,7 +83,6 @@ group :development do
   #gem 'meta_request'
 end
 
-#
 group :test do
   gem 'rspec', '~> 3.10.0'
   gem 'rspec-rails', '~> 4.0.2'
