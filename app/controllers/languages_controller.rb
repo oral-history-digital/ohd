@@ -22,7 +22,7 @@ class LanguagesController < ApplicationController
   def update
     @language = Language.find params[:id]
     authorize @language
-    @language.update_attributes language_params
+    @language.update language_params
 
     respond_to do |format|
       format.json do

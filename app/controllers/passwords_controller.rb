@@ -26,6 +26,7 @@ class PasswordsController < Devise::PasswordsController
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
       if Devise.sign_in_after_reset_password
+        Doorkeeper::AccessToken.create!(resource_owner_id: resource.id) if resource
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message!(:notice, flash_message)
         sign_in(resource_name, resource)

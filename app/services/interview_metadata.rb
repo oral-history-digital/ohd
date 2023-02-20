@@ -1,10 +1,8 @@
 class InterviewMetadata
   include ActiveModel::Validations
 
-  attr_accessor :creation_date,
-    :media_type, :mime_type, :tape_paths, :transcript_paths, :project_id,
-    :name, :num_speakers, :corpus_name, :recording_date, :dominant_language,
-    :actors, :topic
+  attr_accessor :creation_date, :tape_count, :project_id, :name, :num_speakers,
+    :corpus_name, :recording_date, :dominant_language, :actors, :topic
 
   validates_each :recording_date do |record, attr, value|
     record.errors.add attr, 'cannot be blank' if value.blank?
@@ -38,22 +36,7 @@ class InterviewMetadata
             xml.MdCollectionDisplayName 'Bavarian Archive for Speech Signals (BAS)'
           }
           xml.Resources {
-            xml.ResourceProxyList {
-              tape_paths.each_with_index do |path, index|
-                id = self.class.pad(index + 1)
-                xml.ResourceProxy('id' => "r_#{id}") {
-                  xml.ResourceType('Resource', 'mimetype' => mime_type)
-                  xml.ResourceRef path
-                }
-              end
-              transcript_paths.each_with_index do |path, index|
-                id = self.class.pad(index + 1)
-                xml.ResourceProxy('id' => "m_#{id}") {
-                  xml.ResourceType('Resource', 'mimetype' => 'application/pdf')
-                  xml.ResourceRef path
-                }
-              end
-            }
+            xml.ResourceProxyList
             xml.JournalFileProxyList
             xml.ResourceRelationList
             xml.IsPartOfList {
@@ -68,8 +51,8 @@ class InterviewMetadata
                 xml.Corpus "OH.D #{corpus_name}"
                 xml.Environment 'unknown'
                 xml.RecordingDate recording_date.to_s
-                xml.NumberOfRecordings tape_paths.size
-                xml.NumberMediaFiles tape_paths.size
+                xml.NumberOfRecordings tape_count
+                xml.NumberMediaFiles tape_count
                 xml.SubjectLanguages {
                   xml.SubjectLanguage {
                     xml.Dominant 'true'
@@ -112,25 +95,6 @@ class InterviewMetadata
                 xml.Description {
                     xml.Description(description, 'LanguageID' => 'ISO639-3:eng')
                 }
-                tape_paths.each_with_index do |path, index|
-                  id = self.class.pad(index + 1)
-                  xml.send('media-annotation-bundle') {
-                    xml.send('media-file', 'ref' => "r_#{id}", 'actor-ref' => all_actors_as_string) {
-                      xml.Type media_type
-                    }
-                  }
-                end
-                transcript_paths.each_with_index do |path, index|
-                  id = self.class.pad(index + 1)
-                  xml.WrittenResource('ref' => "m_#{id}", 'actor-ref' => all_actors_as_string) do
-                    xml.AnnotationType {
-                      xml.AnnotationType 'Orthography'
-                    }
-                    xml.AnnotationFormat {
-                      xml.AnnotationFormat 'application/pdf'
-                    }
-                  end
-                end
               }
             }
           }

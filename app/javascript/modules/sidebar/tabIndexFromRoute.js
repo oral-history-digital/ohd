@@ -59,6 +59,8 @@ export default function tabIndexFromRoute(pathBase, pathname, isCampscapesProjec
         index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/task_types`, pathname)) {
         index = indexes.INDEX_PROJECT_ACCESS;
+    } else if (matchPath(`${pathBase}/event_types`, pathname)) {
+        index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/projects`, pathname)) {
         index = indexes.INDEX_PROJECTS;
     } else if (matchPath(`${pathBase}/institutions`, pathname)) {

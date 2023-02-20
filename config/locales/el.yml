@@ -312,12 +312,14 @@ el:
     birth_location: Birth location
     interview_location: Interview location
     home_location: Home location
+  event_types:
+    date_of_birth: Ημερομηνία γέννησης
   metadata_labels:
     link_to_interview: Link to interview
     tape_count: Tape count
     description: Description
     duration: Duration
-    date_of_birth: Date of birth
+    date_of_birth: Ημερομηνία γέννησης
     year_of_birth: Year of birth
     birth_location: Birth location
     gender: Gender
@@ -338,10 +340,10 @@ el:
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
-      new: Neues Interview
+      new: Neues Interview anlegen
       edit: Interview bearbeiten
       processed: 'Interview angelegt: '
-      processing: Das Interview wurde bearbeitet
+      processing: Das Interview wurde angelegt.
       return: Weiteres Interview anlegen
       goto: Zum Interview
     interviews:
@@ -514,6 +516,11 @@ el:
       edit: 'Aufgabenart bearbeiten'
       delete: 'Aufgabenart löschen'
       admin: 'Aufgabenarten bearbeiten'
+    event_type:
+      new: 'Add event type'
+      edit: 'Edit event type'
+      delete: 'Delete event type'
+      admin: 'Edit event types'
     task_type_permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
@@ -614,6 +621,8 @@ el:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
       ref_object_type: Die andere Seite der Verknüpfung vom Register aus gesehen.
+      event_type_id: Event type, e.g. date of birth
+      eventable_type: Data type to which the event relates
     registry_reference_types:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Verknüpfungsart)
       registry_entry_id: tiefst möglicher, z.B. der Registereintrag 'Orte' für die Verknüpfungsart 'Geburtsort'
@@ -621,6 +630,8 @@ el:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Mitwirkungsart)
     media_streams:
       path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
+    events:
+      display_date: optional, if date is fuzzy
   contributions:
     title: Συνεργάτης
     add: Προσθήκη συνεργάτη
@@ -642,6 +653,9 @@ el:
     quality_manager_research: Ποιοτικός έλεγχος της ιστορικής επεξεργασίας
     other_attender: Other attendees
     transcript: Transcript
+  events:
+    title: Events
+    add: Add event
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen
@@ -789,7 +803,7 @@ el:
     tasks_supervisor_ids: Qualitätsmanagement
     tasks_user_account_ids: Bearbeiter*innen
     workflow_state: Status
-    date_of_birth: Geburtsdatum
+    date_of_birth: Ημερομηνία γέννησης
     signature_original: Originalsignatur
     startpage_position: Startpage position
   activerecord:
@@ -896,6 +910,12 @@ el:
       person:
         one: Person
         other: Personen
+      event_type:
+        one: Event type
+        other: Event types
+      event:
+        one: Event
+        other: Events
       metadata_field:
         one: Metadatum
         other: Metadaten
@@ -922,10 +942,9 @@ el:
         person_id: Άτομο
         speaker_designation: Υπόδειξη ομιλιτών (π.χ. *CG:*)
       collection:
+        name: Collection name
         project_id: Archive
         institution_id: Institution
-        homepage: Ιστοσελίδα
-        name: Name
         countries: Συνεντεύξεις στην
         institution: Διεξαγωγή από
         responsibles: Υπεύθυνοι
@@ -933,6 +952,11 @@ el:
         homepage: Ιστοσελίδα
         notes: Άλλες επισημάνσεις
         interviews: Συνεντευξιαζόμενοι
+      event:
+        event_type_id: Event type
+        start_date: Start date
+        end_date: End date
+        display_date: Display date
       language:
         code: Κωδικός
         name: Name
@@ -998,6 +1022,7 @@ el:
         update_only_speakers: nur Sprecher aktualisieren
         update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
+        name: Archive name
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
@@ -1009,7 +1034,7 @@ el:
         shortname: Kürzel
         initials: Initials (interview ID)
         archive_id_number_length: Number of figures (interview ID)
-        domain: Projektdomain
+        domain: Project website
         archive_domain: Archivdomain
         doi: DOI
         cooperation_partner: Συνεργασίες
@@ -1017,7 +1042,7 @@ el:
         manager: Contact person
         hosting_institution: Θεσμός
         pseudo_funder_names: Χρηματοδότηση
-        contact_email: Επαφή
+        contact_email: Contact email (generic)
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
         has_map: Karte anzeigen
@@ -1034,8 +1059,9 @@ el:
         aspect_x: Bildformat x-Wert
         aspect_y: Bildformat y-Wert
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
-        domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        domain_help: "Website with further information about the project"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        contact_email_help: "This email address is used for communication with users, e.g. to confirm registrations."
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: order in search facets and map filter
@@ -1051,9 +1077,12 @@ el:
         label: Label
         values: Werte
         registry_reference_type_id: Verknüpfungsart
+        event_type_id: Event type
+        eventable_type: Event of
         Person: Interviewte*r
         Interview: Interview
         RegistryReferenceType: Register (Verknüpfung)
+        EventType: Event
       external_link:
         internal_name: Internal Name
       upload:
@@ -1278,10 +1307,15 @@ el:
         file_input: Παρακαλώ συμπληρώστε
         password_input: Ο κωδικός σας πρέπει να αποτελείται από τουλάχιστον επτά χαρακτήρες. Οι δύο κωδικοί πρόσβασης θα πρέπει να είναι οι ίδιοι.
         email_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
+        date_input: Please select a date.
       template:
         header: Δεν ήταν δυνατή η επεξεργασία του αιτήματός σας
         body: 'Παρουσιάστηκε το εξής πρόβλημα:'
       models:
+        event:
+          attributes:
+            event_type_id:
+              empty: Please select an event type.
         interview:
           attributes:
             collection_id:
@@ -1365,6 +1399,8 @@ el:
         references: "references"
         annotations: "annotations"
       segments: "segments"
+    events:
+      display_date_placeholder: 'e.g. November 1979'
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
@@ -1468,6 +1504,8 @@ el:
       admin_menu:
         actions: Actions
       copy_link: Αντιγραφή URL
+      error_message:
+        error: Error
       pagination:
         page: "Page %{current} of %{total}"
         prev: previous page

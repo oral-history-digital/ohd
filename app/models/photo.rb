@@ -41,11 +41,26 @@ class Photo < ApplicationRecord
   end
 
   def variant_path(resolution)
-    variant = photo.variant(resize: resolution, auto_orient: true, strip: true)
-    signed_blob_id = variant.blob.signed_id
-    variation_key  = variant.variation.key
-    filename       = variant.blob.filename
-    Rails.application.routes.url_helpers.rails_blob_representation_path(signed_blob_id, variation_key, filename)
+    if photo.variable?
+      variant = photo.variant(resize: resolution, auto_orient: true, strip: true)
+      signed_blob_id = variant.blob.signed_id
+      variation_key  = variant.variation.key
+      filename       = variant.blob.filename
+      Rails.application.routes.url_helpers.rails_blob_representation_path(signed_blob_id, variation_key, filename)
+    end
+  end
+
+  def recalculate_checksum
+    blob = photo.blob
+    blob.update_column(:checksum, Digest::MD5.base64digest(File.read(blob.service.path_for(blob.key))))
+  end
+
+  def name
+    n = photo_file_name || photo.blob[:filename]
+    unless %w(jpg jpeg png gif tiff pdf psd eps ai indd raw).include?(n.split('.').last.downcase)
+      n += ".#{photo.blob.content_type.split('/').last}"
+    end
+    n
   end
 
 end

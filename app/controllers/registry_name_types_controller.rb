@@ -18,7 +18,7 @@ class RegistryNameTypesController < ApplicationController
   def update
     @registry_name_type = RegistryNameType.find params[:id]
     authorize @registry_name_type
-    @registry_name_type.update_attributes registry_name_type_params
+    @registry_name_type.update registry_name_type_params
 
     respond @registry_name_type
   end

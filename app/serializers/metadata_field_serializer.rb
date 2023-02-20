@@ -16,6 +16,8 @@ class MetadataFieldSerializer < ApplicationSerializer
     :display_on_landing_page,
     :ref_object_type,
     :source,
+    :event_type_id,
+    :eventable_type,
     #:locale,
     :label,
     :values

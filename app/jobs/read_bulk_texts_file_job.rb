@@ -31,7 +31,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       if interview
         case kind
         when 'protocoll', 'pk', 'prot'
-          interview.update_attributes observations: text, locale: locale
+          interview.update observations: text, locale: locale
         when 'bg'
           text = text.sub(/[^\n]*\(#{archive_id.upcase}\)\n+/, '')
           #
@@ -49,7 +49,7 @@ class ReadBulkTextsFileJob < ApplicationJob
             text << "\n\n#{part}"
           end
           bg = BiographicalEntry.find_or_create_by(person_id: interview.interviewees.first.id)
-          bg.update_attributes(locale: locale, text: text)
+          bg.update(locale: locale, text: text)
           #
           # the following is a more complex trial:
           #

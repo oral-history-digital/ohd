@@ -4,7 +4,7 @@ class HelpTextsController < ApplicationController
   def update
     help_text = HelpText.find params[:id]
     authorize help_text
-    help_text.update_attributes help_text_params
+    help_text.update help_text_params
 
     render json: help_text
   end

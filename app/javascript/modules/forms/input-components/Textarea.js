@@ -6,6 +6,7 @@ export default function Textarea({
     value,
     data,
     attribute,
+    htmlOptions,
     scope,
     label,
     labelKey,
@@ -57,6 +58,7 @@ export default function Textarea({
                 className="Input"
                 defaultValue={actualValue}
                 onChange={onChange}
+                {...htmlOptions}
             />
         </Element>
     );
@@ -65,6 +67,7 @@ export default function Textarea({
 Textarea.propTypes = {
     value: PropTypes.string,
     data: PropTypes.object,
+    htmlOptions: PropTypes.object,
     scope: PropTypes.string,
     attribute: PropTypes.string,
     label: PropTypes.string,

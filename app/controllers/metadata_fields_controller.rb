@@ -20,7 +20,7 @@ class MetadataFieldsController < ApplicationController
   end
 
   def update
-    @metadata_field.update_attributes(metadata_field_params)
+    @metadata_field.update(metadata_field_params)
 
     respond_to do |format|
       format.json do
@@ -104,6 +104,8 @@ class MetadataFieldsController < ApplicationController
         :values,
         :registry_entry_id,
         :registry_reference_type_id,
+        :event_type_id,
+        :eventable_type,
         translations_attributes: [:locale, :label, :id]
       )
     end

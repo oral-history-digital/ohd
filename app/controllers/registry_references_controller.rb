@@ -17,7 +17,7 @@ class RegistryReferencesController < ApplicationController
   def update
     @registry_reference = RegistryReference.find params[:id]
     authorize @registry_reference
-    @registry_reference.update_attributes registry_reference_params
+    @registry_reference.update registry_reference_params
 
     Sunspot.index! @registry_reference.interview
 
