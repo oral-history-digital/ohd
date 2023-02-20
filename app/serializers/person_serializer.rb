@@ -10,7 +10,7 @@ class PersonSerializer < ApplicationSerializer
     :title,
     :description,
     :associations_loaded,
-    :events
+    :events,
     :created_at,
     :updated_at
   ]
