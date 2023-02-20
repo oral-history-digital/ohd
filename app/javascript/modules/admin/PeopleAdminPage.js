@@ -14,8 +14,8 @@ import AddButton from './AddButton';
 
 export default function PeopleAdminPage() {
     const { t } = useI18n();
-    const { data: eventTypes, isLoading: eventTypesAreLoading } = useEventTypes();
-    const { isLoading, data: people, error } = usePeople();
+    const { isLoading: eventTypesAreLoading } = useEventTypes();
+    const { isLoading: peopleAreLoading, data: people, error } = usePeople();
 
     if (!people || eventTypesAreLoading) {
         return null;
@@ -25,7 +25,6 @@ export default function PeopleAdminPage() {
         return (
             <PersonForm
                 data={data}
-                withEvents={eventTypes.length > 0}
                 onSubmit={onSubmit}
                 onCancel={onCancel}
             />
@@ -49,7 +48,7 @@ export default function PeopleAdminPage() {
                     {peopleCount} {t('activerecord.models.person.other')}
                 </h1>
 
-                {isLoading ?
+                {peopleAreLoading ?
                     <Spinner /> : (
                     error ?
                         <ErrorMessage>{error.message}</ErrorMessage> : (
@@ -59,7 +58,7 @@ export default function PeopleAdminPage() {
                                 scope="person"
                                 interview={undefined}
                                 onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                                disabled={isLoading}
+                                disabled={peopleAreLoading}
                             />
                             <PersonTable />
                     </>
