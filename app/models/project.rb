@@ -28,6 +28,7 @@ class Project < ApplicationRecord
   has_many :people, dependent: :destroy
   has_many :map_sections, dependent: :destroy
   has_many :archiving_batches, dependent: :destroy
+  has_many :event_types, dependent: :destroy
 
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
     fallbacks_for_empty_translations: true, touch: true
@@ -151,13 +152,29 @@ class Project < ApplicationRecord
   end
 
   def search_facets
-    metadata_fields.where(use_as_facet: true).
+    metadata_fields.
+      where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
       includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
   end
 
   def search_facets_names
-    metadata_fields.where(use_as_facet: true).map(&:name)
+    metadata_fields.
+      where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
+      map(&:name)
+  end
+
+  def event_facets
+    metadata_fields.
+      where(source: 'EventType', use_as_facet: true).
+      order(:facet_order)
+  end
+
+  def event_facet_names
+    metadata_fields.
+      where(source: 'EventType', use_as_facet: true).
+      map(&:name).
+      map(&:to_sym)
   end
 
   def grid_fields
@@ -338,18 +355,40 @@ class Project < ApplicationRecord
 
   def updated_search_facets(search)
     facets = search_facets_hash.deep_dup
-    search_facets_names.each do |facet|
-      search.facet("search_facets:#{facet}").rows.each do |row|
-        facets[facet][:subfacets][row.value][:count] = row.count if facets[facet][:subfacets][row.value]
-      rescue StandardError => e
-        p "*** facet: #{facet}, row.value: #{row.value}"
-        p "*** error: #{e.message}"
+
+    # String facets.
+    search_facets_names.each do |facet_name|
+      facet = search.facet("search_facets:#{facet_name}")
+      if facet.present?
+        search.facet("search_facets:#{facet_name}").rows.each do |row|
+          facets[facet_name][:subfacets][row.value][:count] = row.count if facets[facet_name][:subfacets][row.value]
+        rescue StandardError => e
+          p "*** facet: #{facet_name}, row.value: #{row.value}"
+          p "*** error: #{e.message}"
+        end
+      end
+    end
+
+    # Date facets.
+    event_facet_names.each do |facet_name|
+      facet = search.facet("events:#{facet_name}")
+      if facet.present?
+        facets[facet_name] = {
+          name: facet_name,
+          subfacets: {},
+          type: 'EventType'
+        }
+        facet.rows.each do |row|
+          facets[facet_name][:subfacets][row.value] = row.count
+        end
       end
     end
 
     # Delete facet values with zero count.
     facets.each do |k, facet|
-      facet[:subfacets].delete_if { |k, subfacet| subfacet[:count] == 0 }
+      if facet[:type] != 'EventType'
+        facet[:subfacets].delete_if { |k, subfacet| subfacet[:count] == 0 }
+      end
     end
 
     facets

@@ -1,16 +1,16 @@
-class UnauthorizedController < ActionController::Metal
-  include AbstractController::Rendering
-  include ActionController::Rendering
-  include ActionController::Renderers
-
-  use_renderers :json
-
-  def self.call(env)
-    @respond ||= action(:respond)
-    @respond.call(env)
-  end
+class UnauthorizedController < Devise::FailureApp
 
   def respond
-    render json: {}, status: :unauthorized
+    if request.format.json?
+      json_api_error_response
+    else
+      super
+    end
+  end
+
+  def json_api_error_response
+    self.status        = 401
+    self.content_type  = 'application/json'
+    self.response_body = { errors: [{ message: i18n_message }] }.to_json
   end
 end

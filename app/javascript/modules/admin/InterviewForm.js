@@ -111,22 +111,15 @@ export default function InterviewForm({
                 values: collections,
                 value: interview?.collection_id,
                 withEmpty: true,
-                //validate: function(v){return /^\d+$/.test(v)},
                 individualErrorMsg: 'empty'
             },
             {
                 // tape_count is important to calculate the video-path
                 attribute: 'tape_count',
                 value: interview?.tape_count,
-                elementType: 'input',
-                validate: function(v){return /^\d+$/.test(v)}
-            },
-            {
-                attribute: 'observations',
-                value: interview?.observations?.[locale],
-                elementType: 'textarea',
-            },
-        ]
+                validate: function(v){return /^\d+$/.test(v)},
+            }
+        ];
 
         if (interview) {
             elements.push(
@@ -145,8 +138,8 @@ export default function InterviewForm({
             values: { project_id: project.id },
             data: interview,
             onSubmit: handleSubmit,
-            submitText: submitText,
-            elements: elements,
+            submitText,
+            elements,
             helpTextCode: 'interview_form',
         }
 

@@ -83,7 +83,7 @@ class Interview < ApplicationRecord
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
     atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id description)
-    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
+    update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
   after_create :create_tasks
@@ -119,11 +119,18 @@ class Interview < ApplicationRecord
     text :archive_id_fulltext, :stored => true do
       archive_id
     end
-    integer :interviewee_id, :stored => true#, :references => Person
+    integer :interviewee_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
     integer :tasks_user_account_ids, :stored => true, :multiple => true
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
     string :workflow_state, stored: true
+
+    dynamic_date_range :events, multiple: true do
+      interviewee&.events&.inject({}) do |hash, e|
+        (hash[e.event_type.code.to_sym] ||= []) << (e.start_date..e.end_date)
+        hash
+      end
+    end
 
     # in order to find pseudonyms with fulltextsearch (dg)
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
@@ -287,7 +294,7 @@ class Interview < ApplicationRecord
       if tape.segments.count == 0
         tape.destroy
       else
-        tape.update_attributes media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', tape.number)}"
+        tape.update media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', tape.number)}"
       end
     end
 
@@ -481,7 +488,7 @@ class Interview < ApplicationRecord
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
           if update_only_speakers && speaker_id
             segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
-            segment.update_attributes speaker_id: speaker_id
+            segment.update speaker_id: speaker_id
           else
             Segment.create_or_update_by({
               interview_id: id,
@@ -757,12 +764,38 @@ class Interview < ApplicationRecord
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project
           dynamic :search_facets do
-            # By default Sunspot will only return the first 100 facet values. You can increase this limit, or force it to return all facets by setting limit to -1.
+            # By default Sunspot will only return the first 100 facet values.
+            # You can increase this limit, or force it to return all facets by
+            # setting limit to -1.
             project.search_facets_names.each do |facet_name|
               facet_value = params[facet_name]
               facet_value.reject(&:blank?) if facet_value.is_a?(Array)
               filter = with(facet_name.to_sym).any_of(facet_value) if facet_value.present?
               facet facet_name, limit: -1, exclude: [filter].reject(&:blank?)
+            end
+          end
+
+          dynamic :events do
+            project.event_facet_names.each do |facet_name|
+              facet_value = params[facet_name]
+
+              if facet_value.present?
+                facet_values = facet_value.is_a?(Array) ? facet_value : [facet_value]
+                filter = any_of do
+                  facet_values.each do |value|
+                    start_year = Date.new(value.split('-')[0].to_i)
+                    end_year = (Date.new(value.split('-')[1].to_i)).prev_day
+                    with(facet_name.to_sym).between(start_year..end_year)
+                  end
+                end
+              end
+
+              facet facet_name,
+                    range: Date.new(1900)..Date.today,
+                    range_interval: '+1YEAR',
+                    limit: -1,
+                    exclude: [filter].reject(&:blank?)
+
             end
           end
         end

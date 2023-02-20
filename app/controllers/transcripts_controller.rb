@@ -59,7 +59,7 @@ class TranscriptsController < ApplicationController
       tape_number = (!transcript_params[:tape_number].blank? && transcript_params[:tape_number].to_i) || index + 1
       tape_media_id = [interview.archive_id, format('%02d', interview.tapes.count), format('%02d', tape_number)].join('_')
       tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
-      tape.update_attributes duration: tape_duration, time_shift: time_shifts[index]
+      tape.update duration: tape_duration, time_shift: time_shifts[index]
     end
   end
 

@@ -23,8 +23,8 @@ export default function Pagination({
 
     const pageRange = getPageRange(pageCount, page, WINDOW_SIZE);
 
-    const hasEllipsisAtFront = pageRange.at(0) > 1;
-    const hasEllipsisAtBack = pageRange.at(-1) < pageCount;
+    const hasEllipsisAtFront = pageRange[0] > 1;
+    const hasEllipsisAtBack = pageRange[pageRange.length - 1] < pageCount;
 
     return (
         <nav className={classNames('Pagination', className)}>

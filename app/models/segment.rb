@@ -76,7 +76,7 @@ class Segment < ApplicationRecord
 
   def write_other_versions(text, locale)
     [:public, :subtitle].each do |version|
-      update_attributes(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
+      update(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
     end
   end
 
@@ -165,7 +165,7 @@ class Segment < ApplicationRecord
         next_time = Timecode.new(opts.delete(:next_timecode)).time
         duration = next_time - Timecode.new(opts[:timecode]).time
         opts.update(duration: duration) if duration > 0
-        segment.update_attributes(opts)
+        segment.update(opts)
       else
         assign_speakers_and_update_text(segment, opts)
       end
@@ -201,11 +201,11 @@ class Segment < ApplicationRecord
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
           person_id = segment.interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first['person_id']
           atts[:speaker_id] = person_id if person_id
-          segment.update_attributes atts
+          segment.update atts
         else
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
           atts[:speaker_id] = segment.prev && segment.prev.speaker_id if !segment.speaker_id && segment.prev && segment.prev.speaker_id
-          segment.update_attributes atts
+          segment.update atts
         end
 
         # if there is another speaker_designation in the text
@@ -387,7 +387,7 @@ class Segment < ApplicationRecord
       # if there is no next segment add 7s (approximated segment time)
       end_time = self.next ? self.next.time : self.time + 7
       # lazy update duration
-      update_attributes duration: end_time - self.time
+      update duration: end_time - self.time
     end
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end

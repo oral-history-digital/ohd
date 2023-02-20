@@ -1,4 +1,4 @@
-module XMLParser
+module XmlParser
 
   # This Parser is a reimplementation of the ODS Import
   # to make use of the more powerful Nokogiri library,
@@ -7,7 +7,7 @@ module XMLParser
   # under the old implementation.
   # Also, the column definition and checks have been made
   # DRYer - write configuration, not code per column.
-  class ODSParser
+  class OdsParser
 
     def initialize(file, format = :transcript)
       doc_class = case format
@@ -141,7 +141,7 @@ module XMLParser
       def check_file(file, filename_parts)
         # check file exists
         unless  File.exist?(file.tempfile)
-          Rails.logger.debug 'XMLParser::ODSParser - File ' + file + ' not Found'
+          Rails.logger.debug 'XmlParser::OdsParser - File ' + file + ' not Found'
           puts 'Datei ' + file + ' konnte nicht gefunden werden!'
           return false
         end
@@ -151,14 +151,14 @@ module XMLParser
         end
         # check file-extension
         unless File.extname(file.tempfile).downcase == '.ods'
-          Rails.logger.debug 'XMLParser::ODSParser - File ' + file + ' no .ods-file'
+          Rails.logger.debug 'XmlParser::OdsParser - File ' + file + ' no .ods-file'
           puts 'Datei ' + file + ' keine .ods-Datei!'
           return false
         end
         # check file-name structure
         #unless File.split(file)[1].split('_').size == filename_parts
         unless file.original_filename.split('_').size == filename_parts
-          Rails.logger.debug 'XMLParser::ODSParser - File ' + file + ' filename structure failed'
+          Rails.logger.debug 'XmlParser::OdsParser - File ' + file + ' filename structure failed'
           puts 'Datei ' + file + ' Dateistruktur fehlerhaft!'
           return false
         end
@@ -191,7 +191,7 @@ module XMLParser
             if @importable_fields.include?(column_type)
               # If data matches a regexp then we assume that data is
               # sane, otherwise we remove invalid characters.
-              @attributes[column_type] = next_column[column_type].is_a?(Regexp) ? text : XMLParser::sanitize_xml(text).gsub("\\", '/')
+              @attributes[column_type] = next_column[column_type].is_a?(Regexp) ? text : XmlParser::sanitize_xml(text).gsub("\\", '/')
             end
             next_column = columns.shift
           end
@@ -208,7 +208,7 @@ module XMLParser
 
     end
 
-    class ODSTranscript < ODSParser::ODSDocument
+    class ODSTranscript < OdsParser::ODSDocument
 
       # these are the fields that are copied from a new-imported version
       # into an existing segment
@@ -316,7 +316,7 @@ module XMLParser
     end
 
     # A generic base class for interview translation files.
-    class ODSTranslation < ODSParser::ODSDocument
+    class ODSTranslation < OdsParser::ODSDocument
 
       def initialize(file, import_class, columns)
         @import_class = import_class
@@ -367,7 +367,7 @@ module XMLParser
 
     end
 
-    class ODSInterviewTranslation < ODSParser::ODSTranslation
+    class ODSInterviewTranslation < OdsParser::ODSTranslation
       def initialize(file)
         columns = [
             {:segment_id => 0},
@@ -380,7 +380,7 @@ module XMLParser
       end
     end
 
-    class ODSPhotoTranslation < ODSParser::ODSTranslation
+    class ODSPhotoTranslation < OdsParser::ODSTranslation
       def initialize(file)
         columns = [
             {:photo_id => 0},
@@ -390,7 +390,7 @@ module XMLParser
       end
     end
 
-    class ODSCampTranslation < ODSParser::ODSDocument
+    class ODSCampTranslation < OdsParser::ODSDocument
 
       def initialize(file)
         options = {
@@ -443,7 +443,7 @@ module XMLParser
 
     end
 
-    class ODSCompanyTranslation < ODSParser::ODSDocument
+    class ODSCompanyTranslation < OdsParser::ODSDocument
 
       def initialize(file)
         options = {
@@ -500,7 +500,7 @@ module XMLParser
 
     end
 
-    class ODSLocationTranslation < ODSParser::ODSDocument
+    class ODSLocationTranslation < OdsParser::ODSDocument
 
       def initialize(file)
         options = {
@@ -581,7 +581,7 @@ module XMLParser
 
     end
 
-    class ODSPersonTranslation < ODSParser::ODSDocument
+    class ODSPersonTranslation < OdsParser::ODSDocument
 
       def initialize(file)
         options = {

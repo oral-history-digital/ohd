@@ -9,7 +9,7 @@
     <p>Вам нужно лишь активировать Ваш доступ. Необходимая для активации доступа информация была только что повторно выслана на Ваш электронный адрес.</p>
   <% else %>
     <p>Ваш доступ уже активен. Если Вы не помните Ваши данные для доступа, перейдите, пожалуйста, по следующей ссылке:
-      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optinal_identifier : OHD_DOMAIN}/#{new_user_account_password_path}", :class => 'new_password link' %>
+      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_account_password_path}", :class => 'new_password link' %>
     </p>
   <% end %>
 <% end %>

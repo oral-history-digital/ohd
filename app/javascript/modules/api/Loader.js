@@ -26,7 +26,7 @@ const Loader = {
             });
     },
 
-    delete: function(url, dispatch, callback) {
+    delete: function(url, dispatch, callback, cb) {
         request.delete(url)
             .set('Accept', 'application/json')
             .end( (error, res) => {
@@ -40,6 +40,9 @@ const Loader = {
                     } else {
                         if (typeof callback === "function") {
                             dispatch(callback(JSON.parse(res.text)));
+                        }
+                        if (typeof cb === 'function') {
+                            cb(JSON.parse(res.text));
                         }
                     }
                 }
@@ -56,7 +59,7 @@ const Loader = {
         Loader.submit(req, url, params, dispatch, successCallback, errorCallback, callback);
     },
 
-    submit: function(req, url, params, dispatch, successCallback, errorCallback, callback) {
+    submit: function(req, url, params, dispatch, successCallback, errorCallback, cb) {
         let scope = Object.keys(params)[0];
         Object.keys(params[scope]).map((param, index) => {
             if (params[scope][param] !== undefined && params[scope][param] !== null) {
@@ -131,8 +134,8 @@ const Loader = {
                     if (typeof successCallback === "function") {
                         dispatch(successCallback(json));
                     }
-                    if (typeof callback === 'function') {
-                        callback(json);
+                    if (typeof cb === 'function') {
+                        cb(json);
                     }
                 }
             }

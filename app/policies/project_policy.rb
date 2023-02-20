@@ -10,7 +10,11 @@ class ProjectPolicy < ApplicationPolicy
     show?
   end
 
-  def archiving_batches?
+  def archiving_batches_index?
+    show?
+  end
+
+  def archiving_batches_show?
     show?
   end
 

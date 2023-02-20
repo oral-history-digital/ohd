@@ -8,6 +8,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
 import { pathBase } from 'modules/routes';
+import FetchAccountContainer from './FetchAccountContainer';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
@@ -23,17 +24,12 @@ export default function Layout({
     project,
     projectId,
     projects,
-    accountsStatus,
-    account,
-    isLoggedIn,
-    isLoggedOut,
     loggedInAt,
     collectionsStatus,
     projectsStatus,
     languagesStatus,
     setLocale,
     fetchData,
-    deleteData,
 }) {
     const location = useLocation();
     const navigate = useNavigate();
@@ -62,22 +58,9 @@ export default function Layout({
     }
 
     function loadStuff() {
-        loadAccount()
         loadCollections();
         loadProjects();
         loadLanguages();
-    }
-
-    function loadAccount() {
-        if (
-            !accountsStatus.current ||
-            accountsStatus.current.split('-')[0] === 'reload' ||
-            (isLoggedIn && !account && accountsStatus.current.split('-')[0] === 'fetched')
-        ) {
-            fetchData({ projectId, locale, projects }, 'accounts', 'current');
-        } else if (isLoggedOut && account) {
-            deleteData({ projectId, locale, projects }, 'accounts', 'current', null, null, false, true)
-        }
     }
 
     function loadCollections() {
@@ -111,6 +94,7 @@ export default function Layout({
                 'sidebar-is-visible': sidebarVisible,
                 'is-sticky': scrollPositionBelowThreshold,
             })}>
+                <FetchAccountContainer />
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}
@@ -154,26 +138,21 @@ export default function Layout({
 
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool,
-    isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string,
     projects: PropTypes.object.isRequired,
     project: PropTypes.object,
-    accountsStatus: PropTypes.object,
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
     collectionsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
-    account: PropTypes.object,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
     toggleSidebar: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
-    deleteData: PropTypes.func.isRequired,
     setLocale: PropTypes.func.isRequired,
 };

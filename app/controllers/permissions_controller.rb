@@ -14,7 +14,7 @@ class PermissionsController < ApplicationController
   def update
     @permission = Permission.find params[:id]
     authorize @permission
-    @permission.update_attributes permission_params
+    @permission.update permission_params
     respond_to do |format|
       format.json do
         render json: data_json(@permission, msg: 'processed')
@@ -34,7 +34,7 @@ class PermissionsController < ApplicationController
       ]
 
     respond_to do |format|
-      format.html { render :template => '/react/app.html' }
+      format.html { render :template => '/react/app' }
       format.json do
         json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-permissions-visible-for-#{current_user_account.id}-#{extra_params}-#{Permission.count}-#{Permission.maximum(:updated_at)}" do
           {

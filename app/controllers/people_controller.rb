@@ -22,7 +22,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find params[:id]
     authorize @person
-    @person.update_attributes person_params
+    @person.update person_params
 
     respond @person
   end
@@ -171,7 +171,12 @@ class PeopleController < ApplicationController
         :use_pseudonym,
         translations_attributes: [:locale, :id, :first_name, :last_name,
           :birth_name, :other_first_names, :alias_names, :description,
-          :pseudonym_first_name, :pseudonym_last_name]
+          :pseudonym_first_name, :pseudonym_last_name
+        ],
+        events_attributes: [
+          :eventable_id, :event_type_id, :start_date, :end_date,
+          translations_attributes: [:id, :locale, :display_date]
+        ]
     )
   end
 

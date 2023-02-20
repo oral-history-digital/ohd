@@ -1,6 +1,7 @@
 class ProjectMetadata
   attr_accessor :creation_date,
     :metadata_resources, :documentation_url, :documentation_languages, :num_interviews,
+    :creator_name, :creator_email, :creator_organisation, :creator_website,
     :title, :id, :owner, :publication_year, :description, :description_lang,
     :subject_languages, :media_types, :mime_types
 
@@ -73,6 +74,19 @@ class ProjectMetadata
                   }
                 }
               }
+
+              xml.Creators {
+                xml.Creator {
+                  xml.Role 'Producer'
+                  xml.Contact {
+                    xml.Person creator_name
+                    xml.Email creator_email
+                    xml.Organisation creator_organisation
+                    xml.Website creator_website
+                  }
+                }
+              }
+
               xml.DocumentationLanguages {
                 documentation_languages.each do |lang|
                   language_code = self.class.language_code(lang)
