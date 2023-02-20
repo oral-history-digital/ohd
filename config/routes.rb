@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
     resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
+    resources :event_types
+    resources :events
     resources :help_texts, only: [:index]
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"
@@ -58,6 +60,7 @@ Rails.application.routes.draw do
     resources :people do
       resources :biographical_entries, only: [:destroy]
       resources :registry_references, only: [:create, :update, :destroy]
+      resources :events, only: [:index, :show, :create, :update, :destroy]
       get 'landing_page_metadata'
       get 'contributions'
     end

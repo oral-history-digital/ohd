@@ -78,31 +78,6 @@ export default function useSearchParams() {
         });
     }
 
-    function setParam(name, value) {
-        const newParams = {
-            ...params,
-           [name]: value,
-        };
-        pushToHistory(newParams);
-    }
-
-    function setParams(object) {
-        const newParams = {
-            ...params,
-            ...object,
-        };
-        pushToHistory(newParams);
-    }
-
-    function deleteParam(name) {
-        const newParams = {
-            ...params,
-        };
-        delete newParams[name];
-
-        pushToHistory(newParams);
-    }
-
     function addFacetParam(name, value) {
         const newParams = {
             ...params,
@@ -153,8 +128,52 @@ export default function useSearchParams() {
         return params[name] || [];
     }
 
+    function setRangeParam(name, range) {
+        setParam(name, `${range[0]}-${range[1]}`);
+    }
+
+    function deleteRangeParam(name) {
+        deleteParam(name);
+    }
+
+    function getRangeParam(name) {
+        const value = params[name];
+        if (!value) {
+            return undefined;
+        }
+
+        const range = value.split('-')
+            .map(year => Number(year));
+        return range;
+    }
+
     function resetSearchParams() {
         const newParams = {};
+        pushToHistory(newParams);
+    }
+
+    function setParam(name, value) {
+        const newParams = {
+            ...params,
+           [name]: value,
+        };
+        pushToHistory(newParams);
+    }
+
+    function setParams(object) {
+        const newParams = {
+            ...params,
+            ...object,
+        };
+        pushToHistory(newParams);
+    }
+
+    function deleteParam(name) {
+        const newParams = {
+            ...params,
+        };
+        delete newParams[name];
+
         pushToHistory(newParams);
     }
 
@@ -183,6 +202,9 @@ export default function useSearchParams() {
             setFulltext,
             setFulltextAndSort,
             setYearOfBirthRange,
+            setRangeParam,
+            getRangeParam,
+            deleteRangeParam,
             setParam,
             addFacetParam,
             deleteFacetParam,

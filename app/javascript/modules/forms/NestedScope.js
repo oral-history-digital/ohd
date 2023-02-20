@@ -1,9 +1,11 @@
+import { useState, createElement } from 'react';
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 import classNames from 'classnames';
-import NestedScopeElementContainer from './NestedScopeElementContainer';
-import { useState, createElement } from 'react';
+import PropTypes from 'prop-types';
+
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
+import NestedScopeElementContainer from './NestedScopeElementContainer';
 
 export default function NestedScope({
     onSubmit,
@@ -14,6 +16,7 @@ export default function NestedScope({
     scope,
     getNewElements,
     elementRepresentation,
+    onDeleteCallback,
 }) {
     const { t } = useI18n();
     const elements = (parent?.[pluralize(scope)] || []);
@@ -32,6 +35,7 @@ export default function NestedScope({
                         element={element}
                         onSubmit={onSubmit}
                         onDelete={onDelete}
+                        onDeleteCallback={onDeleteCallback}
                         formComponent={formComponent}
                         formProps={formProps}
                         scope={scope}
@@ -79,5 +83,8 @@ export default function NestedScope({
             }
         </div>
     )
-                    
 }
+
+NestedScope.propTypes = {
+    onDeleteCallback: PropTypes.func,
+};

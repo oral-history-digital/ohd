@@ -2,8 +2,14 @@ import { useEffect  } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setProjectId, getProjectId, setArchiveId, setAvailableViewModes,
-    setViewMode, clearViewModes } from 'modules/archive';
+import {
+    setProjectId,
+    getProjectId,
+    setArchiveId,
+    setAvailableViewModes,
+    setViewMode,
+    clearViewModes
+} from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { HomeContainer } from 'modules/startpage';
@@ -11,15 +17,30 @@ import { InterviewContainer } from 'modules/interview';
 import { SearchPage } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
 import { RegistryContainer } from 'modules/registry';
-import { WrappedRolesContainer,
-    WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
-    WrappedContributionTypesContainer, WrappedRegistryNameTypesContainer,
-    WrappedLanguagesContainer, WrappedCollectionsContainer,
-    UploadsContainer, EditProjectDisplay, EditProjectConfig, EditProjectInfo,
-    MetadataFieldsContainer, EditInterview, PeopleAdminPage
+import {
+    EditInterview,
+    EditProjectConfig,
+    EditProjectDisplay,
+    EditProjectInfo,
+    EventTypesAdminPage,
+    MetadataFieldsContainer,
+    PeopleAdminPage,
+    UploadsContainer,
+    WrappedCollectionsContainer,
+    WrappedContributionTypesContainer,
+    WrappedLanguagesContainer,
+    WrappedPermissionsContainer,
+    WrappedRegistryNameTypesContainer,
+    WrappedRegistryReferenceTypesContainer,
+    WrappedRolesContainer,
+    WrappedTaskTypesContainer
 } from 'modules/admin';
-import { AccountPage, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
-    from 'modules/account';
+import {
+    AccountPage,
+    OrderNewPasswordContainer,
+    RegisterContainer,
+    ActivateAccount
+} from 'modules/account';
 import { UserRegistrationsContainer } from 'modules/users';
 
 export default function ProjectRoutes() {
@@ -60,6 +81,7 @@ export default function ProjectRoutes() {
                 <Route path="project/edit-display" element={<EditProjectDisplay />} />
                 <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
                 <Route path="people" element={<PeopleAdminPage />} />
+                <Route path="event_types" element={<EventTypesAdminPage />} />
                 <Route path="registry_reference_types" element={<WrappedRegistryReferenceTypesContainer />} />
                 <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
                 <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />

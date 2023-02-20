@@ -22,7 +22,7 @@ namespace :solr do
       puts "Finished approx. #{segment_count} segments in #{(finish - start)} seconds."
     end
 
-    %w(interview person biographical_entry photo registry_entry annotation).each do |that|
+    %w(interview person biographical_entry photo registry_entry annotation event).each do |that|
       desc "reindex #{that.pluralize}"
       task that.pluralize.to_sym => :environment do
         start = Time.now

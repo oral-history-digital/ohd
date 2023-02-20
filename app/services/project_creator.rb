@@ -15,6 +15,7 @@ class ProjectCreator < ApplicationService
     create_default_registry_entries
     create_default_registry_reference_types
     create_default_registry_reference_type_metadata_fields
+    create_default_event_types
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
     create_default_contribution_types
@@ -105,6 +106,17 @@ class ProjectCreator < ApplicationService
       )
 
       add_translations(ref_type, 'name', "registry_reference_types.#{code}")
+    end
+  end
+
+  def create_default_event_types
+    %w(date_of_birth).each do |code|
+      event_type = EventType.create(
+        code: code,
+        project_id: project.id
+      )
+
+      add_translations(event_type, 'name', "event_types.#{code}")
     end
   end
 

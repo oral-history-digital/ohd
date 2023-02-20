@@ -17,13 +17,11 @@ export default function SearchActions({
     const { allParams } = useSearchParams();
 
     function showSaveButton() {
-        const searchTerm = allParams.fulltext;
-        const facetValues = Object.values(allParams)
-            .filter(val => Array.isArray(val))
-            .flat();
-        const numFilters = facetValues.length;
+        const filters = { ...allParams };
+        delete filters.sort;
+        delete filters.order;
 
-        return searchTerm || numFilters > 0;
+        return Object.keys(filters).length > 0;
     }
 
     function saveSearchForm(closeModal) {

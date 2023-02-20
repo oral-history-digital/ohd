@@ -12,6 +12,7 @@ class Person < ApplicationRecord
   has_many :registry_entries, :through => :registry_references
 
   has_many :contributions, dependent: :destroy
+  has_many :events, as: :eventable, dependent: :destroy
 
   has_many :histories, dependent: :destroy
   has_many :biographical_entries, dependent: :destroy
@@ -21,7 +22,7 @@ class Person < ApplicationRecord
   translates :first_name, :last_name, :birth_name, :other_first_names,
     :alias_names, :description,
     fallbacks_for_empty_translations: true, touch: true
-  accepts_nested_attributes_for :translations
+  accepts_nested_attributes_for :translations, :events
 
   validates_length_of :description, maximum: 1000
 
@@ -75,6 +76,11 @@ class Person < ApplicationRecord
         registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq.compact || []
       end
     end
+  end
+
+  after_touch do
+    interviews = self.interviews
+    Sunspot.index! [interviews]
   end
 
   def interviews

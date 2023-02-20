@@ -3,3 +3,8 @@
   margin-top: 0;
   padding-left: $base-unit;
 }
+
+.UnorderedList--plain {
+  list-style-type: none;
+  padding-left: 0;
+}
