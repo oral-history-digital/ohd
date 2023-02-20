@@ -6,6 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { usePersonEvents, Event } from 'modules/events';
 import { Spinner } from 'modules/spinners';
 import PersonContributions from './PersonContributions';
+import formatPersonName from './formatPersonName';
 
 const attributes = [
     'gender',
@@ -26,7 +27,10 @@ export default function PersonDetails({
     const { data: events, isLoading: eventsAreLoading } = usePersonEvents(data.id);
 
     return (
-        <div className="details">
+        <div>
+            <h3 className="u-mt-none u-mb">
+                {formatPersonName(data, translations, { locale })}
+            </h3>
             <dl>
                 {attributes.map(attribute => (
                     <Fragment key={attribute}>

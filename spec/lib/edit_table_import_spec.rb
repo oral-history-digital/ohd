@@ -77,6 +77,10 @@ describe EditTableImport do
       expect(interview.segments.first(2).last.annotations.first.text(:de)).to eq("Für die Unterbringung der Ostarbeiter errichtetes Barackenlager")
       expect(interview.tapes.first.segments.count).to eq(1)
       expect(interview.tapes.last.segments.count).to eq(1)
+      expect(interview.segments.first.speaking_person).not_to be(nil)
+      expect(interview.segments.last.speaking_person).not_to be(nil)
+      expect(interview.segments.first.speaking_person).to be(interview.interviewers.first)
+      expect(interview.segments.last.speaking_person).to be(interview.interviewees.first)
     end
   end
 

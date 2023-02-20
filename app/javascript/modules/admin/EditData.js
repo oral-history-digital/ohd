@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 
@@ -43,27 +43,26 @@ export default function EditData({
         ) :
         (
             <>
-                {formElements.map(element => (
-                    <p key={element.key}>
-                        <span className="flyout-content-label">
-                            {t(`activerecord.attributes.${scope}.${element.attribute}`)}:
-                        </span>
-                        <span className="flyout-content-data">
-                            {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}
-                        </span>
-                    </p>
-                ))}
+                <dl className="DescriptionList">
+                    {formElements.map(element => (
+                        <Fragment key={element.key}>
+                            <dt>
+                                {t(`activerecord.attributes.${scope}.${element.attribute}`)}
+                            </dt>
+                            <dd>
+                                {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}
+                            </dd>
+                        </Fragment>
+                    ))}
+                </dl>
                 <button
                     type="button"
                     className="Button Button--transparent Button--icon"
-                    title={t('edit.default.edit')}
                     onClick={toggleEditing}
                 >
-                    {
-                        editing ?
-                            <FaTimes className="Icon Icon--editorial" /> :
-                            <FaPencilAlt className="Icon Icon--editorial" />
-                    }
+                    <FaPencilAlt className="Icon Icon--editorial" />
+                    {' '}
+                    {t('edit.default.edit')}
                 </button>
             </>
         );

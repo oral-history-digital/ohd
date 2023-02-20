@@ -22,7 +22,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find params[:id]
     authorize @person
-    @person.update_attributes person_params
+    @person.update person_params
 
     respond @person
   end

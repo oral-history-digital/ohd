@@ -103,7 +103,7 @@ namespace :authentication_data do
 
           if registration.valid?
             state = account.deactivated_at.nil? ? 'registered' : 'rejected'
-            registration.update_attributes(workflow_state: state)
+            registration.update(workflow_state: state)
 
             begin
               if registration.user.nil?

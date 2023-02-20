@@ -2,6 +2,7 @@
 require_relative 'boot'
 
 require 'rails/all'
+require "sprockets/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -14,6 +15,8 @@ module Archive
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
+    config.active_storage.variant_processor = :mini_magick
+
     config.active_job.queue_adapter = :delayed_job
     config.action_cable.mount_path = '/cable'
 
@@ -32,5 +35,13 @@ module Archive
 
     config.middleware.use Rack::Deflater
     config.middleware.use Rack::Brotli
+
+    config.active_record.yaml_column_permitted_classes = [
+      ActiveSupport::HashWithIndifferentAccess,
+      Symbol
+    ]
+
+    config.action_dispatch.cookies_serializer = :hybrid
+    config.active_support.cache_format_version = 7.0
   end
 end

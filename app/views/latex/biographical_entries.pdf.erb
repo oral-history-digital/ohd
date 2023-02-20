@@ -11,7 +11,7 @@
 \begin{document}
 
 <%=
-  render partial: "./latex/header_footer",
+  render partial: "latex/header_footer",
     locals: {
       header_text: header_text,
       interview: interview,
@@ -21,7 +21,7 @@
 %>
 
 <%=
-  render partial: "./latex/title",
+  render partial: "latex/title",
     locals: {
       title: title,
       space_above: 0.4,
@@ -34,7 +34,7 @@
   <% start_date = Date.parse(biographical_entry.start_date(header_locale)).strftime("%d.%m.%Y") rescue biographical_entry.start_date(header_locale) %>
   <% end_date = Date.parse(biographical_entry.end_date(header_locale)).strftime("%d.%m.%Y") rescue biographical_entry.end_date(header_locale) %>
   <% title = [start_date, end_date].compact.join(' - ') || '' %>
-  <%= render partial: "./latex/title",
+  <%= render partial: "latex/title",
     locals:
     {
       title: latex_escape(title),

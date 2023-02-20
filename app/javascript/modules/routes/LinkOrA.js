@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/layout';
 import { getLocale, setProjectId, getProjectId } from 'modules/archive';
+import { getCurrentAccount } from 'modules/data';
 
 function LinkOrA({
     to = '',
@@ -15,6 +16,7 @@ function LinkOrA({
 }) {
     const locale = useSelector(getLocale);
     const currentProjectId = useSelector(getProjectId);
+    const currentAccount = useSelector(getCurrentAccount);
     const dispatch = useDispatch();
 
     const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
@@ -26,6 +28,9 @@ function LinkOrA({
     const pathBase = project.archive_domain ? `/${locale}` : `/${project.identifier}/${locale}`;
     const path = to.length > 0 ? `${pathBase}/${to}` : pathBase;
     const domain = project.archive_domain || ohdDomain;
+
+    const accessTokenParam = currentAccount?.access_token ? `access_token=${currentAccount.access_token}` : null;
+    const paramsWithAccessToken = [params, accessTokenParam].filter(Boolean).join('&');
 
     return (
         (onOHD && !projectHasOtherDomain) || projectIsCurrentProject ?
@@ -40,7 +45,7 @@ function LinkOrA({
             <a
                 className={className}
                 style={style}
-                href={`${domain}${path}${params ? '?' + params : ''}`}
+                href={`${domain}${path}${paramsWithAccessToken.length > 0 ? '?' + paramsWithAccessToken : ''}`}
             >
                 { children }
             </a>

@@ -68,7 +68,7 @@ export default class RegistryEntry extends Component {
                         target="_blank"
                         rel="noreferrer"
                         className="Link flyout-sub-tabs-content-ico-link"
-                        title={normDatum.norm_data_provider.name}
+                        title={t(this.props, 'norm_data.link_hover')}
                     >
                         &nbsp;{normDatum.norm_data_provider.name}&nbsp;
                     </a>
@@ -99,7 +99,9 @@ export default class RegistryEntry extends Component {
     buttons() {
         return (
             <div>
-                {this.normDataLinks()}
+                <AuthorizedContent object={this.props.data} action='update'>
+                    {this.normDataLinks()}
+                </AuthorizedContent>
                 {this.osmLink()}
                 {this.editButtons()}
             </div>
@@ -224,6 +226,7 @@ export default class RegistryEntry extends Component {
                             registryEntryId={data.id}
                             registryEntryParent={registryEntryParent}
                             onSubmit={close}
+                            normDataLinks={this.normDataLinks()}
                         />
                     )}
                 </Modal>

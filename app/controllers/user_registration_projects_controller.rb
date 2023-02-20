@@ -24,7 +24,7 @@ class UserRegistrationProjectsController < ApplicationController
     authorize @user_registration_project
     # workflow gem uses update_column which does not update updated_at!
     @user_registration_project.updated_at = DateTime.now
-    @user_registration_project.update_attributes user_registration_project_params
+    @user_registration_project.update user_registration_project_params
     @user_registration_project.user_account.touch
 
     respond_to do |format|

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import { ScrollToTop } from 'modules/user-agent';
 import { getMapSections } from 'modules/data';
-import { getEditView } from 'modules/archive';
+import { useIsEditor } from 'modules/archive';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
@@ -22,7 +22,7 @@ import { getMapView } from '../selectors';
 export default function SearchMap() {
     const mapSections = useSelector(getMapSections);
     const mapView = useSelector(getMapView);
-    const isEditView = useSelector(getEditView);
+    const isEditor = useIsEditor();
 
     const [currentSection, setCurrentSection] = useState(mapSections[0].name);
     const { t } = useI18n();
@@ -50,7 +50,7 @@ export default function SearchMap() {
             </Helmet>
 
             <div className="wrapper-content map SearchMap">
-                {isEditView && <HelpText code="search_map" className="u-mb" />}
+                {isEditor && <HelpText code="search_map" className="u-mb" />}
 
                 <div className={classNames('LoadingOverlay', {
                     'is-loading': locationsLoading,

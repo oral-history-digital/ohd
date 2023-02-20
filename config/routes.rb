@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper do
+    skip_controllers :authorizations, :applications, :authorized_applications
+  end
+
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
@@ -18,7 +22,8 @@ Rails.application.routes.draw do
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-display", to: "projects#edit_display"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
-    get "project/archiving_batches/:number", to: "projects#archiving_batches"
+    get "project/archiving_batches", to: "projects#archiving_batches_index"
+    get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
 
@@ -78,7 +83,6 @@ Rails.application.routes.draw do
 
     resources :interviews do
       member do
-        get :doi_contents
         get :metadata
         get 'cmdi_metadata', action: :cmdi_metadata
         get :headings
@@ -158,6 +162,10 @@ Rails.application.routes.draw do
       member do
         get :confirm_new_email
       end
+      collection do
+        get :check_email
+        get :access_token
+      end
     end
     resources :user_registrations do
       member do
@@ -181,7 +189,6 @@ Rails.application.routes.draw do
         get :publish_notice
       end
     end
-
   end
 
   concern :search do
@@ -207,13 +214,17 @@ Rails.application.routes.draw do
   concern :unnamed_devise_routes do
     devise_scope :user_account do
       post "user_accounts/sign_in", to: "sessions#create"
+      get "user_accounts/sign_in", to: "sessions#new"
+      get "user_accounts/is_logged_in", to: "sessions#is_logged_in"
       delete "user_accounts/sign_out", to: "sessions#destroy"
       patch "user_accounts/password", to: "passwords#update"
       get "user_accounts/password/edit", to: "passwords#edit"
+      get "user_accounts/password/new", to: "passwords#new"
       put "user_accounts/password", to: "passwords#update"
       post "user_accounts/password", to: "passwords#create"
       get "user_accounts/confirmation", to: "devise/confirmations#show"
       post "user_accounts/confirmation", to: "devise/confirmations#create"
+      get "passwords/check_email", to: "passwords#check_email"
     end
   end
 
@@ -226,8 +237,7 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
-      root to: "projects#index"
-      #root to: redirect {|params, request| "/#{params[:locale]}/projects"}
+      get "/", to: "projects#index"
       resources :projects, only: [:create, :update, :destroy, :index]
       resources :institutions
       resources :help_texts, only: [:index, :update]
@@ -236,9 +246,9 @@ Rails.application.routes.draw do
       concerns :unnamed_devise_routes, :search
     end
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
-      root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
+      get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-        root to: "projects#show"
+        get "/", to: "projects#show"
         resources :projects, only: [:update, :destroy]
         concerns :archive
         concerns :account
@@ -253,9 +263,9 @@ Rails.application.routes.draw do
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
-    root to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
+    get "/", to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-      root to: "projects#show"
+      get "/", to: "projects#show"
       resources :projects, only: [:update, :destroy]
       concerns :archive
       concerns :account

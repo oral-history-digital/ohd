@@ -7,6 +7,7 @@ class PhotosController < ApplicationController
     @photo = Photo.create(photo_params)
     @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}", metadata: {title: photo_params[:caption]})
     @photo.write_iptc_metadata
+    @photo.recalculate_checksum # integrity verification fails since upgrading to rails 7
 
     respond_to do |format|
       format.json do
@@ -24,7 +25,7 @@ class PhotosController < ApplicationController
   def update
     @photo = Photo.find(params[:id])
     authorize @photo
-    @photo.update_attributes(photo_params)
+    @photo.update(photo_params)
     @photo.write_iptc_metadata
 
     respond_to do |format|

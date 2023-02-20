@@ -136,13 +136,13 @@ EVAL
     reg_attrs.delete('application_info') # we do not need the YAML field
     reg_attrs.delete('user_account_id')
     reg_attrs.delete('workflow_state')
-    self.user_account.update_attributes(reg_attrs)
+    self.user_account.update(reg_attrs)
     user_attrs = user_attributes
     user_attrs.delete('id')
     user_attrs.delete('first_name') # names were taken from registration attrs
     user_attrs.delete('last_name')
     user_attrs.delete('comments') # comments conflicts with UserAccount#has_many :comments
-    self.user_account.update_attributes(user_attrs)
+    self.user_account.update(user_attrs)
   end
 
   def create_login

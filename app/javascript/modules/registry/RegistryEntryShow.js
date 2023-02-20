@@ -106,6 +106,9 @@ export default class RegistryEntryShow extends Component {
                     {this.registryEntry().name[locale]}
                     {this.osmLink()}
                 </h3>
+                <div className='small-right'>
+                    {this.props.normDataLinks}
+                </div>
                 <p>
                     {this.registryEntry().notes[locale]}
                 </p>

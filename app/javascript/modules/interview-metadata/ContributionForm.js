@@ -61,7 +61,6 @@ export default function ContributionForm({
             value: data?.person_id,
             withEmpty: true,
             validate: v => v !== '',
-            individualErrorMsg: 'empty',
             handlechangecallback: handlePersonChange,
         },
         {
@@ -137,6 +136,7 @@ export default function ContributionForm({
                         {' | '}
                         <Modal
                             title={t('edit.person.edit')}
+                            hideHeading
                             trigger={(
                                 <>
                                     <FaUserEdit className="Icon Icon--editorial" />

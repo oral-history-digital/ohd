@@ -5,10 +5,10 @@ import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import { AdminMenu } from 'modules/ui';
 import { DeleteItemForm } from 'modules/forms';
+import { PersonDetails } from 'modules/person';
 import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
-import PersonDetails from './PersonDetails';
 import getDataDisplayName from './getDataDisplayName';
 
 const Item = AdminMenu.Item;
