@@ -1,64 +1,51 @@
-import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
-// TODO: this does not work
 import 'rc-slider/assets/index.css';
 
-import { useSearchParams } from 'modules/query-string';
+import getRangeMarks from './getRangeMarks';
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
-const rangeStyle = { width: 318 };
-const style = { paddingBottom: 20, marginLeft: -11};
-const INTERVAL = 5;
 
 export default function YearRange({
+    currentValue,
+    onChange,
+    onAfterChange,
     sliderMin,
     sliderMax,
 }) {
-    const { yearOfBirthMin, yearOfBirthMax, setYearOfBirthRange } = useSearchParams();
-    const [currentValue, setCurrentValue] = useState([yearOfBirthMin,
-        yearOfBirthMax]);
-
-    useEffect(() => {
-        setCurrentValue([yearOfBirthMin, yearOfBirthMax]);
-    }, [yearOfBirthMin, yearOfBirthMax]);
-
-    function handleCompleteChange() {
-        setYearOfBirthRange(...currentValue);
-    }
-
-    let marks = {};
-    for (var i = (sliderMin + 1); i < sliderMax; i++) {
-        // set a mark every interval'th year. default is 5
-        if (i % INTERVAL === 0 ) {
-            marks[i] = i;
-        }
-    }
-    // set min and max values as additional marks
-    marks[sliderMin] = sliderMin;
-    marks[sliderMax] = sliderMax;
+    const alignRangeStyles = {
+        paddingLeft: '7px',
+        paddingRight: '7px'
+    };
 
     return (
-        <div>
-            <div style={style} className="year-range-state">
-                <span>{currentValue[0] || sliderMin} - {currentValue[1] || sliderMax}</span>
+        <div className="flyout-radio-container">
+            <div className="u-mb">
+                {currentValue ?
+                    `${currentValue[0]}–${currentValue[1]}` :
+                    `${sliderMin}–${sliderMax}`
+                }
             </div>
-            <Range
-                min={sliderMin}
-                max={sliderMax}
-                onChange={setCurrentValue}
-                onAfterChange={handleCompleteChange}
-                allowCross
-                marks={marks}
-                tipProps={{placement: 'top'}}
-                style={rangeStyle}
-                value={[currentValue[0] || sliderMin, currentValue[1] || sliderMax]}
-            />
+            <div style={alignRangeStyles}>
+                <Range
+                    min={sliderMin}
+                    max={sliderMax}
+                    onChange={onChange}
+                    onAfterChange={onAfterChange}
+                    marks={getRangeMarks(sliderMin, sliderMax)}
+                    step={1}
+                    tipProps={{placement: 'top'}}
+                    value={currentValue || [sliderMin, sliderMax]}
+                />
+            </div>
         </div>
     );
 }
 
 YearRange.propTypes = {
+    currentValue: PropTypes.array,
     sliderMin: PropTypes.number,
     sliderMax: PropTypes.number,
+    onChange: PropTypes.func.isRequired,
+    onAfterChange: PropTypes.func.isRequired,
 };
