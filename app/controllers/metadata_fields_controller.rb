@@ -104,6 +104,8 @@ class MetadataFieldsController < ApplicationController
         :values,
         :registry_entry_id,
         :registry_reference_type_id,
+        :event_type_id,
+        :eventable_type,
         translations_attributes: [:locale, :label, :id]
       )
     end

@@ -7,6 +7,10 @@ RSpec.describe ProjectMetadata do
     md.metadata_resources = ['za_001', 'za_002', 'za_003']
     md.documentation_url = 'http://www.example.com/archive/'
     md.documentation_languages = ['en', 'de', 'fr']
+    md.creator_name = 'Alice Henderson'
+    md.creator_email = 'alice@example.com'
+    md.creator_organisation = 'Alice Henderson University'
+    md.creator_website = 'https://www.ahu.edu'
     md.num_interviews = 3
     md.title = 'The Test Archive'
     md.id = 'ohd_test_001'

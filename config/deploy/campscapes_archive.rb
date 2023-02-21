@@ -11,5 +11,5 @@ set :project_yml, "campscapes.yml"
 #    }
 
 set :rbenv_type, :system
-set :rbenv_ruby, '2.6.6'
+set :rbenv_ruby, '2.7.7'
 set :rbenv_custom_path, '/opt/rbenv'

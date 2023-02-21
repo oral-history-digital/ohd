@@ -41,11 +41,13 @@ class Photo < ApplicationRecord
   end
 
   def variant_path(resolution)
-    variant = photo.variant(resize: resolution, auto_orient: true, strip: true)
-    signed_blob_id = variant.blob.signed_id
-    variation_key  = variant.variation.key
-    filename       = variant.blob.filename
-    Rails.application.routes.url_helpers.rails_blob_representation_path(signed_blob_id, variation_key, filename)
+    if photo.variable?
+      variant = photo.variant(resize: resolution, auto_orient: true, strip: true)
+      signed_blob_id = variant.blob.signed_id
+      variation_key  = variant.variation.key
+      filename       = variant.blob.filename
+      Rails.application.routes.url_helpers.rails_blob_representation_path(signed_blob_id, variation_key, filename)
+    end
   end
 
   def recalculate_checksum

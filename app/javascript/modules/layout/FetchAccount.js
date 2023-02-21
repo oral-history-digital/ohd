@@ -20,7 +20,8 @@ export default function FetchAccount({
             !isLoggedIn &&
             !checkedOhdSession &&
             location.origin !== OHD_DOMAINS[railsMode] &&
-            ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1
+            ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1 &&
+            /password/.test(location.pathname) === false
         ) {
             location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/is_logged_in?path=${location.pathname}&project=${projectId}`;
         }

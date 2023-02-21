@@ -182,11 +182,51 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "external_link_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "event_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_date"
+    t.index ["event_id"], name: "index_event_translations_on_event_id"
+    t.index ["locale"], name: "index_event_translations_on_locale"
+  end
+
+  create_table "event_type_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "event_type_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["event_type_id"], name: "index_event_type_translations_on_event_type_id"
+    t.index ["locale"], name: "index_event_type_translations_on_locale"
+  end
+
+  create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "code", null: false
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_event_types_on_project_id"
+  end
+
+  create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.bigint "event_type_id", null: false
+    t.string "eventable_type", null: false
+    t.bigint "eventable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_type_id"], name: "index_events_on_event_type_id"
+    t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
+  end
+
+  create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "external_link_id", null: false
     t.string "locale", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "url"
     t.string "name"
     t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
@@ -1032,6 +1072,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "archiving_batches", "projects"
+  add_foreign_key "event_types", "projects"
   add_foreign_key "histories", "people"
   add_foreign_key "map_sections", "projects"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

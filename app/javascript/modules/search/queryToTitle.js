@@ -2,27 +2,42 @@ import { t } from 'modules/i18n';
 
 export default function queryToTitle(query, facetStructure, locale, translations) {
     const searchTerm = query.fulltext;
-    const facets = onlyFacetsQuery(query);
+
+    const facets = { ...query };
+    delete facets.fulltext;
+    delete facets.sort;
+    delete facets.order;
+
     const facetValues = Object.values(facets).flat();
-    const numFilters = facetValues.length;
+    const numFacets = facetValues.length;
 
     if (searchTerm) {
-        if (numFilters === 0) {
+        if (numFacets === 0) {
             return t({ locale, translations }, 'modules.workbook.default_titles.search_for_term',
                 { searchTerm });
         } else {
             return t({ locale, translations }, 'modules.workbook.default_titles.search_for_term_and_filters',
-                { searchTerm, numFilters });
+                { searchTerm, numFilters: numFacets });
         }
     } else {
         let translatedFacetValues = [];
 
-        for (let [name, values] of Object.entries(facets)) {
-            values.forEach((value) => {
-                const valueObject = facetStructure?.[name]?.['subfacets'][value];
-                const translatedValue = valueObject ? valueObject['name'][locale] : value;
-                translatedFacetValues.push(translatedValue);
-            })
+        for (let [facetName, facetValue] of Object.entries(facets)) {
+            if (Array.isArray(facetValue)) {
+                // References
+                facetValue.forEach((value) => {
+                    const valueObject = facetStructure?.[facetName]?.['subfacets']?.[value];
+                    const translatedValue = valueObject ? valueObject['name'][locale] : value;
+                    translatedFacetValues.push(translatedValue);
+                })
+            } else {
+                // Date range
+                // TODO: Prefix with translated facet name, e.g.
+                // "Geburtsdatum 1970-1980" instead of "1970-1980"
+                const formattedDateRange = facetValue.replace('-', '–');
+
+                translatedFacetValues.push(formattedDateRange);
+            }
         }
 
         const filterStr = t({ locale, translations }, 'modules.workbook.filter');
@@ -31,20 +46,8 @@ export default function queryToTitle(query, facetStructure, locale, translations
         } else if (translatedFacetValues.length === 2) {
             return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]}`;
         } else {
-            const moreNum = numFilters - 2;
+            const moreNum = numFacets - 2;
             return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]} ${t({ locale, translations }, 'modules.workbook.default_titles.and_filters_more', { numFilters: moreNum })}`;
         }
     }
-}
-
-function onlyFacetsQuery(params) {
-    const facets = {};
-
-    for (let [name, values] of Object.entries(params)) {
-        if (Array.isArray(values)) {
-            facets[name] = values;
-        }
-    }
-
-    return facets;
 }

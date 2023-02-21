@@ -34,7 +34,7 @@ function OHDLink({ className }) {
                     <img className="SiteHeader-logo" src='/ohd-logo-gr.png' alt="" />
                 </a> :
                 <Link
-                    to={`/${locale}/projects`}
+                    to={`/${locale}`}
                     title='OHD'
                     onClick={unsetProjectId}
                     className={classNames(className, 'u-mr')}
