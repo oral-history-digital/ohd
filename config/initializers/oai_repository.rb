@@ -21,7 +21,7 @@ OaiRepository.setup do |config|
     # This is your repository administrator's email address.
     # This will appear in the information returned from an "Identify" call to
     # your repository
-    config.admin_email = "herdis.kley@cedis.fu-berlin.de"
+    config.admin_email = "mail@oral-history.digital"
 
     # The number of records shown at a time (when doing a ListRecords)
     config.limit = 10000
@@ -52,17 +52,17 @@ OaiRepository.setup do |config|
     # ]
     #
     config.sets = [
-       {
-         spec: 'class:interview',
-         name: 'Interviews',
-         model: Interview,
-         description: 'Interviews'
-       },
+       #{
+         #spec: 'class:interview',
+         #name: 'Interviews',
+         #model: Interview,
+         #description: 'Interviews'
+       #},
        {
          spec: 'class:project',
-         name: 'Archive',
+         name: 'Interview-Archiv',
          model: Project,
-         description: 'Archive'
+         description: 'Archiv'
        }
     ]
 
