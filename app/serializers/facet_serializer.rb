@@ -1,10 +1,14 @@
 class FacetSerializer < ApplicationSerializer
-  attributes :id,
-             :name,
+  attributes :name,
+             :type,
              :subfacets
 
   def name
     object.metadata_field.localized_hash(:label)
+  end
+
+  def type
+    object.class.name
   end
 
   def subfacets
@@ -21,7 +25,11 @@ class FacetSerializer < ApplicationSerializer
       else
         {}
       end
+    when "EventType"
+      {}
     when "Person"
+    else
+      {}
     end
   end
 end

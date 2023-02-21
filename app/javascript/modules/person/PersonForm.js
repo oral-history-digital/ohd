@@ -6,7 +6,10 @@ import { submitDataWithFetch } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
+import { useEventTypes } from 'modules/event-types';
+import { EventForm, Event } from 'modules/events';
 import { usePathBase } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import {
     PERSON_GENDER_MALE,
     PERSON_GENDER_FEMALE,
@@ -74,11 +77,13 @@ const formElements = [
 ];
 
 export default function PersonForm({
-    data,
+    data: person,
+    withEvents = true,
     onSubmit,
     onCancel
 }) {
     const [isFetching, setIsFetching] = useState(false);
+    const { data: eventTypes, isLoading: eventTypesAreLoading } = useEventTypes();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
@@ -86,18 +91,61 @@ export default function PersonForm({
     const { locale, translations } = useI18n();
     const project = useSelector(getCurrentProject);
 
+    function showEvent(event) {
+        return <Event event={event} />;
+    }
+
+    if (eventTypesAreLoading) {
+        return <Spinner />;
+    }
+
+    const nestedScopeProps = (withEvents && eventTypes?.length > 0) ?
+        [{
+            formComponent: EventForm,
+            formProps: { personId: person?.id },
+            parent: person,
+            scope: 'event',
+            elementRepresentation: showEvent,
+            onDeleteCallback: (id) => {
+                // In case of server error.
+                if (typeof id !== 'number') {
+                    return;
+                }
+
+                mutatePeople(async people => {
+                    const eventHolder = people.data[person.id];
+
+                    const updatedPeople = {
+                        ...people,
+                        data: {
+                            ...people.data,
+                            [person.id]: {
+                                ...eventHolder,
+                                events: eventHolder.events.filter(event => event.id !== id)
+                            }
+                        }
+                    };
+                    delete updatedPeople.data[id];
+
+                    return updatedPeople;
+                });
+            }
+        }] :
+        undefined;
+
     return (
         <div>
-            {data && (
+            {person && (
                 <h3 className="u-mt-none u-mb">
-                    {formatPersonName(data, translations, { locale })}
+                    {formatPersonName(person, translations, { locale })}
                 </h3>
             )}
 
             <Form
-                data={data}
+                data={person}
                 values={{ project_id: project.id }}
                 scope="person"
+                nestedScopeProps={nestedScopeProps}
                 helpTextCode="person_form"
                 onSubmit={async (params) => {
                     mutatePeople(async people => {
@@ -138,6 +186,7 @@ export default function PersonForm({
 
 PersonForm.propTypes = {
     data: PropTypes.object,
+    withEvents: PropTypes.bool,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };

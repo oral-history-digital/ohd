@@ -10,6 +10,7 @@ class PersonSerializer < ApplicationSerializer
     :title,
     :description,
     :associations_loaded,
+    :events,
     :created_at,
     :updated_at
   ]
@@ -19,6 +20,10 @@ class PersonSerializer < ApplicationSerializer
       mem[locale] = object.description(locale)
       mem
     end
+  end
+
+  def events
+    object.events.map { |e| EventSerializer.new(e) }
   end
 
   # dummy. will be filled in search

@@ -22,6 +22,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.7.0",
     "datalist-polyfill": "^1.23.3",
+    "date-fns": "^2.29.3",
     "dotenv": "^16.0.1",
     "form-serialize": "^0.7.2",
     "glob": "^7.1.2",
@@ -41,7 +42,7 @@
     "path-complete-extname": "^1.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^7.1.1",
-    "rc-slider": "^9.2.4",
+    "rc-slider": "^9.7.5",
     "react": "^17.0.2",
     "react-colorful": "^5.2.0",
     "react-copy-to-clipboard": "^5.1.0",
@@ -69,7 +70,7 @@
     "slick-carousel": "^1.8.1",
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1",
-    "swr": "^2.0.0-rc.0",
+    "swr": "^2.0.0",
     "video.js": "^7.18.1"
   },
   "devDependencies": {
