@@ -112,7 +112,7 @@ Rails.application.configure do
   config.require_master_key = true
 
   config.hosts = [
-    "oral-history.digital",
+    "portal.oral-history.digital",
     "test.oral-history.digital",
     "test1.oral-history.digital",
     "test2.oral-history.digital",

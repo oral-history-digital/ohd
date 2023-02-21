@@ -50,6 +50,17 @@
             </Country>
           </Location>
         </OriginLocation>
+        <Creators>
+          <Creator>
+            <Role>Producer</Role>
+            <Contact>
+              <Person>Alice Henderson</Person>
+              <Email>alice@example.com</Email>
+              <Organisation>Alice Henderson University</Organisation>
+              <Website>https://www.ahu.edu</Website>
+            </Contact>
+          </Creator>
+        </Creators>
         <DocumentationLanguages>
           <Language>
             <LanguageName>English</LanguageName>

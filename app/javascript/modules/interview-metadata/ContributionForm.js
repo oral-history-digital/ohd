@@ -61,7 +61,6 @@ export default function ContributionForm({
             value: data?.person_id,
             withEmpty: true,
             validate: v => v !== '',
-            individualErrorMsg: 'empty',
             handlechangecallback: handlePersonChange,
         },
         {
@@ -127,6 +126,7 @@ export default function ContributionForm({
                 >
                     {close => (
                         <PersonForm
+                            withEvents={false}
                             onSubmit={close}
                             onCancel={close}
                         />
@@ -149,6 +149,7 @@ export default function ContributionForm({
                             {close => (
                                 <PersonForm
                                     data={selectedPerson}
+                                    withEvents={false}
                                     onSubmit={close}
                                     onCancel={close}
                                 />

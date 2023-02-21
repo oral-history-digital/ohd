@@ -9,5 +9,9 @@ export { default as SingleValueWithFormContainer } from './SingleValueWithFormCo
 export { default as SubmitOnBlurForm } from './SubmitOnBlurForm';
 export { default as DeleteItemForm } from './DeleteItemForm';
 
-export { validateTapeNumber, validateColor, validateGeoCoordinate } from
-    './validators';
+export {
+    validateTapeNumber,
+    validateColor,
+    validateGeoCoordinate,
+    validateDate
+} from './validators';

@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet';
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { useEventTypes } from 'modules/event-types';
+import { ErrorMessage } from 'modules/ui';
 import {
     usePeople,
     PersonTable,
@@ -12,7 +14,12 @@ import AddButton from './AddButton';
 
 export default function PeopleAdminPage() {
     const { t } = useI18n();
-    const { isLoading, isValidating, data: people } = usePeople();
+    const { isLoading: eventTypesAreLoading } = useEventTypes();
+    const { isLoading: peopleAreLoading, data: people, error } = usePeople();
+
+    if (!people || eventTypesAreLoading) {
+        return null;
+    }
 
     function renderForm(data, onSubmit, onCancel) {
         return (
@@ -41,20 +48,22 @@ export default function PeopleAdminPage() {
                     {peopleCount} {t('activerecord.models.person.other')}
                 </h1>
 
-                {isLoading ?
+                {peopleAreLoading ?
                     <Spinner /> : (
-                    <>
-                        <AddButton
-                            className="u-mb"
-                            scope="person"
-                            interview={undefined}
-                            onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                            disabled={isLoading}
-                        />
-                        <PersonTable />
+                    error ?
+                        <ErrorMessage>{error.message}</ErrorMessage> : (
+                        <>
+                            <AddButton
+                                className="u-mb"
+                                scope="person"
+                                interview={undefined}
+                                onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
+                                disabled={peopleAreLoading}
+                            />
+                            <PersonTable />
                     </>
+                    )
                 )}
-
             </AuthShowContainer>
 
             <AuthShowContainer ifLoggedOut ifNoProject>

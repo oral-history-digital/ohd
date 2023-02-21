@@ -22,7 +22,8 @@ Rails.application.routes.draw do
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-display", to: "projects#edit_display"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
-    get "project/archiving_batches/:number", to: "projects#archiving_batches"
+    get "project/archiving_batches", to: "projects#archiving_batches_index"
+    get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
 
@@ -49,6 +50,8 @@ Rails.application.routes.draw do
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
     resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
+    resources :event_types
+    resources :events
     resources :help_texts, only: [:index]
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"
@@ -57,6 +60,7 @@ Rails.application.routes.draw do
     resources :people do
       resources :biographical_entries, only: [:destroy]
       resources :registry_references, only: [:create, :update, :destroy]
+      resources :events, only: [:index, :show, :create, :update, :destroy]
       get 'landing_page_metadata'
       get 'contributions'
     end
@@ -233,8 +237,7 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
-      #get "/", to: redirect {|params, request| "/#{params[:locale]}/projects"}
-      get "/", to: "projects#show"
+      get "/", to: "projects#index"
       resources :projects, only: [:create, :update, :destroy, :index]
       resources :institutions
       resources :help_texts, only: [:index, :update]
@@ -261,8 +264,8 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
     get "/", to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
-    get "/:locale", to: "projects#show"
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      get "/", to: "projects#show"
       resources :projects, only: [:update, :destroy]
       concerns :archive
       concerns :account
