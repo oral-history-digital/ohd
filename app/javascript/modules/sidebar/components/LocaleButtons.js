@@ -23,10 +23,10 @@ export default function LocaleButtons({
         let newPath;
         if (/^\/[a-z]{2}\/?$/.test(location.pathname)) {
             newPath = `/${locale}`;
-        } else if (/^(?:\/[a-z]{2,4})?\/[a-z]{2}$/.test(location.pathname)) {
+        } else if (/^(?:\/[\-a-z0-9]{1,11}[a-z])?\/[a-z]{2}$/.test(location.pathname)) {
             newPath = pathBaseStr;
         } else {
-            newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}\//, pathBaseStr + '/');
+            newPath = location.pathname.replace(/^(?:\/[\-a-z0-9]{1,11}[a-z])?\/[a-z]{2}\//, pathBaseStr + '/');
         }
 
         navigate(newPath);
