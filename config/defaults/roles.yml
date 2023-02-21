@@ -305,7 +305,7 @@
   - :name: NormDatum destroy
     :klass: NormDatum
     :action_name: destroy
-- :name: Sammlungsmanagement
+- :name: Archivmanagement
   :permissions:
   - :name: Annotation create
     :klass: Annotation
