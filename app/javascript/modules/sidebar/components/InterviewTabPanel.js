@@ -87,7 +87,12 @@ export default function InterviewTabPanel({
                     <>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <SubTab title={t('person_info')} open={!isLoggedIn}>
-                                {isEditor && <HelpText code="interview_person_data" className="u-mb" />}
+                                {isEditor &&
+                                    <HelpText
+                                        code="interview_person_data"
+                                        small
+                                    />
+                                }
                                 <PersonDataContainer/>
                                 {intervieweeIsLoading ?
                                     <Spinner /> : (
@@ -106,7 +111,12 @@ export default function InterviewTabPanel({
                         <AuthShowContainer ifLoggedIn>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('interview_info')}>
-                                    {isEditor && <HelpText code="interview_interview_data" className="u-mb" />}
+                                    {isEditor &&
+                                        <HelpText
+                                            code="interview_interview_data"
+                                            small
+                                        />
+                                    }
                                     <InterviewInfoContainer/>
                                     <InterviewContributorsContainer/>
                                     <InterviewTextMaterialsContainer/>

@@ -72,7 +72,11 @@ export default function EditTableHeaderOptions({
             <span>
                 {numElements} {t('modules.edit_table.segments')}
             </span>
-            <HelpText code="edit_table" small style={{ marginLeft: 'auto' }} />
+            <HelpText
+                code="edit_table"
+                small
+                className="HelpText--reversed u-ml-auto"
+            />
         </div>
     );
 }
