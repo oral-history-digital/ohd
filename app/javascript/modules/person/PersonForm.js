@@ -78,7 +78,6 @@ const formElements = [
 
 export default function PersonForm({
     data: person,
-    withEvents = true,
     onSubmit,
     onCancel
 }) {
@@ -99,7 +98,7 @@ export default function PersonForm({
         return <Spinner />;
     }
 
-    const nestedScopeProps = (withEvents && eventTypes?.length > 0) ?
+    const nestedScopeProps = (eventTypes?.length > 0) ?
         [{
             formComponent: EventForm,
             formProps: { personId: person?.id },
@@ -186,7 +185,6 @@ export default function PersonForm({
 
 PersonForm.propTypes = {
     data: PropTypes.object,
-    withEvents: PropTypes.bool,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };
