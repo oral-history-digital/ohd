@@ -38,6 +38,26 @@
   color: $ui-background-color !important;
 }
 
+.u-color-attention {
+  color: $attention-color !important;
+}
+
+.u-color-primary {
+  color: var(--primary-color) !important;
+}
+
+.u-color-secondary {
+  color: var(--secondary-color) !important;
+}
+
+.u-color-editorial {
+  color: var(--editorial-color) !important;
+}
+
 .u-uppercase {
   text-transform: uppercase !important;
+}
+
+.u-vertical-align-bottom {
+  vertical-align: bottom !important;
 }

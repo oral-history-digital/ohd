@@ -13,6 +13,7 @@ import {
     PersonTable,
     PersonForm
 } from 'modules/person';
+import EditViewOrRedirect from './EditViewOrRedirect';
 import AddButton from './AddButton';
 
 export default function PeopleAdminPage() {
@@ -44,39 +45,41 @@ export default function PeopleAdminPage() {
         Object.values(people).length;
 
     return (
-        <div className='wrapper-content register'>
-            <Helmet>
-                <title>
-                    {t('activerecord.models.person.other')}
-                </title>
-            </Helmet>
+        <EditViewOrRedirect>
+            <div className='wrapper-content register'>
+                <Helmet>
+                    <title>
+                        {t('activerecord.models.person.other')}
+                    </title>
+                </Helmet>
 
-            <AuthShowContainer ifLoggedIn>
-                <h1 className="registry-entries-title">
-                    {peopleCount} {t('activerecord.models.person.other')}
-                </h1>
+                <AuthShowContainer ifLoggedIn>
+                    <h1 className="registry-entries-title">
+                        {peopleCount} {t('activerecord.models.person.other')}
+                    </h1>
 
-                {peopleAreLoading ?
-                    <Spinner /> : (
-                    error ?
-                        <ErrorMessage>{error.message}</ErrorMessage> : (
-                        <>
-                            <AddButton
-                                className="u-mb"
-                                scope="person"
-                                interview={undefined}
-                                onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                                disabled={peopleAreLoading}
-                            />
-                            <PersonTable />
-                    </>
-                    )
-                )}
-            </AuthShowContainer>
+                    {peopleAreLoading ?
+                        <Spinner /> : (
+                        error ?
+                            <ErrorMessage>{error.message}</ErrorMessage> : (
+                            <>
+                                <AddButton
+                                    className="u-mb"
+                                    scope="person"
+                                    interview={undefined}
+                                    onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
+                                    disabled={peopleAreLoading}
+                                />
+                                <PersonTable />
+                        </>
+                        )
+                    )}
+                </AuthShowContainer>
 
-            <AuthShowContainer ifLoggedOut ifNoProject>
-                {t('devise.failure.unauthenticated')}
-            </AuthShowContainer>
-        </div>
+                <AuthShowContainer ifLoggedOut ifNoProject>
+                    {t('devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
+        </EditViewOrRedirect>
     );
 }
