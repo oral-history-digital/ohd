@@ -126,7 +126,6 @@ export default function ContributionForm({
                 >
                     {close => (
                         <PersonForm
-                            withEvents={false}
                             onSubmit={close}
                             onCancel={close}
                         />
@@ -149,7 +148,6 @@ export default function ContributionForm({
                             {close => (
                                 <PersonForm
                                     data={selectedPerson}
-                                    withEvents={false}
                                     onSubmit={close}
                                     onCancel={close}
                                 />
