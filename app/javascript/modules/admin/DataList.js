@@ -9,6 +9,7 @@ import { Form } from 'modules/forms';
 import { camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import DataContainer from './DataContainer';
+import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default class DataList extends Component {
 
@@ -101,12 +102,14 @@ export default class DataList extends Component {
 
     render() {
         return (
-            <div>
-                <ErrorBoundary>
-                    {this.data()}
-                    {this.add()}
-                </ErrorBoundary>
-            </div>
+            <EditViewOrRedirect>
+                <div>
+                    <ErrorBoundary>
+                        {this.data()}
+                        {this.add()}
+                    </ErrorBoundary>
+                </div>
+            </EditViewOrRedirect>
         );
     }
 }

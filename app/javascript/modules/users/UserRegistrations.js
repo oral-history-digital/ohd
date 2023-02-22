@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthShowContainer } from 'modules/auth';
-import { parametrizedQuery } from 'modules/admin';
+import { parametrizedQuery, EditViewOrRedirect } from 'modules/admin';
 import { HelpText } from 'modules/help-text';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
@@ -61,25 +61,27 @@ export default class UserRegistrations extends Component {
 
     render() {
         return (
-            <div className='wrapper-content register'>
-                <Helmet>
-                    <title>{t(this.props, `edit.users.admin`)}</title>
-                </Helmet>
-                <ErrorBoundary>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <HelpText code="user_admin_page" />
+            <EditViewOrRedirect>
+                <div className='wrapper-content register'>
+                    <Helmet>
+                        <title>{t(this.props, `edit.users.admin`)}</title>
+                    </Helmet>
+                    <ErrorBoundary>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <HelpText code="user_admin_page" />
 
-                        <h1 className='registry-entries-title'>
-                            {t(this.props, `edit.users.admin`)}
-                        </h1>
-                        {this.userRegistrations()}
-                        {this.renderScrollObserver()}
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-                </ErrorBoundary>
-            </div>
+                            <h1 className='registry-entries-title'>
+                                {t(this.props, `edit.users.admin`)}
+                            </h1>
+                            {this.userRegistrations()}
+                            {this.renderScrollObserver()}
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                            {t(this.props, 'devise.failure.unauthenticated')}
+                        </AuthShowContainer>
+                    </ErrorBoundary>
+                </div>
+            </EditViewOrRedirect>
         );
     }
 }
