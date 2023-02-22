@@ -24,7 +24,7 @@ html
               = image_tag @project.logos.first.file, class: 'SiteHeader-logo'
 
           main.Site-content
-            .wrapper-content
+            .wrapper-content.u-line-length
               - if notice
                 p.notice = notice
               - if alert

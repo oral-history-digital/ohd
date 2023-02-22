@@ -89,7 +89,6 @@ export default function PersonData({
                             {close => (
                                 <PersonForm
                                     data={person}
-                                    withEvents={false}
                                     onSubmit={close}
                                     onCancel={close}
                                 />
