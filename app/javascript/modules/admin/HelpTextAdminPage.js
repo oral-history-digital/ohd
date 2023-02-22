@@ -1,11 +1,19 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { useDispatch } from 'react-redux';
 
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { HelpTextTable } from 'modules/help-text';
+import { hideSidebar } from 'modules/sidebar';
 
 export default function HelpTextAdminPage() {
     const { t } = useI18n();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(hideSidebar());
+    }, []);
 
     return (
         <div className='wrapper-content register'>
