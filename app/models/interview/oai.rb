@@ -2,6 +2,7 @@ module Interview::Oai
 
   def oai_dc_identifier
     "oai:#{project.identifier}:#{archive_id}"
+    #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"
   end
 
   def oai_dc_creator
