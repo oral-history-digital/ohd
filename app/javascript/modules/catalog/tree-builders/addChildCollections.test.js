@@ -4,7 +4,7 @@ test('adds sorted collections to a project', () => {
     const project = {
         id: 1,
         shortname: 'zwar',
-        collection_ids: [1, 2, 3],
+        collection_ids: [1, 2, 3, 4],
     };
 
     const collections = [
@@ -17,7 +17,7 @@ test('adds sorted collections to a project', () => {
     const expected = {
         id: 1,
         shortname: 'zwar',
-        collection_ids: [1, 2, 3],
+        collection_ids: [1, 2, 3, 4],
         collections: [
             { id: 1 },
             { id: 2 },
