@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import { AccountPage, OrderNewPasswordContainer, RegisterContainer,
     ActivateAccount } from 'modules/account';
-import { UserRegistrationsContainer } from 'modules/users';
+import { UsersAdminPage } from 'modules/admin';
 import { SearchPage } from 'modules/search';
 import { WrappedInstitutionsContainer, ArchivePage, HelpTextAdminPage } from 'modules/admin';
 import { SiteStartpage } from 'modules/site-startpage';
@@ -27,7 +27,7 @@ const RoutesWithProjectId = () => (
         <Route path="/:locale/user_accounts/password/edit" element={<ActivateAccount />} />
         <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
         <Route exact path="/:locale/user_registrations/new" element={<RegisterContainer />} />
-        <Route exact path="/:locale/user_registrations" element={<UserRegistrationsContainer />} />
+        <Route exact path="/:locale/user_registrations" element={<UsersAdminPage />} />
         <Route path="/:locale/accounts/current" element={<AccountPage />} />
         <Route path="/:locale/searches/archive" element={<SearchPage />} />
         <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
