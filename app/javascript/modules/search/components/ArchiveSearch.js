@@ -3,6 +3,7 @@ import Observer from 'react-intersection-observer';
 import { AuthShowContainer } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
+import { ErrorMessage } from 'modules/ui';
 import useArchiveSearch from '../useArchiveSearch';
 import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
@@ -49,6 +50,12 @@ function ArchiveSearch() {
                 empty={isEmpty}
                 loading={isLoading}
             />
+
+            {error && (
+                <ErrorMessage className="u-mt">
+                    {error.message} ({error.status})
+                </ErrorMessage>
+            )}
 
             {!isLoadingMore && !isReachingEnd && (
                 <Observer onChange={handleScroll} />
