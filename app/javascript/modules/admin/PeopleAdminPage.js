@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { useDispatch } from 'react-redux';
 
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { useEventTypes } from 'modules/event-types';
+import { hideSidebar } from 'modules/sidebar';
 import { ErrorMessage } from 'modules/ui';
 import {
     usePeople,
@@ -13,7 +17,17 @@ import AddButton from './AddButton';
 
 export default function PeopleAdminPage() {
     const { t } = useI18n();
-    const { isLoading, data: people, error } = usePeople();
+    const dispatch = useDispatch();
+    const { isLoading: eventTypesAreLoading } = useEventTypes();
+    const { isLoading: peopleAreLoading, data: people, error } = usePeople();
+
+    useEffect(() => {
+        dispatch(hideSidebar());
+    }, []);
+
+    if (!people || eventTypesAreLoading) {
+        return null;
+    }
 
     function renderForm(data, onSubmit, onCancel) {
         return (
@@ -42,7 +56,7 @@ export default function PeopleAdminPage() {
                     {peopleCount} {t('activerecord.models.person.other')}
                 </h1>
 
-                {isLoading ?
+                {peopleAreLoading ?
                     <Spinner /> : (
                     error ?
                         <ErrorMessage>{error.message}</ErrorMessage> : (
@@ -52,7 +66,7 @@ export default function PeopleAdminPage() {
                                 scope="person"
                                 interview={undefined}
                                 onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                                disabled={isLoading}
+                                disabled={peopleAreLoading}
                             />
                             <PersonTable />
                     </>
