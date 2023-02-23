@@ -19,7 +19,7 @@ module Interview::Oai
   end
 
   def oai_dc_description
-    "#{media_type.classify}-Interview in #{language.name(:de)} Sprache."
+    "#{media_type.classify}-Interview auf #{language.name(:de)}."
   end
 
   def oai_dc_publisher
@@ -43,7 +43,7 @@ module Interview::Oai
   end
 
   def oai_dc_format
-    media_type.classify
+    media_type == 'audio' ? 'audio/mp3' : 'video/mp4'  
   end
 
   def oai_dc_source
@@ -51,7 +51,7 @@ module Interview::Oai
   end
 
   def oai_dc_language
-    language && language.name(:de)
+    language && language.code
   end
 
   def oai_dc_relation
