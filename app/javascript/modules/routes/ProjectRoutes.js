@@ -41,7 +41,7 @@ import {
     RegisterContainer,
     ActivateAccount
 } from 'modules/account';
-import { UserRegistrationsContainer } from 'modules/users';
+import { UsersAdminPage } from 'modules/admin';
 
 export default function ProjectRoutes() {
     const projectId = useSelector(getProjectId);
@@ -74,7 +74,7 @@ export default function ProjectRoutes() {
                 <Route path="user_accounts/password/edit" element={<ActivateAccount />} />
                 <Route path="user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
                 <Route path="user_registrations/new" element={<RegisterContainer />} />
-                <Route path="user_registrations" element={<UserRegistrationsContainer />} />
+                <Route path="user_registrations" element={<UsersAdminPage />} />
                 <Route path="uploads/new" element={<UploadsContainer />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route path="project/edit-config" element={<EditProjectConfig />} />

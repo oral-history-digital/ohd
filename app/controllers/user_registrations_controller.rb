@@ -100,7 +100,7 @@ class UserRegistrationsController < ApplicationController
   def index
     page = params[:page] || 1
     user_registrations = policy_scope(UserRegistration).
-      where(search_params).
+      #where(search_params).
       order("last_name ASC").
       paginate(page: page)
 
