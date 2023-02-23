@@ -588,7 +588,7 @@ class Interview < ApplicationRecord
 
       I18n.locale = orig_locale
 
-      if first_name.empty?
+      if first_name.blank?
         last_name
       else
         "#{last_name}, #{first_name}"
