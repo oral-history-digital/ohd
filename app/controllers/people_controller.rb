@@ -91,7 +91,9 @@ class PeopleController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{cache_key_params}-#{Person.count}-#{Person.maximum(:updated_at)}" do
+        cache_key = "#{current_project.cache_key_prefix}-people-#{cache_key_params}"\
+          "-#{Person.count}-#{Person.maximum(:updated_at)}-#{I18n.locale.to_s}"
+        json = Rails.cache.fetch(cache_key) do
           if params[:for_projects]
             data = policy_scope(Person).
               includes(:translations, :project).
@@ -113,7 +115,7 @@ class PeopleController < ApplicationController
           end
 
           {
-            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s, nil, nil, I18n.locale.to_s); mem },
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id,
@@ -148,7 +150,9 @@ class PeopleController < ApplicationController
       format.json do
         render json: {
           nested_id: person.id,
-          data: params[:with_associations] ? cache_single(person, 'PersonWithAssociations') : cache_single(person),
+          data: (params[:with_associations].present? ?
+            cache_single(person, 'PersonWithAssociations', nil, I18n.locale.to_s) :
+            cache_single(person, nil,                      nil, I18n.locale.to_s)),
           nested_data_type: "people",
           data_type: 'projects',
           id: current_project.id,
