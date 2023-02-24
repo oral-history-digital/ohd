@@ -4,6 +4,7 @@ import { useI18n } from 'modules/i18n';
 import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
+import ProjectShortnamesCell from './ProjectShortnamesCell';
 
 export default function UserTable() {
     const { t, locale } = useI18n();
@@ -29,7 +30,11 @@ export default function UserTable() {
             accessorKey: 'activated_at',
             header: t('activerecord.attributes.user_registration.activated_at'),
             accessorFn: row => row.activated_at,
-            //cell: DateCell
+        },
+        {
+            accessorKey: 'user_registration_projects',
+            header: t('activerecord.models.project.other'),
+            cell: ProjectShortnamesCell,
         },
         {
             id: 'actions',
