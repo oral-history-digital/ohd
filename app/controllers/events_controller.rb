@@ -31,7 +31,7 @@ class EventsController < ApplicationController
   def update
     event = Event.find(params[:id])
     authorize event
-    event.update_attributes(event_params)
+    event.update(event_params)
 
     render json: event
   end
