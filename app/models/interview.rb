@@ -580,18 +580,15 @@ class Interview < ApplicationRecord
   def build_full_title_from_name_parts(locale)
     first_interviewee = interviewee
     if first_interviewee
-      orig_locale = I18n.locale
-      I18n.locale = locale
+      I18n.with_locale locale do
+        last_name = first_interviewee.last_name_used
+        first_name = first_interviewee.first_name_used
 
-      last_name = first_interviewee.last_name_used
-      first_name = first_interviewee.first_name_used
-
-      I18n.locale = orig_locale
-
-      if first_name.blank?
-        last_name
-      else
-        "#{last_name}, #{first_name}"
+        if first_name.blank?
+          last_name
+        else
+          "#{last_name}, #{first_name}"
+        end
       end
     else
       'no interviewee given'
@@ -603,26 +600,28 @@ class Interview < ApplicationRecord
   end
 
   def reverted_short_title(locale)
-    orig_locale = I18n.locale
-    begin
-      I18n.locale = locale
-      "#{interviewee.last_name_used}, #{interviewee.first_name_used}"
-    rescue
-      "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
-    ensure
-      I18n.locale = orig_locale
+    I18n.with_locale locale do
+      begin
+        fn = interviewee.first_name_used
+        ln = interviewee.last_name_used
+        if fn.blank?
+          "#{I18n.t("honorific.#{interviewee.gender}")} #{ln}"
+        else
+          "#{ln}, #{fn}"
+        end
+      rescue
+        "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
+      end
     end
   end
 
   def short_title(locale)
-    orig_locale = I18n.locale
-    begin
-      I18n.locale = locale
-      "#{interviewee.first_name_used}, #{interviewee.last_name_used}"
-    rescue
-      "Interviewee might not be in DB, interview-id = #{id}"
-    ensure
-      I18n.locale = orig_locale
+    I18n.with_locale locale do
+      begin
+        "#{interviewee.first_name_used}, #{interviewee.last_name_used}"
+      rescue
+        "Interviewee might not be in DB, interview-id = #{id}"
+      end
     end
   end
 
@@ -630,18 +629,15 @@ class Interview < ApplicationRecord
     if project.fullname_on_landing_page
       title(locale)
     else
-      orig_locale = I18n.locale
-      I18n.locale = locale
-
       name_parts = []
-      unless interviewees.blank?
-        fn = interviewee.first_name_used
-        ln = interviewee.last_name_used
-        name_parts << fn unless fn.blank?
-        name_parts << "#{ln.strip.chars.first}." unless ln.blank?
+      I18n.with_locale locale do
+        unless interviewees.blank?
+          fn = interviewee.first_name_used
+          ln = interviewee.last_name_used
+          name_parts << fn unless fn.blank?
+          name_parts << "#{ln.strip.chars.first}." unless ln.blank?
+        end
       end
-
-      I18n.locale = orig_locale
       name_parts.join(' ')
     end
   end
