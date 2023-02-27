@@ -22,7 +22,9 @@ class BiographicalEntriesController < ApplicationController
     authorize interview
     respond_to do |format|
       format.pdf do
-        send_data interview.biography_pdf(params[:locale], params[:lang]), filename: "#{interview.archive_id}_biography_#{params[:lang]}.pdf", :type => "application/pdf"
+        send_data interview.biography_pdf(params[:locale], params[:lang]),
+          filename: "#{interview.archive_id}_biography_#{params[:lang]}.pdf",
+          type: "application/pdf"
       end
     end
   end
