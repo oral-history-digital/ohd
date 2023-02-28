@@ -19,7 +19,7 @@ export const getTree = createSelector(
         const preparedData = prepareEntriesForComponent(data, selectedRegistryEntryId);
         const filteredData = filterEntriesWithOutLabels(preparedData);
         const root = buildTree(filteredData);
-        sortChildrenRecursively(root.children);
+        root.children && sortChildrenRecursively(root.children);
         disableTopCategories(root);
         return root;
     }
@@ -85,7 +85,7 @@ function sortChildrenRecursively(children) {
 }
 
 function disableTopCategories(root) {
-    root.children.forEach(child => {
+    root.children?.forEach(child => {
         child.disabled = true;
     });
 }
