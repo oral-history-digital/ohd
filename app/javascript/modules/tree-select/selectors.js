@@ -85,7 +85,7 @@ function sortChildrenRecursively(children) {
 }
 
 function disableTopCategories(root) {
-    root.children.forEach(child => {
+    root.children?.forEach(child => {
         child.disabled = true;
     });
 }
