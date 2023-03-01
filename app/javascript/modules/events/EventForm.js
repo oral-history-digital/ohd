@@ -4,7 +4,11 @@ import { useSelector } from 'react-redux';
 import { getProjectId } from 'modules/archive';
 import { getProjects } from 'modules/data';
 import { useEventTypes } from 'modules/event-types';
-import { useMutatePeople } from 'modules/person';
+import {
+    useMutatePeople,
+    useMutatePersonWithAssociations,
+    useMutatePersonLandingPageMetadata
+} from 'modules/person';
 import { Form, validateDate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
@@ -22,6 +26,9 @@ export default function EventForm({
     const projectId = useSelector(getProjectId);
     const projects = useSelector(getProjects);
     const mutatePeople = useMutatePeople();
+    const mutatePersonWithAssociations = useMutatePersonWithAssociations();
+    const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
+
     const { t, locale } = useI18n();
 
     const { data: eventTypes, isLoading } = useEventTypes();
@@ -100,6 +107,11 @@ export default function EventForm({
 
                             return updatedPeople;
                         });
+
+                        if (eventHolderId) {
+                            mutatePersonWithAssociations(eventHolderId);
+                            mutatePersonLandingPageMetadata(eventHolderId);
+                        }
                     });
                 }
                 if (typeof onSubmit === 'function') {

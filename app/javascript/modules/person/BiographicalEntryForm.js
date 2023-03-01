@@ -1,4 +1,10 @@
+import { useState} from 'react';
 import PropTypes from 'prop-types';
+
+import { submitDataWithFetch } from 'modules/api';
+import { usePathBase } from 'modules/routes';
+import useMutatePeople from './useMutatePeople';
+import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
 
 import { Form } from 'modules/forms';
 
@@ -12,12 +18,39 @@ export default function BiographicalEntryForm({
     onSubmit,
     onCancel,
 }) {
+    const [isFetching, setIsFetching] = useState(false);
+    const mutatePeople = useMutatePeople();
+    const mutatePersonWithAssociations = useMutatePersonWithAssociations();
+    const pathBase = usePathBase();
+
     return (
         <Form
             scope='biographical_entry'
-            onSubmit={(params) => {
-                submitData({ locale, projectId, projects }, params);
-                onSubmit();
+            onSubmit={async (params) => {
+                mutatePeople(async people => {
+                    const id = person?.id || biographicalEntry?.person_id;
+                    setIsFetching(true);
+                    const result = await submitDataWithFetch(pathBase, params);
+                    const updatedPerson = result.data;
+
+                    setIsFetching(false);
+                    if (id) {
+                        mutatePersonWithAssociations(id);
+                    }
+
+                    if (typeof onSubmit === 'function') {
+                        onSubmit();
+                    }
+
+                    const updatedPeople = {
+                        ...people,
+                        data: {
+                            ...people.data,
+                            [updatedPerson.id]: updatedPerson
+                        }
+                    };
+                    return updatedPeople;
+                });
             }}
             onCancel={onCancel}
             data={biographicalEntry}
@@ -48,6 +81,7 @@ export default function BiographicalEntryForm({
                     optionsScope: 'workflow_states',
                 },
             ]}
+            fetching={isFetching}
         />
     );
 }
