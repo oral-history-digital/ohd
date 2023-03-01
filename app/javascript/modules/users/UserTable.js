@@ -45,7 +45,6 @@ export default function UserTable() {
             accessorFn: row => row.activated_at,
         },
         {
-            accessorKey: 'user_registration_projects',
             header: t('activerecord.models.project.other'),
             cell: ProjectShortnamesCell,
         },

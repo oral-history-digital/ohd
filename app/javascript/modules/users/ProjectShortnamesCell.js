@@ -1,23 +1,38 @@
 import { useSelector } from 'react-redux';
-import { getProjects } from 'modules/data';
-
 import PropTypes from 'prop-types';
 
+import { getProjects } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+
 export default function ProjectShortnamesCell({
-    getValue
+    row,
 }) {
+    const { t } = useI18n();
     const projects = useSelector(getProjects);
-    const userRegistrationProjects = Object.values(getValue('user_registration_projects'));
+    const userRegistration = row.original;
+    const userRegistrationProjects = Object.values(userRegistration.user_registration_projects);
+
+    const projectDisplay = userRegistrationProject => {
+        if (userRegistrationProject) {
+            const workflowState = t(`user_registration_projects.workflow_states.${userRegistrationProject.workflow_state}`);
+            const hasAMRole = Object.values(userRegistration.user_roles).find(role => 
+                role.name === 'Archivmanagement' && role.project_id === userRegistrationProject.project_id);
+
+            return (
+                <li
+                    key={userRegistrationProject.id}
+                    className="DetailList-item"
+                >
+                    { projects[userRegistrationProject.project_id].shortname + ' - ' + workflowState + (hasAMRole ? ' - AM' : '') }
+                </li>
+            )
+        }
+    }
 
     return (
         <ul  className="DetailList">
             {userRegistrationProjects.map(urp => (
-                <li
-                    key={urp.id}
-                    className="DetailList-item"
-                >
-                    {projects[urp.project_id].shortname}
-                </li>
+                projectDisplay(urp)
             ))}
         </ul>
     );
