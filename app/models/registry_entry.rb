@@ -176,7 +176,7 @@ class RegistryEntry < ApplicationRecord
   # TODO: Decide wether workflow_state should be 'public'.
   scope :for_tree, -> (locale, project_id) {
     joins('LEFT OUTER JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id INNER JOIN registry_name_translations ON registry_names.id = registry_name_translations.registry_name_id INNER JOIN registry_name_types ON registry_names.registry_name_type_id = registry_name_types.id')
-    .where('registry_name_translations.locale' => locale)
+    .where("registry_name_translations.locale = ? OR registry_entries.code = 'root'", locale)
     .where(project_id: project_id)
     .group('registry_entries.id, registry_hierarchies.ancestor_id')
     .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
