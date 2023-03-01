@@ -3,8 +3,8 @@ require 'globalize'
 class Collection < ApplicationRecord
 
   has_many :interviews
-  belongs_to :project
-  belongs_to :institution
+  belongs_to :project, touch: true
+  belongs_to :institution, touch: true
 
   translates :name, :homepage, :countries, :interviewers, :responsibles, :notes, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
