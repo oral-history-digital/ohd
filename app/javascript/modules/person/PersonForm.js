@@ -128,6 +128,11 @@ export default function PersonForm({
 
                     return updatedPeople;
                 });
+
+                if (person.id) {
+                    mutatePersonWithAssociations(person.id);
+                    mutatePersonLandingPageMetadata(person.id);
+                }
             }
         }] :
         undefined;
