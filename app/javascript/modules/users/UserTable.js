@@ -10,6 +10,7 @@ import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
 import ProjectShortnamesCell from './ProjectShortnamesCell';
 import RolesCell from './RolesCell';
+import TasksCell from './TasksCell';
 
 export default function UserTable() {
     const { t, locale } = useI18n();
@@ -71,6 +72,10 @@ export default function UserTable() {
         {
             header: t('activerecord.models.role.other'),
             cell: RolesCell,
+        },
+        {
+            header: t('activerecord.models.task.other'),
+            cell: TasksCell,
         },
     ]), [locale]);
 
