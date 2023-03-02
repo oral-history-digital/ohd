@@ -12,7 +12,10 @@ export default class UserRoles extends Component {
     userRoles() {
         return Object.keys(this.props.userRoles).map((id) => {
             return (
-                <li key={`user-role-li-${id}`}>
+                <li
+                    key={`user-role-li-${id}`}
+                    className="DetailList-item"
+                >
                     <UserRoleContainer
                         userRole={this.props.userRoles[id]}
                         key={`userRole-${id}`}
@@ -47,7 +50,7 @@ export default class UserRoles extends Component {
     render() {
         return (
             <div>
-                <ul className={'user-roles'}>
+                <ul className="DetailList">
                     {this.userRoles()}
                 </ul>
                 {this.addUserRole()}
