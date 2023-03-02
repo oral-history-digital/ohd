@@ -18,6 +18,7 @@ export default function ProjectShortnamesCell({
             const hasAMRole = Object.values(userRegistration.user_roles).find(role => 
                 role.name === 'Archivmanagement' && role.project_id === userRegistrationProject.project_id);
 
+            debugger;
             return (
                 <li
                     key={userRegistrationProject.id}
@@ -30,7 +31,7 @@ export default function ProjectShortnamesCell({
     }
 
     return (
-        <ul  className="DetailList">
+        <ul className="DetailList">
             {userRegistrationProjects.map(urp => (
                 projectDisplay(urp)
             ))}
@@ -39,5 +40,5 @@ export default function ProjectShortnamesCell({
 }
 
 ProjectShortnamesCell.propTypes = {
-    getValue: PropTypes.func.isRequired,
+    row: PropTypes.object.isRequired,
 };

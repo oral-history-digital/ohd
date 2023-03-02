@@ -9,6 +9,7 @@ import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
 import ProjectShortnamesCell from './ProjectShortnamesCell';
+import RolesCell from './RolesCell';
 
 export default function UserTable() {
     const { t, locale } = useI18n();
@@ -66,6 +67,10 @@ export default function UserTable() {
                 return getCurrentUserRegistrationProject(row, project).updated_at;
             },
             cell: DateCell,
+        },
+        {
+            header: t('activerecord.models.role.other'),
+            cell: RolesCell,
         },
     ]), [locale]);
 
