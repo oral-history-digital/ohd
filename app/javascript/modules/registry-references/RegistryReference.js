@@ -19,7 +19,7 @@ export default function RegistryReference({
     registryEntriesStatus,
     refObject,
     hideEdit,
-    locale,
+    contentLocale,
     projectId,
     projects,
     registryEntries,
@@ -30,7 +30,7 @@ export default function RegistryReference({
     fetchData,
     deleteData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { deleteRegistryReference } = useRegistryReferenceApi();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
@@ -72,7 +72,7 @@ export default function RegistryReference({
         }
     }
 
-    const hasNote = !!registryEntry.notes[locale];
+    const hasNote = !!(registryEntry.notes[contentLocale] || registryEntry.notes[locale]);
 
     return (
         <li className="RegistryReference registry-reference">
@@ -84,14 +84,14 @@ export default function RegistryReference({
                         className="RegistryReference-name RegistryReference-name--link"
                         onClick={() => setOpenReference(registryEntry)}
                     >
-                        {registryEntry.name[locale]}
+                        {registryEntry.name[contentLocale] || registryEntry.name[locale]}
                     </button>
                 ) : (
                     <span
                         id={"reference-" + registryReference.id}
                         className="RegistryReference-name"
                     >
-                        {registryEntry.name[locale]}
+                        {registryEntry.name[contentLocale] || registryEntry.name[locale]}
                     </span>
                 )
             }
@@ -133,7 +133,7 @@ export default function RegistryReference({
                                     }}
                                     onCancel={close}
                                 >
-                                    <p>{registryEntry.name[locale]}</p>
+                                    <p>{registryEntry.name[contentLocale] || registryEntry.name[locale]}</p>
                                 </DeleteItemForm>
                             )}
                         </Modal>
