@@ -16,6 +16,7 @@ function NormDataForDescriptor({
     normDataProviders,
     descriptor,
     setFromAPI,
+    onSubmitCallback,
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
@@ -99,6 +100,7 @@ function NormDataForDescriptor({
                                             ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project, locale),
                                             ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
                                         });
+                                        onSubmitCallback();
                                         setFromAPI(false);
                                     }} >
                                         {`${result.Entry.Name}: ${result.Entry.Label}, ${result.Entry.Type}`}
