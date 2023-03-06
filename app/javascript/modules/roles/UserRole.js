@@ -2,9 +2,11 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaEye, FaTrash } from 'react-icons/fa';
 
-import { admin } from 'modules/auth';
+import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import { useMutateData, useMutateDatum } from 'modules/data';
+import { useDataApi } from 'modules/api';
 
 export default function UserRole ({
     userRole,
@@ -12,9 +14,14 @@ export default function UserRole ({
     projects,
     projectId,
     deleteData,
+    userRegistrationId,
 }) {
 
     const { t, locale } = useI18n();
+    const { isAuthorized } = useAuthorization();
+    const { deleteDatum } = useDataApi();
+    const mutateData = useMutateData('user_registrations');
+    const mutateDatum = useMutateDatum();
 
     const show = () => {
         return (
@@ -29,14 +36,35 @@ export default function UserRole ({
     }
 
     const destroy = () => {
-        deleteData({ projectId, projects, locale }, 'user_roles', userRole.id, null, null, true);
+        mutateData( async data => {
+            const result = await deleteDatum(userRole.id, 'user_roles');
+            const updatedDatum = result.data;
+
+            if (userRegistrationId) {
+                mutateDatum(userRegistrationId, 'user_registrations');
+            }
+
+            //if (typeof onSubmit === 'function') {
+                //onSubmit();
+            //}
+
+            const updatedData = {
+                ...data,
+                data: {
+                    ...data.data,
+                    [updatedDatum.id]: updatedDatum
+                }
+            };
+
+            return updatedData;
+        });
     }
 
     const deleteUserRole = () => {
         if (
             userRole &&
             !hideEdit &&
-            admin(userRole, 'destroy')
+            isAuthorized(userRole, 'destroy')
         ) {
             return (
                 <Modal

@@ -1,19 +1,19 @@
-import useSWRImmutable from 'swr/immutable';
-import { useSelector } from 'react-redux';
+import { useSWRConfig } from 'swr';
 
-import { getCurrentProject } from 'modules/data';
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
 
-export default function useMutateDatum(id, scope) {
-    const project = useSelector(getCurrentProject);
+export default function useMutateDatum() {
     const pathBase = usePathBase();
+    const { mutate } = useSWRConfig();
 
-    const path = `${pathBase}/${scope}/${id}.json`;
+    return function mutatePersonData(id, scope, updateDocument) {
+        const path = `${pathBase}/${scope}/${id}.json`;
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(
-        typeof id === 'number' ? path : null, fetcher
-    );
-
-    return { isLoading, isValidating, data: data?.data, error };
+        if (typeof updateDocument === 'function') {
+            mutate(path, updateDocument, { revalidate: false });
+        } else {
+            mutate(path);
+        }
+    }
 }
