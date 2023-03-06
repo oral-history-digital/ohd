@@ -140,6 +140,7 @@ export default class UserRegistration extends Component {
                         <UserRolesContainer
                             userRoles={roles}
                             userAccountId={this.props.userRegistration.user_account_id}
+                            userRegistrationId={this.props.userRegistration.id}
                             hideEdit={false}
                         />
                     }
