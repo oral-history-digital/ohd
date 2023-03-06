@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
-//import { submitAndMutate } from 'modules/data';
 import { submitAndMutate, useMutateData, useMutateDatum } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 
@@ -23,7 +22,6 @@ export default function UserRoleForm ({
     const mutateData = useMutateData('user_registrations');
     const mutateDatum = useMutateDatum(userRegistrationId, 'user_registrations');
     const pathBase = usePathBase();
-    //const submitWithMutate = submitAndMutate();
 
     useEffect(() => {
         if (
@@ -40,12 +38,9 @@ export default function UserRoleForm ({
                 scope='user_role'
                 onSubmit={ async (params) => {
                     mutateData( async data => {
-                        debugger;   
-                        //setIsFetching(true);
                         const result = await submitDataWithFetch(pathBase, params);
                         const updatedDatum = result.data;
 
-                        //setIsFetching(false);
                         if (userRegistrationId) {
                             mutateDatum(userRegistrationId, 'user_registrations');
                         }
@@ -63,12 +58,6 @@ export default function UserRoleForm ({
                         };
                         return updatedData;
                     });
-                    //submitWithMutate(
-                        //params,
-                        //onSubmit,
-                        //userRegistrationId,
-                        //'user_registrations',
-                    //);
                 }}
                 values={{
                     user_account_id: userAccountId,
