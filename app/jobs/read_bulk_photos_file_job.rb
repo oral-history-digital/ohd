@@ -89,6 +89,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           #photo.photo.attach(io: File.open(File.join(Rails.root, 'tmp', 'files', data[2])), filename: data[2], metadata: {title: data[3]})
 
           photo.write_iptc_metadata
+          photo.recalculate_checksum
 
           interviews_to_reindex << interview
           File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
