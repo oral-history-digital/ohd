@@ -2,18 +2,28 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { submitDataWithFetch } from 'modules/api';
+//import { submitAndMutate } from 'modules/data';
+import { submitAndMutate, useMutateData, useMutateDatum } from 'modules/data';
+import { usePathBase } from 'modules/routes';
 
 export default function UserRoleForm ({
     userAccountId,
+    userRegistrationId,
     projectId,
     projects,
     project,
     locale,
+    roles,
     rolesStatus,
     fetchData,
-    submitData,
     onSubmit,
 }) {
+
+    const mutateData = useMutateData('user_registrations');
+    const mutateDatum = useMutateDatum(userRegistrationId, 'user_registrations');
+    const pathBase = usePathBase();
+    //const submitWithMutate = submitAndMutate();
 
     useEffect(() => {
         if (
@@ -28,7 +38,38 @@ export default function UserRoleForm ({
         <div>
             <Form
                 scope='user_role'
-                onSubmit={(params) => { submitData( params); onSubmit(); }}
+                onSubmit={ async (params) => {
+                    mutateData( async data => {
+                        debugger;   
+                        //setIsFetching(true);
+                        const result = await submitDataWithFetch(pathBase, params);
+                        const updatedDatum = result.data;
+
+                        //setIsFetching(false);
+                        if (userRegistrationId) {
+                            mutateDatum(userRegistrationId, 'user_registrations');
+                        }
+
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
+
+                        const updatedData = {
+                            ...data,
+                            data: {
+                                ...data.data,
+                                [updatedDatum.id]: updatedDatum
+                            }
+                        };
+                        return updatedData;
+                    });
+                    //submitWithMutate(
+                        //params,
+                        //onSubmit,
+                        //userRegistrationId,
+                        //'user_registrations',
+                    //);
+                }}
                 values={{
                     user_account_id: userAccountId,
                 }}
