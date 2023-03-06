@@ -15,6 +15,7 @@ export default function RolesCell({
         <UserRolesContainer
             userRoles={roles}
             userAccountId={userRegistration.user_account_id}
+            userRegistrationId={userRegistration.id}
             hideEdit={false}
         />
     );

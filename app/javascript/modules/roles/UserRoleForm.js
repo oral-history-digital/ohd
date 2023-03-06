@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
-import { submitAndMutate, useMutateData, useMutateDatum } from 'modules/data';
+import { useMutateData, useMutateDatum } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 
 export default function UserRoleForm ({
@@ -20,7 +20,7 @@ export default function UserRoleForm ({
 }) {
 
     const mutateData = useMutateData('user_registrations');
-    const mutateDatum = useMutateDatum(userRegistrationId, 'user_registrations');
+    const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
 
     useEffect(() => {

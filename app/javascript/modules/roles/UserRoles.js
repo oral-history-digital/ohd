@@ -18,6 +18,7 @@ export default class UserRoles extends Component {
                 >
                     <UserRoleContainer
                         userRole={this.props.userRoles[id]}
+                        userRegistrationId={this.props.userRegistrationId}
                         key={`userRole-${id}`}
                         hideEdit={this.props.hideEdit}
                     />
@@ -39,6 +40,7 @@ export default class UserRoles extends Component {
                     {closeModal => (
                         <UserRoleFormContainer
                             userAccountId={this.props.userAccountId}
+                            userRegistrationId={this.props.userRegistrationId}
                             onSubmit={closeModal}
                         />
                     )}

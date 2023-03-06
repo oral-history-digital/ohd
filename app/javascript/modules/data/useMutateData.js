@@ -1,11 +1,9 @@
 import { useSWRConfig } from 'swr';
 import { useSelector } from 'react-redux';
 
-import { getCurrentProject } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 
 export default function useMutateData(scope) {
-    const project = useSelector(getCurrentProject);
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 
