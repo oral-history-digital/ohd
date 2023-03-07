@@ -47,6 +47,7 @@ export default function NormDatumForm({
                     setRegistryEntryAttributes={setRegistryEntryAttributes}
                     registryEntryAttributes={registryEntryAttributes}
                     setFromAPI={setFromAPI}
+                    onSubmitCallback={onSubmitCallback}
                 /> :
                 <Form
                     scope='norm_datum'
