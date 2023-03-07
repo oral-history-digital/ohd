@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { RowActions } from 'modules/tables';
-import UserRegistrationProjectFormContainer from './UserRegistrationProjectFormContainer';
+import UserEdit from './UserEdit';
 
 export default function UserRowActions({
     row,
@@ -9,7 +9,7 @@ export default function UserRowActions({
     return (
         <RowActions
             row={row}
-            editComponent={UserRegistrationProjectFormContainer}
+            editComponent={UserEdit}
         />
     );
 }
