@@ -17,14 +17,18 @@ export default function ProjectShortnamesCell({
             const workflowState = t(`user_registration_projects.workflow_states.${userRegistrationProject.workflow_state}`);
             const hasAMRole = Object.values(userRegistration.user_roles).find(role => 
                 role.name === 'Archivmanagement' && role.project_id === userRegistrationProject.project_id);
+            const project = projects[userRegistrationProject.project_id];
 
-            debugger;
+            if (project.shortname === 'ohd') {
+                return null;
+            }
+
             return (
                 <li
                     key={userRegistrationProject.id}
                     className="DetailList-item"
                 >
-                    { projects[userRegistrationProject.project_id].shortname + ' - ' + workflowState + (hasAMRole ? ' - AM' : '') }
+                    { project.shortname + ' - ' + workflowState + (hasAMRole ? ' - AM' : '') }
                 </li>
             )
         }

@@ -28,7 +28,9 @@ class UserRegistrationSerializer < ApplicationSerializer
     :country,
     :user_roles,
     :user_registration_projects,
-    :tasks
+    :tasks,
+    :workflow_state,
+    :workflow_states,
 
   def user_account_id
     object.user_account && object.user_account.id
