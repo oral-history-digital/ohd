@@ -42,6 +42,11 @@ export default function UserTable() {
 
     const ohdColumns = useMemo(() => ([
         {
+            id: 'workflow_state',
+            accessorFn: row => row.workflow_state,
+            header: t('activerecord.attributes.user_registration.workflow_state'),
+        },
+        {
             accessorKey: 'activated_at',
             header: t('activerecord.attributes.user_registration.activated_at'),
             accessorFn: row => row.activated_at,
@@ -50,7 +55,7 @@ export default function UserTable() {
             header: t('activerecord.models.project.other'),
             cell: ProjectShortnamesCell,
         },
-    ]), [locale]);
+    ]), [locale, projectId]);
 
     const projectColumns = useMemo(() => ([
         {
@@ -77,7 +82,7 @@ export default function UserTable() {
             header: t('activerecord.models.task.other'),
             cell: TasksCell,
         },
-    ]), [locale]);
+    ]), [locale, projectId]);
 
     const actionColumns = useMemo(() => ([
         {
@@ -85,7 +90,7 @@ export default function UserTable() {
             header: t('modules.tables.actions'),
             cell: UserRowActions
         }
-    ]), [locale]);
+    ]), [locale, projectId]);
 
     const columns = baseColumns.concat(projectId !== 'ohd' ? projectColumns : ohdColumns).concat(actionColumns);
 

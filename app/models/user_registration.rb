@@ -1,5 +1,6 @@
 class UserRegistration < ApplicationRecord
   #include ActionView::Helpers::TextHelper
+  include Workflow
 
   belongs_to :user_account
 
@@ -19,6 +20,26 @@ class UserRegistration < ApplicationRecord
   before_create :serialize_form_parameters
 
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
+
+  workflow do
+    #state :new do
+      #event :activate, :transitions_to => :activated
+    #end
+    state :registered do
+      event :block, :transitions_to => :blocked
+    end
+    state :blocked do
+      event :revoke_block, :transitions_to => :registered
+    end
+  end
+
+  def workflow_states
+    current_state.events.map{|e| e.first}
+  end
+
+  def workflow_state=(change)
+    self.send("#{change}!")
+  end
 
   # fields expected for the user registration
   def self.define_registration_fields(fields)
@@ -80,7 +101,6 @@ EVAL
   def register
     create_account
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
-    self.processed_at = Time.now
     self.default_locale = I18n.locale
     save
     # FIXME: copies all attributes to user_account. this duplicates data and has to be removed after the new registration process is finished

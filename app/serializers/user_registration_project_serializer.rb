@@ -6,6 +6,8 @@ class UserRegistrationProjectSerializer < ApplicationSerializer
     :workflow_states,
     :admin_comments,
     :activated_at,
+    :processed_at,
+    :terminated_at,
     :updated_at,
     :created_at
 

@@ -189,7 +189,8 @@ class UserRegistrationsController < ApplicationController
       :receive_newsletter,
       :tos_agreement,
       :priv_agreement,
-      :default_locale
+      :default_locale,
+      :workflow_state,
     )
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true, length: 191
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
   create_table "archiving_batches", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "number", null: false
     t.bigint "project_id", null: false
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
     t.index ["project_id"], name: "index_archiving_batches_on_project_id"
   end
 
@@ -182,8 +184,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "event_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "event_id", null: false
+  create_table "event_translations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "event_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -192,8 +194,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["locale"], name: "index_event_translations_on_locale"
   end
 
-  create_table "event_type_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "event_type_id", null: false
+  create_table "event_type_translations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "event_type_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -202,31 +204,31 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["locale"], name: "index_event_type_translations_on_locale"
   end
 
-  create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "event_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.bigint "project_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["project_id"], name: "index_event_types_on_project_id"
   end
 
-  create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "start_date", null: false
     t.date "end_date", null: false
     t.bigint "event_type_id", null: false
     t.string "eventable_type", null: false
     t.bigint "eventable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["event_type_id"], name: "index_events_on_event_type_id"
     t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
   end
 
-  create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "external_link_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "external_link_id", null: false
     t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "url"
     t.string "name"
     t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
@@ -441,6 +443,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.boolean "use_in_results_list"
     t.string "map_color", default: "#1c2d8f"
     t.boolean "use_in_metadata_import", default: false
+    t.integer "event_type_id"
+    t.string "eventable_type"
   end
 
   create_table "norm_data", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -459,7 +463,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "oauth_access_grants", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "oauth_access_grants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "resource_owner_id", null: false
     t.bigint "application_id", null: false
     t.string "token", null: false
@@ -473,7 +477,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
   end
 
-  create_table "oauth_access_tokens", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "oauth_access_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "resource_owner_id"
     t.bigint "application_id"
     t.string "token", null: false
@@ -488,7 +492,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
-  create_table "oauth_applications", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "oauth_applications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "uid", null: false
     t.string "secret", null: false
@@ -774,7 +778,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.index ["media_id"], name: "index_segments_on_media_id", length: 191
   end
 
-  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
     t.integer "user_account_id"
@@ -1000,6 +1004,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.datetime "activated_at", precision: nil
     t.string "workflow_state"
     t.string "admin_comments"
+    t.datetime "processed_at"
+    t.datetime "terminated_at"
   end
 
   create_table "user_registrations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -1016,6 +1022,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_160705) do
     t.boolean "receive_newsletter"
     t.boolean "priv_agreement", default: false
     t.datetime "updated_at", precision: nil
+    t.string "workflow_state"
     t.index ["email"], name: "index_user_registrations_on_workflow_state_and_email", length: 191
   end
 
