@@ -94,7 +94,7 @@ export default function UserRole ({
         <div>
             {userRole.name}
             <span>
-                {show()}
+                {false && show()}
                 {deleteUserRole()}
             </span>
         </div>
