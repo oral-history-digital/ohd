@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchData } from 'modules/data';
 import { getProjectId, getLocale } from 'modules/archive';
-import { getProjects, getStatuses } from 'modules/data';
+import { getCurrentProject, getStatuses } from 'modules/data';
 import { Spinner } from 'modules/spinners';
 
 export default function Fetch({
@@ -18,7 +18,7 @@ export default function Fetch({
     testIdOrDesc,
 }) {
     const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
+    const project = useSelector(getCurrentProject);
     const locale = useSelector(getLocale);
     const statuses = useSelector(getStatuses);
     const testResult = (typeof testSelector === 'function') ?
@@ -29,7 +29,7 @@ export default function Fetch({
 
     useEffect(() => {
         if (!testResult) {
-            dispatch(fetchData({ projectId, locale, projects }, ...fetchParams));
+            dispatch(fetchData({ projectId, locale, project }, ...fetchParams));
         }
     }, [JSON.stringify(fetchParams), doReload]);
 

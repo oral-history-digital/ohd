@@ -12,7 +12,6 @@ import {
 } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
 import { SearchPage } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
@@ -90,7 +89,6 @@ export default function ProjectRoutes() {
                 <Route path="roles" element={<WrappedRolesContainer />} />
                 <Route path="permissions" element={<WrappedPermissionsContainer />} />
                 <Route path="task_types" element={<WrappedTaskTypesContainer />} />
-                <Route exact path="/" element={<HomeContainer />} />
             </Routes>
         </ErrorBoundary>
     );

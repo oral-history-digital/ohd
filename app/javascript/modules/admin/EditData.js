@@ -14,7 +14,7 @@ export default function EditData({
     translations,
     locale,
     projectId,
-    projects,
+    project,
     scope,
     submitData,
 }) {
@@ -33,7 +33,7 @@ export default function EditData({
                 values={initialFormValues}
                 scope={scope}
                 onSubmit={params => {
-                    submitData({ locale, projectId, projects }, params);
+                    submitData({ locale, projectId, project }, params);
                     toggleEditing();
                 }}
                 onCancel={toggleEditing}
@@ -76,7 +76,7 @@ EditData.propTypes = {
     locale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     scope: PropTypes.string.isRequired,
     translations: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,

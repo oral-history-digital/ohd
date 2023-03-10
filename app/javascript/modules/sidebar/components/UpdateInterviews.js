@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
 import { getLocale, getProjectId } from 'modules/archive';
-import { submitData, getProjects } from 'modules/data';
+import { submitData, getCurrentProject } from 'modules/data';
 
 export default function UpdateInterviews({
     params,
@@ -15,7 +15,7 @@ export default function UpdateInterviews({
     const dispatch = useDispatch();
     const locale = useSelector(getLocale);
     const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
+    const project = useSelector(getCurrentProject);
 
     function updateInterviews(params) {
         selectedArchiveIds.forEach(archiveId => {
@@ -23,7 +23,7 @@ export default function UpdateInterviews({
                 ...params,
                 id: archiveId,
             };
-            dispatch(submitData({ locale, projectId, projects }, {interview: updatedParams}));
+            dispatch(submitData({ locale, projectId, project }, {interview: updatedParams}));
         });
     }
 

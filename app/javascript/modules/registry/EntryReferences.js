@@ -17,7 +17,7 @@ export default function EntryReferences({
     isLoggedIn,
     locale,
     projectId,
-    projects,
+    project,
     onSubmit,
     setArchiveId,
     fetchData,
@@ -33,7 +33,7 @@ export default function EntryReferences({
     useEffect(() => {
         archiveIds.map(archiveId => {
             if (!statuses['interviews'][archiveId]) {
-                fetchData({ projectId, locale, projects }, 'interviews', archiveId);
+                fetchData({ projectId, locale, project }, 'interviews', archiveId);
             }
         })
     }, [isLoggedIn]);
@@ -41,7 +41,7 @@ export default function EntryReferences({
     useEffect(() => {
         archiveIds.map(archiveId => {
             if (!statuses['title']?.[`for_interviews_${archiveId}`]) {
-                fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
+                fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title');
             }
         })
     }, [isLoggedIn]);

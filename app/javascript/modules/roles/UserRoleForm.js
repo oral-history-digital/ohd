@@ -10,7 +10,6 @@ export default function UserRoleForm ({
     userAccountId,
     userRegistrationId,
     projectId,
-    projects,
     project,
     locale,
     roles,
@@ -28,7 +27,7 @@ export default function UserRoleForm ({
             !rolesStatus[`for_projects_${project?.id}`] ||
             rolesStatus[`for_projects_${project?.id}`].split('-')[0] === 'reload'
         ) {
-            fetchData( { locale, projectId, projects }, 'roles', null, null, `for_projects=${project?.id}`);
+            fetchData( { locale, projectId, project }, 'roles', null, null, `for_projects=${project?.id}`);
         }
     });
 
@@ -83,7 +82,7 @@ UserRoleForm.propTypes = {
     roles: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

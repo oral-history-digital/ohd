@@ -12,7 +12,6 @@ import ContributionFormContainer from './ContributionFormContainer';
 export default function Contribution({
     person,
     projectId,
-    projects,
     project,
     archiveId,
     contribution,
@@ -24,7 +23,7 @@ export default function Contribution({
     const { isAuthorized } = useAuthorization();
 
     const destroy = () => {
-        deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'contributions', contribution.id);
+        deleteData({ locale, projectId, project }, 'interviews', archiveId, 'contributions', contribution.id);
         // TODO: Mutate after getting response.
         //mutatePersonWithAssociations(person.id);
     };
@@ -96,7 +95,6 @@ Contribution.propTypes = {
     withSpeakerDesignation: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
 };

@@ -8,7 +8,7 @@ import { usePathBase } from 'modules/routes';
 export default function TreeSelect({
     locale,
     projectId,
-    projects,
+    project,
     dataAvailable,
     tree,
     handleChange,
@@ -28,7 +28,7 @@ export default function TreeSelect({
         const registryEntryId = selectedNodes[0]?.value
 
         if (typeof registryEntryId !== 'undefined') {
-            fetchData({ locale, projectId, projects }, 'registry_entries', registryEntryId, null,
+            fetchData({ locale, projectId, project }, 'registry_entries', registryEntryId, null,
                 'with_associations=true');
         }
 
@@ -71,7 +71,7 @@ export default function TreeSelect({
 TreeSelect.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     dataAvailable: PropTypes.bool.isRequired,
     tree: PropTypes.object,
     handleChange: PropTypes.func.isRequired,

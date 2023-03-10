@@ -10,7 +10,7 @@ export default function LocaleButtons({
     locales,
     setLocale,
     projectId,
-    projects,
+    project,
 }) {
     const location = useLocation();
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function LocaleButtons({
     function handleButtonClick(e) {
         const locale = e.target.textContent;
 
-        const pathBaseStr = pathBase({ projectId, locale, projects });
+        const pathBaseStr = pathBase({ projectId, locale, project });
 
         let newPath;
         if (/^\/[a-z]{2}\/?$/.test(location.pathname)) {

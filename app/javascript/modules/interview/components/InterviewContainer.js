@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getIsLoggedIn } from 'modules/account';
 import { setArchiveId, getInterviewEditView, getProjectId, getLocale } from 'modules/archive';
-import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog, getProjects,
+import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog,
     fetchData, getCurrentProject } from 'modules/data';
 import Interview from './Interview';
 
@@ -14,7 +14,6 @@ const mapStateToProps = state => ({
     interviewEditView: getInterviewEditView(state),
     projectId: getProjectId(state),
     locale: getLocale(state),
-    projects: getProjects(state),
     project: getCurrentProject(state),
     isLoggedIn: getIsLoggedIn(state),
 });

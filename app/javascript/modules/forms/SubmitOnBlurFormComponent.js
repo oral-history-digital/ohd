@@ -87,6 +87,6 @@ SubmitOnBlurForm.propTypes = {
     data: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
 };

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
 import { resetQuery, setQueryParams } from 'modules/search';
-import { fetchData, getProjectLocales, getProjects, getUserRegistrationsStatus } from 'modules/data';
+import { fetchData, getProjectLocales, getCurrentProject, getUserRegistrationsStatus } from 'modules/data';
 import { hideSidebar } from 'modules/sidebar';
 import DataSearchForm from './DataSearchForm';
 import { getUserRegistrationsQuery } from '../search';
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
     translations: getTranslations(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
     query: getUserRegistrationsQuery(state),
     dataStatus: getUserRegistrationsStatus(state),
     scope: 'user_registration',

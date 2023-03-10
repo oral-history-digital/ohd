@@ -243,7 +243,7 @@ Rails.application.routes.draw do
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
       concerns :account
-      concerns :unnamed_devise_routes, :search
+      concerns :unnamed_devise_routes, :search, :archive
     end
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
       get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}

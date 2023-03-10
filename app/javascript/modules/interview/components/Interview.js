@@ -20,7 +20,6 @@ export default function Interview({
     interviewEditView,
     isCatalog,
     projectId,
-    projects,
     project,
     locale,
     setArchiveId,
@@ -40,19 +39,19 @@ export default function Interview({
     // fetch interview base data
     useEffect(() => {
         if (!status) {
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId);
+            fetchData({ projectId, locale, project }, 'interviews', archiveId);
         }
     }, [projectId, locale, archiveId, status]);
 
     // fetch non-public data if project-access granted
     useEffect(() => {
         if (projectAccessGranted) {
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'short_title');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'description');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'observations');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'photos');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'reload_translations');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'short_title');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'description');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'observations');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'photos');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'reload_translations');
         }
     }, [archiveId, isLoggedIn]);
 
@@ -95,7 +94,7 @@ Interview.propTypes = {
     isCatalog: PropTypes.bool.isRequired,
     interviewEditView: PropTypes.bool.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,

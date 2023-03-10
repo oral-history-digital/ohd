@@ -15,7 +15,6 @@ export default function InterviewForm({
     languages,
     project,
     projectId,
-    projects,
     submitData,
     submitText,
     withContributions,
@@ -54,7 +53,7 @@ export default function InterviewForm({
     function handleSubmit(params){
         setShowForm(false);
 
-        submitData({ locale, projectId, projects }, params);
+        submitData({ locale, projectId, project }, params);
     }
 
     function renderForm() {
@@ -185,7 +184,6 @@ InterviewForm.propTypes = {
     interview: PropTypes.object,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     withContributions: PropTypes.bool,

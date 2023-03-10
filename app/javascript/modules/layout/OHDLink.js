@@ -24,7 +24,7 @@ function OHDLink({ className }) {
     )
 
     return (
-        !project || project.display_ohd_link ?
+        !project.is_ohd || project.display_ohd_link ?
             (projectHasOwnDomain ?
                 <a
                     title='OHD'

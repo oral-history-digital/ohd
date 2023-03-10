@@ -47,7 +47,7 @@ export default function Layout({
 
         if (pathLocale) {
             if (project?.available_locales.indexOf(pathLocale) === -1) {
-                const newPathBase = pathBase({projectId, locale: project.default_locale, projects}) + '/';
+                const newPathBase = pathBase({projectId, locale: project.default_locale, project}) + '/';
                 const newPath = location.pathname.replace(pathBasePart, newPathBase);
                 navigate(newPath);
                 setLocale(locale);
@@ -69,19 +69,19 @@ export default function Layout({
             !collectionsStatus[`for_projects_${project?.id}`] &&
             !project.is_ohd
         ) {
-            fetchData({ projectId, locale, projects }, 'collections', null, null, `for_projects=${project?.id}`);
+            fetchData({ projectId, locale, project }, 'collections', null, null, `for_projects=${project?.id}`);
         }
     }
 
     function loadProjects() {
         if (projectId &&!projectsStatus.all) {
-            fetchData({ projectId, locale, projects }, 'projects', null, null, 'all');
+            fetchData({ projectId, locale, project }, 'projects', null, null, 'all');
         }
     }
 
     function loadLanguages() {
         if (!languagesStatus.all) {
-            fetchData({ projectId, locale, projects }, 'languages', null, null, 'all');
+            fetchData({ projectId, locale, project }, 'languages', null, null, 'all');
         }
     }
 

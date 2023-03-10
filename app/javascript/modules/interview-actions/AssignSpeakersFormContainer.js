@@ -6,7 +6,6 @@ import {
     fetchData,
     getContributionTypesForCurrentProject,
     getCurrentProject,
-    getProjects,
     getSpeakerDesignationsStatus,
     submitData,
 } from 'modules/data';
@@ -17,7 +16,6 @@ const mapStateToProps = state => ({
     contributionTypes: getContributionTypesForCurrentProject(state),
     project: getCurrentProject(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
     speakerDesignationsStatus: getSpeakerDesignationsStatus(state),
 });
 

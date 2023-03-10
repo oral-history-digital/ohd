@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { DataList } from 'modules/admin';
-import { fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
+import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import CommentsContainer from './CommentsContainer';
 import TaskPreviewContainer from './TaskPreviewContainer';
@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
+        project: getCurrentProject(state),
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         //

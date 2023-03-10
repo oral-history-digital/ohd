@@ -15,7 +15,7 @@ export default function RefObjectLink({
     isLoggedIn,
     locale,
     projectId,
-    projects,
+    project,
     onSubmit,
     sendTimeChangeRequest,
     setArchiveId,
@@ -33,7 +33,7 @@ export default function RefObjectLink({
             registryReference.ref_object_type === 'Segment' &&
             isLoggedIn
         ) {
-            fetchData({ projectId, locale, projects }, 'segments', registryReference.ref_object_id);
+            fetchData({ projectId, locale, project }, 'segments', registryReference.ref_object_id);
         }
     }, [segment, isLoggedIn]);
 

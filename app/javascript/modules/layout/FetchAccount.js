@@ -9,7 +9,7 @@ export default function FetchAccount({
     isLoggedOut,
     checkedOhdSession,
     projectId,
-    projects,
+    project,
     locale,
     fetchData,
     deleteData,
@@ -32,14 +32,14 @@ export default function FetchAccount({
             /^reload/.test(accountsStatus.current) ||
             (isLoggedIn && !account && !/^fetching/.test(accountsStatus.current))
         ) {
-            fetchData({ projectId, locale, projects }, 'accounts', 'current');
+            fetchData({ projectId, locale, project }, 'accounts', 'current');
         }
     }, [accountsStatus.current, isLoggedIn]);
 
 
     useEffect(() => {
         if (isLoggedOut && account) {
-            deleteData({ projectId, locale, projects }, 'accounts', 'current', null, null, false, true);
+            deleteData({ projectId, locale, project }, 'accounts', 'current', null, null, false, true);
         }
     }, [isLoggedOut]);
 

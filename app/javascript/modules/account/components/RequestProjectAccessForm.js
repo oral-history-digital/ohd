@@ -8,7 +8,6 @@ export default function RequestProjectAccessForm({
     externalLinks,
     locale,
     projectId,
-    projects,
     project,
     submitData,
     onSubmit,
@@ -24,7 +23,7 @@ export default function RequestProjectAccessForm({
         <Form
             scope='user_registration_project'
             onSubmit={(params) => {
-                submitData({ locale, projectId, projects }, params);
+                submitData({ locale, projectId, project }, params);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
@@ -67,7 +66,7 @@ export default function RequestProjectAccessForm({
 RequestProjectAccessForm.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,

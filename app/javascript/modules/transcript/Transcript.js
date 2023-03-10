@@ -26,7 +26,7 @@ export default function Transcript({
     tape,
     locale,
     projectId,
-    projects,
+    project,
     autoScroll,
     workbookIsLoading,
     workbookLoaded,
@@ -64,7 +64,7 @@ export default function Transcript({
 
     useEffect(() => {
         if (loadSegments && !transcriptFetched) {
-            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
+            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'segments');
         }
     }, [loadSegments, transcriptFetched, archiveId]);
 
@@ -157,7 +157,7 @@ Transcript.propTypes = {
     loadSegments: PropTypes.bool,
     contributionTypes: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     isIdle: PropTypes.bool.isRequired,
