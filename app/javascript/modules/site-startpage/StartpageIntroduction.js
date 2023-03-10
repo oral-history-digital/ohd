@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import useCatalogStats from './useCatalogStats';
+import { getCurrentProject, getProjectTranslation } from 'modules/data';
 
 export default function StartpageIntroduction({
     className,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { data: stats, error, isLoading } = useCatalogStats();
+    const project = useSelector(getCurrentProject);
+    const projectTranslation = useSelector(getProjectTranslation);
 
     if (isLoading) {
         return <Spinner />;
@@ -20,9 +24,8 @@ export default function StartpageIntroduction({
 
     return (
         <article className={className}>
+            <div className="u-mt-none u-mb-none" dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
             <p className="u-mt-none u-mb-none">
-                {t('modules.site_startpage.introduction')}
-                {' '}
                 {t('modules.site_startpage.stats', {
                     numProjects: stats?.num_projects,
                     numCollections: stats?.num_collections,
