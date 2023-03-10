@@ -17,7 +17,7 @@ export default function NormDatumForm({
     norm_data_provider_id,
     nid,
     projectId,
-    projects,
+    project,
     normDataProviders,
     locale,
     setRegistryEntryAttributes,
@@ -60,7 +60,7 @@ export default function NormDatumForm({
                                 nid:  nid,
                             }),
                         };
-                        submitData({projectId, locale, projects}, nid ? paramsWithSelectedEntryValues : params, index);
+                        submitData({projectId, locale, project}, nid ? paramsWithSelectedEntryValues : params, index);
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }

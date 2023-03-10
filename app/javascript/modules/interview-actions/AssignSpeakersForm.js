@@ -14,7 +14,6 @@ export default function AssignSpeakersForm({
     interview,
     project,
     projectId,
-    projects,
     speakerDesignationsStatus,
     submitData,
 }) {
@@ -27,7 +26,7 @@ export default function AssignSpeakersForm({
             !speakerDesignationsStatus[`for_interviews_${archiveId}`] ||
             speakerDesignationsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'reload'
         ) {
-            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'speaker_designations');
+            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'speaker_designations');
         }
     });
 
@@ -90,7 +89,7 @@ export default function AssignSpeakersForm({
                 <Form
                     scope='update_speaker'
                     onSubmit={params => {
-                        submitData({ locale, projectId, projects }, params);
+                        submitData({ locale, projectId, project }, params);
                         setShowForm(false);
                     }}
                     helpTextCode="assign_speakers_form"
@@ -115,7 +114,7 @@ AssignSpeakersForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
     interview: PropTypes.object.isRequired,
     projectId: PropTypes.number.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     speakerDesignationsStatus: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
 };

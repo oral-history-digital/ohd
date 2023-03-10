@@ -26,12 +26,11 @@ export default function EditTable({
     segmentsStatus,
     archiveId,
     projectId,
-    projects,
     fetchData,
 }) {
     useEffect(() => {
         if (!segmentsStatus[`for_interviews_${archiveId}`]) {
-            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
+            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'segments');
         }
     }, []);
 
@@ -124,6 +123,6 @@ EditTable.propTypes = {
     mediaTime: PropTypes.number.isRequired,
     tape: PropTypes.number.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

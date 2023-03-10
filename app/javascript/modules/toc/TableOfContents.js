@@ -13,7 +13,7 @@ export default function TableOfContents({
     archiveId,
     locale,
     projectId,
-    projects,
+    project,
     fetchData,
 }) {
     const { t } = useI18n();
@@ -28,7 +28,7 @@ export default function TableOfContents({
 
     useEffect(() => {
         if (!headingsFetched) {
-            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'headings');
+            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'headings');
         }
     }, [headingsFetched])
 
@@ -63,7 +63,7 @@ TableOfContents.propTypes = {
     archiveId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     headingsFetched: PropTypes.bool.isRequired,
     headings: PropTypes.object,
     preparedHeadings: PropTypes.array,

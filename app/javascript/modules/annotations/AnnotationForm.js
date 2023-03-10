@@ -78,7 +78,7 @@ AnnotationForm.propTypes = {
     annotation: PropTypes.object,
     segment: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,

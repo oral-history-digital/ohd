@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 
 import { usePrevious } from 'modules/react-toolbox';
 import { getLocale, getProjectId } from 'modules/archive';
-import { getProjects } from 'modules/data';
+import { getCurrentProject } from 'modules/data';
 import { pathBase } from 'modules/routes';
 import { getIsLoggedIn } from '../selectors';
 
@@ -13,11 +13,11 @@ export default function RedirectOnLogin({
 }) {
     const locale = useSelector(getLocale);
     const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
+    const project = useSelector(getCurrentProject);
     const isLoggedIn = useSelector(getIsLoggedIn);
 
     const prevIsLoggedIn = usePrevious(isLoggedIn);
-    const to = projectId ? `${pathBase({projectId, locale, projects})}${path}` : `/${locale}`;
+    const to = projectId ? `${pathBase({projectId, locale, project})}${path}` : `/${locale}`;
 
     if (prevIsLoggedIn === false && isLoggedIn === true) {
         return (

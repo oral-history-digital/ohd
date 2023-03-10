@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
+import { fetchData, getCurrentInterview, getCurrentProject,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { getFilter } from '../selectors';
@@ -11,7 +11,7 @@ import EditTable from './EditTable';
 const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),

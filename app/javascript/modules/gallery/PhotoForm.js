@@ -8,7 +8,7 @@ export default function PhotoForm({
     withUpload,
     locale,
     projectId,
-    projects,
+    project,
     submitData,
     onSubmit,
     onCancel,
@@ -67,7 +67,7 @@ export default function PhotoForm({
             scope='photo'
             helpTextCode="photo_form"
             onSubmit={params => {
-                submitData({ projectId, projects, locale }, params);
+                submitData({ projectId, project, locale }, params);
                 if (onSubmit) {
                     onSubmit();
                 }
@@ -88,7 +88,7 @@ PhotoForm.propTypes = {
     photo: PropTypes.object,
     withUpload: PropTypes.bool,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,

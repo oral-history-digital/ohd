@@ -64,9 +64,9 @@ export default class WorkbookItemForm extends Component {
         event.preventDefault();
         if (this.valid()) {
             if (id) {
-                updateWorkbook(pathBase({ locale, projectId, projects }), id, {user_content: this.state})
+                updateWorkbook(pathBase({ locale, projectId, project }), id, {user_content: this.state})
             } else {
-                createWorkbook(pathBase({ locale, projectId, projects }), {user_content: this.state})
+                createWorkbook(pathBase({ locale, projectId, project }), {user_content: this.state})
             }
             onSubmit();
         } else {

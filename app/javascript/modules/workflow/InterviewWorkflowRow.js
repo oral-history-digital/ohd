@@ -24,7 +24,6 @@ export default function InterviewWorkflowRow({
     collections,
     project,
     projectId,
-    projects,
     tasks,
     tasksStatus,
     userAccountsStatus,
@@ -48,13 +47,13 @@ export default function InterviewWorkflowRow({
 
     function loadUserAccounts() {
         if (!userAccountsStatus.all) {
-            fetchData({ projectId, projects, locale }, 'accounts');
+            fetchData({ projectId, project, locale }, 'accounts');
         }
     }
 
     function loadTasks() {
         if (!tasksStatus[`for_interview_${interview.archive_id}`]) {
-            fetchData({ projectId, projects, locale }, 'tasks', null, null, `for_interview=${interview.archive_id}`);
+            fetchData({ projectId, project, locale }, 'tasks', null, null, `for_interview=${interview.archive_id}`);
         }
     }
 
@@ -193,7 +192,6 @@ InterviewWorkflowRow.propTypes = {
     collections: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     tasks: PropTypes.object,
     tasksStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,

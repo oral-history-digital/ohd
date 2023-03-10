@@ -18,7 +18,7 @@ export default function Data({
     joinedData,
     locale,
     projectId,
-    projects,
+    project,
     task,
     form,
     scope,
@@ -44,11 +44,11 @@ export default function Data({
         }
 
         // skip remove from state, only remove server-side
-        deleteData({ locale, projectId, projects }, pluralize(scope), data.id,
+        deleteData({ locale, projectId, project }, pluralize(scope), data.id,
             null, null, true);
         // only remove from state
         deleteData(
-            { locale, projectId, projects },
+            { locale, projectId, project },
             outerScope ? pluralize(outerScope) : pluralize(scope),
             outerScopeId || data.id,
             outerScope ? pluralize(scope) : null,
@@ -143,7 +143,7 @@ export default function Data({
 Data.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
     joinedData: PropTypes.object,
     task: PropTypes.object,

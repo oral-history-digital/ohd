@@ -20,7 +20,6 @@ export default function RegistryNameForm({
     setRegistryEntryAttributes,
     registryEntryAttributes,
     projectId,
-    projects,
     project,
     locale,
     foundRegistryEntries,
@@ -64,7 +63,7 @@ export default function RegistryNameForm({
         <Form
             scope='registry_name'
             onSubmit={params => {
-                submitData({projectId, locale, projects}, params, index);
+                submitData({projectId, locale, project}, params, index);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }

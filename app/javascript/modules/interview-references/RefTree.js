@@ -17,7 +17,7 @@ export default function RefTree({
     archiveId,
     locale,
     projectId,
-    projects,
+    project,
     fetchData,
 }) {
     const { t } = useI18n();
@@ -25,7 +25,7 @@ export default function RefTree({
 
     useEffect(() => {
         if (refTreeStatus === 'n/a') {
-            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'ref_tree');
+            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'ref_tree');
         }
     });
 
@@ -76,7 +76,7 @@ RefTree.propTypes = {
     interview: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     refTree: PropTypes.object,
     refTreeStatus: PropTypes.string.isRequired,

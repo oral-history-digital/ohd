@@ -13,7 +13,7 @@ export default function Annotation({
     segment,
     locale,
     projectId,
-    projects,
+    project,
     deleteData,
 }) {
     const { t } = useI18n();
@@ -47,7 +47,7 @@ export default function Annotation({
                         {closeModal => (
                             <DeleteItemForm
                                 onSubmit={() => {
-                                    deleteData({ locale, projectId, projects }, 'annotations', annotation.id, null, null, true);
+                                    deleteData({ locale, projectId, project }, 'annotations', annotation.id, null, null, true);
                                     closeModal();
                                 }}
                                 onCancel={closeModal}
@@ -66,7 +66,7 @@ Annotation.propTypes = {
     annotation: PropTypes.object.isRequired,
     segment: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,

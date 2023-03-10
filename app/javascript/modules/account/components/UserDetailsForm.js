@@ -5,7 +5,7 @@ import { Form } from 'modules/forms';
 export default function UserDetailsForm({
     account,
     locale,
-    projects,
+    project,
     projectId,
     onSubmit,
     submitData,
@@ -15,7 +15,7 @@ export default function UserDetailsForm({
         <Form
             data={account}
             scope="account"
-            onSubmit={params => {submitData({ locale, projects, projectId }, params); onSubmit();}}
+            onSubmit={params => {submitData({ locale, project, projectId }, params); onSubmit();}}
             onCancel={onCancel}
             submitText='submit'
             elements={[
@@ -40,7 +40,7 @@ export default function UserDetailsForm({
 
 UserDetailsForm.propTypes = {
     locale: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     account: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,

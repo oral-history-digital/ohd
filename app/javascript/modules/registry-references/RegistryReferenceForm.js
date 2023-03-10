@@ -32,7 +32,7 @@ export default function RegistryReferenceForm({
 
     useEffect(() => {
         if (!registryReferenceTypesStatus[`for_projects_${project?.id}`]) {
-            fetchData({ locale, projectId, projects }, 'registry_reference_types', null, null, `for_projects=${project?.id}`);
+            fetchData({ locale, projectId, project }, 'registry_reference_types', null, null, `for_projects=${project?.id}`);
         }
     })
 
@@ -104,7 +104,7 @@ export default function RegistryReferenceForm({
                             return result;
                         });
                     } else {
-                        submitData({ locale, projectId, projects }, params);
+                        submitData({ locale, projectId, project }, params);
                     }
 
                     if (typeof onSubmit === 'function') {

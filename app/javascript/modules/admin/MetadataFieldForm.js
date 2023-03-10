@@ -27,7 +27,6 @@ const NAME_VALUES = {
 export default function MetadataFieldForm({
     locale,
     projectId,
-    projects,
     project,
     registryReferenceTypes,
     data,
@@ -76,7 +75,7 @@ export default function MetadataFieldForm({
             <Form
                 scope='metadata_field'
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, projects }, params);
+                    submitData({ locale, projectId, project }, params);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -212,7 +211,6 @@ export default function MetadataFieldForm({
 
 MetadataFieldForm.propTypes = {
     data: PropTypes.object,
-    projects: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     registryReferenceTypes: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,

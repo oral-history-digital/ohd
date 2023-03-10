@@ -6,7 +6,7 @@ export default function UserRegistrationProjectForm({
     userRegistrationProject,
     locale,
     projectId,
-    projects,
+    project,
     submitData,
     onSubmit,
 }) {
@@ -14,7 +14,7 @@ export default function UserRegistrationProjectForm({
         <Form
             scope='user_registration_project'
             onSubmit={(params) => {
-                submitData({ locale, projectId, projects }, params);
+                submitData({ locale, projectId, project }, params);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
@@ -45,7 +45,7 @@ UserRegistrationProjectForm.propTypes = {
     userRegistrationProject: PropTypes.object,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
 };

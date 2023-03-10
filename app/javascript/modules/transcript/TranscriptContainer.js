@@ -11,7 +11,7 @@ import {
     getCurrentInterview,
     getCurrentIntervieweeId,
     getHasTranscript,
-    getProjects,
+    getCurrentProject,
     getTranscriptFetched,
     getTranscriptLocale
 } from 'modules/data';
@@ -23,7 +23,7 @@ import Transcript from './Transcript';
 const mapStateToProps = (state, props) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),

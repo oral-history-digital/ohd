@@ -87,7 +87,7 @@ export default class UserRegistrations extends Component {
 UserRegistrations.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
     query: PropTypes.object.isRequired,
     userRegistrations: PropTypes.object,

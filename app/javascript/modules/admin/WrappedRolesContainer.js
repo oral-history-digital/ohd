@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         locales: getProjectLocales(state),
         projectId: getProjectId(state),
-        projects: getProjects(state),
+        project: getCurrentProject(state),
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),

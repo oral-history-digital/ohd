@@ -9,7 +9,7 @@ import NormDatumFormContainer from './NormDatumFormContainer';
 export default function RegistryEntryForm({
     locale,
     projectId,
-    projects,
+    project,
     normDataProviders,
     translations,
     registryEntries,
@@ -61,7 +61,7 @@ export default function RegistryEntryForm({
                     const paramsWithNormDataAttributes = {
                         registry_entry: Object.assign({}, registryEntryAttributes, params.registry_entry)
                     };
-                    submitData({projectId, locale, projects}, paramsWithNormDataAttributes);
+                    submitData({projectId, locale, project}, paramsWithNormDataAttributes);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -140,7 +140,7 @@ RegistryEntryForm.propTypes = {
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
     submitData: PropTypes.func.isRequired,
     onCancel: PropTypes.func,

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getProjectId } from 'modules/archive';
-import { deleteData, getProjects } from 'modules/data';
+import { deleteData, getCurrentProject } from 'modules/data';
 import { Modal } from 'modules/ui';
 import { DeleteItemForm } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
@@ -16,7 +16,7 @@ export default function DeleteInterviews({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
+    const project = useSelector(getCurrentProject);
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -24,7 +24,7 @@ export default function DeleteInterviews({
 
     function deleteInterviews() {
         selectedArchiveIds.forEach(
-            archiveId => dispatch(deleteData({ locale, projectId, projects }, 'interviews', archiveId))
+            archiveId => dispatch(deleteData({ locale, projectId, project }, 'interviews', archiveId))
         );
 
         const isDetailPage = new RegExp(`^${pathBase}/interviews`);

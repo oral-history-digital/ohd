@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { deleteData, getProjects } from 'modules/data';
+import { deleteData, getCurrentProject } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import BiographicalEntry from './BiographicalEntry';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
     translations: getTranslations(state),
 });
 

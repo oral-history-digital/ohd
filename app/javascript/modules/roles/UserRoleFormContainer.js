@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, fetchData, getProjects, getCurrentProject, getRolesForCurrentProject, getRolesStatus } from 'modules/data';
+import { submitData, fetchData, getCurrentProject, getRolesForCurrentProject, getRolesStatus } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import UserRoleForm from './UserRoleForm';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
     project: getCurrentProject(state),
     roles: getRolesForCurrentProject(state),
     rolesStatus: getRolesStatus(state),

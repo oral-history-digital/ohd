@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { fetchData, deleteData, submitData, getProjectLocales, getProjects, getCurrentAccount,
-    getPermissions, getPermissionsStatus } from 'modules/data';
+    getCurrentProject, getPermissions, getPermissionsStatus } from 'modules/data';
 import DataList from './DataList';
 
 const mapStateToProps = state => ({
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
     translations: getTranslations(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
+    project: getCurrentProject(state),
     account: getCurrentAccount(state),
     editView: getEditView(state),
     //

@@ -6,7 +6,7 @@ import { useI18n } from 'modules/i18n';
 export default function MergeRegistryEntriesButton({
     locale,
     projectId,
-    projects,
+    project,
     selectedRegistryEntryIds,
     submitData,
 }) {
@@ -16,7 +16,7 @@ export default function MergeRegistryEntriesButton({
         const firstId = selectedRegistryEntryIds.slice(0, 1);
         const restIds = selectedRegistryEntryIds.slice(1);
 
-        submitData({ locale, projectId, projects }, {merge_registry_entry: {id: firstId, ids: restIds}});
+        submitData({ locale, projectId, project }, {merge_registry_entry: {id: firstId, ids: restIds}});
     }
 
     if (selectedRegistryEntryIds.length < 2) {
@@ -52,7 +52,7 @@ export default function MergeRegistryEntriesButton({
 MergeRegistryEntriesButton.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     selectedRegistryEntryIds: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,
 };

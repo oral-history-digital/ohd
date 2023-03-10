@@ -9,14 +9,14 @@ export default function SingleTextInputForm({
     data,
     nested,
     projectId,
-    projects,
+    project,
     locale,
 }) {
     return (
         <Form
             scope='text'
             onSubmit={params => {
-                submitData({projectId, projects, locale}, params, index);
+                submitData({projectId, project, locale}, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}

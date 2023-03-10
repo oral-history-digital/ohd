@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, getProjects, getCurrentInterview, getCurrentRefTree,
+import { fetchData, getCurrentProject, getCurrentInterview, getCurrentRefTree,
     getCurrentRefTreeStatus } from 'modules/data';
 import {
     getArchiveId,
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     interview: getCurrentInterview(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
     archiveId: getArchiveId(state),
     refTree: getCurrentRefTree(state),
     refTreeStatus: getCurrentRefTreeStatus(state)

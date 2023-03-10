@@ -21,7 +21,7 @@ export default function NestedScopeElement({
     elementRepresentation,
     locale,
     projectId,
-    projects,
+    project,
 }) {
     const { t } = useI18n();
     const [editing, setEditing] = useState(!!showForm);
@@ -63,7 +63,7 @@ export default function NestedScopeElement({
                             if (typeof element.id === 'undefined') {
                                 onDelete(index, scope);
                             } else {
-                                deleteData({locale, projectId, projects},
+                                deleteData({locale, projectId, project},
                                     pluralize(scope), element.id, null, null,
                                     false, false, onDeleteCallback
                                 );

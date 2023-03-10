@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { changeRegistryEntriesViewMode, searchRegistryEntry } from 'modules/search';
 import { hideSidebar } from 'modules/sidebar';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { getProjects } from 'modules/data';
+import { getCurrentProject } from 'modules/data';
 import RegistrySearchForm from './RegistrySearchForm';
 
 const mapStateToProps = (state) => {
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         isRegistryEntrySearching: state.search.isRegistryEntrySearching,
         projectId: getProjectId(state),
-        projects: getProjects(state),
+        project: getCurrentProject(state),
     }
 }
 

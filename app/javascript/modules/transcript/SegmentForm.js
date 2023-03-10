@@ -7,7 +7,7 @@ import { Spinner } from 'modules/spinners';
 export default function SegmentForm({
     locale,
     projectId,
-    projects,
+    project,
     contentLocale,
     segment,
     submitData,
@@ -24,7 +24,7 @@ export default function SegmentForm({
         <div>
             <Form
                 scope='segment'
-                onSubmit={(params) => { submitData({ locale, projectId, projects }, params); onSubmit(); }}
+                onSubmit={(params) => { submitData({ locale, projectId, project }, params); onSubmit(); }}
                 onCancel={onCancel}
                 data={segment}
                 helpTextCode="segment_form"
@@ -53,7 +53,7 @@ export default function SegmentForm({
 SegmentForm.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
     segment: PropTypes.object,
     submitData: PropTypes.func.isRequired,

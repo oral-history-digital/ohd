@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { deleteData, getProjects } from 'modules/data';
+import { deleteData, getCurrentProject } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import Annotation from './Annotation';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
     projectId: getProjectId(state),
 });
 

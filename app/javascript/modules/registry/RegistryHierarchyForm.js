@@ -6,7 +6,7 @@ import { useI18n } from 'modules/i18n';
 export default function RegistryHierarchyForm({
     locale,
     projectId,
-    projects,
+    project,
     registryHierarchy,
     descendantRegistryEntry,
     submitData,
@@ -29,7 +29,7 @@ export default function RegistryHierarchyForm({
             <Form
                 scope='registry_hierarchy'
                 onSubmit={params => {
-                    submitData({ locale, projectId, projects }, params);
+                    submitData({ locale, projectId, project }, params);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -54,7 +54,7 @@ RegistryHierarchyForm.propTypes = {
     registryHierarchy: PropTypes.object,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     submitData: PropTypes.func.isRequired,

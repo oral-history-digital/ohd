@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { fetchData, getCurrentProject, getProjects,
+import { fetchData, getCurrentProject,
     getLanguages, getCollectionsForCurrentProject,
     getAccountsStatus, getTasksStatus, getTasks } from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
@@ -13,7 +13,6 @@ const mapStateToProps = (state) => ({
     locale: getLocale(state),
     project: getCurrentProject(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
     tasks: getTasks(state),
     tasksStatus: getTasksStatus(state),
     translations: getTranslations(state),
