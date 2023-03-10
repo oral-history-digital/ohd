@@ -737,7 +737,7 @@ class Interview < ApplicationRecord
       search = Interview.search do
         fulltext params[:fulltext]
         with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
-        with(:project_id, project.id) if project
+        with(:project_id, project.id) unless project.is_ohd?
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project
           dynamic :search_facets do
