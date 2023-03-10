@@ -84,7 +84,7 @@ export default function SidebarTabs({
     const showAccountTab = true //!isCampscapesProject;
     const showCatalogTab = project.is_ohd;
     const showInterviewTab = !!interview;
-    const showRegistryTab = !project.is_ohd && (
+    const showRegistryTab = (
         (!isLoggedIn && project.logged_out_visible_registry_entry_ids?.length > 0) ||
         isLoggedIn
     )
