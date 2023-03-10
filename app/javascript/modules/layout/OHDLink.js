@@ -5,14 +5,12 @@ import classNames from 'classnames';
 
 import { getCurrentAccount, getCurrentProject, getProjects } from 'modules/data';
 import { getLocale, setProjectId } from 'modules/archive';
-import { projectByDomain } from 'modules/routes';
 import { OHD_DOMAINS } from './constants';
 
 function OHDLink({ className }) {
     const locale = useSelector(getLocale);
     const project = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
-    const projectHasOwnDomain = projectByDomain(projects);
     const dispatch = useDispatch();
     const currentAccount = useSelector(getCurrentAccount);
 
@@ -25,7 +23,7 @@ function OHDLink({ className }) {
 
     return (
         !project.is_ohd || project.display_ohd_link ?
-            (projectHasOwnDomain ?
+            (project.archive_domain ?
                 <a
                     title='OHD'
                     href={`${OHD_DOMAINS[railsMode]}/${locale}` + (!!accessTokenParam ? `?${accessTokenParam}` : '')}
