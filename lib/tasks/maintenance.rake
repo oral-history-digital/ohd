@@ -25,7 +25,7 @@ namespace :maintenance do
       show_preview_img: false,
       workflow_state: 'public',
       locale: :de,
-      introduction: "Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen."
+      introduction: "Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen.",
       name: 'Oral History Digital',
       grant_project_access_instantly: true,
     }, UserAccount.where(email: 'cord.pagenstecher@cedis.fu-berlin.de').first, true)
