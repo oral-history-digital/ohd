@@ -26,7 +26,7 @@ class MetadataField < ApplicationRecord
 
   after_commit do
     if use_as_facet_previously_changed?
-      Sunspot.index!(project.interviews)
+      Sunspot.index!(project.is_ohd? ? Interview.all : project.interviews)
     end
   end
 
