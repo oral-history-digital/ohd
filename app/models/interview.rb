@@ -174,8 +174,8 @@ class Interview < ApplicationRecord
     end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
-      project.search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = (self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))) || ''
+      ((Project.ohd.present? ? Project.ohd.search_facets_names : []) | project.search_facets_names).inject({}) do |mem, facet|
+        mem[facet] = (self.respond_to?(facet) ? self.send(facet) : (interviewee && interviewee.respond_to?(facet) && interviewee.send(facet))) || ''
         mem
       end
     end
