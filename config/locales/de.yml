@@ -819,6 +819,7 @@ de:
     date_of_birth: Geburtsdatum
     signature_original: Originalsignatur
     startpage_position: Startseitenposition
+    project_id: Archiv
   activerecord:
     models:
       help_text:

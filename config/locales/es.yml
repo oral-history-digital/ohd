@@ -788,6 +788,7 @@ es:
     date_of_birth: Fecha de nacimiento
     signature_original: Originalsignatur
     startpage_position: Startpage position
+    project_id: Archiv
   activerecord:
     models:
       interview:
