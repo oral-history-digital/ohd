@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 
-import { humanReadable, getLanguages } from 'modules/data';
+import { humanReadable, getLanguages, getCurrentProject, getProjects } from 'modules/data';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
@@ -14,8 +14,9 @@ import {
 
 export default function ThumbnailMetadata({
     interview,
-    project,
 }) {
+    const project = useSelector(getCurrentProject);
+    const projects = useSelector(getProjects);
     const languages = useSelector(getLanguages);
     const { locale, translations } = useI18n();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
@@ -57,6 +58,7 @@ export default function ThumbnailMetadata({
                             languages,
                             optionsScope: 'search_facets',
                             collections: project.collections,
+                            projects,
                         }, {}, '');
 
                         if (!value) {
@@ -85,7 +87,6 @@ export default function ThumbnailMetadata({
 ThumbnailMetadata.propTypes = {
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object,
-    project: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,

@@ -38,7 +38,6 @@ export default function InterviewPreviewInner({
             {!isExpanded && (
                 <ThumbnailMetadata
                     interview={interview}
-                    project={project}
                 />
             )}
         </>

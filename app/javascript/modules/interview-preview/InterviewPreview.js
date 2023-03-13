@@ -18,13 +18,12 @@ export default function InterviewPreview({
     interview,
     locale,
     projects,
-    project,
     setArchiveId,
     selectedArchiveIds,
     addRemoveArchiveId,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    //const project = projects[interview.project_id];
+    const project = projects[interview.project_id];
     const projectId = project.identifier;
     const { fulltext } = useArchiveSearch();
 
