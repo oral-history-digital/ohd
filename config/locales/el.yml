@@ -799,6 +799,7 @@ el:
     date_of_birth: Ημερομηνία γέννησης
     signature_original: Originalsignatur
     startpage_position: Startpage position
+    project_id: Archiv
   activerecord:
     models:
       interview:

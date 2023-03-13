@@ -17,7 +17,7 @@ const NAME_VALUES = {
         "media_type", "archive_id", "interview_date", "duration", "tape_count",
         "language_id", "observations", "workflow_state", "tasks_user_account_ids",
         "tasks_supervisor_ids", "description", "collection_id",
-        "signature_original", "startpage_position"
+        "signature_original", "startpage_position", "project_id"
     ],
     Person: [
         "date_of_birth", "year_of_birth", "gender", "description"
