@@ -17,7 +17,10 @@ export default function TableWithPagination({
     className,
     columns,
     data,
-    isLoading
+    isLoading,
+    manualPagination,
+    setPage,
+    pageCount,
 }) {
     const [sorting, setSorting] = useState([]);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -51,6 +54,8 @@ export default function TableWithPagination({
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        manualPagination: manualPagination,
+        pageCount: pageCount,
     });
 
     return (
@@ -65,7 +70,7 @@ export default function TableWithPagination({
                 page={table.getState().pagination.pageIndex + 1}
                 pageCount={table.getPageCount()}
                 pageSize={table.getState().pagination.pageSize}
-                onPageChange={page => table.setPageIndex(page - 1)}
+                onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
                 onPageSizeChange={table.setPageSize}
             />
             <Table table={table} isLoading={isLoading} />
@@ -74,7 +79,7 @@ export default function TableWithPagination({
                 page={table.getState().pagination.pageIndex + 1}
                 pageCount={table.getPageCount()}
                 pageSize={table.getState().pagination.pageSize}
-                onPageChange={page => table.setPageIndex(page - 1)}
+                onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
                 onPageSizeChange={table.setPageSize}
             />
         </div>
