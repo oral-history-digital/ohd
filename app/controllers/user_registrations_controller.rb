@@ -102,7 +102,7 @@ class UserRegistrationsController < ApplicationController
     user_registrations = policy_scope(UserRegistration).
       #where(search_params).
       order("last_name ASC").
-      paginate(page: page)
+      paginate(page: page, per_page: 25)
 
     total_pages = user_registrations.total_pages
     user_registrations = user_registrations.includes(:user_registration_projects).

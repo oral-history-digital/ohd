@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
@@ -14,9 +14,11 @@ import TasksCell from './TasksCell';
 
 export default function UserTable() {
     const { t, locale } = useI18n();
-    const { data, isLoading } = useUsers();
+    const [page, setPage] = useState(1);
+    const { data, isLoading } = useUsers(page);
     const projectId = useSelector(getProjectId);
     const project = useSelector(getCurrentProject);
+
 
     const getCurrentUserRegistrationProject = (row, project) => {
         return Object.values(row.user_registration_projects).find(p => p.project_id === project.id)
@@ -96,9 +98,12 @@ export default function UserTable() {
 
     return (
         <TableWithPagination
-            data={Object.values(data || {})}
+            data={Object.values(data?.data || {})}
+            pageCount={data?.result_pages_count}
             columns={columns}
             isLoading={isLoading}
+            setPage={setPage}
+            manualPagination
         />
     );
 }
