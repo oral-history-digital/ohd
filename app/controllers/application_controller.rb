@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
 
   def current_project
     @current_project = @current_project || (
-      params[:project_id].present? ?
+      (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
         Project.where("UPPER(shortname) = ?", params[:project_id].upcase).first :
         Project.by_host(request.host)
     )
