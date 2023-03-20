@@ -2,14 +2,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId } from 'modules/archive';
-import { fetchData, deleteData, getCurrentAccount,
+import { fetchData, deleteData, getCurrentUser,
     getAccountsStatus, getCurrentProject } from 'modules/data';
-import { getIsLoggedIn, getIsLoggedOut, getCheckedOhdSession } from 'modules/account';
+import { getIsLoggedIn, getIsLoggedOut, getCheckedOhdSession } from 'modules/user';
 import FetchAccount from './FetchAccount';
 
 const mapStateToProps = state => ({
-    account: getCurrentAccount(state),
-    accountsStatus: getAccountsStatus(state),
+    user: getCurrentUser(state),
+    usersStatus: getAccountsStatus(state),
     isLoggedIn: getIsLoggedIn(state),
     isLoggedOut: getIsLoggedOut(state),
     checkedOhdSession: getCheckedOhdSession(state),

@@ -5,7 +5,7 @@ import { toggleSidebar, getSidebarVisible } from 'modules/sidebar';
 import { getEditView, getLocale, setLocale, getProjectId } from 'modules/archive';
 import { fetchData, getProjects, getCollectionsStatus,
     getLanguagesStatus, getProjectsStatus, getCurrentProject } from 'modules/data';
-import { getLoggedInAt } from 'modules/account';
+import { getLoggedInAt } from 'modules/user';
 import Layout from './Layout';
 
 const mapStateToProps = state => ({

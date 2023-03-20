@@ -39,7 +39,7 @@ import {
     OrderNewPasswordContainer,
     RegisterContainer,
     ActivateAccount
-} from 'modules/account';
+} from 'modules/user';
 import { UsersAdminPage } from 'modules/admin';
 
 export default function ProjectRoutes() {
@@ -68,12 +68,12 @@ export default function ProjectRoutes() {
                 <Route path="searches/archive" element={<SearchPage />} />
                 <Route path="searches/map" element={<SearchMap />} />
                 <Route path="registry_entries" element={<RegistryContainer />} />
-                <Route path="accounts/current" element={<AccountPage />} />
-                <Route path="user_accounts/password/new" element={<OrderNewPasswordContainer />} />
-                <Route path="user_accounts/password/edit" element={<ActivateAccount />} />
-                <Route path="user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
-                <Route path="user_registrations/new" element={<RegisterContainer />} />
-                <Route path="user_registrations" element={<UsersAdminPage />} />
+                <Route path="users/current" element={<AccountPage />} />
+                <Route path="users/password/new" element={<OrderNewPasswordContainer />} />
+                <Route path="users/password/edit" element={<ActivateAccount />} />
+                <Route path="users/:resetPasswordToken/activate" element={<ActivateAccount />} />
+                <Route path="users/new" element={<RegisterContainer />} />
+                <Route path="users" element={<UsersAdminPage />} />
                 <Route path="uploads/new" element={<UploadsContainer />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route path="project/edit-config" element={<EditProjectConfig />} />

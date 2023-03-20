@@ -15,7 +15,7 @@ export {
     getContributionTypesStatus,
     getContributionsStatus,
     getContributorsFetched,
-    getCurrentAccount,
+    getCurrentUser,
     getCurrentInterview,
     getCurrentInterviewFetched,
     getCurrentIntervieweeId,
@@ -69,8 +69,8 @@ export {
     getTasksStatus,
     getTranscriptFetched,
     getTranscriptLocale,
-    getUserRegistrations,
-    getUserRegistrationsStatus,
+    getUsers,
+    getUsersStatus,
 } from './selectors/dataSelectors';
 
 export {

@@ -9,15 +9,15 @@ export default function ProjectShortnamesCell({
 }) {
     const { t } = useI18n();
     const projects = useSelector(getProjects);
-    const userRegistration = row.original;
-    const userRegistrationProjects = Object.values(userRegistration.user_registration_projects);
+    const user = row.original;
+    const UserProjects = Object.values(user.user_projects);
 
-    const projectDisplay = userRegistrationProject => {
-        if (userRegistrationProject) {
-            const workflowState = t(`user_registration_projects.workflow_states.${userRegistrationProject.workflow_state}`);
-            const hasAMRole = Object.values(userRegistration.user_roles).find(role => 
-                role.name === 'Archivmanagement' && role.project_id === userRegistrationProject.project_id);
-            const project = projects[userRegistrationProject.project_id];
+    const projectDisplay = UserProject => {
+        if (UserProject) {
+            const workflowState = t(`user_projects.workflow_states.${UserProject.workflow_state}`);
+            const hasAMRole = Object.values(user.user_roles).find(role => 
+                role.name === 'Archivmanagement' && role.project_id === UserProject.project_id);
+            const project = projects[UserProject.project_id];
 
             if (project.shortname === 'ohd') {
                 return null;
@@ -25,7 +25,7 @@ export default function ProjectShortnamesCell({
 
             return (
                 <li
-                    key={userRegistrationProject.id}
+                    key={UserProject.id}
                     className="DetailList-item"
                 >
                     { project.shortname + ' - ' + workflowState + (hasAMRole ? ' - AM' : '') }
@@ -36,7 +36,7 @@ export default function ProjectShortnamesCell({
 
     return (
         <ul className="DetailList">
-            {userRegistrationProjects.map(urp => (
+            {UserProjects.map(urp => (
                 projectDisplay(urp)
             ))}
         </ul>

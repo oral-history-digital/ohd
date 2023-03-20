@@ -3,7 +3,7 @@ const NAME = 'sidebar';
 export { NAME };
 
 export const INDEX_NONE = -1;
-export const INDEX_ACCOUNT = 0;
+export const INDEX_USER = 0;
 export const INDEX_SEARCH = 1;
 export const INDEX_CATALOG = 2;
 export const INDEX_INTERVIEW = 3;

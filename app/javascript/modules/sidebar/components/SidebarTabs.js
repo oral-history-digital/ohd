@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
-import { AccountContainer } from 'modules/account';
+import { AccountContainer } from 'modules/user';
 import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
@@ -32,7 +32,7 @@ export default function SidebarTabs({
     isCampscapesProject,
     hasMap,
 }) {
-    const [tabIndex, setTabIndex] = useState(indexes.INDEX_ACCOUNT);
+    const [tabIndex, setTabIndex] = useState(indexes.INDEX_USER);
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
@@ -48,9 +48,9 @@ export default function SidebarTabs({
         setTabIndex(index);
 
         switch (index) {
-        case indexes.INDEX_ACCOUNT:
+        case indexes.INDEX_USER:
             if (isLoggedIn) {
-                navigate(`${pathBase}/accounts/current`);
+                navigate(`${pathBase}/users/current`);
             }
             break;
         case indexes.INDEX_SEARCH:
@@ -119,7 +119,7 @@ export default function SidebarTabs({
                     className="SidebarTabs-tab"
                 >
                     {t((isCampscapesProject && !archiveId) ?
-                        'user_registration.notes_on_tos_agreement' :
+                        'user.notes_on_tos_agreement' :
                         (!project.is_ohd ? 'archive_search' : 'modules.sidebar.search')
                     )}
                 </Tab>
@@ -215,7 +215,7 @@ export default function SidebarTabs({
 
             <TabPanels>
                 <TabPanel key="1">
-                    {tabIndex === indexes.INDEX_ACCOUNT && (
+                    {tabIndex === indexes.INDEX_USER && (
                         <AccountContainer/>
                     )}
                 </TabPanel>

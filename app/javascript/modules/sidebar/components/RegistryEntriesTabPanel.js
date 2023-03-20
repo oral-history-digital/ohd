@@ -73,7 +73,7 @@ RegistryEntriesTabPanel.propTypes = {
     locale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
     translations: PropTypes.object.isRequired,
-    account: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     changeRegistryEntriesViewMode: PropTypes.func.isRequired,
 };

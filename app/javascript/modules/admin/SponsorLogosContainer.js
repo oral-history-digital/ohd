@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getCurrentProject, getProjectLocales, fetchData, deleteData, submitData,
-    getCurrentAccount } from 'modules/data';
+    getCurrentUser } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
@@ -13,7 +13,7 @@ const mapStateToProps = state => {
         projectId: getProjectId(state),
         project: getCurrentProject(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: true,
         //
         data: project.sponsor_logos,

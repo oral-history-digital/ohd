@@ -14,13 +14,13 @@ export default function UserRole ({
     projects,
     projectId,
     deleteData,
-    userRegistrationId,
+    userId,
 }) {
 
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { deleteDatum } = useDataApi();
-    const mutateData = useMutateData('user_registrations');
+    const mutateData = useMutateData('users');
     const mutateDatum = useMutateDatum();
 
     const show = () => {
@@ -40,8 +40,8 @@ export default function UserRole ({
             const result = await deleteDatum(userRole.id, 'user_roles');
             const updatedDatum = result.data;
 
-            if (userRegistrationId) {
-                mutateDatum(userRegistrationId, 'user_registrations');
+            if (userId) {
+                mutateDatum(userId, 'users');
             }
 
             //if (typeof onSubmit === 'function') {

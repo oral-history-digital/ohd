@@ -20,25 +20,25 @@ export default function UserTable() {
     const project = useSelector(getCurrentProject);
 
 
-    const getCurrentUserRegistrationProject = (row, project) => {
-        return Object.values(row.user_registration_projects).find(p => p.project_id === project.id)
+    const getCurrentUserProject = (row, project) => {
+        return Object.values(row.user_projects).find(p => p.project_id === project.id)
     };
 
     const baseColumns = useMemo(() => ([
         {
             id: 'first_name',
             accessorFn: row => row.first_name,
-            header: t('activerecord.attributes.user_registration.first_name')
+            header: t('activerecord.attributes.user.first_name')
         },
         {
             id: 'last_name',
             accessorFn: row => row.last_name,
-            header: t('activerecord.attributes.user_registration.last_name')
+            header: t('activerecord.attributes.user.last_name')
         },
         {
             id: 'email',
             accessorFn: row => row.email,
-            header: t('activerecord.attributes.user_registration.email'),
+            header: t('activerecord.attributes.user.email'),
         },
     ]), [locale]);
 
@@ -46,11 +46,11 @@ export default function UserTable() {
         {
             id: 'workflow_state',
             accessorFn: row => row.workflow_state,
-            header: t('activerecord.attributes.user_registration.workflow_state'),
+            header: t('activerecord.attributes.user.workflow_state'),
         },
         {
             accessorKey: 'activated_at',
-            header: t('activerecord.attributes.user_registration.activated_at'),
+            header: t('activerecord.attributes.user.activated_at'),
             accessorFn: row => row.activated_at,
         },
         {
@@ -64,15 +64,15 @@ export default function UserTable() {
             id: 'workflow_state',
             header: t('activerecord.attributes.default.workflow_state'),
             accessorFn: row => {
-                const workflowState = getCurrentUserRegistrationProject(row, project).workflow_state;
-                return t(`user_registration_projects.workflow_states.${workflowState}`);
+                const workflowState = getCurrentUserProject(row, project).workflow_state;
+                return t(`user_projects.workflow_states.${workflowState}`);
             },
         },
         {
             accessorKey: 'updated_at',
             header: t('activerecord.attributes.default.updated_at'),
             accessorFn: row => {
-                return getCurrentUserRegistrationProject(row, project).updated_at;
+                return getCurrentUserProject(row, project).updated_at;
             },
             cell: DateCell,
         },

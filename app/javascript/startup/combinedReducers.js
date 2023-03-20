@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { accountReducer, ACCOUNT_NAME } from 'modules/account';
+import { userReducer, USER_NAME } from 'modules/user';
 import { archiveReducer, ARCHIVE_NAME } from 'modules/archive';
 import { dataReducer, DATA_NAME } from 'modules/data';
 import { editTableReducer, EDIT_TABLE_NAME } from 'modules/edit-table';
@@ -14,7 +14,7 @@ import { treeSelectReducer, TREE_SELECT_NAME } from 'modules/tree-select';
 import { workbookReducer, WORKBOOK_NAME } from 'modules/workbook';
 
 const combinedReducer = combineReducers({
-    [ACCOUNT_NAME]: accountReducer,
+    [USER_NAME]: userReducer,
     [ARCHIVE_NAME]: archiveReducer,
     [DATA_NAME]: dataReducer,
     [EDIT_TABLE_NAME]: editTableReducer,

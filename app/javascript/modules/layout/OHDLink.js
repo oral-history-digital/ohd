@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { getCurrentAccount, getCurrentProject, getProjects } from 'modules/data';
+import { getCurrentUser, getCurrentProject, getProjects } from 'modules/data';
 import { getLocale, setProjectId } from 'modules/archive';
 import { OHD_DOMAINS } from './constants';
 
@@ -12,7 +12,7 @@ function OHDLink({ className }) {
     const project = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
     const dispatch = useDispatch();
-    const currentAccount = useSelector(getCurrentAccount);
+    const currentAccount = useSelector(getCurrentUser);
 
     const accessTokenParam = currentAccount?.access_token ? `access_token=${currentAccount.access_token}` : null;
 

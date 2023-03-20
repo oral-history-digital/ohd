@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getInstitutionsQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getProjects, getCurrentAccount,
+import { fetchData, deleteData, submitData, getProjects, getCurrentUser,
     getInstitutions, getInstitutionsStatus, getProjectLocales,
     getProjectHasMap, InstitutionTile } from 'modules/data';
 import { getCookie } from 'modules/persistence';
@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     translations: getTranslations(state),
-    account: getCurrentAccount(state),
+    user: getCurrentUser(state),
     editView: getCookie('editView') === 'true',
     data: getInstitutions(state),
     dataStatus: getInstitutionsStatus(state),

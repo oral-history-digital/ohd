@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { changeRegistryEntriesViewMode, getShowRegistryEntriesSearchResults } from 'modules/search';
-import { getProjectLocales, getProjects, getCurrentAccount } from 'modules/data';
+import { getProjectLocales, getProjects, getCurrentUser } from 'modules/data';
 import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 
 const mapStateToProps = state => ({
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     locales: getProjectLocales(state),
     translations: getTranslations(state),
-    account: getCurrentAccount(state),
+    user: getCurrentUser(state),
     editView: getEditView(state),
 });
 

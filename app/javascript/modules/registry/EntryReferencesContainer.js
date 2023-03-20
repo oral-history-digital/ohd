@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getInterviews, getCurrentProject, fetchData } from 'modules/data';
 import { setArchiveId, getLocale, getProjectId } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import EntryReferences from './EntryReferences';
 
 const mapStateToProps = state => ({

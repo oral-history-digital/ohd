@@ -7,7 +7,7 @@ export default function AuthShow({
     ifNoProject,
     ifCatalog,
     project,
-    account,
+    user,
     isCatalog,
     children,
 }) {
@@ -15,9 +15,9 @@ export default function AuthShow({
         // logged in and registered for the current project
         //(isLoggedIn && ifLoggedIn) ||
         (
-            isLoggedIn && ifLoggedIn && account && (
-                account.admin ||
-                Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+            isLoggedIn && ifLoggedIn && user && (
+                user.admin ||
+                Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
             )
         ) ||
         // catalog-project
@@ -29,8 +29,8 @@ export default function AuthShow({
         (!isLoggedIn && ifLoggedOut) ||
         // logged in and NOT registered for the current project
         (
-            isLoggedIn && ifNoProject && account && !account.admin &&
-            !Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+            isLoggedIn && ifNoProject && user && !user.admin &&
+            !Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
         )
     ) {
         // logged out or still not registered for a project
@@ -47,7 +47,7 @@ AuthShow.propTypes = {
     ifNoProject: PropTypes.bool,
     ifCatalog: PropTypes.bool,
     project: PropTypes.object,
-    account: PropTypes.object,
+    user: PropTypes.object,
     isCatalog: PropTypes.bool.isRequired,
     children: PropTypes.node,
 };

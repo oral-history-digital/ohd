@@ -8,7 +8,7 @@ import {
     getIsCatalog
 } from 'modules/data';
 import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideSidebar } from '../actions';
 

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getInterviews, getSegments, getCurrentProject, fetchData } from 'modules/data';
 import { setArchiveId, getLocale, getProjectId } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import RefObjectLink from './RefObjectLink';
 
 const mapStateToProps = state => ({

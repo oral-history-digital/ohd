@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getLanguagesQuery } from 'modules/search';
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount,
+import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentUser,
     getLanguages, getLanguagesStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
     projects: getProjects(state),
     project: getCurrentProject(state),
     translations: getTranslations(state),
-    account: getCurrentAccount(state),
+    user: getCurrentUser(state),
     editView: getCookie('editView') === 'true',
     data: getLanguages(state),
     dataStatus: getLanguagesStatus(state),

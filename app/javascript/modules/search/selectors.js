@@ -45,4 +45,4 @@ export const getPermissionsQuery = state => getState(state).permissions.query;
 
 export const getTaskTypesQuery = state => getState(state).task_types.query;
 
-export const getUserRegistrationsQuery = state => getState(state).user_registrations.query;
+export const getUsersQuery = state => getState(state).users.query;

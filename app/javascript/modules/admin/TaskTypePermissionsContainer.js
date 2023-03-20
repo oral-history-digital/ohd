@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, submitData, getProjectLocales, getProjects, getCurrentAccount,
+import { fetchData, deleteData, submitData, getProjectLocales, getProjects, getCurrentUser,
     getCurrentProject, getPermissions, getPermissionsStatus } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import DataList from './DataList';
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
     project: getCurrentProject(state),
     locales: getProjectLocales(state),
     translations: getTranslations(state),
-    account: getCurrentAccount(state),
+    user: getCurrentUser(state),
     editView: getEditView(state),
     //
     //

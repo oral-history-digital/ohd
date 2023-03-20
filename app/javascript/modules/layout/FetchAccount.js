@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { OHD_DOMAINS } from 'modules/layout';
 
 export default function FetchAccount({
-    account,
-    accountsStatus,
+    user,
+    usersStatus,
     isLoggedIn,
     isLoggedOut,
     checkedOhdSession,
@@ -23,23 +23,23 @@ export default function FetchAccount({
             ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1 &&
             /password/.test(location.pathname) === false
         ) {
-            location = `${OHD_DOMAINS[railsMode]}/de/user_accounts/is_logged_in?path=${location.pathname}&project=${projectId}`;
+            location = `${OHD_DOMAINS[railsMode]}/de/users/is_logged_in?path=${location.pathname}&project=${projectId}`;
         }
     }, [checkedOhdSession, isLoggedIn]);
 
     useEffect(() => {
         if (
-            /^reload/.test(accountsStatus.current) ||
-            (isLoggedIn && !account && !/^fetching/.test(accountsStatus.current))
+            /^reload/.test(usersStatus.current) ||
+            (isLoggedIn && !user && !/^fetching/.test(usersStatus.current))
         ) {
-            fetchData({ projectId, locale, project }, 'accounts', 'current');
+            fetchData({ projectId, locale, project }, 'users', 'current');
         }
-    }, [accountsStatus.current, isLoggedIn]);
+    }, [usersStatus.current, isLoggedIn]);
 
 
     useEffect(() => {
-        if (isLoggedOut && account) {
-            deleteData({ projectId, locale, project }, 'accounts', 'current', null, null, false, true);
+        if (isLoggedOut && user) {
+            deleteData({ projectId, locale, project }, 'users', 'current', null, null, false, true);
         }
     }, [isLoggedOut]);
 

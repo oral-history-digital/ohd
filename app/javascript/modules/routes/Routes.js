@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { AccountPage, OrderNewPasswordContainer, RegisterContainer,
-    ActivateAccount } from 'modules/account';
+    ActivateAccount } from 'modules/user';
 import { SearchPage } from 'modules/search';
 import { UsersAdminPage, WrappedInstitutionsContainer, ArchivePage, HelpTextAdminPage } from 'modules/admin';
 import { SiteStartpage } from 'modules/site-startpage';

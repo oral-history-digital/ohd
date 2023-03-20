@@ -27,7 +27,7 @@ test('normalizes old style queries', () => {
             '646776',
         ],
         'period[]': [],
-        'tasks_user_account_ids[]': [],
+        'tasks_user_ids[]': [],
         'tasks_supervisor_ids[]': null,
     };
 

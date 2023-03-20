@@ -3,11 +3,11 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getInterviews, getRegistryEntries, getInterviewsStatus,
     getRegistryEntriesStatus, getRegistryReferenceTypesForCurrentProject,
-    getSegments, getSegmentsStatus, getCurrentAccount, getCurrentProject } from 'modules/data';
+    getSegments, getSegmentsStatus, getCurrentUser, getCurrentProject } from 'modules/data';
 import { setArchiveId, getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import RegistryEntryShow from './RegistryEntryShow';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -22,7 +22,7 @@ const mapStateToProps = state => ({
     registryEntriesStatus:getRegistryEntriesStatus(state),
     registryEntries: getRegistryEntries(state),
     editView: getEditView(state),
-    account: getCurrentAccount(state),
+    user: getCurrentUser(state),
     isLoggedIn: getIsLoggedIn(state),
 });
 

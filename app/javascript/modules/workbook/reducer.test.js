@@ -1,5 +1,5 @@
 import reducer, { initialState } from './reducer';
-import { LOGOUT } from 'modules/account';
+import { LOGOUT } from 'modules/user';
 import * as types from './action-types';
 
 test('returns the initial state', () => {

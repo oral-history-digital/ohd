@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getArchiveId, getProjectId, getSelectedArchiveIds } from 'modules/archive';
 import { getCurrentInterview, getCurrentProject, getIsCampscapesProject }
     from 'modules/data';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import SidebarTabs from './SidebarTabs';
 
 const mapStateToProps = (state) => {
