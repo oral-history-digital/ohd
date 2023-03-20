@@ -49,7 +49,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
 
-    MarkTextJob.perform_later(@interview, mark_text_params[:texts_attributes].as_json, mark_text_params[:locale], current_user_account)
+    MarkTextJob.perform_later(@interview, mark_text_params[:texts_attributes].as_json, mark_text_params[:locale], current_user)
 
     respond_to do |format|
       format.json do
@@ -72,7 +72,7 @@ class InterviewsController < ApplicationController
     # contributors (update_speakers_params[:contributions]) are people designated through column speaker_id
     #
     contributors = update_speakers_params[:contributions_attributes] && update_speakers_params[:contributions_attributes].map(&:to_h)
-    AssignSpeakersJob.perform_later(@interview, speakers, contributors, current_user_account)
+    AssignSpeakersJob.perform_later(@interview, speakers, contributors, current_user)
 
     respond_to do |format|
       format.json do
@@ -383,7 +383,7 @@ class InterviewsController < ApplicationController
   def random_featured
     respond_to do |format|
       format.json do
-        logged_in = current_user_account.present?
+        logged_in = current_user.present?
         serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
         featured_interviews = current_project.featured_interviews
 
@@ -415,7 +415,7 @@ class InterviewsController < ApplicationController
   end
 
   def initial_interview_redux_state
-    #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user_account ? current_user_account.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
+    #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
     if @interview
       initial_redux_state.update(
         archive: initial_redux_state[:archive].update(

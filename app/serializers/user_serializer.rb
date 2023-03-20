@@ -1,10 +1,9 @@
-# encoding: utf-8
-#
-class UserRegistrationSerializer < ApplicationSerializer
+class UserAccountSerializer < ApplicationSerializer
   attributes :id,
     :first_name,
     :last_name,
     :email,
+    :admin,
     :tos_agreement,
     :application_info,
     :created_at,
@@ -27,13 +26,16 @@ class UserRegistrationSerializer < ApplicationSerializer
     :state,
     :country,
     :user_roles,
-    :user_registration_projects,
+    :permissions,
+    :user_projects,
     :tasks,
+    :supervised_tasks,
     :workflow_state,
     :workflow_states,
+    :access_token
 
-  def user_account_id
-    object.user_account && object.user_account.id
+  def user_id
+    object.id
   end
 
   def names
@@ -46,24 +48,28 @@ class UserRegistrationSerializer < ApplicationSerializer
   end
 
   def user_roles
-    object.user_account ? object.user_account.user_roles.inject({}) do |mem, c|
-      mem[c.id] = cache_single(c.role.project, c) if c.role.project
-      mem
-    end : {}
-  end
-
-  def user_registration_projects
-    object.user_registration_projects.inject({}) do |mem, c|
-      mem[c.id] = cache_single(c.project, c) if c.project
-      mem
-    end
+    object.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem}
   end
 
   def tasks
-    object.user_account ? object.user_account.tasks.inject({}) do |mem, c|
-      mem[c.id] = cache_single(c.interview.project, c) if c.interview.project
-      mem
-    end : {}
+    object.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem}
+  end
+
+  def supervised_tasks
+    object.supervised_tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem}
+  end
+
+  def permissions
+    object.permissions.inject({}){|mem, c| mem[c.id] = PermissionSerializer.new(c); mem}
+  end
+
+  def user_projects
+    object.user_projects.inject({}){|mem, c| mem[c.id] = UserProjectSerializer.new(c); mem}
+  end
+
+  def access_token
+    last_access_token = object.access_tokens.last
+    last_access_token && last_access_token.token
   end
 
   def created_at
@@ -83,26 +89,6 @@ class UserRegistrationSerializer < ApplicationSerializer
   end
 
   def country
-    ISO3166::Country.translations(:de)[YAML.load(object.application_info)[:country]]
+    ISO3166::Country.translations(:de)[object.country]
   end
-
-  [
-    :appellation,
-    :gender,
-    :job_description,
-    :research_intentions,
-    :comments,
-    :organization,
-    :homepage,
-    :street,
-    :zipcode,
-    :city,
-    :state
-  ].each do |info|
-    define_method info do
-      i = YAML.load(object.application_info)[info]
-      i && i.force_encoding("UTF-8")
-    end
-  end
-
 end

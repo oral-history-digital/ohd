@@ -29,10 +29,11 @@ namespace :maintenance do
       name: 'Oral History Digital',
       grant_project_access_instantly: true,
     }, UserAccount.where(email: 'cord.pagenstecher@cedis.fu-berlin.de').first, true)
-    UserRegistration.all.each do |user_registration|
-      user_registration_project = UserRegistrationProject.create project_id: project.id, user_registration_id: user_registration.id
-      user_registration_project.grant_project_access_instantly!
-    end
+
+    ActiveRecord::Base.connection.execute <<-SQL
+      INSERT INTO user_projects (project_id, user_id, workflow_state, created_at, updated_at)
+      VALUES #{User.all.map{|u| "(#{project.id}, #{u.id}, 'project_access_granted', '#{Time.now}', '#{Time.now}')"}.join(', ')}
+    SQL
   end
 
 end

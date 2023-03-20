@@ -17,7 +17,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def new
-    redirect_to url_with_access_token if current_user_account
+    redirect_to url_with_access_token if current_user
     super
   end
 
@@ -34,14 +34,14 @@ class SessionsController < Devise::SessionsController
   rescue BCrypt::Errors::InvalidHash
     respond_to do |format|
       format.json {
-        render json: {error: 'change_to_bcrypt', email: params['user_account']['login']}
+        render json: {error: 'change_to_bcrypt', email: params['user']['login']}
       }
     end
   end
 
   def destroy
-    current_user_account.access_tokens.destroy_all
-    current_user_account.sessions.destroy_all
+    current_user.access_tokens.destroy_all
+    current_user.sessions.destroy_all
     sign_out
     respond_to_on_destroy
   end
@@ -78,6 +78,6 @@ class SessionsController < Devise::SessionsController
   end
 
   def last_token
-    current_user_account && current_user_account.access_tokens.last.token
+    current_user && current_user.access_tokens.last.token
   end
 end

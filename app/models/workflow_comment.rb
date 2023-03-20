@@ -1,7 +1,7 @@
 class WorkflowComment < ApplicationRecord
 
   belongs_to :interview
-  belongs_to :user_account
+  belongs_to :user
   belongs_to :parent, :class_name => 'WorkflowComment'
 
   after_create :update_interview

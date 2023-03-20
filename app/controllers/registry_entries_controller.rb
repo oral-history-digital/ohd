@@ -118,7 +118,7 @@ class RegistryEntriesController < ApplicationController
         send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", type: "application/pdf" #, :disposition => "attachment"
       end
       format.csv do
-        if current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'RegistryEntry', 'show'))
+        if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
           csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
             CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|

@@ -2,7 +2,7 @@ class AnnotationsController < ApplicationController
   def create
     authorize Annotation
     @annotation = Annotation.new(annotation_params)
-    @annotation.author_id = current_user_account.id # FIXME: if we have data here (in MOG for example), it has to be migrated from user_id to user_account_id
+    @annotation.author_id = current_user.id # FIXME: if we have data here (in MOG for example), it has to be migrated from user_id to user_account_id
     @annotation.save
     #@annotation.submit! if @annotation.private? && params[:publish]
 

@@ -48,13 +48,13 @@ class PasswordsController < Devise::PasswordsController
 
   def check_email
     email = params[:email]
-    registration = UserRegistration.where(email: email).first
+    user = User.where(email: email).first
 
-    if registration
-      if !registration.user_account.confirmed?
+    if user
+      if !user.confirmed?
         msg = 'account_confirmation_missing'
         # re-send the activation instructions
-        registration.user_account.resend_confirmation_instructions
+        user.resend_confirmation_instructions
         error = true
       else
         msg = nil

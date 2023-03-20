@@ -12,12 +12,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  begin
-    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.mailer_sender = 'mail@oral-history.digital'
-    end
-  rescue ActiveRecord::NoDatabaseError
-  end
+  config.mailer_sender = 'mail@oral-history.digital'
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'CustomDeviseMailer'
@@ -39,7 +34,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  config.authentication_keys = [:login]
+  #config.authentication_keys = [:login]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the

@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   def create
     authorize Task
     @task = Task.create task_params
-    @task.update(supervisor_id: current_user_account.id)
+    @task.update(supervisor_id: current_user.id)
     @task.user_account.user_registration.touch
 
     respond_to do |format|

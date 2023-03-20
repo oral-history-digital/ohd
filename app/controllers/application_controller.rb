@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user_account!
   before_action :user_account_by_token
   def user_account_by_token
-    if doorkeeper_token && !current_user_account
+    if doorkeeper_token && !current_user
       user = UserAccount.find(doorkeeper_token.resource_owner_id) 
       sign_in(user)
     end
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_policy_scoped, only: :index
 
   def pundit_user
-    ProjectContext.new(current_user_account, current_project)
+    ProjectContext.new(current_user, current_project)
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -67,18 +67,18 @@ class ApplicationController < ActionController::Base
       },
       account: {
         isLoggingIn: false,
-        isLoggedIn: !!current_user_account,
-        isLoggedOut: !current_user_account,
+        isLoggedIn: !!current_user,
+        isLoggedOut: !current_user,
         accessToken: params[:access_token],
         checkedOhdSession: params[:checked_ohd_session],
-        firstName: current_user_account && current_user_account.first_name,
-        lastName: current_user_account && current_user_account.last_name,
-        email: current_user_account && current_user_account.email,
-        admin: current_user_account && current_user_account.admin,
+        firstName: current_user && current_user.first_name,
+        lastName: current_user && current_user.last_name,
+        email: current_user && current_user.email,
+        admin: current_user && current_user.admin,
       },
       data: {
         statuses: {
-          accounts: {current: 'fetched'},
+          users: {current: 'fetched'},
           interviews: {},
           random_featured_interviews: {},
           segments: {},
@@ -93,7 +93,7 @@ class ApplicationController < ActionController::Base
           biographical_entries: {},
           speaker_designations: {},
           mark_text: {},
-          user_registrations: {resultPagesCount: 1},
+          users: {resultPagesCount: 1},
           roles: {},
           permissions: {},
           tasks: {},
@@ -124,8 +124,8 @@ class ApplicationController < ActionController::Base
         collections: Rails.cache.fetch("collections-#{Collection.maximum(:updated_at)}") do
           Collection.all.inject({}){|mem, s| mem[s.id] = CollectionSerializer.new(s); mem}
         end,
-        accounts: {
-          current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
+        users: {
+          current: current_user && ::UserSerializer.new(current_user) || nil #{}
         },
         registry_entries: {},
         interviews: {},
@@ -148,9 +148,9 @@ class ApplicationController < ActionController::Base
   def initial_search_redux_state
     {
       registryEntries: {},
-      user_registrations: {
+      users: {
         query: {
-          'user_registrations.workflow_state': 'account_confirmed',
+          'users.workflow_state': 'account_confirmed',
           page: 1,
         },
       },

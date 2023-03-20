@@ -3,7 +3,7 @@ class UserContentsController < ApplicationController
   def create
     authorize(UserContent)
     @user_content = UserContent.new(user_content_params)
-    @user_content.user_account_id = current_user_account.id
+    @user_content.user_account_id = current_user.id
     @user_content.project_id = current_project.id
     @user_content.save
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
@@ -47,7 +47,7 @@ class UserContentsController < ApplicationController
         render json: {
             data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
             data_type: 'user_contents',
-            user_account_id: current_user_account&.id
+            user_account_id: current_user&.id
           }
       end
     end

@@ -18,7 +18,7 @@ export default function LoginForm() {
             submitText='login'
             elements={[
                 {
-                    attribute: 'login',
+                    attribute: 'email',
                     elementType: 'input',
                     type: 'text',
                 },
