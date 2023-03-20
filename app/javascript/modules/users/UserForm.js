@@ -7,7 +7,7 @@ import { usePathBase } from 'modules/routes';
 
 export default function UserForm({
     data,
-    userRegistrationId,
+    userId,
     scope,
     locale,
     projectId,
@@ -15,7 +15,7 @@ export default function UserForm({
     submitData,
     onSubmit,
 }) {
-    const mutateData = useMutateData('user_registrations');
+    const mutateData = useMutateData('users');
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
 
@@ -30,7 +30,7 @@ export default function UserForm({
         },
     ];
 
-    if (scope === 'user_registration_project') {
+    if (scope === 'user_project') {
         formElements.push({
             elementType: 'textarea',
             attribute: 'admin_comments',
@@ -46,8 +46,8 @@ export default function UserForm({
                     const result = await submitDataWithFetch(pathBase, params);
                     const updatedDatum = result.data;
 
-                    if (userRegistrationId) {
-                        mutateDatum(userRegistrationId, 'user_registrations');
+                    if (userId) {
+                        mutateDatum(userId, 'users');
                     }
 
                     if (typeof onSubmit === 'function') {

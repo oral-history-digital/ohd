@@ -7,14 +7,14 @@ import { t } from 'modules/i18n';
 export default class TaskPreview extends Component {
 
     dateAttribute() {
-        if (this.props.data.user_account_id === this.props.account.id) {
+        if (this.props.data.user_id === this.props.user.id) {
             // tasks assigned to current user
             if (this.props.data.workflow_state === 'finished') {
                 return 'finished_at';
             } else {
-                return 'assigned_to_user_account_at';
+                return 'assigned_to_user_at';
             }
-        } else if (this.props.data.supervisor_id === this.props.account.id) {
+        } else if (this.props.data.supervisor_id === this.props.user.id) {
             // tasks assigned to current user as QM
             if (this.props.data.workflow_state === 'cleared') {
                 return 'cleared_at';

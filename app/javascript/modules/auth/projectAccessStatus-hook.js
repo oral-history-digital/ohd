@@ -1,16 +1,16 @@
 import { useSelector } from 'react-redux';
 
-import { getCurrentAccount } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 
 export function useProjectAccessStatus(project) {
-    const account = useSelector(getCurrentAccount);
+    const user = useSelector(getCurrentUser);
 
-    const projectRegistration = account && project &&
-        Object.values(account.user_registration_projects).find(urp => urp.project_id === project.id);
+    const projectRegistration = user && project &&
+        Object.values(user.user_projects).find(urp => urp.project_id === project.id);
     const projectAccessStatus = projectRegistration?.workflow_state;
 
     return {
-        projectAccessGranted: account?.admin || projectAccessStatus === 'project_access_granted',
+        projectAccessGranted: user?.admin || projectAccessStatus === 'project_access_granted',
         projectAccessStatus: projectAccessStatus,
     };
 }

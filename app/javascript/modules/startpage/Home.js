@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { RedirectOnLogin } from 'modules/account';
+import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';

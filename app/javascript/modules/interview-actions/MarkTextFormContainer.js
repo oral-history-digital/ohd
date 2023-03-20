@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, submitData, getCurrentInterview, getCurrentProject, getCurrentAccount,
+import { fetchData, submitData, getCurrentInterview, getCurrentProject, getCurrentUser,
     getMarkTextStatus } from 'modules/data';
 import { getLocale, getProjectId, getArchiveId, getTranslations } from 'modules/archive';
 import MarkTextForm from './MarkTextForm';
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         project: getCurrentProject(state),
         archiveId: getArchiveId(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         interview: getCurrentInterview(state),
         markTextStatus: getMarkTextStatus(state),
     }

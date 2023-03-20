@@ -27,9 +27,9 @@ export const getNormDataProviders = state => getData(state).norm_data_providers;
 
 export const getInterviews = state => getData(state).interviews;
 
-export const getAccounts = state => getData(state).accounts;
+export const getAccounts = state => getData(state).users;
 
-export const getCurrentAccount = state => getAccounts(state).current;
+export const getCurrentUser = state => getAccounts(state).current;
 
 export const getPermissions = state => getData(state).permissions;
 
@@ -39,17 +39,17 @@ export const getSegments = state => getData(state).segments;
 
 export const getTasks = state => getData(state).tasks;
 
-export const getUserRegistrations = state => getData(state).user_registrations;
+export const getUsers = state => getData(state).users;
 
 export const getRandomFeaturedInterviews = state => getData(state).random_featured_interviews;
 
-export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
+export const getCurrentUserIsAdmin = state => getCurrentUser(state).admin;
 
 /* Statuses */
 
 export const getStatuses = state => getData(state).statuses;
 
-export const getAccountsStatus = state => getStatuses(state).accounts;
+export const getAccountsStatus = state => getStatuses(state).users;
 
 export const getCollectionsStatus = state => getStatuses(state).collections;
 
@@ -118,7 +118,7 @@ export const getTasksStatus = state => getStatuses(state).tasks;
 
 export const getTaskTypesStatus = state => getStatuses(state).task_types;
 
-export const getUserRegistrationsStatus = state => getStatuses(state).user_registrations;
+export const getUsersStatus = state => getStatuses(state).users;
 
 
 function projectByDomain(projects) {

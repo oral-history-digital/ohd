@@ -10,7 +10,7 @@ import {
     getRegistryEntriesSearch,
     getShowRegistryEntriesSearchResults
 } from 'modules/search';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import Registry from './Registry';
 
 const mapStateToProps = (state) => ({

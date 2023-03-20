@@ -123,7 +123,7 @@ RegistryName.propTypes = {
     formClasses: PropTypes.string,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
-    account: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     submitData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,

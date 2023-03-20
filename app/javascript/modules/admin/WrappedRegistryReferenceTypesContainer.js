@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams, getRegistryReferenceTypesQuery } from 'modules/search';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjectLocales,
-    getCurrentAccount, getRegistryReferenceTypesForCurrentProject,
+    getCurrentUser, getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         project: project,
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: getEditView(state),
         data: getRegistryReferenceTypesForCurrentProject(state),
         dataStatus: getRegistryReferenceTypesStatus(state),

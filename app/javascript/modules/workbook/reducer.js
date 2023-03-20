@@ -1,4 +1,4 @@
-import { LOGOUT } from 'modules/account';
+import { LOGOUT } from 'modules/user';
 
 import {
     FETCH_WORKBOOK_STARTED,

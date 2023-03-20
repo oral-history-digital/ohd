@@ -11,7 +11,7 @@ export default class Task extends Component {
         this.state = {
             task: {
                 id: this.props.task.id,
-                user_account_id: this.props.task.user_account_id,
+                user_id: this.props.task.user_id,
                 supervisor_id: this.props.task.supervisor_id,
                 //workflow_state: this.props.task.workflow_state
             }
@@ -28,7 +28,7 @@ export default class Task extends Component {
                 ) ||
                 (
                     // assigned-user-select
-                    attribute === 'user_account_id' &&
+                    attribute === 'user_id' &&
                     (
                         !!Object.values(u.user_roles).find(r => ['Qualitätsmanagement', 'QM', 'Redaktion', 'Erschließung', 'Archivmanagement'].indexOf(r.name) > -1) ||
                         u.admin
@@ -152,7 +152,7 @@ export default class Task extends Component {
                 >
                     {this.box(this.props.task.task_type.name[this.props.locale])}
                     {this.box(this.valueAndSelect('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
-                    {this.box(this.valueAndSelect('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
+                    {this.box(this.valueAndSelect('user_id', this.usersAsOptionsForSelect('user_id')))}
                     {this.box(this.valueAndSelect('workflow_state', this.workflowStatesAsOptionsForSelect()))}
                     <input type="submit" value={t(this.props, 'submit')}/>
                 </form>

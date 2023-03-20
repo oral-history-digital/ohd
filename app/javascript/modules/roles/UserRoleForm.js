@@ -8,7 +8,7 @@ import { usePathBase } from 'modules/routes';
 
 export default function UserRoleForm ({
     userAccountId,
-    userRegistrationId,
+    userId,
     projectId,
     project,
     locale,
@@ -18,7 +18,7 @@ export default function UserRoleForm ({
     onSubmit,
 }) {
 
-    const mutateData = useMutateData('user_registrations');
+    const mutateData = useMutateData('users');
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
 
@@ -40,8 +40,8 @@ export default function UserRoleForm ({
                         const result = await submitDataWithFetch(pathBase, params);
                         const updatedDatum = result.data;
 
-                        if (userRegistrationId) {
-                            mutateDatum(userRegistrationId, 'user_registrations');
+                        if (userId) {
+                            mutateDatum(userId, 'users');
                         }
 
                         if (typeof onSubmit === 'function') {
@@ -59,7 +59,7 @@ export default function UserRoleForm ({
                     });
                 }}
                 values={{
-                    user_account_id: userAccountId,
+                    user_id: userAccountId,
                 }}
                 elements={[
                     {

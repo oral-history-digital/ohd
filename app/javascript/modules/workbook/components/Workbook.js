@@ -7,7 +7,7 @@ import { Spinner } from 'modules/spinners';
 import WorkbookItemList from './WorkbookItemList';
 
 export default function Workbook({
-    account,
+    user,
     workbookIsLoading,
     workbookLoaded,
     workbookSearches,
@@ -19,10 +19,10 @@ export default function Workbook({
     const pathBase = usePathBase();
 
     useEffect(() => {
-        if (account.email && !account.error && !workbookLoaded && !workbookIsLoading) {
+        if (user.email && !user.error && !workbookLoaded && !workbookIsLoading) {
             fetchWorkbook(pathBase);
         }
-    }, [account.email]);
+    }, [user.email]);
 
     if (workbookIsLoading) {
         return <Spinner />;
@@ -47,7 +47,7 @@ export default function Workbook({
 }
 
 Workbook.propTypes = {
-    account: PropTypes.object,
+    user: PropTypes.object,
     workbookIsLoading: PropTypes.bool.isRequired,
     workbookLoaded: PropTypes.bool.isRequired,
     workbookSearches: PropTypes.array,

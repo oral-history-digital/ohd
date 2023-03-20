@@ -23,7 +23,7 @@ export {
     getRolesQuery,
     getShowRegistryEntriesSearchResults,
     getTaskTypesQuery,
-    getUserRegistrationsQuery,
+    getUsersQuery,
 } from './selectors';
 
 export { default as SearchPage } from './components/SearchPage';

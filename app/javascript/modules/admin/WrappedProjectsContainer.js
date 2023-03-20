@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getProjectLocales,
-    getCurrentAccount } from 'modules/data';
+    getCurrentUser } from 'modules/data';
 import DataList from './DataList';
 import { getProjectsStatus, ProjectTile } from 'modules/data';
 import { INDEX_PROJECTS } from 'modules/sidebar';
@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: getEditView(state),
         data: getProjects(state),
         dataStatus: getProjectsStatus(state),

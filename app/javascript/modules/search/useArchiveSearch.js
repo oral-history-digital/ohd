@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { useSelector } from 'react-redux';
 import range from 'lodash.range';
 
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import { fetcher } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { usePathBase } from 'modules/routes';

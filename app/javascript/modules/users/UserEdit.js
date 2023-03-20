@@ -11,8 +11,8 @@ export default function UserEdit ({
 
     const { t } = useI18n();
     const project = useSelector(getCurrentProject);
-    const scope = project.shortname === 'ohd' ? 'user_registration' : 'user_registration_project';
-    const userRegistrationProject = Object.values(data.user_registration_projects).find(urp => urp.project_id === project.id);
+    const scope = project.shortname === 'ohd' ? 'user' : 'user_project';
+    const UserProject = Object.values(data.user_projects).find(urp => urp.project_id === project.id);
 
     return (
         <div className='details'>
@@ -40,15 +40,15 @@ export default function UserEdit ({
                         <p className="detail"
                            key={index}
                           >
-                            <span className='name'>{t(`activerecord.attributes.user_registration.${detail}`) + ': '}</span>
-                            <span className='content'>{data[detail] || userRegistrationProject[detail]}</span>
+                            <span className='name'>{t(`activerecord.attributes.user.${detail}`) + ': '}</span>
+                            <span className='content'>{data[detail] || UserProject[detail]}</span>
                         </p>
                     )
                 })
             }
             <UserFormContainer
-                data={project.shortname === 'ohd' ? data : userRegistrationProject}
-                userRegistrationId={data.id}
+                data={project.shortname === 'ohd' ? data : UserProject}
+                userId={data.id}
                 scope={scope}
                 onSubmit={onSubmit}
             />

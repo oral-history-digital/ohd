@@ -18,7 +18,7 @@ export default class UserRoles extends Component {
                 >
                     <UserRoleContainer
                         userRole={this.props.userRoles[id]}
-                        userRegistrationId={this.props.userRegistrationId}
+                        userId={this.props.userId}
                         key={`userRole-${id}`}
                         hideEdit={this.props.hideEdit}
                     />
@@ -40,7 +40,7 @@ export default class UserRoles extends Component {
                     {closeModal => (
                         <UserRoleFormContainer
                             userAccountId={this.props.userAccountId}
-                            userRegistrationId={this.props.userRegistrationId}
+                            userId={this.props.userId}
                             onSubmit={closeModal}
                         />
                     )}
@@ -69,5 +69,5 @@ UserRoles.propTypes = {
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    account: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
 };

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getTaskTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getCurrentAccount,
+import { fetchData, deleteData, submitData, getCurrentProject, getCurrentUser,
     getTaskTypesForCurrentProject, getTaskTypesStatus, getProjectLocales } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
         project: getCurrentProject(state),
         locales: getProjectLocales(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: getEditView(state),
         data: getTaskTypesForCurrentProject(state),
         dataStatus: getTaskTypesStatus(state),

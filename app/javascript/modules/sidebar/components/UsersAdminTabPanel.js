@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { FaDownload } from 'react-icons/fa';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { UserRegistrationSearchFormContainer } from 'modules/admin';
+import { UserSearchFormContainer } from 'modules/admin';
 import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -57,13 +57,13 @@ export default function UsersAdminTabPanel({
             <div className='flyout-sub-tabs-container flyout-video'>
                 <AdminSubTab
                     title='edit.users.admin'
-                    url={`${pathBase}/user_registrations`}
-                    obj={{type: 'UserRegistration'}}
+                    url={`${pathBase}/users`}
+                    obj={{type: 'User'}}
                     action='update'
                 >
                     <div>
                         <div>
-                            <UserRegistrationSearchFormContainer/>
+                            <UserSearchFormContainer/>
                             <a href={userStatisticsPath()}>
                                 <FaDownload
                                     className="Icon Icon--primary"

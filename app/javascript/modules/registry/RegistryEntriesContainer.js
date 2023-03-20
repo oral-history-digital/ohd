@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, getCurrentProject, getCurrentAccount, getProjects, getRegistryEntries,
+import { fetchData, getCurrentProject, getCurrentUser, getProjects, getRegistryEntries,
     getRegistryEntriesStatus } from 'modules/data';
 import { getEditView, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import RegistryEntries from './RegistryEntries';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
     registryEntries: getRegistryEntries(state),
     registryEntriesStatus: getRegistryEntriesStatus(state),
     project: getCurrentProject(state),
-    account: getCurrentAccount(state),
+    user: getCurrentUser(state),
     editView: getEditView(state),
     isLoggedIn: getIsLoggedIn(state),
 });

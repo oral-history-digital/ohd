@@ -8,9 +8,9 @@ import {
 
 export const initialState = {
     registryEntries: {},
-    user_registrations: {
+    users: {
         query: {
-            'user_registration_projects.workflow_state': 'account_confirmed',
+            'user_projects.workflow_state': 'account_confirmed',
             page: 1,
         },
     },

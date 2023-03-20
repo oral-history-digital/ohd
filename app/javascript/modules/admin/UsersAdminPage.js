@@ -25,13 +25,13 @@ export default function UsersAdminPage() {
         <div className='wrapper-content register'>
             <Helmet>
                 <title>
-                    {t('activerecord.models.user_registration.other')}
+                    {t('activerecord.models.user.other')}
                 </title>
             </Helmet>
 
             <AuthShowContainer ifLoggedIn>
                 <h1 className="registry-entries-title">
-                    {usersCount} {t('activerecord.models.user_registration.other')}
+                    {usersCount} {t('activerecord.models.user.other')}
                 </h1>
 
                 <UserTable />

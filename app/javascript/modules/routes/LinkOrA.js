@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/layout';
 import { getLocale, setProjectId, getProjectId } from 'modules/archive';
-import { getCurrentAccount } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 
 function LinkOrA({
     to = '',
@@ -16,7 +16,7 @@ function LinkOrA({
 }) {
     const locale = useSelector(getLocale);
     const currentProjectId = useSelector(getProjectId);
-    const currentAccount = useSelector(getCurrentAccount);
+    const currentAccount = useSelector(getCurrentUser);
     const dispatch = useDispatch();
 
     const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;

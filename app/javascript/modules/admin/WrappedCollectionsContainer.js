@@ -5,7 +5,7 @@ import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
 import {
     fetchData, deleteData, submitData, getCurrentProject,
-    getProjectLocales, getCurrentAccount,
+    getProjectLocales, getCurrentUser,
     getCollectionsForCurrentProject, getCollectionsStatus
 } from 'modules/data';
 import { getCookie } from 'modules/persistence';
@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         project: getCurrentProject(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: getCookie('editView') === 'true',
         data: getCollectionsForCurrentProject(state),
         dataStatus: getCollectionsStatus(state),

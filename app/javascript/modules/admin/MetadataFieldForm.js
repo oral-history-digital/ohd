@@ -15,7 +15,7 @@ import {
 const NAME_VALUES = {
     Interview: [
         "media_type", "archive_id", "interview_date", "duration", "tape_count",
-        "language_id", "observations", "workflow_state", "tasks_user_account_ids",
+        "language_id", "observations", "workflow_state", "tasks_user_ids",
         "tasks_supervisor_ids", "description", "collection_id",
         "signature_original", "startpage_position", "project_id"
     ],

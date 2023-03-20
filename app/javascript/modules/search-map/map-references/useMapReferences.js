@@ -9,7 +9,7 @@ import { fetcher } from 'modules/api';
 import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
 import { usePathBase } from 'modules/routes';
 import { getEditView } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import { useSearchParams } from 'modules/query-string';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';

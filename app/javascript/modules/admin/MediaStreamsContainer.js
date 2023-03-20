@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getCurrentProject, fetchData, deleteData, submitData, getProjects,
-    getCurrentAccount, getMediaStreamsForCurrentProject } from 'modules/data';
+    getCurrentUser, getMediaStreamsForCurrentProject } from 'modules/data';
 import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
@@ -13,7 +13,7 @@ const mapStateToProps = state => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: true,
         //
         data: getMediaStreamsForCurrentProject(state),

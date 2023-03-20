@@ -14,7 +14,7 @@ import {
     CitationInfoContainer
 } from 'modules/interview-metadata';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { AccountContainer } from 'modules/account';
+import { AccountContainer } from 'modules/user';
 import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_17_094912) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -92,18 +92,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
     t.string "end_date", limit: 255
     t.index ["biographical_entry_id"], name: "index_biographical_entry_translations_on_biographical_entry_id"
     t.index ["locale"], name: "index_biographical_entry_translations_on_locale", length: 191
-  end
-
-  create_table "checklist_items", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "interview_id", null: false
-    t.integer "user_id", null: false
-    t.string "item_type", limit: 255, null: false
-    t.boolean "checked"
-    t.datetime "checked_at", precision: nil
-    t.datetime "updated_at", precision: nil
-    t.integer "user_account_id"
-    t.index ["interview_id", "checked"], name: "index_checklist_items_on_interview_id_and_checked"
-    t.index ["interview_id"], name: "index_checklist_items_on_interview_id"
   end
 
   create_table "collection_translations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -781,9 +769,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
   create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.integer "user_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -851,10 +839,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "name", limit: 255
-    t.integer "user_account_id"
     t.integer "task_type_id"
     t.integer "interview_id"
-    t.datetime "assigned_to_user_account_at", precision: nil
+    t.datetime "assigned_to_user_at", precision: nil
     t.datetime "assigned_to_supervisor_at", precision: nil
     t.datetime "started_at", precision: nil
     t.datetime "finished_at", precision: nil
@@ -906,21 +893,62 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
     t.string "ip", limit: 255
     t.string "action", limit: 255, null: false
     t.string "resource_id", limit: 20
-    t.integer "user_account_id"
+    t.integer "user_id"
     t.string "query", limit: 100
     t.string "facets", limit: 300
     t.datetime "logged_at", precision: nil, null: false
     t.datetime "created_at", precision: nil
   end
 
-  create_table "user_account_ips", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_account_id"
-    t.string "ip", limit: 255
+  create_table "user_contents", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "id_hash", limit: 255
+    t.string "title", limit: 255
+    t.string "description", limit: 300
+    t.string "interview_references", limit: 255
+    t.string "properties", limit: 500
+    t.string "link_url", limit: 255
+    t.string "type", limit: 255, null: false
+    t.boolean "shared", default: false
+    t.boolean "persistent"
     t.datetime "created_at", precision: nil
-    t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip", length: { ip: 191 }
+    t.datetime "updated_at", precision: nil
+    t.integer "reference_id"
+    t.string "reference_type", limit: 255
+    t.integer "position", default: 1
+    t.string "workflow_state", limit: 255, default: "private"
+    t.datetime "submitted_at", precision: nil
+    t.datetime "published_at", precision: nil
+    t.string "media_id", limit: 255
+    t.integer "project_id"
+    t.index ["media_id"], name: "index_user_contents_on_media_id", length: 191
+    t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", length: 191
+    t.index ["user_id"], name: "index_user_contents_on_user_id"
   end
 
-  create_table "user_accounts", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "user_projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_registration_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "activated_at", precision: nil
+    t.string "workflow_state"
+    t.string "admin_comments"
+    t.datetime "processed_at"
+    t.datetime "terminated_at"
+    t.integer "user_id"
+  end
+
+  create_table "user_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.datetime "updated_at", precision: nil
+    t.datetime "created_at", precision: nil
+    t.index ["role_id"], name: "index_user_roles_on_role_id"
+    t.index ["user_id"], name: "index_user_roles_on_user_id"
+  end
+
+  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", limit: 255, default: "", null: false
@@ -962,103 +990,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
     t.text "admin_comments", size: :medium
     t.datetime "processed_at", precision: nil
     t.datetime "activated_at", precision: nil
-    t.boolean "anonymized", default: false
-    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true, length: 191
-    t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true, length: 191
-  end
-
-  create_table "user_contents", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "id_hash", limit: 255
-    t.string "title", limit: 255
-    t.string "description", limit: 300
-    t.string "interview_references", limit: 255
-    t.string "properties", limit: 500
-    t.string "link_url", limit: 255
-    t.string "type", limit: 255, null: false
-    t.boolean "shared", default: false
-    t.boolean "persistent"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
-    t.integer "reference_id"
-    t.string "reference_type", limit: 255
-    t.integer "position", default: 1
-    t.string "workflow_state", limit: 255, default: "private"
-    t.datetime "submitted_at", precision: nil
-    t.datetime "published_at", precision: nil
-    t.string "media_id", limit: 255
-    t.integer "user_account_id"
-    t.integer "project_id"
-    t.index ["media_id"], name: "index_user_contents_on_media_id", length: 191
-    t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", length: 191
-    t.index ["user_account_id"], name: "index_user_contents_on_user_account_id"
-    t.index ["user_id"], name: "index_user_contents_on_user_id"
-  end
-
-  create_table "user_registration_projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "project_id"
-    t.integer "user_registration_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.integer "user_account_id"
-    t.datetime "activated_at", precision: nil
-    t.string "workflow_state"
-    t.string "admin_comments"
-    t.datetime "processed_at"
-    t.datetime "terminated_at"
-  end
-
-  create_table "user_registrations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "first_name", limit: 255
-    t.string "last_name", limit: 255
-    t.string "email", limit: 255
-    t.boolean "tos_agreement"
-    t.text "application_info", size: :long
-    t.datetime "created_at", precision: nil
-    t.datetime "activated_at", precision: nil
-    t.integer "user_account_id"
-    t.datetime "processed_at", precision: nil
-    t.string "default_locale", limit: 255
-    t.boolean "receive_newsletter"
-    t.boolean "priv_agreement", default: false
-    t.datetime "updated_at", precision: nil
-    t.string "workflow_state"
-    t.index ["email"], name: "index_user_registrations_on_workflow_state_and_email", length: 191
-  end
-
-  create_table "user_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "role_id"
-    t.integer "user_account_id"
-    t.datetime "updated_at", precision: nil
-    t.datetime "created_at", precision: nil
-    t.index ["role_id"], name: "index_user_roles_on_role_id"
-    t.index ["user_id"], name: "index_user_roles_on_user_id"
-  end
-
-  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "first_name", limit: 255
-    t.string "last_name", limit: 255
-    t.string "appellation", limit: 255
-    t.string "job_description", limit: 255
-    t.string "research_intentions", limit: 255
-    t.text "comments", size: :long
-    t.string "organization", limit: 255
-    t.string "homepage", limit: 255
-    t.string "street", limit: 255
-    t.string "zipcode", limit: 255
-    t.string "city", limit: 255
-    t.string "state", limit: 255
-    t.string "country", limit: 255
-    t.datetime "tos_agreed_at", precision: nil
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
-    t.boolean "admin"
-    t.integer "user_account_id"
-    t.integer "user_registration_id"
-    t.string "gender", default: ""
-    t.index ["first_name", "last_name"], name: "index_users_on_first_name_and_last_name", length: 191
-    t.index ["user_account_id"], name: "index_users_on_user_account_id"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end
 
   create_table "workflow_comments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -1071,7 +1004,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_112227) do
     t.string "user_initials", limit: 4
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.integer "user_account_id"
     t.index ["interview_id", "parent_id"], name: "index_workflow_comments_on_interview_id_and_parent_id"
     t.index ["interview_id", "public"], name: "index_workflow_comments_on_interview_id_and_public"
     t.index ["interview_id"], name: "index_workflow_comments_on_interview_id"

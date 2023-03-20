@@ -5,19 +5,19 @@ import * as indexes from './constants';
 export default function tabIndexFromRoute(pathBase, pathname, isCampscapesProject = false) {
     let index;
 
-    if (matchPath(`${pathBase}/accounts/current`, pathname)) {
-        index = indexes.INDEX_ACCOUNT;
-    } else if (matchPath(`${pathBase}/user_accounts/password/new`, pathname)) {
-        index = indexes.INDEX_ACCOUNT;
-    } else if (matchPath(`${pathBase}/user_accounts/password/edit`, pathname)) {
-        index = indexes.INDEX_ACCOUNT;
-    } else if (matchPath(`${pathBase}/user_registrations/:resetPasswordToken/activate`, pathname)) {
-        index = indexes.INDEX_ACCOUNT;
-    } else if (matchPath(`${pathBase}/user_registrations/new`, pathname)) {
-        index = indexes.INDEX_ACCOUNT;
+    if (matchPath(`${pathBase}/users/current`, pathname)) {
+        index = indexes.INDEX_USER;
+    } else if (matchPath(`${pathBase}/users/password/new`, pathname)) {
+        index = indexes.INDEX_USER;
+    } else if (matchPath(`${pathBase}/users/password/edit`, pathname)) {
+        index = indexes.INDEX_USER;
+    } else if (matchPath(`${pathBase}/users/:resetPasswordToken/activate`, pathname)) {
+        index = indexes.INDEX_USER;
+    } else if (matchPath(`${pathBase}/users/new`, pathname)) {
+        index = indexes.INDEX_USER;
     } else if (matchPath(`${pathBase}/not_found`, pathname)) {
-        index = indexes.INDEX_ACCOUNT;
-    } else if (matchPath(`${pathBase}/user_registrations`, pathname)) {
+        index = indexes.INDEX_USER;
+    } else if (matchPath(`${pathBase}/users`, pathname)) {
         index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/searches/archive`, pathname)) {
         index = indexes.INDEX_SEARCH;
@@ -68,7 +68,7 @@ export default function tabIndexFromRoute(pathBase, pathname, isCampscapesProjec
     } else if (matchPath(`${pathBase}/help_texts`, pathname)) {
         index = indexes.INDEX_HELP_TEXTS;
     } else if (matchPath(`${pathBase}`, pathname)) {
-        index = isCampscapesProject ? indexes.INDEX_NONE : indexes.INDEX_ACCOUNT;
+        index = isCampscapesProject ? indexes.INDEX_NONE : indexes.INDEX_USER;
     } else {
         index = indexes.INDEX_NONE;
     }

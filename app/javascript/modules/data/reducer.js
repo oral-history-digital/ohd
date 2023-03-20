@@ -7,12 +7,12 @@ import {
 } from './action-types';
 
 const initialState = {
-    accounts: {
+    users: {
         current: null
     },
     projects: {},
     statuses: {
-        accounts: {},
+        users: {},
         interviews: {},
         random_featured_interviews: {},
         segments: {},
@@ -30,7 +30,7 @@ const initialState = {
         biographical_entries: {},
         speaker_designations: {},
         mark_text: {},
-        user_registrations: {resultPagesCount: 1},
+        users: {resultPagesCount: 1},
         roles: {},
         permissions: {},
         tasks: {},

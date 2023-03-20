@@ -47,7 +47,7 @@ export default function InterviewWorkflowRow({
 
     function loadUserAccounts() {
         if (!userAccountsStatus.all) {
-            fetchData({ projectId, project, locale }, 'accounts');
+            fetchData({ projectId, project, locale }, 'users');
         }
     }
 
@@ -163,7 +163,7 @@ export default function InterviewWorkflowRow({
                     <div className='workflow-active boxes header'>
                         {box(t('activerecord.attributes.task.task_type_id'))}
                         {box(t('activerecord.attributes.task.supervisor_id'))}
-                        {box(t('activerecord.attributes.task.user_account_id'))}
+                        {box(t('activerecord.attributes.task.user_id'))}
                         {box(t('activerecord.attributes.task.workflow_state'))}
                         {box(t('activerecord.attributes.task.comments'), '30')}
                     </div>

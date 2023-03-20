@@ -8,13 +8,13 @@ export default function TasksCell({
     row,
 }) {
     const project = useSelector(getCurrentProject);
-    const userRegistration = row.original;
-    const tasks = Object.values(userRegistration.tasks).filter(t => t.project_id === project.id);
+    const user = row.original;
+    const tasks = Object.values(user.tasks).filter(t => t.project_id === project.id);
 
     return (
         <TasksContainer
             data={tasks}
-            initialFormValues={{user_account_id: userRegistration.user_account_id}}
+            initialFormValues={{user_id: user.id}}
             hideEdit={true}
             hideDelete={true}
             hideAdd={true}
