@@ -1,9 +1,9 @@
 class AdminMailer < ApplicationMailer
 
-  def new_registration_info
-    registration = params[:registration]
+  def new_user_info
+    user = params[:user]
     @project = params[:project]
-    @user_name = registration.full_name
+    @user_name = user.full_name
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/user_registrations"
 
     mail(

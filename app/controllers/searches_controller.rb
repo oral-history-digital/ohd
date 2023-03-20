@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def facets
-    search = Interview.archive_search(current_user_account, current_project, locale, params)
+    search = Interview.archive_search(current_user, current_project, locale, params)
     facets = current_project ?
       current_project.updated_search_facets(search) :
       {}
@@ -57,7 +57,7 @@ class SearchesController < ApplicationController
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit'))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
+      with(:workflow_state, (current_user && (current_user.admin? || current_user.roles?(current_project, 'General', 'edit'))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
@@ -125,7 +125,7 @@ class SearchesController < ApplicationController
       format.json do
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
         scope = map_scope
-        search = Interview.archive_search(current_user_account, current_project, locale, params, 10_000)
+        search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
 
         json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}" do
           registry_entries = RegistryEntry.for_map(I18n.locale,
@@ -145,10 +145,10 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.json do
         registry_entry_id = params[:id]
-        signed_in = current_user_account.present?
+        signed_in = current_user.present?
         scope = map_scope
 
-        search = Interview.archive_search(current_user_account, current_project, locale, params, 10_000)
+        search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
         interview_ids = map_interview_ids(search)
 
         interview_refs = RegistryReference.for_map_registry_entry(registry_entry_id,
@@ -184,17 +184,17 @@ class SearchesController < ApplicationController
         render :template => "/react/app"
       end
       format.json do
-        search = Interview.archive_search(current_user_account, current_project, locale, params)
+        search = Interview.archive_search(current_user, current_project, locale, params)
         render json: {
           result_pages_count: search.results.total_pages,
           results_count: search.total,
-          interviews: search.results.map { |i| cache_single(i, current_user_account ? 'InterviewLoggedInSearchResult' : 'InterviewBase') },
+          interviews: search.results.map { |i| cache_single(i, current_user ? 'InterviewLoggedInSearchResult' : 'InterviewBase') },
           page: params[:page].to_i || 1,
           fulltext: params[:fulltext]
         }
       end
       format.csv do
-        search = Interview.archive_search(current_user_account, current_project, locale, params, 999999)
+        search = Interview.archive_search(current_user, current_project, locale, params, 999999)
         desired_columns = current_project.list_columns.map(&:name)
         options = {col_sep: "\t", quote_char: "\x00"}
         csv = CSV.generate(options) do |csv|
@@ -213,11 +213,11 @@ class SearchesController < ApplicationController
   def suggestions
     respond_to do |format|
       format.json do
-        dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
+        dropdown_values = Interview.dropdown_search_values(current_project, current_user)
         cache_key_prefix = current_project.present? ? current_project.cache_key_prefix : 'OHD'
         render json: {
-          all_interviews_titles: current_user_account ? dropdown_values[:all_interviews_titles] : [],
-          all_interviews_pseudonyms: current_user_account ? dropdown_values[:all_interviews_pseudonyms] : [],
+          all_interviews_titles: current_user ? dropdown_values[:all_interviews_titles] : [],
+          all_interviews_pseudonyms: current_user ? dropdown_values[:all_interviews_pseudonyms] : [],
           sorted_archive_ids: Rails.cache.fetch("#{cache_key_prefix}-sorted_archive_ids-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
         }
       end
@@ -239,8 +239,8 @@ class SearchesController < ApplicationController
   def map_scope
     show_all = ActiveModel::Type::Boolean.new.cast(params[:all])
     scope = show_all &&
-            current_user_account &&
-            (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit')) ?
+            current_user &&
+            (current_user.admin? || current_user.roles?(current_project, 'General', 'edit')) ?
             'all' : 'public'
   end
 

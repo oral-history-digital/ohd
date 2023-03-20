@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  #devise_for :user_accounts,
+    #controllers: { sessions: "sessions", passwords: "passwords" },
+    #skip: [:registrations]
+  devise_for :users,
+    controllers: {
+      sessions: "sessions",
+      passwords: "passwords",
+      registrations: "registrations"
+    }
+
   use_doorkeeper do
     skip_controllers :authorizations, :applications, :authorized_applications
   end
@@ -212,18 +222,18 @@ Rails.application.routes.draw do
   # but we need them in the routes version with and without :project_id
   #
   concern :unnamed_devise_routes do
-    devise_scope :user_account do
-      post "user_accounts/sign_in", to: "sessions#create"
-      get "user_accounts/sign_in", to: "sessions#new"
-      get "user_accounts/is_logged_in", to: "sessions#is_logged_in"
-      delete "user_accounts/sign_out", to: "sessions#destroy"
-      patch "user_accounts/password", to: "passwords#update"
-      get "user_accounts/password/edit", to: "passwords#edit"
-      get "user_accounts/password/new", to: "passwords#new"
-      put "user_accounts/password", to: "passwords#update"
-      post "user_accounts/password", to: "passwords#create"
-      get "user_accounts/confirmation", to: "devise/confirmations#show"
-      post "user_accounts/confirmation", to: "devise/confirmations#create"
+    devise_scope :user do
+      post "users/sign_in", to: "sessions#create"
+      get "users/sign_in", to: "sessions#new"
+      get "users/is_logged_in", to: "sessions#is_logged_in"
+      delete "users/sign_out", to: "sessions#destroy"
+      patch "users/password", to: "passwords#update"
+      get "users/password/edit", to: "passwords#edit"
+      get "users/password/new", to: "passwords#new"
+      put "users/password", to: "passwords#update"
+      post "users/password", to: "passwords#create"
+      get "users/confirmation", to: "devise/confirmations#show"
+      post "users/confirmation", to: "devise/confirmations#create"
       get "passwords/check_email", to: "passwords#check_email"
     end
   end
@@ -281,7 +291,4 @@ Rails.application.routes.draw do
   mount OaiRepository::Engine => "/de/oai_repository"
   root to: redirect("#{OHD_DOMAIN}/de")
 
-  devise_for :user_accounts,
-    controllers: { sessions: "sessions", passwords: "passwords" },
-    skip: [:registrations]
 end

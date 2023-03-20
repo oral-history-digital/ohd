@@ -1,93 +1,124 @@
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :lockable, :timeoutable, and :omniauthable
+  devise :database_authenticatable,
+         :registerable,
+         :confirmable,
+         :recoverable,
+         :trackable,
+         :validatable
 
-  require 'user_account'
-  #require 'archive-authorization'
+  has_many :sessions,
+           class_name: 'ActiveRecord::SessionStore::Session',
+           dependent: :delete_all
 
-  belongs_to :user_account
-  belongs_to :user_registration
+  has_many :access_tokens,
+           class_name: 'Doorkeeper::AccessToken',
+           foreign_key: :resource_owner_id,
+           dependent: :delete_all
 
-  #has_many :user_contents
+  has_many :user_roles, dependent: :destroy
+  has_many :roles, through: :user_roles
+  has_many :permissions, through: :roles
 
-  #has_many :searches
+  has_many :tasks
+  has_many :supervised_tasks,
+           class_name: 'Task',
+           foreign_key: :supervisor_id
 
-  ##acts_as_authorized_user
+  has_many :user_contents, dependent: :destroy
+  has_many :searches, dependent: :destroy
+  has_many :comments, foreign_key: :author_id, dependent: :destroy
 
-  #has_many :user_roles
-  #has_many :roles, through: :user_roles
-  #has_many :permissions, through: :roles
+  has_many :user_projects, dependent: :destroy
+  has_many :projects,
+    through: :user_projects
 
-  #has_many :tasks
-  #has_many :supervised_tasks,
-           #class_name: 'Task',
-           #foreign_key: :supervisor_id
+  #validates_uniqueness_of :login
+  #validates_presence_of :login
+  validates_uniqueness_of :email
+  validates_presence_of :email
+  validates_format_of :email, :with => Devise.email_regexp
+  validates_length_of :password, :within => 5..50, :allow_blank => true
 
-  #delegate :email, :login,
-           #:to => :user_account
+  scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
 
-  #def tasks?(record)
-    #!tasks.where(authorized: record).where.not(workflow_state: 'finished').blank? #||
-    ##!supervised_tasks.where(authorized: record).blank?
+  #workflow do
+    ##state :new do
+      ##event :activate, :transitions_to => :activated
+    ##end
+    #state :registered do
+      #event :block, :transitions_to => :blocked
+    #end
+    #state :blocked do
+      #event :revoke_block, :transitions_to => :registered
+    #end
   #end
 
-  #def permissions?(klass, action_name)
-    #!permissions.where(klass: klass, action_name: action_name).blank?
+  #def workflow_states
+    #current_state.events.map{|e| e.first}
   #end
 
-  #def roles?(klass, action_name)
-    #!roles.joins(:permissions).where("permissions.klass": klass, "permissions.action_name": action_name).blank?
+  #def workflow_state=(change)
+    #self.send("#{change}!")
   #end
 
-  #def to_s
-    #[ first_name, last_name ].compact.join(' ')
-  #end
+  def projects
+    user_projects.map(&:project)
+  end
 
-  #def zipcity
-    #"#{zipcode} #{city}"
-  #end
+  def active_projects
+    user_projects.where.not(activated_at: nil).map(&:project)
+  end
 
-  #def zipcity=(str)
-    #self.zipcode = (str[/^\s*\d+/] || '').strip
-    #self.city = str.sub(zipcode, '').strip
-  #end
+  def accessible_projects
+    user_projects.where(workflow_state: 'project_access_granted').map(&:project)
+  end
 
-  #def email=(address)
-    #user_account.update_attribute :email, address
-    #user_account.reload
-    #user_registration.update_attribute :email, address
-    #user_registration.reload
-  #end
+  def all_tasks
+    tasks | supervised_tasks
+  end
 
-  #def admin?
-    #read_attribute(:admin) == true
-  #end
+  def task_permissions?(project, record, action_name)
+    if record.respond_to?(:class_name)
+      # on create record is just a class not an object
+      # and we can not really check for interview_id
+      # so trust the checking in the frontend :(
+      #
+      all_tasks.select{|t| t.interview.project_id == project.id}.
+        map(&:permissions).flatten.uniq.
+        find{|p| p.klass == record.class_name && p.action_name == action_name}
+    else
+      record_tasks = record.is_a?(Interview) ?
+        all_tasks.select{|t| t.interview_id == record.id} :
+        all_tasks.select{|t| t.interview_id == record.interview_id}
+      record_tasks.map(&:permissions).flatten.uniq.
+        find{|p| p.klass == record.class.name && p.action_name == action_name}
+    end
+  end
 
-  #def tags
-    #Tag.for_user(self) unless Tag.nil?
-  #end
+  def roles?(project, klass, action_name)
+    project &&
+    !roles.joins(:permissions).
+      where(project_id: project.id).
+      where("permissions.klass": klass, "permissions.action_name": action_name).
+      blank?
+  end
 
-  ## Authenticate a user based on configured attribute keys. Returns the
-  ## authenticated user if it's valid or nil.
-  #def authenticate(attributes={})
-    #return unless Devise.authentication_keys.all? { |k| attributes[k].present? }
-    #conditions = attributes.slice(*Devise.authentication_keys)
-    #auth_proxy = find_for_authentication(conditions)
-    #auth_proxy.user if auth_proxy.try(:valid_for_authentication?, attributes)
-  #end
+  def locale_with_project_fallback
+    self.default_locale || self.user_registration.projects.last.default_locale
+  end
 
-  #private
+  def full_name
+    [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
+  end
 
-  ## Find first record based on conditions given (ie by the sign in form).
-  ## Overwrite to add customized conditions, create a join, or maybe use a
-  ## namedscope to filter records while authenticating.
-  ## Example:
-  ##
-  ##   def self.find_for_authentication(conditions={})
-  ##     conditions[:active] = true
-  ##     find(:first, :conditions => conditions)
-  ##   end
-  ##
-  #def find_for_authentication(conditions)
-    #UserAccount.where(conditions).first
-  #end
+  def display_name
+    if !self.user_registration.appellation.blank?
+      [I18n.t("user_registration.appellation.#{self.user_registration.appellation}"), self.user_registration.full_name].compact.join(' ')
+    else
+      self.user_registration.full_name
+    end
+  end
 
 end

@@ -1,32 +1,16 @@
-class UserRegistrationPolicy < ApplicationPolicy
-
-  #def new?
-    #true
-  #end
-
-  #def create?
-    #new?
-  #end
-
-  #def activate?
-    #new?
-  #end
-
-  #def confirm?
-    #new?
-  #end
+class UserPolicy < ApplicationPolicy
 
   def show?
-    user.admin?
+    user == record
   end
 
-  def subscribe?
-    user.admin?
+  def update?
+    show?
   end
 
-  def unsubscribe?
-    user.admin?
-  end
+  #def confirm_new_email?
+    #show?
+  #end
 
   class Scope < Scope
     def resolve

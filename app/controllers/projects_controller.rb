@@ -90,7 +90,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   def create
     authorize Project
-    @project = ProjectCreator.perform(project_params, current_user_account)
+    @project = ProjectCreator.perform(project_params, current_user)
 
     respond @project
   end

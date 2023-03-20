@@ -1,30 +1,18 @@
 class UserContent < ApplicationRecord
 
-  # TODO: this gem is to old: should be replaced by sth. else
-  #acts_as_taggable
-
-
-  #include ActionController::UrlWriter
-
   CONTENT_TYPES = [ :search, :interview_reference, :user_annotation ]
 
   ANNOTATION_LIMIT = 300
 
-  belongs_to :user_account
+  belongs_to :user
   belongs_to :project
   belongs_to :reference, :polymorphic => true
 
-  #before_validation :compile_id_hash, :on => :create
-
   before_validation :store_properties
-  #after_validation :check_persistence, :set_link_url, :on => :create
 
-
-  validates_presence_of :user_account_id
+  validates_presence_of :user_id
 
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
-  #validates_associated :reference, :if => Proc.new{|content| content.type != Search }
-  #validates_uniqueness_of :id_hash, :scope => :user_account_id
   validates_length_of :description, :maximum => ANNOTATION_LIMIT
 
   def after_initialize

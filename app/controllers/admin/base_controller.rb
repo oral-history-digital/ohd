@@ -23,7 +23,7 @@ class Admin::BaseController < ApplicationController
       session[:"user_account.return_to"] = request.request_uri
       flash[:alert] = t(:unauthenticated_search, :scope => 'devise.sessions')
       redirect_to new_user_account_session_url
-    elsif !current_user_account.admin?
+    elsif !current_user.admin?
       flash[:alert] = "Sie haben keine Administratorenrechte!"
       redirect_to new_user_account_session_url
     end

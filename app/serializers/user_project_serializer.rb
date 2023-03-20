@@ -1,7 +1,7 @@
-class UserRegistrationProjectSerializer < ApplicationSerializer
+class UserProjectSerializer < ApplicationSerializer
   attributes :id,
     :project_id,
-    :user_registration_id,
+    :user_id,
     :workflow_state,
     :workflow_states,
     :admin_comments,
