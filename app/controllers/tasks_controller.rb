@@ -10,7 +10,7 @@ class TasksController < ApplicationController
       format.json do
         render json: data_json(@task.user,
                                msg: 'processed',
-                               reload_data_type: 'accounts',
+                               reload_data_type: 'users',
                                reload_id: "current"
                               )
       end
@@ -31,7 +31,7 @@ class TasksController < ApplicationController
           data_type: 'tasks',
           data: ::TaskSerializer.new(@task),
           msg: 'processed',
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end
@@ -68,7 +68,7 @@ class TasksController < ApplicationController
       format.json {
         render json: data_json(@task.user,
                                msg: 'processed',
-                               reload_data_type: 'accounts',
+                               reload_data_type: 'users',
                                reload_id: "current"
                               )
       }

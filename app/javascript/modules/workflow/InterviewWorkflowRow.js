@@ -185,7 +185,7 @@ export default function InterviewWorkflowRow({
 
 InterviewWorkflowRow.propTypes = {
     interview: PropTypes.object.isRequired,
-    userAccountsStatus: PropTypes.object.isRequired,
+    usersStatus: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,

@@ -1,16 +1,16 @@
 class UsersController < ApplicationController
 
-  skip_before_action :authenticate_user!, only: [:show, :check_email]
-  skip_after_action :verify_authorized, only: [:show, :check_email]
-  skip_after_action :verify_policy_scoped, only: [:show, :check_email]
+  skip_before_action :authenticate_user!, only: [:current, :check_email]
+  skip_after_action :verify_authorized, only: [:current, :check_email]
+  skip_after_action :verify_policy_scoped, only: [:current, :check_email]
 
-  def show
+  def current
     respond_to do |format|
       format.html {}
       format.json do
         render json: {
           id: 'current',
-          data_type: 'accounts',
+          data_type: 'users',
           data: current_user && ::UserSerializer.new(current_user)
         }
       end
@@ -136,7 +136,7 @@ class UsersController < ApplicationController
 
   def initial_user_redux_state
     initial_redux_state.update(
-      account: initial_redux_state[:account].update(
+      user: initial_redux_state[:user].update(
         login: @login,
         display_name: @display_name,
         registration_status: @registration_status,

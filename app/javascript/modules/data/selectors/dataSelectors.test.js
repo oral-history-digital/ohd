@@ -287,8 +287,8 @@ test('getStatuses gets statuses object', () => {
     expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
-test('getAccountsStatus gets users status object', () => {
-    expect(selectors.getAccountsStatus(state)).toEqual(state.data.statuses.users);
+test('getUsersStatus gets users status object', () => {
+    expect(selectors.getUsersStatus(state)).toEqual(state.data.statuses.users);
 });
 
 test('getCollectionsStatus gets collections status object', () => {
@@ -387,8 +387,8 @@ test('getProjects gets projects object', () => {
     expect(selectors.getProjects(state)).toEqual(state.data.projects);
 });
 
-test('getAccounts gets users object', () => {
-    expect(selectors.getAccounts(state)).toEqual(state.data.users);
+test('getUsers gets users object', () => {
+    expect(selectors.getUsers(state)).toEqual(state.data.users);
 });
 
 test('getCurrentUser gets user object of current user', () => {

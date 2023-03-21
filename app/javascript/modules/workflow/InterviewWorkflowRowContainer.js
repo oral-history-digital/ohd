@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { setArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { fetchData, getCurrentProject,
     getLanguages, getCollectionsForCurrentProject,
-    getAccountsStatus, getTasksStatus, getTasks } from 'modules/data';
+    getUsersStatus, getTasksStatus, getTasks } from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
 const mapStateToProps = (state) => ({
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
     tasks: getTasks(state),
     tasksStatus: getTasksStatus(state),
     translations: getTranslations(state),
-    userAccountsStatus: getAccountsStatus(state),
+    usersStatus: getUsersStatus(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

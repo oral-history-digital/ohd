@@ -3,7 +3,7 @@ class Role < ApplicationRecord
   has_many :permissions, through: :role_permissions
 
   has_many :user_roles, dependent: :destroy
-  has_many :users_accounts, through: :user_roles
+  has_many :users, through: :user_roles
 
   belongs_to :project
 end
