@@ -196,7 +196,7 @@ ru:
               confirmation: не совпадает с первоначальным.
               too_short: слишком короткий.
               too_long: слишком длинный.
-        user_registration:
+        user:
           attributes:
             email:
               taken: уже зарегистрирован. Пожалуйста, используйте функцию 'Забыли

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Workflow
+
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable
   devise :database_authenticatable,
@@ -43,25 +45,25 @@ class User < ApplicationRecord
 
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
 
-  #workflow do
-    ##state :new do
-      ##event :activate, :transitions_to => :activated
-    ##end
-    #state :registered do
-      #event :block, :transitions_to => :blocked
-    #end
-    #state :blocked do
-      #event :revoke_block, :transitions_to => :registered
-    #end
-  #end
+  workflow do
+    state :created do
+      event :confirm, :transitions_to => :confirmed
+    end
+    state :registered do
+      event :block, :transitions_to => :blocked
+    end
+    state :blocked do
+      event :revoke_block, :transitions_to => :registered
+    end
+  end
 
-  #def workflow_states
-    #current_state.events.map{|e| e.first}
-  #end
+  def workflow_states
+    current_state.events.map{|e| e.first}
+  end
 
-  #def workflow_state=(change)
-    #self.send("#{change}!")
-  #end
+  def workflow_state=(change)
+    self.send("#{change}!")
+  end
 
   def projects
     user_projects.map(&:project)

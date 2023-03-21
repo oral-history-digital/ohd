@@ -206,7 +206,7 @@ el:
   biographicalentry_results: αποτελέσματα αναζήτησης στο σύντομο βιογραφικό
   observation_results: Search results in the protocol
   person_results: Αποτελέσματα αναζήτησης στα ονόματα
-  user_registration_results: Αποτελέσματα αναζήτησης στους χρήστες
+  user_results: Αποτελέσματα αναζήτησης στους χρήστες
   segment_hits: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
   no_interviews_results: Δε βρέθηκαν συνεντεύξεις.
   interview_id: Κωδικός συνέντευξης
@@ -494,7 +494,7 @@ el:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: Details
       edit: Bearbeiten
     role:
@@ -604,7 +604,7 @@ el:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
@@ -697,7 +697,7 @@ el:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
+  user:
     registration: Εγγραφή
     registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών "Μνήμες
       από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα και να εξηγήσετε
@@ -871,7 +871,7 @@ el:
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1112,7 +1112,7 @@ el:
         gender: Φύλο
         first_name: Όνομα
         last_name: Επώνυμο
-      user_registration:
+      user:
         created_at: Δημιουργήθηκε στις
         activated_at: Ενεργοποιήθηκε στις
         processed_at: Επεξεργάστηκε στις
@@ -1149,9 +1149,9 @@ el:
           μετά την αποστολή της εγγραφής σας, λαμβάνετε τα δεδομένα εισόδου σας και
           μια απάντηση στο αίτημά σας."
         priv_agreement_alias: προσωπικών δεδομένων
-        user_registration_projects:
+        user_projects:
           workflow_state: Κατάσταση
-      user_registration_project:
+      user_project:
         workflow_state: Κατάσταση
         admin_comments: Kommentar
       user_role:

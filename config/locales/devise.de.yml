@@ -162,7 +162,7 @@ de:
               confirmation: und -wiederholung stimmen nicht überein.
               too_short: ist zu kurz.
               too_long: ist zu lang.
-        user_registration:
+        user:
           attributes:
             email:
               taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
