@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
         translations: translations,
         countryKeys: country_keys,
       },
-      account: {
+      user: {
         isLoggingIn: false,
         isLoggedIn: !!current_user,
         isLoggedOut: !current_user,

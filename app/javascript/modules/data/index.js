@@ -5,8 +5,6 @@ export { clearStateData, deleteData, fetchData, submitData } from './actions';
 export { default as dataReducer } from './reducer';
 
 export {
-    getAccounts,
-    getAccountsStatus,
     getCollections,
     getCollectionsForCurrentProject,
     getCollectionsForCurrentProjectFetched,

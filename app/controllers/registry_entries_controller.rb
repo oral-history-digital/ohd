@@ -143,7 +143,7 @@ class RegistryEntriesController < ApplicationController
           end
           send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
         else
-          redirect_to account_url('current')
+          redirect_to user_url('current')
         end
       end
     end

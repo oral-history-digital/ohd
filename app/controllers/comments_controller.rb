@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
           id: @comment.ref_id,
           data_type: 'tasks',
           data: ::TaskSerializer.new(@comment.ref),
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end
@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
           id: @comment.ref_id,
           data_type: 'tasks',
           data: ::TaskSerializer.new(@comment.ref),
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end
@@ -99,7 +99,7 @@ class CommentsController < ApplicationController
           id: ref.id,
           data_type: 'tasks',
           data: ::TaskSerializer.new(@comment.ref),
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end

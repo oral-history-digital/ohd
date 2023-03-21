@@ -19,7 +19,7 @@ export default class Task extends Component {
     }
 
     usersAsOptionsForSelect(attribute) {
-        let opts = Object.values(this.props.userAccounts).
+        let opts = Object.values(this.props.users).
             filter(u =>
                 (
                     // supervisor-select
@@ -71,12 +71,12 @@ export default class Task extends Component {
         let v, user;
         if (/^\d+$/.test(this.props.task[attribute])) {
             //
-            // current_user has the key 'current' in the userAccounts-Hash
+            // current_user has the key 'current' in the users-Hash
             //
-            if (this.props.userAccounts['current'].id === parseInt(this.props.task[attribute])) {
-                user = this.props.userAccounts['current'];
+            if (this.props.users['current'].id === parseInt(this.props.task[attribute])) {
+                user = this.props.users['current'];
             } else {
-                user = this.props.userAccounts[this.props.task[attribute]];
+                user = this.props.users[this.props.task[attribute]];
             }
             v = user && `${user.last_name}, ${user.first_name}` || 'NA';
         } else if (this.props.task[attribute]) {

@@ -12,7 +12,7 @@ class UserProjectsController < ApplicationController
       format.json do
         render json: {
           id: 'current',
-          data_type: 'accounts',
+          data_type: 'users',
           data: current_user && ::UserSerializer.new(current_user)
         }
       end

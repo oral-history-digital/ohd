@@ -129,7 +129,7 @@ class ProjectsController < ApplicationController
             data: cache_single(project),
             data_type: 'projects',
             id: project.id,
-            reload_data_type: 'accounts',
+            reload_data_type: 'users',
             reload_id: 'current'
           }
         end

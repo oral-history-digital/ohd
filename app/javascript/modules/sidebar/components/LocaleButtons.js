@@ -57,6 +57,6 @@ LocaleButtons.propTypes = {
     currentLocale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
     projectId: PropTypes.string,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     setLocale: PropTypes.func.isRequired,
 };
