@@ -1,5 +1,5 @@
 class CollectionsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: :index
+  skip_before_action :authenticate_user!, only: :index
 
   def new
     authorize Collection

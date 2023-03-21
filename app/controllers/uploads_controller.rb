@@ -1,6 +1,6 @@
 class UploadsController < ApplicationController
 
-  skip_before_action :authenticate_user_account!, only: [:new, :metadata_import_template]
+  skip_before_action :authenticate_user!, only: [:new, :metadata_import_template]
   skip_after_action :verify_authorized, only: [:metadata_import_template]
 
   def new

@@ -121,7 +121,7 @@ class Interview < ApplicationRecord
     end
     integer :interviewee_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
-    integer :tasks_user_account_ids, :stored => true, :multiple => true
+    integer :tasks_user_ids, :stored => true, :multiple => true
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
     string :workflow_state, stored: true
 
@@ -273,8 +273,8 @@ class Interview < ApplicationRecord
     %w(title short_title description contributions photos registry_references)
   end
 
-  def tasks_user_account_ids
-    tasks.map(&:user_account_id).compact.uniq
+  def tasks_user_ids
+    tasks.map(&:user_id).compact.uniq
   end
 
   def tasks_supervisor_ids
@@ -709,8 +709,8 @@ class Interview < ApplicationRecord
   class << self
     # https://github.com/sunspot/sunspot#stored-fields
     # in order to get a dropdown list in search field
-    def dropdown_search_values(project, user_account)
-      wf_state = user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ["public", "unshared"] : 'public'
+    def dropdown_search_values(project, user)
+      wf_state = user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ["public", "unshared"] : 'public'
       cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
@@ -733,10 +733,10 @@ class Interview < ApplicationRecord
       end
     end
 
-    def archive_search(user_account, project, locale, params, per_page = 12)
+    def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
         with(:project_id, project.id) unless project.is_ohd?
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project

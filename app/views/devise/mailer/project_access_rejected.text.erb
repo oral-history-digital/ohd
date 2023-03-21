@@ -1,10 +1,10 @@
 <%
   contact_email = @project.contact_email
-  my_locale = @user_account.locale_with_project_fallback
+  my_locale = @user.locale_with_project_fallback
   case my_locale.to_sym
   when :en
 -%>
-Dear <%= @user_account.display_name %>,
+Dear <%= @user.display_name %>,
 
 You have tried to register for the application "<%= @project.name('en') %>".
 
@@ -16,7 +16,7 @@ Yours sincerely,
 
 The project team "<%= @project.name('en') %>"
 <% when :el -%>
-Αγαπητή/-έ <%= @user_account.display_name %>,
+Αγαπητή/-έ <%= @user.display_name %>,
 
 Προσπαθήσατε να εγγραφείτε στην εφαρμογή "<%= @project.name('el') %>".
 
@@ -28,7 +28,7 @@ The project team "<%= @project.name('en') %>"
 
 Η ομάδα του προγράμματος "<%= @project.name('el') %>"
 <% when :es -%>
-Estimada/o <%= @user_account.display_name %>,
+Estimada/o <%= @user.display_name %>,
 
 Usted ha intentado de registrarse para la aplicación "<%= @project.name('es') %>".
 
@@ -40,7 +40,7 @@ Con saludos cordiales,
 
 El equipo del proyecto "<%= @project.name('es') %>"
 <% when :ru -%>
-Уважаемый(-ая) <%= @user_account.display_name %>,
+Уважаемый(-ая) <%= @user.display_name %>,
 
 Вы пытались зарегистрироваться для получения доступа к проекту "<%= @project.name('ru') %>".
 
@@ -52,7 +52,7 @@ El equipo del proyecto "<%= @project.name('es') %>"
 
 сотрудники проекта "<%= @project.name('ru') %>"
 <% else -%>
-Sehr geehrte/r <%= @user_account.display_name %>,
+Sehr geehrte/r <%= @user.display_name %>,
 
 Sie haben versucht sich für die Anwendung "<%= @project.name('de') %>" zu registrieren.
 

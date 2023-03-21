@@ -1,6 +1,6 @@
 Liebe/r <%= @receiver.display_name %>,
 
-<%= @task.user_account.display_name %> hat die Aufgabe '<%= @task.task_type.label(:de) %>' zum Interview <%= @task.interview.archive_id %> in der Redaktionsumgebung der Anwendung <%= @task.interview.project.name %> abgeschlossen.
+<%= @task.user.display_name %> hat die Aufgabe '<%= @task.task_type.label(:de) %>' zum Interview <%= @task.interview.archive_id %> in der Redaktionsumgebung der Anwendung <%= @task.interview.project.name %> abgeschlossen.
 Bitte überprüfe das Ergebnis.
 
 <%= "#{@task.interview.project.archive_domain}/de/accounts/current"  %>

@@ -49,9 +49,9 @@ class Admin::UserStatisticsController < Admin::BaseController
         elsif entry.blank?
           label = "k. A. (#{category})"
         elsif entry == 'other'
-          label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
+          label = I18n.t("user.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
         else
-          label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de)
+          label = I18n.t("user.#{field_name}.#{entry}", :locale => :de)
         end
         if @rows.include?(label)
           @rows[label][:sum] += count
@@ -97,9 +97,9 @@ class Admin::UserStatisticsController < Admin::BaseController
           elsif entry.blank?
             label = "k. A. (#{category})"
           elsif entry == 'other'
-            label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
+            label = I18n.t("user.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
           else
-            label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de)
+            label = I18n.t("user.#{field_name}.#{entry}", :locale => :de)
           end
 
           if @rows[label]

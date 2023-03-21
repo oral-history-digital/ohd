@@ -31,11 +31,11 @@ class ProjectCreator < ApplicationService
   private
 
   def grant_access_to_creating_user#(project, user)
-    user_registration_project = UserRegistrationProject.create(
+    user_project = UserProject.create(
       project_id: project.id,
-      user_registration_id: user.user_registration.id
+      user_id: user.id
     )
-    user_registration_project.grant_project_access!
+    user_project.grant_project_access!
   end
 
   def create_default_registry_name_types

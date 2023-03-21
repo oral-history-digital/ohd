@@ -1,10 +1,10 @@
 class AdminMailer < ApplicationMailer
 
-  def new_user_info
+  def new_registration_info
     user = params[:user]
     @project = params[:project]
     @user_name = user.full_name
-    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/user_registrations"
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
       subject: "Neue Registrierung zur Prüfung",

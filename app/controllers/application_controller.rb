@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   #before_action :doorkeeper_authorize!
-  before_action :authenticate_user_account!
-  before_action :user_account_by_token
-  def user_account_by_token
+  before_action :authenticate_user!
+  before_action :user_by_token
+  def user_by_token
     if doorkeeper_token && !current_user
       user = UserAccount.find(doorkeeper_token.resource_owner_id) 
       sign_in(user)

@@ -28,7 +28,7 @@ namespace :maintenance do
       introduction: "Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen.",
       name: 'Oral History Digital',
       grant_project_access_instantly: true,
-    }, UserAccount.where(email: 'cord.pagenstecher@cedis.fu-berlin.de').first, true)
+    }, User.where(email: 'cord.pagenstecher@cedis.fu-berlin.de').first, true)
 
     ActiveRecord::Base.connection.execute <<-SQL
       INSERT INTO user_projects (project_id, user_id, workflow_state, created_at, updated_at)

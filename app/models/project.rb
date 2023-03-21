@@ -19,9 +19,9 @@ class Project < ApplicationRecord
   has_many :roles, dependent: :destroy
   has_many :external_links, dependent: :destroy
   has_many :registry_entries, dependent: :destroy
-  has_many :user_registration_projects, dependent: :destroy
-  has_many :user_registrations,
-    through: :user_registration_projects
+  has_many :user_projects, dependent: :destroy
+  has_many :users,
+    through: :user_projects
 
   has_many :registry_reference_types, dependent: :destroy
   has_many :registry_name_types, dependent: :destroy
@@ -276,13 +276,13 @@ class Project < ApplicationRecord
           rescue
           end
         # admin facets
-        when "tasks_user_account_ids", "tasks_supervisor_ids"
+        when "tasks_user_ids", "tasks_supervisor_ids"
           # add filters for tasks
           mem[facet.name.to_sym] = {
             name: name,
-            subfacets: (UserAccount.joins(:user_roles) | UserAccount.where(admin: true)).inject({}) do |subfacets, user_account|
-              subfacets[user_account.id.to_s] = {
-                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = user_account.full_name; desc},
+            subfacets: (UserAccount.joins(:user_roles) | UserAccount.where(admin: true)).inject({}) do |subfacets, user|
+              subfacets[user.id.to_s] = {
+                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = user.full_name; desc},
                 count: 0,
               }
               subfacets
