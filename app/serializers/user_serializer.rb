@@ -1,11 +1,10 @@
-class UserAccountSerializer < ApplicationSerializer
+class UserSerializer < ApplicationSerializer
   attributes :id,
     :first_name,
     :last_name,
     :email,
     :admin,
     :tos_agreement,
-    :application_info,
     :created_at,
     :activated_at,
     :user_id,

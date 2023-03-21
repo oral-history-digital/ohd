@@ -26,7 +26,7 @@ export default function InterviewWorkflowRow({
     projectId,
     tasks,
     tasksStatus,
-    userAccountsStatus,
+    usersStatus,
     fetchData,
     setArchiveId,
 }) {
@@ -41,12 +41,12 @@ export default function InterviewWorkflowRow({
     const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
-        loadUserAccounts();
+        loadUsers();
         loadTasks();
     }, []);
 
-    function loadUserAccounts() {
-        if (!userAccountsStatus.all) {
+    function loadUsers() {
+        if (!usersStatus.all) {
             fetchData({ projectId, project, locale }, 'users');
         }
     }
