@@ -202,7 +202,7 @@ es:
   biographicalentry_results: Resultados de búsqueda en la biografía breve
   observation_results: Resultados de búsqueda en las notas
   person_results: Resultados de búsqueda para personas
-  user_registration_results: Resultados de búsqueda para usuaria/os
+  user_results: Resultados de búsqueda para usuaria/os
   segment_hits: Resultados en la transcripción
   no_interviews_results: No se encontraron entrevistas.
   interview_id: ID de la entrevista
@@ -487,7 +487,7 @@ es:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: 'Details'
     role:
       new: 'Rolle hinzufügen'
@@ -595,7 +595,7 @@ es:
     start: Bearbeitung beginnen
     finish: dem QM einreichen
     clear: freigeben
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
@@ -689,7 +689,7 @@ es:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
+  user:
     registration: Registro
     registration_text_one: 'Para ver las entrevistas en el archivo, es
         necesario registrarse. La '
@@ -860,7 +860,7 @@ es:
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1093,7 +1093,7 @@ es:
         gender: Género
         first_name: Nombre
         last_name: Apellido
-      user_registration:
+      user:
         created_at: Creado el
         activated_at: Activado el
         processed_at: Editado el
@@ -1117,9 +1117,9 @@ es:
         priv_agreement: Indicaciones sobre la política de privacidad
         register: Enviar registro
         workflow_state: Estado
-        user_registration_projects:
+        user_projects:
           workflow_state: Estado
-      user_registration_project:
+      user_project:
         workflow_state: Estado
         admin_comments: Comentario
       user_role:

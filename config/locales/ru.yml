@@ -196,7 +196,7 @@ ru:
   biographicalentry_results: Результаты поиска в Краткой биографии
   observation_results: Search results in the protocol
   person_results: Результаты поиска для людей
-  user_registration_results: Suchergebnisse für Benutzer*innen
+  user_results: Suchergebnisse für Benutzer*innen
   segment_hits: Результаты в тексте
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
@@ -536,7 +536,7 @@ ru:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: Details
       edit: Bearbeiten
     role:
@@ -646,7 +646,7 @@ ru:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
@@ -744,7 +744,7 @@ ru:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: редакторский формат
-  user_registration:
+  user:
     registration: Регистрация
     registration_text_one: 'Для поиска информации в архиве "Принудительный труд 1939-1945"
       необходима регистрация. '
@@ -914,7 +914,7 @@ ru:
       biographical_entry:
         one: Краткая биография
         other: Краткие биографии
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1152,7 +1152,7 @@ ru:
         gender: Geschlecht
         first_name: Имя
         last_name: Фамилия
-      user_registration:
+      user:
         created_at: Erstellt am
         activated_at: активирован
         processed_at: Bearbeitet am
@@ -1177,9 +1177,9 @@ ru:
         register: Отправить регистрацию
         workflow_state: Status
         transition_to: 'Status'
-        user_registration_projects:
+        user_projects:
           workflow_state: Status
-      user_registration_project:
+      user_project:
         workflow_state: Status
         admin_comments: Kommentar
       user_role:
@@ -1650,7 +1650,7 @@ ru:
     language_id: Язык
     fulltext: Ключевое понятие
   admin_nav:
-    user_registrations: Пользователь
+    users: Пользователь
     import: Импорт
     statistics: Статистика
     permissions: Права

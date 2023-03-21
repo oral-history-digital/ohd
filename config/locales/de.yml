@@ -204,7 +204,7 @@ de:
   biographicalentry_results: Suchergebnisse in der Kurzbiografie
   observation_results: Suchergebnisse im Protokoll
   person_results: Suchergebnisse für Personen
-  user_registration_results: Suchergebnisse für Benutzer*innen
+  user_results: Suchergebnisse für Benutzer*innen
   segment_hits: Suchergebnisse
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
@@ -511,7 +511,7 @@ de:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: 'Details'
     role:
       new: 'Rolle hinzufügen'
@@ -623,7 +623,7 @@ de:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
@@ -716,7 +716,7 @@ de:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
+  user:
     registration: Registrierung
     registration_text_one: 'Um die Interviews im Archiv ansehen zu können ist eine
       Registrierung notwendig. Die '
@@ -894,7 +894,7 @@ de:
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1131,7 +1131,7 @@ de:
         gender: Geschlecht
         first_name: Vorname
         last_name: Nachname
-      user_registration:
+      user:
         created_at: Erstellt am
         activated_at: Aktiviert am
         processed_at: Bearbeitet am
@@ -1154,9 +1154,9 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
-        user_registration_projects:
+        user_projects:
           workflow_state: Status
-      user_registration_project:
+      user_project:
         workflow_state: Status
         admin_comments: Kommentar
       user_role:

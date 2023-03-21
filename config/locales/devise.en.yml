@@ -200,7 +200,7 @@ en:
               confirmation: and confirmation don't match
               too_short: is too short
               too_long: is too long
-        user_registration:
+        user:
           attributes:
             email:
               taken: is already registered here. Please choose 'forgot password' on

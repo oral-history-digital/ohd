@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_17_094912) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_101543) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -990,6 +990,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_094912) do
     t.text "admin_comments", size: :medium
     t.datetime "processed_at", precision: nil
     t.datetime "activated_at", precision: nil
+    t.string "workflow_state", default: "created"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end

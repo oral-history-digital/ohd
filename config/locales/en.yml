@@ -199,7 +199,7 @@ en:
   biographicalentry_results: Search results in the short biography
   observation_results: Search results in the protocol
   person_results: Search results for persons
-  user_registration_results: Suchergebnisse für Benutzer*innen
+  user_results: Suchergebnisse für Benutzer*innen
   segment_hits: search results
   no_interviews_results: No interviews found.
   interview_id: Interview ID
@@ -491,7 +491,7 @@ en:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: Details
       edit: Bearbeiten
     role:
@@ -601,7 +601,7 @@ en:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
@@ -696,7 +696,7 @@ en:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
+  user:
     registration: Register
     registration_text_one: 'Registration is required for research in the archive.
       The '
@@ -871,7 +871,7 @@ en:
       biographical_entry:
         one: Short Biography
         other: Short Biographies
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1108,7 +1108,7 @@ en:
         gender: Geschlecht
         first_name: Vorname
         last_name: Nachname
-      user_registration:
+      user:
         created_at: Created at
         activated_at: Activated At
         processed_at: Processed At
@@ -1133,9 +1133,9 @@ en:
         priv_agreement: Priv Agreement
         register: Register
         workflow_state: Workflow state
-        user_registration_projects:
+        user_projects:
           workflow_state: Status
-      user_registration_project:
+      user_project:
         workflow_state: Status
         admin_comments: Kommentar
       user_role:
