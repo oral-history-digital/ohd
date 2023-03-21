@@ -1,7 +1,7 @@
 class Task < ApplicationRecord
 
   belongs_to :user
-  belongs_to :supervisor, class_name: 'UserAccount'
+  belongs_to :supervisor, class_name: 'User'
   belongs_to :task_type
   has_many :permissions, through: :task_type
   belongs_to :interview, touch: true

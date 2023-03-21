@@ -8,7 +8,7 @@ class UserProject < ApplicationRecord
   validates :project_id, :user_id, presence: true
 
   after_create do
-    AdminMailer.with(user: self.user, project: project).new_user_info.deliver_now if user.activated_at
+    AdminMailer.with(user: self.user, project: project).new_registration_info.deliver_now if user.activated_at
   end
 
   workflow do

@@ -1,5 +1,5 @@
 class RegistryEntriesController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:index, :show]
   skip_after_action :verify_authorized, only: [:norm_data_api]
   skip_after_action :verify_policy_scoped, only: [:norm_data_api]
 

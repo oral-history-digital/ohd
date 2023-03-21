@@ -8,7 +8,7 @@ class UserAccountSerializer < ApplicationSerializer
     :application_info,
     :created_at,
     :activated_at,
-    :user_account_id,
+    :user_id,
     :processed_at,
     :default_locale,
     :receive_newsletter,

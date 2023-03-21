@@ -47,9 +47,9 @@ class CustomDeviseMailer < Devise::Mailer
     end
 
     if record.unconfirmed_email
-      @url = "#{domain}/#{locale}/accounts/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
+      @url = "#{domain}/#{locale}/users/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
     else
-      @url = "#{domain}/#{locale}/user_registrations/#{record.confirmation_token}/activate"
+      @url = "#{domain}/#{locale}/users/#{record.confirmation_token}/activate"
     end
 
     opts[:from] = contact_email
@@ -73,7 +73,7 @@ class CustomDeviseMailer < Devise::Mailer
       @project_name = 'Oral-History.Digital'
     end
 
-    @url = "#{domain}/#{locale}/user_accounts/password/edit?reset_password_token=#{token}"
+    @url = "#{domain}/#{locale}/users/password/edit?reset_password_token=#{token}"
 
     opts[:from] = contact_email
     opts[:reply_to] = contact_email

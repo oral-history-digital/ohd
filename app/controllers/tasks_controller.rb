@@ -4,11 +4,11 @@ class TasksController < ApplicationController
     authorize Task
     @task = Task.create task_params
     @task.update(supervisor_id: current_user.id)
-    @task.user_account.user_registration.touch
+    @task.user.touch
 
     respond_to do |format|
       format.json do
-        render json: data_json(@task.user_account.user_registration,
+        render json: data_json(@task.user,
                                msg: 'processed',
                                reload_data_type: 'accounts',
                                reload_id: "current"
@@ -21,8 +21,8 @@ class TasksController < ApplicationController
     @task = Task.find params[:id]
     authorize @task
     @task.update task_params
-    @task.user_account.user_registration.touch if @task.user_account
-    @task.supervisor.user_registration.touch if @task.supervisor
+    @task.user.touch if @task.user
+    @task.supervisor.touch if @task.supervisor
 
     respond_to do |format|
       format.json do
@@ -60,13 +60,13 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     authorize @task
-    user_registration = @task.user_account.user_registration
+    user = @task.user
     @task.destroy
-    user_registration.touch
+    user.touch
 
     respond_to do |format|
       format.json {
-        render json: data_json(@task.user_account.user_registration,
+        render json: data_json(@task.user,
                                msg: 'processed',
                                reload_data_type: 'accounts',
                                reload_id: "current"
@@ -81,7 +81,7 @@ class TasksController < ApplicationController
     params.require(:task).
       permit(
         :task_type_id,
-        :user_account_id,
+        :user_id,
         :supervisor_id,
         :interview_id,
         :archive_id,

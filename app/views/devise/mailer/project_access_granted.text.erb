@@ -1,10 +1,10 @@
 <%
-  my_locale = @user_account.locale_with_project_fallback
+  my_locale = @user.locale_with_project_fallback
   url = "#{@project.domain_with_optional_identifier}/#{my_locale}"
   case my_locale.to_sym
   when :en
 -%>
-Dear <%= @user_account.display_name %>,
+Dear <%= @user.display_name %>,
 
 You now have access to the application "<%= @project.name('en') %>" for the research you specified.
 
@@ -14,7 +14,7 @@ Yours sincerely,
 
 The project team "<%= @project.name('en') %>"
 <% when :el -%>
-Αγαπητή/-έ <%= @user_account.display_name %>,
+Αγαπητή/-έ <%= @user.display_name %>,
 
 Έχετε τώρα πρόσβαση στην εφαρμογή "<%= @project.name('el') %>" για το αίτημα έρευνάς σας. Παρακαλούμε να σεβαστείτε τα δικαιώματα προσωπικότητας των μαρτύρων και να τηρείτε τους όρους χρήσης του Αρχείου (<%= @conditions_link && @conditions_link.url(:el) %>).
 
@@ -24,7 +24,7 @@ The project team "<%= @project.name('en') %>"
 
 Η ομάδα του προγράμματος "<%= @project.name('el') %>"
 <% when :es -%>
-Estimada/o <%= @user_account.display_name %>,
+Estimada/o <%= @user.display_name %>,
 
 Usted tiene ahora acceso a la aplicación "<%= @project.name('es') %>" para el tema de investigación que indicó.
 
@@ -34,7 +34,7 @@ Con saludos cordiales,
 
 El equipo del proyecto "<%= @project.name('es') %>"
 <% when :ru -%>
-Уважаемый(-ая) <%= @user_account.display_name %>,
+Уважаемый(-ая) <%= @user.display_name %>,
 
 Вы получаете доступ к приложению "<%= @project.name('ru') %>", согласно Вашего запроса на исследование.
 
@@ -48,7 +48,7 @@ El equipo del proyecto "<%= @project.name('es') %>"
 
 сотрудники проекта "<%= @project.name('ru') %>"
 <% else -%>
-Sehr geehrte/r <%= @user_account.display_name %>,
+Sehr geehrte/r <%= @user.display_name %>,
 
 Sie haben nun Zugang zu der Anwendung "<%= @project.name('de') %>" für das von Ihnen angegebene Recherche-Anliegen.
 

@@ -19,7 +19,7 @@
 #
 # 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
-# 5. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions|norm_data_providers]
+# 5. on target-db: run rake database:unify_[users|languages|permissions|institutions|norm_data_providers]
 
 namespace :database do
   desc 'show development database'
@@ -83,28 +83,26 @@ namespace :database do
     end
   end
 
-  desc 'unify user_accounts'
-  task :unify_user_accounts, [:max_id] => :environment do |t, args|
+  desc 'unify users'
+  task :unify_users, [:max_id] => :environment do |t, args|
     raise 'Please provide max_id-parameter' unless args.max_id
-    UserRegistration.group(:email).count.select{|k,v| v > 1}.each do |email, count|
-      first_ur = UserRegistration.where(email: email).where("id <= ?", args.max_id).first
-      first_user_account = first_ur && first_ur.user_account
-      if first_ur
-        other_urs = UserRegistration.where(email: email).where("id > ?", args.max_id)
+    User.group(:email).count.select{|k,v| v > 1}.each do |email, count|
+      first_user = User.where(email: email).where("id <= ?", args.max_id).first
+      if first_user
+        other_users = UserRegistration.where(email: email).where("id > ?", args.max_id)
 
-        other_urs.each do |ur|
-          ur.user_registration_projects.update_all(user_registration_id: first_ur.id)
+        other_users.each do |user|
+          user.user_projects.update_all(user_id: first_user.id)
 
-          ur.user_account.user_roles.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.tasks.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.user_contents.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.searches.update_all(user_account_id: first_ur.user_account_id)
+          user.user_roles.update_all(user_id: first_user.id)
+          user.tasks.update_all(user_id: first_user.id)
+          user.user_contents.update_all(user_id: first_user.id)
+          user.searches.update_all(user_id: first_user.id)
 
-          if first_user_account && !first_user_account.activated_at && ur.user_account.activated_at
-            first_user_account.update(activated_at: ur.user_account.activated_at)
+          if !first_user.activated_at && user.activated_at
+            first_user.update(activated_at: user.activated_at)
           end
-          ur.user_account.destroy
-          ur.destroy
+          user.destroy
         end
       end
     end

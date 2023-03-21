@@ -106,7 +106,7 @@ class User < ApplicationRecord
   end
 
   def locale_with_project_fallback
-    self.default_locale || self.user_registration.projects.last.default_locale
+    self.default_locale || self.projects.last.default_locale
   end
 
   def full_name
@@ -114,10 +114,10 @@ class User < ApplicationRecord
   end
 
   def display_name
-    if !self.user_registration.appellation.blank?
-      [I18n.t("user_registration.appellation.#{self.user_registration.appellation}"), self.user_registration.full_name].compact.join(' ')
+    if !self.appellation.blank?
+      [I18n.t("user.appellation.#{self.appellation}"), self.full_name].compact.join(' ')
     else
-      self.user_registration.full_name
+      self.full_name
     end
   end
 

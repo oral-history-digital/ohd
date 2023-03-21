@@ -1,15 +1,15 @@
-<h1>Η ηλεκτρονική διεύθυνση <span><%= @user_registration.email %></span>  έχει ήδη καταχωρηθεί.</h1>
+<h1>Η ηλεκτρονική διεύθυνση <span><%= @user.email %></span>  έχει ήδη καταχωρηθεί.</h1>
 
 <% if current_project %>
   <p>Η ηλεκτρονική διεύθυνση που χρησιμοποιείτε έχει ήδη καταχωρηθεί για το Αρχείο "<%= current_project.name['el'] %>".</p>
 <% end %>
 
-<% if @user_registration %>
-  <% unless @user_registration.activated_at %>
+<% if @user %>
+  <% unless @user.activated_at %>
     <p>Η πρόσβασή σας θα ενεργοποιηθεί σύντομα. Οι αναγκαίες πληροφορίες για την ενεργοποίηση της πρόσβασης έχουν σταλεί στην ηλεκτρονική σας διεύθυνση με E-Mail.</p>
   <% else %>
     <p>Η πρόσβασή σας έχει ενεργοποιηθεί. Εάν δεν γνωρίζετε πλέον τα στοιχεία πρόσβασής σας ακολουθήστε αυτόν τον σύνδεσμο: 
-    <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_account_password_path}", :class => 'new_password link' %>
+    <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_password_path}", :class => 'new_password link' %>
   </p>
   <% end %>
 <% end %>

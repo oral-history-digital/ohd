@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!,
+  skip_before_action :authenticate_user!,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index,
       :edit_info, :edit_display, :edit_config]
   before_action :set_project,

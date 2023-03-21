@@ -10,7 +10,7 @@ class ConfirmationsController < ApplicationController
       sign_in(resource_name, resource)
       change_password_token = resource.send(:generate_reset_password_token)
       resource.save
-      redirect_to edit_user_account_password_url(:reset_password_token => change_password_token)
+      redirect_to edit_user_password_url(:reset_password_token => change_password_token)
     else
       puts resource.errors.full_messages
       flash[:alert] = resource.errors.full_messages

@@ -1,5 +1,5 @@
 <%
-  my_locale = @user_account.default_locale || I18n.locale
+  my_locale = @user.default_locale || I18n.locale
   if @resource.active_projects.count == 1
     project = @resource.active_projects.last
     project_name = project.name(@resource.default_locale)
@@ -13,35 +13,35 @@
   case my_locale.to_sym
   when :en
 -%>
-  <p>Dear <%= @user_account.display_name %>,</p>
+  <p>Dear <%= @user.display_name %>,</p>
   <p>Your access to the application "<%= project_name %>" has been blocked.</p>
   <p>This happens if you have violated the Terms of Use.</p>
   <p>If you have any questions regarding this procedure, please contact us at <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Yours sincerely,</p>
   <p>The project team "<%= project_name %>"</p>
 <% when :ru -%>
-  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+  <p>Уважаемый(-ая) <%= @user.display_name %>,</p>
   <p>Ваш доступ к ресурсу "<%= project_name %>" был заблокирован.</p>
   <p>Это произошло, если Вы нарушили Условия пользовния.</p>
   <p>Если у Вас в связи с этим возникли вопросы, пожалуйста, свяжитесь с нами: <%= contact_email %>.</p>
   <p>С уважением,</p>
   <p>сотрудники проекта "<%= project_name %>"</p>
   <% when :el -%>
-  <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
+  <p>Αγαπητή/-έ <%= @user.display_name %>,</p>
   <p>Η πρόσβαση σας στην εφαρμογή "<%= project_name %>" αποκλείστηκε.</p>
   <p>Aυτό συμβαίνει αν παραβιάσατε τους Όροι Χρήσης.</p>
   <p>Σε περίπτωση που έχετε οποιαδήποτε απορία μπορείτε να επικοινωνήσετε μαζί μας στη διεύθυνση <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Με εκτίμηση,</p>
   <p>Η ομάδα του προγράμματος "<%= project_name %>"</p>
   <% when :es -%>
-  <p>Estimada/o <%= @user_account.display_name %>,</p>
+  <p>Estimada/o <%= @user.display_name %>,</p>
   <p>Su acceso a la aplicación "<%= project_name %>" ha sido bloqueado.</p>
   <p>Eso sucede si ha violado los Términos de uso.</p>
   <p>Si tiene preguntas sobre el proceso, por favor contáctenos bajo <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Con saludos cordiales,</p>
   <p>El equipo del proyecto "<%= project_name %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
+  <p>Sehr geehrte/r <%= @user.display_name %>,</p>
   <p>Ihr Zugang zu der Anwendung "<%= project_name %>" wurde gesperrt.</p>
   <p>Dies geschieht, wenn Sie gegen die Nutzungsbedingungen verstoßen haben.</p>
   <p>Wenn Sie Fragen zu diesem Vorgang haben, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>

@@ -9,7 +9,7 @@ class UserAnnotation < UserContent
   has_one :annotation, :dependent => :destroy, :foreign_key => :user_content_id
 
   scope :for_interview, -> (interview) { where('reference_type = ?', 'Segment').where('interview_references LIKE ?', "%#{interview.archive_id}%") }
-  scope :for_user_account, -> (user_account) { where('user_account_id = ?', user_account.id) } # FIXME: remove - unused?
+  scope :for_user, -> (user) { where('user_id = ?', user.id) } # FIXME: remove - unused?
   # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
   # compatibility to previous, property-based implementation (could be optimized later if not needed)
   scope :for_media_id, -> (m_id) { where('reference_type = ?', 'Segment').where('media_id LIKE ?', "%#{m_id}") }
@@ -88,7 +88,7 @@ class UserAnnotation < UserContent
     attr = {}
     attr[:interview_references] = reference.interview.archive_id
     @properties ||= {}
-    @properties[:author] ||= [user_account.first_name, user_account.last_name].join(' ')
+    @properties[:author] ||= [user.first_name, user.last_name].join(' ')
     heading_segment = Segment.with_heading.for_media_id(reference.media_id).first
     unless heading_segment.nil?
       @properties[:heading] = [heading_segment.section, heading_segment.subheading(I18n.locale).blank? ? heading_segment.mainheading(I18n.locale) : heading_segment.subheading(I18n.locale)].join(' ')

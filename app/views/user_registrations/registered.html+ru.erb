@@ -1,15 +1,15 @@
-<h1>Регистрация <span><%= @user_registration.email %></span> уже имеется </h1>
+<h1>Регистрация <span><%= @user.email %></span> уже имеется </h1>
 
 <% if current_project %>
   <p>Указанный Вами электронный адрес уже зарегистрирован в системе архива "<%= current_project.name('ru') %>".</p>
 <% end %>
 
-<% if @user_registration %>
-  <% unless @user_registration.activated_at %>
+<% if @user %>
+  <% unless @user.activated_at %>
     <p>Вам нужно лишь активировать Ваш доступ. Необходимая для активации доступа информация была только что повторно выслана на Ваш электронный адрес.</p>
   <% else %>
     <p>Ваш доступ уже активен. Если Вы не помните Ваши данные для доступа, перейдите, пожалуйста, по следующей ссылке:
-      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_account_password_path}", :class => 'new_password link' %>
+      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_password_path}", :class => 'new_password link' %>
     </p>
   <% end %>
 <% end %>

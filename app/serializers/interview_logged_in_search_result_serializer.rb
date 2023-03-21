@@ -9,7 +9,7 @@ class InterviewLoggedInSearchResultSerializer < InterviewBaseSerializer
     :properties,
     :signature_original,
     :task_ids,
-    :tasks_user_account_ids,
+    :tasks_user_ids,
     :tasks_supervisor_ids,
   ]
 

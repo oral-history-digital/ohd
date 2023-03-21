@@ -1,5 +1,5 @@
 <%
-  my_locale = @user_account.default_locale || I18n.locale
+  my_locale = @user.default_locale || I18n.locale
   if @resource.active_projects.count == 1
     project = @resource.active_projects.last
     project_name = project.name(@resource.default_locale)
@@ -13,7 +13,7 @@
   case my_locale.to_sym
   when :en
 -%>
-Dear <%= @user_account.display_name %>,
+Dear <%= @user.display_name %>,
 
 Your access to the application "<%= project_name %>" has been blocked.
 
@@ -25,7 +25,7 @@ Yours sincerely,
 
 The project team "<%= project_name %>"
 <% when :el -%>
-Αγαπητή/-έ <%= @user_account.display_name %>,
+Αγαπητή/-έ <%= @user.display_name %>,
 
 Η πρόσβαση σας στην εφαρμογή "<%= project_name %>" αποκλείστηκε.
 
@@ -37,7 +37,7 @@ The project team "<%= project_name %>"
 
 Η ομάδα του προγράμματος "<%= project_name %>"
 <% when :es -%>
-Estimada/o <%= @user_account.display_name %>,
+Estimada/o <%= @user.display_name %>,
 
 Su acceso a la aplicación "<%= project_name %>" ha sido bloqueado.
 
@@ -49,7 +49,7 @@ Con saludos cordiales,
 
 El equipo del proyecto "<%= project_name %>"
 <% when :ru -%>
-Уважаемый(-ая) <%= @user_account.display_name %>,
+Уважаемый(-ая) <%= @user.display_name %>,
 
 Ваш доступ к ресурсу "<%= project_name %>" был заблокирован.
 
@@ -61,7 +61,7 @@ El equipo del proyecto "<%= project_name %>"
 
 сотрудники проекта "<%= project_name %>"
 <% else -%>
-Sehr geehrte/r <%= @user_account.display_name %>,
+Sehr geehrte/r <%= @user.display_name %>,
 
 Ihr Zugang zu der Anwendung "<%= project_name %>" wurde gesperrt.
 
