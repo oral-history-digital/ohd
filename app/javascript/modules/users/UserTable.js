@@ -45,13 +45,13 @@ export default function UserTable() {
     const ohdColumns = useMemo(() => ([
         {
             id: 'workflow_state',
-            accessorFn: row => row.workflow_state,
+            accessorFn: row => t(`workflow_states.${row.workflow_state}`),
             header: t('activerecord.attributes.user.workflow_state'),
         },
         {
-            accessorKey: 'activated_at',
-            header: t('activerecord.attributes.user.activated_at'),
-            accessorFn: row => row.activated_at,
+            accessorKey: 'confirmed_at',
+            header: t('activerecord.attributes.user.confirmed_at'),
+            accessorFn: row => row.confirmed_at,
         },
         {
             header: t('activerecord.models.project.other'),

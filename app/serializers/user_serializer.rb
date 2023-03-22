@@ -6,7 +6,7 @@ class UserSerializer < ApplicationSerializer
     :admin,
     :tos_agreement,
     :created_at,
-    :activated_at,
+    :confirmed_at,
     :user_id,
     :processed_at,
     :default_locale,
@@ -75,8 +75,8 @@ class UserSerializer < ApplicationSerializer
     object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M')
   end
 
-  def activated_at
-    object.activated_at && object.activated_at.strftime('%d.%m.%Y %H:%M Uhr')
+  def confirmed_at
+    object.confirmed_at && object.confirmed_at.strftime('%d.%m.%Y %H:%M Uhr')
   end
 
   def processed_at
