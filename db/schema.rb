@@ -962,7 +962,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_101543) do
     t.string "current_sign_in_ip", limit: 255
     t.string "last_sign_in_ip", limit: 255
     t.string "login", limit: 255
-    t.datetime "deactivated_at", precision: nil
     t.datetime "reset_password_sent_at", precision: nil
     t.string "unconfirmed_email", limit: 255
     t.boolean "admin"
@@ -989,7 +988,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_101543) do
     t.string "default_locale"
     t.text "admin_comments", size: :medium
     t.datetime "processed_at", precision: nil
-    t.datetime "activated_at", precision: nil
     t.string "workflow_state", default: "created"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
