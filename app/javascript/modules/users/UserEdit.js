@@ -31,7 +31,7 @@ export default function UserEdit ({
                     'job_description',
                     'research_intentions',
                     'comments',
-                    'activated_at',
+                    'confirmed_at',
                     'processed_at',
                     'terminated_at',
                     'default_locale',

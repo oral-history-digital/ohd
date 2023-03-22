@@ -65,6 +65,16 @@ class User < ApplicationRecord
     self.send("#{change}!")
   end
 
+  def block
+    # send email to user
+    # revoke access to all projects
+  end
+
+  def revoke_block
+    # send email to user
+    # grant access to all projects
+  end
+
   def projects
     user_projects.map(&:project)
   end
