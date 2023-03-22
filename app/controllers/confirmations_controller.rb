@@ -4,12 +4,14 @@ class ConfirmationsController < ApplicationController
   # GET /resource/confirmation?confirmation_token=abcdef
   def show
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
+    yield resource if block_given?
 
     if resource.errors.empty?
       set_flash_message :notice, :confirmed
       sign_in(resource_name, resource)
       change_password_token = resource.send(:generate_reset_password_token)
       resource.save
+      resource.confirm!
       redirect_to edit_user_password_url(:reset_password_token => change_password_token)
     else
       puts resource.errors.full_messages
@@ -17,4 +19,5 @@ class ConfirmationsController < ApplicationController
       redirect_to login_url
     end
   end
+
 end
