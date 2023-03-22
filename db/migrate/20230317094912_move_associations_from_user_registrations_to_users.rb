@@ -5,7 +5,10 @@ class MoveAssociationsFromUserRegistrationsToUsers < ActiveRecord::Migration[7.0
 
     rename_table :user_registration_projects, :user_projects
 
-    UserProject.update_all("user_id = user_account_id")
+    execute "UPDATE user_projects INNER JOIN user_registrations ON user_registrations.id = user_projects.user_registration_id SET user_projects.user_id = user_registrations.user_account_id"
+
+    execute "UPDATE users INNER JOIN user_registrations ON user_registrations.user_account_id = users.id SET users.confirmed_at = user_registrations.activated_at WHERE user_registrations.activated_at IS NOT NULL AND users.confirmed_at IS NULL"
+
     UserRole.update_all("user_id = user_account_id")
     Task.update_all("user_id = user_account_id")
     UserContent.update_all("user_id = user_account_id")
