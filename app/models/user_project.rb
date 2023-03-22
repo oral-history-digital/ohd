@@ -8,7 +8,7 @@ class UserProject < ApplicationRecord
   validates :project_id, :user_id, presence: true
 
   after_create do
-    AdminMailer.with(user: self.user, project: project).new_registration_info.deliver_now if user.activated_at
+    AdminMailer.with(user: self.user, project: project).new_registration_info.deliver_now if user.confirmed_at.present? && !project.grant_project_access_instantly?
   end
 
   workflow do
@@ -43,11 +43,6 @@ class UserProject < ApplicationRecord
   def workflow_state=(change)
     self.send("#{change}!")
     user.touch
-  end
-
-  # TODO: check how the token expires
-  def expire_confirmation_token
-    self.user.update_attribute(:confirmation_token, nil)
   end
 
   def grant_project_access
