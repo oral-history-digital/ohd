@@ -26,7 +26,8 @@ class MetadataField < ApplicationRecord
 
   after_commit do
     if use_as_facet_previously_changed?
-      Sunspot.index!(project.is_ohd? ? Interview.all : project.interviews)
+      # commentedout because it makes the rake task maintenance:create_ohd_project run eternally
+      #Sunspot.index!(project.is_ohd? ? Interview.all : project.interviews)
     end
   end
 
