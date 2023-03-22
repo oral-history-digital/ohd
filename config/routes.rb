@@ -7,7 +7,6 @@ Rails.application.routes.draw do
     controllers: {
       sessions: "sessions",
       passwords: "passwords",
-      registrations: "registrations"
     }
 
   use_doorkeeper do
@@ -168,11 +167,12 @@ Rails.application.routes.draw do
   end
 
   concern :account do
-    resources :accounts, only: [:show, :update, :index] do
+    resources :users, only: [:update, :index] do
       member do
         get :confirm_new_email
       end
       collection do
+        get :current
         get :check_email
         get :access_token
       end
