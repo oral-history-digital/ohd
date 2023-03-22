@@ -604,9 +604,11 @@ de:
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
+    block: sperren
+    revoke_block: Sperrung aufheben
+    created: angelegt
+    confirmed: bestätigt
+    blocked: gesperrt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -1133,7 +1135,7 @@ de:
         last_name: Nachname
       user:
         created_at: Erstellt am
-        activated_at: Aktiviert am
+        confirmed_at: Aktiviert am
         processed_at: Bearbeitet am
         default_locale: Sprache
         appellation: Titel

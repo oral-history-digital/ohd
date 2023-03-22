@@ -585,9 +585,11 @@ el:
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
+    block: sperren
+    revoke_block: Sperrung aufheben
+    created: angelegt
+    confirmed: bestätigt
+    blocked: gesperrt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -1114,7 +1116,7 @@ el:
         last_name: Επώνυμο
       user:
         created_at: Δημιουργήθηκε στις
-        activated_at: Ενεργοποιήθηκε στις
+        confirmed_at: Ενεργοποιήθηκε στις
         processed_at: Επεξεργάστηκε στις
         admin_comments: Σχόλιο
         default_locale: Γλώσσα
