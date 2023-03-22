@@ -49,11 +49,11 @@ class User < ApplicationRecord
     state :created do
       event :confirm, :transitions_to => :confirmed
     end
-    state :registered do
+    state :confirmed do
       event :block, :transitions_to => :blocked
     end
     state :blocked do
-      event :revoke_block, :transitions_to => :registered
+      event :revoke_block, :transitions_to => :confirmed
     end
   end
 
