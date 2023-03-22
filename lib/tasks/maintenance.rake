@@ -32,7 +32,7 @@ namespace :maintenance do
 
     ActiveRecord::Base.connection.execute <<-SQL
       INSERT INTO user_projects (project_id, user_id, workflow_state, created_at, updated_at)
-      VALUES #{User.all.map{|u| "(#{project.id}, #{u.id}, 'project_access_granted', '#{Time.now}', '#{Time.now}')"}.join(', ')}
+      VALUES #{User.all.map{|u| "(#{project.id}, #{u.id}, 'project_access_granted', '#{Date.today.strftime("%Y-%m-%d")}', '#{Date.today.strftime("%Y-%m-%d")}')"}.join(', ')}
     SQL
   end
 
