@@ -627,9 +627,11 @@ ru:
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
+    block: sperren
+    revoke_block: Sperrung aufheben
+    created: angelegt
+    confirmed: bestätigt
+    blocked: gesperrt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -1145,18 +1147,14 @@ ru:
         workflow_state: Статус публикации
         heading: Глава
         media_id: Номер носителя информации
-      user_account:
-        login: Login
-        password: Passwort
-      account:
-        gender: Geschlecht
-        first_name: Имя
-        last_name: Фамилия
       user:
         created_at: Erstellt am
-        activated_at: активирован
+        confirmed_at: активирован
         processed_at: Bearbeitet am
+        activated_at: активирован
         default_locale: Sprache
+        login: Login
+        password: Passwort
         appellation: Обращение
         first_name: Имя
         last_name: Фамилия

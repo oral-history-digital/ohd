@@ -1126,18 +1126,14 @@ de:
         workflow_state: Veröffentlichungsstatus
         heading: Kapitel
         media_id: Medien ID
-      user_account:
-        login: Login
-        password: Passwort
-      account:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
       user:
         created_at: Erstellt am
         confirmed_at: Aktiviert am
         processed_at: Bearbeitet am
+        activated_at: freigeschaltet am
         default_locale: Sprache
+        login: Login
+        password: Passwort
         appellation: Titel
         first_name: Vorname
         last_name: Nachname
