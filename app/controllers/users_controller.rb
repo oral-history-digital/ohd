@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def current
     respond_to do |format|
-      format.html {}
+      format.html { render 'react/app' }
       format.json do
         render json: {
           id: 'current',
