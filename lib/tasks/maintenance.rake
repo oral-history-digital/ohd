@@ -3,7 +3,7 @@ namespace :maintenance do
   desc "create ohd project"
   task create_ohd_project: :environment do
     project = ProjectCreator.perform({
-      available_locales: %w(de en ru el es),
+      available_locales: %w(de en),
       view_modes: %w(grid list),
       funder_names: %w(BMBF DFG EU),
       fullname_on_landing_page: false,
