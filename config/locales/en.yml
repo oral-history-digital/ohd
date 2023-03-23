@@ -793,12 +793,13 @@ en:
     observations: Observations
     tape_count: Tape count
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Workflow state
     date_of_birth: Date of birth
     signature_original: Signature original
     startpage_position: Startpage position
     project_id: Archiv
+    project_access_granted_instantly: Freischaltung erforderlich
   activerecord:
     models:
       help_text:
@@ -1162,12 +1163,12 @@ en:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am

@@ -55,7 +55,7 @@ de:
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
-    Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
+    Bitte klicken Sie auf den Link "<a href="/de/users/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
     Vielen Dank für Ihr Verständnis.
   observation: Interviewsituation
@@ -816,12 +816,13 @@ de:
     observations: Protokoll
     tape_count: Anzahl der Bänder
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Status
     date_of_birth: Geburtsdatum
     signature_original: Originalsignatur
     startpage_position: Startseitenposition
     project_id: Archiv
+    project_access_granted_instantly: Freischaltung erforderlich
   activerecord:
     models:
       help_text:
@@ -1179,12 +1180,12 @@ de:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am

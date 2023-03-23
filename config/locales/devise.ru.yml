@@ -190,21 +190,19 @@ ru:
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: не совпадает с первоначальным.
-              too_short: слишком короткий.
-              too_long: слишком длинный.
         user:
           attributes:
             email:
               taken: уже зарегистрирован. Пожалуйста, используйте функцию 'Забыли
                 пароль?' на странице для входа, чтобы восстановить пароль.
+            password:
+              confirmation: не совпадает с первоначальным.
+              too_short: слишком короткий.
+              too_long: слишком длинный.
       messages:
         blank: отсутствует
     attributes:
-      user_account:
+      user:
         email: Электр. адрес
         login: Логин
         password: Пароль
