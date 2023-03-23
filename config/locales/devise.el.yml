@@ -195,21 +195,19 @@ el:
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: und -wiederholung stimmen nicht überein.
-              too_short: ist zu kurz.
-              too_long: ist zu lang.
         user:
           attributes:
             email:
               taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
                 vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen.
+            password:
+              confirmation: und -wiederholung stimmen nicht überein.
+              too_short: ist zu kurz.
+              too_long: ist zu lang.
       messages:
         blank: fehlt
     attributes:
-      user_account:
+      user:
         email: E-Mail
         login: Login
         password: Passwort

@@ -785,12 +785,13 @@ es:
     observations: Protokoll
     tape_count: Anzahl der Bänder
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Status
     date_of_birth: Fecha de nacimiento
     signature_original: Originalsignatur
     startpage_position: Startpage position
     project_id: Archiv
+    project_access_granted_instantly: Freischaltung erforderlich
   activerecord:
     models:
       interview:
@@ -1142,14 +1143,14 @@ es:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
         archive_id: Interview ID
         interviewee: Interviewte*r
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am
