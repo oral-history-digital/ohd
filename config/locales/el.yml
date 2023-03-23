@@ -579,7 +579,6 @@ el:
     reject: zurückgewiesen
     postpone: zurückgestellt
     activate: aktiviert
-    expire: zurückgestellt
     deactivate_account: sperren
     reactivate_account: reaktivieren
     grant_project_access: freischalten
@@ -1107,19 +1106,15 @@ el:
         workflow_state: Κατάσταση δημοσίευσης
         heading: Κεφάλαιο
         media_id: ID μέσου
-      user_account:
-        login: Όνομα σύνδεσης
-        password: Κωδικός
-      account:
-        gender: Φύλο
-        first_name: Όνομα
-        last_name: Επώνυμο
       user:
         created_at: Δημιουργήθηκε στις
         confirmed_at: Ενεργοποιήθηκε στις
         processed_at: Επεξεργάστηκε στις
+        activated_at: freigeschaltet am
         admin_comments: Σχόλιο
         default_locale: Γλώσσα
+        login: Όνομα σύνδεσης
+        password: Κωδικός
         appellation: Προσφώνηση
         first_name: Όνομα
         last_name: Επώνυμο

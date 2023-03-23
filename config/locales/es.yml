@@ -1088,18 +1088,14 @@ es:
         workflow_state: Estado de publicación
         heading: Capítulo
         media_id: ID de medio
-      user_account:
-        login: Iniciar sesión
-        password: Contraseña
-      account:
-        gender: Género
-        first_name: Nombre
-        last_name: Apellido
       user:
         created_at: Creado el
         confirmed_at: Activado el
         processed_at: Editado el
+        activated_at: Activado el
         default_locale: Idioma por defecto
+        login: Iniciar sesión
+        password: Contraseña
         appellation: Título
         first_name: Nombre
         last_name: Apellido
