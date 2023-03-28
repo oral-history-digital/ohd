@@ -124,6 +124,7 @@ class Interview < ApplicationRecord
     integer :tasks_user_ids, :stored => true, :multiple => true
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
     string :workflow_state, stored: true
+    string :project_access, stored: true
 
     dynamic_date_range :events, multiple: true do
       interviewee&.events&.inject({}) do |hash, e|
@@ -244,6 +245,10 @@ class Interview < ApplicationRecord
 
   scope :shared, -> {where(workflow_state: 'public')}
   scope :with_media_type, -> {where.not(media_type: nil)}
+
+  def project_access
+    project.grant_project_access_instantly? ? "free" : "restricted"
+  end
 
   def interviewee_id
     interviewees.first && interviewees.first.id
