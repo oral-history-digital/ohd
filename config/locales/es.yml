@@ -791,7 +791,9 @@ es:
     signature_original: Originalsignatur
     startpage_position: Startpage position
     project_id: Archiv
-    project_access_granted_instantly: Freischaltung erforderlich
+    project_access: Archivzugang
+    restricted: beschränkt
+    free: frei
   activerecord:
     models:
       interview:

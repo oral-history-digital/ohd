@@ -328,6 +328,17 @@ class Project < ApplicationRecord
           # do nothing: facets on individual free-text do not make sense
         when "tape_count"
           # do nothing: this is not meant to be a facet
+        when "project_access"
+          mem[:project_access] = {
+            name: facet_label_hash || localized_hash_for("search_facets", :project_access),
+            subfacets: %w(free restricted).inject({}) do |subfacets, access|
+              subfacets[access] = {
+                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = I18n.t("search_facets.#{access}", locale: locale); desc},
+                count: 0
+              }
+              subfacets
+            end
+          }
         else
           begin
             mem[facet.name.to_sym] = {
@@ -340,7 +351,9 @@ class Project < ApplicationRecord
                 subfacets
               end
             }
-          rescue
+          rescue => e
+            logger.warn "Could not create facet for #{facet.name}"
+            logger.warn e.message
           end
         end
       end
