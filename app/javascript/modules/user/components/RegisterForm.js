@@ -34,6 +34,11 @@ export default function RegisterForm({
     const formElements = () => {
         let firstElements = [
             {
+                attribute: 'pre_register_location',
+                value: location.href,
+                hidden: true,
+            },
+            {
                 elementType: 'input',
                 attribute: 'email',
                 type: 'email',
@@ -91,7 +96,7 @@ export default function RegisterForm({
             },
             {
                 elementType: 'textarea',
-                attribute: 'comments',
+                attribute: 'specification',
                 validate: function(v){return v && v.length > 10}
             },
             {
@@ -189,7 +194,7 @@ export default function RegisterForm({
     return (
         <Form
             scope='user'
-            onSubmit={function(params){submitRegister(`${pathBase}/users`, params)}}
+            onSubmit={function(params){submitRegister(`${pathBase}/users/sign_up`, params)}}
             submitText='user.register'
             elements={formElements()}
         />
