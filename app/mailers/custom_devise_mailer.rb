@@ -49,7 +49,7 @@ class CustomDeviseMailer < Devise::Mailer
     if record.unconfirmed_email
       @url = "#{domain}/#{locale}/users/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
     else
-      @url = "#{domain}/#{locale}/users/#{record.confirmation_token}/activate"
+      @url = "#{domain}/#{locale}/users/confirmation?confirmation_token=#{record.confirmation_token}"
     end
 
     opts[:from] = contact_email

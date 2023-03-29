@@ -18,6 +18,7 @@ export {
     getCurrentInterviewFetched,
     getCurrentIntervieweeId,
     getCurrentProject,
+    getOHDProject,
     getCurrentRefTree,
     getCurrentRefTreeStatus,
     getFlattenedRefTree,

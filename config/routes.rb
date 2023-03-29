@@ -1,19 +1,16 @@
 Rails.application.routes.draw do
 
-  #devise_for :user_accounts,
-    #controllers: { sessions: "sessions", passwords: "passwords" },
-    #skip: [:registrations]
-  devise_for :users,
-    controllers: {
-      sessions: "sessions",
-      passwords: "passwords",
-    }
-
   use_doorkeeper do
     skip_controllers :authorizations, :applications, :authorized_applications
   end
 
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+    devise_for :users,
+      controllers: {
+        sessions: "sessions",
+        confirmations: "confirmations",
+        #passwords: "passwords",
+      }
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
     get 'catalog/stats',            to: 'catalog#stats'
@@ -177,13 +174,7 @@ Rails.application.routes.draw do
         get :access_token
       end
     end
-    resources :user_registrations do
-      member do
-        post :confirm
-        get :activate
-      end
-    end
-    resources :user_registration_projects, only: [:create, :update]
+    resources :user_projects, only: [:create, :update]
     resources :user_contents do
       collection do
         get :segment_annotation

@@ -10,6 +10,10 @@ class User < ApplicationRecord
          :trackable,
          :validatable
 
+  def after_database_authentication
+    Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
+  end
+
   has_many :sessions,
            class_name: 'ActiveRecord::SessionStore::Session',
            dependent: :delete_all

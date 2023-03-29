@@ -8,6 +8,7 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
 import ProjectAccessAlert from './ProjectAccessAlert';
+import RegisterPopupLink from './RegisterPopupLink';
 import EditViewButtonContainer from './EditViewButtonContainer';
 import LoginForm from './LoginForm';
 
@@ -105,17 +106,7 @@ export default function Account ({
                                 {t('login')}
                             </button>
                     }
-                    <div
-                        className="register-link"
-                        onClick={handleLinkClick}
-                    >
-                        <Link
-                            className="Link"
-                            to={pathBase + '/users/new'}
-                        >
-                            {t('user.registration')}
-                        </Link>
-                    </div>
+                    <RegisterPopupLink />
                     <div
                         className="order-new-password-link"
                         onClick={handleLinkClick}
