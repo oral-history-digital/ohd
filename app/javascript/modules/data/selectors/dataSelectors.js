@@ -132,6 +132,13 @@ export const getCurrentProject = createSelector(
     }
 );
 
+export const getOHDProject = createSelector(
+    [getProjects],
+    (projects) => {
+        return Object.values(projects).find(project => project.identifier === 'ohd');
+    }
+);
+
 export const getCurrentInterview = createSelector(
     [getInterviews, getArchiveId],
     (interviews, archiveId) => {

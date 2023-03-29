@@ -7,17 +7,19 @@ import { useI18n } from 'modules/i18n';
 import findExternalLink from '../findExternalLink';
 
 export default function RegisterForm({
-    projectId,
-    project,
+    ohd,
     countryKeys,
     submitRegister,
+    onSubmit,
+    onCancel,
+    registrationStatus,
 }) {
 
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const conditionsLink = findExternalLink(project, 'conditions');
-    const privacyLink = findExternalLink(project, 'privacy_protection');
+    const conditionsLink = findExternalLink(ohd, 'conditions');
+    const privacyLink = findExternalLink(ohd, 'privacy_protection');
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -29,30 +31,16 @@ export default function RegisterForm({
                 .then(res => res.json())
                 .then(json => setEmailCheckResponse(json));
         }
-    }
+    };
+
+    const [password, setPassword] = useState(null);
+
+    const handlePasswordChange = (name, value, data) => {
+        setPassword(value);
+    };
 
     const formElements = () => {
-        let firstElements = [
-            {
-                attribute: 'pre_register_location',
-                value: location.href,
-                hidden: true,
-            },
-            {
-                elementType: 'input',
-                attribute: 'email',
-                type: 'email',
-                handlechangecallback: handleEmailChange,
-                validate: function(v){return emailRegex.test(v)},
-                help: emailCheckResponse.email_taken && (
-                    <p className='notifications'>
-                        {emailCheckResponse.msg}
-                    </p>
-                ),
-                otherError: emailCheckResponse.email_taken,
-                validate: function(v, t){return (emailRegex.test(v) && !t)},
-                //individualErrorMsg: emailCheckResponse.msg || t('activerecord.errors.default.email_input'),
-            },
+        const nameElements = [
             {
                 elementType: 'select',
                 attribute: 'appellation',
@@ -72,72 +60,71 @@ export default function RegisterForm({
                 type: 'text',
                 validate: function(v){return v && v.length > 1}
             },
-            {
-                elementType: 'select',
-                attribute: 'gender',
-                values: ['female', 'male', 'diverse', 'not_specified'],
-                keepOrder: true,
-                withEmpty: true,
-                validate: function(v){return v !== ''}
-            },
-            {
-                elementType: 'select',
-                attribute: 'job_description',
-                values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
-                keepOrder: true,
-                withEmpty: true,
-            },
-            {
-                elementType: 'select',
-                attribute: 'research_intentions',
-                values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
-                keepOrder: true,
-                withEmpty: true,
-            },
-            {
-                elementType: 'textarea',
-                attribute: 'specification',
-                validate: function(v){return v && v.length > 10}
-            },
-            {
-                elementType: 'input',
-                attribute: 'organization',
-                type: 'text',
-            },
         ];
 
-        let addressElements = [
+        const addressElements = [
             {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: projectId !== 'mog' && function(v){return v && v.length > 1}
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: projectId !== 'mog' && function(v){return v && v.length > 1}
+                validate: function(v){return v && v.length > 1}
             }
         ];
 
-        let countrySelect = [
+        const countrySelect = [
             {
                 elementType: 'select',
                 attribute: 'country',
                 optionsScope: 'countries',
                 values: countryKeys && countryKeys[locale],
                 withEmpty: true,
-                validate: projectId !== 'mog' && function(v){return v !== ''}
+                validate: function(v){return v && v.length > 1}
             },
         ];
 
-        let newsletterElement = [
+        const emailPasswordElements = [
+            {
+                elementType: 'input',
+                attribute: 'email',
+                type: 'email',
+                handlechangecallback: handleEmailChange,
+                validate: function(v){return emailRegex.test(v)},
+                help: emailCheckResponse.email_taken && (
+                    <p className='notifications'>
+                        {emailCheckResponse.msg}
+                    </p>
+                ),
+                otherError: emailCheckResponse.email_taken,
+                validate: function(v, t){return (emailRegex.test(v) && !t)},
+            },
+            {
+                elementType: 'input',
+                attribute: 'password',
+                type: 'password',
+                validate: function(v){return v && v.length > 6},
+                handlechangecallback: handlePasswordChange,
+            },
+            {
+                elementType: 'input',
+                attribute: 'password_confirmation',
+                type: 'password',
+                validate: function(v){return v && v.length > 6 && v === password},
+            },
+        ];
+
+        const newsletterElement = [
             {
                 elementType: 'input',
                 attribute: 'receive_newsletter',
@@ -146,7 +133,7 @@ export default function RegisterForm({
             },
         ];
 
-        let otherElements = [
+        const tosPrivacyElements = [
             {
                 elementType: 'input',
                 attribute: 'tos_agreement',
@@ -184,19 +171,49 @@ export default function RegisterForm({
             },
         ];
 
-        if (locale === 'de') {
-            return firstElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(otherElements);
-        } else {
-            return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
-        }
+        //if (locale === 'de') {
+            //return nameElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(tosPrivacyElements);
+        //} else {
+            return nameElements.concat(addressElements).concat(countrySelect).concat(emailPasswordElements).concat(tosPrivacyElements);
+        //}
     }
 
     return (
-        <Form
-            scope='user'
-            onSubmit={function(params){submitRegister(`${pathBase}/users/sign_up`, params)}}
-            submitText='user.register'
-            elements={formElements()}
-        />
+        <>
+            {
+                registrationStatus ? (
+                    <p className='error'>
+                        className='status'
+                        dangerouslySetInnerHTML={{__html: registrationStatus}}
+                    >
+                    </p>
+                ) : (
+                    <div>
+                        <p>
+                            {t('user.registration_text_one')}
+                            <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
+                                {t('user.tos_agreement')}
+                            </a>
+                            {t('user.registration_text_two')}
+                            <a href={privacyLink[locale]} target="_blank" title="" rel="noreferrer">
+                                {t('user.priv_agreement_alias')}
+                            </a>
+                            {t('user.registration_text_three')}
+                        </p>
+                    </div>
+                )
+            }
+            <Form
+                scope='user'
+                onSubmit={function(params){submitRegister(`${pathBase}/users`, params); onSubmit();}}
+                submitText='user.register'
+                elements={formElements()}
+                values={{
+                    default_locale: locale,
+                    pre_register_location: location.href,
+                }}
+                onCancel={onCancel}
+            />
+        </>
     );
 }

@@ -1,23 +1,11 @@
-class ConfirmationsController < ApplicationController
-  #include Devise::Controllers::InternalHelpers
+class ConfirmationsController < Devise::ConfirmationsController
+  skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
-  # GET /resource/confirmation?confirmation_token=abcdef
-  def show
-    self.resource = resource_class.confirm_by_token(params[:confirmation_token])
-    yield resource if block_given?
+  protected
 
-    if resource.errors.empty?
-      set_flash_message :notice, :confirmed
-      sign_in(resource_name, resource)
-      change_password_token = resource.send(:generate_reset_password_token)
-      resource.save
-      resource.confirm!
-      redirect_to edit_user_password_url(:reset_password_token => change_password_token)
-    else
-      puts resource.errors.full_messages
-      flash[:alert] = resource.errors.full_messages
-      redirect_to login_url
-    end
-  end
+  def after_confirmation_path_for(resource_name, resource)
+    resource.pre_register_location
+  end 
 
 end

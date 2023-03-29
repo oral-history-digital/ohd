@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  respond_to :html, :json
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
   #before_action :doorkeeper_authorize!
   before_action :authenticate_user!
   before_action :user_by_token
@@ -13,7 +16,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: :index, unless: -> { params[:controller] == "devise/registrations" }
   after_action :verify_policy_scoped, only: :index
 
   def pundit_user
@@ -25,8 +28,6 @@ class ApplicationController < ActionController::Base
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || (current_project ? current_project.default_locale : :de)).to_sym
-    #valid_locales = current_project.available_locales if valid_locales.empty?
-    #locale = I18n.default_locale unless valid_locales.include?(locale)
     I18n.locale = locale
   end
 
@@ -78,7 +79,7 @@ class ApplicationController < ActionController::Base
       },
       data: {
         statuses: {
-          users: {current: 'fetched'},
+          users: {current: 'fetched', resultPagesCount: 1},
           interviews: {},
           random_featured_interviews: {},
           segments: {},
@@ -93,7 +94,6 @@ class ApplicationController < ActionController::Base
           biographical_entries: {},
           speaker_designations: {},
           mark_text: {},
-          users: {resultPagesCount: 1},
           roles: {},
           permissions: {},
           tasks: {},
@@ -173,6 +173,27 @@ class ApplicationController < ActionController::Base
     cache_key = ""
     params.reject{|k,v| k == 'controller' || k == 'action'}.each{|k,v| cache_key << "#{k}-#{v}-"}
     cache_key
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(
+      :appellation,
+      :first_name,
+      :last_name,
+      :email,
+      :street,
+      :zipcode,
+      :city,
+      :country,
+      :tos_agreement,
+      :priv_agreement,
+      :default_locale,
+      :pre_register_location,
+      :password,
+      :password_confirmation,
+    )}
   end
 
   private
