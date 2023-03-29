@@ -16,7 +16,7 @@ class UserSerializer < ApplicationSerializer
     :gender,
     :job_description,
     :research_intentions,
-    :comments,
+    :specification,
     :organization,
     :homepage,
     :street,
