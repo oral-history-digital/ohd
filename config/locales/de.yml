@@ -1143,7 +1143,7 @@ de:
         gender: Geschlecht
         job_description: Beruf
         research_intentions: Rechercheanliegen
-        comments: Präzisierung des Anliegens
+        specification: Präzisierung des Anliegens
         organization: Institution
         homepage: Homepage der Institution
         address: Adresse
