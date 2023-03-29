@@ -1105,7 +1105,7 @@ es:
         gender: Género
         job_description: Profesión
         research_intentions: Tema de investigación
-        comments: Detalle del tema de investigación
+        specification: Detalle del tema de investigación
         organization: Institución
         homepage: Página web de la institución
         address: Dirección
