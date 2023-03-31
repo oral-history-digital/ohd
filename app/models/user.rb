@@ -40,8 +40,6 @@ class User < ApplicationRecord
   has_many :projects,
     through: :user_projects
 
-  #validates_uniqueness_of :login
-  #validates_presence_of :login
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
