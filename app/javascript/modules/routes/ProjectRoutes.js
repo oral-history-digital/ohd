@@ -37,8 +37,6 @@ import {
 import {
     AccountPage,
     OrderNewPasswordContainer,
-    RegisterContainer,
-    ActivateAccount
 } from 'modules/user';
 import { UsersAdminPage } from 'modules/admin';
 
@@ -71,8 +69,6 @@ export default function ProjectRoutes() {
                 <Route path="users/current" element={<AccountPage />} />
                 <Route path="users/password/new" element={<OrderNewPasswordContainer />} />
                 <Route path="users/password/edit" element={<ActivateAccount />} />
-                <Route path="users/:resetPasswordToken/activate" element={<ActivateAccount />} />
-                <Route path="users/new" element={<RegisterContainer />} />
                 <Route path="users" element={<UsersAdminPage />} />
                 <Route path="uploads/new" element={<UploadsContainer />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />

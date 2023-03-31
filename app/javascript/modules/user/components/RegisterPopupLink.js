@@ -2,14 +2,10 @@ import { useSelector } from 'react-redux';
 
 import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
-import { getRegistrationStatus } from '../selectors';
-import { getOHDProject } from 'modules/data';
-import RegisterFormContainer from './RegisterFormContainer';
-import findExternalLink from '../findExternalLink';
 
 export default function RegisterPopupLink ({
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
 
     return (
         <>
