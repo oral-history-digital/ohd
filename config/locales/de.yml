@@ -729,10 +729,10 @@ de:
     tos_agreement: Nutzungsbedingungen
     priv_agreement: Hinweise zum Datenschutz
     notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
-    notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen zu.
+    notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen der Plattform Oral-History.Digital zu. (Bitte zustimmen)
     priv_agreement_alias: Datenschutzbestimmungen
-    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis zu.
-    register: Registrierung senden
+    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis der Freien Universität Berlin zu. (Bitte zustimmen)
+    register: Registrierung absenden
     appellation:
       dr: Dr.
       prof: Prof.
