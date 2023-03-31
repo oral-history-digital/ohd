@@ -184,7 +184,7 @@ de:
   notice: Merken
   forget_password: Passwort wiederherstellen
   account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
-    6 Zeichen lang sein
+    7 Zeichen lang sein
   submit: Absenden
   platform: Eine Plattform der
   cooperation: in Kooperation mit
@@ -720,13 +720,12 @@ de:
     change_to_edit_view: Redaktionsansicht
   user:
     registration: Registrierung
-    registration_text_one: 'Um die Interviews im Archiv ansehen zu können ist eine
-      Registrierung notwendig. Die '
-    registration_text_two: " erklären, für wen und für welche Zwecke das Archiv nutzbar
-      ist. Die "
-    registration_text_three: " erläutern, warum wir welche Daten verarbeiten und wofür
-      wir sie nutzen. Nachdem Sie Ihre Registrierung bestätigt haben, überprüft das Projektteam die Angaben Ihrer Registrierung inhaltlich.
-      Binnen zwei Werktagen werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert."
+    registration_text_one: 'Bitte registrieren Sie sich, um auf die Interviews zugreifen zu können. Die '
+    registration_text_one_ohd: 'Bitte registrieren Sie sich, um die Plattform nutzen zu können. Die '
+    registration_text_two: ' erklären, für wen und für welche Zwecke Oral.History-Digital nutzbar ist. Die '
+    registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Aus 
+      Datenschutzgründen werden Sie per E-Mail gebeten Ihre Registrierung zu bestätigen.'
+    registration_text_four: 'Danach können Sie die Freischaltung für verschiedene in der Plattform enthaltene Interview-Archive beantragen.'
     tos_agreement: Nutzungsbedingungen
     priv_agreement: Hinweise zum Datenschutz
     notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
