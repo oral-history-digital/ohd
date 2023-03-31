@@ -179,7 +179,7 @@ en:
   notice: Save
   forget_password: Recover password
   account_activation_errors: Password and password confirmation must be the same and
-    at least 6 characters long.
+    at least 7 characters long.
   submit: Submit
   platform: platform
   cooperation: In cooperation with

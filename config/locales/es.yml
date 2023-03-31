@@ -183,7 +183,7 @@ es:
   user_name: Usuaria/o
   notice: Recordar
   forget_password: Recuperar contraseña
-  account_activation_errors: La contraseña y la confirmación de la contraseña deben ser iguales y tener un mínimo de 6 carácteres
+  account_activation_errors: La contraseña y la confirmación de la contraseña deben ser iguales y tener un mínimo de 7 carácteres
   submit: Enviar
   platform: Una plataforma de
   cooperation: en cooperación con
