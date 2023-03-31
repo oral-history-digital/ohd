@@ -7,7 +7,8 @@ import { useI18n } from 'modules/i18n';
 import findExternalLink from '../findExternalLink';
 
 export default function RegisterForm({
-    ohd,
+    project,
+    ohdProject,
     countryKeys,
     submitRegister,
     onSubmit,
@@ -18,8 +19,8 @@ export default function RegisterForm({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const conditionsLink = findExternalLink(ohd, 'conditions');
-    const privacyLink = findExternalLink(ohd, 'privacy_protection');
+    const conditionsLink = findExternalLink(ohdProject, 'conditions');
+    const privacyLink = findExternalLink(ohdProject, 'privacy_protection');
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -171,11 +172,7 @@ export default function RegisterForm({
             },
         ];
 
-        //if (locale === 'de') {
-            //return nameElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(tosPrivacyElements);
-        //} else {
-            return nameElements.concat(addressElements).concat(countrySelect).concat(emailPasswordElements).concat(tosPrivacyElements);
-        //}
+        return nameElements.concat(addressElements).concat(countrySelect).concat(emailPasswordElements).concat(tosPrivacyElements);
     }
 
     return (
@@ -190,7 +187,7 @@ export default function RegisterForm({
                 ) : (
                     <div>
                         <p>
-                            {t('user.registration_text_one')}
+                            { project.is_ohd ? t('user.registration_text_one_ohd') : t('user.registration_text_one')}
                             <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
                                 {t('user.tos_agreement')}
                             </a>
@@ -199,6 +196,7 @@ export default function RegisterForm({
                                 {t('user.priv_agreement_alias')}
                             </a>
                             {t('user.registration_text_three')}
+                            { project.is_ohd ? t('user.registration_text_four') : ''}
                         </p>
                     </div>
                 )
