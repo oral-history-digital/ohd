@@ -37,6 +37,7 @@ import {
 import {
     AccountPage,
     OrderNewPasswordContainer,
+    ActivateAccount,
 } from 'modules/user';
 import { UsersAdminPage } from 'modules/admin';
 
