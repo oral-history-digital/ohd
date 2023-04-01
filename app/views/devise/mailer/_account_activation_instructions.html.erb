@@ -39,17 +39,12 @@
   <p>Με εκτίμηση,</p>
   <p>Η ομάδα του προγράμματος "<%= @project_name %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r <%= @resource.display_name %>,</p>
-  <p>Sie haben sich für das <%= I18n.backend.translate(:de, @application_type) %> "<%= @project_name %>" registriert.</p>
-  <p>Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:</p>
+  <p>Guten Tag <%= @resource.display_name %>,</p>
+  <p>Sie haben sich für die Plattform Oral-History.Digital registriert.</p> 
+  <p>Bitte bestätigen Sie Ihre Registrierung.</p>
   <p><%= link_to 'Registrierung bestätigen', @url %></p>
-  <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.</p>
-  <% if false &&  @resource.projects.count == 1 %>
-    <p>Mit dieser Registrierung sind Sie zugleich im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" registriert. Dort können Sie für weitere Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.</p>
-  <% elsif false %>
-    <p>Nach erfolgter Bestätigung können Sie im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" recherchieren und für einzelne Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.</p>
-  <% end %>  
-  <p>Sollten Sie sich nicht für das <%= I18n.backend.translate(:de, @application_type) %> registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
-  <p>Mit freundlichen Grüßen,</p>
-  <p>Das Projekt-Team "<%= @project_name %>"</p>
+  <p>Sollten Sie sich nicht für die Plattform Oral-History.Digital registriert haben, können Sie diese E-Mail ignorieren.
+Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
+  <p>Mit freundlichen Grüßen</p>
+  <p>Oral-History.Digital</p>
 <% end -%>

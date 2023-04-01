@@ -68,25 +68,18 @@ Con saludos cordiales,
 
 El equipo del proyecto "<%= @project_name %>"
 <% else -%>
-Sehr geehrte/r <%= @resource.display_name %>,
+Guten Tag <%= @resource.display_name %>,
 
-Sie haben sich für das <%= I18n.backend.translate(:de, @application_type) %> "<%= @project_name %>" registriert.
+Sie haben sich für die Plattform Oral-History.Digital registriert.
 
-Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:
+Bitte bestätigen Sie Ihre Registrierung.
 
 <%= @url %>
 
-Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.
+Sollten Sie sich nicht für die Plattform Oral-History.Digital registriert haben, können Sie diese E-Mail ignorieren.
+Ihre Daten werden automatisch nach 14 Tagen gelöscht.
 
-<% if false && @resource.projects.count == 1 %>
-  Mit dieser Registrierung sind Sie zugleich im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" registriert. Dort können Sie für weitere Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.
-<% elsif false %>
-  Nach erfolgter Bestätigung können Sie im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" recherchieren und für einzelne Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.
-<% end %>  
+Mit freundlichen Grüßen
 
-Sollten Sie sich nicht für das <%= I18n.backend.translate(:de, @application_type) %> registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.
-
-Mit freundlichen Grüßen,
-
-Das Projekt-Team "<%= @project_name %>"
+Oral-History.Digital
 <% end -%>
