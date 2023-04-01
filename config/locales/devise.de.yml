@@ -27,7 +27,7 @@ de:
       unconfirmed: Sie müssen Ihren Account bestätigen, bevor Sie fortfahren können.
     mailer:
       confirmation_instructions:
-        subject: Interview-Archiv – Schritte für die Freischaltung Ihres Zugangs
+        subject: Bestätigung Ihrer Registrierung für Oral-History.Digital
       project_access_granted:
         subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
       project_access_rejected:
