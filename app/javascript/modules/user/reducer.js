@@ -45,12 +45,12 @@ const user = (state = {isLoggedIn: false}, action) => {
             })
         case REGISTER:
             return Object.assign({}, state, {
-                isRegistering: true
+                isRegistering: true,
             })
         case REGISTERED:
             return Object.assign({}, state, {
                 isRegistering: false,
-                registrationStatus: action.registrationStatus
+                registered: true,
             })
         case CHANGE_PASSWORD:
             return Object.assign({}, state, {

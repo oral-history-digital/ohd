@@ -57,7 +57,6 @@ const register = () => ({
 
 const registered = (json) => ({
     type: REGISTERED,
-    registrationStatus: json.registration_status
 })
 
 export function submitRegister(url, params) {
