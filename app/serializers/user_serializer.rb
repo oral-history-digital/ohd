@@ -76,7 +76,7 @@ class UserSerializer < ApplicationSerializer
   end
 
   def confirmed_at
-    object.confirmed_at && object.confirmed_at.strftime('%d.%m.%Y %H:%M Uhr')
+    object.confirmed_at && object.confirmed_at.to_f * 1000
   end
 
   def processed_at
