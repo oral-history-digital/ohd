@@ -14,6 +14,7 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
+import { AfterRegisterPopup } from 'modules/user';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -97,6 +98,7 @@ export default function Layout({
                 'is-sticky': scrollPositionBelowThreshold,
             })}>
                 <FetchAccountContainer />
+                <AfterRegisterPopup />
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}

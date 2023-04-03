@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaTimes, FaEllipsisH } from 'react-icons/fa';
 import classNames from 'classnames';
@@ -13,8 +13,11 @@ export default function Modal({
     trigger = <FaEllipsisH className="Icon Icon--primary" />,
     disabled = false,
     children,
+    showDialogInitially = false,
+    hideButton = false,
 }) {
     const [showDialog, setShowDialog] = useState(false);
+    //const [showDialog, setShowDialog] = useState(showDialogInitially);
     const open = () => setShowDialog(true);
     const close = () => setShowDialog(false);
 
@@ -22,6 +25,15 @@ export default function Modal({
     const handleClick = (event) => {
         event.stopPropagation();
     };
+
+    debugger;
+    //useEffect(() => {
+    //debugger;
+        //if (showDialogInitially) {
+            //open();
+            ////setShowDialog(true);
+        //}
+    //}, [showDialogInitially]);
 
     const dismiss = (event) => {
         // Close if escape key was pressed, not if user clicked outside.
@@ -32,15 +44,17 @@ export default function Modal({
 
     return (
         <>
-            <button
-                type="button"
-                className={classNames('Modal-trigger', triggerClassName)}
-                title={title}
-                onClick={open}
-                disabled={disabled}
-            >
-                {trigger}
-            </button>
+            { !hideButton &&
+                <button
+                    type="button"
+                    className={classNames('Modal-trigger', triggerClassName)}
+                    title={title}
+                    onClick={open}
+                    disabled={disabled}
+                >
+                    {trigger}
+                </button>
+            }
 
             <Dialog
                 className={classNames('Modal-dialog', className)}

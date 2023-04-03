@@ -12,3 +12,4 @@ export { default as AccountContainer } from './components/AccountContainer';
 export { default as OrderNewPasswordContainer } from './components/OrderNewPasswordContainer';
 export { default as ActivateAccount } from './components/ActivateAccount';
 export { default as RedirectOnLogin } from './components/RedirectOnLogin';
+export {default as AfterRegisterPopup } from './components/AfterRegisterPopup';
