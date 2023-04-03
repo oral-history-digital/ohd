@@ -24,4 +24,6 @@ export const getLoginError = state => getAccount(state).error;
 
 export const getRegistrationStatus = state => getAccount(state).registrationStatus;
 
+export const getIsRegistered = state => getAccount(state).registered;
+
 export const getOrderNewPasswordStatus = state => getAccount(state).orderNewPasswordStatus;
