@@ -12,7 +12,7 @@ $help-text-background-color: #e6ffe6;
   display: flex;
   margin-left: auto;
   max-width: 30 * $base-unit;
-  padding: $base-unit / 2;
+  padding: $base-unit * 0.5;
 }
 
 .HelpText-icon {

@@ -29,7 +29,7 @@
   align-items: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
-  margin: $base-unit 0 0 ($base-unit / 2);
+  margin: $base-unit 0 0 ($base-unit * 0.5);
   margin-top: $base-unit;
 
   @include screen-m {
