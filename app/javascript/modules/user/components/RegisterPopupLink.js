@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 
 import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
+import RegisterFormContainer from './RegisterFormContainer';
 
 export default function RegisterPopupLink ({
 }) {
