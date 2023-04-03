@@ -40,7 +40,7 @@
   color: var(--primary-color) !important;
   font-size: 1rem !important;
   line-height: $base-unit !important;
-  margin: ($base-unit / 2) 0 0 0 !important;
+  margin: ($base-unit * 0.5) 0 0 0 !important;
 }
 
 .InterviewCard-link:hover .InterviewCard-title,

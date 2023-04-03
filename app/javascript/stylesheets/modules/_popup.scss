@@ -27,7 +27,7 @@
   cursor: pointer;
   line-height: $base-unit;
   margin-left: 0;
-  padding: $base-unit / 2;
+  padding: $base-unit * 0.5;
   text-align: center;
   transition: background-color $transition-duration;
   width: 30%;

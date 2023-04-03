@@ -32,7 +32,7 @@ $ui-background-color: $gray-warm-dark;
 $sidebar-background-color: rgba(232,232,228, 0.95);
 
 $focus-color: var(--secondary-color);// #6eb0f1;
-$focus-radius: $base-unit / 8;
+$focus-radius: $base-unit * 0.125;
 
 
 // z-indexes

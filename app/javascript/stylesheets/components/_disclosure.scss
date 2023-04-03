@@ -28,13 +28,13 @@
   display: inline-block;
   font-size: 1rem !important;
   line-height: $base-unit;
-  margin: 0 0 0 ($base-unit / 3) !important;
+  margin: 0 0 0 ($base-unit * 0.333333) !important;
 }
 
 .Disclosure-content {
   display: none;
   margin-left: $base-unit;
-  margin-top: $base-unit / 2;
+  margin-top: $base-unit * 0.5;
 }
 
 .Disclosure-content.is-expanded {

@@ -10,7 +10,7 @@
 }
 
 .SearchResult:not(:first-child) {
-  margin-top: $base-unit / 2;
+  margin-top: $base-unit * 0.5;
 }
 
 .SearchResult:focus {
