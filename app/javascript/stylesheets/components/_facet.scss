@@ -8,7 +8,7 @@
   color: var(--primary-color) !important;
   display: flex;
   justify-content: space-between;
-  padding: ($base-unit / 4) 0;
+  padding: ($base-unit * 0.25) 0;
   text-align: left;
   text-transform: uppercase !important;
   width: 100%;
@@ -30,7 +30,7 @@
 .Facet-panel {
   display: none;
   line-height: $base-unit;
-  padding-bottom: $base-unit / 2;
+  padding-bottom: $base-unit * 0.5;
 }
 
 .Facet.is-open .Facet-panel {
@@ -47,5 +47,5 @@
 }
 
 .Facet-count {
-  margin-left: $base-unit / 4;
+  margin-left: $base-unit * 0.25;
 }

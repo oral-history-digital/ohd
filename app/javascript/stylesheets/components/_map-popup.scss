@@ -16,7 +16,7 @@
   font-size: 1rem;
   font-weight: bold;
   line-height: $base-unit;
-  margin: 0 0 ($base-unit / 2);
+  margin: 0 0 ($base-unit * 0.5);
 }
 
 .MapPopup-subHeading {
@@ -34,7 +34,7 @@
 
 .MapPopup-list {
   list-style-type: none;
-  margin: 0 0 ($base-unit / 2);
+  margin: 0 0 ($base-unit * 0.5);
   padding: 0;
 }
 

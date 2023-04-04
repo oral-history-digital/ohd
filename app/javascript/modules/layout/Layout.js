@@ -40,7 +40,7 @@ export default function Layout({
     });
 
     function fitLocale() {
-        const pathBasePart = /^(?:\/[a-z]{2,4})?\/([a-z]{2})(?:\/|$)/;
+        const pathBasePart = /^(?:\/[\-a-z0-9]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
 
         const found = location.pathname.match(pathBasePart);
         const pathLocale = Array.isArray(found) ? found[1] : null;

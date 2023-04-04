@@ -18,4 +18,8 @@ class RegistryName < ApplicationRecord
           joins(:translations).select("registry_name_translations.descriptor AS name, registry_entry_id")
   }
 
+  def name_position=(val)
+    self[:name_position] = val.to_i
+  end
+
 end

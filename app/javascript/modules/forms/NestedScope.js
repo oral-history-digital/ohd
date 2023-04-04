@@ -21,7 +21,7 @@ export default function NestedScope({
     const { t } = useI18n();
     const elements = (parent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
-    const [editing, setEditing] = useState(elements.length === 0);
+    const [editing, setEditing] = useState((newElements.length + elements.length) === 0);
 
     const cancel = () => setEditing(false);
 
@@ -39,7 +39,6 @@ export default function NestedScope({
                         formComponent={formComponent}
                         formProps={formProps}
                         scope={scope}
-                        showForm={index === 0 && newElements.length === 0 && !editing}
                         elementRepresentation={elementRepresentation}
                     />
                 )
@@ -67,10 +66,7 @@ export default function NestedScope({
                     onSubmitCallback: setEditing,
                     onCancel: cancel,
                     formClasses: 'nested-form default',
-                }) : null
-            }
-
-            { editing ? null :
+                }) :
                 <button
                     type="button"
                     className="Button Button--transparent Button--icon"
