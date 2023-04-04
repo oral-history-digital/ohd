@@ -13,7 +13,7 @@
 }
 
 .Pagination-page {
-  padding: 0 ($base-unit / 4);
+  padding: 0 ($base-unit * 0.25);
 }
 
 .Pagination-page:disabled {
@@ -29,5 +29,5 @@
   border: 1px solid $ui-background-color;
   font-family: $font-family;
   line-height: $base-unit;
-  padding: 0.1rem ($base-unit / 4);
+  padding: 0.1rem ($base-unit * 0.25);
 }

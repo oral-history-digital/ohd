@@ -1,4 +1,4 @@
-$slider-dot-size: $base-unit / 3;
+$slider-dot-size: $base-unit * 0.333333;
 
 .Slider {
 
@@ -41,7 +41,7 @@ $slider-dot-size: $base-unit / 3;
 
 .Slider-dots > li {
   display: inline-block;
-  margin: 0 ($base-unit / 4);
+  margin: 0 ($base-unit * 0.25);
 }
 
 .Slider-dots > li > button {

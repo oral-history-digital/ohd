@@ -4,15 +4,15 @@
 
 .SegmentPopup-inner {
   border: 2px solid $gray-lighter;
-  padding: $base-unit / 2;
+  padding: $base-unit * 0.5;
   margin-left: auto;
   width: 80%;
 }
 
 .SegmentPopup-glossary {
   border-top: 1px solid $gray-lighter;
-  margin-top: $base-unit / 4;
-  padding-top: $base-unit / 2;
+  margin-top: $base-unit * 0.25;
+  padding-top: $base-unit * 0.5;
   position: relative;
 }
 
@@ -20,7 +20,7 @@
   background-color: $gray-lightest;
   color: $gray-dark;
   position: absolute;
-  top: $base-unit / 2;
+  top: $base-unit * 0.5;
   right: 0;
 }
 
@@ -37,5 +37,5 @@
 
 .SegmentPopup-explanation {
   color: $gray-dark;
-  margin-top: $base-unit / 2;
+  margin-top: $base-unit * 0.5;
 }

@@ -11,10 +11,10 @@
     line-height: $base-unit;
     margin-bottom: 2px;
     outline: none;
-    padding-bottom: $base-unit / 2;
+    padding-bottom: $base-unit * 0.5;
     padding-left: 0;
     padding-right: 15px;
-    padding-top: $base-unit / 2 - 0.0625rem;
+    padding-top: $base-unit * 0.5 - 0.0625rem;
     text-align: left;
     text-transform: uppercase;
     transition: 0.4s;

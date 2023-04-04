@@ -4,7 +4,6 @@ import { Form } from 'modules/forms';
 import { RegistrySearchResultContainer } from 'modules/registry';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import { updateRegistryNameAttributes } from './updateRegistryEntryAttributes';
 
 export default function RegistryNameForm({
     index,
