@@ -10,12 +10,12 @@
 }
 
 .Layout.is-sticky .MediaControls > * {
-  margin-top: $base-unit / 2;
+  margin-top: $base-unit * 0.5;
 }
 
 .MediaControls-tapeSelector,
 .MediaControls-resolutionSelector {
-  margin-right: $base-unit / 2;
+  margin-right: $base-unit * 0.5;
   font-family: FiraSans;
   font-size: 0.75rem;
   outline: none;

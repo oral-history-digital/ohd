@@ -15,8 +15,8 @@
   right: 0;
   top: 0;
   z-index: $z-index-thumbnail-badge;
-  padding: $base-unit / 4;
-  padding-left: $base-unit / 2;
+  padding: $base-unit * 0.25;
+  padding-left: $base-unit * 0.5;
 }
 
 .ThumbnailBadge:focus {
@@ -26,5 +26,5 @@
 .ThumbnailBadge-text {
   font-size: 1rem;
   line-height: $base-unit;
-  margin-left: $base-unit / 4;
+  margin-left: $base-unit * 0.25;
 }
