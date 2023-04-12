@@ -16,7 +16,7 @@ $segment-icon-width: 1.5 * $base-unit;
 }
 
 .Segment:not(:first-of-type) {
-  margin-top: $base-unit / 2;
+  margin-top: $base-unit * 0.5;
 }
 
 .Segment--withSpeaker:not(:first-of-type) {

@@ -8,14 +8,14 @@
 
 .SidebarTabs-tab {
   background-color: $ui-background-color;
-  border-left: ($base-unit / 4) solid $ui-background-color;
+  border-left: ($base-unit * 0.25) solid $ui-background-color;
   border-bottom: 0 !important;
   box-shadow: 0 -1px 1px $sidebar-background-color;  /* 1 */
   color: white;
   font-size: 1.2rem;
   line-height: $base-unit * 1.5;
   outline: none;
-  padding: ($base-unit / 2) $base-unit ($base-unit / 2) ($base-unit * 0.75);
+  padding: ($base-unit * 0.5) $base-unit ($base-unit * 0.5) ($base-unit * 0.75);
   text-align: left;
   transition-duration: $transition-duration;
   transition-property: background-color, border-left-color;
@@ -55,5 +55,5 @@
   font-size: 1.25rem;
   line-height: $base-unit;
   margin: 0;
-  padding: ($base-unit / 2) 20px;
+  padding: ($base-unit * 0.5) 20px;
 }

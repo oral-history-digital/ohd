@@ -10,7 +10,7 @@
   background-color: $gray-lighter;
   border-bottom-color: $gray-lighter;
   border-bottom-style: solid;
-  border-bottom-width: ($base-unit) / 8 !important;
+  border-bottom-width: $base-unit * 0.125 !important;
   line-height: $base-unit;
   margin-right: 1px;
   padding: 0 $base-unit;

@@ -58,7 +58,7 @@
 
 .CatalogTable-header,
 .CatalogTable-cell {
-  padding: ($base-unit / 4) ($base-unit / 2);
+  padding: ($base-unit * 0.25) ($base-unit * 0.5);
 }
 
 .CatalogTable-cell--number {
