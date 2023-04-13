@@ -15,6 +15,7 @@ import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
 import { AfterRegisterPopup } from 'modules/user';
+import { AfterConfirmationPopup } from 'modules/user';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -99,6 +100,7 @@ export default function Layout({
             })}>
                 <FetchAccountContainer />
                 <AfterRegisterPopup />
+                <AfterConfirmationPopup />
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}
