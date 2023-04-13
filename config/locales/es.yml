@@ -702,7 +702,6 @@ es:
         recibirá sus datos de acceso o una respuesta."
     tos_agreement: Términos de uso
     priv_agreement: Indicaciones sobre la política de privacidad
-    notes_on_receive_newsletter: Sí, me gustaría recibir el boletín del proyecto.
     notes_on_tos_agreement: Acepto los términos de uso.
     priv_agreement_alias: Política de privacidad
     notes_on_priv_agreement: Acepto la política de privacidad.
@@ -715,6 +714,7 @@ es:
       male: masculino
       diverse: diverso
       not_specified: no especifica
+  user_project:
     job_description:
       researcher: Docente/Investigador/a
       filmmaker: Director/a de cine
@@ -736,6 +736,7 @@ es:
       university_teaching: Enseñanza universitaria
       scientific_paper: Públicación científica
       other: Otros
+    notes_on_receive_newsletter: Sí, me gustaría recibir el boletín del proyecto %{project}.
   gender:
     female: feminino
     male: masculino
@@ -1103,17 +1104,12 @@ es:
         first_name: Nombre
         last_name: Apellido
         gender: Género
-        job_description: Profesión
-        research_intentions: Tema de investigación
-        specification: Detalle del tema de investigación
-        organization: Institución
         homepage: Página web de la institución
         address: Dirección
         street: Dirección
         zipcode: Código postal
         city: Lugar
         country: País
-        receive_newsletter: Boletín
         tos_agreement: Términos de uso
         priv_agreement: Indicaciones sobre la política de privacidad
         register: Enviar registro
@@ -1123,6 +1119,11 @@ es:
       user_project:
         workflow_state: Estado
         admin_comments: Comentario
+        job_description: Profesión
+        research_intentions: Tema de investigación
+        specification: Detalle del tema de investigación
+        organization: Institución
+        receive_newsletter: Boletín
       user_role:
         role_id: Rolle
       role:

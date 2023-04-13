@@ -2,11 +2,8 @@ class UserProjectsController < ApplicationController
 
   def create
     authorize UserProject
-    @user_project = UserProject.new user_project_params
-    @user_project.user_id = current_user.id
-    @user_project.save
+    @user_project = UserProject.create user_project_params
     @user_project.grant_project_access_instantly! if current_project.grant_project_access_instantly?
-    current_user.touch
 
     respond_to do |format|
       format.json do
@@ -22,10 +19,9 @@ class UserProjectsController < ApplicationController
   def update
     @user_project = UserProject.find params[:id]
     authorize @user_project
-    # workflow gem uses update_column which does not update updated_at!
-    @user_project.updated_at = DateTime.now
     @user_project.update user_project_params
-    @user_project.user.touch
+    # workflow gem uses update_column which does not update updated_at!
+    @user_project.touch
 
     respond_to do |format|
       format.json do
@@ -40,8 +36,15 @@ class UserProjectsController < ApplicationController
     params.require(:user_project).
       permit(
         :project_id,
+        :user_id,
         :workflow_state,
-        :admin_comments
+        :admin_comments,
+        :tos_agreement,
+        :receive_newsletter,
+        :job_description,
+        :research_intentions,
+        :specification,
+        :organization,
     )
   end
 end

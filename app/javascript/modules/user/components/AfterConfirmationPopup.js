@@ -19,16 +19,15 @@ export default function AfterConfirmationPopup ({
     return (
         <Modal
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-            trigger={t('user.registration')}
             showDialogInitially={recentlyConfirmed}
             hideButton={true}
         >
-            close => (
+            { close => (
                 <RequestProjectAccessFormContainer
                     onSubmit={close}
                     onCancel={close}
                 />
-            )
+            )}
         </Modal>
     )
 }

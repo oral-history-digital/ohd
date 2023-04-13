@@ -711,8 +711,6 @@ el:
       Θα σας πληροφορήσουμε για την ενεργοποίηση του λογαριασμού σας εντός δύο εώς τριών ημερών."
     tos_agreement: Προϋποθέσεις χρήσης
     priv_agreement: Υποδείξεις για την προστασία δεδομένων
-    notes_on_receive_newsletter: Θα ήθελα να εγγραφώ και να λαμβάνω το newsletter
-      του προγράμματος "Μνήμες από την Κατοχή στην Ελλάδα".
     notes_on_tos_agreement: Συμφωνώ με τις προϋποθέσεις χρήσης
     priv_agreement_alias: προσωπικών δεδομένων
     notes_on_priv_agreement: Συμφωνώ με την προστασία δεδομένων
@@ -725,6 +723,7 @@ el:
       male: άρρεν
       diverse: Άλλο
       not_specified: Καμία καταχώρηση
+  user_project:
     job_description:
       researcher: Λέκτορας/ ερευνητής
       filmmaker: Σκηνοθέτης/τρια, δημοσιογράφος, δάσκαλος/λα
@@ -746,6 +745,8 @@ el:
       university_teaching: Πανεπιστημιακή διδασκαλία
       scientific_paper: Επιστημονικές δημοσιεύσεις
       other: Άλλο
+    notes_on_receive_newsletter: Θα ήθελα να εγγραφώ και να λαμβάνω το newsletter
+      του προγράμματος "Μνήμες από την Κατοχή στην Ελλάδα".
   gender:
     female: θήλυ
     male: άρρεν
@@ -1121,18 +1122,13 @@ el:
         appellation: Προσφώνηση
         first_name: Όνομα
         last_name: Επώνυμο
-        job_description: Επάγγελμα
         gender: Φύλο
-        research_intentions: Ερευνητικά ενδιαφέροντα
-        specification: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
-        organization: Ίδρυμα
         homepage: Ιστοσελίδα ιδρύματος
         address: Διεύθυνση
         street: Οδός
         zipcode: Ταχυδρομικός κώδικας
         city: Τόπος
         country: Χώρα
-        receive_newsletter: Newsletter
         tos_agreement: Προϋποθέσεις χρήσης
         priv_agreement: Υποδείξεις για την προστασία δεδομένων
         register: Αποστολή αιτήματος εγγραφής
@@ -1154,6 +1150,11 @@ el:
       user_project:
         workflow_state: Κατάσταση
         admin_comments: Kommentar
+        job_description: Επάγγελμα
+        research_intentions: Ερευνητικά ενδιαφέροντα
+        specification: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
+        organization: Ίδρυμα
+        receive_newsletter: Newsletter
       user_role:
         role_id: Rolle
       role:

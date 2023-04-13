@@ -5,6 +5,11 @@ class UserProjectSerializer < ApplicationSerializer
     :workflow_state,
     :workflow_states,
     :admin_comments,
+    :receive_newsletter,
+    :job_description,
+    :research_intentions,
+    :specification,
+    :organization,
     :activated_at,
     :processed_at,
     :terminated_at,
@@ -14,4 +19,5 @@ class UserProjectSerializer < ApplicationSerializer
   def activated_at
     object.activated_at && object.activated_at.strftime("%d.%m.%Y %H:%M")
   end
+
 end
