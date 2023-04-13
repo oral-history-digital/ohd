@@ -14,3 +14,4 @@ export { default as ActivateAccount } from './components/ActivateAccount';
 export { default as RedirectOnLogin } from './components/RedirectOnLogin';
 export {default as AfterRegisterPopup } from './components/AfterRegisterPopup';
 export {default as AfterConfirmationPopup } from './components/AfterConfirmationPopup';
+export {default as AfterRequestProjectAccessPopup } from './components/AfterRequestProjectAccessPopup';

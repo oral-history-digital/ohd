@@ -19,7 +19,7 @@ export default function AfterConfirmationPopup ({
     return (
         <Modal
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-            showDialogInitially={recentlyConfirmed}
+            showDialogInitially={true}
             hideButton={true}
         >
             { close => (
