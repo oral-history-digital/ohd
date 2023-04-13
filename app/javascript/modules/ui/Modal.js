@@ -16,8 +16,7 @@ export default function Modal({
     showDialogInitially = false,
     hideButton = false,
 }) {
-    const [showDialog, setShowDialog] = useState(false);
-    //const [showDialog, setShowDialog] = useState(showDialogInitially);
+    const [showDialog, setShowDialog] = useState(showDialogInitially);
     const open = () => setShowDialog(true);
     const close = () => setShowDialog(false);
 
@@ -27,13 +26,11 @@ export default function Modal({
     };
 
     debugger;
-    //useEffect(() => {
-    //debugger;
-        //if (showDialogInitially) {
-            //open();
-            ////setShowDialog(true);
-        //}
-    //}, [showDialogInitially]);
+    useEffect(() => {
+        if (showDialogInitially) {
+            open();
+        }
+    }, [showDialogInitially]);
 
     const dismiss = (event) => {
         // Close if escape key was pressed, not if user clicked outside.

@@ -8,6 +8,7 @@ import RequestProjectAccessForm from './RequestProjectAccessForm';
 const mapStateToProps = state => {
     const project = getCurrentProject(state);
     return {
+        project: project,
         locale: getLocale(state),
         projectId: getProjectId(state),
         translations: getTranslations(state),
