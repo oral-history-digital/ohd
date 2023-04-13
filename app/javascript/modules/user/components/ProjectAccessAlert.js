@@ -18,17 +18,17 @@ export default function ProjectAccessAlert ({
         });
 
     if (unactivatedProject) {
-        return <div className='error'>{`${t('project_access_in_process')}`}</div>
+        return <div className='error'>{`${t('modules.request_project_access.in_process_text')}`}</div>
     } else {
         return (
             <>
                 <p className='error'>
-                    {t( 'request_project_access_explanation')}
+                    {t( 'modules.request_project_access.access_explanation')}
                 </p>
                 <Modal
-                    title={t( 'request_project_access_link')}
+                    title={t( 'modules.request_project_access.access_link')}
                     triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-                    trigger={t( 'request_project_access_link')}
+                    trigger={t( 'modules.request_project_access.access_link')}
                 >
                     {close => (
                         <RequestProjectAccessFormContainer

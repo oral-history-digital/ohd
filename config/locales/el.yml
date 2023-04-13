@@ -48,10 +48,6 @@ el:
     none: keine
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: στο
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
-  project_access_in_process: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
-    Στη συνέχεια θα ενεργοποιηθεί ο λογαριασμός σας και θα αποκτήσετε πρόσβαση στο Αρχείο Προφορικών Μαρτυριών.
   registration_needed: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
@@ -1354,6 +1350,17 @@ el:
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+    request_project_access:
+      title: Antrag auf Freischaltung für die Anwendung %{project}
+      step_two: 'Schritt 2 - '
+      description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      submit: Antrag auf Freischaltung absenden
+      access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      access_link: 'Freischaltung für dieses Archiv beantragen'
+      in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      in_process_text: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
+        Στη συνέχεια θα ενεργοποιηθεί ο λογαριασμός σας και θα αποκτήσετε πρόσβαση στο Αρχείο Προφορικών Μαρτυριών.
     admin:
       person_details:
         contributions:

@@ -49,9 +49,6 @@ de:
     none: keine
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: bei
-  request_project_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für dieses Archiv beantragen'
-  project_access_in_process: Ihre Registrierung wird derzeit inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Erst danach wird Ihr Zugang aktiviert und Sie können auf die Inhalte des Interview-Archivs zugreifen.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -1356,6 +1353,11 @@ de:
       description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       submit: Antrag auf Freischaltung absenden
+      access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      access_link: 'Freischaltung für dieses Archiv beantragen'
+      in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      in_process_text: Ihr Antrag auf Freischaltung wird inhaltlich geprüft, dies kann bis zu zwei Werktage dauern.
+        Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
     admin:
       person_details:
         contributions:

@@ -48,10 +48,6 @@ en:
     none: keine
   in: in
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
-  project_access_in_process: Your registration is currently being reviewed by the project team, this review may take up to two working days.
-    Only then your access will be activated and you can access the contents of the interview archive.
   registration_needed: For reasons of privacy you have to register. After registration
     you have access to all testimonies in full length.
   change_to_bcrypt: We have recently updated the way we store our passwords. Please
@@ -1355,6 +1351,17 @@ en:
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+    request_project_access:
+      title: Antrag auf Freischaltung für die Anwendung %{project}
+      step_two: 'Schritt 2 - '
+      description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      submit: Antrag auf Freischaltung absenden
+      access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      access_link: 'Freischaltung für dieses Archiv beantragen'
+      in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      in_process_text: Your registration is currently being reviewed by the project team, this review may take up to two working days.
+        Only then your access will be activated and you can access the contents of the interview archive.
     admin:
       person_details:
         contributions:
