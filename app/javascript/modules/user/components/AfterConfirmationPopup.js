@@ -10,7 +10,7 @@ export default function AfterConfirmationPopup ({
     const currentProject = useSelector(getCurrentProject);
     const confirmed = currentUser && Date.parse(currentUser.confirmed_at);
 
-    const recentlyConfirmed = currentUser?.confirmed_at + 600000000000 > Date.now() &&
+    const recentlyConfirmed = currentUser?.confirmed_at + 60000 > Date.now() &&
         currentUser?.pre_registration_location === location.href &&
         !currentProject.is_ohd;
 
