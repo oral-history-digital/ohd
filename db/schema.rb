@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_28_135349) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_13_161111) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -928,7 +928,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_28_135349) do
 
   create_table "user_projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
-    t.integer "user_registration_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.datetime "activated_at", precision: nil
@@ -937,6 +936,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_28_135349) do
     t.datetime "processed_at"
     t.datetime "terminated_at"
     t.integer "user_id"
+    t.boolean "tos_agreement", default: false
+    t.boolean "receive_newsletter", default: false
   end
 
   create_table "user_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -984,7 +985,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_28_135349) do
     t.datetime "updated_at", precision: nil
     t.boolean "priv_agreement"
     t.boolean "tos_agreement"
-    t.boolean "receive_newsletter"
     t.string "default_locale"
     t.text "admin_comments", size: :medium
     t.datetime "processed_at", precision: nil

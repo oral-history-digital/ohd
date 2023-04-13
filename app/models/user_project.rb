@@ -61,4 +61,17 @@ class UserProject < ApplicationRecord
     CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project}).deliver_now
   end
 
+  [
+    :job_description,
+    :research_intentions,
+    :specification,
+    :organization,
+  ].each do |attr|
+    define_method(attr) do
+      user.send(attr)
+    end
+    define_method("#{attr}=") do |value|
+      user.send("#{attr}=", value)
+    end
+  end
 end

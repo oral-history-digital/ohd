@@ -709,7 +709,6 @@ en:
       Within two working days you will be informed about the activation of your account for the interview archive."
     tos_agreement: Terms of Use
     priv_agreement: Privacy Policy
-    notes_on_receive_newsletter: Ich möchte den Newsletter abonnieren.
     notes_on_tos_agreement: I agree to the Terms of Use.
     priv_agreement_alias: Privacy Policy
     notes_on_priv_agreement: I agree to the Privacy Policy.
@@ -722,6 +721,7 @@ en:
       male: male
       diverse: diverse
       not_specified: not specified
+  user_project:
     job_description:
       researcher: Researcher
       filmmaker: Filmmaker
@@ -743,6 +743,7 @@ en:
       university_teaching: University teaching
       scientific_paper: Scientific paper
       other: Other
+    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes %{project} abonnieren.
   gender:
     female: female
     male: male
@@ -1119,17 +1120,12 @@ en:
         first_name: First Name
         last_name: Last Name
         gender: Gender
-        job_description: Job Description
-        research_intentions: Research Intentions
-        specification: Comments
-        organization: Organization
         homepage: Homepage
         address: Adresse
         street: Street
         zipcode: Zipcode
         city: City
         country: Country
-        receive_newsletter: Receive Newsletter
         tos_agreement: Tos Agreement
         priv_agreement: Priv Agreement
         register: Register
@@ -1139,6 +1135,11 @@ en:
       user_project:
         workflow_state: Status
         admin_comments: Kommentar
+        job_description: Job Description
+        research_intentions: Research Intentions
+        specification: Comments
+        organization: Organization
+        receive_newsletter: Receive Newsletter
       user_role:
         role_id: Rolle
       role:

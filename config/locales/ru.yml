@@ -756,7 +756,6 @@ ru:
       данных Вы получите ответное письмо или Ваши данные для доступа."
     tos_agreement: Правила пользования сайтом
     priv_agreement: Положения о защите персональных данных
-    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
     notes_on_tos_agreement: Я принимаю Положения о защите персональных данных.
     priv_agreement_alias: Положения о защите персональных данных
     notes_on_priv_agreement: Я принимаю Правила пользования сайтом.
@@ -769,6 +768,7 @@ ru:
       male: мужчина
       diverse: другие
       not_specified: нет данных
+  user_project:
     job_description:
       researcher: Доцент/Научный сотрудник
       filmmaker: Автор фильмов
@@ -790,6 +790,7 @@ ru:
       university_teaching: Университетское преподавание
       scientific_paper: Научная публикация
       other: Прочее
+    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes %{project} abonnieren.
   gender:
     female: женщина
     male: мужчина
@@ -1162,17 +1163,12 @@ ru:
         first_name: Имя
         last_name: Фамилия
         gender: Пол
-        job_description: Профессия
-        research_intentions: Цель изысканий
-        comments: Уточнение цели
-        organization: Учреждение
         homepage: Интернет-страница учреждения
         address: Adresse
         street: Улица
         zipcode: Индекс
         city: Населённый пункт
         country: Страна
-        receive_newsletter: Newsletter
         tos_agreement: Правила пользования сайтом
         priv_agreement: Hinweise zum Datenschutz
         register: Отправить регистрацию
@@ -1183,6 +1179,11 @@ ru:
       user_project:
         workflow_state: Status
         admin_comments: Kommentar
+        job_description: Профессия
+        research_intentions: Цель изысканий
+        specification: Уточнение цели
+        organization: Учреждение
+        receive_newsletter: Newsletter
       user_role:
         role_id: Rolle
       role:

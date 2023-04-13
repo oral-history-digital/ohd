@@ -10,7 +10,6 @@ class UserSerializer < ApplicationSerializer
     :user_id,
     :processed_at,
     :default_locale,
-    :receive_newsletter,
     :priv_agreement,
     :appellation,
     :gender,

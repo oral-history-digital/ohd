@@ -728,7 +728,6 @@ de:
     registration_text_four: 'Danach können Sie die Freischaltung für verschiedene in der Plattform enthaltene Interview-Archive beantragen.'
     tos_agreement: Nutzungsbedingungen
     priv_agreement: Hinweise zum Datenschutz
-    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
     notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen der Plattform Oral-History.Digital zu. (Bitte zustimmen)
     priv_agreement_alias: Datenschutzbestimmungen
     notes_on_priv_agreement: Ich stimme der Datenschutzpraxis der Freien Universität Berlin zu. (Bitte zustimmen)
@@ -741,6 +740,7 @@ de:
       male: männlich
       diverse: divers
       not_specified: keine Angabe
+  user_project:
     job_description:
       researcher: Dozent*in/Forscher*in
       filmmaker: Filmemacher*in
@@ -762,6 +762,7 @@ de:
       university_teaching: universitäre Lehre
       scientific_paper: wissenschaftliche Publikation
       other: Sonstige
+    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes %{project} abonnieren.
   # this is needed for PersonData.js
   gender:
     female: weiblich
@@ -1140,17 +1141,12 @@ de:
         first_name: Vorname
         last_name: Nachname
         gender: Geschlecht
-        job_description: Beruf
-        research_intentions: Rechercheanliegen
-        specification: Präzisierung des Anliegens
-        organization: Institution
         homepage: Homepage der Institution
         address: Adresse
         street: Straße
         zipcode: PLZ
         city: Ort
         country: Land
-        receive_newsletter: Newsletter
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
@@ -1159,6 +1155,11 @@ de:
       user_project:
         workflow_state: Status
         admin_comments: Kommentar
+        job_description: Tätigkeit
+        research_intentions: Rechercheanliegen
+        specification: Präzisierung des Anliegens
+        organization: Institution
+        receive_newsletter: Newsletter
       user_role:
         role_id: Rolle
       role:
@@ -1349,6 +1350,12 @@ de:
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+    request_project_access:
+      title: Antrag auf Freischaltung für die Anwendung %{project}
+      step_two: 'Schritt 2 - '
+      description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      submit: Antrag auf Freischaltung absenden
     admin:
       person_details:
         contributions:
