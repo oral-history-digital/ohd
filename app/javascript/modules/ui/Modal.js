@@ -25,7 +25,6 @@ export default function Modal({
         event.stopPropagation();
     };
 
-    debugger;
     useEffect(() => {
         if (showDialogInitially) {
             open();
