@@ -141,19 +141,29 @@ class Person < ApplicationRecord
     "#{last_name(locale)}, #{first_name(locale)}"
   end
 
-  def display_name
+  def display_name(anonymous: false, reversed: false)
     used_title = display_title_part
     fn = first_name_used
-    ln = last_name_used
+    ln = anonymous ?
+      last_name_used.strip.slice(0) + '.' :
+      last_name_used
 
     if fn.blank?
-      used_title.blank? ?
-        "#{I18n.t("honorific.#{gender}")} #{ln}" :
-        "#{I18n.t("honorific.#{gender}")} #{used_title} #{ln}"
+      if reversed
+        "#{I18n.t("honorific.#{gender}")} #{ln}"
+      else
+        used_title.blank? ?
+          "#{I18n.t("honorific.#{gender}")} #{ln}" :
+          "#{I18n.t("honorific.#{gender}")} #{used_title} #{ln}"
+      end
     else
-      used_title.blank? ?
-        "#{fn} #{ln}" :
-        "#{used_title} #{fn} #{ln}"
+      if reversed
+        "#{ln}, #{fn}"
+      else
+        used_title.blank? ?
+          "#{fn} #{ln}" :
+          "#{used_title} #{fn} #{ln}"
+      end
     end
   end
 

@@ -64,6 +64,43 @@ describe Person do
         expect(person.display_name).to eq('Frau Dr. Henderson')
       end
     end
+
+    context 'with anonymous option' do
+      it "displays a valid name" do
+        expect(person.display_name(anonymous: true))
+          .to eq('Alice H.')
+      end
+
+      it 'displays a salutation if first name is missing' do
+        person.first_name = ''
+        expect(person.display_name(anonymous: true))
+          .to eq('Frau H.')
+      end
+    end
+
+    context 'with reversed option' do
+      it "displays a valid name" do
+        expect(person.display_name(reversed: true)).to eq('Henderson, Alice')
+      end
+
+      it 'displays a salutation if first name is missing' do
+        person.first_name = ''
+        expect(person.display_name(reversed: true)).to eq('Frau Henderson')
+      end
+    end
+
+    context 'with anonymous and reversed options' do
+      it "displays a valid name" do
+        expect(person.display_name(anonymous: true, reversed: true))
+          .to eq('H., Alice')
+      end
+
+      it 'displays a salutation if first name is missing' do
+        person.first_name = ''
+        expect(person.display_name(anonymous: true, reversed: true))
+          .to eq('Frau H.')
+      end
+    end
   end
 
   describe "#initials" do
