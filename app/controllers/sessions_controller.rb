@@ -23,10 +23,6 @@ class SessionsController < Devise::SessionsController
 
   def create
     self.resource = warden.authenticate!(auth_options)
-    access_token = Doorkeeper::AccessToken.create!(resource_owner_id: resource.id) if resource
-    #access_token = Doorkeeper::AccessToken.create!(application_id: application_id, resource_owner_id: resource.id)
-    #render json: Doorkeeper::OAuth::TokenResponse.new(access_token).body
-
     set_flash_message!(:notice, :signed_in)
     sign_in(resource_name, resource)
     yield resource if block_given?
@@ -80,4 +76,5 @@ class SessionsController < Devise::SessionsController
   def last_token
     current_user && current_user.access_tokens.last.token
   end
+
 end
