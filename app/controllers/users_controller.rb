@@ -34,18 +34,6 @@ class UsersController < ApplicationController
     end
   end
 
-  #def confirm_new_email
-    ## perhaps one should use current_user here instead of the following
-    #user = User.find(params[:id])
-    #authorize(user)
-    #if user.confirmation_token == params[:confirmation_token]
-      #user.confirm
-      #redirect_to account_url('current')
-    #else
-      #raise 'confirmation_token does not fit!!'
-    #end
-  #end
-
   def check_email
     email = params[:email]
     user = User.where(email: email).first
