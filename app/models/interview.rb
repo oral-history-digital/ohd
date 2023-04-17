@@ -577,38 +577,21 @@ class Interview < ApplicationRecord
     end
   end
 
-  def build_full_title_from_name_parts(locale)
+  def full_title(locale)
     first_interviewee = interviewee
     if first_interviewee
       I18n.with_locale locale do
-        last_name = first_interviewee.last_name_used
-        first_name = first_interviewee.first_name_used
-
-        if first_name.blank?
-          last_name
-        else
-          "#{last_name}, #{first_name}"
-        end
+        first_interviewee.display_name(reversed: true)
       end
     else
       'no interviewee given'
     end
   end
 
-  def full_title(locale)
-    build_full_title_from_name_parts(locale)
-  end
-
   def reverted_short_title(locale)
     I18n.with_locale locale do
       begin
-        fn = interviewee.first_name_used
-        ln = interviewee.last_name_used
-        if fn.blank?
-          "#{I18n.t("honorific.#{interviewee.gender}")} #{ln}"
-        else
-          "#{ln}, #{fn}"
-        end
+        interviewee.display_name(reversed: true)
       rescue
         "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
       end
@@ -618,7 +601,7 @@ class Interview < ApplicationRecord
   def short_title(locale)
     I18n.with_locale locale do
       begin
-        "#{interviewee.first_name_used}, #{interviewee.last_name_used}"
+        "#{interviewee.first_name_used} #{interviewee.last_name_used}"
       rescue
         "Interviewee might not be in DB, interview-id = #{id}"
       end
@@ -629,16 +612,13 @@ class Interview < ApplicationRecord
     if project.fullname_on_landing_page
       title(locale)
     else
-      name_parts = []
       I18n.with_locale locale do
-        unless interviewees.blank?
-          fn = interviewee.first_name_used
-          ln = interviewee.last_name_used
-          name_parts << fn unless fn.blank?
-          name_parts << "#{ln.strip.chars.first}." unless ln.blank?
+        if interviewees.blank?
+          'no interviewee given'
+        else
+          interviewee.display_name(anonymous: true)
         end
       end
-      name_parts.join(' ')
     end
   end
 
