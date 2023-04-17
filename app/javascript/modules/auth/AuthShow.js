@@ -17,7 +17,8 @@ export default function AuthShow({
         (
             isLoggedIn && ifLoggedIn && user && (
                 user.admin ||
-                Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+                project?.grant_project_access_instantly ||
+                Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
             )
         ) ||
         // catalog-project
@@ -30,7 +31,8 @@ export default function AuthShow({
         // logged in and NOT registered for the current project
         (
             isLoggedIn && ifNoProject && user && !user.admin &&
-            !Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+            !project?.grant_project_access_instantly &&
+            !Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
         )
     ) {
         // logged out or still not registered for a project

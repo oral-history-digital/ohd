@@ -12,9 +12,11 @@ export default function ProjectAccessAlert ({
     const project = useSelector(getCurrentProject);
     const { t } = useI18n();
 
+    if (project?.grant_project_access_instantly) return null;
+
     const unactivatedProject = user?.user_projects &&
         Object.values(user.user_projects).find( urp => {
-            return urp.project_id === project?.id && urp.activated_at === null
+            return urp.project_id === project?.id && urp.workflow_state !== 'project_access_granted'
         });
 
     if (unactivatedProject) {

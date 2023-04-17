@@ -63,6 +63,7 @@ class ProjectSerializer < ApplicationSerializer
     :show_preview_img,
     :default_search_order,
     :workflow_state,
+    :grant_project_access_instantly,
     :is_ohd
 
   def title
