@@ -12,7 +12,7 @@ export default function AfterRequestProjectAccessPopup ({
 
     const recentlyRequestedProjectAccess = user?.user_projects &&
         Object.values(user.user_projects).find( urp => {
-            return urp.project_id === project?.id && urp.created_at + 5000 > Date.now();
+            return urp.project_id === project?.id && urp.created_at + 60000 > Date.now();
         });
 
     if (!recentlyRequestedProjectAccess) return null;

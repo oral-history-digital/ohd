@@ -30,6 +30,7 @@ class UserSerializer < ApplicationSerializer
     :supervised_tasks,
     :workflow_state,
     :workflow_states,
+    :pre_register_location,
     :access_token
 
   def user_id
