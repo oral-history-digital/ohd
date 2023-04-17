@@ -20,4 +20,8 @@ class UserProjectSerializer < ApplicationSerializer
     object.activated_at && object.activated_at.strftime("%d.%m.%Y %H:%M")
   end
 
+  def created_at
+    object.created_at.to_f * 1000
+  end
+
 end

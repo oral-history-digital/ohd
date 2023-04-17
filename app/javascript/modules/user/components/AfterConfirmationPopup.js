@@ -11,7 +11,7 @@ export default function AfterConfirmationPopup ({
     const confirmed = currentUser && Date.parse(currentUser.confirmed_at);
 
     const recentlyConfirmed = currentUser?.confirmed_at + 60000 > Date.now() &&
-        currentUser?.pre_registration_location === location.href &&
+        currentUser?.pre_register_location === location.href &&
         !currentProject.is_ohd;
 
     if (!recentlyConfirmed) return null;
