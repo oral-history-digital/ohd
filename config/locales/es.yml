@@ -48,8 +48,6 @@ es:
     none: keine
   in: en
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  registration_needed: Para garantizar la protección de datos personales, usted se tiene que registrar.
-    Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
@@ -1301,6 +1299,10 @@ es:
 
   modules:
     registration:
+      registration_needed_ohd: Para garantizar la protección de datos personales, usted se tiene que registrar.
+        Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
+      registration_needed_archive: Para garantizar la protección de datos personales, usted se tiene que registrar.
+        Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.

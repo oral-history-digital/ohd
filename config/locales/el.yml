@@ -48,7 +48,6 @@ el:
     none: keine
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: στο
-  registration_needed: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
@@ -1340,6 +1339,8 @@ el:
 
   modules:
     registration:
+      registration_needed_ohd: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
+      registration_needed_archive: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
