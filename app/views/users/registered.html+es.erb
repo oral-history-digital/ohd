@@ -5,7 +5,7 @@
 <% end %>
 
 <% if @user %>
-  <% unless @user.activated_at %>
+  <% unless @user.confirmed_at %>
     <p>Usted tiene que activar todavía el acceso. Las informaciones sobre cómo activar su acceso se le acaban de enviar nuevamente por correo electrónico.</p>
   <% else %>
     <p>Su acceso ya está activo. Si ha perdido sus datos de acceso, por favor haga clic en el siguiente enlace:

@@ -5,7 +5,7 @@
 <% end %>
 
 <% if @user %>
-  <% unless @user.activated_at %>
+  <% unless @user.confirmed_at %>
     <p>Your account still needs to be activated. Information for activating your account has now been sent again to you via email.</p>
   <% else %>
     <p>Your account has already been activated. If you don't have access to your login details, please follow this link:
