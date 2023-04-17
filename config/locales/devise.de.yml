@@ -19,7 +19,7 @@ de:
       inactive: Ihr Account ist nicht aktiv.
       invalid: Ungültige Anmeldedaten.
       invalid_token: Der Anmelde-Token ist ungültig.
-      locked: Ihr Account ist gesperrt.
+      blocked: Ihr Account ist gesperrt.
       not_found_in_database: Ungültige Anmeldedaten.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
       unauthenticated: Sie müssen sich anmelden oder registrieren, bevor Sie fortfahren
@@ -99,7 +99,7 @@ de:
       unconfirmed: Die E-Mail-Adresse ist bereits registriert.
         Sie müssen Ihre Registrierung noch bestätigen.
         Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-      locked: Ihr Zugang wurde gesperrt.
+      blocked: Ihr Zugang wurde gesperrt.
       invalid: Username oder Passwort ist ungültig.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
