@@ -49,8 +49,6 @@ de:
     none: keine
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: bei
-  registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
-    Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/users/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
@@ -1337,6 +1335,10 @@ de:
 
   modules:
     registration:
+      registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
+        und ggf. eine Freischaltung für einzelne Archive notwendig.
+      registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
+        und eine Freischaltung für das Archiv notwendig.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.

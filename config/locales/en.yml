@@ -48,8 +48,6 @@ en:
     none: keine
   in: in
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  registration_needed: For reasons of privacy you have to register. After registration
-    you have access to all testimonies in full length.
   change_to_bcrypt: We have recently updated the way we store our passwords. Please
     click on the "Forgot your password?" link to recover your password. Thank you
     for your understanding.
@@ -1341,6 +1339,10 @@ en:
 
   modules:
     registration:
+      registration_needed_ohd: For reasons of privacy you have to register. After registration
+        you have access to all testimonies in full length.
+      registration_needed_archive: For reasons of privacy you have to register. After registration
+        you have access to all testimonies in full length.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.

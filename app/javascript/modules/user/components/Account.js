@@ -91,7 +91,10 @@ export default function Account ({
                 <AuthShowContainer ifLoggedOut={true}>
                     <p>
                         {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
-                        {(error || projectId === 'campscapes') ? '' : t('registration_needed')}
+                        {
+                            (error || projectId === 'campscapes') ? '' :
+                                t(`modules.registration.registration_needed_${project.is_ohd ? 'ohd' : 'archive'}`)
+                        }
                     </p>
                     { 
                         (['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) !== -1) ?

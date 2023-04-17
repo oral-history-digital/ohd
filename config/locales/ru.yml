@@ -48,9 +48,6 @@ ru:
     none: keine
   in: В
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  registration_needed: В целях защиты персональных данных тех, чьи истории жизни представлены
-    в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
-    ко всем интервью в полном объеме.
   change_to_bcrypt: Недавно мы изменили способ сохранения наших паролей. Пожалуйста,
     щелкните на ссылку <a href="/de/user_accounts/password/new">"восстановить пароль"</a>,
     чтобы создать новый пароль или восстановить старый. Спасибо за понимание
@@ -1755,6 +1752,12 @@ ru:
 
   modules:
     registration:
+      registration_needed_ohd: В целях защиты персональных данных тех, чьи истории жизни представлены
+        в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
+        ко всем интервью в полном объеме.
+      registration_needed_archive: В целях защиты персональных данных тех, чьи истории жизни представлены
+        в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
+        ко всем интервью в полном объеме.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
