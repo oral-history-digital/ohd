@@ -11,7 +11,11 @@ class User < ApplicationRecord
          :validatable
 
   def after_database_authentication
-    Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
+    if !confirmed?
+      resend_confirmation_instructions
+    else
+      Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
+    end
   end
 
   has_many :sessions,
