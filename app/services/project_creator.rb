@@ -15,7 +15,7 @@ class ProjectCreator < ApplicationService
     create_default_registry_entries
     create_default_registry_reference_types
     create_default_registry_reference_type_metadata_fields
-    create_default_event_types
+    # create_default_event_types  # Do not create default event types for now.
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
     create_default_contribution_types
