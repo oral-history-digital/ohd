@@ -12,7 +12,8 @@ export default function ProjectAccessAlert ({
     const project = useSelector(getCurrentProject);
     const { t } = useI18n();
 
-    if (project?.grant_project_access_instantly) return null;
+    if (project.grant_access_without_login) return null;
+    if (!!user && project?.grant_project_access_instantly) return null;
 
     const unactivatedProject = user?.user_projects &&
         Object.values(user.user_projects).find( urp => {

@@ -82,7 +82,7 @@ export default function Account ({
                         {t('logout')}
                     </button>
                 </AuthShowContainer>
-                <AuthShowContainer ifNoProject={!!project}>
+                <AuthShowContainer ifNoProject={true} ifIsLoggedIn={true}>
                     <ProjectAccessAlert />
                 </AuthShowContainer>
 
@@ -90,9 +90,8 @@ export default function Account ({
 
                 <AuthShowContainer ifLoggedOut={true}>
                     <p>
-                        {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
                         {
-                            (error || projectId === 'campscapes') ? '' :
+                            (error || project.grant_access_without_login) ? '' :
                                 t(`modules.registration.registration_needed_${project.is_ohd ? 'ohd' : 'archive'}`)
                         }
                     </p>

@@ -64,6 +64,7 @@ class ProjectSerializer < ApplicationSerializer
     :default_search_order,
     :workflow_state,
     :grant_project_access_instantly,
+    :grant_access_without_login,
     :is_ohd
 
   def title

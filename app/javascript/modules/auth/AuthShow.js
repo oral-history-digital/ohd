@@ -17,6 +17,7 @@ export default function AuthShow({
         (
             isLoggedIn && ifLoggedIn && user && (
                 user.admin ||
+                project.grant_access_without_login ||
                 project?.grant_project_access_instantly ||
                 Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
             )
@@ -32,6 +33,7 @@ export default function AuthShow({
         (
             isLoggedIn && ifNoProject && user && !user.admin &&
             !project?.grant_project_access_instantly &&
+            !project.grant_access_without_login &&
             !Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
         )
     ) {
