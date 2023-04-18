@@ -280,7 +280,7 @@ class Project < ApplicationRecord
           # add filters for tasks
           mem[facet.name.to_sym] = {
             name: name,
-            subfacets: (UserAccount.joins(:user_roles) | UserAccount.where(admin: true)).inject({}) do |subfacets, user|
+            subfacets: (User.joins(:user_roles) | User.where(admin: true)).inject({}) do |subfacets, user|
               subfacets[user.id.to_s] = {
                 name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = user.full_name; desc},
                 count: 0,

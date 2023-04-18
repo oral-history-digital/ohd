@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   before_action :user_by_token
   def user_by_token
     if doorkeeper_token && !current_user
-      user = UserAccount.find(doorkeeper_token.resource_owner_id) 
+      user = User.find(doorkeeper_token.resource_owner_id) 
       sign_in(user)
     end
   end
