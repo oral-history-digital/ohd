@@ -57,6 +57,11 @@ const mapStateToProps = state => ({
         },
         {
             elementType: 'input',
+            attribute: "grant_access_without_login",
+            type: "checkbox"
+        },
+        {
+            elementType: 'input',
             attribute: "display_ohd_link",
             type: "checkbox"
         },
