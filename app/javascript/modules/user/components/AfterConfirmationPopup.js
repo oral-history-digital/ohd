@@ -26,6 +26,7 @@ export default function AfterConfirmationPopup ({
                 <RequestProjectAccessFormContainer
                     onSubmit={close}
                     onCancel={close}
+                    showStepTwo
                 />
             )}
         </Modal>
