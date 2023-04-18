@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       controllers: {
         sessions: "sessions",
         confirmations: "confirmations",
-        #passwords: "passwords",
+        passwords: "passwords",
       }
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
@@ -244,8 +244,8 @@ Rails.application.routes.draw do
       resources :institutions
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
-      concerns :account
       concerns :unnamed_devise_routes, :search, :archive
+      concerns :account
     end
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
       get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
@@ -253,8 +253,8 @@ Rails.application.routes.draw do
         get "/", to: "projects#show"
         resources :projects, only: [:update, :destroy]
         concerns :archive
-        concerns :account
         concerns :unnamed_devise_routes, :search
+        concerns :account
       end
     end
   end
@@ -270,8 +270,8 @@ Rails.application.routes.draw do
       get "/", to: "projects#show"
       resources :projects, only: [:update, :destroy]
       concerns :archive
-      concerns :account
       concerns :unnamed_devise_routes, :search
+      concerns :account
     end
   end
 

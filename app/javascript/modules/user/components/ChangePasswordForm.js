@@ -64,40 +64,20 @@ export default function ChangePasswordForm({
                 let query = queryString.parse(location.search);
                 resetToken = query.reset_password_token;
             }
-            let url, method;
             let params = values;
 
-            if (!user.active) {
-                url = `${pathBase}/users/${resetToken}/confirm`;
-                method = 'post';
-            } else {
-                url = `${pathBase}/users/password`;
-                method = 'put';
-                params.reset_password_token = resetToken;
-            }
+            const url = `${pathBase}/users/password`;
+            params.reset_password_token = resetToken;
 
-            submitChangePassword(url, method, {user: params});
+            submitChangePassword(url, 'put', {user: params});
         }
     }
 
     return (
         <div>
-            {user.active ? (
-                <h1>
-                    {t('devise.passwords.change')}
-                </h1>
-            ) : (
-                <div>
-                    <h1>
-                        {t('devise.registrations.activate')}
-                        &nbsp;
-                        <em>{user.display_name}</em>
-                    </h1>
-                    <p>
-                        {t('devise.registrations.activate_text')}
-                    </p>
-                </div>
-            )}
+            <h1>
+                {t('devise.passwords.change')}
+            </h1>
 
             {user.error && (
                 <p className="error">
