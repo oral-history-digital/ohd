@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_17_131830) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -602,6 +602,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_131830) do
     t.string "workflow_state", default: "public", null: false
     t.boolean "show_preview_img", default: false
     t.boolean "grant_project_access_instantly", default: false
+    t.boolean "grant_access_without_login", default: false
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
