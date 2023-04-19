@@ -81,6 +81,7 @@ class Person < ApplicationRecord
 
   after_touch do
     interviews = self.interviews
+    interviews.each(&:touch)
     Sunspot.index! [interviews]
   end
 
