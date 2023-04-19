@@ -90,7 +90,7 @@ export default function useInstance(data, type) {
             columnFilters,
             sorting,
         },
-        //filterFromLeafRows: true,
+        filterFromLeafRows: true,
         onExpandedChange: setExpanded,
         onColumnFiltersChange: setColumnFilters,
         onSortingChange: setSorting,
