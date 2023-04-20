@@ -37,9 +37,11 @@ class MetadataImport
 
       project.registry_reference_type_import_metadata_fields.each do |field|
         registry_entries = find_or_create_registry_entries(field, row, locale)
-        ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee
-        destroy_references(ref_object, field.registry_reference_type_id, interview)
-        create_references(registry_entries, interview, ref_object, field.registry_reference_type_id)
+        if !registry_entries.empty?
+          ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee
+          destroy_references(ref_object, field.registry_reference_type_id, interview)
+          create_references(registry_entries, interview, ref_object, field.registry_reference_type_id)
+        end
       end
 
       interview.touch
