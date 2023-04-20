@@ -4,18 +4,12 @@ import { useDispatch } from 'react-redux';
 
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { UserTable, useUsers } from 'modules/users';
+import { UserTable } from 'modules/users';
 import { hideSidebar } from 'modules/sidebar';
 
 export default function UsersAdminPage() {
     const { t } = useI18n();
     const dispatch = useDispatch();
-
-    const { data, isLoading } = useUsers();
-
-    const usersCount = typeof data === 'undefined' ?
-        undefined :
-        Object.values(data).length;
 
     useEffect(() => {
         dispatch(hideSidebar());
@@ -30,12 +24,7 @@ export default function UsersAdminPage() {
             </Helmet>
 
             <AuthShowContainer ifLoggedIn>
-                <h1 className="registry-entries-title">
-                    {usersCount} {t('activerecord.models.user.other')}
-                </h1>
-
                 <UserTable />
-
             </AuthShowContainer>
 
             <AuthShowContainer ifLoggedOut ifNoProject>
