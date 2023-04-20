@@ -20,11 +20,13 @@ export default function TableWithPagination({
     isLoading,
     manualPagination,
     manualFiltering,
+    manualFilterFunc,
+    manualFilter,
     setPage,
     pageCount,
 }) {
     const [sorting, setSorting] = useState([]);
-    const [globalFilter, setGlobalFilter] = useState('');
+    const [globalFilter, setGlobalFilter] = useState(manualFilter || '');
 
     const [{ pageIndex, pageSize }, setPagination] = useState({
         pageIndex: 0,
@@ -65,7 +67,7 @@ export default function TableWithPagination({
             <Filter
                 className="u-mb-small"
                 value={globalFilter}
-                onChange={setGlobalFilter}
+                onChange={value => {setGlobalFilter(value); if (typeof manualFilterFunc === 'function') manualFilterFunc(value);}}
             />
             <Pagination
                 className="u-mb"
