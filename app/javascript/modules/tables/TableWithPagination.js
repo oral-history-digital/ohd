@@ -19,6 +19,7 @@ export default function TableWithPagination({
     data,
     isLoading,
     manualPagination,
+    manualFiltering,
     setPage,
     pageCount,
 }) {
@@ -55,6 +56,7 @@ export default function TableWithPagination({
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         manualPagination: manualPagination,
+        manualFiltering: manualFiltering,
         pageCount: pageCount,
     });
 
