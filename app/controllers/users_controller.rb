@@ -80,6 +80,7 @@ class UsersController < ApplicationController
     page = params[:page] || 1
     users = policy_scope(User).
       #where(search_params).
+      where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").
       order("last_name ASC").
       paginate(page: page, per_page: 25)
 

@@ -15,8 +15,9 @@ import TasksCell from './TasksCell';
 export default function UserTable() {
     const { t, locale } = useI18n();
     const [page, setPage] = useState(1);
-    const { data, isLoading } = useUsers(page);
+    const [filter, setFilter] = useState('');
     const project = useSelector(getCurrentProject);
+    const { data, isLoading } = useUsers(page, filter);
 
     const usersCount = typeof data === 'undefined' ?
         undefined :
@@ -112,6 +113,8 @@ export default function UserTable() {
                     setPage={setPage}
                     manualPagination
                     manualFiltering
+                    manualFilterFunc={setFilter}
+                    manualFilter={filter}
                 />
             }
         </>
