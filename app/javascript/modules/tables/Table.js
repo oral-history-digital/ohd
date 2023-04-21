@@ -3,12 +3,15 @@ import classNames from 'classnames';
 
 import TableHead from './TableHead';
 import TableBody from './TableBody';
+import { Spinner } from 'modules/spinners';
 
 export default function Table({
     table,
     isLoading = false,
     className
 }) {
+    if (isLoading) return <Spinner />;
+
     return (
         <table className={classNames('Table', className, { 'is-loading': isLoading })}>
             <TableHead table={table} />
