@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
 
-import { Spinner } from 'modules/spinners';
 import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
@@ -104,19 +103,17 @@ export default function UserTable() {
             <h1 className="registry-entries-title">
                 {usersCount} {t('activerecord.models.user.other')}
             </h1>
-            { isLoading ? <Spinner /> :
-                <TableWithPagination
-                    data={Object.values(data?.data || {})}
-                    pageCount={data?.result_pages_count}
-                    columns={columns}
-                    isLoading={isLoading}
-                    setPage={setPage}
-                    manualPagination
-                    manualFiltering
-                    manualFilterFunc={setFilter}
-                    manualFilter={filter}
-                />
-            }
+            <TableWithPagination
+                data={Object.values(data?.data || {})}
+                pageCount={data?.result_pages_count}
+                columns={columns}
+                isLoading={isLoading}
+                setPage={setPage}
+                manualPagination
+                manualFiltering
+                manualFilterFunc={setFilter}
+                manualFilter={filter}
+            />
         </>
     );
 }
