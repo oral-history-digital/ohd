@@ -15,7 +15,7 @@ export default function StartpageIntroduction({
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return <p>{error.message}</p>;
     }
 
     return (
