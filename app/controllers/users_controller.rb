@@ -81,6 +81,7 @@ class UsersController < ApplicationController
     users = policy_scope(User).
       #where(search_params).
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").
+      where(workflow_state: params[:workflow_state] || (current_project.is_ohd? ? 'confirmed' : 'account_confirmed')).
       order("last_name ASC").
       paginate(page: page, per_page: 25)
 
