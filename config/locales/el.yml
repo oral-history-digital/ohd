@@ -605,7 +605,7 @@ el:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
-      account_confirmed: ungeprüft
+      project_access_requested: ungeprüft
       account_deactivated: gesperrt
       all: alle
   help_texts:

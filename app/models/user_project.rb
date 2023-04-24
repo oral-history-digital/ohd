@@ -14,7 +14,7 @@ class UserProject < ApplicationRecord
   workflow do
 
     # admin workflow
-    state :account_confirmed do
+    state :project_access_requested do
       event :grant_project_access, :transitions_to => :project_access_granted
       event :reject_project_access,    :transitions_to => :project_access_rejected
       event :postpone_project_access,  :transitions_to => :project_access_postponed

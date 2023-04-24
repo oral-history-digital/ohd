@@ -3,7 +3,6 @@ class UserProjectsController < ApplicationController
   def create
     authorize UserProject
     @user_project = UserProject.create user_project_params
-    @user_project.grant_project_access_instantly! if current_project.grant_project_access_instantly?
 
     respond_to do |format|
       format.json do
