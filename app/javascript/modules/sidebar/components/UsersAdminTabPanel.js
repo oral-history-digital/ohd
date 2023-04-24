@@ -4,7 +4,6 @@ import Select from 'react-select';
 import { FaDownload } from 'react-icons/fa';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { UserSearchFormContainer } from 'modules/admin';
 import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -63,7 +62,6 @@ export default function UsersAdminTabPanel({
                 >
                     <div>
                         <div>
-                            <UserSearchFormContainer/>
                             <a href={userStatisticsPath()}>
                                 <FaDownload
                                     className="Icon Icon--primary"

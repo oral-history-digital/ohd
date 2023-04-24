@@ -21,7 +21,6 @@ export { default as RoleSearchFormContainer } from './RoleSearchFormContainer';
 export { default as SponsorLogosContainer } from './SponsorLogosContainer';
 export { default as TaskTypeSearchFormContainer } from './TaskTypeSearchFormContainer';
 export { default as UploadsContainer } from './UploadsContainer';
-export { default as UserSearchFormContainer } from './UserSearchFormContainer';
 export { default as EventTypesAdminPage } from './EventTypesAdminPage';
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';

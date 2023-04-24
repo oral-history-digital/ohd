@@ -27,7 +27,7 @@ const state = {
         },
         users: {
             query: {
-                'user_projects.workflow_state': 'account_confirmed',
+                'user_projects.workflow_state': 'project_access_requested',
                 page: 1,
             },
         },

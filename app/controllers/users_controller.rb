@@ -81,7 +81,7 @@ class UsersController < ApplicationController
     users = policy_scope(User).
       #where(search_params).
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").
-      where(workflow_state: params[:workflow_state] || (current_project.is_ohd? ? 'confirmed' : 'account_confirmed')).
+      where(workflow_state: params[:workflow_state] || (current_project.is_ohd? ? 'confirmed' : 'project_access_requested')).
       order("last_name ASC").
       paginate(page: page, per_page: 25)
 
@@ -177,9 +177,10 @@ class UsersController < ApplicationController
       :last_name,
       :email,
       :default_locale,
+      :workflow_state,
       'user_projects.workflow_state'
     ).to_h.select{|k,v| !(v.blank?) }
-    permitted['user_projects.workflow_state'] = 'account_confirmed' unless permitted['user_projects.workflow_state']
+    permitted['user_projects.workflow_state'] = 'project_access_requested' unless permitted['user_projects.workflow_state']
     permitted.delete('user_projects.workflow_state') if permitted['user_projects.workflow_state'] == 'all'
     permitted
   end
