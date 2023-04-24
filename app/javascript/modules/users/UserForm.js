@@ -10,9 +10,7 @@ export default function UserForm({
     userId,
     scope,
     locale,
-    projectId,
-    projects,
-    submitData,
+    project,
     onSubmit,
 }) {
     const mutateData = useMutateData('users');
@@ -25,7 +23,7 @@ export default function UserForm({
             attribute: 'workflow_state',
             values: data && Object.values(data.workflow_states),
             value: data?.workflow_state,
-            optionsScope: 'workflow_states',
+            optionsScope: `workflow_states.user${project.is_ohd ? '' : '_project'}s`,
             withEmpty: true
         },
     ];
@@ -75,8 +73,6 @@ export default function UserForm({
 UserForm.propTypes = {
     data: PropTypes.object,
     locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
+    project: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
 };
