@@ -11,8 +11,8 @@ import 'stylesheets/main.scss';
 const App = (props) => (
     <SWRConfig value={{ fetcher }}>
         <Provider store={archiveStore(props)}>
-            <ThemeProvider />
             <BrowserRouter>
+                <ThemeProvider />
                 <RouteDivider />
             </BrowserRouter>
         </Provider>

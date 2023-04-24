@@ -22,13 +22,12 @@ export default function Interview({
     projectId,
     projects,
     project,
-    locale,
     setArchiveId,
     fetchData,
     isLoggedIn,
 }) {
     const { archiveId } = useParams();
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
@@ -96,7 +95,6 @@ Interview.propTypes = {
     interviewEditView: PropTypes.bool.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };
