@@ -37,7 +37,7 @@ export default function UserEdit ({
                     'default_locale',
                 ].map((detail, index) => {
                     let value = data[detail] || userProject?.[detail];
-                    if (detail === 'confirmed_at' || detail === 'terminated_at') {
+                    if (detail === 'confirmed_at') {
                         value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
                     }
 

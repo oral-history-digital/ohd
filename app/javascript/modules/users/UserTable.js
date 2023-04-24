@@ -17,7 +17,7 @@ export default function UserTable() {
     const project = useSelector(getCurrentProject);
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
-    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'project_access_requested');
+    const [workflowStateFilter, setWorkflowStateFilter] = useState('');//project.is_ohd ? 'confirmed' : 'project_access_requested');
     const handleWorkflowStateFilterChange = (name, value) => {
         setWorkflowStateFilter(value);
     };
@@ -29,7 +29,8 @@ export default function UserTable() {
         'project_access_granted',
         'project_access_rejected',
         'project_access_postponed',
-        'project_access_revoked',
+        'project_access_blocked',
+        'project_access_terminated',
     ];
 
     const { data, isLoading } = useUsers(page, filter, workflowStateFilter);
@@ -83,7 +84,7 @@ export default function UserTable() {
             header: t('activerecord.attributes.default.workflow_state'),
             accessorFn: row => {
                 const workflowState = currentUserProject(row, project).workflow_state;
-                return t(`user_projects.workflow_states.${workflowState}`);
+                return t(`workflow_states.user${project.is_ohd ? '' : '_project'}s.${workflowState}`,);
             },
         },
         {
@@ -135,7 +136,7 @@ export default function UserTable() {
                     values={workflowStateFilterValues}
                     label={t('activerecord.attributes.user.workflow_state')}
                     attribute='workflow_state'
-                    optionsScope='workflow_states'
+                    optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
                     handleChange={handleWorkflowStateFilterChange}
                     withEmpty={true}
                 />
