@@ -72,15 +72,16 @@ class UserSerializer < ApplicationSerializer
   end
 
   def created_at
-    object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M')
+    object.created_at && object.created_at.strftime('%d.%m.%Y')
   end
 
   def confirmed_at
-    object.confirmed_at && object.confirmed_at.to_f * 1000
+    #object.confirmed_at && object.confirmed_at.to_f * 1000
+    object.confirmed_at
   end
 
   def processed_at
-    object.processed_at && object.processed_at.strftime('%d.%m.%Y %H:%M Uhr')
+    object.processed_at && object.processed_at.strftime('%d.%m.%Y')
   end
 
   def receive_newsletter

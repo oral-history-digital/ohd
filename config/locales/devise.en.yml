@@ -37,7 +37,7 @@ en:
         subject: Your Registration for the Application '%{project_name}'
       reset_password_instructions:
         subject: Interview Archive - Steps to recover your Password
-      account_deactivated:
+      project_access_terminated:
         subject: Your access to the application '%{project_name}'
       email_changed:
         subject: Email Changed

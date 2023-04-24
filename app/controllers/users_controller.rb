@@ -79,10 +79,12 @@ class UsersController < ApplicationController
   def index
     page = params[:page] || 1
     users = policy_scope(User).
-      #where(search_params).
-      where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%").
-      where(workflow_state: params[:workflow_state] || (current_project.is_ohd? ? 'confirmed' : 'project_access_requested')).
-      order("last_name ASC").
+      where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
+
+    users = users.where(workflow_state: params[:workflow_state] || 'confirmed') if current_project.is_ohd?
+    users = users.where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') unless current_project.is_ohd?
+
+    users = users.order("last_name ASC").
       paginate(page: page, per_page: 25)
 
     total_pages = users.total_pages

@@ -17,7 +17,7 @@ class UserProjectSerializer < ApplicationSerializer
     :created_at
 
   def activated_at
-    object.activated_at && object.activated_at.strftime("%d.%m.%Y %H:%M")
+    object.activated_at && object.activated_at.strftime("%d.%m.%Y")
   end
 
   def created_at

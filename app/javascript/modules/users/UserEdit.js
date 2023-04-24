@@ -9,10 +9,10 @@ export default function UserEdit ({
     onSubmit,
 }) {
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
     const scope = project.shortname === 'ohd' ? 'user' : 'user_project';
-    const UserProject = Object.values(data.user_projects).find(urp => urp.project_id === project.id);
+    const userProject = Object.values(data.user_projects).find(urp => urp.project_id === project.id);
 
     return (
         <div className='details'>
@@ -36,18 +36,23 @@ export default function UserEdit ({
                     'terminated_at',
                     'default_locale',
                 ].map((detail, index) => {
+                    let value = data[detail] || userProject?.[detail];
+                    if (detail === 'confirmed_at' || detail === 'terminated_at') {
+                        value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
+                    }
+
                     return (
                         <p className="detail"
                            key={index}
                           >
                             <span className='name'>{t(`activerecord.attributes.user.${detail}`) + ': '}</span>
-                            <span className='content'>{data[detail] || UserProject[detail]}</span>
+                            <span className='content'>{value}</span>
                         </p>
                     )
                 })
             }
             <UserFormContainer
-                data={project.shortname === 'ohd' ? data : UserProject}
+                data={project.is_ohd ? data : userProject}
                 userId={data.id}
                 scope={scope}
                 onSubmit={onSubmit}

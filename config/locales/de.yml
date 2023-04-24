@@ -626,7 +626,8 @@ de:
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
       project_access_requested: ungeprüft
-      account_deactivated: gesperrt
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
   help_texts:
     metadata_fields:
@@ -1127,9 +1128,8 @@ de:
         media_id: Medien ID
       user:
         created_at: Erstellt am
-        confirmed_at: Aktiviert am
+        confirmed_at: Registrierung bestätigt am
         processed_at: Bearbeitet am
-        activated_at: freigeschaltet am
         default_locale: Sprache
         login: Login
         password: Passwort
@@ -1143,6 +1143,10 @@ de:
         zipcode: PLZ
         city: Ort
         country: Land
+        job_description: Tätigkeit
+        research_intentions: Rechercheanliegen
+        specification: Präzisierung des Anliegens
+        organization: Institution
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
@@ -1151,11 +1155,10 @@ de:
       user_project:
         workflow_state: Status
         admin_comments: Kommentar
-        job_description: Tätigkeit
-        research_intentions: Rechercheanliegen
-        specification: Präzisierung des Anliegens
-        organization: Institution
         receive_newsletter: Newsletter
+        activated_at: freigeschaltet am
+        processed_at: Bearbeitet am
+        terminated_at: Freischaltung beendet am
       user_role:
         role_id: Rolle
       role:
@@ -1283,6 +1286,7 @@ de:
         key: Schlüssel
         created_at: Angelegt am
         updated_at: Bearbeitet am
+        terminated_at: Freischaltung beendet am
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         use_in_export: im Im-/Export benutzen

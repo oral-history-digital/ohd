@@ -36,7 +36,7 @@ el:
         subject: Η εγγραφή σας στην εφαρμογή '%{project_name}'
       reset_password_instructions:
         subject:  Αρχείο Προφορικών Μαρτυριών – Επαναφορά του κωδικού σας
-      account_deactivated:
+      project_access_terminated:
         subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".

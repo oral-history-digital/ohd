@@ -603,7 +603,8 @@ en:
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
       project_access_requested: ungeprüft
-      account_deactivated: gesperrt
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
   help_texts:
     metadata_fields:
@@ -1121,6 +1122,10 @@ en:
         zipcode: Zipcode
         city: City
         country: Country
+        job_description: Job Description
+        research_intentions: Research Intentions
+        specification: Comments
+        organization: Organization
         tos_agreement: Tos Agreement
         priv_agreement: Priv Agreement
         register: Register
@@ -1129,11 +1134,7 @@ en:
           workflow_state: Status
       user_project:
         workflow_state: Status
-        admin_comments: Kommentar
-        job_description: Job Description
-        research_intentions: Research Intentions
-        specification: Comments
-        organization: Organization
+        admin_comments: Comments
         receive_newsletter: Receive Newsletter
       user_role:
         role_id: Rolle
