@@ -1,9 +1,9 @@
 import projectByDomain from './projectByDomain';
 
-export default function pathBase(props) {
-    if (!props.projectId || projectByDomain(props.projects)) {
-        return `/${props.locale}`;
+export default function pathBase({ projectId, projects, locale }) {
+    if (!projectId || projectByDomain(projects)) {
+        return `/${locale}`;
     } else {
-        return `/${props.projectId}/${props.locale}`;
+        return `/${projectId}/${locale}`;
     }
 }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { OHD_DOMAINS } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/constants';
 
 export default function FetchAccount({
     account,
@@ -45,4 +45,3 @@ export default function FetchAccount({
 
     return null;
 }
-

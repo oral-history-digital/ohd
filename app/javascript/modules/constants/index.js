@@ -36,3 +36,8 @@ export const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 export const OHD_LOCATION = 'https://portal.oral-history.digital';
 export const OHD_USAGE_URL = 'https://www.oral-history.digital/impressum/nutzungsbedingungen/index.html';
 export const OHD_PRIVACY_URL = 'https://www.oral-history.digital/impressum/datenschutzhinweise/index.html';
+export const OHD_DOMAINS = {
+    development: 'http://portal.oral-history.localhost:3000',
+    staging:     'https://staging.oral-history.digital',
+    production:  'https://portal.oral-history.digital',
+};

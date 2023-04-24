@@ -1,20 +1,18 @@
 import { Link } from 'react-router-dom';
 
-import { OHD_DOMAINS } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/constants';
 import { AuthShowContainer } from 'modules/auth';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
 import ProjectAccessAlert from './ProjectAccessAlert';
 import LoginForm from './LoginForm';
 
 export default function Account ({
-    account,
     error,
     isLoggedIn,
     archiveId,
-    project,
     projectId,
     projects,
     firstName,
@@ -22,11 +20,11 @@ export default function Account ({
     submitLogout,
     hideSidebar,
     clearStateData,
-    editViewCookie,
 }) {
 
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+    const project = useProject();
 
     const handleLinkClick = () => {
         if (isMobile()) {
