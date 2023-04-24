@@ -8,7 +8,6 @@ export default function AfterConfirmationPopup ({
 }) {
     const currentUser = useSelector(getCurrentUser);
     const currentProject = useSelector(getCurrentProject);
-    const confirmed = currentUser && Date.parse(currentUser.confirmed_at);
 
     const recentlyConfirmed = currentUser?.confirmed_at + 60000 > Date.now() &&
         currentUser?.pre_register_location === location.href &&
