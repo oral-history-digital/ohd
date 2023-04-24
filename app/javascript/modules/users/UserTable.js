@@ -17,7 +17,7 @@ export default function UserTable() {
     const project = useSelector(getCurrentProject);
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
-    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'account_confirmed');
+    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'project_access_requested');
     const handleWorkflowStateFilterChange = (name, value) => {
         setWorkflowStateFilter(value);
     };
@@ -25,7 +25,7 @@ export default function UserTable() {
         'confirmed',
         'blocked',
     ] : [
-        'account_confirmed',
+        'project_access_requested',
         'project_access_granted',
         'project_access_rejected',
         'project_access_postponed',
@@ -69,7 +69,7 @@ export default function UserTable() {
         {
             accessorKey: 'confirmed_at',
             header: t('activerecord.attributes.user.confirmed_at'),
-            accessorFn: row => row.confirmed_at,
+            accessorFn: row => new Date(row.confirmed_at).toLocaleDateString(locale, { dateStyle: 'medium' }),
         },
         {
             header: t('activerecord.models.project.other'),
