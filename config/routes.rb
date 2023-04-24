@@ -224,8 +224,8 @@ Rails.application.routes.draw do
       get "users/password/new", to: "passwords#new"
       put "users/password", to: "passwords#update"
       post "users/password", to: "passwords#create"
-      get "users/confirmation", to: "devise/confirmations#show"
-      post "users/confirmation", to: "devise/confirmations#create"
+      get "users/confirmation", to: "confirmations#show"
+      post "users/confirmation", to: "confirmations#create"
       get "passwords/check_email", to: "passwords#check_email"
     end
   end
