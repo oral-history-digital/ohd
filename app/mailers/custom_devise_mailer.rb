@@ -21,6 +21,21 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :project_access_rejected, opts)
   end
 
+  def project_access_terminated(record, opts={})
+    @project = opts[:project]
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
+    devise_mail(record, :project_access_terminated, opts)
+  end
+
+  def project_access_blocked(record, opts={})
+    @project = opts[:project]
+    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
+    devise_mail(record, :project_access_blocked, opts)
+  end
+
   def account_deactivated(record, opts={})
     @project = opts[:project]
     opts[:from] = @project.contact_email

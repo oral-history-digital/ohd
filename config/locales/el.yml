@@ -606,7 +606,8 @@ el:
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
       project_access_requested: ungeprüft
-      account_deactivated: gesperrt
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
   help_texts:
     metadata_fields:
@@ -1125,31 +1126,21 @@ el:
         zipcode: Ταχυδρομικός κώδικας
         city: Τόπος
         country: Χώρα
+        job_description: Επάγγελμα
+        research_intentions: Ερευνητικά ενδιαφέροντα
+        specification: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
+        organization: Ίδρυμα
         tos_agreement: Προϋποθέσεις χρήσης
         priv_agreement: Υποδείξεις για την προστασία δεδομένων
         register: Αποστολή αιτήματος εγγραφής
         workflow_state: Κατάσταση
         registration: Εγγραφή
-        registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών
-          "Μνήμες από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα
-          και να εξηγήσετε τους λόγους για τους οποίους επιθυμείτε πρόσβαση στο Αρχείο.
-          Θα πρέπει να συναινέσετε με τους '
-        registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε
-          κατόπιν τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
-        registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα
-          δεδομένα σας, και για ποιο λόγο τα αξιοποιούμε. Εντός δύο εργασιακών ημερών
-          μετά την αποστολή της εγγραφής σας, λαμβάνετε τα δεδομένα εισόδου σας και
-          μια απάντηση στο αίτημά σας."
         priv_agreement_alias: προσωπικών δεδομένων
         user_projects:
           workflow_state: Κατάσταση
       user_project:
         workflow_state: Κατάσταση
         admin_comments: Kommentar
-        job_description: Επάγγελμα
-        research_intentions: Ερευνητικά ενδιαφέροντα
-        specification: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
-        organization: Ίδρυμα
         receive_newsletter: Newsletter
       user_role:
         role_id: Rolle

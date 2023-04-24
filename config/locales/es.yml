@@ -597,7 +597,8 @@ es:
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
       project_access_requested: ungeprüft
-      account_deactivated: gesperrt
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
     restart: Bearbeitung erneut beginnen
   help_texts:
@@ -1105,6 +1106,10 @@ es:
         zipcode: Código postal
         city: Lugar
         country: País
+        job_description: Profesión
+        research_intentions: Tema de investigación
+        specification: Detalle del tema de investigación
+        organization: Institución
         tos_agreement: Términos de uso
         priv_agreement: Indicaciones sobre la política de privacidad
         register: Enviar registro
@@ -1114,10 +1119,6 @@ es:
       user_project:
         workflow_state: Estado
         admin_comments: Comentario
-        job_description: Profesión
-        research_intentions: Tema de investigación
-        specification: Detalle del tema de investigación
-        organization: Institución
         receive_newsletter: Boletín
       user_role:
         role_id: Rolle

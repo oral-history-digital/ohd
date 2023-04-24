@@ -33,7 +33,7 @@ ru:
         subject: Ваша регистрация для доступа к ресурсу '%{project_name}'
       reset_passwod_instructions:
         subject: 'Архив интервью: шаги по восстановлению Вашего пароля'
-      account_deactivated:
+      project_access_terminated:
         subject: Ваш доступ к проекту '%{project_name}'
     omniauth_callbacks:
       failure: Вы не можете войти в систему с учётной записью из %{kind}, так как

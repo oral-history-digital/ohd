@@ -57,7 +57,7 @@ export default function UserForm({
                     const updatedData = {
                         ...data,
                         data: {
-                            ...data.data,
+                            ...data?.data,
                             [updatedDatum.id]: updatedDatum
                         }
                     };

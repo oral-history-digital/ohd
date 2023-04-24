@@ -63,10 +63,10 @@ El equipo del proyecto "<%= project_name %>"
 <% else -%>
 Guten Tag <%= @user.display_name %>
 
-Ihr Zugang zu der Anwendung <%= project_name %> war zeitlich befristet und ist nun beendet.
-Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
+hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung <%= project_name %> gesperrt wurde. Dies erfolgt, wenn die Nutzungsbedingungen des Archivs (<%= @conditions_link %>) nicht beachtet wurden.
+Bei Rückfragen kontaktieren Sie uns bitte unter (<%= @project.contact_email %>).
 
 Mit freundlichen Grüßen
 
-<%= project_name %>
+<%= @project.name(:de) %>
 <% end -%>

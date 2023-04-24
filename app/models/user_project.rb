@@ -20,7 +20,8 @@ class UserProject < ApplicationRecord
       event :postpone_project_access,  :transitions_to => :project_access_postponed
     end
     state :project_access_granted do
-      event :reject_project_access,    :transitions_to => :project_access_rejected
+      event :terminate_project_access,    :transitions_to => :project_access_terminated
+      event :block_project_access,    :transitions_to => :project_access_blocked
     end
     state :project_access_postponed do
       event :grant_project_access,      :transitions_to => :project_access_granted
@@ -29,8 +30,11 @@ class UserProject < ApplicationRecord
     state :project_access_rejected do
       event :grant_project_access,      :transitions_to => :project_access_granted
     end
-    state :account_deactivated do
-      event :reactivate_account, :transitions_to => :project_access_granted
+    state :project_access_terminated do
+      event :grant_project_access, :transitions_to => :project_access_granted
+    end
+    state :project_access_blocked do
+      event :grant_project_access, :transitions_to => :project_access_granted
     end
 
   end
@@ -45,15 +49,27 @@ class UserProject < ApplicationRecord
   end
 
   def grant_project_access
-    self.update_attribute(:activated_at, Time.now)
+    update(activated_at: Date.today, processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
     CustomDeviseMailer.project_access_granted(user, {subject: subject, project: project}).deliver_now
   end
 
   def reject_project_access
-    update_attribute(:activated_at, nil)
+    update(processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
     CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project}).deliver_now
+  end
+
+  def terminate_project_access
+    update(terminated_at: Date.today, processed_at: Date.today)
+    subject = I18n.t('devise.mailer.project_access_terminated.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_terminated(user, {subject: subject, project: project}).deliver_now
+  end
+
+  def block_project_access
+    update(terminated_at: Date.today, processed_at: Date.today)
+    subject = I18n.t('devise.mailer.project_access_blocked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project}).deliver_now
   end
 
   [

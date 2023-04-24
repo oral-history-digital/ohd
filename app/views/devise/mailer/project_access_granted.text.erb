@@ -48,13 +48,13 @@ El equipo del proyecto "<%= @project.name('es') %>"
 
 сотрудники проекта "<%= @project.name('ru') %>"
 <% else -%>
-Sehr geehrte/r <%= @user.display_name %>,
+Guten Tag <%= @user.display_name %>
 
-Sie haben nun Zugang zu der Anwendung "<%= @project.name('de') %>" für das von Ihnen angegebene Recherche-Anliegen.
+Sie haben nun Zugang zu der Anwendung <%= @project.name(:de) %> für das von Ihnen angegebene Recherche-Anliegen.
 
-Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link && @conditions_link.url(:de) %>). Das Mitschneiden, Veröffentlichen oder Verbreiten von Interviews, Ausschnitten oder Fotos erfordert eine gesonderte Erlaubnis. Bitte zitieren Sie nur anonymisiert mit Angabe der Quelle.
+Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link %>).
 
-Mit freundlichen Grüßen,
+Mit freundlichen Grüßen
 
-Das Projekt-Team "<%= @project.name('de') %>"
+<%= @project.name(:de) %>
 <% end -%>

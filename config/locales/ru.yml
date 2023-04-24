@@ -648,7 +648,8 @@ ru:
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
       project_access_requested: ungeprüft
-      account_deactivated: gesperrt
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
   help_texts:
     metadata_fields:
@@ -1164,6 +1165,10 @@ ru:
         zipcode: Индекс
         city: Населённый пункт
         country: Страна
+        job_description: Профессия
+        research_intentions: Цель изысканий
+        specification: Уточнение цели
+        organization: Учреждение
         tos_agreement: Правила пользования сайтом
         priv_agreement: Hinweise zum Datenschutz
         register: Отправить регистрацию
@@ -1174,10 +1179,6 @@ ru:
       user_project:
         workflow_state: Status
         admin_comments: Kommentar
-        job_description: Профессия
-        research_intentions: Цель изысканий
-        specification: Уточнение цели
-        organization: Учреждение
         receive_newsletter: Newsletter
       user_role:
         role_id: Rolle

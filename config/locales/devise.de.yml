@@ -36,7 +36,7 @@ de:
         subject: Ihre Registrierung für die Anwendung '%{project_name}'
       reset_password_instructions:
         subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
-      account_deactivated:
+      project_access_terminated:
         subject: Ihr Zugang zu der Anwendung '%{project_name}'
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.

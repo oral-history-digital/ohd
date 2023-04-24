@@ -30,9 +30,9 @@
   <p>Με εκτίμηση,</p>
   <p>Η ομάδα του προγράμματος "<%= @project.name('el') %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r <%= @user.display_name %>,</p></p>
-  <p>Sie haben nun Zugang zu der Anwendung "<%= @project.name('de') %>" für das von Ihnen angegebene Recherche-Anliegen.</p>
-  <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link && @conditions_link.url(:de) %>). Das Mitschneiden, Veröffentlichen oder Verbreiten von Interviews, Ausschnitten oder Fotos erfordert eine gesonderte Erlaubnis. Bitte zitieren Sie nur anonymisiert mit Angabe der Quelle.</p>
-  <p>Mit freundlichen Grüßen,</p>
-  <p>Das Projekt-Team "<%= @project.name('de') %>"</p>
+  <p>Guten Tag <%= @user.display_name %></p>
+  <p>Sie haben nun Zugang zu der Anwendung <%= @project.name(:de) %> für das von Ihnen angegebene Recherche-Anliegen.</p>
+  <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link %>).</p>
+  <p>Mit freundlichen Grüßen</p>
+  <p><%= @project.name(:de) %></p>
 <% end -%>
