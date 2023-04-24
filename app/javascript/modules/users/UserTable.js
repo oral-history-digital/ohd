@@ -10,17 +10,33 @@ import UserRowActions from './UserRowActions';
 import ProjectShortnamesCell from './ProjectShortnamesCell';
 import RolesCell from './RolesCell';
 import TasksCell from './TasksCell';
+import { SelectContainer } from 'modules/forms';
 
 export default function UserTable() {
     const { t, locale } = useI18n();
+    const project = useSelector(getCurrentProject);
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
-    const project = useSelector(getCurrentProject);
-    const { data, isLoading } = useUsers(page, filter);
+    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'account_confirmed');
+    const handleWorkflowStateFilterChange = (name, value) => {
+        setWorkflowStateFilter(value);
+    };
+    const workflowStateFilterValues = project.is_ohd ? [
+        'confirmed',
+        'blocked',
+    ] : [
+        'account_confirmed',
+        'project_access_granted',
+        'project_access_rejected',
+        'project_access_postponed',
+        'project_access_revoked',
+    ];
+
+    const { data, isLoading } = useUsers(page, filter, workflowStateFilter);
 
     const usersCount = typeof data === 'undefined' ?
         undefined :
-        Object.values(data).length;
+        Object.values(data?.data).length;
 
     const currentUserProject = (row, project) => {
         return Object.values(row.user_projects).find(p => p.project_id === project.id)
@@ -113,7 +129,17 @@ export default function UserTable() {
                 manualFiltering
                 manualFilterFunc={setFilter}
                 manualFilter={filter}
-            />
+            >
+                <SelectContainer
+                    className="u-mb-small"
+                    values={workflowStateFilterValues}
+                    label={t('activerecord.attributes.user.workflow_state')}
+                    attribute='workflow_state'
+                    optionsScope='workflow_states'
+                    handleChange={handleWorkflowStateFilterChange}
+                    withEmpty={true}
+                />
+            </TableWithPagination>
         </>
     );
 }
