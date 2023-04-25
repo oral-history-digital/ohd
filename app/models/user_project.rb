@@ -66,6 +66,7 @@ class UserProject < ApplicationRecord
     update(terminated_at: Date.today, processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_blocked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
     CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project}).deliver_now
+    AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_now
   end
 
   [
