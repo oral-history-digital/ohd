@@ -1770,16 +1770,17 @@ ru:
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
-    request_project_access:
-      title: Antrag auf Freischaltung für die Anwendung %{project}
-      step_two: 'Schritt 2 - '
-      description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+    project_access:
+      request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_two: 'Schritt 2 - '
+      request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
-      submit: Antrag auf Freischaltung absenden
-      access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
-      access_link: 'Freischaltung für dieses Archiv beantragen'
-      in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
-      in_process_text: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш аккаунт будет активирован и Вы получите доступ к материалам Архива интервью.
+      request_submit: Antrag auf Freischaltung absenden
+      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      request_access_link: 'Freischaltung für dieses Archiv beantragen'
+      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      request_in_process_text: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш аккаунт будет активирован и Вы получите доступ к материалам Архива интервью.
+      blocked_text: Sie wurden für dieses Archiv gesperrt.
     admin:
       person_details:
         contributions:

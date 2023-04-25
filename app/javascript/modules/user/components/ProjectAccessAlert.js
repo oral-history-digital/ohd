@@ -15,23 +15,25 @@ export default function ProjectAccessAlert ({
     if (project.grant_access_without_login) return null;
     if (!!user && project?.grant_project_access_instantly) return null;
 
-    const unactivatedProject = user?.user_projects &&
-        Object.values(user.user_projects).find( urp => {
-            return urp.project_id === project?.id && urp.workflow_state !== 'project_access_granted'
+    const currentUserProject = user?.user_projects &&
+        Object.values(user.user_projects).find( up => {
+            return up.project_id === project?.id
         });
 
-    if (unactivatedProject) {
-        return <div className='error'>{`${t('modules.request_project_access.in_process_text')}`}</div>
+    if (currentUserProject.workflow_state === 'project_access_requested') {
+        return <div className='error'>{`${t('modules.project_access.request_in_process_text')}`}</div>
+    } else if (currentUserProject.workflow_state === 'project_access_blocked') {
+        return <div className='error'>{`${t('modules.project_access.blocked_text')}`}</div>
     } else {
         return (
             <>
                 <p className='error'>
-                    {t( 'modules.request_project_access.access_explanation')}
+                    {t( 'modules.project_access.request_access_explanation')}
                 </p>
                 <Modal
-                    title={t( 'modules.request_project_access.access_link')}
+                    title={t( 'modules.project_access.request_access_link')}
                     triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-                    trigger={t( 'modules.request_project_access.access_link')}
+                    trigger={t( 'modules.project_access.request_access_link')}
                 >
                     {close => (
                         <RequestProjectAccessFormContainer

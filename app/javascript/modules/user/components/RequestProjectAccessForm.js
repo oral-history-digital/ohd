@@ -23,8 +23,8 @@ export default function RequestProjectAccessForm({
 
     return (
         <>
-            <h2>{(showStepTwo ? t('modules.request_project_access.step_two') : '') + t('modules.request_project_access.title', {project: project.name[locale]})}</h2>
-            <p>{t('modules.request_project_access.description')}</p>
+            <h2>{(showStepTwo ? t('modules.project_access.request_step_two') : '') + t('modules.project_access.request_title', {project: project.name[locale]})}</h2>
+            <p>{t('modules.project_access.request_description')}</p>
             <Form
                 scope='user_project'
                 onSubmit={(params) => {
@@ -38,7 +38,7 @@ export default function RequestProjectAccessForm({
                     project_id: project.id,
                     user_id: currentUser.id,
                 }}
-                submitText='modules.request_project_access.submit'
+                submitText='modules.project_access.request_submit'
                 elements={[
                     {
                         elementType: 'input',
