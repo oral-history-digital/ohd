@@ -28,7 +28,6 @@ export default function UserTable() {
         'project_access_requested',
         'project_access_granted',
         'project_access_rejected',
-        'project_access_postponed',
         'project_access_blocked',
         'project_access_terminated',
     ];
