@@ -72,13 +72,13 @@ class User < ApplicationRecord
   end
 
   def block
-    # send email to user
-    # revoke access to all projects
+    #TODO: send email to user
+    access_tokens.destroy_all
+    sessions.destroy_all
   end
 
   def revoke_block
-    # send email to user
-    # grant access to all projects
+    #TODO: send email to user
   end
 
   def projects
