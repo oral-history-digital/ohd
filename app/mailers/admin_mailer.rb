@@ -14,6 +14,19 @@ class AdminMailer < ApplicationMailer
     )
   end
 
+  def blocked_project_access
+    @project = params[:project]
+    @user = params[:user]
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
+
+    mail(
+      subject: "Sperrung eines Nutzer*innen-Accounts in der Anwendung #{@project.name(:de)}",
+      from: @project.contact_email,
+      to: "mail@cedis.fu-berlin.de",
+      date: Time.now
+    )
+  end
+
   def finished_job
     @receiver = params[:receiver]
     @type = params[:type]
