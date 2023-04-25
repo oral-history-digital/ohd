@@ -37,11 +37,11 @@ export default function CatalogTable({
                                             header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())
                                         )}
                                     </button>
-                                    {/*header.column.getCanFilter() ? (
+                                    {header.column.getCanFilter() ? (
                                         <div>
                                             <Filter column={header.column} table={instance} />
                                         </div>
-                                    ) : null*/}
+                                    ) : null}
                                 </th>
                             ))}
                         </tr>

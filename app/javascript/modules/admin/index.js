@@ -6,6 +6,8 @@ export { default as EditInterview } from './EditInterview';
 export { default as EditProjectConfig } from './EditProjectConfig';
 export { default as EditProjectDisplay } from './EditProjectDisplay';
 export { default as EditProjectInfo } from './EditProjectInfo';
+export { default as EditViewOrRedirect } from './EditViewOrRedirect';
+export { default as EventTypesAdminPage } from './EventTypesAdminPage';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as HelpTextAdminPage } from './HelpTextAdminPage';
 export { default as UsersAdminPage } from './UsersAdminPage';

@@ -11,6 +11,7 @@ import { useEventTypes, EventTypeForm, useMutateEventTypes } from 'modules/event
 import { useInvalidateAllPersonData } from 'modules/person';
 import DataContainer from './DataContainer';
 import AddButton from './AddButton';
+import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
@@ -72,61 +73,63 @@ export default function EventTypesAdminPage() {
         });
 
     return (
-        <div className='wrapper-content register'>
-            <Helmet>
-                <title>
-                    {t(`activerecord.models.${scope}.other`)}
-                </title>
-            </Helmet>
+        <EditViewOrRedirect>
+            <div className='wrapper-content register'>
+                <Helmet>
+                    <title>
+                        {t(`activerecord.models.${scope}.other`)}
+                    </title>
+                </Helmet>
 
-            <AuthShowContainer ifLoggedIn>
-                <h1 className="registry-entries-title">
-                    {t(`activerecord.models.${scope}.other`)}
-                </h1>
+                <AuthShowContainer ifLoggedIn>
+                    <h1 className="registry-entries-title">
+                        {t(`activerecord.models.${scope}.other`)}
+                    </h1>
 
-                <div className={classNames('LoadingOverlay', {
-                    'is-loading': isValidating
-                })}>
-                    {!hideAdd && (
-                        <AddButton
-                            scope={scope}
-                            onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                            disabled={isValidating}
-                        />
-                    )}
+                    <div className={classNames('LoadingOverlay', {
+                        'is-loading': isValidating
+                    })}>
+                        {!hideAdd && (
+                            <AddButton
+                                scope={scope}
+                                onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
+                                disabled={isValidating}
+                            />
+                        )}
 
-                    {sortedData.map(data => (
-                        <DataContainer
-                            data={data}
-                            scope={scope}
-                            outerScope={outerScope}
-                            outerScopeId={outerScopeId}
-                            detailsAttributes={detailsAttributes}
-                            joinedData={joinedData}
-                            form={renderForm}
-                            showComponent={showComponent}
-                            hideEdit={hideEdit}
-                            hideDelete={hideDelete}
-                            handleDelete={handleDeleteEventType}
-                            disabled={isValidating}
-                            key={`${scope}-${data.id}`}
-                        />
-                    ))}
+                        {sortedData.map(data => (
+                            <DataContainer
+                                data={data}
+                                scope={scope}
+                                outerScope={outerScope}
+                                outerScopeId={outerScopeId}
+                                detailsAttributes={detailsAttributes}
+                                joinedData={joinedData}
+                                form={renderForm}
+                                showComponent={showComponent}
+                                hideEdit={hideEdit}
+                                hideDelete={hideDelete}
+                                handleDelete={handleDeleteEventType}
+                                disabled={isValidating}
+                                key={`${scope}-${data.id}`}
+                            />
+                        ))}
 
-                    {!hideAdd && (
-                        <AddButton
-                            scope={scope}
-                            onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                            disabled={isValidating}
-                        />
-                    )}
-                </div>
+                        {!hideAdd && (
+                            <AddButton
+                                scope={scope}
+                                onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
+                                disabled={isValidating}
+                            />
+                        )}
+                    </div>
 
-            </AuthShowContainer>
+                </AuthShowContainer>
 
-            <AuthShowContainer ifLoggedOut ifNoProject>
-                {t('devise.failure.unauthenticated')}
-            </AuthShowContainer>
-        </div>
+                <AuthShowContainer ifLoggedOut ifNoProject>
+                    {t('devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
+        </EditViewOrRedirect>
     );
 }

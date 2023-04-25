@@ -9,3 +9,8 @@
     padding-right: 9px;
   }
 }
+
+.Sidebar--header {
+  display: flex;
+  padding: $base-unit $base-unit $base-unit ($base-unit * 0.75);
+}

@@ -39,7 +39,7 @@ export default function CollectionData({
     }
 
     if (error) {
-        return <p className={className}>{t('error')}: {error}</p>;
+        return <p className={className}>{t('error')}: {error.message}</p>;
     }
 
     if (!collectionData || collectionData.num_interviews === 0) {
