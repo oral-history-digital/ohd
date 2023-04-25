@@ -6,6 +6,7 @@ import { Form } from 'modules/forms';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
+import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default class Uploads extends Component {
 
@@ -116,18 +117,20 @@ export default class Uploads extends Component {
 
     render() {
         return (
-            <div className='wrapper-content register'>
-                <Helmet>
-                    <title>{t(this.props, `edit.upload.upload`)}</title>
-                </Helmet>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
-                    {this.content()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
-            </div>
+            <EditViewOrRedirect>
+                <div className='wrapper-content register'>
+                    <Helmet>
+                        <title>{t(this.props, `edit.upload.upload`)}</title>
+                    </Helmet>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
+                        {this.content()}
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </div>
+            </EditViewOrRedirect>
         );
     }
 }

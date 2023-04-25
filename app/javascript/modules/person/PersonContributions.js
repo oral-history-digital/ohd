@@ -17,7 +17,7 @@ export default function PersonContributions({
 
     if (error) {
         return (
-            <p>{t('modules.admin.person_details.contributions.error')}: {error}</p>
+            <p>{t('modules.admin.person_details.contributions.error')}: {error.message}</p>
         );
     }
 
