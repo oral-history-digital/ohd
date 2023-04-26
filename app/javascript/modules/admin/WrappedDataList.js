@@ -13,6 +13,7 @@ import statifiedQuery from './statifiedQuery';
 import DataContainer from './DataContainer';
 import AddButton from './AddButton';
 import sortData from './sortData';
+import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default class WrappedDataList extends Component {
     constructor(props) {
@@ -122,59 +123,61 @@ export default class WrappedDataList extends Component {
             locale);
 
         return (
-            <div className='wrapper-content register'>
-                <Helmet>
-                    <title>
-                        {t(this.props, `activerecord.models.${scope}.other`)}
-                    </title>
-                </Helmet>
+            <EditViewOrRedirect>
+                <div className='wrapper-content register'>
+                    <Helmet>
+                        <title>
+                            {t(this.props, `activerecord.models.${scope}.other`)}
+                        </title>
+                    </Helmet>
 
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className="registry-entries-title">
-                        {t(this.props, `activerecord.models.${scope}.other`)}
-                    </h1>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <h1 className="registry-entries-title">
+                            {t(this.props, `activerecord.models.${scope}.other`)}
+                        </h1>
 
-                    {!hideAdd && (
-                        <AddButton
-                            scope={scope}
-                            interview={interview}
-                            task={task}
-                            onClose={closeModal => this.form(undefined, closeModal, closeModal)}
-                        />
-                    )}
+                        {!hideAdd && (
+                            <AddButton
+                                scope={scope}
+                                interview={interview}
+                                task={task}
+                                onClose={closeModal => this.form(undefined, closeModal, closeModal)}
+                            />
+                        )}
 
-                    {sortedData.map(data => (
-                        <DataContainer
-                            data={data}
-                            scope={scope}
-                            outerScope={outerScope}
-                            outerScopeId={outerScopeId}
-                            detailsAttributes={detailsAttributes}
-                            joinedData={joinedData}
-                            form={this.form}
-                            showComponent={showComponent}
-                            hideEdit={hideEdit}
-                            hideDelete={hideDelete}
-                            key={`${scope}-${data.id}`}
-                        />
-                    ))}
+                        {sortedData.map(data => (
+                            <DataContainer
+                                data={data}
+                                scope={scope}
+                                outerScope={outerScope}
+                                outerScopeId={outerScopeId}
+                                detailsAttributes={detailsAttributes}
+                                joinedData={joinedData}
+                                form={this.form}
+                                showComponent={showComponent}
+                                hideEdit={hideEdit}
+                                hideDelete={hideDelete}
+                                key={`${scope}-${data.id}`}
+                            />
+                        ))}
 
-                    {!hideAdd && (
-                        <AddButton
-                            scope={scope}
-                            interview={interview}
-                            task={task}
-                            onClose={closeModal => this.form(undefined, closeModal, closeModal)}
-                        />
-                    )}
+                        {!hideAdd && (
+                            <AddButton
+                                scope={scope}
+                                interview={interview}
+                                task={task}
+                                onClose={closeModal => this.form(undefined, closeModal, closeModal)}
+                            />
+                        )}
 
-                    {this.renderScrollObserver()}
-                </AuthShowContainer>
+                        {this.renderScrollObserver()}
+                    </AuthShowContainer>
 
-                <AuthShowContainer ifLoggedOut ifNoProject>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
-            </div>
+                    <AuthShowContainer ifLoggedOut ifNoProject>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </div>
+            </EditViewOrRedirect>
         );
     }
 }
