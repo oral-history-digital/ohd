@@ -17,10 +17,11 @@ class Person < ApplicationRecord
   has_many :histories, dependent: :destroy
   has_many :biographical_entries, dependent: :destroy
 
-  validates :gender, inclusion: %w(male female diverse), allow_nil: true
+  validates :gender, inclusion: %w(male female diverse not_specified),
+    allow_nil: true
 
   translates :first_name, :last_name, :birth_name, :other_first_names,
-    :alias_names, :description,
+    :alias_names, :description, :pseudonym_first_name, :pseudonym_last_name,
     fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations, :events
 
@@ -80,6 +81,7 @@ class Person < ApplicationRecord
 
   after_touch do
     interviews = self.interviews
+    interviews.each(&:touch)
     Sunspot.index! [interviews]
   end
 
@@ -111,8 +113,13 @@ class Person < ApplicationRecord
 
   def name(last_name_as_inital = false)
     I18n.available_locales.inject({}) do |mem, locale|
-      inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
-      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}"
+      orig_locale = I18n.locale
+      I18n.locale = locale
+
+      inital_or_last_name = last_name_as_inital ? "#{last_name_used.first}." : last_name_used
+      mem[locale] = "#{inital_or_last_name}, #{first_name_used}"
+
+      I18n.locale = orig_locale
       mem
     end
   end
@@ -124,6 +131,8 @@ class Person < ApplicationRecord
         last_name: translation.last_name || last_name(I18n.default_locale),
         alias_name: translation.alias_names || alias_names(I18n.default_locale),
         birth_name: translation.birth_name || birth_name(I18n.default_locale),
+        pseudonym_first_name: translation.pseudonym_first_name || pseudonym_first_name(I18n.default_locale),
+        pseudonym_last_name: translation.pseudonym_last_name || pseudonym_last_name(I18n.default_locale)
       }
       mem
     end
@@ -131,6 +140,65 @@ class Person < ApplicationRecord
 
   def full_name(locale)
     "#{last_name(locale)}, #{first_name(locale)}"
+  end
+
+  def display_name(anonymous: false, reversed: false)
+    used_title = display_title_part
+    fn = first_name_used
+    ln = anonymous ?
+      last_name_used.strip.slice(0) + '.' :
+      last_name_used
+
+    if fn.blank?
+      if reversed
+        "#{I18n.t("honorific.#{gender}")} #{ln}"
+      else
+        used_title.blank? ?
+          "#{I18n.t("honorific.#{gender}")} #{ln}" :
+          "#{I18n.t("honorific.#{gender}")} #{used_title} #{ln}"
+      end
+    else
+      if reversed
+        "#{ln}, #{fn}"
+      else
+        used_title.blank? ?
+          "#{fn} #{ln}" :
+          "#{used_title} #{fn} #{ln}"
+      end
+    end
+  end
+
+  def display_title_part
+    used_gender = gender == 'female' ? 'female' : 'male'
+
+    if title.present?
+      I18n.t("modules.person.abbr_titles.#{title}_#{used_gender}")
+    else
+      ''
+    end
+  end
+
+  def initials
+    first_part = initials_from_name_part(first_name_used)
+    last_part = initials_from_name_part(last_name_used)
+
+    first_part + last_part
+  end
+
+  def initials_from_name_part(part)
+    if part.blank?
+      return ''
+    end
+
+    part.strip[0].upcase
+  end
+
+  def first_name_used
+    use_pseudonym ? pseudonym_first_name : first_name
+  end
+
+  def last_name_used
+    use_pseudonym ? pseudonym_last_name : last_name
   end
 
   def identifier

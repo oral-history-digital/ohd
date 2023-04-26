@@ -50,52 +50,61 @@ module Interview::Export
   def to_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     first_segment_with_heading = segments.with_heading.first
-    ApplicationController.new.render_to_string(
-      template: 'latex/interview_transcript',
-      formats: :pdf,
-      layout: 'latex',
-      locals: {
-        interview: self,
-        doc_type: 'transcript',
-        header_locale: header_locale,
-        content_locale: content_locale,
-        content_locale_public: "#{content_locale}-public",
-        content_locale_human: I18n.t(content_locale, locale: header_locale),
-        headings_in_content_locale: !!first_segment_with_heading &&
-          (first_segment_with_heading.mainheading(content_locale) || first_segment_with_heading.subheading(content_locale))
-      }
-    )
+
+    I18n.with_locale header_locale.to_sym do
+      ApplicationController.new.render_to_string(
+        template: 'latex/interview_transcript',
+        formats: :pdf,
+        layout: 'latex',
+        locals: {
+          interview: self,
+          doc_type: 'transcript',
+          header_locale: header_locale,
+          content_locale: content_locale,
+          content_locale_public: "#{content_locale}-public",
+          content_locale_human: I18n.t(content_locale, locale: header_locale),
+          headings_in_content_locale: !!first_segment_with_heading &&
+            (first_segment_with_heading.mainheading(content_locale) || first_segment_with_heading.subheading(content_locale))
+        }
+      )
+    end
   end
 
   def biography_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
-    ApplicationController.new.render_to_string(
-      template: 'latex/biographical_entries',
-      formats: :pdf,
-      layout: 'latex',
-      locals: {
-        interview: self,
-        doc_type: 'biographical_entries',
-        biography: true,
-        header_locale: header_locale,
-        content_locale: content_locale,
-      }
-    )
+
+    I18n.with_locale header_locale.to_sym do
+      ApplicationController.new.render_to_string(
+        template: 'latex/biographical_entries',
+        formats: :pdf,
+        layout: 'latex',
+        locals: {
+          interview: self,
+          doc_type: 'biographical_entries',
+          biography: true,
+          header_locale: header_locale,
+          content_locale: content_locale,
+        }
+      )
+    end
   end
 
   def observations_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
-    ApplicationController.new.render_to_string(
-      template: 'latex/interview_observations',
-      formats: :pdf,
-      layout: 'latex',
-      locals: {
-        interview: self,
-        doc_type: 'observations',
-        header_locale: header_locale,
-        content_locale: content_locale,
-      }
-    )
+
+    I18n.with_locale header_locale.to_sym do
+      ApplicationController.new.render_to_string(
+        template: 'latex/interview_observations',
+        formats: :pdf,
+        layout: 'latex',
+        locals: {
+          interview: self,
+          doc_type: 'observations',
+          header_locale: header_locale,
+          content_locale: content_locale,
+        }
+      )
+    end
   end
 
   def metadata_xml(locale)

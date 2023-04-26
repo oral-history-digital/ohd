@@ -19,7 +19,7 @@ gem 'mini_magick'
 gem 'mini_exiftool'
 gem 'image_processing', '~> 1.2'
 gem 'mime-types'
-gem 'globalize'
+gem 'globalize', '~> 6.2.1'
 gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
@@ -87,22 +87,12 @@ group :test do
   gem 'rspec', '~> 3.10.0'
   gem 'rspec-rails', '~> 4.0.2'
   gem 'rspec-snapshot', '~> 0.1.2'
-  # Faster tests:
-  gem 'spork'
+  gem 'spork' # faster tests
   gem 'pdf-inspector', require: "pdf/inspector"
   gem 'pdf-reader'
-  #gem 'rest-client'
-  #gem 'json'
-  #gem 'pry'
-  gem 'factory_bot'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-activemodel-mocks'
   gem 'simplecov'
-  # Integration tests:
-  #gem 'capybara'
-  #gem 'selenium-webdriver'
-  #gem 'database_cleaner'
-  #gem 'email_spec'
 end
 
 group :production do

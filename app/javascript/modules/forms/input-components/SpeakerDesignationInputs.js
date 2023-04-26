@@ -2,7 +2,7 @@ import { createElement } from 'react';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { formatPersonName, usePeople } from 'modules/person';
+import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import InputContainer from './InputContainer';
 
@@ -11,7 +11,7 @@ export default function SpeakerDesignationInputs({
     value: contributions,
     handleChange,
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t } = useI18n();
     const { data: people, isLoading } = usePeople();
 
     const onChange = (name, v) => {
@@ -39,7 +39,8 @@ export default function SpeakerDesignationInputs({
             <h4>{t('speaker_designations')}</h4>
             {
                 contributions.map(contribution => {
-                    const label = formatPersonName(people[contribution.person_id], translations, { locale, withTitle: true });
+                    const contributor = people[contribution.person_id];
+                    const label = contributor?.display_name;
                     return createElement(InputContainer, {
                         key: contribution.id,
                         scope: attribute,

@@ -11,7 +11,6 @@ import { ContentField } from 'modules/forms';
 import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 import { humanReadable } from 'modules/data';
-import { formatPersonName } from 'modules/person';
 import { EventContentField } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import {
@@ -62,18 +61,12 @@ export default function PersonData({
         return <Spinner />;
     }
 
-    const personName = formatPersonName(person, translations, {
-        locale,
-        fallbackLocale: project.default_locale,
-        withTitle: true,
-    });
-
     return (
         <>
             <AuthShowContainer ifLoggedIn>
                 <ContentField
                     label={t('interviewee_name')}
-                    value={personName}
+                    value={person.display_name}
                     fetching={isValidating}
                 >
                     <AuthorizedContent object={person} action='update'>
