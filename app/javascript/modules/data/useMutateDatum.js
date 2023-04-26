@@ -7,7 +7,7 @@ export default function useMutateDatum() {
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 
-    return function mutatePersonData(id, scope, updateDocument) {
+    return function mutateData(id, scope, updateDocument) {
         const path = `${pathBase}/${scope}/${id}.json`;
 
         if (typeof updateDocument === 'function') {
