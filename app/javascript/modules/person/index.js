@@ -1,5 +1,3 @@
-export { default as formatPersonName } from './formatPersonName';
-
 export {
     PERSON_GENDER_MALE,
     PERSON_GENDER_FEMALE,

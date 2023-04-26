@@ -1,7 +1,4 @@
-import { formatPersonName } from 'modules/person';
-import getInitials from './getInitials';
-
-export default function getContributorInformation(contributions, people, locale, translations) {
+export default function getContributorInformation(contributions, people) {
     if (!people) {
         return {};
     }
@@ -24,22 +21,10 @@ export default function getContributorInformation(contributions, people, locale,
           return;
         }
 
-        const info = {};
-
-        const firstName = contributor.names[locale]?.first_name;
-        const lastName = contributor.names[locale]?.last_name;
-
-        if (firstName && lastName) {
-            info.initials = getInitials(firstName, lastName);
-        } else if (contribution.speaker_designation) {
-            info.initials = contribution.speaker_designation;
-        } else {
-            info.initials = undefined;
-        }
-
-        info.fullname = formatPersonName(contributor, translations, { locale });
-
-        contributorInfo[contributor.id] = info;
+        contributorInfo[contributor.id] = {
+            initials: contributor.initials || contribution.speaker_designation || undefined,
+            fullname: contributor.display_name
+        };
     });
 
     return contributorInfo;

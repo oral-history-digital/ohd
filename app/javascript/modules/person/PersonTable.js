@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { useI18n } from 'modules/i18n';
-import { TableWithPagination, DateCell } from 'modules/tables';
+import { TableWithPagination, BooleanCell, DateCell } from 'modules/tables';
 import PersonRowActions from './PersonRowActions';
 import usePeople from './usePeople';
 
@@ -10,7 +10,16 @@ export default function PersonTable() {
     const { data, isLoading } = usePeople();
 
     const personArray = Object.values(data || {})
-        .sort((a, b) => a.name[locale].localeCompare(b.name[locale]));
+        .sort((a, b) => {
+            const aLastName = a.names[locale]?.last_name;
+            const bLastName = b.names[locale]?.last_name;
+
+            if (aLastName && bLastName) {
+                return aLastName.localeCompare(bLastName);
+            } else {
+                return 0;
+            }
+        });
 
     const columns = useMemo(() => ([
         {
@@ -26,6 +35,21 @@ export default function PersonTable() {
             id: 'first_name',
             accessorFn: row => row.names[locale]?.first_name,
             header: t('activerecord.attributes.person.first_name')
+        },
+        {
+            id: 'pseudonym_last_name',
+            accessorFn: row => row.names[locale]?.pseudonym_last_name,
+            header: t('activerecord.attributes.person.pseudonym_last_name')
+        },
+        {
+            id: 'pseudonym_first_name',
+            accessorFn: row => row.names[locale]?.pseudonym_first_name,
+            header: t('activerecord.attributes.person.pseudonym_first_name')
+        },
+        {
+            accessorKey: 'use_pseudonym',
+            header: t('activerecord.attributes.person.use_pseudonym'),
+            cell: BooleanCell
         },
         {
             id: 'title',
