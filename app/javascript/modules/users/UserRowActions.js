@@ -5,10 +5,13 @@ import UserEdit from './UserEdit';
 
 export default function UserRowActions({
     row,
+    getValue,
 }) {
+    const dataPath = getValue();
     return (
         <RowActions
             row={row}
+            dataPath={dataPath}
             editComponent={UserEdit}
         />
     );

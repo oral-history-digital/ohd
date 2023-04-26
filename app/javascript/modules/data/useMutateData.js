@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 
 import { usePathBase } from 'modules/routes';
 
-export default function useMutateData(scope) {
+export default function useMutateData(scope, dataPath) {
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 
     return function mutateData(updateDocument) {
-        const path = `${pathBase}/${scope}.json`;
+        const path = dataPath || `${pathBase}/${scope}.json`;
 
         if (typeof updateDocument === 'function') {
             mutate(path, updateDocument, { revalidate: false });

@@ -15,8 +15,10 @@ import { SelectContainer } from 'modules/forms';
 export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
+
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
+
     const [workflowStateFilter, setWorkflowStateFilter] = useState('');//project.is_ohd ? 'confirmed' : 'project_access_requested');
     const handleWorkflowStateFilterChange = (name, value) => {
         setWorkflowStateFilter(value);
@@ -32,7 +34,9 @@ export default function UserTable() {
         'project_access_terminated',
     ];
 
-    const { data, isLoading } = useUsers(page, filter, workflowStateFilter);
+    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter);
+
+    const getDataPath = (row) => dataPath;
 
     const usersCount = typeof data === 'undefined' ?
         undefined :
@@ -108,9 +112,10 @@ export default function UserTable() {
         {
             id: 'actions',
             header: t('modules.tables.actions'),
-            cell: UserRowActions
+            accessorFn: getDataPath,
+            cell: UserRowActions,
         }
-    ]), [locale, project]);
+    ]), [locale, project, dataPath]);
 
     const columns = baseColumns.concat(!project.is_ohd ? projectColumns : ohdColumns).concat(actionColumns);
 

@@ -6,6 +6,7 @@ import { getCurrentProject } from 'modules/data';
 
 export default function UserEdit ({
     data,
+    dataPath,
     onSubmit,
 }) {
 
@@ -53,6 +54,7 @@ export default function UserEdit ({
             }
             <UserFormContainer
                 data={project.is_ohd ? data : userProject}
+                dataPath={dataPath}
                 userId={data.id}
                 scope={scope}
                 onSubmit={onSubmit}

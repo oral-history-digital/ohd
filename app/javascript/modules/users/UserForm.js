@@ -7,13 +7,14 @@ import { usePathBase } from 'modules/routes';
 
 export default function UserForm({
     data,
+    dataPath,
     userId,
     scope,
     locale,
     project,
     onSubmit,
 }) {
-    const mutateData = useMutateData('users');
+    const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
 
