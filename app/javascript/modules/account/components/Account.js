@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/layout';
@@ -8,7 +7,6 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
 import ProjectAccessAlert from './ProjectAccessAlert';
-import EditViewButtonContainer from './EditViewButtonContainer';
 import LoginForm from './LoginForm';
 
 export default function Account ({
@@ -55,7 +53,6 @@ export default function Account ({
                     <div className='info'>
                         {`${t('logged_in_as')} ${firstName} ${lastName}`}
                     </div>
-                    <EditViewButtonContainer />
                     <button
                         type="button"
                         className='Button Button--fullWidth Button--secondaryAction u-mt-small'
@@ -92,7 +89,7 @@ export default function Account ({
                         {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
                         {(error || projectId === 'campscapes') ? '' : t('registration_needed')}
                     </p>
-                    { 
+                    {
                         (['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) !== -1) ?
                             <LoginForm /> :
                             <button

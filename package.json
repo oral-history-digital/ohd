@@ -21,7 +21,7 @@
     "@reach/tabs": "^0.16.4",
     "@reach/visually-hidden": "^0.16.0",
     "@silvermine/videojs-quality-selector": "^1.2.5",
-    "@tanstack/react-table": "8.2.3",
+    "@tanstack/react-table": "8.8.5",
     "actioncable": "^5.2.3",
     "babel-loader": "^8.3.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
