@@ -20,9 +20,9 @@ export default function ProjectAccessAlert ({
             return up.project_id === project?.id
         });
 
-    if (currentUserProject.workflow_state === 'project_access_requested') {
+    if (currentUserProject?.workflow_state === 'project_access_requested') {
         return <div className='error'>{`${t('modules.project_access.request_in_process_text')}`}</div>
-    } else if (currentUserProject.workflow_state === 'project_access_blocked') {
+    } else if (currentUserProject?.workflow_state === 'project_access_blocked') {
         return <div className='error'>{`${t('modules.project_access.blocked_text')}`}</div>
     } else {
         return (
