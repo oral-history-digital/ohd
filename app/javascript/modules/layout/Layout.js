@@ -14,9 +14,8 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
-import { AfterRegisterPopup } from 'modules/user';
-import { AfterConfirmationPopup } from 'modules/user';
-import { AfterRequestProjectAccessPopup } from 'modules/user';
+import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
+    CorrectUserDataPopup } from 'modules/user';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -103,6 +102,7 @@ export default function Layout({
                 <AfterRegisterPopup />
                 <AfterConfirmationPopup />
                 <AfterRequestProjectAccessPopup />
+                <CorrectUserDataPopup />
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}

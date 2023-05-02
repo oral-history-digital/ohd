@@ -14,6 +14,20 @@ class AdminMailer < ApplicationMailer
     )
   end
 
+  def corrected_project_access_data
+    user = params[:user]
+    @project = params[:project]
+    @user_name = user.full_name
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
+
+    mail(
+      subject: "Korrigierte Benutzerdaten zur Prüfung",
+      from: "noreply@cedis.fu-berlin.de",
+      to: @project.contact_email,
+      date: Time.now
+    )
+  end
+
   def blocked_project_access
     @project = params[:project]
     @user = params[:user]

@@ -33,7 +33,7 @@ de:
       project_access_granted:
         subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
       project_access_rejected:
-        subject: Ihre Registrierung für die Anwendung '%{project_name}'
+        subject: Ihr Antrag auf Freischaltung für die Anwendung '%{project_name}'
       reset_password_instructions:
         subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
       project_access_terminated:

@@ -157,7 +157,7 @@ class UsersController < ApplicationController
       :gender,
       :job_description,
       :research_intentions,
-      :comments,
+      :specification,
       :organization,
       :homepage,
       :street,
