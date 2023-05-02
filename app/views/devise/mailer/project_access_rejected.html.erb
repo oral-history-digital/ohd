@@ -32,10 +32,12 @@
   <p>Con saludos cordiales,</p>
   <p>El equipo del proyecto "<%= @project.name('es') %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r <%= @user.display_name %>,</p>
-  <p>Sie haben versucht sich für die Anwendung "<%= @project.name('de') %>" zu registrieren.</p>
-  <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.</p>
-  <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
-  <p>Mit freundlichen Grüßen,</p>
-  <p>Das Projekt-Team "<%= @project.name('de') %>"</p>
+  <p>Guten Tag <%= @user.display_name %>,</p>
+  <p>Sie haben eine Freischaltung für die Anwendung <%= @project.name('de') %> beantragt.</p>
+  <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs (<%= @conditions_link %>) entsprechen.</p>
+  <p>Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.</p>
+  <p><%= link_to 'Korrigieren', @project.domain_with_optional_identifier + '/de' %></p>
+  <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.</p>
+  <p>Mit freundlichen Grüßen</p>
+  <p><%= @project.name('de') %></p>
 <% end -%>

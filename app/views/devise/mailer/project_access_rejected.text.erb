@@ -52,15 +52,18 @@ El equipo del proyecto "<%= @project.name('es') %>"
 
 сотрудники проекта "<%= @project.name('ru') %>"
 <% else -%>
-Sehr geehrte/r <%= @user.display_name %>,
+Guten Tag <%= @user.display_name %>,
 
-Sie haben versucht sich für die Anwendung "<%= @project.name('de') %>" zu registrieren.
+Sie haben eine Freischaltung für die Anwendung <%= @project.name('de') %> beantragt.
 
-Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.
+Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs (<%= @conditions_link %>) entsprechen.
+Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.
 
-Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.
+<%= @project.domain_with_optional_identifier + '/de' %>
 
-Mit freundlichen Grüßen,
+Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.
 
-Das Projekt-Team "<%= @project.name('de') %>"
+Mit freundlichen Grüßen
+
+<%= @project.name('de') %>
 <% end -%>
