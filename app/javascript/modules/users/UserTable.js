@@ -19,7 +19,7 @@ export default function UserTable() {
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
 
-    const [workflowStateFilter, setWorkflowStateFilter] = useState('');//project.is_ohd ? 'confirmed' : 'project_access_requested');
+    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'project_access_requested');
     const handleWorkflowStateFilterChange = (name, value) => {
         setWorkflowStateFilter(value);
     };
