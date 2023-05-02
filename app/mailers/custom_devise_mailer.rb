@@ -16,6 +16,8 @@ class CustomDeviseMailer < Devise::Mailer
 
   def project_access_rejected(record, opts={})
     @project = opts[:project]
+    @user_project = opts[:user_project]
+    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
     opts[:from] = @project.contact_email
     opts[:reply_to] = @project.contact_email
     devise_mail(record, :project_access_rejected, opts)

@@ -11,20 +11,25 @@ class UserProject < ApplicationRecord
     AdminMailer.with(user: self.user, project: project).new_registration_info.deliver_now if user.confirmed_at.present? && !project.grant_project_access_instantly?
   end
 
+  accepts_nested_attributes_for :user
+
   workflow do
 
     # admin workflow
     state :project_access_requested do
       event :grant_project_access, :transitions_to => :project_access_granted
-      event :reject_project_access,    :transitions_to => :project_access_rejected
-      event :postpone_project_access,  :transitions_to => :project_access_postponed
+      event :reject_project_access, :transitions_to => :project_access_rejected
     end
     state :project_access_granted do
-      event :terminate_project_access,    :transitions_to => :project_access_terminated
-      event :block_project_access,    :transitions_to => :project_access_blocked
+      event :terminate_project_access, :transitions_to => :project_access_terminated
+      event :block_project_access, :transitions_to => :project_access_blocked
     end
     state :project_access_rejected do
-      event :grant_project_access,      :transitions_to => :project_access_granted
+      event :correct_project_access_data, :transitions_to => :project_access_data_corrected
+    end
+    state :project_access_data_corrected do
+      event :grant_project_access, :transitions_to => :project_access_granted
+      event :reject_project_access, :transitions_to => :project_access_rejected
     end
     state :project_access_terminated do
       event :grant_project_access, :transitions_to => :project_access_granted
@@ -53,7 +58,11 @@ class UserProject < ApplicationRecord
   def reject_project_access
     update(processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project}).deliver_now
+    CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project, user_project: self}).deliver_now
+  end
+
+  def correct_project_access_data
+    AdminMailer.with(user: self.user, project: project).corrected_project_access_data.deliver_now
   end
 
   def terminate_project_access
@@ -70,6 +79,13 @@ class UserProject < ApplicationRecord
   end
 
   [
+    :appellation,
+    :first_name,
+    :last_name,
+    :street,
+    :zipcode,
+    :city,
+    :country,
     :job_description,
     :research_intentions,
     :specification,

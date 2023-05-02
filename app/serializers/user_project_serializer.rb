@@ -6,6 +6,13 @@ class UserProjectSerializer < ApplicationSerializer
     :workflow_states,
     :admin_comments,
     :receive_newsletter,
+    :appellation,
+    :first_name,
+    :last_name,
+    :street,
+    :zipcode,
+    :city,
+    :country,
     :job_description,
     :research_intentions,
     :specification,
@@ -32,4 +39,21 @@ class UserProjectSerializer < ApplicationSerializer
     object.terminated_at && object.terminated_at.strftime('%d.%m.%Y')
   end
 
+  [
+    :appellation,
+    :first_name,
+    :last_name,
+    :street,
+    :zipcode,
+    :city,
+    :country,
+    :job_description,
+    :research_intentions,
+    :specification,
+    :organization,
+  ].each do |attr|
+    define_method(attr) do
+      object.user.send(attr)
+    end
+  end
 end

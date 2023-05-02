@@ -50,6 +50,7 @@ export default function RequestProjectAccessForm({
                     {
                         elementType: 'select',
                         attribute: 'job_description',
+                        optionsScope: 'user_project.job_description',
                         value: currentUser.job_description,
                         values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
                         keepOrder: true,
@@ -59,6 +60,7 @@ export default function RequestProjectAccessForm({
                     {
                         elementType: 'select',
                         attribute: 'research_intentions',
+                        optionsScope: 'user_project.research_intentions',
                         value: currentUser.research_intentions,
                         values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
                         keepOrder: true,
