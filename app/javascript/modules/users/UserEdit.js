@@ -42,6 +42,14 @@ export default function UserEdit ({
                         value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
                     }
 
+                    if (detail === 'job_description' || detail === 'research_intentions') {
+                        value = t(`user_project.${detail}.${value}`);
+                    }
+
+                    if (detail === 'default_locale') {
+                        value = t(value);
+                    }
+
                     return (
                         <p className="detail"
                            key={index}

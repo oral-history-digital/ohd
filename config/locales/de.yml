@@ -614,6 +614,7 @@ de:
       project_access_granted: freigeschaltet
       reject_project_access: ablehnen
       project_access_rejected: abgelehnt
+      project_access_data_corrected: korrigiert
       project_access_requested: ungeprüft
       project_access_terminated: beendet
       terminate_project_access: beenden
