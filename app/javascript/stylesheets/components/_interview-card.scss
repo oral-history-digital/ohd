@@ -7,7 +7,6 @@
 
 }
 
-
 .InterviewCard-link {
   display: block;
 }
@@ -17,7 +16,6 @@
 }
 
 .InterviewCard-image {
-
 }
 
 .InterviewCard.is-expanded .InterviewCard-image {
@@ -46,4 +44,26 @@
 .InterviewCard-link:hover .InterviewCard-title,
 .InterviewCard-link:focus .InterviewCard-title {
   text-decoration: underline;
+}
+
+.InterviewCard-icon {
+  align-items: center;
+  background-color: $ui-background-color;
+  color: white;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  transform: scale(1.05);
+  transition: transform $transition-duration;
+  width: 100%;
+}
+
+.InterviewCard-icon svg {
+  height: 33.3%;
+  width: 33.3%;
+}
+
+.InterviewCard-link:hover .InterviewCard-icon,
+.InterviewCard-link:focus .InterviewCard-icon {
+  transform: scale(1.15);
 }
