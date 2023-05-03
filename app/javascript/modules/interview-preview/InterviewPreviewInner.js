@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
 
 import { useProjectAccessStatus } from 'modules/auth';
-import missingStill from 'assets/images/missing_still.png';
 import ThumbnailMetadata from './ThumbnailMetadata';
+import InterviewImage from './InterviewImage';
 
 export default function InterviewPreviewInner({
     interview,
@@ -12,18 +12,10 @@ export default function InterviewPreviewInner({
     isExpanded
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
-    const showImg = project.show_preview_img || projectAccessGranted;
 
     return (
         <>
-            <div className="InterviewCard-image aspect-ratio">
-                <img
-                    className="aspect-ratio__inner"
-                    src={showImg ? (interview.still_url || 'missing_still') : 'missing_still'}
-                    onError={ (e) => { e.target.src = missingStill; }}
-                    alt=""
-                />
-            </div>
+            <InterviewImage interview={interview} project={project} />
 
             <p className="InterviewCard-title">
                 {interview.workflow_state === 'unshared' &&
