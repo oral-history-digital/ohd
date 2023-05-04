@@ -24,7 +24,7 @@ export default function RegisterForm({
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-    const [emailCheckResponse, setEmailCheckResponse] = useState({email_taken: false, msg: null});
+    const [emailCheckResponse, setEmailCheckResponse] = useState({registration_error: false, msg: null});
 
     const handleEmailChange = async(name, value) => {
         if (emailRegex.test(value)) {
@@ -102,13 +102,11 @@ export default function RegisterForm({
                 type: 'email',
                 handlechangecallback: handleEmailChange,
                 validate: function(v){return emailRegex.test(v)},
-                help: emailCheckResponse.email_taken && (
+                help: emailCheckResponse.registration_error && (
                     <p className='notifications'>
                         {emailCheckResponse.msg}
                     </p>
                 ),
-                otherError: emailCheckResponse.email_taken,
-                validate: function(v, t){return (emailRegex.test(v) && !t)},
             },
             {
                 elementType: 'input',

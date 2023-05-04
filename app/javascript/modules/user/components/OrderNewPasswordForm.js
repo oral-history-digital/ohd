@@ -13,7 +13,7 @@ export default function OrderNewPasswordForm ({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const [emailCheckResponse, setEmailCheckResponse] = useState({email_taken: false, msg: null});
+    const [emailCheckResponse, setEmailCheckResponse] = useState({reset_password_error: false, msg: null});
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -22,7 +22,7 @@ export default function OrderNewPasswordForm ({
 
     const handleChange = (name, value) => {
         if (emailRegex.test(value)) {
-            fetch(`${pathBase}/passwords/check_email?email=${value}`)
+            fetch(`${pathBase}/users/check_email?email=${value}`)
                 .then(res => res.json())
                 .then(json => setEmailCheckResponse(json));
         }
@@ -31,7 +31,7 @@ export default function OrderNewPasswordForm ({
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(!error && !emailCheckResponse.error) {
+        if(!error && !emailCheckResponse.reset_password_error) {
             submitOrderNewPassword(`${pathBase}/users/password`, {user: {email: email}});
         }
     }
@@ -47,8 +47,8 @@ export default function OrderNewPasswordForm ({
                 attribute='email'
                 value={user && emailRegex.test(user.email) ? user.email : ''}
                 type='text'
-                showErrors={error || emailCheckResponse.error}
-                help={emailCheckResponse.error && (
+                showErrors={error || emailCheckResponse.reset_password_error}
+                help={emailCheckResponse.reset_password_error && (
                     <p className='notifications'>
                         {emailCheckResponse.msg}
                     </p>
