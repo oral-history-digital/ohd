@@ -711,13 +711,13 @@ de:
     registration_text_one_ohd: 'Bitte registrieren Sie sich, um die Plattform nutzen zu können. Die '
     registration_text_two: ' erklären, für wen und für welche Zwecke Oral.History-Digital nutzbar ist. Die '
     registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Aus 
-      Datenschutzgründen werden Sie per E-Mail gebeten Ihre Registrierung zu bestätigen.'
+      Datenschutzgründen werden Sie per E-Mail gebeten Ihre Registrierung zu bestätigen. '
     registration_text_four: 'Danach können Sie die Freischaltung für verschiedene in der Plattform enthaltene Interview-Archive beantragen.'
     tos_agreement: Nutzungsbedingungen
     priv_agreement: Hinweise zum Datenschutz
-    notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen der Plattform Oral-History.Digital zu. (Bitte zustimmen)
+    notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen der Plattform Oral-History.Digital zu.
     priv_agreement_alias: Datenschutzbestimmungen
-    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis der Freien Universität Berlin zu. (Bitte zustimmen)
+    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis der Freien Universität Berlin zu.
     register: Registrierung absenden
     appellation:
       dr: Dr.
@@ -1331,6 +1331,7 @@ de:
 
   modules:
     registration:
+      title: Registrierung für Oral-History.Digital
       registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
         und ggf. eine Freischaltung für einzelne Archive notwendig.
       registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
@@ -1344,12 +1345,13 @@ de:
         project_access_rejected: Die E-Mail-Adresse %{email} ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
         project_access_granted: Die E-Mail-Adresse %{email} ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
         login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
-        login:  Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
+        login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer Email-Adresse und ihrem Passwort an.
         project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.
           Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
         project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt. 
     project_access:
       request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_one: 'Schritt 1 - '
       request_step_two: 'Schritt 2 - '
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
