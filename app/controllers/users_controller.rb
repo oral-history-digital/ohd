@@ -50,7 +50,7 @@ class UsersController < ApplicationController
         msg = 'account_confirmation_missing'
         user.resend_confirmation_instructions
         reset_password_error = true
-      elsif current_project
+      elsif current_project && !current_project.is_ohd?
         project_access = user.user_projects.where(project: current_project).first
         if project_access
           msg = project_access.workflow_state

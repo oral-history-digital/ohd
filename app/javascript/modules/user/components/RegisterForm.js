@@ -72,17 +72,18 @@ export default function RegisterForm({
             },
             {
                 elementType: 'input',
-                attribute: 'zipcode',
-                type: 'text',
-                validate: function(v){return v && v.length > 1}
-            },
-            {
-                elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function(v){locale === 'es' || (v && v.length > 1)}
             }
         ];
+
+        const zipElement = {
+            elementType: 'input',
+            attribute: 'zipcode',
+            type: 'text',
+            validate: function(v){return v && v.length > 1}
+        };
 
         const countrySelect = [
             {
@@ -169,6 +170,8 @@ export default function RegisterForm({
                 )
             },
         ];
+
+        if (locale !== 'es') addressElements.push(zipElement);
 
         return nameElements.concat(addressElements).concat(countrySelect).concat(emailPasswordElements).concat(tosPrivacyElements);
     }
