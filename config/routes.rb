@@ -227,7 +227,6 @@ Rails.application.routes.draw do
       get "users/confirmation", to: "confirmations#show"
       post "users/confirmation", to: "confirmations#create"
       put "user_projects/update", to: "user_projects#update"
-      get "passwords/check_email", to: "passwords#check_email"
     end
   end
 

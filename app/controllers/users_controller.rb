@@ -39,16 +39,17 @@ class UsersController < ApplicationController
     user = User.where(email: email).first
 
     msg = nil
-    email_taken = false
+    registration_error = false
+    reset_password_error = false
 
     if user
-      email_taken = true
+      registration_error = true
       msg = 'login'
 
       if !user.confirmed?
         msg = 'account_confirmation_missing'
-        # re-send the activation instructions
         user.resend_confirmation_instructions
+        reset_password_error = true
       elsif current_project
         project_access = user.user_projects.where(project: current_project).first
         if project_access
@@ -57,6 +58,9 @@ class UsersController < ApplicationController
           msg = 'login_and_request_project_access'
         end
       end
+    else
+      msg = 'still_not_registered'
+      reset_password_error = true
     end
 
     translated_msg = msg && I18n.backend.translate(
@@ -70,7 +74,8 @@ class UsersController < ApplicationController
       format.json do
         render json: {
           msg: translated_msg,
-          email_taken: email_taken
+          registration_error: registration_error,
+          reset_password_error: reset_password_error
         }
       end
     end

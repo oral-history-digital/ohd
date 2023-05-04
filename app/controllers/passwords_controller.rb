@@ -26,39 +26,4 @@ class PasswordsController < Devise::PasswordsController
     end
   end
 
-  def check_email
-    email = params[:email]
-    user = User.where(email: email).first
-
-    if user
-      if !user.confirmed?
-        msg = 'account_confirmation_missing'
-        # re-send the activation instructions
-        user.resend_confirmation_instructions
-        error = true
-      else
-        msg = nil
-        error = false
-      end
-    else
-      msg = 'still_not_registered'
-      error = true
-    end
-
-    translated_msg = msg && I18n.backend.translate(
-      params[:locale],
-      "modules.registration.messages.#{msg}",
-      email: email,
-    )
-
-    respond_to do |format|
-      format.json do
-        render json: {
-          msg: translated_msg,
-          error: error
-        }
-      end
-    end
-  end
-  
 end
