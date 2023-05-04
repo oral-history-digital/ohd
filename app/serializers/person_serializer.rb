@@ -3,6 +3,8 @@ class PersonSerializer < ApplicationSerializer
     :id,
     :names,
     :name,
+    :display_name,
+    :initials,
     :text,
     :date_of_birth,
     :year_of_birth,
@@ -10,6 +12,7 @@ class PersonSerializer < ApplicationSerializer
     :title,
     :description,
     :associations_loaded,
+    :use_pseudonym,
     :events,
     :created_at,
     :updated_at

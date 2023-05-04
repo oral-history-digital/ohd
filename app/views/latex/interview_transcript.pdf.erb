@@ -1,7 +1,7 @@
 \definecolor{primaryColor}{HTML}{<%= "#{(interview.project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
 
-<% 
-  interviewee_name = "#{interview.interviewees.first.first_name(header_locale)} #{interview.interviewees.first.last_name(header_locale)}"
+<%
+  interviewee_name = interview.interviewee.display_name
   title = "#{I18n.t((interview.lang == content_locale) ? 'transcript_title' : 'translation_title', locale: header_locale, lang: content_locale_human)} #{interviewee_name}"
   header_text = "#{I18n.t('transcript_header', locale: header_locale, lang: content_locale_human)} #{interviewee_name} (#{I18n.t('archive_id', locale: header_locale)} #{interview.archive_id})"
   tape = 0
@@ -19,7 +19,7 @@
       interview: interview,
       header_locale: header_locale,
       doc_type: doc_type
-  } 
+  }
 %>
 
 <%=
@@ -40,7 +40,7 @@
   }
 %>
 <%#= render partial: "latex/citation", locals: { interviewee_name: interviewee_name } %>
-           
+
 \newpage
 
 <%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.identifier != 'zwar' %>
@@ -84,7 +84,7 @@
 
     <% if !segment.mainheading(content_locale_public).blank? %>
       \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(content_locale_public)) %>}
-      <% if tape != segment.tape.number %> 
+      <% if tape != segment.tape.number %>
         <% space_above = 0 %>
         <%= render partial: "latex/title", locals: {title: "#{I18n.t('tape', locale: header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
       <% end %>
@@ -107,4 +107,3 @@
     <% speaker_id = segment.speaker_id %>
   <% end %>
 <% end %>
-

@@ -5,14 +5,13 @@ import { useI18n } from 'modules/i18n';
 import useMutatePeople from './useMutatePeople';
 import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
 import useMutatePersonLandingPageMetadata from './useMutatePersonLandingPageMetadata';
-import formatPersonName from './formatPersonName';
 
 export default function PersonDelete({
     data,
     onSubmit = f => f,
     onCancel = f => f
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t } = useI18n();
     const { deletePerson } = usePersonApi();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
@@ -46,7 +45,7 @@ export default function PersonDelete({
             </h3>
 
             <p className="u-mb">
-                {formatPersonName(data, translations, { locale })}
+                {data.display_name}
             </p>
 
             <div className="Form-footer">

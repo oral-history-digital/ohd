@@ -298,6 +298,11 @@ el:
   call_user_annotation: Προβολή τμήματος
   title: Τίτλος
   description: Περιγραφή
+  honorific:
+    male: Κύριε
+    female: Κυρία
+    diverse: '*'
+    not_specified: '*'
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
@@ -747,6 +752,7 @@ el:
     female: θήλυ
     male: άρρεν
     diverse: Άλλο
+    not_specified: Καμία καταχώρηση
   title:
     doctor: Δρ.
     professor: Καθηγητής/Καθηγήτρια
@@ -766,6 +772,7 @@ el:
     male: άρρεν
     female: θήλυ
     diverse: Άλλο
+    not_specified: Καμία καταχώρηση
     video: Video
     audio: Audio
     born: γεννημένος/-η
@@ -1191,6 +1198,9 @@ el:
         date_of_birth: Ημερομηνία γέννησης
         alias_names: Alias Names
         other_first_names: Άλλα ονόματα
+        pseudonym_first_name: Pseudonym first name
+        pseudonym_last_name: Pseudonym last name
+        use_pseudonym: Use pseudonym
         typology: Εμπειρίες
         biography: Biographie
         description: Description

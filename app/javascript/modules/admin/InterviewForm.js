@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
-import { formatPersonName, usePeople } from 'modules/person';
+import { usePeople } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
@@ -22,7 +22,7 @@ export default function InterviewForm({
     const [showForm, setShowForm] = useState(true);
     const [archiveId, setArchiveId] = useState(null);
 
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
     const { data: people, isLoading } = usePeople();
@@ -36,11 +36,12 @@ export default function InterviewForm({
     }
 
     function showContribution(value) {
+        const contributor = people?.[Number.parseInt(value.person_id)];
+
         return (
             <span>
                 <span>
-                    {formatPersonName(people?.[Number.parseInt(value.person_id)],
-                        translations, { locale, withTitle: true })}
+                    {contributor?.display_name}
                 </span>
                 {', '}
                 <span>

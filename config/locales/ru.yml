@@ -339,6 +339,11 @@ ru:
   call_user_annotation: Показать сегмент
   title: Название
   description: Описание
+  honorific:
+    male: г-н
+    female: г-жа
+    diverse: '*'
+    not_specified: '*'
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
@@ -790,6 +795,7 @@ ru:
     female: женщина
     male: мужчина
     diverse: другие
+    not_specified: нет данных
   title:
     doctor: д-р.
     professor: проф.
@@ -809,6 +815,7 @@ ru:
     male: " мужчина"
     female: женщина
     diverse: другие
+    not_specified: нет данных
     video: Видео
     audio: Аудио
     born: урожд.
@@ -1229,6 +1236,9 @@ ru:
         date_of_birth: дата рождения
         alias_names: Alias Names
         other_first_names: Other First Names
+        pseudonym_first_name: Pseudonym first name
+        pseudonym_last_name: Pseudonym last name
+        use_pseudonym: Use pseudonym
         typology: Erfahrungen
         biography: Biographie
         description: Description

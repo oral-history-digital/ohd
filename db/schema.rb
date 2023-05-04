@@ -502,6 +502,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
     t.integer "project_id"
     t.integer "registry_references_count", default: 0
     t.integer "title"
+    t.boolean "use_pseudonym", default: false, null: false
   end
 
   create_table "permissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -524,6 +525,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
     t.string "other_first_names", limit: 255
     t.string "alias_names", limit: 255
     t.text "description"
+    t.string "pseudonym_first_name", default: "", null: false
+    t.string "pseudonym_last_name", default: "", null: false
     t.index ["locale"], name: "index_person_translations_on_locale", length: 191
     t.index ["person_id"], name: "index_person_translations_on_person_id"
   end
@@ -1015,5 +1018,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
   add_foreign_key "event_types", "projects"
   add_foreign_key "histories", "people"
   add_foreign_key "map_sections", "projects"
-  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
 end

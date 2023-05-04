@@ -366,10 +366,14 @@ class Interview < ApplicationRecord
   end
 
   def reverted_short_title(locale)
+    orig_locale = I18n.locale
     begin
-      [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
+      I18n.locale = locale
+      "#{interviewee.last_name_used}, #{interviewee.first_name_used}"
     rescue
       "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
+    ensure
+      I18n.locale = orig_locale
     end
   end
 
@@ -578,40 +582,34 @@ class Interview < ApplicationRecord
     end
   end
 
-  def build_full_title_from_name_parts(locale)
+  def full_title(locale)
     first_interviewee = interviewee
     if first_interviewee
-
-      # Build last name with a locale-specific pattern.
-      last_name = first_interviewee.last_name(locale) || first_interviewee.last_name(I18n.default_locale)
-
-      # Build first name.
-      first_names = []
-      first_name = first_interviewee.first_name(locale) || first_interviewee.first_name(I18n.default_locale)
-      first_names << first_name unless first_name.blank?
-      other_first_names = first_interviewee.other_first_names(locale) || first_interviewee.other_first_names(I18n.default_locale)
-      first_names << other_first_names unless other_first_names.blank?
-
-      # Combine first and last name with a locale-specific pattern.
-      if first_names.empty?
-        last_name
-      else
-        "#{last_name}, #{first_names.join(' ')}"
+      I18n.with_locale locale do
+        first_interviewee.display_name(reversed: true)
       end
     else
       'no interviewee given'
     end
   end
 
-  def full_title(locale)
-    build_full_title_from_name_parts(locale)
+  def reverted_short_title(locale)
+    I18n.with_locale locale do
+      begin
+        interviewee.display_name(reversed: true)
+      rescue
+        "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
+      end
+    end
   end
 
   def short_title(locale)
-    begin
-      [interviewee.first_name(locale), interviewee.last_name(locale)].join(' ')
-    rescue
-      "Interviewee might not be in DB, interview-id = #{id}"
+    I18n.with_locale locale do
+      begin
+        "#{interviewee.first_name_used} #{interviewee.last_name_used}"
+      rescue
+        "Interviewee might not be in DB, interview-id = #{id}"
+      end
     end
   end
 
@@ -619,12 +617,13 @@ class Interview < ApplicationRecord
     if project.fullname_on_landing_page
       title(locale)
     else
-      name_parts = []
-      unless interviewees.blank?
-        name_parts << interviewee.first_name(locale) unless interviewee.first_name(locale).blank?
-        name_parts << "#{(interviewee.last_name(locale).blank? ? '' : interviewee.last_name(locale)).strip.chars.first}."
+      I18n.with_locale locale do
+        if interviewees.blank?
+          'no interviewee given'
+        else
+          interviewee.display_name(anonymous: true)
+        end
       end
-      name_parts.join(' ')
     end
   end
 

@@ -6,7 +6,6 @@ import { useI18n } from 'modules/i18n';
 import { usePersonEvents, Event } from 'modules/events';
 import { Spinner } from 'modules/spinners';
 import PersonContributions from './PersonContributions';
-import formatPersonName from './formatPersonName';
 
 const attributes = [
     'gender',
@@ -16,6 +15,9 @@ const attributes = [
     'birth_name',
     'alias_names',
     'other_first_names',
+    'pseudonym_first_name',
+    'pseudonym_last_name',
+    'use_pseudonym',
     'date_of_birth',
     'description'
 ];
@@ -29,7 +31,7 @@ export default function PersonDetails({
     return (
         <div>
             <h3 className="u-mt-none u-mb">
-                {formatPersonName(data, translations, { locale })}
+                {data.display_name}
             </h3>
             <dl>
                 {attributes.map(attribute => (
