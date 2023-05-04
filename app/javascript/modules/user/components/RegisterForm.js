@@ -74,7 +74,7 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){locale === 'es' || (v && v.length > 1)}
+                validate: function(v){return v && v.length > 1}
             }
         ];
 
