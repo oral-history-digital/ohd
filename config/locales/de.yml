@@ -303,6 +303,11 @@ de:
   call_user_annotation: Segment aufrufen
   title: Titel
   description: Beschreibung
+  honorific:
+    male: Herr
+    female: Frau
+    diverse: Person
+    not_specified: Person
   jobs:
     read_transcript: Transkript Upload
     read_bulk_metadata: Import von Metadaten
@@ -755,6 +760,7 @@ de:
     female: weiblich
     male: männlich
     diverse: divers
+    not_specified: keine Angabe
   title:
     doctor: Dr.
     professor: Prof.
@@ -777,6 +783,7 @@ de:
     male: männlich
     female: weiblich
     diverse: divers
+    not_specified: keine Angabe
     video: Video
     audio: Audio
     born: geb.
@@ -1195,6 +1202,9 @@ de:
         alias_names: Weitere Namen
         pseudonym: Pseudonym
         other_first_names: Weitere Vornamen
+        pseudonym_first_name: Pseudonym Vorname
+        pseudonym_last_name: Pseudonym Nachname
+        use_pseudonym: Pseudonym benutzen
         date_of_birth: Geburtsdatum
         typology: Erfahrungen
         biography: Biographie

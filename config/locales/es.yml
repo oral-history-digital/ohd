@@ -289,6 +289,11 @@ es:
   call_user_annotation: Ir al segmento
   title: Título
   description: Descripción
+  honorific:
+    male: Sr
+    female: Sra
+    diverse: '*'
+    not_specified: '*'
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
@@ -736,6 +741,7 @@ es:
     female: feminino
     male: masculino
     diverse: diverso
+    not_specified: no especifica
   title:
     doctor: Dr./Dra.
     professor: Prof./Profa.
@@ -755,6 +761,7 @@ es:
     male: masculino
     female: feminino
     diverse: diverso
+    not_specified: no especifica
     video: Video
     audio: Audio
     born: nacido
@@ -1167,6 +1174,9 @@ es:
         date_of_birth: Fecha de nacimiento
         alias_names: Alias Names (?)
         other_first_names: Otros nombres
+        pseudonym_first_name: Pseudonym first name
+        pseudonym_last_name: Pseudonym last name
+        use_pseudonym: Use pseudonym
         typology: Experiencias
         biography: Biographie
         description: Description

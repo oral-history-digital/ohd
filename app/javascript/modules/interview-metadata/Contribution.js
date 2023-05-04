@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { formatPersonName } from 'modules/person';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -19,7 +18,7 @@ export default function Contribution({
     deleteData,
     submitData
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
 
     const destroy = () => {
@@ -35,11 +34,7 @@ export default function Contribution({
     if (isAuthorized(contribution, 'update') || contribution.workflow_state === 'public' ) {
         return (
             <span className="flyout-content-data">
-                {formatPersonName(person, translations, {
-                    locale,
-                    fallbackLocale: project.default_locale,
-                    withTitle: true
-                })}
+                {person.display_name}
 
                 {
                     withSpeakerDesignation ?
@@ -72,11 +67,7 @@ export default function Contribution({
                                     onSubmit={() => { destroy(); close(); }}
                                     onCancel={close}
                                 >
-                                    <p>{formatPersonName(person, translations, {
-                                        locale,
-                                        fallbackLocale: project.default_locale,
-                                        withTitle: true
-                                    })}</p>
+                                    <p>{person.display_name}</p>
                                 </DeleteItemForm>
                             )}
                         </Modal>

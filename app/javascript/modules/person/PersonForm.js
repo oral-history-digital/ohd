@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { submitDataWithFetch } from 'modules/api';
-import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useEventTypes } from 'modules/event-types';
@@ -14,6 +13,7 @@ import {
     PERSON_GENDER_MALE,
     PERSON_GENDER_FEMALE,
     PERSON_GENDER_DIVERSE,
+    PERSON_GENDER_NOT_SPECIFIED,
     PERSON_TITLE_DOCTOR,
     PERSON_TITLE_PROFESSOR,
     PERSON_TITLE_PROFESSOR_WITH_PROMOTION,
@@ -21,7 +21,6 @@ import {
 import useMutatePeople from './useMutatePeople';
 import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
 import useMutatePersonLandingPageMetadata from './useMutatePersonLandingPageMetadata';
-import formatPersonName from './formatPersonName';
 
 const formElements = [
     {
@@ -30,7 +29,8 @@ const formElements = [
         values: [
             PERSON_GENDER_MALE,
             PERSON_GENDER_FEMALE,
-            PERSON_GENDER_DIVERSE
+            PERSON_GENDER_DIVERSE,
+            PERSON_GENDER_NOT_SPECIFIED
         ],
         optionsScope: 'gender',
         withEmpty: true,
@@ -67,6 +67,19 @@ const formElements = [
         multiLocale: true,
     },
     {
+        attribute: 'pseudonym_first_name',
+        multiLocale: true,
+    },
+    {
+        attribute: 'pseudonym_last_name',
+        multiLocale: true,
+    },
+    {
+        attribute: 'use_pseudonym',
+        elementType: 'input',
+        type: 'checkbox',
+    },
+    {
         attribute: 'date_of_birth',
     },
     {
@@ -87,7 +100,6 @@ export default function PersonForm({
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
-    const { locale, translations } = useI18n();
     const project = useSelector(getCurrentProject);
 
     function showEvent(event) {
@@ -141,7 +153,7 @@ export default function PersonForm({
         <div>
             {person && (
                 <h3 className="u-mt-none u-mb">
-                    {formatPersonName(person, translations, { locale })}
+                    {person.display_name}
                 </h3>
             )}
 

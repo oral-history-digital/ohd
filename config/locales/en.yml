@@ -294,6 +294,11 @@ en:
   call_user_annotation: Show segment
   title: Title
   description: Description
+  honorific:
+    male: Mr
+    female: Ms
+    diverse: Mx
+    not_specified: Mx
   registry_reference_types:
     birth_location: Birth location
     interview_location: Interview location
@@ -743,6 +748,7 @@ en:
     female: female
     male: male
     diverse: diverse
+    not_specified: not specified
   title:
     doctor: Dr.
     professor: Professor
@@ -763,6 +769,7 @@ en:
     male: Male
     female: Female
     diverse: Diverse
+    not_specified: Not specified
     video: Video
     audio: Audio
     born: née
@@ -1185,6 +1192,9 @@ en:
         date_of_birth: Date of birth
         alias_names: Additional Names
         other_first_names: Other First Names
+        pseudonym_first_name: Pseudonym first name
+        pseudonym_last_name: Pseudonym last name
+        use_pseudonym: Use pseudonym
         typology: Erfahrungen
         biography: Biographie
         description: Description

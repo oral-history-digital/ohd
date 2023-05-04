@@ -39,13 +39,13 @@ export default function Transcript({
         openReference: null,
     });
     const { data: people, isLoading: peopleAreLoading } = usePeople();
-    const { t, translations } = useI18n();
+    const { t } = useI18n();
     const pathBase = usePathBase();
     const isEditor = useIsEditor();
 
     const contributorInformation = useMemo(() => getContributorInformation(
-        interview.contributions, people, locale, translations),
-        [interview.contributions, people, locale, translations]
+        interview.contributions, people),
+        [interview.contributions, people]
     );
 
     useEffect(() => {
