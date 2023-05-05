@@ -18,19 +18,15 @@ class UsersController < ApplicationController
   end
 
   def update
-    authorize(current_user)
-    current_user.update user_params
-    # FIXME: we have to update duplicated data here
-    current_user.update user_params
-    respond_to do |format|
-      format.html {}
-      format.json do
-        render json: current_user && {
-          id: 'current',
-          data_type: 'users',
-          data: ::UserSerializer.new(current_user)
-        } || {}
-      end
+    user = params[:id] == 'current' ? current_user : User.find(params[:id])
+    authorize(user)
+
+    if params[:user][:workflow_state] == 'remove'
+      user.remove
+      render json: {id: params[:id], data_type: 'users', data: {id: params[:id], workflow_state: 'removed'}}
+    else
+      user.update(user_params)
+      render json: {id: user.id, data_type: 'users', data: ::UserSerializer.new(user)}
     end
   end
 

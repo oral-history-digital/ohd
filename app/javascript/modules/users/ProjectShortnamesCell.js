@@ -10,14 +10,14 @@ export default function ProjectShortnamesCell({
     const { t } = useI18n();
     const projects = useSelector(getProjects);
     const user = row.original;
-    const UserProjects = Object.values(user.user_projects);
+    const userProjects = Object.values(user.user_projects);
 
-    const projectDisplay = UserProject => {
-        if (UserProject) {
-            const workflowState = t(`user_projects.workflow_states.${UserProject.workflow_state}`);
+    const projectDisplay = userProject => {
+        if (userProject) {
+            const workflowState = t(`workflow_states.user_projects.${userProject.workflow_state}`);
             const hasAMRole = Object.values(user.user_roles).find(role => 
-                role.name === 'Archivmanagement' && role.project_id === UserProject.project_id);
-            const project = projects[UserProject.project_id];
+                role.name === 'Archivmanagement' && role.project_id === userProject.project_id);
+            const project = projects[userProject.project_id];
 
             if (project.shortname === 'ohd') {
                 return null;
@@ -25,7 +25,7 @@ export default function ProjectShortnamesCell({
 
             return (
                 <li
-                    key={UserProject.id}
+                    key={userProject.id}
                     className="DetailList-item"
                 >
                     { project.shortname + ' - ' + workflowState + (hasAMRole ? ' - AM' : '') }
@@ -36,7 +36,7 @@ export default function ProjectShortnamesCell({
 
     return (
         <ul className="DetailList">
-            {UserProjects.map(urp => (
+            {userProjects.map(urp => (
                 projectDisplay(urp)
             ))}
         </ul>

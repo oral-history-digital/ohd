@@ -57,10 +57,15 @@ class User < ApplicationRecord
     end
     state :confirmed do
       event :block, :transitions_to => :blocked
+      # pseudo
+      event :remove, :transitions_to => :removed
     end
     state :blocked do
       event :revoke_block, :transitions_to => :confirmed
+      # pseudo
+      event :remove, :transitions_to => :removed
     end
+    state :removed
   end
 
   def workflow_states
@@ -69,6 +74,7 @@ class User < ApplicationRecord
 
   def workflow_state=(change)
     self.send("#{change}!")
+  rescue ActiveRecord::ActiveRecordError => e
   end
 
   def block
@@ -79,6 +85,12 @@ class User < ApplicationRecord
 
   def revoke_block
     #TODO: send email to user
+  end
+
+  def remove
+    subject = I18n.t('devise.mailer.account_removed.subject')
+    CustomDeviseMailer.account_removed(self, {subject: subject}).deliver_now
+    destroy
   end
 
   def projects

@@ -53,14 +53,18 @@ export default function UserForm({
                         onSubmit();
                     }
 
-                    const updatedData = {
-                        ...data,
-                        data: {
-                            ...data?.data,
-                            [updatedDatum.id]: updatedDatum
+                    if (updatedDatum.workflow_state !== 'removed') {
+                        return {
+                            ...data,
+                            data: {
+                                ...data?.data,
+                                [updatedDatum.id]: updatedDatum
+                            }
                         }
-                    };
-                    return updatedData;
+                    } else {
+                        const { [updatedDatum.id]: {}, ...rest } = data?.data;
+                        return {data: rest};
+                    }
                 });
             }}
             data={data}

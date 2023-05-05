@@ -39,7 +39,7 @@ export default function UserTable() {
 
     const getDataPath = (row) => dataPath;
 
-    const usersCount = typeof data === 'undefined' ?
+    const usersCount = typeof data?.data === 'undefined' ?
         undefined :
         Object.values(data?.data).length;
 
@@ -68,7 +68,7 @@ export default function UserTable() {
     const ohdColumns = useMemo(() => ([
         {
             id: 'workflow_state',
-            accessorFn: row => t(`workflow_states.${row.workflow_state}`),
+            accessorFn: row => t(`workflow_states.users.${row.workflow_state}`),
             header: t('activerecord.attributes.user.workflow_state'),
         },
         {
