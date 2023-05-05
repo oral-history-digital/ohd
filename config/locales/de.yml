@@ -612,6 +612,7 @@ de:
       rejected: abgelehnt
       block: sperren
       blocked: gesperrt
+      remove: löschen
       revoke_block: Sperrung aufheben
       confirmed: bestätigt
     user_projects:

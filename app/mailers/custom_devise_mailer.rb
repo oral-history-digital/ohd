@@ -38,11 +38,10 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :project_access_blocked, opts)
   end
 
-  def account_deactivated(record, opts={})
-    @project = opts[:project]
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :account_deactivated, opts)
+  def account_removed(record, opts={})
+    opts[:from] = 'mail@oral-history.digital'
+    opts[:reply_to] = 'mail@oral-history.digital' 
+    devise_mail(record, :account_removed, opts)
   end
 
   def confirmation_instructions(record, token, opts={})

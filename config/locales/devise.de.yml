@@ -38,6 +38,8 @@ de:
         subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
       project_access_terminated:
         subject: Ihr Zugang zu der Anwendung '%{project_name}'
+      account_removed:
+        subject: Löschung Ihres Nutzer*innen-Accounts
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.
       success: Sie haben sich erfolgreich mit Ihrem Account angemeldet.
