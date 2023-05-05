@@ -143,7 +143,7 @@ export default function UserTable() {
                     attribute='workflow_state'
                     optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
                     handleChange={handleWorkflowStateFilterChange}
-                    withEmpty={true}
+                    withEmpty={false}
                 />
             </TableWithPagination>
         </>
