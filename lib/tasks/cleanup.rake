@@ -1,5 +1,10 @@
 namespace :cleanup do
 
+  desc 'removes unconfirmed users older than 14 days'
+  task :unconfirmed_users => :environment do
+    User.where('confirmation_sent_at < ?', 14.days.ago).where(confirmed_at: nil).destroy_all
+  end
+
   desc 'cleans up UserRegistration#created_at'
   task :user_creation_dates => :environment do
     puts 'Cleaning up problematic creation dates for UserRegistration:'
