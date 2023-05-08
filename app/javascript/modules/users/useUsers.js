@@ -10,7 +10,7 @@ export default function useUsers(page, filter, workflowStateFilter, manualSortin
         dataPath += `&filter=${filter}`;
     }
     if (workflowStateFilter) {
-        dataPath += `&workflow_state_filter=${workflowStateFilter}`;
+        dataPath += `&workflow_state=${workflowStateFilter}`;
     }
     if (manualSorting?.[0]) {
         dataPath += `&order=${manualSorting[0].id}&direction=${manualSorting[0].desc ? 'desc' : 'asc'}`;
