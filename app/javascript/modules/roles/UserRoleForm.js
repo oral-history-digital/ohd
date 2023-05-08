@@ -7,6 +7,7 @@ import { useMutateData, useMutateDatum } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 
 export default function UserRoleForm ({
+    dataPath,
     userAccountId,
     userId,
     projectId,
@@ -18,7 +19,7 @@ export default function UserRoleForm ({
     onSubmit,
 }) {
 
-    const mutateData = useMutateData('users');
+    const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
 
@@ -51,7 +52,7 @@ export default function UserRoleForm ({
                         const updatedData = {
                             ...data,
                             data: {
-                                ...data.data,
+                                ...data?.data,
                                 [updatedDatum.id]: updatedDatum
                             }
                         };
