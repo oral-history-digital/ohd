@@ -30,6 +30,7 @@ de:
     en: englisch
     es: spanisch
     ru: russisch
+    all: alle
   workflow_state:
     public: öffentlich
     unshared: nicht öffentlich
