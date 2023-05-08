@@ -150,6 +150,7 @@ export default function UserTable() {
                 manualSorting
                 manualSortFunc={setSorting}
                 manualSort={sorting}
+                changePageSize={false}
             >
                 <SelectContainer
                     className="u-mb-small"

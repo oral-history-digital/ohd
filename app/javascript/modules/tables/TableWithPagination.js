@@ -25,6 +25,7 @@ export default function TableWithPagination({
     manualSorting,
     manualSortFunc,
     manualSort,
+    changePageSize = true,
     setPage,
     pageCount,
     children,
@@ -95,6 +96,7 @@ export default function TableWithPagination({
                 pageSize={table.getState().pagination.pageSize}
                 onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
                 onPageSizeChange={table.setPageSize}
+                changePageSize={changePageSize}
             />
             <Table table={table} isLoading={isLoading} />
             <Pagination
@@ -104,6 +106,7 @@ export default function TableWithPagination({
                 pageSize={table.getState().pagination.pageSize}
                 onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
                 onPageSizeChange={table.setPageSize}
+                changePageSize={changePageSize}
             />
         </div>
     );
