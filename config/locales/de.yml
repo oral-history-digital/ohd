@@ -616,6 +616,7 @@ de:
       remove: löschen
       revoke_block: Sperrung aufheben
       confirmed: bestätigt
+      all: alle
     user_projects:
       grant_project_access: freischalten
       project_access_granted: freigeschaltet
@@ -627,6 +628,7 @@ de:
       terminate_project_access: beenden
       project_access_blocked: gesperrt
       block_project_access: sperren
+      all: alle
   help_texts:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
