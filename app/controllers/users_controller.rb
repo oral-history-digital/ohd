@@ -93,10 +93,7 @@ class UsersController < ApplicationController
 
     total_pages = users.total_pages
     users = users.includes(:user_projects).
-      inject({}){|mem, s| mem[s.id] = UserSerializer.new(s); mem}
-
-    update_initial_redux_state(users)
-    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+      map{|u| UserSerializer.new(u)}
 
     respond_to do |format|
       format.html { render 'react/app' }
@@ -104,7 +101,6 @@ class UsersController < ApplicationController
         render json: {
           data: users,
             data_type: 'users',
-            extra_params: extra_params,
             page: params[:page],
             result_pages_count: total_pages
           }
