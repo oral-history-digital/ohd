@@ -3,7 +3,6 @@ class UserRolesController < ApplicationController
   def create
     authorize UserRole
     @user_role = UserRole.create user_role_params
-    @user_role.user.touch
 
     respond_to do |format|
       format.json do
@@ -17,7 +16,6 @@ class UserRolesController < ApplicationController
     authorize @user_role
     user = @user_role.user
     @user_role.destroy
-    user.touch
 
     respond_to do |format|
       format.json {

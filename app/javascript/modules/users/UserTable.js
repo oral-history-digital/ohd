@@ -103,6 +103,7 @@ export default function UserTable() {
         },
         {
             header: t('activerecord.models.role.other'),
+            accessorFn: getDataPath,
             cell: RolesCell,
         },
         {
@@ -128,7 +129,7 @@ export default function UserTable() {
                 {usersCount} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
-                data={data?.data || []}
+                data={Object.values(data?.data || {})}
                 pageCount={data?.result_pages_count}
                 columns={columns}
                 isLoading={isLoading}
