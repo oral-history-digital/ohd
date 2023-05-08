@@ -93,7 +93,7 @@ class UsersController < ApplicationController
 
     total_pages = users.total_pages
     users = users.includes(:user_projects).
-      map{|u| UserSerializer.new(u)}
+      inject({}){|mem, s| mem[s.id] = UserSerializer.new(s); mem}
 
     respond_to do |format|
       format.html { render 'react/app' }
