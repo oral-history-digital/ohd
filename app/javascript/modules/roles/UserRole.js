@@ -15,12 +15,13 @@ export default function UserRole ({
     projectId,
     deleteData,
     userId,
+    dataPath,
 }) {
 
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { deleteDatum } = useDataApi();
-    const mutateData = useMutateData('users');
+    const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
 
     const show = () => {
@@ -44,14 +45,10 @@ export default function UserRole ({
                 mutateDatum(userId, 'users');
             }
 
-            //if (typeof onSubmit === 'function') {
-                //onSubmit();
-            //}
-
             const updatedData = {
                 ...data,
                 data: {
-                    ...data.data,
+                    ...data?.data,
                     [updatedDatum.id]: updatedDatum
                 }
             };

@@ -21,6 +21,7 @@ export default class UserRoles extends Component {
                         userId={this.props.userId}
                         key={`userRole-${id}`}
                         hideEdit={this.props.hideEdit}
+                        dataPath={this.props.dataPath}
                     />
                 </li>
             )
@@ -42,6 +43,7 @@ export default class UserRoles extends Component {
                             userAccountId={this.props.userAccountId}
                             userId={this.props.userId}
                             onSubmit={closeModal}
+                            dataPath={this.props.dataPath}
                         />
                     )}
                 </Modal>
