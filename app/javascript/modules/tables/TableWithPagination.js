@@ -22,11 +22,14 @@ export default function TableWithPagination({
     manualFiltering,
     manualFilterFunc,
     manualFilter,
+    manualSorting,
+    manualSortFunc,
+    manualSort,
     setPage,
     pageCount,
     children,
 }) {
-    const [sorting, setSorting] = useState([]);
+    const [sorting, setSorting] = useState(manualSort || []);
     const [globalFilter, setGlobalFilter] = useState(manualFilter || '');
 
     const [{ pageIndex, pageSize }, setPagination] = useState({
@@ -42,6 +45,15 @@ export default function TableWithPagination({
         [pageIndex, pageSize]
     );
 
+    const sortFunc = m => {
+        if (manualSorting) {
+            manualSortFunc(m);
+            setSorting(m);
+        } else {
+            setSorting(m);
+        }
+    }
+
     const table = useReactTable({
         data: data || [],
         columns,
@@ -52,7 +64,7 @@ export default function TableWithPagination({
         },
         globalFilterFn: 'includesString',
         onPaginationChange: setPagination,
-        onSortingChange: setSorting,
+        onSortingChange: sortFunc,
         onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -60,6 +72,7 @@ export default function TableWithPagination({
         getSortedRowModel: getSortedRowModel(),
         manualPagination: manualPagination,
         manualFiltering: manualFiltering,
+        manualSorting: manualSorting,
         pageCount: pageCount,
     });
 

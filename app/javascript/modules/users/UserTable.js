@@ -35,7 +35,9 @@ export default function UserTable() {
         'project_access_terminated',
     ];
 
-    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter);
+    const [sorting, setSorting] = useState([]);
+
+    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter, sorting);
 
     const getDataPath = (row) => dataPath;
 
@@ -135,6 +137,9 @@ export default function UserTable() {
                 manualFiltering
                 manualFilterFunc={setFilter}
                 manualFilter={filter}
+                manualSorting
+                manualSortFunc={setSorting}
+                manualSort={sorting}
             >
                 <SelectContainer
                     className="u-mb-small"
