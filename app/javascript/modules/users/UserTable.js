@@ -128,7 +128,7 @@ export default function UserTable() {
                 {usersCount} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
-                data={Object.values(data?.data || {})}
+                data={data?.data || []}
                 pageCount={data?.result_pages_count}
                 columns={columns}
                 isLoading={isLoading}
