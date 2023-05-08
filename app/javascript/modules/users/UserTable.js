@@ -19,6 +19,15 @@ export default function UserTable() {
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
 
+    const [localeFilter, setLocaleFilter] = useState('');
+    const handleLocaleFilterChange = (name, value) => {
+        setLocaleFilter(value);
+    };
+    const localeFilterValues = ['all'].concat(project.is_ohd ? [
+        'de',
+        'en',
+    ] : project.available_locales);
+
     const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'project_access_requested');
     const handleWorkflowStateFilterChange = (name, value) => {
         setWorkflowStateFilter(value);
@@ -37,7 +46,7 @@ export default function UserTable() {
 
     const [sorting, setSorting] = useState([]);
 
-    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter, sorting);
+    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter, localeFilter, sorting);
 
     const getDataPath = (row) => dataPath;
 
@@ -149,6 +158,15 @@ export default function UserTable() {
                     attribute='workflow_state'
                     optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
                     handleChange={handleWorkflowStateFilterChange}
+                    withEmpty={false}
+                />
+                <SelectContainer
+                    className="u-mb-small"
+                    values={localeFilterValues}
+                    label={t('activerecord.attributes.user.default_locale')}
+                    attribute='default_locale'
+                    optionsScope={'default_locales'}
+                    handleChange={handleLocaleFilterChange}
                     withEmpty={false}
                 />
             </TableWithPagination>
