@@ -45,15 +45,6 @@ export default function TableWithPagination({
         [pageIndex, pageSize]
     );
 
-    const sortFunc = m => {
-        if (manualSorting) {
-            manualSortFunc(m);
-            setSorting(m);
-        } else {
-            setSorting(m);
-        }
-    }
-
     const table = useReactTable({
         data: data || [],
         columns,
@@ -64,7 +55,7 @@ export default function TableWithPagination({
         },
         globalFilterFn: 'includesString',
         onPaginationChange: setPagination,
-        onSortingChange: sortFunc,
+        onSortingChange: manualSortFunc || setSorting,
         onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
