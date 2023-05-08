@@ -35,6 +35,7 @@ export default function UserTable() {
     const workflowStateFilterValues = project.is_ohd ? [
         'confirmed',
         'blocked',
+        'all',
     ] : [
         'project_access_requested',
         'project_access_granted',
@@ -42,6 +43,7 @@ export default function UserTable() {
         'project_access_data_corrected ',
         'project_access_blocked',
         'project_access_terminated',
+        'all',
     ];
 
     const [sorting, setSorting] = useState([]);
@@ -96,6 +98,7 @@ export default function UserTable() {
     const projectColumns = useMemo(() => ([
         {
             id: 'workflow_state',
+            enableSorting: false,
             header: t('activerecord.attributes.default.workflow_state'),
             accessorFn: row => {
                 const workflowState = currentUserProject(row, project).workflow_state;
@@ -124,6 +127,7 @@ export default function UserTable() {
     const actionColumns = useMemo(() => ([
         {
             id: 'actions',
+            enableSorting: false,
             header: t('modules.tables.actions'),
             accessorFn: getDataPath,
             cell: UserRowActions,
