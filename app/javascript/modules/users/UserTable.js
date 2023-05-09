@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { getCurrentProject } from 'modules/data';
+import { getCurrentProject, getProjects } from 'modules/data';
 
 import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
@@ -15,9 +15,15 @@ import { SelectContainer } from 'modules/forms';
 export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
+    const projects = useSelector(getProjects);
 
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
+
+    const [projectFilter, setProjectFilter] = useState('');
+    const handleProjectFilterChange = (name, value) => {
+        setProjectFilter(value);
+    };
 
     const [localeFilter, setLocaleFilter] = useState('');
     const handleLocaleFilterChange = (name, value) => {
@@ -48,7 +54,7 @@ export default function UserTable() {
 
     const [sorting, setSorting] = useState([]);
 
-    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter, localeFilter, sorting);
+    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter, localeFilter, projectFilter, sorting);
 
     const getDataPath = (row) => dataPath;
 
@@ -88,6 +94,7 @@ export default function UserTable() {
             accessorKey: 'confirmed_at',
             header: t('activerecord.attributes.user.confirmed_at'),
             accessorFn: row => new Date(row.confirmed_at).toLocaleDateString(locale, { dateStyle: 'medium' }),
+            enableSorting: false,
         },
         {
             header: t('activerecord.models.project.other'),
@@ -112,16 +119,17 @@ export default function UserTable() {
                 return currentUserProject(row, project).updated_at;
             },
             cell: DateCell,
+            enableSorting: false,
         },
         {
             header: t('activerecord.models.role.other'),
             accessorFn: getDataPath,
             cell: RolesCell,
         },
-        {
-            header: t('activerecord.models.task.other'),
-            cell: TasksCell,
-        },
+        //{
+            //header: t('activerecord.models.task.other'),
+            //cell: TasksCell,
+        //},
     ]), [locale, project]);
 
     const actionColumns = useMemo(() => ([
@@ -174,6 +182,14 @@ export default function UserTable() {
                     handleChange={handleLocaleFilterChange}
                     withEmpty={false}
                 />
+                { project.is_ohd && <SelectContainer
+                    className="u-mb-small"
+                    values={projects}
+                    label={t('activerecord.models.project.one')}
+                    attribute='project'
+                    handleChange={handleProjectFilterChange}
+                    withEmpty={true}
+                /> }
             </TableWithPagination>
         </>
     );
