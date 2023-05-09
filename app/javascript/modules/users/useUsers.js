@@ -7,7 +7,7 @@ export default function useUsers(page, filter, workflowStateFilter, localeFilter
 
     let dataPath = `${pathBase}/users.json?page=${page}`;
     if (filter) {
-        dataPath += `&filter=${filter}`;
+        dataPath += `&q=${filter}`;
     }
     if (workflowStateFilter) {
         dataPath += `&workflow_state=${workflowStateFilter}`;
