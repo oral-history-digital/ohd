@@ -10,7 +10,7 @@ export default function AfterConfirmationPopup ({
     const currentProject = useSelector(getCurrentProject);
 
     const recentlyConfirmed = currentUser?.confirmed_at + 60000 > Date.now() &&
-        currentUser?.pre_register_location?.split('?')[0] === (location.origin + location.path) &&
+        currentUser?.pre_register_location?.split('?')[0] === (location.origin + location.pathname) &&
         !currentProject.is_ohd;
 
     if (!recentlyConfirmed) return null;
