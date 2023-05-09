@@ -90,6 +90,8 @@ class UsersController < ApplicationController
 
     users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
 
+    users = users.where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
+
     users = users.order([order, direction].join(' ')).
       paginate(page: page, per_page: 25)
 
