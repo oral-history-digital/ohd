@@ -1376,7 +1376,9 @@ de:
       request_in_process_text: Ihr Antrag auf Freischaltung wird inhaltlich geprüft, dies kann bis zu zwei Werktage dauern.
         Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
       blocked_text: Sie wurden für dieses Archiv gesperrt.
+      terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
       correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
+      rejected_text: Ihre Freischaltung für dieses Archiv wurde abgelehnt. Bitte korrigieren Sie Ihre Daten.
     admin:
       person_details:
         contributions:
