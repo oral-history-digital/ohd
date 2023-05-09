@@ -13,7 +13,7 @@ class ConfirmationsController < Devise::ConfirmationsController
   protected
 
   def after_confirmation_path_for(resource_name, resource)
-    resource.pre_register_location
+    resource.pre_register_location.split('?')[0]
   end 
 
 end
