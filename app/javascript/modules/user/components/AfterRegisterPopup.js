@@ -18,12 +18,20 @@ export default function AfterRegisterPopup ({
             showDialogInitially={true}
             hideButton={true}
         >
-                    <>
-                        <h2>{t('devise.registrations.signed_up_title')}</h2>
-                        <p>
-                            {t('devise.registrations.signed_up')}
-                        </p>
-                    </>
+            { close => (
+                <>
+                    <h2>{t('devise.registrations.signed_up_title')}</h2>
+                    <p>
+                        {t('devise.registrations.signed_up')}
+                    </p>
+                    <input
+                        type="button"
+                        className="Button Button--primaryAction"
+                        value={'OK'}
+                        onClick={close}
+                    />
+                </>
+            )}
         </Modal>
     )
 }
