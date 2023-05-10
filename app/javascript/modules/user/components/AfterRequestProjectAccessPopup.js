@@ -24,11 +24,19 @@ export default function AfterRequestProjectAccessPopup ({
             showDialogInitially={true}
             hideButton={true}
         >
-                    <>
-                        <p>
-                            {t('modules.project_access.request_in_process_text')}
-                        </p>
-                    </>
+            { close => (
+                <>
+                    <p>
+                        {t('modules.project_access.request_in_process_text')}
+                    </p>
+                    <input
+                        type="button"
+                        className="Button Button--primaryAction"
+                        value={'OK'}
+                        onClick={close}
+                    />
+                </>
+            )}
         </Modal>
     )
 }
