@@ -58,7 +58,8 @@ class UserProject < ApplicationRecord
   def reject_project_access
     update(processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project, user_project: self}).deliver_now
+    # wait until params are updated before sending the mail. Like this admin comments will be available in the mail.
+    CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   def correct_project_access_data
