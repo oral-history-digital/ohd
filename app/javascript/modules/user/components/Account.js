@@ -56,7 +56,7 @@ export default function Account ({
                     </div>
                     <button
                         type="button"
-                        className='Button Button--fullWidth Button--secondaryAction u-mt-small'
+                        className='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
                         onClick={() => {
                             // clear non-public data
                             if (archiveId) {
@@ -97,7 +97,7 @@ export default function Account ({
                             <LoginForm /> :
                             <button
                                 type="button"
-                                className='Button Button--fullWidth Button--secondaryAction u-mt-small'
+                                className='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
                                 onClick={() => {
                                     location = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}&project=${projectId}`;
                                 }}

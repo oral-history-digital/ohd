@@ -26,9 +26,8 @@ export default function AfterRequestProjectAccessPopup ({
         >
             { close => (
                 <>
-                    <p>
-                        {t('modules.project_access.request_in_process_text')}
-                    </p>
+                    <p>{`${t('modules.project_access.request_in_process_text1')}`}</p>
+                    <p>{`${t('modules.project_access.request_in_process_text2')}`}</p>
                     <input
                         type="button"
                         className="Button Button--primaryAction"
