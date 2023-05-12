@@ -32,7 +32,7 @@
 <% else -%>
   <p>Guten Tag <%= @user.display_name %></p>
   <p>Sie haben nun Zugang zu der Anwendung <%= @project.name(:de) %> für das von Ihnen angegebene Recherche-Anliegen.</p>
-  <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link %>).</p>
+  <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link.url(:de) %>).</p>
   <p>Mit freundlichen Grüßen</p>
   <p><%= @project.name(:de) %></p>
 <% end -%>
