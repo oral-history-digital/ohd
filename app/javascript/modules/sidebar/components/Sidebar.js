@@ -4,16 +4,18 @@ import PropTypes from 'prop-types';
 import LocaleButtonsContainer from './LocaleButtonsContainer';
 import ToggleEditView from './ToggleEditView';
 import SidebarTabsContainer from './SidebarTabsContainer';
+import CurrentArchive from './CurrentArchive';
 
 export default function Sidebar({
     className,
 }) {
     return (
         <div className={classNames(className, 'Sidebar', 'wrapper-flyout')}>
-            <div className="Sidebar--header">
+            <header className="Sidebar-header">
                 <LocaleButtonsContainer />
                 <ToggleEditView className="u-ml" />
-            </div>
+            </header>
+            <CurrentArchive className="Sidebar-title u-mt-none u-mb u-ml" />
             <SidebarTabsContainer />
         </div>
     );
