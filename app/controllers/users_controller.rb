@@ -89,8 +89,8 @@ class UsersController < ApplicationController
     users = users.where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all'
 
     users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
-
     users = users.where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
+    users = users.joins(:user_roles).where("user_roles.role_id = ?", params[:role]) if !params[:role].blank?
 
     users = users.order([order, direction].join(' ')).
       paginate(page: page, per_page: 25)
