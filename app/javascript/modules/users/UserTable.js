@@ -172,7 +172,7 @@ export default function UserTable() {
                     handleChange={handleWorkflowStateFilterChange}
                     withEmpty={false}
                 />
-                <SelectContainer
+                { project.available_locales.length > 1 && <SelectContainer
                     className="u-mb-small"
                     values={localeFilterValues}
                     label={t('activerecord.attributes.user.default_locale')}
@@ -180,7 +180,7 @@ export default function UserTable() {
                     optionsScope={'default_locales'}
                     handleChange={handleLocaleFilterChange}
                     withEmpty={false}
-                />
+                /> }
                 { project.is_ohd && <SelectContainer
                     className="u-mb-small"
                     values={projects}
