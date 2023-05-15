@@ -56,7 +56,7 @@ Guten Tag <%= @user.display_name %>,
 
 Sie haben eine Freischaltung für die Anwendung <%= @project.name('de') %> beantragt.
 
-Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs (<%= @conditions_link.url(:de) %>) entsprechen.
+Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs (<%= @conditions_link && @conditions_link.url(:de) %>) entsprechen.
 
 <% unless @user_project.admin_comments.blank? %>
   <%= @user_project.admin_comments %>
@@ -64,7 +64,7 @@ Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind
 
 Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.
 
-<%= @project.domain_with_optional_identifier + '/de' %>
+<%= "#{@project.domain_with_optional_identifier}/de?access_token=#{@user.access_tokens.last.token}" %>
 
 Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.
 
