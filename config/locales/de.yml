@@ -174,7 +174,7 @@ de:
   login: Anmelden
   login_name: Login
   logout: Abmelden
-  login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
+  login_errors: Bitte berichtigen Sie Ihre E-Mail und/ oder Ihr Passwort
   logged_in_as: Angemeldet als
   user_name: Benutzer*in
   notice: Merken
@@ -284,7 +284,7 @@ de:
   language: Sprache
   camera: Kamera
   order_new_password: Passwort wiederherstellen
-  ordered_new_password: Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres
+  ordered_new_password: Ihnen wurde eine E-Mail mit Anleitungen zur Änderung Ihres
     Passwortes geschickt.
   conditions: Nutzungsbedingungen
   privacy_protection: Datenschutz
@@ -347,7 +347,7 @@ de:
   edit:
     text:
       new: Text auswählen
-      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
+      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhalten Sie eine E-Mail.
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
@@ -493,7 +493,7 @@ de:
       delete: Anmerkung löschen
     upload:
       upload: Importieren
-      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
+      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhalten Sie eine E-Mail.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Import
     update_speaker:
@@ -544,7 +544,7 @@ de:
       admin: 'Berechtigungen bearbeiten'
     upload_transcript:
       title: Transkript hochladen
-      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist, erhalten Sie eine Email.'
+      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist, erhalten Sie eine E-Mail.'
     upload_edit_table:
       title: Erschliessungstabelle hochladen
       template: Vorlage für den Import
@@ -1306,7 +1306,7 @@ de:
         text_input: Bitte angeben
         file_input: Bitte Datei auswählen
         password_input: Ihr Passwort muss mindestens sieben Zeichen haben. Stellen Sie sicher, dass beide Passwörter übereinstimmen.
-        email_input: Bitte berichtigen Sie Ihre Email
+        email_input: Bitte berichtigen Sie Ihre E-Mail
         date_input: Bitte wählen Sie ein Datum aus.
       template:
         header: Ihre Anfrage konnte nicht bearbeitet werden
@@ -1359,7 +1359,7 @@ de:
         project_access_rejected: Die E-Mail-Adresse %{email} ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
         project_access_granted: Die E-Mail-Adresse %{email} ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
         login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
-        login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer Email-Adresse und ihrem Passwort an.
+        login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer E-Mail-Adresse und ihrem Passwort an.
         project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.
           Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
         project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt. 
@@ -1370,7 +1370,8 @@ de:
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      request_access_explanation1: Sie sind bereits in Oral-History.Digital registriert, aber noch nicht für dieses Archiv freigeschaltet.
+      request_access_explanation2: Bitte beantragen Sie die Freischaltung.
       request_access_link: 'Freischaltung für dieses Archiv beantragen'
       request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
       request_in_process_text1: Ihr Antrag auf Freischaltung wird inhaltlich geprüft, dies kann bis zu zwei Werktage dauern.
