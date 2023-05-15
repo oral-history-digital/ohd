@@ -25,11 +25,7 @@ class UserProject < ApplicationRecord
       event :block_project_access, :transitions_to => :project_access_blocked
     end
     state :project_access_rejected do
-      event :correct_project_access_data, :transitions_to => :project_access_data_corrected
-    end
-    state :project_access_data_corrected do
-      event :grant_project_access, :transitions_to => :project_access_granted
-      event :reject_project_access, :transitions_to => :project_access_rejected
+      event :correct_project_access_data, :transitions_to => :project_access_requested
     end
     state :project_access_terminated do
       event :grant_project_access, :transitions_to => :project_access_granted
