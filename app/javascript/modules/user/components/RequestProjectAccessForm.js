@@ -67,7 +67,7 @@ export default function RequestProjectAccessForm({
             validate: function(v){return v && v !== '0'},
             help: (
                 <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
-                    {t('user.notes_on_tos_agreement')}
+                    {t('user.notes_on_tos_agreement_archive', {project: project.name[locale]})}
                 </a>
             )
         },
