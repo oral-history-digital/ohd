@@ -36,12 +36,15 @@ export default function ProjectAccessAlert ({
         return (
             <>
                 <p className='error'>
-                    {t( 'modules.project_access.request_access_explanation')}
+                    {t('modules.project_access.request_access_explanation1')}
+                </p>
+                <p className='error'>
+                    {t('modules.project_access.request_access_explanation2')}
                 </p>
                 <Modal
-                    title={t( 'modules.project_access.request_access_link')}
-                    triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-                    trigger={t( 'modules.project_access.request_access_link')}
+                    title={t('modules.project_access.request_access_link')}
+                    triggerClassName='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
+                    trigger={t('modules.project_access.request_access_link')}
                 >
                     {close => (
                         <RequestProjectAccessFormContainer
