@@ -241,6 +241,10 @@ ru:
   person_info: О человеке
   date_of_birth: Дата рождения
   year_of_birth: Год рождения
+  pseudonym_or_name: Pseudonym or name
+  birth_name: Birth name
+  other_first_names: Other first names
+  alias_names: Alias names
   place_of_birth: Geburtsort
   place_of_interview: Interviewort
   typology: Erfahrung
@@ -363,6 +367,7 @@ ru:
     duration: Duration
     date_of_birth: дата рождения
     year_of_birth: Year of birth
+    pseudonym_or_name: Pseudonym or name
     birth_location: Birth location
     gender: Gender
     interview_date: Interview date
@@ -1232,10 +1237,11 @@ ru:
         title: Title
         first_name: Vorname
         last_name: Nachname
-        birth_name: Geburtsname
+        birth_name: Birth name
         date_of_birth: дата рождения
-        alias_names: Alias Names
-        other_first_names: Other First Names
+        alias_names: Alias names
+        pseudonym: Pseudonym
+        other_first_names: Other first names
         pseudonym_first_name: Pseudonym first name
         pseudonym_last_name: Pseudonym last name
         use_pseudonym: Use pseudonym

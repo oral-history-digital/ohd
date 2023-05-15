@@ -1,39 +1,16 @@
 import PropTypes from 'prop-types';
-import { FaPencilAlt } from 'react-icons/fa';
 
-import {
-    AuthorizedContent,
-    AuthShowContainer,
-    useProjectAccessStatus
-} from 'modules/auth';
+import { useProjectAccessStatus } from 'modules/auth';
 import { useIsEditor } from 'modules/archive';
 import { ContentField } from 'modules/forms';
-import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 import { humanReadable } from 'modules/data';
 import { EventContentField } from 'modules/events';
 import { useI18n } from 'modules/i18n';
-import {
-    METADATA_SOURCE_EVENT_TYPE,
-    METADATA_SOURCE_PERSON
-} from 'modules/constants';
 import usePersonWithAssociations from './usePersonWithAssociations';
 import Biography from './Biography';
-import PersonForm from './PersonForm';
-
-function getDisplayedMetadataFields(metadataFields, isProjectAccessGranted) {
-    const filteredFields = metadataFields.filter(field => {
-        const isPersonType = field.source === METADATA_SOURCE_PERSON ||
-            field.source === METADATA_SOURCE_EVENT_TYPE && field.eventable_type === 'Person';
-
-        const isAllowed = isProjectAccessGranted && field.use_in_details_view ||
-            !isProjectAccessGranted && field.display_on_landing_page;
-
-        return isPersonType && isAllowed;
-    });
-
-    return filteredFields;
-}
+import NameOrPseudonym from './NameOrPseudonym';
+import getDisplayedMetadataFields from './getDisplayedMetadataFields';
 
 export default function PersonData({
     interview,
@@ -49,7 +26,11 @@ export default function PersonData({
     const displayedMetadataFields = getDisplayedMetadataFields(
         Object.values(project.metadata_fields), projectAccessGranted);
 
-    if (intervieweeId === null) {
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    if (intervieweeId === null || !person) {
         return (
             <div>
                 {t('modules.person.no_interviewee')}
@@ -57,48 +38,15 @@ export default function PersonData({
         );
     }
 
-    if (isLoading) {
-        return <Spinner />;
-    }
-
     return (
         <>
-            <AuthShowContainer ifLoggedIn>
-                <ContentField
-                    label={t('interviewee_name')}
-                    value={person.display_name}
-                    fetching={isValidating}
-                >
-                    <AuthorizedContent object={person} action='update'>
-                        <Modal
-                            hideHeading
-                            title={t('edit.contribution.edit')}
-                            trigger={(<>
-                                <FaPencilAlt className="Icon Icon--editorial Icon--small" />
-                                {' '}
-                                {t('edit.contribution.edit')}
-                            </>)}
-                        >
-                            {close => (
-                                <PersonForm
-                                    data={person}
-                                    onSubmit={close}
-                                    onCancel={close}
-                                />
-                            )}
-                        </Modal>
-                    </AuthorizedContent>
-                </ContentField>
-            </AuthShowContainer>
-
-            <AuthShowContainer ifLoggedOut ifNoProject>
-                <ContentField
-                    label={t('interviewee_name')}
-                    value={interview?.anonymous_title?.[locale]}
-                />
-            </AuthShowContainer>
-
-            {person && displayedMetadataFields.map(field => {
+            <NameOrPseudonym
+                type="name"
+                person={person}
+                interview={interview}
+                fetching={isValidating}
+            />
+            {displayedMetadataFields.map(field => {
                 if (field.source === 'EventType') {
                     const events = person.events.filter(event =>
                         event.event_type_id === field.event_type_id);
@@ -113,6 +61,15 @@ export default function PersonData({
                             events={events}
                         />
                     );
+                }
+
+                if (field.name === 'pseudonym_or_name') {
+                    return (<NameOrPseudonym
+                        type="pseudonym"
+                        person={person}
+                        interview={interview}
+                        fetching={isValidating}
+                    />);
                 }
 
                 const label = field.label?.[locale] || t(field.name);

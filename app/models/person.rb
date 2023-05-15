@@ -201,6 +201,10 @@ class Person < ApplicationRecord
     use_pseudonym ? pseudonym_last_name : last_name
   end
 
+  def pseudonym
+    "#{pseudonym_first_name} #{pseudonym_last_name}".strip
+  end
+
   def identifier
     id
   end

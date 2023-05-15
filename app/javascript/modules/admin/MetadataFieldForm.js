@@ -20,7 +20,8 @@ const NAME_VALUES = {
         "signature_original", "startpage_position"
     ],
     Person: [
-        "date_of_birth", "year_of_birth", "gender", "description"
+        "date_of_birth", "year_of_birth", "gender", "description",
+        "birth_name", "other_first_names", "alias_names", "pseudonym_or_name"
     ],
 }
 
