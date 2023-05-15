@@ -34,7 +34,7 @@
 <% else -%>
   <p>Guten Tag <%= @user.display_name %>,</p>
   <p>Sie haben eine Freischaltung für die Anwendung <%= @project.name('de') %> beantragt.</p>
-  <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den <%= @conditions_link && (link_to 'Nutzungsbedingungen des Archivs', @conditions_link.url(:de)) %>) entsprechen.</p>
+  <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den <%= @conditions_link && (link_to 'Nutzungsbedingungen des Archivs', @conditions_link.url(:de)) %> entsprechen.</p>
   <% unless @user_project.admin_comments.blank? %>
     <p><%= @user_project.admin_comments %></p>
   <% end %>

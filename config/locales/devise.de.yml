@@ -41,7 +41,7 @@ de:
       account_removed:
         subject: Löschung Ihres Nutzer*innen-Accounts
       reset_password_instructions:
-        subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
+        subject: Oral-History.Digital. Schritte für die Wiederherstellung Ihres Passwortes.
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.
       success: Sie haben sich erfolgreich mit Ihrem Account angemeldet.

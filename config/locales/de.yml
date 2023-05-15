@@ -481,6 +481,7 @@ de:
       edit: Registereinträge bearbeiten
     users:
       admin: Benutzer*innen
+      confirm_remove: "Soll der/ die Benutzer*in wirklich gelöscht werden?"
     history:
       new: Kurzbiografie/ Ereignis hinzufügen
       edit: Kurzbiografie/ Ereignis bearbeiten
@@ -624,8 +625,8 @@ de:
       project_access_rejected: abgelehnt
       project_access_data_corrected: korrigiert
       project_access_requested: ungeprüft
-      project_access_terminated: beendet
-      terminate_project_access: beenden
+      project_access_terminated: Freischaltung beendet
+      terminate_project_access: Freischaltung beenden
       project_access_blocked: gesperrt
       block_project_access: sperren
       all: alle
