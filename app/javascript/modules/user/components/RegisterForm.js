@@ -147,7 +147,7 @@ export default function RegisterForm({
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer">
-                        {t('user.notes_on_tos_agreement')}
+                        {t('user.notes_on_tos_agreement_ohd')}
                     </a>
                 )
             },

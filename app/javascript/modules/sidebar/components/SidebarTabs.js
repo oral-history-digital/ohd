@@ -33,10 +33,9 @@ export default function SidebarTabs({
     hasMap,
 }) {
     const [tabIndex, setTabIndex] = useState(indexes.INDEX_USER);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
-    const locale = useSelector(getLocale);
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -119,7 +118,7 @@ export default function SidebarTabs({
                     className="SidebarTabs-tab"
                 >
                     {t((isCampscapesProject && !archiveId) ?
-                        'user.notes_on_tos_agreement' :
+                        ('user.notes_on_tos_agreement', {project: project.name[locale]}) :
                         (!project.is_ohd ? 'archive_search' : 'modules.sidebar.search')
                     )}
                 </Tab>
