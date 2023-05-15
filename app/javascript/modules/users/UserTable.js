@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { getCurrentProject, getProjects } from 'modules/data';
+import { getCurrentProject, getProjects, Fetch,
+    getRolesForCurrentProjectFetched, getRolesForCurrentProject } from 'modules/data';
 
 import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
@@ -16,6 +17,7 @@ export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
+    const projectRoles = useSelector(getRolesForCurrentProject);
 
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
@@ -23,6 +25,11 @@ export default function UserTable() {
     const [projectFilter, setProjectFilter] = useState('');
     const handleProjectFilterChange = (name, value) => {
         setProjectFilter(value);
+    };
+
+    const [roleFilter, setRoleFilter] = useState('');
+    const handleRoleFilterChange = (name, value) => {
+        setRoleFilter(value);
     };
 
     const [localeFilter, setLocaleFilter] = useState('');
@@ -53,7 +60,15 @@ export default function UserTable() {
 
     const [sorting, setSorting] = useState([]);
 
-    const { data, isLoading, dataPath } = useUsers(page, filter, workflowStateFilter, localeFilter, projectFilter, sorting);
+    const { data, isLoading, dataPath } = useUsers(
+        page,
+        filter,
+        workflowStateFilter,
+        localeFilter,
+        projectFilter,
+        roleFilter,
+        sorting
+    );
 
     const getDataPath = (row) => dataPath;
 
@@ -189,6 +204,19 @@ export default function UserTable() {
                     handleChange={handleProjectFilterChange}
                     withEmpty={true}
                 /> }
+                <Fetch
+                    fetchParams={['roles', null, null, `for_projects=${project?.id}`]}
+                    testSelector={getRolesForCurrentProjectFetched}
+                >
+                    <SelectContainer
+                        className="u-mb-small"
+                        values={projectRoles}
+                        label={t('activerecord.models.role.one')}
+                        attribute='role'
+                        handleChange={handleRoleFilterChange}
+                        withEmpty={true}
+                    />
+                </Fetch>
             </TableWithPagination>
         </>
     );

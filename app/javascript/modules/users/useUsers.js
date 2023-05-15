@@ -2,7 +2,14 @@ import useSWRImmutable from 'swr/immutable';
 
 import { usePathBase } from 'modules/routes';
 
-export default function useUsers(page, filter, workflowStateFilter, localeFilter, projectFilter, manualSorting) {
+export default function useUsers(page,
+    filter,
+    workflowStateFilter,
+    localeFilter,
+    projectFilter,
+    roleFilter,
+    manualSorting
+) {
     const pathBase = usePathBase();
 
     let dataPath = `${pathBase}/users.json?page=${page}`;
@@ -17,6 +24,9 @@ export default function useUsers(page, filter, workflowStateFilter, localeFilter
     }
     if (projectFilter) {
         dataPath += `&project=${projectFilter}`;
+    }
+    if (roleFilter) {
+        dataPath += `&role=${roleFilter}`;
     }
     if (manualSorting?.[0]) {
         dataPath += `&order=${manualSorting[0].id}&direction=${manualSorting[0].desc ? 'desc' : 'asc'}`;

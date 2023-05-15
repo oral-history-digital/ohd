@@ -52,6 +52,7 @@ export {
     getRegistryReferenceTypesForCurrentProjectFetched,
     getRegistryReferenceTypesStatus,
     getRolesForCurrentProject,
+    getRolesForCurrentProjectFetched,
     getRolesStatus,
     getRootRegistryEntry,
     getRootRegistryEntryFetched,
