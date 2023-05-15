@@ -243,6 +243,10 @@ en:
   person_info: About the Person
   date_of_birth: Date of birth
   year_of_birth: Year of Birth
+  pseudonym_or_name: Pseudonym or name
+  birth_name: Birth name
+  other_first_names: Other first names
+  alias_names: Additional names
   place_of_birth: Place of Birth
   country_of_birth: Country of Birth
   birth_location: Place of  Birth
@@ -318,6 +322,7 @@ en:
     duration: Duration
     date_of_birth: Date of birth
     year_of_birth: Year of birth
+    pseudonym_or_name: Pseudonym or name
     birth_location: Birth location
     gender: Gender
     interview_date: Interview date
@@ -1191,6 +1196,7 @@ en:
         birth_name: Birth Name
         date_of_birth: Date of birth
         alias_names: Additional Names
+        pseudonym: Pseudonym
         other_first_names: Other First Names
         pseudonym_first_name: Pseudonym first name
         pseudonym_last_name: Pseudonym last name

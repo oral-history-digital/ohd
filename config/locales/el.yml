@@ -250,6 +250,10 @@ el:
   person_info: Σχετικά με το άτομο
   date_of_birth: Ημερομηνία γέννησης
   year_of_birth: Έτος γέννησης
+  pseudonym_or_name: Pseudonym or name
+  birth_name: Βαφτιστικό όνομα
+  other_first_names: Άλλα ονόματα
+  alias_names: Alias names
   place_of_birth: Τόπος γέννησης
   place_of_interview: Τόπος συνέντευξης
   typology: Εμπειρία
@@ -321,6 +325,7 @@ el:
     duration: Duration
     date_of_birth: Ημερομηνία γέννησης
     year_of_birth: Year of birth
+    pseudonym_or_name: Pseudonym or name
     birth_location: Birth location
     gender: Gender
     interview_date: Interview date
@@ -1207,6 +1212,7 @@ el:
         birth_name: Βαφτιστικό όνομα
         date_of_birth: Ημερομηνία γέννησης
         alias_names: Alias Names
+        pseudonym: Pseudonym
         other_first_names: Άλλα ονόματα
         pseudonym_first_name: Pseudonym first name
         pseudonym_last_name: Pseudonym last name
