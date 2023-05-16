@@ -8,7 +8,7 @@ import { getCurrentProject, getProjects, Fetch,
 import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
-import ProjectShortnamesCell from './ProjectShortnamesCell';
+import ArchiveManagementInCell from './ArchiveManagementInCell';
 import RolesCell from './RolesCell';
 import TasksCell from './TasksCell';
 import { SelectContainer } from 'modules/forms';
@@ -111,8 +111,8 @@ export default function UserTable() {
             enableSorting: false,
         },
         {
-            header: t('activerecord.models.project.other'),
-            cell: ProjectShortnamesCell,
+            header: t('modules.project_access.archive_management_in'),
+            cell: ArchiveManagementInCell,
         },
     ]), [locale, project]);
 
