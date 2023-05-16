@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import UserFormContainer from './UserFormContainer';
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
+import ProjectsOverview from './ProjectsOverview';
 
 export default function UserEdit ({
     data,
@@ -12,7 +13,7 @@ export default function UserEdit ({
 
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
-    const scope = project.shortname === 'ohd' ? 'user' : 'user_project';
+    const scope = project.is_ohd ? 'user' : 'user_project';
     const userProject = Object.values(data.user_projects).find(urp => urp.project_id === project.id);
 
     const details = [
@@ -71,6 +72,9 @@ export default function UserEdit ({
                     )
                 })
             }
+
+            { project.is_ohd && <ProjectsOverview user={data} /> }
+
             <UserFormContainer
                 data={project.is_ohd ? data : userProject}
                 dataPath={dataPath}
