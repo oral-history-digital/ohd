@@ -1383,7 +1383,7 @@ de:
       correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
       rejected_text: Ihre Freischaltung für dieses Archiv wurde abgelehnt. Bitte korrigieren Sie Ihre Daten.
       archive_management_in: Archivmanagement in
-      project_access_grantedi_in: freigeschaltet in
+      granted_in: freigeschaltet in
     admin:
       person_details:
         contributions:
