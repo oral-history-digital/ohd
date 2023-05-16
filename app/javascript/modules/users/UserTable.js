@@ -9,6 +9,7 @@ import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
 import ArchiveManagementInCell from './ArchiveManagementInCell';
+import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 import RolesCell from './RolesCell';
 import TasksCell from './TasksCell';
 import { SelectContainer } from 'modules/forms';
@@ -111,6 +112,10 @@ export default function UserTable() {
             enableSorting: false,
         },
         {
+            header: t('modules.project_access.granted_in'),
+            cell: ProjectAccessGrantedCell,
+        },
+        {
             header: t('modules.project_access.archive_management_in'),
             cell: ArchiveManagementInCell,
         },
@@ -204,19 +209,19 @@ export default function UserTable() {
                     handleChange={handleProjectFilterChange}
                     withEmpty={true}
                 /> }
-                <Fetch
-                    fetchParams={['roles', null, null, `for_projects=${project?.id}`]}
-                    testSelector={getRolesForCurrentProjectFetched}
-                >
-                    <SelectContainer
-                        className="u-mb-small"
-                        values={projectRoles}
-                        label={t('activerecord.models.role.one')}
-                        attribute='role'
-                        handleChange={handleRoleFilterChange}
-                        withEmpty={true}
-                    />
-                </Fetch>
+                { !project.is_ohd && <Fetch
+                        fetchParams={['roles', null, null, `for_projects=${project?.id}`]}
+                        testSelector={getRolesForCurrentProjectFetched}
+                    >
+                        <SelectContainer
+                            className="u-mb-small"
+                            values={projectRoles}
+                            label={t('activerecord.models.role.one')}
+                            attribute='role'
+                            handleChange={handleRoleFilterChange}
+                            withEmpty={true}
+                        />
+                </Fetch> }
             </TableWithPagination>
         </>
     );
