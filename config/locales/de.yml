@@ -1384,6 +1384,10 @@ de:
       rejected_text: Ihre Freischaltung für dieses Archiv wurde abgelehnt. Bitte korrigieren Sie Ihre Daten.
       archive_management_in: Archivmanagement in
       granted_in: freigeschaltet in
+      actual_workflow_state: aktueller Status
+      at: am
+      one: Freischaltung
+      many: Freischaltungen
     admin:
       person_details:
         contributions:
