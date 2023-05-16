@@ -15,28 +15,39 @@ export default function UserEdit ({
     const scope = project.shortname === 'ohd' ? 'user' : 'user_project';
     const userProject = Object.values(data.user_projects).find(urp => urp.project_id === project.id);
 
+    const details = [
+        'appellation',
+        'first_name',
+        'last_name',
+        'email',
+        'street',
+        'zipcode',
+        'city',
+        'country',
+        'confirmed_at',
+        'default_locale',
+    ];
+
+    if (!project.is_ohd) details.concat([
+        'organization',
+        'job_description',
+        'research_intentions',
+        'specification',
+        'processed_at',
+        'terminated_at',
+    ]);
+
     return (
         <div className='details'>
             {
-                [
-                    'appellation',
-                    'first_name',
-                    'last_name',
-                    'email',
-                    'street',
-                    'zipcode',
-                    'city',
-                    'country',
-                    'gender',
+                details.concat(project.is_ohd ? [] : [
                     'organization',
                     'job_description',
                     'research_intentions',
                     'specification',
-                    'confirmed_at',
                     'processed_at',
                     'terminated_at',
-                    'default_locale',
-                ].map((detail, index) => {
+                ]).map((detail, index) => {
                     let value = data[detail] || userProject?.[detail];
                     if (detail === 'confirmed_at') {
                         value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
