@@ -86,10 +86,10 @@ class UsersController < ApplicationController
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
 
     users = users.where(workflow_state: params[:workflow_state] || 'confirmed') if current_project.is_ohd? && params[:workflow_state] != 'all'
-    users = users.where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all'
+    users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all'
+    users = users.joins(:user_projects).where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
 
     users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
-    users = users.where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
     users = users.joins(:user_roles).where("user_roles.role_id = ?", params[:role]) if !params[:role].blank?
 
     users = users.order([order, direction].join(' ')).
