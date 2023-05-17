@@ -12,7 +12,6 @@ const mapStateToProps = (state) => {
     return {
         archiveId: getArchiveId(state),
         projects: getProjects(state),
-        project: getCurrentProject(state),
         projectId: getProjectId(state),
         firstName: getFirstName(state),
         lastName: getLastName(state),

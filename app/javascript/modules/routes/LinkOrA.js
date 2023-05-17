@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { OHD_DOMAINS } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/constants';
 import { getLocale, setProjectId, getProjectId } from 'modules/archive';
 import { getCurrentUser } from 'modules/data';
 

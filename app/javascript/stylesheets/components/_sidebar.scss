@@ -10,7 +10,13 @@
   }
 }
 
-.Sidebar--header {
+.Sidebar-header {
   display: flex;
   padding: $base-unit $base-unit $base-unit ($base-unit * 0.75);
+}
+
+.Sidebar-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
 }
