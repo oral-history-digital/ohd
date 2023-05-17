@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { getCurrentAccount, getCurrentProject, getProjects } from 'modules/data';
 import { getLocale, setProjectId } from 'modules/archive';
 import { projectByDomain } from 'modules/routes';
-import { OHD_DOMAINS } from './constants';
+import { OHD_DOMAINS } from 'modules/constants';
 
 function OHDLink({ className }) {
     const locale = useSelector(getLocale);
