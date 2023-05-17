@@ -7,16 +7,11 @@ import { getIsLoggedIn } from 'modules/user';
 import SidebarTabs from './SidebarTabs';
 
 const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
     return {
         archiveId: getArchiveId(state),
-        projectId: getProjectId(state),
-        project: getCurrentProject(state),
         selectedArchiveIds: getSelectedArchiveIds(state),
-        hasMap: project && project.has_map === 1,
         isLoggedIn: getIsLoggedIn(state),
         interview: getCurrentInterview(state),
-        isCampscapesProject: getIsCampscapesProject(state),
     }
 }
 

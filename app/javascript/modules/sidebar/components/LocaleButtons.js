@@ -1,32 +1,53 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 
-import { pathBase } from 'modules/routes';
+import { DEFAULT_LOCALES, SYSTEM_LOCALES } from 'modules/constants';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+
+const projectLocales = (project) => project ?
+    project.available_locales :
+    DEFAULT_LOCALES;
 
 export default function LocaleButtons({
     className,
-    currentLocale,
-    locales,
     setLocale,
-    projectId,
-    project,
 }) {
-    const location = useLocation();
+    const project = useProject();
+    const locales = projectLocales(project);
+    const { locale: currentLocale } = useI18n();
     const navigate = useNavigate();
+    const matchWithProject = useMatch('/:projectId/:locale/*');
+    const matchWOProject = useMatch('/:locale/*');
+    const [searchParams, setSearchParams] = useSearchParams();
 
     function handleButtonClick(e) {
         const locale = e.target.textContent;
 
-        const pathBaseStr = pathBase({ projectId, locale, project });
-
+        let pathBaseStr = '/de';  // Fallback.
         let newPath;
-        if (/^\/[a-z]{2}\/?$/.test(location.pathname)) {
-            newPath = `/${locale}`;
-        } else if (/^(?:\/[\-a-z0-9]{1,11}[a-z])?\/[a-z]{2}$/.test(location.pathname)) {
-            newPath = pathBaseStr;
-        } else {
-            newPath = location.pathname.replace(/^(?:\/[\-a-z0-9]{1,11}[a-z])?\/[a-z]{2}\//, pathBaseStr + '/');
+        if (matchWithProject && SYSTEM_LOCALES.includes(matchWithProject.params.locale)) {
+            pathBaseStr = `/${matchWithProject.params.projectId}/${locale}`;
+            if (matchWithProject.params['*']) {
+                newPath = pathBaseStr + '/' + matchWithProject.params['*'];
+            } else {
+                newPath = pathBaseStr;
+            }
+        }
+        if (matchWOProject && SYSTEM_LOCALES.includes(matchWOProject.params.locale)) {
+            pathBaseStr = `/${locale}`;
+            if (matchWOProject.params['*']) {
+                newPath = pathBaseStr + '/' + matchWOProject.params['*'];
+            } else {
+                newPath = pathBaseStr;
+            }
+        }
+
+        // Add query params.
+        const queryString = searchParams.toString();
+        if (queryString.length > 0) {
+            newPath += `?${queryString}`;
         }
 
         navigate(newPath);
@@ -54,9 +75,5 @@ export default function LocaleButtons({
 
 LocaleButtons.propTypes = {
     className: PropTypes.string,
-    currentLocale: PropTypes.string.isRequired,
-    locales: PropTypes.array.isRequired,
-    projectId: PropTypes.string,
-    project: PropTypes.object.isRequired,
     setLocale: PropTypes.func.isRequired,
 };

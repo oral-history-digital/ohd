@@ -21,13 +21,12 @@ export default function Interview({
     isCatalog,
     projectId,
     project,
-    locale,
     setArchiveId,
     fetchData,
     isLoggedIn,
 }) {
     const { archiveId } = useParams();
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
