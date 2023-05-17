@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Checkbox } from 'modules/ui';
 import queryString from 'query-string';
 
-import { OHD_DOMAINS } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/constants';
 import { LinkOrA } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';

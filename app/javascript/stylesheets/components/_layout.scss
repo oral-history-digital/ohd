@@ -60,11 +60,6 @@
   right: $base-unit * 0.5;
   top: $base-unit * 0.5;
   z-index: $z-index-sidebar-toggle;
-
-  @include screen-m {
-    right: $base-unit;
-    top: $base-unit;
-  }
 }
 
 .Layout.is-sticky .Layout-contentTabs {

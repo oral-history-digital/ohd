@@ -7,8 +7,9 @@ const qsOptions = {
 };
 
 export default function useSearchParams() {
-    const { search } = useLocation();
+    const location = useLocation();
     const navigate = useNavigate();
+    const { search, pathname } = location;
 
     const params = useMemo(
         () => queryString.parse(search, qsOptions), [search]
@@ -178,11 +179,14 @@ export default function useSearchParams() {
     }
 
     function pushToHistory(newParams, replace = false) {
-        const options = {
-            search: queryString.stringify(newParams, qsOptions),
-        };
+        const qs = queryString.stringify(newParams, qsOptions);
 
-        navigate(options, { replace });
+        // Use location object from window instead of useLocation because
+        // the useLocation object does not return the correct pathname.
+        // Maybe upgrade to the new React Router API (createBrowserRouter).
+        const all = `${window.location.pathname}?${qs}`;
+
+        navigate(all, { replace });
     }
 
     const memoizedValue = useMemo(() => {

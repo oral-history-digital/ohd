@@ -8,7 +8,7 @@ import '@reach/tabs/styles.css';
 import { AccountContainer } from 'modules/account';
 import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { getLocale } from 'modules/archive';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
@@ -26,19 +26,20 @@ import tabIndexFromRoute from '../tabIndexFromRoute';
 export default function SidebarTabs({
     selectedArchiveIds,
     interview,
-    project,
     archiveId,
     isLoggedIn,
-    isCampscapesProject,
-    hasMap,
 }) {
     const [tabIndex, setTabIndex] = useState(indexes.INDEX_ACCOUNT);
     const { t } = useI18n();
+    const project = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const locale = useSelector(getLocale);
     const navigate = useNavigate();
     const { pathname } = useLocation();
+
+    const hasMap = project?.has_map === 1;
+    const isCampscapesProject = project?.identifier === 'campscapes';
 
     useEffect(() => {
         setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
@@ -287,10 +288,7 @@ export default function SidebarTabs({
 
 SidebarTabs.propTypes = {
     interview: PropTypes.object,
-    projectId: PropTypes.string,
-    project: PropTypes.object,
     archiveId: PropTypes.string,
-    hasMap: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     isCampscapesProject: PropTypes.bool.isRequired,
     selectedArchiveIds: PropTypes.array,
