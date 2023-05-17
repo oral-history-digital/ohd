@@ -146,7 +146,7 @@ class Person < ApplicationRecord
     used_title = display_title_part
     fn = first_name_used
     ln = anonymous ?
-      last_name_used.strip.slice(0) + '.' :
+      (last_name_used ? last_name_used.strip.slice(0) + '.' : '') :
       last_name_used
 
     if fn.blank?
