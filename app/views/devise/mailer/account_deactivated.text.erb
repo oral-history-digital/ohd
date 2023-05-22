@@ -61,10 +61,14 @@ El equipo del proyecto "<%= project_name %>"
 
 сотрудники проекта "<%= project_name %>"
 <% else -%>
-Guten Tag <%= @user.display_name %>
+Guten Tag <%= @user.display_name %>,
 
 Ihr Zugang zu der Anwendung <%= project_name %> war zeitlich befristet und ist nun beendet.
 Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
+
+<% unless @user_project.admin_comments.blank? %>
+  <%= @user_project.admin_comments %>
+<% end %>
 
 Mit freundlichen Grüßen
 

@@ -30,9 +30,12 @@
   <p>Με εκτίμηση,</p>
   <p>Η ομάδα του προγράμματος "<%= @project.name('el') %>"</p>
 <% else -%>
-  <p>Guten Tag <%= @user.display_name %></p>
+  <p>Guten Tag <%= @user.display_name %>,</p>
   <p>Sie haben nun Zugang zu der Anwendung <%= @project.name(:de) %> für das von Ihnen angegebene Recherche-Anliegen.</p>
   <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link.url(:de) %>).</p>
+  <% unless @user_project.admin_comments.blank? %>
+    <p><%= @user_project.admin_comments %></p>
+  <% end %>
   <p>Mit freundlichen Grüßen</p>
   <p><%= @project.name(:de) %></p>
 <% end -%>
