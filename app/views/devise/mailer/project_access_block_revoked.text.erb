@@ -63,8 +63,9 @@ El equipo del proyecto "<%= project_name %>"
 <% else -%>
 Guten Tag <%= @user.display_name %>,
 
-hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung <%= project_name %> gesperrt wurde. Dies erfolgt, wenn die Nutzungsbedingungen des Archivs (<%= @conditions_link.url(:de) %>) nicht beachtet wurden.
-Bei Rückfragen kontaktieren Sie uns bitte unter <%= @project.contact_email %>.
+hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Anwendung <%= project_name %> aufgehoben wurde.
+
+Sie haben nun wieder Zugang zu der Anwendung <%= project_name %>.
 
 <% unless @user_project.admin_comments.blank? %>
   <%= @user_project.admin_comments %>
@@ -72,5 +73,5 @@ Bei Rückfragen kontaktieren Sie uns bitte unter <%= @project.contact_email %>.
 
 Mit freundlichen Grüßen
 
-<%= @project.name(:de) %>
+<%= project_name %>
 <% end -%>

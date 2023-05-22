@@ -31,7 +31,7 @@ class UserProject < ApplicationRecord
       event :grant_project_access, :transitions_to => :project_access_granted
     end
     state :project_access_blocked do
-      event :grant_project_access, :transitions_to => :project_access_granted
+      event :revoke_project_access_block, :transitions_to => :project_access_granted
     end
 
   end
@@ -72,8 +72,14 @@ class UserProject < ApplicationRecord
   def block_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_blocked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project, user_project: self}).deliver_now
-    AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_later(wait: 5.seconds)
+    CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
+    AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_now
+  end
+
+  def revoke_project_access_block
+    update(terminated_at: Date.today, processed_at: Date.today)
+    subject = I18n.t('devise.mailer.project_access_block_revoked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_block_revoked(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   [
