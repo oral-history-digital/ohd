@@ -36,6 +36,8 @@ de:
         subject: Ihr Antrag auf Freischaltung für die Anwendung '%{project_name}'
       project_access_blocked:
         subject: Sperrung Ihres Nutzer*innen-Accounts
+      project_access_block_revoked:
+        subject: Ihr Zugang zu der Anwendung '%{project_name}'
       project_access_terminated:
         subject: Ihr Zugang zu der Anwendung '%{project_name}'
       account_removed:

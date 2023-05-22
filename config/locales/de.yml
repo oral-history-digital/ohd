@@ -628,6 +628,7 @@ de:
       project_access_terminated: Freischaltung beendet
       terminate_project_access: Freischaltung beenden
       project_access_blocked: gesperrt
+      revoke_project_access_block: Sperrung aufheben
       block_project_access: sperren
       all: alle
   help_texts:
@@ -1157,7 +1158,7 @@ de:
         user_projects:
           workflow_state: Status
       user_project:
-        workflow_state: Status
+        workflow_state: Status ändern
         admin_comments: Kommentar
         receive_newsletter: Newsletter
         activated_at: freigeschaltet am
@@ -1280,7 +1281,7 @@ de:
         longitude: Longitude
         website: Website
         archive_id: Interview-ID
-        workflow_state: Status
+        workflow_state: Status ändern
         locale: Sprache
         lang: Sprache
         text: Text

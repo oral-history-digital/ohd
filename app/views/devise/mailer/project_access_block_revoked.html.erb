@@ -42,8 +42,8 @@
   <p>El equipo del proyecto "<%= project_name %>"</p>
 <% else -%>
   <p>Guten Tag <%= @user.display_name %>,</p>
-  <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung <%= project_name %> gesperrt wurde. Dies erfolgt, wenn die <%= @conditions_link && link_to('Nutzungsbedingungen des Archivs', @conditions_link.url(:de)) %> des Archivs nicht beachtet wurden.</p>
-  <p>Bei Rückfragen kontaktieren Sie uns bitte unter <%= mail_to @project.contact_email %>.</p>
+  <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Anwendung <%= project_name %> aufgehoben wurde.</p>
+  <p>Sie haben nun wieder Zugang zu der Anwendung <%= project_name %>.</p>
   <% unless @user_project.admin_comments.blank? %>
     <p><%= @user_project.admin_comments %></p>
   <% end %>
