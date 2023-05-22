@@ -40,6 +40,10 @@ de:
         subject: Ihr Zugang zu der Anwendung '%{project_name}'
       project_access_terminated:
         subject: Ihr Zugang zu der Anwendung '%{project_name}'
+      user_blocked:
+        subject: Ihr Zugang zu der Plattform OHD
+      user_block_revoked:
+        subject: Ihr Zugang zu der Plattform Oral-History.Digital
       account_removed:
         subject: Löschung Ihres Nutzer*innen-Accounts
       reset_password_instructions:

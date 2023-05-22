@@ -1376,8 +1376,8 @@ de:
       request_access_explanation1: Sie sind bereits in Oral-History.Digital registriert, aber noch nicht für dieses Archiv freigeschaltet.
       request_access_explanation2: Bitte beantragen Sie die Freischaltung.
       request_access_link: Freischaltung beantragen
-      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
-      request_in_process_text1: Ihr Antrag auf Freischaltung wird inhaltlich geprüft, dies kann bis zu zwei Werktage dauern.
+      request_in_process_title: Ihr Antrag auf Freischaltung wurde erfolgreich abgesendet!
+      request_in_process_text1: Die inhaltliche Prüfung des Antrages kann bis zu zwei Werktage dauern.
       request_in_process_text2: Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
       blocked_text: Sie wurden für dieses Archiv gesperrt.
       terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
