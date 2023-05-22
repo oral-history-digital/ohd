@@ -31,6 +31,10 @@ class UserProjectSerializer < ApplicationSerializer
     object.created_at.to_f * 1000
   end
 
+  def updated_at
+    object.updated_at && object.updated_at.strftime('%d.%m.%Y')
+  end
+
   def processed_at
     object.processed_at && object.processed_at.strftime('%d.%m.%Y')
   end

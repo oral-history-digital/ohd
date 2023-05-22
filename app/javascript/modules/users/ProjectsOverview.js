@@ -32,7 +32,7 @@ export default function ProjectsOverview({
                 </h4>
                 <div className={showProject === project.shortname ? '' : 'hidden'} >
                     <p>{ t('modules.project_access.actual_workflow_state') + ': ' + workflowState }</p>
-                    <p>{ t('modules.project_access.at') + ': ' + (userProject.processed_at || userProject.activated_at) }</p>
+                    <p>{ t('modules.project_access.at') + ': ' + (userProject.processed_at || userProject.activated_at || userProject.updated_at) }</p>
                 </div>
             </li>
         )
