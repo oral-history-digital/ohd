@@ -50,6 +50,22 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :project_access_block_revoked, opts)
   end
 
+  def user_blocked(record, opts={})
+    @project = Project.ohd
+    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
+    devise_mail(record, :user_blocked, opts)
+  end
+
+  def user_block_revoked(record, opts={})
+    @project = Project.ohd
+    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
+    devise_mail(record, :user_block_revoked, opts)
+  end
+
   def account_removed(record, opts={})
     opts[:from] = 'mail@oral-history.digital'
     opts[:reply_to] = 'mail@oral-history.digital' 

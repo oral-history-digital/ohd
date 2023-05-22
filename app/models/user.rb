@@ -78,13 +78,15 @@ class User < ApplicationRecord
   end
 
   def block
-    #TODO: send email to user
+    subject = I18n.t('devise.mailer.user_blocked.subject', locale: self.locale_with_project_fallback)
+    CustomDeviseMailer.user_blocked(self, {subject: subject}).deliver_later(wait: 5.seconds)
     access_tokens.destroy_all
     sessions.destroy_all
   end
 
   def revoke_block
-    #TODO: send email to user
+    subject = I18n.t('devise.mailer.user_block_revoked.subject', locale: self.locale_with_project_fallback)
+    CustomDeviseMailer.user_block_revoked(self, {subject: subject}).deliver_later(wait: 5.seconds)
   end
 
   def remove
