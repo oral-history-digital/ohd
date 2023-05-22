@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
         project: getCurrentProject(state),
         currentUser: getCurrentUser(state),
         projectId: getProjectId(state),
+        countryKeys: getCountryKeys(state),
     }
 }
 
