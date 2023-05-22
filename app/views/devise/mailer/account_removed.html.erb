@@ -44,8 +44,8 @@
   <p>Guten Tag <%= @user.display_name %>,</p>
   <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
   <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
-  <% unless @user_project.admin_comments.blank? %>
-    <p><%= @user_project.admin_comments %></p>
+  <% unless @user.admin_comments.blank? %>
+    <p><%= @user.admin_comments %></p>
   <% end %>
   <p>Mit freundlichen Grüßen</p>
   <p>Oral-History.Digital</p>
