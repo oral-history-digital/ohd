@@ -132,7 +132,7 @@ export default function InterviewTabPanel({
                     </SubTab>
                 </AuthorizedContent>
 
-                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='upload_edit_table'>
+                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update'>
                     <SubTab title={t('edit.upload_edit_table.title')}>
                         <UploadEditTableContainer />
                     </SubTab>
