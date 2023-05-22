@@ -37,7 +37,7 @@ export default function UserProject({
                             <FaAngleDown className="Icon Icon--primary" />
                     }
                 </button>
-                <ContentField label={t('activerecord.attributes.user.activated_at')} value={UserProject.activated_at} />
+                <ContentField label={t('activerecord.attributes.user_project.activated_at')} value={UserProject.activated_at} />
                 {
                     showProject ?
                     <>

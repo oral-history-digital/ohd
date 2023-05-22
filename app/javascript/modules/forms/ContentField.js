@@ -29,7 +29,7 @@ function ContentField({
             {
                 noLabel ?
                     null :
-                    <span className="flyout-content-label">{label}:</span>
+                    <span className="flyout-content-label">{label}: </span>
             }
             {valueArray.map(value => {
                 return (
