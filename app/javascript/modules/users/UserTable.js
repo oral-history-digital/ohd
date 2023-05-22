@@ -73,10 +73,6 @@ export default function UserTable() {
 
     const getDataPath = (row) => dataPath;
 
-    const usersCount = typeof data?.data === 'undefined' ?
-        undefined :
-        Object.values(data?.data).length;
-
     const currentUserProject = (row, project) => {
         return Object.values(row.user_projects).find(p => p.project_id === project.id)
     };
@@ -166,7 +162,7 @@ export default function UserTable() {
     return (
         <>
             <h1 className="registry-entries-title">
-                {usersCount} {t('activerecord.models.user.other')}
+                {data?.total} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
                 data={Object.values(data?.data || {})}

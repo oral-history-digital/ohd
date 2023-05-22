@@ -95,7 +95,9 @@ class UsersController < ApplicationController
     users = users.order([order, direction].join(' ')).
       paginate(page: page, per_page: 25)
 
+    total_enntries = users.total_entries
     total_pages = users.total_pages
+
     users = users.includes(:user_projects).
       inject({}){|mem, s| mem[s.id] = UserSerializer.new(s); mem}
 
@@ -104,10 +106,11 @@ class UsersController < ApplicationController
       format.json do |format|
         render json: {
           data: users,
-            data_type: 'users',
-            page: params[:page],
-            result_pages_count: total_pages
-          }
+          data_type: 'users',
+          page: params[:page],
+          result_pages_count: total_pages,
+          total: total_enntries
+        }
       end
       format.csv do
         response.headers['Pragma'] = 'no-cache'
