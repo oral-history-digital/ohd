@@ -740,6 +740,9 @@ de:
       diverse: divers
       not_specified: keine Angabe
   user_project:
+    appellation:
+      dr: Dr.
+      prof: Prof.
     job_description:
       researcher: Dozent*in/Forscher*in
       filmmaker: Filmemacher*in
