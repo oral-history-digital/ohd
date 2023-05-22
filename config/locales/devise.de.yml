@@ -59,8 +59,8 @@ de:
       submit: Passwort jetzt ändern
       resend: Passwort ändern
       link: Passwort wiederherstellen
-      send_instructions: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich im
-        Archiv registriert haben. Sie erhalten dann per E-Mail einen Link zur
+      send_instructions: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich
+        registriert haben. Sie erhalten dann per E-Mail einen Link zur
         Passworterneuerung.
       updated: Ihr Passwort wurde geändert. Sie sind jetzt angemeldet.
       no_token: Sie können diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen
