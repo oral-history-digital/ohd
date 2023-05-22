@@ -48,11 +48,15 @@ El equipo del proyecto "<%= @project.name('es') %>"
 
 сотрудники проекта "<%= @project.name('ru') %>"
 <% else -%>
-Guten Tag <%= @user.display_name %>
+Guten Tag <%= @user.display_name %>,
 
 Sie haben nun Zugang zu der Anwendung <%= @project.name(:de) %> für das von Ihnen angegebene Recherche-Anliegen.
 
 Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die Nutzungsbedingungen des Archivs (<%= @conditions_link.url(:de) %>).
+
+<% unless @user_project.admin_comments.blank? %>
+  <%= @user_project.admin_comments %>
+<% end %>
 
 Mit freundlichen Grüßen
 

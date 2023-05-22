@@ -41,9 +41,12 @@
   <p>Con saludos cordiales,</p>
   <p>El equipo del proyecto "<%= project_name %>"</p>
 <% else -%>
-  <p>Guten Tag <%= @user.display_name %></p>
+  <p>Guten Tag <%= @user.display_name %>,</p>
   <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung <%= project_name %> gesperrt wurde. Dies erfolgt, wenn die Nutzungsbedingungen des Archivs (<%= @conditions_link.url(:de) %>) nicht beachtet wurden.</p>
   <p>Bei Rückfragen kontaktieren Sie uns bitte unter (<%= @project.contact_email %>).</p>
+  <% unless @user_project.admin_comments.blank? %>
+    <p><%= @user_project.admin_comments %></p>
+  <% end %>
   <p>Mit freundlichen Grüßen</p>
   <p><%= @project.name(:de) %></p>
 <% end -%>

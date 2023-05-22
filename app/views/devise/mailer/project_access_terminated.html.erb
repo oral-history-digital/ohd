@@ -41,9 +41,12 @@
   <p>Con saludos cordiales,</p>
   <p>El equipo del proyecto "<%= project_name %>"</p>
 <% else -%>
-  <p>Guten Tag <%= @user.display_name %></p>
+  <p>Guten Tag <%= @user.display_name %>,</p>
   <p>Ihr Zugang zu der Anwendung <%= project_name %> war zeitlich befristet und ist nun beendet.</p>
   <p>Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.</p>
+  <% unless @user_project.admin_comments.blank? %>
+    <p><%= @user_project.admin_comments %></p>
+  <% end %>
   <p>Mit freundlichen Grüßen</p>
   <p><%= @project.name(:de) %></p>
 <% end -%>

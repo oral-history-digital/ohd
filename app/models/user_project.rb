@@ -48,7 +48,7 @@ class UserProject < ApplicationRecord
   def grant_project_access
     update(activated_at: Date.today, processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_granted(user, {subject: subject, project: project}).deliver_now
+    CustomDeviseMailer.project_access_granted(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   def reject_project_access
@@ -60,20 +60,20 @@ class UserProject < ApplicationRecord
   end
 
   def correct_project_access_data
-    AdminMailer.with(user: self.user, project: project).corrected_project_access_data.deliver_now
+    AdminMailer.with(user: self.user, project: project).corrected_project_access_data.deliver_later(wait: 5.seconds)
   end
 
   def terminate_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_terminated.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_terminated(user, {subject: subject, project: project}).deliver_now
+    CustomDeviseMailer.project_access_terminated(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   def block_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
     subject = I18n.t('devise.mailer.project_access_blocked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project}).deliver_now
-    AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_now
+    CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project, user_project: self}).deliver_now
+    AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_later(wait: 5.seconds)
   end
 
   [
