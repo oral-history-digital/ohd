@@ -29,49 +29,50 @@ export default function UserEdit ({
         'default_locale',
     ];
 
-    if (!project.is_ohd) details.concat([
+    const projectDetails = [
         'organization',
         'job_description',
         'research_intentions',
         'specification',
         'processed_at',
         'terminated_at',
-    ]);
+    ];
+
+    const detailRepresentation = (value, detail, index) => {
+        if (detail === 'confirmed_at') {
+            value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
+        }
+
+        if (detail === 'job_description' || detail === 'research_intentions') {
+            value = t(`user_project.${detail}.${value}`);
+        }
+
+        if (detail === 'default_locale') {
+            value = t(value);
+        }
+
+        return (
+            <p className="detail"
+               key={index}
+              >
+                <span className='name'>{t(`activerecord.attributes.user.${detail}`) + ': '}</span>
+                <span className='content'>{value}</span>
+            </p>
+        )
+    }
 
     return (
         <div className='details'>
-            {
-                details.concat(project.is_ohd ? [] : [
-                    'organization',
-                    'job_description',
-                    'research_intentions',
-                    'specification',
-                    'processed_at',
-                    'terminated_at',
-                ]).map((detail, index) => {
-                    let value = data[detail] || userProject?.[detail];
-                    if (detail === 'confirmed_at') {
-                        value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
-                    }
-
-                    if (detail === 'job_description' || detail === 'research_intentions') {
-                        value = t(`user_project.${detail}.${value}`);
-                    }
-
-                    if (detail === 'default_locale') {
-                        value = t(value);
-                    }
-
-                    return (
-                        <p className="detail"
-                           key={index}
-                          >
-                            <span className='name'>{t(`activerecord.attributes.user.${detail}`) + ': '}</span>
-                            <span className='content'>{value}</span>
-                        </p>
-                    )
+            <h3>{t('user.registration')}</h3>
+            { details.map((detail, index) => {
+                    return (detailRepresentation(data[detail] || userProject?.[detail], detail, index));
                 })
             }
+
+            { !project.is_ohd && <h3>{t('modules.project_access.one')}</h3> }
+            { !project.is_ohd && projectDetails.map((detail, index) => {
+                return (detailRepresentation(userProject[detail], detail, index));
+            })}
 
             { project.is_ohd && <ProjectsOverview user={data} /> }
 
