@@ -725,11 +725,11 @@ de:
       Datenschutzgründen werden Sie per E-Mail gebeten Ihre Registrierung zu bestätigen. '
     registration_text_four: 'Danach können Sie die Freischaltung für verschiedene in der Plattform enthaltene Interview-Archive beantragen.'
     tos_agreement: Nutzungsbedingungen
-    priv_agreement: Hinweise zum Datenschutz
-    notes_on_tos_agreement_ohd: Ich stimme den Nutzungsbedingungen der Plattform Oral-History.Digital zu.
+    priv_agreement: Datenschutzpraxis
+    notes_on_tos_agreement_ohd: Ich stimme den %{tos_link} der Plattform Oral-History.Digital zu.
     notes_on_tos_agreement_archive: Ich stimme den %{tos_link} der Anwendung %{project} zu.
     priv_agreement_alias: Datenschutzbestimmungen
-    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis der Freien Universität Berlin zu.
+    notes_on_priv_agreement: Ich stimme der %{priv_link} der Freien Universität Berlin zu.
     register: Registrierung absenden
     appellation:
       dr: Dr.

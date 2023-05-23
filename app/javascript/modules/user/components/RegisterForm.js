@@ -140,16 +140,17 @@ export default function RegisterForm({
                 labelKey: 'user.tos_agreement',
                 type: 'checkbox',
                 validate: function(v){return v && v !== '0'},
-                help: (
-                    <a
+                help: t('user.notes_on_tos_agreement_ohd', {
+                    tos_link: <a
                         className="Link"
                         href={conditionsLink[locale]}
                         target="_blank"
                         title="Externer Link"
-                        rel="noreferrer">
-                        {t('user.notes_on_tos_agreement_ohd')}
+                        rel="noreferrer"
+                    >
+                        {t('user.tos_agreement')}
                     </a>
-                )
+                })
             },
             {
                 elementType: 'input',
@@ -157,17 +158,17 @@ export default function RegisterForm({
                 labelKey: 'user.priv_agreement',
                 type: 'checkbox',
                 validate: function(v){return v && v !== '0'},
-                help: (
-                    <a
+                help: t('user.notes_on_priv_agreement', {
+                    priv_link: <a
                         className="Link"
                         href={privacyLink[locale]}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer"
                     >
-                        {t('user.notes_on_priv_agreement')}
+                        {t('user.priv_agreement')}
                     </a>
-                )
+                })
             },
         ];
 

@@ -19,8 +19,6 @@ export default function RequestProjectAccessForm({
     const { t } = useI18n();
 
     const conditionsLink = findExternalLink(project, 'conditions');
-    const privacyLink = findExternalLink(project, 'privacy_protection');
-
     const tos_link = () => {
         return (
             <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
@@ -85,11 +83,7 @@ export default function RequestProjectAccessForm({
             elementType: 'input',
             attribute: 'receive_newsletter',
             type: 'checkbox',
-            help: (
-                <p>
-                    {t('user_project.notes_on_receive_newsletter', {project: project.name[locale]})}
-                </p>
-            )
+            help: t('user_project.notes_on_receive_newsletter', {project: project.name[locale]})
         });
     }
 
