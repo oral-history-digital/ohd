@@ -727,7 +727,7 @@ de:
     tos_agreement: Nutzungsbedingungen
     priv_agreement: Hinweise zum Datenschutz
     notes_on_tos_agreement_ohd: Ich stimme den Nutzungsbedingungen der Plattform Oral-History.Digital zu.
-    notes_on_tos_agreement_archive: Ich stimme den Nutzungsbedingungen für die Anwendung %{project} zu.
+    notes_on_tos_agreement_archive: Ich stimme den %{tos_link} der Anwendung %{project} zu.
     priv_agreement_alias: Datenschutzbestimmungen
     notes_on_priv_agreement: Ich stimme der Datenschutzpraxis der Freien Universität Berlin zu.
     register: Registrierung absenden

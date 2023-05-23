@@ -1,5 +1,7 @@
+import reactStringReplace from 'react-string-replace';
+
 export default function t({ locale, translations }, key, params) {
-    let text, defaultKey;
+    let text, textWithReplacements, defaultKey;
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
 
@@ -22,7 +24,9 @@ export default function t({ locale, translations }, key, params) {
         if (typeof(text) === 'string') {
             if(params) {
                 for (let [key, value] of Object.entries(params)) {
-                    text = text.replace(`%{${key}}`, value)
+                    text = reactStringReplace(text, `%{${key}}`, (match, i) => (
+                        value
+                    ));
                 }
             }
             return text

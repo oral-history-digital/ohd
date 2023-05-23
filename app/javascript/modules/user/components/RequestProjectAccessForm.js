@@ -21,6 +21,14 @@ export default function RequestProjectAccessForm({
     const conditionsLink = findExternalLink(project, 'conditions');
     const privacyLink = findExternalLink(project, 'privacy_protection');
 
+    const tos_link = () => {
+        return (
+            <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
+                {t('user.tos_agreement')}
+            </a>
+        )
+    };
+
     const formElements = [
         {
             elementType: 'input',
@@ -65,11 +73,10 @@ export default function RequestProjectAccessForm({
             labelKey: 'user.tos_agreement',
             type: 'checkbox',
             validate: function(v){return v && v !== '0'},
-            help: (
-                <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
-                    {t('user.notes_on_tos_agreement_archive', {project: project.name[locale]})}
-                </a>
-            )
+            help: t('user.notes_on_tos_agreement_archive', {
+                project: project.name[locale],
+                tos_link: tos_link(),
+            })
         },
     ];
 
