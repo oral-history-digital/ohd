@@ -4,7 +4,7 @@ import request from 'superagent';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import findExternalLink from '../findExternalLink';
+import { findExternalLink } from 'modules/layout';
 
 export default function RegisterForm({
     project,

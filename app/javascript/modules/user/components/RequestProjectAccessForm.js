@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import findExternalLink from '../findExternalLink';
+import { findExternalLink } from 'modules/layout';
 
 export default function RequestProjectAccessForm({
-    externalLinks,
     locale,
     projectId,
     project,
