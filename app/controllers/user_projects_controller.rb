@@ -37,7 +37,7 @@ class UserProjectsController < ApplicationController
         :project_id,
         :user_id,
         :workflow_state,
-        :admin_comments,
+        :mail_text,
         :tos_agreement,
         :receive_newsletter,
         :appellation,

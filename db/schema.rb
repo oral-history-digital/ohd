@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_24_090837) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -936,7 +936,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
     t.datetime "updated_at", precision: nil, null: false
     t.datetime "activated_at", precision: nil
     t.string "workflow_state"
-    t.string "admin_comments"
+    t.text "mail_text"
     t.datetime "processed_at"
     t.datetime "terminated_at"
     t.integer "user_id"
@@ -990,7 +990,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
     t.boolean "priv_agreement"
     t.boolean "tos_agreement"
     t.string "default_locale"
-    t.text "admin_comments", size: :medium
+    t.text "mail_text", size: :medium
     t.datetime "processed_at", precision: nil
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
@@ -1018,4 +1018,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_091710) do
   add_foreign_key "event_types", "projects"
   add_foreign_key "histories", "people"
   add_foreign_key "map_sections", "projects"
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
 end
