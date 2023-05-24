@@ -4,7 +4,7 @@ class UserProjectSerializer < ApplicationSerializer
     :user_id,
     :workflow_state,
     :workflow_states,
-    :admin_comments,
+    :mail_text,
     :receive_newsletter,
     :appellation,
     :first_name,

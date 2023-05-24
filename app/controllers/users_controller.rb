@@ -162,6 +162,7 @@ class UsersController < ApplicationController
       :last_name,
       :email,
       :gender,
+      :mail_text,
       :job_description,
       :research_intentions,
       :specification,
