@@ -133,7 +133,7 @@ export default function UserTable() {
             accessorFn: row => {
                 return currentUserProject(row, project).processed_at;
             },
-            cell: DateCell,
+            //cell: DateCell,
             enableSorting: false,
         },
         {
