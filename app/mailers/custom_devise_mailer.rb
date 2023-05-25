@@ -6,70 +6,12 @@ class CustomDeviseMailer < Devise::Mailer
   # Note that Devise passes a Devise::Mailer object to your proc, hence the parameter throwaway (*).
   #default from: ->(*) { Class.instance.email_address }
 
-  def project_access_granted(record, opts={})
-    @project = opts[:project]
-    @user_project = opts[:user_project]
-    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :project_access_granted, opts)
-  end
-
-  def project_access_rejected(record, opts={})
-    @project = opts[:project]
-    @user_project = opts[:user_project]
-    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :project_access_rejected, opts)
-  end
-
-  def project_access_terminated(record, opts={})
+  def access_mail(record, opts={})
     @project = opts[:project]
     @user_project = opts[:user_project]
     opts[:from] = @project.contact_email
     opts[:reply_to] = @project.contact_email
-    devise_mail(record, :project_access_terminated, opts)
-  end
-
-  def project_access_blocked(record, opts={})
-    @project = opts[:project]
-    @user_project = opts[:user_project]
-    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :project_access_blocked, opts)
-  end
-
-  def project_access_block_revoked(record, opts={})
-    @project = opts[:project]
-    @user_project = opts[:user_project]
-    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :project_access_block_revoked, opts)
-  end
-
-  def user_blocked(record, opts={})
-    @project = Project.ohd
-    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :user_blocked, opts)
-  end
-
-  def user_block_revoked(record, opts={})
-    @project = Project.ohd
-    @conditions_link = @project.external_links.where(internal_name: 'conditions').first
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :user_block_revoked, opts)
-  end
-
-  def account_removed(record, opts={})
-    opts[:from] = 'mail@oral-history.digital'
-    opts[:reply_to] = 'mail@oral-history.digital' 
-    devise_mail(record, :account_removed, opts)
+    devise_mail(record, :access_mail, opts)
   end
 
   def confirmation_instructions(record, token, opts={})

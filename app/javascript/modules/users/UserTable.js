@@ -128,10 +128,10 @@ export default function UserTable() {
             },
         },
         {
-            accessorKey: 'updated_at',
+            accessorKey: 'processed_at',
             header: t('activerecord.attributes.default.updated_at'),
             accessorFn: row => {
-                return currentUserProject(row, project).updated_at;
+                return currentUserProject(row, project).processed_at;
             },
             cell: DateCell,
             enableSorting: false,

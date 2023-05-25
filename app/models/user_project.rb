@@ -47,16 +47,16 @@ class UserProject < ApplicationRecord
 
   def grant_project_access
     update(activated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_granted(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
+    subject = I18n.t('devise.mailer.grant_project_access.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   def reject_project_access
     update(processed_at: Date.today)
     Doorkeeper::AccessToken.create!(resource_owner_id: user.id)
-    subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    # wait until params are updated before sending the mail. Like this admin comments will be available in the mail.
-    CustomDeviseMailer.project_access_rejected(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
+    subject = I18n.t('devise.mailer.reject_project_access.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    # wait until params are updated before sending the mail. Like this mail_text will be available in the mail.
+    CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   def correct_project_access_data
@@ -65,21 +65,21 @@ class UserProject < ApplicationRecord
 
   def terminate_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.project_access_terminated.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_terminated(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
+    subject = I18n.t('devise.mailer.terminat_project_access.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   def block_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.project_access_blocked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_blocked(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
+    subject = I18n.t('devise.mailer.block_project_access.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
     AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_now
   end
 
   def revoke_project_access_block
-    update(terminated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.project_access_block_revoked.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_block_revoked(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
+    update(activated_at: Date.today, processed_at: Date.today)
+    subject = I18n.t('devise.mailer.revoke_project_access_block.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
   [
