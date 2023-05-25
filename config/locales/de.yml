@@ -731,6 +731,7 @@ de:
     priv_agreement_alias: Datenschutzbestimmungen
     notes_on_priv_agreement: Ich stimme der %{priv_link} der Freien Universität Berlin zu.
     register: Registrierung absenden
+    correct_link: Korrigieren
     appellation:
       dr: Dr.
       prof: Prof.
@@ -1145,6 +1146,7 @@ de:
         first_name: Vorname
         last_name: Nachname
         gender: Geschlecht
+        mail_text: E-Mail-Text
         homepage: Homepage der Institution
         address: Adresse
         street: Straße
@@ -1162,7 +1164,7 @@ de:
           workflow_state: Status
       user_project:
         workflow_state: Status ändern
-        admin_comments: Kommentar
+        mail_text: E-Mail-Text
         receive_newsletter: Newsletter
         activated_at: freigeschaltet am
         processed_at: Bearbeitet am

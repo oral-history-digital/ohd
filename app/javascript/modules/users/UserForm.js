@@ -7,6 +7,8 @@ import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum } from 'modules/data';
 import { usePathBase } from 'modules/routes';
+import { findExternalLink } from 'modules/layout';
+import { OHD_LOCATION } from 'modules/constants';
 
 export default function UserForm({
     data,
@@ -23,6 +25,8 @@ export default function UserForm({
     const { t } = useI18n();
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [workflowState, setWorkflowState] = useState(false);
+    const conditionsLink = findExternalLink(project, 'conditions');
 
     const formElements = [
         {
@@ -34,17 +38,23 @@ export default function UserForm({
             withEmpty: true,
             handlechangecallback: (name, value) => {
                 if (value === 'remove') setShowConfirmDialog(true);
+                setWorkflowState(value);
             },
         },
-    ];
-
-    if (scope === 'user_project') {
-        formElements.push({
+        {
+            //elementType: 'richTextEditor',
             elementType: 'textarea',
-            attribute: 'admin_comments',
-            value: data?.admin_comments,
-        });
-    }
+            attribute: 'mail_text',
+            value: workflowState ? t(`devise.mailer.${workflowState}.text`, {
+                project_name: project.name[locale],
+                tos_link: `<a href='${conditionsLink[locale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
+                user_display_name: `${data.first_name} ${data.last_name}`,
+                mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
+                correct_link: `<a href='${project.archive_domain || OHD_LOCATION}${pathBase}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
+            }).join(' ') : '',
+            validate: (v) => (v && v.length > 100),
+        },
+    ];
 
     return (
         <>
@@ -94,8 +104,7 @@ export default function UserForm({
                         }
                     });
                 }}
-                data={data}
-                values={{ default_locale: locale }}
+                values={{ id: data?.id }}
                 submitText='submit'
                 elements={formElements}
             />

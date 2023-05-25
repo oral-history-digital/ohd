@@ -1,0 +1,8 @@
+<%
+  mail = @project.is_ohd? ? @user.mail_text : @user_project.mail_text
+  if mail.match(/ACCESS_TOKEN_WILL_BE_REPLACED/)
+    Doorkeeper::AccessToken.create!(resource_owner_id: @user.id)
+    mail = mail.sub('ACCESS_TOKEN_WILL_BE_REPLACED', @user.access_tokens.last.token)
+  end
+%>
+<%= mail.html_safe %>
