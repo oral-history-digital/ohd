@@ -65,7 +65,7 @@ class UserProject < ApplicationRecord
 
   def terminate_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.terminat_project_access.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
+    subject = I18n.t('devise.mailer.terminate_project_access.subject', project_name: project.name(user.locale_with_project_fallback), locale: user.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 5.seconds)
   end
 
