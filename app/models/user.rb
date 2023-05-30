@@ -91,8 +91,8 @@ class User < ApplicationRecord
 
   def remove
     subject = I18n.t('devise.mailer.account_removed.subject')
-    CustomDeviseMailer.account_removed(self, {subject: subject, project: Project.ohd}).deliver_now
-    destroy
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
+    RemoveUserJob.set(wait: 10.seconds).perform_later(self.id)
   end
 
   def projects

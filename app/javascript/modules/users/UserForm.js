@@ -51,7 +51,7 @@ export default function UserForm({
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
                 correct_link: `<a href='${project.archive_domain || OHD_LOCATION}${pathBase}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
-            }).join(' ') : '',
+            }).join('') : '',
             validate: (v) => (v && v.length > 100),
         },
     ];
