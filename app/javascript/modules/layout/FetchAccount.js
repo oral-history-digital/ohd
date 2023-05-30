@@ -21,7 +21,8 @@ export default function FetchAccount({
             !checkedOhdSession &&
             location.origin !== OHD_DOMAINS[railsMode] &&
             ['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) === -1 &&
-            /password/.test(location.pathname) === false
+            /password/.test(location.pathname) === false &&
+            /open_register_popup/.test(location.search) === false
         ) {
             location = `${OHD_DOMAINS[railsMode]}/de/users/is_logged_in?path=${location.pathname}&project=${projectId}`;
         }
