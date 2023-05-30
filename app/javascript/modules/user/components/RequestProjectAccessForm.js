@@ -88,7 +88,7 @@ export default function RequestProjectAccessForm({
 
     return (
         <>
-            <h2>{(showStepTwo ? t('modules.project_access.request_step_two') : '') + t('modules.project_access.request_title', {project: project.name[locale]})}</h2>
+            <h2>{(showStepTwo ? t('modules.project_access.request_step_two') : '')}{t('modules.project_access.request_title', {project: project.name[locale]})}</h2>
             <p>{t('modules.project_access.request_description')}</p>
             <Form
                 scope='user_project'
