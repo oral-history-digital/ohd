@@ -35,8 +35,10 @@ export default function Input({
 
     useEffect(() => {
         setVal(data?.[attribute] || value);
-        const valid = validate(val);
-        handleErrors(attribute, !valid);
+        if (typeof(validate) === 'function') {
+            const valid = validate(val);
+            handleErrors(attribute, !valid);
+        }
         handleChange(attribute, val, data);
     }, [value, data?.[attribute]]);
 
