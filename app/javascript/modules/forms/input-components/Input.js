@@ -34,10 +34,12 @@ export default function Input({
     const [val, setVal] = useState(data?.[attribute] || value);
 
     useEffect(() => {
-        //console.log('input ' + attribute + ' value: ' + value + ' data: ' + JSON.stringify(data));
         setVal(data?.[attribute] || value);
-        //cleanProps.value = data?.[attribute] || value;
+        const valid = validate(val);
+        handleErrors(attribute, !valid);
+        handleChange(attribute, val, data);
     }, [value, data?.[attribute]]);
+
 
     const onChange = (event) => {
         let v = event.target.files ? event.target.files[0] : event.target.value;
