@@ -1505,6 +1505,8 @@ en:
       instructions: Anleitung für die Redaktionsansicht
       more_results: Load more results
       sample_archives: Sample Archives
+      access_requested: Access requested
+      no_access: Access required
     tables:
       actions: Actions
       search: Search…
