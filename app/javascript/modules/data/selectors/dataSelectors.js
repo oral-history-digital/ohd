@@ -300,7 +300,10 @@ export const getProjectHasMap = createSelector(
 
 export const getStartpageProjects = createSelector(
     [getPublicProjects],
-    projects => shuffle(projects)
+    (projects) => {
+        const projectsWithoutOhd = projects.filter((project) => !project.is_ohd);
+        return shuffle(projectsWithoutOhd);
+    }
 );
 
 export const getCollectionsForCurrentProjectFetched = createSelector(
