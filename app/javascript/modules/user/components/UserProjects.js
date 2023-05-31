@@ -27,7 +27,7 @@ function UserProjects() {
                 currentProject && currentUserProject &&
                 <UserProject
                     key={currentProject.id}
-                    UserProject={currentUserProject}
+                    userProject={currentUserProject}
                     roles={groupedRoles[currentProject.id]}
                     tasks={groupedTasks[currentProject.id]}
                     supervisedTasks={groupedSupervisedTasks[currentProject.id]}
@@ -39,7 +39,7 @@ function UserProjects() {
                         return (
                             <UserProject
                                 key={urp.id}
-                                UserProject={urp}
+                                userProject={urp}
                                 roles={groupedRoles[urp.project_id]}
                                 tasks={groupedTasks[urp.project_id]}
                                 supervisedTasks={groupedSupervisedTasks[urp.project_id]}

@@ -10,7 +10,7 @@ import UserTasks from './UserTasks';
 import { useI18n } from 'modules/i18n';
 
 export default function UserProject({
-    UserProject,
+    userProject,
     roles,
     tasks,
     supervisedTasks
@@ -21,7 +21,7 @@ export default function UserProject({
     const [showProject, setShowProject] = useState(false);
     const [showRoles, setShowRoles] = useState(false);
 
-    const project = projects[UserProject.project_id];
+    const project = projects[userProject?.project_id];
 
     return (
         project ?
@@ -37,7 +37,7 @@ export default function UserProject({
                             <FaAngleDown className="Icon Icon--primary" />
                     }
                 </button>
-                <ContentField label={t('activerecord.attributes.user_project.activated_at')} value={UserProject.activated_at} />
+                <ContentField label={t(`workflow_states.user_projects.${userProject.workflow_state}`)} value={userProject.processed_at} />
                 {
                     showProject ?
                     <>
@@ -86,7 +86,7 @@ export default function UserProject({
 }
 
 UserProject.propTypes = {
-    UserProject: PropTypes.object.isRequired,
+    userProject: PropTypes.object.isRequired,
     roles: PropTypes.object,
     tasks: PropTypes.object,
     supervisedTasks: PropTypes.object,
