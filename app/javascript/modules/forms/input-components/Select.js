@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import Element from '../Element';
@@ -52,6 +52,14 @@ export default function Select({
             }
         }
     }
+
+    useEffect(() => {
+        if (typeof(validate) === 'function') {
+            const valid = validate(defaultValue);
+            handleErrors(attribute, !valid);
+        }
+        handleChange(attribute, defaultValue, data);
+    }, [value, data?.[attribute]]);
 
     const selectTextAndValueFunction = (value) => {
 
