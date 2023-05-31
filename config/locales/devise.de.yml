@@ -83,7 +83,7 @@ de:
         subject: Ihr Zugang zu der Plattform Oral-History.Digital
         text: |
           <p>Guten Tag %{user_display_name},</p>
-          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Plattform Oral-History. Digital aufgehoben wurde.</p>
+          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Plattform Oral-History.Digital aufgehoben wurde.</p>
           <p>Sie haben nun wieder Zugang zu der Plattform.</p>
           <p>Mit freundlichen Grüßen</p>
           <p>Oral-History. Digital</p>
