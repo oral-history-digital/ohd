@@ -91,7 +91,7 @@ export default function ChangePasswordForm({
                     attribute='password'
                     type='password'
                     showErrors={showErrors}
-                    validate={v => v.length > 6}
+                    validate={v => v?.length > 6}
                     handleChange={handleChange}
                     handleErrors={handleErrors}
                 />
@@ -100,7 +100,7 @@ export default function ChangePasswordForm({
                     attribute='password_confirmation'
                     type='password'
                     showErrors={showErrors}
-                    validate={v => v.length > 6 && v === values.password}
+                    validate={v => v?.length > 6 && v === values.password}
                     handleChange={handleChange}
                     handleErrors={handleErrors}
                 />
