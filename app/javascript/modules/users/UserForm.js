@@ -8,7 +8,7 @@ import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 import { findExternalLink } from 'modules/layout';
-import { OHD_LOCATION } from 'modules/constants';
+import { OHD_DOMAINS } from 'modules/constants';
 
 export default function UserForm({
     data,
@@ -50,7 +50,7 @@ export default function UserForm({
                 tos_link: `<a href='${conditionsLink[locale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
-                correct_link: `<a href='${project.archive_domain || OHD_LOCATION}${pathBase}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
+                correct_link: `<a href='${project.archive_domain || OHD_DOMAINS[railsMode]}${pathBase}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
             }).join('') : '',
             validate: (v) => (v && v.length > 100),
         },
