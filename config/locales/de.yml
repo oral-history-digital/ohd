@@ -1160,8 +1160,7 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
-        user_projects:
-          workflow_state: Status
+        workflow_state: Status
       user_project:
         workflow_state: Status ändern
         mail_text: E-Mail-Text

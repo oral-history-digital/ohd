@@ -40,13 +40,13 @@ de:
         subject: Ihr Antrag auf Freischaltung für die Anwendung '%{project_name}'
         text: |
           <p>Guten Tag %{user_display_name},</p>
-          <p>Sie haben eine Freischaltung für die Anwendung <%= @project.name('de') %> beantragt.</p>
+          <p>Sie haben eine Freischaltung für die Anwendung %{project_name} beantragt.</p>
           <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den %{tos_link} entsprechen.</p>
           <p>Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.</p>
           <p>%{correct_link}</p>
-          <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.</p>
+          <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter %{mail_to}.</p>
           <p>Mit freundlichen Grüßen</p>
-          <p><%= @project.name('de') %></p>
+          <p>%{project_name}</p>
       block_project_access:
         subject: Sperrung Ihres Nutzer*innen-Accounts
         text: |
