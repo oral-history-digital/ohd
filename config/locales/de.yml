@@ -1450,6 +1450,9 @@ de:
       at: in
     interview_metadata:
       add_contributors: Mitwirkende hinzufügen
+    interview_preview:
+      access_requested: Freischaltung beantragt
+      no_access: Freischaltung erforderlich
     interview_search:
       no_results: Keine Ergebnisse
       annotation_for: Anmerkung zu
