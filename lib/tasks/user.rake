@@ -8,7 +8,7 @@ namespace :user do
     email = args.email
     password = args.password
 
-    user_account = UserAccount.new(
+    user = User.new(
       login: email,
       email: email,
       first_name: args.first_name,
@@ -19,23 +19,14 @@ namespace :user do
       tos_agreed_at: DateTime.now,
       priv_agreement: true
     )
-    user_account.skip_confirmation!
-    user_account.save
+    user.skip_confirmation!
+    user.save
 
-    user_registration = UserRegistration.create(
-      user_account_id: user_account.id,
-      email: email,
-      first_name: args.first_name,
-      last_name: args.last_name,
-      tos_agreement: true,
-      priv_agreement: true
-    )
+    #project = Project.first
+    #user_registration.projects << project
 
-    project = Project.first
-    user_registration.projects << project
-
-    urp = user_registration.user_registration_projects.first
-    urp.activated_at = DateTime.now
-    urp.save
+    #urp = user_registration.user_registration_projects.first
+    #urp.activated_at = DateTime.now
+    #urp.save
   end
 end

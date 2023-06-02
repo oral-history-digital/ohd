@@ -1433,6 +1433,9 @@ en:
       at: at
     interview_metadata:
       add_contributors: Add contributors
+    interview_preview:
+      access_requested: Access requested
+      no_access: Access required
     interview_search:
       no_results: No results
       annotation_for: Annotation for
@@ -1505,6 +1508,8 @@ en:
       instructions: Anleitung für die Redaktionsansicht
       more_results: Load more results
       sample_archives: Sample Archives
+      access_requested: Access requested
+      no_access: Access required
     tables:
       actions: Actions
       search: Search…

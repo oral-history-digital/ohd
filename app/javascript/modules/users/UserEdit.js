@@ -48,7 +48,7 @@ export default function UserEdit ({
         }
 
         if (detail === 'default_locale') {
-            value = t(value);
+            value = value ? t(value) : '';
         }
 
         return (
@@ -86,5 +86,3 @@ export default function UserEdit ({
         </div>
     );
 }
-
-
