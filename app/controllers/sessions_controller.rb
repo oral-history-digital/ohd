@@ -57,7 +57,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def set_project
-    @project = Project.where(shortname: params[:project]).first
+    @project = Project.where(shortname: params[:project]).first || Project.ohd
   end
 
   def set_path
