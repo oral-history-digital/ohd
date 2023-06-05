@@ -1,3 +1,4 @@
+import '../../__mocks__/matchMediaMock';
 import { CALL_API } from 'modules/api';
 import * as types from './action-types';
 import * as actions from './actions';
