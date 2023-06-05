@@ -1,3 +1,4 @@
+import '../../__mocks__/matchMediaMock';
 import { NAME  } from './constants';
 import * as selectors from './selectors';
 
