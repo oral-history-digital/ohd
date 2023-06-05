@@ -1337,12 +1337,15 @@ es:
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
-      request_access_link: 'Freischaltung für dieses Archiv beantragen'
-      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
-      request_in_process_text: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.
-        Solamente después se activará su acceso y pueda acceder al contenido del archivo de entrevistas.
-      blocked_text: Sie wurden für dieses Archiv gesperrt.
+      request_access_explanation: You have not yet requested activation for this archive.
+      request_access_link: Request activation
+      request_in_process_title: Your activation request has been successfully submitted!
+      request_in_process_text1: Su registro actualmente está en revisión por el equipo
+        del proyecto, esta revisión puede durar hasta dos días hábiles. Solamente después
+        se activará su acceso y pueda acceder al contenido del archivo de entrevistas.
+      request_in_process_text2: You will be notified by email once you can access the
+        archive.
+      blocked_text: You have been blocked from accessing this archive.
     admin:
       person_details:
         contributions:
