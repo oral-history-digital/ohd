@@ -49,7 +49,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def url
-    "#{@project.domain_with_optional_identifier}#{@path}"
+    "#{!@project.archive_domain.blank? ? @project.archive_domain : OHD_DOMAIN}#{@path}"
   end
 
   def path
