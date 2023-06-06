@@ -40,8 +40,10 @@ export default function Textarea({
     const actualValue = value || data?.[attribute];
 
     useEffect(() => {
-        const valid = validate(actualValue);
-        handleErrors(attribute, !valid);
+        if (typeof(validate) === 'function') {
+            const valid = validate(actualValue);
+            handleErrors(attribute, !valid);
+        }
         handleChange(attribute, actualValue, data);
     }, [value, data?.[attribute]]);
 
