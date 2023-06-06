@@ -33,14 +33,14 @@ export default function Input({
     const [changeFile, setChangeFile] = useState(false);
     const [val, setVal] = useState(data?.[attribute] || value);
 
-    useEffect(() => {
-        setVal(data?.[attribute] || value);
-        if (typeof(validate) === 'function') {
-            const valid = validate(val);
-            handleErrors(attribute, !valid);
-        }
-        handleChange(attribute, val, data);
-    }, [value, data?.[attribute]]);
+    //useEffect(() => {
+        //setVal(data?.[attribute] || value);
+        //if (typeof(validate) === 'function') {
+            //const valid = validate(val);
+            //handleErrors(attribute, !valid);
+        //}
+        //handleChange(attribute, val, data);
+    //}, [value, data?.[attribute]]);
 
 
     const onChange = (event) => {
