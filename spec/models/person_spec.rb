@@ -121,4 +121,17 @@ describe Person do
       expect(person.initials).to eq('H')
     end
   end
+
+  describe "#pseudonym" do
+    it 'returns pseudonym if pseudonym names are available' do
+      expect(person.pseudonym).to eq('George Sand')
+    end
+
+    it 'returns empty string if pseudonym names are not available' do
+      person.pseudonym_first_name = ''
+      person.pseudonym_last_name = ''
+
+      expect(person.pseudonym).to eq('')
+    end
+  end
 end

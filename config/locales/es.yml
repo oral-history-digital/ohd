@@ -132,7 +132,6 @@ es:
   compress_media_player: "Compress media player"
   expand_media_player: "Expand media player"
   interviews: Entrevistas
-  places: Lugares de nacimiento
   interview_location_desc_one: " se menciona en capítulo "
   interview_location_desc_two: " ."
   archive_map_explanation: El mapa muestra los lugares de nacimiento de las personas entrevistadas.
@@ -237,6 +236,10 @@ es:
   person_info: Sobre la persona
   date_of_birth: Fecha de nacimiento
   year_of_birth: Año de nacimiento
+  pseudonym_or_name: Pseudonym or name
+  birth_name: Nombre de nacimiento
+  other_first_names: Otros nombres
+  alias_names: Alias names
   place_of_birth: Lugar de nacimiento
   place_of_interview: Lugar de entrevista
   typology: Experiencia
@@ -257,7 +260,6 @@ es:
   interview_info: Sobre la entrevista
   place: Lugar
   group: Grupo
-  places: Places
   people: People
   subjects: Subjects
   duration: Duración
@@ -308,6 +310,7 @@ es:
     biography: Biographie
     date_of_birth: Fecha de nacimiento
     year_of_birth: Year of birth
+    pseudonym_or_name: Pseudonym or name
     birth_location: Birth location
     gender: Gender
     interview_date: Interview date
@@ -1172,7 +1175,8 @@ es:
         last_name: Apellido
         birth_name: Nombre de nacimiento
         date_of_birth: Fecha de nacimiento
-        alias_names: Alias Names (?)
+        alias_names: Alias names
+        pseudonym: Pseudonym
         other_first_names: Otros nombres
         pseudonym_first_name: Pseudonym first name
         pseudonym_last_name: Pseudonym last name

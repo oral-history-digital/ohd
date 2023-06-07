@@ -12,3 +12,5 @@
   list_columns_order: 4.0
   use_in_details_view: true
   display_on_landing_page: true
+:pseudonym_or_name:
+  use_in_details_view: true

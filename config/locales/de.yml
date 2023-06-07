@@ -332,6 +332,7 @@ de:
     duration: Dauer
     date_of_birth: Geburtsdatum
     year_of_birth: Geburtsjahr
+    pseudonym_or_name: Pseudonym oder Name
     birth_location: Geburtsort
     gender: Geschlecht
     interview_date: Interview-Datum
@@ -813,6 +814,10 @@ de:
     language_id: Sprache
     age: Alter
     year_of_birth: Geburtsjahr
+    pseudonym_or_name: Pseudonym oder Name
+    birth_name: Geburtsname
+    other_first_names: Weitere Vornamen
+    alias_names: Weitere Namen
     interview_date: Entstehungszeit
     public: öffentlich
     unshared: nicht öffentlich
