@@ -5,6 +5,7 @@ class PersonSerializer < ApplicationSerializer
     :name,
     :display_name,
     :initials,
+    :pseudonym,
     :text,
     :date_of_birth,
     :year_of_birth,
