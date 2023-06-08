@@ -121,7 +121,7 @@ export default function UserTable() {
         {
             id: 'workflow_state',
             enableSorting: false,
-            header: t('activerecord.attributes.default.workflow_state'),
+            header: t('activerecord.attributes.user.workflow_state'),
             accessorFn: row => {
                 const workflowState = currentUserProject(row, project).workflow_state;
                 return t(`workflow_states.user${project.is_ohd ? '' : '_project'}s.${workflowState}`,);
@@ -165,6 +165,7 @@ export default function UserTable() {
                 {data?.total} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
+                //data={data?.data || []}
                 data={Object.values(data?.data || {})}
                 pageCount={data?.result_pages_count}
                 columns={columns}
