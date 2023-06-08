@@ -600,16 +600,16 @@ en:
       all: all
     user_projects:
       grant_project_access: grant project access
-      project_access_granted: project access granted 
-      reject_project_access: reject project access 
+      project_access_granted: project access granted
+      reject_project_access: reject project access
       project_access_rejected: project access rejected
       project_access_data_corrected: corrected
       project_access_requested: project access requested
       project_access_terminated: project access terminated
-      terminate_project_access: terminate project access 
+      terminate_project_access: terminate project access
       project_access_blocked: project access blocked
       revoke_project_access_block: revoke project access block
-      block_project_access: block project access 
+      block_project_access: block project access
       all: all
   help_texts:
     metadata_fields:
@@ -1391,8 +1391,8 @@ en:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages

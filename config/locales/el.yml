@@ -1384,8 +1384,8 @@ el:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages
