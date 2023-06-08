@@ -19,7 +19,7 @@ export default function MediaPlayerTitle({
 
     return (
         <h1 className={className}>
-            {interviewee.display_name}
+            {interviewee?.display_name}
         </h1>
     );
 }
