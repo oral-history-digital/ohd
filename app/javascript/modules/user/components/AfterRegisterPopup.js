@@ -13,6 +13,7 @@ export default function AfterRegisterPopup ({
 
     return (
         <Modal
+            key='after-register-popup'
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
             trigger={t('user.registration')}
             showDialogInitially={true}
