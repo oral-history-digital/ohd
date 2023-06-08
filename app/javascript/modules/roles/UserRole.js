@@ -88,7 +88,7 @@ export default function UserRole ({
     }
 
     return (
-        <div>
+        <div key={`userRole-${userRole.id}`}>
             {userRole.name}
             <span>
                 {false && show()}
