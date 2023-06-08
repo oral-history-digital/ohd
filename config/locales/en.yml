@@ -576,28 +576,10 @@ en:
     unpublish: nicht öffentlich
     public: öffentlich
     publish: öffentlich
-    register: registriert
-    reject: zurückgewiesen
-    postpone: zurückgestellt
-    activate: aktiviert
     expire: zurückgestellt
-    deactivate_account: sperren
-    reactivate_account: reaktivieren
-    grant_project_access: freischalten
-    reject_project_access: ablehnen
-    postpone_project_access: zurückstellen
-    block: sperren
-    revoke_block: Sperrung aufheben
-    created: angelegt
-    confirmed: bestätigt
-    blocked: gesperrt
-    all: alle
     unchecked: unbeantwortet
-    preliminary: preliminary
+    preliminary: vorläufig
     checked: geprüft
-    postponed: zurückgestellt
-    rejected: abgelehnt
-    registered: registriert
     created: zu Bearbeiten
     started: in Bearbeitung
     finished: Bearbeitet/ im QM
@@ -607,15 +589,28 @@ en:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_projects:
-    workflow_states:
-      project_access_granted: freigeschaltet
-      project_access_rejected: abgelehnt
-      project_access_postponed: zurückgestellt
-      project_access_requested: ungeprüft
-      project_access_terminated: beendet
-      project_access_blocked: gesperrt
-      all: alle
+    users:
+      reject: reject
+      rejected: rejected
+      block: block
+      blocked: blocked
+      remove: remove
+      revoke_block: revoke block
+      confirmed: confirmed
+      all: all
+    user_projects:
+      grant_project_access: grant project access
+      project_access_granted: project access granted 
+      reject_project_access: reject project access 
+      project_access_rejected: project access rejected
+      project_access_data_corrected: corrected
+      project_access_requested: project access requested
+      project_access_terminated: project access terminated
+      terminate_project_access: terminate project access 
+      project_access_blocked: project access blocked
+      revoke_project_access_block: revoke project access block
+      block_project_access: block project access 
+      all: all
   help_texts:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
