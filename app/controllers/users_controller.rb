@@ -79,6 +79,13 @@ class UsersController < ApplicationController
   def index
     page = params[:page] || 1
     order = params[:order] || 'last_name'
+    if ['processed_at', 'workflow_state'].include? order
+      if current_project.is_ohd?
+        order = "users.#{order}"
+      else
+        order = "user_projects.#{order}"
+      end
+    end
     direction = params[:direction] || 'asc'
 
     users = policy_scope(User).
@@ -98,6 +105,7 @@ class UsersController < ApplicationController
     total_pages = users.total_pages
 
     users = users.includes(:user_projects).
+      #map{|u| UserSerializer.new(u)}
       inject({}){|mem, s| mem[s.id] = UserSerializer.new(s); mem}
 
     respond_to do |format|
