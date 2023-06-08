@@ -1326,7 +1326,7 @@ es:
         project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
         project_access_rejected: Die E-Mail-Adresse %{email} ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
         project_access_granted: Die E-Mail-Adresse %{email} ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt. 
+        project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt.
         login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
         login:  Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
@@ -1357,8 +1357,8 @@ es:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages
