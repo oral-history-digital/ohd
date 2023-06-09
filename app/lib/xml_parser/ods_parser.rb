@@ -240,7 +240,6 @@ module XmlParser
           end
           raise @tape.errors.full_messages.join('; ') + '.' unless @tape.valid?
 
-          @tape.reset_interview_speaker_checklist_item!
           @tape.save
           raise @tape.errors.full_messages.join('; ') + '.' if @tape.new_record? || !@tape.valid?
 
