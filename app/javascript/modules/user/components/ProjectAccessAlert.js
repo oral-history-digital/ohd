@@ -30,7 +30,7 @@ export default function ProjectAccessAlert ({
             </div>
     } else if (currentUserProject?.workflow_state === 'project_access_rejected') {
         return <div className='error'>{`${t('modules.project_access.rejected_text')}`}</div>
-    } else if (currentUserProject?.workflow_state === 'project_access_blocked') {
+    } else if (user.workflow_state === 'blocked' || currentUserProject?.workflow_state === 'project_access_blocked') {
         return <div className='error'>{`${t('modules.project_access.blocked_text')}`}</div>
     } else {
         return (
@@ -42,6 +42,7 @@ export default function ProjectAccessAlert ({
                     {t('modules.project_access.request_access_explanation2')}
                 </p>
                 <Modal
+                    key='request-project-access-popup'
                     title={t('modules.project_access.request_access_link')}
                     triggerClassName='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
                     trigger={t('modules.project_access.request_access_link')}
