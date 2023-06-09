@@ -9,7 +9,7 @@ class CustomDeviseMailer < Devise::Mailer
   def access_mail(record, opts={})
     @project = opts[:project]
     @user_project = opts[:user_project]
-    opts[:from] = 'noreply@oral-history.digital'
+    opts[:from] = @project.contact_email
     opts[:reply_to] = @project.contact_email
     devise_mail(record, :access_mail, opts)
   end
