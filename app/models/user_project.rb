@@ -29,6 +29,7 @@ class UserProject < ApplicationRecord
     end
     state :project_access_terminated do
       event :grant_project_access, :transitions_to => :project_access_granted
+      event :request_project_access, :transitions_to => :project_access_requested
     end
     state :project_access_blocked do
       event :revoke_project_access_block, :transitions_to => :project_access_granted
@@ -43,6 +44,10 @@ class UserProject < ApplicationRecord
   def workflow_state=(change)
     self.send("#{change}!")
     user.touch
+  end
+
+  def request_project_access
+    AdminMailer.with(user: self.user, project: project).new_registration_info.deliver_now if user.confirmed_at.present? && !project.grant_project_access_instantly?
   end
 
   def grant_project_access
