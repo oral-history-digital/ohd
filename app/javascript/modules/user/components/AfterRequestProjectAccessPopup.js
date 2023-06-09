@@ -19,6 +19,7 @@ export default function AfterRequestProjectAccessPopup ({
 
     return (
         <Modal
+            key='after-request-project-access-popup'
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
             title={t('modules.project_access.request_in_process_title')}
             showDialogInitially={true}

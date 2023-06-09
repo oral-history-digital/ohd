@@ -20,6 +20,7 @@ export default function CorrectUserDataPopup ({
 
     return (
         <Modal
+            key='correct-user-data-popup'
             title={t( 'modules.project_access.correct_user_data_title')}
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
             showDialogInitially={true}

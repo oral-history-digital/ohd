@@ -17,6 +17,7 @@ export default function AfterConfirmationPopup ({
 
     return (
         <Modal
+            key='after-confirmation-popup'
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
             showDialogInitially={true}
             hideButton={true}
