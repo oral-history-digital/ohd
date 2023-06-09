@@ -16,6 +16,14 @@ export default function RequestProjectAccessForm({
 }) {
 
     const { t } = useI18n();
+    const currentUserProject = Object.values(currentUser.user_projects).find(p => p.project_id === project.id);
+    const values = {
+        project_id: project.id,
+        user_id: currentUser.id,
+    };
+    if (currentUserProject) {
+        values.workflow_state = 'request_project_access';
+    }
 
     const conditionsLink = findExternalLink(project, 'conditions');
     const tos_link = () => {
@@ -99,10 +107,8 @@ export default function RequestProjectAccessForm({
                     }
                 }}
                 onCancel={onCancel}
-                values={{
-                    project_id: project.id,
-                    user_id: currentUser.id,
-                }}
+                values={ values }
+                data={currentUserProject}
                 submitText='modules.project_access.request_submit'
                 elements={formElements}
             />
