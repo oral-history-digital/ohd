@@ -70,10 +70,6 @@ class Interview < ApplicationRecord
            through: :segment_registry_references,
            source: :registry_entry
 
-  has_many :checklist_items,
-           -> {order('item_type ASC')},
-           dependent: :destroy
-
   has_many :tasks, dependent: :destroy
 
   has_and_belongs_to_many :archiving_batches
