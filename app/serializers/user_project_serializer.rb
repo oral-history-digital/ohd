@@ -35,10 +35,6 @@ class UserProjectSerializer < ApplicationSerializer
     object.updated_at && object.updated_at.strftime('%d.%m.%Y')
   end
 
-  def terminated_at
-    object.terminated_at && object.terminated_at.strftime('%d.%m.%Y')
-  end
-
   [
     :appellation,
     :first_name,

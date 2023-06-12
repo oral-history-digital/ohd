@@ -39,7 +39,7 @@ export default function UserEdit ({
     ];
 
     const detailRepresentation = (value, detail, index) => {
-        if (detail === 'confirmed_at') {
+        if (['confirmed_at', 'processed_at', 'terminated_at'].includes(detail)) {
             value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
         }
 
