@@ -8,7 +8,7 @@ export default function useUsers(page,
     localeFilter,
     projectFilter,
     roleFilter,
-    manualSorting
+    sorting
 ) {
     const pathBase = usePathBase();
 
@@ -28,8 +28,8 @@ export default function useUsers(page,
     if (roleFilter) {
         dataPath += `&role=${roleFilter}`;
     }
-    if (manualSorting?.[0]) {
-        dataPath += `&order=${manualSorting[0].id}&direction=${manualSorting[0].desc ? 'desc' : 'asc'}`;
+    if (sorting?.[0]) {
+        dataPath += `&order=${sorting[0].id}&direction=${sorting[0].desc ? 'desc' : 'asc'}`;
     }
 
     const { isLoading, isValidating, data, error } = useSWRImmutable(dataPath);

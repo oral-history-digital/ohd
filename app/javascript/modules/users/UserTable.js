@@ -104,8 +104,7 @@ export default function UserTable() {
         {
             accessorKey: 'confirmed_at',
             header: t('activerecord.attributes.user.confirmed_at'),
-            accessorFn: row => new Date(row.confirmed_at).toLocaleDateString(locale, { dateStyle: 'medium' }),
-            enableSorting: false,
+            cell: DateCell,
         },
         {
             header: t('modules.project_access.granted_in'),
@@ -120,7 +119,6 @@ export default function UserTable() {
     const projectColumns = useMemo(() => ([
         {
             id: 'workflow_state',
-            enableSorting: false,
             header: t('activerecord.attributes.user.workflow_state'),
             accessorFn: row => {
                 const workflowState = currentUserProject(row, project).workflow_state;
@@ -133,8 +131,7 @@ export default function UserTable() {
             accessorFn: row => {
                 return currentUserProject(row, project).processed_at;
             },
-            //cell: DateCell,
-            enableSorting: false,
+            cell: DateCell,
         },
         {
             header: t('activerecord.models.role.other'),
@@ -165,8 +162,7 @@ export default function UserTable() {
                 {data?.total} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
-                //data={data?.data || []}
-                data={Object.values(data?.data || {})}
+                data={data?.data || []}
                 pageCount={data?.result_pages_count}
                 columns={columns}
                 isLoading={isLoading}
