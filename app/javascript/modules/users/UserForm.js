@@ -78,11 +78,12 @@ export default function UserForm({
             <Form
                 scope={scope}
                 onSubmit={ async (params) => {
-                    mutateData( async data => {
+                    mutateData( async users => {
                         const result = await submitDataWithFetch(pathBase, params);
                         const updatedDatum = result.data;
+                        const userIndex = users.data.findIndex(u => u.id === userId);
 
-                        if (userId) {
+                        if (updatedDatum.id) {
                             mutateDatum(userId, 'users');
                         }
 
@@ -90,18 +91,13 @@ export default function UserForm({
                             onSubmit();
                         }
 
+                        let updatedUsers;
                         if (updatedDatum.workflow_state !== 'removed') {
-                            return {
-                                ...data,
-                                data: {
-                                    ...data?.data,
-                                    [updatedDatum.id]: updatedDatum
-                                }
-                            }
+                            updatedUsers = [...users.data.slice(0, userIndex), updatedDatum, ...users.data.slice(userIndex + 1)];
                         } else {
-                            const { [updatedDatum.id]: {}, ...rest } = data?.data;
-                            return {data: rest};
+                            updatedUsers = [...users.data.slice(0, userIndex), ...users.data.slice(userIndex + 1)];
                         }
+                        return { ...users, data: updatedUsers };
                     });
                 }}
                 values={{ id: data?.id }}
