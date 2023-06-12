@@ -32,7 +32,7 @@ export default function UserForm({
         {
             elementType: 'select',
             attribute: 'workflow_state',
-            values: data && Object.values(data.workflow_states.filter((ws) => ws !== 'correct_project_access_data')),
+            values: data && Object.values(data.workflow_states.filter((ws) => ws !== 'correct_project_access_data' && ws !== 'request_project_access')),
             value: data?.workflow_state,
             optionsScope: `workflow_states.user${project.is_ohd ? '' : '_project'}s`,
             withEmpty: true,
