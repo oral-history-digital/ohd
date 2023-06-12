@@ -17,20 +17,11 @@ class CustomDeviseMailer < Devise::Mailer
   def confirmation_instructions(record, token, opts={})
     @token = token
 
-    if record.projects.count == 1
-      project = record.projects.last
-      domain = project.domain_with_optional_identifier
-      contact_email = project.contact_email
-      locale = record.default_locale || project.default_locale
-      @project_name = project.name(record.default_locale)
-      @application_type = :interview_archive
-    else # if no project or more than one
-      domain = OHD_DOMAIN
-      contact_email = 'mail@oral-history.digital'
-      locale = 'de'
-      @project_name = 'Oral-History.Digital'
-      @application_type = :interview_portal 
-    end
+    domain = OHD_DOMAIN
+    contact_email = 'mail@oral-history.digital'
+    locale = 'de'
+    @project_name = 'Oral-History.Digital'
+    @application_type = :interview_portal 
 
     if record.unconfirmed_email
       @url = "#{domain}/#{locale}/users/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
@@ -47,17 +38,10 @@ class CustomDeviseMailer < Devise::Mailer
     token = token
     project = opts[:project]
 
-    if project
-      domain = project.domain_with_optional_identifier
-      contact_email = project.contact_email
-      locale = record.default_locale || project.default_locale
-      @project_name = project.name(record.default_locale)
-    else # if no project or more than one
-      domain = OHD_DOMAIN
-      contact_email = 'mail@oral-history.digital'
-      locale = 'de'
-      @project_name = 'Oral-History.Digital'
-    end
+    domain = OHD_DOMAIN
+    contact_email = 'mail@oral-history.digital'
+    locale = 'de'
+    @project_name = 'Oral-History.Digital'
 
     @url = "#{domain}/#{locale}/users/password/edit?reset_password_token=#{token}"
 
