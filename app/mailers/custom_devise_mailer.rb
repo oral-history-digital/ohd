@@ -15,6 +15,7 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def confirmation_instructions(record, token, opts={})
+    return if ['removed', 'blocked'].include?(record.workflow_state)
     @token = token
 
     domain = OHD_DOMAIN
