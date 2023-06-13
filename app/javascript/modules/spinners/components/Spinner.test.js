@@ -6,7 +6,7 @@ it('renders correctly', () => {
     const tree = renderer
         .create(
             <Spinner
-                className="spinner"
+                className="my-spinner"
                 style={{ margin: '1rem' }}
             />
         )

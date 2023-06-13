@@ -1358,10 +1358,14 @@ de:
   modules:
     registration:
       title: Registrierung für Oral-History.Digital
-      registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
-        und ggf. eine Freischaltung für einzelne Archive notwendig.
-      registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
-        und eine Freischaltung für das Archiv notwendig.
+      registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung
+        auf der Plattform Oral-History.Digital und ggf. eine Freischaltung für einzelne
+        Archive notwendig.
+      registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung
+        auf der Plattform Oral-History.Digital notwendig.
+      registration_and_access_needed: Um auf die Interviews zuzugreifen, ist eine
+        Registrierung auf der Plattform Oral-History.Digital und eine Freischaltung für
+        das Archiv notwendig.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         still_not_registered: Die E-Mail-Adresse %{email} ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
@@ -1382,12 +1386,12 @@ de:
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation1: Sie sind bereits in Oral-History.Digital registriert, aber noch nicht für dieses Archiv freigeschaltet.
-      request_access_explanation2: Bitte beantragen Sie die Freischaltung.
+      request_access_explanation: Sie sind noch nicht für dieses Archiv freigeschaltet.
       request_access_link: Freischaltung beantragen
       request_in_process_title: Ihr Antrag auf Freischaltung wurde erfolgreich abgesendet!
-      request_in_process_text1: Die inhaltliche Prüfung des Antrages kann bis zu zwei Werktage dauern.
-      request_in_process_text2: Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
+      request_in_process_text1: Sie haben Freischaltung für dieses Archiv beantragt.
+      request_in_process_text2: Die Prüfung Ihres Antrages kann bis zu zwei Werktage dauern.
+        Sie werden per E-Mail benachrichtigt, sobald Sie auf das Archiv zugreifen können.
       blocked_text: Sie wurden für dieses Archiv gesperrt.
       terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
       correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
