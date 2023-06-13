@@ -3,7 +3,7 @@
 exports[`renders correctly 1`] = `
 <img
   alt=""
-  className="spinner"
+  className="Spinner my-spinner"
   src="mock.jpg"
   style={
     Object {
@@ -16,7 +16,7 @@ exports[`renders correctly 1`] = `
 exports[`renders padding CSS class 1`] = `
 <img
   alt=""
-  className="undefined"
+  className="Spinner Spinner--withPadding"
   src="mock.jpg"
 />
 `;
