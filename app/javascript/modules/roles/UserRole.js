@@ -37,23 +37,17 @@ export default function UserRole ({
     }
 
     const destroy = () => {
-        mutateData( async data => {
+        mutateData( async users => {
             const result = await deleteDatum(userRole.id, 'user_roles');
             const updatedDatum = result.data;
+            const userIndex = users.data.findIndex(u => u.id === userId);
 
-            if (userId) {
+            if (updatedDatum.id) {
                 mutateDatum(userId, 'users');
             }
 
-            const updatedData = {
-                ...data,
-                data: {
-                    ...data?.data,
-                    [updatedDatum.id]: updatedDatum
-                }
-            };
-
-            return updatedData;
+            const updatedUsers = [...users.data.slice(0, userIndex), updatedDatum, ...users.data.slice(userIndex + 1)];
+            return { ...users, data: updatedUsers };
         });
     }
 
@@ -65,6 +59,7 @@ export default function UserRole ({
         ) {
             return (
                 <Modal
+                    key={`delete-userRole-${userId}`}
                     title={t('delete')}
                     trigger={<FaTrash className="Icon Icon--editorial" />}
                 >

@@ -1,1 +1,1 @@
-export { default as UserRolesContainer } from './UserRolesContainer';
+export { default as UserRoles } from './UserRoles';

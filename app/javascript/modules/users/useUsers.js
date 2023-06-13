@@ -2,7 +2,8 @@ import useSWRImmutable from 'swr/immutable';
 
 import { usePathBase } from 'modules/routes';
 
-export default function useUsers(page,
+export default function useUsers(
+    page,
     filter,
     workflowStateFilter,
     localeFilter,

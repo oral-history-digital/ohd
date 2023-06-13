@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
-      subject: "Neue Registrierung zur Prüfung",
+      subject: "Neuer Freischaltungsantrag zur Prüfung",
       from: "noreply@cedis.fu-berlin.de",
       to: @project.contact_email,
       date: Time.now
