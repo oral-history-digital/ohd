@@ -1,4 +1,6 @@
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
 export default function SingleTextInputForm({
     index,
@@ -8,10 +10,10 @@ export default function SingleTextInputForm({
     formClasses,
     data,
     nested,
-    projectId,
-    project,
-    locale,
 }) {
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
+
     return (
         <Form
             scope='text'

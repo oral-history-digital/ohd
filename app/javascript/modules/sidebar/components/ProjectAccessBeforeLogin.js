@@ -8,8 +8,7 @@ export default function ProjectAccessBeforeLogin({
     className,
 }) {
     const { t } = useI18n();
-
-    const project = useProject();
+    const { project } = useProject();
 
     let projectAccessMessage;
     if (project.is_ohd) {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
+import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { DumbTranscriptResult } from 'modules/interview-search';
@@ -15,12 +16,10 @@ export default function RefTree({
     refTree,
     interview,
     archiveId,
-    locale,
-    projectId,
-    project,
     fetchData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const isEditor = useIsEditor();
 
     useEffect(() => {
@@ -72,11 +71,7 @@ export default function RefTree({
 }
 
 RefTree.propTypes = {
-    locale: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     refTree: PropTypes.object,
     refTreeStatus: PropTypes.string.isRequired,

@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchData } from 'modules/data';
-import { getProjectId, getLocale } from 'modules/archive';
-import { getCurrentProject, getStatuses } from 'modules/data';
+import { fetchData, getStatuses } from 'modules/data';
+import { getLocale } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
+import { useProject } from 'modules/routes';
 
 export default function Fetch({
     fetchParams,
@@ -17,8 +17,8 @@ export default function Fetch({
     testDataType,
     testIdOrDesc,
 }) {
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
+    const { project, projectId } = useProject();
+
     const locale = useSelector(getLocale);
     const statuses = useSelector(getStatuses);
     const testResult = (typeof testSelector === 'function') ?

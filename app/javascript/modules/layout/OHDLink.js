@@ -3,14 +3,15 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { getCurrentUser, getCurrentProject, getProjects } from 'modules/data';
-import { getLocale, setProjectId } from 'modules/archive';
+import { getCurrentUser } from 'modules/data';
+import { setProjectId } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { OHD_DOMAINS } from 'modules/constants';
 
 function OHDLink({ className }) {
-    const locale = useSelector(getLocale);
-    const project = useSelector(getCurrentProject);
-    const projects = useSelector(getProjects);
+    const { locale } = useI18n();
+    const { project } = useProject();
     const dispatch = useDispatch();
     const currentAccount = useSelector(getCurrentUser);
 

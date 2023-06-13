@@ -1,11 +1,9 @@
 import { useSWRConfig } from 'swr';
-import { useSelector } from 'react-redux';
 
-import { getCurrentProject } from 'modules/data';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 
 export default function useMutatePeople() {
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 

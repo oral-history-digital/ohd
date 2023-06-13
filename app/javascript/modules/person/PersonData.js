@@ -7,6 +7,7 @@ import { Spinner } from 'modules/spinners';
 import { humanReadable } from 'modules/data';
 import { EventContentField } from 'modules/events';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import usePersonWithAssociations from './usePersonWithAssociations';
 import Biography from './Biography';
 import NameOrPseudonym from './NameOrPseudonym';
@@ -15,9 +16,9 @@ import getDisplayedMetadataFields from './getDisplayedMetadataFields';
 export default function PersonData({
     interview,
     intervieweeId,
-    project,
 }) {
     const { t, locale, translations } = useI18n();
+    const { project } = useProject();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const isEditor = useIsEditor();
 
@@ -97,5 +98,4 @@ export default function PersonData({
 PersonData.propTypes = {
     interview: PropTypes.object.isRequired,
     intervieweeId: PropTypes.number,
-    project: PropTypes.object.isRequired,
 };

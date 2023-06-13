@@ -6,6 +6,7 @@ import queryString from 'query-string';
 
 import { OHD_DOMAINS } from 'modules/constants';
 import { LinkOrA } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
 import { useArchiveSearch } from 'modules/search';
@@ -16,13 +17,13 @@ import InterviewPreviewInner from './InterviewPreviewInner';
 export default function InterviewPreview({
     statuses,
     interview,
-    locale,
     projects,
     setArchiveId,
     selectedArchiveIds,
     addRemoveArchiveId,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const { locale } = useI18n();
     const project = projects[interview.project_id];
     const projectId = project.identifier;
     const { fulltext } = useArchiveSearch();
@@ -101,7 +102,6 @@ export default function InterviewPreview({
 InterviewPreview.propTypes = {
     interview: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
     setArchiveId: PropTypes.func.isRequired,

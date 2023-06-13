@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getIsLoggedIn } from 'modules/user';
-import { setArchiveId, getInterviewEditView, getProjectId, getLocale } from 'modules/archive';
+import { setArchiveId, getInterviewEditView } from 'modules/archive';
 import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog,
-    fetchData, getCurrentProject } from 'modules/data';
+    fetchData } from 'modules/data';
 import Interview from './Interview';
 
 const mapStateToProps = state => ({
@@ -12,9 +12,6 @@ const mapStateToProps = state => ({
     interviewIsFetched: getCurrentInterviewFetched(state),
     isCatalog: getIsCatalog(state),
     interviewEditView: getInterviewEditView(state),
-    projectId: getProjectId(state),
-    locale: getLocale(state),
-    project: getCurrentProject(state),
     isLoggedIn: getIsLoggedIn(state),
 });
 

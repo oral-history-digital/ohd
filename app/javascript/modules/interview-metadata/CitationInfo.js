@@ -1,19 +1,17 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { OHD_LOCATION } from 'modules/constants';
 
 export default function CitationInfo({
     interview,
     collections,
-    locale,
-    project,
     projectDoi,
-    projectId,
     projectName,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
     const collection = collections?.[interview.collection_id];
 
@@ -65,10 +63,7 @@ export default function CitationInfo({
 
 CitationInfo.propTypes = {
     collections: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     projectDoi: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
     projectName: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
 };

@@ -3,6 +3,7 @@ import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 import RegistryReferenceContainer from './RegistryReferenceContainer';
@@ -12,15 +13,14 @@ export default function RegistryReferences({
     registryEntries,
     registryReferenceTypeId,
     refObject,
-    project,
     interview,
     inTranscript,
     lowestAllowedRegistryEntryId,
-    locale,
     contentLocale,
     setOpenReference,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project } = useProject();
 
     if (!registryEntriesStatus[project.root_registry_entry_id] || registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !== 'fetched') {
         return null;
@@ -89,8 +89,6 @@ RegistryReferences.propTypes = {
     registryReferenceTypeId: PropTypes.number,
     inTranscript: PropTypes.bool,
     lowestAllowedRegistryEntryId: PropTypes.number,
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
     registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,

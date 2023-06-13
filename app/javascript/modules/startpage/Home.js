@@ -2,16 +2,18 @@ import PropTypes from 'prop-types';
 
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
+import { useProject } from 'modules/routes';
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
 
 export default function Home({
-    project,
     projectTranslation,
     showStartPageVideo,
     showFeaturedInterviews,
     institutions,
 }) {
+    const { project } = useProject();
+
     return (
         <ScrollToTop>
             <div className='wrapper-content home-content'>

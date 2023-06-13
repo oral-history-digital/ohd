@@ -1,11 +1,9 @@
-import { useSelector } from 'react-redux';
-
-import { getCurrentProject } from 'modules/data';
+import { useProject } from 'modules/routes';
 import OHDLink from './OHDLink';
 import ProjectLogo from './ProjectLogo';
 
 function SiteHeader() {
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
 
     return (
         <header className="SiteHeader">

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import HeadingContainer from './HeadingContainer';
 
@@ -11,12 +12,10 @@ export default function TableOfContents({
     preparedHeadings,
     isIdle,
     archiveId,
-    locale,
-    projectId,
-    project,
     fetchData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
     useEffect(() => {
         // Only scroll to top if media has not started yet.
@@ -61,9 +60,6 @@ export default function TableOfContents({
 
 TableOfContents.propTypes = {
     archiveId: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     headingsFetched: PropTypes.bool.isRequired,
     headings: PropTypes.object,
     preparedHeadings: PropTypes.array,

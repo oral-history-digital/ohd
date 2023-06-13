@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import { getCurrentProject, getProjectTranslation, getShowFeaturedInterviews,
+import { getProjectTranslation, getShowFeaturedInterviews,
     getShowStartPageVideo, getInstitutions, getIsCampscapesProject } from 'modules/data';
 
 const mapStateToProps = state => ({
-    project: getCurrentProject(state),
     projectTranslation: getProjectTranslation(state),
     showStartPageVideo: getShowStartPageVideo(state),
     showFeaturedInterviews: getShowFeaturedInterviews(state),

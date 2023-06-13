@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
 
+import { useProject } from 'modules/routes';
+
 export default function AuthShow({
     isLoggedIn,
     ifLoggedIn,
     ifLoggedOut,
     ifNoProject,
     ifCatalog,
-    project,
     user,
     isCatalog,
     children,
 }) {
+    const { project } = useProject();
+
     if (
         // logged in and registered for the current project
         //(isLoggedIn && ifLoggedIn) ||
@@ -50,7 +53,6 @@ AuthShow.propTypes = {
     ifLoggedOut: PropTypes.bool,
     ifNoProject: PropTypes.bool,
     ifCatalog: PropTypes.bool,
-    project: PropTypes.object,
     user: PropTypes.object,
     isCatalog: PropTypes.bool.isRequired,
     children: PropTypes.node,
