@@ -5,7 +5,7 @@ import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { getCurrentUser, ProjectShow, getProjects } from 'modules/data';
 import { ContentField } from 'modules/forms'
-import { UserRolesContainer } from 'modules/roles';
+import { UserRoles } from 'modules/roles';
 import UserTasks from './UserTasks';
 import { useI18n } from 'modules/i18n';
 
@@ -60,9 +60,9 @@ export default function UserProject({
                                 </h4>
                                 {
                                     showRoles ?
-                                    <UserRolesContainer
+                                    <UserRoles
                                         userRoles={roles || {}}
-                                        userAccountId={user.id}
+                                        userId={user.id}
                                         hideEdit={true}
                                         hideAdd={true}
                                     /> : null

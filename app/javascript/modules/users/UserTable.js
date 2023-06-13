@@ -114,7 +114,7 @@ export default function UserTable() {
             header: t('modules.project_access.archive_management_in'),
             cell: ArchiveManagementInCell,
         },
-    ]), [locale, project]);
+    ]), [locale, project, dataPath]);
 
     const projectColumns = useMemo(() => ([
         {
@@ -142,7 +142,7 @@ export default function UserTable() {
             //header: t('activerecord.models.task.other'),
             //cell: TasksCell,
         //},
-    ]), [locale, project]);
+    ]), [locale, project, dataPath]);
 
     const actionColumns = useMemo(() => ([
         {

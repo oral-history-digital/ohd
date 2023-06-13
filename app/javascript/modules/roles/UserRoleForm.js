@@ -8,7 +8,6 @@ import { usePathBase } from 'modules/routes';
 
 export default function UserRoleForm ({
     dataPath,
-    userAccountId,
     userId,
     projectId,
     project,
@@ -37,11 +36,12 @@ export default function UserRoleForm ({
             <Form
                 scope='user_role'
                 onSubmit={ async (params) => {
-                    mutateData( async data => {
+                    mutateData( async users => {
                         const result = await submitDataWithFetch(pathBase, params);
                         const updatedDatum = result.data;
+                        const userIndex = users.data.findIndex(u => u.id === userId);
 
-                        if (userId) {
+                        if (updatedDatum.id) {
                             mutateDatum(userId, 'users');
                         }
 
@@ -49,18 +49,12 @@ export default function UserRoleForm ({
                             onSubmit();
                         }
 
-                        const updatedData = {
-                            ...data,
-                            data: {
-                                ...data?.data,
-                                [updatedDatum.id]: updatedDatum
-                            }
-                        };
-                        return updatedData;
+                        const updatedUsers = [...users.data.slice(0, userIndex), updatedDatum, ...users.data.slice(userIndex + 1)];
+                        return { ...users, data: updatedUsers };
                     });
                 }}
                 values={{
-                    user_id: userAccountId,
+                    user_id: userId,
                 }}
                 elements={[
                     {
@@ -79,7 +73,6 @@ export default function UserRoleForm ({
 
 UserRoleForm.propTypes = {
     rolesStatus: PropTypes.object.isRequired,
-    userAccountId: PropTypes.number.isRequired,
     roles: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,

@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getCurrentProject } from 'modules/data';
-import { UserRolesContainer } from 'modules/roles';
+import { UserRoles } from 'modules/roles';
 
 export default function RolesCell({
     row,
@@ -14,9 +14,9 @@ export default function RolesCell({
     const roles = Object.values(user.user_roles).filter(u => u.project_id === project.id) || [];
 
     return (
-        <UserRolesContainer
+        <UserRoles
+            key={`user-roles-${user.id}`}
             userRoles={roles}
-            userAccountId={user.id}
             userId={user.id}
             hideEdit={false}
             dataPath={dataPath}
