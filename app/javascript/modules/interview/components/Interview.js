@@ -8,6 +8,7 @@ import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayerContainer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
@@ -19,14 +20,13 @@ export default function Interview({
     interviewIsFetched,
     interviewEditView,
     isCatalog,
-    projectId,
-    project,
     setArchiveId,
     fetchData,
     isLoggedIn,
 }) {
     const { archiveId } = useParams();
     const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
@@ -92,9 +92,6 @@ Interview.propTypes = {
     interviewIsFetched: PropTypes.bool.isRequired,
     isCatalog: PropTypes.bool.isRequired,
     interviewEditView: PropTypes.bool.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

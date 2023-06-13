@@ -1,12 +1,10 @@
 import useSWRImmutable from 'swr/immutable';
-import { useSelector } from 'react-redux';
 
-import { getCurrentProject } from 'modules/data';
 import { fetcher } from 'modules/api';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 
 export default function usePeople() {
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
     const pathBase = usePathBase();
 
     const path = `${pathBase}/people.json?for_projects=${project.id}`;

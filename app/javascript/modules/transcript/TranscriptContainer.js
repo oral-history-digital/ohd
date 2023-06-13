@@ -1,17 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    getLocale,
-    getProjectId,
-    getArchiveId
-} from 'modules/archive';
+import { getArchiveId } from 'modules/archive';
 import {
     fetchData,
     getCurrentInterview,
     getCurrentIntervieweeId,
     getHasTranscript,
-    getCurrentProject,
     getTranscriptFetched,
     getTranscriptLocale
 } from 'modules/data';
@@ -21,9 +16,6 @@ import { getWorkbookIsLoading, getWorkbookLoaded, fetchWorkbook } from 'modules/
 import Transcript from './Transcript';
 
 const mapStateToProps = (state, props) => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    project: getCurrentProject(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),

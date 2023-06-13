@@ -7,7 +7,7 @@ import { useProject } from 'modules/routes';
 export default function CurrentArchive({
     className,
 }) {
-    const project = useProject();
+    const { project } = useProject();
     const { locale } = useI18n();
     const name = project.display_name[locale] || project.name[locale];
 

@@ -5,13 +5,12 @@ import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import ContributionFormContainer from './ContributionFormContainer';
 
 export default function Contribution({
     person,
-    projectId,
-    project,
     archiveId,
     contribution,
     withSpeakerDesignation,
@@ -19,6 +18,7 @@ export default function Contribution({
     submitData
 }) {
     const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const { isAuthorized } = useAuthorization();
 
     const destroy = () => {
@@ -85,8 +85,6 @@ Contribution.propTypes = {
     contribution: PropTypes.object.isRequired,
     withSpeakerDesignation: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
 

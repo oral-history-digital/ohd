@@ -1,9 +1,7 @@
 import { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { AccountPage, OrderNewPasswordContainer } from 'modules/user';
-import { SearchPage } from 'modules/search';
-import { UsersAdminPage, WrappedInstitutionsContainer, ArchivePage, HelpTextAdminPage } from 'modules/admin';
+import { WrappedInstitutionsContainer, ArchivePage, HelpTextAdminPage } from 'modules/admin';
 import { SiteStartpage } from 'modules/site-startpage';
 import { HomeContainer } from 'modules/startpage';
 import ProjectRoutes from './ProjectRoutes';

@@ -9,15 +9,23 @@ export default function useProject() {
     const projectArray = Object.values(projects);
     const matchWithProject = useMatch('/:projectId/:locale/*');
 
+    let currentProject;
     if (matchWithProject && isLocaleValid(matchWithProject.params.locale)) {
         // Archive is running on OHD domain.
-        return projectArray.find(
-            project => project.shortname === matchWithProject.params.projectId
+        currentProject = projectArray.find(
+            project => project.identifier === matchWithProject.params.projectId
         );
     } else {
+        console.log('second')
         // Archive is running on its own domain.
-        return projectArray.find(
+        currentProject = projectArray.find(
             project => project.archive_domain === window.location.origin
         );
     }
+
+    return {
+        project: currentProject,
+        projectId: currentProject.identifier,
+        isOhd: currentProject.is_ohd,
+    };
 }
