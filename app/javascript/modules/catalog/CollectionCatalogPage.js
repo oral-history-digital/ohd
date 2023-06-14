@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useParams, Navigate } from 'react-router-dom';
+import { FaChevronRight} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -45,6 +46,19 @@ export default function CollectionCatalogPage() {
                     <h1 className="search-results-title u-mb">
                         {title}
                     </h1>
+
+                    {collection.is_linkable && (
+                        <p className="Paragraph u-mb">
+                            <LinkOrA
+                                project={project}
+                                to={`searches/archive?collection_id[]=${collection.id}`}
+                                className="ProminentLink"
+                            >
+                                <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
+                                {t('modules.catalog.go_to_collection')}
+                            </LinkOrA>
+                        </p>
+                    )}
 
                     <dl className="DescriptionList">
                         <dt className="DescriptionList-term">
@@ -98,17 +112,6 @@ export default function CollectionCatalogPage() {
                             {t('activerecord.models.interview.other')}
                         </dd>
                     </dl>
-
-                    {collection.is_linkable && (
-                        <p className="Paragraph u-mb">
-                            <LinkOrA
-                                project={project}
-                                to={`searches/archive?collection_id[]=${collection.id}`}
-                            >
-                                {t('modules.catalog.go_to_collection')}
-                            </LinkOrA>
-                        </p>
-                    )}
                 </div>
             </ErrorBoundary>
         </ScrollToTop>
