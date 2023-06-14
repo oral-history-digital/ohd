@@ -24,7 +24,11 @@ class UserProjectsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_project.user, msg: 'processed')
+        render json: {
+          id: @user_project.user == current_user ? 'current' : @user_project.user_id,
+          data_type: 'users',
+          data: ::UserSerializer.new(@user_project.user),
+        }
       end
     end
   end

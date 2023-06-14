@@ -6,7 +6,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
-import ProjectAccessAlert from './ProjectAccessAlert';
+import ProjectAccessAlertContainer from './ProjectAccessAlertContainer';
 import RegisterPopupLink from './RegisterPopupLink';
 import LoginForm from './LoginForm';
 
@@ -78,7 +78,7 @@ export default function Account ({
                     </button>
                 </AuthShowContainer>
                 <AuthShowContainer ifNoProject={true} ifIsLoggedIn={true}>
-                    <ProjectAccessAlert />
+                    <ProjectAccessAlertContainer />
                 </AuthShowContainer>
 
                 {errorMsg()}

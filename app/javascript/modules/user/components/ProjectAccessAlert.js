@@ -3,13 +3,14 @@ import { useSelector } from 'react-redux';
 import { Modal } from 'modules/ui';
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 import { useI18n } from 'modules/i18n';
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentProject, getCurrentUser, getUsersStatus } from 'modules/data';
 
 export default function ProjectAccessAlert ({
+    user,
+    project,
+    fetchData,
 }) {
 
-    const user = useSelector(getCurrentUser);
-    const project = useSelector(getCurrentProject);
     const { t } = useI18n();
 
     if (project.grant_access_without_login) return null;
