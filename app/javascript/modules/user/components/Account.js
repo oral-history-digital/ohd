@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { OHD_DOMAINS } from 'modules/constants';
 import { AuthShowContainer } from 'modules/auth';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
+import ProjectAccessAlert from './ProjectAccessAlert';
 import RegisterPopupLink from './RegisterPopupLink';
 import LoginForm from './LoginForm';
 
@@ -24,6 +25,7 @@ export default function Account ({
 
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+    const project = useProject();
 
     const handleLinkClick = () => {
         if (isMobile()) {
@@ -75,10 +77,19 @@ export default function Account ({
                         {t('logout')}
                     </button>
                 </AuthShowContainer>
+                <AuthShowContainer ifNoProject={true} ifIsLoggedIn={true}>
+                    <ProjectAccessAlert />
+                </AuthShowContainer>
 
                 {errorMsg()}
 
                 <AuthShowContainer ifLoggedOut={true}>
+                    <p>
+                        {
+                            (error || project.grant_access_without_login) ? '' :
+                                t(`modules.registration.registration_needed_${project.is_ohd ? 'ohd' : 'archive'}`)
+                        }
+                    </p>
                     {
                         (['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) !== -1) ?
                             <LoginForm /> :
