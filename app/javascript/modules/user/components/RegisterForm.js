@@ -6,6 +6,8 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { findExternalLink } from 'modules/layout';
 
+const NON_ZIP_COUNTRIES = ["AO", "AE", "AG", "BI", "BJ", "BF", "BS", "BZ", "BO", "CF", "CL", "CM", "CD", "KM", "DJ", "DM", "ER", "ET", "FJ", "GA", "GM", "GQ", "GD", "GY", "HK", "KI", "KN", "LC", "ML", "MR", "MW", "NR", "QA", "RW", "SL", "SO", "ST", "SR", "SC", "TD", "TG", "TO", "TT", "TV", "UG", "VU", "YE", "ZW"];
+
 export default function RegisterForm({
     project,
     ohdProject,
@@ -35,6 +37,7 @@ export default function RegisterForm({
     };
 
     const [password, setPassword] = useState(null);
+    const [hideZip, setHideZip] = useState(true);
 
     const handlePasswordChange = (name, value, data) => {
         setPassword(value);
@@ -63,6 +66,20 @@ export default function RegisterForm({
             },
         ];
 
+        const countrySelect = [
+            {
+                elementType: 'select',
+                attribute: 'country',
+                optionsScope: 'countries',
+                values: countryKeys && countryKeys[locale],
+                withEmpty: true,
+                validate: function(v){return v && v.length > 1},
+                handlechangecallback: (name, value) => {
+                    setHideZip(NON_ZIP_COUNTRIES.indexOf(value) > -1);
+                },
+            },
+        ];
+
         const addressElements = [
             {
                 elementType: 'input',
@@ -72,28 +89,17 @@ export default function RegisterForm({
             },
             {
                 elementType: 'input',
+                attribute: 'zipcode',
+                type: 'text',
+                validate: function(v){return v && v.length > 1},
+                hidden: hideZip,
+            },
+            {
+                elementType: 'input',
                 attribute: 'city',
                 type: 'text',
                 validate: function(v){return v && v.length > 1}
             }
-        ];
-
-        const zipElement = {
-            elementType: 'input',
-            attribute: 'zipcode',
-            type: 'text',
-            validate: function(v){return v && v.length > 1}
-        };
-
-        const countrySelect = [
-            {
-                elementType: 'select',
-                attribute: 'country',
-                optionsScope: 'countries',
-                values: countryKeys && countryKeys[locale],
-                withEmpty: true,
-                validate: function(v){return v && v.length > 1}
-            },
         ];
 
         const emailPasswordElements = [
@@ -172,9 +178,7 @@ export default function RegisterForm({
             },
         ];
 
-        if (locale !== 'es') addressElements.push(zipElement);
-
-        return nameElements.concat(addressElements).concat(countrySelect).concat(emailPasswordElements).concat(tosPrivacyElements);
+        return nameElements.concat(countrySelect).concat(addressElements).concat(emailPasswordElements).concat(tosPrivacyElements);
     }
 
     return (
