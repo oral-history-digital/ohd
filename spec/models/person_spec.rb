@@ -58,6 +58,12 @@ describe Person do
         expect(person.display_name).to eq('Frau Henderson')
       end
 
+      it 'displays a salutation even if gender is nil' do
+        person.first_name = ''
+        person.gender = nil
+        expect(person.display_name).to eq('Person Henderson')
+      end
+
       it 'displays title if present' do
         person.first_name = ''
         person.title = 'doctor'
