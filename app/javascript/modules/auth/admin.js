@@ -3,7 +3,7 @@ import permitted from './permitted';
 // props should contain:
 //   - user ~ getCurrentUser(state)
 //   - editView ~ getEditView(state)
-//   - project ~ getCurrentProject(state)
+//   - project ~ useProject() or getCurrentProject(state)
 //
 // obj can be the serialized json of e.g. an interview or a segment
 //

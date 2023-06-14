@@ -4,14 +4,13 @@ import { useSelector } from 'react-redux';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import useCatalogStats from './useCatalogStats';
-import { getCurrentProject, getProjectTranslation } from 'modules/data';
+import { getProjectTranslation } from 'modules/data';
 
 export default function StartpageIntroduction({
     className,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { data: stats, error, isLoading } = useCatalogStats();
-    const project = useSelector(getCurrentProject);
     const projectTranslation = useSelector(getProjectTranslation);
 
     if (isLoading) {

@@ -1,9 +1,10 @@
 import { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { FaPencilAlt } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
 export default function EditData({
@@ -12,14 +13,12 @@ export default function EditData({
     helpTextCode,
     initialFormValues,
     translations,
-    locale,
-    projectId,
-    project,
     scope,
     submitData,
 }) {
     const [editing, setEditing] = useState(false);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
     function toggleEditing() {
         setEditing(prev => !prev);
@@ -73,10 +72,7 @@ EditData.propTypes = {
     formElements: PropTypes.array.isRequired,
     helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
-    locale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     scope: PropTypes.string.isRequired,
     translations: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,

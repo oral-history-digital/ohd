@@ -7,7 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
-import { pathBase } from 'modules/routes';
+import { pathBase, useProject } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import FetchAccountContainer from './FetchAccountContainer';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
@@ -22,10 +23,6 @@ export default function Layout({
     sidebarVisible,
     children,
     toggleSidebar,
-    locale,
-    project,
-    projectId,
-    projects,
     loggedInAt,
     collectionsStatus,
     projectsStatus,
@@ -35,6 +32,8 @@ export default function Layout({
 }) {
     const location = useLocation();
     const navigate = useNavigate();
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
 
     useEffect(() => {
         fitLocale();
@@ -147,15 +146,10 @@ export default function Layout({
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
     loggedInAt: PropTypes.number,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string,
-    projects: PropTypes.object.isRequired,
-    project: PropTypes.object,
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
     collectionsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
-    editView: PropTypes.bool.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

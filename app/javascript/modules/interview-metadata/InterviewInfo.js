@@ -5,16 +5,18 @@ import { Fetch, getCollectionsForCurrentProjectFetched } from 'modules/data';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { useProjectAccessStatus } from 'modules/auth';
 import CollectionLink from './CollectionLink';
 
 export default function InterviewInfo({
     interview,
-    project,
     collections,
     languages,
 }) {
     const { t } = useI18n();
+    const { project } = useProject();
+
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const collection = collections[interview.collection_id];
 

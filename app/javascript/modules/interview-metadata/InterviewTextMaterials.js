@@ -7,11 +7,8 @@ import InterviewDownloads from './InterviewDownloads';
 
 export default function InterviewTextMaterials({
     interview,
-    project,
-    locale,
     isCatalog,
 }) {
-
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
@@ -71,9 +68,5 @@ export default function InterviewTextMaterials({
 }
 
 InterviewTextMaterials.propTypes = {
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
 };

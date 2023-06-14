@@ -14,7 +14,7 @@ export default function InterviewPreviewInner({
     isExpanded
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
-    const currentProject = useProject();
+    const { project: currentProject } = useProject();
 
     return (
         <>

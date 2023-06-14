@@ -31,7 +31,7 @@ export default function SidebarTabs({
 }) {
     const [tabIndex, setTabIndex] = useState(indexes.INDEX_USER);
     const { t, locale } = useI18n();
-    const project = useProject();
+    const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const navigate = useNavigate();

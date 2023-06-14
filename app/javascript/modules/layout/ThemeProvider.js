@@ -9,7 +9,7 @@ const DEFAULT_ASPECT_X = 4;
 const DEFAULT_ASPECT_Y = 3;
 
 export default function ThemeProvider() {
-    const project = useProject();
+    const { project } = useProject();
 
     const primaryColor = project?.primary_color || DEFAULT_PRIMARY_COLOR;
     const secondaryColor = project?.secondary_color || DEFAULT_SECONDARY_COLOR;

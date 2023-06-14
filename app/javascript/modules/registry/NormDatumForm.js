@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import NormDataForDescriptorContainer from './NormDataForDescriptorContainer';
 
 export default function NormDatumForm({
@@ -16,15 +16,13 @@ export default function NormDatumForm({
     descriptor,
     norm_data_provider_id,
     nid,
-    projectId,
-    project,
     normDataProviders,
-    locale,
     setRegistryEntryAttributes,
     registryEntryAttributes,
 }) {
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
     const [fromAPI, setFromAPI] = useState(false);
 

@@ -1,10 +1,6 @@
 import { connect } from 'react-redux';
 
-import {
-    getCurrentProject,
-    getProjects,
-    getRootRegistryEntry
-} from 'modules/data';
+import { getProjects, getRootRegistryEntry } from 'modules/data';
 import {
     getIsRegistryEntrySearching,
     getRegistryEntriesSearch,
@@ -16,7 +12,6 @@ import Registry from './Registry';
 const mapStateToProps = (state) => ({
     rootRegistryEntry: getRootRegistryEntry(state),
     projects: getProjects(state),
-    currentProject: getCurrentProject(state),
     foundRegistryEntries: getRegistryEntriesSearch(state),
     showRegistryEntriesSearchResults: getShowRegistryEntriesSearchResults(state),
     isRegistryEntrySearching: getIsRegistryEntrySearching(state),

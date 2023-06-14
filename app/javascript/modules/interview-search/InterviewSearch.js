@@ -4,17 +4,18 @@ import PropTypes from 'prop-types';
 import { useIsEditor } from 'modules/archive';
 import { ScrollToTop } from 'modules/user-agent';
 import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import InterviewSearchForm from './InterviewSearchForm';
 import InterviewSearchResultsContainer from './InterviewSearchResultsContainer';
 
 export default function InterviewSearch({
-    locale,
-    projectId,
-    project,
     archiveId,
     refTreeStatus,
     fetchData,
 }) {
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
     const isEditor = useIsEditor();
 
     useEffect(() => {
@@ -33,10 +34,6 @@ export default function InterviewSearch({
 }
 
 InterviewSearch.propTypes = {
-    locale: PropTypes.string.isRequired,
-    editView: PropTypes.bool.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     refTreeStatus: PropTypes.string.isRequired,
     fetchData: PropTypes.func.isRequired,

@@ -4,6 +4,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import { AdminMenu } from 'modules/ui';
+import { useProject } from 'modules/routes';
 import { DeleteItemForm } from 'modules/forms';
 import { PersonDetails } from 'modules/person';
 import BaseData from './BaseData';
@@ -16,9 +17,6 @@ const Item = AdminMenu.Item;
 export default function Data({
     data,
     joinedData,
-    locale,
-    projectId,
-    project,
     task,
     form,
     scope,
@@ -34,7 +32,8 @@ export default function Data({
     deleteData,
     handleDelete,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
     function destroy(close) {
         // Use custom delete handler if available, skip the rest.
@@ -141,9 +140,6 @@ export default function Data({
 }
 
 Data.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
     joinedData: PropTypes.object,
     task: PropTypes.object,

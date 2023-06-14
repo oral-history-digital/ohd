@@ -1,13 +1,11 @@
 import useSWRImmutable from 'swr/immutable';
-import { useSelector } from 'react-redux';
 
-import { getCurrentProject } from 'modules/data';
 import { useProjectAccessStatus } from 'modules/auth';
 import { fetcher } from 'modules/api';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 
 export default function usePersonWithAssociations(id) {
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
     const pathBase = usePathBase();
     const { projectAccessGranted } = useProjectAccessStatus(project);
 

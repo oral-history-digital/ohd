@@ -5,18 +5,17 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { DeleteItemForm } from 'modules/forms';
+import { useProject } from 'modules/routes';
 import AnnotationFormContainer from './AnnotationFormContainer';
 
 export default function Annotation({
     annotation,
     contentLocale,
     segment,
-    locale,
-    projectId,
-    project,
     deleteData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
     return (
         <div>
@@ -65,9 +64,6 @@ export default function Annotation({
 Annotation.propTypes = {
     annotation: PropTypes.object.isRequired,
     segment: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
