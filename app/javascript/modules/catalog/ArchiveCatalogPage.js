@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useParams, Navigate } from 'react-router-dom';
+import { FaChevronRight} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -52,6 +53,13 @@ export default function ArchiveCatalogPage() {
                     <h1 className="search-results-title u-mb">
                         {title}
                     </h1>
+
+                    <p className="Paragraph u-mb">
+                        <LinkOrA project={project} to="" className="ProminentLink">
+                            <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
+                            {t('modules.catalog.go_to_archive')}
+                        </LinkOrA>
+                    </p>
 
                     <dl className="DescriptionList">
                         <dt className="DescriptionList-term">
@@ -149,12 +157,6 @@ export default function ArchiveCatalogPage() {
                             t('activerecord.models.interview.other')
                         }
                     </dd>
-
-                    <p className="Paragraph u-mb">
-                        <LinkOrA project={project} to="">
-                            {t('modules.catalog.go_to_archive')}
-                        </LinkOrA>
-                    </p>
 
                     <ArchiveCatalog id={Number.parseInt(id)} />
                 </div>

@@ -1,0 +1,15 @@
+.ProminentLink {
+  font-size: $font-size-larger;
+  line-height: $base-unit;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ProminentLink-icon {
+  background-color: var(--primary-color);
+  color: white;
+  width: $base-unit;
+  height: $base-unit;
+  padding: $base-unit * 0.25;
+  border-radius: 50%;
+}
