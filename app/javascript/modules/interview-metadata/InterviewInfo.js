@@ -14,7 +14,7 @@ export default function InterviewInfo({
     collections,
     languages,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { project } = useProject();
 
     const { projectAccessGranted } = useProjectAccessStatus(project);
@@ -94,9 +94,12 @@ export default function InterviewInfo({
                     attribute={'collection_id'}
                     projectAccessGranted={projectAccessGranted}
                 >
-                    {
-                        collection && <CollectionLink collection={collection} />
-                    }
+                    {collection && (
+                        <CollectionLink
+                            collectionId={collection.id}
+                            notes={collection.notes?.[locale]}
+                        />
+                    )}
                 </SingleValueWithFormContainer>
             </Fetch>
 
@@ -126,8 +129,6 @@ export default function InterviewInfo({
 
 InterviewInfo.propTypes = {
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
 };

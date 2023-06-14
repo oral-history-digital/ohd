@@ -3,3 +3,4 @@ export { default as InterviewContributorsContainer } from './InterviewContributo
 export { default as InterviewTextMaterialsContainer } from './InterviewTextMaterialsContainer';
 export { default as ContributionFormContainer } from './ContributionFormContainer';
 export { default as CitationInfoContainer } from './CitationInfoContainer';
+export { default as CollectionLink } from './CollectionLink';
