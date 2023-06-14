@@ -1,13 +1,11 @@
 import { useState} from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { submitDataWithFetch } from 'modules/api';
-import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useEventTypes } from 'modules/event-types';
 import { EventForm, Event } from 'modules/events';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import {
     PERSON_GENDER_MALE,
@@ -100,7 +98,7 @@ export default function PersonForm({
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
 
     function showEvent(event) {
         return <Event event={event} />;

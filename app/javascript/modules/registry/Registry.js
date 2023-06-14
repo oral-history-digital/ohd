@@ -11,18 +11,19 @@ import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { ScrollToTop } from 'modules/user-agent';
+import { useProject } from 'modules/routes';
 import RegistrySearchResultContainer from './RegistrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
 
 export default function Registry({
-    currentProject,
     rootRegistryEntry,
     foundRegistryEntries,
     showRegistryEntriesSearchResults,
     isRegistryEntrySearching,
 }) {
     const { t } = useI18n();
+    const { project } = useProject();
     const isEditor = useIsEditor();
 
     return (
@@ -32,7 +33,7 @@ export default function Registry({
             </Helmet>
             <div className='wrapper-content register'>
                 <Fetch
-                    fetchParams={['registry_entries', currentProject?.root_registry_entry_id, null, null, 'with_associations=true']}
+                    fetchParams={['registry_entries', project?.root_registry_entry_id, null, null, 'with_associations=true']}
                     testSelector={getRootRegistryEntryFetched}
                     reloadSelector={getRootRegistryEntryReload}
                 >
@@ -71,8 +72,6 @@ export default function Registry({
 }
 
 Registry.propTypes = {
-    currentProject: PropTypes.object,
-    editView: PropTypes.bool.isRequired,
     rootRegistryEntry: PropTypes.object,
     foundRegistryEntries: PropTypes.object.isRequired,
     showRegistryEntriesSearchResults: PropTypes.bool.isRequired,

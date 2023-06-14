@@ -5,7 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { useIsEditor } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { isSegmentActive } from 'modules/interview-helpers';
 import { usePeople } from 'modules/person';
 import SegmentContainer from './SegmentContainer';
@@ -24,9 +24,6 @@ export default function Transcript({
     mediaTime,
     isIdle,
     tape,
-    locale,
-    projectId,
-    project,
     autoScroll,
     workbookIsLoading,
     workbookLoaded,
@@ -39,7 +36,8 @@ export default function Transcript({
         openReference: null,
     });
     const { data: people, isLoading: peopleAreLoading } = usePeople();
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
     const isEditor = useIsEditor();
 
@@ -151,13 +149,10 @@ export default function Transcript({
 }
 
 Transcript.propTypes = {
-    locale: PropTypes.string.isRequired,
     originalLocale: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
     loadSegments: PropTypes.bool,
     contributionTypes: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     isIdle: PropTypes.bool.isRequired,

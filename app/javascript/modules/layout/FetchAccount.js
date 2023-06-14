@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { useProject } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import { OHD_DOMAINS } from 'modules/constants';
 
 export default function FetchAccount({
@@ -8,12 +10,11 @@ export default function FetchAccount({
     isLoggedIn,
     isLoggedOut,
     checkedOhdSession,
-    projectId,
-    project,
-    locale,
     fetchData,
     deleteData,
 }) {
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
 
     useEffect(() => {
         if (

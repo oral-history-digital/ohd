@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 
-import ProjectFooter from './ProjectFooter';
-import { getCurrentProject } from 'modules/data';
 import { getLocale } from 'modules/archive';
+import { useProject } from 'modules/routes';
+import ProjectFooter from './ProjectFooter';
 
 function SiteFooter() {
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
     const locale = useSelector(getLocale);
 
     let links = {};

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getCurrentProject, fetchData, deleteData, submitData, getProjects,
     getCurrentUser, getMediaStreamsForCurrentProject } from 'modules/data';
-import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
 const mapStateToProps = state => {

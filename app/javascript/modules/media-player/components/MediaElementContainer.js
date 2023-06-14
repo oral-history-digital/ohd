@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentInterview, getMediaStreamsForCurrentProject,
-    getCurrentProject } from 'modules/data';
+import { getCurrentInterview, getMediaStreamsForCurrentProject } from 'modules/data';
 import { getArchiveId } from 'modules/archive';
 import { updateMediaTime, updateIsPlaying, resetMedia, sendTimeChangeRequest,
     clearTimeChangeRequest } from '../actions';
@@ -13,7 +12,6 @@ import MediaElement from './MediaElement';
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
-    project: getCurrentProject(state),
     mediaStreams: getMediaStreamsForCurrentProject(state),
     tape: getCurrentTape(state),
     timeChangeRequest: getTimeChangeRequest(state),

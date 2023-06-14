@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
 import speakerImage from 'assets/images/speaker.png';
@@ -28,7 +28,6 @@ export default function MediaElement({
     archiveId,
     className,
     interview,
-    project,
     mediaStreams,
     tape,
     timeChangeRequestAvailable,
@@ -41,6 +40,7 @@ export default function MediaElement({
 }) {
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
+    const { project } = useProject();
     const playerRef = useRef(null);
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
@@ -294,7 +294,6 @@ MediaElement.propTypes = {
     archiveId: PropTypes.string.isRequired,
     className: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
     mediaStreams: PropTypes.object.isRequired,
     tape: PropTypes.number,
     timeChangeRequestAvailable: PropTypes.bool,

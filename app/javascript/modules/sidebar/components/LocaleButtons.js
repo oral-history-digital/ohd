@@ -14,7 +14,7 @@ export default function LocaleButtons({
     className,
     setLocale,
 }) {
-    const project = useProject();
+    const { project } = useProject();
     const locales = projectLocales(project);
     const { locale: currentLocale } = useI18n();
     const navigate = useNavigate();
