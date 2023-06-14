@@ -148,14 +148,15 @@ class Person < ApplicationRecord
     ln = anonymous ?
       (last_name_used ? last_name_used.strip.slice(0) + '.' : '') :
       last_name_used
+    gender_key = gender.present? ? gender : 'not_specified'
 
     if fn.blank?
       if reversed
-        "#{I18n.t("honorific.#{gender}")} #{ln}"
+        "#{I18n.t("honorific.#{gender_key}")} #{ln}"
       else
         used_title.blank? ?
-          "#{I18n.t("honorific.#{gender}")} #{ln}" :
-          "#{I18n.t("honorific.#{gender}")} #{used_title} #{ln}"
+          "#{I18n.t("honorific.#{gender_key}")} #{ln}" :
+          "#{I18n.t("honorific.#{gender_key}")} #{used_title} #{ln}"
       end
     else
       if reversed
