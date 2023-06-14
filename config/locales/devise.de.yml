@@ -72,7 +72,7 @@ de:
           <p>Mit freundlichen Grüßen</p>
           <p>%{project_name}</p>
       block:
-        subject: Ihr Zugang zu der Plattform Oral-History.Digital
+        subject: Sperrung Ihres Nutzer*innen-Accounts
         text: |
           <p>Guten Tag %{user_display_name},</p>
           <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Plattform Oral-History.Digital gesperrt wurde. Dies erfolgt, wenn die %{tos_link} nicht beachtet wurden.</p>
