@@ -1352,13 +1352,10 @@ en:
 
   modules:
     registration:
-      registration_needed_ohd: To access the interviews, registration on the platform
-        Oral-History.Digital is required, and potentially, authorization for individual
-        archives.
-      registration_needed_archive: To access the interviews, registration on the
-        platform Oral-History.Digital is necessary.
-      registration_and_access_needed: To access the interviews, registration on the
-        platform Oral-History.Digital and authorization for the archive are necessary.
+      registration_needed_ohd: For reasons of privacy you have to register. After registration
+        you have access to all testimonies in full length.
+      registration_needed_archive: For reasons of privacy you have to register. After registration
+        you have access to all testimonies in full length.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
@@ -1374,13 +1371,12 @@ en:
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation: You have not yet requested activation for this archive.
-      request_access_link: Request activation
-      request_in_process_title: Your activation request has been successfully submitted!
-      request_in_process_text1: You have requested activation for this archive.
-      request_in_process_text2: The review of your application may take up to two
-        business days. You will be notified by email once you can access the archive.
-      blocked_text: You have been blocked from accessing this archive.
+      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      request_access_link: 'Freischaltung für dieses Archiv beantragen'
+      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      request_in_process_text: Your registration is currently being reviewed by the project team, this review may take up to two working days.
+        Only then your access will be activated and you can access the contents of the interview archive.
+      blocked_text: Sie wurden für dieses Archiv gesperrt.
     admin:
       person_details:
         contributions:
