@@ -589,11 +589,11 @@
   - :name: UploadedFile update
     :klass: UploadedFile
     :action_name: update
-  - :name: UserRegistration update
-    :klass: UserRegistration
+  - :name: User update
+    :klass: User
     :action_name: update
-  - :name: UserRegistrationProject update
-    :klass: UserRegistrationProject
+  - :name: UserProject update
+    :klass: UserProject
     :action_name: update
   - :name: UserRole create
     :klass: UserRole
@@ -609,11 +609,11 @@
   - :name: General edit
     :klass: General
     :action_name: edit
-  - :name: UserRegistration update
-    :klass: UserRegistration
+  - :name: User update
+    :klass: User
     :action_name: update
-  - :name: UserRegistrationProject update
-    :klass: UserRegistrationProject
+  - :name: UserProject update
+    :klass: UserProject
     :action_name: update
   - :name: UserRole create
     :klass: UserRole
