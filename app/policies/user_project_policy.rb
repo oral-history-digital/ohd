@@ -5,7 +5,7 @@ class UserProjectPolicy < ApplicationPolicy
 
   def update?
     user && (user.user_projects.include?(record) || user.admin? ||
-             user.roles?(project, resolve_class_name(record), m))
+             user.roles?(project, 'UserProject', 'update'))
   end
 
 end
