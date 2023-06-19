@@ -1,41 +1,53 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
-import { pathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
 import { formatTimecode } from 'modules/interview-helpers';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';
 
-export default class WorkbookItemForm extends Component {
-    constructor(props) {
-        super(props);
+export default function WorkbookItemForm({
+    id,
+    title,
+    description,
+    properties,
+    reference_id,
+    reference_type,
+    media_id,
+    type,
+    segmentIndex,
+    workflow_state,
+    shared,
+    interview,
+    submitLabel,
+    createWorkbook,
+    updateWorkbook,
+    onSubmit,
+    onCancel,
+}) {
+    const { project } = useProject();
+    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
+    const [formState, setFormState] = useState({
+        id,
+        title: title || defaultTitle(),
+        description,
+        properties,
+        reference_id,
+        reference_type,
+        media_id,
+        type,
+        segmentIndex,
+        workflow_state,
+        shared,
+    });
 
-        this.state = {
-            id: this.props.id,
-            title: this.props.title || this.defaultTitle(),
-            description: this.props.description,
-            properties: this.props.properties,
-            reference_id: this.props.reference_id,
-            reference_type: this.props.reference_type,
-            media_id: this.props.media_id,
-            type: this.props.type,
-            segmentIndex: this.props.segmentIndex,
-            workflow_state: this.props.workflow_state,
-            shared: false
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    defaultTitle() {
-        const { type, interview, properties, locale, translations } = this.props;
-
+    function defaultTitle() {
         const name = interview.anonymous_title?.[locale];
-        const interviewStr = t({ locale, translations }, 'activerecord.models.interview.one');
+        const interviewStr = t('activerecord.models.interview.one');
         const archiveId = interview.archive_id;
-        const tapeStr = t({ locale, translations }, 'tape');
+        const tapeStr = t('tape');
 
         switch (type) {
         case 'Search':
@@ -47,146 +59,150 @@ export default class WorkbookItemForm extends Component {
         }
     }
 
-    handleChange(event) {
+    function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
 
-        this.setState({[name]: value});
-        if (this.valid()) {
-            this.clearErrors();
+        setFormState((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+
+        if (valid()) {
+            clearErrors();
         }
     }
 
-    handleSubmit(event) {
-        const { projectId, projects, locale, createWorkbook, updateWorkbook, onSubmit } = this.props;
-        const { id } = this.state;
+    function handleSubmit(event) {
+        const { id } = formState;
 
         event.preventDefault();
-        if (this.valid()) {
+        if (valid()) {
             if (id) {
-                updateWorkbook(pathBase({ locale, projectId, project }), id, {user_content: this.state})
+                updateWorkbook(pathBase, id, {user_content: formState});
             } else {
-                createWorkbook(pathBase({ locale, projectId, project }), {user_content: this.state})
+                createWorkbook(pathBase, {user_content: formState});
             }
             onSubmit();
         } else {
-            this.setErrors();
+            setErrors();
         }
     }
 
-    valid() {
-        return this.state.title?.length > 1
+    function valid() {
+        return formState.title?.length > 1;
     }
 
-    setErrors() {
-        const { locale, translations } = this.props;
-
-        this.setState({errors: t({ locale, translations }, 'user_content_errors')});
+    function setErrors() {
+        setFormState((prev) => ({
+            ...prev,
+            errors: t('user_content_errors'),
+        }));
     }
 
-    clearErrors() {
-        this.setState({errors: undefined});
+    function clearErrors() {
+        setFormState((prev) => ({
+            ...prev,
+            errors: null,
+        }));
     }
 
+    const actualSubmitLabel = submitLabel ? submitLabel : t('save');
 
-    render() {
-        const { type, locale, translations, properties,
-            interview, project, onCancel } = this.props;
+    return (
+        <div>
+            <div className='errors'>{formState.errors}</div>
+            <form
+                className='Form default'
+                onSubmit={handleSubmit}
+            >
+                <div className="form-group">
+                    <label className="publish-label" htmlFor="workbook_item_form_title">
+                        {t('title')}
+                    </label>
+                    <input
+                        id="workbook_item_form_title"
+                        type="text"
+                        name="title"
+                        required
+                        value={formState.title}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="publish-label" htmlFor="workbook_item_form_description">
+                        {t('modules.workbook.note')}
+                    </label>
+                    <textarea
+                        id="workbook_item_form_description"
+                        name="description"
+                        maxLength={300}
+                        value={formState.description}
+                        onChange={handleChange}
+                    />
+                </div>
 
-        let submitLabel = this.props.submitLabel ? this.props.submitLabel : t(this.props, 'save');
+                {type === 'InterviewReference' && (
+                    <CitationInfo
+                        interview={interview}
+                        project={project}
+                        className="u-mb"
+                    />
+                )}
 
-        return (
-            <div>
-                <div className='errors'>{this.state.errors}</div>
-                <form
-                    className='Form default'
-                    onSubmit={this.handleSubmit}
-                >
-                    <div className="form-group">
-                        <label className="publish-label" htmlFor="workbook_item_form_title">
-                            {t({ locale, translations }, 'title')}
-                        </label>
-                        <input
-                            id="workbook_item_form_title"
-                            type="text"
-                            name="title"
-                            required
-                            value={this.state.title}
-                            onChange={this.handleChange}
+                {type === 'UserAnnotation' && (
+                    <>
+                        <SegmentLink
+                            interviewId={properties.interview_archive_id}
+                            tape={properties.tape_nbr}
+                            time={properties.time}
+                            className="u-mb"
                         />
-                    </div>
-                    <div className="form-group">
-                        <label className="publish-label" htmlFor="workbook_item_form_description">
-                            {t({ locale, translations }, 'modules.workbook.note')}
-                        </label>
-                        <textarea
-                            id="workbook_item_form_description"
-                            name="description"
-                            maxLength={300}
-                            value={this.state.description}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-
-                    {type === 'InterviewReference' && (
                         <CitationInfo
                             interview={interview}
                             project={project}
+                            tape={properties.tape_nbr}
+                            time={properties.time}
                             className="u-mb"
                         />
-                    )}
+                    </>
+                )}
 
-                    {type === 'UserAnnotation' && (
-                        <>
-                            <SegmentLink
-                                interviewId={properties.interview_archive_id}
-                                tape={properties.tape_nbr}
-                                time={properties.time}
-                                className="u-mb"
-                            />
-                            <CitationInfo
-                                interview={interview}
-                                project={project}
-                                tape={properties.tape_nbr}
-                                time={properties.time}
-                                className="u-mb"
-                            />
-                        </>
+                <div className="Form-footer">
+                    <input
+                        className="Button Button--primaryAction"
+                        type="submit"
+                        value={actualSubmitLabel}
+                    />
+                    {typeof onCancel === 'function' && (
+                        <button
+                            type="button"
+                            className="Button Button--secondaryAction"
+                            onClick={onCancel}
+                        >
+                            {t('cancel')}
+                        </button>
                     )}
-
-                    <div className="Form-footer">
-                        <input
-                            className="Button Button--primaryAction"
-                            type="submit"
-                            value={submitLabel}
-                        />
-                        {typeof onCancel === 'function' && (
-                            <button
-                                type="button"
-                                className="Button Button--secondaryAction"
-                                onClick={onCancel}
-                            >
-                                {t({ locale, translations }, 'cancel')}
-                            </button>
-                        )}
-                    </div>
-                </form>
-            </div>
-        );
-    }
+                </div>
+            </form>
+        </div>
+    );
 }
 
 WorkbookItemForm.propTypes = {
+    id: PropTypes.number,
     title: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    interview: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    projects: PropTypes.object.isRequired,
-    properties: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
+    description: PropTypes.string,
+    properties: PropTypes.object,
+    reference_id: PropTypes.number,
+    reference_type: PropTypes.string,
+    media_id: PropTypes.string,
+    type: PropTypes.string,
+    segmentIndex: PropTypes.number,
+    workflow_state: PropTypes.string,
+    shared: PropTypes.bool,
     submitLabel: PropTypes.string,
+    interview: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     createWorkbook: PropTypes.func.isRequired,
