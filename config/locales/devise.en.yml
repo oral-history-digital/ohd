@@ -29,20 +29,77 @@ en:
       unconfirmed: You have to confirm your email address before continuing.
       last_attempt: You have one more attempt before your account is locked.
     mailer:
+      grant_project_access:
+        subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>Sie haben nun Zugang zu der Anwendung %{project_name} für das von Ihnen angegebene Recherche-Anliegen.</p>
+          <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die %{tos_link} des Archivs.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Ihr Antrag auf Freischaltung für die Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>Sie haben eine Freischaltung für die Anwendung %{project_name} beantragt.</p>
+          <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den %{tos_link} entsprechen.</p>
+          <p>Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.</p>
+          <p>%{correct_link}</p>
+          <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter %{mail_to}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Sperrung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung %{project_name} gesperrt wurde. Dies erfolgt, wenn die %{tos_link} des Archivs nicht beachtet wurden.</p>
+          <p>Bei Rückfragen kontaktieren Sie uns bitte unter %{mail_to}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
+        subject: Ihr Zugang zu der Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Anwendung %{project_name} aufgehoben wurde.</p>
+          <p>Sie haben nun wieder Zugang zu der Anwendung %{project_name}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Ihr Zugang zu der Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>Ihr Zugang zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.</p>
+          <p>Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Sperrung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Plattform Oral-History.Digital gesperrt wurde. Dies erfolgt, wenn die %{tos_link} nicht beachtet wurden.</p>
+          <p>Bei Rückfragen kontaktieren Sie uns bitte unter %{mail_to}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Ihr Zugang zu der Plattform Oral-History.Digital
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Plattform Oral-History.Digital aufgehoben wurde.</p>
+          <p>Sie haben nun wieder Zugang zu der Plattform.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Löschung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
       confirmation_instructions:
-        subject: Interview Archive – Steps for the Activation of your Account
-      project_access_granted:
-        subject: Activation of your Account for the Application '%{project_name}'
-      project_access_rejected:
-        subject: Your Registration for the Application '%{project_name}'
+        subject: Bestätigung Ihrer Registrierung für Oral-History.Digital
       reset_password_instructions:
-        subject: Interview Archive - Steps to recover your Password
-      project_access_terminated:
-        subject: Your access to the application '%{project_name}'
-      email_changed:
-        subject: Email Changed
-      password_change:
-        subject: Password Changed
+        subject: Oral-History.Digital. Schritte für die Wiederherstellung Ihres Passwortes.
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
       success: Successfully authenticated from your account.
