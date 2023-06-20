@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import useSWRImmutable from 'swr/immutable';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
@@ -26,7 +27,6 @@ export default function InterviewWorkflowRow({
     projectId,
     tasks,
     tasksStatus,
-    usersStatus,
     fetchData,
     setArchiveId,
 }) {
@@ -36,20 +36,16 @@ export default function InterviewWorkflowRow({
     const { fulltext } = useArchiveSearch();
     const { data: people, isLoading } = usePeople();
 
+    const usersPath = `${pathBase}/users.json?workflow_users_for_project=${projectId}`;
+    const { isLoading: isLoadingUsers, data: users, error: usersLoadError } = useSWRImmutable(usersPath);
+
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
     const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
-        loadUsers();
         loadTasks();
     }, []);
-
-    function loadUsers() {
-        if (!usersStatus.all) {
-            fetchData({ projectId, project, locale }, 'users');
-        }
-    }
 
     function loadTasks() {
         if (!tasksStatus[`for_interview_${interview.archive_id}`]) {
@@ -86,7 +82,10 @@ export default function InterviewWorkflowRow({
     }
 
     return (
-        <div className='border-top'>
+        <div
+            className='border-top'
+            key={interview.archive_id}
+        >
             <div className='search-result-workflow data boxes'>
                 {isLoading ? <Spinner small /> : (
                     <Link className="Link search-result-link box-10"
@@ -173,7 +172,7 @@ export default function InterviewWorkflowRow({
                         <HelpText code="workflow_tasks" />
                         {interview.task_ids.map(taskId => {
                             if (project.task_types[tasks[taskId].task_type.id]?.use) {
-                                return <TaskContainer task={tasks[taskId]} interview={interview} />
+                                return <TaskContainer task={tasks[taskId]} interview={interview} users={users?.data} />
                             }
                         })}
                     </div>

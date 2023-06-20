@@ -77,7 +77,6 @@ class UsersController < ApplicationController
   end
   
   def index
-    page = params[:page] || 1
     order = params[:order] || 'last_name'
     if ['processed_at', 'workflow_state'].include? order
       if current_project.is_ohd?
@@ -92,17 +91,24 @@ class UsersController < ApplicationController
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
 
     users = users.where(workflow_state: params[:workflow_state] || 'confirmed') if current_project.is_ohd? && params[:workflow_state] != 'all'
-    users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all'
+    users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all' && params[:workflow_users_for_project].blank?
     users = users.joins(:user_projects).where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
 
     users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
     users = users.joins(:user_roles).where("user_roles.role_id = ?", params[:role]) if !params[:role].blank?
 
-    users = users.order([order, direction].join(' ')).
-      paginate(page: page, per_page: 25)
+    if !params[:workflow_users_for_project].blank?
+      workflowRoleIds = current_project.roles.where(name: %w(Redaktion Qualitätsmanagement Archivmanagement)).map(&:id)
+      users = users.joins(:user_roles).where("user_roles.role_id IN (?)", workflowRoleIds)
+    end
 
-    total_enntries = users.total_entries
-    total_pages = users.total_pages
+    users = users.order([order, direction].join(' '))
+
+    if params[:page]
+      users = users.paginate(page: params[:page], per_page: 25)
+      total_entries = users.total_entries
+      total_pages = users.total_pages
+    end
 
     users = users.map{|u| UserSerializer.new(u)}
 
@@ -114,7 +120,7 @@ class UsersController < ApplicationController
           data_type: 'users',
           page: params[:page],
           result_pages_count: total_pages,
-          total: total_enntries
+          total: total_entries
         }
       end
       format.csv do
