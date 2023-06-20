@@ -13,20 +13,19 @@ export default class Task extends Component {
                 id: this.props.task.id,
                 user_id: this.props.task.user_id,
                 supervisor_id: this.props.task.supervisor_id,
-                //workflow_state: this.props.task.workflow_state
             }
         };
     }
 
     usersAsOptionsForSelect(attribute) {
-        let opts = Object.values(this.props.users).
+        let opts = this.props.users.
             filter(u =>
                 (
                     // supervisor-select
                     attribute === 'supervisor_id' &&
                     (!!Object.values(u.user_roles).find(r => {
-                        (
-                            ['Qualitätsmanagement', 'QM', 'Sammlungsmanagement'].indexOf(r.name) > -1 &&
+                        return (
+                            ['Qualitätsmanagement', 'QM', 'Archivmanagement'].indexOf(r.name) > -1 &&
                             r.project_id === this.props.project.id
                         )
                     }))
@@ -35,18 +34,18 @@ export default class Task extends Component {
                     // assigned-user-select
                     attribute === 'user_id' &&
                     (!!Object.values(u.user_roles).find(r => {
-                        (
-                            ['Redaktion', 'Sammlungsmanagement'].indexOf(r.name) > -1 &&
+                        return (
+                            ['Redaktion', 'Archivmanagement'].indexOf(r.name) > -1 &&
                             r.project_id === this.props.project.id
                         )
                     }))
                 )
             ).
             sort((a, b) => `${b.last_name}${b.first_name}` < `${a.last_name}${a.first_name}`).
-            map((userAccount, index) => {
+            map((user, index) => {
             return (
-                <option value={userAccount.id} key={`${attribute}-option-${index}`}>
-                    {`${userAccount.last_name}, ${userAccount.first_name}`}
+                <option value={user.id} key={`${attribute}-option-${index}`}>
+                    {`${user.last_name}, ${user.first_name}`}
                 </option>
             )
         })
@@ -55,6 +54,8 @@ export default class Task extends Component {
                 {t(this.props, 'choose')}
             </option>
         )
+        console.log('attribute = ', attribute);
+        console.log('opts = ', opts);
         return opts;
     }
 
@@ -77,14 +78,7 @@ export default class Task extends Component {
     value(attribute) {
         let v, user;
         if (/^\d+$/.test(this.props.task[attribute])) {
-            //
-            // current_user has the key 'current' in the users-Hash
-            //
-            if (this.props.users['current'].id === parseInt(this.props.task[attribute])) {
-                user = this.props.users['current'];
-            } else {
-                user = this.props.users[this.props.task[attribute]];
-            }
+            user = this.props.users.find(u => u.id === this.props.task[attribute]);
             v = user && `${user.last_name}, ${user.first_name}` || 'NA';
         } else if (this.props.task[attribute]) {
             v = t(this.props, `workflow_states.${this.props.task[attribute]}`);
