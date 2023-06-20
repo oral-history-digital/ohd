@@ -27,6 +27,7 @@ export default function UserForm({
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [workflowState, setWorkflowState] = useState(false);
     const conditionsLink = findExternalLink(project, 'conditions');
+    const correctHref = data.pre_register_location ? data.pre_register_location.split('?')[0] : (project.archive_domain || OHD_DOMAINS[railsMode]);
 
     const formElements = [
         {
@@ -50,7 +51,7 @@ export default function UserForm({
                 tos_link: `<a href='${conditionsLink[locale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
-                correct_link: `<a href='${project.archive_domain || OHD_DOMAINS[railsMode]}${pathBase}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
+                correct_link: `<a href='${correctHref}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
             }).join('') : '',
             validate: (v) => (v && v.length > 100),
         },

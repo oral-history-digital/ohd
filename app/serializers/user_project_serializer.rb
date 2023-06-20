@@ -17,6 +17,7 @@ class UserProjectSerializer < ApplicationSerializer
     :research_intentions,
     :specification,
     :organization,
+    :pre_register_location,
     :activated_at,
     :processed_at,
     :terminated_at,
@@ -47,6 +48,7 @@ class UserProjectSerializer < ApplicationSerializer
     :research_intentions,
     :specification,
     :organization,
+    :pre_register_location,
   ].each do |attr|
     define_method(attr) do
       object.user.send(attr)
