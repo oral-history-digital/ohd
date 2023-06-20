@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
 
-import { Checkbox } from 'modules/ui';
+import { CollectionLink } from 'modules/interview-metadata';
 import { useSearchParams } from 'modules/query-string';
+import { Checkbox } from 'modules/ui';
 
 export default function FacetValues({
     data,
@@ -53,28 +53,12 @@ export default function FacetValues({
     }
 
     function renderCollectionInfo(subfacet) {
-        if (facet === 'collection_id' && (subfacet.notes || subfacet.homepage)) {
+        if (facet === 'collection_id') {
             return (
-                <span>
-                    <FaInfoCircle
-                        className="Icon Icon--unobtrusive u-mr-tiny"
-                        title={subfacet.notes[locale]}
-                    />
-                    {collectionLink(subfacet)}
-                </span>
-            );
-        }
-    }
-
-    function collectionLink(subfacet) {
-        if (subfacet.homepage && subfacet.homepage[locale]) {
-            // apend 'http://' to homepage if not present
-            let href = /^http/.test(subfacet.homepage[locale]) ? subfacet.homepage[locale] : `http://${subfacet.homepage[locale]}`
-
-            return (
-                <a href={href} title={subfacet.homepage[locale]} target="_blank" rel="noreferrer">
-                    <FaExternalLinkAlt className="Icon Icon--unobtrusive" />
-                </a>
+                <CollectionLink
+                    collectionId={subfacet.id}
+                    notes={subfacet.notes[locale]}
+                />
             );
         }
     }

@@ -296,6 +296,7 @@ class Project < ApplicationRecord
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: (is_ohd? ? Collection : collections).includes(:translations).inject({}) do |subfacets, sf|
                 subfacets[sf.id.to_s] = {
+                  id: sf.id,
                   name: sf.localized_hash(:name),
                   count: 0,
                   homepage: sf.try(:localized_hash, :homepage),

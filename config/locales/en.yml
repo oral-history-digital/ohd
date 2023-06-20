@@ -1434,6 +1434,7 @@ en:
       at: at
     interview_metadata:
       add_contributors: Add contributors
+      collection_link_title: Collection in the OHD catalog
     interview_preview:
       access_requested: Access requested
       no_access: Access required
