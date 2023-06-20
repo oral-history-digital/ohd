@@ -16,7 +16,6 @@ export default function useProject() {
             project => project.identifier === matchWithProject.params.projectId
         );
     } else {
-        console.log('second')
         // Archive is running on its own domain.
         currentProject = projectArray.find(
             project => project.archive_domain === window.location.origin
