@@ -78,7 +78,7 @@ export default class Task extends Component {
     value(attribute) {
         let v, user;
         if (/^\d+$/.test(this.props.task[attribute])) {
-            user = this.props.users.find(u => u.id === this.props.task[attribute]);
+            user = this.props.users?.find(u => u.id === this.props.task[attribute]);
             v = user && `${user.last_name}, ${user.first_name}` || 'NA';
         } else if (this.props.task[attribute]) {
             v = t(this.props, `workflow_states.${this.props.task[attribute]}`);
