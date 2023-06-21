@@ -18,7 +18,7 @@ export default class Task extends Component {
     }
 
     usersAsOptionsForSelect(attribute) {
-        let opts = this.props.users.
+        let opts = this.props.users?.
             filter(u =>
                 (
                     // supervisor-select
@@ -48,7 +48,7 @@ export default class Task extends Component {
                     {`${user.last_name}, ${user.first_name}`}
                 </option>
             )
-        })
+        }) || [];
         opts.unshift(
             <option value='' key={`${this.props.scope}-choose`}>
                 {t(this.props, 'choose')}
