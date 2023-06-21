@@ -12,5 +12,3 @@ export const RECEIVE_RESULT = `${NAME}/receiveResult`;
 export const UPDATE_SELECTED_ARCHIVE_IDS = `${NAME}/updateSelectedArchiveIds`;
 export const SET_SELECTED_ARCHIVE_IDS = `${NAME}/setSelectedArchiveIds`;
 export const UPDATE_SELECTED_REGISTRY_ENTRY_IDS = `${NAME}/updateSelectedRegistryEntryIds`;
-export const REQUEST_STATIC_CONTENT = `${NAME}/requestStaticContent`;
-export const RECEIVE_STATIC_CONTENT = `${NAME}/receiveStaticContent`;

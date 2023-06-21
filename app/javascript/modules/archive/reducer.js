@@ -5,8 +5,6 @@ import {
     SET_AVAILABLE_VIEW_MODES,
     SET_VIEW_MODE,
     CLEAR_VIEW_MODES,
-    REQUEST_STATIC_CONTENT,
-    RECEIVE_STATIC_CONTENT,
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
     RECEIVE_RESULT,
@@ -79,18 +77,6 @@ const archive = (state = initialState, action) => {
             } else {
                 return Object.assign({}, state, { selectedRegistryEntryIds: state.selectedRegistryEntryIds.filter(rid => rid !== action.rid) })
             }
-        case REQUEST_STATIC_CONTENT:
-            return Object.assign({}, state, {
-                isFetchingExternalLinks: true
-            })
-        case RECEIVE_STATIC_CONTENT:
-            return Object.assign({}, state, {
-                homeContent: action.homeContent,
-                translations: action.translations,
-                country_keys: action.countryKeys,
-                registryEntryMetadataFields: action.registryEntryMetadataFields,
-                registryReferenceTypeMetadataFields: action.registryReferenceTypeMetadataFields,
-            })
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {
                 editView: action.editView

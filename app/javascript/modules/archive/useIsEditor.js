@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
-import { getEditView } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/user';
+import { getEditView } from './selectors';
 
 export default function useIsEditor() {
     const isLoggedIn = useSelector(getIsLoggedIn);
