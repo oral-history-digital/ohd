@@ -54,8 +54,6 @@ export default class Task extends Component {
                 {t(this.props, 'choose')}
             </option>
         )
-        console.log('attribute = ', attribute);
-        console.log('opts = ', opts);
         return opts;
     }
 
