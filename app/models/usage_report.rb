@@ -428,10 +428,9 @@ class UsageReport < ApplicationRecord
         # NOTE: theoretically, it is possible that someone attempts
         # a login with another accounts login details. Also, this
         # method cannot discern unsuccessful login attempts.
-        user = UserAccount.find_by_login(login)
+        user = User.find_by_login(login)
         unless user.nil?
           self.user_id = user.id
-          UserAccountIp.create({ :user_id => user.id, :ip => self.ip })
         else
           errors.add(:user_id, :missing)
         end
@@ -442,9 +441,9 @@ class UsageReport < ApplicationRecord
   end
 
   def assign_user_by_ip
-    user_ip = UserAccountIp.find_by_ip(self.ip)
-    unless user_ip.nil?
-      self.user_id = user_ip.user_id
+    user = User.where(current_sign_in_ip: self.ip)
+    unless user.nil?
+      self.user_id = user.id
       return true
     end
     false
