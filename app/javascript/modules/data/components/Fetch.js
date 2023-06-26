@@ -44,10 +44,6 @@ Fetch.propTypes = {
     fetchParams: PropTypes.array.isRequired,
     testSelector: PropTypes.func,
     testDataType: PropTypes.string,
-    testIdOrDesc: PropTypes.oneOfType([
-        PropTypes.integer,
-        PropTypes.string,
-    ]),
     fallback: PropTypes.element,
     alwaysRenderChildren: PropTypes.bool,
     children: PropTypes.oneOfType([
