@@ -19,8 +19,8 @@ export default class Task extends Component {
 
     usersAsOptionsForSelect(attribute) {
         let opts = this.props.users?.
-            filter(u =>
-                (
+            filter(u => {
+                return (
                     // supervisor-select
                     attribute === 'supervisor_id' &&
                     (!!Object.values(u.user_roles).find(r => {
@@ -40,7 +40,7 @@ export default class Task extends Component {
                         )
                     }))
                 )
-            ).
+            }).
             sort((a, b) => `${b.last_name}${b.first_name}` < `${a.last_name}${a.first_name}`).
             map((user, index) => {
             return (
