@@ -3,7 +3,7 @@ class Admin::UserStatisticsController < Admin::BaseController
   require 'csv'
 
   def index
-    policy_scope(UserAccount)
+    policy_scope(User)
     @usage_reports = Dir.glob(File.join(UsageReport.report_file_path, '*.csv')).map{|f| f.split('/').last}
     @tiered_reports = {}
     @usage_reports.each do |r|
@@ -27,12 +27,12 @@ class Admin::UserStatisticsController < Admin::BaseController
   private
 
   def csv_export
-    countries = params[:countries] || UserAccount.where.not(country: '').map{|u|u.country}.compact.uniq.sort
+    countries = params[:countries] || User.where.not(country: '').map{|u|u.country}.compact.uniq.sort
 
     @list = [ :header, :count ]
     @rows = {
             :header => { :label => "Benutzerstatistik vom #{Time.now.strftime("%d.%m.%Y")}", :sum => "Gesamt-Zeitraum", :cols => {} },
-            :count => { :label => nil, :sum => UserAccount.where(country: countries).count, :cols => {} }
+            :count => { :label => nil, :sum => User.where(country: countries).count, :cols => {} }
     }
     @errors = []
 
@@ -41,7 +41,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       #inserts title row
       @list << "'=== #{category} ==='"
       #
-      category_results = UserAccount.where(country: countries).group(field_name).count.sort_by { |group| -group.last }
+      category_results = User.where(country: countries).group(field_name).count.sort_by { |group| -group.last }
 
       category_results.each do |entry, count|
         if category == 'Land'
@@ -49,9 +49,9 @@ class Admin::UserStatisticsController < Admin::BaseController
         elsif entry.blank?
           label = "k. A. (#{category})"
         elsif entry == 'other'
-          label = I18n.t("user.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
+          label = I18n.t("user_project.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
         else
-          label = I18n.t("user.#{field_name}.#{entry}", :locale => :de)
+          label = I18n.t("user_project.#{field_name}.#{entry}", :locale => :de)
         end
         if @rows.include?(label)
           @rows[label][:sum] += count
@@ -90,7 +90,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       @rows[:header][:cols][month_label] = month_label
 
       categories.each do |category, field_name|
-        results = UserAccount.where(country: countries).where(conditions).group(field_name).count
+        results = User.where(country: countries).where(conditions).group(field_name).count
         results.each do |entry, count|
           if category == 'Land'
             label = I18n.t(entry, :scope => :countries, :locale => :de)

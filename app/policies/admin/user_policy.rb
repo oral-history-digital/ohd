@@ -1,4 +1,4 @@
-class Admin::UserAccountPolicy < ApplicationPolicy
+class Admin::UserPolicy < ApplicationPolicy
 
   def show?
     user.admin?
