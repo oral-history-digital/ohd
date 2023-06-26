@@ -1,3 +1,6 @@
+import React from "react"
+React.useLayoutEffect = React.useEffect
+
 window.matchMedia =
     window.matchMedia ||
     function() {
