@@ -47,6 +47,7 @@
     "lodash.shuffle": "^4.2.0",
     "lodash.throttle": "^4.1.1",
     "lodash.xor": "^4.5.0",
+    "madge": "^6.1.0",
     "path-complete-extname": "^1.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^7.1.1",
@@ -73,6 +74,7 @@
     "reactjs-popup": "^2.0.4",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.2.0",
     "regenerator-runtime": "^0.13.7",
     "reselect": "^4.0.0",
@@ -108,7 +110,7 @@
     "cypress:open": "cypress open",
     "cypress:deploy": "cypress run --spec 'cypress/integration/after_deploy_spec.js'",
     "lint": "eslint app/javascript",
-    "test": "jest",
+    "test": "jest --verbose true",
     "test-watch": "jest --watch"
   }
 }
