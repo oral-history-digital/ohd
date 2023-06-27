@@ -142,7 +142,7 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
+    [ self.first_name, self.last_name ].join(' ').strip
   end
 
   def display_name
