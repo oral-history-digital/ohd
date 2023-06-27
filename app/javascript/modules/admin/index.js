@@ -23,7 +23,7 @@ export { default as RegistryReferenceTypesSearchFormContainer } from './Registry
 export { default as RoleSearchFormContainer } from './RoleSearchFormContainer';
 export { default as SponsorLogosContainer } from './SponsorLogosContainer';
 export { default as TaskTypeSearchFormContainer } from './TaskTypeSearchFormContainer';
-export { default as UploadsContainer } from './UploadsContainer';
+export { default as UploadsPage } from './UploadsPage';
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
