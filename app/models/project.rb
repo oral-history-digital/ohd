@@ -80,6 +80,8 @@ class Project < ApplicationRecord
   validates :shortname, format: { with: /\A[\-a-z0-9]{1,11}[a-z]\z/ },  uniqueness: true,  presence: true
   validates :workflow_state, inclusion: { in: %w(public unshared),
     message: "%{value} is not a valid workflow state" }
+  validates :upload_types, inclusion: { in: %w(bulk_metadata bulk_photos bulk_registry_entries bulk_texts),
+    message: "%{value} is not a valid upload type" }
 
   scope :shared, -> { where(workflow_state: 'public' )}
 
