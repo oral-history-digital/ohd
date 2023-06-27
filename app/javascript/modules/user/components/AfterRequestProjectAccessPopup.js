@@ -14,7 +14,7 @@ export default function AfterRequestProjectAccessPopup ({
         Object.values(user.user_projects).find( urp => {
             return urp.project_id === project?.id &&
                 urp.workflow_state === 'project_access_requested' &&
-                urp.updated_at + 60000 > Date.now();
+                new Date(urp.updated_at).getTime() + 60000 > Date.now();
         });
 
     if (!recentlyRequestedProjectAccess) return null;

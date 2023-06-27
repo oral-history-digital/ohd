@@ -28,14 +28,6 @@ class UserProjectSerializer < ApplicationSerializer
     object.activated_at && object.activated_at.strftime("%d.%m.%Y")
   end
 
-  def created_at
-    object.created_at.to_f * 1000
-  end
-
-  def updated_at
-    object.created_at.to_f * 1000
-  end
-
   [
     :appellation,
     :first_name,
