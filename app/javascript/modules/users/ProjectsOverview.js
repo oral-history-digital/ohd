@@ -8,7 +8,7 @@ import { useI18n } from 'modules/i18n';
 export default function ProjectsOverview({
     user,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const projects = useSelector(getProjects);
     const userProjects = Object.values(user.user_projects);
 
@@ -22,6 +22,7 @@ export default function ProjectsOverview({
             return null;
         }
 
+        const date = new Date(userProject.processed_at || userProject.activated_at || userProject.updated_at).toLocaleDateString(locale, { dateStyle: 'medium' });
         return (
             <li
                 key={userProject.id}
@@ -32,7 +33,7 @@ export default function ProjectsOverview({
                 </h4>
                 <div className={showProject === project.shortname ? '' : 'hidden'} >
                     <p>{ t('modules.project_access.actual_workflow_state') + ': ' + workflowState }</p>
-                    <p>{ t('modules.project_access.at') + ': ' + (userProject.processed_at || userProject.activated_at || userProject.updated_at) }</p>
+                    <p>{ t('modules.project_access.at') + ': ' + date }</p>
                 </div>
             </li>
         )
