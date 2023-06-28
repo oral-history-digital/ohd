@@ -10,8 +10,10 @@ class Admin::UserPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.admin?
-        scope.where(admin: true).order(last_name: :asc)
+      if user && (user.admin? || user.roles?(project, 'User', 'update'))
+        users = scope.where.not(confirmed_at: nil)
+        users = users.joins(:user_projects).where("user_projects.project_id = ?", project.id) if !project.is_ohd?
+        users
       else
         scope.none
       end
