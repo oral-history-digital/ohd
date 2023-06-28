@@ -172,6 +172,7 @@ Rails.application.routes.draw do
         get :current
         get :check_email
         get :access_token
+        get :newsletter_recipients
       end
     end
     resources :user_projects, only: [:create, :update]

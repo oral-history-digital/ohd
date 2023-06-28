@@ -49,8 +49,6 @@ class User < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
-  scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
-
   workflow do
     state :created do
       event :confirm, :transitions_to => :confirmed

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:current, :check_email]
-  skip_after_action :verify_authorized, only: [:current, :check_email]
+  skip_after_action :verify_authorized, only: [:current, :check_email, :newsletter_recipients]
   skip_after_action :verify_policy_scoped, only: [:current, :check_email]
 
   def current
@@ -140,6 +140,27 @@ class UsersController < ApplicationController
                   { :filename => "Nutzer-#{search_params.keys.map{|k| translate_field_or_value(k, search_params[k])}.join("_")}-#{Time.now.strftime('%d.%m.%Y')}.csv",
                     :disposition => 'attachment',
                     :type => 'text/comma-separated-values' })
+      end
+    end
+  end
+
+  def newsletter_recipients
+    users = policy_scope(User).joins(:user_projects).where("user_projects.receive_newsletter = ?", true)
+
+    respond_to do |format|
+      format.csv do
+        csv = CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
+          row << ['E-Mail', 'Datum der Freischaltung']
+          users.each do |u|
+            row << [u.email, u.confirmed_at.strftime('%d.%m.%Y')]
+          end
+        end
+        send_data(
+          csv,
+          filename: "E-Mail-Empfaenger-#{current_project.shortname}-#{Time.now.strftime('%d.%m.%Y')}.csv",
+          disposition: 'attachment',
+          type: 'text/comma-separated-values'
+        )
       end
     end
   end

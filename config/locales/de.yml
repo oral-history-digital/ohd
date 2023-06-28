@@ -158,6 +158,7 @@ de:
   called: Abruf
   download: Download
   download_user_statistics: Benutzerstatistik herunterladen
+  download_newsletter_recipients: Newsletterempfänger herunterladen
   back: Zurück
   search_in_normdata: Nach Einträgen für %{descriptor} in Normdaten-API suchen
   existing_registry_entries: Bereits existierende Registereinträge
