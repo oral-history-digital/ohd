@@ -15,7 +15,7 @@ export default function UserProject({
     tasks,
     supervisedTasks
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const user = useSelector(getCurrentUser);
     const projects = useSelector(getProjects);
     const [showProject, setShowProject] = useState(false);
@@ -37,7 +37,10 @@ export default function UserProject({
                             <FaAngleDown className="Icon Icon--primary" />
                     }
                 </button>
-                <ContentField label={t(`workflow_states.user_projects.${userProject.workflow_state}`)} value={userProject.processed_at} />
+                <ContentField
+                    label={t(`workflow_states.user_projects.${userProject.workflow_state}`)}
+                    value={new Date(userProject.processed_at || userProject.created_at).toLocaleDateString(locale, { dateStyle: 'medium' })}
+                />
                 {
                     showProject ?
                     <>
