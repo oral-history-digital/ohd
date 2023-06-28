@@ -71,18 +71,6 @@ class UserSerializer < ApplicationSerializer
     last_access_token && last_access_token.token
   end
 
-  def created_at
-    object.created_at && object.created_at.strftime('%d.%m.%Y')
-  end
-
-  def confirmed_at
-    object.processed_at && object.processed_at.strftime('%d.%m.%Y')
-  end
-
-  def processed_at
-    object.processed_at && object.processed_at.strftime('%d.%m.%Y')
-  end
-
   def receive_newsletter
     object.receive_newsletter ? 'Ja' :'Nein'
   end
