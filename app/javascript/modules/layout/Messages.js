@@ -6,7 +6,6 @@ import { usePathBase } from 'modules/routes';
 
 function Messages({
     loggedInAt,
-    isRegistered,
     notifications,
 }) {
     const { t, locale } = useI18n();
@@ -16,12 +15,6 @@ function Messages({
         return (
             <p className='messages'>
                 {t('devise.omniauth_callbacks.success')}
-            </p>
-        )
-    } else if (isRegistered) {
-        return (
-            <p className='messages'>
-                {t('devise.registrations.signed_up')}
             </p>
         )
     } else if (notifications.length > 0) {
