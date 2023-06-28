@@ -21,6 +21,7 @@ export default function Account ({
     submitLogout,
     hideSidebar,
     clearStateData,
+    isRegistered,
 }) {
 
     const { t, locale } = useI18n();
@@ -87,7 +88,7 @@ export default function Account ({
                     <p>
                         {
                             (error || project.grant_access_without_login) ? '' :
-                                t(`modules.registration.registration_needed_${project.is_ohd ? 'ohd' : 'archive'}`)
+                                t(isRegistered ? 'devise.registrations.signed_up' : `modules.registration.registration_needed_${project.is_ohd ? 'ohd' : 'archive'}`)
                         }
                     </p>
                     {
