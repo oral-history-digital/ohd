@@ -27,7 +27,8 @@ export default function UserForm({
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [workflowState, setWorkflowState] = useState(false);
     const conditionsLink = findExternalLink(project, 'conditions');
-    const correctHref = data.pre_register_location ? data.pre_register_location.split('?')[0] : (project.archive_domain || OHD_DOMAINS[railsMode]);
+    let correctHref = project.archive_domain ? project.archive_domain : `${OHD_DOMAINS[railsMode]}/${project.shortname}`;
+    correctHref += `/${project.default_locale}`;
 
     const formElements = [
         {
