@@ -13,6 +13,7 @@ export default function UsersAdminTabPanel({
     countryKeys,
     locale,
     translations,
+    project,
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -82,6 +83,18 @@ export default function UsersAdminTabPanel({
                             }}
                             placeholder="Statistik nach Ländern filtern (optional)"
                         />
+                        { project.has_newsletter &&
+                            <div>
+                                <a href={`${pathBase}/users/newsletter_recipients.csv`}>
+                                    <FaDownload
+                                        className="Icon Icon--primary"
+                                        title={t('download_newsletter_recipients')}
+                                    />
+                                    {' '}
+                                    {t('download_newsletter_recipients')}
+                                </a>
+                            </div>
+                        }
                     </div>
                 </AdminSubTab>
             </div>
