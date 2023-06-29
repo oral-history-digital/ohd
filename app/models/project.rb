@@ -30,6 +30,8 @@ class Project < ApplicationRecord
   has_many :archiving_batches, dependent: :destroy
   has_many :event_types, dependent: :destroy
 
+  has_one :access_config, dependent: :destroy
+
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
     fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
@@ -44,6 +46,10 @@ class Project < ApplicationRecord
   serialize :hidden_transcript_registry_entry_ids, Array
   serialize :pdf_registry_entry_ids, Array
   # serialize :fullname_on_landing_page
+
+  after_create do
+    create_access_config!
+  end
 
   #
   # define pseudo-methods for serialized attributes

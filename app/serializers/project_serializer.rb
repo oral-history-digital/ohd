@@ -67,6 +67,8 @@ class ProjectSerializer < ApplicationSerializer
     :grant_access_without_login,
     :is_ohd
 
+  has_one :access_config
+
   def title
     object.shortname
   end

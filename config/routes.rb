@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"
     get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
+    resources :access_configs
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
 

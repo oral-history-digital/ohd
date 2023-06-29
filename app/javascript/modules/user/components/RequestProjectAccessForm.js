@@ -34,8 +34,8 @@ export default function RequestProjectAccessForm({
         )
     };
 
-    const formElements = [
-        {
+    const DEFAULT_FORM_ELEMENTS = {
+        organization: {
             elementType: 'input',
             attribute: 'organization',
             label: t('activerecord.attributes.user.organization'),
@@ -43,36 +43,38 @@ export default function RequestProjectAccessForm({
             type: 'text',
             validate: function(v){return v?.length > 1}
         },
-        {
+        job_description: {
             elementType: 'select',
             attribute: 'job_description',
             label: t('activerecord.attributes.user.job_description'),
             optionsScope: 'user_project.job_description',
             value: currentUser.job_description,
-            values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
+            values: Object.entries(project.access_config.job_description.values).map(([key, value]) => value && key),
+            //values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
             keepOrder: true,
             withEmpty: true,
             validate: function(v){return v?.length > 1}
         },
-        {
+        research_intentions: {
             elementType: 'select',
             attribute: 'research_intentions',
             label: t('activerecord.attributes.user.research_intentions'),
             optionsScope: 'user_project.research_intentions',
             value: currentUser.research_intentions,
-            values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
+            values: Object.entries(project.access_config.research_intentions.values).map(([key, value]) => value && key),
+            //values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
             keepOrder: true,
             withEmpty: true,
             validate: function(v){return v?.length > 1}
         },
-        {
+        specification: {
             elementType: 'textarea',
             attribute: 'specification',
             label: t('activerecord.attributes.user.specification'),
             value: currentUser.specification,
             validate: function(v){return v?.length > 10}
         },
-        {
+        tos_agreement: {
             elementType: 'input',
             attribute: 'tos_agreement',
             labelKey: 'user.tos_agreement',
@@ -83,7 +85,12 @@ export default function RequestProjectAccessForm({
                 tos_link: tos_link(),
             })
         },
-    ];
+    };
+
+    const formElements = [];
+    Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([key, value]) => {
+        if (project.access_config[key].display) formElements.push(DEFAULT_FORM_ELEMENTS[key]);
+    });
 
     if (project.has_newsletter) {
         formElements.push({

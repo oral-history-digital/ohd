@@ -401,6 +401,7 @@ en:
       admin: Archive configuration
       info: Edit archive information
       config: Configure archive
+      access_config: Configure Access
       display: Edit display options
       processed: "Archive created:"
       return: Create another archive

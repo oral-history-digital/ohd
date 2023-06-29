@@ -420,6 +420,7 @@ de:
       admin: Archivkonfiguration
       info: Archivinformation bearbeiten
       config: Archiv konfigurieren
+      access_config: Freischaltungsangaben konfigurieren
       display: Anzeigeoptionen bearbeiten
       processed: 'Archiv angelegt: '
       return: Weiteres Archiv anlegen
