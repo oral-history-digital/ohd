@@ -19,6 +19,7 @@ import { RegistryContainer } from 'modules/registry';
 import {
     EditInterview,
     EditProjectConfig,
+    EditProjectAccessConfig,
     EditProjectDisplay,
     EditProjectInfo,
     EventTypesAdminPage,
@@ -74,6 +75,7 @@ export default function ProjectRoutes() {
                 <Route path="uploads/new" element={<UploadsContainer />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route path="project/edit-config" element={<EditProjectConfig />} />
+                <Route path="project/edit-access-config" element={<EditProjectAccessConfig />} />
                 <Route path="project/edit-display" element={<EditProjectDisplay />} />
                 <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
                 <Route path="people" element={<PeopleAdminPage />} />

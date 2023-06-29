@@ -4,6 +4,7 @@ export { default as ContributionTypesSearchFormContainer } from './ContributionT
 export { default as DataList } from './DataList';
 export { default as EditInterview } from './EditInterview';
 export { default as EditProjectConfig } from './EditProjectConfig';
+export { default as EditProjectAccessConfig } from './EditProjectAccessConfig';
 export { default as EditProjectDisplay } from './EditProjectDisplay';
 export { default as EditProjectInfo } from './EditProjectInfo';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
