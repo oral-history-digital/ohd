@@ -50,7 +50,6 @@ export default function RequestProjectAccessForm({
             optionsScope: 'user_project.job_description',
             value: currentUser.job_description,
             values: Object.entries(project.access_config.job_description.values).map(([key, value]) => value && key),
-            //values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
             keepOrder: true,
             withEmpty: true,
             validate: function(v){return v?.length > 1}
@@ -62,7 +61,6 @@ export default function RequestProjectAccessForm({
             optionsScope: 'user_project.research_intentions',
             value: currentUser.research_intentions,
             values: Object.entries(project.access_config.research_intentions.values).map(([key, value]) => value && key),
-            //values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
             keepOrder: true,
             withEmpty: true,
             validate: function(v){return v?.length > 1}
