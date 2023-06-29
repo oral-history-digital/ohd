@@ -37,6 +37,12 @@ export default function ProjectConfigTabPanel() {
                     action='update'
                 />
                 <AdminSubTab
+                    title='edit.project.access_config'
+                    url={`${pathBase}/project/edit-access-config`}
+                    obj={{type: 'Project'}}
+                    action='update'
+                />
+                <AdminSubTab
                     title='edit.project.display'
                     url={`${pathBase}/project/edit-display`}
                     obj={{type: 'Project'}}
