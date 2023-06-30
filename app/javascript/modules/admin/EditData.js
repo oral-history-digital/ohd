@@ -46,7 +46,7 @@ export default function EditData({
                     {formElements.map(element => (
                         <Fragment key={element.key}>
                             <dt>
-                                {t(`activerecord.attributes.${scope}.${element.attribute}`)}
+                                {t(element.labelKey || `activerecord.attributes.${scope}.${element.attribute}`)}
                             </dt>
                             <dd>
                                 {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}

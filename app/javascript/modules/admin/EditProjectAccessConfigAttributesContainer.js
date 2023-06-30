@@ -8,28 +8,55 @@ import EditData from './EditData';
 const mapStateToProps = state => {
     const project = getCurrentProject(state);
     const formElements = [];
-    const DEFAULT_FORM_ELEMENTS = [
-        'organization',
-        'job_description',
-        'research_intentions',
-        'specification',
-        'tos_agreement',
-    ];
+    const DEFAULT_FORM_ELEMENTS = {
+        organization: {},
+        job_description: {
+            values: [
+                'researcher',
+                'filmmaker',
+                'journalist',
+                'teacher',
+                'memorial_staff',
+                'pupil',
+                'student',
+                'other',
+            ],
+        },
+        research_intentions: {
+            values: [
+                'exhibition',
+                'education',
+                'film',
+                'genealogy',
+                'art',
+                'personal_interest',
+                'press_publishing',
+                'school_project',
+                'university_teaching',
+                'scientific_paper',
+                'other',
+            ],
+        },
+        specification: {},
+        tos_agreement: {},
+    }
 
     if (project) {
-        DEFAULT_FORM_ELEMENTS.forEach(attribute => {
+        Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute, value]) => {
             formElements.push({
                 elementType: 'input',
                 attribute: `[${attribute}]display`,
+                labelKey: `activerecord.attributes.user.${attribute}`,
                 value: project.access_config[attribute].display,
                 type: "checkbox"
             });
-            if (project.access_config[attribute].values) {
-                Object.entries(project.access_config[attribute].values).map(([key, value]) => {
+            if (DEFAULT_FORM_ELEMENTS[attribute].values) {
+                DEFAULT_FORM_ELEMENTS[attribute].values.map(value => {
                 formElements.push({
                     elementType: 'input',
-                    attribute: `[${attribute}][values]${key}`,
-                    value: value,
+                    attribute: `[${attribute}][values]${value}`,
+                    labelKey: `user_project.${attribute}.${value}`,
+                    value: project.access_config[attribute].values[value],
                     type: "checkbox"
                 });
             })};
