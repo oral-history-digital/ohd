@@ -29,4 +29,8 @@ class ProjectPolicy < ApplicationPolicy
   def edit_config?
     update?
   end
+
+  def edit_access_config?
+    update?
+  end
 end

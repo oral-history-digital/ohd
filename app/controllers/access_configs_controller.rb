@@ -1,30 +1,24 @@
 class AccessConfigsController < ApplicationController
-  before_action :set_access_config, only: %i[ update destroy ]
-
-  # POST /access_configes
-  def create
-    @access_config = AccessConfig.new(access_config_params)
-
-    if @access_config.save
-      redirect_to @access_config, notice: "Project access was successfully created."
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
+  before_action :set_access_config, only: %i[ update ]
 
   # PATCH/PUT /access_configes/1
   def update
+    authorize @access_config.project
     if @access_config.update(access_config_params)
-      redirect_to @access_config, notice: "Project access was successfully updated."
+      respond_to do |format|
+        format.json do
+          render json: {
+            data: cache_single(@access_config.project),
+            data_type: 'projects',
+            id: @access_config.project.id,
+            reload_data_type: 'users',
+            reload_id: 'current'
+          }
+        end
+      end
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  # DELETE /access_configes/1
-  def destroy
-    @access_config.destroy
-    redirect_to access_configes_url, notice: "Project access was successfully destroyed."
   end
 
   private
@@ -35,6 +29,12 @@ class AccessConfigsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def access_config_params
-      params.require(:access_config).permit(:organization, :job_description, :research_intentions, :specification, :tos_agreement)
+      params.require(:access_config).permit(
+        organization: {},
+        job_description: {},
+        research_intentions: {},
+        specification: {},
+        tos_agreement: {},
+      )
     end
 end
