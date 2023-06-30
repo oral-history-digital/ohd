@@ -45,7 +45,7 @@ const mapStateToProps = state => {
         Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute, value]) => {
             formElements.push({
                 elementType: 'input',
-                attribute: `[${attribute}]display`,
+                attribute: `[${attribute}_setter]display`,
                 labelKey: `activerecord.attributes.user.${attribute}`,
                 value: project.access_config[attribute].display,
                 type: "checkbox"
@@ -54,7 +54,7 @@ const mapStateToProps = state => {
                 DEFAULT_FORM_ELEMENTS[attribute].values.map(value => {
                 formElements.push({
                     elementType: 'input',
-                    attribute: `[${attribute}][values]${value}`,
+                    attribute: `[${attribute}_setter][values]${value}`,
                     labelKey: `user_project.${attribute}.${value}`,
                     value: project.access_config[attribute].values[value],
                     type: "checkbox"

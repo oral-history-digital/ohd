@@ -30,11 +30,11 @@ class AccessConfigsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def access_config_params
       params.require(:access_config).permit(
-        organization: {},
-        job_description: {},
-        research_intentions: {},
-        specification: {},
-        tos_agreement: {},
+        organization_setter: {},
+        job_description_setter: {},
+        research_intentions_setter: {},
+        specification_setter: {},
+        tos_agreement_setter: {},
       )
     end
 end
