@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"
+    get "project/edit-access-config", to: "projects#edit_access_config"
     get "project/edit-display", to: "projects#edit_display"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"

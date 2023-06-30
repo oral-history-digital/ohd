@@ -49,4 +49,14 @@ class AccessConfig < ApplicationRecord
     }
   end
 
+  %w(organization job_description research_intentions specification tos_agreement).each do |field|
+    define_method "#{field}=?" do |params_hash|
+      display = params_hash.delete(:display) || field[:display]
+      self[field][display] = display
+      if params_hash[:values]
+        self[field][:values].with_indifferent_access.update(params_hash[:values].with_indifferent_access)
+      end
+    end
+  end
+
 end

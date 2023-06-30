@@ -1,10 +1,10 @@
 class ProjectsController < ApplicationController
   skip_before_action :authenticate_user!,
-    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index,
-      :edit_info, :edit_display, :edit_config]
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index]
+      #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-      :edit_display, :edit_config, :edit, :update, :destroy]
+      :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy]
 
   # GET /projects
   def index
@@ -77,7 +77,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  %w(edit_info edit_display edit_config).each do |m|
+  %w(edit_info edit_display edit_config edit_access_config).each do |m|
     define_method m do
       respond_to do |format|
         format.html do
