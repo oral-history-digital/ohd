@@ -1,23 +1,14 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getProjectLocales,
-    getCurrentUser } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
 import DataList from './DataList';
 import { getProjectsStatus, ProjectTile } from 'modules/data';
-import { INDEX_PROJECTS } from 'modules/sidebar';
 
 const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        user: getCurrentUser(state),
         editView: getEditView(state),
         data: getProjects(state),
         dataStatus: getProjectsStatus(state),
@@ -51,7 +42,6 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "archive_domain",
-                //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
                 help: 'activerecord.attributes.project.archive_domain_help'
             },
             {

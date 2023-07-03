@@ -1,121 +1,149 @@
-import { createElement, Component } from 'react';
+import { createElement, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthorizedContent } from 'modules/auth';
-import { Modal } from 'modules/ui';
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { useProject } from 'modules/routes';
 import { camelCase } from 'modules/strings';
-import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import DataContainer from './DataContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
-export default class DataList extends Component {
+export default function DataList({
+    data,
+    scope,
+    outerScope,
+    outerScopeId,
+    optionsScope,
+    detailsAttributes,
+    joinedData,
+    showComponent,
+    interview,
+    hideAdd,
+    hideShow,
+    hideEdit,
+    hideDelete,
+    editView,
+    task,
+    joinDataStatus,
+    joinDataScope,
+    fetchData,
+    form,
+    initialFormValues,
+    formElements,
+    helpTextCode,
+    submitData,
+}) {
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
-    constructor(props) {
-        super(props);
-        this.form = this.form.bind(this);
-    }
+    useEffect(() => {
+        loadJoinData();
+    }, []);
 
-    componentDidMount() {
-        this.loadJoinData();
-    }
-
-    loadJoinData() {
-         if (
-            this.props.joinDataStatus && !(
-                this.props.joinDataStatus[`for_projects_${this.props.project?.id}`] ||
-                this.props.joinDataStatus.all
-            )
-         ) {
-            this.props.fetchData(this.props, this.props.joinDataScope, null, null, null);
-         }
+    function loadJoinData() {
+        if (joinDataStatus
+            && !(joinDataStatus[`for_projects_${project?.id}`] || joinDataStatus.all)
+        ) {
+            fetchData({ locale, project, projectId }, joinDataScope, null, null, null);
+        }
      }
 
-    data() {
-        if (this.props.data) {
-            return Object.keys(this.props.data).map((c) => {
-                return (
-                    <DataContainer
-                        data={this.props.data[c]}
-                        scope={this.props.scope}
-                        outerScope={this.props.outerScope}
-                        outerScopeId={this.props.outerScopeId}
-                        optionsScope={this.props.optionsScope}
-                        detailsAttributes={this.props.detailsAttributes}
-                        joinedData={this.props.joinedData}
-                        form={this.form}
-                        showComponent={this.props.showComponent}
-                        hideShow={this.props.hideShow}
-                        hideEdit={this.props.hideEdit}
-                        hideDelete={this.props.hideDelete}
-                        editView={this.props.editView}
-                        task={this.props.task}
-                        key={`${this.props.scope}-${c}`}
-                    />
-                )
-            })
-        } else {
-            return null;
-        }
-    }
-
-    form(data, onSubmit, onCancel) {
-        if (this.props.form) {
-            return createElement(this.props.form, {data: data, values: this.props.initialFormValues, onSubmit: onSubmit});
+    function createForm(data, onSubmit, onCancel) {
+        if (form) {
+            return createElement(form, {
+                data,
+                values: initialFormValues,
+                onSubmit,
+            });
         } else {
             return (
                 <Form
                     data={data}
-                    values={this.props.initialFormValues}
-                    scope={this.props.scope}
-                    helpTextCode={this.props.helpTextCode}
+                    values={initialFormValues}
+                    scope={scope}
+                    helpTextCode={helpTextCode}
                     onSubmit={(params) => {
-                        this.props.submitData(this.props, params);
+                        submitData({ locale, project, projectId }, params);
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
                     }}
                     onCancel={onCancel}
                     submitText='submit'
-                    elements={this.props.formElements}
+                    elements={formElements}
                 />
             );
         }
     }
 
-    add() {
-        if (!this.props.hideAdd) {
-            return (
-                <AuthorizedContent object={[{type: camelCase(this.props.scope), interview_id: this.props.interview?.id}, this.props.task]} action='create'>
-                    <Modal
-                        title={t(this.props, `edit.${this.props.scope}.new`)}
-                        trigger={<><FaPlus className="Icon Icon--editorial"/> {t(this.props, `edit.${this.props.scope}.new`)}</>}
-                    >
-                        {close => this.form(undefined, close, close)}
-                    </Modal>
-                </AuthorizedContent>
-            )
-        }
-    }
-
-    render() {
-        return (
-            <EditViewOrRedirect>
-                <div>
-                    <ErrorBoundary>
-                        {this.data()}
-                        {this.add()}
-                    </ErrorBoundary>
-                </div>
-            </EditViewOrRedirect>
-        );
-    }
+    return (
+        <EditViewOrRedirect>
+            <div>
+                <ErrorBoundary>
+                    {data && Object.keys(data).map((c) => (
+                        <DataContainer
+                            key={c}
+                            data={data[c]}
+                            scope={scope}
+                            outerScope={outerScope}
+                            outerScopeId={outerScopeId}
+                            optionsScope={optionsScope}
+                            detailsAttributes={detailsAttributes}
+                            joinedData={joinedData}
+                            form={createForm}
+                            showComponent={showComponent}
+                            hideShow={hideShow}
+                            hideEdit={hideEdit}
+                            hideDelete={hideDelete}
+                            editView={editView}
+                            task={task}
+                        />
+                    ))}
+                    {!hideAdd && (
+                        <AuthorizedContent
+                            object={[{type: camelCase(scope), interview_id: interview?.id}, task]}
+                            action='create'
+                        >
+                            <Modal
+                                title={t(`edit.${scope}.new`)}
+                                trigger={<><FaPlus className="Icon Icon--editorial"/> {t(`edit.${scope}.new`)}</>}
+                            >
+                                {close => createForm(undefined, close, close)}
+                            </Modal>
+                        </AuthorizedContent>
+                    )}
+                </ErrorBoundary>
+            </div>
+        </EditViewOrRedirect>
+    );
 }
 
 DataList.propTypes = {
+    data: PropTypes.object,
+    form: PropTypes.object,
+    initialFormValues: PropTypes.object,
+    scope: PropTypes.string,
+    task: PropTypes.object,
+    formElements: PropTypes.array,
     helpTextCode: PropTypes.string,
+    joinDataScope: PropTypes.string,
+    joinDataStatus: PropTypes.string,
+    interview: PropTypes.object,
+    outerScope: PropTypes.string,
+    outerScopeId: PropTypes.string,
+    optionsScope: PropTypes.string,
+    detailsAttributes: PropTypes.object,
+    joinedData: PropTypes.object,
+    showComponent: PropTypes.node,
+    hideShow: PropTypes.bool,
+    hideEdit: PropTypes.bool,
+    hideDelete: PropTypes.bool,
+    editView: PropTypes.bool,
+    hideAdd: PropTypes.bool,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
 };

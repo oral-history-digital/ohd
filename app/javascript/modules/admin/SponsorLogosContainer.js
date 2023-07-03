@@ -1,21 +1,13 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, getProjectLocales, fetchData, deleteData, submitData,
-    getCurrentUser } from 'modules/data';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getCurrentProject, getProjectLocales, fetchData, deleteData, submitData } from 'modules/data';
 import DataList from './DataList';
 
 const mapStateToProps = state => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        project: getCurrentProject(state),
-        translations: getTranslations(state),
-        user: getCurrentUser(state),
         editView: true,
-        //
         data: project.sponsor_logos,
         outerScope: 'project',
         outerScopeId: project.id,
