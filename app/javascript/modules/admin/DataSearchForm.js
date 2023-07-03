@@ -1,31 +1,39 @@
-import { createElement, Component } from 'react';
-import classNames from 'classnames';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
 import { HelpText } from 'modules/help-text';
-import { isMobile } from 'modules/user-agent';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { pluralize } from 'modules/strings';
-import { t } from 'modules/i18n';
+import { isMobile } from 'modules/user-agent';
 import parametrizedQuery from './parametrizedQuery';
+import DataSearchFormElement from './DataSearchFormElement';
 
-export default class DataSearchForm extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleReset = this.handleReset.bind(this);
-    }
+export default function DataSearchForm({
+    scope,
+    query,
+    helpTextCode,
+    searchableAttributes,
+    submitText,
+    setQueryParams,
+    fetchData,
+    resetQuery,
+    hideSidebar,
+}) {
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
+    const formEl = useRef(null);
 
-    componentWillUnmount() {
-        this.handleReset();
-    }
+    useEffect(() => {
+        return () => handleReset();
+    }, []);
 
-    handleChange(event) {
+    function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-        this.props.setQueryParams(
-            pluralize(this.props.scope),
+        setQueryParams(
+            pluralize(scope),
             {
                 [name]: value,
                 page: 1,
@@ -33,82 +41,63 @@ export default class DataSearchForm extends Component {
         );
     }
 
-    handleReset() {
-        this.form.reset();
-        this.props.resetQuery(pluralize(this.props.scope));
-        this.props.fetchData(this.props, pluralize(this.props.scope), null, null, null);
+    function handleReset() {
+        formEl.current.reset();
+        resetQuery(pluralize(scope));
+        fetchData({ projectId, locale, project }, pluralize(scope),
+            null, null, null);
     }
 
-    handleSubmit(event) {
+    function handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
         if (isMobile()) {
-            this.props.hideSidebar();
+            hideSidebar();
         }
-        this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
+        fetchData({ projectId, locale, project }, pluralize(scope),
+            null, null, parametrizedQuery(query));
     }
 
-    optionsForSelect(attributeName, values) {
-        let opts = values.map((value, index) => {
-            return (
-                <option value={value} key={`${attributeName}-option-${index}`}>
-                    {t(this.props, `${pluralize(attributeName)}.${value}`)}
-                </option>
-            )
-        })
-        opts.unshift(
-            <option value='' key={`${this.props.scope}-choose`}>
-                {t(this.props, 'choose')}
-            </option>
-        )
-        return opts;
-    }
+    return (
+        <form
+            ref={formEl}
+            id={`${scope}_search_form`}
+            className="flyout-search default"
+            onSubmit={handleSubmit}
+        >
+            {helpTextCode && <HelpText code={helpTextCode} />}
 
-    searchFormElement(element) {
-        let opts = {
-            className: classNames('Input', 'Input--fullWidth'),
-            name: element.attributeName,
-            value: this.props.query[element.attributeName] || element.value,
-            onChange: this.handleChange,
-            key: `search-form-element-${element.attribute}`
-        };
-
-        if (element.type === 'select') {
-            return createElement('select', opts, this.optionsForSelect(element.attributeName, element.values));
-        } else {
-            opts.type = "text";
-            return createElement('input', opts);
-        }
-    }
-
-    render() {
-        const { helpTextCode, scope, searchableAttributes, submitText } = this.props;
-
-        return (
-            <form
-                ref={(form) => { this.form = form; }}
-                id={`${scope}_search_form`}
-                className="flyout-search default"
-                onSubmit={this.handleSubmit}
-            >
-                {helpTextCode && <HelpText code={helpTextCode} />}
-
-                {searchableAttributes.map((element) => {
-                    return (
-                        <FormElement label={t(this.props, `activerecord.attributes.${scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
-                            {this.searchFormElement(element)}
-                        </FormElement>
-                    )
-                })}
-                <input
-                    className="lonely-search-button"
-                    value={t(this.props, submitText || 'search')}
-                    type="submit"
-                />
-            </form>
-        );
-    }
+            {searchableAttributes.map((element) => {
+                return (
+                    <FormElement
+                        key={element.attributeName}
+                        label={t(`activerecord.attributes.${scope}.${element.attributeName}`)}
+                    >
+                        <DataSearchFormElement
+                            element={element}
+                            scope={scope}
+                            query={query}
+                            onChange={handleChange}
+                        />
+                    </FormElement>
+                )
+            })}
+            <input
+                className="lonely-search-button"
+                value={t(submitText || 'search')}
+                type="submit"
+            />
+        </form>
+    );
 }
 
 DataSearchForm.propTypes = {
+    query: PropTypes.object.isRequired,
+    searchableAttributes: PropTypes.array.isRequired,
+    scope: PropTypes.string.isRequired,
+    submitText: PropTypes.string,
     helpTextCode: PropTypes.string,
+    fetchData: PropTypes.func.isRequired,
+    hideSidebar: PropTypes.func.isRequired,
+    resetQuery: PropTypes.func.isRequired,
+    setQueryParams: PropTypes.func.isRequired,
 };
