@@ -12,6 +12,7 @@ import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
 import SelectContainer from './input-components/SelectContainer';
 import ColorPicker from './input-components/ColorPicker';
+import Extra from './input-components/Extra';
 import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
 import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
 import NestedScope from './NestedScope';
@@ -26,7 +27,8 @@ const elementTypeToComponent = {
     richTextEditor: RichTextEditor,
     select: SelectContainer,
     speakerDesignationInputs: SpeakerDesignationInputs,
-    textarea: Textarea
+    textarea: Textarea,
+    extra: Extra,
 };
 
 export default function FormComponent({
