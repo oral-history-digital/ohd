@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_24_090837) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_29_101219) do
+  create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.text "organization"
+    t.text "job_description"
+    t.text "research_intentions"
+    t.text "specification"
+    t.text "tos_agreement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_access_configs_on_project_id"
+  end
+
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
@@ -992,6 +1004,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_090837) do
     t.string "default_locale"
     t.text "mail_text", size: :medium
     t.datetime "processed_at", precision: nil
+    t.boolean "anonymized", default: false
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
@@ -1013,6 +1026,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_090837) do
     t.index ["interview_id"], name: "index_workflow_comments_on_interview_id"
   end
 
+  add_foreign_key "access_configs", "projects"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "archiving_batches", "projects"
   add_foreign_key "event_types", "projects"

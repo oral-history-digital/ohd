@@ -1311,6 +1311,7 @@ de:
         use_in_export: im Im-/Export benutzen
         order: Reihenfolge
         data: Datei
+        options: Optionen
     errors:
       default:
         empty: Bitte auswählen
