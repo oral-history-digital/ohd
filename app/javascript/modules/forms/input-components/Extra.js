@@ -5,7 +5,7 @@ export default function Extra({
     html,
     tag,
     className,
-    textKey,
+    labelKey,
     children,
 }) {
     if (html) return html;
@@ -15,7 +15,7 @@ export default function Extra({
 
     return (
         <Tag className={className} >
-            {textKey && t(textKey)}
+            {labelKey && t(labelKey)}
         </Tag>
     );
 }
