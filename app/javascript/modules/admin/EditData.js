@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
@@ -72,7 +72,6 @@ EditData.propTypes = {
     formElements: PropTypes.array.isRequired,
     helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
-    locales: PropTypes.array.isRequired,
     scope: PropTypes.string.isRequired,
     translations: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,

@@ -1,29 +1,18 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getLanguagesQuery } from 'modules/search';
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentUser,
-    getLanguages, getLanguagesStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
-import { getCookie } from 'modules/persistence';
+import { fetchData, deleteData, submitData,
+    getLanguages, getLanguagesStatus, getProjectHasMap } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    locales: getProjectLocales(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    project: getCurrentProject(state),
-    translations: getTranslations(state),
-    user: getCurrentUser(state),
-    editView: getCookie('editView') === 'true',
     data: getLanguages(state),
     dataStatus: getLanguagesStatus(state),
     resultPagesCount: getLanguagesStatus(state).resultPagesCount,
     query: getLanguagesQuery(state),
     scope: 'language',
     baseTabIndex: 4 + getProjectHasMap(state),
-    //detailsAttributes: ['name'],
     detailsAttributes: ['code', 'name'],
     formElements: [
         {
@@ -33,7 +22,6 @@ const mapStateToProps = state => ({
         {
             attribute: 'name',
             multiLocale: true,
-            //validate: function(v){return v.length > 1}
         },
     ],
     joinedData: { },
