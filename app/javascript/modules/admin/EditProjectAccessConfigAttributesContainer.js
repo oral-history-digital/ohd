@@ -47,14 +47,14 @@ const mapStateToProps = state => {
                 elementType: 'input',
                 attribute: `[${attribute}_setter]display`,
                 labelKey: `activerecord.attributes.user.${attribute}`,
-                value: project.access_config[attribute].display,
+                value: String(project.access_config[attribute].display).toLowerCase() === 'true',
                 type: "checkbox"
             });
             if (DEFAULT_FORM_ELEMENTS[attribute].values) {
                 formElements.push({
                     elementType: 'extra',
                     tag: 'h4',
-                    textKey: 'activerecord.attributes.default.options',
+                    labelKey: 'activerecord.attributes.default.options',
                     className: 'is-option',
                 });
                 DEFAULT_FORM_ELEMENTS[attribute].values.map(value => {
@@ -63,7 +63,7 @@ const mapStateToProps = state => {
                     attribute: `[${attribute}_setter][values]${value}`,
                     labelKey: `user_project.${attribute}.${value}`,
                     className: 'is-option',
-                    value: project.access_config[attribute].values[value],
+                    value: String(project.access_config[attribute].values[value]).toLowerCase() === 'true',
                     type: "checkbox"
                 });
             })};

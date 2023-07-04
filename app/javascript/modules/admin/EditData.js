@@ -41,17 +41,17 @@ export default function EditData({
             />
         ) :
         (
-            <>
+            <form className='default'>
                 <dl className="DescriptionList">
                     {formElements.map(element => (
-                        <Fragment key={element.key}>
+                        <div key={element.key} className={element.className}>
                             <dt>
                                 {t(element.labelKey || `activerecord.attributes.${scope}.${element.attribute}`)}
                             </dt>
                             <dd>
                                 {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}
                             </dd>
-                        </Fragment>
+                        </div>
                     ))}
                 </dl>
                 <button
@@ -63,7 +63,7 @@ export default function EditData({
                     {' '}
                     {t('edit.default.edit')}
                 </button>
-            </>
+            </form>
         );
 }
 
