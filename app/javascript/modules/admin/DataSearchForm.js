@@ -42,7 +42,7 @@ export default function DataSearchForm({
     }
 
     function handleReset() {
-        formEl.current.reset();
+        formEl.current?.reset();
         resetQuery(pluralize(scope));
         fetchData({ projectId, locale, project }, pluralize(scope),
             null, null, null);
