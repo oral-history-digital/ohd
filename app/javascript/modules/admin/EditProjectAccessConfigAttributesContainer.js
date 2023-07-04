@@ -51,11 +51,18 @@ const mapStateToProps = state => {
                 type: "checkbox"
             });
             if (DEFAULT_FORM_ELEMENTS[attribute].values) {
+                formElements.push({
+                    elementType: 'extra',
+                    tag: 'h4',
+                    textKey: 'activerecord.attributes.default.options',
+                    className: 'is-option',
+                });
                 DEFAULT_FORM_ELEMENTS[attribute].values.map(value => {
                 formElements.push({
                     elementType: 'input',
                     attribute: `[${attribute}_setter][values]${value}`,
                     labelKey: `user_project.${attribute}.${value}`,
+                    className: 'is-option',
                     value: project.access_config[attribute].values[value],
                     type: "checkbox"
                 });
