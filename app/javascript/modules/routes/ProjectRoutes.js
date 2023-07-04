@@ -25,7 +25,7 @@ import {
     EventTypesAdminPage,
     MetadataFieldsContainer,
     PeopleAdminPage,
-    UploadsContainer,
+    UploadsPage,
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
     WrappedLanguagesContainer,
@@ -72,7 +72,7 @@ export default function ProjectRoutes() {
                 <Route path="users/password/new" element={<OrderNewPasswordContainer />} />
                 <Route path="users/password/edit" element={<ActivateAccount />} />
                 <Route path="users" element={<UsersAdminPage />} />
-                <Route path="uploads/new" element={<UploadsContainer />} />
+                <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route path="project/edit-config" element={<EditProjectConfig />} />
                 <Route path="project/edit-access-config" element={<EditProjectAccessConfig />} />

@@ -1,5 +1,6 @@
 .idea/
 /assets
+config/master.key
 config/database.yml
 config/datacite.yml
 config/project.yml
