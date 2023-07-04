@@ -49,7 +49,7 @@ export default function RequestProjectAccessForm({
             label: t('activerecord.attributes.user.job_description'),
             optionsScope: 'user_project.job_description',
             value: currentUser.job_description,
-            values: Object.entries(project.access_config.job_description.values).map(([key, value]) => value && key),
+            values: Object.entries(project.access_config.job_description.values).map(([key, value]) => String(value).toLowerCase() === 'true' && key),
             keepOrder: true,
             withEmpty: true,
             validate: function(v){return v?.length > 1}
@@ -60,7 +60,7 @@ export default function RequestProjectAccessForm({
             label: t('activerecord.attributes.user.research_intentions'),
             optionsScope: 'user_project.research_intentions',
             value: currentUser.research_intentions,
-            values: Object.entries(project.access_config.research_intentions.values).map(([key, value]) => value && key),
+            values: Object.entries(project.access_config.research_intentions.values).map(([key, value]) => String(value).toLowerCase() === 'true' && key),
             keepOrder: true,
             withEmpty: true,
             validate: function(v){return v?.length > 1}
@@ -87,7 +87,7 @@ export default function RequestProjectAccessForm({
 
     const formElements = [];
     Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([key, value]) => {
-        if (project.access_config[key].display) formElements.push(DEFAULT_FORM_ELEMENTS[key]);
+        if (String(project.access_config[key].display).toLowerCase() === 'true') formElements.push(DEFAULT_FORM_ELEMENTS[key]);
     });
 
     if (project.has_newsletter) {
