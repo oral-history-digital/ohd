@@ -10,7 +10,6 @@ import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import { getLocale } from 'modules/archive';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
 import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
@@ -90,7 +89,7 @@ export default function SidebarTabs({
     )
     const showMapTab = hasMap && !project.is_ohd;
     const showWorkbookTab = isLoggedIn;
-    const showIndexingTab = !project.is_ohd && isAuthorized({type: 'General'}, 'edit');
+    const showIndexingTab = isAuthorized({type: 'General'}, 'edit');
     const showAdministrationTab = isAuthorized({type: 'General'}, 'edit');
     const showProjectAdminTab = isAuthorized({type: 'Project'}, 'update');
     const showProjectsTab = project.is_ohd && isAuthorized({type: 'Project'}, 'create');
