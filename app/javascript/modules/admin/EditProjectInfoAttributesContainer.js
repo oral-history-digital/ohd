@@ -2,11 +2,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getTranslations } from 'modules/archive';
-import { submitData, getProjectLocales, getCurrentProject } from 'modules/data';
+import { submitData, getCurrentProject } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = state => ({
-    locales: getProjectLocales(state),
     translations: getTranslations(state),
     data: getCurrentProject(state),
     scope: 'project',
