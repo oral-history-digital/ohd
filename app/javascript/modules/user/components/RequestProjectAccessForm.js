@@ -41,7 +41,7 @@ export default function RequestProjectAccessForm({
             label: t('activerecord.attributes.user.organization'),
             value: currentUser.organization,
             type: 'text',
-            validate: function(v){return v?.length > 1}
+            validate: String(project.access_config.organization.obligatory).toLowerCase() === 'true' && function(v){return v?.length > 1}
         },
         job_description: {
             elementType: 'select',
@@ -52,7 +52,7 @@ export default function RequestProjectAccessForm({
             values: Object.entries(project.access_config.job_description.values).map(([key, value]) => String(value).toLowerCase() === 'true' && key),
             keepOrder: true,
             withEmpty: true,
-            validate: function(v){return v?.length > 1}
+            validate: String(project.access_config.job_description.obligatory).toLowerCase() === 'true' && function(v){return v?.length > 1}
         },
         research_intentions: {
             elementType: 'select',
@@ -63,21 +63,21 @@ export default function RequestProjectAccessForm({
             values: Object.entries(project.access_config.research_intentions.values).map(([key, value]) => String(value).toLowerCase() === 'true' && key),
             keepOrder: true,
             withEmpty: true,
-            validate: function(v){return v?.length > 1}
+            validate: String(project.access_config.research_intentions.obligatory).toLowerCase() === 'true' && function(v){return v?.length > 1}
         },
         specification: {
             elementType: 'textarea',
             attribute: 'specification',
             label: t('activerecord.attributes.user.specification'),
             value: currentUser.specification,
-            validate: function(v){return v?.length > 10}
+            validate: String(project.access_config.specification.obligatory).toLowerCase() === 'true' && function(v){return v?.length > 10},
         },
         tos_agreement: {
             elementType: 'input',
             attribute: 'tos_agreement',
             labelKey: 'user.tos_agreement',
             type: 'checkbox',
-            validate: function(v){return v && v !== '0'},
+            validate: true && function(v){return v && v !== '0'},
             help: t('user.notes_on_tos_agreement_archive', {
                 project: project.name[locale],
                 tos_link: tos_link(),

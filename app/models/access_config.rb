@@ -11,9 +11,11 @@ class AccessConfig < ApplicationRecord
   def set_default_properties
     self.organization = {
       display: true,
+      obligatory: true,
     }
     self.job_description = {
       display: true,
+      obligatory: true,
       values: {
         researcher: true,
         filmmaker: true,
@@ -27,10 +29,12 @@ class AccessConfig < ApplicationRecord
     }
     self.research_intentions = {
       display: true,
+      obligatory: true,
       values: {
         exhibition: true,
         education: true,
         film: true,
+        memorial_culture_project: true,
         genealogy: true,
         art: true,
         personal_interest: true,
@@ -43,17 +47,19 @@ class AccessConfig < ApplicationRecord
     }
     self.specification = {
       display: true,
+      obligatory: true,
     }
     self.tos_agreement = {
       display: true,
+      obligatory: true,
     }
   end
 
   %w(organization job_description research_intentions specification tos_agreement).each do |field|
     define_method "#{field}_setter=" do |hash|
       hash = hash.with_indifferent_access
-      display = hash[:display] || self[field][:display]
-      self[field][:display] = display
+      self[field][:display] = hash[:display] || self[field][:display]
+      self[field][:obligatory] = hash[:obligatory] || self[field][:obligatory]
       if hash[:values]
         self[field][:values].update(hash[:values])
       end

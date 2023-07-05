@@ -27,6 +27,7 @@ const mapStateToProps = state => {
                 'exhibition',
                 'education',
                 'film',
+                'memorial_culture_project',
                 'genealogy',
                 'art',
                 'personal_interest',
@@ -44,19 +45,25 @@ const mapStateToProps = state => {
     if (project) {
         Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute, value]) => {
             formElements.push({
+                elementType: 'extra',
+                tag: 'h3',
+                labelKey: `activerecord.attributes.user.${attribute}`,
+            });
+            formElements.push({
                 elementType: 'input',
                 attribute: `[${attribute}_setter]display`,
-                labelKey: `activerecord.attributes.user.${attribute}`,
+                labelKey: 'edit.default.display',
                 value: String(project.access_config[attribute].display).toLowerCase() === 'true',
                 type: "checkbox"
             });
+            formElements.push({
+                elementType: 'input',
+                attribute: `[${attribute}_setter]obligatory`,
+                labelKey: 'edit.default.obligatory',
+                value: String(project.access_config[attribute].obligatory).toLowerCase() === 'true',
+                type: "checkbox"
+            });
             if (DEFAULT_FORM_ELEMENTS[attribute].values) {
-                formElements.push({
-                    elementType: 'extra',
-                    tag: 'h4',
-                    labelKey: 'activerecord.attributes.default.options',
-                    className: 'is-option',
-                });
                 DEFAULT_FORM_ELEMENTS[attribute].values.map(value => {
                 formElements.push({
                     elementType: 'input',
