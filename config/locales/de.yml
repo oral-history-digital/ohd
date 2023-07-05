@@ -557,6 +557,8 @@ de:
     administration: Verwaltung
     indexing: Erschliessung
     default:
+      display: Anzeige
+      obligatory: Pflichtfeld
       show: Ansicht
       edit: Bearbeiten
       edit_record: "%{name} bearbeiten"
@@ -760,6 +762,7 @@ de:
       exhibition: Ausstellung
       education: Bildungsarbeit
       film: Dokumentarfilm
+      memorial_culture_project: Erinnerungskulturelles Projekt
       genealogy: Familienforschung
       art: Kunstprojekt
       personal_interest: Persönliches Interesse
