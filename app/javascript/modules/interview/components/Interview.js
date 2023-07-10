@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { EditTableLoader } from 'modules/edit-table';
-import { MediaPlayerContainer } from 'modules/media-player';
+import { MediaPlayer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -70,7 +70,7 @@ export default function Interview({
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
-                        <MediaPlayerContainer />
+                        <MediaPlayer />
                         {
                             interviewEditView ?
                                 <EditTableLoader /> :
