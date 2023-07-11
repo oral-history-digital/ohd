@@ -32,7 +32,7 @@ de:
         subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
         text: |
           <p>Guten Tag %{user_display_name},</p>
-          <p>Sie haben nun Zugang zu der Anwendung %{project_name} für das von Ihnen angegebene Recherche-Anliegen.</p>
+          <p>Sie haben nun Zugang zu der Anwendung %{project_link} für das von Ihnen angegebene Recherche-Anliegen.</p>
           <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die %{tos_link} des Archivs.</p>
           <p>Mit freundlichen Grüßen</p>
           <p>%{project_name}</p>

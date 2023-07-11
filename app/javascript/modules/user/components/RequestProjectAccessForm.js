@@ -21,6 +21,7 @@ export default function RequestProjectAccessForm({
     const values = {
         project_id: project.id,
         user_id: currentUser.id,
+        pre_access_location: location.href,
     };
     if (currentUserProject) {
         values.workflow_state = 'request_project_access';

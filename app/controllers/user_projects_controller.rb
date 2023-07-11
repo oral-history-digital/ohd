@@ -55,6 +55,7 @@ class UserProjectsController < ApplicationController
         :research_intentions,
         :specification,
         :organization,
+        :pre_access_location,
     )
   end
 end

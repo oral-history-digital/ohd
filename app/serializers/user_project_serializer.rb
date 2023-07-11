@@ -18,6 +18,7 @@ class UserProjectSerializer < ApplicationSerializer
     :specification,
     :organization,
     :pre_register_location,
+    :pre_access_location,
     :activated_at,
     :processed_at,
     :terminated_at,
