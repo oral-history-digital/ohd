@@ -2,22 +2,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getTaskTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getCurrentUser,
-    getTaskTypesForCurrentProject, getTaskTypesStatus, getProjectLocales } from 'modules/data';
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { fetchData, deleteData, submitData, getCurrentProject,
+    getTaskTypesForCurrentProject, getTaskTypesStatus } from 'modules/data';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        project: getCurrentProject(state),
-        locales: getProjectLocales(state),
-        translations: getTranslations(state),
-        user: getCurrentUser(state),
-        editView: getEditView(state),
         data: getTaskTypesForCurrentProject(state),
         dataStatus: getTaskTypesStatus(state),
         resultPagesCount: getTaskTypesStatus(state).resultPagesCount,

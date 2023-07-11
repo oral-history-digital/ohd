@@ -2,22 +2,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getRolesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentUser,
-    getRolesForCurrentProject, getRolesStatus, getProjectLocales } from 'modules/data';
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { fetchData, deleteData, submitData, getCurrentProject,
+    getRolesForCurrentProject, getRolesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 import RolePermissionsContainer from './RolePermissionsContainer';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        project: getCurrentProject(state),
-        translations: getTranslations(state),
-        user: getCurrentUser(state),
-        editView: getEditView(state),
         data: getRolesForCurrentProject(state),
         dataStatus: getRolesStatus(state),
         resultPagesCount: getRolesStatus(state).resultPagesCount,

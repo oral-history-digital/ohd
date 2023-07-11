@@ -1,23 +1,15 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams, getContributionTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getCurrentUser,
-    getContributionTypesForCurrentProject, getContributionTypesStatus, getProjectLocales,
+import { fetchData, deleteData, submitData, getCurrentProject,
+    getContributionTypesForCurrentProject, getContributionTypesStatus,
     getProjectHasMap } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        project: getCurrentProject(state),
-        translations: getTranslations(state),
-        user: getCurrentUser(state),
-        editView: getEditView(state),
         data: getContributionTypesForCurrentProject(state),
         dataStatus: getContributionTypesStatus(state),
         resultPagesCount: getContributionTypesStatus(state).resultPagesCount,
@@ -53,11 +45,6 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'order',
             },
-            //{
-                //attribute: 'use_as_speaker',
-                //elementType: 'input',
-                //type: 'checkbox',
-            //},
         ],
         joinedData: { },
         helpTextCode: 'contribution_type_form'
