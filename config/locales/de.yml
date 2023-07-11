@@ -1397,7 +1397,8 @@ de:
       blocked_text: Sie wurden für dieses Archiv gesperrt.
       terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
       correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
-      rejected_text: Ihre Freischaltung für dieses Archiv wurde abgelehnt. Bitte korrigieren Sie Ihre Daten.
+      rejected_text: Die Überprüfung Ihres Antrags auf Freischaltung hat ergeben, dass ihre Angaben unzureichend sind oder nicht denNutzungsbedingungen entsprechen. Bitte ändern Sie Ihre Angaben.
+      rejected_button_text: Angaben korrigieren.
       archive_management_in: Archivmanagement in
       granted_in: freigeschaltet in
       actual_workflow_state: aktueller Status

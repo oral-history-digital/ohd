@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 
 import { Modal } from 'modules/ui';
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
+import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject, getCurrentUser, getUsersStatus } from 'modules/data';
 
@@ -30,7 +31,25 @@ export default function ProjectAccessAlert ({
                 <p>{`${t('modules.project_access.request_in_process_text2')}`}</p>
             </div>
     } else if (currentUserProject?.workflow_state === 'project_access_rejected') {
-        return <div className='error'>{`${t('modules.project_access.rejected_text')}`}</div>
+        return (
+            <>
+                <div className='error'>{`${t('modules.project_access.rejected_text')}`}</div>
+                <Modal
+                    key='correct-request-project-access-popup'
+                    title={t('modules.project_access.rejected_button_text')}
+                    triggerClassName='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
+                    trigger={t('modules.project_access.rejected_button_text')}
+                >
+                    { close => (
+                        <CorrectUserDataFormContainer
+                            onSubmit={close}
+                            onCancel={close}
+                            userProject={currentUserProject}
+                        />
+                    )}
+                </Modal>
+            </>
+        )
     } else if (user.workflow_state === 'blocked' || currentUserProject?.workflow_state === 'project_access_blocked') {
         return <div className='error'>{`${t('modules.project_access.blocked_text')}`}</div>
     } else {
