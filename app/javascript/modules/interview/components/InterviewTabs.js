@@ -10,15 +10,15 @@ import { InterviewSearchContainer, useInterviewSearch } from 'modules/interview-
 import { RefTreeContainer } from 'modules/interview-references';
 import { useSearchParams } from 'modules/query-string';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import showTranslationTab from './showTranslationTab';
 import showTocTab from './showTocTab';
 
 export default function InterviewTabs({
     interview,
-    projectId,
-    locale,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { projectId } = useProject();
     const [tabIndex, setTabIndex] = useState(0);
 
     const { fulltext } = useSearchParams();
@@ -124,7 +124,5 @@ export default function InterviewTabs({
 }
 
 InterviewTabs.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
 };

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { Fetch, getRegistryReferenceTypesForCurrentProjectFetched } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
 import {
@@ -27,15 +29,14 @@ const NAME_VALUES = {
 }
 
 export default function MetadataFieldForm({
-    locale,
-    projectId,
-    project,
     registryReferenceTypes,
     data,
     submitData,
     onSubmit,
     onCancel,
 }) {
+    const { locale } = useI18n();
+    const { project, projectId } = useProject();
     const [source, setSource] = useState(data?.source);
     const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(data?.registry_reference_type_id);
     const [eventTypeId, setEventTypeId] = useState(data?.event_type_id);
@@ -213,10 +214,7 @@ export default function MetadataFieldForm({
 
 MetadataFieldForm.propTypes = {
     data: PropTypes.object,
-    project: PropTypes.object.isRequired,
     registryReferenceTypes: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,

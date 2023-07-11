@@ -1,4 +1,4 @@
-import { createElement, Component } from 'react';
+import { createElement, useEffect } from 'react';
 import Observer from 'react-intersection-observer'
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
@@ -7,7 +7,8 @@ import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
 import { pluralize } from 'modules/strings';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import parametrizedQuery from './parametrizedQuery';
 import statifiedQuery from './statifiedQuery';
 import DataContainer from './DataContainer';
@@ -15,64 +16,57 @@ import AddButton from './AddButton';
 import sortData from './sortData';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
-export default class WrappedDataList extends Component {
-    constructor(props) {
-        super(props);
-        this.form = this.form.bind(this);
-        this.handleScroll = this.handleScroll.bind(this);
-    }
+export default function WrappedDataList({
+    form,
+    formElements,
+    initialFormValues,
+    helpTextCode,
+    query,
+    data,
+    dataStatus,
+    sortAttribute,
+    sortAttributeTranslated,
+    scope,
+    interview,
+    task,
+    hideAdd,
+    outerScope,
+    outerScopeId,
+    resultPagesCount,
+    detailsAttributes,
+    joinedData,
+    hideEdit,
+    hideDelete,
+    showComponent,
+    scopeId,
+    nestedScope,
+    fetchData,
+    submitData,
+    setQueryParams,
+}) {
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
-    componentDidMount() {
-        // Load data
-        const { query, project, dataStatus, scope, scopeId, nestedScope,
-            fetchData } = this.props;
-
+    useEffect(() => {
         if (
             query &&
-            !(dataStatus[`for_projects_${project?.id}`] || dataStatus.all || dataStatus[statifiedQuery(query)])
+            !(dataStatus?.[`for_projects_${project?.id}`] || dataStatus?.all || dataStatus?.[statifiedQuery(query)])
         ) {
             fetchData(
-                this.props,
+                { locale, project, projectId },
                 pluralize(scope),
                 scopeId || null,
                 nestedScope ? pluralize(nestedScope) : null,
                 parametrizedQuery(query)
             );
         }
-    }
+    }, []);
 
-    renderScrollObserver() {
-        const { query, dataStatus, project, resultPagesCount } = this.props;
-
-        if (query) {
-            if (
-                 !(
-                     /^fetched/.test(dataStatus[`for_projects_${project?.id}`]) ||
-                     /^fetched/.test(dataStatus.all)
-                 )
-            ) {
-                if (
-                    dataStatus[statifiedQuery(query)]?.split('-')[0] === 'fetching'
-                ) {
-                    return <Spinner />;
-                } else if (!resultPagesCount || resultPagesCount > parseInt(query.page)) {
-                    return (
-                        <Observer
-                            onChange={inView => this.handleScroll(inView)}
-                        />
-                    )
-                }
-            }
-        }
-    }
-
-    handleScroll(inView) {
-        const { scope, nestedScope, scopeId, query, setQueryParams, fetchData } = this.props;
-
+    function handleScroll(inView) {
         if(inView){
             setQueryParams(pluralize(nestedScope || scope), {page: query.page + 1});
             fetchData(
-                this.props,
+                { locale, project, projectId },
                 pluralize(scope),
                 scopeId || null,
                 nestedScope ? pluralize(nestedScope) : null,
@@ -81,10 +75,7 @@ export default class WrappedDataList extends Component {
         }
     }
 
-    form(data, onSubmit, onCancel) {
-        const { form, initialFormValues, scope, formElements, helpTextCode,
-            submitData } = this.props;
-
+    function createForm(data, onSubmit, onCancel) {
         if (form) {
             return createElement(form, {
                 data,
@@ -99,7 +90,7 @@ export default class WrappedDataList extends Component {
                     values={initialFormValues}
                     scope={scope}
                     onSubmit={(params) => {
-                        submitData(this.props, params);
+                        submitData({ locale, project, projectId }, params);
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
@@ -113,79 +104,85 @@ export default class WrappedDataList extends Component {
         }
     }
 
-    render() {
-        const { data, sortAttribute, sortAttributeTranslated, locale, scope,
-            interview, task, hideAdd, outerScope, outerScopeId,
-            detailsAttributes, joinedData, hideEdit, hideDelete,
-            showComponent } = this.props;
+    const sortedData = sortData(data, sortAttribute, sortAttributeTranslated,
+        locale);
 
-        const sortedData = sortData(data, sortAttribute, sortAttributeTranslated,
-            locale);
+    const notFetched = !(/^fetched/.test(dataStatus?.[`for_projects_${project?.id}`])
+        || /^fetched/.test(dataStatus?.all));
+    const fetching = dataStatus?.[statifiedQuery(query)]?.split('-')[0] === 'fetching';
+    const hasMorePages = !resultPagesCount || resultPagesCount > parseInt(query.page);
 
-        return (
-            <EditViewOrRedirect>
-                <div className='wrapper-content register'>
-                    <Helmet>
-                        <title>
-                            {t(this.props, `activerecord.models.${scope}.other`)}
-                        </title>
-                    </Helmet>
+    return (
+        <EditViewOrRedirect>
+            <div className='wrapper-content register'>
+                <Helmet>
+                    <title>
+                        {t(`activerecord.models.${scope}.other`)}
+                    </title>
+                </Helmet>
 
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <h1 className="registry-entries-title">
-                            {t(this.props, `activerecord.models.${scope}.other`)}
-                        </h1>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <h1 className="registry-entries-title">
+                        {t(`activerecord.models.${scope}.other`)}
+                    </h1>
 
-                        {!hideAdd && (
-                            <AddButton
-                                scope={scope}
-                                interview={interview}
-                                task={task}
-                                onClose={closeModal => this.form(undefined, closeModal, closeModal)}
-                            />
-                        )}
+                    {!hideAdd && (
+                        <AddButton
+                            scope={scope}
+                            interview={interview}
+                            task={task}
+                            onClose={closeModal => createForm(undefined, closeModal, closeModal)}
+                        />
+                    )}
 
-                        {sortedData.map(data => (
-                            <DataContainer
-                                data={data}
-                                scope={scope}
-                                outerScope={outerScope}
-                                outerScopeId={outerScopeId}
-                                detailsAttributes={detailsAttributes}
-                                joinedData={joinedData}
-                                form={this.form}
-                                showComponent={showComponent}
-                                hideEdit={hideEdit}
-                                hideDelete={hideDelete}
-                                key={`${scope}-${data.id}`}
-                            />
-                        ))}
+                    {sortedData.map(data => (
+                        <DataContainer
+                            data={data}
+                            scope={scope}
+                            outerScope={outerScope}
+                            outerScopeId={outerScopeId}
+                            detailsAttributes={detailsAttributes}
+                            joinedData={joinedData}
+                            form={createForm}
+                            showComponent={showComponent}
+                            hideEdit={hideEdit}
+                            hideDelete={hideDelete}
+                            key={`${scope}-${data.id}`}
+                        />
+                    ))}
 
-                        {!hideAdd && (
-                            <AddButton
-                                scope={scope}
-                                interview={interview}
-                                task={task}
-                                onClose={closeModal => this.form(undefined, closeModal, closeModal)}
-                            />
-                        )}
+                    {!hideAdd && (
+                        <AddButton
+                            scope={scope}
+                            interview={interview}
+                            task={task}
+                            onClose={closeModal => createForm(undefined, closeModal, closeModal)}
+                        />
+                    )}
 
-                        {this.renderScrollObserver()}
-                    </AuthShowContainer>
+                    {query && notFetched && (
+                        fetching ?
+                            (<Spinner />) :
+                            (hasMorePages && (
+                                <Observer
+                                    onChange={inView => handleScroll(inView)}
+                                />
+                            ))
+                    )}
+                </AuthShowContainer>
 
-                    <AuthShowContainer ifLoggedOut ifNoProject>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-                </div>
-            </EditViewOrRedirect>
-        );
-    }
+                <AuthShowContainer ifLoggedOut ifNoProject>
+                    {t('devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
+        </EditViewOrRedirect>
+    );
 }
 
 WrappedDataList.propTypes = {
     data: PropTypes.object,
     joinedData: PropTypes.object,
-    locale: PropTypes.string,
+    helpTextCode: PropTypes.string,
     sortAttribute: PropTypes.string,
     sortAttributeTranslated: PropTypes.bool,
     detailsAttributes: PropTypes.array,
@@ -202,7 +199,6 @@ WrappedDataList.propTypes = {
     query: PropTypes.object,
     dataStatus: PropTypes.object,
     resultPagesCount: PropTypes.number,
-    project: PropTypes.object,
     hideAdd: PropTypes.bool,
     hideEdit: PropTypes.bool,
     hideDelete: PropTypes.bool,

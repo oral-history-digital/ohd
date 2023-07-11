@@ -1,26 +1,16 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
 import {
     fetchData, deleteData, submitData, getCurrentProject,
-    getProjectLocales, getCurrentUser,
     getCollectionsForCurrentProject, getCollectionsStatus
 } from 'modules/data';
-import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        project: getCurrentProject(state),
-        translations: getTranslations(state),
-        user: getCurrentUser(state),
-        editView: getCookie('editView') === 'true',
         data: getCollectionsForCurrentProject(state),
         dataStatus: getCollectionsStatus(state),
         resultPagesCount: getCollectionsStatus(state).resultPagesCount,

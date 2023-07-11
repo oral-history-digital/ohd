@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { useProject } from 'modules/routes';
 import MediaPlayerTitle from './MediaPlayerTitle';
 import MediaControlsContainer from './MediaControlsContainer';
 import MediaElementContainer from './MediaElementContainer';
 import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
 
-export default function MediaPlayer({
-    projectId,
-}) {
+export default function MediaPlayer() {
+    const { projectId } = useProject();
+
     if (!projectId) {
         return null;
     }
