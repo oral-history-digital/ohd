@@ -4,6 +4,7 @@ import request from 'superagent';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import useProjectAccessConfig from '../useProjectAccessConfig';
 
 export default function CorrectUserDataForm({
     project,
@@ -78,41 +79,7 @@ export default function CorrectUserDataForm({
             },
         ];
 
-        const projectAccessElements = [
-            {
-                elementType: 'input',
-                attribute: 'organization',
-                label: t('activerecord.attributes.user.organization'),
-                type: 'text',
-                validate: function(v){return v?.length > 1}
-            },
-            {
-                elementType: 'select',
-                attribute: 'job_description',
-                label: t('activerecord.attributes.user.job_description'),
-                optionsScope: 'user_project.job_description',
-                values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
-                keepOrder: true,
-                withEmpty: true,
-                validate: function(v){return v?.length > 1}
-            },
-            {
-                elementType: 'select',
-                attribute: 'research_intentions',
-                label: t('activerecord.attributes.user.research_intentions'),
-                optionsScope: 'user_project.research_intentions',
-                values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
-                keepOrder: true,
-                withEmpty: true,
-                validate: function(v){return v?.length > 1}
-            },
-            {
-                elementType: 'textarea',
-                attribute: 'specification',
-                label: t('activerecord.attributes.user.specification'),
-                validate: function(v){return v?.length > 10}
-            },
-        ];
+        const projectAccessElements = useProjectAccessConfig(project, currentUser);
 
         return nameElements.concat(addressElements).concat(countrySelect).concat(projectAccessElements);
     }
