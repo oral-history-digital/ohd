@@ -49,6 +49,7 @@ export default function UserForm({
             attribute: 'mail_text',
             value: workflowState ? t(`devise.mailer.${workflowState}.text`, {
                 project_name: project.name[locale],
+                project_link: `<a href='${data.pre_access_location}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[locale]}</a>`,
                 tos_link: `<a href='${conditionsLink[locale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,

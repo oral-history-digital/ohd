@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_29_101219) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_11_111604) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -954,6 +954,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_29_101219) do
     t.integer "user_id"
     t.boolean "tos_agreement", default: false
     t.boolean "receive_newsletter", default: false
+    t.string "pre_access_location"
   end
 
   create_table "user_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
