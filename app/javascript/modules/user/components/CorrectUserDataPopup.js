@@ -16,7 +16,9 @@ export default function CorrectUserDataPopup ({
             return up.project_id === project?.id && up.workflow_state === 'project_access_rejected';
         });
 
-    if (!rejectedProjectAccess) return null;
+    const fromLink = window.location.search.includes('correct_user_data');
+
+    if (!(rejectedProjectAccess && fromLink)) return null;
 
     return (
         <Modal

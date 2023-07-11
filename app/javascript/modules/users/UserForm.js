@@ -28,7 +28,7 @@ export default function UserForm({
     const [workflowState, setWorkflowState] = useState(false);
     const conditionsLink = findExternalLink(project, 'conditions');
     let correctHref = project.archive_domain ? project.archive_domain : `${OHD_DOMAINS[railsMode]}/${project.shortname}`;
-    correctHref += `/${project.default_locale}`;
+    correctHref += `/${project.default_locale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
 
     const formElements = [
         {
@@ -52,7 +52,7 @@ export default function UserForm({
                 tos_link: `<a href='${conditionsLink[locale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
-                correct_link: `<a href='${correctHref}?access_token=ACCESS_TOKEN_WILL_BE_REPLACED'>${t('user.correct_link')}</a>`,
+                correct_link: `<a href='${correctHref}'>${t('user.correct_link')}</a>`,
             }).join('') : '',
             validate: (v) => (v && v.length > 100),
         },
