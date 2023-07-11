@@ -10,7 +10,7 @@ import { getProjectsStatus, ProjectTile } from 'modules/data';
 const mapStateToProps = (state) => {
     return {
         editView: getEditView(state),
-        data: getProjects(state),
+        data: Object.values(getProjects(state)).filter(p => !p.is_ohd),
         dataStatus: getProjectsStatus(state),
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
