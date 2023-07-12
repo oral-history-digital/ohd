@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-      :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy]
+      :edit_display, :edit_config, :edit_access_config, :edit, :update]
 
   # GET /projects
   def index
@@ -104,6 +104,8 @@ class ProjectsController < ApplicationController
 
   # DELETE /projects/1
   def destroy
+    @project = Project.find(params[:id])
+    authorize @project
     @project.destroy
 
     respond_to do |format|
