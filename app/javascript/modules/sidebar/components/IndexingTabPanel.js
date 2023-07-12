@@ -16,7 +16,10 @@ export default function IndexingTabPanel() {
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
-    const showArchiveSubTabs = !project.is_ohd;
+
+    function isRegularArchive() {
+        return !project.is_ohd;
+    }
 
     if (!isAuthorized({ type: 'General' }, 'edit')) {
         return null;
@@ -28,7 +31,7 @@ export default function IndexingTabPanel() {
                 { t('edit.indexing') }
             </h3>
             <div className='flyout-sub-tabs-container flyout-video'>
-                {showArchiveSubTabs && (
+                {isRegularArchive() && (
                     <AdminSubTab
                         title='edit.interview.new'
                         url={`${pathBase}/interviews/new`}
@@ -42,7 +45,7 @@ export default function IndexingTabPanel() {
                     obj={{type: 'Upload'}}
                     action='create'
                 />
-                {showArchiveSubTabs && (
+                {isRegularArchive() && (
                     <AdminSubTab
                         title= 'edit.person.admin'
                         url={`${pathBase}/people`}
@@ -50,17 +53,15 @@ export default function IndexingTabPanel() {
                         action='update'
                     />
                 )}
-                {showArchiveSubTabs && (
-                    <AdminSubTab
-                        title= 'edit.registry_reference_type.admin'
-                        url={`${pathBase}/registry_reference_types`}
-                        obj={{type: 'RegistryReferenceType'}}
-                        action='update'
-                    >
-                        <RegistryReferenceTypesSearchFormContainer />
-                    </AdminSubTab>
-                )}
-                {showArchiveSubTabs && (
+                <AdminSubTab
+                    title= 'edit.registry_reference_type.admin'
+                    url={`${pathBase}/registry_reference_types`}
+                    obj={{type: 'RegistryReferenceType'}}
+                    action='update'
+                >
+                    <RegistryReferenceTypesSearchFormContainer />
+                </AdminSubTab>
+                {isRegularArchive() && (
                     <AdminSubTab
                         title= 'edit.registry_name_type.admin'
                         url={`${pathBase}/registry_name_types`}
@@ -70,7 +71,7 @@ export default function IndexingTabPanel() {
                         <RegistryNameTypesSearchFormContainer />
                     </AdminSubTab>
                 )}
-                {showArchiveSubTabs && (
+                {isRegularArchive() && (
                     <AdminSubTab
                         title= 'edit.contribution_type.admin'
                         url={`${pathBase}/contribution_types`}
@@ -80,7 +81,7 @@ export default function IndexingTabPanel() {
                         <ContributionTypesSearchFormContainer />
                     </AdminSubTab>
                 )}
-                {showArchiveSubTabs && (
+                {isRegularArchive() && (
                     <AdminSubTab
                         title= 'edit.collection.admin'
                         url={`${pathBase}/collections`}
@@ -90,7 +91,7 @@ export default function IndexingTabPanel() {
                         <CollectionsSearchFormContainer />
                     </AdminSubTab>
                 )}
-                {showArchiveSubTabs && (
+                {isRegularArchive() && (
                     <AdminSubTab
                         title= 'edit.language.admin'
                         url={`${pathBase}/languages`}
