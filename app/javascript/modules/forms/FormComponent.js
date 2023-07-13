@@ -5,7 +5,7 @@ import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import { TreeSelectContainer } from 'modules/tree-select';
+import { RegistryTreeSelect } from 'modules/registry-tree-select';
 import { HelpText } from 'modules/help-text';
 import { pluralize } from 'modules/strings';
 import InputContainer from './input-components/InputContainer';
@@ -23,7 +23,7 @@ const elementTypeToComponent = {
     colorPicker: ColorPicker,
     input: InputContainer,
     registryEntrySelect: RegistryEntrySelectContainer,
-    registryEntryTreeSelect: TreeSelectContainer,
+    registryEntryTreeSelect: RegistryTreeSelect,
     richTextEditor: RichTextEditor,
     select: SelectContainer,
     speakerDesignationInputs: SpeakerDesignationInputs,

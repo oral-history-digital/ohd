@@ -3,21 +3,17 @@ import PropTypes from 'prop-types';
 
 import { useRegistryReferenceApi } from 'modules/api';
 import { Form } from 'modules/forms';
-import {
-    useMutatePersonWithAssociations,
-    useMutatePersonLandingPageMetadata
-} from 'modules/person';
+import { useI18n } from 'modules/i18n';
+import { useMutatePersonWithAssociations, useMutatePersonLandingPageMetadata } from 'modules/person';
+import { useProject } from 'modules/routes';
 
 export default function RegistryReferenceForm({
+    ohdProject,
     registryReference,
     registryReferenceTypes,
     registryReferenceTypesStatus,
     refObject,
-    project,
     interview,
-    projectId,
-    projects,
-    locale,
     registryReferenceTypeId,
     lowestAllowedRegistryEntryId,
     inTranscript,
@@ -26,6 +22,8 @@ export default function RegistryReferenceForm({
     onSubmit,
     onCancel,
 }) {
+    const { locale } = useI18n();
+    const { project, projectId } = useProject();
     const { createRegistryReference, updateRegistryReference } = useRegistryReferenceApi();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
@@ -36,12 +34,19 @@ export default function RegistryReferenceForm({
         }
     })
 
+    function isOhdRegistryReferenceType() {
+        const ohdRegistryReferenceTypes = Object.keys(ohdProject.registry_reference_types);
+        const result = ohdRegistryReferenceTypes.includes(String(registryReferenceTypeId));
+        return result;
+    }
+
     function buildElements() {
         let elements = [
             {
                 elementType: 'registryEntryTreeSelect',
                 attribute: 'registry_entry_id',
                 lowestAllowedRegistryEntryId,
+                loadOhdTree: isOhdRegistryReferenceType(),
                 inTranscript,
                 goDeeper: true
             },
@@ -119,10 +124,7 @@ export default function RegistryReferenceForm({
 }
 
 RegistryReferenceForm.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    ohdProject: PropTypes.object.isRequired,
     registryReference: PropTypes.object,
     refObject: PropTypes.object,
     inTranscript: PropTypes.bool,

@@ -11,8 +11,10 @@ import {
     METADATA_SOURCE_INTERVIEW,
     METADATA_SOURCE_PERSON,
     METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+    METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE,
     METADATA_SOURCE_EVENT_TYPE
 } from 'modules/constants';
+import useGlobalRegistryReferenceTypes from './useGlobalRegistryReferenceTypes';
 
 const NAME_VALUES = {
     Interview: [
@@ -38,10 +40,15 @@ export default function MetadataFieldForm({
     const { locale } = useI18n();
     const { project, projectId } = useProject();
     const [source, setSource] = useState(data?.source);
-    const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(data?.registry_reference_type_id);
+    const [registryReferenceTypeId, setRegistryReferenceTypeId] =
+        useState(data?.registry_reference_type_id);
     const [eventTypeId, setEventTypeId] = useState(data?.event_type_id);
 
-    const { isLoading: eventTypesAreLoading, data: eventTypes } = useEventTypes();
+    const { isLoading: eventTypesLoading, data: eventTypes } = useEventTypes();
+    const {
+        isLoading: globalRegistryReferenceTypesLoading,
+        data: globalRegistryReferenceTypes,
+    } = useGlobalRegistryReferenceTypes();
 
     const handleSourceChange = (name, value) => {
         setSource(value);
@@ -55,19 +62,25 @@ export default function MetadataFieldForm({
         setEventTypeId(value);
     };
 
-    if (eventTypesAreLoading) {
+    if (eventTypesLoading) {
         return <Spinner />;
     }
+
+    const isRegistrySource = source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE
+        || source === METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE;
+    const isEventSource = source === METADATA_SOURCE_EVENT_TYPE;
 
     const nameValuesForSource = () => {
         if (source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE) {
             return registryReferenceTypes && registryReferenceTypes[registryReferenceTypeId]?.code;
-        } else if (source === METADATA_SOURCE_EVENT_TYPE) {
+        } else if (isEventSource) {
             return eventTypes.find(et => et.id === eventTypeId)?.code;
         } else {
             return NAME_VALUES[source];
         }
     };
+
+    console.log(globalRegistryReferenceTypes);
 
     return (
         <Fetch
@@ -86,9 +99,7 @@ export default function MetadataFieldForm({
                 onCancel={onCancel}
                 helpTextCode="metadata_form"
                 data={data}
-                values={{
-                    project_id: project.id
-                }}
+                values={{ project_id: project.id }}
                 elements={[
                     {
                         elementType: 'select',
@@ -97,7 +108,8 @@ export default function MetadataFieldForm({
                             METADATA_SOURCE_INTERVIEW,
                             METADATA_SOURCE_PERSON,
                             METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
-                            METADATA_SOURCE_EVENT_TYPE
+                            METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE,
+                            METADATA_SOURCE_EVENT_TYPE,
                         ],
                         optionsScope: 'activerecord.attributes.metadata_field',
                         withEmpty: true,
@@ -106,10 +118,12 @@ export default function MetadataFieldForm({
                     {
                         elementType: 'select',
                         attribute: 'registry_reference_type_id',
-                        values: registryReferenceTypes,
+                        values: (source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE
+                            ? registryReferenceTypes
+                            : globalRegistryReferenceTypes),
                         withEmpty: true,
                         handlechangecallback: handleRegistryReferenceTypeIdChange,
-                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+                        hidden: !isRegistrySource,
                         help: 'help_texts.metadata_fields.registry_reference_type_id',
                         validate: function(v){return /\d+/.test(v)}
                     },
@@ -119,7 +133,7 @@ export default function MetadataFieldForm({
                         values: ['Interview', 'Person'],
                         optionsScope: 'activerecord.attributes.metadata_field',
                         withEmpty: true,
-                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+                        hidden: !isRegistrySource,
                         help: 'help_texts.metadata_fields.ref_object_type',
                         validate: function(v){return /\w+/.test(v)}
                     },
@@ -129,7 +143,7 @@ export default function MetadataFieldForm({
                         values: eventTypes,
                         withEmpty: true,
                         handlechangecallback: handleEventTypeIdChange,
-                        hidden: source !== METADATA_SOURCE_EVENT_TYPE,
+                        hidden: !isEventSource,
                         help: 'help_texts.metadata_fields.event_type_id',
                         validate: v => /\d+/.test(v)
                     },
@@ -139,7 +153,7 @@ export default function MetadataFieldForm({
                         values: ['Person'],
                         optionsScope: 'activerecord.attributes.metadata_field',
                         withEmpty: true,
-                        hidden: source !== METADATA_SOURCE_EVENT_TYPE,
+                        hidden: !isEventSource,
                         help: 'help_texts.metadata_fields.eventable_type',
                         validate: v => /\w+/.test(v)
                     },
@@ -149,7 +163,7 @@ export default function MetadataFieldForm({
                         values: nameValuesForSource(),
                         optionsScope: 'search_facets',
                         withEmpty: true,
-                        hidden: source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE || source === METADATA_SOURCE_EVENT_TYPE,
+                        hidden: isRegistrySource || isEventSource,
                         validate: function(v){return /\w+/.test(v)}
                     },
                     {
@@ -188,12 +202,12 @@ export default function MetadataFieldForm({
                         elementType: 'input',
                         attribute: 'use_in_map_search',
                         type: 'checkbox',
-                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+                        hidden: !isRegistrySource,
                     },
                     {
                         elementType: 'colorPicker',
                         attribute: 'map_color',
-                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+                        hidden: !isRegistrySource,
                     },
                     {
                         elementType: 'input',
@@ -204,7 +218,7 @@ export default function MetadataFieldForm({
                         elementType: 'input',
                         attribute: 'use_in_metadata_import',
                         type: 'checkbox',
-                        hidden: source !== METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+                        hidden: !isRegistrySource,
                     },
                 ]}
             />

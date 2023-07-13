@@ -403,14 +403,6 @@ test('getRegistryEntries gets registry entries object', () => {
     expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
 });
 
-test('getRootRegistryEntry gets root registry entry', () => {
-    expect(selectors.getRootRegistryEntry(state)).toEqual(state.data.registry_entries[1]);
-});
-
-test('getRootRegistryEntryFetched is true if entry is fetched', () => {
-    expect(selectors.getRootRegistryEntryFetched(state)).toBeTruthy();
-});
-
 test('getRegistryNameTypesForCurrentProject gets registry name types object', () => {
     expect(selectors.getRegistryNameTypesForCurrentProject(state)).toEqual(state.data.registry_name_types);
 });

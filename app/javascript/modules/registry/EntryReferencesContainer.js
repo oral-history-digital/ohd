@@ -1,22 +1,18 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getInterviews, getCurrentProject, fetchData } from 'modules/data';
-import { setArchiveId, getLocale, getProjectId } from 'modules/archive';
+import { setArchiveId } from 'modules/archive';
+import { getProjects } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
 import EntryReferences from './EntryReferences';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    project: getCurrentProject(state),
-    interviews: getInterviews(state),
     isLoggedIn: getIsLoggedIn(state),
+    projects: getProjects(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setArchiveId,
-    fetchData,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(EntryReferences);

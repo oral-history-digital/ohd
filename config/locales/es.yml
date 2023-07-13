@@ -60,6 +60,7 @@ es:
   or: oder
   show: Zeigen
   hide: Weniger
+  loading: Loading…
   edit_column_header:
     open_table: "Erschließungstabelle öffnen"
     close_table: "Erschließungstabelle schließen"
@@ -1070,6 +1071,7 @@ es:
         Person: Interviewte*r
         Interview: Interview
         RegistryReferenceType: Register (Verknüpfung)
+        GlobalRegistryReferenceType: Globales Register (Verknüpfung)
         EventType: Event
       external_link:
         internal_name: Internal Name

@@ -1,5 +1,5 @@
 class RegistryReferenceTypesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :global]
 
   def create
     authorize RegistryReferenceType
@@ -23,7 +23,7 @@ class RegistryReferenceTypesController < ApplicationController
     respond @registry_reference_type
   end
 
-  def destroy 
+  def destroy
     @registry_reference_type = RegistryReferenceType.find(params[:id])
     authorize @registry_reference_type
     registry_reference_type = @registry_reference_type
@@ -70,6 +70,17 @@ class RegistryReferenceTypesController < ApplicationController
           }
         end
         render json: json
+      end
+    end
+  end
+
+  def global
+    ref_types = Project.ohd.registry_reference_types
+    authorize ref_types
+
+    respond_to do |format|
+      format.json do
+        render json: ref_types, each_serializer: RegistryReferenceTypeSerializer
       end
     end
   end

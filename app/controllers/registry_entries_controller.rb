@@ -122,7 +122,7 @@ class RegistryEntriesController < ApplicationController
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
           csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
             CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
-              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews', 'Status'] 
+              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews', 'Status']
               root.on_all_descendants do |entry|
                 entry.parents.each do |parent|
                   row << [
@@ -152,6 +152,17 @@ class RegistryEntriesController < ApplicationController
 
   def tree
     registry_entries = RegistryEntry.for_tree(I18n.locale, current_project.id)
+    authorize registry_entries
+
+    respond_to do |format|
+      format.json do
+        render json: registry_entries, each_serializer: SlimRegistryEntrySerializer
+      end
+    end
+  end
+
+  def global_tree
+    registry_entries = RegistryEntry.for_tree(I18n.locale, Project.ohd.id)
     authorize registry_entries
 
     respond_to do |format|
@@ -230,7 +241,7 @@ class RegistryEntriesController < ApplicationController
       ],
       translations_attributes: [
         :locale,
-        :id, 
+        :id,
         :notes
       ]
     )

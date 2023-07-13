@@ -6,4 +6,8 @@ class RegistryEntryPolicy < ApplicationPolicy
   def tree?
     index?
   end
+
+  def global_tree?
+    index?
+  end
 end
