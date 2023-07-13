@@ -21,6 +21,8 @@ export const getPublicProjects = createSelector(
     }
 );
 
+
+
 export const getCollections = state => getData(state).collections;
 
 export const getNormDataProviders = state => getData(state).norm_data_providers;
@@ -256,21 +258,6 @@ export const getContributorsFetched = createSelector(
         } else {
             return false;
         }
-    }
-);
-
-export const getRootRegistryEntryFetched = createSelector(
-    [getRegistryEntriesStatus, getCurrentProject],
-    (status, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(status[currentProject.root_registry_entry_id]);
-    }
-);
-
-export const getRootRegistryEntry = createSelector(
-    [getRegistryEntries, getCurrentProject],
-    (registryEntries, currentProject) => {
-        return registryEntries[currentProject.root_registry_entry_id];
     }
 );
 

@@ -54,8 +54,6 @@ export {
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
     getRolesStatus,
-    getRootRegistryEntry,
-    getRootRegistryEntryFetched,
     getRootRegistryEntryReload,
     getSegments,
     getSegmentsStatus,

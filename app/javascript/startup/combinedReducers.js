@@ -10,7 +10,6 @@ import { mediaPlayerReducer, MEDIA_PLAYER_NAME } from 'modules/media-player';
 import { searchMapReducer, SEARCH_MAP_NAME } from 'modules/search-map';
 import { searchReducer, SEARCH_NAME } from 'modules/search';
 import { sidebarReducer, SIDEBAR_NAME } from 'modules/sidebar';
-import { treeSelectReducer, TREE_SELECT_NAME } from 'modules/tree-select';
 import { workbookReducer, WORKBOOK_NAME } from 'modules/workbook';
 
 const combinedReducer = combineReducers({
@@ -24,7 +23,6 @@ const combinedReducer = combineReducers({
     [SEARCH_MAP_NAME]: searchMapReducer,
     [SEARCH_NAME]: searchReducer,
     [SIDEBAR_NAME]: sidebarReducer,
-    [TREE_SELECT_NAME]: treeSelectReducer,
     [WORKBOOK_NAME]: workbookReducer,
 });
 

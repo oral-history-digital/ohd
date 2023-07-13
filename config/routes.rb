@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     resources :registry_names, only: [:create, :update, :destroy]
     resources :registry_references, only: [:create, :update, :destroy, :index]
     resources :registry_reference_types, only: [:create, :update, :index, :destroy]
+    get "registry_reference_types/global", to: "registry_reference_types#global"
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
     resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
@@ -84,6 +85,7 @@ Rails.application.routes.draw do
     end
 
     get "registry_entry_tree", to: "registry_entries#tree"
+    get "global_registry_entry_tree", to: "registry_entries#global_tree"
 
     put "update_speakers/:id", to: "interviews#update_speakers"
     put "mark_texts/:id", to: "interviews#mark_texts"

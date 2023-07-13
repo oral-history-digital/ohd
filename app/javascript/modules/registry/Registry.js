@@ -2,29 +2,29 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import { AuthorizedContent } from 'modules/auth';
-import {
-    Fetch,
-    getRootRegistryEntryFetched,
-    getRootRegistryEntryReload
-} from 'modules/data';
 import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { ScrollToTop } from 'modules/user-agent';
-import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import RegistrySearchResultContainer from './RegistrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
-import RegistryEntriesContainer from './RegistryEntriesContainer';
+import RegistryEntries from './RegistryEntries';
+import useRootEntry from './useRootEntry';
 
 export default function Registry({
-    rootRegistryEntry,
     foundRegistryEntries,
     showRegistryEntriesSearchResults,
     isRegistryEntrySearching,
 }) {
     const { t } = useI18n();
-    const { project } = useProject();
     const isEditor = useIsEditor();
+
+    const { isLoading, data: rootRegistryEntry } = useRootEntry();
+
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     return (
         <ScrollToTop>
@@ -32,47 +32,40 @@ export default function Registry({
                 <title>{t('registry')}</title>
             </Helmet>
             <div className='wrapper-content register'>
-                <Fetch
-                    fetchParams={['registry_entries', project?.root_registry_entry_id, null, null, 'with_associations=true']}
-                    testSelector={getRootRegistryEntryFetched}
-                    reloadSelector={getRootRegistryEntryReload}
-                >
-                    <h1 className='registry-entries-title'>
-                        {t('registry')}
-                    </h1>
+                <h1 className='registry-entries-title'>
+                    {t('registry')}
+                </h1>
 
-                    {isEditor && <HelpText code="registry_page" className="u-mb" />}
+                {isEditor && <HelpText code="registry_page" className="u-mb" />}
 
-                    <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
-                        <MergeRegistryEntriesButtonContainer />
-                    </AuthorizedContent>
+                <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                    <MergeRegistryEntriesButtonContainer />
+                </AuthorizedContent>
 
-                    {
-                        showRegistryEntriesSearchResults ?
-                            (foundRegistryEntries?.results?.length === 0 && !isRegistryEntrySearching ?
-                                (
-                                    <div className="search-result">
-                                        {`0 ${t('registryentry_results')}`}
-                                    </div>
-                                ) :
-                                (
-                                    <ul className="RegistryEntryList RegistryEntryList--root">
-                                        {
-                                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
-                                        }
-                                    </ul>
-                                )
+                {
+                    showRegistryEntriesSearchResults ?
+                        (foundRegistryEntries?.results?.length === 0 && !isRegistryEntrySearching ?
+                            (
+                                <div className="search-result">
+                                    {`0 ${t('registryentry_results')}`}
+                                </div>
                             ) :
-                            <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} />
-                    }
-                </Fetch>
+                            (
+                                <ul className="RegistryEntryList RegistryEntryList--root">
+                                    {
+                                        foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
+                                    }
+                                </ul>
+                            )
+                        ) :
+                        <RegistryEntries root registryEntryParent={rootRegistryEntry} />
+                }
             </div>
         </ScrollToTop>
     );
 }
 
 Registry.propTypes = {
-    rootRegistryEntry: PropTypes.object,
     foundRegistryEntries: PropTypes.object.isRequired,
     showRegistryEntriesSearchResults: PropTypes.bool.isRequired,
     isRegistryEntrySearching: PropTypes.bool,

@@ -11,7 +11,7 @@ import { DeleteItemForm } from 'modules/forms';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
-import RegistryEntriesContainer from './RegistryEntriesContainer';
+import RegistryEntries from './RegistryEntries';
 
 const Item = AdminMenu.Item;
 
@@ -295,7 +295,7 @@ export default class RegistryEntry extends Component {
                 {children}
                 {
                     this.state.childrenVisible && (
-                    <RegistryEntriesContainer
+                    <RegistryEntries
                         className="RegistryEntry-children"
                         registryEntryParent={data}
                     />

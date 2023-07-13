@@ -31,6 +31,7 @@ export const VIEWMODE_WORKFLOW = 'workflow';
 export const METADATA_SOURCE_INTERVIEW = 'Interview';
 export const METADATA_SOURCE_PERSON = 'Person';
 export const METADATA_SOURCE_REGISTRY_REFERENCE_TYPE = 'RegistryReferenceType';
+export const METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE = 'GlobalRegistryReferenceType';
 export const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 
 export const OHD_LOCATION = 'https://portal.oral-history.digital';
