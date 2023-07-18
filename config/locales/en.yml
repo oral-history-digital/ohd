@@ -1521,10 +1521,9 @@ en:
       catalog: Catalog
       search: Search
     site_startpage:
-      introduction: Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen.
-      stats: Derzeit verzeichnet Oral-History.Digital %{numProjects} Archive mit %{numCollections} Sammlungen und %{numInterviews} Interviews von %{numInstitutions} Institutionen.
-      under_construction: Das Portal ist noch im Aufbau.
-      instructions: Anleitung für die Redaktionsansicht
+      stats: Currently, Oral-History.Digital lists %{numProjects} archives with %{numCollections} collections and %{numInterviews} interviews from %{numInstitutions} institutions.
+      under_construction: The portal is still under construction.
+      instructions: Instructions for the editorial view
       more_results: Load more results
       sample_archives: Sample Archives
       access_requested: Access requested

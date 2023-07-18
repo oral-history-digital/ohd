@@ -23,7 +23,8 @@ export default function StartpageIntroduction({
 
     return (
         <article className={className}>
-            <div className="u-mt-none u-mb-none" dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
+            <div className="u-mt-none u-mb-none"
+                dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
             <p className="u-mt-none u-mb-none">
                 {t('modules.site_startpage.stats', {
                     numProjects: stats?.num_projects,
