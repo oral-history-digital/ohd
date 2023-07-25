@@ -13,7 +13,7 @@ import useFacets from '../useFacets';
 export default function ArchiveFacets() {
     const { locale } = useI18n();
     const { isAuthorized } = useAuthorization();
-    const { facets, isLoading, isValidating } = useFacets();
+    const { facets, isLoading } = useFacets();
     const { isLoading: eventTypesAreLoading, data: eventTypes } = useEventTypes();
 
     if (!facets || eventTypesAreLoading) {

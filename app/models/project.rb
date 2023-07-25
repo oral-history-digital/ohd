@@ -317,6 +317,22 @@ class Project < ApplicationRecord
           end
         when "archive_id"
           # do nothing: should not be a facet!
+        when "project_id"
+          facet_label_hash = facet.localized_hash(:label)
+          cache_key_date = [Project.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          result = mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}-#{Project.count}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: Project.shared.includes(:translations).inject({}) do |acc, project|
+                acc[project.id.to_s] = {
+                  name: project.localized_hash(:name),
+                  count: 0
+                }
+                acc
+              end
+            }
+          end
+          result
         when /_id$/ # belongs_to associations like language on interview
           facet_label_hash = facet.localized_hash(:label)
           associatedModel = facet.name.sub('_id', '').classify.constantize

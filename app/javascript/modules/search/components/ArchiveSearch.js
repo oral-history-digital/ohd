@@ -12,7 +12,7 @@ import ArchiveSearchSorting from './ArchiveSearchSorting';
 const PAGE_SIZE = 12;
 
 function ArchiveSearch() {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     const { interviews, total, data, error, isValidating, isLoading, size,
         setSize } = useArchiveSearch();
@@ -34,7 +34,7 @@ function ArchiveSearch() {
     return (
         <>
             <h1 className="search-results-title">
-                {total} {t('interviews')}
+                {total?.toLocaleString(locale)} {t('interviews')}
             </h1>
             <div className="SearchResults-legend search-results-legend u-mt">
                 <AuthShowContainer ifLoggedIn>
