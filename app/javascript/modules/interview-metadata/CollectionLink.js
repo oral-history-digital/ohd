@@ -22,9 +22,9 @@ export default function CollectionLink({
     const ohdDomain = OHD_DOMAINS[railsMode];
 
     return (
-        <span>
+        <>
             <FaInfoCircle
-                className="Icon Icon--unobtrusive u-mr-tiny"
+                className="Icon Icon--unobtrusive Facet-collectionIcon u-ml-tiny"
                 title={notes}
             />
             {hasOwnDomain ? (
@@ -33,18 +33,20 @@ export default function CollectionLink({
                     title={t('modules.interview_metadata.collection_link_title')}
                     target="_blank"
                     rel="noreferrer"
+                    className="u-ml-tiny"
                 >
-                    <FaExternalLinkAlt className="Icon Icon--unobtrusive u-mr-tiny" />
+                    <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
                 </a>
             ) : (
                 <Link
                     to={linkPath}
                     title={t('modules.interview_metadata.collection_link_title')}
+                    className="u-ml-tiny"
                 >
-                    <FaExternalLinkAlt className="Icon Icon--unobtrusive u-mr-tiny" />
+                    <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
                 </Link>
             )}
-        </span>
+        </>
     );
 }
 

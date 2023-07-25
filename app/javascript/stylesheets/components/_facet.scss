@@ -46,6 +46,23 @@
   font-weight: bold;
 }
 
+.Facet-label {
+  align-items: center;
+  display: flex;
+}
+
+.Facet-value-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Facet-checkbox,
+.Facet-collectionIcon {
+  flex-shrink: 0;
+}
+
 .Facet-count {
+  flex-shrink: 0;
   margin-left: $base-unit * 0.25;
 }
