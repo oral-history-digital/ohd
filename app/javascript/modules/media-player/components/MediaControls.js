@@ -18,18 +18,27 @@ export default function MediaControls({
     const { t } = useI18n();
     const pathBase = usePathBase();
 
+    const tapes = [...Array(Number.parseInt(interview.tape_count)).keys()]
+        .map(i => i + 1);
+
     function handleTapeChange(e) {
         setTape(Number(e.target.value));
     }
 
-    const tapes = [...Array(Number.parseInt(interview.tape_count)).keys()]
-        .map(i => i + 1);
+    function positionUrl() {
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        const interviewId = interview.archive_id;
+        const timeCode = formatTimecode(mediaTime, true);
+        return `${protocol}//${host}${pathBase}/interviews/${interviewId}?tape=${currentTape}&time=${timeCode}`;
+    }
 
-    const positionUrl=`${window.location.protocol}//${window.location.host}${pathBase}/interviews/${interview.archive_id}?tape=${currentTape}&time=${formatTimecode(mediaTime, true)}`;
+    const showMediaControls = !interview.media_missing;
 
     return (
         <div className={classNames(className, 'MediaControls')}>
-            <div className="MediaControls-selects">
+            {showMediaControls && (
+                <div className="MediaControls-selects">
                 {
                     tapes.length > 1 && (
                         <select
@@ -47,7 +56,8 @@ export default function MediaControls({
                         </select>
                     )
                 }
-            </div>
+                </div>
+            )}
 
             <div className="MediaControls-buttons">
                 <Modal
@@ -69,14 +79,16 @@ export default function MediaControls({
                         />
                     )}
                 </Modal>
-                <CopyText
-                    className="MediaControls-bookmark"
-                    iconClassName="Icon--white"
-                    text={positionUrl}
-                    title={t('modules.media_player.copy_position_tooltip')}
-                >
-                    {t('modules.media_player.copy_position')}
-                </CopyText>
+                {showMediaControls && (
+                    <CopyText
+                        className="MediaControls-bookmark"
+                        iconClassName="Icon--white"
+                        text={positionUrl()}
+                        title={t('modules.media_player.copy_position_tooltip')}
+                    >
+                        {t('modules.media_player.copy_position')}
+                    </CopyText>
+                )}
             </div>
         </div>
     );

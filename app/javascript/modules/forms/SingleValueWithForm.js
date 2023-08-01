@@ -28,8 +28,6 @@ export default class SingleValueWithForm extends Component {
 
     editButton() {
         const { editing } = this.state;
-
-
     }
 
     label() {
@@ -171,6 +169,8 @@ export default class SingleValueWithForm extends Component {
 SingleValueWithForm.propTypes = {
     obj: PropTypes.object,
     attribute: PropTypes.string,
+    elementType: PropTypes.string,
+    type: PropTypes.string,
     readOnly: PropTypes.bool,
     linkUrls: PropTypes.bool,
 };

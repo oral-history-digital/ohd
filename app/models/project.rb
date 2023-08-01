@@ -33,7 +33,7 @@ class Project < ApplicationRecord
   has_one :access_config, dependent: :destroy
 
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
-    fallbacks_for_empty_translations: true, touch: true
+    :media_missing_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array

@@ -46,3 +46,7 @@
 .Layout.is-sticky .MediaHeader-controls {
   margin-left: 0;
 }
+
+.Layout.is-sticky .MediaHeader--mediaMissing {
+  flex-shrink: 0;
+}

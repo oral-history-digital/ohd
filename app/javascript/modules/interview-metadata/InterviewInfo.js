@@ -61,6 +61,14 @@ export default function InterviewInfo({
             />
             <SingleValueWithFormContainer
                 obj={interview}
+                attribute="media_missing"
+                elementType="input"
+                type="checkbox"
+                projectAccessGranted={projectAccessGranted}
+                noStatusCheckbox
+            />
+            <SingleValueWithFormContainer
+                obj={interview}l
                 validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
                 attribute={'duration'}
                 projectAccessGranted={projectAccessGranted}
