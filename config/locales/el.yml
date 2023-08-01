@@ -32,6 +32,9 @@ el:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Ναι
+    false: Όχι
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -794,6 +797,7 @@ el:
     archive_id: Interview ID
     collection_id: Collection
     media_type: Τύπος μέσου
+    media_missing: Απουσία μέσων
     language_id: Γλώσσα
     age: Ηλικία
     year_of_birth: Έτος γέννησης
@@ -1004,6 +1008,7 @@ el:
         language_id: Γλώσσα
         translation_language_id: Übersetzungssprache
         media_type: Τύπος μέσου
+        media_missing: Απουσία μέσων
         translated: η συνέντευξη έχει ήδη μεταφραστεί;
         workflow_state: 'Κατάσταση'
         tasks_states: Bearbeitungsstand
@@ -1036,6 +1041,7 @@ el:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Media Missing Message
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: Importarten
@@ -1453,6 +1459,7 @@ el:
         disable: "disable auto-scrolling transcript"
       copy_position: Αντιγραφή θέσης
       copy_position_tooltip: Αντιγραφή της χρονοσφραγίδας ως URL
+      media_missing: "Δυστυχώς, το αρχείο πολυμέσων για αυτήν τη συνέντευξη δεν είναι διαθέσιμο στο διαδίκτυο. Επικοινωνήστε μαζί μας για περισσότερες πληροφορίες σχετικά με τη συνέντευξη και, εφόσον απαιτείται, πρόσβαση στο αρχείο πολυμέσων."
     person:
       no_interviewee: No interviewee
       abbr_titles:

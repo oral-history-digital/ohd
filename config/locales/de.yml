@@ -34,6 +34,9 @@ de:
   workflow_state:
     public: öffentlich
     unshared: nicht öffentlich
+  boolean_value:
+    true: Ja
+    false: Nein
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -826,6 +829,7 @@ de:
     other_first_names: Weitere Vornamen
     alias_names: Weitere Namen
     interview_date: Entstehungszeit
+    media_missing: Mediendateien fehlen
     public: öffentlich
     unshared: nicht öffentlich
     description: Beschreibung
@@ -1037,6 +1041,7 @@ de:
         language_id: Originalsprache
         translation_language_id: Übersetzungssprache
         media_type: Medientyp
+        media_missing: Mediendateien fehlen
         translated: ist das Interview bereits übersetzt?
         workflow_state: Interview-Status
         tasks_states: Bearbeitungsstand
@@ -1065,6 +1070,7 @@ de:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Text bei fehlenden Medien
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Vollen Namen auf der Landingpage zeigen
         pseudo_upload_types: Importarten
@@ -1494,6 +1500,7 @@ de:
         disable: "mitlaufendes Transkript aus"
       copy_position: Position kopieren
       copy_position_tooltip: Aktuelle Zeitmarke als URL kopieren
+      media_missing: "Leider ist die Mediendatei für dieses Interview online nicht verfügbar. Bitte kontaktieren Sie uns, um weitere Informationen zum Interview und ggf. Zugang zur Mediendatei zu erhalten."
     person:
       no_interviewee: Keine interviewte Person
       abbr_titles:
