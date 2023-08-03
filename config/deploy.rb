@@ -1,7 +1,7 @@
 # config valid only for current version of Capistrano
 lock "3.17.0"
 
-set :repo_url, "git@github.com:oral-history-digital/ohd.git"
+set :repo_url, "https://github.com/oral-history-digital/ohd.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
