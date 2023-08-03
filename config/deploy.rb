@@ -5,7 +5,7 @@ set :repo_url, "git@gitlab.cedis.fu-berlin.de:dis/zwar-archive.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, ENV.fetch('BRANCH', 'development')
+set :branch, ENV.fetch('BRANCH', 'main')
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
