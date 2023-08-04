@@ -1043,7 +1043,7 @@ es:
         pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
-        is_catalog: Ist das Projekt ein Katalog
+        is_catalog: Nur Metadaten anzeigen
         grant_project_access_instantly: Keine Freischaltung nötig
         grant_access_without_login: Zugang ohne Login
         display_ohd_link: OHD-Link zeigen
