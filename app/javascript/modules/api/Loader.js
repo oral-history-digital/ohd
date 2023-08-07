@@ -70,7 +70,7 @@ const Loader = {
                 } else {
                     if (Array.isArray(params[scope][param])) {
                         // value is an array
-                        params[scope][param].map((elem) => {
+                        params[scope][param].map((elem, elemIndex) => {
                             if (typeof(elem) === 'object') {
                                 // array elements are hashes/ objects
                                 Object.keys(elem).map((e) => {
@@ -86,11 +86,11 @@ const Loader = {
                                         elem[e].map((i, index) => {
                                             Object.keys(i).map((j) => {
                                                 if (i[j] && i[j] !== '')
-                                                    req.field(`${scope}[${param}][][${e}][${index}][${j}]`, i[j]);
+                                                    req.field(`${scope}[${param}][${elemIndex}}][${e}][${index}][${j}]`, i[j]);
                                             })
                                         })
                                     } else {
-                                        req.field(`${scope}[${param}][][${e}]`, elem[e] || '');
+                                        req.field(`${scope}[${param}][${elemIndex}][${e}]`, elem[e] || '');
                                     }
                                 })
                             } else {
