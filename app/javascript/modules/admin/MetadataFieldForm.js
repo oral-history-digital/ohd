@@ -22,7 +22,7 @@ const NAME_VALUES = {
         "language_id", "observations", "workflow_state", "tasks_user_ids",
         "tasks_supervisor_ids", "description", "collection_id",
         "signature_original", "startpage_position", "project_id",
-        "project_access"
+        "project_access", "transcript_coupled"
     ],
     Person: [
         "date_of_birth", "year_of_birth", "gender", "description",

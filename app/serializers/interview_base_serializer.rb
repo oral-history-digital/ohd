@@ -6,6 +6,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :collection_id,
     :interviewee_id,
     :tape_count,
+    :transcript_coupled,
     :video,
     :media_type,
     :duration,

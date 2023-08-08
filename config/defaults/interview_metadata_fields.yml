@@ -21,6 +21,8 @@
   display_on_landing_page: true
 :tape_count:
   use_in_details_view: true
+:transcript_coupled:
+  use_in_details_view: false
 :language_id:
   use_as_facet: true
   facet_order: 3.0

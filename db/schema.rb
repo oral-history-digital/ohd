@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_11_111604) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_08_093849) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -365,6 +365,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_111604) do
     t.string "original_content_type"
     t.integer "startpage_position"
     t.integer "translation_language_id"
+    t.boolean "transcript_coupled", default: true
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
   end
 
