@@ -330,6 +330,7 @@ de:
   metadata_labels:
     link_to_interview: Link zum Interview
     tape_count: Anzahl der Bänder
+    transcript_coupled: Transkript mit Mediendatei koppeln (Timecode-Alignment) ein/aus
     description: Beschreibung
     duration: Dauer
     date_of_birth: Geburtsdatum
@@ -831,6 +832,7 @@ de:
     duration: Dauer
     observations: Protokoll
     tape_count: Anzahl der Bänder
+    transcript_coupled: Transkript mit Mediendatei koppeln (Timecode-Alignment) ein/aus
     tasks_supervisor_ids: Qualitätsmanagement
     tasks_user_ids: Bearbeiter*innen
     workflow_state: Status
@@ -1024,6 +1026,7 @@ de:
         duration: Dauer
         interview_date: geführt am
         tape_count: Anzahl der Bänder
+        transcript_coupled: Transkript mit Mediendatei koppeln (Timecode-Alignment) ein/aus
         interviewers: Interviewführung
         transcriptors: Transkription
         translators: Übersetzung

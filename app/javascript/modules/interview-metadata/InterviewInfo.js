@@ -72,6 +72,13 @@ export default function InterviewInfo({
                 projectAccessGranted={projectAccessGranted}
             />
             <SingleValueWithFormContainer
+                obj={interview}
+                elementType='input'
+                type='checkbox'
+                attribute={'transcript_coupled'}
+                projectAccessGranted={projectAccessGranted}
+            />
+            <SingleValueWithFormContainer
                 elementType={'select'}
                 obj={interview}
                 values={languages}

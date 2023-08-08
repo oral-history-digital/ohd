@@ -449,6 +449,7 @@ class InterviewsController < ApplicationController
       "interview_date",
       "signature_original",
       "tape_count",
+      "transcript_coupled",
       "duration",
       "video",
       "translated",
