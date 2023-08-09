@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Form } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { usePeople } from 'modules/person';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
 export default function InterviewForm({
@@ -13,8 +13,6 @@ export default function InterviewForm({
     contributionTypes,
     interview,
     languages,
-    project,
-    projectId,
     submitData,
     submitText,
     withContributions,
@@ -23,6 +21,7 @@ export default function InterviewForm({
     const [archiveId, setArchiveId] = useState(null);
 
     const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
     const { data: people, isLoading } = usePeople();
@@ -87,6 +86,12 @@ export default function InterviewForm({
                 withEmpty: true,
                 values: ['video', 'audio'],
                 validate: function(v){return /^\w+$/.test(v)},
+            },
+            {
+                attribute: 'media_missing',
+                value: interview?.media_missing || false,
+                elementType: 'input',
+                type: 'checkbox',
             },
             {
                 elementType: 'select',
@@ -183,8 +188,6 @@ export default function InterviewForm({
 
 InterviewForm.propTypes = {
     interview: PropTypes.object,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     withContributions: PropTypes.bool,

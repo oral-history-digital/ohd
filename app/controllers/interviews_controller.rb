@@ -455,6 +455,7 @@ class InterviewsController < ApplicationController
       "translated",
       "workflow_state",
       "media_type",
+      "media_missing",
       "biographies_workflow_state",
       :startpage_position,
       properties: {},

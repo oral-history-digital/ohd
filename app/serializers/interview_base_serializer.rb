@@ -15,6 +15,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :language_id,
     :lang,
     :anonymous_title,
+    :media_missing,
     :still_url,
     :contributions,
     :registry_references,

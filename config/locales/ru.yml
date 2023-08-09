@@ -32,6 +32,9 @@ ru:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Да
+    false: Нет
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -841,6 +844,7 @@ ru:
     age: Возраст
     year_of_birth: Год рождения
     interview_date: Entstehungszeit
+    media_missing: Отсутствует медиа
     public: öffentlich
     unshared: nicht öffentlich
     description: Beschreibung
@@ -1047,6 +1051,7 @@ ru:
         language_id: Originalsprache
         translation_language_id: Übersetzungssprache
         media_type: Medientyp
+        media_missing: Отсутствует медиа
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status'
         tasks_states: Bearbeitungsstand
@@ -1076,6 +1081,7 @@ ru:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Media Missing Message
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: Importarten
@@ -1879,6 +1885,7 @@ ru:
         disable: "disable auto-scrolling transcript"
       copy_position: Копировать позицию
       copy_position_tooltip: Копировать актуальную отметку времени как URL
+      media_missing: "К сожалению, медиафайл для этого интервью недоступен онлайн. Пожалуйста, свяжитесь с нами для получения дополнительной информации об интервью и, при необходимости, доступа к медиафайлу."
     person:
       no_interviewee: No interviewee
       abbr_titles:

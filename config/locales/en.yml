@@ -32,6 +32,9 @@ en:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Yes
+    false: No
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geo Filter
@@ -791,6 +794,7 @@ en:
     age: Age
     year_of_birth: Year of birth
     interview_date: Interview date
+    media_missing: Media missing
     public: öffentlich
     unshared: nicht öffentlich
     description: Description
@@ -1000,6 +1004,7 @@ en:
         language_id: Originalsprache
         translation_language_id: Übersetzungssprache
         media_type: Media Typ
+        media_missing: Media missing
         translated: ist das Interview bereits übersetzt?
         workflow_state: Interview-Status
         tasks_states: Bearbeitungsstand
@@ -1028,6 +1033,7 @@ en:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Media Missing Message
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: Importarten
@@ -1480,6 +1486,7 @@ en:
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
       copy_position_tooltip: Copy current timestamp as URL
+      media_missing: "Unfortunately, the media file for this interview is not available online. Please contact us for further information about the interview and, if necessary, access to the media file."
     person:
       no_interviewee: No interviewee
       abbr_titles:

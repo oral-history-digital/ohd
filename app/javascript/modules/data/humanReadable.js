@@ -1,3 +1,5 @@
+import isNil from 'lodash.isnil';
+
 import { t } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
 
@@ -10,7 +12,14 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
         (Array.isArray(obj.translations_attributes) ? obj.translations_attributes.find(t => t.locale === props.locale) :
         Object.values(obj.translations_attributes).find(t => t.locale === props.locale))
 
-    let value = state.value || obj[attribute] || (translation && translation[attribute]);
+    let value;
+    if (!isNil(state.value)) {
+        value = state.value;
+    } else if (!isNil(obj[attribute])) {
+        value = obj[attribute];
+    } else {
+        value = translation && translation[attribute];
+    }
 
     if (props.optionsScope && props.translations[props.locale][props.optionsScope].hasOwnProperty(value)) {
         value = t(props, `${props.optionsScope}.${value}`);
@@ -43,6 +52,10 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
 
     if (typeof value === 'string' && state.collapsed) {
         value = value.substring(0,25)
+    }
+
+    if (typeof value === 'boolean') {
+        return t(props, `boolean_value.${value}`);
     }
 
     return value || none;

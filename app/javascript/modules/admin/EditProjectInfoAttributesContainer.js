@@ -43,6 +43,10 @@ const mapStateToProps = state => ({
         {
             attribute: "pseudo_funder_names"
         },
+        {
+            attribute: 'media_missing_text',
+            multiLocale: true,
+        },
     ],
 });
 
