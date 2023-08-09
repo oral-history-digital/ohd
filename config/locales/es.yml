@@ -32,6 +32,9 @@ es:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Sí
+    false: No
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -785,6 +788,7 @@ es:
     age: Edad
     year_of_birth: Año de nacimiento
     interview_date: Fecha de origen
+    media_missing: Falta de medios
     public: öffentlich
     unshared: nicht öffentlich
     description: Beschreibung
@@ -991,6 +995,7 @@ es:
         language_id: Idioma original
         translation_language_id: Übersetzungssprache
         media_type: Formato de medio
+        media_missing: Falta de medios
         translated: se ha traducido la entrevista?
         workflow_state: estatus
         tasks_states: Bearbeitungsstand
@@ -1018,6 +1023,7 @@ es:
         default_locale: default Sprachcode (alpha2)
         view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
+        media_missing_text: Media Missing Message
         pseudo_upload_types: Importarten
         primary_color: Primary color
         secondary_color: Secondary color
@@ -1426,6 +1432,7 @@ es:
         disable: "disable auto-scrolling transcript"
       copy_position: Copiar posición
       copy_position_tooltip: Copiar codigo de tiempo como enlace
+      media_missing: "Lamentablemente, el archivo multimedia de esta entrevista no está disponible en línea. Por favor, contáctenos para obtener más información sobre la entrevista y, si es necesario, acceso al archivo multimedia."
     person:
       no_interviewee: No interviewee
       abbr_titles:

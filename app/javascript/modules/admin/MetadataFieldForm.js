@@ -18,7 +18,7 @@ import useGlobalRegistryReferenceTypes from './useGlobalRegistryReferenceTypes';
 
 const NAME_VALUES = {
     Interview: [
-        "media_type", "archive_id", "interview_date", "duration", "tape_count",
+        "media_type", "media_missing", "archive_id", "interview_date", "duration", "tape_count",
         "language_id", "observations", "workflow_state", "tasks_user_ids",
         "tasks_supervisor_ids", "description", "collection_id",
         "signature_original", "startpage_position", "project_id",
@@ -62,7 +62,7 @@ export default function MetadataFieldForm({
         setEventTypeId(value);
     };
 
-    if (eventTypesLoading) {
+    if (eventTypesLoading || globalRegistryReferenceTypesLoading) {
         return <Spinner />;
     }
 
@@ -79,8 +79,6 @@ export default function MetadataFieldForm({
             return NAME_VALUES[source];
         }
     };
-
-    console.log(globalRegistryReferenceTypes);
 
     return (
         <Fetch

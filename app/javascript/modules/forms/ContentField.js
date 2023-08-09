@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import isNil from 'lodash.isnil';
 
 import ContentValueWithLinks from './ContentValueWithLinks';
 
@@ -14,10 +15,12 @@ function ContentField({
 }) {
     let valueArray;
 
-    if (!value) {
+    if (isNil(value)) {
         valueArray = ['---'];
     } else if (Array.isArray(value)) {
         valueArray = value;
+    } else if (typeof value === 'boolean') {
+        valueArray = [String(value)];
     } else {
         valueArray = [value];
     }
