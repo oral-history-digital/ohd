@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaEdit, FaSortAmountDown } from 'react-icons/fa';
+import { FaEdit, FaSortAmountDown, FaSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -7,6 +7,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function MediaPlayerButtons({
     autoScroll,
+    transcriptCoupled = true,
     className,
     editViewEnabled,
     enableAutoScroll,
@@ -38,15 +39,21 @@ export default function MediaPlayerButtons({
                 </button>
             </AuthorizedContent>
 
-            <button
-                className={classNames('StateButton', { 'is-pressed': autoScroll })}
-                type="button"
-                aria-label={autoScrollButtonLabel}
-                title={autoScrollButtonLabel}
-                onClick={toggleAutoScroll}
-            >
-                <FaSortAmountDown className="StateButton-icon" />
-            </button>
+            { transcriptCoupled ?
+                <button
+                    className={classNames('StateButton', { 'is-pressed': autoScroll })}
+                    type="button"
+                    aria-label={autoScrollButtonLabel}
+                    title={autoScrollButtonLabel}
+                    onClick={toggleAutoScroll}
+                >
+                    <FaSortAmountDown className="StateButton-icon" />
+                </button> :
+                <button className="StateButton-icon stacked">
+                    <FaSortAmountDown />
+                    <FaSlash />
+                </button>
+            }
         </div>
     );
 }
