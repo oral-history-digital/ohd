@@ -7,7 +7,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function MediaPlayerButtons({
     autoScroll,
-    transcriptCoupled = true,
+    interview,
     className,
     editViewEnabled,
     enableAutoScroll,
@@ -39,7 +39,7 @@ export default function MediaPlayerButtons({
                 </button>
             </AuthorizedContent>
 
-            { transcriptCoupled ?
+            { interview?.transcript_coupled ?
                 <button
                     className={classNames('StateButton', { 'is-pressed': autoScroll })}
                     type="button"
@@ -49,10 +49,10 @@ export default function MediaPlayerButtons({
                 >
                     <FaSortAmountDown className="StateButton-icon" />
                 </button> :
-                <button className="StateButton-icon stacked">
+                <div className="StateButton-icon stacked">
                     <FaSortAmountDown />
                     <FaSlash />
-                </button>
+                </div>
             }
         </div>
     );
