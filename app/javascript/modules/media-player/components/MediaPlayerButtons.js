@@ -51,7 +51,7 @@ export default function MediaPlayerButtons({
                 </button> :
                 <div className="StateButton-icon stacked">
                     <FaSortAmountDown />
-                    <FaSlash />
+                    <FaSlash className="red" />
                 </div>
             }
         </div>
