@@ -11,10 +11,9 @@ import {
     METADATA_SOURCE_INTERVIEW,
     METADATA_SOURCE_PERSON,
     METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
-    METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE,
     METADATA_SOURCE_EVENT_TYPE
 } from 'modules/constants';
-import useGlobalRegistryReferenceTypes from './useGlobalRegistryReferenceTypes';
+import useCombinedRegistryReferenceTypes from './useCombinedRegistryReferenceTypes';
 
 const NAME_VALUES = {
     Interview: [
@@ -31,7 +30,6 @@ const NAME_VALUES = {
 }
 
 export default function MetadataFieldForm({
-    registryReferenceTypes,
     data,
     submitData,
     onSubmit,
@@ -45,10 +43,7 @@ export default function MetadataFieldForm({
     const [eventTypeId, setEventTypeId] = useState(data?.event_type_id);
 
     const { isLoading: eventTypesLoading, data: eventTypes } = useEventTypes();
-    const {
-        isLoading: globalRegistryReferenceTypesLoading,
-        data: globalRegistryReferenceTypes,
-    } = useGlobalRegistryReferenceTypes();
+    const { isLoading: registryReferenceTypesLoading, registryReferenceTypes } = useCombinedRegistryReferenceTypes();
 
     const handleSourceChange = (name, value) => {
         setSource(value);
@@ -62,12 +57,11 @@ export default function MetadataFieldForm({
         setEventTypeId(value);
     };
 
-    if (eventTypesLoading || globalRegistryReferenceTypesLoading) {
+    if (eventTypesLoading || registryReferenceTypesLoading) {
         return <Spinner />;
     }
 
-    const isRegistrySource = source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE
-        || source === METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE;
+    const isRegistrySource = source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE;
     const isEventSource = source === METADATA_SOURCE_EVENT_TYPE;
 
     const nameValuesForSource = () => {
@@ -106,7 +100,6 @@ export default function MetadataFieldForm({
                             METADATA_SOURCE_INTERVIEW,
                             METADATA_SOURCE_PERSON,
                             METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
-                            METADATA_SOURCE_GLOBAL_REGISTRY_REFERENCE_TYPE,
                             METADATA_SOURCE_EVENT_TYPE,
                         ],
                         optionsScope: 'activerecord.attributes.metadata_field',
@@ -116,9 +109,7 @@ export default function MetadataFieldForm({
                     {
                         elementType: 'select',
                         attribute: 'registry_reference_type_id',
-                        values: (source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE
-                            ? registryReferenceTypes
-                            : globalRegistryReferenceTypes),
+                        values: registryReferenceTypes,
                         withEmpty: true,
                         handlechangecallback: handleRegistryReferenceTypeIdChange,
                         hidden: !isRegistrySource,
@@ -226,7 +217,6 @@ export default function MetadataFieldForm({
 
 MetadataFieldForm.propTypes = {
     data: PropTypes.object,
-    registryReferenceTypes: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
