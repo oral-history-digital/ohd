@@ -13,6 +13,7 @@ export default function DumbTranscriptResult({
     time,
     className,
     lang,
+    transcriptCoupled,
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function DumbTranscriptResult({
                 <TapeAndTime
                     tape={tapeNumber}
                     time={time}
+                    transcriptCoupled={transcriptCoupled}
                 />
             </p>
             <p
