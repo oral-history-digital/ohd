@@ -116,7 +116,7 @@ export default function Transcript({
                         }
 
                         const nextSegment = array[index + 1];
-                        const active = isSegmentActive({
+                        const active = interview.transcript_coupled && isSegmentActive({
                             thisSegmentTape: segment.tape_nbr,
                             thisSegmentTime: segment.time,
                             nextSegmentTape: nextSegment?.tape_nbr,

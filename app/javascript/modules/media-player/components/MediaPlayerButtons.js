@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { FaEdit, FaSortAmountDown, FaSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
@@ -23,6 +24,12 @@ export default function MediaPlayerButtons({
             enableAutoScroll();
         }
     }
+
+    useEffect(() => {
+        if (!interview.transcript_coupled) {
+            disableAutoScroll();
+        }
+    }, [interview.transcript_coupled]);
 
     const autoScrollButtonLabel = autoScroll ? t('modules.media_player.auto_scroll.disable') : t('modules.media_player.auto_scroll.enable')
 
