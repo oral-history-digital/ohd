@@ -186,6 +186,8 @@ export default function MediaElement({
 
 
     function addTextTracks() {
+        if (!interview.transcript_coupled) return;
+
         const player = playerRef.current
         if (!player) {
             return;
