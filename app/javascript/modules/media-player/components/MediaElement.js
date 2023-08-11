@@ -175,7 +175,7 @@ export default function MediaElement({
         player.src(newSources);
 
         addTextTracks();
-    }, [tape]);
+    }, [tape, interview.transcript_coupled]);
 
     // Check if time has been changed from outside of component.
     useEffect(() => {
