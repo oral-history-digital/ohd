@@ -10,7 +10,7 @@ class MetadataField < ApplicationRecord
   serialize :values
 
   validates :source,
-    inclusion: { in: %w(Person Interview RegistryReferenceType GlobalRegistryReferenceType EventType),
+    inclusion: { in: %w(Person Interview RegistryReferenceType EventType),
     message: '%{value} is not a valid source' }
   validates_presence_of :name
   validates_uniqueness_of :registry_reference_type_id, allow_nil: true,
@@ -23,7 +23,7 @@ class MetadataField < ApplicationRecord
 
   def set_name
     self.name = case source
-                when 'RegistryReferenceType', 'GlobalRegistryReferenceType'
+                when 'RegistryReferenceType'
                   registry_reference_type&.code
                 when 'EventType'
                   event_type&.code
