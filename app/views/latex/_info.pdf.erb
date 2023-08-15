@@ -19,12 +19,14 @@
     translators: 'translation',
     segmentators: 'segmentation'
   }.each do |contribution_type, translation_key|
-    contributors = interview.respond_to?(contribution_type) ? interview.send(contribution_type).compact : []
-    names = contributors.map{|i| "#{i.first_name(header_locale)} #{i.last_name(header_locale)}" }.join(", ")
-    unless names.blank?
+    unless doc_type == 'transcript' && contribution_type == :translators
+      contributors = interview.respond_to?(contribution_type) ? interview.send(contribution_type).compact : []
+      names = contributors.map{|i| "#{i.first_name(header_locale)} #{i.last_name(header_locale)}" }.join(", ")
+      unless names.blank?
 %>
-      \par{<%= latex_escape( "#{I18n.t(translation_key, locale: header_locale)}: #{names}" ) %> \newline}
+        \par{<%= latex_escape( "#{I18n.t(translation_key, locale: header_locale)}: #{names}" ) %>}
 <%
+      end
     end
   end
 %>

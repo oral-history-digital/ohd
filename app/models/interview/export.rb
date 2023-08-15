@@ -58,7 +58,7 @@ module Interview::Export
         layout: 'latex',
         locals: {
           interview: self,
-          doc_type: 'transcript',
+          doc_type: self.lang == content_locale ? 'transcript' : 'translation',
           header_locale: header_locale,
           content_locale: content_locale,
           content_locale_public: "#{content_locale}-public",

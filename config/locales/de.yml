@@ -263,9 +263,11 @@ de:
   history: Kurzbiografie
   interview_with: Interview mit
   transcript_header: 'Transkript (%{lang}):'
+  translation_header: 'Übersetzung (%{lang}):'
   transcript_title: Transkript (%{lang}) des Interviews mit
   translation_title: Übersetzung (%{lang}) des Interviews mit
   transcript_footer: 'Zitierweise: Transkript des Interviews mit'
+  translation_footer: 'Zitierweise: Übersetzung des Interviews mit'
   transcript_template: Vorlage für den Import von .csv Dateien
   biographical_entries_header: 'Kurzbiografie (deutsch): %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Kurzbiografie (deutsch) von %{interviewee_name}'
