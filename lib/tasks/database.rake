@@ -46,7 +46,7 @@ namespace :database do
     Rails.application.eager_load!
     ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq{|a| a.table_name}.each do |model|
       puts "updating #{model}"
-      id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id'])
+      id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id', 'url_without_id'])
       id_columns.each do |col|
         if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?(col)
           puts "updating #{col}"
@@ -89,7 +89,7 @@ namespace :database do
     User.group(:email).count.select{|k,v| v > 1}.each do |email, count|
       first_user = User.where(email: email).where("id <= ?", args.max_id).first
       if first_user
-        other_users = UserRegistration.where(email: email).where("id > ?", args.max_id)
+        other_users = User.where(email: email).where("id > ?", args.max_id)
 
         other_users.each do |user|
           user.user_projects.update_all(user_id: first_user.id)
@@ -99,8 +99,8 @@ namespace :database do
           user.user_contents.update_all(user_id: first_user.id)
           user.searches.update_all(user_id: first_user.id)
 
-          if !first_user.activated_at && user.activated_at
-            first_user.update(activated_at: user.activated_at)
+          if !first_user.confirmed_at && user.confirmed_at
+            first_user.update(confirmed_at: user.confirmed_at)
           end
           user.destroy
         end
@@ -113,10 +113,12 @@ namespace :database do
     raise 'Please provide max_id-parameter' unless args.max_id
     Language.all.each do |language|
       first_language = Language.where(name: language.name).where("languages.id <= ?", args.max_id).first
-      other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
-      other_languages.each do |other_language|
-        other_language.interviews.update_all(language_id: first_language.id)
-        other_language.destroy
+      if first_language
+        other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
+        other_languages.each do |other_language|
+          other_language.interviews.update_all(language_id: first_language.id)
+          other_language.destroy
+        end
       end
     end
   end
@@ -143,11 +145,13 @@ namespace :database do
     raise 'Please provide max_id-parameter' unless args.max_id
     Institution.all.each do |institution|
       first_institution = Institution.where(name: institution.name).where("institutions.id <= ?", args.max_id).first
-      other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
-      first_institution && other_institutions.each do |other_institution|
-        other_institution.collections.update_all(institution_id: first_institution.id)
-        other_institution.institution_projects.update_all(institution_id: first_institution.id)
-        other_institution.destroy
+      if first_institution
+        other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
+        first_institution && other_institutions.each do |other_institution|
+          other_institution.collections.update_all(institution_id: first_institution.id)
+          other_institution.institution_projects.update_all(institution_id: first_institution.id)
+          other_institution.destroy
+        end
       end
     end
   end
@@ -157,10 +161,12 @@ namespace :database do
     raise 'Please provide max_id-parameter' unless args.max_id
     NormDataProvider.all.each do |norm_data_provider|
       first_norm_data_provider = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id <= ?", args.max_id).first
-      other_norm_data_providers = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id > ?", args.max_id)
-      other_norm_data_providers.each do |other_norm_data_provider|
-        other_norm_data_provider.norm_data.update_all(norm_data_provider_id: first_norm_data_provider.id)
-        other_norm_data_provider.destroy
+      if first_norm_data_provider
+        other_norm_data_providers = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id > ?", args.max_id)
+        other_norm_data_providers.each do |other_norm_data_provider|
+          other_norm_data_provider.norm_data.update_all(norm_data_provider_id: first_norm_data_provider.id)
+          other_norm_data_provider.destroy
+        end
       end
     end
   end
