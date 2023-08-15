@@ -108,8 +108,6 @@ EVAL
     update_attribute(:updated_at, Time.now)
   end
 
-  private
-
   def serialize_form_parameters
     serialized_form_params = {}
     yaml_fields = [:appellation, :gender, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :country]
