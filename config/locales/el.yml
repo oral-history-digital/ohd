@@ -260,9 +260,11 @@ el:
   history: Σύντομο βιογραφικό
   interview_with: Συνέντευξη με
   transcript_header: Απομαγνητοφωνημένο κείμενο
+  translation_header: Μετάφραση κείμενο
   transcript_title: Απομαγνητοφώνηση της συνέντευξης με
   translation_title: Μετάφραση της συνέντευξης με
   transcript_footer: 'Τρόπος παραπομπής: Απομαγνητοφώνηση της συνέντευξης με'
+  translation_footer: 'Τρόπος παραπομπής: Μετάφραση της συνέντευξης με'
   transcript_template: Υπόδειγμα για την εισαγωγή αρχείων .csv
   biographical_entries_header: 'Σύντομο βιογραφικό: %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Σύντομο βιογραφικό της/του %{interviewee_name}'

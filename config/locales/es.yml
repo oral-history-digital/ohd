@@ -251,9 +251,11 @@ es:
   history: Biografía breve
   interview_with: Entrevista con
   transcript_header: 'Transcripción (%{lang}):'
+  translation_header: 'Traducción (%{lang}):'
   transcript_title: Transcripción (%{lang}) de la entrevista con
   translation_title: Traducción (%{lang}) de la entrevista con
   transcript_footer: 'Cómo citar: Transcripción de la entrevista con'
+  translation_footer: 'Cómo citar: Traducción de la entrevista con'
   transcript_template: Modelo para la importación de archivos .csv
   biographical_entries_header: 'Biografía breve (español): %{interviewee_name} (Interview ID %{archive_id})'
   biographical_entries_title: 'Biografía breve (español) de %{interviewee_name}'

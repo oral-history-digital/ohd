@@ -254,6 +254,7 @@ ru:
   transcript_title: Транскрипт интервью (%{lang})
   translation_title: Перевод интервью (%{lang})
   transcript_footer: 'Метод цитирования: Транскрипт интервью'
+  translation_footer: 'Метод цитирования: Перевод интервью'
   transcript_template: Vorlage für den Import von .csv Dateien
   biographical_entries_header: 'Краткая биография: %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Краткая биография: %{interviewee_name}'

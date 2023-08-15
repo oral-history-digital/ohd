@@ -48,7 +48,8 @@
         \raggedright
         <%= latex_escape(footer_text) %>\\
         \vspace*{0.5cm}
-        \copyright <%= Date.today.strftime("%Y") %> Freie Universit\"at Berlin
+        \copyright <%= Date.today.strftime("%Y") %> <%= (interview.project.institutions.where(parent_id: nil).first ||
+          interview.project.institions.first).name(header_locale) %>
       \end{minipage}
     }
   }
