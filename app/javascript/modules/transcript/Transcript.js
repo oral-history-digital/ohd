@@ -139,6 +139,7 @@ export default function Transcript({
                                 setOpenReference={setOpenReference}
                                 tabIndex={tabIndex}
                                 active={active}
+                                transcriptCoupled={interview.transcript_coupled}
                             />
                         );
                     })

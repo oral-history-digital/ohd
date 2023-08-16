@@ -27,6 +27,7 @@ function Segment({
     setOpenReference,
     tabIndex,
     sendTimeChangeRequest,
+    transcriptCoupled,
 }) {
     const divEl = useRef();
     const { isAuthorized } = useAuthorization();
@@ -112,7 +113,7 @@ function Segment({
                     type="button"
                     className={classNames('Segment-text', { 'is-active': active })}
                     lang={contentLocale}
-                    onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+                    onClick={() => {transcriptCoupled && sendTimeChangeRequest(data.tape_nbr, data.time)}}
                     // TODO: clean mog segment-texts from html in db
                     //dangerouslySetInnerHTML={{__html: text}}
                 >
