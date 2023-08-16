@@ -86,7 +86,7 @@ const Loader = {
                                         elem[e].map((i, index) => {
                                             Object.keys(i).map((j) => {
                                                 if (i[j] && i[j] !== '')
-                                                    req.field(`${scope}[${param}][${elemIndex}}][${e}][${index}][${j}]`, i[j]);
+                                                    req.field(`${scope}[${param}][${elemIndex}][${e}][${index}][${j}]`, i[j]);
                                             })
                                         })
                                     } else {
