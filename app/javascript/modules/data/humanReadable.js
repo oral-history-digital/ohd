@@ -2,6 +2,8 @@ import isNil from 'lodash.isnil';
 
 import { t } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
+import isDate from './isDate';
+import toDateString from './toDateString';
 
 /**
  * Needs in props at most: optionsScope, translations, locale, values
@@ -56,6 +58,10 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
 
     if (typeof value === 'boolean') {
         return t(props, `boolean_value.${value}`);
+    }
+
+    if (isDate(value)) {
+        return toDateString(value, props.locale);
     }
 
     return value || none;
