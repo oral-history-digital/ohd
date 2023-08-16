@@ -13,14 +13,19 @@ export default function useRootEntry() {
     const registryEntriesStatus = useSelector(getRegistryEntriesStatus);
 
     useEffect(() => {
-        if (hasNotBeenLoaded()) {
+        if (hasNotBeenLoaded() && isNotLoading()) {
             load();
         }
-    }, []);
+    }, [registryEntriesStatus[project.root_registry_entry_id]]);
 
     function hasNotBeenLoaded() {
         const fetched = /^fetched/;
         return !fetched.test(registryEntriesStatus[project.root_registry_entry_id]);
+    }
+
+    function isNotLoading() {
+        const fetching = /^fetching/;
+        return !fetching.test(registryEntriesStatus[project.root_registry_entry_id]);
     }
 
     function load() {
