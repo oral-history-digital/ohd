@@ -69,7 +69,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def last_token
-    current_user && current_user.access_tokens.last.token
+    current_user && current_user.access_tokens.last && current_user.access_tokens.last.token
   end
 
 end
