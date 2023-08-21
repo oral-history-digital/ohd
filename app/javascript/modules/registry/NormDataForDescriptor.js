@@ -71,11 +71,13 @@ function NormDataForDescriptor({
     //}
 
     const fetchAPIResults = async(params) => {
-        const filters = [
-            `geo_filter=${params.geo_filter}`,
-            `place_type=${params.place_type}`,
-            //`place=${params.place_extended}`,
-        ]
+        const filters = [];
+        ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
+            if (params[filter]) {
+                filters.push(`${filter}=${params[filter]}`);
+            }
+        });
+
         fetch(`${pathBase}/norm_data_api?expression=${descriptor}&` + filters.join('&'))
             .then(res => res.json())
             .then(json => setApiResult(json));
