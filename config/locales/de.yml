@@ -1479,6 +1479,7 @@ de:
     interview_metadata:
       add_contributors: Mitwirkende hinzufügen
       collection_link_title: Sammlung im OHD-Katalog
+      show_collection_desc: Sammlungsbeschreibung anzeigen
     interview_preview:
       access_requested: Freischaltung beantragt
       no_access: Freischaltung erforderlich
