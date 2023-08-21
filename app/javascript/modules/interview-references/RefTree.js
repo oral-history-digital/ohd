@@ -40,6 +40,7 @@ export default function RefTree({
                         time={entry.time}
                         lang={lang}
                         className="heading"
+                        transcriptCoupled={interview.transcript_coupled}
                     />
                 )
             } else {
