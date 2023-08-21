@@ -19,7 +19,9 @@ export default function DumbTranscriptResult({
     const dispatch = useDispatch();
 
     function handleClick() {
-        dispatch(sendTimeChangeRequest(tapeNumber, time));
+        if (transcriptCoupled) {
+            dispatch(sendTimeChangeRequest(tapeNumber, time));
+        }
     }
 
     return (
