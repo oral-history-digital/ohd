@@ -72,9 +72,8 @@ export default function CollectionCatalogPage() {
                             <dt className="DescriptionList-term">
                                 {t('activerecord.attributes.collection.notes')}
                             </dt>
-                            <dd className="DescriptionList-description">
-                                {collection.notes[locale]}
-                            </dd>
+                            <dd dangerouslySetInnerHTML={{__html: collection.notes[locale]}}
+                                className="DescriptionList-description"/>
                         </>)}
 
                         {collection.responsibles?.[locale] && (<>

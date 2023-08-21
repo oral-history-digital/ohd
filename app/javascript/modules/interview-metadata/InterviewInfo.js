@@ -1,24 +1,21 @@
 import PropTypes from 'prop-types';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
-import { Fetch, getCollectionsForCurrentProjectFetched } from 'modules/data';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { useProjectAccessStatus } from 'modules/auth';
-import CollectionLink from './CollectionLink';
+import InterviewCollectionInfo from './InterviewCollectionInfo';
 
 export default function InterviewInfo({
     interview,
-    collections,
     languages,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { project } = useProject();
 
     const { projectAccessGranted } = useProjectAccessStatus(project);
-    const collection = collections[interview.collection_id];
 
     if (!interview?.language_id) {
         return null;
@@ -95,28 +92,8 @@ export default function InterviewInfo({
                 attribute={'language_id'}
                 projectAccessGranted={projectAccessGranted}
             />
-            <Fetch
-                fetchParams={['collections', null, null, `for_projects=${project?.id}`]}
-                testSelector={getCollectionsForCurrentProjectFetched}
-            >
-                <SingleValueWithFormContainer
-                    elementType={'select'}
-                    obj={interview}
-                    values={collections}
-                    withEmpty={true}
-                    validate={function(v){return /^\d+$/.test(v)}}
-                    individualErrorMsg={'empty'}
-                    attribute={'collection_id'}
-                    projectAccessGranted={projectAccessGranted}
-                >
-                    {collection && (
-                        <CollectionLink
-                            collectionId={collection.id}
-                            notes={collection.notes?.[locale]}
-                        />
-                    )}
-                </SingleValueWithFormContainer>
-            </Fetch>
+
+            <InterviewCollectionInfo interview={interview} />
 
             <AuthorizedContent object={interview} action='update'>
                 <SingleValueWithFormContainer
@@ -145,5 +122,4 @@ export default function InterviewInfo({
 InterviewInfo.propTypes = {
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
-    collections: PropTypes.object.isRequired,
 };
