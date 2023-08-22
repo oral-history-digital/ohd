@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { Modal, Checkbox } from 'modules/ui';
 import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { Modal, Checkbox } from 'modules/ui';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntries from './RegistryEntries';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryEditButtons from './RegistryEntryEditButtons';
+import NormDataLinks from './NormDataLinks';
 
 export default class RegistryEntry extends Component {
     constructor(props) {
@@ -41,24 +42,6 @@ export default class RegistryEntry extends Component {
         ) {
             this.props.fetchData(this.props, 'registry_entries', this.props.data.id);
         }
-    }
-
-    normDataLinks() {
-        return this.props.data.norm_data.map( normDatum => {
-            return (
-                <>
-                    <a
-                        href={`${normDatum.norm_data_provider.url_without_id}${normDatum.nid}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="Link flyout-sub-tabs-content-ico-link"
-                        title={t(this.props, 'norm_data.link_hover')}
-                    >
-                        &nbsp;{normDatum.norm_data_provider.name}&nbsp;
-                    </a>
-                </>
-            )
-        })
     }
 
     showChildren() {
@@ -95,7 +78,7 @@ export default class RegistryEntry extends Component {
                             registryEntryId={data.id}
                             registryEntryParent={registryEntryParent}
                             onSubmit={close}
-                            normDataLinks={this.normDataLinks()}
+                            normDataLinks={<NormDataLinks registryEntry={data} />}
                         />
                     )}
                 </Modal>
@@ -164,8 +147,8 @@ export default class RegistryEntry extends Component {
                     {this.entry()}
 
                     <div>
-                        <AuthorizedContent object={this.props.data} action='update'>
-                            {this.normDataLinks()}
+                        <AuthorizedContent object={data} action="update">
+                            <NormDataLinks registryEntry={data} />
                         </AuthorizedContent>
 
                         {showOpenStreetMapLink && (
