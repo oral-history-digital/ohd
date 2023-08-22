@@ -11,6 +11,7 @@ import RegistryEntries from './RegistryEntries';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryEditButtons from './RegistryEntryEditButtons';
 import NormDataLinks from './NormDataLinks';
+import RegistryEntryToggleChildren from './RegistryEntryToggleChildren';
 
 export default class RegistryEntry extends Component {
     constructor(props) {
@@ -18,7 +19,6 @@ export default class RegistryEntry extends Component {
 
         this.state = {
             childrenVisible: false,
-            editButtonsVisible: false,
         };
 
         this.showChildren = this.showChildren.bind(this);
@@ -33,14 +33,13 @@ export default class RegistryEntry extends Component {
     }
 
     reloadRegistryEntry() {
+        const { registryEntries, registryEntriesStatus, data, fetchData } = this.props;
+
         if (
-            (
-                !this.props.registryEntries[this.props.data.id] &&
-                !this.props.registryEntriesStatus[this.props.data.id]
-            ) ||
-            /^reload/.test(this.props.registryEntriesStatus[this.props.data.id])
+            (!registryEntries[data.id] && !registryEntriesStatus[data.id]) ||
+            /^reload/.test(registryEntriesStatus[data.id])
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.data.id);
+            fetchData(this.props, 'registry_entries', data.id);
         }
     }
 
@@ -90,42 +89,11 @@ export default class RegistryEntry extends Component {
         }
     }
 
-    showHideChildren() {
-        const { data } = this.props;
-        const { childrenVisible } = this.state;
-
-        if (data.children_count > 0) {
-            return (
-                <button
-                    className="Button Button--transparent Button--icon RegistryEntry-toggleChildren"
-                    title={`${data.children_count} ${t(this.props, 'edit.registry_entry.show_children')}`}
-                    onClick={this.showChildren}
-                    >
-                    {
-                        childrenVisible ?
-                            <FaMinus className="Icon Icon--primary" /> :
-                            <FaPlus className="Icon Icon--primary" />
-                    }
-                </button>
-            );
-        } else {
-            return (
-                <div className="RegistryEntry-toggleChildren" />
-            );
-        }
-    }
-
-    description() {
-        if(this.props.data.desc !== ''){
-            return (
-                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.data.desc}</div>
-            )
-        }
-    }
-
     render() {
         const { className, selectedRegistryEntryIds, data, addRemoveRegistryEntryId,
-            registryEntryParent, children, hideEditButtons } = this.props;
+            registryEntryParent, children, hideEditButtons,
+            hideCheckbox } = this.props;
+        const { childrenVisible } = this.state;
 
         const showOpenStreetMapLink = data.latitude + data.longitude !== 0;
         const showEditButtons = !hideEditButtons;
@@ -136,14 +104,24 @@ export default class RegistryEntry extends Component {
                 className={classNames('RegistryEntry', className)}
             >
                 <div className="RegistryEntry-content">
-                    { !this.props.hideCheckbox && <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
-                        <Checkbox
-                            className='select-checkbox'
-                            checked={selectedRegistryEntryIds.includes(data.id)}
-                            onChange={() => addRemoveRegistryEntryId(data.id)}
+                    {!hideCheckbox && (
+                        <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                            <Checkbox
+                                className='select-checkbox'
+                                checked={selectedRegistryEntryIds.includes(data.id)}
+                                onChange={() => addRemoveRegistryEntryId(data.id)}
+                            />
+                        </AuthorizedContent>
+                    )}
+
+                    {showEditButtons && (
+                        <RegistryEntryToggleChildren
+                            count={data.children_count}
+                            isOpen={childrenVisible}
+                            onToggle={this.showChildren}
                         />
-                    </AuthorizedContent> }
-                    {showEditButtons && this.showHideChildren()}
+                    )}
+
                     {this.entry()}
 
                     <div>
@@ -168,9 +146,10 @@ export default class RegistryEntry extends Component {
                         )}
                     </div>
                 </div>
+
                 {children}
-                {
-                    this.state.childrenVisible && (
+
+                {childrenVisible && (
                     <RegistryEntries
                         className="RegistryEntry-children"
                         registryEntryParent={data}
