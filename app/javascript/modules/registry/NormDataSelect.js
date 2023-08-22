@@ -11,12 +11,11 @@ function NormDataSelect({
     registryEntryParent,
     registryNameTypes,
     normDataProviders,
-    locale,
     searchRegistryEntry,
     descriptor,
     setDescriptor,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
