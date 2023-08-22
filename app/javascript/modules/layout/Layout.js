@@ -2,12 +2,11 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
-import { pathBase, useProject } from 'modules/routes';
+import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import FetchAccountContainer from './FetchAccountContainer';
 import SiteHeader from './SiteHeader';
@@ -17,6 +16,7 @@ import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
 import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
     CorrectUserDataPopup } from 'modules/user';
+import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -27,36 +27,15 @@ export default function Layout({
     collectionsStatus,
     projectsStatus,
     languagesStatus,
-    setLocale,
     fetchData,
 }) {
-    const location = useLocation();
-    const navigate = useNavigate();
     const { project, projectId } = useProject();
     const { locale } = useI18n();
+    useCheckLocaleAgainstProject();
 
     useEffect(() => {
-        fitLocale();
         loadStuff();
     });
-
-    function fitLocale() {
-        const pathBasePart = /^(?:\/[\-a-z0-9]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
-
-        const found = location.pathname.match(pathBasePart);
-        const pathLocale = Array.isArray(found) ? found[1] : null;
-
-        if (pathLocale) {
-            if (project?.available_locales.indexOf(pathLocale) === -1) {
-                const newPathBase = pathBase({projectId, locale: project.default_locale, project}) + '/';
-                const newPath = location.pathname.replace(pathBasePart, newPathBase);
-                navigate(newPath);
-                setLocale(locale);
-            } else if (pathLocale !== locale) {
-                setLocale(pathLocale);
-            }
-        }
-    }
 
     function loadStuff() {
         loadCollections();
