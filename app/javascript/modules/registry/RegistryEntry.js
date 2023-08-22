@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaGlobeEurope, FaMinus, FaPlus }
-    from 'react-icons/fa';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AdminMenu, Modal, Checkbox } from 'modules/ui';
@@ -12,6 +11,7 @@ import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import RegistryEntries from './RegistryEntries';
+import OpenStreetMapLink from './OpenStreetMapLink';
 
 const Item = AdminMenu.Item;
 
@@ -75,37 +75,6 @@ export default class RegistryEntry extends Component {
                 </>
             )
         })
-    }
-
-    osmLink() {
-        if((this.props.data.latitude + this.props.data.longitude) !== 0 ) {
-            return (
-                <a
-                    href={`https://www.openstreetmap.org/?mlat=${this.props.data.latitude}&mlon=${this.props.data.longitude}&zoom=6`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="Link flyout-sub-tabs-content-ico-link"
-                    title={`${this.props.data.latitude}, ${this.props.data.longitude}`}
-                >
-                    <FaGlobeEurope className="Icon Icon--primary" />
-                </a>
-            )
-        }
-        else {
-            return null;
-        }
-    }
-
-    buttons() {
-        return (
-            <div>
-                <AuthorizedContent object={this.props.data} action='update'>
-                    {this.normDataLinks()}
-                </AuthorizedContent>
-                {this.osmLink()}
-                {this.editButtons()}
-            </div>
-        )
     }
 
     editButtons() {
@@ -275,6 +244,8 @@ export default class RegistryEntry extends Component {
         const { className, selectedRegistryEntryIds, data, addRemoveRegistryEntryId,
             children, hideEditButtons } = this.props;
 
+        const showOpenStreetMapLink = data.latitude + data.longitude !== 0;
+
         return (
             <li
                 id={`entry_${data.id}`}
@@ -290,7 +261,21 @@ export default class RegistryEntry extends Component {
                     </AuthorizedContent> }
                     {!hideEditButtons && this.showHideChildren()}
                     {this.entry()}
-                    {this.buttons()}
+
+                    <div>
+                        <AuthorizedContent object={this.props.data} action='update'>
+                            {this.normDataLinks()}
+                        </AuthorizedContent>
+
+                        {showOpenStreetMapLink && (
+                            <OpenStreetMapLink
+                                lat={data.latitude}
+                                lng={data.longitude}
+                            />
+                        )}
+
+                        {this.editButtons()}
+                    </div>
                 </div>
                 {children}
                 {
@@ -309,6 +294,8 @@ RegistryEntry.propTypes = {
     data: PropTypes.object.isRequired,
     className: PropTypes.string,
     locale: PropTypes.string.isRequired,
+    hideEditButtons: PropTypes.bool,
+    hideCheckbox: PropTypes.bool,
     translations: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
     registryEntryParent: PropTypes.object.isRequired,
