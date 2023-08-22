@@ -24,7 +24,7 @@ export default function AnnotationResult({
     const annotationText = data.text[locale];
 
     function handleClick() {
-        if (segment) {
+        if (segment && interview.transcript_coupled) {
             dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
         }
     }
@@ -39,7 +39,7 @@ export default function AnnotationResult({
                 {t('modules.interview_search.annotation_for')}
                 {' '}
                 {segment ?
-                    <TapeAndTime tape={segment.tape_nbr} time={segment.time} /> :
+                    <TapeAndTime tape={segment.tape_nbr} time={segment.time} transcriptCoupled={interview.transcript_coupled} /> :
                     <Spinner small />
                 }
             </div>

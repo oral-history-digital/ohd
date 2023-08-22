@@ -23,8 +23,8 @@ export default function InterviewMapPopup({
         onUpdate();
     }, [personReferences, segmentReferences]);
 
-    function handleClick(tape, time) {
-        dispatch(sendTimeChangeRequest(tape, time));
+    function handleClick(tape, time, transcriptCoupled) {
+        transcriptCoupled && dispatch(sendTimeChangeRequest(tape, time));
     }
 
     return (
@@ -69,9 +69,9 @@ export default function InterviewMapPopup({
                                         <button
                                             type="button"
                                             className="Button MapPopup-button"
-                                            onClick={() => handleClick(ref.tape_nbr, ref.time)}
+                                            onClick={() => handleClick(ref.tape_nbr, ref.time, ref.transcript_coupled)}
                                         >
-                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
+                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} transcriptCoupled={ref.transcript_coupled} />
                                         </button>
                                     </li>
                                 ))

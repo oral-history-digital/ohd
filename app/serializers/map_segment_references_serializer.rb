@@ -1,6 +1,6 @@
 class MapSegmentReferencesSerializer < ActiveModel::Serializer
   attributes :id, :ref_object_type, :registry_reference_type_id, :time,
-    :tape_nbr, :archive_id, :first_name, :last_name
+    :tape_nbr, :archive_id, :transcript_coupled, :first_name, :last_name
 
   def time
     # timecode as seconds

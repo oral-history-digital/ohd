@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import queryString from 'query-string';
@@ -12,15 +13,29 @@ import WorkbookActions from './WorkbookActions';
 
 export default function WorkbookItem({
     data,
-    locale,
     className,
     projects,
+    statuses,
+    interviews,
     setArchiveId,
     sendTimeChangeRequest,
     hideSidebar,
+    fetchData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { facets } = useFacets();
+
+    const project = projects[data.project_id];
+    const projectId = project?.shortname;
+    const interview = interviews[data.media_id];
+
+    const fetchingInterview = !!statuses['interviews'][data.media_id];
+
+    useEffect(() => {
+        if ( project && !fetchingInterview ) {
+            fetchData({ projectId, locale, project }, 'interviews', data.media_id, 'transcript_coupled');
+        }
+    }, [interview, project]);
 
     function hideSidebarIfMobile() {
         if (isMobile()) {
@@ -33,14 +48,13 @@ export default function WorkbookItem({
             setArchiveId(data.media_id);
         } else if (data.type === 'UserAnnotation') {
             setArchiveId(data.properties.interview_archive_id);
-            sendTimeChangeRequest(data.properties.tape_nbr, data.properties.time);
+            interview?.transcript_coupled && sendTimeChangeRequest(data.properties.tape_nbr, data.properties.time);
         }
 
         hideSidebarIfMobile();
     }
 
     const callKey = "call" + data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
-    const project = projects[data.project_id];
     let itemPath;
     if (project) {
         switch (data.type) {
@@ -96,6 +110,7 @@ export default function WorkbookItem({
                                 <TapeAndTime
                                     tape={data.properties.tape_nbr}
                                     time={data.properties.time}
+                                    transcriptCoupled={interview?.transcript_coupled}
                                 />
                             </dd>
                         </div>
