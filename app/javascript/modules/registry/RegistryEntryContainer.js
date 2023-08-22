@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, getRegistryEntries,
+import { fetchData, getRegistryEntries,
     getRegistryEntriesStatus, getCurrentUser, getCurrentProject } from 'modules/data';
 import { addRemoveRegistryEntryId, getLocale, getTranslations,
     getSelectedRegistryEntryIds, getProjectId, getEditView } from 'modules/archive';
@@ -21,7 +21,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
-    deleteData,
     addRemoveRegistryEntryId,
 }, dispatch);
 

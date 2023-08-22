@@ -3,17 +3,13 @@ import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { AdminMenu, Modal, Checkbox } from 'modules/ui';
+import { Modal, Checkbox } from 'modules/ui';
 import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import { DeleteItemForm } from 'modules/forms';
-import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
-import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import RegistryEntries from './RegistryEntries';
 import OpenStreetMapLink from './OpenStreetMapLink';
-
-const Item = AdminMenu.Item;
+import RegistryEntryEditButtons from './RegistryEntryEditButtons';
 
 export default class RegistryEntry extends Component {
     constructor(props) {
@@ -47,18 +43,6 @@ export default class RegistryEntry extends Component {
         }
     }
 
-    destroy() {
-        this.props.deleteData(this.props, 'registry_entries', this.props.data.id, null, null, true);
-    }
-
-    rmParent() {
-        this.props.deleteData(this.props, 'registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
-    }
-
-    parentRegistryHierarchyId() {
-        return this.props.data.parent_registry_hierarchy_ids[this.props.registryEntryParent.id];
-    }
-
     normDataLinks() {
         return this.props.data.norm_data.map( normDatum => {
             return (
@@ -75,90 +59,6 @@ export default class RegistryEntry extends Component {
                 </>
             )
         })
-    }
-
-    editButtons() {
-        const { data, registryEntryParent, locale, hideEditButtons } = this.props;
-
-        if (hideEditButtons) {
-            return null;
-        }
-
-        return (
-            <AuthorizedContent object={data} action='update'>
-                <AdminMenu>
-                    <Item
-                        name="edit"
-                        label={t(this.props, 'edit.registry_entry.edit')}
-                    >
-                        {close => (
-                            <RegistryEntryFormContainer
-                                registryEntryId={data.id}
-                                registryEntryParent={registryEntryParent}
-                                onSubmit={close}
-                                onCancel={close}
-                            />
-                        )}
-                    </Item>
-                    <Item
-                        name="delete"
-                        label={t(this.props, 'delete')}
-                    >
-                        {close => (
-                            <DeleteItemForm
-                                onSubmit={() => {
-                                    this.destroy();
-                                    close();
-                                }}
-                                onCancel={close}
-                            >
-                                <p>{data.name[locale]}</p>
-                            </DeleteItemForm>
-                        )}
-                    </Item>
-                    <Item
-                        name="new_child"
-                        label={t(this.props, `edit.registry_entry.new`)}
-                    >
-                        {close => (
-                            <RegistryEntryFormContainer
-                                registryEntryParent={data}
-                                onSubmit={close}
-                                onCancel={close}
-                            />
-                        )}
-                    </Item>
-                    <Item
-                        name="add_parent"
-                        label={t(this.props, 'edit.registry_entry.add_parent')}
-                    >
-                        {close => (
-                            <RegistryHierarchyFormContainer
-                                descendantRegistryEntry={data}
-                                onSubmit={close}
-                                onCancel={close}
-                            />
-                        )}
-
-                    </Item>
-                    {registryEntryParent && (
-                        <Item
-                            name="delete_parent"
-                            label={t(this.props, 'edit.registry_entry.delete_parent')}
-                        >
-                            {close => (
-                                <DeleteItemForm
-                                    onSubmit={() => { this.rmParent(); close(); }}
-                                    onCancel={close}
-                                >
-                                    <p>{registryEntryParent.name[locale]}</p>
-                                </DeleteItemForm>
-                            )}
-                        </Item>
-                    )}
-                </AdminMenu>
-            </AuthorizedContent>
-        );
     }
 
     showChildren() {
@@ -242,9 +142,10 @@ export default class RegistryEntry extends Component {
 
     render() {
         const { className, selectedRegistryEntryIds, data, addRemoveRegistryEntryId,
-            children, hideEditButtons } = this.props;
+            registryEntryParent, children, hideEditButtons } = this.props;
 
         const showOpenStreetMapLink = data.latitude + data.longitude !== 0;
+        const showEditButtons = !hideEditButtons;
 
         return (
             <li
@@ -259,7 +160,7 @@ export default class RegistryEntry extends Component {
                             onChange={() => addRemoveRegistryEntryId(data.id)}
                         />
                     </AuthorizedContent> }
-                    {!hideEditButtons && this.showHideChildren()}
+                    {showEditButtons && this.showHideChildren()}
                     {this.entry()}
 
                     <div>
@@ -274,7 +175,14 @@ export default class RegistryEntry extends Component {
                             />
                         )}
 
-                        {this.editButtons()}
+                        {showEditButtons && (
+                            <AuthorizedContent object={data} action="update">
+                                <RegistryEntryEditButtons
+                                    registryEntry={data}
+                                    parentRegistryEntry={registryEntryParent}
+                                />
+                            </AuthorizedContent>
+                        )}
                     </div>
                 </div>
                 {children}
@@ -297,6 +205,7 @@ RegistryEntry.propTypes = {
     hideEditButtons: PropTypes.bool,
     hideCheckbox: PropTypes.bool,
     translations: PropTypes.object.isRequired,
+    registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
     registryEntryParent: PropTypes.object.isRequired,
     selectedRegistryEntryIds: PropTypes.array.isRequired,
@@ -305,6 +214,5 @@ RegistryEntry.propTypes = {
         PropTypes.node
     ]),
     fetchData: PropTypes.func.isRequired,
-    deleteData: PropTypes.func.isRequired,
     addRemoveRegistryEntryId: PropTypes.func.isRequired,
 };
