@@ -11,7 +11,6 @@ export default function RegistryEntryForm({
     projectId,
     project,
     normDataProviders,
-    translations,
     registryEntries,
     registryEntryId,
     registryEntryParent,
@@ -22,11 +21,18 @@ export default function RegistryEntryForm({
 
     const { t } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
-    const [descriptor, setDescriptor] = useState(registryEntry?.registry_names[0].descriptor[locale]);
+    const [descriptor, setDescriptor] = useState(initialDescriptor());
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
     const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
+    }
+
+    function initialDescriptor() {
+        const registryName = registryEntry?.registry_names[0];
+        return registryName
+            ? registryName.descriptor[locale]
+            : 'no name';
     }
 
     function showRegistryName(registryName) {
@@ -138,7 +144,6 @@ RegistryEntryForm.propTypes = {
     registryEntryParent: PropTypes.object,
     registryEntries: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
