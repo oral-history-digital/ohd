@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 
 import { Form, validateGeoCoordinate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 import NormDatumFormContainer from './NormDatumFormContainer';
 
 export default function RegistryEntryForm({
-    locale,
-    projectId,
-    project,
     normDataProviders,
     registryEntries,
     registryEntryId,
@@ -18,8 +16,8 @@ export default function RegistryEntryForm({
     onSubmit,
     onCancel,
 }){
-
-    const { t } = useI18n();
+    const { project, projectId } = useProject();
+    const { t, locale } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [descriptor, setDescriptor] = useState(initialDescriptor());
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
@@ -32,7 +30,7 @@ export default function RegistryEntryForm({
         const registryName = registryEntry?.registry_names[0];
         return registryName
             ? registryName.descriptor[locale]
-            : 'no name';
+            : '';
     }
 
     function showRegistryName(registryName) {
@@ -143,9 +141,7 @@ RegistryEntryForm.propTypes = {
     registryEntryId: PropTypes.number,
     registryEntryParent: PropTypes.object,
     registryEntries: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
+    normDataProviders: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
     submitData: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
