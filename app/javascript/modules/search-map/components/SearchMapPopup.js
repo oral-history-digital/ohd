@@ -26,7 +26,6 @@ export default function SearchMapPopup({
 
     // Should run when references is updated.
     useEffect(() => {
-        fetchData({ projectId, locale, project }, 'interviews', archiveId, 'transcript_coupled');
         onUpdate();
     }, [referenceGroups]);
 
