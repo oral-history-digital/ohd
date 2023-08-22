@@ -10,26 +10,29 @@ import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import useMapReferences from '../map-references/useMapReferences';
+import { useProject } from 'modules/routes';
 
 export default function SearchMapPopup({
     title,
     registryEntryId,
     onUpdate = f => f,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const dispatch = useDispatch();
+    const { project, projectId } = useProject();
 
     const { isLoading, referenceGroups, segmentRefGroups, numSegmentRefs, error } = useMapReferences(registryEntryId);
 
     // Should run when references is updated.
     useEffect(() => {
+        fetchData({ projectId, locale, project }, 'interviews', archiveId, 'transcript_coupled');
         onUpdate();
     }, [referenceGroups]);
 
-    function handleClick(archiveId, tape, time) {
+    function handleClick(archiveId, tape, time, transcriptCoupled) {
         dispatch(setArchiveId(archiveId));
-        dispatch(sendTimeChangeRequest(tape, time));
+        transcriptCoupled && dispatch(sendTimeChangeRequest(tape, time));
     }
 
     if (error) {
@@ -91,10 +94,10 @@ export default function SearchMapPopup({
                                                     <li key={ref.id}>
                                                         <Link
                                                             className="MapPopup-link MapPopup-link--small"
-                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time)}
+                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time, ref.transcript_coupled)}
                                                             to={`${pathBase}/interviews/${ref.archive_id}`}
                                                         >
-                                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
+                                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} transcriptCoupled={ref.transcript_coupled} />
                                                         </Link>
                                                     </li>
                                                 ))

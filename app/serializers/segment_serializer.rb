@@ -16,6 +16,7 @@ class SegmentSerializer < ApplicationSerializer
              :registry_references_count,
              :media_id,
              :timecode,
+             :transcript_coupled,
              :speaker_id,
              :speaker
              #:speaker_is_interviewee
@@ -47,4 +48,7 @@ class SegmentSerializer < ApplicationSerializer
     end
   end
 
+  def transcript_coupled
+    object.interview.transcript_coupled
+  end
 end

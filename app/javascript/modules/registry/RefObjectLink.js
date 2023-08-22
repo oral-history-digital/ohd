@@ -46,14 +46,14 @@ export default function RefObjectLink({
             key={registryReference.id}
             onClick={() => {
                 setArchiveId(registryReference.archive_id);
-                isLoggedIn && segment && sendTimeChangeRequest(segment.tape_nbr, segment.time);
+                isLoggedIn && segment && segment.transcript_coupled && sendTimeChangeRequest(segment.tape_nbr, segment.time);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
             }}
             to={pathBase + '/interviews/' + registryReference.archive_id}
         >
-            <TapeAndTime tape={segment.tape_nbr} time={segment.time} />
+            <TapeAndTime tape={segment.tape_nbr} time={segment.time} transcriptCoupled={segment.transcript_coupled} />
         </Link>
     )
 }
