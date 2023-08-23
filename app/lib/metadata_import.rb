@@ -156,7 +156,12 @@ class MetadataImport
       contributor_string.sub(/\"/, '') if contributor_string.count("\"") == 1
       last_name, first_name = contributor_string.split(/,\s*/)
       contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
-      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: interview.project.contribution_types.find_by_code(contribution_type).id
+      Contribution.create(
+        person_id: contributor.id,
+        interview_id: interview.id,
+        contribution_type_id: interview.project.contribution_types.find_by_code(contribution_type).id,
+        workflow_state: 'public'
+      )
     end
   end
 
