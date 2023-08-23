@@ -18,13 +18,19 @@
   display: flex;
 }
 
+.RegistryEntry-checkbox {
+  flex-shrink: 0;
+}
+
 .RegistryEntry-toggleChildren {
   cursor: pointer;
+  flex-shrink: 0;
   margin-right: 8px;
   width: $base-unit;
 }
 
 .RegistryEntry-label {
+  text-align: left;
 }
 
 .RegistryEntry-label.is-clickable {

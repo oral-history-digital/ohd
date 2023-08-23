@@ -68,7 +68,7 @@ export default function RegistryEntry({
                 {!hideCheckbox && (
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                         <Checkbox
-                            className='select-checkbox'
+                            className='RegistryEntry-checkbox select-checkbox'
                             checked={selectedRegistryEntryIds.includes(data.id)}
                             onChange={() => addRemoveRegistryEntryId(data.id)}
                         />
