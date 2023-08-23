@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaMinus, FaPlus } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AuthorizedContent, admin } from 'modules/auth';
@@ -12,6 +11,7 @@ import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryEditButtons from './RegistryEntryEditButtons';
 import NormDataLinks from './NormDataLinks';
 import RegistryEntryToggleChildren from './RegistryEntryToggleChildren';
+import RegistryEntryLabel from './RegistryEntryLabel';
 
 export default class RegistryEntry extends Component {
     constructor(props) {
@@ -47,46 +47,10 @@ export default class RegistryEntry extends Component {
         this.setState(prevState => ({ childrenVisible: !prevState.childrenVisible }));
     }
 
-    entry() {
-        const { data, locale, registryEntryParent } = this.props;
-
-        const hasReferences = admin(this.props, {type: 'General'}, 'edit') ?
-            data.registry_references_count > 0 :
-            data.public_registry_references_count > 0;
-
-        const localizedName = data.name[locale];
-        const name = localizedName && localizedName.length > 0 ?
-            localizedName :
-            <i>{t(this.props, 'modules.registry.name_missing')}</i>;
-        const displayName = (<>
-            {name}
-            <AuthorizedContent object={data} action='update'>
-                {` (ID: ${data.id})`}
-            </AuthorizedContent>
-        </>);
-
-        if (hasReferences) {
-            return (
-                <Modal
-                    title={t(this.props, 'activerecord.models.registry_entry.actions.show')}
-                    triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
-                    trigger={displayName}
-                >
-                    {close => (
-                        <RegistryEntryShowContainer
-                            registryEntryId={data.id}
-                            registryEntryParent={registryEntryParent}
-                            onSubmit={close}
-                            normDataLinks={<NormDataLinks registryEntry={data} />}
-                        />
-                    )}
-                </Modal>
-            );
-        } else {
-            return (
-                <span className="RegistryEntry-label">{displayName}</span>
-            );
-        }
+    hasReferences() {
+        return admin(this.props, {type: 'General'}, 'edit')
+            ? this.props.data.registry_references_count > 0
+            : this.props.data.public_registry_references_count > 0;
     }
 
     render() {
@@ -122,7 +86,23 @@ export default class RegistryEntry extends Component {
                         />
                     )}
 
-                    {this.entry()}
+                    {this.hasReferences() ? (
+                        <Modal
+                            title={t(this.props, 'activerecord.models.registry_entry.actions.show')}
+                            triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
+                            trigger={<RegistryEntryLabel registryEntry={data} />}
+                        >
+                            {close => (
+                                <RegistryEntryShowContainer
+                                    registryEntryId={data.id}
+                                    registryEntryParent={registryEntryParent}
+                                    onSubmit={close}
+                                    normDataLinks={<NormDataLinks registryEntry={data} />}
+                                />
+                            )}
+                        </Modal>
+                    ) : <RegistryEntryLabel registryEntry={data} />
+                    }
 
                     <div>
                         <AuthorizedContent object={data} action="update">
