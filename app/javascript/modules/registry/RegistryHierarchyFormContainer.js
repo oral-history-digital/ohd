@@ -1,18 +1,11 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentProject } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
+import { submitData } from 'modules/data';
 import RegistryHierarchyForm from './RegistryHierarchyForm';
-
-const mapStateToProps = state => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    project: getCurrentProject(state),
-});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     submitData,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryHierarchyForm);
+export default connect(undefined, mapDispatchToProps)(RegistryHierarchyForm);

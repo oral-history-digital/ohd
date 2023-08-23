@@ -1,27 +1,26 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { usePathBase } from 'modules/routes';
 import { getStatuses } from 'modules/data';
-import { Spinner } from 'modules/spinners';
 import { TapeAndTime } from 'modules/interview-helpers';
+import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 
 export default function RefObjectLink({
     registryReference,
-    interviews,
     segments,
     isLoggedIn,
-    locale,
-    projectId,
-    project,
     onSubmit,
     sendTimeChangeRequest,
     setArchiveId,
     fetchData,
 }) {
     const pathBase = usePathBase();
+    const { locale } = useI18n();
+    const { project, projectId } = useProject();
+
     const statuses = useSelector(getStatuses);
     const segment = registryReference.ref_object_type === 'Segment' && segments[registryReference.ref_object_id];
 
