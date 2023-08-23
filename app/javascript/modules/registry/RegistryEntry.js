@@ -92,7 +92,6 @@ export default function RegistryEntry({
                         {close => (
                             <RegistryEntryShowContainer
                                 registryEntryId={data.id}
-                                registryEntryParent={registryEntryParent}
                                 onSubmit={close}
                                 normDataLinks={<NormDataLinks registryEntry={data} />}
                             />
