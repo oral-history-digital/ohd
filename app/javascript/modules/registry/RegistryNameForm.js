@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Form } from 'modules/forms';
 
-import { RegistrySearchResultContainer } from 'modules/registry';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import RegistrySearchResult from './RegistrySearchResult';
 
 export default function RegistryNameForm({
     index,
@@ -82,7 +82,7 @@ export default function RegistryNameForm({
                     <h6>{`${t('existing_registry_entries')}:`}</h6>
                     <ul className="RegistryEntryList RegistryEntryList--root">
                         {
-                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox hideEditButtons />)
+                            foundRegistryEntries?.results?.map(result => <RegistrySearchResult key={result.id} result={result} hideCheckbox hideEditButtons />)
                         }
                     </ul>
                 </>
