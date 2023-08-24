@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTimes, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
@@ -6,100 +6,102 @@ import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
 import { underscore } from 'modules/strings';
 import { admin, AuthorizedContent } from 'modules/auth';
-import { t } from 'modules/i18n';
 import ContentField from './ContentField';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
-export default class SingleValueWithForm extends Component {
+export default function SingleValueWithForm ({
+    readOnly,
+    projectAccessGranted,
+    elementType,
+    type,
+    multiLocale,
+    validate,
+    values,
+    withEmpty,
+    individualErrorMsg,
+    optionsScope,
+    obj,
+    noLabel,
+    linkUrls,
+    collapse,
+    children,
+    attribute,
+    data,
+    onlyStatus,
+    noStatusCheckbox,
+    user,
+    editView,
+    translations,
+    submitData,
+}) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            editing: false,
-            collapsed: this.props.collapse,
-            value: this.props.value
-        };
-        this.setEditing = this.setEditing.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+    const [editing, setEditing] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    //const [value, setValue] = useState(obj.properties?.public_attributes?.[attribute]?.toString() === 'true');
+    const [collapsed, setCollapsed] = useState(collapse);
 
-    setEditing() {
-        this.setState({editing: !this.state.editing});
-    }
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
-    editButton() {
-        const { editing } = this.state;
-    }
+    const metadataField = Object.values(project.metadata_fields).find(m => m.name === attribute);
 
-    label() {
-        return this.metadataField()?.label && this.metadataField().label[this.props.locale] ||
-            t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
-    }
+    const label = metadataField?.label?.locale ||
+            t(`activerecord.attributes.${underscore(obj.type)}.${attribute}`);
 
-    formElements() {
-        let elements = [
-            {
-                elementType: this.props.elementType,
-                type: this.props.type,
-                multiLocale: this.props.multiLocale,
-                attribute: this.props.attribute,
-                label: this.label(),
-                validate: this.props.validate,
-                data: this.props.obj,
-                values: this.props.values,
-                withEmpty: this.props.withEmpty,
-                individualErrorMsg: this.props.individualErrorMsg,
-                optionsScope: this.props.optionsScope,
-                handlechangecallback: this.handleChange
-            }
-        ];
-
-        let statusCheckbox = {
-            elementType: 'input',
-            attribute: `public_attributes[${this.props.attribute}]`,
-            value: this.props.obj.properties?.public_attributes?.[this.props.attribute]?.toString() === 'true',
-            labelKey: 'activerecord.attributes.default.publish',
-            type: 'checkbox',
-        };
-
-        if (this.props.noStatusCheckbox) {
-            return elements;
-        } else {
-            return elements.concat(statusCheckbox);
+    const formElements = [
+        {
+            elementType: elementType,
+            type: type,
+            multiLocale: multiLocale,
+            attribute: attribute,
+            label: label,
+            validate: validate,
+            data: obj,
+            values: values,
+            withEmpty: withEmpty,
+            individualErrorMsg: individualErrorMsg,
+            optionsScope: optionsScope,
+            //handlechangecallback: handleChange
         }
+    ];
+
+    const statusCheckbox = {
+        elementType: 'input',
+        attribute: `public_attributes[${attribute}]`,
+        //value: value,
+        value: obj.properties?.public_attributes?.[attribute]?.toString() === 'true',
+        labelKey: 'activerecord.attributes.default.publish',
+        type: 'checkbox',
+        handlechangecallback: handleChange
+    };
+
+    if (!noStatusCheckbox) {
+        formElements.push(statusCheckbox);
     }
 
-    handleChange(name, value) {
-        this.setState({value: value});
-    }
+    const handleChange = (name, value) => {
+        setValue(value);
+    };
 
-    form() {
-        let _this = this;
-        return (
-            <Form
-                scope={underscore(this.props.obj.type)}
-                onSubmit={function(params){_this.props.submitData(_this.props, params, {updateStateBeforeSubmit: true}); _this.setEditing()}}
-                onCancel={_this.setEditing}
-                formClasses='default single-value'
-                className="ContentField"
-                data={this.props.obj}
-                elements={_this.formElements()}
-            />
-        )
-    }
+    const form = () => (
+        <Form
+            scope={underscore(obj.type)}
+            onSubmit={(params) => {
+                submitData({project, projectId, locale}, params, {updateStateBeforeSubmit: true});
+                setEditing(false)
+            }}
+            onCancel={() => setEditing(false)}
+            formClasses='default single-value'
+            className="ContentField"
+            data={obj}
+            elements={formElements}
+        />
+    );
 
-    metadataField() {
-        return Object.values(this.props.project.metadata_fields).find(m => m.name === this.props.attribute);
-    }
-
-    show() {
-        const { readOnly, projectAccessGranted, obj, attribute, noLabel, linkUrls,
-            collapse, children } = this.props;
-        const { collapsed, editing } = this.state;
-
-        const metadataField = this.metadataField();
-
+    const show = () => {
         if (
-            admin(this.props, obj, 'update') && typeof metadataField !== 'undefined' ||
+            admin({user, editView, project}, obj, 'update') && typeof metadataField !== 'undefined' ||
             (
                 (
                     (projectAccessGranted && metadataField?.use_in_details_view) ||
@@ -108,12 +110,12 @@ export default class SingleValueWithForm extends Component {
                 (obj.properties?.public_attributes?.[attribute]?.toString() === 'true')
             )
         ) {
-            let value = humanReadable(obj, attribute, this.props, this.state);
+            const contentValue = humanReadable(obj, attribute, {translations, locale, values, optionsScope}, {collapsed});
             return (
                 <ContentField
                     noLabel={noLabel}
-                    label={this.label()}
-                    value={value}
+                    label={label}
+                    value={contentValue}
                     linkUrls={linkUrls}
                 >
                     {
@@ -124,8 +126,8 @@ export default class SingleValueWithForm extends Component {
                                         <button
                                             type="button"
                                             className="Button Button--transparent Button--icon"
-                                            title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
-                                            onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+                                            title={t(collapsed ? 'show' : 'hide')}
+                                            onClick={() => setCollapsed(!collapsed)}
                                         >
                                             {
                                                 collapsed ?
@@ -140,8 +142,8 @@ export default class SingleValueWithForm extends Component {
                                     <button
                                         type="button"
                                         className="Button Button--transparent Button--icon"
-                                        title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
-                                        onClick={() => this.setEditing()}
+                                        title={t(`edit.default.${editing ? 'cancel' : 'edit'}`)}
+                                        onClick={() => setEditing(!editing)}
                                     >
                                         {
                                             editing ?
@@ -160,10 +162,9 @@ export default class SingleValueWithForm extends Component {
         }
     }
 
-    render() {
-        const isEditMode = admin(this.props, this.props.obj, 'update') && this.state.editing;
-        return isEditMode ? this.form() : this.show();
-    }
+    return(
+        (admin({user, editView, project}, obj, 'update') && editing) ? form() : show()
+    );
 }
 
 SingleValueWithForm.propTypes = {
