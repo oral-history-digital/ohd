@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Form } from 'modules/forms';
 
 import { RegistrySearchResultContainer } from 'modules/registry';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 
 export default function RegistryNameForm({
     index,
@@ -14,19 +14,14 @@ export default function RegistryNameForm({
     data,
     nested,
     registryEntryId,
-    registryEntryParent,
     registryNameTypes,
-    normDataProviders,
-    setRegistryEntryAttributes,
     registryEntryAttributes,
-    projectId,
-    project,
-    locale,
     foundRegistryEntries,
     searchRegistryEntry,
     setDescriptor,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
     useEffect(() => {
