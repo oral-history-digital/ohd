@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer, AuthorizedContent, useAuthorization } from 'modules/auth';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
 import InterviewDownloads from './InterviewDownloads';
 
 export default function InterviewTextMaterials({
@@ -35,16 +35,14 @@ export default function InterviewTextMaterials({
                 </p>
             </AuthShowContainer>
             <AuthorizedContent object={interview} action="update">
-                {
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        collapse
-                        elementType="textarea"
-                        multiLocale
-                        attribute={'observations'}
-                        noLabel
-                    />
-                }
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    collapse
+                    elementType="textarea"
+                    multiLocale
+                    attribute={'observations'}
+                    noLabel
+                />
             </AuthorizedContent>
             {!isCatalog && (
                 <AuthShowContainer ifLoggedIn>
@@ -60,6 +58,13 @@ export default function InterviewTextMaterials({
                                 />
                             )
                         })}
+                        <StatusForm
+                            data={interview}
+                            scope='interview'
+                            attribute='transcript'
+                            attribute='public_attributes[transcript]'
+                            value={interview.properties?.public_attributes?.transcript?.toString() === 'true'}
+                        />
                     </p>
                 </AuthShowContainer>
             )}
