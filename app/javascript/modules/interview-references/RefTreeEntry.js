@@ -2,9 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { Disclosure } from 'modules/ui';
-import isTranscriptResultList from './isTranscriptResultList';
-import RefTreeEntryList from './RefTreeEntryList';
-import TranscriptResultList from './TranscriptResultList';
+import RefTreeChildren from './RefTreeChildren';
 
 export default function RefTreeEntry({
     entry,
@@ -18,13 +16,7 @@ export default function RefTreeEntry({
 
     return (
         <Disclosure title={title}>
-        {
-            isTranscriptResultList(entry.children) ? (
-                <TranscriptResultList transcriptResults={entry.children} />
-            ) : (
-                <RefTreeEntryList entries={entry.children} />
-            )
-        }
+            <RefTreeChildren entries={entry.children} />
         </Disclosure>
     );
 }
