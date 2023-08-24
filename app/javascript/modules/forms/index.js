@@ -7,6 +7,7 @@ export { default as Element } from './Element';
 export { default as Label } from './Label';
 export { default as SingleTextInputFormContainer } from './SingleTextInputFormContainer';
 export { default as SingleValueWithFormContainer } from './SingleValueWithFormContainer';
+export { default as StatusForm } from './StatusForm';
 export { default as SubmitOnBlurForm } from './SubmitOnBlurForm';
 export { default as DeleteItemForm } from './DeleteItemForm';
 
