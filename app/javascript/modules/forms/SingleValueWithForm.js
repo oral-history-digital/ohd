@@ -38,7 +38,6 @@ export default function SingleValueWithForm ({
 
     const [editing, setEditing] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    //const [value, setValue] = useState(obj.properties?.public_attributes?.[attribute]?.toString() === 'true');
     const [collapsed, setCollapsed] = useState(collapse);
 
     const { t, locale } = useI18n();
@@ -49,40 +48,33 @@ export default function SingleValueWithForm ({
     const label = metadataField?.label?.locale ||
             t(`activerecord.attributes.${underscore(obj.type)}.${attribute}`);
 
-    const formElements = [
-        {
-            elementType: elementType,
-            type: type,
-            multiLocale: multiLocale,
-            attribute: attribute,
-            label: label,
-            validate: validate,
-            data: obj,
-            values: values,
-            withEmpty: withEmpty,
-            individualErrorMsg: individualErrorMsg,
-            optionsScope: optionsScope,
-            //handlechangecallback: handleChange
-        }
-    ];
+    const formElements = [];
+    const formElement = {
+        elementType: elementType,
+        type: type,
+        multiLocale: multiLocale,
+        attribute: attribute,
+        label: label,
+        validate: validate,
+        data: obj,
+        values: values,
+        withEmpty: withEmpty,
+        individualErrorMsg: individualErrorMsg,
+        optionsScope: optionsScope,
+    };
 
     const statusCheckbox = {
         elementType: 'input',
         attribute: `public_attributes[${attribute}]`,
-        //value: value,
         value: obj.properties?.public_attributes?.[attribute]?.toString() === 'true',
         labelKey: 'activerecord.attributes.default.publish',
         type: 'checkbox',
-        handlechangecallback: handleChange
     };
 
+    formElements.push(formElement);
     if (!noStatusCheckbox) {
         formElements.push(statusCheckbox);
     }
-
-    const handleChange = (name, value) => {
-        setValue(value);
-    };
 
     const form = () => (
         <Form
