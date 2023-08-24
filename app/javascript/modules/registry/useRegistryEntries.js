@@ -76,7 +76,7 @@ export default function useRegistryEntries(registryEntryParent) {
         const localizedName = registryEntry.name[locale];
         const name = localizedName?.length > 0
             ? localizedName
-            : (<i>{t('modules.registry.name_missing')}</i>);
+            : String(registryEntry.id);
         return name;
     }
 
