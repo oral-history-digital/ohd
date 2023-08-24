@@ -68,7 +68,7 @@ export default function InterviewInfo({
                 noStatusCheckbox
             />
             <SingleValueWithFormContainer
-                obj={interview}l
+                obj={interview}
                 validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
                 attribute={'duration'}
                 projectAccessGranted={projectAccessGranted}
