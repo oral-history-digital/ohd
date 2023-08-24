@@ -7,9 +7,7 @@ import { HelpText } from 'modules/help-text';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-import RefTreeEntryList from './RefTreeEntryList';
-import TranscriptResultList from './TranscriptResultList';
-import isTranscriptResultList from './isTranscriptResultList';
+import RefTreeChildren from './RefTreeChildren';
 
 export default function RefTree({
     refTreeStatus,
@@ -36,11 +34,7 @@ export default function RefTree({
             {isEditor && <HelpText code="interview_registry" className="u-mb" />}
             <div className="content-index content-ref-tree">
                 {refTree?.children ? (
-                    isTranscriptResultList(refTree.children) ? (
-                        <TranscriptResultList transcriptResults={refTree.children} />
-                    ) : (
-                        <RefTreeEntryList entries={refTree.children} />
-                    )
+                    <RefTreeChildren entries={refTree.children}/>
                 ) : (
                     t('without_ref_tree')
                 )}
