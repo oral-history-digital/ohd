@@ -12,6 +12,7 @@ export default function InterviewTextMaterials({
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
+    const showTranscriptPDF = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.transcript?.toString() === 'true';
 
     if (!interview.language_id) {
         return null;
@@ -53,7 +54,7 @@ export default function InterviewTextMaterials({
                                 <InterviewDownloads
                                     lang={lang}
                                     type='transcript'
-                                    condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
+                                    condition={showTranscriptPDF && interview.segments?.[1]?.[interview.first_segments_ids[1]]}
                                     showEmpty={true}
                                 />
                             )
