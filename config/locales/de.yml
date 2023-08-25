@@ -1100,6 +1100,7 @@ de:
         grant_access_without_login: Zugang ohne Login
         display_ohd_link: OHD-Link zeigen
         show_preview_img: Vorschaubild auf Landing-Page zeigen
+        show_legend: Legende im Transkript anzeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color

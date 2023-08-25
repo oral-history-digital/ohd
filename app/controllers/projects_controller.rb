@@ -175,6 +175,7 @@ class ProjectsController < ApplicationController
           "grant_access_without_login",
           "display_ohd_link",
           "show_preview_img",
+          "show_legend",
           "workflow_state",
           translations_attributes: [
             :locale,

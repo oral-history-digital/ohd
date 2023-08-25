@@ -60,13 +60,15 @@
 
 \newpage
 
-<%=
-  render partial: "latex/legend",
-    locals: {
-      header_locale: header_locale,
-      interview: interview
-  }
-%>
+<% if interview.project.show_legend %>
+  <%=
+    render partial: "latex/legend",
+      locals: {
+        header_locale: header_locale,
+        interview: interview
+    }
+  %>
+<% end %>
 
 \newpage
 
