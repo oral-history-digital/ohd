@@ -6,7 +6,7 @@ import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { submitData } from 'modules/data';
-import { admin, AuthorizedContent } from 'modules/auth';
+import { AuthorizedContent } from 'modules/auth';
 
 export default function StatusForm({
     data,
