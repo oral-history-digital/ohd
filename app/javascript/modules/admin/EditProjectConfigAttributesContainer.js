@@ -65,6 +65,11 @@ const mapStateToProps = state => ({
             type: "checkbox"
         },
         {
+            elementType: 'input',
+            attribute: "show_legend",
+            type: "checkbox"
+        },
+        {
             attribute: "doi"
         },
         {

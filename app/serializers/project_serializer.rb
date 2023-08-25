@@ -61,6 +61,7 @@ class ProjectSerializer < ApplicationSerializer
     :root_registry_entry_id,
     :display_ohd_link,
     :show_preview_img,
+    :show_legend,
     :default_search_order,
     :workflow_state,
     :grant_project_access_instantly,
