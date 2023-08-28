@@ -7,7 +7,7 @@ import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { ScrollToTop } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
-import RegistrySearchResultContainer from './RegistrySearchResultContainer';
+import RegistrySearchResult from './RegistrySearchResult';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntries from './RegistryEntries';
 import useRootEntry from './useRootEntry';
@@ -53,7 +53,7 @@ export default function Registry({
                             (
                                 <ul className="RegistryEntryList RegistryEntryList--root">
                                     {
-                                        foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
+                                        foundRegistryEntries?.results?.map(result => <RegistrySearchResult key={result.id} result={result} />)
                                     }
                                 </ul>
                             )
