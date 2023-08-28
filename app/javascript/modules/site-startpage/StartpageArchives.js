@@ -6,7 +6,7 @@ import { getStartpageProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import ArchiveTile from './ArchiveTile';
 
-const INITIALLY_SHOWN_ARCHIVES = 12;
+const INITIALLY_SHOWN_ARCHIVES = 6;
 
 export default function StartpageArchives({
     className
@@ -23,7 +23,7 @@ export default function StartpageArchives({
 
     return (
         <article className={className}>
-            <h3 className="u-uppercase u-mt-none u-mb-none">
+            <h3 className="Startpage-heading u-mt-none u-mb-none">
                 {t('modules.site_startpage.sample_archives')}
             </h3>
 

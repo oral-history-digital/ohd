@@ -1534,13 +1534,30 @@ en:
       catalog: Catalog
       search: Search
     site_startpage:
-      stats: Currently, Oral-History.Digital lists %{numProjects} archives with %{numCollections} collections and %{numInterviews} interviews from %{numInstitutions} institutions.
-      under_construction: The portal is still under construction.
-      instructions: Instructions for the editorial view
       more_results: Load more results
       sample_archives: Sample Archives
       access_requested: Access requested
       no_access: Access required
+      introduction:
+        text1: <b>Oral-History.Digital</b> is a curation and research platform for narrative audio or video interviews. Currently, <b>Oral-History.Digital</b> lists
+        text2: archives with
+        text3: collections and
+        text4: interviews from
+        text5: institutions. The portal is still under construction. Background information can be found on the <a href="https://www.oral-history.digital/en" target="_blank" rel="noreferrer">accompanying website</a>. For guidance, see the <a href="https://wikis.fu-berlin.de/x/0oDGT" target="_blank" rel="noreferrer">help wiki</a>.
+        wiki: help wiki
+      search:
+        heading: Search
+        text1: You can
+        text2: search
+        text3: through individual interviews from different archives. You can <b>filter</b> e.g. by subject, language or gender. <b>Full text search</b> is limited to the archives for which you are activated.
+      catalog:
+        heading: Catalog
+        text1: The
+        text2: catalog
+        text3: lists the institutions, archives, and collections. The <b>archives</b> have different metadata and access regulations. <b>Collections</b> are individual subsets within these archives.
+      access:
+        heading: Access
+        text: To access the interviews, registration in the Oral-History.Digital platform and access for the archive is required. Please register in Oral-History.Digital and ask for admittance to individual archives to access the full interviews.
     tables:
       actions: Actions
       search: Search…

@@ -1,17 +1,19 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { FaSearch, FaList, FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import useCatalogStats from './useCatalogStats';
-import { getProjectTranslation } from 'modules/data';
 
 export default function StartpageIntroduction({
     className,
 }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
     const { data: stats, error, isLoading } = useCatalogStats();
-    const projectTranslation = useSelector(getProjectTranslation);
 
     if (isLoading) {
         return <Spinner />;
@@ -21,30 +23,82 @@ export default function StartpageIntroduction({
         return <p>{error.message}</p>;
     }
 
+    const introductionHtml = `${t('modules.site_startpage.introduction.text1')}
+${stats?.num_projects} ${t('modules.site_startpage.introduction.text2')}
+${stats?.num_collections} ${t('modules.site_startpage.introduction.text3')}
+${stats?.num_interviews} ${t('modules.site_startpage.introduction.text4')}
+${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
+
     return (
-        <article className={className}>
-            <div className="u-mt-none u-mb-none"
-                dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
-            <p className="u-mt-none u-mb-none">
-                {t('modules.site_startpage.stats', {
-                    numProjects: stats?.num_projects,
-                    numCollections: stats?.num_collections,
-                    numInterviews: stats?.num_interviews,
-                    numInstitutions: stats?.num_institutions,
-                })}
-            </p>
-            <p className="u-mt-none u-mb-none u-color-ui">
-                {t('modules.site_startpage.under_construction')}
-            </p>
-            <p className="u-mt u-mb-none">
-                <a
-                    href="https://wikis.fu-berlin.de/x/0oDGT"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    {t('modules.site_startpage.instructions')}
-                </a>
-            </p>
+        <article className={classNames(className, 'Startpage')}>
+            <p dangerouslySetInnerHTML={{__html: introductionHtml}} />
+
+            <div className="u-mt-large">
+                <section>
+                    <div className="Startpage-headingGroup">
+                        <div className="Media">
+                            <Link to={`${pathBase}/searches/archive`} className="Media-img">
+                                <FaSearch className="Startpage-icon" />
+                            </Link>
+                            <div className="Media-body">
+                                <h3 className="Startpage-heading u-mt-none">
+                                    {t('modules.site_startpage.search.heading')}
+                                </h3>
+                                <p>
+                                    {t('modules.site_startpage.search.text1')}
+                                    {' '}
+                                    <Link to={`${pathBase}/searches/archive`}>
+                                        {t('modules.site_startpage.search.text2')}
+                                    </Link>
+                                    {' '}
+                                    <span dangerouslySetInnerHTML={{__html: t('modules.site_startpage.search.text3')}} />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="u-mt-large">
+                    <div className="Startpage-headingGroup">
+                        <div className="Media">
+                            <Link to={`${pathBase}/catalog`} className="Media-img">
+                                <FaList className="Startpage-icon" />
+                            </Link>
+                            <div className="Media-body">
+                                <h3 className="Startpage-heading u-mt-none">
+                                    {t('modules.site_startpage.catalog.heading')}
+                                </h3>
+                                <p>
+                                    {t('modules.site_startpage.catalog.text1')}
+                                    {' '}
+                                    <Link to={`${pathBase}/catalog`}>
+                                        {t('modules.site_startpage.catalog.text2')}
+                                    </Link>
+                                    {' '}
+                                    <span dangerouslySetInnerHTML={{__html: t('modules.site_startpage.catalog.text3')}} />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="u-mt-large">
+                    <div className="Media">
+                        <div className="Media-img">
+                            <FaUserCircle className="Startpage-icon" />
+                        </div>
+                        <div className="Media-body">
+                            <h3 className="Startpage-heading u-mt-none">
+                                {t('modules.site_startpage.access.heading')}
+                            </h3>
+                            <p>
+                                {t('modules.site_startpage.access.text')}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
         </article>
     );
 }
