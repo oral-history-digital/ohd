@@ -45,7 +45,7 @@ export default function SingleValueWithForm ({
 
     const metadataField = Object.values(project.metadata_fields).find(m => m.name === attribute);
 
-    const label = metadataField?.label?.locale ||
+    const label = metadataField?.label?.[locale] ||
             t(`activerecord.attributes.${underscore(obj.type)}.${attribute}`);
 
     const formElements = [];
