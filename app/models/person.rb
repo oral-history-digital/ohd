@@ -14,7 +14,6 @@ class Person < ApplicationRecord
   has_many :contributions, dependent: :destroy
   has_many :events, as: :eventable, dependent: :destroy
 
-  has_many :histories, dependent: :destroy
   has_many :biographical_entries, dependent: :destroy
 
   validates :gender, inclusion: %w(male female diverse not_specified),
