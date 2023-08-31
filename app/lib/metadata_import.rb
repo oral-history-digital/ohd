@@ -93,9 +93,13 @@ class MetadataImport
       birth_name: row[:birth_name],
       alias_names: row[:alias_names],
       other_first_names: row[:other_first_names],
+      pseudonym_first_name: row[:pseudonym_first_name],
+      pseudonym_last_name: row[:pseudonym_last_name],
+      use_pseudonym: %w(yes y ja j true t).include?(row[:use_pseudonym]) ? true : false,
+      description: row[:person_description],
       gender: gender(row[:gender]),
       date_of_birth: row[:date_of_birth],
-      biography: row[:biography],
+      biography: {text: row[:biography], workflow_state: %w(yes y ja j true t).include?(row[:biography_public]) ? 'public' : 'unshared'},
     }.select{|k,v| v != nil}
 
     if interview.interviewee
