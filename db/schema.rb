@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_25_090918) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_31_124742) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -159,7 +159,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_090918) do
 
   create_table "contributions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "interview_id"
-    t.string "contribution_type", limit: 255
     t.integer "person_id"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil

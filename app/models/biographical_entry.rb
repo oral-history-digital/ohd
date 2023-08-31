@@ -29,4 +29,8 @@ class BiographicalEntry < ApplicationRecord
     escaped_text = LatexToPdf.escape_latex(sanitized_text)
     escaped_text.gsub(/\r?\n/, '~\newline~')
   end
+
+  def public?
+    workflow_state == 'public'
+  end
 end
