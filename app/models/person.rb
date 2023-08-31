@@ -219,6 +219,10 @@ class Person < ApplicationRecord
       group(:locale).count.keys.map(&:to_s).include?(locale.to_s)
   end
 
+  def biography_public?
+    biographical_entries.first && biographical_entries.first.public?
+  end
+
   def biography(locale)
     locale ||= project.default_locale
     biographical_entries.map{|b| b.text(locale)}.join('\n')

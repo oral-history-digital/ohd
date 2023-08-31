@@ -31,9 +31,14 @@ class MetadataExport
           interview.interviewee.birth_name,
           interview.interviewee.alias_names,
           interview.interviewee.other_first_names,
+          interview.interviewee.pseudonym_first_name,
+          interview.interviewee.pseudonym_last_name,
+          interview.interviewee.use_pseudonym,
+          interview.interviewee.description,
           interview.interviewee.gender,
           interview.interviewee.date_of_birth,
           interview.interviewee.biography(locale) && interview.interviewee.biography(locale).gsub(/[\r\n\t]/, ' '),
+          interview.interviewee.biography_public?,
         ]
 
         project.contribution_types.inject(line) do |mem, contribution_type|
