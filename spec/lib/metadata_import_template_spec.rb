@@ -9,7 +9,7 @@ describe MetadataImportTemplate do
     end
 
     it 'should contain all base column-headers' do
-      expect(@csv.parse_csv(col_sep: "\t")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Sammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Link zum Interview", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie"])
+      expect(@csv.parse_csv(col_sep: "\t")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Sammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Link zum Interview", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Pseudonym Vorname", "Pseudonym Nachname", "Pseudonym benutzen", "Personenbeschreibung", "Geschlecht", "Geburtsdatum", "Biographie", "Biographie öffentlich"])
     end
   end
 
@@ -20,7 +20,7 @@ describe MetadataImportTemplate do
     end
 
     it 'should contain all base column-headers and columns for registry_reference_type-metadata_fields' do
-      expect(@csv.parse_csv(col_sep: "\t")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Sammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Link zum Interview", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewte*r", "Interviewführung", "Übersetzung", "Transkription", "Erschließung", "Geburtsort", "Geburtsort (direkter Oberbegriff)", "Interviewort", "Interviewort (direkter Oberbegriff)"])
+      expect(@csv.parse_csv(col_sep: "\t")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Sammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Link zum Interview", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Pseudonym Vorname", "Pseudonym Nachname", "Pseudonym benutzen", "Personenbeschreibung", "Geschlecht", "Geburtsdatum", "Biographie", "Biographie öffentlich", "Interviewführung", "Übersetzung", "Transkription", "Erschließung", "Geburtsort", "Geburtsort (direkter Oberbegriff)", "Interviewort", "Interviewort (direkter Oberbegriff)"])
     end
   end
 

@@ -1242,7 +1242,9 @@ de:
         date_of_birth: Geburtsdatum
         typology: Erfahrungen
         biography: Biographie
+        biography_public: Biographie öffentlich
         description: Beschreibung
+        person_description: Personenbeschreibung
       registry_entry:
         descriptor: Name
         notes: Beschreibung

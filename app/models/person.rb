@@ -225,9 +225,9 @@ class Person < ApplicationRecord
     biographical_entries.map{|b| b.text(locale)}.join('\n')
   end
 
-  def biography=(text)
+  def biography=(hash)
     biographical_entries.destroy_all
-    biographical_entries.build({text: text})
+    biographical_entries.build(hash)
   end
 
   def contributions_with_interviews(project_id)

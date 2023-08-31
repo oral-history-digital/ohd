@@ -47,9 +47,14 @@ class MetadataImportTemplate
       :birth_name,
       :alias_names,
       :other_first_names,
+      :pseudonym_first_name,
+      :pseudonym_last_name,
+      :use_pseudonym,
+      :person_description,
       :gender,
       :date_of_birth,
       :biography,
+      :biography_public,
     ].inject({}) do |mem, c| 
       mem[c] = I18n.t("activerecord.attributes.person.#{c}", locale: @locale)
       mem
