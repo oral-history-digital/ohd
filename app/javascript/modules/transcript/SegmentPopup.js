@@ -1,21 +1,24 @@
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 
-import { Fetch } from 'modules/data';
-import { useAuthorization } from 'modules/auth';
 import { Annotations } from 'modules/annotations';
+import { useAuthorization } from 'modules/auth';
+import { Fetch } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { RegistryReferencesContainer } from 'modules/registry-references';
+import { useProject } from 'modules/routes';
 
 export default function SegmentPopup({
     contentLocale,
     data,
-    project,
     openReference,
     popupType,
     workbookAnnotations,
     setOpenReference,
 }) {
     const { isAuthorized } = useAuthorization();
+    const { locale } = useI18n();
+    const { project } = useProject();
 
     const annotationsForSegment = workbookAnnotations?.filter(annotation =>
         data.user_annotation_ids.includes(annotation.id));
@@ -80,10 +83,10 @@ export default function SegmentPopup({
                                     <FaTimes className="Icon" />
                                 </button>
                                 <div className="SegmentPopup-term">
-                                    {openReference.name[contentLocale]}
+                                    {openReference.name[locale]}
                                 </div>
                                 <div className="SegmentPopup-explanation">
-                                    {openReference.notes[contentLocale]}
+                                    {openReference.notes[locale]}
                                 </div>
                             </div>
                         )
