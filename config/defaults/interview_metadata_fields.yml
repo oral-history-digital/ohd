@@ -49,3 +49,5 @@
   display_on_landing_page: true
 :signature_original:
   use_in_details_view: true
+:media_missing:
+  use_in_details_view: true

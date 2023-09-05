@@ -373,6 +373,7 @@ ru:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Отсутствует медиа
     signature_original: Signature original
     observations: Observations
     language_id: Language
