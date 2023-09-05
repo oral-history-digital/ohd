@@ -64,6 +64,15 @@ class ApplicationController < ActionController::Base
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
         translations: translations,
+        translations: Rails.cache.fetch("translations-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}") do
+          TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
+            mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
+              mem2[translation.locale] = translation.value
+              mem2
+            end
+            mem
+          end
+        end,
         countryKeys: country_keys,
       },
       user: {

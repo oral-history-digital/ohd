@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_31_124742) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_05_120506) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -874,6 +874,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_124742) do
     t.integer "project_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "translation_value_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "translation_value_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "value"
+    t.index ["locale"], name: "index_translation_value_translations_on_locale"
+    t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
+  end
+
+  create_table "translation_values", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "uploaded_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

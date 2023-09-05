@@ -1,0 +1,19 @@
+h1 Listing translation_values
+
+table
+  thead
+    tr
+      th
+      th
+      th
+
+  tbody
+    - @translation_values.each do |translation_value|
+      tr
+        td = link_to 'Show', translation_value
+        td = link_to 'Edit', edit_translation_value_path(translation_value)
+        td = link_to 'Destroy', translation_value, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Translation value', new_translation_value_path

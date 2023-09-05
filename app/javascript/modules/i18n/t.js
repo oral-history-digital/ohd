@@ -11,33 +11,22 @@ export default function t({ locale, translations }, key, params) {
         defaultKey = keyArray.join('.');
     }
 
-    try {
-        try {
-            eval(`text = translations.${locale}.${key}`);
-        } catch (e) {
-        } finally {
-            if (typeof(text) !== 'string') {
-                usingDefault = true;
-                eval(`text = translations.${locale}.${defaultKey}`);
-            }
-        }
-    } catch (e) {
-    } finally {
-        if (typeof(text) === 'string') {
-            if(params) {
-                for (let [key, value] of Object.entries(params)) {
-                    text = reactStringReplace(text, `%{${key}}`, (match, i) => (
-                        value
-                    ));
-                }
-            }
-            return `${text}${railsMode !== 'production' ? ` (${key})` : ''}`;
-        } else {
-            if (developmentMode === 'true') {
-                return `translation for ${locale}.${key} is missing!`;
-            } else {
-                return productionFallback;
-            }
+    if (translations[key]?.[locale]) {
+        text = translations[key][locale];
+    } else if (translations[defaultKey]?.[locale]) {
+        text = translations[defaultKey][locale];
+        usingDefault = true;
+    } else {
+        text = productionFallback;
+    }
+
+    if(params) {
+        for (let [key, value] of Object.entries(params)) {
+            text = reactStringReplace(text, `%{${key}}`, (match, i) => (
+                value
+            ));
         }
     }
+
+    return `${text}${railsMode !== 'production' ? ` (${usingDefault ? defaultKey : key})` : ''}`;
 }
