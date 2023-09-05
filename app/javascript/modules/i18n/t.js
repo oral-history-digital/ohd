@@ -4,6 +4,7 @@ export default function t({ locale, translations }, key, params) {
     let text, textWithReplacements, defaultKey;
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
+    let usingDefault = false;
 
     if (keyArray.length > 2) {
         keyArray[keyArray.length - 2] = 'default';
@@ -16,6 +17,7 @@ export default function t({ locale, translations }, key, params) {
         } catch (e) {
         } finally {
             if (typeof(text) !== 'string') {
+                usingDefault = true;
                 eval(`text = translations.${locale}.${defaultKey}`);
             }
         }
@@ -29,7 +31,7 @@ export default function t({ locale, translations }, key, params) {
                     ));
                 }
             }
-            return text
+            return `${text}${railsMode !== 'production' ? ` (${key})` : ''}`;
         } else {
             if (developmentMode === 'true') {
                 return `translation for ${locale}.${key} is missing!`;
