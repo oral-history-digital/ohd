@@ -23,15 +23,15 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
         value = translation && translation[attribute];
     }
 
-    if (props.optionsScope && props.translations[props.locale][props.optionsScope].hasOwnProperty(value)) {
+    if (props.optionsScope && props.translations.hasOwnProperty(`${props.optionsScope}.${value}`)) {
         value = t(props, `${props.optionsScope}.${value}`);
     }
 
-    if (props.translations[props.locale][attribute] && props.translations[props.locale][attribute].hasOwnProperty(value)) {
+    if(props.translations.hasOwnProperty(`${attribute}.${value}`)) {
         value = t(props, `${attribute}.${value}`);
     }
 
-    if (typeof value === 'string' && props.translations[props.locale].hasOwnProperty(value) && attribute !== 'shortname') {
+    if (typeof value === 'string' && props.translations.hasOwnProperty(value) && attribute !== 'shortname') {
         value = t(props, value);
     }
 
