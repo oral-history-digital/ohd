@@ -13,7 +13,7 @@ import { Spinner } from 'modules/spinners';
 import { getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
-import InterviewLoggedOut from './InterviewLoggedOut';
+import MediaPreview from './MediaPreview';
 
 export default function Interview({
     interview,
@@ -80,7 +80,7 @@ export default function Interview({
                     </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut ifNoProject>
-                    <InterviewLoggedOut />
+                    <MediaPreview />
                 </AuthShowContainer>
             </div>
         );
