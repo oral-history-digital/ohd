@@ -22,11 +22,13 @@ en:
       inactive: Your account is not activated yet.
       invalid: Invalid %{authentication_keys} or password.
       invalid_token: Der Anmelde-Token ist ungültig.
-      locked: Your account is locked.
-      not_found_in_database: Invalid %{authentication_keys} or password.
+      blocked: Invalid credentials
+      not_found_in_database: Invalid credentials
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your email address before continuing.
+      unconfirmed: The email address %{email} is already registered.
+        You still need to confirm your registration.
+        An email with the required link has just been resent to you.
       last_attempt: You have one more attempt before your account is locked.
     mailer:
       grant_project_access:
@@ -105,12 +107,12 @@ en:
       success: Successfully authenticated from your account.
     passwords:
       change: Change your password
-      forgot: Forgot your password?
+      forgot: Password recovery
       password: Password
       password_confirmation: Password confirmation
       submit: Change my password
       resend: Change password
-      link: Passwort wiederherstellen
+      link: Password recovery
       send_instructions: You will receive an email with instructions on how to reset
         your password in a few minutes.
       updated: Your password has been changed successfully. You are now signed in.
@@ -147,14 +149,16 @@ en:
         to verify your new email address. Please check your email and follow the confirm
         link to confirm your new email address.
     sessions:
-      link: Sign in
-      login: Sign in
+      link: Log in
+      login: Log in
       signed_in: Signed in successfully.
       signed_out: Signed out successfully.
       unauthenticated: You need to sign in or sign up before continuing.
       unauthenticated_search: In order to search you are required to sign in first.
-      unconfirmed: You have to confirm your account before continuing.
-      locked: Your account is locked.
+      unconfirmed: The email address %{email} is already registered.
+        You still need to confirm your registration.
+        An email with the required link has just been resent to you.
+      blocked: Your account is blocked.
       invalid: Invalid email or password.
       invalid_token: Invalid authentication token.
       timeout: Your session expired, please sign in again to continue.
@@ -265,7 +269,7 @@ en:
     attributes:
       user:
         email: Email
-        login: login
+        login: Log in
         password: password
         password_confirmation: password confirmation
   errors:

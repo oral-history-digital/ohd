@@ -19,13 +19,16 @@ el:
     failure:
       already_authenticated: Είστε ήδη συνδεδεμένος.
       inactive: Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα.
-      invalid: Μη έγκυρο email ή κωδικός.
+      invalid: Μη έγκυρα δεδομένα σύνδεσης.
+      not_found_in_database: Μη έγκυρα δεδομένα σύνδεσης.
       invalid_token: Μη έγκυρος κωδικός πιστοποίησης.
-      locked: Ο λογαριασμός σας είναι κλειδωμένος.
+      blocked: Ο λογαριασμός σας είναι κλειδωμένος.
       not_found_in_database: Μη έγκυρo %{authentication_keys} ή κωδικός.
       timeout: Η σύνδεσή σας τερματίστηκε, παρακαλούμε συνδεθείτε ξανά.
       unauthenticated: Χρειάζεται να συνδεθείτε πριν να συνεχίσετε.
-      unconfirmed: Απαιτείται η επιβεβαίωση του λογαριασμού σας πριν συνεχίσετε.
+      unconfirmed: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη.
+        Πρέπει να επιβεβαιώσετε την εγγραφή σας.
+        Ένα e-mail με τον απαραίτητο σύνδεσμο μόλις σας εστάλη.
       last_attempt: Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί.
     mailer:
       confirmation_instructions:
@@ -43,12 +46,12 @@ el:
       success: Επιτυχής είσοδος με το λογαριασμό σας.
     passwords:
       change: Αλλάξτε τον κωδικό σας
-      forgot: Ξεχάσατε τον κωδικό σας?
-      password: Κωδικός
+      forgot: Ανάκτηση κωδικού πρόσβασης
+      password: Κωδικός πρόσβασης
       password_confirmation: Επανάληψη κωδικού
       submit: Passwort jetzt ändern
       resend: Passwort ändern
-      link: Passwort wiederherstellen
+      link: Ανάκτηση κωδικού πρόσβασης
       send_instructions: Παρακαλώ δώστε την ηλεκτρονική σας διεύθυνση, με την οποία
         έγινε η εγγραφή σας στο Αρχείο. Θα λάβετε στο E-Mail σας ένα σύνδεσμο για
         τον επανακαθορισμό του κωδικού σας.
@@ -92,16 +95,16 @@ el:
         unconfirmed: μη επιβεβαιωμένος. Σας είχε αποσταλεί email με οδηγίες
         locked: κλειδωμένος
     sessions:
-      link: Anmelden
-      login: Anmelden
+      link: Είσοδος
+      login: Είσοδος
       signed_in: Σύνδεση με επιτυχία.
       signed_out: Αποσύνδεση με επιτυχία.
       unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
       unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
-      unconfirmed: Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden
-        können.
-      locked: Ihr Zugang wurde gesperrt.
-      invalid: Username oder Passwort ist ungültig.
+      unconfirmed: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη.
+        Πρέπει να επιβεβαιώσετε την εγγραφή σας.
+        Ένα e-mail με τον απαραίτητο σύνδεσμο μόλις σας εστάλη.
+      blocked: Ο λογαριασμός σας είναι κλειδωμένος.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
       inactive: Ihr Zugang ist zur Zeit deaktiviert.
@@ -122,7 +125,7 @@ el:
     authentication_keys:
       login: Benutzer*in
       email: E-Mail
-      password: Passwort
+      password: Κωδικός πρόσβασης
     workflow_states:
       new_registration: Neuanmeldung
       new_registrations: Neuanmeldungen
@@ -210,7 +213,7 @@ el:
       user:
         email: E-Mail
         login: Login
-        password: Passwort
+        password: Κωδικός πρόσβασης
         password_confirmation: Passwort-Wiederholung
   errors:
     messages:

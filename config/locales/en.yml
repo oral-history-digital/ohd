@@ -707,13 +707,12 @@ en:
     change_to_edit_view: Redaktionsansicht
   user:
     registration: Register
-    registration_text_one: 'Registration is required for research in the archive.
-      The '
-    registration_text_two: " explain for whom and for which purposes the archive can
-      be used. The "
-    registration_text_three: " clarifies which personal data we process and what we
-      use it for. After you have confirmed your registration, the project team will review your registration details.
-      Within two working days you will be informed about the activation of your account for the interview archive."
+    registration_text_one: 'Please register to access the interviews. The '
+    registration_text_one_ohd: 'Please register to use the platform. The '
+    registration_text_two: ' explain who can use Oral.History-Digital and for what purposes. The '
+    registration_text_three: ' explains why we process which data and what we use it for.
+      For privacy reasons, you will be asked to confirm your registration by email.'
+    registration_text_four: 'You can then request activation for various interview archives included in the platform.'
     tos_agreement: Terms of Use
     priv_agreement: Privacy Policy
     notes_on_tos_agreement: I agree to the Terms of Use.
@@ -1364,13 +1363,12 @@ en:
   modules:
     registration:
       title: Registrierung für Oral-History.Digital
-      registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
-        und ggf. eine Freischaltung für einzelne Archive notwendig.
-      registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
-        und eine Freischaltung für das Archiv notwendig.
+      registration_needed_ohd: Access to the interviews requires registration on the Oral-History.Digital platform and, if necessary,
+        activation for individual archives.
+      registration_needed_archive: Access to the interviews requires registration on the Oral-History.Digital platform and activation for the archive.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
-        still_not_registered: Die E-Mail-Adresse %{email} ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: The email address %{email} is not yet registered. Please register first.
         account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
         project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
@@ -1388,8 +1386,8 @@ en:
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation1: Sie sind bereits in Oral-History.Digital registriert, aber noch nicht für dieses Archiv freigeschaltet.
-      request_access_explanation2: Bitte beantragen Sie die Freischaltung.
+      request_access_explanation1: You are already registered in Oral-History.Digital, but not yet activated for this archive.
+      request_access_explanation2: Please apply for activation.
       request_access_link: Freischaltung beantragen
       request_in_process_title: Ihr Antrag auf Freischaltung wurde erfolgreich abgesendet!
       request_in_process_text1: Die inhaltliche Prüfung des Antrages kann bis zu zwei Werktage dauern.
