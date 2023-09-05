@@ -13,7 +13,12 @@ export default function BirthYearFacet({
         yearOfBirthMax]);
 
     useEffect(() => {
-        setCurrentValue([yearOfBirthMin, yearOfBirthMax]);
+        if (Number.isNaN(yearOfBirthMin) && Number.isNaN(yearOfBirthMax)) {
+            setCurrentValue([sliderMin, sliderMax]);
+        } else {
+            setCurrentValue([yearOfBirthMin, yearOfBirthMax]);
+        }
+
     }, [yearOfBirthMin, yearOfBirthMax]);
 
     function handleCompleteChange() {

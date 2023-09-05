@@ -9,7 +9,7 @@ const qsOptions = {
 export default function useSearchParams() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { search, pathname } = location;
+    const { search } = location;
 
     const params = useMemo(
         () => queryString.parse(search, qsOptions), [search]
@@ -30,7 +30,6 @@ export default function useSearchParams() {
     delete facets.fulltext;
     delete facets.year_of_birth_min;
     delete facets.year_of_birth_max;
-
 
     function setSortBy(value) {
         setParam('sort', value);
