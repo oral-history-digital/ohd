@@ -347,6 +347,7 @@ de:
     archive_id: Interview-ID
     interview_location: Ort des Interviews
     media_type: Medientyp
+    media_missing: Mediendateien fehlen
     signature_original: Originalsignatur
     observations: Protokoll
     language_id: Sprache
