@@ -182,7 +182,7 @@ ru:
   forget_password_question: Passwort wiederherstellen
   enter_email: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv
     registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.
-  email: Адрес эл. почты
+  email: Электронный адрес
   change_password: Passwort ändern
   archive_results: Результаты поиска
   segment_results: Результаты поиска транскриптов
@@ -319,7 +319,7 @@ ru:
   interview_type: 'Art: Video'
   language: Язык
   camera: Kamera
-  order_new_password: Passwort wiederherstellen
+  order_new_password: Возобновление пароля
   ordered_new_password: Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres
     Passwortes geschickt.
   conditions: Условия пользования
@@ -758,14 +758,14 @@ ru:
     change_to_edit_view: редакторский формат
   user:
     registration: Регистрация
-    registration_text_one: 'Для поиска информации в архиве "Принудительный труд 1939-1945"
-      необходима регистрация. '
-    registration_text_two: " разъясняют, кто и в каких целях может использовать архив. "
-    registration_text_three: " разъясняют, почему и какие сведения нами обрабатываются
-      и каким образом используются. В течение двух рабочих дней после отправки Ваших
-      данных Вы получите ответное письмо или Ваши данные для доступа."
-    tos_agreement: Правила пользования сайтом
-    priv_agreement: Положения о защите персональных данных
+    registration_text_one: 'Пожалуйста, зарегистрируйтесь для получения доступа к интервью. В '
+    registration_text_one_ohd: 'Пожалуйста, зарегистрируйтесь для получения доступа к платформе. В '
+    registration_text_two: 'содержится пояснение, кто и с какой целью может использовать Oral.History-Digital. '
+    registration_text_three: ' поясняет, почему мы запрашиваем некоторые данные и для чего их используем.
+      В целях защиты информации Вы получите электронное письмо с просьбой подтвердить Вашу регистрацию.'
+    registration_text_four: 'После этого Вы сможете подать запрос на активацию допуска к различным архивам интервью, размещенным на платформе.'
+    tos_agreement: Условиях пользования
+    priv_agreement: Политика конфиденциальности
     notes_on_tos_agreement: Я принимаю Положения о защите персональных данных.
     priv_agreement_alias: Положения о защите персональных данных
     notes_on_priv_agreement: Я принимаю Правила пользования сайтом.
@@ -1174,9 +1174,9 @@ ru:
         processed_at: Bearbeitet am
         activated_at: активирован
         default_locale: Sprache
-        login: Login
-        password: Passwort
-        appellation: Обращение
+        login: Вход
+        password: Пароль
+        appellation: Звание
         first_name: Имя
         last_name: Фамилия
         gender: Пол
@@ -1327,7 +1327,7 @@ ru:
         locale: Sprache
         lang: Sprache
         text: Text
-        email: Адрес эл. почты
+        email: Электронный адрес
         url: URL
         href: Href
         file: Datei
@@ -1388,8 +1388,8 @@ ru:
     new: New interview
     edit: Edit interview
   user_account:
-    login: Login
-    password: Password
+    login: Вход
+    password: Пароль
     errors:
       login: Please correct your login
       password: Please correct your password
@@ -1779,32 +1779,48 @@ ru:
 
   modules:
     registration:
-      registration_needed_ohd: В целях защиты персональных данных тех, чьи истории жизни представлены
-        в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
-        ко всем интервью в полном объеме.
-      registration_needed_archive: В целях защиты персональных данных тех, чьи истории жизни представлены
-        в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
-        ко всем интервью в полном объеме.
+      title: Registrierung für Oral-History.Digital
+      registration_needed_ohd: Для получения доступа к интервью необходима регистрация на платформе Oral-History.Digital
+        и при необходимости – активация допуска к одному из архивов.
+      registration_needed_archive: Для получения доступа к интервью необходима регистрация на платформе Oral-History.Digital
+        и активация допуска к архиву.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
-        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
-        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
-        login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
-        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: Электронный адрес %{email} еще не зарегистрирован. Пожалуйста, пройдите процедуру регистрации.
+        account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+        project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_rejected: Die E-Mail-Adresse %{email} ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
+        project_access_granted: Die E-Mail-Adresse %{email} ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
+        login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
+        login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer E-Mail-Adresse und ihrem Passwort an.
+        project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.
+          Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
+        project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt.
     project_access:
       request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_one: 'Schritt 1 - '
       request_step_two: 'Schritt 2 - '
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
-      request_access_link: 'Freischaltung für dieses Archiv beantragen'
-      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
-      request_in_process_text: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш аккаунт будет активирован и Вы получите доступ к материалам Архива интервью.
+      request_access_explanation1: Вы уже зарегистрированы на портале Oral-History.Digital, но еще не получили допуск к этому архиву.
+      request_access_explanation2: Пожалуйста, подайте заявку на активацию доступа.
+      request_access_link: Freischaltung beantragen
+      request_in_process_title: Ihr Antrag auf Freischaltung wurde erfolgreich abgesendet!
+      request_in_process_text1: Die inhaltliche Prüfung des Antrages kann bis zu zwei Werktage dauern.
+      request_in_process_text2: Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
       blocked_text: Sie wurden für dieses Archiv gesperrt.
+      terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
+      correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
+      rejected_text: Die Überprüfung Ihres Antrags auf Freischaltung hat ergeben, dass ihre Angaben unzureichend sind oder nicht denNutzungsbedingungen entsprechen. Bitte ändern Sie Ihre Angaben.
+      rejected_button_text: Angaben korrigieren.
+      archive_management_in: Archivmanagement in
+      granted_in: freigeschaltet in
+      actual_workflow_state: aktueller Status
+      at: am
+      one: Freischaltung
+      many: Freischaltungen
     admin:
       person_details:
         contributions:

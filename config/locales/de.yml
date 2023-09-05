@@ -737,7 +737,7 @@ de:
       Datenschutzgründen werden Sie per E-Mail gebeten Ihre Registrierung zu bestätigen. '
     registration_text_four: 'Danach können Sie die Freischaltung für verschiedene in der Plattform enthaltene Interview-Archive beantragen.'
     tos_agreement: Nutzungsbedingungen
-    priv_agreement: Datenschutzpraxis
+    priv_agreement: Datenschutzbestimmungen
     notes_on_tos_agreement_ohd: Ich stimme den %{tos_link} der Plattform Oral-History.Digital zu.
     notes_on_tos_agreement_archive: Ich stimme den %{tos_link} der Anwendung %{project} zu.
     priv_agreement_alias: Datenschutzbestimmungen
@@ -1379,9 +1379,9 @@ de:
   modules:
     registration:
       title: Registrierung für Oral-History.Digital
-      registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
+      registration_needed_ohd: Um auf die Interviews zuzugreifen, ist eine Registrierung in Oral-History.Digital
         und ggf. eine Freischaltung für einzelne Archive notwendig.
-      registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung in der Plattform Oral-History.Digital
+      registration_needed_archive: Um auf die Interviews zuzugreifen, ist eine Registrierung in Oral-History.Digital
         und eine Freischaltung für das Archiv notwendig.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'

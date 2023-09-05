@@ -701,16 +701,15 @@ es:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
   user:
-    registration: Registro
-    registration_text_one: 'Para ver las entrevistas en el archivo, es
-        necesario registrarse. La '
-    registration_text_two: " declarar, para quién y con qué fines se puede usar el archivo.
-        La "
-    registration_text_three: " explicar, porque procesamos cuales datos y para que
-        los usamos. Dentro de dos días hábiles después de registrarse
-        recibirá sus datos de acceso o una respuesta."
+    registration: Registrarse
+    registration_text_one: 'Por favor, regístrese para poder utilizar la plataforma. Los '
+    registration_text_one_ohd: 'Por favor, regístrese para poder utilizar la plataforma. Los '
+    registration_text_two: ' explican para quien y con que fines puede utilizarse Oral.History-Digital. La '
+    registration_text_three: ' explica porque procesamos cuales datos y para que los utilizamos.
+      Por motivos de protección de datos, se le pedirá que confirme su registro por correo electrónico.'
+    registration_text_four: 'Después, podrá solicitar el acceso para varios archivos de entrevistas incluidos en la plataforma.'
     tos_agreement: Términos de uso
-    priv_agreement: Indicaciones sobre la política de privacidad
+    priv_agreement: Política de privacidad
     notes_on_tos_agreement: Acepto los términos de uso.
     priv_agreement_alias: Política de privacidad
     notes_on_priv_agreement: Acepto la política de privacidad.
@@ -1263,7 +1262,7 @@ es:
         locale: Sprache
         lang: Sprache
         text: Text
-        email: E-Mail
+        email: Correo electrónico
         url: URL
         href: Href
         file: Dato
@@ -1325,10 +1324,9 @@ es:
 
   modules:
     registration:
-      registration_needed_ohd: Para garantizar la protección de datos personales, usted se tiene que registrar.
-        Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
-      registration_needed_archive: Para garantizar la protección de datos personales, usted se tiene que registrar.
-        Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
+      registration_needed_ohd: Para acceder a las entrevistas, es necesario registrarse en Oral-History.Digital y, en caso necesario,
+        solicitar el acceso a los archivos individuales.
+      registration_needed_archive: Para acceder a las entrevistas, es necesario registrarse en Oral-History.Digital y solicitar el acceso al archivo.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die E-Mail-Adresse %{email} ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
@@ -1340,14 +1338,15 @@ es:
         login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
         login:  Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die E-Mail-Adresse %{email} ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: El correo electrónico %{email} aún no está registrado. Por favor, regístrese primero.
     project_access:
       request_title: Antrag auf Freischaltung für die Anwendung %{project}
       request_step_two: 'Schritt 2 - '
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      request_access_explanation1: Ya está registrado/a en Oral-History.Digital, pero aún no está activado su acceso para este archivo.
+      request_access_explanation2: Por favor, solicite el acceso.
       request_access_link: 'Freischaltung für dieses Archiv beantragen'
       request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
       request_in_process_text: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.

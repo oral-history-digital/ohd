@@ -160,7 +160,7 @@ de:
       unconfirmed: Die E-Mail-Adresse ist bereits registriert.
         Sie müssen Ihre Registrierung noch bestätigen.
         Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-      blocked: Ihr Zugang wurde gesperrt.
+      blocked: Ihr Account ist gesperrt.
       invalid: Username oder Passwort ist ungültig.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.

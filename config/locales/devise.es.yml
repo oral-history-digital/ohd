@@ -17,14 +17,16 @@ es:
     failure:
       already_authenticated: Ya se ha iniciado la sesión.
       inactive: Su cuenta aún no se ha activado.
-      invalid: Nombre de usuaria/o o contraseña inválidos.
+      invalid: Datos de acceso no válidos
       invalid_token: El token de acceso (?) es inválido.
-      locked: Su cuenta se ha bloqueado.
-      not_found_in_database: Dirección de correo electrónico o contraseña inválidos.
+      blocked: Su cuenta está bloqueada.
+      not_found_in_database: Datos de acceso no válidos
       timeout: Su sesión expiró. Por favor, vuelva a iniciar sesión.
       unauthenticated: Tiene que iniciar sesión o registrarse para poder
         continuar.
-      unconfirmed: Tiene que confirmar su cuenta para poder continuar.
+      unconfirmed: El correo electrónico %{email} ya está registrado.
+        Aún debe confirmar su registro.
+        Se le acaba de reenviar un correo electrónico con el enlace necesario.
     mailer:
       confirmation_instructions:
         subject: Archivo de entrevistas – Pasos para la activación de su cuenta
@@ -46,7 +48,7 @@ es:
       password_confirmation: Repetir contraseña
       submit: Passwort jetzt ändern
       resend: Passwort ändern
-      link: Passwort wiederherstellen
+      link: Recuperar contraseña
       send_instructions: Por favor introduzca la dirección de correo electrónico, que usó
         para registrarse en el archivo. Recibirá un correo electrónico con el enlace
         para recuperar su contraseña.
@@ -85,15 +87,16 @@ es:
         confirmar su nueva dirección de correo electrónico. Recibirá en pocos minutos un correo electrónico
         con que podrá concluir el cambio de su dirección de correo electrónico.
     sessions:
-      link: Anmelden
-      login: Anmelden
+      link: Iniciar sesión
+      login: Iniciar sesión
       signed_in: Usted ha iniciado la sesión.
       signed_out: Usted ha cerrado la sesión.
       unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
       unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
-      unconfirmed: Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden
-        können.
-      locked: Ihr Zugang wurde gesperrt.
+      unconfirmed: El correo electrónico %{email} ya está registrado.
+        Aún debe confirmar su registro.
+        Se le acaba de reenviar un correo electrónico con el enlace necesario.
+      blocked: Su cuenta está bloqueada.
       invalid: Username oder Passwort ist ungültig.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
@@ -115,8 +118,8 @@ es:
       send_now: Jetzt zuschicken
     authentication_keys:
       login: Benutzer*in
-      email: E-Mail
-      password: Passwort
+      email: Correo electrónico
+      password: Contraseña
     workflow_states:
       new_registration: Neuanmeldung
       new_registrations: Neuanmeldungen
@@ -159,7 +162,7 @@ es:
       first_name: Vorname
       last_name: Nachname
       job_description: Beruf
-      email: E-Mail
+      email: Correo electrónico
       gender: Género
       research_intentions: Recherche-Anliegen
       comments: Präzisierung des Anliegens
@@ -204,7 +207,7 @@ es:
       user:
         email: E-Mail
         login: Login
-        password: Passwort
+        password: Contraseña
         password_confirmation: Passwort-Wiederholung
   errors:
     messages:

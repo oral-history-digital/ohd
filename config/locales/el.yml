@@ -175,7 +175,7 @@ el:
   error: Error
   segment: Απόσπασμα
   publish: Δημοσίευση
-  login: Εγγραφή
+  login: Είσοδος
   login_name: Χρήστης
   logout: Έξοδος
   login_errors: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
@@ -712,17 +712,14 @@ el:
     change_to_edit_view: Redaktionsansicht
   user:
     registration: Εγγραφή
-    registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών "Μνήμες
-      από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα και να εξηγήσετε
-      τους λόγους για τους οποίους επιθυμείτε πρόσβαση στο Αρχείο. Θα πρέπει να συναινέσετε
-      με τους '
-    registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε κατόπιν
-      τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
-    registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα δεδομένα
-      σας, και για ποιο λόγο τα αξιοποιούμε. Μετά από την εγγραφή σας η ομάδα του προγράμματος θα ελέγξει τα στοιχεία σας.
-      Θα σας πληροφορήσουμε για την ενεργοποίηση του λογαριασμού σας εντός δύο εώς τριών ημερών."
-    tos_agreement: Προϋποθέσεις χρήσης
-    priv_agreement: Υποδείξεις για την προστασία δεδομένων
+    registration_text_one: 'Παρακαλούμε εγγραφείτε για να αποκτήσετε πρόσβαση στις συνεντεύξεις. Οι '
+    registration_text_one_ohd: 'Παρακαλούμε εγγραφείτε για να μπορέσετε να χρησιμοποιήσετε την πλατφόρμα. Οι '
+    registration_text_two: ' εξηγούν από ποιον και για ποιους σκοπούς μπορεί να χρησιμοποιηθεί το Oral.History-Digital. Οι '
+    registration_text_three: ' αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα δεδομένα σας, και για ποιο σκοπό τα αξιοποιούμε.
+      Για λόγους προστασίας δεδομένων, θα σας ζητηθεί να επιβεβαιώσετε την εγγραφή σας μέσω e-mail.'
+    registration_text_four: 'Στη συνέχεια, μπορείτε να ζητήσετε την ενεργοποίηση των διάφορων αρχείων μαρτυριών που περιλαμβάνονται στην πλατφόρμα.'
+    tos_agreement: όροι χρήσης
+    priv_agreement: όροι προστασίας προσωπικών δεδομένων
     notes_on_tos_agreement: Συμφωνώ με τις προϋποθέσεις χρήσης
     priv_agreement_alias: προσωπικών δεδομένων
     notes_on_priv_agreement: Συμφωνώ με την προστασία δεδομένων
@@ -1137,7 +1134,7 @@ el:
         admin_comments: Σχόλιο
         default_locale: Γλώσσα
         login: Όνομα σύνδεσης
-        password: Κωδικός
+        password: Κωδικός πρόσβασης
         appellation: Προσφώνηση
         first_name: Όνομα
         last_name: Επώνυμο
@@ -1357,8 +1354,10 @@ el:
 
   modules:
     registration:
-      registration_needed_ohd: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
-      registration_needed_archive: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
+      registration_needed_ohd: Για να αποκτήσετε πρόσβαση στις συνεντεύξεις πρέπει να πραγματοποιήσετε εγγραφή στο Oral-History. Digital και,
+        εάν είναι απαραίτητο να ενεργοποιήσετε τα επιμέρους αρχεία.
+      registration_needed_archive: Για να αποκτήσετε πρόσβαση στις συνεντεύξεις πρέπει να πραγματοποιήσετε εγγραφή στο Oral-History. Digital
+        και να ενεργοποιήσετε το Aρχείο.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
@@ -1367,14 +1366,15 @@ el:
         login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} δεν έχει ακόμη καταχωρηθεί. Παρακαλώ εγγραφείτε πρώτα.
     project_access:
       request_title: Antrag auf Freischaltung für die Anwendung %{project}
       request_step_two: 'Schritt 2 - '
       request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
         Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
       request_submit: Antrag auf Freischaltung absenden
-      request_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+      request_access_explanation1: Είστε ήδη εγγεγραμμένος στο Oral-History.Digital, αλλά δεν έχετε ενεργοποιήσει ακόμα αυτό το αρχείο.
+      request_access_explanation2: Παρακαλούμε κάντε αίτηση για ενεργοποίηση.
       request_access_link: 'Freischaltung für dieses Archiv beantragen'
       request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
       request_in_process_text: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
