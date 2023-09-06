@@ -29,7 +29,7 @@ class TranslationValuesController < ApplicationController
       extra_params = "all"
     else
       page = params[:page] || 1
-      translation_values = policy_scope(TranslationValue).includes(:translations).where(search_params).order("translation_value_translations.name ASC").paginate page: page
+      translation_values = policy_scope(TranslationValue).includes(:translations).where(search_params).order(:key).paginate page: page
       extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
     end
 
@@ -37,7 +37,6 @@ class TranslationValuesController < ApplicationController
       format.html { render "react/app" }
       format.json do
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-translation_values-#{extra_params ? extra_params : "all"}-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}" do
-          translation_values = translation_values.includes(:translations)
           {
             data: translation_values.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "translation_values",
@@ -78,7 +77,6 @@ class TranslationValuesController < ApplicationController
   def search_params
     params.permit(
       :key,
-      :locale,
       :value,
     ).to_h.select{|k,v| !v.blank? }
   end

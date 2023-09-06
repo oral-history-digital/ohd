@@ -1,5 +1,6 @@
 import {
     PermissionSearchFormContainer,
+    TranslationValuesSearchFormContainer,
     RoleSearchFormContainer,
     TaskTypeSearchFormContainer
 } from 'modules/admin';
@@ -69,6 +70,14 @@ export default function ProjectConfigTabPanel() {
                     action='update'
                 >
                     <PermissionSearchFormContainer/>
+                </AdminSubTab>
+                <AdminSubTab
+                    title='edit.translation_value.admin'
+                    url={`${pathBase}/translation_values`}
+                    obj={{type: 'TranslationValue'}}
+                    action='update'
+                >
+                    <TranslationValuesSearchFormContainer/>
                 </AdminSubTab>
                 <AdminSubTab
                     title='edit.task_type.admin'

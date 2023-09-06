@@ -29,6 +29,7 @@ import {
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
     WrappedLanguagesContainer,
+    WrappedTranslationValuesContainer,
     WrappedPermissionsContainer,
     WrappedRegistryNameTypesContainer,
     WrappedRegistryReferenceTypesContainer,
@@ -84,6 +85,7 @@ export default function ProjectRoutes() {
                 <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
                 <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />
                 <Route path="languages" element={<WrappedLanguagesContainer />} />
+                <Route path="translation_values" element={<WrappedTranslationValuesContainer />} />
                 <Route path="collections" element={<WrappedCollectionsContainer />} />
                 <Route path="roles" element={<WrappedRolesContainer />} />
                 <Route path="permissions" element={<WrappedPermissionsContainer />} />

@@ -108,6 +108,7 @@ class ApplicationController < ActionController::Base
           tasks: {},
           projects: {all: 'fetched'},
           languages: {all: 'fetched'},
+          translation_values: {},
           institutions: {all: 'fetched'},
           collections: {},
           people: {},
@@ -173,6 +174,7 @@ class ApplicationController < ActionController::Base
       projects: { query: {page: 1} },
       collections: { query: {page: 1} },
       languages: { query: {page: 1} },
+      translation_values: { query: {page: 1} },
       institutions: { query: {page: 1} }
     }
   end
