@@ -1,13 +1,11 @@
 import reactStringReplace from 'react-string-replace';
 import { useSelector } from 'react-redux';
-import { getTranslationsView } from 'modules/archive';
 
-export default function t({ locale, translations }, key, params) {
+export default function t({ locale, translations, translationsView }, key, params) {
     let text, textWithReplacements, defaultKey;
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
     let usingDefault = false;
-    const translationsView = useSelector(getTranslationsView);
 
     if (keyArray.length > 2) {
         keyArray[keyArray.length - 2] = 'default';
