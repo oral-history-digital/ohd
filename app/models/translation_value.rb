@@ -1,6 +1,8 @@
 class TranslationValue < ApplicationRecord
 
-  translates :value
+  validates :key, presence: true, uniqueness: true
+
+  translates :value, touch: true
   accepts_nested_attributes_for :translations
 
   def self.create_from_hash(locale, translations_hash, old_key=nil)
