@@ -9,6 +9,7 @@ import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import AdminSubTab from './AdminSubTab';
+import ToggleTranslationsView from './ToggleTranslationsView';
 
 export default function ProjectConfigTabPanel() {
     const { t } = useI18n();
@@ -77,6 +78,7 @@ export default function ProjectConfigTabPanel() {
                     obj={{type: 'TranslationValue'}}
                     action='update'
                 >
+                    <ToggleTranslationsView/>
                     <TranslationValuesSearchFormContainer/>
                 </AdminSubTab>
                 <AdminSubTab

@@ -6,6 +6,7 @@ import {
     SET_VIEW_MODE,
     CLEAR_VIEW_MODES,
     CHANGE_TO_EDIT_VIEW,
+    CHANGE_TO_TRANSLATIONS_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
@@ -24,6 +25,7 @@ export const initialState = {
     homeContent: "",
     externalLinks: {},
     editView: false,
+    translationsView: false,
     doiResult: {},
     selectedArchiveIds: ['dummy']
 }
@@ -80,6 +82,10 @@ const archive = (state = initialState, action) => {
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {
                 editView: action.editView
+            })
+        case CHANGE_TO_TRANSLATIONS_VIEW:
+            return Object.assign({}, state, {
+                translationsView: action.translationsView
             })
         case CHANGE_TO_INTERVIEW_EDIT_VIEW:
             return Object.assign({}, state, {

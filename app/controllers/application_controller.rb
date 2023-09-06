@@ -60,6 +60,7 @@ class ApplicationController < ActionController::Base
         viewModes: nil,
         viewMode: nil,
         editView: !!cookies["editView"],
+        translationsView: !!cookies["translationsView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
