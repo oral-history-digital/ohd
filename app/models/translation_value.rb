@@ -1,5 +1,7 @@
 class TranslationValue < ApplicationRecord
+
   translates :value
+  accepts_nested_attributes_for :translations
 
   def self.create_from_hash(locale, translations_hash, old_key=nil)
     translations_hash.each do |key, value|

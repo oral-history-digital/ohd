@@ -9,6 +9,8 @@ export const getData = state => state.data;
 
 export const getLanguages = state => getData(state).languages;
 
+export const getTranslationValues = state => getData(state).translation_values;
+
 export const getInstitutions = state => getData(state).institutions;
 
 export const getProjects = state => getData(state).projects;
@@ -67,6 +69,8 @@ export const getHeadingsFetched = createSelector(
 );
 
 export const getLanguagesStatus = state => getStatuses(state).languages;
+
+export const getTranslationValuesStatus = state => getStatuses(state).translation_values;
 
 export const getInstitutionsStatus = state => getStatuses(state).institutions;
 

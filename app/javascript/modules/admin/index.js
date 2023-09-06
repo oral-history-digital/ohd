@@ -13,6 +13,7 @@ export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as HelpTextAdminPage } from './HelpTextAdminPage';
 export { default as UsersAdminPage } from './UsersAdminPage';
 export { default as LanguagesSearchFormContainer } from './LanguagesSearchFormContainer';
+export { default as TranslationValuesSearchFormContainer } from './TranslationValuesSearchFormContainer';
 export { default as LogosContainer } from './LogosContainer';
 export { default as MetadataFieldsContainer } from './MetadataFieldsContainer';
 export { default as PeopleAdminPage } from './PeopleAdminPage';
@@ -28,6 +29,7 @@ export { default as WrappedCollectionsContainer } from './WrappedCollectionsCont
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
 export { default as WrappedLanguagesContainer } from './WrappedLanguagesContainer';
+export { default as WrappedTranslationValuesContainer } from './WrappedTranslationValuesContainer';
 export { default as WrappedPermissionsContainer } from './WrappedPermissionsContainer';
 export { default as WrappedProjectsContainer } from './WrappedProjectsContainer';
 export { default as WrappedRegistryNameTypesContainer } from './WrappedRegistryNameTypesContainer';

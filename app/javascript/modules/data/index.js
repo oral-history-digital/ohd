@@ -32,6 +32,8 @@ export {
     getInterviewsStatus,
     getLanguages,
     getLanguagesStatus,
+    getTranslationValues,
+    getTranslationValuesStatus,
     getMarkTextStatus,
     getMediaStreamsForCurrentProject,
     getNormDataProviders,

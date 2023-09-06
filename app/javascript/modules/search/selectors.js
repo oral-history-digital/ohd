@@ -37,6 +37,8 @@ export const getCollectionsQuery = state => getState(state).collections.query;
 
 export const getLanguagesQuery = state => getState(state).languages.query;
 
+export const getTranslationValuesQuery = state => getState(state).translation_values.query;
+
 export const getInstitutionsQuery = state => getState(state).institutions.query;
 
 export const getRolesQuery = state => getState(state).roles.query;
