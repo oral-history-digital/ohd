@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_05_120506) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_06_133441) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -890,6 +890,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_05_120506) do
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_translation_values_on_key"
   end
 
   create_table "uploaded_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
