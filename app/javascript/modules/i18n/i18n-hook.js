@@ -2,7 +2,7 @@ import { useMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { SYSTEM_LOCALES } from 'modules/constants';
-import { getTranslations } from 'modules/archive';
+import { getTranslationsView, getTranslations } from 'modules/archive';
 import originalT from './t';
 
 export function useI18n() {
@@ -18,8 +18,9 @@ export function useI18n() {
     }
 
     const translations = useSelector(getTranslations);
+    const translationsView = useSelector(getTranslationsView);
 
-    const curriedT = (key, params) => originalT({ locale, translations }, key, params);
+    const curriedT = (key, params) => originalT({ locale, translations, translationsView }, key, params);
 
     return {
         locale,
