@@ -37,6 +37,7 @@ Rails.application.routes.draw do
 
     resources :edit_tables, only: [:create, :show]
     resources :languages
+    resources :translation_values
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
     resources :institution_projects
