@@ -23,7 +23,7 @@ export default function UsersAdminTabPanel({
 
     function countryKeyOptions() {
         return countryKeys[locale].map(x => ({
-            label: translations[locale]['countries'][x],
+            label: translations[`countries.${x}`][locale],
             value: x
         }));
     }
