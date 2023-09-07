@@ -79,6 +79,7 @@ class MetadataImport
       interview = Interview.create interview_data.update(properties: properties)
     end
     interview.public_attributes=({signature_original: true}) if row[:signature_original]
+    interview.save
     interview
   end
 
