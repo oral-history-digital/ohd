@@ -16,21 +16,20 @@ export default function InterviewCollectionInfo({
     const { locale, t } = useI18n();
     const { project } = useProject();
     const collections = useSelector(getCollectionsForCurrentProject);
-
     const { projectAccessGranted } = useProjectAccessStatus(project);
+
     const collection = collections[interview.collection_id];
-    const collectionNotes = collection.notes[locale];
     const titleText = t('modules.interview_metadata.show_collection_desc');
 
     return (
         <SingleValueWithFormContainer
-            elementType={'select'}
+            elementType="select"
             obj={interview}
             values={collections}
             withEmpty={true}
             validate={function(v){return /^\d+$/.test(v)}}
-            individualErrorMsg={'empty'}
-            attribute={'collection_id'}
+            individualErrorMsg="empty"
+            attribute="collection_id"
             projectAccessGranted={projectAccessGranted}
         >
         {collection && (
@@ -43,7 +42,7 @@ export default function InterviewCollectionInfo({
                 </DisclosureButton>
                 <CollectionLink collectionId={collection.id} />
                 <DisclosurePanel>
-                    <span dangerouslySetInnerHTML={{__html: collectionNotes}} />
+                    <span dangerouslySetInnerHTML={{__html: collection.notes[locale]}} />
                 </DisclosurePanel>
             </Disclosure>
         )}
