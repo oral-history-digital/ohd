@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import classNames from 'classnames';
 
 import { useProjectAccessStatus } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { MediaIcon } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
-import fallbackImage from 'assets/images/speaker.png';
 
 export default function MediaPreview() {
     const { t, locale } = useI18n();
@@ -15,14 +13,13 @@ export default function MediaPreview() {
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const interview = useSelector(getCurrentInterview);
 
-    const [imgUrl, setImgUrl] = useState(interview.still_url || fallbackImage);
+    const [loadingError, setLoadingError] = useState(false);
 
-    function handleError() {
-        setImgUrl(fallbackImage);
+    function imageAvailable() {
+        return (project.show_preview_img || projectAccessGranted)
+            && interview.still_url
+            && !loadingError;
     }
-
-    let imageAvailable = (project.show_preview_img || projectAccessGranted)
-        && interview.still_url;
 
     return (
         <div className="MediaPreview u-mb-large">
@@ -30,14 +27,14 @@ export default function MediaPreview() {
                 {interview.anonymous_title[locale]}
             </h1>
             <div className="MediaPreview-body">
-                {imageAvailable ? (
+                {imageAvailable() ? (
                     <img
                         className="MediaPreview-image"
-                        src={imgUrl}
+                        src={interview.still_url}
                         alt={interview.media_type === 'video'
                             ? t('modules.interview.video_preview')
                             : t('modules.interview.audio_preview')}
-                        onError={handleError}
+                        onError={() => setLoadingError(true)}
                     />) : (
                     <MediaIcon
                         interview={interview}

@@ -12,7 +12,8 @@
 }
 
 .MediaPreview-image {
-  max-width: 100%;
+  max-width: $base-unit * 20;
+  width: 100%;
 }
 
 .MediaPreview-icon {
