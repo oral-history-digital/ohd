@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'notes',
                 multiLocale: true,
-                elementType: 'textarea',
+                elementType: 'richTextEditor',
             }
         ],
         joinedData: {},
