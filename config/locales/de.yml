@@ -347,6 +347,7 @@ de:
     archive_id: Interview-ID
     interview_location: Ort des Interviews
     media_type: Medientyp
+    media_missing: Mediendateien fehlen
     signature_original: Originalsignatur
     observations: Protokoll
     language_id: Sprache
@@ -1478,6 +1479,7 @@ de:
     interview_metadata:
       add_contributors: Mitwirkende hinzufügen
       collection_link_title: Sammlung im OHD-Katalog
+      show_collection_desc: Sammlungsbeschreibung anzeigen
     interview_preview:
       access_requested: Freischaltung beantragt
       no_access: Freischaltung erforderlich
@@ -1548,13 +1550,29 @@ de:
       catalog: Katalog
       search: Suche
     site_startpage:
-      stats: Derzeit verzeichnet Oral-History.Digital %{numProjects} Archive mit %{numCollections} Sammlungen und %{numInterviews} Interviews von %{numInstitutions} Institutionen.
-      under_construction: Das Portal ist noch im Aufbau.
-      instructions: Anleitung für die Redaktionsansicht
       more_results: Mehr Ergebnisse laden
       sample_archives: Beispielarchive
       access_requested: Freischaltung beantragt
       no_access: Freischaltung erforderlich
+      introduction:
+        text1: <b>Oral-History.Digital</b> ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen. Derzeit verzeichnet <b>Oral-History.Digital</b>
+        text2: Archive mit
+        text3: Sammlungen und
+        text4: Interviews von
+        text5: Institutionen. Das Portal ist noch im Aufbau. Hintergrund-Informationen finden Sie auf der <a href="https://www.oral-history.digital" target="_blank" rel="noreferrer">begleitenden Webseite</a>. Eine Anleitung bietet das <a href="https://wikis.fu-berlin.de/x/0oDGT" target="_blank" rel="noreferrer">Hilfe-Wiki</a>.
+      search:
+        heading: Suche
+        text1: Die
+        text2: Suche
+        text3: führt zu einzelnen Interviews aus verschiedenen Archiven. <b>Filtern</b> können Sie z.B. nach Thema, Sprache oder Geschlecht. Im <b>Volltext</b> können Sie nur in den Archiven suchen, für die Sie freigeschaltet sind.
+      catalog:
+        heading: Katalog
+        text1: Der
+        text2: Katalog
+        text3: verzeichnet die Institutionen, Archive und Sammlungen. Die <b>Archive</b> haben unterschiedliche Metadaten und Zugangsregelungen. <b>Sammlungen</b> sind einzelne Teilbestände innerhalb dieser Archive.
+      access:
+        heading: Anmeldung
+        text: Um die Persönlichkeitsrechte der Interviewten zu schützen, verlangen die meisten Archive eine Anmeldung. Bitte registrieren Sie sich in Oral-History.Digital und lassen Sie sich für einzelne Archive freischalten, um auf die vollständigen Interviews zugreifen zu können.
     tables:
       actions: Aktionen
       search: Suchen…
