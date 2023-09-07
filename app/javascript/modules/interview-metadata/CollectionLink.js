@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/constants';
@@ -8,7 +8,6 @@ import { useProject } from 'modules/routes';
 
 export default function CollectionLink({
     collectionId,
-    notes,
 }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
@@ -21,36 +20,27 @@ export default function CollectionLink({
 
     const ohdDomain = OHD_DOMAINS[railsMode];
 
-    return (
-        <>
-            <FaInfoCircle
-                className="Icon Icon--unobtrusive Facet-collectionIcon u-ml-tiny"
-                title={notes}
-            />
-            {hasOwnDomain ? (
-                <a
-                    href={`${ohdDomain}${linkPath}`}
-                    title={t('modules.interview_metadata.collection_link_title')}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="u-ml-tiny"
-                >
-                    <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
-                </a>
-            ) : (
-                <Link
-                    to={linkPath}
-                    title={t('modules.interview_metadata.collection_link_title')}
-                    className="u-ml-tiny"
-                >
-                    <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
-                </Link>
-            )}
-        </>
+    return hasOwnDomain ? (
+        <a
+            href={`${ohdDomain}${linkPath}`}
+            title={t('modules.interview_metadata.collection_link_title')}
+            target="_blank"
+            rel="noreferrer"
+            className="u-ml-tiny"
+        >
+            <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
+        </a>
+    ) : (
+        <Link
+            to={linkPath}
+            title={t('modules.interview_metadata.collection_link_title')}
+            className="u-ml-tiny"
+        >
+            <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
+        </Link>
     );
 }
 
 CollectionLink.propTypes = {
     collectionId: PropTypes.number.isRequired,
-    notes: PropTypes.string,
 };

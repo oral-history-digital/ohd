@@ -2,23 +2,16 @@ import reactStringReplace from 'react-string-replace';
 import { useSelector } from 'react-redux';
 
 export default function t({ locale, translations, translationsView }, key, params) {
-    let text, textWithReplacements, defaultKey;
-    let keyArray = key.split('.');
-    let productionFallback = keyArray[keyArray.length - 1];
+    let text;
     let usingDefault = false;
-
-    if (keyArray.length > 2) {
-        keyArray[keyArray.length - 2] = 'default';
-        defaultKey = keyArray.join('.');
-    }
 
     if (translations[key]?.[locale]) {
         text = translations[key][locale];
-    } else if (translations[defaultKey]?.[locale]) {
-        text = translations[defaultKey][locale];
+    } else if (translations[defaultKey(key)]?.[locale]) {
+        text = translations[defaultKey(key)][locale];
         usingDefault = true;
     } else {
-        text = productionFallback;
+        text = productionFallback(key);
     }
 
     if(params) {
@@ -29,5 +22,21 @@ export default function t({ locale, translations, translationsView }, key, param
         }
     }
 
-    return `${text}${translationsView ? ` (${usingDefault ? defaultKey : key})` : ''}`;
+    return `${text}${translationsView ? ` (${usingDefault ? defaultKey(key) : key})` : ''}`;
+}
+
+function defaultKey(key) {
+    const keyArray = key.split('.');
+
+    if (keyArray.length <= 2) {
+        return undefined;
+    }
+
+    keyArray[keyArray.length - 2] = 'default';
+    return keyArray.join('.');
+}
+
+function productionFallback(key) {
+    const keyArray = key.split('.');
+    return keyArray[keyArray.length - 1];
 }

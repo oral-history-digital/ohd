@@ -78,6 +78,7 @@ class MetadataImport
     else
       interview = Interview.create interview_data.update(properties: properties)
     end
+    interview.public_attributes=({signature_original: true}) if row[:signature_original]
     interview
   end
 
@@ -107,7 +108,12 @@ class MetadataImport
     else
       interviewee = Person.find_or_create_by project_id: project.id, first_name: row[:first_name], last_name: row[:last_name]
       interviewee.update interviewee_data
-      Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: project.contribution_types.find_by_code('interviewee').id
+      Contribution.create(
+        person_id: interviewee.id,
+        interview_id: interview.id,
+        contribution_type_id: project.contribution_types.find_by_code('interviewee').id,
+        workflow_state: 'public'
+      )
     end
   end
 
@@ -118,8 +124,10 @@ class MetadataImport
         'male'
       when 'f', 'female', 'w', 'woman', 'weiblich', 'frau'
         'female'
-      else
+      when 'd', 'diverse', 'divers'
         'diverse'
+      else
+        'not_specified'
       end
     end
   end
