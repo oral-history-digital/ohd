@@ -14,7 +14,8 @@ export default function SubTab({
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [isOpen, setIsOpen] = useState(matchPath(url, location.pathname));
+    const open = url ? matchPath(url, location.pathname) : false;
+    const [isOpen, setIsOpen] = useState(open);
 
     function handleClick() {
         if (url && location.pathname !== url) {
