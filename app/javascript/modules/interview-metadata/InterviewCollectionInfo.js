@@ -19,7 +19,7 @@ export default function InterviewCollectionInfo({
 
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const collection = collections[interview.collection_id];
-    const collectionNotes = collection.notes[locale];
+    const collectionNotes = collection?.notes?.[locale];
     const titleText = t('modules.interview_metadata.show_collection_desc');
 
     return (
