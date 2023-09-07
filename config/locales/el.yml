@@ -333,6 +333,7 @@ el:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Απουσία μέσων
     signature_original: Signature original
     observations: Observations
     language_id: Language
@@ -1438,6 +1439,7 @@ el:
     interview_metadata:
       add_contributors: Add contributors
       collection_link_title: Collection in the OHD catalog
+      show_collection_desc: Εμφάνιση περιγραφής συλλογής
     interview_search:
       no_results: Δεν υπάρχουν αποτελέσματα
       annotation_for: Annotation for

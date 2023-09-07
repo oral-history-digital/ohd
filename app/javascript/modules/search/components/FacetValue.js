@@ -45,10 +45,7 @@ export default function FacetValue({
                     {facetValue.count}
                 </span>
                 {facetName === 'collection_id' && (
-                    <CollectionLink
-                        collectionId={id}
-                        notes={facetValue.notes[locale]}
-                    />
+                    <CollectionLink collectionId={id} />
                 )}
             </label>
         </div>

@@ -373,6 +373,7 @@ ru:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Отсутствует медиа
     signature_original: Signature original
     observations: Observations
     language_id: Language
@@ -1879,6 +1880,7 @@ ru:
     interview_metadata:
       add_contributors: Add contributors
       collection_link_title: Collection in the OHD catalog
+      show_collection_desc: Показать описание коллекции
     interview_search:
       no_results: No results
       annotation_for: Annotation for
