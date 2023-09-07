@@ -229,8 +229,10 @@ class Person < ApplicationRecord
   end
 
   def biography=(hash)
-    biographical_entries.destroy_all
-    biographical_entries.build(hash)
+    if hash[:text].present?
+      biographical_entries.destroy_all
+      biographical_entries.build(hash)
+    end
   end
 
   def contributions_with_interviews(project_id)
