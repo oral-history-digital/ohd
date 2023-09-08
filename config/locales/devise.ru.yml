@@ -27,16 +27,77 @@ ru:
         Для этого на Ваш электронный адрес был отправлен соответствующий линк.
       last_attempt: У Вас осталась еще одна попытка ввести пароль до блокировки.
     mailer:
+      grant_project_access:
+        subject: Предоставление доступа к приложению '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Вы получили доступ п приложению '%{project_name}' для проведения заявленных Вами исследований.</p>
+          <p>Пожалуйста, соблюдайте личные права интервьюированных и Правила пользования архивом (externer Link conditions einzelarchiv) des Archivs.</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Ваша заявка на получение доступа к приложению '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Вы отправили запрос на получение доступа к приложению %{project_name}</p>
+          <p>Рассмотрение Вашей заявки, к сожалению, показало, что Ваши данные неполные или не соответствуют Правилам пользования архивом (externer Link conditions einzelarchiv).</p>
+          <p>Перейдя за линком, Вы можете уточнить или дополнить Ваши данные.</p>
+          <p>Изменить</p>
+          <p>Если Вам нужна помощь, пожалуйста, обратитесь к нам по адресу %{mail_to}</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Блокирование Вашего пользовательского акаунта
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к приложению %{project_name} заблокирован. Это произошло из-за нарушения Вами Условий пользования архивом (externer Link conditions einzelarchiv).</p>
+          <p>Если у Вас есть вопросы, пожалуйста, обратитесь к нам по адресу %{mail_to}</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
+        subject: Ваш доступ к архиву '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к приложению %{project_name} был разблокирован.</p>
+          <p>Вы снова получаете доступ к приложению %{project_name}</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Ваш доступ к приложению '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Ваш доступ к приложению %{project_name} был ограничен по времени и на данный момент прекращен.</p>
+          <p>Позже вы можете снова подать заявку на предоставление доступа. </p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Блокирование Вашего пользовательского акаунта
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к платформе Oral-History.Digital был заблокирован. Это произошло из-за нарушения Вами Условий пользования (externer Link conditions ohd)</p>
+          <p>Если у Вас есть вопросы, пожалуйста, обратитесь к нам по адресу %{mail_to}.</p>
+          <p>С уважением,</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Ваш доступ к  платформе Oral-History.Digital
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к платформе Oral-History.Digital был разблокирован.</p>
+          <p>Вы снова получаете доступ к платформе.</p>
+          <p>С уважением,</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Löschung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
       confirmation_instructions:
         subject: Подтверждение Вашей регистрации на Oral-History.Digital
-      project_access_granted:
-        subject: Активация Вашего аккаунта для доступа к ресурсу '%{project_name}'
-      project_access_rejected:
-        subject: Ваша регистрация для доступа к ресурсу '%{project_name}'
       reset_passwod_instructions:
         subject: 'Архив интервью: шаги по восстановлению Вашего пароля'
-      project_access_terminated:
-        subject: Ваш доступ к проекту '%{project_name}'
     omniauth_callbacks:
       failure: Вы не можете войти в систему с учётной записью из %{kind}, так как
         "%{reason}".

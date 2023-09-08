@@ -32,63 +32,63 @@ en:
       last_attempt: You have one more attempt before your account is locked.
     mailer:
       grant_project_access:
-        subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
+        subject: Activation of your access to the application '%{project_name}'
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>Sie haben nun Zugang zu der Anwendung %{project_name} für das von Ihnen angegebene Recherche-Anliegen.</p>
-          <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die %{tos_link} des Archivs.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <<p>p>Hello %{user_display_name},</p></p>
+          <<p>p>You now have access to the application '%{project_name}' for the research intention you specified.</p></p>
+          <<p>p>Please respect the interviewees' privacy rights and the archive's %{tos_link}.</p></p>
+          <<p>p>With best regards</p></p>
           <p>%{project_name}</p>
       reject_project_access:
-        subject: Ihr Antrag auf Freischaltung für die Anwendung '%{project_name}'
+        subject: Your request to activate your account for the application '%{project_name}'
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>Sie haben eine Freischaltung für die Anwendung %{project_name} beantragt.</p>
-          <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den %{tos_link} entsprechen.</p>
-          <p>Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.</p>
-          <p>%{correct_link}</p>
-          <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter %{mail_to}.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <p>Hello %{user_display_name},</p>
+          <p>You have requested activation for the application '%{project_name} '.</p>
+          <p>Unfortunately, a review of your information has revealed that it is insufficient or does not comply with the Terms of Use (externer Link conditions einzelarchiv).</p>
+          <p>You can use the following link to change or complete your information.</p>
+          <p>Correct</p>
+          <p>If you need assistance, please contact us at %{mail_to}</p>
+          <p>With best regards</p>
           <p>%{project_name}</p>
       block_project_access:
-        subject: Sperrung Ihres Nutzer*innen-Accounts
+        subject: Blocking of your account
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung %{project_name} gesperrt wurde. Dies erfolgt, wenn die %{tos_link} des Archivs nicht beachtet wurden.</p>
-          <p>Bei Rückfragen kontaktieren Sie uns bitte unter %{mail_to}.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <p>Hello %{user_display_name},</p>
+          <p>We hereby inform you that your access to the application %{project_name} has been blocked. This occurs when the archive's Terms of Use (externer Link conditions einzelarchiv) have not been respected.</p>
+          <p>If you have any further questions, please contact us at %{mail_to}.</p>
+          <p>With best regards</p>
           <p>%{project_name}</p>
       revoke_project_access_block:
-        subject: Ihr Zugang zu der Anwendung '%{project_name}'
+        subject: Your access to the archive '%{project_name}'
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Anwendung %{project_name} aufgehoben wurde.</p>
-          <p>Sie haben nun wieder Zugang zu der Anwendung %{project_name}.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <p>Hello %{user_display_name},</p>
+          <p>we hereby inform you that the access to the application %{project_name} has been unblocked.</p>
+          <p>You can now access the application %{project_name} again.</p>
+          <p>With best regards</p>
           <p>%{project_name}</p>
       terminate_project_access:
-        subject: Ihr Zugang zu der Anwendung '%{project_name}'
+        subject: Your access to the archive '%{project_name}'
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>Ihr Zugang zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.</p>
-          <p>Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <p>Hello %{user_display_name},</p>
+          <p>Your access to the application %{project_name} was time-limited and has now expired.</p>
+          <p>Please feel free to reapply at a later date.</p>
+          <p>With best regards</p>
           <p>%{project_name}</p>
       block:
-        subject: Sperrung Ihres Nutzer*innen-Accounts
+        subject: Blocking of your account
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Plattform Oral-History.Digital gesperrt wurde. Dies erfolgt, wenn die %{tos_link} nicht beachtet wurden.</p>
-          <p>Bei Rückfragen kontaktieren Sie uns bitte unter %{mail_to}.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <p>Hello %{user_display_name},</p>
+          <p>We hereby inform you that your access to the platform Oral-History.Digital has been blocked. This occurs when the platform's Terms of Use (externer Link conditions ohd) have not been respected.</p>
+          <p>If you have any further questions, please contact us at %{mail_to}.</p>
+          <p>With best regards</p>
           <p>Oral-History. Digital</p>
       revoke_block:
-        subject: Ihr Zugang zu der Plattform Oral-History.Digital
+        subject: Your access to the Oral-History.Digital platform
         text: |
-          <p>Guten Tag %{user_display_name},</p>
-          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Plattform Oral-History.Digital aufgehoben wurde.</p>
-          <p>Sie haben nun wieder Zugang zu der Plattform.</p>
-          <p>Mit freundlichen Grüßen</p>
+          <p>Hello %{user_display_name},</p>
+          <p>we hereby inform you that the access to the Oral-History.Digital platform has been unblocked.</p>
+          <p>You can now access the platform again.</p>
+          <p>With best regards</p>
           <p>Oral-History. Digital</p>
       remove:
         subject: Löschung Ihres Nutzer*innen-Accounts
