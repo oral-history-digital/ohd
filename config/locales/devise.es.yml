@@ -29,7 +29,7 @@ es:
         Se le acaba de reenviar un correo electrónico con el enlace necesario.
     mailer:
       confirmation_instructions:
-        subject: Archivo de entrevistas – Pasos para la activación de su cuenta
+        subject: Confirme su solicitud de registro en Oral-History.Digital
       project_access_granted:
         subject: Activar su cuenta para la aplicación '%{project_name}'
       project_access_rejected:

@@ -28,7 +28,7 @@ ru:
       last_attempt: У Вас осталась еще одна попытка ввести пароль до блокировки.
     mailer:
       confirmation_instructions:
-        subject: 'Архив интервью: шаги по активации Вашего аккаунта'
+        subject: Подтверждение Вашей регистрации на Oral-History.Digital
       project_access_granted:
         subject: Активация Вашего аккаунта для доступа к ресурсу '%{project_name}'
       project_access_rejected:
