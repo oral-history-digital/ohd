@@ -31,7 +31,7 @@ export default function InterviewListRow({
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
     const { fulltext } = useArchiveSearch();
-    const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
+    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
 
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
 
