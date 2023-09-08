@@ -29,7 +29,7 @@ de:
         Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
     mailer:
       grant_project_access:
-        subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
+        subject: Freischaltung Ihres Zugangs zu der Anwendung '%{project_name}'
         text: |
           <p>Guten Tag %{user_display_name},</p>
           <p>Sie haben nun Zugang zu der Anwendung %{project_link} für das von Ihnen angegebene Recherche-Anliegen.</p>
@@ -42,7 +42,7 @@ de:
           <p>Guten Tag %{user_display_name},</p>
           <p>Sie haben eine Freischaltung für die Anwendung %{project_name} beantragt.</p>
           <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den %{tos_link} entsprechen.</p>
-          <p>Unter folgendem Link können Sie Ihre Angaben in der Registrierung ändern oder ergänzen.</p>
+          <p>Unter folgendem Link können Sie Ihre Angaben ändern oder ergänzen.</p>
           <p>%{correct_link}</p>
           <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter %{mail_to}.</p>
           <p>Mit freundlichen Grüßen</p>

@@ -31,16 +31,77 @@ el:
         Ένα e-mail με τον απαραίτητο σύνδεσμο μόλις σας εστάλη.
       last_attempt: Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί.
     mailer:
+      grant_project_access:
+        subject: Ενεργοποίηση της πρόσβασής σας στην εφαρμογή '%{project_name}'
+        text: |
+          <p>Καλημέρα %{user_display_name},</p>
+          <p>Έχετε πλέον πρόσβαση στην εφαρμογή "%{project_name}" για το αίτημα έρευνας που καθορίσατε.</p>
+          <p>Παρακαλούμε να σεβαστείτε τα προσωπικά δικαιώματα των συνεντευξιαζόμενων και τους %{tos_link} του αρχείου. </p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Το αίτημά σας για ενεργοποίηση της εφαρμογής '%{project_name}'
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Ζητήσατε ενεργοποίηση της εφαρμογής %{project_name}.</p>
+          <p>Δυστυχώς, ελέγξαμε τα στοιχεία σας και διαπιστώσαμε ότι είναι ανεπαρκή ή δεν συμμορφώνονται με τους %{tos_link}.</p>
+          <p>Μπορείτε να αλλάξετε ή να συμπληρώσετε τα στοιχεία σας στον ακόλουθο σύνδεσμο.</p>
+          <p>Διόρθωση </p>
+          <p>Εάν χρειάζεστε βοήθεια, επικοινωνήστε μαζί μας στο %{mail_to}</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Αποκλεισμός του λογαριασμού σας
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Σας ενημερώνουμε ότι η πρόσβασή σας στην εφαρμογή %{project_name} έχει μπλοκαριστεί. Αυτό οφείλεται στη μη συμμόρφωση με τους %{tos_link} του αρχείου.</p>
+          <p>Εάν έχετε οποιαδήποτε απορία, παρακαλούμε επικοινωνήστε μαζί μας στο %{mail_to}.</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
+        subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
+        text: |
+          <p>Γεια σας %{user_display_name}, </p>
+          <p>σας ενημερώνουμε ότι η πρόσβαση στην εφαρμογή %{project_name} έχει αποκατασταθεί.</p>
+          <p>Μπορείτε πλέον να έχετε πρόσβαση στην εφαρμογή %{project_name}.</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
+        text: |
+          <p>Καλημέρα %{user_display_name}, </p>
+          <p>Η πρόσβασή σας στην εφαρμογή %{project_name} ήταν χρονικά περιορισμένη και τώρα τερματίζεται.</p>
+          <p>Μπορείτε ασφαλώς να ζητήσετε εκ νέου ενεργοποίηση σε μεταγενέστερη ημερομηνία.</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Αποκλεισμός του λογαριασμού σας
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Σας ενημερώνουμε ότι η πρόσβασή σας στην πλατφόρμα Oral-History.Digital έχει μπλοκαριστεί. Αυτό συμβαίνει επειδή δεν έχουν τηρηθεί οι %{tos_link}.</p>
+          <p>Εάν έχετε οποιαδήποτε απορία, παρακαλούμε επικοινωνήστε μαζί μας στο %{mail_to}.</p>
+          <p>Με εκτίμηση</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Η πρόσβασή σας στην πλατφόρμα Oral-History.Digital
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Σας ενημερώνουμε ότι η πρόσβαση σας στην πλατφόρμα Oral-History.Digital έχει αποκατασταθεί.</p>
+          <p>Μπορείτε πλέον να έχετε πρόσβαση στην πλατφόρμα.</p>
+          <p>Με εκτίμηση</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Löschung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
       confirmation_instructions:
         subject: Επιβεβαίωση της εγγραφής σας στο Oral-History.Digital 
-      project_access_granted:
-        subject: Ενεργοποίηση του λογαριασμού σας για την εφαρμογή '%{project_name}'
-      project_access_rejected:
-        subject: Η εγγραφή σας στην εφαρμογή '%{project_name}'
       reset_password_instructions:
         subject:  Αρχείο Προφορικών Μαρτυριών – Επαναφορά του κωδικού σας
-      project_access_terminated:
-        subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
       success: Επιτυχής είσοδος με το λογαριασμό σας.

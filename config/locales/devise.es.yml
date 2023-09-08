@@ -28,16 +28,77 @@ es:
         Aún debe confirmar su registro.
         Se le acaba de reenviar un correo electrónico con el enlace necesario.
     mailer:
+      grant_project_access:
+        subject: Activación de su acceso a la aplicación '%{project_name}'
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Ya tiene acceso a la aplicación '%{project_name}' para el objetivo que ha especificado.</p>
+          <p>Le rogamos que respete el derecho a la intimidad de los entrevistados y los Términos de uso (externer Link conditions einzelarchiv) del archivo.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Su solicitud de acceso para la aplicación '%{project_name}'
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Ha solicitado el acceso para la aplicación %{project_name}.</p>
+          <p>Lamentablemente, la revisión de sus datos arrojó que son insuficientes o no cumplen los Términos de uso (externer Link conditions einzelarchiv).</p>
+          <p>Puede modificar o completar sus datos a través del siguiente enlace.</p>
+          <p>Corregir</p>
+          <p>Si necesita ayuda, contáctenos en %{mail_to}</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Bloqueo de su cuenta
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informamos de que su acceso a la aplicación %{project_name} ha sido bloqueado. Esto se debe al incumplimiento de los Términos de uso (externer Link conditions einzelarchiv) del archivo.</p>
+          <p>Si tiene alguna duda, por favor, póngase en contacto con nosotros a través de %{mail_to}.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
+        subject: Su acceso a la aplicación '%{project_name}'
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informarmos de que su acceso a la aplicación %{project_name} ha sido desbloqueado.</p>
+          <p>Ya puede acceder de nuevo a la aplicación %{project_name}.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Su acceso a la aplicación'%{project_name}'
+        text: |
+          <p>Hola %{user_display_name},</p>
+          <p>Su acceso a la aplicación %{project_name} estaba autorizado por tiempo limitado y ha caducado.</p>
+          <p>Puede volver a solicitar el acceso más adelante.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Bloqueo de su cuenta
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informamos de que su acceso a la plataforma Oral-History.Digital ha sido bloqueado. Esto se debe al incumplimiento de los Términos de uso (externer Link conditions ohd).</p>
+          <p>Si tiene alguna duda, póngase en contacto con nosotros a través de %{mail_to}.</p>
+          <p>Saludos cordiales</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Su acceso a la plataforma Oral-History.Digital
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informamos de que su acceso a la plataforma Oral-History.Digital ha sido desbloqueado.</p>
+          <p>Ya puede acceder de nuevo a la plataforma.</p>
+          <p>Saludos cordiales</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Löschung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
       confirmation_instructions:
         subject: Confirme su solicitud de registro en Oral-History.Digital
-      project_access_granted:
-        subject: Activar su cuenta para la aplicación '%{project_name}'
-      project_access_rejected:
-        subject: Su registro para la aplicación '%{project_name}'
       reset_password_instructions:
         subject: Archivo de entrevistas – Pasos para restablecer su contraseña
-      project_access_terminated:
-        subject: Su acceso a la aplicación '%{project_name}'
     omniauth_callbacks:
       failure: No ha podido iniciar sesión con su cuenta %{kind}, porque '%{reason}'.
       success: Ha iniciado exitosamente la sesión con su cuenta.
