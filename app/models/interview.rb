@@ -309,7 +309,7 @@ class Interview < ApplicationRecord
     (1..d.to_i).each do |t|
       tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
-    self.touch
+    self.touch unless self.new_record?
   end
 
   def self.random_featured(n = 1, project_id)
