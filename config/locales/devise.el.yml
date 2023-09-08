@@ -32,7 +32,7 @@ el:
       last_attempt: Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί.
     mailer:
       confirmation_instructions:
-        subject: Αρχείο Προφορικών Μαρτυριών – Βήματα για την ενεργοποίηση του λογαριασμού σας
+        subject: Επιβεβαίωση της εγγραφής σας στο Oral-History.Digital 
       project_access_granted:
         subject: Ενεργοποίηση του λογαριασμού σας για την εφαρμογή '%{project_name}'
       project_access_rejected:
