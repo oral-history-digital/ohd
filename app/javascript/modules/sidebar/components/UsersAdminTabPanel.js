@@ -81,7 +81,7 @@ export default function UsersAdminTabPanel({
                                 placeholder: provided => ({...provided, cursor: 'text'}),
                                 menu: provided => ({...provided, position: 'relative'}),
                             }}
-                            placeholder="Statistik nach Ländern filtern (optional)"
+                            placeholder={t('filter_by_countries')}
                         />
                         { project.has_newsletter &&
                             <div>
