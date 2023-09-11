@@ -180,44 +180,6 @@ de:
         not_signed_in: nicht angemeldet
     labels:
       send_now: Jetzt zuschicken
-    authentication_keys:
-      login: Benutzer*in
-      email: E-Mail
-      password: Passwort
-    registration_fields:
-      fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
-      select: Bitte auswählen
-      appellation: Anrede
-      first_name: Vorname
-      last_name: Nachname
-      job_description: Beruf
-      email: E-Mail
-      gender: Geschlecht
-      research_intentions: Recherche-Anliegen
-      comments: Präzisierung des Anliegens
-      organization: Institution
-      school: Schule
-      homepage: Homepage der Institution
-      street: Straße
-      zipcode: PLZ
-      city: Ort
-      state: Bundesland
-      country: Land
-      tos_agreement: Nutzungsbedingungen
-      tos_agreement_explanation: Ich stimme den %{terms_of_use} zu.
-      priv_agreement: Datenschutzbestimmungen
-      priv_agreement_explanation: Ich stimme den %{privacy_policy} zu.
-      agreed: zugestimmt
-      not_agreed: keine Zustimmung
-      receive_newsletter: Newsletter
-      receive_newsletter_explanation: Ich möchte den Newsletter des Projektes "%{project_name}"
-        abonnieren.
-      requested_at: Datum der Anfrage
-      name: Name
-      adress: Anschrift
-      workflow_state: Registrierungsstatus
-      login: Benutzername
-      created_at: Datum der Registrierung
   activerecord:
     errors:
       models:

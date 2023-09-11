@@ -178,10 +178,6 @@ en:
         not_signed_in: not signed in
     labels:
       send_now: Resend now
-    authentication_keys:
-      login: Login
-      email: Email
-      password: Password
     workflow_states:
       new_registration: requested
       new_registrations: requested
@@ -218,40 +214,6 @@ en:
       remove: deactivate
       remove_info: The account is deactivated (please inform the user of this in a
         separate Email).
-    registration_fields:
-      fill_out_missing_fields_message: 'Please fill in the missing information:'
-      select: Please select
-      appellation: Title
-      first_name: First name
-      last_name: Last name
-      job_description: Occupation
-      email: Email
-      gender: Gender
-      research_intentions: Research objectives
-      comments: Specification of research objectives
-      organization: Institution
-      school: School
-      homepage: Institution Homepage
-      street: Street Address
-      zipcode: Zipcode
-      city: City
-      state: State
-      country: Country
-      tos_agreement: Terms of Use
-      tos_agreement_explanation: I agree to the %{terms_of_use}.
-      priv_agreement: Privacy Policy
-      priv_agreement_explanation: I agree to the %{privacy_policy}.
-      agreed: zugestimmt
-      not_agreed: keine Zustimmung
-      receive_newsletter: Newsletter
-      receive_newsletter_explanation: I subscribe to the newsletter of the project
-        "%{project_name}".
-      requested_at: Request date
-      name: Name
-      adress: Address
-      workflow_state: Registration status
-      login: Username
-      created_at: Date of Registration
   activerecord:
     errors:
       models:
@@ -269,9 +231,9 @@ en:
     attributes:
       user:
         email: Email
-        login: Log in
-        password: password
-        password_confirmation: password confirmation
+        login: Login
+        password: Password
+        password_confirmation: Password Confirmation
   errors:
     messages:
       already_confirmed: was already confirmed, please try signing in
