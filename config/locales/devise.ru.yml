@@ -177,10 +177,6 @@ ru:
         not_signed_in: Вы не вошли в систему
     labels:
       send_now: Отправить сейчас
-    authentication_keys:
-      login: Пользователь
-      email: Электронный адрес
-      password: Пароль
     workflow_states:
       new_registration: Новая регистрация
       new_registrations: Новые регистрации
@@ -219,39 +215,6 @@ ru:
       remove: деактивировать
       remove_info: Доступ пользователя деактивируется (просба проинформировать пользователя
         в отдельном письме).
-    registration_fields:
-      fill_out_missing_fields_message: 'Пожалуйста, дополните следующие сведения:'
-      select: Пожалуйста, выберите
-      appellation: Обращение
-      first_name: Имя
-      last_name: Фамилия
-      job_description: Профессия
-      gender: Пол
-      email: Электронный адрес
-      research_intentions: Цель изысканий
-      comments: Уточнение цели
-      organization: Учреждение
-      school: Школа
-      homepage: Интернет-страница учреждения
-      street: Улица
-      zipcode: Индекс
-      city: Населённый пункт
-      state: Федеральная земля
-      country: Страна
-      tos_agreement: Правила пользования сайтом
-      tos_agreement_explanation: Я принимаю %{terms_of_use}.
-      priv_agreement: Положения о защите персональных данных
-      priv_agreement_explanation: Я принимаю %{privacy_policy}.
-      agreed: приняты
-      not_agreed: не приняты
-      receive_newsletter: Рассылка
-      receive_newsletter_explanation: Я хочу подписаться на рассылку проекта "%{project_name}".
-      requested_at: Дата запроса
-      name: Имя
-      adress: Адрес
-      workflow_state: Статус регистрации
-      login: Имя пользователя
-      created_at: Дата регистрации
   activerecord:
     errors:
       models:
