@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
-      subject: "Neuer Freischaltungsantrag zur Prüfung",
+      subject: I18n.t(:new_registration_info)
       from: "noreply@cedis.fu-berlin.de",
       to: @project.contact_email,
       date: Time.now
@@ -21,7 +21,7 @@ class AdminMailer < ApplicationMailer
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
-      subject: "Korrigierte Benutzerdaten zur Prüfung",
+      subject: I18n.t(:corrected_project_access_data)
       from: "noreply@cedis.fu-berlin.de",
       to: @project.contact_email,
       date: Time.now
