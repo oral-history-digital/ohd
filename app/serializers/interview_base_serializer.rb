@@ -22,6 +22,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :startpage_position,
     :properties,
     :transcript_locales,
+    :toc_locales
   ]
 
   def attributes(*args)
@@ -91,5 +92,9 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def transcript_locales
     object.languages.select{|l| object.has_transcript?(l)}
+  end
+
+  def toc_locales
+    object.project.available_locales.select { |l| object.has_heading?(l) }
   end
 end

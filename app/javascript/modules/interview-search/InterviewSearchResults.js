@@ -66,7 +66,7 @@ export default function InterviewSearchResults({
                     className="u-mt"
                 />
             )}
-            {showTranslationTab(projectId, interview.lang, locale) &&
+            {showTranslationTab(project, interview, locale) &&
             translatedTranscriptResultsPerLocale?.map(([resultLocale, results]) => (
                 <ResultList
                     key={resultLocale}
