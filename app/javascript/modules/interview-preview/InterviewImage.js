@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { FaVideo, FaVolumeUp, FaFileAlt, FaTags } from 'react-icons/fa';
 
 import { useProjectAccessStatus } from 'modules/auth';
+import { MediaIcon } from 'modules/interview-helpers';
 
 export default function InterviewImage({
     interview,
@@ -15,19 +15,6 @@ export default function InterviewImage({
     let imageAvailable = (project.show_preview_img || projectAccessGranted)
         && interview.still_url
         && !error;
-
-    let MediaIcon;
-    switch (interview.media_type) {
-    case 'video':
-        MediaIcon = FaVideo;
-        break;
-    case 'audio':
-        MediaIcon = FaVolumeUp;
-        break;
-    default:
-        MediaIcon = FaFileAlt;
-        break;
-    }
 
     return (
         <div className={classNames('InterviewCard-image', 'aspect-ratio', {
@@ -41,7 +28,7 @@ export default function InterviewImage({
                     alt=""
                 />) : (
                 <div className="InterviewCard-icon aspect-ratio__inner">
-                    <MediaIcon />
+                    <MediaIcon interview={interview} />
                 </div>
             )}
         </div>

@@ -98,14 +98,10 @@ el:
           <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
           <p>Mit freundlichen Grüßen</p>
           <p>Oral-History.Digital</p>
-      new_registration_info:
-        subject: Neuer Freischaltungsantrag zur Prüfung
-      corrected_project_access_data:
-        subject: Korrigierte Benutzerdaten zur Prüfung
       confirmation_instructions:
-        subject: Bestätigung Ihrer Registrierung für Oral-History.Digital
+        subject: Επιβεβαίωση της εγγραφής σας στο Oral-History.Digital 
       reset_password_instructions:
-        subject: Oral-History.Digital. Schritte für die Wiederherstellung Ihres Passwortes.
+        subject:  Αρχείο Προφορικών Μαρτυριών – Επαναφορά του κωδικού σας
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
       success: Επιτυχής είσοδος με το λογαριασμό σας.

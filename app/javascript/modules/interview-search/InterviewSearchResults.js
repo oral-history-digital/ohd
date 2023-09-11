@@ -23,7 +23,7 @@ export default function InterviewSearchResults({
     const { fulltext } = useSearchParams();
     const { isLoading, data, numResults, segmentResults, headingResults, registryEntryResults,
         photoResults, biographyResults, annotationResults, observationsResults }
-        = useInterviewSearch(archiveId, fulltext);
+        = useInterviewSearch(archiveId, fulltext, project);
 
     if (isLoading) {
         return (
