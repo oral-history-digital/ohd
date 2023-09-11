@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 
-import { useSearchParams } from 'modules/query-string';
 import { useI18n } from 'modules/i18n';
+import { useSearchParams } from 'modules/query-string';
+import { useProject } from 'modules/routes';
 import useInterviewSearch from './useInterviewSearch';
 
 export default function InterviewSearchForm({
     archiveId,
 }) {
     const { fulltext, setFulltext } = useSearchParams();
-    const { isLoading } = useInterviewSearch(archiveId, fulltext);
+    const { project } = useProject();
+    const { isLoading } = useInterviewSearch(archiveId, fulltext, project);
 
     const [searchTerm, setSearchTerm] = useState(fulltext);
     const { t } = useI18n();

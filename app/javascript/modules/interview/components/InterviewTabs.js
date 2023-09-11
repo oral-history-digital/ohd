@@ -18,11 +18,11 @@ export default function InterviewTabs({
     interview,
 }) {
     const { t, locale } = useI18n();
-    const { projectId } = useProject();
+    const { project, projectId } = useProject();
     const [tabIndex, setTabIndex] = useState(0);
 
     const { fulltext } = useSearchParams();
-    const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
+    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
 
     useEffect(() => {
         if (fulltext && numResults > 0) {

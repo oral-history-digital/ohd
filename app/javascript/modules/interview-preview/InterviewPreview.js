@@ -32,17 +32,8 @@ export default function InterviewPreview({
     const paramStr = queryString.stringify(params, { skipNull: true });
     const linkPath = `interviews/${interview.archive_id}?${paramStr}`;
 
-    /* TODO: Only load search results in certain cases.
-      project.archive_domain === window.location.origin ||
-      !project.archive_domain ||
-      project.archive_domain === ''
-    */
-
     const { isLoading, numResults, data: searchResults } =
-        useInterviewSearch(interview.archive_id, fulltext);
-
-    const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
-    const showSlideShow = (onOHD && (!project.archive_domain || project.archive_domain === '')) || project.archive_domain === window.location.origin;
+        useInterviewSearch(interview.archive_id, fulltext, project);
 
     const doSetArchiveId = () => setArchiveId(interview.archive_id);
 
@@ -71,20 +62,18 @@ export default function InterviewPreview({
                 />
             </LinkOrA>
 
-            {
-                showSlideShow && isExpanded && searchResults && numResults > 0 && (
-                    <div className="slider">
-                        <div className="archive-search-found-segments">
-                            <SlideShowSearchResults
-                                interview={interview}
-                                searchResults={searchResults}
-                                projectId={projectId}
-                                project={project}
-                            />
-                        </div>
+            {isExpanded && searchResults && numResults > 0 && (
+                <div className="slider">
+                    <div className="archive-search-found-segments">
+                        <SlideShowSearchResults
+                            interview={interview}
+                            searchResults={searchResults}
+                            projectId={projectId}
+                            project={project}
+                        />
                     </div>
-                )
-            }
+                </div>
+            )}
 
             <AuthorizedContent object={{ type: 'Interview', interview_id: interview.id }} action='update'>
                 <div>
