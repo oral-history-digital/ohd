@@ -95,6 +95,10 @@ de:
           <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
           <p>Mit freundlichen Grüßen</p>
           <p>Oral-History.Digital</p>
+      new_registration_info:
+        subject: Neuer Freischaltungsantrag zur Prüfung
+      corrected_project_access_data:
+        subject: Korrigierte Benutzerdaten zur Prüfung
       confirmation_instructions:
         subject: Bestätigung Ihrer Registrierung für Oral-History.Digital
       reset_password_instructions:
