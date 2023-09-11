@@ -136,7 +136,7 @@ class User < ApplicationRecord
   end
 
   def locale_with_project_fallback
-    self.default_locale || self.projects.last.default_locale
+    self.default_locale || self.projects.last&.default_locale || :de
   end
 
   def full_name
