@@ -91,7 +91,7 @@ el:
           <p>Με εκτίμηση</p>
           <p>Oral-History. Digital</p>
       remove:
-        subject: Löschung Ihres Nutzer*innen-Accounts
+        subject: Διαγραφή του λογαριασμού σας
         text: |
           <p>Guten Tag %{user_display_name},</p>
           <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
