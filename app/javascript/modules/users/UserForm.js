@@ -28,7 +28,8 @@ export default function UserForm({
     const [workflowState, setWorkflowState] = useState(false);
     const conditionsLink = findExternalLink(project, 'conditions');
     let correctHref = project.archive_domain ? project.archive_domain : `${OHD_DOMAINS[railsMode]}/${project.shortname}`;
-    correctHref += `/${project.default_locale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
+    const correctLocale = project.available_locales.indexOf(data.default_locale) > -1 ? data.default_locale : project.default_locale;
+    correctHref += `/${correctLocale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
 
     const formElements = [
         {
