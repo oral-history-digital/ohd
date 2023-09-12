@@ -22,7 +22,14 @@ export default function t({ locale, translations, translationsView }, key, param
         }
     }
 
-    if (translationsView) text.push(usingDefault ? defaultKey(key) : key);
+    const usedKey = usingDefault ? defaultKey(key) : key;
+
+    if (translationsView) {
+        Array.isArray(text) ?
+            text.push(` (${usedKey})`) :
+            text = [text, ` (${usedKey})`];
+    }
+
     return text;
 }
 
