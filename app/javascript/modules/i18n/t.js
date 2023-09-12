@@ -18,11 +18,12 @@ export default function t({ locale, translations, translationsView }, key, param
         for (let [key, value] of Object.entries(params)) {
             text = reactStringReplace(text, `%{${key}}`, (match, i) => (
                 value
-            )).join(' ');
+            ));
         }
     }
 
-    return `${text}${translationsView ? ` (${usingDefault ? defaultKey(key) : key})` : ''}`;
+    if (translationsView) text.push(usingDefault ? defaultKey(key) : key);
+    return text;
 }
 
 function defaultKey(key) {
