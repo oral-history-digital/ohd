@@ -27,7 +27,7 @@ export default function t({ locale, translations, translationsView }, key, param
     if (translationsView) {
         Array.isArray(text) ?
             text.push(` (${usedKey})`) :
-            text = [text, ` (${usedKey})`];
+            text += ` (${usedKey})`;
     }
 
     return text;
