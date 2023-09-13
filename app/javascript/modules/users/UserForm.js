@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Dialog } from '@reach/dialog';
 
 import { useI18n } from 'modules/i18n';
+import { t as originalT} from 'modules/i18n';
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum } from 'modules/data';
@@ -16,6 +17,8 @@ export default function UserForm({
     userId,
     scope,
     locale,
+    translationsView,
+    translations,
     project,
     onSubmit,
 }) {
@@ -28,8 +31,8 @@ export default function UserForm({
     const [workflowState, setWorkflowState] = useState(false);
     const conditionsLink = findExternalLink(project, 'conditions');
     let correctHref = project.archive_domain ? project.archive_domain : `${OHD_DOMAINS[railsMode]}/${project.shortname}`;
-    const correctLocale = project.available_locales.indexOf(data.default_locale) > -1 ? data.default_locale : project.default_locale;
-    correctHref += `/${correctLocale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
+    const responseLocale = project.available_locales.indexOf(data.default_locale) > -1 ? data.default_locale : project.default_locale;
+    correctHref += `/${responseLocale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
 
     const formElements = [
         {
@@ -48,10 +51,10 @@ export default function UserForm({
             //elementType: 'richTextEditor',
             elementType: 'textarea',
             attribute: 'mail_text',
-            value: workflowState ? t(`devise.mailer.${workflowState}.text`, {
-                project_name: project.name[locale],
-                project_link: `<a href='${data.pre_access_location}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[locale]}</a>`,
-                tos_link: `<a href='${conditionsLink[locale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
+            value: workflowState ? originalT({translations, translationsView, locale: responseLocale}, `devise.mailer.${workflowState}.text`, {
+                project_name: project.name[responseLocale],
+                project_link: `<a href='${data.pre_access_location}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
+                tos_link: `<a href='${conditionsLink[responseLocale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
                 correct_link: `<a href='${correctHref}'>${t('user.correct_link')}</a>`,
