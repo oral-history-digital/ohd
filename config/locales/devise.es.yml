@@ -98,7 +98,7 @@ es:
       confirmation_instructions:
         subject: Confirme su solicitud de registro en Oral-History.Digital
       reset_password_instructions:
-        subject: Archivo de entrevistas – Pasos para restablecer su contraseña
+        subject: Oral-History.Digital. Pasos para recuperar su contraseña.
     omniauth_callbacks:
       failure: No ha podido iniciar sesión con su cuenta %{kind}, porque '%{reason}'.
       success: Ha iniciado exitosamente la sesión con su cuenta.

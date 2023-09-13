@@ -101,7 +101,7 @@ el:
       confirmation_instructions:
         subject: Επιβεβαίωση της εγγραφής σας στο Oral-History.Digital 
       reset_password_instructions:
-        subject:  Αρχείο Προφορικών Μαρτυριών – Επαναφορά του κωδικού σας
+        subject: Oral-History.Digital. Βήματα για να ανακτήσετε τον κωδικό πρόσβασής σας.
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
       success: Επιτυχής είσοδος με το λογαριασμό σας.
