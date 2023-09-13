@@ -44,6 +44,7 @@ form.default {
     border-color: var(--primary-color);
   }
   input[type=submit], input[type=button] {
+    margin-top: 15px;
     margin-left: 0;
     width: 100%;
     background-color: $ui-background-color;
