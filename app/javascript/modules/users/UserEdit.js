@@ -38,25 +38,33 @@ export default function UserEdit ({
         'terminated_at',
     ];
 
-    const detailRepresentation = (value, detail, index) => {
+    const detailValue = (value, detail) => {
         if (['confirmed_at', 'processed_at', 'terminated_at'].includes(detail)) {
-            value = value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
+            return value ? new Date(value).toLocaleDateString(locale, { dateStyle: 'medium' }) : null;
         }
 
         if (detail === 'job_description' || detail === 'research_intentions') {
-            value = t(`user_project.${detail}.${value}`);
+            return t(`user_project.${detail}.${value}`);
         }
 
         if (detail === 'default_locale') {
-            value = value ? t(value) : '';
+            return value ? t(value) : '';
         }
 
+        if (detail === 'country') {
+            return value[locale];
+        }
+
+        return value;
+    };
+
+    const detailRepresentation = (value, detail, index) => {
         return (
             <p className="detail"
                key={index}
               >
                 <span className='name'>{t(`activerecord.attributes.user.${detail}`) + ': '}</span>
-                <span className='content'>{value}</span>
+                <span className='content'>{detailValue(value, detail)}</span>
             </p>
         )
     }
