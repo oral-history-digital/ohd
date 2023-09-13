@@ -20,7 +20,7 @@ class CustomDeviseMailer < Devise::Mailer
 
     domain = OHD_DOMAIN
     contact_email = 'mail@oral-history.digital'
-    locale = 'de'
+    locale = record.default_locale || 'de'
     @project_name = 'Oral-History.Digital'
     @application_type = :interview_portal 
 
@@ -42,7 +42,7 @@ class CustomDeviseMailer < Devise::Mailer
 
     domain = OHD_DOMAIN
     contact_email = 'mail@oral-history.digital'
-    locale = 'de'
+    locale = record.default_locale || 'de'
     @project_name = 'Oral-History.Digital'
 
     @url = "#{domain}/#{locale}/users/password/edit?reset_password_token=#{token}"
