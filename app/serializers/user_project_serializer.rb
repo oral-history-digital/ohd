@@ -19,6 +19,7 @@ class UserProjectSerializer < ApplicationSerializer
     :organization,
     :pre_register_location,
     :pre_access_location,
+    :default_locale,
     :activated_at,
     :processed_at,
     :terminated_at,
@@ -46,5 +47,9 @@ class UserProjectSerializer < ApplicationSerializer
     define_method(attr) do
       object.user.send(attr)
     end
+  end
+
+  def default_locale
+    object.user.default_locale
   end
 end
