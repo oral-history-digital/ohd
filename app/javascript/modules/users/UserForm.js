@@ -63,7 +63,7 @@ export default function UserForm({
     return (
         <>
             <Dialog aria-label='confirm-rm' isOpen={showConfirmDialog} onDismiss={close} className={'Modal-dialog'} >
-                <h2>{t('Soll dieser Nutzer*innen-Account wirklich endgültig aus der Datenbank gelöscht werden?')}</h2>
+                <h2>{t('user.remove_permanently.confirmation.text')}</h2>
                 <div className="Form-footer u-mt">
                     <input
                         type="button"
