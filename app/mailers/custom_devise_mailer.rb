@@ -32,6 +32,7 @@ class CustomDeviseMailer < Devise::Mailer
 
     opts[:from] = contact_email
     opts[:reply_to] = contact_email
+    opts[:subject] = I18n.t('devise.mailer.confirmation_instructions.subject', locale: record.default_locale)
     devise_mail(record, :confirmation_instructions, opts)
   end
 
@@ -48,6 +49,7 @@ class CustomDeviseMailer < Devise::Mailer
 
     opts[:from] = contact_email
     opts[:reply_to] = contact_email
+    opts[:subject] = I18n.t('devise.mailer.reset_password_instructions.subject', locale: record.default_locale)
     devise_mail(record, :reset_password_instructions, opts)
   end
 
