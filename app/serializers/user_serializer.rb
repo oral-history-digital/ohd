@@ -76,6 +76,9 @@ class UserSerializer < ApplicationSerializer
   end
 
   def country
-    ISO3166::Country.translations(:de)[object.country]
+    I18n.available_locales.inject({}) do |mem, c|
+      mem[c] = ISO3166::Country.translations(c)[object.country] if object.country
+      mem
+    end
   end
 end
