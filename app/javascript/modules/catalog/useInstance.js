@@ -66,7 +66,7 @@ export default function useInstance(data, type) {
             case 'name':
                 return {
                     accessorKey: 'name',
-                    header: t(`modules.catalog.table.name_header.${type}`),
+                    header: <span dangerouslySetInnerHTML={{__html: t(`modules.catalog.table.name_header.${type}`)}} />,
                     cell: NameCell,
                     enableColumnFilter: true,
                 };
