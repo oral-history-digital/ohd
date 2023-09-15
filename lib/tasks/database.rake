@@ -19,7 +19,9 @@
 #
 # 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
-# 5. on target-db: run rake database:unify_[users|languages|permissions|institutions|norm_data_providers]
+# 5. on target-db: run rake database:unify_[users|languages|permissions|institutions|norm_data_providers][max-id]
+#
+# 6. on target-db: run rake database:cleanup[max-id]
 
 namespace :database do
   desc 'show development database'
@@ -169,5 +171,11 @@ namespace :database do
         end
       end
     end
+  end
+
+  desc 'cleanup'
+  task :cleanup, [:max_id] => :environment do |t, args|
+    raise 'Please provide max_id-parameter' unless args.max_id
+    TranslationValue.where("id > ?", args.max_id).destroy_all
   end
 end
