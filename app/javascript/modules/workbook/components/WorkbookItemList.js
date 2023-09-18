@@ -21,7 +21,7 @@ export default function WorkbookItemList({
         if (isOhd) {
             return contents;
         } else {
-            return contents.filter((item) => item.project_id === project.id);
+            return contents?.filter((item) => item.project_id === project.id);
         }
     }
 
