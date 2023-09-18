@@ -30,7 +30,7 @@ export default function UserForm({
     const responseLocale = project.available_locales.indexOf(data.default_locale) > -1 ? data.default_locale : project.default_locale;
     const conditionsLink = `${project.domain_with_optional_identifier}/${responseLocale}/conditions`;
     let correctHref = `${project.domain_with_optional_identifier}/${responseLocale}`;
-    correctHref += `/${responseLocale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
+    correctHref += '?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED';
 
     const formElements = [
         {
