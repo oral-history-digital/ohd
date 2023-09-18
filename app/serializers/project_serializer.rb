@@ -25,6 +25,7 @@ class ProjectSerializer < ApplicationSerializer
     :is_catalog,
     :domain,
     :archive_domain,
+    :domain_with_optional_identifier,
     :doi,
     :cooperation_partner,
     :leader,

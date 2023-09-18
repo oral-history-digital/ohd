@@ -1,15 +1,14 @@
 import { useI18n } from 'modules/i18n';
-import { findExternalLink } from 'modules/layout';
 
 export default function useProjectAccessConfig(
     project,
     currentUser,
 ) {
     const { t, locale } = useI18n();
-    const conditionsLink = findExternalLink(project, 'conditions');
+    const conditionsLink = `${project.domain_with_optional_identifier}/${locale}/conditions`;
     const tos_link = () => {
         return (
-            <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
+            <a href={conditionsLink} target="_blank" title="Externer Link" rel="noreferrer">
                 {t('user.tos_agreement')}
             </a>
         )

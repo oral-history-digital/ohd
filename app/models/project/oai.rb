@@ -66,8 +66,7 @@ module Project::Oai
   #end
 
   def oai_dc_rights
-    link = external_links.where(internal_name: 'conditions').first
-    link && link.url
+    "#{domain_with_optional_identifier}/#{default_locale}/conditions"
   end
 
 end

@@ -4,7 +4,6 @@ import request from 'superagent';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import { findExternalLink } from 'modules/layout';
 
 const NON_ZIP_COUNTRIES = ["AO", "AE", "AG", "BI", "BJ", "BF", "BS", "BZ", "BO", "CF", "CL", "CM", "CD", "KM", "DJ", "DM", "ER", "ET", "FJ", "GA", "GM", "GQ", "GD", "GY", "HK", "KI", "KN", "LC", "ML", "MR", "MW", "NR", "QA", "RW", "SL", "SO", "ST", "SR", "SC", "TD", "TG", "TO", "TT", "TV", "UG", "VU", "YE", "ZW"];
 
@@ -21,8 +20,8 @@ export default function RegisterForm({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const conditionsLink = findExternalLink(ohdProject, 'conditions');
-    const privacyLink = findExternalLink(ohdProject, 'privacy_protection');
+    const conditionsLink = `${project.domain_with_optional_identifier}/${locale}/conditions`;
+    const privacyLink = `${project.domain_with_optional_identifier}/${locale}/privacy_protection`;
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -149,7 +148,7 @@ export default function RegisterForm({
                 help: t('user.notes_on_tos_agreement_ohd', {
                     tos_link: <a
                         className="Link"
-                        href={conditionsLink[locale]}
+                        href={conditionsLink}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer"
@@ -167,7 +166,7 @@ export default function RegisterForm({
                 help: t('user.notes_on_priv_agreement', {
                     priv_link: <a
                         className="Link"
-                        href={privacyLink[locale]}
+                        href={privacyLink}
                         target="_blank"
                         title="Externer Link"
                         rel="noreferrer"

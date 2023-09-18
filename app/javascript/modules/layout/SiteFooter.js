@@ -1,12 +1,14 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { getLocale } from 'modules/archive';
-import { useProject } from 'modules/routes';
+import { useProject, usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import ProjectFooter from './ProjectFooter';
 
 function SiteFooter() {
     const { project } = useProject();
-    const locale = useSelector(getLocale);
+    const pathBase = usePathBase();
+    const { t, locale } = useI18n();
 
     let links = {};
     if (project) {
@@ -16,6 +18,19 @@ function SiteFooter() {
     return (
         <footer>
             <ul className='footer-bottom-nav'>
+                {
+                    ['conditions', 'privacy_protection', 'legal_info', 'contact'].map(key => (
+                        <li key={'external-link-' + key}>
+                            <Link
+                                to={`${pathBase}/${key}`}
+                                title={t(key)}
+                                className="u-ml-tiny"
+                            >
+                                {t(key)}
+                            </Link>
+                        </li>
+                    ))
+                }
                 {
                     Object.keys(links).map(key => (
                         <li key={'external-link-' + key}>
