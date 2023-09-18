@@ -13,7 +13,6 @@ const mapStateToProps = state => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         translations: getTranslations(state),
-        externalLinks: project && project.external_links,
     }
 };
 

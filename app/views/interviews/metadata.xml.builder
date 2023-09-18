@@ -87,9 +87,9 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.rightsList do
-    interview.project.external_links.each do |external_link|
-      xml.rights rightsURI: "#{external_link.url}" do 
-        xml.text! "#{external_link.name(locale)} des Interview-Archivs \"#{interview.project.name(locale)}\""
+    %w(conditions privacy_protection).each do |field|
+      xml.rights rightsURI: "#{interview.project.domain_with_optional_identifier}/#{locale}/field" do 
+        xml.text! "#{I18n.t(field, locale: locale)} des Interview-Archivs \"#{interview.project.name(locale)}\""
       end
     end
   end

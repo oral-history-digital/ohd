@@ -63,8 +63,7 @@ module Interview::Oai
   #end
 
   def oai_dc_rights
-    link = project.external_links.where(internal_name: 'conditions').first
-    link && link.url
+    "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions"
   end
 
 end

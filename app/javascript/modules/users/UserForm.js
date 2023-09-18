@@ -8,8 +8,6 @@ import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum } from 'modules/data';
 import { usePathBase } from 'modules/routes';
-import { findExternalLink } from 'modules/layout';
-import { OHD_DOMAINS } from 'modules/constants';
 
 export default function UserForm({
     data,
@@ -29,9 +27,9 @@ export default function UserForm({
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [workflowState, setWorkflowState] = useState(false);
-    const conditionsLink = findExternalLink(project, 'conditions');
-    let correctHref = project.archive_domain ? project.archive_domain : `${OHD_DOMAINS[railsMode]}/${project.shortname}`;
     const responseLocale = project.available_locales.indexOf(data.default_locale) > -1 ? data.default_locale : project.default_locale;
+    const conditionsLink = `${project.domain_with_optional_identifier}/${responseLocale}/conditions`;
+    let correctHref = `${project.domain_with_optional_identifier}/${responseLocale}`;
     correctHref += `/${responseLocale}?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED`;
 
     const formElements = [
@@ -54,7 +52,7 @@ export default function UserForm({
             value: workflowState ? originalT({translations, translationsView, locale: responseLocale}, `devise.mailer.${workflowState}.text`, {
                 project_name: project.name[responseLocale],
                 project_link: `<a href='${data.pre_access_location}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
-                tos_link: `<a href='${conditionsLink[responseLocale]}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
+                tos_link: `<a href='${conditionsLink}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
                 correct_link: `<a href='${correctHref}'>${t('user.correct_link')}</a>`,
