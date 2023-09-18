@@ -5,6 +5,7 @@ import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import useProjectAccessConfig from '../useProjectAccessConfig';
+import { NON_ZIP_COUNTRIES } from '../constants';
 
 export default function CorrectUserDataForm({
     project,
@@ -19,6 +20,8 @@ export default function CorrectUserDataForm({
 
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+
+    const [hideZip, setHideZip] = useState(true);
 
     const formElements = () => {
         const nameElements = [
@@ -58,7 +61,8 @@ export default function CorrectUserDataForm({
                 attribute: 'zipcode',
                 label: t('activerecord.attributes.user.zipcode'),
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function(v){return v && v.length > 1},
+                hidden: hideZip,
             },
             {
                 elementType: 'input',
@@ -75,7 +79,10 @@ export default function CorrectUserDataForm({
                 optionsScope: 'countries',
                 values: countryKeys && countryKeys[locale],
                 withEmpty: true,
-                validate: function(v){return v && v.length > 1}
+                validate: function(v){return v && v.length > 1},
+                handlechangecallback: (name, value) => {
+                    setHideZip(NON_ZIP_COUNTRIES.indexOf(value) > -1);
+                },
             },
         ];
 
