@@ -4,7 +4,7 @@ import { FaEyeSlash } from 'react-icons/fa';
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
@@ -19,6 +19,7 @@ import {
 
 export default function InterviewListRow({
     interview,
+    projects,
     selectedArchiveIds,
     languages,
     collections,
@@ -26,7 +27,7 @@ export default function InterviewListRow({
     addRemoveArchiveId,
 }) {
     const { locale, translations } = useI18n();
-    const { project } = useProject();
+    const project = projects[interview.project_id];
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
@@ -119,7 +120,7 @@ export default function InterviewListRow({
 
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
-    project: PropTypes.object.isRequired,
+    projects: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
