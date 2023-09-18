@@ -69,6 +69,7 @@ class ProjectSerializer < ApplicationSerializer
     :is_ohd
 
   has_one :access_config
+  has_many :texts
 
   def title
     object.shortname

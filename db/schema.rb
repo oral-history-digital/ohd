@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_06_133441) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_15_121243) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -870,7 +870,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_133441) do
   end
 
   create_table "texts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "code"
     t.integer "project_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false

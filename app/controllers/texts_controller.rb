@@ -1,39 +1,46 @@
 class TextsController < ApplicationController
-  before_action :set_text, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:show]
+  skip_after_action :verify_authorized, only: [:show]
+  skip_after_action :verify_policy_scoped, only: [:show]
+
+  before_action :set_text, only: [:update]
+
+  def show
+    respond_to do |format|
+      format.html { render "react/app" }
+    end
+  end
 
   # POST /texts
   def create
-    authorize Text
+    authorize current_project, :update?
     @text = Text.create(text_params)
 
     respond_to do |format|
       format.json do
-        render json: data_json(@text, msg: 'processed')
+        render json: {
+          data: cache_single(@text.project),
+          data_type: 'projects',
+          id: @text.project_id,
+        }
       end
     end
   end
 
-  # PATCH/PUT /texts/1
   def update
-    @text.update(text_params)
-
-    respond_to do |format|
-      format.json do
-        render json: data_json(@text)
+    authorize @text.project, :update?
+    if @text.update(text_params)
+      respond_to do |format|
+        format.json do
+          render json: {
+            data: cache_single(@text.project),
+            data_type: 'projects',
+            id: @text.project_id,
+          }
+        end
       end
-    end
-  end
-
-  # DELETE /texts/1
-  def destroy
-    @text.destroy
-
-    respond_to do |format|
-      format.html do
-        render :action => 'index'
-      end
-      format.js
-      format.json { render json: {}, status: :ok }
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -45,6 +52,10 @@ class TextsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def text_params
-      params.require(:text).permit(:name, :project_id, :text)
+      params.require(:text).permit(
+        :code,
+        :project_id,
+        translations_attributes: [:locale, :text, :id]
+      )
     end
 end
