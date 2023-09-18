@@ -30,7 +30,7 @@ export default function BookmarkSegmentButton({
                     }}
                     reference_id={segment.id}
                     reference_type="Segment"
-                    media_id={segment.media_id}
+                    media_id={interview.archive_id}
                     segment={segment}
                     type="UserAnnotation"
                     workflow_state="private"
