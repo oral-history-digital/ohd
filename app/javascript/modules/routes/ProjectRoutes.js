@@ -42,6 +42,7 @@ import {
     ActivateAccount,
 } from 'modules/user';
 import { UsersAdminPage } from 'modules/admin';
+import { TextPage } from 'modules/layout';
 
 export default function ProjectRoutes() {
     const projectId = useSelector(getProjectId);
@@ -86,6 +87,10 @@ export default function ProjectRoutes() {
                 <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />
                 <Route path="languages" element={<WrappedLanguagesContainer />} />
                 <Route path="translation_values" element={<WrappedTranslationValuesContainer />} />
+                <Route path="conditions" element={<TextPage code='conditions' />} />
+                <Route path="privacy_protection" element={<TextPage code='privacy_protection' />} />
+                <Route path="contact" element={<TextPage code='contact' />} />
+                <Route path="legal_info" element={<TextPage code='legal_info' />} />
                 <Route path="collections" element={<WrappedCollectionsContainer />} />
                 <Route path="roles" element={<WrappedRolesContainer />} />
                 <Route path="permissions" element={<WrappedPermissionsContainer />} />

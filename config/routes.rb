@@ -23,6 +23,9 @@ Rails.application.routes.draw do
     get "norm_data_api" => "registry_entries#norm_data_api"
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
+    %w(conditions privacy_protection contact legal_info).each do |page|
+      get page, to: "texts#show"
+    end
 
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"

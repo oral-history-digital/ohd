@@ -31,6 +31,7 @@ class Project < ApplicationRecord
   has_many :event_types, dependent: :destroy
 
   has_one :access_config, dependent: :destroy
+  has_many :texts, dependent: :destroy
 
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
     :media_missing_text, fallbacks_for_empty_translations: true, touch: true
