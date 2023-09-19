@@ -32,6 +32,17 @@ function SiteFooter() {
                     ))
                 }
                 {
+                    !project.is_ohd && <li key={'external-link-ohd_conditions'}>
+                        <Link
+                            to={`${pathBase}/ohd_conditions`}
+                            title={t('ohd_conditions')}
+                            className="u-ml-tiny"
+                        >
+                            {t('ohd_conditions')}
+                        </Link>
+                    </li>
+                }
+                {
                     Object.keys(links).map(key => (
                         <li key={'external-link-' + key}>
                             <a
