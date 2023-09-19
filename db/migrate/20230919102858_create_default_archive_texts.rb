@@ -1,6 +1,6 @@
 class CreateDefaultArchiveTexts < ActiveRecord::Migration[7.0]
   def up
-    Project.where.not(shortname: 'ohd').each do |project|
+    Project.all.each do |project|
       %w(conditions ohd_conditions privacy_protection contact legal_info).each do |code|
         text = Text.find_or_create_by(
           project_id: project.id,
@@ -14,6 +14,14 @@ class CreateDefaultArchiveTexts < ActiveRecord::Migration[7.0]
           )
         end
       end
+    end
+    ohd = Project.where(shortname: 'ohd').first
+    text = ohd.texts.where(code: 'conditions').first
+    I18n.available_locales.each do |locale|
+      text.update(
+        locale: locale,
+        text: File.read(File.join(Rails.root, "config/defaults/texts/#{locale}/ohd_conditions.html"))
+      )
     end
   end
 
