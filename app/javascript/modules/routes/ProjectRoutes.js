@@ -88,6 +88,7 @@ export default function ProjectRoutes() {
                 <Route path="languages" element={<WrappedLanguagesContainer />} />
                 <Route path="translation_values" element={<WrappedTranslationValuesContainer />} />
                 <Route path="conditions" element={<TextPage code='conditions' />} />
+                <Route path="conditions" element={<TextPage code='ohd_conditions' />} />
                 <Route path="privacy_protection" element={<TextPage code='privacy_protection' />} />
                 <Route path="contact" element={<TextPage code='contact' />} />
                 <Route path="legal_info" element={<TextPage code='legal_info' />} />

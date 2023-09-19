@@ -19,7 +19,7 @@ export default function RegisterForm({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const conditionsLink = `${project.domain_with_optional_identifier}/${locale}/conditions`;
+    const conditionsLink = `${project.domain_with_optional_identifier}/${locale}/ohd_conditions`;
     const privacyLink = `${project.domain_with_optional_identifier}/${locale}/privacy_protection`;
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

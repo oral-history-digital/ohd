@@ -22,6 +22,7 @@ class ProjectCreator < ApplicationService
     create_default_contribution_types unless is_ohd
     create_default_task_types unless is_ohd
     create_default_roles
+    create_default_texts
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
     ) unless is_ohd
@@ -218,6 +219,21 @@ class ProjectCreator < ApplicationService
     end
   end
 
+  def create_default_texts
+    %w(conditions ohd_conditions privacy_protection contact legal_info).each do |code|
+      I18n.available_locales.each do |locale|
+        Text.update_or_create_by(
+          project_id: project.id,
+          locale: locale,
+          code: code,
+          text: replace_with_project_params(
+            File.read(File.join(Rails.root, "config/defaults/texts/#{locale}/#{code}.html"))
+          )
+        )
+      end
+    end
+  end
+
   private
 
   def add_translations(record, attribute, translation_key)
@@ -227,6 +243,10 @@ class ProjectCreator < ApplicationService
     end
     record.save
     I18n.locale = project.default_locale
+  end
+
+  def replace_with_project_params(text)
+    text.gsub(/\s*project\.(\w+)\s*/) { project.send($1) }
   end
 
 end
