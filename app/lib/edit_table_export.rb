@@ -52,7 +52,7 @@ class EditTableExport
           subheading_trans = translation && translation.subheading
           registry_references = segment.registry_references.map{|r| r.registry_entry_id}.compact.uniq.join('#')
           annotations = segment.annotations.map{|a| a.text(original_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
-          annotations_trans = segment.annotations.map{|a| a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations_trans = segment.annotations.map{|a| a.text(translation_locale).blank? ? '' : a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
 
           f << [
             tape.number,
