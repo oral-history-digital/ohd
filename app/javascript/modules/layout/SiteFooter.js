@@ -6,7 +6,7 @@ import { useI18n } from 'modules/i18n';
 import ProjectFooter from './ProjectFooter';
 
 function SiteFooter() {
-    const { project } = useProject();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
 
@@ -19,7 +19,29 @@ function SiteFooter() {
         <footer>
             <ul className='footer-bottom-nav'>
                 {
-                    ['conditions', 'privacy_protection', 'legal_info', 'contact'].map(key => (
+                    <li key={'external-link-conditions'}>
+                        <Link
+                            to={`${pathBase}/conditions`}
+                            title={`${t('conditions')} (${projectId})`}
+                            className="u-ml-tiny"
+                        >
+                            {`${t('conditions')} (${projectId})`}
+                        </Link>
+                    </li>
+                }
+                {
+                    !project.is_ohd && <li key={'external-link-ohd_conditions'}>
+                        <Link
+                            to={`${pathBase}/ohd_conditions`}
+                            title={`${t('conditions')} (OHD)`}
+                            className="u-ml-tiny"
+                        >
+                            {`${t('conditions')} (OHD)`}
+                        </Link>
+                    </li>
+                }
+                {
+                    ['privacy_protection', 'legal_info', 'contact'].map(key => (
                         <li key={'external-link-' + key}>
                             <Link
                                 to={`${pathBase}/${key}`}
@@ -30,17 +52,6 @@ function SiteFooter() {
                             </Link>
                         </li>
                     ))
-                }
-                {
-                    !project.is_ohd && <li key={'external-link-ohd_conditions'}>
-                        <Link
-                            to={`${pathBase}/ohd_conditions`}
-                            title={t('ohd_conditions')}
-                            className="u-ml-tiny"
-                        >
-                            {t('ohd_conditions')}
-                        </Link>
-                    </li>
                 }
                 {
                     Object.keys(links).map(key => (
