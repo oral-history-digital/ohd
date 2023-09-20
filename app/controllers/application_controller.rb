@@ -64,7 +64,6 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: translations,
         translations: Rails.cache.fetch("translations-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}") do
           TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
             mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
@@ -130,10 +129,10 @@ class ApplicationController < ActionController::Base
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,
         institutions: Rails.cache.fetch("institutions-#{Institution.count}-#{Institution.maximum(:updated_at)}") do
-          Institution.all.inject({}){|mem, s| mem[s.id] = InstitutionSerializer.new(s); mem}
+          Institution.all.includes(:translations).inject({}){|mem, s| mem[s.id] = InstitutionSerializer.new(s); mem}
         end,
         collections: Rails.cache.fetch("collections-#{Collection.maximum(:updated_at)}") do
-          Collection.all.inject({}){|mem, s| mem[s.id] = CollectionSerializer.new(s); mem}
+          Collection.all.includes(:translations).inject({}){|mem, s| mem[s.id] = CollectionSerializer.new(s); mem}
         end,
         users: {
           current: current_user && ::UserSerializer.new(current_user) || nil #{}
@@ -227,19 +226,6 @@ class ApplicationController < ActionController::Base
         mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
         mem
       end
-    end
-  end
-
-  def translations
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = instance_variable_get("@#{locale}") ||
-                    instance_variable_set("@#{locale}",
-                                          YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
-                      YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]
-                    ).merge(
-                      countries: ISO3166::Country.translations(locale),
-                    ))
-      mem
     end
   end
 
