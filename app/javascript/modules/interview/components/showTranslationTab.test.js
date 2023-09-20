@@ -1,15 +1,27 @@
-import { PROJECT_ZWAR, PROJECT_CDOH, PROJECT_MOG } from 'modules/constants';
+import { PROJECT_ZWAR, PROJECT_CDOH } from 'modules/constants';
 import showTranslationTab from './showTranslationTab';
 
 describe('ZWAR', () => {
     test('is false if interview lang is German', () => {
-        const actual = showTranslationTab(PROJECT_ZWAR, 'de', 'en');
+        const project = { identifier: PROJECT_ZWAR };
+        const interview = {
+            lang: 'de',
+            languages: ['de', 'ru'],
+            transcript_locales: ['de', 'ru'],
+        };
+        const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
         expect(actual).toBe(expected);
     });
 
     test('is true otherwise', () => {
-        const actual = showTranslationTab(PROJECT_ZWAR, 'ru', 'en');
+        const project = { identifier: PROJECT_ZWAR };
+        const interview = {
+            lang: 'ru',
+            languages: ['de', 'ru'],
+            transcript_locales: ['de', 'ru'],
+        };
+        const actual = showTranslationTab(project, interview, 'en');
         const expected = true;
         expect(actual).toBe(expected);
     });
@@ -17,42 +29,78 @@ describe('ZWAR', () => {
 
 describe('CDOH', () => {
     test('is false if interview lang is locale', () => {
-        const actual = showTranslationTab(PROJECT_CDOH, 'es', 'es');
+        const project = { identifier: PROJECT_CDOH };
+        const interview = {
+            lang: 'es',
+            languages: ['de', 'es'],
+            transcript_locales: ['de', 'es'],
+        };
+        const actual = showTranslationTab(project, interview, 'es');
         const expected = false;
         expect(actual).toBe(expected);
     });
 
     test('is true otherwise', () => {
-        const actual = showTranslationTab(PROJECT_CDOH, 'es', 'de');
-        const expected = true;
-        expect(actual).toBe(expected);
-    });
-});
-
-describe('MOG', () => {
-    test('is true if interview lang is locale', () => {
-        const actual = showTranslationTab(PROJECT_MOG, 'el', 'el');
-        const expected = true;
-        expect(actual).toBe(expected);
-    });
-
-    test('is true otherwise', () => {
-        const actual = showTranslationTab(PROJECT_MOG, 'el', 'de');
+        const project = { identifier: PROJECT_CDOH };
+        const interview = {
+            lang: 'es',
+            languages: ['de', 'es'],
+            transcript_locales: ['de', 'es'],
+        };
+        const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
         expect(actual).toBe(expected);
     });
 });
 
 describe('other projects', () => {
-    test('is true if interview lang is locale', () => {
-        const actual = showTranslationTab('dummy', 'en', 'en');
-        const expected = true;
+    test('is false if interview lang is locale', () => {
+        const project = { identifier: 'dummy' };
+        const interview = {
+            lang: 'en',
+            languages: ['en', 'de'],
+            transcript_locales: ['en', 'de'],
+        };
+        const actual = showTranslationTab(project, interview, 'en');
+        const expected = false;
         expect(actual).toBe(expected);
     });
 
     test('is true otherwise', () => {
-        const actual = showTranslationTab('dummy', 'en', 'de');
+        const project = { identifier: 'dummy' };
+        const interview = {
+            lang: 'en',
+            languages: ['en', 'de'],
+            transcript_locales: ['en', 'de'],
+        };
+        const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
+        expect(actual).toBe(expected);
+    });
+});
+
+describe('transcript availability', () => {
+    test('is true if translated transcript is available', () => {
+        const project = { identifier: 'dummy' };
+        const interview = {
+            lang: 'en',
+            languages: ['en', 'de'],
+            transcript_locales: ['en', 'de'],
+        };
+        const actual = showTranslationTab(project, interview, 'de');
+        const expected = true;
+        expect(actual).toBe(expected);
+    });
+
+    test('is false if translated transcript is not available', () => {
+        const project = { identifier: 'dummy' };
+        const interview = {
+            lang: 'en',
+            languages: ['en', 'de'],
+            transcript_locales: ['en'],
+        };
+        const actual = showTranslationTab(project, interview, 'de');
+        const expected = false;
         expect(actual).toBe(expected);
     });
 });

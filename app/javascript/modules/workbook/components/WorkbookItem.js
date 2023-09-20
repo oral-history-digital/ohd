@@ -145,10 +145,12 @@ export default function WorkbookItem({
 
 WorkbookItem.propTypes = {
     data: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
+    statuses: PropTypes.object.isRequired,
+    interviews: PropTypes.object.isRequired,
     className: PropTypes.string,
     projects: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };

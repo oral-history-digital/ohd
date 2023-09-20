@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
-import { usePathBase, useProject } from 'modules/routes';
+import { useProject, LinkOrA } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
@@ -19,6 +18,7 @@ import {
 
 export default function InterviewListRow({
     interview,
+    projects,
     selectedArchiveIds,
     languages,
     collections,
@@ -27,17 +27,18 @@ export default function InterviewListRow({
 }) {
     const { locale, translations } = useI18n();
     const { project } = useProject();
+    const projectOfInterview = projects[interview.project_id];
     const { isAuthorized } = useAuthorization();
-    const { projectAccessGranted } = useProjectAccessStatus(project);
-    const pathBase = usePathBase();
+    const { projectAccessGranted } = useProjectAccessStatus(projectOfInterview);
     const { fulltext } = useArchiveSearch();
-    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
+    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, projectOfInterview);
+    const { data: interviewee } = usePersonWithAssociations(interview.interviewee_id);
 
-    const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
-
-    const params = { fulltext };
-    const paramStr = queryString.stringify(params, { skipNull: true });
-    const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
+    function linkPath() {
+        const params = { fulltext };
+        const paramStr = queryString.stringify(params, { skipNull: true });
+        return `interviews/${interview.archive_id}?${paramStr}`;
+    }
 
     return (
         <tr className="Table-row">
@@ -53,11 +54,11 @@ export default function InterviewListRow({
                 )
             }
             <td className="Table-cell">
-                <Link className="search-result-link"
-                    onClick={() => {
-                        setArchiveId(interview.archive_id);
-                    }}
-                    to={linkUrl}
+                <LinkOrA
+                    project={projectOfInterview}
+                    to={linkPath()}
+                    onLinkClick={() => setArchiveId(interview.archive_id)}
+                    className="search-result-link"
                 >
                     {
                         projectAccessGranted ?
@@ -71,7 +72,7 @@ export default function InterviewListRow({
                             </div> :
                             interview.anonymous_title[locale]
                     }
-                </Link>
+                </LinkOrA>
             </td>
             {
                 project.list_columns.map(column => {
@@ -104,12 +105,14 @@ export default function InterviewListRow({
             {
                 fulltext && numResults > 0 && (
                     <td className="Table-cell">
-                        <Link className="search-result-link"
-                            onClick={() => setArchiveId(interview.archive_id)}
-                            to={`${pathBase}/interviews/${interview.archive_id}`}
+                        <LinkOrA
+                            project={projectOfInterview}
+                            to={linkPath()}
+                            onLinkClick={() => setArchiveId(interview.archive_id)}
+                            className="search-result-link"
                         >
                             {numResults}
-                        </Link>
+                        </LinkOrA>
                     </td>
                 )
             }
@@ -119,7 +122,7 @@ export default function InterviewListRow({
 
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
-    project: PropTypes.object.isRequired,
+    projects: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,

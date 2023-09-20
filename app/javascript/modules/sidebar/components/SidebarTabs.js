@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
@@ -11,7 +10,7 @@ import { Spinner } from 'modules/spinners';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
-import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
+import ArchiveSearchTabPanel from './ArchiveSearchTabPanel';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
 import WorkbookTabPanel from './WorkbookTabPanel';
 import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
@@ -119,7 +118,7 @@ export default function SidebarTabs({
                 >
                     {t((isCampscapesProject && !archiveId) ?
                         ('user.notes_on_tos_agreement', {project: project.name[locale]}) :
-                        (!project.is_ohd ? 'archive_search' : 'modules.sidebar.search')
+                        (project.is_ohd ? 'modules.sidebar.search' : 'archive_search')
                     )}
                 </Tab>
 
@@ -221,7 +220,7 @@ export default function SidebarTabs({
 
                 <TabPanel key="2">
                     {tabIndex === indexes.INDEX_SEARCH && (
-                        <ArchiveSearchTabPanelContainer selectedArchiveIds={selectedArchiveIds} />
+                        <ArchiveSearchTabPanel selectedArchiveIds={selectedArchiveIds} />
                     )}
                 </TabPanel>
 

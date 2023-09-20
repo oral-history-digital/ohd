@@ -40,7 +40,8 @@ class PeopleController < ApplicationController
     data = {
       id: @person.id,
       type: 'Person',
-      registry_references: {}
+      registry_references: {},
+      use_pseudonym: @person.use_pseudonym
     }
 
     current_project.metadata_fields
