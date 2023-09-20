@@ -53,10 +53,6 @@ export default function TextPage({
         (
             <ScrollToTop>
                 <div className='wrapper-content register'>
-                    <h1>
-                        {text?.code && t(text.code)}
-                    </h1>
-
                     <div dangerouslySetInnerHTML={{__html: text?.text?.[locale]}} />
 
                     <AuthorizedContent object={project} action='update'>
