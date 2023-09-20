@@ -26,9 +26,11 @@ export default function TableOfContents({
     }, []);
 
     useEffect(() => {
-        if (!headingsFetched) {
-            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'headings');
+        if (headingsFetched) {
+            return;
         }
+
+        fetchData({ locale, projectId, project }, 'interviews', archiveId, 'headings');
     }, [headingsFetched])
 
     if (!headingsFetched) {
