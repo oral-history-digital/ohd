@@ -1791,13 +1791,13 @@ ru:
         account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
         project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
-        project_access_rejected: Die E-Mail-Adresse %{email} ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_granted: Die E-Mail-Adresse %{email} ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
+        project_access_rejected: Электронный адрес %{email} уже зарегистрирован. Однако Ваш запрос на доступ к приложению %{project} был отклонен.
+        project_access_granted: Электронный адрес %{email} уже зарегистрирован. Пожалуйста, войдите в систему, указав Ваш электронный адрес и пароль.
+        login_and_request_project_access: Электронный адрес %{email} уже зарегистрирован на Oral-History.Digital, но активация допуска еще не состоялась. вы получите подтверждение о получении доступа к приложению по электронной почте.
         login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer E-Mail-Adresse und ihrem Passwort an.
-        project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.
+        project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project} war zeitlich befristet und ist nun beendet.
           Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
-        project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt.
+        project_access_blocked: Ваш акаунт заблокирован.
     project_access:
       request_title: Antrag auf Freischaltung für die Anwendung %{project}
       request_step_one: 'Schritt 1 - '

@@ -1362,12 +1362,13 @@ el:
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
-        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
+        project_access_rejected: Το email %{email} είναι ήδη καταχωρημένο. Ωστόσο, το αίτημά σας για πρόσβαση στην εφαρμογή %{project} απορρίφθηκε.
+        project_access_granted: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη. Παρακαλούμε συνδεθείτε στην ενότητα Είσοδος με τη διεύθυνση ηλεκτρονικού ταχυδρομείου και τον κωδικό πρόσβασής σας.
+        login_and_request_project_access: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη στο Oral-History.Digital αλλά δεν έχει ακόμη πραγματοποιηθεί ενεργοποίηση αυτής της εφαρμογής. Θα ενημερωθείτε με e-mail όταν θα έχετε πρόσβαση σε αυτή την εφαρμογή.
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         still_not_registered: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} δεν έχει ακόμη καταχωρηθεί. Παρακαλώ εγγραφείτε πρώτα.
+        project_access_blocked: Ο λογαριασμός σας είναι κλειδωμένος.
     project_access:
       request_title: Antrag auf Freischaltung für die Anwendung %{project}
       request_step_two: 'Schritt 2 - '
