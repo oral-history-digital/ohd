@@ -5,6 +5,7 @@ import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { NON_ZIP_COUNTRIES } from '../constants';
+import { OHD_DOMAINS } from 'modules/constants';
 
 export default function RegisterForm({
     project,
@@ -19,8 +20,8 @@ export default function RegisterForm({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const conditionsLink = `${project.domain_with_optional_identifier}/${locale}/ohd_conditions`;
-    const privacyLink = `${project.domain_with_optional_identifier}/${locale}/privacy_protection`;
+    const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
+    const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
