@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import queryString from 'query-string';
 
-import { LinkOrA } from 'modules/routes';
+import { LinkOrA, useProject } from 'modules/routes';
 import { convertLegacyQuery, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
@@ -24,6 +24,7 @@ export default function WorkbookItem({
 }) {
     const { t, locale } = useI18n();
     const { facets } = useFacets();
+    const { isOhd } = useProject();
 
     const project = projects[data.project_id];
     const projectId = project?.shortname;
@@ -134,11 +135,13 @@ export default function WorkbookItem({
                 ) : t('modules.workbook.project_unavailable')}
             </p>
 
-            <WorkbookActions
-                item={data}
-                itemPath={itemPath}
-                className="WorkbookEntry-actions"
-            />
+            {!isOhd && (
+                <WorkbookActions
+                    item={data}
+                    itemPath={itemPath}
+                    className="WorkbookEntry-actions"
+                />
+            )}
         </div>
     );
 }

@@ -142,7 +142,7 @@ export default function WorkbookItemForm({
                     />
                 </div>
 
-                {type === 'InterviewReference' && (
+                {type === 'InterviewReference' && interview && (
                     <CitationInfo
                         interview={interview}
                         project={project}
@@ -150,7 +150,7 @@ export default function WorkbookItemForm({
                     />
                 )}
 
-                {type === 'UserAnnotation' && (
+                {type === 'UserAnnotation' && interview && (
                     <>
                         <SegmentLink
                             interviewId={properties.interview_archive_id}
