@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
 
-import { ScrollToTop } from 'modules/user-agent';
-import { getMapSections } from 'modules/data';
 import { useIsEditor } from 'modules/archive';
-import { MapComponent } from 'modules/map';
-import { useI18n } from 'modules/i18n';
+import { getMapSections } from 'modules/data';
 import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import { MapComponent } from 'modules/map';
+import { useProject, usePathBase } from 'modules/routes';
+import { ScrollToTop } from 'modules/user-agent';
 import useSearchMap from '../search-map/useSearchMap';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
@@ -23,7 +25,8 @@ export default function SearchMap() {
     const mapSections = useSelector(getMapSections);
     const mapView = useSelector(getMapView);
     const isEditor = useIsEditor();
-
+    const pathBase = usePathBase();
+    const { project } = useProject();
     const [currentSection, setCurrentSection] = useState(mapSections[0].name);
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -41,6 +44,12 @@ export default function SearchMap() {
             center,
             zoom,
         }));
+    }
+
+    if (!project.has_map) {
+        return (
+            <Navigate to={`${pathBase}/not_found`} replace />
+        );
     }
 
     return (
