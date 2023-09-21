@@ -61,7 +61,7 @@ export default function CorrectUserDataForm({
                 attribute: 'zipcode',
                 label: t('activerecord.attributes.user.zipcode'),
                 type: 'text',
-                validate: function(v){return v && v.length > 1},
+                //validate: function(v){return v && v.length > 1},
                 hidden: hideZip,
             },
             {
