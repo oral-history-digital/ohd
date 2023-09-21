@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useProject, usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import ProjectFooter from './ProjectFooter';
+import { OHD_DOMAINS } from 'modules/constants';
 
 function SiteFooter() {
     const { project, projectId } = useProject();
@@ -31,17 +32,30 @@ function SiteFooter() {
                 }
                 {
                     !project.is_ohd && <li key={'external-link-ohd_conditions'}>
-                        <Link
-                            to={`${pathBase}/ohd_conditions`}
+                        <a
+                            href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
+                            target="_blank"
                             title={`${t('conditions')} (OHD)`}
                             className="u-ml-tiny"
                         >
                             {`${t('conditions')} (OHD)`}
-                        </Link>
+                        </a>
                     </li>
                 }
                 {
-                    ['privacy_protection', 'legal_info', 'contact'].map(key => (
+                    <li key={'external-link-ohd_conditions'}>
+                        <a
+                            href={`${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`}
+                            target="_blank"
+                            title={t('privacy_protection')}
+                            className="u-ml-tiny"
+                        >
+                            {t('privacy_protection')}
+                        </a>
+                    </li>
+                }
+                {
+                    ['legal_info', 'contact'].map(key => (
                         <li key={'external-link-' + key}>
                             <Link
                                 to={`${pathBase}/${key}`}
