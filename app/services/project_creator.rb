@@ -239,7 +239,9 @@ class ProjectCreator < ApplicationService
               institution_zip: project.institutions.first&.zip,
               institution_city: project.institutions.first&.city,
               institution_country: project.institutions.first&.country,
-              privacy_protection_link: "#{project.domain_with_optional_identifier}/#{locale}/privacy_protection",
+              privacy_protection_link: "#{OHD_DOMAIN}/#{locale}/privacy_protection",
+              project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/privacy_protection",
+              ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/condition",
             }
           )
         )
