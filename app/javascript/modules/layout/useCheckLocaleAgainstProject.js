@@ -30,9 +30,8 @@ export default function useCheckLocaleAgainstProject() {
         // make exception for password paths
         // TODO: removethis exception when all locales are present in OHD
         const password = location.pathname.match(/\/password\//);
-        const confirmation = location.pathname.match(/\/confirmation\//);
 
-        if (projectHasLocale(localeFromPath) || password || confirmation) {
+        if (projectHasLocale(localeFromPath) || password) {
             setStateLocaleIfNecessary(localeFromPath);
         } else {
             redirectToDefaultLocale();
