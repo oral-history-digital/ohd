@@ -89,7 +89,7 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
-                validate: function(v){return v && v.length > 1},
+                //validate: function(v){return v && v.length > 1},
                 hidden: hideZip,
             },
             {
