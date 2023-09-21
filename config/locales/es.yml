@@ -1333,10 +1333,10 @@ es:
         account_confirmed: Die E-Mail-Adresse %{email} ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
         project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
         project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
-        project_access_rejected: Die E-Mail-Adresse %{email} ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_granted: Die E-Mail-Adresse %{email} ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        project_access_blocked: Die E-Mail-Adresse %{email} ist für den Zugang zu der Anwendung %{project} gesperrt.
-        login_and_request_project_access: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für die Anwendung %{project}.
+        project_access_rejected: El correo electrónico %{email} ya está registrado. Sin embargo, su solicitud de acceso a la aplicación %{project} ha sido denegada.
+        project_access_granted: El correo electrónico %{email} ya está registrado. Por favor, inicie sesión con su correo electrónico y contraseña.
+        project_access_blocked: Su cuenta está bloqueada.
+        login_and_request_project_access: El correo electrónico %{email} ya está registrado en Oral-History.Digital pero aún no está activado su acceso para este archivo. Se le informará por correo electrónico cuando pueda acceder a este archivo.
         login:  Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
         still_not_registered: El correo electrónico %{email} aún no está registrado. Por favor, regístrese primero.
