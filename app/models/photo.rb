@@ -52,7 +52,7 @@ class Photo < ApplicationRecord
 
   def recalculate_checksum
     blob = photo.blob
-    blob.update_column(:checksum, Digest::MD5.base64digest(File.read(blob.service.path_for(blob.key))))
+    blob.update_column(:checksum, Digest::MD5.base64digest(File.read(blob.service.path_for(blob.key)))) if blob
   end
 
   def name
