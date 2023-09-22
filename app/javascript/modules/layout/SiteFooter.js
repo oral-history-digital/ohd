@@ -46,7 +46,7 @@ function SiteFooter() {
                     </li>
                 }
                 {
-                    <li key={'external-link-ohd_conditions'}>
+                    <li key={'external-link-privacy_protection'}>
                         <a
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`}
                             target="_blank"
