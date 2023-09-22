@@ -8,10 +8,16 @@ export default function AfterConfirmationPopup ({
 }) {
     const currentUser = useSelector(getCurrentUser);
     const currentProject = useSelector(getCurrentProject);
+    const currentProjectAccess = currentUser?.user_projects &&
+        Object.values(currentUser.user_projects).find( up => {
+            return up.project_id === currentProject?.id;
+        });
 
-    const recentlyConfirmed = currentUser && new Date(currentUser.confirmed_at).getTime() + 600000 > Date.now() &&
+    const recentlyConfirmed = !currentProjectAccess?.tos_agreement &&
         currentUser?.pre_register_location?.split('?')[0] === (location.origin + location.pathname) &&
-        !currentProject.is_ohd;
+        !currentProject.is_ohd &&
+        !currentProject.grant_project_access_instantly &&
+        !currentProject.grant_access_without_login;
 
     if (!recentlyConfirmed) return null;
 

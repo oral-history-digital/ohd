@@ -20,6 +20,7 @@ class UserProjectSerializer < ApplicationSerializer
     :pre_register_location,
     :pre_access_location,
     :default_locale,
+    :tos_agreement,
     :activated_at,
     :processed_at,
     :terminated_at,
