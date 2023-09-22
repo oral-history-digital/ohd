@@ -33,7 +33,6 @@ function SiteFooter() {
                     </li>
                 }
                 {
-                    !project.is_ohd &&
                     <li key={'external-link-ohd_conditions'}>
                         <a
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
