@@ -20,6 +20,8 @@ function SiteFooter() {
         <footer>
             <ul className='footer-bottom-nav'>
                 {
+                    !project.grant_project_access_instantly &&
+                    !project.grant_access_without_login &&
                     <li key={'external-link-conditions'}>
                         <Link
                             to={`${pathBase}/conditions`}
@@ -31,7 +33,8 @@ function SiteFooter() {
                     </li>
                 }
                 {
-                    !project.is_ohd && <li key={'external-link-ohd_conditions'}>
+                    !project.is_ohd &&
+                    <li key={'external-link-ohd_conditions'}>
                         <a
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
                             target="_blank"
