@@ -32,7 +32,6 @@ export default function useCheckLocaleAgainstProject() {
         const password = location.pathname.match(/\/password\//);
         const conditions = location.pathname.match(/\/conditions$/);
         const privacy_protection = location.pathname.match(/\/privacy_protection$/);
-            debugger;
 
         if (projectHasLocale(localeFromPath) || password || conditions || privacy_protection) {
             setStateLocaleIfNecessary(localeFromPath);
