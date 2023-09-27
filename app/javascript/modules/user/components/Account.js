@@ -8,7 +8,6 @@ import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
 import ProjectAccessAlertContainer from './ProjectAccessAlertContainer';
 import RegisterPopupLink from './RegisterPopupLink';
-import LoginForm from './LoginForm';
 
 export default function Account ({
     error,
@@ -91,19 +90,15 @@ export default function Account ({
                                 t(isRegistered ? 'devise.registrations.signed_up' : `modules.registration.registration_needed_${project.is_ohd ? 'ohd' : 'archive'}`)
                         }
                     </p>
-                    {
-                        (['za', 'mog', 'cd', 'campscapes'].indexOf(projectId) !== -1) ?
-                            <LoginForm /> :
-                            <button
-                                type="button"
-                                className='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
-                                onClick={() => {
-                                    location = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}&project=${projectId}`;
-                                }}
-                            >
-                                {t('login')}
-                            </button>
-                    }
+                    <button
+                        type="button"
+                        className='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
+                        onClick={() => {
+                            location = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}&project=${projectId}`;
+                        }}
+                    >
+                        {t('login')}
+                    </button>
                     <RegisterPopupLink />
                     <div
                         className="order-new-password-link"
