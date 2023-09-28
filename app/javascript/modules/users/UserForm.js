@@ -29,6 +29,7 @@ export default function UserForm({
     const [workflowState, setWorkflowState] = useState(false);
     const responseLocale = project.available_locales.indexOf(data.default_locale) > -1 ? data.default_locale : project.default_locale;
     const conditionsLink = `${project.domain_with_optional_identifier}/${responseLocale}/conditions`;
+    const projectLink = data.pre_access_location || `${project.domain_with_optional_identifier}/${responseLocale}`;
     let correctHref = `${project.domain_with_optional_identifier}/${responseLocale}`;
     correctHref += '?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED';
 
@@ -51,7 +52,7 @@ export default function UserForm({
             attribute: 'mail_text',
             value: workflowState ? originalT({translations, translationsView, locale: responseLocale}, `devise.mailer.${workflowState}.text`, {
                 project_name: project.name[responseLocale],
-                project_link: `<a href='${data.pre_access_location}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
+                project_link: `<a href='${projectLink}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
                 tos_link: `<a href='${conditionsLink}' target="_blank" title="Externer Link" rel="noreferrer">${t('user.tos_agreement')}</a>`,
                 user_display_name: `${data.first_name} ${data.last_name}`,
                 mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
