@@ -12,6 +12,7 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "@babel/runtime": "^7.21.0",
+    "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@rails/webpacker": "^5.4.3",
     "@reach/checkbox": "^0.16.0",
     "@reach/dialog": "^0.16.2",

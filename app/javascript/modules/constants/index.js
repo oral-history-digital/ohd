@@ -39,3 +39,5 @@ export const OHD_DOMAINS = {
     staging:     'https://staging.oral-history.digital',
     production:  'https://portal.oral-history.digital',
 };
+
+export const TRACKING_URL_BASE = '//localhost:8080/';
