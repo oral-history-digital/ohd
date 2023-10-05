@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { useTrackPageView } from 'modules/analytics';
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
 import { useProject } from 'modules/routes';
@@ -12,6 +13,7 @@ export default function Home({
 }) {
     const { project, projectId } = useProject();
     const { locale } = useI18n();
+    useTrackPageView();
 
     function showStartPageVideo() {
         return projectId === 'mog';
