@@ -7,6 +7,7 @@ import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useTranscriptQueryString } from 'modules/query-string';
+import { formatTimecode } from 'modules/interview-helpers';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
@@ -94,6 +95,8 @@ function Segment({
         <>
             <div
                 id={`segment_${data.id}`}
+                data-tape={data.tape_nbr}
+                data-time={formatTimecode(data.time, true)}
                 ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
