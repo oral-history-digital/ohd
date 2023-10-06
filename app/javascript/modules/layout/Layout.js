@@ -15,7 +15,7 @@ import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
 import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
-    CorrectUserDataPopup } from 'modules/user';
+    CorrectUserDataPopup, AfterResetPassword } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 
 export default function Layout({
@@ -81,6 +81,7 @@ export default function Layout({
                 <AfterConfirmationPopup />
                 <AfterRequestProjectAccessPopup />
                 <CorrectUserDataPopup />
+                <AfterResetPassword />
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}
