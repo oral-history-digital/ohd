@@ -107,6 +107,7 @@ export default function Account ({
                         <Link
                             className="Link"
                             to={pathBase + '/users/password/new'}
+                            state={{from: location.href}}
                         >
                             {t('forget_password')}
                         </Link>

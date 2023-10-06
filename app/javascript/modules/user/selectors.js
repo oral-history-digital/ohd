@@ -27,3 +27,5 @@ export const getRegistrationStatus = state => getAccount(state).registrationStat
 export const getIsRegistered = state => getAccount(state).registered;
 
 export const getOrderNewPasswordStatus = state => getAccount(state).orderNewPasswordStatus;
+
+export const getChangePasswordStatus = state => getAccount(state).changePasswordStatus;

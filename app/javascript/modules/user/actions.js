@@ -17,6 +17,13 @@ const login = () => ({
     type: LOGIN,
 })
 
+const loginAfterPasswordChange = (json) => {
+    return dispatch => {
+        dispatch(loggedIn(json.user));
+        dispatch(changedPassword(json));
+    }
+}
+
 const loggedIn = (json) => ({
     type: LOGGED_IN,
     firstName: json.first_name,
@@ -72,16 +79,17 @@ const changePassword = () => ({
 
 const changedPassword = (json) => ({
     type: CHANGED_PASSWORD,
-    changePasswordStatus: json
+    changePasswordStatus: json,
+    redirectUrl: json.redirect_url,
 })
 
 export function submitChangePassword(url, method, params) {
     return dispatch => {
         dispatch(changePassword());
         if(method === 'post') {
-            Loader.post(url, params, dispatch, loggedIn, authError);
+            Loader.post(url, params, dispatch, loginAfterPasswordChange, authError);
         } else {
-            Loader.put(url, params, dispatch, loggedIn, authError);
+            Loader.put(url, params, dispatch, loginAfterPasswordChange, authError);
         }
     }
 }
