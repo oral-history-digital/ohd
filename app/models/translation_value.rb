@@ -16,7 +16,7 @@ class TranslationValue < ApplicationRecord
   end
 
   def self.for(key, locale)
-    TranslationValue.find_by(key: key, locale: locale)
+    TranslationValue.find_by(key: key, locale: locale)&.value
   end
 
 end
