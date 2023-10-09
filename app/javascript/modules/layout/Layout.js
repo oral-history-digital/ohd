@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
@@ -32,31 +31,11 @@ export default function Layout({
 }) {
     const { project, projectId } = useProject();
     const { locale } = useI18n();
-    const { trackPageView } = useMatomo()
     useCheckLocaleAgainstProject();
 
     useEffect(() => {
         loadStuff();
     });
-
-    useEffect(() => {
-        // What does this do if matomo provider is not configured?
-        // Only tracks the page once.
-
-        // Maybe put this in a hook "useTrackPageView" and call it from every
-        // single page. Put it in a new module "tracking", "analytics" or "web-analytics",
-        // too.
-
-        if (shouldTrackPageView()) {
-            trackPageView();
-        }
-    }, []);
-
-    function shouldTrackPageView() {
-        // Check if user is logged in and do_not_track is false.
-        // Check if project should be tracked.
-        return true;
-    }
 
     function loadStuff() {
         loadCollections();

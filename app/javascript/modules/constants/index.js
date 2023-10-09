@@ -40,4 +40,4 @@ export const OHD_DOMAINS = {
     production:  'https://portal.oral-history.digital',
 };
 
-export const TRACKING_URL_BASE = '//localhost:8080/';
+export const ANALYTICS_URL_BASE = '//localhost:8080/';

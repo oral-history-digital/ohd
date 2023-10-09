@@ -1,6 +1,6 @@
 import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
 import { MemoizedRoutesWithoutProjectId, MemoizedRoutesWithProjectId } from './Routes';
-import TrackingProvider from './TrackingProvider';
+import { AnalyticsProvider } from 'modules/analytics';
 import useProject from './useProject';
 
 function RouteDivider() {
@@ -8,14 +8,14 @@ function RouteDivider() {
     const isScrollBelowThreshold = useScrollBelowThreshold();
 
     return (
-        <TrackingProvider>
+        <AnalyticsProvider project={project}>
             <LayoutContainer scrollPositionBelowThreshold={isScrollBelowThreshold}>
                 {project.archive_domain ?
                     <MemoizedRoutesWithoutProjectId project={project} /> :
                     <MemoizedRoutesWithProjectId />
                 }
             </LayoutContainer>
-        </TrackingProvider>
+        </AnalyticsProvider>
     );
 }
 
