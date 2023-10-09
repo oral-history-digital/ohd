@@ -8,9 +8,12 @@ class Interview < ApplicationRecord
 
   belongs_to :project
   belongs_to :collection
-  belongs_to :language
-  belongs_to :translation_language,
-             class_name: 'Language'
+
+  has_many :languages,
+    through: :interview_languages
+
+  has_many :interview_languages,
+    dependent: :destroy
 
   has_many :photos,
            #-> {includes(:interview, :translations)},
@@ -109,7 +112,9 @@ class Interview < ApplicationRecord
 
   searchable do
     integer :project_id, :stored => true, :references => Project
-    integer :language_id, :stored => true, :references => Language
+    integer :language_id, stored: true, multiple: true do
+      languages.where(type: ['primary', 'secondary']).map(&:id)
+    end
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id_fulltext, :stored => true do
@@ -149,7 +154,7 @@ class Interview < ApplicationRecord
     string :media_type, :stored => true
     integer :duration, :stored => true
     string :language, :stored => true do
-      language && language.translations.map(&:name).join(' ')
+      languages.where(type: ['primary', 'secondary']).map{|l| l.translations.map(&:name).join(' ')}.join(' ')
     end
     string :alias_names, :stored => true
 
@@ -399,8 +404,7 @@ class Interview < ApplicationRecord
   end
 
   def lang
-    # return only the first language code in cases like 'slk/ces'
-    language && ( ISO_639.find(language.first_code).try(:alpha2) || language.first_code )
+    languages.where(type: ['primary', 'secondary']).map{|l| ISO_639.find(l.code).try(:alpha2) || l.code )
   end
 
   def languages
