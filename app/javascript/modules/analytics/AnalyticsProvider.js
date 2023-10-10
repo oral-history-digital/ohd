@@ -10,9 +10,6 @@ export default function AnalyticsProvider({
     children,
 }) {
     const siteId = project.analytics_site_id;
-
-    console.log(project)
-
     const instance = useMemo(() => Number.isInteger(siteId)
         ? createInstance({
             urlBase: ANALYTICS_URL_BASE,

@@ -9,7 +9,6 @@ export default function useTrackPageView() {
     const { trackPageView } = useMatomo();
 
     useEffect(() => {
-        // What does this do if matomo provider is not configured?
         if (shouldTrackPageView()) {
             console.log('tracking page view')
             trackPageView();
@@ -17,11 +16,10 @@ export default function useTrackPageView() {
     }, []);
 
     function shouldTrackPageView() {
-        if (currentUser) {
+        if (currentUser && !currentUser.do_not_track) {
             return true;
         }
 
-        // Check if project should be tracked.
         return false;
     }
 }
