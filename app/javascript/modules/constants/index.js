@@ -40,4 +40,5 @@ export const OHD_DOMAINS = {
     production:  'https://portal.oral-history.digital',
 };
 
-export const ANALYTICS_URL_BASE = '//localhost:8080/';
+//export const ANALYTICS_URL_BASE = '//localhost:8080/';
+export const ANALYTICS_URL_BASE = 'http://da02.cedis.fu-berlin.de:8081/';
