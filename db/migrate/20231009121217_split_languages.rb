@@ -9,8 +9,9 @@ class SplitLanguages < ActiveRecord::Migration[7.0]
 
     Language.where("code Like '%/%'").each do |language|
       codes = language.code.split(/\//)
-      first_language = Language.find_or_create_by(code: codes[0])
-      second_language = Language.find_or_create_by(code: codes[1])
+      names = language.name.split(/\//)
+      first_language = Language.find_or_create_by(code: codes[0], name: names[0])
+      second_language = Language.find_or_create_by(code: codes[1], name: names[1])
 
       language.interviews.each do |interview|
         InterviewLanguage.create(interview: interview, language: first_language, spec: 'primary')
