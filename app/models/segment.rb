@@ -327,7 +327,7 @@ class Segment < ApplicationRecord
   end
 
   def orig_locale
-    interview.language && ISO_639.find(interview.language.first_code).alpha2
+    interview.language && ISO_639.find(interview.language.code).alpha2
   end
 
   def media_id=(id)

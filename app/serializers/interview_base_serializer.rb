@@ -97,4 +97,8 @@ class InterviewBaseSerializer < ApplicationSerializer
   def toc_locales
     object.project.available_locales.select { |l| object.has_heading?(l) }
   end
+
+  def language_id
+    object.language.id
+  end
 end

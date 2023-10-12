@@ -1,32 +1,34 @@
 class SplitLanguages < ActiveRecord::Migration[7.0]
   def up
     create_table :interview_languages do |t|
-      t.references :interview, null: false, foreign_key: true
-      t.references :language, null: false, foreign_key: true
-      t.type :string
+      t.integer :interview_id, null: false, foreign_key: true
+      t.integer :language_id, null: false, foreign_key: true
+      t.string :spec 
       t.timestamps
     end
 
-    Language.where("code LIKE '%-%' OR code Like '%/%'").each do |language|
-      codes = language.code.split(/[-\/]/)
+    Language.where("code Like '%/%'").each do |language|
+      codes = language.code.split(/\//)
       first_language = Language.find_or_create_by(code: codes[0])
       second_language = Language.find_or_create_by(code: codes[1])
 
       language.interviews.each do |interview|
-        InterviewLanguage.create(interview: interview, language: first_language, type: 'primary')
-        InterviewLanguage.create(interview: interview, language: second_language, type: 'secondary')
+        InterviewLanguage.create(interview: interview, language: first_language, spec: 'primary')
+        InterviewLanguage.create(interview: interview, language: second_language, spec: 'secondary')
       end
       language.destroy
     end
 
-    Language.where.not("code LIKE '%-%' OR code Like '%/%'").each do |language|
+    Language.where.not("code Like '%/%'").each do |language|
       language.interviews.each do |interview|
-        InterviewLanguage.create(interview: interview, language: language, type: 'primary')
+        InterviewLanguage.create(interview: interview, language: language, spec: 'primary')
       end
     end
 
-    interview.each do |interview|
-      InterviewLanguage.create(interview: interview, language: interview.translation_language, type: 'primary_translation')
+    Interview.all.each do |interview|
+      if interview.translation_language_id
+        InterviewLanguage.create(interview: interview, language_id: interview.translation_language_id, spec: 'primary_translation')
+      end
     end
 
     remove_column :interviews, :language_id
