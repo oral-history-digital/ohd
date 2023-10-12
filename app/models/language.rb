@@ -12,7 +12,7 @@ class Language < ApplicationRecord
   after_update :touch_interviews
 
   class << self
-    def find_by_code_or_name(code_or_name)
+    def find_by_code_or_name(name_or_code)
       joins(:translations).
         where("name = ? OR code = ?", name_or_code, name_or_code).
         first

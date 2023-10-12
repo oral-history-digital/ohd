@@ -337,6 +337,9 @@ el:
     signature_original: Signature original
     observations: Observations
     language_id: Language
+    first_language: Erste Sprache
+    second_language: Zweite Sprache
+    first_translation_language: Erste Übersetzungssprache
     workflow_state: Workflow state
     collection_id: Collection
     home_location: Home location

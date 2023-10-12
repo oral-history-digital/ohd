@@ -56,20 +56,6 @@ class MetadataImport
       project_id: project.id,
       archive_id: row[:archive_id],
       signature_original: row[:signature_original],
-      interview_language_attributes: [
-        {
-          language: find_language(row[:first_language]),
-          spec: 'primary'
-        },
-        {
-          language: find_language(row[:second_language]),
-          spec: 'secondary'
-        },
-        {
-          language: find_language(row[:first_translation_language]),
-          spec: 'primary_translation'
-        },
-      ],
       collection_id: row[:collection_id] && find_or_create_collection(row[:collection_id], project).id,
       interview_date: row[:interview_date],
       media_type: row[:media_type] && row[:media_type].downcase,
@@ -77,6 +63,25 @@ class MetadataImport
       observations: row[:observations],
       description: row[:description],
     }
+
+    interview_languages_attributes = [
+      {
+        language: find_language(row[:first_language]),
+        spec: 'primary'
+      },
+      {
+        language: find_language(row[:first_translation_language]),
+        spec: 'primary_translation'
+      },
+    ]
+
+    second_language = find_language(row[:second_language])
+    interview_languages_attributes << {
+      language: second_language,
+      spec: 'secondary'
+    } if second_language
+
+    interview_data[:interview_languages_attributes] = interview_languages_attributes
 
     # TODO: fit to campscape specifications again
     #properties = {interviewer: data[23], link: data[27], subcollection: data[13]}.select{|k,v| v != nil}

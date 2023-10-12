@@ -12,8 +12,8 @@ class Interview < ApplicationRecord
   has_many :interview_languages,
            dependent: :destroy
 
-  has_many :languages,
-           through: :interview_languages
+  #has_many :languages,
+           #through: :interview_languages
 
   has_many :photos,
            #-> {includes(:interview, :translations)},
@@ -113,7 +113,7 @@ class Interview < ApplicationRecord
   searchable do
     integer :project_id, :stored => true, :references => Project
     integer :language_id, stored: true, multiple: true do
-      languages.where(spec: ['primary', 'secondary']).map(&:id)
+      interview_languages.where(spec: ['primary', 'secondary']).map{|il| il.language_id}
     end
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
@@ -154,7 +154,9 @@ class Interview < ApplicationRecord
     string :media_type, :stored => true
     integer :duration, :stored => true
     string :language, :stored => true do
-      languages.where(spec: ['primary', 'secondary']).map{|l| l.translations.map(&:name).join(' ')}.join(' ')
+      interview_languages.where(spec: ['primary', 'secondary']).map do |il|
+        il.language.translations.map(&:name).join(' ')
+      end.join(' ')
     end
     string :alias_names, :stored => true
 
