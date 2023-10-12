@@ -83,6 +83,8 @@ describe MetadataImport do
       expect(Person.count).to eq(5)
 
       expect(Interview.last.language.name).to eq("Deutsch")
+      expect(Interview.last.translation_language.name).to eq("Englisch")
+      expect(Interview.last.languages).to include('pl')
       expect(Interview.last.interview_date).to eq("05/03/20")
       expect(Interview.last.media_type).to eq("audio")
       expect(Interview.last.duration).to eq(9600)
