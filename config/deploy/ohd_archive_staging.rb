@@ -5,7 +5,8 @@ set :stage, :staging
 set :deploy_to, "/data/applications/#{fetch :application}"
 set :bundle_path, "/data/bundle/01"
 set :project_yml, "ohd_archive_staging.yml"
-set :branch, ENV.fetch('BRANCH', 'develop')
+#set :branch, ENV.fetch('BRANCH', 'develop')
+set :branch, "split-languages"
 
 #set :default_env, {
 #      'project_name' => fetch(:application)
