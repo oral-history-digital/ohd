@@ -118,7 +118,7 @@ namespace :database do
       if first_language
         other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
         other_languages.each do |other_language|
-          other_language.interviews.update_all(language_id: first_language.id)
+          other_language.interview_languages.update_all(language_id: first_language.id)
           other_language.destroy
         end
       end
