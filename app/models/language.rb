@@ -7,7 +7,8 @@ class Language < ApplicationRecord
   translates :name, :abbreviated, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
-  has_many :interviews
+  has_many :interview_languages, dependent: :destroy
+  has_many :interviews, through: :interview_languages
 
   after_update :touch_interviews
 
