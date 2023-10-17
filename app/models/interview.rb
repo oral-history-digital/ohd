@@ -427,6 +427,21 @@ class Interview < ApplicationRecord
     end
   end
 
+  def primary_language_id=(lid)
+    l = interview_languages.where(spec: ['primary']).first
+    l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: 'primary')
+  end
+
+  def secondary_language_id=(lid)
+    l = interview_languages.where(spec: ['secondary']).first
+    l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: 'secondary')
+  end
+
+  def primary_translation_language_id=(lid)
+    l = interview_languages.where(spec: ['primary_translation']).first
+    l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: 'primary_translation')
+  end
+
   def has_transcript?(locale)
     segment_count = segments
       .joins(:translations)
