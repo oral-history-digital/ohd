@@ -2,26 +2,31 @@
 # some tasks to join databases while maintaining references.
 #
 # procedure is as follows:
-# 1. on target db: rake database:get_max_id
+#
+# 1. make dumps of both databases
+#
+# 2. on target db: rake database:get_max_id
 #    (
 #      get the maximum id from the target db - the one the other should be merged into
 #    )
 #    result: max-id-value
 #
-# 2. on source db: rake database:prepare_join[max-id,db-username,db-name]
+# 3. on source db: rake database:prepare_join[max-id,db-username,db-name]
 #    (
 #      add max(max-id-value from target-db, max-id-value from source-db), to all id- and *_id-fields of the source-db
 #      dump source db without create table statements
 #    )
 #    result: prepared-source-db-name.sql
 #
-# 3. on target-db: run rake database:cleanup_active_storage
+# 4. on target-db: run rake database:cleanup_active_storage
 #
-# 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
+# 5. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
-# 5. on target-db: run rake database:unify_[users|languages|permissions|institutions|norm_data_providers][max-id]
+# 6. on target-db: run rake database:unify_[users|languages|permissions|institutions|norm_data_providers][max-id]
 #
-# 6. on target-db: run rake database:cleanup[max-id]
+# 7. on target-db: run rake database:cleanup[max-id]
+#
+# 8. reindex target-db: rake solr:reindex:all
 
 namespace :database do
   desc 'show development database'
@@ -48,7 +53,7 @@ namespace :database do
     Rails.application.eager_load!
     ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq{|a| a.table_name}.each do |model|
       puts "updating #{model}"
-      id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id', 'url_without_id'])
+      id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id', 'url_without_id', 'citation_media_id'])
       id_columns.each do |col|
         if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?(col)
           puts "updating #{col}"
