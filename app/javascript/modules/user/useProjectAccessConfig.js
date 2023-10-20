@@ -57,7 +57,7 @@ export default function useProjectAccessConfig(
             attribute: 'tos_agreement',
             labelKey: 'user.tos_agreement',
             type: 'checkbox',
-            validate: true && function(v){return v && v !== '0'},
+            validate: function(v){return v && v !== '0'},
             help: t('user.notes_on_tos_agreement_archive', {
                 project: project.name[locale],
                 tos_link: tos_link(),
