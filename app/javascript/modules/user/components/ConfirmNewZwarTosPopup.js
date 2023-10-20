@@ -40,6 +40,7 @@ export default function ConfirmNewZwarTosPopup ({
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
             showDialogInitially={true}
             hideButton={true}
+            hideCloseButton={true}
         >
             { close => (
                 <>
@@ -53,7 +54,6 @@ export default function ConfirmNewZwarTosPopup ({
                             dispatch(submitData({ locale, projectId, project }, params));
                             close();
                         }}
-                        onCancel={close}
                         data={currentProjectAccess}
                         submitText='modules.project_access.request_submit'
                         elements={[
