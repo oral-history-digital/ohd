@@ -80,10 +80,12 @@ export default function FormComponent({
     }
 
     function handleErrors(name, hasError) {
-        setErrors(prevErrors => ({
-            ...prevErrors,
-            [name]: hasError
-        }));
+        if (name !== 'undefined') {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [name]: hasError
+            }));
+        }
     }
 
     function handleChange(name, value, params, identifier) {
@@ -101,12 +103,14 @@ export default function FormComponent({
         let hasErrors = false;
 
         Object.keys(errors).forEach(name => {
-            const element = elements.find(element => element.attribute === name);
+            if (name !== 'undefined') {
+                const element = elements.find(element => element.attribute === name);
 
-            const isHidden = element?.hidden;
-            const isOptional = element?.optional;
+                const isHidden = element?.hidden;
+                const isOptional = element?.optional;
 
-            hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
+                hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
+            }
         })
 
         return !hasErrors;
