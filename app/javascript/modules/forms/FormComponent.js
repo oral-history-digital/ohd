@@ -74,7 +74,7 @@ export default function FormComponent({
                 let value = element.value || (data && data[element.attribute]);
                 error = !(value && element.validate(value));
             }
-            errors[element.attribute] = error;
+            if (element.attribute) errors[element.attribute] = error;
         })
         return errors;
     }
