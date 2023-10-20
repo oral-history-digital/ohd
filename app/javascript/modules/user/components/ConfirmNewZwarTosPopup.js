@@ -80,7 +80,7 @@ export default function ConfirmNewZwarTosPopup ({
                                 attribute: 'tos_agreement',
                                 label: t('user.tos_agreement') + ' (ZWAR)',
                                 type: 'checkbox',
-                                validate: true && function(v){return v && v !== '0'},
+                                validate: function(v){return v && v !== '0'},
                                 help: t('update.zwar.tos.tos_agreement_zwar', {
                                     project: project.name[locale],
                                     tos_link: <a
