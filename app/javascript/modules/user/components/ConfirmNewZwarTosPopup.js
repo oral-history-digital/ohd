@@ -60,10 +60,10 @@ export default function ConfirmNewZwarTosPopup ({
                             {
                                 elementType: 'input',
                                 attribute: 'tos_agreement_ohd',
-                                labelKey: 'user.tos_agreement',
+                                label: t('user.tos_agreement') + ' (OHD)',
                                 type: 'checkbox',
                                 validate: function(v){return v && v !== '0'},
-                                help: t('user.notes_on_tos_agreement_ohd', {
+                                help: t('update.zwar.tos.tos_agreement_ohd', {
                                     tos_link: <a
                                         className="Link"
                                         href={conditionsLink}
@@ -78,10 +78,10 @@ export default function ConfirmNewZwarTosPopup ({
                             {
                                 elementType: 'input',
                                 attribute: 'tos_agreement',
-                                labelKey: 'user.tos_agreement',
+                                label: t('user.tos_agreement') + ' (ZWAR)',
                                 type: 'checkbox',
                                 validate: true && function(v){return v && v !== '0'},
-                                help: t('user.notes_on_tos_agreement_archive', {
+                                help: t('update.zwar.tos.tos_agreement_zwar', {
                                     project: project.name[locale],
                                     tos_link: <a
                                         className="Link"
@@ -100,7 +100,7 @@ export default function ConfirmNewZwarTosPopup ({
                                 labelKey: 'user.priv_agreement',
                                 type: 'checkbox',
                                 validate: function(v){return v && v !== '0'},
-                                help: t('user.notes_on_priv_agreement', {
+                                help: t('update.zwar.tos.priv_agreement', {
                                     priv_link: <a
                                         className="Link"
                                         href={privacyLink}
