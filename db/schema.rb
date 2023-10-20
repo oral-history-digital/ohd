@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_09_121217) do
-  create_table "access_configs", charset: "utf8mb3", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2023_10_18_132202) do
+  create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
     t.text "job_description"
@@ -1010,8 +1010,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_121217) do
     t.string "default_locale"
     t.text "mail_text", size: :medium
     t.datetime "processed_at", precision: nil
+    t.boolean "anonymized", default: false
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end
 
   create_table "workflow_comments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
