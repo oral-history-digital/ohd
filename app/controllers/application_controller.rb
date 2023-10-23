@@ -119,8 +119,19 @@ class ApplicationController < ActionController::Base
         },
         projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
           Project.all.
-            includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
-            inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
+            includes(
+              :translations,
+              :registry_name_types,
+              :media_streams,
+              :institution_projects,
+              [
+                {metadata_fields: :translations},
+                {external_links: :translations},
+                {registry_reference_types: :translations},
+                {contribution_types: :translations},
+                {map_sections: :translations},
+              ]
+            ).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
           NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
