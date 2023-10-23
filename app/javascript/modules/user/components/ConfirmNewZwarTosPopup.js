@@ -55,7 +55,6 @@ export default function ConfirmNewZwarTosPopup ({
                             close();
                         }}
                         data={currentProjectAccess}
-                        submitText='modules.project_access.request_submit'
                         elements={[
                             {
                                 elementType: 'input',
