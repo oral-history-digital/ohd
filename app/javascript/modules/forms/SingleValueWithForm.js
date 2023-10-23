@@ -33,6 +33,7 @@ export default function SingleValueWithForm ({
     user,
     editView,
     translations,
+    languages,
     submitData,
 }) {
 
@@ -102,7 +103,7 @@ export default function SingleValueWithForm ({
                 (obj.properties?.public_attributes?.[attribute]?.toString() === 'true')
             )
         ) {
-            const contentValue = humanReadable(obj, attribute, {translations, locale, values, optionsScope}, {collapsed});
+            const contentValue = humanReadable(obj, attribute, {languages, translations, locale, values, optionsScope}, {collapsed});
             return (
                 <ContentField
                     noLabel={noLabel}
