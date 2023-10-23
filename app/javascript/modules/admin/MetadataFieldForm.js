@@ -18,7 +18,7 @@ import useCombinedRegistryReferenceTypes from './useCombinedRegistryReferenceTyp
 const NAME_VALUES = {
     Interview: [
         "media_type", "media_missing", "archive_id", "interview_date", "duration", "tape_count",
-        "primary_language_id", "secondary_language_id", "primary_translation_language_id",
+        "language_id", "primary_language_id", "secondary_language_id", "primary_translation_language_id",
         "observations", "workflow_state", "tasks_user_ids",
         "tasks_supervisor_ids", "description", "collection_id",
         "signature_original", "startpage_position", "project_id",

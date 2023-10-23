@@ -13,6 +13,9 @@ class InterviewBaseSerializer < ApplicationSerializer
     :interview_date,
     :languages,
     :language_id,
+    :primary_language_id,
+    :secondary_language_id,
+    :primary_translation_language_id,
     :lang,
     :anonymous_title,
     :media_missing,
@@ -100,5 +103,11 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def language_id
     object.language.id
+  end
+
+  %w(primary secondary primary_translation).each do |spec|
+    define_method "#{spec}_language_id" do
+      object.interview_languages.where(spec: spec).first.try(:language_id)
+    end
   end
 end
