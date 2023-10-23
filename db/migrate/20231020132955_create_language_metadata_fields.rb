@@ -56,9 +56,9 @@ class CreateLanguageMetadataFields < ActiveRecord::Migration[7.0]
     end
 
     {
-      primary_language: 'Erste Sprache',
-      secondary_language: 'Zweite Sprache',
-      primary_translation_language: 'Erste Übersetzungssprache',
+      primary_language_id: 'Erste Sprache',
+      secondary_language_id: 'Zweite Sprache',
+      primary_translation_language_id: 'Erste Übersetzungssprache',
     }.each do |key, value|
       TranslationValue.find_or_create_by(key: "metadata_labels.#{key}").update(value: value, locale: 'de')
     end
@@ -66,5 +66,6 @@ class CreateLanguageMetadataFields < ActiveRecord::Migration[7.0]
 
   def down
     MetadataField.where(name: %w(primary_language_id secondary_language_id primary_translation_language_id)).destroy_all
+    TranslationValue.where(key: %w(primary_language_id secondary_language_id primary_translation_language_id).map{|m| "metadata_labels.#{m}"}).destroy_all
   end
 end
