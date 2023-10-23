@@ -115,6 +115,11 @@ class Interview < ApplicationRecord
     integer :language_id, stored: true, multiple: true do
       interview_languages.where(spec: ['primary', 'secondary']).map{|il| il.language_id}
     end
+    %w(primary secondary primary_translation).each do |spec|
+      integer :"#{spec}_language_id", stored: true do
+        interview_languages.where(spec: spec).first.try(:language_id)
+      end
+    end
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id_fulltext, :stored => true do
