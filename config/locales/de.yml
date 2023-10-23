@@ -351,9 +351,9 @@ de:
     signature_original: Originalsignatur
     observations: Protokoll
     language_id: Sprache
-    first_language: Erste Sprache
-    second_language: Zweite Sprache
-    first_translation_language: Erste Übersetzungssprache
+    primary_language: Erste Sprache
+    secondary_language: Zweite Sprache
+    primary_translation_language: Erste Übersetzungssprache
     workflow_state: Status
     collection_id: Sammlung
     home_location: Wohnort
