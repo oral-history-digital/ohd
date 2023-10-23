@@ -199,7 +199,7 @@ class Segment < ApplicationRecord
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
-          person_id = segment.interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first['person_id']
+          person_id = segment.interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first&.person_id
           atts[:speaker_id] = person_id if person_id
           segment.update atts
         else
