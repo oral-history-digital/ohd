@@ -31,7 +31,9 @@ export default function Interview({
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
-    useTrackPageView();
+
+    const documentTitle = `${t('activerecord.models.interview.one')} ${interview.archive_id}`;
+    useTrackPageView(documentTitle);
 
     useEffect(() => {
         setArchiveId(archiveId);
@@ -68,7 +70,7 @@ export default function Interview({
         return (
             <div>
                 <Helmet>
-                    <title>{t('activerecord.models.interview.one')} {interview.archive_id}</title>
+                    <title>{documentTitle}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>

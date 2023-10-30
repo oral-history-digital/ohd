@@ -13,7 +13,8 @@ export default function AnalyticsProvider({
 
     const instance = useMemo(() => createInstance({
         urlBase: ANALYTICS_URL_BASE,
-        siteId,
+        siteId: siteId || 1, // If siteId does not exist, nothing is tracked.
+                             // But we need to provide an id anyway.
         disabled: !shouldTrack(),
     }), [siteId]);
 

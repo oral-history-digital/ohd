@@ -4,14 +4,16 @@ import { useSelector } from 'react-redux';
 
 import { getCurrentUser } from 'modules/data';
 
-export default function useTrackPageView() {
+export default function useTrackPageView(title) {
     const currentUser = useSelector(getCurrentUser);
     const { trackPageView } = useMatomo();
+
+    let options = title ? { documentTitle: title } : {};
 
     useEffect(() => {
         if (shouldTrack()) {
             console.log('Tracking page view')
-            trackPageView();
+            trackPageView(options);
         }
     }, []);
 
