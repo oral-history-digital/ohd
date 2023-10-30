@@ -33,7 +33,7 @@ export default function Interview({
     const status = statuses[archiveId];
 
     const documentTitle = `${t('activerecord.models.interview.one')} ${interview.archive_id}`;
-    useTrackPageView(documentTitle);
+    useTrackPageView();
 
     useEffect(() => {
         setArchiveId(archiveId);
