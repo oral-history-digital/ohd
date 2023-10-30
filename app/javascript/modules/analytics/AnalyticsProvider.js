@@ -10,23 +10,22 @@ export default function AnalyticsProvider({
     children,
 }) {
     const siteId = project.analytics_site_id;
-    const instance = useMemo(() => Number.isInteger(siteId)
-        ? createInstance({
-            urlBase: ANALYTICS_URL_BASE,
-            siteId,
-        })
-        : null
-    , [siteId]);
 
-    if (instance) {
-        return (
-            <MatomoProvider value={instance}>
-                {children}
-            </MatomoProvider>
-        );
-    } else {
-        return children;
+    const instance = useMemo(() => createInstance({
+        urlBase: ANALYTICS_URL_BASE,
+        siteId,
+        disabled: !shouldTrack(),
+    }), [siteId]);
+
+    function shouldTrack() {
+        return Number.isInteger(siteId);
     }
+
+    return (
+        <MatomoProvider value={instance}>
+            {children}
+        </MatomoProvider>
+    );
 }
 
 AnalyticsProvider.propTypes = {

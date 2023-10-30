@@ -1,21 +1,22 @@
-import { useEffect } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react'
 import { useSelector } from 'react-redux';
 
 import { getCurrentUser } from 'modules/data';
 
-export default function useTrackPageView() {
+export default function useTrackSiteSearch() {
     const currentUser = useSelector(getCurrentUser);
-    const { trackPageView } = useMatomo();
+    const { trackSiteSearch } = useMatomo();
 
-    useEffect(() => {
+    function searchFunction(searchTerm) {
         if (shouldTrack()) {
-            console.log('Tracking page view')
-            trackPageView();
+            console.log(`Tracking site search: ${searchTerm}`);
+            trackSiteSearch({ keyword: searchTerm })
         }
-    }, []);
+    }
 
     function shouldTrack() {
         return currentUser && !currentUser.do_not_track;
     }
+
+    return searchFunction;
 }
