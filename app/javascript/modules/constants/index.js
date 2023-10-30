@@ -45,5 +45,5 @@ const ANALYTICS_URLS = {
     staging: 'http://da02.cedis.fu-berlin.de:8081/',
     production: 'http://da02.cedis.fu-berlin.de:8081/',
 };
-
 export const ANALYTICS_URL_BASE = ANALYTICS_URLS[railsMode];
+export const ANALYTICS_DEFAULT_SITE_ID = 1;
