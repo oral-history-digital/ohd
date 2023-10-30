@@ -11,12 +11,16 @@ export default function AnalyticsProvider({
 }) {
     const siteId = project.analytics_site_id;
 
-    const instance = useMemo(() => createInstance({
-        urlBase: ANALYTICS_URL_BASE,
-        siteId: siteId || 1, // If siteId does not exist, nothing is tracked.
-                             // But we need to provide an id anyway.
-        disabled: !shouldTrack(),
-    }), [siteId]);
+    const instance = useMemo(() => {
+        const result = createInstance({
+            urlBase: ANALYTICS_URL_BASE,
+            siteId: siteId || 1, // If siteId does not exist, nothing is tracked.
+                                // But we need to provide an id anyway.
+            disabled: !shouldTrack(),
+        });
+        console.log('Instance created', result);
+        return result;
+    }, [siteId]);
 
     function shouldTrack() {
         return Number.isInteger(siteId);
