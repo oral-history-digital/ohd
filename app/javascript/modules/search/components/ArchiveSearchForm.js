@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { FaUndo } from 'react-icons/fa';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
@@ -17,6 +18,7 @@ export default function ArchiveSearchForm({
 }) {
     const { t } = useI18n();
     const formEl = useRef(null);
+    const { trackSiteSearch } = useMatomo();
 
     const { fulltext, setFulltextAndSort, resetSearchParams } = useSearchParams();
 
@@ -41,6 +43,8 @@ export default function ArchiveSearchForm({
 
         if (searchTerm?.length > 0)  {
             setFulltextAndSort(searchTerm, 'score', 'desc');
+
+            trackSiteSearch({ keyword: searchTerm })
         } else {
             setFulltextInput('');
 
