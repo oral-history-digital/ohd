@@ -55,6 +55,7 @@
     "query-string": "^7.1.1",
     "rc-slider": "^9.7.5",
     "react": "^17.0.2",
+    "react_ujs": "^2.5.0",
     "react-colorful": "^5.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.2",
@@ -72,7 +73,6 @@
     "react-slick": "^0.28.0",
     "react-string-replace": "^1.1.0",
     "react-virtuoso": "^1.10.6",
-    "react_ujs": "^2.5.0",
     "reactjs-popup": "^2.0.4",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
@@ -84,7 +84,8 @@
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1",
     "swr": "^2.0.0",
-    "video.js": "^7.18.1"
+    "video.js": "^7.18.1",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.12.1",
