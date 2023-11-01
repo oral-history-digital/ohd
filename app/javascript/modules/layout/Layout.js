@@ -136,5 +136,4 @@ Layout.propTypes = {
     ]),
     toggleSidebar: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
-    setLocale: PropTypes.func.isRequired,
 };
