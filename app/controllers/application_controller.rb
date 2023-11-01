@@ -18,6 +18,12 @@ class ApplicationController < ActionController::Base
 
   after_action :verify_authorized, except: :index, unless: -> { params[:controller] == "devise/registrations" }
   after_action :verify_policy_scoped, only: :index
+  after_action if: -> {Rails.env.development?} do
+    logger = ActiveRecord::Base.logger
+    
+    Rails.logger.info "ActiveRecord: #{logger.query_count} queries performed"
+    logger.reset_query_count
+  end
 
   def pundit_user
     ProjectContext.new(current_user, current_project)
@@ -291,5 +297,4 @@ class ApplicationController < ActionController::Base
       contribution.update(speaker_designation: attributes[:speaker_designation])
     end
   end
-
 end
