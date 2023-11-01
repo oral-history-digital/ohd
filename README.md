@@ -93,16 +93,13 @@ bin/rake sunspot:reindex
 
 ## Tests
 
-Backend tests can be run with:
+See above for basic dependencies, then ensure prepare the environment for 
+testing:
 
-```bash
-bin/rspec
-```
+* `npm install --legacy-peer-deps`
+* run the solr instance (`RAILS_ENV=test bundle exec sunspot:solr:run`)
+* run the wepack dev server (`bin/wepack-dev-server`)
 
-Frontend tests can be run with:
+With that out of the way, run all tests:
 
-```bash
-npm test
-```
-
-We are currently working on providing basic end-to-end-tests.
+    bundle exec rails test -v test/system
