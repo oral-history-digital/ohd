@@ -112,14 +112,6 @@ class Interview < ApplicationRecord
 
   searchable do
     integer :project_id, :stored => true, :references => Project
-    integer :language_id, stored: true, multiple: true do
-      interview_languages.where(spec: ['primary', 'secondary']).map{|il| il.language_id}
-    end
-    %w(primary secondary primary_translation).each do |spec|
-      integer :"#{spec}_language_id", stored: true do
-        interview_languages.where(spec: spec).first.try(:language_id)
-      end
-    end
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id_fulltext, :stored => true do
@@ -414,14 +406,6 @@ class Interview < ApplicationRecord
     interview_languages.where(spec: ['primary']).first&.language
   end
 
-  def secondary_language
-    interview_languages.where(spec: ['secondary']).first&.language
-  end
-
-  def translation_language
-    interview_languages.where(spec: ['primary_translation']).first&.language
-  end
-
   def lang
     ISO_639.find(language&.code).try(:alpha2) || language&.code
   end
@@ -432,19 +416,23 @@ class Interview < ApplicationRecord
     end
   end
 
-  def primary_language_id=(lid)
-    l = interview_languages.where(spec: ['primary']).first
-    l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: 'primary')
+  def language_id
+    [primary_language_id, secondary_language_id].compact
   end
 
-  def secondary_language_id=(lid)
-    l = interview_languages.where(spec: ['secondary']).first
-    l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: 'secondary')
-  end
+  %w(primary secondary primary_translation).each do |spec|
+    define_method "#{spec}_language" do
+      interview_languages.where(spec: spec).first.try(:language)
+    end
 
-  def primary_translation_language_id=(lid)
-    l = interview_languages.where(spec: ['primary_translation']).first
-    l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: 'primary_translation')
+    define_method "#{spec}_language_id" do
+      interview_languages.where(spec: spec).first.try(:language_id)
+    end
+
+    define_method "#{spec}_language_id=" do |lid|
+      l = interview_languages.where(spec: spec).first
+      l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
+    end
   end
 
   def has_transcript?(locale)
