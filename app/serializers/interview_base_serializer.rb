@@ -105,9 +105,4 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.language.id
   end
 
-  %w(primary secondary primary_translation).each do |spec|
-    define_method "#{spec}_language_id" do
-      object.interview_languages.where(spec: spec).first.try(:language_id)
-    end
-  end
 end
