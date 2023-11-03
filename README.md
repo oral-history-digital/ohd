@@ -77,6 +77,15 @@ http://portal.oral-history.localhost:3000
 respectively.
 
 
+## Routing/ Domains
+
+To set an own domain on a specific project you can update it as follows in the rails console:
+
+```ruby
+Project.where(shortname: 'yourprojectsshortname').update(archive_domain: 'http://specific-project.localhost:3000')
+```
+
+
 ## Caching and Reindexing
 
 To activate caching in development (which is recommended at the moment), run:
