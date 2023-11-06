@@ -61,8 +61,8 @@ export default function UserEdit ({
     const detailRepresentation = (value, detail, index) => {
         return (
             <p className="detail"
-               key={index}
-              >
+               key={`${detail}-${data.id}-${index}`}
+            >
                 <span className='name'>{t(`activerecord.attributes.user.${detail}`) + ': '}</span>
                 <span className='content'>{detailValue(value, detail)}</span>
             </p>
@@ -73,9 +73,8 @@ export default function UserEdit ({
         <div className='details'>
             <h3>{t('user.registration')}</h3>
             { details.map((detail, index) => {
-                    return (detailRepresentation(data[detail] || userProject?.[detail], detail, index));
-                })
-            }
+                return (detailRepresentation(data[detail] || userProject?.[detail], detail, index));
+            })}
 
             { !project.is_ohd && <h3>{t('modules.project_access.one')}</h3> }
             { !project.is_ohd && projectDetails.map((detail, index) => {
