@@ -86,7 +86,7 @@ export default function CorrectUserDataForm({
             },
         ];
 
-        const projectAccessElements = useProjectAccessConfig(project, currentUser);
+        const projectAccessElements = useProjectAccessConfig(project, userProject, currentUser);
 
         return nameElements.concat(addressElements).concat(countrySelect).concat(projectAccessElements);
     }
