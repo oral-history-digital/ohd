@@ -196,8 +196,6 @@ class UsersController < ApplicationController
       :gender,
       :mail_text,
       :job_description,
-      :research_intentions,
-      :specification,
       :organization,
       :homepage,
       :street,

@@ -26,7 +26,7 @@ export default function RequestProjectAccessForm({
         values.workflow_state = 'request_project_access';
     }
 
-    const formElements = useProjectAccessConfig(project, currentUser);
+    const formElements = useProjectAccessConfig(project, currentUserProject, currentUser);
 
     if (project.has_newsletter) {
         formElements.push({

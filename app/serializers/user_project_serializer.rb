@@ -31,25 +31,6 @@ class UserProjectSerializer < ApplicationSerializer
     object.activated_at && object.activated_at.strftime("%d.%m.%Y")
   end
 
-  [
-    :appellation,
-    :first_name,
-    :last_name,
-    :street,
-    :zipcode,
-    :city,
-    :country,
-    :job_description,
-    :research_intentions,
-    :specification,
-    :organization,
-    :pre_register_location,
-  ].each do |attr|
-    define_method(attr) do
-      object.user.send(attr)
-    end
-  end
-
   def default_locale
     object.user.default_locale
   end
