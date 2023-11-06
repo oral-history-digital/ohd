@@ -8,7 +8,6 @@ class UserSerializer < ApplicationSerializer
     :created_at,
     :confirmed_at,
     :user_id,
-    :processed_at,
     :default_locale,
     :priv_agreement,
     :appellation,
