@@ -177,5 +177,8 @@ namespace :database do
   task :cleanup, [:max_id] => :environment do |t, args|
     raise 'Please provide max_id-parameter' unless args.max_id
     TranslationValue.where("id > ?", args.max_id).destroy_all
+    UserProject.where("id > ?", args.max_id).where(processed_at: nil).each do |user_project|
+      user_project.update(processed_at: user_project.user && user_project.user.created_at)
+    end
   end
 end
