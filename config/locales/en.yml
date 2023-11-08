@@ -1107,6 +1107,7 @@ en:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
+        hidden_text: This sequence will not be published at the request of the interviewee or for legal reasons.
       user_content:
         title: Titel
         description: Notiz

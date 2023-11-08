@@ -1094,6 +1094,7 @@ es:
         subheading: Encabezado secundario
         text: Texto
         speaker_id: Hablante
+        hidden_text: Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht.
       user_content:
         title: Título
         description: Anotación
