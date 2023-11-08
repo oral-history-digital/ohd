@@ -1113,6 +1113,7 @@ el:
         subheading: Υποκεφάλαιο
         text: Κείμενο
         speaker_id: Ομιλιτής
+        hidden_text: Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht.
       user_content:
         title: Τίτλος
         description: Σημείωση
