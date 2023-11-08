@@ -1148,6 +1148,7 @@ de:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher*in
+        hidden_text: Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht.
       user_content:
         title: Titel
         description: Notiz
