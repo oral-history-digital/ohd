@@ -14,7 +14,7 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test "visiting the project 'home' page" do
-    binding.pry
+    #binding.pry
     visit '/'
     assert_text 'This is the test archive of the oral history digital project'
   end
