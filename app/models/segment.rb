@@ -89,7 +89,7 @@ class Segment < ApplicationRecord
       when :subtitle
         text_original.
           # colonia
-          gsub(/<res\s+(.*?)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht").              # e.g. <res bla bla>
+          gsub(/<res\s+(.*?)>/, "Diese Passage wird nicht veröffentlicht.").              # e.g. <res bla bla>
           gsub(/<an\s+(.*?)>/, "XXX").                                                                                                            # e.g. <an bla bla>
           gsub(/\s*<n\(([^>]*?)\)>/, "").                                                                                                         # <n(1977)>
           gsub(/<i\((.*?)\)>/, "").                                                                                                               # <i(Batteriewechsel)>
