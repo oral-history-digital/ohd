@@ -52,6 +52,7 @@ module.exports = function(api) {
       '@babel/plugin-syntax-dynamic-import',
       isTestEnv && 'babel-plugin-dynamic-import-node',
       '@babel/plugin-transform-destructuring',
+      '@babel/plugin-transform-nullish-coalescing-operator',
       [
         '@babel/plugin-proposal-class-properties',
         {
