@@ -97,7 +97,7 @@ See above for basic dependencies, then ensure prepare the environment for
 testing:
 
 * `npm install --legacy-peer-deps`
-* run the solr instance (`RAILS_ENV=test bundle exec sunspot:solr:run`)
+* run the solr instance (`RAILS_ENV=test bundle exec rake sunspot:solr:run`)
 * run the wepack dev server (`bin/wepack-dev-server`)
 
 With that out of the way, run all tests:
