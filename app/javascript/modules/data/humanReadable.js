@@ -35,6 +35,10 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
         value = t(props, value);
     }
 
+    if (/\w+_language_id/.test(attribute)) {
+        return props.languages && props.languages[value]?.name[props.locale];
+    }
+
     if (/\w+_id/.test(attribute) && attribute !== 'archive_id') { // get corresponding name from e.g. collection_id
         if (props.values) {
             value = props.values[value]?.name

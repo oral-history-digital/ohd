@@ -18,6 +18,8 @@ const mapStateToProps = (state) => {
         outerScope: 'project',
         outerScopeId: project.id,
         scope: 'collection',
+        sortAttribute: 'name',
+        sortAttributeTranslated: true,
         baseTabIndex: 4 + project.has_map,
         detailsAttributes: ['name', 'homepage', 'responsibles', 'notes'],
         initialFormValues: { project_id: project.id },

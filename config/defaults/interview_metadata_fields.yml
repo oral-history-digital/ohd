@@ -26,8 +26,32 @@
 :language_id:
   use_as_facet: true
   facet_order: 3.0
+  use_in_results_table: false
+  use_in_results_list: false
+  list_columns_order: 2.0
+  use_in_details_view: false
+  display_on_landing_page: false
+:primary_language_id:
+  use_as_facet: false
+  facet_order: 3.0
   use_in_results_table: true
   use_in_results_list: true
+  list_columns_order: 2.0
+  use_in_details_view: true
+  display_on_landing_page: true
+:secondary_language_id:
+  use_as_facet: false
+  facet_order: 3.0
+  use_in_results_table: false
+  use_in_results_list: false
+  list_columns_order: 2.0
+  use_in_details_view: true
+  display_on_landing_page: true
+:primary_translation_language_id:
+  use_as_facet: false
+  facet_order: 3.0
+  use_in_results_table: false
+  use_in_results_list: false
   list_columns_order: 2.0
   use_in_details_view: true
   display_on_landing_page: true

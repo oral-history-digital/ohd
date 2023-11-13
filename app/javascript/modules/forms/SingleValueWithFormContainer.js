@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getEditView, getTranslations } from 'modules/archive';
-import { submitData, getCurrentProject, getCurrentUser } from 'modules/data';
+import { submitData, getCurrentProject, getCurrentUser,
+    getLanguages } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
 import SingleValueWithForm from './SingleValueWithForm';
 
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => {
         editView: getEditView(state),
         isLoggedIn: getIsLoggedIn(state),
         translations: getTranslations(state),
+        languages: getLanguages(state),
     }
 }
 

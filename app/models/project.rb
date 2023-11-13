@@ -334,7 +334,22 @@ class Project < ApplicationRecord
             }
           end
           result
-        when /_id$/ # belongs_to associations like language on interview
+        when 'language_id', 'primary_language_id', 'secondary_language_id', 'primary_translation_language_id'
+          facet_label_hash = facet.localized_hash(:label)
+          cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: Language.all.includes(:translations).inject({}) do |subfacets, sf|
+                subfacets[sf.id.to_s] = {
+                  name: sf.localized_hash(:name),
+                  count: 0
+                }
+                subfacets
+              end
+            }
+          end
+        when /_id$/ # belongs_to associations
           facet_label_hash = facet.localized_hash(:label)
           associatedModel = facet.name.sub('_id', '').classify.constantize
           cache_key_date = [associatedModel.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")

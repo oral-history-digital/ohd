@@ -6,6 +6,7 @@ describe MetadataImport do
     Person.destroy_all
     Interview.destroy_all
     @language = FactoryBot.create(:language) #unless Language.where(name: 'Deutsch').first
+    FactoryBot.create(:language, code: "pol", name: "Polnisch")
 
     @project = project_with_contribution_types_and_metadata_fields
 
@@ -83,6 +84,8 @@ describe MetadataImport do
       expect(Person.count).to eq(5)
 
       expect(Interview.last.language.name).to eq("Deutsch")
+      expect(Interview.last.translation_language.name).to eq("English")
+      expect(Interview.last.languages).to include('pl')
       expect(Interview.last.interview_date).to eq("05/03/20")
       expect(Interview.last.media_type).to eq("audio")
       expect(Interview.last.duration).to eq(9600)
