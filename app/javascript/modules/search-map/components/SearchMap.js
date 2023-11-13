@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
 
+import { useTrackPageView } from 'modules/analytics';
 import { useIsEditor } from 'modules/archive';
 import { getMapSections } from 'modules/data';
 import { HelpText } from 'modules/help-text';
@@ -32,6 +33,7 @@ export default function SearchMap() {
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
     const { isLoading: locationsLoading } = useMapLocations();
+    useTrackPageView();
 
     const defaultSection = mapSections.find(section => section.name === currentSection);
     const bounds = [

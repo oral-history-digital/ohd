@@ -39,3 +39,11 @@ export const OHD_DOMAINS = {
     staging:     'https://staging.oral-history.digital',
     production:  'https://portal.oral-history.digital',
 };
+
+const ANALYTICS_URLS = {
+    development: '//localhost:8080/',
+    staging: 'http://da02.cedis.fu-berlin.de:8081/',
+    production: 'http://da02.cedis.fu-berlin.de:8081/',
+};
+export const ANALYTICS_URL_BASE = ANALYTICS_URLS[railsMode];
+export const ANALYTICS_DEFAULT_SITE_ID = 1;
