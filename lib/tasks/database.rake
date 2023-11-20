@@ -52,17 +52,15 @@ namespace :database do
   task :add_to_all_id_fields, [:max_id] => :environment do |t, args|
     Rails.application.eager_load!
     ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq{|a| a.table_name}.each do |model|
-      puts "updating #{model}"
-      id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id', 'url_without_id', 'citation_media_id'])
-      id_columns.each do |col|
-        if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?(col)
-          puts "updating #{col}"
-          sql = "UPDATE #{model.table_name} SET #{col} = #{col} + #{args.max_id.to_i}"
-          puts sql
-          ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=0")
-          ActiveRecord::Base.connection.execute(sql)
-          ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=1")
-        end
+      if ActiveRecord::Base.connection.table_exists?(model.table_name)
+        puts "updating #{model}"
+        id_columns = ['id'] | (model.column_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id', 'url_without_id', 'citation_media_id'])
+        update_statement = id_columns.map{|c| "#{c} = #{c} + #{args[:max_id]}"}.join(', ')
+        sql = "UPDATE #{model.table_name} SET #{update_statement}"
+        puts sql
+        ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=0")
+        ActiveRecord::Base.connection.execute(sql)
+        ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=1")
       end
       puts "---"
     rescue StandardError => e
