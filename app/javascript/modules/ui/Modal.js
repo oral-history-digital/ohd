@@ -15,6 +15,7 @@ export default function Modal({
     children,
     showDialogInitially = false,
     hideButton = false,
+    hideCloseButton = false,
 }) {
     const [showDialog, setShowDialog] = useState(showDialogInitially);
     const open = () => setShowDialog(true);
@@ -33,7 +34,7 @@ export default function Modal({
 
     const dismiss = (event) => {
         // Close if escape key was pressed, not if user clicked outside.
-        if (event.type === 'keydown') {
+        if (!hideCloseButton && event.type === 'keydown') {
             close();
         }
     };
@@ -76,13 +77,13 @@ export default function Modal({
                         children
                 }
 
-                <button
+                { !hideCloseButton && <button
                     type="button"
                     className="Modal-close"
                     onClick={close}
                 >
                     <FaTimes className="Modal-icon" />
-                </button>
+                </button> }
             </Dialog>
         </>
     );

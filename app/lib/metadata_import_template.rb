@@ -25,7 +25,9 @@ class MetadataImportTemplate
     [
       :archive_id,
       :signature_original,
-      :language_id,
+      :first_language,
+      :second_language,
+      :first_translation_language,
       :collection_id,
       :interview_date,
       :media_type,
