@@ -412,7 +412,7 @@ class Interview < ApplicationRecord
 
   def languages
     interview_languages.map do |il|
-      ISO_639.find(il.language.code).try(:alpha2) || il.language.code
+      ISO_639.find(il.language&.code).try(:alpha2) || il.language&.code
     end
   end
 
