@@ -444,7 +444,11 @@ class Interview < ApplicationRecord
 
     define_method "#{spec}_language_id=" do |lid|
       l = interview_languages.where(spec: spec).first
-      l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
+      if lid.blank?
+        l.destroy if l
+      else
+        l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
+      end
     end
   end
 
