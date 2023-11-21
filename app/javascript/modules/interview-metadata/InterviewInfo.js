@@ -89,7 +89,7 @@ export default function InterviewInfo({
                     obj={interview}
                     values={languages}
                     withEmpty={true}
-                    validate={function(v){return /^\d+$/.test(v)}}
+                    //validate={function(v){return /^\d+$/.test(v)}}
                     attribute={attribute}
                     projectAccessGranted={projectAccessGranted}
                 />
