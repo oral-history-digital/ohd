@@ -23,6 +23,7 @@ export default function ConfirmNewZwarTosPopup ({
 
     if (project?.shortname !== 'za') return null;
     if (!currentProjectAccess) return null;
+    if (location.pathname.match(/\/conditions$/)) return null;
 
     const newProjectAccess = new Date(currentProjectAccess.created_at).getTime() > new Date('2023-10-19T00:00:00Z').getTime();
     if (newProjectAccess) return null;
