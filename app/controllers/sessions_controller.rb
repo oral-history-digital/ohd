@@ -1,5 +1,6 @@
 class SessionsController < Devise::SessionsController
 
+  skip_before_action :require_no_authentication
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
@@ -16,8 +17,11 @@ class SessionsController < Devise::SessionsController
   end
 
   def new
-    redirect_to url_with_access_token if current_user
-    super
+    if current_user
+      redirect_to url_with_access_token
+    else
+      super
+    end
   end
 
   def create
