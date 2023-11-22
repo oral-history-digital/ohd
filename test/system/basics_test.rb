@@ -120,8 +120,29 @@ class BasicsTest < ApplicationSystemTestCase
     assert_no_text 'Please apply for activation'
   end
 
+  test 'create interview' do
+    visit '/'
+    login_as 'alice@example.com'
+
+    click_on 'Editing interface'
+    click_on 'Curation'
+    click_on 'Neues Interview anlegen'
+    select 'Dupont, Jean'
+    select 'Interviewee'
+    fill_in 'Interview ID', with: 'test123'
+    select 'Audio'
+    select 'English', from: 'primary_language_id'
+    select 'English', from: 'secondary_language_id'
+    select 'English', from: 'primary_translation_language_id'
+    fill_in 'Number of tapes', with: 1
+    within '#interview' do
+      click_on 'Neues Interview anlegen'
+    end
+    assert_text 'Das Interview wurde angelegt'
+  end
+
   test 'domain login' do
-    project = test_project(
+    project = DataHelper.test_project(
       shortname: 'myproject',
       archive_domain: 'http://myproject.localhost:47001',
       name: 'My Project',
@@ -129,44 +150,11 @@ class BasicsTest < ApplicationSystemTestCase
       more_text: 'more text, more text',
       landing_page_text: "This my project's is the landing page. Register please."
     )
-    test_registry(project)
+    DataHelper.test_registry(project)
+    DataHelper.test_contribution_type(project)
 
-  #   create_table "interviews", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-  #   t.string "archive_id", limit: 255
-  #   t.integer "collection_id"
-  #   t.integer "duration"
-  #   t.boolean "translated"
-  #   t.datetime "created_at", precision: nil
-  #   t.datetime "updated_at", precision: nil
-  #   t.boolean "segmented", default: false
-  #   t.boolean "researched", default: false
-  #   t.boolean "proofread", default: false
-  #   t.string "interview_date", limit: 255
-  #   t.string "still_image_file_name", limit: 255
-  #   t.string "still_image_content_type", limit: 255
-  #   t.integer "still_image_file_size"
-  #   t.datetime "still_image_updated_at", precision: nil
-  #   t.boolean "inferior_quality", default: false
-  #   t.text "original_citation", size: :long
-  #   t.text "translated_citation", size: :long
-  #   t.string "citation_media_id", limit: 255
-  #   t.string "citation_timecode", limit: 18
-  #   t.datetime "indexed_at", precision: nil
-  #   t.integer "language_id"
-  #   t.string "workflow_state", limit: 255, default: "unshared"
-  #   t.string "doi_status", limit: 255
-  #   t.text "properties", size: :medium
-  #   t.string "media_type"
-  #   t.integer "project_id"
-  #   t.string "signature_original"
-  #   t.integer "registry_references_count", default: 0
-  #   t.string "original_content_type"
-  #   t.integer "startpage_position"
-  #   t.integer "translation_language_id"
-  #   t.boolean "media_missing", default: false, null: false
-  #   t.boolean "transcript_coupled", default: true
-  #   t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
-  # end
+    user = User.find_by(email: 'john@example.com')
+    DataHelper.grant_access(project, user)
 
     interview = Interview.create!(
       project_id: project.id,
@@ -177,6 +165,14 @@ class BasicsTest < ApplicationSystemTestCase
     visit 'http://myproject.localhost:47001'
     assert_text 'My Project'
 
-    binding.pry
+    # log in without returning to page root
+    within '.flyout-login-container' do
+      click_on 'Login'
+    end
+    fill_in 'Email', with: 'john@example.com'
+    fill_in 'Password', with: 'password'
+    click_on 'Login'
+
+    assert_text 'My Project'
   end
 end
