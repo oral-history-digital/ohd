@@ -21,10 +21,6 @@ const mapStateToProps = state => ({
             help: 'activerecord.attributes.project.domain_help'
         },
         {
-            attribute: "archive_domain",
-            help: 'activerecord.attributes.project.archive_domain_help'
-        },
-        {
             elementType: 'input',
             attribute: 'contact_email',
             type: 'email',

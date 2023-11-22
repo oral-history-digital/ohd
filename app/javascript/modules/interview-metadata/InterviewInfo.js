@@ -83,15 +83,17 @@ export default function InterviewInfo({
                 attribute={'transcript_coupled'}
                 projectAccessGranted={projectAccessGranted}
             />
-            <SingleValueWithFormContainer
-                elementType={'select'}
-                obj={interview}
-                values={languages}
-                withEmpty={true}
-                validate={function(v){return /^\d+$/.test(v)}}
-                attribute={'language_id'}
-                projectAccessGranted={projectAccessGranted}
-            />
+            { ['primary_language_id', 'secondary_language_id', 'primary_translation_language_id'].map((attribute) => (
+                <SingleValueWithFormContainer
+                    elementType={'select'}
+                    obj={interview}
+                    values={languages}
+                    withEmpty={true}
+                    //validate={function(v){return /^\d+$/.test(v)}}
+                    attribute={attribute}
+                    projectAccessGranted={projectAccessGranted}
+                />
+            ))}
 
             <InterviewCollectionInfo interview={interview} />
 

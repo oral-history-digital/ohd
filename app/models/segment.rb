@@ -76,20 +76,21 @@ class Segment < ApplicationRecord
 
   def write_other_versions(text, locale)
     [:public, :subtitle].each do |version|
-      update(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
+      update(text: enciphered_text(version, text, locale), locale: "#{locale}-#{version}")
     end
   end
 
-  def enciphered_text(version, text_original='')
+  def enciphered_text(version, text_original='', locale)
     text_original ||= ''
     text_original = text_original.gsub('{{', '{[').gsub('}}', ']}') # replace wrong {{ with {[
+    hidden_text = locale.to_sym == :en ? I18n.t("activerecord.attributes.segment.hidden_text", locale: :en) : I18n.t("activerecord.attributes.segment.hidden_text", locale: :de)
     # TODO: replace with utf8 À
     text_enciphered =
       case version
       when :subtitle
         text_original.
           # colonia
-          gsub(/<res\s+(.*?)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht").              # e.g. <res bla bla>
+          gsub(/<res\s+(.*?)>/, hidden_text).                                                                                                     # e.g. <res bla bla>
           gsub(/<an\s+(.*?)>/, "XXX").                                                                                                            # e.g. <an bla bla>
           gsub(/\s*<n\(([^>]*?)\)>/, "").                                                                                                         # <n(1977)>
           gsub(/<i\((.*?)\)>/, "").                                                                                                               # <i(Batteriewechsel)>
@@ -122,7 +123,7 @@ class Segment < ApplicationRecord
       when :public
         text_original.
           # colonia
-          gsub(/<res\s+(.*?)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht"). # e.g. <res bla bla>
+          gsub(/<res\s+(.*?)>/, hidden_text).                                                                                                     # e.g. <res bla bla>
           gsub(/<an\s+(.*?)>/, "XXX").                                                                                                            # e.g. <an bla bla>
           gsub(/<n\(([^>]*?)\)>/, '(\1)').                                                                                                        # <n(1977)>
           gsub(/<i\((.*?)\)>/, "<c(Pause)>").                                                                                                     # <i(Batteriewechsel)>
@@ -327,7 +328,7 @@ class Segment < ApplicationRecord
   end
 
   def orig_locale
-    interview.language && ISO_639.find(interview.language.first_code).alpha2
+    interview.language && ISO_639.find(interview.language.code).alpha2
   end
 
   def media_id=(id)

@@ -37,3 +37,4 @@ solr/pids
 /config/master.key
 
 /test/translations.sql
+/.tool-versions

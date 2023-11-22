@@ -351,6 +351,9 @@ de:
     signature_original: Originalsignatur
     observations: Protokoll
     language_id: Sprache
+    primary_language_id: Erste Sprache
+    secondary_language_id: Zweite Sprache
+    primary_translation_language_id: Erste Übersetzungssprache
     workflow_state: Status
     collection_id: Sammlung
     home_location: Wohnort
@@ -1145,6 +1148,7 @@ de:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher*in
+        hidden_text: Diese Passage wird nicht veröffentlicht.
       user_content:
         title: Titel
         description: Notiz

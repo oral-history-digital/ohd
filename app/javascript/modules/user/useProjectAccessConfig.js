@@ -2,6 +2,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function useProjectAccessConfig(
     project,
+    currentUserProject,
     currentUser,
 ) {
     const { t, locale } = useI18n();
@@ -39,7 +40,7 @@ export default function useProjectAccessConfig(
             attribute: 'research_intentions',
             label: t('activerecord.attributes.user.research_intentions'),
             optionsScope: 'user_project.research_intentions',
-            value: currentUser.research_intentions,
+            value: currentUserProject?.research_intentions,
             values: Object.entries(project.access_config.research_intentions.values).map(([key, value]) => String(value).toLowerCase() === 'true' && key),
             keepOrder: true,
             withEmpty: true,
@@ -49,7 +50,7 @@ export default function useProjectAccessConfig(
             elementType: 'textarea',
             attribute: 'specification',
             label: t('activerecord.attributes.user.specification'),
-            value: currentUser.specification,
+            value: currentUserProject?.specification,
             validate: String(project.access_config.specification.obligatory).toLowerCase() === 'true' && function(v){return v?.length > 10},
         },
         tos_agreement: {
@@ -57,7 +58,7 @@ export default function useProjectAccessConfig(
             attribute: 'tos_agreement',
             labelKey: 'user.tos_agreement',
             type: 'checkbox',
-            validate: true && function(v){return v && v !== '0'},
+            validate: function(v){return v && v !== '0'},
             help: t('user.notes_on_tos_agreement_archive', {
                 project: project.name[locale],
                 tos_link: tos_link(),

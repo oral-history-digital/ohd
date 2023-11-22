@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import request from 'superagent';
 import { useLocation } from 'react-router-dom';
 
 import { InputContainer } from 'modules/forms';
@@ -11,10 +10,10 @@ export default function OrderNewPasswordForm ({
     user,
     submitOrderNewPassword,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const pathBase = usePathBase();
     const location = useLocation();
-    const { from } = location.state;
+    const from = location.state?.from;
 
     const [emailCheckResponse, setEmailCheckResponse] = useState({reset_password_error: false, msg: null});
 
@@ -35,7 +34,9 @@ export default function OrderNewPasswordForm ({
     const handleSubmit = (event) => {
         event.preventDefault();
         if(!error && !emailCheckResponse.reset_password_error) {
-            submitOrderNewPassword(`${pathBase}/users/password`, {user: {email: email, from: from}});
+            submitOrderNewPassword(`${pathBase}/users/password`, {
+                user: { email, from },
+            });
         }
     }
 
@@ -68,3 +69,8 @@ export default function OrderNewPasswordForm ({
         </form>
     );
 }
+
+OrderNewPasswordForm.propTypes = {
+    user: PropTypes.object,
+    submitOrderNewPassword: PropTypes.func.isRequired,
+};

@@ -8,9 +8,12 @@ class Interview < ApplicationRecord
 
   belongs_to :project
   belongs_to :collection
-  belongs_to :language
-  belongs_to :translation_language,
-             class_name: 'Language'
+
+  has_many :interview_languages,
+           dependent: :destroy
+
+  #has_many :languages,
+           #through: :interview_languages
 
   has_many :photos,
            #-> {includes(:interview, :translations)},
@@ -78,7 +81,20 @@ class Interview < ApplicationRecord
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
-    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id description transcript)
+    atts = %w(
+      archive_id
+      media_type
+      interview_date
+      duration
+      tape_count
+      collection_id
+      description
+      transcript
+      language_id
+      primary_language_id
+      secondary_language_id
+      primary_translation_language_id
+    )
     update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
@@ -91,7 +107,7 @@ class Interview < ApplicationRecord
 
   translates :observations, :description, fallbacks_for_empty_translations: true, touch: true
 
-  accepts_nested_attributes_for :translations, :contributions
+  accepts_nested_attributes_for :translations, :contributions, :interview_languages
 
   class ProjectConfigValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
@@ -109,7 +125,6 @@ class Interview < ApplicationRecord
 
   searchable do
     integer :project_id, :stored => true, :references => Project
-    integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id_fulltext, :stored => true do
@@ -149,7 +164,9 @@ class Interview < ApplicationRecord
     string :media_type, :stored => true
     integer :duration, :stored => true
     string :language, :stored => true do
-      language && language.translations.map(&:name).join(' ')
+      interview_languages.where(spec: ['primary', 'secondary']).map do |il|
+        il.language.translations.map(&:name).join(' ')
+      end.join(' ')
     end
     string :alias_names, :stored => true
 
@@ -398,22 +415,40 @@ class Interview < ApplicationRecord
     end
   end
 
+  def language
+    interview_languages.where(spec: ['primary']).first&.language
+  end
+
   def lang
-    # return only the first language code in cases like 'slk/ces'
-    language && ( ISO_639.find(language.first_code).try(:alpha2) || language.first_code )
+    ISO_639.find(language&.code).try(:alpha2) || language&.code
   end
 
   def languages
-    if language && translation_language
-      [language, translation_language].map do |l|
-        ISO_639.find(l.first_code).try(:alpha2) || l.first_code
+    interview_languages.map do |il|
+      ISO_639.find(il.language&.code).try(:alpha2) || il.language&.code
+    end
+  end
+
+  def language_id
+    [primary_language_id, secondary_language_id].compact
+  end
+
+  %w(primary secondary primary_translation).each do |spec|
+    define_method "#{spec}_language" do
+      interview_languages.where(spec: spec).first.try(:language)
+    end
+
+    define_method "#{spec}_language_id" do
+      interview_languages.where(spec: spec).first.try(:language_id)
+    end
+
+    define_method "#{spec}_language_id=" do |lid|
+      l = interview_languages.where(spec: spec).first
+      if lid.blank?
+        l.destroy if l
+      else
+        l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
       end
-    elsif segments.length > 0
-      segments.joins(:translations).where.not("segment_translations.text": [nil, '']).group(:locale).count.keys.map{|k| k.split('-').first}.uniq
-    elsif language
-      [ISO_639.find(language.first_code).try(:alpha2) || language.first_code]
-    else
-      []
     end
   end
 
@@ -472,7 +507,9 @@ class Interview < ApplicationRecord
   end
 
   def alpha3_transcript_locales
-    language ? language.code.split(/[\/-]/) : []
+    interview_languages.where(spec: ['primary', 'secondary']).map do |il|
+      ISO_639.find(il.language.code).try(:alpha3)
+    end
   end
 
   def right_to_left
