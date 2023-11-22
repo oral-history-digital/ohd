@@ -61,8 +61,10 @@ export default function Textarea({
             elementType='textarea'
             individualErrorMsg={individualErrorMsg}
             help={help}
+            htmlFor={`${scope}_${attribute}`}
         >
             <textarea
+                id={`${scope}_${attribute}`}
                 name={attribute}
                 className="Input"
                 defaultValue={actualValue}
