@@ -1,9 +1,16 @@
 module DataHelper
-  def test_data
+  def self.test_data
     I18n.locale = :en
 
-    project = test_project
-    registry = test_registry(project)
+    project = DataHelper.test_project
+    registry = DataHelper.test_registry(project)
+    ct = DataHelper.test_contribution_type(project)
+
+    jdupont = Person.create!(
+      project: project,
+      first_name: 'Jean',
+      last_name: 'Dupont'
+    )
 
     institution = Institution.create!(
       name: "Test Institute",
@@ -54,7 +61,7 @@ module DataHelper
     w.close
   end
 
-  def test_project(attribs = {})
+  def self.test_project(attribs = {})
     attribs.reverse_merge!(
       shortname: 'test',
       domain: 'http://test.portal.oral-history.localhost:47001',
@@ -82,13 +89,45 @@ module DataHelper
     Project.create! attribs
   end
 
-  def test_registry(project, attribs = {})
+  def self.test_contribution_type(project, attribs = {})
+    attribs.reverse_merge!(
+      project: project,
+      code: 'interviewee',
+      label: 'Interviewee'
+    )
+
+    ContributionType.create! attribs
+  end
+
+  def self.test_registry(project, attribs = {})
     attribs.reverse_merge!(
       code: 'root',
       workflow_state: 'public',
-      project: project
+      project: project,
+      registry_names: [
+        RegistryName.new(
+          descriptor: "#{project.shortname} registry",
+          name_position: 1,
+          registry_name_type: RegistryNameType.new
+        )
+      ]
     )
 
     RegistryEntry.create! attribs
+  end
+
+  def self.grant_access(project, user, attribs = {})
+    attribs.reverse_merge!(
+      project: project,
+      user: user,
+      tos_agreement: true,
+      research_intentions: 'school_project'
+    )
+
+    ws = attribs.delete :workflow_state
+    up = UserProject.create! attribs
+    up.update_column :workflow_state, ws
+
+    up
   end
 end

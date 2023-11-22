@@ -51,9 +51,10 @@ default: &default
 development:
   <<: *default
   compile: true
+  public_output_path: packs
 
   # Reference: https://webpack.js.org/configuration/dev-server/
-  dev_server:
+  dev_server: &dev_server
     https: false
     host: localhost
     port: 3035
@@ -76,6 +77,12 @@ development:
 test:
   <<: *default
   compile: true
+  public_output_path: packs-test
+
+  dev_server:
+    <<: *dev_server
+    port: 3036
+    public: localhost:3036
 
   # Cache manifest.json for performance
   # cache_manifest: true
