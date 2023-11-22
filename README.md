@@ -125,9 +125,9 @@ See above for basic dependencies, then ensure prepare the environment for
 testing:
 
 * `npm install --legacy-peer-deps`
-* run the solr instance (`RAILS_ENV=test bundle exec rake sunspot:solr:run`)
-* run the wepack dev server (`bin/webpack-dev-server`)
+* foreman start
 
-With that out of the way, run all tests:
+Foreman also starts the development servers as they can be shared with the with
+environment. With that out of the way, run all tests:
 
-    bundle exec rails test -v test/system
+    bundle exec rails test -v test/
