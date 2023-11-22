@@ -13,18 +13,26 @@ end
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require "#{Rails.root}/test/data_helper.rb"
 
 class ActiveSupport::TestCase
+  include DataHelper
+  extend DataHelper
+
   DatabaseCleaner.clean_with :truncation
   DatabaseCleaner.clean
 
   # TODO: rebase test data on seed data once seed data is ready
   # load "#{Rails.root}/db/seeds.rb"
-  load "#{Rails.root}/test/test_data.rb"
+  test_data
 
   self.use_transactional_tests = true
 
   File.truncate "#{Rails.root}/log/test.log", 0
+
+  def setup
+    ActionMailer::Base.deliveries = []
+  end
 
   def reload_page
     page.evaluate_script("window.location.reload()")
