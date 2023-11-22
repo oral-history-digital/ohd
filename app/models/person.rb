@@ -159,7 +159,9 @@ class Person < ApplicationRecord
       end
     else
       if reversed
-        "#{ln}, #{fn}"
+        used_title.blank? ?
+          "#{ln}, #{fn}" :
+          "#{ln}, #{used_title} #{fn}"
       else
         used_title.blank? ?
           "#{fn} #{ln}" :
