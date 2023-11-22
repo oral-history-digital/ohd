@@ -377,6 +377,9 @@ ru:
     signature_original: Signature original
     observations: Observations
     language_id: Language
+    primary_language_id: Erste Sprache
+    secondary_language_id: Zweite Sprache
+    primary_translation_language_id: Erste Übersetzungssprache
     workflow_state: Workflow state
     collection_id: Collection
     home_location: Home location
@@ -1155,6 +1158,7 @@ ru:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
+        hidden_text: Diese Passage wird nicht veröffentlicht.
       user_content:
         title: Заглавие
         description: Заметка

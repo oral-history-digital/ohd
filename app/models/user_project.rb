@@ -96,9 +96,8 @@ class UserProject < ApplicationRecord
     :city,
     :country,
     :job_description,
-    :research_intentions,
-    :specification,
     :organization,
+    :pre_register_location
   ].each do |attr|
     define_method(attr) do
       user.send(attr)

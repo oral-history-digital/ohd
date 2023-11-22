@@ -17,3 +17,4 @@ export {default as AfterConfirmationPopup } from './components/AfterConfirmation
 export {default as AfterRequestProjectAccessPopup } from './components/AfterRequestProjectAccessPopup';
 export {default as CorrectUserDataPopup } from './components/CorrectUserDataPopup';
 export {default as AfterResetPassword } from './components/AfterResetPassword';
+export {default as ConfirmNewZwarTosPopup } from './components/ConfirmNewZwarTosPopup';

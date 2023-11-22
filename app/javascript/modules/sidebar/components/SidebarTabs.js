@@ -287,6 +287,5 @@ SidebarTabs.propTypes = {
     interview: PropTypes.object,
     archiveId: PropTypes.string,
     isLoggedIn: PropTypes.bool,
-    isCampscapesProject: PropTypes.bool.isRequired,
     selectedArchiveIds: PropTypes.array,
 };

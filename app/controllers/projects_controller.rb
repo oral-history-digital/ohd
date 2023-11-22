@@ -160,7 +160,6 @@ class ProjectsController < ApplicationController
           "shortname",
           "archive_id_number_length",
           "domain",
-          "archive_domain",
           "doi",
           "cooperation_partner",
           "leader",
