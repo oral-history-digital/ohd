@@ -123,5 +123,6 @@ Rails.application.configure do
     "archive.occupation-memories.org",
     "da03.cedis.fu-berlin.de",
     "testimonies.campscapes.org",
+    "archiv.erlebte-geschichte.fu-berlin.de",
   ]
 end
