@@ -45,7 +45,7 @@ export default function InterviewSearchResults({
 
     const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
 
-    const translationLanguages = interview.languages?.filter(lang => lang !== interview.lang);
+    const translationLanguages = [interview.translation_locale];
 
     const translatedTranscriptResultsPerLocale = translationLanguages?.map(resultLocale => [
         resultLocale,

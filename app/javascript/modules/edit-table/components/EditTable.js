@@ -38,7 +38,7 @@ export default function EditTable({
         return <Spinner />;
     }
 
-    let translationLocale = interview.languages.filter(locale => locale !== interview.lang)[0];
+    let translationLocale = interview.translation_locale;
     //
     // use interface-locale if no translation-locale given and if it differs from interview-language
     //
