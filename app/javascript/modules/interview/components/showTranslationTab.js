@@ -2,7 +2,7 @@ import { PROJECT_ZWAR, PROJECT_CDOH } from 'modules/constants';
 
 export default function showTranslationTab(project, interview, locale) {
     return projectSupportsTranslatedTranscript(project, interview, locale)
-        && transcriptAvailable(interview);
+        && translationAvailable(interview);
 }
 
 function projectSupportsTranslatedTranscript(project, interview, locale) {
@@ -16,11 +16,6 @@ function projectSupportsTranslatedTranscript(project, interview, locale) {
     }
 }
 
-function transcriptAvailable(interview) {
-    const language = translationLanguage(interview);
-    return interview?.transcript_locales.includes(language);
-}
-
-function translationLanguage(interview) {
-    return interview.languages?.filter(l => l !== interview.lang)[0];
+function translationAvailable(interview) {
+    return interview?.transcript_locales.includes(interview.translation_locale);
 }
