@@ -96,7 +96,6 @@ class MetadataImport
     else
       interview = Interview.create interview_data.update(properties: properties)
     end
-    interview.public_attributes=({signature_original: true}) if row[:signature_original]
     interview.save
     interview
   end
@@ -219,7 +218,7 @@ class MetadataImport
 
   def destroy_references(ref_object, ref_type_id, interview)
     if ref_type_id
-      ref_object.registry_references.where(registry_reference_type_id: ref_type_id, interview_id: interview.id).destroy_all
+      ref_object&.registry_references.where(registry_reference_type_id: ref_type_id, interview_id: interview.id).destroy_all
     end
   end
 
