@@ -18,7 +18,6 @@ development:
   adapter: mysql2
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
-  reconnect: false
   database: ohd_archive
   pool: 5
   username: root
@@ -32,7 +31,6 @@ test:
   adapter: mysql2
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
-  reconnect: false
   database: ohd_archive_test
   pool: 5
   username: root
@@ -43,7 +41,6 @@ production:
   adapter: mysql2
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
-  reconnect: false
   database: ohd_archive
   pool: 5
   username: root
