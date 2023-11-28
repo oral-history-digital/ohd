@@ -26,6 +26,7 @@ export default function InterviewTextMaterials({
                     { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
                         return (
                             <InterviewDownloads
+                                key={locale}
                                 lang={locale}
                                 type='observations'
                                 condition={showObservations && interview.observations?.[locale]}
@@ -41,7 +42,7 @@ export default function InterviewTextMaterials({
                     collapse
                     elementType="textarea"
                     multiLocale
-                    attribute={'observations'}
+                    attribute="observations"
                     noLabel
                 />
             </AuthorizedContent>
@@ -49,9 +50,10 @@ export default function InterviewTextMaterials({
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.languages.map( lang => {
+                        { interview.languages.map((lang) => {
                             return (
                                 <InterviewDownloads
+                                    key={lang}
                                     lang={lang}
                                     type='transcript'
                                     condition={showTranscriptPDF && interview.segments?.[1]?.[interview.first_segments_ids[1]]}
@@ -62,7 +64,6 @@ export default function InterviewTextMaterials({
                         <StatusForm
                             data={interview}
                             scope='interview'
-                            attribute='transcript'
                             attribute='public_attributes[transcript]'
                             value={interview.properties?.public_attributes?.transcript?.toString() === 'true'}
                         />
@@ -74,5 +75,6 @@ export default function InterviewTextMaterials({
 }
 
 InterviewTextMaterials.propTypes = {
+    isCatalog: PropTypes.bool,
     interview: PropTypes.object.isRequired,
 };
