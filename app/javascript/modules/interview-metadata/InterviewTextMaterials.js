@@ -20,22 +20,24 @@ export default function InterviewTextMaterials({
 
     return (
         <>
-            <AuthShowContainer ifLoggedIn>
-                <p>
-                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                    { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
-                        return (
-                            <InterviewDownloads
-                                key={locale}
-                                lang={locale}
-                                type='observations'
-                                condition={showObservations && interview.observations?.[locale]}
-                                showEmpty={true}
-                            />
-                        )
-                    })}
-                </p>
-            </AuthShowContainer>
+            {showObservations && (
+                <AuthShowContainer ifLoggedIn>
+                    <p>
+                        <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
+                        { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
+                            return (
+                                <InterviewDownloads
+                                    key={locale}
+                                    lang={locale}
+                                    type='observations'
+                                    condition={showObservations && interview.observations?.[locale]}
+                                    showEmpty={true}
+                                />
+                            )
+                        })}
+                    </p>
+                </AuthShowContainer>
+            )}
             <AuthorizedContent object={interview} action="update">
                 <SingleValueWithFormContainer
                     obj={interview}
@@ -46,7 +48,7 @@ export default function InterviewTextMaterials({
                     noLabel
                 />
             </AuthorizedContent>
-            {!isCatalog && (
+            {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
