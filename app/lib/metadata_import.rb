@@ -69,11 +69,13 @@ class MetadataImport
         language: find_language(row[:primary_language_id]),
         spec: 'primary'
       },
-      {
-        language: find_language(row[:primary_translation_language_id]),
-        spec: 'primary_translation'
-      },
     ]
+
+    primary_translation_language = find_language(row[:primary_translation_language_id])
+    interview_languages_attributes << {
+      language: primary_translation_language,
+      spec: 'primary_translation'
+    } if primary_translation_language
 
     secondary_language = find_language(row[:secondary_language_id])
     interview_languages_attributes << {
