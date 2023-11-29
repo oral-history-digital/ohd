@@ -51,7 +51,6 @@
 | sunspot_rails                                  | MIT                             |
 | sunspot_solr                                   | MIT                             |
 | progress_bar                                   | WTFPL                           |
-| cypress-on-rails                               |                                 |
 | byebug                                         | BSD-2-CLAUSE                    |
 | bcrypt_pbkdf                                   | MIT                             |
 | ed25519                                        | MIT                             |
@@ -158,11 +157,9 @@
 | @pmmmwh/react-refresh-webpack-plugin           | MIT                  |
 | @wojtekmaj/enzyme-adapter-react-17             | MIT                  |
 | babel-jest                                     | MIT                  |
-| cypress                                        | MIT                  |
 | dot-prop-immutable                             | MIT                  |
 | enzyme                                         | MIT                  |
 | eslint                                         | MIT                  |
-| eslint-plugin-cypress                          | MIT                  |
 | eslint-plugin-jest                             | MIT                  |
 | eslint-plugin-jsx-a11y                         | MIT                  |
 | eslint-plugin-react                            | MIT                  |

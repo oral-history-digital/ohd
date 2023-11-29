@@ -91,11 +91,9 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
     "babel-jest": "^26.6.3",
-    "cypress": "^9.6.1",
     "dot-prop-immutable": "^2.1.0",
     "enzyme": "^3.11.0",
     "eslint": "^7.13.0",
-    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest": "^24.1.5",
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react": "^7.21.5",
@@ -109,8 +107,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:deploy": "cypress run --spec 'cypress/integration/after_deploy_spec.js'",
     "lint": "eslint app/javascript",
     "test": "jest --verbose true",
     "test-watch": "jest --watch"
