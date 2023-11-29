@@ -59,7 +59,6 @@ gem 'progress_bar'
 
 
 group :test, :development do
-  gem 'cypress-on-rails', '~> 1.0'
   gem "byebug", "~> 11.1"
   gem 'bcrypt_pbkdf'
   gem 'ed25519'

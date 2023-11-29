@@ -9,7 +9,6 @@ module.exports = {
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
         "plugin:jest/recommended",
-        "plugin:cypress/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
