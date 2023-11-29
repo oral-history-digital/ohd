@@ -77,7 +77,6 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'puma'
-  gem 'foreman'
   gem 'rb-readline'
   gem 'pry'
   #gem 'meta_request'
