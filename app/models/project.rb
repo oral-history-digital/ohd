@@ -124,13 +124,6 @@ class Project < ApplicationRecord
       end.compact
     end
 
-    def by_host(host)
-      all.find do |project|
-        uri = Addressable::URI.parse(project.archive_domain)
-        uri && uri.host == host
-      end
-    end
-
     def by_identifier(identifier)
       where(["lower(shortname) = :value", { value: identifier.downcase }]).first
     end
