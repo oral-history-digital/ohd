@@ -8,6 +8,7 @@ export default function groupSegmentRefs(refs) {
                 archive_id: ref.archive_id,
                 last_name: ref.last_name,
                 first_name: ref.first_name,
+                display_name: ref.display_name,
                 refs: [],
             };
         }
