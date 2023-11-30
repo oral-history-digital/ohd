@@ -59,7 +59,6 @@ gem 'progress_bar'
 
 
 group :test, :development do
-  gem 'cypress-on-rails', '~> 1.0'
   gem "byebug", "~> 11.1"
   gem 'bcrypt_pbkdf'
   gem 'ed25519'
@@ -77,7 +76,6 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'puma'
-  gem 'foreman'
   gem 'rb-readline'
   gem 'pry'
   #gem 'meta_request'

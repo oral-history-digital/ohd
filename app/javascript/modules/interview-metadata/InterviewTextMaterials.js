@@ -20,38 +20,42 @@ export default function InterviewTextMaterials({
 
     return (
         <>
-            <AuthShowContainer ifLoggedIn>
-                <p>
-                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                    { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
-                        return (
-                            <InterviewDownloads
-                                lang={locale}
-                                type='observations'
-                                condition={showObservations && interview.observations?.[locale]}
-                                showEmpty={true}
-                            />
-                        )
-                    })}
-                </p>
-            </AuthShowContainer>
+            {showObservations && (
+                <AuthShowContainer ifLoggedIn>
+                    <p>
+                        <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
+                        { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
+                            return (
+                                <InterviewDownloads
+                                    key={locale}
+                                    lang={locale}
+                                    type='observations'
+                                    condition={showObservations && interview.observations?.[locale]}
+                                    showEmpty={true}
+                                />
+                            )
+                        })}
+                    </p>
+                </AuthShowContainer>
+            )}
             <AuthorizedContent object={interview} action="update">
                 <SingleValueWithFormContainer
                     obj={interview}
                     collapse
                     elementType="textarea"
                     multiLocale
-                    attribute={'observations'}
+                    attribute="observations"
                     noLabel
                 />
             </AuthorizedContent>
-            {!isCatalog && (
+            {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.languages.map( lang => {
+                        { interview.languages.map((lang) => {
                             return (
                                 <InterviewDownloads
+                                    key={lang}
                                     lang={lang}
                                     type='transcript'
                                     condition={showTranscriptPDF && interview.segments?.[1]?.[interview.first_segments_ids[1]]}
@@ -62,7 +66,6 @@ export default function InterviewTextMaterials({
                         <StatusForm
                             data={interview}
                             scope='interview'
-                            attribute='transcript'
                             attribute='public_attributes[transcript]'
                             value={interview.properties?.public_attributes?.transcript?.toString() === 'true'}
                         />
@@ -74,5 +77,6 @@ export default function InterviewTextMaterials({
 }
 
 InterviewTextMaterials.propTypes = {
+    isCatalog: PropTypes.bool,
     interview: PropTypes.object.isRequired,
 };
