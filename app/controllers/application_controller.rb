@@ -27,8 +27,7 @@ class ApplicationController < ActionController::Base
 
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
-    locale ||= (params[:locale] || (current_project ? current_project.default_locale : :de)).to_sym
-    I18n.locale = locale
+    I18n.locale = locale || params[:locale] || I18n.default_locale
   end
 
   # Append the locale to all requests.
@@ -39,8 +38,8 @@ class ApplicationController < ActionController::Base
   def current_project
     @current_project = @current_project || (
       (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
-        Project.where("UPPER(shortname) = ?", params[:project_id].upcase).first :
-        Project.by_host(request.host)
+        Project.where(shortname: params[:project_id]).first :
+        Project.where(archive_domain: request.base_url).first
     )
   end
 
