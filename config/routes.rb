@@ -274,7 +274,7 @@ Rails.application.routes.draw do
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
-    get "/", to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
+    get "/", to: redirect {|params, request| "/#{Project.where(archive_domain: request.base_url).first.default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
       resources :projects, only: [:update, :destroy]
