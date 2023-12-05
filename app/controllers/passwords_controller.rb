@@ -33,7 +33,9 @@ class PasswordsController < Devise::PasswordsController
 
   protected
     def after_resetting_password_path_for(resource)
-      resource.pre_register_location
+      last_token = resource.access_tokens.last
+      url = resource.pre_register_location
+      last_token ? "#{url}?access_token=#{last_token}" : url
     end 
 
 end
