@@ -48,6 +48,13 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
+  validates :first_name, presence: true, length: { minimum: 2 }, allow_blank: false
+  validates :last_name, presence: true, length: { minimum: 2 }, allow_blank: false
+  validates :country, presence: true, length: { minimum: 2 }, allow_blank: false
+  validates :street, presence: true, length: { minimum: 2 }, allow_blank: false
+  validates :city, presence: true, length: { minimum: 2 }, allow_blank: false
+  validates :priv_agreement, acceptance: { accept: true }
+  validates :tos_agreement, acceptance: { accept: true }
 
   workflow do
     state :created do
