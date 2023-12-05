@@ -118,23 +118,26 @@ class Project < ApplicationRecord
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').map do |project|
-        uri = Addressable::URI.parse(project.archive_domain)
-        uri && uri.host
-      end.compact
+      where.not(shortname: 'ohd').
+        where.not(archive_domain: ['', nil]).
+        pluck(:archive_domain).uniq
+    end
+
+    def by_domain(domain)
+      where(archive_domain: domain).first
     end
 
     def by_identifier(identifier)
-      where(["lower(shortname) = :value", { value: identifier.downcase }]).first
+      where(shortname: identifier).first
     end
-  end
-
-  def is_ohd?
-    shortname.downcase == 'ohd'
   end
 
   def identifier
     shortname.downcase
+  end
+
+  def is_ohd?
+    identifier == 'ohd'
   end
 
   def num_interviews

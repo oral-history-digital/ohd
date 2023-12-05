@@ -7,12 +7,34 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   #before_action :doorkeeper_authorize!
-  before_action :authenticate_user!
+  before_action :store_user_location!, if: :storable_location?
   before_action :user_by_token
+  before_action :check_ohd_session
+  before_action :authenticate_user!
+
   def user_by_token
     if doorkeeper_token && !current_user
       user = User.find(doorkeeper_token.resource_owner_id) 
       sign_in(user)
+    end
+  end
+
+  def check_ohd_session
+    if ( 
+        !current_user &&
+        request.base_url != OHD_DOMAIN &&
+        !params['checked_ohd_session'] &&
+        !params[:open_register_popup] &&
+        storable_location?
+      )
+        path = url_for(
+          only_path: true,
+          controller: 'sessions',
+          action: 'is_logged_in',
+          project: Project.by_domain(request.base_url).identifier,
+          path: request.fullpath,
+        )
+        redirect_to "#{OHD_DOMAIN}#{path}"
     end
   end
 
@@ -302,4 +324,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
+  end
+
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
+  end
 end
