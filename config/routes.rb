@@ -246,7 +246,7 @@ Rails.application.routes.draw do
   #
   # in production this should be the ohd-domain
   #
-  constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
+  constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     scope "/:locale" do
       get "/", to: "projects#index"
       resources :projects, only: [:create, :update, :destroy, :index]
@@ -257,7 +257,10 @@ Rails.application.routes.draw do
       concerns :account
     end
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
-      get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
+      get "/", to: redirect{|params, request|
+        project = Project.by_identifier(params[:project_id])
+        "/#{project.identifier}/#{project.default_locale}"
+      }
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
         resources :projects, only: [:update, :destroy]
@@ -273,8 +276,8 @@ Rails.application.routes.draw do
   #
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
-  constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
-    get "/", to: redirect {|params, request| "/#{Project.where(archive_domain: request.base_url).first.default_locale}"}
+  constraints(lambda { |request| Project.archive_domains.include?(request.base_url) }) do
+    get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
       resources :projects, only: [:update, :destroy]
