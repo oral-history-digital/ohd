@@ -162,7 +162,7 @@ class User < ApplicationRecord
   def self.send_reset_password_instructions(attributes = {}) 
     recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
     if recoverable.persisted?
-      recoverable.update pre_register_location: attributes[:from]
+      recoverable.update pre_register_location: attributes[:from].gsub("?checked_ohd_session=true", "")
       recoverable.send_reset_password_instructions
     end
     recoverable
