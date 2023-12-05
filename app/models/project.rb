@@ -167,9 +167,7 @@ class Project < ApplicationRecord
   end
 
   def search_facets_names
-    metadata_fields.
-      where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
-      map(&:name)
+    search_facets.map(&:name)
   end
 
   def event_facets
