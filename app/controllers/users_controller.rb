@@ -78,6 +78,17 @@ class UsersController < ApplicationController
     end
   end
   
+  def confirm_new_email
+    user = User.find(params[:id])
+    authorize(user)
+    if user.confirmation_token == params[:confirmation_token]
+      user.confirm
+      redirect_to user_url('current')
+    else
+      raise 'confirmation_token does not fit!!'
+    end
+  end
+
   def index
     order = params[:order] || 'last_name'
     if ['processed_at', 'workflow_state'].include? order
