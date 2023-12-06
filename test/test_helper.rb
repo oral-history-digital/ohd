@@ -15,7 +15,14 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "#{Rails.root}/test/data_helper.rb"
 
+if ENV['retry'] == 'true'
+  require 'minitest/retry'
+  Minitest::Retry.use!
+end
+
 class ActiveSupport::TestCase
+  include Devise::Test::IntegrationHelpers
+
   DatabaseCleaner.clean_with :deletion
   DatabaseCleaner.clean
 
@@ -29,6 +36,13 @@ class ActiveSupport::TestCase
 
   def setup
     ActionMailer::Base.deliveries = []
+    Rails.application.routes.default_url_options[:host] = 'test.portal.oral-history.localhost:47001'
+
+    system 'mkdir', '-p', "#{Rails.root}/public/test/"
+  end
+
+  def teardown
+    system 'rm', '-rf', "#{Rails.root}/public/test/"
   end
 
   def reload_page
@@ -44,13 +58,24 @@ class ActiveSupport::TestCase
     body.to_s.scan(/http[^\n> ]+/).map{|l| l.gsub(/=0D/, '')}
   end
 
-  def login_as(email, password = 'password')
+  alias_method :devise_login_as, :login_as
+  def login_as(user_or_email, password = 'password')
+    unless system_test?
+      return devise_login_as user_or_email
+    end
+    
     visit '/'
     within '.flyout-login-container' do
       click_on 'Login'
     end
-    fill_in 'Email', with: email
+    fill_in 'Email', with: user_or_email
     fill_in 'Password', with: password
     click_on 'Login'
+  end
+
+  def system_test?
+    return false unless Kernel.const_defined?(:ApplicationSystemTestCase)
+
+    self.is_a?(::ApplicationSystemTestCase)
   end
 end

@@ -68,8 +68,8 @@ group :development do
   # Automatic tests
   gem 'rails-erd'
   gem 'guard-spork'
-  gem 'guard-rspec'
-  gem 'guard-cucumber'
+  # gem 'guard-rspec'
+  # gem 'guard-cucumber'
   gem 'capistrano', '~> 3.17.0'
   gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'capistrano-rbenv'
@@ -86,10 +86,11 @@ group :test do
   # gem 'rspec', '~> 3.10.0'
   # gem 'rspec-rails', '~> 4.0.2'
   # gem 'rspec-snapshot', '~> 0.1.2'
+  gem 'minitest-retry'
   gem 'spork' # faster tests
   gem 'pdf-inspector', require: "pdf/inspector"
   gem 'pdf-reader'
-  gem 'factory_bot_rails', '~> 6.2.0'
+  # gem 'factory_bot_rails', '~> 6.2.0'
   # gem 'rspec-activemodel-mocks'
   gem 'selenium-webdriver'
   gem 'simplecov'
