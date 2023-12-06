@@ -262,6 +262,14 @@ export default function MediaElement({
         return false;
     }
 
+    function handleQualitySelected() {
+        /*
+         * Add text tracks again after quality is selected.
+         * Otherwise, they are lost.
+         */
+        addTextTracks();
+    }
+
     function handlePlayerReady(player) {
         playerRef.current = player;
 
@@ -272,6 +280,7 @@ export default function MediaElement({
         player.on('timeupdate', handleTimeUpdateEvent);
         player.on('ended', handleEndedEvent);
         player.on('contextmenu', handleContextMenuEvent);
+        player.on('qualitySelected', handleQualitySelected);
 
         checkForTimeChangeRequest();
     }

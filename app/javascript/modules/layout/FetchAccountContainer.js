@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { fetchData, deleteData, getCurrentUser, getUsersStatus } from 'modules/data';
-import { getIsLoggedIn, getIsLoggedOut, getCheckedOhdSession } from 'modules/user';
+import { getIsLoggedIn, getIsLoggedOut, } from 'modules/user';
 import FetchAccount from './FetchAccount';
 
 const mapStateToProps = state => ({
@@ -10,7 +10,6 @@ const mapStateToProps = state => ({
     usersStatus: getUsersStatus(state),
     isLoggedIn: getIsLoggedIn(state),
     isLoggedOut: getIsLoggedOut(state),
-    checkedOhdSession: getCheckedOhdSession(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

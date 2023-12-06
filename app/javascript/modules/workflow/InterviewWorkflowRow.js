@@ -100,9 +100,8 @@ export default function InterviewWorkflowRow({
                             onError={(e)=> { e.target.src = missingStill; }}
                             alt=""
                         />
-                        <span className='workflow' >
-                            {interviewee?.names?.[locale]?.last_name + ', '}<br />
-                            {interviewee?.names?.[locale]?.first_name }
+                        <span className="workflow">
+                            {interview.short_title?.[locale]}
                         </span>
                     </Link>
                 )}

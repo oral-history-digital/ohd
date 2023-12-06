@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:current, :check_email]
+  skip_before_action :user_by_token, only: [:check_email]
+  skip_before_action :check_ohd_session, only: [:check_email]
   skip_after_action :verify_authorized, only: [:current, :check_email, :newsletter_recipients]
   skip_after_action :verify_policy_scoped, only: [:current, :check_email]
 
@@ -76,6 +78,17 @@ class UsersController < ApplicationController
     end
   end
   
+  def confirm_new_email
+    user = User.find(params[:id])
+    authorize(user)
+    if user.confirmation_token == params[:confirmation_token]
+      user.confirm
+      redirect_to user_url('current')
+    else
+      raise 'confirmation_token does not fit!!'
+    end
+  end
+
   def index
     order = params[:order] || 'last_name'
     if ['processed_at', 'workflow_state'].include? order

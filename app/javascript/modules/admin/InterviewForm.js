@@ -107,7 +107,6 @@ export default function InterviewForm({
                 values: languages,
                 value: interview?.secondary_language_id,
                 withEmpty: true,
-                validate: function(v){return /^\d+$/.test(v)},
             },
             {
                 elementType: 'select',
@@ -115,7 +114,6 @@ export default function InterviewForm({
                 values: languages,
                 value: interview?.primary_translation_language_id,
                 withEmpty: true,
-                validate: function(v){return /^\d+$/.test(v)},
             },
             {
                 elementType: 'select',

@@ -121,13 +121,13 @@ bin/rake sunspot:reindex
 
 ## Tests
 
-See above for basic dependencies, then ensure prepare the environment for 
+See above for basic dependencies, then prepare the environment for 
 testing:
 
 * `npm install --legacy-peer-deps`
 * foreman start
 
-Foreman also starts the development servers as they can be shared with the with
+Foreman also starts the development servers as they can be shared with the test
 environment. With that out of the way, run all tests:
 
     bundle exec rails test -v test/

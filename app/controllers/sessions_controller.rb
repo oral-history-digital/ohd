@@ -1,6 +1,7 @@
 class SessionsController < Devise::SessionsController
 
   skip_before_action :require_no_authentication
+  skip_before_action :check_ohd_session
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
@@ -20,7 +21,14 @@ class SessionsController < Devise::SessionsController
     if current_user
       redirect_to url_with_access_token
     else
-      super
+      if request.base_url == OHD_DOMAIN
+        super
+      else
+        self.resource = resource_class.new(sign_in_params)
+        project = Project.by_domain(request.base_url)
+        path = stored_location_for(resource).gsub("?checked_ohd_session=true", "")
+        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.identifier}&path=#{path}"
+      end
     end
   end
 
@@ -30,12 +38,6 @@ class SessionsController < Devise::SessionsController
     sign_in(resource_name, resource)
     yield resource if block_given?
     respond_with resource, location: url_with_access_token
-  rescue BCrypt::Errors::InvalidHash
-    respond_to do |format|
-      format.json {
-        render json: {error: 'change_to_bcrypt', email: params['user']['login']}
-      }
-    end
   end
 
   def destroy

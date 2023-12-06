@@ -17,6 +17,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :secondary_language_id,
     :primary_translation_language_id,
     :lang,
+    :translation_locale,
     :anonymous_title,
     :media_missing,
     :still_url,
@@ -105,4 +106,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.language.id
   end
 
+  def translation_locale
+    object.interview_languages.where(spec: ['primary_translation']).first&.language&.alpha2
+  end
 end
