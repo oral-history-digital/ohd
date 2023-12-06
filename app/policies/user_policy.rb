@@ -8,6 +8,10 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def confirm_new_email?
+    show?
+  end
+
   class Scope < Scope
     def resolve
       if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))

@@ -81,7 +81,7 @@ class Person < ApplicationRecord
   end
 
   after_touch do
-    interviews = self.interviews
+    interviews = self.interviews.compact
     interviews.each(&:touch)
     Sunspot.index! [interviews]
   end
@@ -161,7 +161,9 @@ class Person < ApplicationRecord
       end
     else
       if reversed
-        "#{ln}, #{fn}"
+        used_title.blank? ?
+          "#{ln}, #{fn}" :
+          "#{ln}, #{used_title} #{fn}"
       else
         used_title.blank? ?
           "#{fn} #{ln}" :

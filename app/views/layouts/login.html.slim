@@ -20,7 +20,7 @@ html
 
             = image_tag  "/ohd-logo-gr.png", class: 'SiteHeader-logo'
 
-            - if @project && @project.logos.first
+            - if @project && @project.logos.first && !@project.is_ohd?
               = image_tag @project.logos.first.file, class: 'SiteHeader-logo'
 
           main.Site-content

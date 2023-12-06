@@ -18,8 +18,6 @@ yarn-debug.log*
 .yarn-integrity
 coverage
 .byebug_history
-/cypress/screenshots/
-/cypress/videos/
 .vscode
 
 # Ignore uploaded files in development.

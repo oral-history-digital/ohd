@@ -36,7 +36,7 @@ class Language < ApplicationRecord
   end
 
   def alpha2
-    ISO_639.find(code).alpha2
+    ISO_639.find(code)&.alpha2
   end
 
   private

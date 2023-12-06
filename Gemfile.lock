@@ -158,8 +158,6 @@ GEM
     cucumber-expressions (6.0.1)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
-    cypress-on-rails (1.7.0)
-      rack
     cyrillizer (0.2.3)
     daemons (1.2.6)
     database_cleaner (2.0.2)
@@ -199,7 +197,6 @@ GEM
     ffi (1.9.25)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
-    foreman (0.87.2)
     formatador (0.2.5)
     gherkin (5.1.0)
     git-version-bump (0.17.1)
@@ -504,7 +501,6 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.0)
   capybara
   countries
-  cypress-on-rails (~> 1.0)
   cyrillizer
   daemons
   database_cleaner
@@ -516,7 +512,6 @@ DEPENDENCIES
   factory_bot_rails (~> 6.2.0)
   fastercsv
   font-awesome-rails
-  foreman
   globalize (~> 6.2.1)
   guard-cucumber
   guard-rspec

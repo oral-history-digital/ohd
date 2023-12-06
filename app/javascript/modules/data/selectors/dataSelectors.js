@@ -214,7 +214,7 @@ export const getTranscriptLocale = createSelector(
             return undefined;
         }
 
-        const firstTranslationLocale = interview.languages?.filter(l => l !== interview.lang)[0];
+        const firstTranslationLocale = interview.translation_locale;
         const locale = originalLocale ? interview.lang : firstTranslationLocale;
         return locale;
     }

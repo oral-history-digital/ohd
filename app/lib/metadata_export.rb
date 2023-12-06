@@ -17,9 +17,9 @@ class MetadataExport
         line = [
           interview.archive_id,
           interview.signature_original,
-          interview.language.name(locale),
-          interview.secondary_language.name(locale),
-          interview.translation_language.name(locale),
+          interview.primary_language.name(locale),
+          interview.secondary_language&.name(locale),
+          interview.primary_translation_language&.name(locale),
           interview.collection && interview.collection.name(locale),
           interview.interview_date,
           interview.media_type,

@@ -88,6 +88,7 @@ class Interview < ApplicationRecord
       duration
       tape_count
       collection_id
+      signature_original
       description
       transcript
       language_id
