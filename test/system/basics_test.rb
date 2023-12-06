@@ -129,7 +129,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Neues Interview anlegen'
     select 'Dupont, Jean'
     select 'Interviewee'
-    fill_in 'Interview ID', with: 'test123'
+    fill_in 'Interview ID', with: 'test234'
     select 'Audio'
     select 'English', from: 'primary_language_id'
     select 'English', from: 'secondary_language_id'
@@ -174,5 +174,50 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Login'
 
     assert_text 'My Project'
+  end
+
+  test 'search in and across archives' do
+    Interview.reindex
+    DataHelper.test_media
+
+    visit '/'
+    login_as 'alice@example.com'
+    click_on 'Search the archive'
+
+    within '#archiveSearchForm' do
+      fill_in with: 'nonsense'
+      click_button 'Search the archive'
+    end
+
+    assert_no_text 'Rossi, Mario'
+
+    within '#archiveSearchForm' do
+      fill_in with: 'rossi'
+      click_button 'Search the archive'
+    end
+
+    assert_text 'Rossi, Mario'
+
+    click_on 'Rossi, Mario'
+    click_on '1 Search results in transcript'
+    click_on 'My name is Mario Rossi'
+
+    within '.MediaPlayer' do
+      assert_text '17:12'
+    end
+  end
+
+  test 'download transcript PDF' do
+    Interview.reindex
+    DataHelper.test_media
+
+    visit '/'
+    login_as 'alice@example.com'
+    click_on 'Search the archive'
+    click_on 'Rossi, Mario'
+    click_on 'About the interview'
+    click_on 'English'
+
+    # -> no error, we are happy
   end
 end
