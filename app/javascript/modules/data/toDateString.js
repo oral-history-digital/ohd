@@ -7,6 +7,6 @@ export default function toDateString(value, locale) {
 
 function localeString(locale) {
     return locale === 'en'
-        ? 'en-GB'
+        ? 'en-US'
         : locale;
 }
