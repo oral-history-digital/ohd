@@ -14,7 +14,9 @@ class SessionsController < Devise::SessionsController
   layout 'login'
 
   def is_logged_in
-    redirect_to url_with_access_token
+    redirect_to last_token ?
+      url_with_access_token :
+      join_params(url_with_access_token, "checked_ohd_session=true")
   end
 
   def new
@@ -50,8 +52,7 @@ class SessionsController < Devise::SessionsController
   private
 
   def url_with_access_token
-    u = "#{url}#{url.include?('?') ? '&' : '?'}checked_ohd_session=true"
-    last_token ? "#{u}&access_token=#{last_token}" : u
+    last_token ? join_params(url, "access_token=#{last_token}") : url
   end
 
   def url
@@ -71,7 +72,10 @@ class SessionsController < Devise::SessionsController
   end
 
   def last_token
-    current_user && current_user.access_tokens.last && current_user.access_tokens.last.token
+    current_user&.access_tokens.last&.token
   end
 
+  def join_params(base_url, params_string)
+    "#{base_url}#{base_url.include?('?') ? '&' : '?'}#{params_string}"
+  end
 end
