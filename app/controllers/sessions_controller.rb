@@ -50,16 +50,12 @@ class SessionsController < Devise::SessionsController
   private
 
   def url_with_access_token
-    u = "#{url}?checked_ohd_session=true"
+    u = "#{url}#{url.include?('?') ? '&' : '?'}checked_ohd_session=true"
     last_token ? "#{u}&access_token=#{last_token}" : u
   end
 
   def url
     "#{!@project.archive_domain.blank? ? @project.archive_domain : OHD_DOMAIN}#{@path}"
-  end
-
-  def path
-    @path.blank? ? "/#{params[:locale]}/projects" : @path
   end
 
   def set_project
