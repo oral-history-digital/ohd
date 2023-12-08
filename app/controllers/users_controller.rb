@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
 
-  skip_before_action :authenticate_user!, only: [:current, :check_email]
-  skip_before_action :user_by_token, only: [:check_email]
-  skip_before_action :check_ohd_session, only: [:check_email]
-  skip_after_action :verify_authorized, only: [:current, :check_email, :newsletter_recipients]
-  skip_after_action :verify_policy_scoped, only: [:current, :check_email]
+  skip_before_action :authenticate_user!, only: [:confirm_new_email, :current, :check_email]
+  skip_before_action :user_by_token, only: [:confirm_new_email, :check_email]
+  skip_before_action :check_ohd_session, only: [:confirm_new_email, :check_email]
+  skip_after_action :verify_authorized, only: [:confirm_new_email, :current, :check_email, :newsletter_recipients]
+  skip_after_action :verify_policy_scoped, only: [:confirm_new_email, :current, :check_email]
 
   def current
     respond_to do |format|
@@ -80,9 +80,9 @@ class UsersController < ApplicationController
   
   def confirm_new_email
     user = User.find(params[:id])
-    authorize(user)
     if user.confirmation_token == params[:confirmation_token]
       user.confirm
+      sign_in(user)
       redirect_to user_url('current')
     else
       raise 'confirmation_token does not fit!!'
