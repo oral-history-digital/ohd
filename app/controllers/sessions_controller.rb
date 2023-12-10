@@ -72,7 +72,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def last_token
-    current_user&.access_tokens.last&.token
+    current_user&.access_tokens&.last&.token
   end
 
   def join_params(base_url, params_string)
