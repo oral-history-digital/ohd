@@ -6,10 +6,7 @@ ReactOnRails.configure do |config|
   # This configures the script to run to build the production assets by webpack. Set this to nil
   # if you don't want react_on_rails building this file for you.
 
-  # https://stackoverflow.com/a/49709493
-  config.build_production_command = 'yarn install --production && echo "module.exports = {};" >> node_modules/rc-slider/assets/postcss.config.js && RAILS_ENV=production NODE_ENV=production bin/webpack -p'
-
-  # config.build_production_command = nil
+  config.build_production_command = "RAILS_ENV=production bin/shakapacker"
 
   ################################################################################
   ################################################################################
@@ -25,7 +22,7 @@ ReactOnRails.configure do |config|
   # with rspec then this controls what yarn command is run
   # to automatically refresh your webpack assets on every test run.
   #
-  config.build_test_command = "RAILS_ENV=test bin/webpack"
+  config.build_test_command = "RAILS_ENV=test bin/shakapacker"
 
   ################################################################################
   ################################################################################
