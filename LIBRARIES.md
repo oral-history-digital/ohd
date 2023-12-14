@@ -30,7 +30,7 @@
 | cyrillizer                                     | MIT                             |
 | active_model_serializers                       | MIT                             |
 | rails-latex                                    | MIT                             |
-| webpacker                                      | MIT                             |
+| shakapacker                                    | MIT                             |
 | react_on_rails                                 | MIT                             |
 | slim-rails                                     | MIT                             |
 | iso-639                                        | MIT                             |
@@ -85,7 +85,6 @@
 | @babel/preset-env                              | MIT                             |
 | @babel/preset-react                            | MIT                             |
 | @babel/runtime                                 | MIT                             |
-| @rails/webpacker                               | MIT                             |
 | @reach/checkbox                                | MIT                 |
 | @reach/dialog                                  | MIT                 |
 | @reach/disclosure                              | MIT                 |
