@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:confirm_new_email, :current, :check_email]
+  skip_before_action :store_user_location!, only: [:confirm_new_email, :check_email]
   skip_before_action :user_by_token, only: [:confirm_new_email, :check_email]
   skip_before_action :check_ohd_session, only: [:confirm_new_email, :check_email]
   skip_after_action :verify_authorized, only: [:confirm_new_email, :current, :check_email, :newsletter_recipients]
