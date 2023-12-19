@@ -69,6 +69,7 @@ class SessionsController < Devise::SessionsController
 
   def set_locale
     @locale = params[:locale]
+    I18n.locale = @locale if @locale
   end
 
   def last_token
