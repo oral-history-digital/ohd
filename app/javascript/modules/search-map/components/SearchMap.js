@@ -12,6 +12,7 @@ import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
 import { useProject, usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
+import { SpinnerOverlay } from 'modules/spinners';
 import useSearchMap from '../search-map/useSearchMap';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
@@ -61,28 +62,27 @@ export default function SearchMap() {
             <div className="wrapper-content map SearchMap">
                 {isEditor && <HelpText code="search_map" className="u-mb" />}
 
-                <div className={classNames('LoadingOverlay', {
-                    'is-loading': locationsLoading,
-                })}>
-                    {
-                        error ?
-                            (<div>
-                                {t('modules.search_map.error')}: {error.message}
-                            </div>) :
-                            (<MapComponent
-                                className="Map--search"
-                                loading={isLoading}
-                                markers={markers || []}
-                                popupComponent={SearchMapPopup}
-                            >
+                {
+                    error ?
+                        (<div>
+                            {t('modules.search_map.error')}: {error.message}
+                        </div>) :
+                        (<MapComponent
+                            className="Map--search"
+                            loading={isLoading}
+                            markers={markers || []}
+                            popupComponent={SearchMapPopup}
+                        >
+                            <>
+                                {locationsLoading && <SpinnerOverlay />}
                                 <MapNewBoundsSetter
                                     bounds={bounds}
                                     view={mapView}
                                     onViewChange={handleViewChange}
                                 />
-                            </MapComponent>)
-                    }
-                </div>
+                            </>
+                        </MapComponent>)
+                }
 
                 <div className="SearchMap-controls">
                     <MapFilterContainer />
