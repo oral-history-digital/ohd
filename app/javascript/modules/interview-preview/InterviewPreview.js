@@ -75,7 +75,7 @@ export default function InterviewPreview({
                 </div>
             )}
 
-            <AuthorizedContent object={{ type: 'Interview', interview_id: interview.id }} action='update'>
+            <AuthorizedContent object={interview} action='update'>
                 <div>
                     <Checkbox
                         className='export-checkbox'
