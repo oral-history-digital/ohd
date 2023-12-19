@@ -1158,7 +1158,7 @@ ru:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
-        hidden_text: Diese Passage wird nicht veröffentlicht.
+        hidden_text: Эта часть текста не публикуется.
       user_content:
         title: Заглавие
         description: Заметка

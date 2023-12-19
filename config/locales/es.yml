@@ -1097,7 +1097,7 @@ es:
         subheading: Encabezado secundario
         text: Texto
         speaker_id: Hablante
-        hidden_text: Diese Passage wird nicht veröffentlicht.
+        hidden_text: Esta parte del texto no se publica.
       user_content:
         title: Título
         description: Anotación

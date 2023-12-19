@@ -1116,7 +1116,7 @@ el:
         subheading: Υποκεφάλαιο
         text: Κείμενο
         speaker_id: Ομιλιτής
-        hidden_text: Diese Passage wird nicht veröffentlicht.
+        hidden_text: Αυτό το μέρος του κειμένου δεν δημοσιεύεται.
       user_content:
         title: Τίτλος
         description: Σημείωση
