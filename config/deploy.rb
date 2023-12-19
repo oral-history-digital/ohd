@@ -38,7 +38,6 @@ set :keep_releases, 5
 set :project_yml, 'empty.yml'
 
 namespace :deploy do
-
   desc 'Copy correct project file into config directory'
   task :copy_project_file do
     on roles(:app) do
@@ -47,4 +46,16 @@ namespace :deploy do
   end
 
   before :updated, 'copy_project_file'
+  before :updated, 'yarn:install'
+end
+
+namespace :yarn do
+  desc 'Install yarn dependencies'
+  task :install do
+    on roles(:app) do
+      within release_path do
+        execute :yarn, :install
+      end
+    end
+  end
 end
