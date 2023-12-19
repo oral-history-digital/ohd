@@ -33,7 +33,6 @@ gem 'open4'
 gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'rails-latex'
-gem 'webpacker', '~> 5.4.3'
 gem 'react_on_rails', '~> 11.3.0'
 gem 'slim-rails'
 gem 'iso-639'
@@ -56,6 +55,7 @@ gem 'celluloid'
 gem 'sunspot_rails', '~> 2.6.0'
 gem 'sunspot_solr', '~> 2.6.0'
 gem 'progress_bar'
+gem 'shakapacker', '= 7.1'
 
 
 group :test, :development do
