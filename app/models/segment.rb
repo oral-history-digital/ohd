@@ -118,7 +118,7 @@ class Segment < ApplicationRecord
           gsub("(???) ", "(...?)").                              # e.g. Nice grandparents, we played football, (???) it’s
           gsub("<***>", "").                                     # e.g. <***>
           gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
-          gsub(/\s+([\.\,\?\!\:])/, '\1').                          # cleanup whitespace (before .,?!:)
+          gsub(/\s+([\.\,\?\!\:])/, '\1').                       # cleanup whitespace (before .,?!:)
           gsub(/^\s+/, "")                                       # cleanup whitespace (beginning of phrase)
       when :public
         text_original.
@@ -137,7 +137,7 @@ class Segment < ApplicationRecord
           gsub("<***>", "<i(Bandende)>").                        # e.g. <***>
           gsub("(???) ", "<?>").                                 # e.g. Nice grandparents, we played football, (???) it’s
           gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
-          gsub(/\s+([\.\,\?\!\:])/, '\1').                          # cleanup whitespace (before .,?!:)
+          gsub(/\s+([\.\,\?\!\:])/, '\1').                       # cleanup whitespace (before .,?!:)
           gsub(/^\s+/, "")                                       # cleanup whitespace (beginning of phrase)
       end
     text_enciphered
