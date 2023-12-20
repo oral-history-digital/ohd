@@ -10,17 +10,15 @@ import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import useMapReferences from '../map-references/useMapReferences';
-import { useProject } from 'modules/routes';
 
 export default function SearchMapPopup({
     title,
     registryEntryId,
     onUpdate = f => f,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const pathBase = usePathBase();
     const dispatch = useDispatch();
-    const { project, projectId } = useProject();
 
     const { isLoading, referenceGroups, segmentRefGroups, numSegmentRefs, error } = useMapReferences(registryEntryId);
 
@@ -59,7 +57,7 @@ export default function SearchMapPopup({
                                                 to={`${pathBase}/interviews/${ref.archive_id}`}
                                                 className="MapPopup-link"
                                             >
-                                                {`${ref.first_name} ${ref.last_name} (${ref.archive_id})`}
+                                                {`${ref.display_name} (${ref.archive_id})`}
                                             </Link>
                                         </li>
                                     ))
@@ -83,7 +81,7 @@ export default function SearchMapPopup({
                                                 className="MapPopup-link"
                                                 to={`${pathBase}/interviews/${refGroup.archive_id}`}
                                             >
-                                                {`${refGroup.first_name} ${refGroup.last_name} (${refGroup.archive_id})`}
+                                                {`${refGroup.display_name} (${refGroup.archive_id})`}
                                             </Link>
                                         </h5>
 

@@ -1,0 +1,3 @@
+class SlimInterviewRegistryReferenceSerializer < SlimRegistryReferenceSerializer
+  attributes :registry_reference_type_id
+end
