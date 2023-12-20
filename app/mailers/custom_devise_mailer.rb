@@ -26,13 +26,14 @@ class CustomDeviseMailer < Devise::Mailer
 
     if record.unconfirmed_email
       @url = "#{domain}/#{locale}/users/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
+      opts[:subject] = I18n.t('devise.mailer.new_email_confirmation_instructions.subject', locale: record.default_locale)
     else
       @url = "#{domain}/#{locale}/users/confirmation?confirmation_token=#{record.confirmation_token}"
+      opts[:subject] = I18n.t('devise.mailer.confirmation_instructions.subject', locale: record.default_locale)
     end
 
     opts[:from] = contact_email
     opts[:reply_to] = contact_email
-    opts[:subject] = I18n.t('devise.mailer.confirmation_instructions.subject', locale: record.default_locale)
     devise_mail(record, :confirmation_instructions, opts)
   end
 
