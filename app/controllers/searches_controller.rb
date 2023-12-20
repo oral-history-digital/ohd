@@ -128,8 +128,7 @@ class SearchesController < ApplicationController
         search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
 
         json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}" do
-          registry_entries = RegistryEntry.for_map(I18n.locale,
-            map_interviewee_ids(search), map_interview_ids(search), scope)
+          registry_entries = RegistryEntry.for_map(map_interviewee_ids(search), map_interview_ids(search), scope)
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer
@@ -152,11 +151,18 @@ class SearchesController < ApplicationController
         interview_ids = map_interview_ids(search)
 
         interview_refs = RegistryReference.for_map_registry_entry(registry_entry_id,
-          I18n.locale, map_interviewee_ids(search), interview_ids, signed_in, scope)
-        interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs, each_serializer: SlimRegistryReferenceMapSerializer)
+          map_interviewee_ids(search), interview_ids, scope)
+        interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
+          each_serializer: SlimInterviewRegistryReferenceSerializer,
+          default_locale: current_project.default_locale,
+          signed_in: signed_in)
 
-        segment_refs = RegistryReference.for_map_segment_references(registry_entry_id, I18n.locale, interview_ids, signed_in, scope)
-        segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs, each_serializer: MapSegmentReferencesSerializer)
+        segment_refs = RegistryReference.for_map_segment_references(registry_entry_id,
+          interview_ids, scope)
+        segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
+          each_serializer: SlimSegmentRegistryReferenceSerializer,
+          default_locale: current_project.default_locale,
+          signed_in: signed_in)
 
         references = {
           interview_references: interview_refs_serialized,
