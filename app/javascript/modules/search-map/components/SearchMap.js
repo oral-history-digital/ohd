@@ -3,7 +3,6 @@ import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import classNames from 'classnames';
 
 import { useIsEditor } from 'modules/archive';
 import { getMapSections } from 'modules/data';

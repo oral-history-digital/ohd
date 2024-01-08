@@ -132,10 +132,6 @@ class ProjectSerializer < ApplicationSerializer
     end
   end
 
-  def has_map
-    object.has_map ? 1 : 0
-  end
-
   def root_registry_entry_id
     object.root_registry_entry.id
   end

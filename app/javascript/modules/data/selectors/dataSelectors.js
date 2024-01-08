@@ -282,13 +282,6 @@ export const getProjectLocales = createSelector(
     }
 );
 
-export const getProjectHasMap = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.has_map;
-    }
-);
-
 export const getStartpageProjects = createSelector(
     [getPublicProjects],
     (projects) => {

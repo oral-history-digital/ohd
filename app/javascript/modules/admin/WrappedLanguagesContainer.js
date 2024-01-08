@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getLanguagesQuery } from 'modules/search';
 import { fetchData, deleteData, submitData,
-    getLanguages, getLanguagesStatus, getProjectHasMap } from 'modules/data';
+    getLanguages, getLanguagesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = state => ({
@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
     resultPagesCount: getLanguagesStatus(state).resultPagesCount,
     query: getLanguagesQuery(state),
     scope: 'language',
-    baseTabIndex: 4 + getProjectHasMap(state),
     detailsAttributes: ['code', 'name'],
     formElements: [
         {

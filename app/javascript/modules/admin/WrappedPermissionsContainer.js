@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getPermissionsQuery } from 'modules/search';
 import { fetchData, deleteData, submitData,
-    getPermissions, getPermissionsStatus, getProjectHasMap } from 'modules/data';
+    getPermissions, getPermissionsStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = state => ({
@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
     resultPagesCount: getPermissionsStatus(state).resultPagesCount,
     query: getPermissionsQuery(state),
     scope: 'permission',
-    baseTabIndex: 5 + getProjectHasMap(state),
     detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
     formElements: [
         {
