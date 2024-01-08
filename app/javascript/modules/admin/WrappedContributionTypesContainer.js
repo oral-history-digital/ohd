@@ -3,8 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getContributionTypesQuery } from 'modules/search';
 import { fetchData, deleteData, submitData, getCurrentProject,
-    getContributionTypesForCurrentProject, getContributionTypesStatus,
-    getProjectHasMap } from 'modules/data';
+    getContributionTypesForCurrentProject, getContributionTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -19,7 +18,6 @@ const mapStateToProps = (state) => {
         scope: 'contribution_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        baseTabIndex: 4 + getProjectHasMap(state),
         detailsAttributes: ['code'],
         initialFormValues: {project_id: project.id},
         formElements: [

@@ -461,10 +461,6 @@ describe('getProjectLocales', () => {
     });
 });
 
-test('getProjectHasMap gets if project has a mpa', () => {
-    expect(selectors.getProjectHasMap(state)).toEqual(state.data.projects[1].has_map);
-});
-
 test('getInterviews retrieves all interviews', () => {
     expect(selectors.getInterviews(state)).toEqual(state.data.interviews);
 });
