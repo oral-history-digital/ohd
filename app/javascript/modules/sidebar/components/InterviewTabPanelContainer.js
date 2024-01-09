@@ -17,7 +17,7 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),
-    hasMap: getCurrentProject(state)?.has_map === 1,
+    hasMap: getCurrentProject(state)?.has_map,
     isCatalog: getIsCatalog(state),
     isLoggedIn: getIsLoggedIn(state),
 });

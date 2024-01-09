@@ -17,7 +17,6 @@ const mapStateToProps = (state) => {
         outerScope: 'project',
         outerScopeId: project.id,
         scope: 'task_type',
-        baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc'],
         initialFormValues: {project_id: project.id},
         formElements: [
