@@ -48,8 +48,8 @@
         \raggedright
         <%= latex_escape(footer_text) %>\\
         \vspace*{0.5cm}
-        \copyright <%= Date.today.strftime("%Y") %> <%= (interview.project.institutions.where(parent_id: nil).first ||
-          interview.project.institutions.first).name(header_locale) %>
+        \copyright <%= Date.today.strftime("%Y") %> <%= (current_project.institutions.where(parent_id: nil).first ||
+          current_project.institutions.first).name(header_locale) %>
       \end{minipage}
     }
   }
