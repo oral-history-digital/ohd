@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getTranslationValuesQuery } from 'modules/search';
 import { fetchData, deleteData, submitData,
-    getTranslationValues, getTranslationValuesStatus, getProjectHasMap } from 'modules/data';
+    getTranslationValues, getTranslationValuesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = state => ({
@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
     resultPagesCount: getTranslationValuesStatus(state).resultPagesCount,
     query: getTranslationValuesQuery(state),
     scope: 'translation_value',
-    baseTabIndex: 4 + getProjectHasMap(state),
     detailsAttributes: ['key', 'value'],
     formElements: [
         {
