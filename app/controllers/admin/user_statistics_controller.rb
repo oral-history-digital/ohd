@@ -26,92 +26,74 @@ class Admin::UserStatisticsController < Admin::BaseController
 
   private
 
-  def csv_export
-    countries = params[:countries] || User.where.not(country: '').map{|u|u.country}.compact.uniq.sort
+  def csv_export(locale = I18n.locale)
+    live_since = current_project.live_since || current_project.created_at
+    countries = params[:countries] ||
+      current_project.users.where.not(country: ['', nil]).map{|u|u.country}.compact.uniq.sort
 
     @list = [ :header, :count ]
     @rows = {
-            :header => { :label => "Benutzerstatistik vom #{Time.now.strftime("%d.%m.%Y")}", :sum => "Gesamt-Zeitraum", :cols => {} },
-            :count => { :label => nil, :sum => User.where(country: countries).count, :cols => {} }
+      header: {
+        row_label: TranslationValue.for('user_statistics.header', locale, date: Time.now.strftime('%d.%m.%Y')),
+        sum: TranslationValue.for('user_statistics.total', locale),
+        cols: {}
+      },
+      count: {
+        row_label: nil,
+        sum: current_project.users.where(country: countries).count,
+        cols: {}
+      }
     }
     @errors = []
 
-    categories = { 'Beruf' => 'job_description', 'Recherche-Anliegen' => 'research_intentions', 'Land' => 'country' }
-    categories.each do |category, field_name|
+    categories = ['job_description', 'research_intentions', 'country']
+    categories.each do |category|
       #inserts title row
-      @list << "'=== #{category} ==='"
+      category_title = TranslationValue.for("activerecord.attributes.user.#{category}", locale)
+      @list << "'=== #{category_title} ==='"
       #
-      category_results = User.where(country: countries).group(field_name).count.sort_by { |group| -group.last }
-
-      category_results.each do |entry, count|
-        if category == 'Land'
-          label = I18n.t(entry, :scope => :countries, :locale => :de)
-        elsif entry.blank?
-          label = "k. A. (#{category})"
-        elsif entry == 'other'
-          label = I18n.t("user_project.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
-        else
-          label = I18n.t("user_project.#{field_name}.#{entry}", :locale => :de)
-        end
-        if @rows.include?(label)
-          @rows[label][:sum] += count
-        else
-          @list << label
-          @rows[label] = { :label => label, :sum => count, :cols => {} }
-        end
-      end
-    end
-
-    date_pattern = "%m / %Y"
-    first_month = Date.new(2010, 7)
-    current_month = first_month
-    last_month = (Date.today-1.month).beginning_of_month
-
-    months = [ nil ]
-    while current_month <= last_month
-      months << current_month
-      current_month += 1.month
-    end
-    months << [ nil ]
-
-    @month_labels = []
-    months.each_with_index do |month, index|
-      if index === 0
-        month_label = "Vor #{first_month.strftime(date_pattern)}"
-        conditions = ["created_at < ?", first_month]
-      elsif index === (months.size-1)
-        month_label = "#{last_month.next_month.strftime(date_pattern)} (bis #{Time.now.strftime("%d.%m.")})"
-        conditions = ["created_at >= ?", last_month.next_month]
-      else
-        month_label = month.strftime(date_pattern)
-        conditions = ["created_at >= ? AND created_at < ?", month, month.next_month]
-      end
-      @month_labels << month_label
-      @rows[:header][:cols][month_label] = month_label
-
-      categories.each do |category, field_name|
-        results = User.where(country: countries).where(conditions).group(field_name).count
-        results.each do |entry, count|
-          if category == 'Land'
-            label = I18n.t(entry, :scope => :countries, :locale => :de)
-          elsif entry.blank?
-            label = "k. A. (#{category})"
-          elsif entry == 'other'
-            label = I18n.t("user.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
+      current_project.users.
+        where(country: countries).
+        group(category).count.
+        sort_by{ |group| -group.last }.
+        each do |entry, count|
+          row_label = label_for(category, entry, locale)
+          if @rows.include?(row_label)
+            @rows[row_label][:sum] += count
           else
-            label = I18n.t("user.#{field_name}.#{entry}", :locale => :de)
+            @list << row_label
+            @rows[row_label] = { row_label: row_label, sum: count, cols: {} }
           end
+        end
+    end
 
-          if @rows[label]
-            unless @rows[label][:cols][month_label] == nil
-              @rows[label][:cols][month_label] = @rows[label][:cols][month_label] + count
+    table_name = current_project.is_ohd? ? 'users' : 'user_projects'
+    time_slots = total(live_since, table_name, locale) + years(live_since, table_name) + months(table_name)
+
+    time_slots.each do |time_slot|
+      slot_label, conditions = time_slot
+      @rows[:header][:cols][slot_label] = slot_label
+
+      categories.each do |category|
+        current_project.users.
+          where(country: countries).
+          where(conditions).
+          group(category).count.
+          sort_by{ |group| -group.last }.
+          each do |entry, count|
+            row_label = label_for(category, entry, locale)
+
+            if @rows[row_label]
+              unless @rows[row_label][:cols][slot_label] == nil
+                @rows[row_label][:cols][slot_label] = @rows[row_label][:cols][slot_label] + count
+              else
+                @rows[row_label][:cols][slot_label] = count
+              end
             else
-              @rows[label][:cols][month_label] = count
+              @errors << "#{row_label} mit Wert '#{count}' nicht berücksichtigt."
             end
-          else
-            @errors << "#{label} mit Wert '#{count}' nicht berücksichtigt."
           end
-        end
+
       end
     end
 
@@ -121,9 +103,9 @@ class Admin::UserStatisticsController < Admin::BaseController
         if row === nil
           csv << [ col ]
         else
-          cells_for_row = [ row[:label], row[:sum] ]
-          @month_labels.each do |month_label|
-            cells_for_row << row[:cols][month_label]
+          cells_for_row = [ row[:row_label], row[:sum] ]
+          time_slots.to_h.keys.each do |slot_label|
+            cells_for_row << row[:cols][slot_label]
           end
           csv << cells_for_row
         end
@@ -138,6 +120,58 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
 
     send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{current_project.shortname}-Benutzerstatistik-#{params[:countries].try(:join, '-') || "gesamt"}.csv")
+  end
+
+  def label_for(category, entry, locale)
+    category_title = TranslationValue.for("activerecord.attributes.user.#{category}", locale)
+    if category == 'country'
+      TranslationValue.for("countries.#{entry}", locale)
+    elsif entry.blank?
+      "k. A. (#{category_title})"
+    elsif entry == 'other'
+      TranslationValue.for("user_project.#{category}.#{entry}", locale) + " (#{category_title})"
+    else
+      TranslationValue.for("user_project.#{category}.#{entry}", locale)
+    end
+  end
+
+  def total(live_since, table_name, locale = I18n.locale)
+    [[
+      TranslationValue.for('user_statistics.total', locale),
+      [
+        "#{table_name}.created_at >= ? AND #{table_name}.created_at < ?",
+        live_since,
+        Time.now
+      ]
+    ]]
+  end
+
+  def years(live_since, table_name)
+    (live_since.year..Time.now.year).inject([]) do |mem, y|
+      mem << [
+        y,
+        [
+          "#{table_name}.created_at >= ? AND #{table_name}.created_at < ?",
+          Date.parse("1.1.#{y}"),
+          Date.parse("31.12.#{y}")
+        ]
+      ]
+      mem
+    end
+  end
+    
+  def months(table_name)
+    (0..11).to_a.reverse.inject([]) do |mem, m|
+      mem << [
+        (Time.now - m.months).strftime('%m.%Y'),
+        [
+          "#{table_name}.created_at >= ? AND #{table_name}.created_at < ?",
+          (Time.now - m.months).beginning_of_month,
+          (Time.now - m.months).end_of_month
+        ]
+      ]
+      mem
+    end
   end
 
 end
