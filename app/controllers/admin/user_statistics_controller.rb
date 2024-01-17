@@ -35,7 +35,7 @@ class Admin::UserStatisticsController < Admin::BaseController
     @rows = {
       header: {
         row_label: TranslationValue.for('user_statistics.header', locale, date: Time.now.strftime('%d.%m.%Y')),
-        sum: TranslationValue.for('user_statistics.total', locale),
+        sum: TranslationValue.for('user_statistics.total_period', locale),
         cols: {}
       },
       count: {
@@ -68,7 +68,7 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
 
     table_name = current_project.is_ohd? ? 'users' : 'user_projects'
-    time_slots = total(live_since, table_name, locale) + years(live_since, table_name) + months(table_name)
+    time_slots = years(live_since, table_name) + months(table_name)
 
     time_slots.each do |time_slot|
       slot_label, conditions = time_slot
@@ -90,7 +90,7 @@ class Admin::UserStatisticsController < Admin::BaseController
                 @rows[row_label][:cols][slot_label] = count
               end
             else
-              @errors << "#{row_label} mit Wert '#{count}' nicht berücksichtigt."
+              @errors << TranslationValue.for("user_statistics.not_considered", locale, row_label: row_label, count: count)
             end
           end
 
@@ -111,15 +111,30 @@ class Admin::UserStatisticsController < Admin::BaseController
         end
       end
       csv << []
-      csv << [ "Stand der Erhebung: #{Time.now.strftime("%d.%m.%Y %H:%M")}" ]
-      csv << [ "Zeitraum: Gesamt" ]
-      csv << [ @errors.size == 0 ? 'Keine Fehlermeldungen.' : 'Fehler / Warnungen:' ]
+      csv << [TranslationValue.for('user_statistics.status_date', locale, date: Time.now.strftime("%d.%m.%Y %H:%M"))]
+      csv << [TranslationValue.for('user_statistics.total_period', locale)]
+      csv << [ 
+        @errors.size == 0 ?
+        TranslationValue.for('user_statistics.no_errors', locale) :
+        TranslationValue.for('user_statistics.errors', locale)
+      ]
       @errors.each do |error|
         csv << [ error ]
       end
     end
 
-    send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{current_project.shortname}-Benutzerstatistik-#{params[:countries].try(:join, '-') || "gesamt"}.csv")
+    send_data(
+      content,
+      filename: [
+        Time.now.strftime("%Y-%m-%d-%H%M"),
+        current_project.shortname,
+        TranslationValue.for('user_statistics.user_statistic', locale),
+        (
+          params[:countries].try(:join, '-') ||
+          TranslationValue.for('user_statistics.total', locale)
+        )
+      ].join('-') + '.csv'
+    )
   end
 
   def label_for(category, entry, locale)
@@ -133,17 +148,6 @@ class Admin::UserStatisticsController < Admin::BaseController
     else
       TranslationValue.for("user_project.#{category}.#{entry}", locale)
     end
-  end
-
-  def total(live_since, table_name, locale = I18n.locale)
-    [[
-      TranslationValue.for('user_statistics.total', locale),
-      [
-        "#{table_name}.created_at >= ? AND #{table_name}.created_at < ?",
-        live_since,
-        Time.now
-      ]
-    ]]
   end
 
   def years(live_since, table_name)
