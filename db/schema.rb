@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_03_131307) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -304,7 +304,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_131307) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "interview_languages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "interview_languages", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "interview_id", null: false
     t.integer "language_id", null: false
     t.string "spec"
@@ -340,6 +340,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_131307) do
     t.string "citation_media_id", limit: 255
     t.string "citation_timecode", limit: 18
     t.datetime "indexed_at", precision: nil
+    t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
     t.text "properties", size: :medium
@@ -349,6 +350,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_131307) do
     t.integer "registry_references_count", default: 0
     t.string "original_content_type"
     t.integer "startpage_position"
+    t.integer "translation_language_id"
     t.boolean "media_missing", default: false, null: false
     t.boolean "transcript_coupled", default: true
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
@@ -606,6 +608,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_131307) do
     t.boolean "grant_project_access_instantly", default: false
     t.boolean "grant_access_without_login", default: false
     t.boolean "show_legend", default: true
+    t.date "live_since"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
@@ -962,6 +965,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_131307) do
     t.string "pre_access_location"
     t.text "specification"
     t.text "research_intentions"
+  end
+
+  create_table "user_registrations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "first_name", limit: 255
+    t.string "last_name", limit: 255
+    t.string "email", limit: 255
+    t.boolean "tos_agreement"
+    t.text "application_info", size: :medium
+    t.datetime "created_at", precision: nil
+    t.datetime "activated_at", precision: nil
+    t.integer "user_account_id"
+    t.datetime "processed_at", precision: nil
+    t.string "default_locale", limit: 255
+    t.boolean "receive_newsletter"
+    t.boolean "priv_agreement", default: false
+    t.datetime "updated_at", precision: nil
+    t.string "workflow_state"
+    t.index ["email"], name: "index_user_registrations_on_workflow_state_and_email", length: 191
   end
 
   create_table "user_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
