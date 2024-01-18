@@ -59,6 +59,7 @@ gem 'shakapacker', '= 7.1'
 
 
 group :test, :development do
+  gem "bundler-audit", "~> 0.9.1"
   gem "byebug", "~> 11.1"
   gem 'bcrypt_pbkdf'
   gem 'ed25519'
