@@ -69,8 +69,8 @@ class Admin::UserStatisticsController < Admin::BaseController
         end
     end
 
-    table_name = current_project.is_ohd? ? 'users' : 'user_projects'
-    time_slots = years(live_since, table_name) + months(table_name)
+    date_attribute = current_project.is_ohd? ? 'users.created_at' : 'user_projects.activated_at'
+    time_slots = years(live_since, date_attribute) + months(date_attribute)
 
     time_slots.each do |time_slot|
       slot_label, conditions = time_slot
@@ -152,12 +152,12 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
   end
 
-  def years(live_since, table_name)
+  def years(live_since, date_attribute)
     (live_since.year..Time.now.year).inject([]) do |mem, y|
       mem << [
         y,
         [
-          "#{table_name}.created_at >= ? AND #{table_name}.created_at < ?",
+          "#{date_attribute} >= ? AND #{date_attribute} < ?",
           Date.parse("1.1.#{y}"),
           Date.parse("31.12.#{y}")
         ]
@@ -166,12 +166,12 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
   end
     
-  def months(table_name)
+  def months(date_attribute)
     (0..11).to_a.reverse.inject([]) do |mem, m|
       mem << [
         (Time.now - m.months).strftime('%m.%Y'),
         [
-          "#{table_name}.created_at >= ? AND #{table_name}.created_at < ?",
+          "#{date_attribute} >= ? AND #{date_attribute} < ?",
           (Time.now - m.months).beginning_of_month,
           (Time.now - m.months).end_of_month
         ]
