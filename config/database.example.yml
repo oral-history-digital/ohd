@@ -34,7 +34,7 @@ test:
   database: ohd_archive_test
   pool: 5
   username: root
-  password:
+  password: root
   socket: /var/run/mysqld/mysqld.sock
 
 production:
@@ -44,5 +44,5 @@ production:
   database: ohd_archive
   pool: 5
   username: root
-  password: 
+  password:
   socket: /var/run/mysqld/mysqld.sock
