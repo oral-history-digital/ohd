@@ -28,8 +28,10 @@ class Admin::UserStatisticsController < Admin::BaseController
 
   def csv_export(locale = I18n.locale)
     live_since = current_project.live_since || current_project.created_at
+    users = current_project.is_ohd? ? User.where.not(confirmed_at: nil) : current_project.users
+
     countries = params[:countries] ||
-      current_project.users.where.not(country: ['', nil]).map{|u|u.country}.compact.uniq.sort
+      users.where.not(country: ['', nil]).map{|u|u.country}.compact.uniq.sort
 
     @list = [ :header, :count ]
     @rows = {
@@ -40,7 +42,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       },
       count: {
         row_label: nil,
-        sum: current_project.users.where(country: countries).count,
+        sum: users.where(country: countries).count,
         cols: {}
       }
     }
@@ -52,7 +54,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       category_title = TranslationValue.for("activerecord.attributes.user.#{category}", locale)
       @list << "'=== #{category_title} ==='"
       #
-      current_project.users.
+      users.
         where(country: countries).
         group(category).count.
         sort_by{ |group| -group.last }.
@@ -75,7 +77,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       @rows[:header][:cols][slot_label] = slot_label
 
       categories.each do |category|
-        current_project.users.
+        users.
           where(country: countries).
           where(conditions).
           group(category).count.
