@@ -15,14 +15,18 @@ class TranslationValue < ApplicationRecord
     end
   end
 
-  def self.for(key, locale, replacements={})
+  def self.for(key, locale, replacements={}, fallback_to_key=false)
     text = find_by(key: key)&.value(locale)
     if text
       replacements.each do |k, v|
         text = text.gsub(/%{#{k}}/, v.to_s)
       end
     else
-      text = "missing translation-value: #{key}"
+      if fallback_to_key
+        text = key.split('.').last.humanize
+      else
+        text = "missing translation-value: #{key}"
+      end
     end
     text
   end
