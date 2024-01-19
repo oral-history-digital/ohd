@@ -20,7 +20,10 @@ class Admin::UserStatisticsController < Admin::BaseController
             Time.now.strftime("%Y-%m-%d-%H%M"),
             current_project.shortname,
             TranslationValue.for('user_statistics.user_statistic', locale),
-            params[:countries].try(:join, '-')
+            (
+              params[:countries].try(:join, '-') ||
+              TranslationValue.for('user_statistics.total', locale)
+            )
           ].join('-') + '.csv'
         )
       end
