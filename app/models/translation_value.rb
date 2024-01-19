@@ -23,7 +23,7 @@ class TranslationValue < ApplicationRecord
       end
     else
       if fallback_to_key
-        text = key.split('.').last.humanize
+        text = key.split('.').last
       else
         text = "missing translation-value: #{key}"
       end

@@ -42,8 +42,8 @@ class Admin::UserStatisticsController < Admin::BaseController
     users = current_project.is_ohd? ? User.where.not(confirmed_at: nil) : current_project.users
     users = users.where(country: params[:countries]) if params[:countries].present?
 
-    categories = ['job_description', 'research_intentions', 'country']
-    date_attribute = current_project.is_ohd? ? 'users.created_at' : 'user_projects.activated_at'
+    categories = ['job_description', 'research_intentions', 'country', 'default_locale']
+    date_attribute = current_project.is_ohd? ? 'users.confirmed_at' : 'user_projects.activated_at'
 
     time_slots = (
       total(live_since, date_attribute, locale) +
@@ -76,14 +76,14 @@ class Admin::UserStatisticsController < Admin::BaseController
 
   def label_for(category, entry, locale)
     category_title = TranslationValue.for("activerecord.attributes.user.#{category}", locale)
-    if category == 'country'
-      TranslationValue.for("countries.#{entry}", locale)
-    elsif entry.blank?
+    if entry.blank?
       "k. A. (#{category_title})"
+    elsif category == 'country'
+      TranslationValue.for("countries.#{entry}", locale)
     elsif entry == 'other'
       TranslationValue.for("user_project.#{category}.#{entry}", locale) + " (#{category_title})"
     else
-      TranslationValue.for("user_project.#{category}.#{entry}", locale)
+      TranslationValue.for("user_project.#{category}.#{entry}", locale, {}, true)
     end
   end
 
