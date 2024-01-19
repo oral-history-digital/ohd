@@ -13,7 +13,17 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
     respond_to do |wants|
       wants.html
-      wants.csv { csv_export }
+      wants.csv do
+        send_data(
+          generate_csv,
+          filename: [
+            Time.now.strftime("%Y-%m-%d-%H%M"),
+            current_project.shortname,
+            TranslationValue.for('user_statistics.user_statistic', locale),
+            params[:countries].try(:join, '-')
+          ].join('-') + '.csv'
+        )
+      end
     end
   end
 
@@ -26,117 +36,42 @@ class Admin::UserStatisticsController < Admin::BaseController
 
   private
 
-  def csv_export(locale = I18n.locale)
+  def generate_csv(locale = I18n.locale)
     live_since = current_project.live_since || current_project.created_at
+
     users = current_project.is_ohd? ? User.where.not(confirmed_at: nil) : current_project.users
-
-    countries = params[:countries] ||
-      users.where.not(country: ['', nil]).map{|u|u.country}.compact.uniq.sort
-
-    @list = [ :header, :count ]
-    @rows = {
-      header: {
-        row_label: TranslationValue.for('user_statistics.header', locale, date: Time.now.strftime('%d.%m.%Y')),
-        sum: TranslationValue.for('user_statistics.total_period', locale),
-        cols: {}
-      },
-      count: {
-        row_label: nil,
-        sum: users.where(country: countries).count,
-        cols: {}
-      }
-    }
-    @errors = []
+    users = users.where(country: params[:countries]) if params[:countries].present?
 
     categories = ['job_description', 'research_intentions', 'country']
-    categories.each do |category|
-      #inserts title row
-      category_title = TranslationValue.for("activerecord.attributes.user.#{category}", locale)
-      @list << "'=== #{category_title} ==='"
-      #
-      users.
-        where(country: countries).
-        group(category).count.
-        sort_by{ |group| -group.last }.
-        each do |entry, count|
-          row_label = label_for(category, entry, locale)
-          if @rows.include?(row_label)
-            @rows[row_label][:sum] += count
-          else
-            @list << row_label
-            @rows[row_label] = { row_label: row_label, sum: count, cols: {} }
-          end
-        end
-    end
-
     date_attribute = current_project.is_ohd? ? 'users.created_at' : 'user_projects.activated_at'
-    time_slots = years(live_since, date_attribute) + months(date_attribute)
 
-    time_slots.each do |time_slot|
-      slot_label, conditions = time_slot
-      @rows[:header][:cols][slot_label] = slot_label
+    time_slots = (
+      total(live_since, date_attribute, locale) +
+      years(live_since, date_attribute) +
+      months(date_attribute)
+    ).to_h
+
+    CSV.generate(:col_sep => "\t", quote_char: "\x00") do |csv|
+      csv << [
+        TranslationValue.for('user_statistics.header', locale, date: Time.now.strftime('%d.%m.%Y')),
+      ] + time_slots.keys
+
+      csv << [
+        TranslationValue.for('user_statistics.total', locale),
+      ] + time_slots.map{|k, conditions| users.where(conditions).count }
 
       categories.each do |category|
+        csv << ["'=== #{TranslationValue.for("activerecord.attributes.user.#{category}", locale)} ==='"]
         users.
-          where(country: countries).
-          where(conditions).
           group(category).count.
           sort_by{ |group| -group.last }.
           each do |entry, count|
-            row_label = label_for(category, entry, locale)
-
-            if @rows[row_label]
-              unless @rows[row_label][:cols][slot_label] == nil
-                @rows[row_label][:cols][slot_label] = @rows[row_label][:cols][slot_label] + count
-              else
-                @rows[row_label][:cols][slot_label] = count
-              end
-            else
-              @errors << TranslationValue.for("user_statistics.not_considered", locale, row_label: row_label, count: count)
-            end
-          end
-
-      end
-    end
-
-    content = CSV.generate(:col_sep => "\t", quote_char: "\x00") do |csv|
-      @list.each do |col|
-        row = @rows[col]
-        if row === nil
-          csv << [ col ]
-        else
-          cells_for_row = [ row[:row_label], row[:sum] ]
-          time_slots.to_h.keys.each do |slot_label|
-            cells_for_row << row[:cols][slot_label]
-          end
-          csv << cells_for_row
+            csv << [
+              label_for(category, entry, locale),
+            ] + time_slots.map{|k, conditions| users.where(conditions).where(category => entry).count }
         end
       end
-      csv << []
-      csv << [TranslationValue.for('user_statistics.status_date', locale, date: Time.now.strftime("%d.%m.%Y %H:%M"))]
-      csv << [TranslationValue.for('user_statistics.total_period', locale)]
-      csv << [ 
-        @errors.size == 0 ?
-        TranslationValue.for('user_statistics.no_errors', locale) :
-        TranslationValue.for('user_statistics.errors', locale)
-      ]
-      @errors.each do |error|
-        csv << [ error ]
-      end
     end
-
-    send_data(
-      content,
-      filename: [
-        Time.now.strftime("%Y-%m-%d-%H%M"),
-        current_project.shortname,
-        TranslationValue.for('user_statistics.user_statistic', locale),
-        (
-          params[:countries].try(:join, '-') ||
-          TranslationValue.for('user_statistics.total', locale)
-        )
-      ].join('-') + '.csv'
-    )
   end
 
   def label_for(category, entry, locale)
@@ -150,6 +85,17 @@ class Admin::UserStatisticsController < Admin::BaseController
     else
       TranslationValue.for("user_project.#{category}.#{entry}", locale)
     end
+  end
+
+  def total(live_since, date_attribute, locale = I18n.locale)
+    [[
+      TranslationValue.for('user_statistics.total', locale),
+      [
+        "#{date_attribute} >= ? AND #{date_attribute} < ?",
+        live_since,
+        Time.now
+      ]
+    ]]
   end
 
   def years(live_since, date_attribute)
