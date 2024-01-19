@@ -57,7 +57,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       ] + time_slots.keys
 
       csv << [
-        TranslationValue.for('user_statistics.total', locale),
+        nil,
       ] + time_slots.map{|k, conditions| users.where(conditions).count }
 
       categories.each do |category|
