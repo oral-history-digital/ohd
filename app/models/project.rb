@@ -155,6 +155,10 @@ class Project < ApplicationRecord
     read_attribute :available_locales
   end
 
+  def logo
+    logos.where(locale: I18n.locale).first || logos.first
+  end
+
   def root_registry_entry
     registry_entries.where(code: 'root').first
   end

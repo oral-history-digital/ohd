@@ -16,12 +16,12 @@ html
     .layout-indicator style="display: block;"
       .Layout
         .Layout-page.Site
-          header.SiteHeader
+          header.LoginHeader
 
-            = image_tag  "/ohd-logo-gr.png", class: 'SiteHeader-logo'
+            = image_tag  "/ohd-logo-gr.png", class: 'LoginHeader-logo'
 
-            - if @project && @project.logos.first && !@project.is_ohd?
-              = image_tag @project.logos.first.file, class: 'SiteHeader-logo'
+            - if @project && @project.logo && !@project.is_ohd?
+              = image_tag @project.logo.file, class: 'LoginHeader-logo'
 
           main.Site-content
             .wrapper-content.u-line-length
