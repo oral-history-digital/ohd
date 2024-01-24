@@ -74,6 +74,24 @@ class Admin::UserStatisticsController < Admin::BaseController
             ] + time_slots.map{|k, conditions| users.where(conditions).where(category => entry).count }
         end
       end
+
+      # add a row for each archive
+      if current_project.is_ohd?
+        date_attribute = 'activated_at'
+
+        time_slots = (
+          total(live_since, date_attribute, locale) +
+          years(live_since, date_attribute) +
+          months(date_attribute)
+        ).to_h
+
+        csv << ["'=== #{TranslationValue.for("activerecord.models.project.one", locale)} ==='"]
+        Project.where.not(shortname: 'ohd').each do |project|
+          csv << [
+            project.shortname,
+          ] + time_slots.map{|k, conditions| UserProject.where(conditions).where(project_id: project.id).count }
+        end
+      end
     end
   end
 
