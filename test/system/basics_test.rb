@@ -330,7 +330,7 @@ class BasicsTest < ApplicationSystemTestCase
     
     click_on 'Add annotations'
     click_on 'Anmerkung hinzufügen'
-    find('.public-DraftStyleDefault-ltr').send_keys('my annotation')
+    find('.public-DraftEditor-content').send_keys('my annotation')
     click_on 'Submit'
   end
 end
