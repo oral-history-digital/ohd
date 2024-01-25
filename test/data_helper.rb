@@ -25,6 +25,51 @@ module DataHelper
     ct = test_contribution_type(project)
     i = test_interview(project)
 
+    root_registry_entry = RegistryEntry.create!(
+      project_id: project.id,
+      code: 'root',
+      workflow_state: 'public'
+    )
+
+    # default_registry_name_type = RegistryNameType.find_by!(code: "spelling")
+
+    # RegistryName.create(
+    #   registry_entry_id: root_registry_entry.id,
+    #   registry_name_type_id: default_registry_name_type.id,
+    #   name_position: 0,
+    #   descriptor: I18n.t('registry', locale: project.default_locale),
+    #   locale: project.default_locale
+    # )
+
+    # ['places', 'people', 'subjects'].each do |code|
+    #   entry = RegistryEntry.create(
+    #     project_id: project.id,
+    #     code: code,
+    #     workflow_state: 'public'
+    #   )
+
+    #   registry_name = RegistryName.create(
+    #     registry_entry_id: entry.id,
+    #     registry_name_type_id: default_registry_name_type.id,
+    #     name_position: 0,
+    #   )
+
+    #   # add_translations(registry_name, 'descriptor', code)
+
+    #   RegistryHierarchy.find_or_create_by(
+    #     ancestor_id: root_registry_entry.id,
+    #     descendant_id: entry.id
+    #   )
+    # end
+
+    RegistryReferenceType.create(
+      code: 'birth_location',
+      name: 'Birth location',
+      registry_entry_id: project.registry_entries.where(code: 'root').first.id,
+      project_id: project.id,
+      use_in_transcript: true,
+    )
+
     institution = Institution.create!(
       name: "Test Institute",
       shortname: 'test_inst',
@@ -97,7 +142,19 @@ module DataHelper
       introduction: 'This is the test archive of the oral history digital project…',
       more_text: 'more text?',
       landing_page_text: 'This is the landing page. Register please.',
-      workflow_state: 'public'
+      workflow_state: 'public',
+      registry_name_types: [
+        RegistryNameType.create(
+          code: 'spelling',
+          name: 'Bezeichner',
+          order_priority: 3
+        ),
+        RegistryNameType.create(
+          code: 'ancient',
+          name: 'Ehemalige Bezeichnung',
+          order_priority: 3
+        )
+      ]
     )
 
     Project.create! attribs
@@ -148,6 +205,10 @@ module DataHelper
         Contribution.new(
           contribution_type: ContributionType.find_by!(code: 'interviewee'),
           person: Person.find_by!(last_name: 'Rossi')
+        ),
+        Contribution.new(
+          contribution_type: ContributionType.find_by!(code: 'interviewee'),
+          person: Person.find_by!(last_name: 'Dupont')
         )
       ]
     )
