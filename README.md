@@ -15,7 +15,7 @@ production without any modifications.
 * MySQL/MariaDB
 * Node.js 16
 * yarn
-* Java Runtime Environment
+* Java Runtime Environment (version 8)
 * optional: LaTeX for PDF generation (e.g. texlive-base and texlive-xetex packages for Ubuntu)
 
 ## Application Setup

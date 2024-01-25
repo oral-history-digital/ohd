@@ -73,6 +73,12 @@ class ActiveSupport::TestCase
     click_on 'Login'
   end
 
+  def logout
+    visit '/'
+    click_on 'Account'
+    click_on 'Logout'
+  end
+
   def system_test?
     return false unless Kernel.const_defined?(:ApplicationSystemTestCase)
 
