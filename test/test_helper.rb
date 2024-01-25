@@ -15,7 +15,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "#{Rails.root}/test/data_helper.rb"
 
-if ENV['retry'] == 'true'
+if ENV['RETRY'] == 'true'
   require 'minitest/retry'
   Minitest::Retry.use!
 end
