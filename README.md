@@ -131,6 +131,7 @@ Foreman also starts the development servers as they can be shared with the test
 environment. With that out of the way, run all tests:
 
     bundle exec rails test -v test/
+    bundle exec rails test -v test/system
 
 Additional features of the test suite can be controlled with environment
 variables:
@@ -138,3 +139,8 @@ variables:
 * set COVERAGE=true to generate a coverage report to `tmp/coverage/index.html`
 * set RETRY=true to rerun failed tests up to 3 times
 * set HEADLESS=true to run the e2e tests in a headless browser
+
+There is also a script to run all tests in an unattended fashion (with RETRY
+and HEADLESS):
+
+    bin/test
