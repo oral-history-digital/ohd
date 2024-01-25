@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+export RETRY="true"
+export COVERAGE="true"
+
+bundle exec rails test -v test/system
