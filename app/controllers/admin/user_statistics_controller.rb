@@ -45,7 +45,8 @@ class Admin::UserStatisticsController < Admin::BaseController
     users = current_project.is_ohd? ? User.where.not(confirmed_at: nil) : current_project.users
     users = users.where(country: params[:countries]) if params[:countries].present?
 
-    categories = ['job_description', 'research_intentions', 'country', 'default_locale']
+    archive_categories = ['job_description', 'research_intentions', 'country', 'default_locale']
+    ohd_categories = ['country', 'default_locale']
     date_attribute = current_project.is_ohd? ? 'users.confirmed_at' : 'user_projects.activated_at'
 
     time_slots = (
@@ -63,7 +64,7 @@ class Admin::UserStatisticsController < Admin::BaseController
         nil,
       ] + time_slots.map{|k, conditions| users.where(conditions).count }
 
-      categories.each do |category|
+      (current_project.is_ohd? ? ohd_categories : archive_categories).each do |category|
         csv << ["'=== #{TranslationValue.for("activerecord.attributes.user.#{category}", locale)} ==='"]
         users.
           group(category).count.
