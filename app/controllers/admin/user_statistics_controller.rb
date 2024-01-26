@@ -50,9 +50,9 @@ class Admin::UserStatisticsController < Admin::BaseController
     date_attribute = current_project.is_ohd? ? 'users.confirmed_at' : 'user_projects.activated_at'
 
     time_slots = (
-      total(live_since, date_attribute, locale) +
+      total(date_attribute, locale) +
       years(live_since, date_attribute) +
-      months(date_attribute)
+      months(live_since, date_attribute)
     ).to_h
 
     CSV.generate(:col_sep => "\t", quote_char: "\x00") do |csv|
@@ -81,9 +81,9 @@ class Admin::UserStatisticsController < Admin::BaseController
         date_attribute = 'activated_at'
 
         time_slots = (
-          total(live_since, date_attribute, locale) +
+          total(date_attribute, locale) +
           years(live_since, date_attribute) +
-          months(date_attribute)
+          months(live_since, date_attribute)
         ).to_h
 
         csv << ["'=== #{TranslationValue.for("activerecord.models.project.one", locale)} ==='"]
@@ -109,19 +109,18 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
   end
 
-  def total(live_since, date_attribute, locale = I18n.locale)
+  def total(date_attribute, locale = I18n.locale)
     [[
       TranslationValue.for('user_statistics.total', locale),
       [
-        "#{date_attribute} >= ? AND #{date_attribute} < ?",
-        live_since,
+        "#{date_attribute} < ?",
         Time.now
       ]
     ]]
   end
 
   def years(live_since, date_attribute)
-    (live_since.year..Time.now.year).inject([]) do |mem, y|
+    ((live_since.year + 1)..Time.now.year).inject([]) do |mem, y|
       mem << [
         y,
         [
@@ -134,8 +133,10 @@ class Admin::UserStatisticsController < Admin::BaseController
     end
   end
     
-  def months(date_attribute)
-    (0..11).to_a.reverse.inject([]) do |mem, m|
+  def months(live_since, date_attribute)
+    days_live = (Date.today - live_since).to_i
+    max_months = days_live > 365 ? 11 : (days_live / 30).ceil
+    (0..max_months).to_a.reverse.inject([]) do |mem, m|
       mem << [
         (Time.now - m.months).strftime('%m.%Y'),
         [
