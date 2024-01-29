@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 
-import { PixelLoader } from 'modules/spinners';
+import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import SegmentLinks from './SegmentLinks';
-import useEntryReferences from './useEntryReferences';
 import useEntryReferencesAlt from './useEntryReferencesAlt';
 
 export default function EntryReferences({
@@ -15,10 +14,11 @@ export default function EntryReferences({
     setArchiveId,
 }) {
     const { t } = useI18n();
-    const { isLoading, referencesCount, data } = useEntryReferences(registryEntry);
-    const { data: altData } = useEntryReferencesAlt(registryEntry);
+    //const { isLoading, referencesCount, data } = useEntryReferences(registryEntry);
+    const { isLoading, isValidating, data, interviewReferences, segmentReferences,
+        error } = useEntryReferencesAlt(registryEntry);
 
-    console.log(altData);
+    const referencesCount = interviewReferences?.length;
 
     function title() {
         const refTranslation = referencesCount === 1
@@ -31,33 +31,26 @@ export default function EntryReferences({
         <>
             <h4>{title()}</h4>
             {isLoading ?
-                <PixelLoader/> : (
+                <Spinner/> : (
                 <ul className="UnorderedList">
-                    {data.map(({ loaded, archiveId, projectId, title, segmentReferences }) => {
-                        if (!loaded) {
-                            return (
-                                <li key={archiveId}>
-                                    {t('loading')}
-                                </li>
-                            );
-                        }
-
+                    {interviewReferences.map(({ archive_id, project_id, display_name }) => {
                         return (
-                            <li key={archiveId}>
+                            <li key={archive_id}>
                                 <LinkOrA
-                                    project={projects[projectId]}
-                                    to={`interviews/${archiveId}`}
-                                    onLinkClick={() => setArchiveId(archiveId)}
+                                    project={projects[project_id]}
+                                    to={`interviews/${archive_id}`}
+                                    onLinkClick={() => setArchiveId(archive_id)}
                                     className="search-result-link"
                                 >
-                                    {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${title} (${archiveId})`}
+                                    {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${display_name} (${archive_id})`}
                                 </LinkOrA>
-                                {isLoggedIn && (
+
+                                {/*isLoggedIn && (
                                     <SegmentLinks
                                         references={segmentReferences}
                                         onSubmit={onSubmit}
                                     />
-                                )}
+                                )*/}
                             </li>
                         );
                     })}

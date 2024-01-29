@@ -123,14 +123,20 @@ class RegistryReferencesController < ApplicationController
     #scope = map_scope
 
     interview_refs = RegistryReference.for_registry_entry(registry_entry_id)
-
     interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
       each_serializer: SlimInterviewRegistryReferenceSerializer,
       default_locale: current_project.default_locale,
       signed_in: signed_in)
 
+    segment_refs = RegistryReference.segment_references_for_registry_entry(registry_entry_id)
+    segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
+      each_serializer: SlimSegmentRegistryReferenceSerializer,
+      default_locale: current_project.default_locale,
+      signed_in: signed_in)
+
     render json: {
-      interview_references: interview_refs_serialized
+      interview_references: interview_refs_serialized,
+      segment_references: segment_refs_serialized
     }
   end
 
