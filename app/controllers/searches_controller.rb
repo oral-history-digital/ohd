@@ -149,15 +149,16 @@ class SearchesController < ApplicationController
 
         search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
         interview_ids = map_interview_ids(search)
+        repository = RegistryReferenceRepository.new
 
-        interview_refs = RegistryReference.for_map_registry_entry(registry_entry_id,
+        interview_refs = repository.map_interview_references_for(registry_entry_id,
           map_interviewee_ids(search), interview_ids, scope)
         interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
           each_serializer: SlimInterviewRegistryReferenceSerializer,
           default_locale: current_project.default_locale,
           signed_in: signed_in)
 
-        segment_refs = RegistryReference.for_map_segment_references(registry_entry_id,
+        segment_refs = repository.map_segment_references_for(registry_entry_id,
           interview_ids, scope)
         segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
           each_serializer: SlimSegmentRegistryReferenceSerializer,
