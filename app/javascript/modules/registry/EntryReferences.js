@@ -5,6 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import SegmentLinks from './SegmentLinks';
 import useEntryReferences from './useEntryReferences';
+import useEntryReferencesAlt from './useEntryReferencesAlt';
 
 export default function EntryReferences({
     projects,
@@ -15,6 +16,9 @@ export default function EntryReferences({
 }) {
     const { t } = useI18n();
     const { isLoading, referencesCount, data } = useEntryReferences(registryEntry);
+    const { data: altData } = useEntryReferencesAlt(registryEntry);
+
+    console.log(altData);
 
     function title() {
         const refTranslation = referencesCount === 1

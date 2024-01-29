@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     resources :registry_hierarchies, only: [:create, :destroy]
     resources :registry_names, only: [:create, :update, :destroy]
     resources :registry_references, only: [:create, :update, :destroy, :index]
+    get "registry_references/for_reg_entry/:id", to: "registry_references#for_reg_entry"
     resources :registry_reference_types, only: [:create, :update, :index, :destroy]
     get "registry_reference_types/global", to: "registry_reference_types#global"
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
