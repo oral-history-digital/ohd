@@ -6,7 +6,7 @@ import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal, Checkbox } from 'modules/ui';
-import RegistryEntryShowContainer from './RegistryEntryShowContainer';
+import RegistryEntryShow from './RegistryEntryShow';
 import RegistryEntries from './RegistryEntries';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryEditButtons from './RegistryEntryEditButtons';
@@ -90,7 +90,7 @@ export default function RegistryEntry({
                         trigger={<RegistryEntryLabel registryEntry={data} />}
                     >
                         {close => (
-                            <RegistryEntryShowContainer
+                            <RegistryEntryShow
                                 registryEntryId={data.id}
                                 onSubmit={close}
                                 normDataLinks={<NormDataLinks registryEntry={data} />}
