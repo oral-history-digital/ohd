@@ -33,7 +33,7 @@ class RegistryReference < BaseRegistryReference
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
 
     entries.where('metadata_fields.ref_object_type': ['Person', 'Interview'])
-      .group('registry_references.id')
+      .group('interviews.archive_id')
       .select("registry_references.id,
         registry_reference_types.id as registry_reference_type_id,
         interviews.archive_id,

@@ -14,6 +14,7 @@ export default function useEntryReferencesAlt(registryEntry) {
 
     let interviewReferences, segmentReferences;
 
+
     if (data) {
         interviewReferences = data?.interview_references;
         segmentReferences = data?.segment_references;
