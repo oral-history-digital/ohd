@@ -79,7 +79,7 @@ class Admin::UserStatisticsController < Admin::BaseController
 
       # add a row for each archive
       if current_project.is_ohd?
-        date_attribute = 'activated_at'
+        date_attribute = 'user_projects.activated_at'
 
         time_slots = (
           total(date_attribute, locale) +
@@ -88,10 +88,21 @@ class Admin::UserStatisticsController < Admin::BaseController
         ).to_h
 
         csv << ["'=== #{TranslationValue.for("activerecord.models.project.one", locale)} ==='"]
-        Project.where.not(shortname: 'ohd').each do |project|
-          csv << [
-            project.shortname,
-          ] + time_slots.map{|k, conditions| UserProject.where(conditions).where(project_id: project.id).count }
+        Project.where.not(shortname: 'ohd').
+          left_joins(:user_projects).
+          where.not(user_projects: {activated_at: nil}).
+          group(:id).
+          order('COUNT(user_projects.id) DESC').
+          each do |project|
+            csv << [
+              project.shortname,
+            ] + time_slots.map do |k, conditions|
+              users.
+                joins(:user_projects).
+                where(conditions).
+                where("user_projects.project_id = ?", project.id).
+                count
+            end
         end
       end
     end
@@ -114,7 +125,7 @@ class Admin::UserStatisticsController < Admin::BaseController
     [[
       TranslationValue.for('user_statistics.total', locale),
       [
-        "#{date_attribute} < ?",
+        "#{date_attribute} <= ?",
         Time.now
       ]
     ]]
