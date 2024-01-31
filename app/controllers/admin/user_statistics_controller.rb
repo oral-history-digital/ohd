@@ -45,7 +45,7 @@ class Admin::UserStatisticsController < Admin::BaseController
     users = current_project.is_ohd? ? User.where.not(confirmed_at: nil) : current_project.users
     users = users.where(country: params[:countries]) if params[:countries].present?
 
-    archive_categories = ['job_description', 'research_intentions', 'country', 'default_locale']
+    archive_categories = ['job_description', 'user_projects.research_intentions', 'country', 'default_locale']
     ohd_categories = ['country', 'default_locale']
     date_attribute = current_project.is_ohd? ? 'users.confirmed_at' : 'user_projects.activated_at'
 
@@ -65,13 +65,14 @@ class Admin::UserStatisticsController < Admin::BaseController
       ] + time_slots.map{|k, conditions| users.where(conditions).count }
 
       (current_project.is_ohd? ? ohd_categories : archive_categories).each do |category|
-        csv << ["'=== #{TranslationValue.for("activerecord.attributes.user.#{category}", locale)} ==='"]
+        category_key = category.split('.').last
+        csv << ["'=== #{TranslationValue.for("activerecord.attributes.user.#{category_key}", locale)} ==='"]
         users.
           group(category).count.
           sort_by{ |group| -group.last }.
           each do |entry, count|
             csv << [
-              label_for(category, entry, locale),
+              label_for(category_key, entry, locale),
             ] + time_slots.map{|k, conditions| users.where(conditions).where(category => entry).count }
         end
       end
@@ -134,7 +135,7 @@ class Admin::UserStatisticsController < Admin::BaseController
   end
     
   def months(live_since, date_attribute)
-    days_live = (Date.today - live_since).to_i
+    days_live = (Date.today - live_since.to_date).to_i
     max_months = days_live > 365 ? 11 : (days_live / 30).ceil
     (0..max_months).to_a.reverse.inject([]) do |mem, m|
       mem << [
