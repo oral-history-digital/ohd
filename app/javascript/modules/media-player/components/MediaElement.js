@@ -42,6 +42,7 @@ export default function MediaElement({
     const { t, locale } = useI18n();
     const { project } = useProject();
     const playerRef = useRef(null);
+    const tapeRef = useRef(tape);  // Used for event handler below.
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
@@ -169,6 +170,8 @@ export default function MediaElement({
             return;
         }
 
+        tapeRef.current = tape;
+
         const newSources = mediaStreamsToSources(Object.values(mediaStreams),
             pathBase, interview.media_type, archiveId, interview.tape_count, tape);
 
@@ -199,11 +202,14 @@ export default function MediaElement({
             player.removeRemoteTextTrack(tracks[i]);
         }
 
+        // Use tape number from ref since this function is called from event
+        // handler.
+        const actualTape = tapeRef.current;
         // Add new text tracks.
         let newTracks = [];
         if (interview.media_type === 'video') {
             newTracks = interview.languages.map(lang => ({
-                src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${tape}`,
+                src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
                 language: lang,
                 kind: 'captions',
                 label: t(lang),
