@@ -675,13 +675,13 @@ de:
     research: Erschließung
     sound: Ton
     other_attender: Sonstige Anwesende
+    further_interviewee: Weitere*r Interviewte*r
     producer: Produktion
     quality_manager: Qualitätsmangement
     quality_manager_translation: Qualitätsmanagement Übersetzung
     quality_manager_transcription: Qualitätsmanagement Transkription
     quality_manager_interviewing: Qualitätsmanagement Interview
     quality_manager_research: Qualitätsmanagement Erschließung
-    other_attender: Sonstige Anwesende
     transcript: Transkription
   events:
     title: Ereignisse
