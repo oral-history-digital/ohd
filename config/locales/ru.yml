@@ -697,14 +697,14 @@ ru:
     proofreader: корректура
     research: обработка
     sound: Ton
-    other_attender: Sonstige Anwesende
+    other_attender: Other attendees
+    further_interviewee: Further interviewee
     producer: Produktion
     quality_manager: Qualitätsmangement
     quality_manager_translation: Qualitätsmangement Übersetzung
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
