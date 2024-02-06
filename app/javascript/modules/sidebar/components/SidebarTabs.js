@@ -35,7 +35,7 @@ export default function SidebarTabs({
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const hasMap = project?.has_map === 1;
+    const hasMap = project?.has_map;
     const isCampscapesProject = project?.identifier === 'campscapes';
 
     useEffect(() => {

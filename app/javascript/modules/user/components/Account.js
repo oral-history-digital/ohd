@@ -94,7 +94,7 @@ export default function Account ({
                         type="button"
                         className='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
                         onClick={() => {
-                            location = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}&project=${projectId}`;
+                            location = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}${location.search}&project=${projectId}`;
                         }}
                     >
                         {t('login')}

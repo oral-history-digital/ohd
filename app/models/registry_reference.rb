@@ -19,10 +19,7 @@ class RegistryReference < BaseRegistryReference
             where.not('registry_entries.longitude': '-0.376295').where.not('registry_entries.latitude': '39.462571')
         }
 
-  scope :for_map_registry_entry, -> (registry_entry_id, locale, person_ids = [], interview_ids = [], signed_in = false, scope = 'public') {
-    last_name_select = signed_in ? 'person_translations.last_name' : 'SUBSTRING(person_translations.last_name,1,1) AS last_name'
-    pseudonym_last_name_select = signed_in ? 'person_translations.pseudonym_last_name' : 'SUBSTRING(person_translations.pseudonym_last_name,1,1) AS pseudonym_last_name'
-
+  scope :for_map_registry_entry, -> (registry_entry_id, person_ids = [], interview_ids = [], scope = 'public') {
     entries = joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
       .joins('INNER JOIN registry_entries ON registry_references.registry_entry_id = registry_entries.id')
       .joins('INNER JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
@@ -37,7 +34,6 @@ class RegistryReference < BaseRegistryReference
       .where('metadata_fields.use_in_map_search': true)
       .where('contribution_types.code': 'interviewee')
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
-      .where('person_translations.locale': locale)
 
     entries.where('metadata_fields.ref_object_type': 'Person')
       .where('registry_references.ref_object_id': person_ids)
@@ -45,13 +41,18 @@ class RegistryReference < BaseRegistryReference
         entries.where('metadata_fields.ref_object_type': 'Interview')
           .where('registry_references.ref_object_id': interview_ids)
         )
-      .select("registry_references.id, registry_reference_types.id as registry_reference_type_id, interviews.archive_id, people.use_pseudonym, person_translations.first_name, #{last_name_select}, person_translations.pseudonym_first_name, #{pseudonym_last_name_select}")
+      .group('registry_references.id')
+      .select("registry_references.id,
+        registry_reference_types.id as registry_reference_type_id,
+        interviews.archive_id,
+        people.use_pseudonym,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.last_name) AS agg_last_names,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.first_name) AS agg_first_names,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.pseudonym_last_name) AS agg_pseudonym_last_names,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.pseudonym_first_name) AS agg_pseudonym_first_names")
   }
 
-  scope :for_map_segment_references, -> (registry_entry_id, locale, interview_ids, signed_in = false, scope = 'public') {
-    last_name_select = signed_in ? 'person_translations.last_name' : 'SUBSTRING(person_translations.last_name,1,1) AS last_name'
-    pseudonym_last_name_select = signed_in ? 'person_translations.pseudonym_last_name' : 'SUBSTRING(person_translations.pseudonym_last_name,1,1) AS pseudonym_last_name'
-
+  scope :for_map_segment_references, -> (registry_entry_id, interview_ids, scope = 'public') {
     joins('INNER JOIN registry_entries ON registry_references.registry_entry_id = registry_entries.id')
       .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
       .joins('INNER JOIN contributions ON contributions.interview_id = interviews.id')
@@ -68,9 +69,18 @@ class RegistryReference < BaseRegistryReference
       .where('registry_references.ref_object_type': 'Segment')
       .where('contribution_types.code': 'interviewee')
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
-      .where('person_translations.locale': locale)
       .group('registry_references.id')
-      .select("registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_nbr, interviews.archive_id, interviews.transcript_coupled, people.use_pseudonym, person_translations.first_name, #{last_name_select}, person_translations.pseudonym_first_name, #{pseudonym_last_name_select}")
+      .select("registry_references.id,
+        registry_references.ref_object_type,
+        segments.timecode,
+        tapes.number AS tape_nbr,
+        interviews.archive_id,
+        interviews.transcript_coupled,
+        people.use_pseudonym,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.last_name) AS agg_last_names,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.first_name) AS agg_first_names,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.pseudonym_last_name) AS agg_pseudonym_last_names,
+        JSON_OBJECTAGG(person_translations.locale, person_translations.pseudonym_first_name) AS agg_pseudonym_first_names")
   }
 
   scope :for_interview_map_person_references, -> (registry_entry_id, locale, person_id) {

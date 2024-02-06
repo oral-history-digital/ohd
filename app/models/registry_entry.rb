@@ -25,11 +25,11 @@ class RegistryEntry < ApplicationRecord
   has_many :norm_data
   accepts_nested_attributes_for :norm_data
 
-  has_many :gnd_norm_data, 
+  has_many :gnd_norm_data,
            ->{ where(norm_data_provider_id: NormDataProvider.where(name: 'GND').first.id)},
            class_name: 'NormDatum'
 
-  has_many :osm_norm_data, 
+  has_many :osm_norm_data,
            ->{ where(norm_data_provider_id: NormDataProvider.where(name: 'OSM').first.id)},
            class_name: 'NormDatum'
 
@@ -182,7 +182,7 @@ class RegistryEntry < ApplicationRecord
     .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
 
-  scope :for_map, -> (locale, person_ids = [], interview_ids = [], scope = 'public') {
+  scope :for_map, -> (person_ids = [], interview_ids = [], scope = 'public') {
     entries = joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
       .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
       .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
@@ -192,7 +192,6 @@ class RegistryEntry < ApplicationRecord
       .where.not('registry_entries.latitude': [nil, ''])
       .where.not('registry_entries.longitude': [nil, ''])
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
-      .where('registry_name_translations.locale': locale)
 
     entries
       .where('metadata_fields.ref_object_type': 'Person')
@@ -210,7 +209,11 @@ class RegistryEntry < ApplicationRecord
           .where('registry_references.ref_object_type': 'Segment')
       )
       .group('registry_entries.id')
-      .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(IF(registry_references.ref_object_type = "Segment", "S", registry_reference_types.id)) AS ref_types')
+      .select("registry_entries.id,
+        registry_entries.longitude,
+        registry_entries.latitude,
+        JSON_OBJECTAGG(registry_name_translations.locale, registry_name_translations.descriptor) AS agg_names,
+        GROUP_CONCAT(IF(registry_references.ref_object_type = \"Segment\", \"S\", registry_reference_types.id)) AS ref_types")
   }
 
   def identifier

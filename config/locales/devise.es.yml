@@ -97,6 +97,8 @@ es:
           <p>Oral-History.Digital</p>
       confirmation_instructions:
         subject: Confirme su solicitud de registro en Oral-History.Digital
+      new_email_confirmation_instructions:
+        subject: Confirmación de su nueva dirección de correo electrónico para Oral-History.Digital
       reset_password_instructions:
         subject: Oral-History.Digital. Pasos para recuperar su contraseña.
     omniauth_callbacks:

@@ -65,8 +65,7 @@ class UserSerializer < ApplicationSerializer
   end
 
   def access_token
-    last_access_token = object.access_tokens.last
-    last_access_token && last_access_token.token
+    object.access_tokens.last&.token
   end
 
   def receive_newsletter

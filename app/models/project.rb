@@ -155,6 +155,10 @@ class Project < ApplicationRecord
     read_attribute :available_locales
   end
 
+  def logo
+    logos.where(locale: I18n.locale).first || logos.first
+  end
+
   def root_registry_entry
     registry_entries.where(code: 'root').first
   end
@@ -167,7 +171,10 @@ class Project < ApplicationRecord
   end
 
   def search_facets_names
-    search_facets.map(&:name)
+    metadata_fields.
+      where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
+      order(:facet_order).
+      pluck(:name)
   end
 
   def event_facets

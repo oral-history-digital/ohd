@@ -18,26 +18,7 @@ module.exports = function(api) {
 
   return {
     presets: [
-      isTestEnv && [
-        '@babel/preset-env',
-        {
-          targets: {
-            node: 'current'
-          },
-          modules: 'commonjs'
-        },
-        '@babel/preset-react'
-      ],
-      (isProductionEnv || isDevelopmentEnv) && [
-        '@babel/preset-env',
-        {
-          forceAllTransforms: true,
-          useBuiltIns: 'entry',
-          corejs: 3,
-          modules: false,
-          exclude: ['transform-typeof-symbol']
-        }
-      ],
+      './node_modules/shakapacker/package/babel/preset.js',
       [
         '@babel/preset-react',
         {
@@ -48,44 +29,6 @@ module.exports = function(api) {
       ]
     ].filter(Boolean),
     plugins: [
-      'babel-plugin-macros',
-      '@babel/plugin-syntax-dynamic-import',
-      isTestEnv && 'babel-plugin-dynamic-import-node',
-      '@babel/plugin-transform-destructuring',
-      '@babel/plugin-transform-nullish-coalescing-operator',
-      [
-        '@babel/plugin-proposal-class-properties',
-        {
-          loose: true
-        }
-      ],
-      [
-        '@babel/plugin-proposal-object-rest-spread',
-        {
-          useBuiltIns: true
-        }
-      ],
-      [
-        '@babel/plugin-transform-runtime',
-        {
-          helpers: false,
-          regenerator: true,
-          corejs: false
-        }
-      ],
-      [
-        '@babel/plugin-transform-regenerator',
-        {
-          async: false
-        }
-      ],
-      isWebpackDevServer && 'react-refresh/babel',
-      isProductionEnv && [
-        'babel-plugin-transform-react-remove-prop-types',
-        {
-          removeImport: true
-        }
-      ]
     ].filter(Boolean)
   }
 }

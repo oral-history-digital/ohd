@@ -132,20 +132,20 @@ export default function InterviewTabPanel({
                     </SubTab>
                 </AuthorizedContent>
 
-                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update'>
+                <AuthorizedContent object={interview} action='update'>
                     <SubTab title={t('edit.upload_edit_table.title')}>
                         <UploadEditTableContainer />
                     </SubTab>
                 </AuthorizedContent>
 
                 {/* TODO: rework assign speaker functionality
-                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
+                <AuthorizedContent object={interview} action='update_speakers'>
                     <SubTab title={t('assign_speakers')}>
                         <AssignSpeakersFormContainer interview={interview} />
                     </SubTab>
                 </AuthorizedContent>*/}
 
-                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
+                <AuthorizedContent object={interview} action='mark_texts'>
                     <SubTab title={t('mark_texts')}>
                         <MarkTextFormContainer interview={interview} />
                     </SubTab>

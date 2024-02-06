@@ -10,21 +10,30 @@ test('transforms registry location data into markers for map component', () => {
             id: 18220,
             lat: '52.21',
             lon: '21.03',
-            name: 'Deutschland',
+            agg_names: {
+                de: 'Deutschland',
+                en: 'Germany',
+            },
             ref_types: '4,4,4,4,4',
         },
         {
             id: 18221,
             lat: '52.21',
             lon: '21.03',
-            name: 'Deutschland',
+            agg_names: {
+                de: 'Deutschland',
+                en: 'Germany',
+            },
             ref_types: '4,4,4,4,4,S,S',
         },
         {
             id: 18222,
             lat: '53.66',
             lon: '23.81',
-            name: 'Berlin',
+            agg_names: {
+                de: 'Berlin',
+                en: 'Berlin',
+            },
             ref_types: 'S,S,S,4,14',
         },
     ];
@@ -35,7 +44,10 @@ test('transforms registry location data into markers for map component', () => {
             id: 18220,
             lat: 52.21,
             long: 21.03,
-            name: 'Deutschland',
+            agg_names: {
+                de: 'Deutschland',
+                en: 'Germany',
+            },
             numReferences: 5,
             numMetadataReferences: 5,
             numSegmentReferences: 0,
@@ -46,7 +58,10 @@ test('transforms registry location data into markers for map component', () => {
             id: 18221,
             lat: 52.21,
             long: 21.03,
-            name: 'Deutschland',
+            agg_names: {
+                de: 'Deutschland',
+                en: 'Germany',
+            },
             numReferences: 7,
             numMetadataReferences: 5,
             numSegmentReferences: 2,
@@ -57,7 +72,10 @@ test('transforms registry location data into markers for map component', () => {
             id: 18222,
             lat: 53.66,
             long: 23.81,
-            name: 'Berlin',
+            agg_names: {
+                de: 'Berlin',
+                en: 'Berlin',
+            },
             numReferences: 5,
             numMetadataReferences: 2,
             numSegmentReferences: 3,
@@ -74,7 +92,10 @@ test('throws when lat lon data is empty', () => {
             id: 18221,
             lat: '',
             lon: '',
-            name: 'Berlin',
+            agg_names: {
+                de: 'Berlin',
+                en: 'Berlin',
+            },
             ref_types: 'S,S,S,4,14',
         },
     ];

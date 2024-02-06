@@ -657,13 +657,13 @@ el:
     research: Ιστορική επεξεργασία
     sound: Ήχος
     other_attender: Άλλοι παρευρισκόμενοι
+    further_interviewee: Further interviewee
     producer: Παραγωγή
     quality_manager: Qualitätsmangement
     quality_manager_translation: Ποιοτικός έλεγχος της μετάφρασης
     quality_manager_transcription: Ποιοτικός έλεγχος της απομαγνητοφώνησης
     quality_manager_interviewing: Ποιοτικός έλεγχος της συνέντευξης
     quality_manager_research: Ποιοτικός έλεγχος της ιστορικής επεξεργασίας
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
@@ -1116,7 +1116,7 @@ el:
         subheading: Υποκεφάλαιο
         text: Κείμενο
         speaker_id: Ομιλιτής
-        hidden_text: Diese Passage wird nicht veröffentlicht.
+        hidden_text: Αυτό το μέρος του κειμένου δεν δημοσιεύεται.
       user_content:
         title: Τίτλος
         description: Σημείωση
