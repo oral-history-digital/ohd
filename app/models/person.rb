@@ -73,7 +73,9 @@ class Person < ApplicationRecord
   after_initialize do
     project && project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
       define_singleton_method field.name do
-        registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq.compact || []
+        registry_references.
+          where(registry_reference_type_id: field.registry_reference_type_id).
+          pluck(:registry_entry_id).uniq.compact || []
       end
     end
   end
