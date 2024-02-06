@@ -15,7 +15,7 @@ class ApplicationPolicy
     true
   end
 
-  %w(create new update edit destroy download).each do |m|
+  %w(create new update edit destroy download upload_transcript).each do |m|
     define_method "#{m}?" do
       user && (user.admin? || user.roles?(project, resolve_class_name(record), m) || user.task_permissions?(project, record, m))
     end
