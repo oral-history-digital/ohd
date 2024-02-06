@@ -3,9 +3,15 @@ class ApplicationRecord < ActiveRecord::Base
 
   def localized_hash(att)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = self.send(att, locale) 
+      mem[locale] = localized_value(att, locale) 
       mem
     end
+  end
+
+  def localized_value(att, locale)
+    self.send(att, locale)
+  rescue ArgumentError => e
+    self.send(att)
   end
 
   # following method is only used in models with a worflow_state-attribute
