@@ -95,7 +95,7 @@ class User < ApplicationRecord
   end
 
   def remove
-    subject = I18n.t('devise.mailer.remove.subject')
+    subject = I18n.t('devise.mailer.remove.subject', locale: self.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
     RemoveUserJob.set(wait: 10.seconds).perform_later(self.id)
   end
@@ -168,8 +168,9 @@ class User < ApplicationRecord
 
   def self.send_reset_password_instructions(attributes = {}) 
     recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
-    if recoverable.persisted?
-      recoverable.update pre_register_location: attributes[:from].gsub("?checked_ohd_session=true", "")
+    if recoverable.persisted? && attributes[:from]
+      recoverable.pre_register_location = attributes[:from].gsub("?checked_ohd_session=true", "")
+      recoverable.save(validate: false)
       recoverable.send_reset_password_instructions
     end
     recoverable

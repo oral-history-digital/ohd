@@ -40,6 +40,9 @@ export default function UserTable() {
     const localeFilterValues = ['all'].concat(project.is_ohd ? [
         'de',
         'en',
+        'ru',
+        'es',
+        'el',
     ] : project.available_locales);
 
     const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'project_access_requested');

@@ -13,9 +13,9 @@ production without any modifications.
 
 * Ruby 2.7.7
 * MySQL/MariaDB
-* Node.js 16
+* Node.js >=16
 * yarn
-* Java Runtime Environment (version 8)
+* Java Runtime Environment (Version 8)
 * optional: LaTeX for PDF generation (e.g. texlive-base and texlive-xetex packages for Ubuntu)
 
 ## Application Setup
@@ -56,7 +56,7 @@ terminals (this is better for Rails debugging with Byebug):
 ```bash
 bin/start_app
 bin/start_search
-bin/webpack-dev-server
+bin/shakapacker-dev-server
 ```
 
 Or you can use foreman to start all three servers at once (Foreman runs the commands
@@ -121,7 +121,7 @@ bin/rake sunspot:reindex
 
 ## Tests
 
-See above for basic dependencies, then prepare the environment for 
+See above for basic dependencies, then prepare the environment for
 testing:
 
 * `npm install --legacy-peer-deps`

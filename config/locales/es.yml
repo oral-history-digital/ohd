@@ -647,13 +647,13 @@ es:
     research: Edición científica
     sound: Sonido
     other_attender: Otras personas
+    further_interviewee: Further interviewee
     producer: Producción
     quality_manager: Qualitätsmangement
     quality_manager_translation: Gestión de calidad Traducción
     quality_manager_transcription: Gestión de calidad Transcripción
     quality_manager_interviewing: Gestión de calidad Entrevista
     quality_manager_research: Gestión de calidad Edición científica
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
@@ -1097,7 +1097,7 @@ es:
         subheading: Encabezado secundario
         text: Texto
         speaker_id: Hablante
-        hidden_text: Diese Passage wird nicht veröffentlicht.
+        hidden_text: Esta parte del texto no se publica.
       user_content:
         title: Título
         description: Anotación

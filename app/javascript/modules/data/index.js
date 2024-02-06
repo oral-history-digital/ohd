@@ -40,7 +40,6 @@ export {
     getPermissions,
     getPermissionsStatus,
     getPreparedHeadings,
-    getProjectHasMap,
     getProjectLocales,
     getProjects,
     getProjectsStatus,

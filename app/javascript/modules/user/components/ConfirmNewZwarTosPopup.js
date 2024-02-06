@@ -25,7 +25,7 @@ export default function ConfirmNewZwarTosPopup ({
     if (!currentProjectAccess) return null;
     if (location.pathname.match(/\/conditions$/)) return null;
 
-    const newProjectAccess = new Date(currentProjectAccess.created_at).getTime() > new Date('2023-10-19T00:00:00Z').getTime();
+    const newProjectAccess = new Date(currentProjectAccess.created_at).getTime() > new Date('2023-12-11T00:00:00Z').getTime();
     if (newProjectAccess) return null;
 
     const confirmedNewTos = currentProjectAccess.tos_agreement;

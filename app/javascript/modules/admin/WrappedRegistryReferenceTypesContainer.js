@@ -19,7 +19,6 @@ const mapStateToProps = (state) => {
         scope: 'registry_reference_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        baseTabIndex: 4 + project.has_map,
         detailsAttributes: ['name'],
         initialFormValues: {project_id: project.id},
         formElements: [

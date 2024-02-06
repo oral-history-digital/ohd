@@ -104,6 +104,8 @@ en:
         subject: Corrected user data for review
       confirmation_instructions:
         subject: Confirmation of your registration for Oral-History.Digital
+      new_email_confirmation_instructions:
+        subject: Confirmation of your new email address for Oral-History.Digital
       reset_password_instructions:
         subject: Oral-History.Digital. Steps to recover your password.
     omniauth_callbacks:
