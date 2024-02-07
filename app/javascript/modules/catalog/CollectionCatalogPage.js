@@ -51,7 +51,8 @@ export default function CollectionCatalogPage() {
                         <p className="Paragraph u-mb">
                             <LinkOrA
                                 project={project}
-                                to={`searches/archive?collection_id[]=${collection.id}`}
+                                to={'searches/archive'}
+                                params={`collection_id[]=${collection.id}`}
                                 className="ProminentLink"
                             >
                                 <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
