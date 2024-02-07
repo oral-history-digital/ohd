@@ -40,6 +40,7 @@ export default function ArchiveFacets() {
                     return (
                         <FacetDropdown
                             key={facetName}
+                            facet={facetName}
                             label={facetData.name[locale]}
                         >
                             <BirthYearFacet
@@ -68,6 +69,7 @@ export default function ArchiveFacets() {
                     return (
                         <FacetDropdown
                             key={facetName}
+                            facet={facetName}
                             label={eventType.name}
                         >
                             <RangeFacet
@@ -88,6 +90,7 @@ export default function ArchiveFacets() {
                     return (
                         <FacetDropdown
                             key={facetName}
+                            facet={facetName}
                             label={facetData.name[locale]}
                             admin={isAdminFacet}
                         >

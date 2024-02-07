@@ -7,12 +7,14 @@ import { useI18n } from 'modules/i18n';
 
 export default function FacetDropdown({
     label,
+    facet,
     admin = false,
     children
 }) {
     const { locale } = useI18n();
 
-    const [open, setOpen] = useState(false);
+    const searchParams = new URLSearchParams(document.location.search);
+    const [open, setOpen] = useState(searchParams.has(`${facet}[]`));
 
     function handleClick(event) {
         event.preventDefault();
