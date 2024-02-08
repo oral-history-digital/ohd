@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -270,10 +271,19 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     respond_to do |format|
       format.html do
-        render :template => '/react/app'
+        render template: '/react/app', status: :forbidden
       end
       format.json do
-        render json: {msg: 'not_authorized'}, status: :ok
+        render json: {msg: 'not_authorized'}, status: :forbidden
+      end
+      format.vtt do
+        render plain: 'not_authorized', status: :forbidden
+      end
+      format.csv do
+        render text: 'not_authorized', status: :forbidden
+      end
+      format.pdf do
+        render text: 'not_authorized', status: :forbidden
       end
     end
   end
