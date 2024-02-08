@@ -51,7 +51,7 @@
         <%= latex_escape(footer_text) %>\\
         \vspace*{0.5cm}
         \copyright <%= Date.today.strftime("%Y") %> <%= (project.institutions.where(parent_id: nil).first ||
-          project.institutions.first).name(header_locale) %>
+          project.institutions.first)&.name(header_locale) %>
       \end{minipage}
     }
   }
