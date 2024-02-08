@@ -109,7 +109,9 @@ class User < ApplicationRecord
   end
 
   def accessible_projects
-    user_projects.where(workflow_state: 'project_access_granted').map(&:project)
+    user_projects.where(workflow_state: 'project_access_granted').map(&:project) +
+      Project.where(grant_project_access_instantly: true).
+      or(Project.where(grant_access_without_login: true))
   end
 
   def all_tasks
