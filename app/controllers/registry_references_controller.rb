@@ -122,13 +122,15 @@ class RegistryReferencesController < ApplicationController
     signed_in = current_user.present?
     #scope = map_scope
 
-    interview_refs = RegistryReference.for_registry_entry(registry_entry_id)
+    repository = RegistryReferenceRepository.new
+
+    interview_refs = repository.interview_references_for(registry_entry_id)
     interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
-      each_serializer: SlimInterviewRegistryReferenceSerializer,
+      each_serializer: SlimRegistryReferenceSerializer,
       default_locale: current_project.default_locale,
       signed_in: signed_in)
 
-    segment_refs = RegistryReference.segment_references_for_registry_entry(registry_entry_id)
+    segment_refs = repository.segment_references_for(registry_entry_id)
     segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
       each_serializer: SlimSegmentRegistryReferenceSerializer,
       default_locale: current_project.default_locale,
