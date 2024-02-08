@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 
+import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { useIsEditor } from 'modules/archive';
@@ -15,6 +16,7 @@ export default function AccountPage() {
     const { t } = useI18n();
     const isEditor = useIsEditor();
     const user = useSelector(getCurrentUser);
+    useTrackPageView();
 
     return (
         <div className='wrapper-content register'>

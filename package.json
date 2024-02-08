@@ -15,6 +15,7 @@
     "@babel/preset-env": "^7.23.3",
     "@babel/preset-react": "^7.23.3",
     "@babel/runtime": "^7.23.4",
+    "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@reach/checkbox": "^0.16.0",
     "@reach/dialog": "^0.16.2",
     "@reach/disclosure": "^0.16.2",

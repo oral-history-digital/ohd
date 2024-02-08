@@ -106,6 +106,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.index ["locale"], name: "index_biographical_entry_translations_on_locale", length: 191
   end
 
+  create_table "checklist_items", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "interview_id", null: false
+    t.integer "user_id", null: false
+    t.string "item_type", limit: 255, null: false
+    t.boolean "checked"
+    t.datetime "checked_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.integer "user_account_id"
+    t.index ["interview_id", "checked"], name: "index_checklist_items_on_interview_id_and_checked"
+    t.index ["interview_id"], name: "index_checklist_items_on_interview_id"
+  end
+
   create_table "collection_translations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "collection_id"
     t.string "locale", limit: 255
@@ -609,6 +621,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.boolean "grant_access_without_login", default: false
     t.boolean "show_legend", default: true
     t.date "live_since"
+    t.integer "analytics_site_id"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
@@ -885,7 +898,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -895,7 +908,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -922,6 +935,60 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.string "facets", limit: 300
     t.datetime "logged_at", precision: nil, null: false
     t.datetime "created_at", precision: nil
+  end
+
+  create_table "user_account_ips", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_account_id"
+    t.string "ip", limit: 255
+    t.datetime "created_at", precision: nil
+    t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip", length: { ip: 191 }
+  end
+
+  create_table "user_accounts", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "email", limit: 255, default: "", null: false
+    t.string "encrypted_password", limit: 128, default: "", null: false
+    t.string "password_salt", limit: 255, default: "", null: false
+    t.string "reset_password_token", limit: 255
+    t.string "confirmation_token", limit: 255
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
+    t.integer "sign_in_count", default: 0
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "current_sign_in_ip", limit: 255
+    t.string "last_sign_in_ip", limit: 255
+    t.string "login", limit: 255
+    t.datetime "deactivated_at", precision: nil
+    t.datetime "reset_password_sent_at", precision: nil
+    t.string "unconfirmed_email", limit: 255
+    t.boolean "admin"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "appellation"
+    t.string "job_description"
+    t.string "research_intentions"
+    t.text "comments", size: :medium
+    t.string "organization"
+    t.string "homepage"
+    t.string "street"
+    t.string "zipcode"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.datetime "tos_agreed_at", precision: nil
+    t.string "gender"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.boolean "priv_agreement"
+    t.boolean "tos_agreement"
+    t.boolean "receive_newsletter"
+    t.string "default_locale"
+    t.text "admin_comments", size: :medium
+    t.datetime "processed_at", precision: nil
+    t.datetime "activated_at", precision: nil
+    t.boolean "anonymized", default: false
+    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true, length: 191
+    t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true, length: 191
   end
 
   create_table "user_contents", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -967,12 +1034,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.text "research_intentions"
   end
 
+  create_table "user_registration_projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_registration_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_account_id"
+    t.datetime "activated_at", precision: nil
+    t.string "workflow_state"
+    t.string "admin_comments"
+  end
+
   create_table "user_registrations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "first_name", limit: 255
     t.string "last_name", limit: 255
     t.string "email", limit: 255
     t.boolean "tos_agreement"
-    t.text "application_info", size: :medium
+    t.text "application_info", size: :long
     t.datetime "created_at", precision: nil
     t.datetime "activated_at", precision: nil
     t.integer "user_account_id"
@@ -981,7 +1059,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.boolean "receive_newsletter"
     t.boolean "priv_agreement", default: false
     t.datetime "updated_at", precision: nil
-    t.string "workflow_state"
     t.index ["email"], name: "index_user_registrations_on_workflow_state_and_email", length: 191
   end
 
@@ -1036,6 +1113,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.boolean "anonymized", default: false
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
+    t.boolean "do_not_track", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end

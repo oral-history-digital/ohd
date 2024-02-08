@@ -40,3 +40,11 @@ export const OHD_DOMAINS = {
     production:  'https://portal.oral-history.digital',
     test:        'http://test.portal.oral-history.localhost:47001'
 };
+
+const ANALYTICS_URLS = {
+    development: '//localhost:8080/',
+    staging: '//metrics.oral-history.digital/',
+    production: '//metrics.oral-history.digital/',
+};
+export const ANALYTICS_URL_BASE = ANALYTICS_URLS[railsMode];
+export const ANALYTICS_DEFAULT_SITE_ID = 1;
