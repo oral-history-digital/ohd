@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
+import { useTrackPageView } from 'modules/analytics';
 import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
@@ -30,6 +31,9 @@ export default function Interview({
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
+
+    const documentTitle = `${t('activerecord.models.interview.one')} ${interview.archive_id}`;
+    useTrackPageView();
 
     useEffect(() => {
         setArchiveId(archiveId);
@@ -66,7 +70,7 @@ export default function Interview({
         return (
             <div>
                 <Helmet>
-                    <title>{t('activerecord.models.interview.one')} {interview.archive_id}</title>
+                    <title>{documentTitle}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>

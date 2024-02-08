@@ -4,6 +4,7 @@ import { FaChevronRight} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
 import { getPublicProjects, getInstitutions } from 'modules/data';
@@ -18,6 +19,7 @@ export default function ArchiveCatalogPage() {
     const { t, locale } = useI18n();
     const id = Number(useParams().id);
     const pathBase = usePathBase();
+    useTrackPageView();
 
     const project = projects.find(p => p.id === id);
 

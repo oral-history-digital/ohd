@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
+import { useTrackPageView } from 'modules/analytics';
 import { AuthorizedContent } from 'modules/auth';
 import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
@@ -19,6 +20,7 @@ export default function Registry({
 }) {
     const { t } = useI18n();
     const isEditor = useIsEditor();
+    useTrackPageView();
 
     const { isLoading, data: rootRegistryEntry } = useRootEntry();
 

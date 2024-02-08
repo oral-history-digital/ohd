@@ -4,6 +4,7 @@ import { FaChevronRight} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
 import { getCollections, getProjects } from 'modules/data';
@@ -18,6 +19,7 @@ export default function CollectionCatalogPage() {
     const { t, locale } = useI18n();
     const { id } = useParams();
     const pathBase = usePathBase();
+    useTrackPageView();
 
     const collection = collections[id];
 

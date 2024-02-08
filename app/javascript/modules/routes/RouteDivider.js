@@ -1,18 +1,21 @@
 import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
-import { useProject } from 'modules/routes';
 import { MemoizedRoutesWithoutProjectId, MemoizedRoutesWithProjectId } from './Routes';
+import { AnalyticsProvider } from 'modules/analytics';
+import useProject from './useProject';
 
 function RouteDivider() {
     const { project } = useProject();
     const isScrollBelowThreshold = useScrollBelowThreshold();
 
     return (
-        <LayoutContainer scrollPositionBelowThreshold={isScrollBelowThreshold}>
-            {project.archive_domain ?
-                <MemoizedRoutesWithoutProjectId project={project} /> :
-                <MemoizedRoutesWithProjectId />
-            }
-        </LayoutContainer>
+        <AnalyticsProvider project={project}>
+            <LayoutContainer scrollPositionBelowThreshold={isScrollBelowThreshold}>
+                {project.archive_domain ?
+                    <MemoizedRoutesWithoutProjectId project={project} /> :
+                    <MemoizedRoutesWithProjectId />
+                }
+            </LayoutContainer>
+        </AnalyticsProvider>
     );
 }
 

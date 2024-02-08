@@ -29,7 +29,8 @@ class UserSerializer < ApplicationSerializer
     :workflow_state,
     :workflow_states,
     :pre_register_location,
-    :access_token
+    :access_token,
+    :do_not_track
 
   def user_id
     object.id
