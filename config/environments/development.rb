@@ -75,5 +75,6 @@ Rails.application.configure do
     "portal.oral-history.localhost",
     "test1.oral-history.localhost",
     "test2.oral-history.localhost",
+    "test3.oral-history.localhost",
   ]
 end
