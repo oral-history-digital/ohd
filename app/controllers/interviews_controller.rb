@@ -171,12 +171,18 @@ class InterviewsController < ApplicationController
         render json: data_json(@interview)
       end
       format.vtt do
+        unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
+          raise Pundit::NotAuthorizedError
+        end
         vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
         send_data vtt, filename: "#{filename}.vtt", type: "text/vtt"
       end
       format.csv do
+        unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
+          raise Pundit::NotAuthorizedError
+        end
         send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{filename}.csv", type: "text/csv"
       end
       format.html
