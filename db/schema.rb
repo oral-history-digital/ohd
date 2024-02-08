@@ -885,7 +885,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -895,7 +895,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_145735) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
