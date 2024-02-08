@@ -154,7 +154,7 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
 
-    unless @interview.present?
+    unless @interview.present? && current_project.interviews.include?(@interview)
       raise ActiveRecord::RecordNotFound
     end
 
