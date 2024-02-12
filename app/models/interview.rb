@@ -342,10 +342,6 @@ class Interview < ApplicationRecord
     archive_id
   end
 
-  def identifier_method
-    'archive_id'
-  end
-
   # referenced by archive_id
   def to_param
     archive_id
