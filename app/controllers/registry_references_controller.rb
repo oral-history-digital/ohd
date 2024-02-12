@@ -97,10 +97,11 @@ class RegistryReferencesController < ApplicationController
         interview = Interview.find_by(archive_id: params[:archive_id])
         registry_entry_id = params[:registry_entry_id]
         interviewee = interview.interviewee
+        repository = RegistryReferenceRepository.new
 
-        person_references = RegistryReference.for_interview_map_person_references(registry_entry_id, I18n.locale, interviewee.id)
-        interview_references = RegistryReference.for_interview_map_interview_references(registry_entry_id, I18n.locale, interview.id)
-        segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
+        person_references = repository.interview_map_person_references_for(registry_entry_id, I18n.locale, interviewee.id)
+        interview_references = repository.interview_map_interview_references_for(registry_entry_id, I18n.locale, interview.id)
+        segment_references = repository.interview_map_segment_references_for(registry_entry_id, interview.id)
 
         combined_references = person_references.to_a + interview_references.to_a
 
