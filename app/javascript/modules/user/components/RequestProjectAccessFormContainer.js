@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData, getCurrentProject, getCurrentUser } from 'modules/data';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import RequestProjectAccessForm from './RequestProjectAccessForm';
 
 const mapStateToProps = state => {
@@ -10,9 +10,7 @@ const mapStateToProps = state => {
     return {
         project: project,
         currentUser: getCurrentUser(state),
-        locale: getLocale(state),
         projectId: getProjectId(state),
-        translations: getTranslations(state),
     }
 };
 

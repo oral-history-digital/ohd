@@ -11,11 +11,9 @@ import AdminSubTab from './AdminSubTab';
 
 export default function UsersAdminTabPanel({
     countryKeys,
-    locale,
-    translations,
     project,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
 
@@ -23,7 +21,7 @@ export default function UsersAdminTabPanel({
 
     function countryKeyOptions() {
         return countryKeys[locale].map(x => ({
-            label: translations[`countries.${x}`][locale],
+            label: t(`countries.${x}`),
             value: x
         }));
     }
@@ -104,6 +102,4 @@ export default function UsersAdminTabPanel({
 
 UsersAdminTabPanel.propTypes = {
     countryKeys: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 }

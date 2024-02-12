@@ -6,7 +6,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { RegistrySearchFormContainer } from 'modules/registry';
 import { useProject } from 'modules/routes';
-import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
+import DownloadRegistryEntries from './DownloadRegistryEntries';
 import { PROJECT_MOG } from 'modules/constants';
 
 function RegistryEntriesTabPanel({
@@ -38,8 +38,8 @@ function RegistryEntriesTabPanel({
                         locales.map((locale) => (
                             <AuthorizedContent key={locale} object={{type: 'General'}} action='edit'>
                                 <div key={locale}>
-                                    <DownloadRegistryEntriesContainer format="pdf" specificLocale={locale} />
-                                    <DownloadRegistryEntriesContainer format="csv" specificLocale={locale} />
+                                    <DownloadRegistryEntries format="pdf" specificLocale={locale} />
+                                    <DownloadRegistryEntries format="csv" specificLocale={locale} />
                                 </div>
                             </AuthorizedContent>
                         )) :
