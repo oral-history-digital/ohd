@@ -24,4 +24,7 @@ class ApplicationRecord < ActiveRecord::Base
     ['public', 'unshared']
   end
 
+  def identifier
+    self.id
+  end
 end

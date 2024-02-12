@@ -209,14 +209,6 @@ class Person < ApplicationRecord
     "#{pseudonym_first_name} #{pseudonym_last_name}".strip
   end
 
-  def identifier
-    id
-  end
-
-  def identifier_method
-    'id'
-  end
-
   def has_biography?(locale)
     biographical_entries.joins(:translations).
       where.not("biographical_entry_translations.text": [nil, '']).

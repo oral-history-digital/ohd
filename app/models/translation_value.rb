@@ -5,6 +5,10 @@ class TranslationValue < ApplicationRecord
   translates :value, touch: true
   accepts_nested_attributes_for :translations
 
+  def identifier
+    key.parameterize
+  end
+
   def self.create_from_hash(locale, translations_hash, old_key=nil)
     translations_hash.each do |key, value|
       if value.is_a?(Hash)

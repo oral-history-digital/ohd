@@ -242,14 +242,6 @@ class Segment < ApplicationRecord
 
   end
 
-  def identifier
-    id
-  end
-
-  def identifier_method
-    'id'
-  end
-
   def languages
     translations.map{|t| t.locale.to_s.split('-').first}.uniq
   end

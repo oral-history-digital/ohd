@@ -216,14 +216,6 @@ class RegistryEntry < ApplicationRecord
         GROUP_CONCAT(IF(registry_references.ref_object_type = \"Segment\", \"S\", registry_reference_types.id)) AS ref_types")
   }
 
-  def identifier
-    id
-  end
-
-  def identifier_method
-    'id'
-  end
-
   searchable do
     text :names
   end
