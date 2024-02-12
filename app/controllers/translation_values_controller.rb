@@ -1,5 +1,7 @@
 class TranslationValuesController < ApplicationController
-  skip_before_action :authenticate_user!, only: :index
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_after_action :verify_authorized, only: [:show]
+  skip_after_action :verify_policy_scoped, only: [:show]
 
   def create
     authorize TranslationValue
@@ -16,6 +18,15 @@ class TranslationValuesController < ApplicationController
     authorize @translation_value
     @translation_value.update translation_value_params
 
+    respond_to do |format|
+      format.json do
+        render json: data_json(@translation_value)
+      end
+    end
+  end
+
+  def show
+    @translation_value = TranslationValue.where(key: params[:id].gsub('-', '.')).first
     respond_to do |format|
       format.json do
         render json: data_json(@translation_value)

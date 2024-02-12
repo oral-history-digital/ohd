@@ -2,7 +2,8 @@ import { useMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { SYSTEM_LOCALES } from 'modules/constants';
-import { getTranslationsView, getTranslations } from 'modules/archive';
+import { getTranslationsView } from 'modules/archive';
+import { getTranslationValues } from 'modules/data';
 import originalT from './t';
 
 export function useI18n() {
@@ -17,7 +18,7 @@ export function useI18n() {
         locale = matchWOProject.params.locale;
     }
 
-    const translations = useSelector(getTranslations);
+    const translations = useSelector(getTranslationValues);
     const translationsView = useSelector(getTranslationsView);
 
     const curriedT = (key, params) => originalT({ locale, translations, translationsView }, key, params);
