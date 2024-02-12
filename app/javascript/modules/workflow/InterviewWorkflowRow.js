@@ -19,8 +19,6 @@ import missingStill from 'assets/images/missing_still.png';
 
 export default function InterviewWorkflowRow({
     interview,
-    locale,
-    translations,
     languages,
     collections,
     project,
@@ -31,7 +29,7 @@ export default function InterviewWorkflowRow({
     setArchiveId,
 }) {
     const [collapsed, setCollapsed] = useState(true);
-    const { t } = useI18n();
+    const { t, locale, translations } = useI18n();
     const pathBase = usePathBase();
     const { fulltext } = useArchiveSearch();
     const { data: people, isLoading } = usePeople();

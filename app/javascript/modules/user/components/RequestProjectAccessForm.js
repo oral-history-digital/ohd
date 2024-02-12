@@ -5,7 +5,6 @@ import { useI18n } from 'modules/i18n';
 import useProjectAccessConfig from '../useProjectAccessConfig';
 
 export default function RequestProjectAccessForm({
-    locale,
     projectId,
     project,
     currentUser,
@@ -15,7 +14,7 @@ export default function RequestProjectAccessForm({
     showStepTwo,
 }) {
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const currentUserProject = Object.values(currentUser.user_projects).find(p => p.project_id === project.id);
     const values = {
         project_id: project.id,

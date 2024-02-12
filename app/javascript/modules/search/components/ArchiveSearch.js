@@ -5,7 +5,7 @@ import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { ErrorMessage } from 'modules/ui';
 import useArchiveSearch from '../useArchiveSearch';
-import SearchActionsContainer from './SearchActionsContainer';
+import SearchActions from './SearchActions';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
 
@@ -38,7 +38,7 @@ function ArchiveSearch() {
             </h1>
             <div className="SearchResults-legend search-results-legend u-mt">
                 <AuthShowContainer ifLoggedIn>
-                    <SearchActionsContainer />
+                    <SearchActions />
                 </AuthShowContainer>
             </div>
 

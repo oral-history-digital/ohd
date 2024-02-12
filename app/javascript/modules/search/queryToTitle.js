@@ -1,6 +1,7 @@
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
-export default function queryToTitle(query, facetStructure, locale, translations) {
+export default function queryToTitle(query, facetStructure) {
+    const { t } = useI18n();
     const searchTerm = query.fulltext;
 
     const facets = { ...query };
@@ -13,10 +14,10 @@ export default function queryToTitle(query, facetStructure, locale, translations
 
     if (searchTerm) {
         if (numFacets === 0) {
-            return t({ locale, translations }, 'modules.workbook.default_titles.search_for_term',
+            return t('modules.workbook.default_titles.search_for_term',
                 { searchTerm });
         } else {
-            return t({ locale, translations }, 'modules.workbook.default_titles.search_for_term_and_filters',
+            return t('modules.workbook.default_titles.search_for_term_and_filters',
                 { searchTerm, numFilters: numFacets });
         }
     } else {
@@ -40,14 +41,14 @@ export default function queryToTitle(query, facetStructure, locale, translations
             }
         }
 
-        const filterStr = t({ locale, translations }, 'modules.workbook.filter');
+        const filterStr = t('modules.workbook.filter');
         if (translatedFacetValues.length === 1) {
             return `${filterStr} ${translatedFacetValues[0]}`;
         } else if (translatedFacetValues.length === 2) {
             return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]}`;
         } else {
             const moreNum = numFacets - 2;
-            return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]} ${t({ locale, translations }, 'modules.workbook.default_titles.and_filters_more', { numFilters: moreNum })}`;
+            return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]} ${t('modules.workbook.default_titles.and_filters_more', { numFilters: moreNum })}`;
         }
     }
 }
