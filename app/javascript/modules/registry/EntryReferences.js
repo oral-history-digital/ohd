@@ -4,7 +4,7 @@ import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import SegmentReference from './SegmentReference';
-import useEntryReferencesAlt from './useEntryReferencesAlt';
+import useEntryReferences from './useEntryReferences';
 
 export default function EntryReferences({
     projects,
@@ -14,7 +14,7 @@ export default function EntryReferences({
     setArchiveId,
 }) {
     const { t } = useI18n();
-    const { isLoading, interviewReferences, error } = useEntryReferencesAlt(registryEntry);
+    const { isLoading, interviewReferences, error } = useEntryReferences(registryEntry);
 
     const referencesCount = interviewReferences?.length;
 
