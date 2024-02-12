@@ -1,14 +1,30 @@
 import reactStringReplace from 'react-string-replace';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { fetchData, getStatuses } from 'modules/data';
+import { useProject } from 'modules/routes';
 
 export default function t({ locale, translations, translationsView }, key, params) {
+    const { project, projectId } = useProject();
+    const statuses = useSelector(getStatuses);
+    const dispatch = useDispatch();
+
+    const keyParam = key.replace(/\./g, '-');
+
+    useEffect(() => {
+        if (!statuses.translation_values[key]) {
+            dispatch(fetchData({ projectId, locale, project }, 'translation_values', keyParam));
+        }
+    }, [statuses.translation_values[key]]);
+
     let text;
     let usingDefault = false;
 
-    if (translations[key]?.[locale]) {
-        text = translations[key][locale];
-    } else if (translations[defaultKey(key)]?.[locale]) {
-        text = translations[defaultKey(key)][locale];
+    if (translations[keyParam]?.value[locale]) {
+        text = translations[keyParam].value[locale];
+    } else if (translations[defaultKey(keyParam)]?.value[locale]) {
+        text = translations[defaultKey(keyParam)].value[locale];
         usingDefault = true;
     } else {
         text = productionFallback(key);

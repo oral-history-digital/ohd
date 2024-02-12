@@ -1,6 +1,10 @@
 class TranslationValueSerializer < ApplicationSerializer
   attributes :id, :key, :value, :code#, :locale
 
+  def id
+    object.identifier
+  end
+
   def code
     object.key
   end
