@@ -1,9 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
-
-export default class ErrorBoundaryComponent extends Component {
+export default class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
 
@@ -15,11 +13,11 @@ export default class ErrorBoundaryComponent extends Component {
     }
 
     render() {
-        const { locale, translations, small } = this.props;
+        const { small } = this.props;
         const { error } = this.state;
 
         if (error) {
-            const message = `${t({ locale, translations }, 'error')}: ${error.message}`;
+            const message = `Error: ${error.message}`;
 
             return (
                 <div className="wrapper-content">
@@ -35,9 +33,7 @@ export default class ErrorBoundaryComponent extends Component {
     }
 }
 
-ErrorBoundaryComponent.propTypes = {
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
+ErrorBoundary.propTypes = {
     small: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
