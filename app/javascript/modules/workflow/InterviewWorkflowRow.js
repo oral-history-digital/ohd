@@ -8,7 +8,6 @@ import useSWRImmutable from 'swr/immutable';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
-import { humanReadable } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
@@ -104,11 +103,11 @@ export default function InterviewWorkflowRow({
                     </Link>
                 )}
 
-                {box(humanReadable(interview, 'archive_id', { locale, translations }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'media_type', { locale, translations }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'duration', { locale, translations }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'language_id', { locale, translations, languages }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'collection_id', { locale, translations, collections }, { collapsed }), '10')}
+                {box(interview?.archive_id, '10')}
+                {box(t(interview?.media_type), '10')}
+                {box(`${interview?.duration.split(':')[0]} h ${interview?.duration.split(':')[1]} min`, '10')}
+                {box(languages[interview?.language_id]?.name[locale], '10')}
+                {box(collections[interview?.collection_id]?.name[locale], '10')}
 
                 <div className={classNames('box-30', collapsed ? 'workflow-inactive' : 'workflow-active')} >
                     {tasksFetched && (
@@ -146,6 +145,7 @@ export default function InterviewWorkflowRow({
                         elementType={'select'}
                         obj={interview}
                         attribute={'workflow_state'}
+                        value={t(`workflow_states.${interview.workflow_state}`)}
                         values={['public', 'unshared']}
                         optionsScope={'workflow_states'}
                         noStatusCheckbox={true}
@@ -182,8 +182,6 @@ export default function InterviewWorkflowRow({
 InterviewWorkflowRow.propTypes = {
     interview: PropTypes.object.isRequired,
     usersStatus: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,

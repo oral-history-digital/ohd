@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTimes, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
-import { humanReadable } from 'modules/data';
 import { underscore } from 'modules/strings';
 import { admin, AuthorizedContent } from 'modules/auth';
 import ContentField from './ContentField';
@@ -16,6 +15,7 @@ export default function SingleValueWithForm ({
     elementType,
     type,
     multiLocale,
+    value,
     validate,
     values,
     withEmpty,
@@ -40,6 +40,7 @@ export default function SingleValueWithForm ({
     const [editing, setEditing] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [collapsed, setCollapsed] = useState(collapse);
+    const isStringValue = typeof value === 'string';
 
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
@@ -103,12 +104,11 @@ export default function SingleValueWithForm ({
                 (obj.properties?.public_attributes?.[attribute]?.toString() === 'true')
             )
         ) {
-            const contentValue = humanReadable(obj, attribute, {languages, translations, locale, values, optionsScope}, {collapsed});
             return (
                 <ContentField
                     noLabel={noLabel}
                     label={label}
-                    value={contentValue}
+                    value={isStringValue && collapsed ? value?.substring(0,25) : value}
                     linkUrls={linkUrls}
                 >
                     {

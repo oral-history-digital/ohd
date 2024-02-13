@@ -30,6 +30,7 @@ export default function InterviewCollectionInfo({
             validate={function(v){return /^\d+$/.test(v)}}
             individualErrorMsg="empty"
             attribute="collection_id"
+            value={collection?.name[locale]}
             projectAccessGranted={projectAccessGranted}
         >
         {collection && (
