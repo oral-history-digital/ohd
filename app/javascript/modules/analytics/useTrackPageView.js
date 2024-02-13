@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { getCurrentUser } from 'modules/data';
 
-const TRACKING_DELAY = 25;
+const TRACKING_DELAY = 100;
 
 export default function useTrackPageView(title) {
     const currentUser = useSelector(getCurrentUser);
