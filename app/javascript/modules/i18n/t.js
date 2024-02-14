@@ -1,34 +1,39 @@
 import reactStringReplace from 'react-string-replace';
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchData, getStatuses } from 'modules/data';
-import { useProject } from 'modules/routes';
+import { fetchData } from 'modules/data';
 
-export default function t({ locale, translations, translationsView }, key, params) {
-    const { project, projectId } = useProject();
-    const statuses = useSelector(getStatuses);
-    const dispatch = useDispatch();
-
+export default function t(
+    {
+        locale,
+        translationValues,
+        translationsView,
+        statuses,
+        project,
+        dispatch
+    }, key, params
+) {
     const keyParam = key.replace(/\./g, '-');
+    const fetchStatus = statuses.translation_values[keyParam];
+    const fetched = /^fetched/.test(fetchStatus);
+    const translationValue = translationValues[keyParam]?.value[locale];
 
-    useEffect(() => {
-        if (!statuses.translation_values[key]) {
-            dispatch(fetchData({ projectId, locale, project }, 'translation_values', keyParam));
-        }
-    }, [statuses.translation_values[key]]);
+    const defaultKeyParam = defaultKey(key)?.replace(/\./g, '-');
+    const defaultFetchStatus = statuses.translation_values[defaultKeyParam];
+    const defaultFetched = /^fetched/.test(defaultFetchStatus);
+    const defaultTranslationValue = translationValues[defaultKeyParam]?.value[locale];
 
-    let text;
-    let usingDefault = false;
-
-    if (translations[keyParam]?.value[locale]) {
-        text = translations[keyParam].value[locale];
-    } else if (translations[defaultKey(keyParam)]?.value[locale]) {
-        text = translations[defaultKey(keyParam)].value[locale];
-        usingDefault = true;
-    } else {
-        text = productionFallback(key);
+    if (!fetchStatus) {
+        dispatch(fetchData({ locale, project }, 'translation_values', keyParam));
     }
+    if (
+        /^fetched/.test(fetchStatus) &&
+        !translationValue &&
+        !defaultFetchStatus
+    ) {
+        dispatch(fetchData({ locale, project }, 'translation_values', defaultKeyParam));
+    }
+
+    let text = translationValue || defaultTranslationValue || productionFallback(key);
 
     if(params) {
         for (let [key, value] of Object.entries(params)) {
@@ -38,7 +43,7 @@ export default function t({ locale, translations, translationsView }, key, param
         }
     }
 
-    const usedKey = usingDefault ? defaultKey(key) : key;
+    const usedKey = !translationValue && defaultTranslationValue ? defaultKey(key) : key;
 
     if (translationsView) {
         Array.isArray(text) ?
