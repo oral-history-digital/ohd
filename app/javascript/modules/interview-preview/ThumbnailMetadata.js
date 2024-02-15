@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 
-import { humanReadable, getLanguages, getProjects, getCollections } from 'modules/data';
+import { useHumanReadable } from 'modules/data';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
@@ -17,10 +17,8 @@ export default function ThumbnailMetadata({
     interview,
 }) {
     const { project } = useProject();
-    const projects = useSelector(getProjects);
-    const languages = useSelector(getLanguages);
-    const collections = useSelector(getCollections);
-    const { locale, translations } = useI18n();
+    const { locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
 
     if (isLoading) {
@@ -54,14 +52,11 @@ export default function ThumbnailMetadata({
                     }
 
                     if (obj) {
-                        const value = humanReadable(obj, field.name, {
-                            locale,
-                            translations,
-                            languages,
+                        const value = humanReadable({
+                            obj,
+                            attribute: field.name,
                             optionsScope: 'search_facets',
-                            collections,
-                            projects,
-                        }, {}, '');
+                        });
 
                         if (!value) {
                             return null;

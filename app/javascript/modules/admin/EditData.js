@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
-import { humanReadable } from 'modules/data';
+import { useHumanReadable } from 'modules/data';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
@@ -18,6 +18,7 @@ export default function EditData({
 }) {
     const [editing, setEditing] = useState(false);
     const { t, locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
     const { project, projectId } = useProject();
 
     function toggleEditing() {
@@ -49,7 +50,7 @@ export default function EditData({
                                 {t(element.labelKey || `activerecord.attributes.${scope}.${element.attribute}`)}
                             </dt>
                             <dd>
-                                {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}
+                                {humanReadable({obj: data, attribute: element.attribute, collapsed: true})}
                             </dd>
                         </div>
                     ))}
