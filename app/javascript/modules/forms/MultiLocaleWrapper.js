@@ -1,27 +1,31 @@
-import { createElement, Component } from 'react';
+import { createElement } from 'react';
 import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import RichTextareaContainer from './input-components/RichTextareaContainer';
 import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
 
-export default class MultiLocaleWrapper extends Component {
+export default function MultiLocaleWrapper(props) {
+    const { t, locale } = useI18n();
 
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
+    const {
+        attribute,
+        elementType,
+        scope,
+        label,
+        mandatory,
+        data,
+        locales,
+        handleChange,
+    } = props;
+
+    const labelFunc = (locale) => {
+        return (label || t(`activerecord.attributes.${scope}.${attribute}`)) +
+            (mandatory ? ' *' : '') + ` (${locale})`;
     }
 
-    label(locale) {
-        let mandatory = this.props.mandatory ? ' *' : '';
-        let label = this.props.label ? this.props.label : t(this.props, `activerecord.attributes.${this.props.scope}.${this.props.attribute}`) + mandatory;
-        return `${label} (${locale})`;
-    }
-
-    findTranslation(locale) {
-        const { data } = this.props;
-
+    const findTranslation = (locale) => {
         if (!data?.translations_attributes) {
             return null;
         }
@@ -61,41 +65,37 @@ export default class MultiLocaleWrapper extends Component {
         return translation;
     }
 
-    handleChange(name, value, translation) {
+    const onChange = (name, value, translation) => {
         let params = {translation: {[name]: value, locale: translation.locale, id: translation.id}};
-        this.props.handleChange(null, null, params, 'locale');
+        handleChange(null, null, params, 'locale');
     }
 
-    preparedProps(locale) {
-        const translation = this.findTranslation(locale) || {locale: locale};
-        const value = translation[this.props.attribute];
+    const preparedProps = (locale) => {
+        const translation = findTranslation(locale) || {locale: locale};
+        const value = translation[attribute];
 
-        return Object.assign({}, this.props, {
-            handleChange: this.handleChange,
+        return Object.assign({}, props, {
+            handleChange: onChange,
             data: translation,
             value: value,
-            label: this.label(locale),
-            key: `${this.props.attribute}-${locale}`
+            label: labelFunc(locale),
+            key: `${attribute}-${locale}`
         })
     }
 
-    components() {
-        return {
-            input: InputContainer,
-            richTextEditor: RichTextareaContainer,
-            textarea: Textarea,
-        }
+    const components = {
+        input: InputContainer,
+        richTextEditor: RichTextareaContainer,
+        textarea: Textarea,
     }
 
-    render() {
-        return (
-            <div className='multi-locale-input'>
-                {this.props.locales.map(locale => {
-                    return createElement(this.components()[this.props.elementType], this.preparedProps(locale));
-                })}
-            </div>
-        );
-    }
+    return (
+        <div className='multi-locale-input'>
+            {locales.map(locale => {
+                return createElement(components[elementType], preparedProps(locale));
+            })}
+        </div>
+    );
 }
 
 MultiLocaleWrapper.propTypes = {
