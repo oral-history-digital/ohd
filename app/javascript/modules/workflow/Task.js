@@ -1,24 +1,30 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-import { admin } from 'modules/auth';
-import { t } from 'modules/i18n';
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import CommentsContainer from './CommentsContainer';
 
-export default class Task extends Component {
+export default function Task({
+    task,
+    interview,
+    users,
+    scope,
+    submitData,
+}) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            task: {
-                id: this.props.task.id,
-                user_id: this.props.task.user_id,
-                supervisor_id: this.props.task.supervisor_id,
-            }
-        };
-    }
+    const { t, locale } = useI18n();
+    const { project } = useProject();
+    const { isAuthorized } = useAuthorization();
 
-    usersAsOptionsForSelect(attribute) {
-        let opts = this.props.users?.
+    const [thisTask, setThisTask] = useState({
+        id: task.id,
+        user_id: task.user_id,
+        supervisor_id: task.supervisor_id,
+    });
+
+    const usersAsOptionsForSelect = (attribute) => {
+        let opts = users?.
             filter(u => {
                 return (
                     // supervisor-select
@@ -26,7 +32,7 @@ export default class Task extends Component {
                     (!!Object.values(u.user_roles).find(r => {
                         return (
                             ['Qualitätsmanagement', 'QM', 'Archivmanagement'].indexOf(r.name) > -1 &&
-                            r.project_id === this.props.project.id
+                            r.project_id === project.id
                         )
                     }))
                 ) ||
@@ -36,7 +42,7 @@ export default class Task extends Component {
                     (!!Object.values(u.user_roles).find(r => {
                         return (
                             ['Redaktion', 'Archivmanagement'].indexOf(r.name) > -1 &&
-                            r.project_id === this.props.project.id
+                            r.project_id === project.id
                         )
                     }))
                 )
@@ -50,36 +56,36 @@ export default class Task extends Component {
             )
         }) || [];
         opts.unshift(
-            <option value='' key={`${this.props.scope}-choose`}>
-                {t(this.props, 'choose')}
+            <option value='' key={`${scope}-choose`}>
+                {t('choose')}
             </option>
         )
         return opts;
     }
 
-    workflowStatesAsOptionsForSelect() {
-        let opts = this.props.task.workflow_states.map((workflowState, index) => {
+    const workflowStatesAsOptionsForSelect = () => {
+        let opts = task.workflow_states.map((workflowState, index) => {
             return (
                 <option value={workflowState} key={`${workflowState}-option-${index}`}>
-                    {t(this.props, `workflow_states.${workflowState}`)}
+                    {t(`workflow_states.${workflowState}`)}
                 </option>
             )
         })
         opts.unshift(
-            <option value='' key={`${this.props.scope}-choose`}>
-                {t(this.props, 'choose')}
+            <option value='' key={`${scope}-choose`}>
+                {t('choose')}
             </option>
         )
         return opts;
     }
 
-    value(attribute) {
+    const value = (attribute) => {
         let v, user;
-        if (/^\d+$/.test(this.props.task[attribute])) {
-            user = this.props.users?.find(u => u.id === this.props.task[attribute]);
+        if (/^\d+$/.test(task[attribute])) {
+            user = users?.find(u => u.id === task[attribute]);
             v = user && `${user.last_name}, ${user.first_name}` || 'NA';
-        } else if (this.props.task[attribute]) {
-            v = t(this.props, `workflow_states.${this.props.task[attribute]}`);
+        } else if (task[attribute]) {
+            v = t(`workflow_states.${task[attribute]}`);
         } else {
             v = 'NA';
         }
@@ -90,31 +96,31 @@ export default class Task extends Component {
         )
     }
 
-    select(attribute, options) {
+    const select = (attribute, options) => {
         if (
             // if the task is one of this users tasks
             (
                 attribute === 'workflow_state' &&
                 (
-                    this.props.task.workflow_state === 'created' ||
-                    this.props.task.workflow_state === 'started' ||
-                    this.props.task.workflow_state === 'restarted'
+                    task.workflow_state === 'created' ||
+                    task.workflow_state === 'started' ||
+                    task.workflow_state === 'restarted'
                 ) &&
-                admin(this.props, this.props.task, 'update')
+                isAuthorized(task, 'update')
             ) ||
             // if the user has the permission to assign tasks
-            admin(this.props, {type: 'Task'}, 'assign')
+            isAuthorized({type: 'Task'}, 'assign')
         ) {
             return (
                 <select
-                    key={`select-${this.props.task.id}-${attribute}`}
+                    key={`select-${task.id}-${attribute}`}
                     name={attribute}
-                    value={this.state.task[attribute] || this.props.task[attribute] || ''}
+                    value={thisTask[attribute] || task[attribute] || ''}
                     //
                     // strange issue: state.task.id gets lost on second update
                     // therefore it is set again here
                     //
-                    onChange={() => this.setState({task: Object.assign({}, this.state.task, {[event.target.name]: event.target.value, id: this.props.task.id})})}
+                    onChange={() => setThisTask({task: Object.assign({}, thisTask, {[event.target.name]: event.target.value, id: task.id})})}
                 >
                     {options}
                 </select>
@@ -124,16 +130,16 @@ export default class Task extends Component {
         }
     }
 
-    valueAndSelect(attribute, options) {
+    const valueAndSelect = (attribute, options) => {
         return (
             <div>
-                {this.value(attribute)}
-                {this.select(attribute, options)}
+                {value(attribute)}
+                {select(attribute, options)}
             </div>
         )
     }
 
-    box(value, width='17-5') {
+    const box = (value, width='17-5') => {
         return (
             <div className={`box box-${width}`} >
                 {value}
@@ -141,28 +147,28 @@ export default class Task extends Component {
         )
     }
 
-    render() {
-        return (
-            <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.task.id}-tasks-boxes`}>
-                <form
-                    className={'task-form'}
-                    key={`form-${this.props.task.id}`}
-                    onSubmit={() => {event.preventDefault(); this.props.submitData(this.props, {task: this.state.task})}}
-                >
-                    {this.box(this.props.task.task_type.name[this.props.locale])}
-                    {this.box(this.valueAndSelect('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
-                    {this.box(this.valueAndSelect('user_id', this.usersAsOptionsForSelect('user_id')))}
-                    {this.box(this.valueAndSelect('workflow_state', this.workflowStatesAsOptionsForSelect()))}
-                    <input type="submit" value={t(this.props, 'submit')}/>
-                </form>
-                {this.box(admin(this.props, this.props.task, 'update') &&
+    return (
+        <div className='data boxes' key={`${interview.archive_id}-${task.id}-tasks-boxes`}>
+            <form
+                className={'task-form'}
+                key={`form-${task.id}`}
+                onSubmit={() => {event.preventDefault(); submitData({ locale, project }, {task: thisTask})}}
+            >
+                {box(task.task_type.name[locale])}
+                {box(valueAndSelect('supervisor_id', usersAsOptionsForSelect('supervisor_id')))}
+                {box(valueAndSelect('user_id', usersAsOptionsForSelect('user_id')))}
+                {box(valueAndSelect('workflow_state', workflowStatesAsOptionsForSelect()))}
+                <input type="submit" value={t( 'submit')}/>
+            </form>
+            <AuthorizedContent object={task} action='update'>
+                {box(
                     <CommentsContainer
-                        data={this.props.task.comments}
-                        task={this.props.task}
-                        initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}}
+                        data={task.comments}
+                        task={task}
+                        initialFormValues={{ref_id: task.id, ref_type: 'Task'}}
                     />, '30'
                 )}
-            </div>
-        );
-    }
+            </AuthorizedContent>
+        </div>
+    );
 }
