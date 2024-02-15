@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData, getCurrentProject, getCurrentUser } from 'modules/data';
-import { getTranslations } from 'modules/archive';
+import { getTranslationValues } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = state => ({
