@@ -305,9 +305,9 @@ class ApplicationController < ActionController::Base
   def data_json(data, opts={})
     identifier = (data.class.name.underscore == 'interview') ? :archive_id : :id
     json = {
-      "#{identifier}": data.identifier,
+      "#{identifier}": opts[:id] || data&.identifier,
       data_type: data.class.name.underscore.pluralize,
-      data: cache_single(data)
+      data: data ? cache_single(data) : nil
     }
     json.update(opts)
     json
