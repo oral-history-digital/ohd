@@ -29,7 +29,7 @@ class TranslationValuesController < ApplicationController
     @translation_value = TranslationValue.where(key: params[:id].gsub('-', '.')).first
     respond_to do |format|
       format.json do
-        render json: data_json(@translation_value)
+        render json: data_json(@translation_value, id: params[:id])
       end
     end
   end
