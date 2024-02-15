@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
 import { useProject, LinkOrA } from 'modules/routes';
-import { humanReadable } from 'modules/data';
+import { useHumanReadable } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
@@ -25,7 +25,8 @@ export default function InterviewListRow({
     setArchiveId,
     addRemoveArchiveId,
 }) {
-    const { locale, translations } = useI18n();
+    const { locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
     const { project } = useProject();
     const projectOfInterview = projects[interview.project_id];
     const { isAuthorized } = useAuthorization();
@@ -97,7 +98,7 @@ export default function InterviewListRow({
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {obj && humanReadable(obj, column.name, { locale, translations, languages, collections, optionsScope: 'search_facets' }, {})}
+                            {obj && humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'})}
                         </td>
                     );
                 })

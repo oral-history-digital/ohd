@@ -4,9 +4,9 @@ import { useProjectAccessStatus } from 'modules/auth';
 import { useIsEditor } from 'modules/archive';
 import { ContentField } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
-import { humanReadable } from 'modules/data';
 import { EventContentField } from 'modules/events';
 import { useI18n } from 'modules/i18n';
+import { useHumanReadable } from 'modules/data';
 import { useProject } from 'modules/routes';
 import usePersonWithAssociations from './usePersonWithAssociations';
 import Biography from './Biography';
@@ -17,7 +17,8 @@ export default function PersonData({
     interview,
     intervieweeId,
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
     const { project } = useProject();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const isEditor = useIsEditor();
@@ -74,7 +75,7 @@ export default function PersonData({
                 }
 
                 const label = field.label?.[locale] || t(field.name);
-                const value = humanReadable(person, field.name, { locale, translations }, {});
+                const value = humanReadable({obj: person, attribute: field.name});
 
                 if (value === '---' && !isEditor) {
                     return null;

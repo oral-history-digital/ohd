@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData, getCurrentProject } from 'modules/data';
-import { getTranslations } from 'modules/archive';
 import EditData from './EditData';
 
 const mapStateToProps = state => {
@@ -78,7 +77,6 @@ const mapStateToProps = state => {
     }
 
     return {
-        translations: getTranslations(state),
         data: project.access_config,
         scope: 'access_config',
         helpTextCode: 'access_config_form',
