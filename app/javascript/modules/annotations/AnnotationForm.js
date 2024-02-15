@@ -2,8 +2,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
 
-import { t } from 'modules/i18n';
-
 export default class AnnotationForm extends Component {
     constructor(props) {
         super(props);
@@ -38,7 +36,7 @@ export default class AnnotationForm extends Component {
     }
 
     render () {
-        const { locale, translations, onCancel } = this.props;
+        const { onCancel, submitLabel, cancelLabel } = this.props;
 
         return (
             <form
@@ -58,14 +56,14 @@ export default class AnnotationForm extends Component {
                     <input
                         type="submit"
                         className="Button Button--primaryAction"
-                        value={t({ locale, translations }, 'submit')}
+                        value={submitLabel}
                     />
                     <button
                         type="button"
                         className="Button Button--secondaryAction"
                         onClick={onCancel}
                     >
-                        {t({ locale, translations }, 'cancel')}
+                        {cancelLabel}
                     </button>
                 </div>
             </form>
@@ -81,7 +79,6 @@ AnnotationForm.propTypes = {
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
