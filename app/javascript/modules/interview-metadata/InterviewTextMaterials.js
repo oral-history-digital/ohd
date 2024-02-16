@@ -9,7 +9,7 @@ export default function InterviewTextMaterials({
     interview,
     isCatalog,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
     const showTranscriptPDF = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.transcript?.toString() === 'true';
@@ -45,6 +45,7 @@ export default function InterviewTextMaterials({
                     elementType="textarea"
                     multiLocale
                     attribute="observations"
+                    value={interview.observations[locale]?.substring(0,25)}
                     noLabel
                 />
             </AuthorizedContent>
