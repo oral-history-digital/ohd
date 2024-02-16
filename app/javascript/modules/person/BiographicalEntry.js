@@ -1,29 +1,29 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
 import { FaPencilAlt, FaTrash, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 
-export default class BiographicalEntry extends Component {
-    constructor(props) {
-        super(props);
+export default function BiographicalEntry({
+    data,
+    deleteData,
+}) {
+    const { t, locale } = useI18n();
+    const { project } = useProject();
+    const [open, setOpen] = useState(false);
 
-        this.state = { open: false };
-    }
-
-    buttons() {
-        const { data, deleteData } = this.props;
-
+    const buttons = () => {
         return (
             <AuthorizedContent object={data} action='update'>
                 <Modal
-                    title={t(this.props, 'edit.biographical_entry.edit')}
+                    title={t('edit.biographical_entry.edit')}
                     trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
                 >
                     {close => (
@@ -36,18 +36,18 @@ export default class BiographicalEntry extends Component {
                 </Modal>
 
                 <Modal
-                    title={t(this.props, 'delete')}
+                    title={t('delete')}
                     trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                 >
                     {close => (
                         <DeleteItemForm
                             onSubmit={() => {
-                                deleteData(this.props, 'people', data.person_id, 'biographical_entries', data.id, true);
+                                deleteData({project, locale}, 'people', data.person_id, 'biographical_entries', data.id, true);
                                 close();
                             }}
                             onCancel={close}
                         >
-                            {this.entries()}
+                            {entries()}
                         </DeleteItemForm>
                     )}
                 </Modal>
@@ -55,27 +55,27 @@ export default class BiographicalEntry extends Component {
         );
     }
 
-    entry(name) {
+    const entry = (name) => {
         return (
             <p key={name}>
-                <span className='flyout-content-label'>{t(this.props, `activerecord.attributes.biographical_entry.${name}`)}:</span>
-                <span className='flyout-content-data' dangerouslySetInnerHTML={{__html: this.props.data[name][this.props.locale]}} />
+                <span className='flyout-content-label'>{t(`activerecord.attributes.biographical_entry.${name}`)}:</span>
+                <span className='flyout-content-data' dangerouslySetInnerHTML={{__html: data[name][locale]}} />
             </p>
         )
     }
 
-    entries() {
-        return ['text', 'start_date', 'end_date'].map((entry) => {
-            if (this.props.data[entry][this.props.locale])
-                return this.entry(entry);
+    const entries = () => {
+        return ['text', 'start_date', 'end_date'].map((e) => {
+            if (data[e][locale])
+                return entry(e);
         })
     }
 
-    preview() {
-        if (this.props.data.text[this.props.locale]) {
+    const preview = () => {
+        if (data.text[locale]) {
             return (
                 <span className="flyout-content-data">
-                    {this.props.data.text[this.props.locale].substring(0,15)}
+                    {data.text[locale].substring(0,15)}
                 </span>
             )
         } else {
@@ -83,38 +83,30 @@ export default class BiographicalEntry extends Component {
         }
     }
 
-    render() {
-        const { open } = this.state;
-
-        return (
-            <p>
-                <Disclosure open={open} onChange={() => this.setState({ open: !open })}>
-                    <DisclosureButton
-                        className={classNames('Button', 'Button--transparent', 'Button--icon')}
-                        title={t(this.props, open ? 'hide' : 'show')}
-                    >
-                        {this.preview()}
-                        {
-                            open ?
-                                <FaAngleUp className="Icon Icon--text" /> :
-                                <FaAngleDown className="Icon Icon--text" />
-                        }
-                    </DisclosureButton>
-                    <DisclosurePanel>
-                        {this.entries()}
-                    </DisclosurePanel>
-                </Disclosure>
-                {this.buttons()}
-            </p>
-        );
-    }
+    return (
+        <p>
+            <Disclosure open={open} onChange={() => setOpen(!open)}>
+                <DisclosureButton
+                    className={classNames('Button', 'Button--transparent', 'Button--icon')}
+                    title={t(open ? 'hide' : 'show')}
+                >
+                    {preview()}
+                    {
+                        open ?
+                            <FaAngleUp className="Icon Icon--text" /> :
+                            <FaAngleDown className="Icon Icon--text" />
+                    }
+                </DisclosureButton>
+                <DisclosurePanel>
+                    {entries()}
+                </DisclosurePanel>
+            </Disclosure>
+            {buttons()}
+        </p>
+    );
 }
 
 BiographicalEntry.propTypes = {
     data: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    translations: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
