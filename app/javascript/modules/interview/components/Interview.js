@@ -32,7 +32,7 @@ export default function Interview({
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
 
-    const documentTitle = `${t('activerecord.models.interview.one')} ${interview.archive_id}`;
+    const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
     useTrackPageView();
 
     useEffect(() => {
