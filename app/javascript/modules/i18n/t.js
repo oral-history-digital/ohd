@@ -15,9 +15,6 @@ export default function t(
     const keyParam = key.replace(/\./g, '-');
     const fetchStatus = statuses.translations[keyParam];
     const fetched = /^fetched/.test(fetchStatus);
-    if (!translations[keyParam]?.value) {
-        debugger;
-    }
     const translation = translations[keyParam]?.value?.[locale];
 
     const defaultKeyParam = defaultKey(key)?.replace(/\./g, '-');
