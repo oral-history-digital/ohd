@@ -128,6 +128,7 @@ class ApplicationController < ActionController::Base
           projects: {all: 'fetched'},
           languages: {all: 'fetched'},
           translation_values: {},
+          translations: {},
           institutions: {all: 'fetched'},
           collections: {},
           people: {},
@@ -171,6 +172,7 @@ class ApplicationController < ActionController::Base
         interviews: {},
         segments: {},
         translation_values: {},
+        translations: {},
       },
       'media-player': {
         tape: 1,
@@ -306,7 +308,7 @@ class ApplicationController < ActionController::Base
     identifier = (data.class.name.underscore == 'interview') ? :archive_id : :id
     json = {
       "#{identifier}": opts[:id] || data&.identifier,
-      data_type: data.class.name.underscore.pluralize,
+      data_type: opts[:data_type] || data.class.name.underscore.pluralize,
       data: data ? cache_single(data) : nil
     }
     json.update(opts)

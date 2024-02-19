@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
 import originalHumanReadable from './humanReadable';
-import { getStatuses, getTranslationValues, getLanguages,
+import { getStatuses, getTranslations, getLanguages,
     getCollections } from 'modules/data';
 
 export default function useHumanReadable() {
@@ -21,7 +21,7 @@ export default function useHumanReadable() {
     const project = { shortname: 'ohd', archive_domain: OHD_DOMAINS[railsMode] };
     const dispatch = useDispatch();
     const statuses = useSelector(getStatuses);
-    const translationValues = useSelector(getTranslationValues);
+    const translations = useSelector(getTranslations);
     const languages = useSelector(getLanguages);
     const collections = useSelector(getCollections);
 
@@ -36,7 +36,7 @@ export default function useHumanReadable() {
         attribute,
         collapsed,
         none,
-        translationValues,
+        translations,
         statuses,
         optionsScope,
         collections,
