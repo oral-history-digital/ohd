@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
 import originalT from './t';
-import { getStatuses, getTranslationValues } from 'modules/data';
+import { getStatuses, getTranslations } from 'modules/data';
 import { getTranslationsView } from 'modules/archive';
 
 export function useI18n() {
@@ -21,12 +21,12 @@ export function useI18n() {
     const project = { shortname: 'ohd', archive_domain: OHD_DOMAINS[railsMode] };
     const dispatch = useDispatch();
     const statuses = useSelector(getStatuses);
-    const translationValues = useSelector(getTranslationValues);
+    const translations = useSelector(getTranslations);
     const translationsView = useSelector(getTranslationsView);
 
     const curriedT = (key, params) => originalT({
         locale,
-        translationValues,
+        translations,
         statuses,
         project,
         translationsView,

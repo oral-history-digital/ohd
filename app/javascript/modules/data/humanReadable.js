@@ -8,8 +8,8 @@ export default function humanReadable({
     attribute,
     collapsed=false,
     none='---',
-    translationValues,
-    translationValuesStatuses,
+    translations,
+    translationsStatuses,
     optionsScope,
     collections,
     languages,
@@ -61,7 +61,7 @@ export default function humanReadable({
     const keyParam = `${optionsScope || attribute}-${value}`;
     const keyParams = [ keyParam, value ];
 
-    fetchTranslationValues({
+    fetchTranslations({
         keyParams,
         statuses,
         locale,
@@ -69,12 +69,12 @@ export default function humanReadable({
         dispatch
     })
 
-    return translationValues[keyParam]?.value[locale] ||
-        translationValues[value]?.value[locale] ||
+    return translations[keyParam]?.value[locale] ||
+        translations[value]?.value[locale] ||
         value || none;
 }
 
-function fetchTranslationValues({
+function fetchTranslations({
     keyParams,
     statuses,
     locale,
@@ -82,9 +82,9 @@ function fetchTranslationValues({
     dispatch
 }) {
     keyParams.forEach(keyParam => {
-        const fetchStatus = statuses.translation_values[keyParam];
+        const fetchStatus = statuses.translations[keyParam];
         if (!fetchStatus) {
-            dispatch(fetchData({ locale, project }, 'translation_values', keyParam));
+            dispatch(fetchData({ locale, project }, 'translations', keyParam));
         }
     });
 }

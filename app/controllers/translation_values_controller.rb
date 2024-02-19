@@ -15,7 +15,6 @@ class TranslationValuesController < ApplicationController
   end
 
   def update
-    @translation_value = TranslationValue.find params[:id]
     authorize @translation_value
     @translation_value.update translation_value_params
 
@@ -27,11 +26,10 @@ class TranslationValuesController < ApplicationController
   end
 
   def show
-    @translation_value = TranslationValue.where(key: params[:id].gsub('-', '.')).first
     @translation_value.update used: @translation_value.used + 1 if @translation_value
     respond_to do |format|
       format.json do
-        render json: data_json(@translation_value, id: params[:id])
+        render json: data_json(@translation_value, id: params[:id], data_type: 'translations')
       end
     end
   end
@@ -51,7 +49,7 @@ class TranslationValuesController < ApplicationController
       format.json do
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-translation_values-#{extra_params ? extra_params : "all"}-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}" do
           {
-            data: translation_values.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: translation_values.inject({}) { |mem, s| mem[s.identifier] = cache_single(s); mem },
             data_type: "translation_values",
             extra_params: extra_params,
             page: params[:page] || 1,
@@ -64,7 +62,6 @@ class TranslationValuesController < ApplicationController
   end
 
   def destroy
-    @translation_value = TranslationValue.find(params[:id])
     authorize @translation_value
     @translation_value.destroy
 
@@ -92,6 +89,10 @@ class TranslationValuesController < ApplicationController
       :key,
       :value,
     ).to_h.select{|k,v| !v.blank? }
+  end
+
+  def set_translation_value
+    @translation_value = TranslationValue.where(key: params[:id].gsub('-', '.')).first
   end
 
 end

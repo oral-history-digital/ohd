@@ -5,7 +5,7 @@ import { fetchData } from 'modules/data';
 export default function t(
     {
         locale,
-        translationValues,
+        translations,
         translationsView,
         statuses,
         project,
@@ -13,27 +13,30 @@ export default function t(
     }, key, params
 ) {
     const keyParam = key.replace(/\./g, '-');
-    const fetchStatus = statuses.translation_values[keyParam];
+    const fetchStatus = statuses.translations[keyParam];
     const fetched = /^fetched/.test(fetchStatus);
-    const translationValue = translationValues[keyParam]?.value[locale];
+    if (!translations[keyParam]?.value) {
+        debugger;
+    }
+    const translation = translations[keyParam]?.value?.[locale];
 
     const defaultKeyParam = defaultKey(key)?.replace(/\./g, '-');
-    const defaultFetchStatus = statuses.translation_values[defaultKeyParam];
+    const defaultFetchStatus = statuses.translations[defaultKeyParam];
     const defaultFetched = /^fetched/.test(defaultFetchStatus);
-    const defaultTranslationValue = translationValues[defaultKeyParam]?.value[locale];
+    const defaultTranslation = translations[defaultKeyParam]?.value[locale];
 
     if (!fetchStatus) {
-        dispatch(fetchData({ locale, project }, 'translation_values', keyParam));
+        dispatch(fetchData({ locale, project }, 'translations', keyParam));
     }
     if (
         /^fetched/.test(fetchStatus) &&
-        !translationValue &&
+        !translation &&
         !defaultFetchStatus
     ) {
-        dispatch(fetchData({ locale, project }, 'translation_values', defaultKeyParam));
+        dispatch(fetchData({ locale, project }, 'translations', defaultKeyParam));
     }
 
-    let text = translationValue || defaultTranslationValue || productionFallback(key);
+    let text = translation || defaultTranslation || productionFallback(key);
 
     if(params) {
         for (let [key, value] of Object.entries(params)) {
@@ -43,7 +46,7 @@ export default function t(
         }
     }
 
-    const usedKey = !translationValue && defaultTranslationValue ? defaultKey(key) : key;
+    const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
 
     if (translationsView) {
         Array.isArray(text) ?

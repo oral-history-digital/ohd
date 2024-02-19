@@ -12,6 +12,7 @@ const initialState = {
     },
     projects: {},
     translation_values: {},
+    translations: {},
     statuses: {
         users: {},
         interviews: {},
@@ -39,6 +40,7 @@ const initialState = {
         collections: {},
         languages: {},
         translation_values: {},
+        translations: {},
     }
 }
 

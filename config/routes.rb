@@ -40,7 +40,8 @@ Rails.application.routes.draw do
 
     resources :edit_tables, only: [:create, :show]
     resources :languages
-    resources :translation_values
+    resources :translation_values, except: [:show, :new, :edit]
+    get "translations/:id", to: "translation_values#show"
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
     resources :institution_projects
