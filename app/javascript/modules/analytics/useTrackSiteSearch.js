@@ -9,7 +9,6 @@ export default function useTrackSiteSearch() {
 
     function searchFunction(searchTerm) {
         if (shouldTrack()) {
-            console.log(`Tracking site search: ${searchTerm}`);
             trackSiteSearch({ keyword: searchTerm })
         }
     }

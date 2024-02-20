@@ -16,12 +16,10 @@ export default function AnalyticsProvider({
             siteId: project.analytics_site_id || ANALYTICS_DEFAULT_SITE_ID,
             disabled: !shouldTrack(),
         });
-        console.log('Instance created', result);
         return result;
     }, []);
 
     function shouldTrack() {
-        console.log('should track: ', isOnOHD(), isExternalAndHasSiteId());
         return isOnOHD() || isExternalAndHasSiteId();
     }
 

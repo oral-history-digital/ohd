@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { getCurrentUser } from 'modules/data';
 
+const TRACKING_DELAY = 100;
+
 export default function useTrackPageView(title) {
     const currentUser = useSelector(getCurrentUser);
     const { trackPageView } = useMatomo();
@@ -12,8 +14,10 @@ export default function useTrackPageView(title) {
 
     useEffect(() => {
         if (shouldTrack()) {
-            console.log('Tracking page view')
-            trackPageView(options);
+            setTimeout(() => {
+                // Use setTimeout to wait for the document title to get updated.
+                trackPageView(options);
+            }, TRACKING_DELAY);
         }
     }, []);
 
