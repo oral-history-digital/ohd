@@ -32,7 +32,6 @@ export default function Interview({
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
 
-    const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
     useTrackPageView();
 
     useEffect(() => {
@@ -63,6 +62,8 @@ export default function Interview({
     if (!interviewIsFetched || typeof interview?.lang !== 'string') {
         return <Spinner withPadding />;
     }
+
+    const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
 
     if (isCatalog) {
         return <InterviewDetailsLeftSideContainer />;
