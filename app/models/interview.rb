@@ -652,7 +652,7 @@ class Interview < ApplicationRecord
       title(locale)
     else
       I18n.with_locale locale do
-        if interviewees.blank?
+        if interviewee.blank?
           'no interviewee given'
         else
           interviewee.display_name(anonymous: true)
