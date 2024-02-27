@@ -9,6 +9,10 @@ export default function AnalyticsProvider({
     project,
     children,
 }) {
+    if (['development', 'test'].indexOf(railsMode) > -1) {
+        return children;
+    }
+
     const instance = useMemo(() => {
         const result = createInstance({
             urlBase: ANALYTICS_URL_BASE,
