@@ -136,8 +136,8 @@ class Admin::UserStatisticsController < Admin::BaseController
       mem << [
         y,
         [
-          "#{date_attribute} >= ? AND #{date_attribute} <= ?",
-          Date.parse("1.1.#{y}"),
+          "#{date_attribute} > ? AND #{date_attribute} <= ?",
+          Date.parse("31.12.#{y - 1}"),
           Date.parse("31.12.#{y}")
         ]
       ]
@@ -152,8 +152,8 @@ class Admin::UserStatisticsController < Admin::BaseController
       mem << [
         (Time.now - m.months).strftime('%m.%Y'),
         [
-          "#{date_attribute} >= ? AND #{date_attribute} <= ?",
-          (Time.now - m.months).beginning_of_month.to_date,
+          "#{date_attribute} > ? AND #{date_attribute} <= ?",
+          (Time.now - (m + 1).months).end_of_month.to_date,
           (Time.now - m.months).end_of_month.to_date
         ]
       ]

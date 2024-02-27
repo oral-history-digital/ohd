@@ -66,5 +66,5 @@ export default function Home({
 }
 
 Home.propTypes = {
-    institutions: PropTypes.array.isRequired,
+    institutions: PropTypes.object.isRequired,
 };
