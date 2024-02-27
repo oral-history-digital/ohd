@@ -1,10 +1,9 @@
 import { useMatch } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
 import originalT from './t';
-import { getStatuses, getTranslations } from 'modules/data';
-import { getTranslationsView } from 'modules/archive';
+import { getTranslationsView, getTranslations } from 'modules/archive';
 
 export function useI18n() {
     const matchWithProject = useMatch('/:projectId/:locale/*');
@@ -18,19 +17,13 @@ export function useI18n() {
         locale = matchWOProject.params.locale;
     }
 
-    const project = { shortname: 'ohd', archive_domain: OHD_DOMAINS[railsMode] };
-    const dispatch = useDispatch();
-    const statuses = useSelector(getStatuses);
     const translations = useSelector(getTranslations);
     const translationsView = useSelector(getTranslationsView);
 
     const curriedT = (key, params) => originalT({
         locale,
         translations,
-        statuses,
-        project,
         translationsView,
-        dispatch
     }, key, params);
 
     return {

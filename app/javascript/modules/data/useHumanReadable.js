@@ -1,10 +1,10 @@
 import { useMatch } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
 import originalHumanReadable from './humanReadable';
-import { getStatuses, getTranslations, getLanguages,
-    getCollections } from 'modules/data';
+import { getLanguages, getCollections } from 'modules/data';
+import { getTranslations } from 'modules/archive';
 
 export default function useHumanReadable() {
     const matchWithProject = useMatch('/:projectId/:locale/*');
@@ -18,9 +18,6 @@ export default function useHumanReadable() {
         locale = matchWOProject.params.locale;
     }
 
-    const project = { shortname: 'ohd', archive_domain: OHD_DOMAINS[railsMode] };
-    const dispatch = useDispatch();
-    const statuses = useSelector(getStatuses);
     const translations = useSelector(getTranslations);
     const languages = useSelector(getLanguages);
     const collections = useSelector(getCollections);
@@ -37,17 +34,13 @@ export default function useHumanReadable() {
         collapsed,
         none,
         translations,
-        statuses,
         optionsScope,
         collections,
         languages,
         locale,
-        project,
-        dispatch
     });
 
     return {
         humanReadable: curriedHumanReadable,
     };
 }
-

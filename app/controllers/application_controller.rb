@@ -92,6 +92,15 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
+        translations: Rails.cache.fetch("translations-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}") do
+          TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
+            mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
+              mem2[translation.locale] = translation.value
+              mem2
+            end
+            mem
+          end
+        end,
         countryKeys: country_keys,
       },
       user: {
@@ -128,7 +137,6 @@ class ApplicationController < ActionController::Base
           projects: {all: 'fetched'},
           languages: {all: 'fetched'},
           translation_values: {},
-          translations: {},
           institutions: {all: 'fetched'},
           collections: {},
           people: {},
@@ -171,8 +179,6 @@ class ApplicationController < ActionController::Base
         registry_entries: {},
         interviews: {},
         segments: {},
-        translation_values: {},
-        translations: {},
       },
       'media-player': {
         tape: 1,
@@ -307,9 +313,9 @@ class ApplicationController < ActionController::Base
   def data_json(data, opts={})
     identifier = (data.class.name.underscore == 'interview') ? :archive_id : :id
     json = {
-      "#{identifier}": opts[:id] || data&.identifier,
-      data_type: opts[:data_type] || data.class.name.underscore.pluralize,
-      data: data ? cache_single(data) : nil
+      "#{identifier}": data.send(identifier),
+      data_type: data.class.name.underscore.pluralize,
+      data: cache_single(data)
     }
     json.update(opts)
     json

@@ -11,8 +11,6 @@ const initialState = {
         current: null
     },
     projects: {},
-    translation_values: {},
-    translations: {},
     statuses: {
         users: {},
         interviews: {},
@@ -39,8 +37,6 @@ const initialState = {
         projects: {},
         collections: {},
         languages: {},
-        translation_values: {},
-        translations: {},
     }
 }
 

@@ -11,8 +11,6 @@ export const getLanguages = state => getData(state).languages;
 
 export const getTranslationValues = state => getData(state).translation_values;
 
-export const getTranslations = state => getData(state).translations;
-
 export const getInstitutions = state => getData(state).institutions;
 
 export const getProjects = state => getData(state).projects;
