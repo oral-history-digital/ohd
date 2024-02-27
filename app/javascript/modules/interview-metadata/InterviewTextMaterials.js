@@ -45,7 +45,7 @@ export default function InterviewTextMaterials({
                     elementType="textarea"
                     multiLocale
                     attribute="observations"
-                    value={interview.observations[locale]?.substring(0,25)}
+                    value={interview.observations?.[locale]?.substring(0,25)}
                     noLabel
                 />
             </AuthorizedContent>
