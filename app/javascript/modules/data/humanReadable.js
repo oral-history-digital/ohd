@@ -9,13 +9,10 @@ export default function humanReadable({
     collapsed=false,
     none='---',
     translations,
-    translationsStatuses,
     optionsScope,
     collections,
     languages,
     locale,
-    project,
-    dispatch
 }) {
     if (obj.translations_attributes) {
         const translation = (Array.isArray(obj.translations_attributes) ?
@@ -58,33 +55,9 @@ export default function humanReadable({
         return collapsed ? value[locale]?.substring(0,25) : value[locale];
     }
 
-    const keyParam = `${optionsScope || attribute}-${value}`;
-    const keyParams = [ keyParam, value ];
+    const keyParam = `${optionsScope || attribute}.${value}`;
 
-    fetchTranslations({
-        keyParams,
-        statuses,
-        locale,
-        project,
-        dispatch
-    })
-
-    return translations[keyParam]?.value[locale] ||
-        translations[value]?.value[locale] ||
+    return translations[keyParam]?.[locale] ||
+        translations[value]?.[locale] ||
         value || none;
-}
-
-function fetchTranslations({
-    keyParams,
-    statuses,
-    locale,
-    project,
-    dispatch
-}) {
-    keyParams.forEach(keyParam => {
-        const fetchStatus = statuses.translations[keyParam];
-        if (!fetchStatus) {
-            dispatch(fetchData({ locale, project }, 'translations', keyParam));
-        }
-    });
 }

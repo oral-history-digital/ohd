@@ -1,37 +1,14 @@
 import reactStringReplace from 'react-string-replace';
 
-import { fetchData } from 'modules/data';
-
 export default function t(
     {
         locale,
         translations,
         translationsView,
-        statuses,
-        project,
-        dispatch
     }, key, params
 ) {
-    const keyParam = key.replace(/\./g, '-');
-    const fetchStatus = statuses.translations[keyParam];
-    const fetched = /^fetched/.test(fetchStatus);
-    const translation = translations[keyParam]?.value?.[locale];
-
-    const defaultKeyParam = defaultKey(key)?.replace(/\./g, '-');
-    const defaultFetchStatus = statuses.translations[defaultKeyParam];
-    const defaultFetched = /^fetched/.test(defaultFetchStatus);
-    const defaultTranslation = translations[defaultKeyParam]?.value[locale];
-
-    if (!fetchStatus) {
-        dispatch(fetchData({ locale, project }, 'translations', keyParam));
-    }
-    if (
-        /^fetched/.test(fetchStatus) &&
-        !translation &&
-        !defaultFetchStatus
-    ) {
-        dispatch(fetchData({ locale, project }, 'translations', defaultKeyParam));
-    }
+    const translation = translations[key]?.[locale];
+    const defaultTranslation = translations[defaultKey(key)]?.[locale];
 
     let text = translation || defaultTranslation || productionFallback(key);
 
