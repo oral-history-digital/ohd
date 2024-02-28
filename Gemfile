@@ -1,20 +1,14 @@
-#source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
-
-#ruby '2.6.6'
 
 gem 'rdoc'
 gem 'rails', '~> 7.0.0'
 gem 'mysql2'
 gem "redis", "~> 4.0"
-#gem 'exception_notification'
 gem 'pundit'
 gem 'workflow'
-#gem 'i18n-js'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-#gem 'i18n'
-gem 'will_paginate', '3.1.7'
+gem 'will_paginate', '~> 3.3.1'
 gem 'mini_magick'
 gem 'mini_exiftool'
 gem 'image_processing', '~> 1.2'
@@ -45,8 +39,6 @@ gem 'sprockets-rails'
 # Gems specific to public archive app:
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids'
-#gem 'localized_country_select'
-#gem 'route_translator'
 gem 'devise'
 gem 'doorkeeper'
 gem 'activerecord-session_store'
@@ -69,8 +61,6 @@ group :development do
   # Automatic tests
   gem 'rails-erd'
   gem 'guard-spork'
-  # gem 'guard-rspec'
-  # gem 'guard-cucumber'
   gem 'capistrano', '~> 3.17.0'
   gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'capistrano-rbenv'
@@ -78,21 +68,15 @@ group :development do
   gem 'capistrano-passenger'
   gem 'puma'
   gem 'rb-readline'
-  #gem 'meta_request'
 end
 
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
-  # gem 'rspec', '~> 3.10.0'
-  # gem 'rspec-rails', '~> 4.0.2'
-  # gem 'rspec-snapshot', '~> 0.1.2'
   gem 'minitest-retry'
   gem 'spork' # faster tests
   gem 'pdf-inspector', require: "pdf/inspector"
   gem 'pdf-reader'
-  # gem 'factory_bot_rails', '~> 6.2.0'
-  # gem 'rspec-activemodel-mocks'
   gem 'selenium-webdriver'
   gem 'simplecov'
 end
