@@ -1,44 +1,21 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { getRegistryEntries } from 'modules/data';
 import EntryReferencesContainer from './EntryReferencesContainer';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryBreadcrumbs from './RegistryEntryBreadcrumbs';
 
 export default function RegistryEntryShow({
-    registryEntries,
-    registryEntriesStatus,
     registryEntryId,
     normDataLinks,
     onSubmit,
-    fetchData,
 }) {
     const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const registryEntries = useSelector(getRegistryEntries);
     const registryEntry = registryEntries[registryEntryId];
     const showOpenStreetMapLink = registryEntry.latitude + registryEntry.longitude !== 0;
-
-    useEffect(() => {
-        loadWithAssociations();
-    });
-
-    function loadWithAssociations() {
-        const registryEntry = registryEntries[registryEntryId];
-
-        if (
-            (!registryEntry?.associations_loaded) &&
-            registryEntriesStatus[registryEntryId] !== 'fetching'
-        ) {
-            fetchData({ project, projectId, locale }, 'registry_entries',
-                registryEntryId, null, 'with_associations=true');
-        }
-    }
-
-    if (!registryEntry?.associations_loaded) {
-        return null;
-    }
 
     return (
         <div>
@@ -72,9 +49,6 @@ export default function RegistryEntryShow({
 
 RegistryEntryShow.propTypes = {
     normDataLinks: PropTypes.object,
-    registryEntries: PropTypes.object,
-    registryEntriesStatus: PropTypes.object,
     registryEntryId: PropTypes.number.isRequired,
-    fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
 };
