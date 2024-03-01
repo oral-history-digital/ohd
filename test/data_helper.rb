@@ -89,7 +89,8 @@ module DataHelper
       priv_agreement: true,
       country: 'Germany',
       street: 'Am Lindenbaum 3',
-      city: 'Berlin'
+      city: 'Berlin',
+      default_locale: 'en'
     )
     admin.skip_confirmation_notification!
     admin.save!
@@ -107,7 +108,8 @@ module DataHelper
       priv_agreement: true,
       country: 'France',
       street: '3 rue des Petits Champs',
-      city: 'Paris'
+      city: 'Paris',
+      default_locale: 'en'
     )
     jdoe.skip_confirmation_notification!
     jdoe.save!

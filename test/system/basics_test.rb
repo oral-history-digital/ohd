@@ -221,6 +221,24 @@ class BasicsTest < ApplicationSystemTestCase
     # -> no error, we are happy
   end
 
+  test 'change password' do
+    visit '/'
+    click_on 'Recover password'
+    fill_in 'Email', with: 'john@example.com'
+    click_on 'Submit'
+    assert_text 'You have been sent an email with instructions on how to change your password.'
+
+    mail = ActionMailer::Base.deliveries.last
+    assert_match /Oral-History.Digital. Steps to recover your password./, mail.subject
+    link = links_from_email(mail)[0]
+    visit link
+    fill_in 'password', with: 'newpassword'
+    fill_in 'password_confirmation', with: 'newpassword'
+    click_on 'Submit'
+    assert_text 'This is the test archive of the oral history digital project'
+
+  end
+
   test 'bookmarking segments' do
     Interview.reindex
     DataHelper.test_media
