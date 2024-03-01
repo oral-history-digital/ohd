@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
@@ -6,10 +7,13 @@ import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { pluralize } from 'modules/strings';
+import { fetchData } from 'modules/data';
 
 export default function EditData({
     data,
     formElements,
+    sensitiveAttributes = [],
     helpTextCode,
     initialFormValues,
     translations,
@@ -19,10 +23,19 @@ export default function EditData({
     const [editing, setEditing] = useState(false);
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
+    const dispatch = useDispatch();
 
     function toggleEditing() {
         setEditing(prev => !prev);
     }
+
+    useEffect(() => {
+        sensitiveAttributes.forEach(attr => {
+            if (!data[attr]) {
+                dispatch(fetchData({ projectId, locale, project }, pluralize(scope), data.id, attr));
+            }
+        });
+    }, sensitiveAttributes);
 
     return editing ?
         (
