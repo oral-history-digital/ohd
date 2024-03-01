@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
     translations: getTranslations(state),
     data: getCurrentProject(state),
     scope: 'project',
+    sensitiveAttributes: ['contact_email'],
     helpTextCode: 'archive_config_form',
     formElements: [
         {

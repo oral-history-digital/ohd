@@ -240,6 +240,22 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :basic_project_routes do
+    resources :projects, only: [:update, :destroy] do
+      member do
+        get :contact_email
+      end
+    end
+  end
+
+  concern :all_project_routes do
+    resources :projects, only: [:index, :create, :update, :destroy] do
+      member do
+        get :contact_email
+      end
+    end
+  end
+
   # these are the routes with :project_id as first part of path
   #
   # for development it is now set to portal.oral-history.localhost:3000
@@ -250,7 +266,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     scope "/:locale" do
       get "/", to: "projects#index"
-      resources :projects, only: [:create, :update, :destroy, :index]
+      concerns :all_project_routes
       resources :institutions
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
@@ -264,7 +280,7 @@ Rails.application.routes.draw do
       }
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
-        resources :projects, only: [:update, :destroy]
+        concerns :basic_project_routes
         concerns :archive
         concerns :unnamed_devise_routes, :search
         concerns :account
@@ -281,7 +297,7 @@ Rails.application.routes.draw do
     get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
-      resources :projects, only: [:update, :destroy]
+      concerns :basic_project_routes
       concerns :archive
       concerns :unnamed_devise_routes, :search
       concerns :account
