@@ -1,7 +1,7 @@
 require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
-  after_action :verify_authorized, except: [:index, :locations, :location_references]
+  after_action :verify_authorized, except: [:index, :locations, :location_references, :for_reg_entry]
   after_action :verify_policy_scoped, only: [:index, :locations]
 
   def create
@@ -97,10 +97,11 @@ class RegistryReferencesController < ApplicationController
         interview = Interview.find_by(archive_id: params[:archive_id])
         registry_entry_id = params[:registry_entry_id]
         interviewee = interview.interviewee
+        repository = RegistryReferenceRepository.new
 
-        person_references = RegistryReference.for_interview_map_person_references(registry_entry_id, I18n.locale, interviewee.id)
-        interview_references = RegistryReference.for_interview_map_interview_references(registry_entry_id, I18n.locale, interview.id)
-        segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
+        person_references = repository.interview_map_person_references_for(registry_entry_id, I18n.locale, interviewee.id)
+        interview_references = repository.interview_map_interview_references_for(registry_entry_id, I18n.locale, interview.id)
+        segment_references = repository.interview_map_segment_references_for(registry_entry_id, interview.id)
 
         combined_references = person_references.to_a + interview_references.to_a
 
@@ -115,6 +116,31 @@ class RegistryReferencesController < ApplicationController
         render json: references
       end
     end
+  end
+
+  def for_reg_entry
+    registry_entry_id = params[:id]
+    signed_in = current_user.present?
+    #scope = map_scope
+
+    repository = RegistryReferenceRepository.new
+
+    interview_refs = repository.interview_references_for(registry_entry_id)
+    interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
+      each_serializer: SlimRegistryReferenceSerializer,
+      default_locale: current_project.default_locale,
+      signed_in: signed_in)
+
+    segment_refs = repository.segment_references_for(registry_entry_id)
+    segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
+      each_serializer: SlimSegmentRegistryReferenceSerializer,
+      default_locale: current_project.default_locale,
+      signed_in: signed_in)
+
+    render json: {
+      interview_references: interview_refs_serialized,
+      segment_references: segment_refs_serialized
+    }
   end
 
   def index
