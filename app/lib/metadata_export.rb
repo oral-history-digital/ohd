@@ -54,8 +54,8 @@ class MetadataExport
         project.registry_reference_type_import_metadata_fields.inject(line) do |mem, field|
           registry_entries = interview.send(field.name).map{|rid| RegistryEntry.find(rid)}.compact.uniq
           mem << registry_entries.map(&:descriptor).join('#')
-          parent = registry_entries.first && registry_entries.first.parents.first
-          if parent
+          parent = registry_entries.first&.parents.first
+          if parent && parent.id != field.registry_reference_type.registry_entry_id
             mem << parent.descriptor
           else
             mem << nil
