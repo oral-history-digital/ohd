@@ -83,6 +83,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     if user.confirmation_token == params[:confirmation_token]
       user.confirm
+      user.update(login: user.email)
       sign_in(user)
       redirect_to user_url('current')
     else
