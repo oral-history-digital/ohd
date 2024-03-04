@@ -92,3 +92,4 @@ export { default as StateCheck } from './components/StateCheck';
 export { default as humanReadable } from './humanReadable';
 export { default as useMutateData } from './useMutateData';
 export { default as useMutateDatum } from './useMutateDatum';
+export { default as useSensitiveData } from './useSensitiveData';

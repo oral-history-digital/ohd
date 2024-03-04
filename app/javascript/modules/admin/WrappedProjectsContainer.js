@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
+        sensitiveAttributes: ['contact_email'],
         detailsAttributes: ['title', 'workflow_state'],
         initialFormValues: {display_ohd_link: true, pseudo_view_modes: 'grid,list,workflow'},
         formElements: [
