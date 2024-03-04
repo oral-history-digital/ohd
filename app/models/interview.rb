@@ -174,8 +174,8 @@ class Interview < ApplicationRecord
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
 
-    text :transcript do
-      segments.includes(:translations).inject([]) do |all, segment|
+    text :transcript, stored: true do
+      segments.joins(:translations).where("locale like '%-public'").inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
         all
       end.join(' ')
