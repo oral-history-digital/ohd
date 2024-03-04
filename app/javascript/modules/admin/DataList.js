@@ -19,6 +19,7 @@ export default function DataList({
     outerScopeId,
     optionsScope,
     detailsAttributes,
+    sensitiveAttributes = [],
     joinedData,
     showComponent,
     interview,
@@ -89,6 +90,7 @@ export default function DataList({
                             key={c}
                             data={data[c]}
                             scope={scope}
+                            sensitiveAttributes={sensitiveAttributes}
                             outerScope={outerScope}
                             outerScopeId={outerScopeId}
                             optionsScope={optionsScope}
