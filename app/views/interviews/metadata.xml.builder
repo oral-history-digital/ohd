@@ -29,17 +29,11 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.publicationYear DateTime.now.year
 
   xml.contributors do
-    [
-      %w(interviewers Interviewführung), 
-      %w(cinematographers Kamera),
-      %w(transcriptors Transkripteur),
-      %w(translators Übersetzer),
-      %w(segmentators Erschließer)
-    ].each do |contributors, contribution|
-      if interview.send(contributors).length > 0
-        xml.contributor contributorType: "DataCollector" do 
-          xml.contributorName interview.send(contributors).map{|contributor| "#{contributor.last_name(locale)}, #{contributor.first_name(locale)}"}.join('; ') + " (#{contribution})"
-        end
+    interview.contributions.group_by{|c| c.contribution_type}.each do |contribution_type, contributions|
+      xml.contributor contributorType: "DataCollector" do 
+        xml.contributorName contributions.map{|c|
+          "#{c.person.last_name(locale)}, #{c.person.first_name(locale)}"
+        }.join('; ') + " (#{contribution_type.label(locale)})"
       end
     end
     if !interview.project.cooperation_partner.blank?
