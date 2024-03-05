@@ -21,11 +21,11 @@ function LinkOrA({
 
     const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
     const projectHasOtherDomain = project.archive_domain && project.archive_domain !== window.location.origin;
-    const projectIsCurrentProject = project.identifier === currentProjectId;
+    const projectIsCurrentProject = project.shortname === currentProjectId;
 
     const ohdDomain = OHD_DOMAINS[railsMode];
 
-    const pathBase = project.archive_domain ? `/${locale}` : `/${project.identifier}/${locale}`;
+    const pathBase = project.archive_domain ? `/${locale}` : `/${project.shortname}/${locale}`;
     const path = to.length > 0 ? `${pathBase}/${to}` : pathBase;
     const domain = project.archive_domain || ohdDomain;
 
@@ -38,7 +38,7 @@ function LinkOrA({
                 className={className}
                 style={style}
                 to={path}
-                onClick={() => dispatch( setProjectId(project.identifier), onLinkClick(pathBase) )}
+                onClick={() => dispatch( setProjectId(project.shortname), onLinkClick(pathBase) )}
             >
                 { children }
             </Link> :

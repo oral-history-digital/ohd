@@ -503,10 +503,10 @@ class InterviewsController < ApplicationController
     )
     {
       "data": {
-        "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
+        "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
         "type": "dois",
         "attributes": {
-          "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
+          "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(xml),

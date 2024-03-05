@@ -44,7 +44,7 @@
 
 \newpage
 
-<%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.identifier != 'zwar' %>
+<%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.shortname != 'zwar' %>
 
 <%# set section fontsize: %>
 \titleformat{\section}

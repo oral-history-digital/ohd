@@ -2,7 +2,7 @@ xml.instruct!
 xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd", xmlns: "http://datacite.org/schema/kernel-4", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance" do
 
   xml.identifier identifierType: "DOI" do 
-    xml.text! "#{Rails.configuration.datacite['prefix']}/#{interview.project.identifier}.#{interview.archive_id}"
+    xml.text! "#{Rails.configuration.datacite['prefix']}/#{interview.project.shortname}.#{interview.archive_id}"
   end
 
   #xml.AlternateIdentifier AlternateIdentifierType: "URL" do

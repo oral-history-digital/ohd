@@ -148,7 +148,7 @@ class Interview < ApplicationRecord
     end
 
     # in order to find pseudonyms with fulltextsearch (dg)
-    #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
+    #(text :pseudonym_string, :stored => true) if project.shortname == 'dg'
 
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true do
