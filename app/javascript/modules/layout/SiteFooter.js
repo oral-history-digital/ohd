@@ -11,10 +11,8 @@ function SiteFooter() {
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
 
-    let links = {};
-    if (project) {
-        links = project.external_links;
-    }
+    const links = project.external_links || {};
+    const sponsorLogos = project.sponsor_logos || [];
 
     return (
         <footer>
@@ -84,16 +82,16 @@ function SiteFooter() {
                     ))
                 }
             </ul>
-            <p>{project && project.name[locale]}</p>
+            <p>{project?.name?.[locale]}</p>
 
             <ProjectFooter project={project} locale={locale}/>
 
             {
-                project?.sponsor_logos ?
+                sponsorLogos ?
                 (
                     <div className='home-content-logos'>
-                        {Object.keys(project.sponsor_logos).map(k => {
-                            let logo = project.sponsor_logos[k];
+                        {Object.keys(sponsorLogos).map(k => {
+                            let logo = sponsorLogos[k];
                             if (logo.locale === locale) {
                                 return (
                                     <a
