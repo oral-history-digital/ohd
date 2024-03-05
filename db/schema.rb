@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_16_110758) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_05_104035) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -591,7 +591,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_16_110758) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "fullname_on_landing_page"
-    t.string "cache_key_prefix", default: "cdoh"
     t.string "primary_color"
     t.string "secondary_color"
     t.string "editorial_color"

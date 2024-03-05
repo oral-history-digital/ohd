@@ -79,13 +79,13 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def contributions
-    json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.count}-#{object.contributions.maximum(:updated_at)}") do
+    json =  Rails.cache.fetch("#{object.project.shortname}-interview-contributions-#{object.id}-#{object.contributions.count}-#{object.contributions.maximum(:updated_at)}") do
       object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 
   def registry_references
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.count}-#{object.registry_references.maximum(:updated_at)}") do
+    json = Rails.cache.fetch("#{object.project.shortname}-interview-registry_references-#{object.id}-#{object.registry_references.count}-#{object.registry_references.maximum(:updated_at)}") do
       object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end

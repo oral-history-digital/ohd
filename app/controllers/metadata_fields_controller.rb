@@ -41,7 +41,7 @@ class MetadataFieldsController < ApplicationController
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
-        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-project-metadata_fields-#{@project.id}-#{@project.metadata_fields.count}-#{@project.metadata_fields.maximum(:updated_at)}") do
+        json = Rails.cache.fetch("#{current_project.shortname}-project-metadata_fields-#{@project.id}-#{@project.metadata_fields.count}-#{@project.metadata_fields.maximum(:updated_at)}") do
           {
             data: @project.metadata_fields_for.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             nested_data_type: 'metadata_fields',

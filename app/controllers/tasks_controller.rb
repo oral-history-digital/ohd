@@ -45,7 +45,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-tasks-#{@interview.id}-#{@interview.tasks.count}-#{@interview.tasks.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-tasks-#{@interview.id}-#{@interview.tasks.count}-#{@interview.tasks.maximum(:updated_at)}" do
           {
             data: tasks.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'tasks',

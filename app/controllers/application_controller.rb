@@ -292,7 +292,7 @@ class ApplicationController < ActionController::Base
   # serialized compiled cache of an instance
   #
   def cache_single(data, name = nil, related = nil, cache_key_suffix = nil)
-    cache_key_prefix = current_project ? current_project.cache_key_prefix : 'ohd'
+    cache_key_prefix = current_project ? current_project.shortname : 'ohd'
     cache_key = "#{cache_key_prefix}-#{(name || data.class.name).underscore}"\
       "-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}"\
       "-#{cache_key_suffix}"

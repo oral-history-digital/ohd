@@ -77,7 +77,7 @@ class RegistryReferencesController < ApplicationController
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
           interviewee = interview.interviewee
           registry_entries = RegistryEntry.for_map([interviewee&.id], [interview.id], 'all')
 

@@ -363,7 +363,7 @@ class Interview < ApplicationRecord
   def interviewee
     # caching results in 'singleton can't be dumped'-error here. Why?
     #
-    #Rails.cache.fetch("#{project.cache_key_prefix}-interviewee-for-#{id}-#{updated_at}") do
+    #Rails.cache.fetch("#{project.shortname}-interviewee-for-#{id}-#{updated_at}") do
       interviewees.first
     #end
   end
@@ -750,7 +750,7 @@ class Interview < ApplicationRecord
       cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
-      Rails.cache.fetch("#{project ? project.cache_key_prefix : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
+      Rails.cache.fetch("#{project ? project.shortname : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project ? project.interviews.size : Interview.count
