@@ -44,7 +44,7 @@ class RegistryReferenceTypesController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-rrt-#{cache_key_params}-#{RegistryReferenceType.count}-#{RegistryReferenceType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-rrt-#{cache_key_params}-#{RegistryReferenceType.count}-#{RegistryReferenceType.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(RegistryReferenceType).
               includes(:translations, :project).

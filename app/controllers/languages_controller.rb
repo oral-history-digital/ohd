@@ -44,7 +44,7 @@ class LanguagesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-languages-#{extra_params ? extra_params : "all"}-#{Language.count}-#{Language.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-languages-#{extra_params ? extra_params : "all"}-#{Language.count}-#{Language.maximum(:updated_at)}" do
           languages = languages.includes(:translations)
           {
             data: languages.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },

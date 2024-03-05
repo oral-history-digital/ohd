@@ -53,7 +53,7 @@ class CommentsController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-comments-#{cache_key_params}-#{Comment.count}-#{Comment.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-comments-#{cache_key_params}-#{Comment.count}-#{Comment.maximum(:updated_at)}" do
           if params.keys.include?("all")
             data = Comment.all.
               order("created_at ASC").

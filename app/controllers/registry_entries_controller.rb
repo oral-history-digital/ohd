@@ -74,7 +74,7 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-re-#{cache_key_params}-#{cache_key_date}-#{RegistryEntry.count}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-re-#{cache_key_params}-#{cache_key_date}-#{RegistryEntry.count}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
@@ -103,7 +103,7 @@ class RegistryEntriesController < ApplicationController
         render plain: json
       end
       format.pdf do
-        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
+        pdf = Rails.cache.fetch "#{current_project.shortname}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           render_to_string(
             template: 'registry_entries/index',
             formats: :pdf,
@@ -120,7 +120,7 @@ class RegistryEntriesController < ApplicationController
       format.csv do
         if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
-          csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
+          csv = Rails.cache.fetch "#{current_project.shortname}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
             CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
               row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews', 'Status']
               root.on_all_descendants do |entry|
@@ -212,7 +212,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: parent.id,
           data_type: "registry_entries",
-          data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
+          data: Rails.cache.fetch("#{current_project.shortname}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
         }, status: :ok
       end
     end

@@ -34,7 +34,7 @@ class SearchesController < ApplicationController
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           registry_entries: search.results.map do |result|
-            Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do
+            Rails.cache.fetch("#{current_project.shortname}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do
               cache_single(result, 'RegistryEntryWithAssociations')
             end
           end,
@@ -220,7 +220,7 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.json do
         dropdown_values = Interview.dropdown_search_values(current_project, current_user)
-        cache_key_prefix = current_project.present? ? current_project.cache_key_prefix : 'OHD'
+        cache_key_prefix = current_project.present? ? current_project.shortname : 'OHD'
         render json: {
           all_interviews_titles: current_user ? dropdown_values[:all_interviews_titles] : [],
           all_interviews_pseudonyms: current_user ? dropdown_values[:all_interviews_pseudonyms] : [],

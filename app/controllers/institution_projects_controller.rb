@@ -42,7 +42,7 @@ class InstitutionProjectsController < ApplicationController
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
-        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-project-institution_projects-#{@project.id}-#{@project.institution_projects.count}-#{@project.institution_projects.maximum(:updated_at)}") do
+        json = Rails.cache.fetch("#{current_project.shortname}-project-institution_projects-#{@project.id}-#{@project.institution_projects.count}-#{@project.institution_projects.maximum(:updated_at)}") do
           {
             data: @project.institution_projects_for.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             nested_data_type: 'institution_projects',

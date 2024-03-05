@@ -13,7 +13,7 @@ class RegistryHierarchiesController < ApplicationController
         render json: {
           id: descendant.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{descendant.id}-#{descendant.updated_at}"){::RegistryEntrySerializer.new(descendant).as_json},
+          data: Rails.cache.fetch("#{current_project.shortname}-registry_entry-#{descendant.id}-#{descendant.updated_at}"){::RegistryEntrySerializer.new(descendant).as_json},
           reload_data_type: 'registry_entries',
           reload_id: ancestor.id
         }, status: :ok
@@ -40,7 +40,7 @@ class RegistryHierarchiesController < ApplicationController
         render json: {
           id: descendant.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{descendant.id}-#{descendant.updated_at}"){::RegistryEntrySerializer.new(descendant).as_json},
+          data: Rails.cache.fetch("#{current_project.shortname}-registry_entry-#{descendant.id}-#{descendant.updated_at}"){::RegistryEntrySerializer.new(descendant).as_json},
           reload_data_type: 'registry_entries',
           reload_id: ancestor.id
         }, status: :ok

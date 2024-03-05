@@ -92,7 +92,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           {
             data: @interview.speaker_designations,
             nested_data_type: "speaker_designations",
@@ -113,7 +113,7 @@ class InterviewsController < ApplicationController
 
       if %w(contributions photos registry_references).include?(m)
         association = @interview.send(m)
-        data = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
+        data = Rails.cache.fetch("#{@interview.project.shortname}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
           association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
       else
@@ -174,7 +174,7 @@ class InterviewsController < ApplicationController
         unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
           raise Pundit::NotAuthorizedError
         end
-        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
+        vtt = Rails.cache.fetch "#{current_project.shortname}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
         send_data vtt, filename: "#{filename}.vtt", type: "text/vtt"
@@ -351,12 +351,12 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           segments = @interview.segments.
             includes(:translations, :annotations => [:translations]). #, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
             where.not(timecode: "00:00:00.000")
           {
-            data: segments.with_heading.map { |s| Rails.cache.fetch("#{current_project.cache_key_prefix}-headings-#{s.id}-#{s.updated_at}") { ::HeadingSerializer.new(s).as_json } },
+            data: segments.with_heading.map { |s| Rails.cache.fetch("#{current_project.shortname}-headings-#{s.id}-#{s.updated_at}") { ::HeadingSerializer.new(s).as_json } },
             nested_data_type: "headings",
             data_type: "interviews",
             archive_id: params[:id],
@@ -372,7 +372,7 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
             data: ref_tree.part(current_project.root_registry_entry.id),
@@ -421,7 +421,7 @@ class InterviewsController < ApplicationController
   end
 
   def initial_interview_redux_state
-    #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
+    #Rails.cache.fetch("#{current_project.shortname}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
     if @interview
       initial_redux_state.update(
         archive: initial_redux_state[:archive].update(

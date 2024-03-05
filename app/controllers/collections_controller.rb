@@ -30,7 +30,7 @@ class CollectionsController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{cache_key_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-collections-#{cache_key_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(Collection).
               includes(:translations).
