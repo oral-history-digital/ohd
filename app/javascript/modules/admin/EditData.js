@@ -12,7 +12,6 @@ export default function EditData({
     formElements,
     helpTextCode,
     initialFormValues,
-    translations,
     scope,
     submitData,
 }) {
@@ -74,6 +73,5 @@ EditData.propTypes = {
     helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
     scope: PropTypes.string.isRequired,
-    translations: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,
 };
