@@ -36,7 +36,7 @@ export default function SidebarTabs({
     const { pathname } = useLocation();
 
     const hasMap = project?.has_map;
-    const isCampscapesProject = project?.identifier === 'campscapes';
+    const isCampscapesProject = project?.shortname === 'campscapes';
 
     useEffect(() => {
         setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
