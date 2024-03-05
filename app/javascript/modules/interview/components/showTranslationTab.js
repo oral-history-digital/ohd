@@ -6,7 +6,7 @@ export default function showTranslationTab(project, interview, locale) {
 }
 
 function projectSupportsTranslatedTranscript(project, interview, locale) {
-    switch (project.identifier) {
+    switch (project.shortname) {
     case PROJECT_CDOH:
         return interview.lang !== locale;
     case PROJECT_ZWAR:

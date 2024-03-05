@@ -6,7 +6,7 @@ export default function showTocTab(project, interview, locale) {
 }
 
 function projectSupportsToc(project) {
-    return project.identifier !== PROJECT_DG;
+    return project.shortname !== PROJECT_DG;
 }
 
 function tocAvailable(interview, locale) {

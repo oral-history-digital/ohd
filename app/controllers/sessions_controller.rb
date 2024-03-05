@@ -29,7 +29,7 @@ class SessionsController < Devise::SessionsController
         self.resource = resource_class.new(sign_in_params)
         project = Project.by_domain(request.base_url)
         path = stored_location_for(resource).gsub("?checked_ohd_session=true", "")
-        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.identifier}&path=#{path}"
+        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
       end
     end
   end

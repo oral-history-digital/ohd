@@ -98,9 +98,9 @@ class Person < ApplicationRecord
   def date_of_birth
     dob = read_attribute(:date_of_birth)
     unless dob.blank?
-      if project.identifier.to_sym === :mog
+      if project.shortname.to_sym === :mog
         dob.sub(/^\.+/, "").split(".").map { |i| "%.2i" % i }.join(".")
-      elsif project.identifier.to_sym === :zwar
+      elsif project.shortname.to_sym === :zwar
         dob.split("-").reverse.join(".")
       else
         dob

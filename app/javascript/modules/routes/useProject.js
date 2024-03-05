@@ -13,7 +13,7 @@ export default function useProject() {
     if (matchWithProject && isLocaleValid(matchWithProject.params.locale)) {
         // Archive is running on OHD domain.
         currentProject = projectArray.find(
-            project => project.identifier === matchWithProject.params.projectId
+            project => project.shortname === matchWithProject.params.projectId
         );
     } else {
         // Archive is running on its own domain.

@@ -25,7 +25,7 @@ export default function InterviewPreview({
     const [isExpanded, setIsExpanded] = useState(false);
     const { locale } = useI18n();
     const project = projects[interview.project_id];
-    const projectId = project.identifier;
+    const projectId = project.shortname;
     const { fulltext } = useArchiveSearch();
 
     const params = { fulltext };
