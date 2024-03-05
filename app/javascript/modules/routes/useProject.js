@@ -24,7 +24,7 @@ export default function useProject() {
 
     return {
         project: currentProject,
-        projectId: currentProject?.identifier,
+        projectId: currentProject?.shortname,
         isOhd: currentProject?.is_ohd,
     };
 }
