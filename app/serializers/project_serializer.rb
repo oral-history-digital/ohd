@@ -119,18 +119,12 @@ class ProjectSerializer < ApplicationSerializer
     object.sponsor_logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
   end
 
-  def name
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.name(locale)
-      mem
-    end
+  def display_name
+    object.localized_hash(:display_name)
   end
 
-  def display_name
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.display_name(locale)
-      mem
-    end
+  def name
+    object.localized_hash(:name)
   end
 
   def root_registry_entry_id
