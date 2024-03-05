@@ -200,7 +200,7 @@ class Project < ApplicationRecord
 
   # runs only with memcache
   #def clear_cache(namespace)
-    #Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
+    #Rails.cache.delete_matched /^#{shortname}-#{namespace}*/
   #end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
@@ -244,7 +244,7 @@ class Project < ApplicationRecord
         rr = facet.registry_reference_type
         if rr
           cache_key_date = [rr.updated_at, facet.updated_at, RegistryEntry.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
           end
         end
@@ -301,10 +301,13 @@ class Project < ApplicationRecord
         when "collection_id"
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-              subfacets: (is_ohd? ? Collection : collections).includes(:translations).inject({}) do |subfacets, sf|
+              subfacets: ( is_ohd? ?
+                Collection.joins(:project).where(project: {workflow_state: 'public'}) :
+                collections
+              ).includes(:translations).inject({}) do |subfacets, sf|
                 subfacets[sf.id.to_s] = {
                   id: sf.id,
                   name: sf.localized_hash(:name),
@@ -322,7 +325,7 @@ class Project < ApplicationRecord
         when "project_id"
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Project.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          result = mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}-#{Project.count}") do
+          result = mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}-#{Project.count}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: Project.shared.includes(:translations).inject({}) do |acc, project|
@@ -338,7 +341,7 @@ class Project < ApplicationRecord
         when 'language_id', 'primary_language_id', 'secondary_language_id', 'primary_translation_language_id'
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: Language.all.includes(:translations).inject({}) do |subfacets, sf|
@@ -354,7 +357,7 @@ class Project < ApplicationRecord
           facet_label_hash = facet.localized_hash(:label)
           associatedModel = facet.name.sub('_id', '').classify.constantize
           cache_key_date = [associatedModel.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: associatedModel.all.includes(:translations).inject({}) do |subfacets, sf|
