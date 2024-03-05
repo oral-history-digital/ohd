@@ -2,11 +2,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData, getCurrentProject, getCurrentUser } from 'modules/data';
-import { getTranslationValues } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = state => ({
-    translations: getTranslations(state),
     data: getCurrentProject(state),
     scope: 'project',
     helpTextCode: 'archive_config_form',
