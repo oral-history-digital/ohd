@@ -135,7 +135,9 @@ class Interview < ApplicationRecord
     integer :collection_id, :stored => true, :references => Collection
     integer :tasks_user_ids, :stored => true, :multiple => true
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
-    string :workflow_state, stored: true
+    string :workflow_state, stored: true do
+      project.workflow_state == 'unshared' ? 'unshared' : workflow_state
+    end
     string :project_access, stored: true
 
     dynamic_date_range :events, multiple: true do
