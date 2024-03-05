@@ -15,6 +15,10 @@ export default function Home({
     const { locale } = useI18n();
     useTrackPageView();
 
+    if (!project.translations_attributes) {
+        return null;
+    }
+
     function showStartPageVideo() {
         return projectId === 'mog';
     }
