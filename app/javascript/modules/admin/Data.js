@@ -11,6 +11,7 @@ import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
 import getDataDisplayName from './getDataDisplayName';
+import { useSensitiveData } from 'modules/data';
 
 const Item = AdminMenu.Item;
 
@@ -20,6 +21,7 @@ export default function Data({
     task,
     form,
     scope,
+    sensitiveAttributes = [],
     outerScope,
     outerScopeId,
     showComponent,
@@ -34,6 +36,8 @@ export default function Data({
 }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
+
+    useSensitiveData(data, sensitiveAttributes);
 
     function destroy(close) {
         // Use custom delete handler if available, skip the rest.

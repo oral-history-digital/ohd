@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     resources :registry_hierarchies, only: [:create, :destroy]
     resources :registry_names, only: [:create, :update, :destroy]
     resources :registry_references, only: [:create, :update, :destroy, :index]
+    get "registry_references/for_reg_entry/:id", to: "registry_references#for_reg_entry"
     resources :registry_reference_types, only: [:create, :update, :index, :destroy]
     get "registry_reference_types/global", to: "registry_reference_types#global"
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
@@ -240,6 +241,22 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :basic_project_routes do
+    resources :projects, only: [:update, :destroy] do
+      member do
+        get :contact_email
+      end
+    end
+  end
+
+  concern :all_project_routes do
+    resources :projects, only: [:show, :index, :create, :update, :destroy] do
+      member do
+        get :contact_email
+      end
+    end
+  end
+
   # these are the routes with :project_id as first part of path
   #
   # for development it is now set to portal.oral-history.localhost:3000
@@ -250,7 +267,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     scope "/:locale" do
       get "/", to: "projects#index"
-      resources :projects, only: [:show, :create, :update, :destroy, :index]
+      concerns :all_project_routes
       resources :institutions
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
@@ -264,7 +281,7 @@ Rails.application.routes.draw do
       }
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
-        resources :projects, only: [:update, :destroy]
+        concerns :basic_project_routes
         concerns :archive
         concerns :unnamed_devise_routes, :search
         concerns :account
@@ -281,7 +298,7 @@ Rails.application.routes.draw do
     get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
-      resources :projects, only: [:update, :destroy]
+      concerns :basic_project_routes
       concerns :archive
       concerns :unnamed_devise_routes, :search
       concerns :account

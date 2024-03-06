@@ -4,7 +4,8 @@ class ProjectsController < ApplicationController
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-      :edit_display, :edit_config, :edit_access_config, :edit, :update]
+           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy] +
+           Project.non_public_method_names
 
   # GET /projects
   def index
@@ -42,6 +43,22 @@ class ProjectsController < ApplicationController
       end
       format.json do
         render json: data_json(@project)
+      end
+    end
+  end
+
+  Project.non_public_method_names.each do |m|
+    define_method m do
+      respond_to do |format|
+        format.json do
+          render json: {
+            id: @project.id,
+            data_type: "projects",
+            nested_data_type: m,
+            data: @project.send(m),
+            page: '1'
+          }, status: :ok
+        end
       end
     end
   end
@@ -102,13 +119,19 @@ class ProjectsController < ApplicationController
   def update
     @project.update(project_params)
 
-    respond @project
+    respond_to do |format|
+      format.json do
+        render json: {
+          data: cache_single(@project, 'ProjectFull'),
+          data_type: 'projects',
+          id: @project.id,
+        }
+      end
+    end
   end
 
   # DELETE /projects/1
   def destroy
-    @project = Project.find(params[:id])
-    authorize @project
     @project.destroy
 
     respond_to do |format|

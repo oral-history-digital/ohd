@@ -7,6 +7,7 @@ import EditData from './EditData';
 const mapStateToProps = state => ({
     data: getCurrentProject(state),
     scope: 'project',
+    sensitiveAttributes: ['contact_email'],
     helpTextCode: 'archive_config_form',
     formElements: [
         {

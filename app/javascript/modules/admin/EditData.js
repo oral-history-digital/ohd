@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
-import { useHumanReadable } from 'modules/data';
+import { humanReadable, useSensitiveData } from 'modules/data';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
 export default function EditData({
     data,
     formElements,
+    sensitiveAttributes = [],
     helpTextCode,
     initialFormValues,
     scope,
@@ -19,6 +20,8 @@ export default function EditData({
     const { t, locale } = useI18n();
     const { humanReadable } = useHumanReadable();
     const { project, projectId } = useProject();
+
+    useSensitiveData(data, sensitiveAttributes);
 
     function toggleEditing() {
         setEditing(prev => !prev);
