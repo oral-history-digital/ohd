@@ -49,6 +49,7 @@ export default function InstitutionTile ({
             <h3>{t('activerecord.models.collection.other')}</h3>
             <ul>
                 {collectionsForInstitute.map(collection => {
+                    if (!collection) return null;
                     const project = projects[collection.project_id];
                     return (
                         <li key={collection.id}>

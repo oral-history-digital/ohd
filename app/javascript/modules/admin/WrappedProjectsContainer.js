@@ -4,14 +4,16 @@ import { bindActionCreators } from 'redux';
 import { getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
 import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
-import DataList from './DataList';
-import { getProjectsStatus, ProjectTile } from 'modules/data';
+import WrappedDataList from './WrappedDataList';
+import { getProjectsStatus, getStatuses, ProjectTile } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {
         editView: getEditView(state),
         data: Object.values(getProjects(state)).filter(p => !p.is_ohd),
         dataStatus: getProjectsStatus(state),
+        statuses: getStatuses(state),
+        otherDataToLoad: ['institution', 'collection'],
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
@@ -63,4 +65,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setQueryParams,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

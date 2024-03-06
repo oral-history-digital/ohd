@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
     @initial_redux_state ||= {
       archive: {
         locale: I18n.locale,
-        projectId: current_project ? current_project.identifier : nil,
+        projectId: current_project ? current_project.shortname : nil,
         viewModes: nil,
         viewMode: nil,
         editView: !!cookies["editView"],
@@ -134,44 +134,25 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {all: 'fetched'},
+          projects: {},
+          collections: {},
+          institutions: {},
           languages: {all: 'fetched'},
           translation_values: {},
-          institutions: {all: 'fetched'},
-          collections: {},
           people: {},
           task_types: {},
           registry_reference_types: {},
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
-          Project.all.
-            includes(
-              :translations,
-              :registry_name_types,
-              :media_streams,
-              :institution_projects,
-              [
-                {metadata_fields: :translations},
-                {external_links: :translations},
-                {registry_reference_types: :translations},
-                {contribution_types: :translations},
-                {map_sections: :translations},
-              ]
-            ).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
-        end,
+        projects: Project.all.inject({}) { |mem, s| mem[s.id] = ProjectBaseSerializer.new(s); mem },
+        institutions: {},
+        collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
           NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
         languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
-        end,
-        institutions: Rails.cache.fetch("institutions-#{Institution.count}-#{Institution.maximum(:updated_at)}") do
-          Institution.all.includes(:translations).inject({}){|mem, s| mem[s.id] = InstitutionSerializer.new(s); mem}
-        end,
-        collections: Rails.cache.fetch("collections-#{Collection.maximum(:updated_at)}") do
-          Collection.all.includes(:translations).inject({}){|mem, s| mem[s.id] = CollectionSerializer.new(s); mem}
         end,
         users: {
           current: current_user && ::UserSerializer.new(current_user) || nil #{}

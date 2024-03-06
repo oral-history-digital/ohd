@@ -2,15 +2,18 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getInstitutionsQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getInstitutions, getInstitutionsStatus, InstitutionTile } from 'modules/data';
+import { fetchData, deleteData, submitData, getInstitutions,
+    getStatuses, getInstitutionsStatus, InstitutionTile } from 'modules/data';
 import { getCookie } from 'modules/persistence';
-import DataList from './DataList';
+import WrappedDataList from './WrappedDataList';
 import LogosContainer from './LogosContainer';
 
 const mapStateToProps = state => ({
     editView: getCookie('editView') === 'true',
     data: getInstitutions(state),
     dataStatus: getInstitutionsStatus(state),
+    statuses: getStatuses(state),
+    otherDataToLoad: ['institution', 'collection'],
     resultPagesCount: getInstitutionsStatus(state).resultPagesCount,
     query: getInstitutionsQuery(state),
     scope: 'institution',
@@ -74,4 +77,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setQueryParams,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

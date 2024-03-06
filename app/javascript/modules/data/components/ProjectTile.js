@@ -29,9 +29,9 @@ export default function ProjectTile({
                     {data.name[locale]}
                 </p>
                 <p className="ProjectTile-text ProjectTile-text--small">
-                    {Object.values(data.institution_projects).map(ip => {
+                    {data.institution_projects && Object.values(data.institution_projects).map(ip => {
                         return (
-                            <p>{institutions[ip.institution_id].name[locale]}</p>
+                            <p>{institutions[ip.institution_id]?.name[locale]}</p>
                         )
                     })}
                 </p>

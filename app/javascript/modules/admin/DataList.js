@@ -7,7 +7,7 @@ import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { useProject } from 'modules/routes';
-import { camelCase } from 'modules/strings';
+import { camelCase, pluralize } from 'modules/strings';
 import { Modal } from 'modules/ui';
 import DataContainer from './DataContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
@@ -30,6 +30,8 @@ export default function DataList({
     task,
     joinDataStatus,
     joinDataScope,
+    statuses,
+    otherDataToLoad = [],
     fetchData,
     form,
     initialFormValues,
@@ -42,6 +44,13 @@ export default function DataList({
 
     useEffect(() => {
         loadJoinData();
+        if (otherDataToLoad.length) {
+            otherDataToLoad.forEach((d) => {
+                if (!statuses?.[d]?.all) {
+                    fetchData({ locale, project, projectId }, pluralize(d), null, null, 'all');
+                }
+            });
+        }
     }, []);
 
     function loadJoinData() {

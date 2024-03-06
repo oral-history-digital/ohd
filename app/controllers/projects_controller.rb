@@ -40,6 +40,9 @@ class ProjectsController < ApplicationController
       format.html do
         render :template => "/react/app"
       end
+      format.json do
+        render json: data_json(@project)
+      end
     end
   end
 
@@ -120,7 +123,7 @@ class ProjectsController < ApplicationController
   private
     # if a project is updated or destroyed from ohd.de
     def set_project
-      @project = current_project || Project.find(params[:id])
+      @project = params[:id] ? Project.find(params[:id]) : current_project
       authorize @project
     end
 
