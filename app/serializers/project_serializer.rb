@@ -32,7 +32,6 @@ class ProjectSerializer < ApplicationSerializer
     :manager,
     :funder_names,
     :pseudo_funder_names,
-    :contact_email,
     :smtp_server,
     :has_newsletter,
     :logged_out_visible_registry_entry_ids,

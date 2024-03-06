@@ -130,6 +130,10 @@ class Project < ApplicationRecord
     def by_identifier(identifier)
       where(shortname: identifier).first
     end
+
+    def non_public_method_names
+      %w(contact_email)
+    end
   end
 
   def identifier

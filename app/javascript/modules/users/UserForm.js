@@ -6,7 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { t as originalT} from 'modules/i18n';
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
-import { useMutateData, useMutateDatum } from 'modules/data';
+import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 
 export default function UserForm({
@@ -24,6 +24,8 @@ export default function UserForm({
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
     const { t } = useI18n();
+
+    useSensitiveData(project, ['contact_email']);
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [workflowState, setWorkflowState] = useState(false);
