@@ -518,7 +518,7 @@ class Interview < ApplicationRecord
   end
 
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
-    ods = Roo::Spreadsheet.open(file_path, { csv_options: { encoding: 'iso-8859-1:utf-8', col_sep: "\t", quote_char: "\x00" } })
+    ods = Roo::Spreadsheet.open(file_path, { csv_options: { encoding: 'iso-8859-1|utf-8', col_sep: "\t", quote_char: "\x00" } })
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
