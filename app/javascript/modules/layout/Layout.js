@@ -17,6 +17,7 @@ import BackToTopButton from './BackToTopButton';
 import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
     CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
+import { OHD_DOMAINS } from 'modules/constants';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -33,41 +34,19 @@ export default function Layout({
     const { locale } = useI18n();
     useCheckLocaleAgainstProject();
 
+    const ohdDomain = OHD_DOMAINS[railsMode];
+    const ohd = {shortname: 'ohd', archive_domain: ohdDomain};
+
+    // load current project if not already loaded
     useEffect(() => {
-        loadStuff();
-    });
-
-    function loadStuff() {
-        loadCollections();
-        loadProjects();
-        loadLanguages();
-    }
-
-    function loadCollections() {
-        if (
-            project &&
-            !collectionsStatus[`for_projects_${project?.id}`] &&
-            !project.is_ohd
-        ) {
-            fetchData({ projectId, locale, project }, 'collections', null, null, `for_projects=${project?.id}`);
+        if (!projectsStatus[project.id]) {
+            fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
         }
-    }
-
-    function loadProjects() {
-        if (projectId &&!projectsStatus.all) {
-            fetchData({ projectId, locale, project }, 'projects', null, null, 'all');
-        }
-    }
-
-    function loadLanguages() {
-        if (!languagesStatus.all) {
-            fetchData({ projectId, locale, project }, 'languages', null, null, 'all');
-        }
-    }
+    }, [projectId]);
 
     let titleBase = 'Oral-History.Digital';
     if (project) {
-        titleBase = project?.display_name?.[locale] || project.name[locale];
+        titleBase = project?.display_name?.[locale] || project?.name?.[locale];
     }
 
     return (

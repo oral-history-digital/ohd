@@ -24,6 +24,8 @@ export default function WrappedDataList({
     query,
     data,
     dataStatus,
+    statuses,
+    otherDataToLoad = [],
     sortAttribute,
     sortAttributeTranslated,
     scope,
@@ -59,6 +61,13 @@ export default function WrappedDataList({
                 nestedScope ? pluralize(nestedScope) : null,
                 parametrizedQuery(query)
             );
+        }
+        if (otherDataToLoad.length) {
+            otherDataToLoad.forEach((d) => {
+                if (!statuses?.[d]?.all) {
+                    fetchData({ locale, project, projectId }, pluralize(d), null, null, 'all');
+                }
+            });
         }
     }, []);
 
