@@ -30,7 +30,7 @@ class PersonWithAssociationsSerializer < PersonSerializer
     #
     # caching results in 'singleton can't be dumped'-error here. Why?
     #
-    #object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
+    #object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.shortname}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
   end
 
   def events
