@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rdoc'
-gem 'rails', '~> 7.0.0'
-gem 'mysql2'
+gem 'rails', '~> 7.0.8.1'
+gem 'mysql2', '~> 0.5.6'
 gem "redis", "~> 4.0"
 gem 'pundit'
 gem 'workflow'
@@ -27,7 +27,7 @@ gem 'open4'
 gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'rails-latex'
-gem 'react_on_rails', '~> 11.3.0'
+gem 'react_on_rails', '~> 13.4.0'
 gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
@@ -46,7 +46,7 @@ gem 'rack-maintenance'
 gem 'sunspot_rails', '~> 2.6.0'
 gem 'sunspot_solr', '~> 2.6.0'
 gem 'progress_bar'
-gem 'shakapacker', '= 7.1'
+gem 'shakapacker', '~> 7.2.2'
 
 
 group :test, :development do
