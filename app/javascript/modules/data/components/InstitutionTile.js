@@ -33,6 +33,7 @@ export default function InstitutionTile ({
             <ul>
                 {Object.values(data.institution_projects).map(ip => {
                     const project = projects[ip.project_id];
+                    if (!project) return null;
                     return (
                         <li key={ip.id}>
                             <LinkOrA

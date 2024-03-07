@@ -42,7 +42,7 @@ export default function Layout({
         if (!projectsStatus[project.id]) {
             fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
         }
-    }, [projectId]);
+    }, [project]);
 
     let titleBase = 'Oral-History.Digital';
     if (project) {
