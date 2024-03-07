@@ -60,7 +60,7 @@ export default function ProjectRoutes() {
             dispatch(setArchiveId(null));
             //dispatch(setProjectId(null));
         };
-    }, [project, dispatch]);
+    }, [projectId, dispatch]);
 
     return (
         <ErrorBoundary>

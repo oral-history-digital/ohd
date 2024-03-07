@@ -15,6 +15,8 @@ export default function useProjectAccessConfig(
         )
     };
 
+    if (!project.access_config) return [];
+
     const DEFAULT_FORM_ELEMENTS = {
         organization: {
             elementType: 'input',

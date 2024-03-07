@@ -5,6 +5,7 @@ import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { Fetch } from 'modules/data';
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
 
@@ -43,14 +44,20 @@ export default function Home({
                 {showStartPageVideo() ? <StartPageVideo /> : null}
                 <div className="home-text">
                     <h1>{getTranslation('name')}</h1>
-                    {project && Object.values(project.institution_projects).map(ip => (
-                        <p key={ip.id}>
-                            <b>
-                                {institutions[ip.institution_id].name[locale]
-                                || institutions[ip.institution_id].name[project.default_locale]}
-                            </b>
-                        </p>
-                    ))}
+                    <Fetch
+                        fetchParams={['institutions', null, null, 'all']}
+                        testDataType='institutions'
+                        testIdOrDesc='all'
+                    >
+                        {project && Object.values(project.institution_projects).map(ip => (
+                            <p key={ip.id}>
+                                <b>
+                                    {institutions[ip.institution_id]?.name[locale]
+                                    || institutions[ip.institution_id]?.name[project.default_locale]}
+                                </b>
+                            </p>
+                        ))}
+                    </Fetch>
                     <div dangerouslySetInnerHTML={{__html: getTranslation('introduction')}} />
                 </div>
                 {getTranslation('more_text') && (

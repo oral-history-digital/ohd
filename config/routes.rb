@@ -242,7 +242,7 @@ Rails.application.routes.draw do
   end
 
   concern :basic_project_routes do
-    resources :projects, only: [:update, :destroy] do
+    resources :projects, only: [:show, :update, :destroy] do
       member do
         get :contact_email
       end
@@ -299,6 +299,7 @@ Rails.application.routes.draw do
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
       concerns :basic_project_routes
+      resources :institutions
       concerns :archive
       concerns :unnamed_devise_routes, :search
       concerns :account
