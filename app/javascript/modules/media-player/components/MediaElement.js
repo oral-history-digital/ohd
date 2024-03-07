@@ -47,7 +47,7 @@ export default function MediaElement({
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
-    const initialSources = mediaStreamsToSources(Object.values(mediaStreams),
+    const initialSources = mediaStreams && mediaStreamsToSources(Object.values(mediaStreams),
         pathBase, interview.media_type, archiveId, interview.tape_count, tape);
 
     const videoJsOptions = {
