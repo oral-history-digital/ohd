@@ -133,7 +133,7 @@ class Segment < ApplicationRecord
           gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
           #gsub("...", "_").                                      # e.g. ...
           gsub(" [---]", "<p>").                                 # e.g. Ich war [---] bei Maria Malta, als das passierte.
-          gsub(/\((.*?)\?\)/, '<?\1>').                          # e.g. (By now?) it's the next generation
+          #gsub(/\((.*?)\?\)/, '<?\1>').                          # e.g. (By now?) it's the next generation
           gsub("<***>", "<i(Bandende)>").                        # e.g. <***>
           gsub("(???) ", "<?>").                                 # e.g. Nice grandparents, we played football, (???) it’s
           gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
