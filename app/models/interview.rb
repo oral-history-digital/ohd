@@ -177,10 +177,10 @@ class Interview < ApplicationRecord
     # string :birth_location, :stored => true
 
     text :transcript, stored: true do
-      segments.joins(:translations).where("locale like '%-public'").inject([]) do |all, segment|
-        all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
-        all
-      end.join(' ')
+      Segment::Translation.
+        where(segment_id: segment_ids).
+        where("locale like '%-public'").
+        map(&:text).join(' ')
     end
 
     text :headings do
