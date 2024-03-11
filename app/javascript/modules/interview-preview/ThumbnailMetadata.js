@@ -21,7 +21,7 @@ export default function ThumbnailMetadata({
     const { humanReadable } = useHumanReadable();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
 
-    if (isLoading) {
+    if (isLoading || !project.grid_fields) {
         return <Spinner />;
     }
 

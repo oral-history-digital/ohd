@@ -5,6 +5,7 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :shortname,
     :archive_domain,
     :available_locales,
+    :view_modes,
     :collection_ids,
     :is_ohd
 
