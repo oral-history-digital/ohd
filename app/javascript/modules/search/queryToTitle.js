@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 
 export default function queryToTitle(query, facetStructure) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const searchTerm = query.fulltext;
 
     const facets = { ...query };
