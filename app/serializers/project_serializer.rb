@@ -91,6 +91,7 @@ class ProjectSerializer < ApplicationSerializer
     media_streams
     map_sections
     institution_projects
+    collections
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
@@ -101,7 +102,6 @@ class ProjectSerializer < ApplicationSerializer
   # should be loaded only where needed.
   %w(
     people
-    collections
     task_types
     roles
   ).each do |m|
