@@ -1,5 +1,6 @@
 class ProjectBaseSerializer < ActiveModel::Serializer 
   attributes :id,
+    :type,
     :name,
     :display_name,
     :shortname,
@@ -23,5 +24,9 @@ class ProjectBaseSerializer < ActiveModel::Serializer
 
   def is_ohd
     object.shortname == 'ohd'
+  end
+
+  def type
+    object.class.name
   end
 end
