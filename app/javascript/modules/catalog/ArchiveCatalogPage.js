@@ -120,6 +120,21 @@ export default function ArchiveCatalogPage() {
                         </dd>
                     </>)}
 
+                    {project.domain && (<>
+                        <dt className="DescriptionList-term">
+                            {t('activerecord.attributes.project.domain')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            <a
+                                href={project.domain}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {project.domain}
+                            </a>
+                        </dd>
+                    </>)}
+
                     {project.pseudo_funder_names?.length > 0 && (<>
                         <dt className="DescriptionList-term">
                             {t('activerecord.attributes.project.pseudo_funder_names')}
