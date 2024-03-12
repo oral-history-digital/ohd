@@ -24,13 +24,20 @@ class CollectionsController < ApplicationController
   end
 
   def index
+    id = nil
+    nested_data_type = nil
+
     if params.keys.include?("all")
       collections = policy_scope(Collection).all
+      data_type = "collections"
       extra_params = "all"
     elsif params[:for_projects]
-      data = policy_scope(Collection).
+      collections = policy_scope(Collection).
         includes(:translations).
         order("collection_translations.name ASC")
+      data_type = "projects"
+      id = current_project.id
+      nested_data_type = "collections"
       extra_params = "for_projects_#{current_project.id}"
     else
       page = params[:page] || 1
@@ -39,6 +46,9 @@ class CollectionsController < ApplicationController
         includes(:translations).
         order("collection_translations.name ASC").
         paginate page: page
+      data_type = "projects"
+      id = current_project.id
+      nested_data_type = "collections"
       extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
     end
 
@@ -48,7 +58,9 @@ class CollectionsController < ApplicationController
         json = Rails.cache.fetch "collections-#{extra_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
           {
             data: collections.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
-            data_type: "collections",
+            data_type: data_type,
+            nested_data_type: nested_data_type,
+            id: id,
             extra_params: extra_params,
             page: params[:page] || 1,
             result_pages_count: collections.respond_to?(:total_pages) ? collections.total_pages : nil,
