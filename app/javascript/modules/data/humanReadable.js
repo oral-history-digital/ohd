@@ -18,7 +18,8 @@ export default function humanReadable({
         const translation = (Array.isArray(obj.translations_attributes) ?
             obj.translations_attributes.find(t => t.locale === locale) :
             Object.values(obj.translations_attributes).find(t => t.locale === locale))
-        return translation?.[attribute];
+        const v = translation?.[attribute];
+        if (v) return v;
     }
 
     let value = obj[attribute];
@@ -43,12 +44,16 @@ export default function humanReadable({
         return collections[value]?.name[locale];
     }
 
-    if (attribute === 'language_id') {
+    if (/language_id$/.test(attribute)) {
         return languages[value]?.name[locale];
     }
 
     if (typeof value === 'boolean') {
-        return t(`boolean_value.${value}`);
+        return translations[`boolean_value.${value}`][locale];
+    }
+
+    if (Array.isArray(value)) {
+        return value.join(',');
     }
 
     if (typeof value === 'object' && value !== null) {
