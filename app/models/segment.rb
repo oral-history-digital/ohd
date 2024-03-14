@@ -62,7 +62,8 @@ class Segment < ApplicationRecord
 
     after_commit do
       # run this only after commit of original e.g. 'de' version!
-      if text_previously_changed? && locale.length == 2 && !text.blank?
+      #if text_previously_changed? && locale.length == 2 && !text.blank?
+      if locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
         segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
       end

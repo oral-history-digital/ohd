@@ -20,35 +20,34 @@ function SiteFooter() {
                 {
                     !project.grant_project_access_instantly &&
                     !project.grant_access_without_login &&
-                    <li key={'external-link-conditions'}>
+                    <li>
                         <Link
                             to={`${pathBase}/conditions`}
                             title={`${t('conditions')} (${projectId})`}
-                            className="u-ml-tiny"
                         >
                             {`${t('conditions')} (${projectId})`}
                         </Link>
                     </li>
                 }
                 {
-                    <li key={'external-link-ohd_conditions'}>
+                    <li>
                         <a
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
                             target="_blank"
+                            rel="noreferrer"
                             title={`${t('conditions')} (OHD)`}
-                            className="u-ml-tiny"
                         >
                             {`${t('conditions')} (OHD)`}
                         </a>
                     </li>
                 }
                 {
-                    <li key={'external-link-privacy_protection'}>
+                    <li>
                         <a
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`}
                             target="_blank"
+                            rel="noreferrer"
                             title={t('privacy_protection')}
-                            className="u-ml-tiny"
                         >
                             {t('privacy_protection')}
                         </a>
