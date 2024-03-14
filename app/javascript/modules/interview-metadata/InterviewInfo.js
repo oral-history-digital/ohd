@@ -46,7 +46,7 @@ export default function InterviewInfo({
             <SingleValueWithFormContainer
                 obj={interview}
                 attribute={'description'}
-                value={interview.description[locale]}
+                value={interview.description?.[locale]}
                 projectAccessGranted={projectAccessGranted}
                 elementType="textarea"
                 multiLocale
