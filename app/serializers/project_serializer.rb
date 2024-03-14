@@ -47,6 +47,7 @@ class ProjectSerializer < ApplicationSerializer
     :collection_ids,
     :registry_name_types,
     :registry_reference_types,
+    :registry_reference_type_ids,
     :task_types,
     :contribution_types,
     :metadata_fields,
