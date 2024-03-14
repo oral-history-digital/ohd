@@ -10,6 +10,10 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :collection_ids,
     :registry_reference_type_ids,
     :root_registry_entry_id,
+    :workflow_state,
+    :num_interviews,
+    :institution_ids,
+    :logos,
     :is_ohd
 
   def display_name
@@ -34,6 +38,10 @@ class ProjectBaseSerializer < ActiveModel::Serializer
 
   def root_registry_entry_id
     object.root_registry_entry.id
+  end
+
+  def logos
+    object.logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
   end
 
 end
