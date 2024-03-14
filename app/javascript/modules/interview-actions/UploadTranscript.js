@@ -7,6 +7,7 @@ import { useI18n } from 'modules/i18n';
 
 const CONTRIBUTION_TYPES_SPEAKING = [
     'interviewee',
+    'further_interviewee',
     'interviewer',
     'cinematographer',
     'sound',
