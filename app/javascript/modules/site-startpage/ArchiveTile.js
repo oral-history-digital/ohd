@@ -21,9 +21,8 @@ export default function ArchiveTile({
     const opaqueBackgroundColor = backgroundColor + '40';
 
     let institutionName;
-    const institutionProject = Object.values(archive.institution_projects)[0];
-    if (institutionProject) {
-        const institutionId = institutionProject?.institution_id;
+    const institutionProjectId = archive.institution_project_ids?.[0];
+    if (institutionProjectId) {
         const institution = institutions[institutionId];
         institutionName = institution.name[locale];
     }
