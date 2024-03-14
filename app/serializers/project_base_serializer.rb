@@ -8,6 +8,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :available_locales,
     :view_modes,
     :collection_ids,
+    :registry_reference_type_ids,
+    :root_registry_entry_id,
     :is_ohd
 
   def display_name
@@ -29,4 +31,9 @@ class ProjectBaseSerializer < ActiveModel::Serializer
   def type
     object.class.name
   end
+
+  def root_registry_entry_id
+    object.root_registry_entry.id
+  end
+
 end

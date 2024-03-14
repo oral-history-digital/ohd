@@ -35,9 +35,7 @@ export default function RegistryReferenceForm({
     })
 
     function isOhdRegistryReferenceType() {
-        const ohdRegistryReferenceTypes = Object.keys(ohdProject.registry_reference_types);
-        const result = ohdRegistryReferenceTypes.includes(String(registryReferenceTypeId));
-        return result;
+        return ohdProject.registry_reference_type_ids.includes(registryReferenceTypeId);
     }
 
     function buildElements() {
