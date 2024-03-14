@@ -145,7 +145,9 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Project.all.inject({}) { |mem, s| mem[s.id] = ProjectBaseSerializer.new(s); mem },
+        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+          Project.all.inject({}) { |mem, s| mem[s.id] = ProjectBaseSerializer.new(s); mem }
+        end,
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
