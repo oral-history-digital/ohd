@@ -270,7 +270,7 @@ class Segment < ApplicationRecord
 
   searchable do
     string :archive_id, :stored => true do
-      interview.archive_id
+      interview&.archive_id
     end
     string :media_id, :stored => true
     string :timecode
