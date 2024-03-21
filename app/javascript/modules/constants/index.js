@@ -49,4 +49,4 @@ const ANALYTICS_URLS = {
 export const ANALYTICS_URL_BASE = ANALYTICS_URLS[railsMode];
 export const ANALYTICS_DEFAULT_SITE_ID = 1;
 
-export const SHOW_SYSTEM_WARNING = true;
+export const SHOW_SYSTEM_WARNING = false;
