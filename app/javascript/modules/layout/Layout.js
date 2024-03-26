@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -34,11 +35,24 @@ export default function Layout({
     const [warningVisible, setWarningVisible] = useState(warningShouldBeShown());
     const { project, projectId } = useProject();
     const { locale } = useI18n();
+    const [searchParams, setSearchParams] = useSearchParams();
+
     useCheckLocaleAgainstProject();
+
+    useEffect(() => {
+        removeAccessTokenParam();
+    }, []);
 
     useEffect(() => {
         loadStuff();
     });
+
+    function removeAccessTokenParam() {
+        if (searchParams.has('access_token')) {
+            searchParams.delete('access_token');
+            setSearchParams(searchParams);
+        }
+    }
 
     function loadStuff() {
         loadCollections();
