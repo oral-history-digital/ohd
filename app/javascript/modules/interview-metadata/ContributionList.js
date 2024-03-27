@@ -13,7 +13,7 @@ export default function ContributionList({
     const { data: people, isLoading } = usePeople();
     const groupedContributions = useSelector(getGroupedContributions);
 
-    if (isLoading) {
+    if (isLoading || typeof people === 'undefined') {
         return (<Spinner />);
     }
 
