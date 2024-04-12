@@ -5,6 +5,8 @@ export default function toDateString(value, locale) {
     const trimmedDate = value.trim();
     const date = new Date(trimmedDate);
 
+    if (isNaN(date)) return trimmedDate;
+
     return date.toLocaleDateString(localeString(locale));
 }
 
