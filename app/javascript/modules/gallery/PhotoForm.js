@@ -45,7 +45,7 @@ export default function PhotoForm({
                 elementType: 'select',
                 attribute: 'workflow_state',
                 values: Object.values(photo.workflow_states),
-                value: photo.workflow_state,
+                value: photo.workflow_state || 'unshared',
                 optionsScope: 'workflow_states',
             })
         }
