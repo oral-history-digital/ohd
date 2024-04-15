@@ -54,6 +54,7 @@ class RegistryEntriesController < ApplicationController
     @registry_entry = RegistryEntry.find params[:id]
     authorize @registry_entry
     @registry_entry.update registry_entry_params
+    @registry_entry.touch
     current_project.touch
 
     respond_to do |format|
