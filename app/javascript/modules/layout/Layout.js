@@ -47,6 +47,7 @@ export default function Layout({
     useEffect(() => {
         if (!projectsStatus[project.id]) {
             fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
+        }
         removeAccessTokenParam();
     }, [project]);
 
