@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -14,6 +15,8 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
+import Warning from './Warning';
+import { warningShouldBeShown, doNotShowWarningAgain } from './warningFunctions';
 import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
     CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
@@ -30,8 +33,11 @@ export default function Layout({
     languagesStatus,
     fetchData,
 }) {
+    const [warningVisible, setWarningVisible] = useState(warningShouldBeShown());
     const { project, projectId } = useProject();
     const { locale } = useI18n();
+    const [searchParams, setSearchParams] = useSearchParams();
+
     useCheckLocaleAgainstProject();
 
     const ohdDomain = OHD_DOMAINS[railsMode];
@@ -41,8 +47,20 @@ export default function Layout({
     useEffect(() => {
         if (!projectsStatus[project.id]) {
             fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
-        }
+        removeAccessTokenParam();
     }, [project]);
+
+    function removeAccessTokenParam() {
+        if (searchParams.has('access_token')) {
+            searchParams.delete('access_token');
+            setSearchParams(searchParams);
+        }
+    }
+
+    function handleWarningClose() {
+        setWarningVisible(false);
+        doNotShowWarningAgain();
+    }
 
     let titleBase = 'Oral-History.Digital';
     if (project) {
@@ -98,6 +116,8 @@ export default function Layout({
                     visible={scrollPositionBelowThreshold}
                     fullscreen={!sidebarVisible}
                 />
+
+                {warningVisible && <Warning onClose={handleWarningClose}/>}
             </div>
         </ResizeWatcherContainer>
     );

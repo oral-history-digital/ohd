@@ -1,15 +1,24 @@
 import useSWRImmutable from 'swr/immutable';
+import queryString from 'query-string';
 import { useSelector } from 'react-redux';
 
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import { getEditView } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/user';
 
 export default function useEntryReferences(registryEntry) {
     const pathBase = usePathBase();
     const isLoggedIn = useSelector(getIsLoggedIn);
+    const isEditView = useSelector(getEditView);
 
-    const path = `${pathBase}/registry_references/for_reg_entry/${registryEntry.id}?signed_in=${isLoggedIn}`;
+    const params = {
+        signed_in: isLoggedIn,
+        all: isEditView ? true : undefined,
+    };
+    const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
+
+    const path = `${pathBase}/registry_references/for_reg_entry/${registryEntry.id}?${paramStr}`;
     const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
 
     let interviewReferences, segmentReferences;

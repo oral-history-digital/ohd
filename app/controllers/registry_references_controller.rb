@@ -121,17 +121,17 @@ class RegistryReferencesController < ApplicationController
   def for_reg_entry
     registry_entry_id = params[:id]
     signed_in = current_user.present?
-    #scope = map_scope
+    scope = reg_refs_scope
 
     repository = RegistryReferenceRepository.new
 
-    interview_refs = repository.interview_references_for(registry_entry_id)
+    interview_refs = repository.interview_references_for(registry_entry_id, scope)
     interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
       each_serializer: SlimRegistryReferenceSerializer,
       default_locale: current_project.default_locale,
       signed_in: signed_in)
 
-    segment_refs = repository.segment_references_for(registry_entry_id)
+    segment_refs = repository.segment_references_for(registry_entry_id, scope)
     segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
       each_serializer: SlimSegmentRegistryReferenceSerializer,
       default_locale: current_project.default_locale,
@@ -169,6 +169,14 @@ class RegistryReferencesController < ApplicationController
   end
 
   private
+
+  def reg_refs_scope
+    show_all = ActiveModel::Type::Boolean.new.cast(params[:all])
+    scope = show_all &&
+            current_user &&
+            (current_user.admin? || current_user.roles?(current_project, 'General', 'edit')) ?
+            'all' : 'public'
+  end
 
   def respond registry_reference
     registry_reference.ref_object.touch
