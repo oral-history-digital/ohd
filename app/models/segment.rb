@@ -262,7 +262,7 @@ class Segment < ApplicationRecord
 
   searchable do
     string :archive_id, :stored => true do
-      interview.archive_id
+      interview&.archive_id
     end
     string :media_id, :stored => true
     string :timecode
@@ -304,7 +304,7 @@ class Segment < ApplicationRecord
   end
 
   def text_orig
-    text("#{interview.lang}-public")
+    text("#{interview&.lang}-public")
   end
 
 
