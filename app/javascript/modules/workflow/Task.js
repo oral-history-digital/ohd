@@ -120,7 +120,7 @@ export default function Task({
                     // strange issue: state.task.id gets lost on second update
                     // therefore it is set again here
                     //
-                    onChange={() => setThisTask({task: Object.assign({}, thisTask, {[event.target.name]: event.target.value, id: task.id})})}
+                    onChange={() => setThisTask(Object.assign({}, thisTask, {[event.target.name]: event.target.value, id: task.id}))}
                 >
                     {options}
                 </select>
