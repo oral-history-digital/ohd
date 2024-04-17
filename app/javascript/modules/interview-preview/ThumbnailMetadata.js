@@ -56,6 +56,7 @@ export default function ThumbnailMetadata({
                             obj,
                             attribute: field.name,
                             optionsScope: 'search_facets',
+                            none: null,
                         });
 
                         if (!value) {
