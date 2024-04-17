@@ -76,7 +76,7 @@ export default function InterviewListRow({
                 </LinkOrA>
             </td>
             {
-                project.list_columns.map(column => {
+                project?.list_columns.map(column => {
                     const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
