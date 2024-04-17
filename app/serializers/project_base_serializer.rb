@@ -6,6 +6,7 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :shortname,
     :archive_domain,
     :available_locales,
+    :default_locale,
     :view_modes,
     :collection_ids,
     :registry_reference_type_ids,
