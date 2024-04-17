@@ -18,6 +18,7 @@ export default function InterviewContributors({
         <div>
             <ContributionList
                 withSpeakerDesignation={withSpeakerDesignation}
+                interview={interview}
             />
 
             <AuthorizedContent object={{type: 'Contribution', interview_id: interview.id}} action='create'>
