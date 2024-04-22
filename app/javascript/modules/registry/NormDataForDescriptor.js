@@ -71,14 +71,14 @@ function NormDataForDescriptor({
     //}
 
     const fetchAPIResults = async(params) => {
-        const filters = [];
+        const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
         ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
             if (params[filter]) {
-                filters.push(`${filter}=${params[filter]}`);
+                urlAndFilters.push(`${filter}=${params[filter]}`);
             }
         });
 
-        fetch(`${pathBase}/norm_data_api?expression=${descriptor}&` + filters.join('&'))
+        fetch(urlAndFilters.join('&'))
             .then(res => res.json())
             .then(json => setApiResult(json));
     };
@@ -104,7 +104,7 @@ function NormDataForDescriptor({
                                         onSubmitCallback();
                                         setFromAPI(false);
                                     }} >
-                                        {`${result.Entry.Name}: ${result.Entry.Label}, ${result.Entry.Type}`}
+                                        {`${result.Entry.AlternateName.find(n => n.Lang === locale)}, ${result.Entry.Description.find(n => n.Lang === locale).substr(0, 20)}...`}
                                     </a>
                                 </li>
                             )
@@ -129,7 +129,8 @@ function NormDataForDescriptor({
                 !showResults && fetchAPIResults(params.normdata);
                 setShowResults(!showResults);
             }}
-            elements={formElements}
+            elements={[]}
+            //elements={formElements}
             helpTextCode="normdata_form"
         />
     );

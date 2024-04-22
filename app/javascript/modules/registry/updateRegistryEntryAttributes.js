@@ -44,10 +44,16 @@ export function updateNormDataAttributes(entry, normDataProviders, registryEntry
     let normDataAttributes = registryEntryAttributes.norm_data_attributes || registryEntryAttributes.norm_data;
     normDataAttributes ||= [];
 
-    const normDataProvider = Object.values(normDataProviders).find( p => p.api_name === entry.Provider );
+    entry.Identifier.map(provider => {
+        const normDataProvider = Object.values(normDataProviders).find(p => p.name === provider.Provider);
+        const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
+        normDatum.nid = entry.ID;
+    });
 
-    const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
-    normDatum.nid = entry.ID;
+    //const normDataProvider = Object.values(normDataProviders).find( p => p.api_name === entry.Provider );
+
+    //const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
+    //normDatum.nid = entry.ID;
 
     return ({norm_data_attributes: normDataAttributes});
 }
