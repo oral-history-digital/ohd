@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
-import { getPublicProjects, getInstitutions } from 'modules/data';
+import { getPublicProjects, getInstitutions,
+    useLoadCompleteProject } from 'modules/data';
 import { usePathBase, LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
@@ -20,6 +21,7 @@ export default function ArchiveCatalogPage() {
     const id = Number(useParams().id);
     const pathBase = usePathBase();
     useTrackPageView();
+    useLoadCompleteProject(id);
 
     const project = projects.find(p => p.id === id);
 
@@ -29,12 +31,17 @@ export default function ArchiveCatalogPage() {
         );
     }
 
+    //if (!project.manager) {
+        //return null;
+    //}
+
     const title = project.name[locale];
 
-    const institutions = Object.values(project.institution_projects)
+    const institutions = project.institution_projects &&
+        Object.values(project.institution_projects)
         .map(ip => allInstitutions[ip.institution_id]);
 
-    const projectTranslation = project.translations_attributes.find(trans =>
+    const projectTranslation = project.translations_attributes?.find(trans =>
         trans.locale === locale);
 
     return (
@@ -65,14 +72,14 @@ export default function ArchiveCatalogPage() {
 
                     <dl className="DescriptionList">
                         <dt className="DescriptionList-term">
-                            {institutions.length === 1 ?
+                            {institutions?.length === 1 ?
                                 t('activerecord.models.institution.one') :
                                 t('activerecord.models.institution.other')
                             }
                         </dt>
                         <dd className="DescriptionList-description">
                             <ul className="UnorderedList">
-                                {institutions.map(institution => (
+                                {institutions?.map(institution => (
                                     <li key={institution.id}>
                                         <Link to={`/${locale}/catalog/institutions/${institution.id}`}>
                                             {institution.name[locale]}
@@ -141,7 +148,7 @@ export default function ArchiveCatalogPage() {
                         </dt>
                         <dd className="DescriptionList-description">
                             <ul className="UnorderedList">
-                                {project.pseudo_funder_names.map(name =>
+                                {project.pseudo_funder_names?.map(name =>
                                     <li key={name}>{name}</li>
                                 )}
                             </ul>
