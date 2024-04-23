@@ -8,6 +8,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :available_locales,
     :default_locale,
     :view_modes,
+    :list_columns,
+    :grid_fields,
     :collection_ids,
     :registry_reference_type_ids,
     :root_registry_entry_id,
