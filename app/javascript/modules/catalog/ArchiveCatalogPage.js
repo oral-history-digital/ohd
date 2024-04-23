@@ -25,11 +25,11 @@ export default function ArchiveCatalogPage() {
 
     const project = projects.find(p => p.id === id);
 
-    if (!project) {
-        return (
-            <Navigate to={`${pathBase}/not_found`} replace />
-        );
-    }
+    //if (!project) {
+        //return (
+            //<Navigate to={`${pathBase}/not_found`} replace />
+        //);
+    //}
 
     //if (!project.manager) {
         //return null;
