@@ -1,5 +1,5 @@
 class InstitutionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: :index
+  skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_institution, only: [:show, :edit, :update, :destroy]
 
   # GET /institutions
@@ -30,6 +30,16 @@ class InstitutionsController < ApplicationController
     end
   end
 
+  def show
+    respond_to do |format|
+      format.html do
+        render :template => "/react/app"
+      end
+      format.json do
+        render json: data_json(@institution)
+      end
+    end
+  end
   # POST /institutions
   def create
     authorize Institution
