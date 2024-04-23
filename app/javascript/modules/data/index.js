@@ -93,3 +93,4 @@ export { default as useHumanReadable } from './useHumanReadable';
 export { default as useMutateData } from './useMutateData';
 export { default as useMutateDatum } from './useMutateDatum';
 export { default as useSensitiveData } from './useSensitiveData';
+export { default as useLoadCompleteProject } from './useLoadCompleteProject';
