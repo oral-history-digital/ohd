@@ -8,7 +8,7 @@ import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
 import { getPublicProjects, getInstitutions,
-    useLoadCompleteProject } from 'modules/data';
+    useLoadCompleteProject, Fetch } from 'modules/data';
 import { usePathBase, LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
@@ -29,10 +29,6 @@ export default function ArchiveCatalogPage() {
         //return (
             //<Navigate to={`${pathBase}/not_found`} replace />
         //);
-    //}
-
-    //if (!project.manager) {
-        //return null;
     //}
 
     const title = project.name[locale];
