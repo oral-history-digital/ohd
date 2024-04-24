@@ -7,7 +7,6 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { useProjectAccessStatus } from 'modules/auth';
 import InterviewCollectionInfo from './InterviewCollectionInfo';
-import toDateString from 'modules/data/toDateString';
 
 export default function InterviewInfo({
     interview,
@@ -40,7 +39,7 @@ export default function InterviewInfo({
             <SingleValueWithFormContainer
                 obj={interview}
                 attribute={'interview_date'}
-                value={toDateString(interview.interview_date, locale)}
+                value={interview.interview_date}
                 projectAccessGranted={projectAccessGranted}
             />
             <SingleValueWithFormContainer
