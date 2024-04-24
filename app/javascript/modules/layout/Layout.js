@@ -20,7 +20,7 @@ import { warningShouldBeShown, doNotShowWarningAgain } from './warningFunctions'
 import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
     CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
-import { useLoadCompleteProject } from 'modules/data';
+import { OHD_DOMAINS } from 'modules/constants';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -28,16 +28,28 @@ export default function Layout({
     children,
     toggleSidebar,
     loggedInAt,
+    collectionsStatus,
+    projectsStatus,
+    languagesStatus,
+    fetchData,
 }) {
     const [warningVisible, setWarningVisible] = useState(warningShouldBeShown());
     const { project, projectId } = useProject();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    useLoadCompleteProject(project.id);
     useCheckLocaleAgainstProject();
 
-    useEffect(() => { removeAccessTokenParam(); }, [project]);
+    const ohdDomain = OHD_DOMAINS[railsMode];
+    const ohd = {shortname: 'ohd', archive_domain: ohdDomain};
+
+    // load current project if not already loaded
+    useEffect(() => {
+        if (!projectsStatus[project.id]) {
+            fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
+        }
+        removeAccessTokenParam();
+    }, [project]);
 
     function removeAccessTokenParam() {
         if (searchParams.has('access_token')) {
@@ -115,10 +127,14 @@ export default function Layout({
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
     loggedInAt: PropTypes.number,
+    languagesStatus: PropTypes.object,
+    projectsStatus: PropTypes.object,
+    collectionsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
     toggleSidebar: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };
