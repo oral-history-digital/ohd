@@ -37,14 +37,12 @@ export default function Textarea({
         }
     };
 
-    const actualValue = value || data?.[attribute];
-
     useEffect(() => {
         if (typeof(validate) === 'function') {
-            const valid = validate(actualValue);
+            const valid = validate(value);
             handleErrors(attribute, !valid);
         }
-        handleChange(attribute, actualValue, data);
+        //handleChange(attribute, value, data);
     }, [value, data?.[attribute]]);
 
     return (
@@ -56,7 +54,7 @@ export default function Textarea({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(actualValue) : true}
+            valid={typeof validate === 'function' ? validate(value) : true}
             mandatory={typeof validate === 'function'}
             elementType='textarea'
             individualErrorMsg={individualErrorMsg}
@@ -67,7 +65,7 @@ export default function Textarea({
                 id={`${scope}_${attribute}`}
                 name={attribute}
                 className="Input"
-                defaultValue={actualValue}
+                defaultValue={value}
                 onChange={onChange}
                 {...htmlOptions}
             />
