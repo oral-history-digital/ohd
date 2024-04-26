@@ -59,7 +59,7 @@ export default function FormComponent({
     const { t } = useI18n();
 
     function initValues() {
-        const values = { ...initialValues, ...data };
+        const values = { ...initialValues };
         if (data) {
             values.id = data.type === 'Interview' ? data.archive_id : data.id;
         }
