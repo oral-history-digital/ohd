@@ -59,7 +59,7 @@ export default function FormComponent({
     const { t } = useI18n();
 
     function initValues() {
-        const values = { ...initialValues };
+        const values = { ...initialValues, ...data };
         if (data) {
             values.id = data.type === 'Interview' ? data.archive_id : data.id;
         }
@@ -71,7 +71,7 @@ export default function FormComponent({
         elements.map((element) => {
             let error = false;
             if (typeof(element.validate) === 'function') {
-                let value = element.value || (data && data[element.attribute]);
+                let value = element.value || (values[element.attribute]);
                 error = !(value && element.validate(value));
             }
             if (element.attribute) errors[element.attribute] = error;
