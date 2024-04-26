@@ -32,6 +32,10 @@ export default function Biography() {
         Object.keys(firstPublicEntry.text) :
         [];
 
+    if (!firstPublicEntry) {
+        return null;
+    }
+
     return (
         <div>
             <AuthShowContainer ifLoggedIn={true}>
