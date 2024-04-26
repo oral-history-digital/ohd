@@ -85,7 +85,7 @@ export default function InterviewForm({
                 elementType: 'select',
                 withEmpty: true,
                 values: ['video', 'audio'],
-                validate: function(v){return /^\w+$/.test(v)},
+                validate: function(v){return v && /^\w+$/.test(v)},
             },
             {
                 attribute: 'media_missing',
