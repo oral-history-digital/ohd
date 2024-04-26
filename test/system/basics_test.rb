@@ -120,6 +120,28 @@ class BasicsTest < ApplicationSystemTestCase
     assert_no_text 'Please apply for activation'
   end
 
+  test 'validate inputs on archive access request' do
+    visit '/'
+    login_as 'john@example.com'
+
+    assert_text 'The test archive'
+    assert_text 'Please apply for activation'
+    click_on 'Request activation for this archive'
+
+    # the following fields should not be filled to trigger validation errors:
+    #fill_in 'Institution', with: 'Nowhere University'
+    #select 'Student'
+    #select 'School project'
+    #fill_in 'Specification of research intention', with: 'details details'
+    #check 'Terms of Use', visible: :all
+    click_on 'Submit activation request'
+    assert_text 'Institution: Please fill'
+    assert_text 'Occupation: Please select'
+    assert_text 'Research Intention: Please select'
+    assert_text 'Specification of research intention: Please fill'
+    assert_text 'Terms of Use: Please agree'
+  end
+
   test 'create interview' do
     visit '/'
     login_as 'alice@example.com'
