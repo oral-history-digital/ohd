@@ -21,6 +21,8 @@ export default function Textarea({
     handlechangecallback,
     handleErrors,
 }) {
+    const defaultValue = value || data?.[attribute];
+
     const onChange = event => {
         const newValue = event.target.value;
         const name = event.target.name;
@@ -37,13 +39,13 @@ export default function Textarea({
         }
     };
 
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(value);
-            handleErrors(attribute, !valid);
-        }
-        //handleChange(attribute, value, data);
-    }, [value, data?.[attribute]]);
+    //useEffect(() => {
+        //if (typeof(validate) === 'function') {
+            //const valid = validate(defaultValue);
+            //handleErrors(attribute, !valid);
+        //}
+        ////handleChange(attribute, defaultValue, data);
+    //}, [defaultValue, data?.[attribute]]);
 
     return (
         <Element
@@ -54,7 +56,7 @@ export default function Textarea({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(value) : true}
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
             mandatory={typeof validate === 'function'}
             elementType='textarea'
             individualErrorMsg={individualErrorMsg}
@@ -65,7 +67,7 @@ export default function Textarea({
                 id={`${scope}_${attribute}`}
                 name={attribute}
                 className="Input"
-                defaultValue={value}
+                defaultValue={defaultValue}
                 onChange={onChange}
                 {...htmlOptions}
             />

@@ -29,6 +29,7 @@ export default function Input({
     forceUpdateFromProps,
 }) {
 
+    const defaultValue = value || data?.[attribute];
     const [changeFile, setChangeFile] = useState(false);
 
     const onChange = (event) => {
@@ -50,13 +51,13 @@ export default function Input({
         }
     }
 
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(value);
-            handleErrors(attribute, !valid);
-        }
-        //handleChange(attribute, value, data);
-    }, [value, data?.[attribute]]);
+    //useEffect(() => {
+        //if (typeof(validate) === 'function') {
+            //const valid = validate(defaultValue);
+            //handleErrors(attribute, !valid);
+        //}
+        //handleChange(attribute, defaultValue, data);
+    //}, [defaultValue, data?.[attribute]]);
 
     const cleanProps = () => {
         const props = {
@@ -66,8 +67,8 @@ export default function Input({
             name: attribute,
             readOnly,
             placeholder,
-            defaultChecked: value,
-            defaultValue: value,
+            defaultChecked: defaultValue,
+            defaultValue: defaultValue,
             onChange: onChange,
             onClick: onChange,
         }
@@ -110,7 +111,7 @@ export default function Input({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(value) : true}
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
             mandatory={typeof validate === 'function' && !optional}
             elementType={`${type}_input`}
             individualErrorMsg={individualErrorMsg}
