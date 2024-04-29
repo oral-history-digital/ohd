@@ -25,7 +25,7 @@ export default function Select({
     optionsScope,
     withEmpty,
 }) {
-
+    const defaultValue = value || data?.[attribute];
     const { t, locale } = useI18n();
 
     const onChange = (event) => {
@@ -44,13 +44,13 @@ export default function Select({
         }
     }
 
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(value);
-            handleErrors(attribute, !valid);
-        }
-        //handleChange(attribute, value, data);
-    }, [value, data?.[attribute]]);
+    //useEffect(() => {
+        //if (typeof(validate) === 'function') {
+            //const valid = validate(defaultValue);
+            //handleErrors(attribute, !valid);
+        //}
+        ////handleChange(attribute, defaultValue, data);
+    //}, [defaultValue, data?.[attribute]]);
 
     const selectTextAndValueFunction = (value) => {
 
@@ -132,7 +132,7 @@ export default function Select({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(value) : true}
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
             mandatory={typeof(validate) === 'function'}
             elementType='select'
             individualErrorMsg={individualErrorMsg}
@@ -141,7 +141,7 @@ export default function Select({
             <select
                 name={attribute}
                 className="Input"
-                defaultValue={value}
+                defaultValue={defaultValue}
                 onChange={onChange}
                 handlechangecallback={handlechangecallback}
             >

@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
     formElements: [
         {
             attribute: 'name',
-            validate: function(v){return v.length > 1}
+            validate: function(v){return v?.length > 1}
         },
         {
             elementType: 'textarea',
@@ -24,11 +24,11 @@ const mapStateToProps = state => ({
         },
         {
             attribute: 'klass',
-            validate: function(v){return v.length > 1}
+            validate: function(v){return v?.length > 1}
         },
         {
             attribute: 'action_name',
-            validate: function(v){return v.length > 1}
+            validate: function(v){return v?.length > 1}
         },
     ],
     helpTextCode: 'permission_form'

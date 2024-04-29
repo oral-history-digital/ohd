@@ -71,7 +71,7 @@ export default function FormComponent({
         elements.map((element) => {
             let error = false;
             if (typeof(element.validate) === 'function') {
-                let value = element.value || (values[element.attribute]);
+                let value = element.value || (data && data[element.attribute]);
                 error = !(value && element.validate(value));
             }
             if (element.attribute) errors[element.attribute] = error;
