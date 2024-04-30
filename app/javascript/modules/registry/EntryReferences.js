@@ -16,7 +16,7 @@ export default function EntryReferences({
     const { t } = useI18n();
     const { isLoading, interviewReferences, error } = useEntryReferences(registryEntry);
 
-    const referencesCount = interviewReferences?.length;
+    const referencesCount = interviewReferences?.length || 0;
 
     function title() {
         const refTranslation = referencesCount === 1
@@ -33,7 +33,7 @@ export default function EntryReferences({
         <>
             <h4>{title()}</h4>
             <ul className="UnorderedList">
-                {interviewReferences.map(({ archive_id, project_id, display_name,
+                {interviewReferences?.map(({ archive_id, project_id, display_name,
                     segment_references }) => {
                     return (
                         <li key={archive_id}>
