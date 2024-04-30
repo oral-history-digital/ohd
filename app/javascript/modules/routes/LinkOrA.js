@@ -31,6 +31,7 @@ function LinkOrA({
 
     const accessTokenParam = currentAccount?.access_token ? `access_token=${currentAccount.access_token}` : null;
     const paramsWithAccessToken = [params, accessTokenParam].filter(Boolean).join('&');
+    const joiner = path.includes('?') ? '&' : '?';
 
     return (
         (onOHD && !projectHasOtherDomain) || projectIsCurrentProject ?
@@ -45,7 +46,7 @@ function LinkOrA({
             <a
                 className={className}
                 style={style}
-                href={`${domain}${path}${paramsWithAccessToken.length > 0 ? '?' + paramsWithAccessToken : ''}`}
+                href={`${domain}${path}${paramsWithAccessToken.length > 0 ? joiner + paramsWithAccessToken : ''}`}
             >
                 { children }
             </a>
