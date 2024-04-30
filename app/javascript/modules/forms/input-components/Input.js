@@ -51,13 +51,13 @@ export default function Input({
         }
     }
 
-    //useEffect(() => {
-        //if (typeof(validate) === 'function') {
-            //const valid = validate(defaultValue);
-            //handleErrors(attribute, !valid);
-        //}
+    useEffect(() => {
+        if (typeof(validate) === 'function') {
+            const valid = validate(defaultValue);
+            handleErrors(attribute, !valid);
+        }
         //handleChange(attribute, defaultValue, data);
-    //}, [defaultValue, data?.[attribute]]);
+    }, [defaultValue]);
 
     const cleanProps = () => {
         const props = {
