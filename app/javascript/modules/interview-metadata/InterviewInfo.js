@@ -29,18 +29,21 @@ export default function InterviewInfo({
                 value={interview.archive_id}
                 projectAccessGranted={projectAccessGranted}
                 readOnly
+                hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
                 attribute={'signature_original'}
                 value={interview.signature_original}
                 projectAccessGranted={projectAccessGranted}
+                hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
                 attribute={'interview_date'}
                 value={interview.interview_date}
                 projectAccessGranted={projectAccessGranted}
+                hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
@@ -50,7 +53,8 @@ export default function InterviewInfo({
                 elementType="textarea"
                 multiLocale
                 linkUrls
-                collapse
+                hideEmpty
+                //collapse
             />
             <SingleValueWithFormContainer
                 obj={interview}
@@ -70,6 +74,7 @@ export default function InterviewInfo({
                 type="checkbox"
                 projectAccessGranted={projectAccessGranted}
                 noStatusCheckbox
+                hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
@@ -77,6 +82,7 @@ export default function InterviewInfo({
                 attribute={'duration'}
                 value={`${interview.duration.split(':')[0]} h ${interview.duration.split(':')[1]} min`}
                 projectAccessGranted={projectAccessGranted}
+                hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
@@ -84,6 +90,7 @@ export default function InterviewInfo({
                 attribute={'tape_count'}
                 value={interview.tape_count}
                 projectAccessGranted={projectAccessGranted}
+                hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
@@ -92,6 +99,7 @@ export default function InterviewInfo({
                 attribute={'transcript_coupled'}
                 value={t(`boolean_value.${interview.transcript_coupled}`)}
                 projectAccessGranted={projectAccessGranted}
+                hideEmpty
             />
             { ['primary_language_id', 'secondary_language_id', 'primary_translation_language_id'].map((attribute) => (
                 <SingleValueWithFormContainer
@@ -103,6 +111,7 @@ export default function InterviewInfo({
                     attribute={attribute}
                     value={languages[interview[attribute]]?.name[locale]}
                     projectAccessGranted={projectAccessGranted}
+                    hideEmpty
                 />
             ))}
 
