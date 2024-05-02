@@ -291,6 +291,10 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     }
 
+    if (!mediaStreams) {
+        return null;
+    }
+
     return (
         <div className={classNames('MediaElement', className,
             `MediaElement--${aspectRatio}`, {
