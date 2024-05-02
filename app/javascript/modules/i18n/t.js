@@ -16,16 +16,15 @@ export default function t(
         for (let [key, value] of Object.entries(params)) {
             text = reactStringReplace(text, `%{${key}}`, (match, i) => (
                 value
-            )).join('');
+            ));
         }
     }
 
-    const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
+    if (Array.isArray(text)) text = text.join('');
 
     if (translationsView) {
-        Array.isArray(text) ?
-            text.push(` (${usedKey})`) :
-            text += ` (${usedKey})`;
+        const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
+        text += ` (${usedKey})`;
     }
 
     return text;
