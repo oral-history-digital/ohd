@@ -26,7 +26,7 @@ module Archive
     config.datacite = config_for("datacite")
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    config.i18n.available_locales = [:en, :de, :ru, :el, :es]
+    config.i18n.available_locales = [:en, :de, :ru, :el, :es, :uk]
     config.i18n.default_locale = :de || config.i18n.default_locale
     config.i18n.fallbacks = [:en, :de, :ru, :el, :es]
 
