@@ -282,6 +282,7 @@ Rails.application.routes.draw do
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
         concerns :basic_project_routes
+        resources :institutions
         concerns :archive
         concerns :unnamed_devise_routes, :search
         concerns :account
