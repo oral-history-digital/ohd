@@ -30,6 +30,7 @@ export default function SingleValueWithForm ({
     data,
     onlyStatus,
     noStatusCheckbox,
+    hideEmpty=false,
     user,
     editView,
     translations,
@@ -45,6 +46,9 @@ export default function SingleValueWithForm ({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
 
+    if (hideEmpty && !value) {
+        return null;
+    }
     const metadataField = Object.values(project.metadata_fields).find(m => m.name === attribute);
 
     const label = metadataField?.label?.[locale] ||
@@ -108,7 +112,7 @@ export default function SingleValueWithForm ({
                 <ContentField
                     noLabel={noLabel}
                     label={label}
-                    value={isStringValue && collapsed ? value?.substring(0,25) : value}
+                    value={isStringValue && collapsed ? value?.substring(0,500) : value}
                     linkUrls={linkUrls}
                 >
                     {

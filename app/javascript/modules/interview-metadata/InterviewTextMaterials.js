@@ -11,8 +11,14 @@ export default function InterviewTextMaterials({
 }) {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
-    const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
-    const showTranscriptPDF = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.transcript?.toString() === 'true';
+    const showObservations = isAuthorized(interview, 'update') || (
+        interview.properties?.public_attributes?.observations?.toString() === 'true' &&
+        interview.observations?.[locale]
+    );
+    const showTranscriptPDF = isAuthorized(interview, 'update') || (
+        interview.properties?.public_attributes?.transcript?.toString() === 'true' &&
+        interview.segments?.[1]?.[interview.first_segments_ids[1]]
+    );
 
     if (!interview.language_id) {
         return null;
@@ -30,7 +36,7 @@ export default function InterviewTextMaterials({
                                     key={locale}
                                     lang={locale}
                                     type='observations'
-                                    condition={showObservations && interview.observations?.[locale]}
+                                    condition={showObservations}
                                     showEmpty={true}
                                 />
                             )
@@ -45,7 +51,7 @@ export default function InterviewTextMaterials({
                     elementType="textarea"
                     multiLocale
                     attribute="observations"
-                    value={interview.observations?.[locale]?.substring(0,25)}
+                    value={interview.observations?.[locale]?.substring(0,500)}
                     noLabel
                 />
             </AuthorizedContent>
@@ -59,7 +65,7 @@ export default function InterviewTextMaterials({
                                     key={lang}
                                     lang={lang}
                                     type='transcript'
-                                    condition={showTranscriptPDF && interview.segments?.[1]?.[interview.first_segments_ids[1]]}
+                                    condition={showTranscriptPDF}
                                     showEmpty={true}
                                 />
                             )

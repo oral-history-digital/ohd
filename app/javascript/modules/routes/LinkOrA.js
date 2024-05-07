@@ -29,15 +29,19 @@ function LinkOrA({
     const path = to.length > 0 ? `${pathBase}/${to}` : pathBase;
     const domain = project.archive_domain || ohdDomain;
 
-    const accessTokenParam = currentAccount?.access_token ? `access_token=${currentAccount.access_token}` : null;
+    const accessTokenParam = projectIsCurrentProject || (onOHD && !projectHasOtherDomain) || !currentAccount ?
+        null :
+        `access_token=${currentAccount.access_token}`;
     const paramsWithAccessToken = [params, accessTokenParam].filter(Boolean).join('&');
+    const joiner = path.includes('?') ? '&' : '?';
+    const pathWithParams = paramsWithAccessToken ? `${path}${joiner}${paramsWithAccessToken}` : path;
 
     return (
         (onOHD && !projectHasOtherDomain) || projectIsCurrentProject ?
             <Link
                 className={className}
                 style={style}
-                to={path}
+                to={pathWithParams}
                 onClick={() => dispatch( setProjectId(project.shortname), onLinkClick(pathBase) )}
             >
                 { children }
@@ -45,7 +49,7 @@ function LinkOrA({
             <a
                 className={className}
                 style={style}
-                href={`${domain}${path}${paramsWithAccessToken.length > 0 ? '?' + paramsWithAccessToken : ''}`}
+                href={`${domain}${pathWithParams}`}
             >
                 { children }
             </a>

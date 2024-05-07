@@ -32,6 +32,7 @@ export default function InterviewCollectionInfo({
             attribute="collection_id"
             value={collection?.name[locale]}
             projectAccessGranted={projectAccessGranted}
+            hideEmpty
         >
         {collection && (
             <Disclosure>

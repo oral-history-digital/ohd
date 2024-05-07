@@ -57,7 +57,7 @@ export default function humanReadable({
     }
 
     if (typeof value === 'object' && value !== null) {
-        return collapsed ? value[locale]?.substring(0,25) : value[locale];
+        return collapsed ? value[locale]?.substring(0,500) : value[locale];
     }
 
     const keyParam = `${optionsScope || attribute}.${value}`;

@@ -51,6 +51,7 @@ export default function WorkbookItemForm({
 
         switch (type) {
         case 'Search':
+            return `${t('modules.workbook.full_text_search')} ${properties.fulltext}`;
         case 'UserAnnotation':
             return `${name}, ${interviewStr} ${archiveId}, ${tapeStr} ${properties.tape_nbr} – ${formatTimecode(properties.time)}`;
         case 'InterviewReference':
