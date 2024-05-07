@@ -1,5 +1,19 @@
 class CollectionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: :index
+  skip_before_action :authenticate_user!, only: [:index, :show]
+
+  def show
+    @collection = Collection.find params[:id]
+    authorize @collection
+
+    respond_to do |format|
+      format.html do
+        render :template => "/react/app"
+      end
+      format.json do
+        render json: data_json(@collection)
+      end
+    end
+  end
 
   def new
     authorize Collection

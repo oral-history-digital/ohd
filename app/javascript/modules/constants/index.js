@@ -22,7 +22,7 @@ export const PROJECT_ZWAR = 'zwar';
 export const PROJECT_CAMPSCAPES = 'campscapes';
 
 export const DEFAULT_LOCALES = ['de', 'en'];
-export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru'];
+export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru', 'uk'];
 
 export const VIEWMODE_GRID = 'grid';
 export const VIEWMODE_LIST = 'list';

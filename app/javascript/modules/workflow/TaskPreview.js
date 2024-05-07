@@ -8,6 +8,8 @@ import { usePathBase } from 'modules/routes';
 export default function TaskPreview({
     data,
     setArchiveId,
+    scope,
+    user,
 }) {
 
     const { t, locale } = useI18n();

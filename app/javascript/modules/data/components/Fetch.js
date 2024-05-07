@@ -23,7 +23,7 @@ export default function Fetch({
     const statuses = useSelector(getStatuses);
     const testResult = (typeof testSelector === 'function') ?
         useSelector(testSelector) :
-        !!(statuses[testDataType] && statuses[testDataType][testIdOrDesc]);
+        !!(statuses[testDataType] && /^fetched/.test(statuses[testDataType][testIdOrDesc]));
     const doReload = reloadSelector && useSelector(reloadSelector);
     const dispatch = useDispatch();
 

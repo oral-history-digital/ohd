@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
-import { getPublicProjects, getInstitutions } from 'modules/data';
+import { getPublicProjects, getInstitutions,
+    useLoadCompleteProject } from 'modules/data';
 import { usePathBase, LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
@@ -19,22 +20,18 @@ export default function ArchiveCatalogPage() {
     const { t, locale } = useI18n();
     const id = Number(useParams().id);
     const pathBase = usePathBase();
+    const project = useLoadCompleteProject(id);
     useTrackPageView();
 
-    const project = projects.find(p => p.id === id);
-
-    if (!project) {
-        return (
-            <Navigate to={`${pathBase}/not_found`} replace />
-        );
-    }
+    //if (!project) {
+        //return (
+            //<Navigate to={`${pathBase}/not_found`} replace />
+        //);
+    //}
 
     const title = project.name[locale];
 
-    const institutions = Object.values(project.institution_projects)
-        .map(ip => allInstitutions[ip.institution_id]);
-
-    const projectTranslation = project.translations_attributes.find(trans =>
+    const projectTranslation = project.translations_attributes?.find(trans =>
         trans.locale === locale);
 
     return (
@@ -65,17 +62,17 @@ export default function ArchiveCatalogPage() {
 
                     <dl className="DescriptionList">
                         <dt className="DescriptionList-term">
-                            {institutions.length === 1 ?
+                            {project.institution_projects?.length === 1 ?
                                 t('activerecord.models.institution.one') :
                                 t('activerecord.models.institution.other')
                             }
                         </dt>
                         <dd className="DescriptionList-description">
                             <ul className="UnorderedList">
-                                {institutions.map(institution => (
-                                    <li key={institution.id}>
-                                        <Link to={`/${locale}/catalog/institutions/${institution.id}`}>
-                                            {institution.name[locale]}
+                                {Object.values(project.institution_projects || {})?.map(ip => (
+                                    <li key={ip.institution_id}>
+                                        <Link to={`/${locale}/catalog/institutions/${ip.institution_id}`}>
+                                            {ip.name[locale]}
                                         </Link>
                                     </li>
                                 ))}
@@ -141,7 +138,7 @@ export default function ArchiveCatalogPage() {
                         </dt>
                         <dd className="DescriptionList-description">
                             <ul className="UnorderedList">
-                                {project.pseudo_funder_names.map(name =>
+                                {project.pseudo_funder_names?.map(name =>
                                     <li key={name}>{name}</li>
                                 )}
                             </ul>

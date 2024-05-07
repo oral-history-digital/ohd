@@ -60,7 +60,7 @@ export default function ContributionForm({
             values: peopleData,
             value: data?.person_id,
             withEmpty: true,
-            validate: v => v !== '',
+            validate: function(v){return /^\d+$/.test(v)},
             handlechangecallback: handlePersonChange,
         },
         {
@@ -71,7 +71,7 @@ export default function ContributionForm({
             optionsScope: 'contributions',
             keepOrder: true,
             withEmpty: true,
-            validate: v => v !== '',
+            validate: function(v){return /^\d+$/.test(v)},
         },
         {
             elementType: 'select',
