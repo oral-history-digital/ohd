@@ -28,7 +28,7 @@ export default function AfterRegisterPopup ({
                     <input
                         type="button"
                         className="Button Button--primaryAction"
-                        value={'OK'}
+                        value={t('ok')}
                         onClick={close}
                     />
                 </>
