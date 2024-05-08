@@ -41,6 +41,8 @@ class BasicsTest < ApplicationSystemTestCase
     fill_in 'Password confirmation', with: 'password'
     check 'Terms of Use', visible: :all
     check 'Privacy Policy', visible: :all
+    assert_text 'I agree to the Terms of Use of the Oral-History.Digital platform.'
+    assert_text 'I agree to the Privacy Policy of the Freie Universität Berlin.'
     click_on 'Submit registration'
     assert_text 'Your registration has been successfully submitted!'
 
@@ -74,6 +76,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Editing interface'
     click_on 'Edit item'
     select 'Activate'
+    assert_text '<p>Hello Mario Rossi,</p><p>You now have access to the application'
     click_on 'Submit'
     click_button 'Account'
     Capybara.reset_sessions!
