@@ -20,11 +20,12 @@ export default function t(
         }
     }
 
-    if (Array.isArray(text)) text = text.join('');
+    const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
 
     if (translationsView) {
-        const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
-        text += ` (${usedKey})`;
+        Array.isArray(text) ?
+            text.push(` (${usedKey})`) :
+            text += ` (${usedKey})`;
     }
 
     return text;

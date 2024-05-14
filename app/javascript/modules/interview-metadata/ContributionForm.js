@@ -38,7 +38,7 @@ export default function ContributionForm({
     }
 
     const selectedPerson = selectedPersonId !== null ?
-        peopleData[selectedPersonId] :
+        peopleData?.[selectedPersonId] :
         null;
 
     function handlePersonChange(attribute, value) {

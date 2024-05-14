@@ -120,6 +120,8 @@ module DataHelper
     spawn('rails', 'db', '-p', in: r)
     w.write(IO.read(file))
     w.close
+    sleep 2
+    TranslationValue.last.touch
   end
 
   def self.test_project(attribs = {})

@@ -46,9 +46,6 @@ export default function SingleValueWithForm ({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
 
-    if (hideEmpty && !value) {
-        return null;
-    }
     const metadataField = Object.values(project.metadata_fields).find(m => m.name === attribute);
 
     const label = metadataField?.label?.[locale] ||
@@ -104,8 +101,10 @@ export default function SingleValueWithForm ({
                 (
                     (projectAccessGranted && metadataField?.use_in_details_view) ||
                     (!projectAccessGranted && metadataField?.display_on_landing_page)
-                ) &&
-                (obj.properties?.public_attributes?.[attribute]?.toString() === 'true')
+                ) && (
+                    obj.properties?.public_attributes?.[attribute]?.toString() === 'true' &&
+                    !(hideEmpty && !value)
+                )
             )
         ) {
             return (
