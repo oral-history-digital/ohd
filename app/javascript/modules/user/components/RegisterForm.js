@@ -193,11 +193,11 @@ export default function RegisterForm({
                     <div>
                         <p>
                             { project.is_ohd ? t('user.registration_text_one_ohd') : t('user.registration_text_one')}
-                            <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
+                            <a href={conditionsLink} target="_blank" title="" rel="noreferrer">
                                 {t('user.tos_agreement')}
                             </a>
                             {t('user.registration_text_two')}
-                            <a href={privacyLink[locale]} target="_blank" title="" rel="noreferrer">
+                            <a href={privacyLink} target="_blank" title="" rel="noreferrer">
                                 {t('user.priv_agreement_alias')}
                             </a>
                             {t('user.registration_text_three')}
