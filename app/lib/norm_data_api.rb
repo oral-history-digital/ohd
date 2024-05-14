@@ -21,8 +21,9 @@ class NormDataApi
       request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
       request.body = {
         expression: expression,
-        displayLang: display_lang, # ['de', 'en', ...]
-
+        placeType: place_type,
+        geoFilter: geo_filter,
+        displayLang: I18n.available_locales,
       }.to_json
       response = http.request request
       response.body
