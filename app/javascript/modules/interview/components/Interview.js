@@ -7,7 +7,9 @@ import { Helmet } from 'react-helmet';
 import { useTrackPageView } from 'modules/analytics';
 import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayer } from 'modules/media-player';
-import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
+import { AuthShowContainer, AuthorizedContent,
+    useProjectAccessStatus, useAuthorization } from 'modules/auth';
+import { getEditView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
@@ -29,7 +31,9 @@ export default function Interview({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const { isAuthorized } = useAuthorization();
     const statuses = useSelector(getInterviewsStatus);
+    const editView = useSelector(getEditView);
     const status = statuses[archiveId];
 
     useTrackPageView();
@@ -51,11 +55,13 @@ export default function Interview({
             fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title');
             fetchData({ projectId, locale, project }, 'interviews', archiveId, 'short_title');
             fetchData({ projectId, locale, project }, 'interviews', archiveId, 'description');
-            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'observations');
             fetchData({ projectId, locale, project }, 'interviews', archiveId, 'photos');
-            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'reload_translations');
         }
-    }, [archiveId, isLoggedIn]);
+        if (isAuthorized(interview, 'update')) {
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'reload_translations');
+            fetchData({ projectId, locale, project }, 'interviews', archiveId, 'observations');
+        }
+    }, [archiveId, isLoggedIn, editView]);
 
     // Do not render InterviewTabs component as long as interview.lang is absent.
     // (Strangely, it sometimes becomes present only shortly after this component is rendered.)

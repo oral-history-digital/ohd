@@ -40,7 +40,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     hash
   end
 
-  def translations
+  def translations_attributes
     []
   end
 

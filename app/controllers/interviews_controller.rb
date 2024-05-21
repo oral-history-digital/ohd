@@ -140,7 +140,7 @@ class InterviewsController < ApplicationController
     json = {
       id: @interview.archive_id,
       data_type: "interviews",
-      nested_data_type: 'translations',
+      nested_data_type: 'translations_attributes',
       data: @interview.translations,
     }
 
