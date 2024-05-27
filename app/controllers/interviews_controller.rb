@@ -40,7 +40,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, msg: "processed")
+        render json: data_json(@interview, 'InterviewUpdate', msg: "processed")
       end
     end
   end
