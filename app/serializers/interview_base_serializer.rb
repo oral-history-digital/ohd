@@ -107,7 +107,7 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def language_id
-    object.language.id
+    object.language&.id
   end
 
   def translation_locale
