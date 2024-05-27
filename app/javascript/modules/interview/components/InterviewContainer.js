@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getIsLoggedIn } from 'modules/user';
 import { setArchiveId, getInterviewEditView } from 'modules/archive';
-import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog,
-    fetchData } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewFetched,
+    getIsCatalog } from 'modules/data';
 import Interview from './Interview';
 
 const mapStateToProps = state => ({
@@ -12,11 +11,9 @@ const mapStateToProps = state => ({
     interviewIsFetched: getCurrentInterviewFetched(state),
     isCatalog: getIsCatalog(state),
     interviewEditView: getInterviewEditView(state),
-    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
     setArchiveId,
 }, dispatch);
 
