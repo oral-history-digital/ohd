@@ -1,4 +1,4 @@
-class InterviewSerializer < InterviewSerializer
+class InterviewUpdateSerializer < InterviewSerializer
   attributes [
     :observations,
     :description,

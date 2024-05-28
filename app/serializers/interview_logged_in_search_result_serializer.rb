@@ -21,8 +21,4 @@ class InterviewLoggedInSearchResultSerializer < InterviewBaseSerializer
     object.localized_hash(:reverted_short_title)
   end
 
-  #def description
-    #object.localized_hash(:description)
-  #end
-
 end

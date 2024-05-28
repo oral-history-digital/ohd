@@ -116,7 +116,7 @@ class PeopleController < ApplicationController
           end
 
           {
-            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s, nil, nil, I18n.locale.to_s); mem },
+            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id,
@@ -152,8 +152,8 @@ class PeopleController < ApplicationController
         render json: {
           nested_id: person.id,
           data: (params[:with_associations].present? ?
-            cache_single(person, 'PersonWithAssociations', nil, I18n.locale.to_s) :
-            cache_single(person, nil,                      nil, I18n.locale.to_s)),
+            cache_single(person, serializer_name: 'PersonWithAssociations') :
+            cache_single(person)),
           nested_data_type: "people",
           data_type: 'projects',
           id: current_project.id,

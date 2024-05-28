@@ -29,7 +29,7 @@ class MetadataFieldsController < ApplicationController
           data_type: 'projects',
           nested_data_type: 'metadata_fields',
           nested_id: @metadata_field.id,
-          data: cache_single(@metadata_field, nil, "project"),
+          data: cache_single(@metadata_field, related: "project"),
         }
       end
     end

@@ -26,7 +26,8 @@ class InterviewBaseSerializer < ApplicationSerializer
     :startpage_position,
     :properties,
     :transcript_locales,
-    :toc_locales
+    :toc_locales,
+    :description
   ]
 
   def attributes(*args)
@@ -46,6 +47,18 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def translations_attributes
     []
+  end
+
+  def description
+    instance_options[:public_description] ? object.localized_hash(:description) : {}
+  end
+
+  def contributions
+    {}
+  end
+
+  def registry_references
+    {}
   end
 
   def video
@@ -80,18 +93,6 @@ class InterviewBaseSerializer < ApplicationSerializer
     # Further a timecode is human readable sth like 14785 not so.
     #
     Timecode.new(object.duration).timecode
-  end
-
-  def contributions
-    json =  Rails.cache.fetch("#{object.project.shortname}-interview-contributions-#{object.id}-#{object.contributions.count}-#{object.contributions.maximum(:updated_at)}") do
-      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
-
-  def registry_references
-    json = Rails.cache.fetch("#{object.project.shortname}-interview-registry_references-#{object.id}-#{object.registry_references.count}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
   end
 
   def properties
