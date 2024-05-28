@@ -391,11 +391,18 @@ class InterviewsController < ApplicationController
       format.json do
         logged_in = current_user.present?
         serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
+        public_description = current_project.public_description?
+        search_results_metadata_fields = current_project.search_results_metadata_fields
         featured_interviews = current_project.featured_interviews
 
         if featured_interviews.present?
           data = featured_interviews.inject({}) do |mem, interview|
-            mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name)
+            mem[interview.archive_id] = cache_single(
+              interview,
+              serializer_name: serializer_name,
+              public_description: public_description,
+              search_results_metadata_fields: search_results_metadata_fields
+            )
             mem
           end
           json = {
