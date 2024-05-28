@@ -274,13 +274,13 @@ class ApplicationController < ActionController::Base
   #
   # serialized compiled cache of an instance
   #
-  def cache_single(data, name = nil, related = nil, cache_key_suffix = nil)
+  def cache_single(data, opts={})
     cache_key_prefix = current_project ? current_project.shortname : 'ohd'
-    cache_key = "#{cache_key_prefix}-#{(name || data.class.name).underscore}"\
-      "-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}"\
-      "-#{cache_key_suffix}"
+    cache_key = "#{cache_key_prefix}-#{(opts[:serializer_name] || data.class.name).underscore}"\
+      "-#{data.id}-#{data.updated_at}-#{opts[:related] && data.send(opts[:related]).updated_at}"\
+      "-#{opts[:cache_key_suffix]}"
     Rails.cache.fetch(cache_key) do
-      raw = "#{name || data.class.name}Serializer".constantize.new(data)
+      raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db
       #

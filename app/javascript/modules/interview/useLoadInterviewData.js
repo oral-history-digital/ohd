@@ -25,15 +25,10 @@ export default function useLoadInterviewData({
     const metadataFieldObservations = Object.values(project.metadata_fields).find(m => m.name === 'observations');
     const metadataFieldDescription = Object.values(project.metadata_fields).find(m => m.name === 'description');
 
-    // fetch interview base data
     useEffect(() => {
         if (!status) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId));
         }
-    }, [projectId, locale, archiveId, status]);
-
-    // fetch configuration dependent data
-    useEffect(() => {
         if (metadataFieldObservations?.display_on_landing_page) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'observations'));
         }
@@ -44,6 +39,8 @@ export default function useLoadInterviewData({
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'short_title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'photos'));
+            dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'contributions'));
+            dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'registry_references'));
             if (
                 metadataFieldObservations?.use_in_details_view &&
                 !metadataFieldObservations?.display_on_landing_page
@@ -72,6 +69,6 @@ export default function useLoadInterviewData({
                 dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'description'));
             }
         }
-    }, [archiveId, isLoggedIn, editView, metadataFieldObservations, metadataFieldDescription]);
+    }, [projectId, locale, archiveId, status, isLoggedIn, editView, metadataFieldObservations, metadataFieldDescription]);
 
 }

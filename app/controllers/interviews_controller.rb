@@ -395,7 +395,7 @@ class InterviewsController < ApplicationController
 
         if featured_interviews.present?
           data = featured_interviews.inject({}) do |mem, interview|
-            mem[interview.archive_id] = cache_single(interview, serializer_name)
+            mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name)
             mem
           end
           json = {
@@ -405,7 +405,7 @@ class InterviewsController < ApplicationController
         else
           json = Rails.cache.fetch("#{current_project.shortname}-interview-random-featured-#{logged_in}", expires_in: 30.minutes) do
             data = Interview.random_featured(6, current_project.id).inject({}) do |mem, interview|
-              mem[interview.archive_id] = cache_single(interview, serializer_name)
+              mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name)
               mem
             end
             {
