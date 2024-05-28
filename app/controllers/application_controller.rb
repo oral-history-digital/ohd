@@ -298,7 +298,7 @@ class ApplicationController < ActionController::Base
     json = {
       "#{identifier}": data.send(identifier),
       data_type: data.class.name.underscore.pluralize,
-      data: cache_single(data)
+      data: cache_single(data, opts)
     }
     json.update(opts)
     json
