@@ -56,7 +56,7 @@ export default function Input({
             const valid = validate(defaultValue);
             handleErrors(attribute, !valid);
         }
-        //handleChange(attribute, defaultValue, data);
+        handleChange(attribute, defaultValue, data);
     }, [defaultValue]);
 
     const cleanProps = () => {
