@@ -534,7 +534,8 @@ class Interview < ApplicationRecord
               tape_id: tape_id,
               text: row[:transcript] || '',
               locale: locale,
-              speaker_id: speaker_id
+              speaker_id: speaker_id,
+              split: true
             })
           end
         end
@@ -555,7 +556,8 @@ class Interview < ApplicationRecord
       next_timecode: Timecode.new(tape.duration).timecode,
       tape_id: tape_id,
       text: text,
-      locale: locale
+      locale: locale,
+      split: true
     })
   end
 
@@ -582,7 +584,8 @@ class Interview < ApplicationRecord
         tape_id: tape_id,
         text: text,
         locale: locale,
-        speaker_id: speaker_id
+        speaker_id: speaker_id,
+        split: false
       })
     end
   end
