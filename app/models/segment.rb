@@ -163,7 +163,8 @@ class Segment < ApplicationRecord
   class << self
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
-      if opts[:speaker_id]
+      split = opts.delete(:split)
+      if opts[:speaker_id] || !split
         next_time = Timecode.new(opts.delete(:next_timecode)).time
         duration = next_time - Timecode.new(opts[:timecode]).time
         opts.update(duration: duration) if duration > 0
