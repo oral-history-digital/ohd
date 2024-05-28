@@ -55,7 +55,7 @@ export default function useLoadInterviewData({
             }
         }
         if (isAuthorized(interview, 'update')) {
-            //dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'reload_translations'));
+            dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'reload_translations'));
             if (
                 !metadataFieldObservations?.use_in_details_view &&
                 !metadataFieldObservations?.display_on_landing_page
