@@ -1,7 +1,6 @@
 class InterviewUpdateSerializer < InterviewSerializer
   attributes [
     :observations,
-    :description,
   ]
 
   def translations_attributes
