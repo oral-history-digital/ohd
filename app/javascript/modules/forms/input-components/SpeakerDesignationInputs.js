@@ -15,19 +15,18 @@ export default function SpeakerDesignationInputs({
     const { data: people, isLoading } = usePeople();
 
     const onChange = (name, v) => {
-        const index = contributions.findIndex(c => c.id.toString() === name);
-        const updatedContribution = {
-            ...contributions[index],
-            speaker_designation: v,
-        };
-
-        const updatedContributions = [
-            ...contributions.slice(0, index),
-            updatedContribution,
-            ...contributions.slice(index + 1),
-        ];
-
-        handleChange(attribute, updatedContributions);
+        console.log('SpeakerDesignationInputs', contributions.map(c => c.id));
+        if (v) {
+            handleChange(
+                attribute,
+                contributions.map(c => {
+                    if (c.id.toString() === name) {
+                        return { ...c, speaker_designation: v };
+                    }
+                    return c;
+                })
+            );
+        }
     }
 
     if (isLoading) {
