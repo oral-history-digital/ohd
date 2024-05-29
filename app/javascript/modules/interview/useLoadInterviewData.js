@@ -29,13 +29,13 @@ export default function useLoadInterviewData({
         if (!status) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId));
         }
-        if (metadataFieldObservations?.display_on_landing_page) {
+        if (interview && metadataFieldObservations?.display_on_landing_page) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'observations'));
         }
-        if (metadataFieldDescription?.display_on_landing_page) {
+        if (interview && metadataFieldDescription?.display_on_landing_page) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'description'));
         }
-        if (projectAccessGranted) {
+        if (interview && projectAccessGranted) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'short_title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'photos'));
@@ -69,6 +69,6 @@ export default function useLoadInterviewData({
                 dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'description'));
             }
         }
-    }, [projectId, locale, archiveId, status, isLoggedIn, editView, metadataFieldObservations, metadataFieldDescription]);
+    }, [interview?.primary_language_id, projectId, locale, archiveId, isLoggedIn, editView, metadataFieldObservations, metadataFieldDescription]);
 
 }
