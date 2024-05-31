@@ -192,23 +192,25 @@ class Interview < ApplicationRecord
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
       ((Project.ohd.present? ? Project.ohd.search_facets: []) | project.search_facets).inject({}) do |mem, facet|
-        mem[facet.name] = case facet.source
-          when 'RegistryReferenceType'
-            case facet.ref_object_type
-            when "Person"
-              interviewee&.registry_references
-            when "Interview"
-              registry_references
-            when "Segment"
-              segment_registry_references
-            end.where(registry_reference_type_id: facet.registry_reference_type_id).
-            map(&:registry_entry_id).uniq
-          when 'Interview'
-            self.send(facet.name)
-          when 'Person'
-            interviewee.send(facet.name)
-          end
-          mem
+        if interviewee
+          mem[facet.name] = case facet.source
+            when 'RegistryReferenceType'
+              case facet.ref_object_type
+              when "Person"
+                interviewee.registry_references
+              when "Interview"
+                registry_references
+              when "Segment"
+                segment_registry_references
+              end.where(registry_reference_type_id: facet.registry_reference_type_id).
+              map(&:registry_entry_id).uniq
+            when 'Interview'
+              self.send(facet.name)
+            when 'Person'
+              interviewee.send(facet.name)
+            end
+        end
+        mem
       end
     end
 
