@@ -40,7 +40,15 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, serializer_name: 'InterviewUpdate', msg: "processed")
+        render json: data_json(
+          @interview,
+          serializer_name: 'InterviewUpdate',
+          changes: (
+            params[:interview].keys -
+            ["translations_attributes", "public_attributes"]
+          ),
+          msg: "processed"
+        )
       end
     end
   end
