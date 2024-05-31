@@ -44,7 +44,11 @@ export default function Interview({
     const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
 
     if (isCatalog) {
-        return <InterviewDetailsLeftSideContainer />;
+        if (interview?.contributions && Object.keys(interview.contributions).length > 0) {
+            return <InterviewDetailsLeftSideContainer />;
+        } else {
+            return <Spinner withPadding />;
+        }
     } else {
         return (
             <div>
