@@ -203,7 +203,9 @@ class SearchesController < ApplicationController
               i,
               serializer_name: current_user ? 'InterviewLoggedInSearchResult' : 'InterviewBase',
               public_description: public_description,
-              search_results_metadata_fields: search_results_metadata_fields
+              search_results_metadata_fields: search_results_metadata_fields,
+              project_available_locales: current_project.available_locales,
+              project_shortname: current_project.shortname
             )
           end,
           page: params[:page].to_i || 1,

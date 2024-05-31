@@ -409,7 +409,9 @@ class InterviewsController < ApplicationController
               interview,
               serializer_name: serializer_name,
               public_description: public_description,
-              search_results_metadata_fields: search_results_metadata_fields
+              search_results_metadata_fields: search_results_metadata_fields,
+              project_available_locales: current_project.available_locales,
+              project_shortname: current_project.shortname
             )
             mem
           end
