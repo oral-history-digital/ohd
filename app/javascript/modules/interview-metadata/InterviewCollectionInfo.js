@@ -27,7 +27,7 @@ export default function InterviewCollectionInfo({
             obj={interview}
             values={collections}
             withEmpty={true}
-            validate={function(v){return /^\d+$/.test(v)}}
+            //validate={function(v){return /^\d+$/.test(v)}}
             individualErrorMsg="empty"
             attribute="collection_id"
             value={collection?.name[locale]}
