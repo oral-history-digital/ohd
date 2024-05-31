@@ -49,6 +49,6 @@ class SegmentSerializer < ApplicationSerializer
   end
 
   def transcript_coupled
-    object.interview.transcript_coupled
+    instance_options[:transcript_coupled]
   end
 end

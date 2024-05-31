@@ -213,7 +213,7 @@ class Project < ApplicationRecord
   def search_results_metadata_fields
     metadata_fields.where(use_in_results_list: true).
       or(metadata_fields.where(use_in_results_table: true)).
-      where(ref_object_type: 'Interview')
+      where.not(ref_object_type: [nil, ''])
   end
 
   # runs only with memcache

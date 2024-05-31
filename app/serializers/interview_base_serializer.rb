@@ -32,9 +32,27 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def attributes(*args)
     hash = super
-    instance_options[:search_results_metadata_fields]&.each do |m|
-      hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+    instance_options[:search_results_metadata_fields]&.each do |field|
+      field_registry_references = case field["ref_object_type"]
+                                  when "Person"
+                                    object.interviewee&.registry_references
+                                  when "Interview"
+                                    object.registry_references
+                                  when "Segment"
+                                    object.segment_registry_references
+                                  end
+
+      registry_entry_ids = field_registry_references.
+        where(registry_reference_type_id: field.registry_reference_type_id).
+        map(&:registry_entry_id).uniq.compact
+
+      hash[field.name] = (
+        instance_options[:project_available_locales] ||
+        object.project.available_locales
+      ).inject({}) do |mem, locale|
+        mem[locale] = registry_entry_ids.map do |id|
+          RegistryEntry.find(id).to_s(locale)
+        end.join(", ")
         mem
       end
     end
@@ -71,7 +89,8 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def still_url
     # mog still images have to be renamed!
-    if object.project.shortname.downcase == 'mog'
+    project_shortname = instance_options[:project_shortname] || object.project.shortname
+    if project_shortname.downcase == 'mog'
       "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
     else
       still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
@@ -100,7 +119,10 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def toc_locales
-    object.project.available_locales.select { |l| object.has_heading?(l) }
+    (
+      instance_options[:project_available_locales] ||
+      object.project.available_locales
+    ).select { |l| object.has_heading?(l) }
   end
 
   def language_id
