@@ -121,7 +121,7 @@ class InterviewsController < ApplicationController
 
       if %w(contributions photos registry_references).include?(m)
         association = @interview.send(m)
-        data = Rails.cache.fetch("#{@interview.project.shortname}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
+        data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
           association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
       else
