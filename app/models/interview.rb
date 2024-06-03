@@ -205,9 +205,9 @@ class Interview < ApplicationRecord
               end.where(registry_reference_type_id: facet.registry_reference_type_id).
               map(&:registry_entry_id).uniq
             when 'Interview'
-              self.send(facet.name)
+              self.respond_to?(facet.name) && self.send(facet.name)
             when 'Person'
-              interviewee.send(facet.name)
+              interviewee.respond_to?(facet.name) && interviewee.send(facet.name)
             end
         end
         mem
