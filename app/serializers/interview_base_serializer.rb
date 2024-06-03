@@ -68,7 +68,7 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def contributions
-    {}
+    object.contributions.inject({}) { |mem, c| mem[c.id] = ContributionSerializer.new(c); mem }
   end
 
   def registry_references
