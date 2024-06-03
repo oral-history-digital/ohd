@@ -47,13 +47,17 @@ class PeopleController < ApplicationController
     current_project.metadata_fields
       .where(display_on_landing_page: true)
       .where(ref_object_type: 'Person').each do |m|
-      @person.registry_references.where(registry_reference_type_id: m.registry_reference_type_id).each do |rr|
-        data[:registry_references][rr.id] = RegistryReferenceSerializer.new(rr)
-      end
-      data[m.name] = @person.project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = @person.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
-        mem
-      end
+        registry_references = @person.registry_references.
+          where(registry_reference_type_id: m.registry_reference_type_id)
+        registry_references.each do |rr|
+          data[:registry_references][rr.id] = RegistryReferenceSerializer.new(rr)
+        end
+        data[m.name] = @person.project.available_locales.inject({}) do |mem, locale|
+          mem[locale] = registry_references.compact.map do |rr|
+            RegistryEntry.find(rr.registry_entry_id).to_s(locale)
+          end.join(", ")
+          mem
+        end
     end
 
     current_project.metadata_fields

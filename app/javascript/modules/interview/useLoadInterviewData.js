@@ -39,7 +39,6 @@ export default function useLoadInterviewData({
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'short_title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'photos'));
-            dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'contributions'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'registry_references'));
             if (
                 metadataFieldObservations?.use_in_details_view &&
