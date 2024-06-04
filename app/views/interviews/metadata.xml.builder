@@ -54,7 +54,17 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
 
   xml.subjects do
     interview.project.registry_reference_type_metadata_fields.each do |field|
-      xml.subject "#{field.label(locale)}: #{interview.send(field.name).map{|f| RegistryEntry.find(f).to_s(locale)}.join(', ')}"
+      registry_entry_ids = case field.ref_object_type
+      when "Person"
+        interview.interviewee.registry_references
+      when "Interview"
+        interview.registry_references
+      when "Segment"
+        interview.segment_registry_references
+      end.where(registry_reference_type_id: field.registry_reference_type_id).
+      map(&:registry_entry_id).uniq
+
+      xml.subject "#{field.label(locale)}: #{registry_entry_ids.map{|f| RegistryEntry.find(f).to_s(locale)}.join(', ')}"
     end
   end
 

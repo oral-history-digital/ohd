@@ -391,10 +391,17 @@ class Interview < ApplicationRecord
       map(&:person)
   end
 
-   def place_of_interview
-     ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
-     ref && ref.registry_entry
-   end
+  def interviewers
+    interviewer_contribution_type = project.contribution_types.where(code: 'interviewer').first
+    contributions.
+      where(contribution_type_id: interviewer_contribution_type&.id).
+      map(&:person)
+  end
+
+  def place_of_interview
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+    ref && ref.registry_entry
+  end
 
   def title(locale)
     full_title(locale)
