@@ -72,7 +72,7 @@ class RegistryReferencesController < ApplicationController
     policy_scope(RegistryReference)
     respond_to do |format|
       format.html do
-        render layout: 'webpacker'
+        render "react/app"
       end
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
