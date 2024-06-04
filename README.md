@@ -11,9 +11,9 @@ production without any modifications.
 
 ## Prerequisites
 
-* Ruby 2.7.7
+* Ruby 3.0.7
 * MySQL/MariaDB
-* Node.js >=16
+* Node.js >=18
 * yarn
 * Java Runtime Environment (Version 8)
 * optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
