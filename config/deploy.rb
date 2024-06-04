@@ -18,11 +18,11 @@ set :branch, ENV.fetch('BRANCH', 'main')
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/datacite.yml", "config/storage.yml", "config/master.key"
+set :linked_files, %w(config/database.yml config/secrets.yml config/sunspot.yml config/datacite.yml config/storage.yml config/master.key)
 
 # Default value for linked_dirs is []
-# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
-append :linked_dirs, "solr", "node_modules", "tmp/pids", "tmp/files", "tmp/cache", "log"
+# set :linked_dirs, (log tmp/pids tmp/cache tmp/sockets public/system)
+set :linked_dirs, %w(solr node_modules tmp/pids tmp/files tmp/cache log)
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

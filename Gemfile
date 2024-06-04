@@ -21,7 +21,7 @@ gem 'roo', "~> 2.7.0"
 gem 'henkei'
 gem 'webvtt-ruby'
 gem 'oai_repository', git: 'https://github.com/grgr/oai_repository'
-gem 'delayed_job_active_record'
+gem 'delayed_job_active_record', '~> 4.1.8'
 gem 'daemons'
 gem 'open4'
 gem 'cyrillizer'
@@ -35,6 +35,8 @@ gem 'font-awesome-rails'
 gem 'rack-brotli', '~> 1.0'
 gem 'rack-cors'
 gem 'sprockets-rails'
+gem 'rexml', '~> 3.2.8'
+gem 'base64', '~> 0.1.0'
 
 # Gems specific to public archive app:
 gem 'unicode'
