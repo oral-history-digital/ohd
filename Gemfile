@@ -46,7 +46,7 @@ gem 'rack-maintenance'
 gem 'sunspot_rails', '~> 2.6.0'
 gem 'sunspot_solr', '~> 2.6.0'
 gem 'progress_bar'
-gem 'shakapacker', '~> 7.2.2'
+gem 'shakapacker', '7.2.3'
 
 
 group :test, :development do
