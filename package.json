@@ -4,7 +4,7 @@
   "license": "AGPL-3.0-only",
   "version": "1.0.0",
   "engines": {
-    "node": ">=16 <=20"
+    "node": ">=18 <=20"
   },
   "packageManager": "yarn@1.22.19",
   "browserslist": [
