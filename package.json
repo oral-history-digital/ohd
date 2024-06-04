@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=16 <=20"
   },
+  "packageManager": "yarn@1.22.19",
   "browserslist": [
     "defaults"
   ],
@@ -90,7 +91,7 @@
     "reselect": "^4.0.0",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
-    "shakapacker": "7.1.0",
+    "shakapacker": "7.2.3",
     "slick-carousel": "^1.8.1",
     "style-loader": "^3.3.3",
     "superagent": "^5.0.2",
