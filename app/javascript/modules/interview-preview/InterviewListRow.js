@@ -20,8 +20,6 @@ export default function InterviewListRow({
     interview,
     projects,
     selectedArchiveIds,
-    languages,
-    collections,
     setArchiveId,
     addRemoveArchiveId,
 }) {
@@ -124,8 +122,6 @@ export default function InterviewListRow({
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
     projects: PropTypes.object.isRequired,
-    languages: PropTypes.object.isRequired,
-    collections: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
