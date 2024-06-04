@@ -69,7 +69,7 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "collections-#{extra_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-collections-#{extra_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
           {
             data: collections.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: data_type,
