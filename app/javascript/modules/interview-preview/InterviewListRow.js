@@ -39,10 +39,15 @@ export default function InterviewListRow({
         return `interviews/${interview.archive_id}?${paramStr}`;
     }
 
+    function showCheckboxes() {
+        return isAuthorized(interview, 'show') &&
+            isAuthorized({ type: 'General' }, 'edit');
+    }
+
     return (
         <tr className="Table-row">
             {
-                isAuthorized(interview, 'show') && isAuthorized({ type: 'General' }, 'edit') && (
+                showCheckboxes() && (
                     <td className="Table-cell">
                         <Checkbox
                             className="export-checkbox"
