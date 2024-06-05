@@ -120,7 +120,7 @@ function Segment({
                     // TODO: clean mog segment-texts from html in db
                     //dangerouslySetInnerHTML={{__html: text}}
                 >
-                    {text.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || <i>{t('modules.transcript.no_text')}</i>}
+                    {text?.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || <i>{t('modules.transcript.no_text')}</i>}
                 </button>
 
                 <BookmarkSegmentButton segment={data} />
