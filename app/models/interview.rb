@@ -384,18 +384,22 @@ class Interview < ApplicationRecord
     interviewee&.id
   end
 
-  def interviewees
-    interviewee_contribution_type = project.contribution_types.where(code: 'interviewee').first
-    contributions.
-      where(contribution_type_id: interviewee_contribution_type&.id).
-      map(&:person)
+  %w(interviewee interviewer).each do |code|
+    define_method "#{code}s" do
+      contributors_by_code(code)
+    end
   end
 
-  def interviewers
-    interviewer_contribution_type = project.contribution_types.where(code: 'interviewer').first
+  def contributors_by_code(contribution_type_code)
+    contribution_type = project.contribution_types.where(code: contribution_type_code).first
     contributions.
-      where(contribution_type_id: interviewer_contribution_type&.id).
-      map(&:person)
+      where(contribution_type_id: contribution_type&.id).
+      map(&:person).compact.uniq
+  end
+
+  def registry_references_by_metadata_field_name(metadata_field_name)
+    m = project.metadata_fields.where(name: metadata_field_name).first
+    registry_references.where(registry_reference_type_id: m&.registry_reference_type_id)
   end
 
   def place_of_interview
