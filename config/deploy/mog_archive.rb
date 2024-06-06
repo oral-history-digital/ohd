@@ -5,10 +5,7 @@ set :stage, :production
 set :deploy_to, "/data/applications/#{fetch :application}"
 set :bundle_path, "/data/bundle/01"
 set :project_yml, "mog.yml"
-
-#set :default_env, {
-#      'project_name' => fetch(:application)
-#    }
+set :branch, ENV.fetch('BRANCH', 'release/mog')
 
 set :rbenv_type, :system
 set :rbenv_ruby, '2.7.7'
