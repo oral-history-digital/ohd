@@ -19,7 +19,7 @@ export default function transformIntoMarkers(colorMap, locations) {
             id: location.id,
             lat: Number.parseFloat(location.lat),
             long: Number.parseFloat(location.lon),
-            name: location.name,
+            agg_names: location.agg_names,
             numReferences,
             numMetadataReferences,
             numSegmentReferences,

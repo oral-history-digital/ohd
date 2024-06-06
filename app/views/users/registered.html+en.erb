@@ -1,0 +1,17 @@
+<h1>The email address <%= @user.email %> is already registered</h1>
+
+<% if current_project %>
+  <p>The email address you provided is already registered for using the archive "<%= current_project.name('en') %>".</p>
+<% end %>
+
+<% if @user %>
+  <% unless @user.confirmed_at %>
+    <p>Your account still needs to be activated. Information for activating your account has now been sent again to you via email.</p>
+  <% else %>
+    <p>Your account has already been activated. If you don't have access to your login details, please follow this link:
+      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_password_path}", :class => 'new_password link' %>
+    </p>
+  <% end %>
+<% end %>
+
+<br/>

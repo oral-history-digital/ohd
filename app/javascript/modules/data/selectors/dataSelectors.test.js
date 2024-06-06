@@ -9,14 +9,14 @@ const state = {
         projectId: 'cdoh',
     },
     data: {
-        accounts: {
+        users: {
             current: {
                 id: 45,
                 admin: true,
             },
         },
         statuses: {
-            accounts: {
+            users: {
                 current: 'fetched',
             },
             collections: {
@@ -73,7 +73,7 @@ const state = {
             task_types: {
                 'for_projects_1': 'fetched',
             },
-            user_registrations: {
+            users: {
                 resultPagesCount: 1,
             },
         },
@@ -253,7 +253,7 @@ const state = {
                 type: 'Task',
             },
         },
-        user_registrations: {},
+        users: {},
         random_featured_interviews: {
             'cd009': {
                 id: 23,
@@ -287,8 +287,8 @@ test('getStatuses gets statuses object', () => {
     expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
-test('getAccountsStatus gets accounts status object', () => {
-    expect(selectors.getAccountsStatus(state)).toEqual(state.data.statuses.accounts);
+test('getUsersStatus gets users status object', () => {
+    expect(selectors.getUsersStatus(state)).toEqual(state.data.statuses.users);
 });
 
 test('getCollectionsStatus gets collections status object', () => {
@@ -379,20 +379,20 @@ test('getTaskTypesStatus gets task types status object', () => {
     expect(selectors.getTaskTypesStatus(state)).toEqual(state.data.statuses.task_types);
 });
 
-test('getUserRegistrationsStatus gets user registrations status object', () => {
-    expect(selectors.getUserRegistrationsStatus(state)).toEqual(state.data.statuses.user_registrations);
+test('getUsersStatus gets user registrations status object', () => {
+    expect(selectors.getUsersStatus(state)).toEqual(state.data.statuses.users);
 });
 
 test('getProjects gets projects object', () => {
     expect(selectors.getProjects(state)).toEqual(state.data.projects);
 });
 
-test('getAccounts gets accounts object', () => {
-    expect(selectors.getAccounts(state)).toEqual(state.data.accounts);
+test('getUsers gets users object', () => {
+    expect(selectors.getUsers(state)).toEqual(state.data.users);
 });
 
-test('getCurrentAccount gets account object of current user', () => {
-    expect(selectors.getCurrentAccount(state)).toEqual(state.data.accounts.current);
+test('getCurrentUser gets user object of current user', () => {
+    expect(selectors.getCurrentUser(state)).toEqual(state.data.users.current);
 });
 
 test('getPermissions gets permissions object', () => {
@@ -401,14 +401,6 @@ test('getPermissions gets permissions object', () => {
 
 test('getRegistryEntries gets registry entries object', () => {
     expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
-});
-
-test('getRootRegistryEntry gets root registry entry', () => {
-    expect(selectors.getRootRegistryEntry(state)).toEqual(state.data.registry_entries[1]);
-});
-
-test('getRootRegistryEntryFetched is true if entry is fetched', () => {
-    expect(selectors.getRootRegistryEntryFetched(state)).toBeTruthy();
 });
 
 test('getRegistryNameTypesForCurrentProject gets registry name types object', () => {
@@ -427,16 +419,16 @@ test('getTaskTypesForCurrentProject gets task types object', () => {
     expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.task_types);
 });
 
-test('getUserRegistrations gets user registrations object', () => {
-    expect(selectors.getUserRegistrations(state)).toEqual(state.data.user_registrations);
+test('getUsers gets user registrations object', () => {
+    expect(selectors.getUsers(state)).toEqual(state.data.users);
 });
 
 test('getRandomFeaturedInterviews gets featured interviews object', () => {
     expect(selectors.getRandomFeaturedInterviews(state)).toEqual(state.data.random_featured_interviews);
 });
 
-test('getCurrentUserIsAdmin gets admin status of current account', () => {
-    expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.accounts.current.admin);
+test('getCurrentUserIsAdmin gets admin status of current user', () => {
+    expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.users.current.admin);
 });
 
 describe('getCurrentProject', () => {
@@ -467,10 +459,6 @@ describe('getProjectLocales', () => {
         const _state = dotProp.set(state, 'archive.projectId', null);
         expect(selectors.getProjectLocales(_state)).toEqual(DEFAULT_LOCALES);
     });
-});
-
-test('getProjectHasMap gets if project has a mpa', () => {
-    expect(selectors.getProjectHasMap(state)).toEqual(state.data.projects[1].has_map);
 });
 
 test('getInterviews retrieves all interviews', () => {

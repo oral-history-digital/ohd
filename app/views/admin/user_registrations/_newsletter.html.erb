@@ -4,14 +4,14 @@
     <span class="status">
     Newsletter abonniert
     </span>
-    <%=  link_to 'abbestellen', '#', link: unsubscribe_admin_user_registration_path(newsletter), class: 'newsletter-subscription' %>
+    <%=  link_to 'abbestellen', '#', link: unsubscribe_admin_user_path(newsletter), class: 'newsletter-subscription' %>
   </div>
 
   <div class="unsubscribed">
     <span class="status">
     Newsletter abbestellt
     </span>
-    <%=  link_to 'abonnieren', '#', link: subscribe_admin_user_registration_path(newsletter), class: 'newsletter-subscription' %>
+    <%=  link_to 'abonnieren', '#', link: subscribe_admin_user_path(newsletter), class: 'newsletter-subscription' %>
   </div>
 
 </div>

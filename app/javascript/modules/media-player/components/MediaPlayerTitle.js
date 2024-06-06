@@ -9,17 +9,17 @@ export default function MediaPlayerTitle({
     className
 }) {
     const intervieweeId = useSelector(getCurrentIntervieweeId);
-    const { data: peopleData, isLoading } = usePeople();
+    const { data: peopleData, isLoading, isValidating } = usePeople();
 
-    if (isLoading) {
+    if (isLoading || isValidating) {
         return <Spinner small />;
     }
 
-    const interviewee = peopleData[intervieweeId];
+    const interviewee = peopleData?.[intervieweeId];
 
     return (
         <h1 className={className}>
-            {interviewee.display_name}
+            {interviewee?.display_name}
         </h1>
     );
 }

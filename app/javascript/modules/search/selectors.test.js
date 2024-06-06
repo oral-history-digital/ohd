@@ -1,3 +1,4 @@
+import '../../__mocks__/matchMediaMock';
 import { NAME  } from './constants';
 import * as selectors from './selectors';
 
@@ -25,15 +26,15 @@ const state = {
                 results: [],
             }
         },
-        user_registrations: {
+        users: {
             query: {
-                'user_registration_projects.workflow_state': 'account_confirmed',
+                'user_projects.workflow_state': 'project_access_requested',
                 page: 1,
             },
         },
         permissions: {
             query: {
-                name: 'account',
+                name: 'user',
                 page: 2,
             },
         },
@@ -125,6 +126,6 @@ test('getTaskTypesQuery retrieves task types query params', () => {
     expect(selectors.getTaskTypesQuery(state)).toEqual(state[NAME].task_types.query);
 });
 
-test('getUserRegistrationsQuery retrieves user registrations query params', () => {
-    expect(selectors.getUserRegistrationsQuery(state)).toEqual(state[NAME].user_registrations.query);
+test('getUsersQuery retrieves user registrations query params', () => {
+    expect(selectors.getUsersQuery(state)).toEqual(state[NAME].users.query);
 });

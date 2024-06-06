@@ -1,16 +1,25 @@
 import { useSelector } from 'react-redux';
 
-import { getCurrentAccount } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 
 export function useProjectAccessStatus(project) {
-    const account = useSelector(getCurrentAccount);
+    const user = useSelector(getCurrentUser);
 
-    const projectRegistration = account && project &&
-        Object.values(account.user_registration_projects).find(urp => urp.project_id === project.id);
-    const projectAccessStatus = projectRegistration?.workflow_state;
+    const projectRegistration = user && project &&
+        Object.values(user.user_projects).find(urp => urp.project_id === project.id);
+
+    const projectAccessStatus = userHasAccessWithoutRegistration()
+        ? 'project_access_granted'
+        : projectRegistration?.workflow_state;
+
+    function userHasAccessWithoutRegistration() {
+        return project.grant_access_without_login
+            || (user && project.grant_project_access_instantly)
+            || user?.admin === true;
+    }
 
     return {
-        projectAccessGranted: account?.admin || projectAccessStatus === 'project_access_granted',
-        projectAccessStatus: projectAccessStatus,
+        projectAccessGranted: projectAccessStatus === 'project_access_granted',
+        projectAccessStatus,
     };
 }

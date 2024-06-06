@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
 
-import { Checkbox } from 'modules/ui';
 import { useSearchParams } from 'modules/query-string';
+import FacetValue from './FacetValue';
 
 export default function FacetValues({
     data,
@@ -11,20 +9,8 @@ export default function FacetValues({
     filter,
     locale,
 }) {
-    const { getFacetParam, addFacetParam, deleteFacetParam } = useSearchParams();
-
+    const { getFacetParam } = useSearchParams();
     const checkedFacets = getFacetParam(facet);
-
-    function handleCheckboxChange(event) {
-        const name = event.target.name;
-        const value = event.target.value;
-
-        if (event.target.checked) {
-            addFacetParam(name, value);
-        } else {
-            deleteFacetParam(name, value);
-        }
-    }
 
     function sortedSubfacets() {
         // if the Facet is about time periods, sort by years ( by doing: .replace(/[^\d]/g, '') )
@@ -52,67 +38,24 @@ export default function FacetValues({
         return data.subfacets[subfacetId].priority;
     }
 
-    function renderCollectionInfo(subfacet) {
-        if (facet === 'collection_id' && (subfacet.notes || subfacet.homepage)) {
-            return (
-                <span>
-                    <FaInfoCircle
-                        className="Icon Icon--unobtrusive u-mr-tiny"
-                        title={subfacet.notes[locale]}
-                    />
-                    {collectionLink(subfacet)}
-                </span>
-            );
-        }
-    }
-
-    function collectionLink(subfacet) {
-        if (subfacet.homepage && subfacet.homepage[locale]) {
-            // apend 'http://' to homepage if not present
-            let href = /^http/.test(subfacet.homepage[locale]) ? subfacet.homepage[locale] : `http://${subfacet.homepage[locale]}`
-
-            return (
-                <a href={href} title={subfacet.homepage[locale]} target="_blank" rel="noreferrer">
-                    <FaExternalLinkAlt className="Icon Icon--unobtrusive" />
-                </a>
-            );
-        }
-    }
-
     return sortedSubfacets().filter(subfacetId => {
         let subfacetName = data.subfacets[subfacetId].name[locale];
         if (subfacetName) {
             return subfacetName.toLowerCase().includes(filter.toLowerCase());
         }
-    }).map((subfacetId, index) => {
+    }).map((subfacetId) => {
         let checkedState = false;
         if (checkedFacets) {
             checkedState = checkedFacets.indexOf(subfacetId.toString()) > -1;
         }
         return (
-            <div
-                key={index}
-                className={classNames('Facet-value', {
-                    'is-checked': checkedState,
-                })}
-            >
-                <label>
-                    <Checkbox
-                        className={classNames('Input', 'with-font', facet, 'checkbox', 'u-mr-tiny')}
-                        id={facet + "_" + subfacetId}
-                        name={facet}
-                        checked={checkedState}
-                        value={subfacetId}
-                        onChange={handleCheckboxChange}
-                    />
-                    {localDescriptor(subfacetId)}
-                    <span className="Facet-count">
-                        {data.subfacets[subfacetId].count}
-                    </span>
-                </label>
-                &nbsp;
-                {renderCollectionInfo(data.subfacets[subfacetId])}
-            </div>
+            <FacetValue
+                key={subfacetId}
+                id={subfacetId}
+                facetName={facet}
+                facetValue={data.subfacets[subfacetId]}
+                checked={checkedState}
+            />
         );
     })
 }

@@ -1,9 +1,6 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
-  config.x.webpacker[:digesting] = true
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -123,5 +120,6 @@ Rails.application.configure do
     "archive.occupation-memories.org",
     "da03.cedis.fu-berlin.de",
     "testimonies.campscapes.org",
+    "archiv.erlebte-geschichte.fu-berlin.de",
   ]
 end

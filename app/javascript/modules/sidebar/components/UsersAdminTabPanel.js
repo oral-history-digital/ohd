@@ -4,7 +4,6 @@ import Select from 'react-select';
 import { FaDownload } from 'react-icons/fa';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { UserRegistrationSearchFormContainer } from 'modules/admin';
 import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -12,10 +11,9 @@ import AdminSubTab from './AdminSubTab';
 
 export default function UsersAdminTabPanel({
     countryKeys,
-    locale,
-    translations,
+    project,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
 
@@ -23,7 +21,7 @@ export default function UsersAdminTabPanel({
 
     function countryKeyOptions() {
         return countryKeys[locale].map(x => ({
-            label: translations[locale]['countries'][x],
+            label: t(`countries.${x}`),
             value: x
         }));
     }
@@ -57,13 +55,12 @@ export default function UsersAdminTabPanel({
             <div className='flyout-sub-tabs-container flyout-video'>
                 <AdminSubTab
                     title='edit.users.admin'
-                    url={`${pathBase}/user_registrations`}
-                    obj={{type: 'UserRegistration'}}
+                    url={`${pathBase}/users`}
+                    obj={{type: 'User'}}
                     action='update'
                 >
                     <div>
                         <div>
-                            <UserRegistrationSearchFormContainer/>
                             <a href={userStatisticsPath()}>
                                 <FaDownload
                                     className="Icon Icon--primary"
@@ -82,8 +79,20 @@ export default function UsersAdminTabPanel({
                                 placeholder: provided => ({...provided, cursor: 'text'}),
                                 menu: provided => ({...provided, position: 'relative'}),
                             }}
-                            placeholder="Statistik nach Ländern filtern (optional)"
+                            placeholder={t('filter_by_countries')}
                         />
+                        { project.has_newsletter &&
+                            <div>
+                                <a href={`${pathBase}/users/newsletter_recipients.csv`}>
+                                    <FaDownload
+                                        className="Icon Icon--primary"
+                                        title={t('download_newsletter_recipients')}
+                                    />
+                                    {' '}
+                                    {t('download_newsletter_recipients')}
+                                </a>
+                            </div>
+                        }
                     </div>
                 </AdminSubTab>
             </div>
@@ -93,6 +102,4 @@ export default function UsersAdminTabPanel({
 
 UsersAdminTabPanel.propTypes = {
     countryKeys: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 }

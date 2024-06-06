@@ -1,7 +1,6 @@
 import request from 'superagent';
 
 import { setCookie } from 'modules/persistence';
-import { Loader } from 'modules/api';
 
 import {
     SET_LOCALE,
@@ -11,13 +10,12 @@ import {
     SET_VIEW_MODE,
     CLEAR_VIEW_MODES,
     CHANGE_TO_EDIT_VIEW,
+    CHANGE_TO_TRANSLATIONS_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
     SET_SELECTED_ARCHIVE_IDS,
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
-    RECEIVE_STATIC_CONTENT,
-    REQUEST_STATIC_CONTENT,
 } from './action-types';
 
 export const setLocale = (locale) => ({
@@ -49,17 +47,6 @@ export const clearViewModes = () => ({
     type: CLEAR_VIEW_MODES,
 });
 
-const uploadedTranscript = (json) => ({
-    type: UPLOADED_TRANSCRIPT,
-    json: json
-});
-
-export function submitTranscript(params) {
-    return dispatch => {
-        Loader.post(UPLOAD_TRANSCRIPT_URL, params, dispatch, uploadedTranscript);
-    }
-}
-
 const editView = (bool) => ({
     type: CHANGE_TO_EDIT_VIEW,
     editView: bool
@@ -71,6 +58,20 @@ export function changeToEditView(bool) {
         // remove cookie through negative expiration time:
         let expireDays = bool ? 3 : -1;
         setCookie('editView', bool, expireDays);
+    }
+}
+
+const translationsView = (bool) => ({
+    type: CHANGE_TO_TRANSLATIONS_VIEW,
+    translationsView: bool
+});
+
+export function changeToTranslationsView(bool) {
+    return dispatch => {
+        dispatch(translationsView(bool));
+        // remove cookie through negative expiration time:
+        let expireDays = bool ? 3 : -1;
+        setCookie('translationsView', bool, expireDays);
     }
 }
 
@@ -147,28 +148,5 @@ const setSelectedArchiveIds = (archiveIds) => ({
 export function setArchiveIds(archiveIds) {
     return dispatch => {
         dispatch(setSelectedArchiveIds(archiveIds))
-    }
-}
-
-const requestStaticContent = () => ({
-    type: REQUEST_STATIC_CONTENT
-});
-
-function receiveStaticContent(json){
-    return {
-        type: RECEIVE_STATIC_CONTENT,
-        homeContent: json.home_content,
-        translations: json.translations,
-        countryKeys: json.country_keys,
-        registryEntryMetadataFields: json.registry_entry_metadata_fields,
-        registryReferenceTypeMetadataFields: json.registry_reference_type_metadata_fields,
-        receivedAt: Date.now()
-    }
-}
-
-export function fetchStaticContent(url) {
-    return dispatch => {
-        dispatch(requestStaticContent())
-        Loader.getJson(url, null, dispatch, receiveStaticContent);
     }
 }

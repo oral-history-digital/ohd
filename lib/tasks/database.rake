@@ -2,24 +2,31 @@
 # some tasks to join databases while maintaining references.
 #
 # procedure is as follows:
-# 1. on target db: rake database:get_max_id
+#
+# 1. make dumps of both databases
+#
+# 2. on target db: rake database:get_max_id
 #    (
 #      get the maximum id from the target db - the one the other should be merged into
 #    )
 #    result: max-id-value
 #
-# 2. on source db: rake database:prepare_join[max-id,db-username,db-name]
+# 3. on source db: rake database:prepare_join[max-id,db-username,db-name]
 #    (
 #      add max(max-id-value from target-db, max-id-value from source-db), to all id- and *_id-fields of the source-db
 #      dump source db without create table statements
 #    )
 #    result: prepared-source-db-name.sql
 #
-# 3. on target-db: run rake database:cleanup_active_storage
+# 4. on target-db: run rake database:cleanup_active_storage
 #
-# 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
+# 5. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
-# 5. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions|norm_data_providers]
+# 6. on target-db: run rake database:unify_[users|languages|permissions|institutions|norm_data_providers][max-id]
+#
+# 7. on target-db: run rake database:cleanup[max-id]
+#
+# 8. reindex target-db: rake solr:reindex:all
 
 namespace :database do
   desc 'show development database'
@@ -45,17 +52,15 @@ namespace :database do
   task :add_to_all_id_fields, [:max_id] => :environment do |t, args|
     Rails.application.eager_load!
     ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq{|a| a.table_name}.each do |model|
-      puts "updating #{model}"
-      id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id'])
-      id_columns.each do |col|
-        if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?(col)
-          puts "updating #{col}"
-          sql = "UPDATE #{model.table_name} SET #{col} = #{col} + #{args.max_id.to_i}"
-          puts sql
-          ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=0")
-          ActiveRecord::Base.connection.execute(sql)
-          ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=1")
-        end
+      if ActiveRecord::Base.connection.table_exists?(model.table_name)
+        puts "updating #{model}"
+        id_columns = ['id'] | (model.column_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id', 'url_without_id', 'citation_media_id'])
+        update_statement = id_columns.map{|c| "#{c} = #{c} + #{args[:max_id]}"}.join(', ')
+        sql = "UPDATE #{model.table_name} SET #{update_statement}"
+        puts sql
+        ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=0")
+        ActiveRecord::Base.connection.execute(sql)
+        ActiveRecord::Base.connection.execute("SET FOREIGN_KEY_CHECKS=1")
       end
       puts "---"
     rescue StandardError => e
@@ -83,28 +88,26 @@ namespace :database do
     end
   end
 
-  desc 'unify user_accounts'
-  task :unify_user_accounts, [:max_id] => :environment do |t, args|
+  desc 'unify users'
+  task :unify_users, [:max_id] => :environment do |t, args|
     raise 'Please provide max_id-parameter' unless args.max_id
-    UserRegistration.group(:email).count.select{|k,v| v > 1}.each do |email, count|
-      first_ur = UserRegistration.where(email: email).where("id <= ?", args.max_id).first
-      first_user_account = first_ur && first_ur.user_account
-      if first_ur
-        other_urs = UserRegistration.where(email: email).where("id > ?", args.max_id)
+    User.group(:email).count.select{|k,v| v > 1}.each do |email, count|
+      first_user = User.where(email: email).where("id <= ?", args.max_id).first
+      if first_user
+        other_users = User.where(email: email).where("id > ?", args.max_id)
 
-        other_urs.each do |ur|
-          ur.user_registration_projects.update_all(user_registration_id: first_ur.id)
+        other_users.each do |user|
+          user.user_projects.update_all(user_id: first_user.id)
 
-          ur.user_account.user_roles.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.tasks.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.user_contents.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.searches.update_all(user_account_id: first_ur.user_account_id)
+          user.user_roles.update_all(user_id: first_user.id)
+          user.tasks.update_all(user_id: first_user.id)
+          user.user_contents.update_all(user_id: first_user.id)
+          user.searches.update_all(user_id: first_user.id)
 
-          if first_user_account && !first_user_account.activated_at && ur.user_account.activated_at
-            first_user_account.update(activated_at: ur.user_account.activated_at)
+          if !first_user.confirmed_at && user.confirmed_at
+            first_user.update(confirmed_at: user.confirmed_at)
           end
-          ur.user_account.destroy
-          ur.destroy
+          user.destroy
         end
       end
     end
@@ -115,10 +118,12 @@ namespace :database do
     raise 'Please provide max_id-parameter' unless args.max_id
     Language.all.each do |language|
       first_language = Language.where(name: language.name).where("languages.id <= ?", args.max_id).first
-      other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
-      other_languages.each do |other_language|
-        other_language.interviews.update_all(language_id: first_language.id)
-        other_language.destroy
+      if first_language
+        other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
+        other_languages.each do |other_language|
+          other_language.interview_languages.update_all(language_id: first_language.id)
+          other_language.destroy
+        end
       end
     end
   end
@@ -145,11 +150,13 @@ namespace :database do
     raise 'Please provide max_id-parameter' unless args.max_id
     Institution.all.each do |institution|
       first_institution = Institution.where(name: institution.name).where("institutions.id <= ?", args.max_id).first
-      other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
-      first_institution && other_institutions.each do |other_institution|
-        other_institution.collections.update_all(institution_id: first_institution.id)
-        other_institution.institution_projects.update_all(institution_id: first_institution.id)
-        other_institution.destroy
+      if first_institution
+        other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
+        first_institution && other_institutions.each do |other_institution|
+          other_institution.collections.update_all(institution_id: first_institution.id)
+          other_institution.institution_projects.update_all(institution_id: first_institution.id)
+          other_institution.destroy
+        end
       end
     end
   end
@@ -159,11 +166,22 @@ namespace :database do
     raise 'Please provide max_id-parameter' unless args.max_id
     NormDataProvider.all.each do |norm_data_provider|
       first_norm_data_provider = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id <= ?", args.max_id).first
-      other_norm_data_providers = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id > ?", args.max_id)
-      other_norm_data_providers.each do |other_norm_data_provider|
-        other_norm_data_provider.norm_data.update_all(norm_data_provider_id: first_norm_data_provider.id)
-        other_norm_data_provider.destroy
+      if first_norm_data_provider
+        other_norm_data_providers = NormDataProvider.where(name: norm_data_provider.name).where("norm_data_providers.id > ?", args.max_id)
+        other_norm_data_providers.each do |other_norm_data_provider|
+          other_norm_data_provider.norm_data.update_all(norm_data_provider_id: first_norm_data_provider.id)
+          other_norm_data_provider.destroy
+        end
       end
+    end
+  end
+
+  desc 'cleanup'
+  task :cleanup, [:max_id] => :environment do |t, args|
+    raise 'Please provide max_id-parameter' unless args.max_id
+    TranslationValue.where("id > ?", args.max_id).destroy_all
+    UserProject.where("id > ?", args.max_id).where(processed_at: nil).each do |user_project|
+      user_project.update(processed_at: user_project.user && user_project.user.created_at)
     end
   end
 end

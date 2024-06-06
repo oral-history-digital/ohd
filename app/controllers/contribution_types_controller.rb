@@ -1,5 +1,5 @@
 class ContributionTypesController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index]
 
   def create
     authorize ContributionType
@@ -44,7 +44,7 @@ class ContributionTypesController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-contribution_types-#{cache_key_params}-#{ContributionType.count}-#{ContributionType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-contribution_types-#{cache_key_params}-#{ContributionType.count}-#{ContributionType.maximum(:updated_at)}" do
           if params[:for_projects]
             data = current_project.contribution_types.
               includes(:translations).

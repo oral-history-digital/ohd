@@ -9,6 +9,7 @@ export default function TapeAndTime({
     separator = ' – ',
     className,
     style,
+    transcriptCoupled,
 }) {
     const { t } = useI18n();
 
@@ -17,7 +18,8 @@ export default function TapeAndTime({
             className={className}
             style={style}
         >
-            {t('tape')} {tape}{separator}{formatTimecode(time)}
+            {t('tape')} {tape}{transcriptCoupled ? separator : ''}
+            {transcriptCoupled ? formatTimecode(time) : ''}
         </span>
     )
 }

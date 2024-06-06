@@ -1,9 +1,9 @@
 import { useMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { SYSTEM_LOCALES } from 'modules/constants';
-import { getTranslations } from 'modules/archive';
+import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
 import originalT from './t';
+import { getTranslationsView, getTranslations } from 'modules/archive';
 
 export function useI18n() {
     const matchWithProject = useMatch('/:projectId/:locale/*');
@@ -18,12 +18,16 @@ export function useI18n() {
     }
 
     const translations = useSelector(getTranslations);
+    const translationsView = useSelector(getTranslationsView);
 
-    const curriedT = (key, params) => originalT({ locale, translations }, key, params);
+    const curriedT = (key, params) => originalT({
+        locale,
+        translations,
+        translationsView,
+    }, key, params);
 
     return {
         locale,
-        translations,
         t: curriedT,
     };
 }

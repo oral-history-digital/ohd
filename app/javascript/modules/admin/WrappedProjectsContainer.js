@@ -1,29 +1,23 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getProjectLocales,
-    getCurrentAccount } from 'modules/data';
-import DataList from './DataList';
-import { getProjectsStatus, ProjectTile } from 'modules/data';
-import { INDEX_PROJECTS } from 'modules/sidebar';
+import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
+import WrappedDataList from './WrappedDataList';
+import { getProjectsStatus, getStatuses, ProjectTile } from 'modules/data';
 
 const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: getProjects(state),
+        data: Object.values(getProjects(state)).filter(p => !p.is_ohd),
         dataStatus: getProjectsStatus(state),
+        statuses: getStatuses(state),
+        otherDataToLoad: ['institution', 'collection'],
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
+        sensitiveAttributes: ['contact_email'],
         detailsAttributes: ['title', 'workflow_state'],
         initialFormValues: {display_ohd_link: true, pseudo_view_modes: 'grid,list,workflow'},
         formElements: [
@@ -51,7 +45,6 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "archive_domain",
-                //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
                 help: 'activerecord.attributes.project.archive_domain_help'
             },
             {
@@ -73,4 +66,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setQueryParams,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

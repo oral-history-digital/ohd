@@ -9,11 +9,10 @@ import { fetcher } from 'modules/api';
 import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
 import { usePathBase } from 'modules/routes';
 import { getEditView } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import { useSearchParams } from 'modules/query-string';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
-import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
 import sortInterviewRefs from './sortInterviewRefs';
 import groupSegmentRefs from './groupSegmentRefs';
@@ -49,7 +48,6 @@ export default function useMapReferences(registryEntryId) {
     if (referenceTypes && interviewReferences && filter) {
         const transformData = flow(
             curry(filterReferences)(filter),
-            addAbbreviationPoint,
             curry(groupByType)(referenceTypes),
             curry(sortByReferenceTypeOrder)(referenceTypes, 'id'),
             sortInterviewRefs,

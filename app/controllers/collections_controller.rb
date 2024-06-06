@@ -1,5 +1,19 @@
 class CollectionsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: :index
+  skip_before_action :authenticate_user!, only: [:index, :show]
+
+  def show
+    @collection = Collection.find params[:id]
+    authorize @collection
+
+    respond_to do |format|
+      format.html do
+        render :template => "/react/app"
+      end
+      format.json do
+        render json: data_json(@collection)
+      end
+    end
+  end
 
   def new
     authorize Collection
@@ -24,37 +38,46 @@ class CollectionsController < ApplicationController
   end
 
   def index
-    policy_scope(Collection)
+    id = nil
+    nested_data_type = nil
+
+    if params.keys.include?("all")
+      collections = policy_scope(Collection).all
+      data_type = "collections"
+      extra_params = "all"
+    elsif params[:for_projects]
+      collections = policy_scope(Collection).
+        includes(:translations).
+        order("collection_translations.name ASC")
+      data_type = "projects"
+      id = current_project.id
+      nested_data_type = "collections"
+      extra_params = "for_projects_#{current_project.id}"
+    else
+      page = params[:page] || 1
+      collections = policy_scope(Collection).
+        where(search_params).
+        includes(:translations).
+        order("collection_translations.name ASC").
+        paginate page: page
+      data_type = "projects"
+      id = current_project.id
+      nested_data_type = "collections"
+      extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+    end
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{cache_key_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
-          if params[:for_projects]
-            data = policy_scope(Collection).
-              includes(:translations).
-              order("collection_translations.name ASC")
-            extra_params = "for_projects_#{current_project.id}"
-          else
-            page = params[:page] || 1
-            data = policy_scope(Collection).
-              includes(:translations).
-              where(search_params).
-              order("collection_translations.name ASC").
-              paginate(page: page)
-            paginate = true
-            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
-          end
-          
+        json = Rails.cache.fetch "#{current_project.shortname}-collections-#{extra_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
           {
-            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
-            nested_data_type: "collections",
-            data_type: 'projects',
-            id: current_project.id,
+            data: collections.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data_type: data_type,
+            nested_data_type: nested_data_type,
+            id: id,
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: paginate ? data.total_pages : nil
+            result_pages_count: collections.respond_to?(:total_pages) ? collections.total_pages : nil,
           }
         end
         render json: json

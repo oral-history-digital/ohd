@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Form } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { usePeople } from 'modules/person';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
 export default function InterviewForm({
@@ -13,9 +13,6 @@ export default function InterviewForm({
     contributionTypes,
     interview,
     languages,
-    project,
-    projectId,
-    projects,
     submitData,
     submitText,
     withContributions,
@@ -24,6 +21,7 @@ export default function InterviewForm({
     const [archiveId, setArchiveId] = useState(null);
 
     const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
     const { data: people, isLoading } = usePeople();
@@ -55,7 +53,7 @@ export default function InterviewForm({
     function handleSubmit(params){
         setShowForm(false);
 
-        submitData({ locale, projectId, projects }, params);
+        submitData({ locale, projectId, project }, params);
     }
 
     function renderForm() {
@@ -87,23 +85,35 @@ export default function InterviewForm({
                 elementType: 'select',
                 withEmpty: true,
                 values: ['video', 'audio'],
-                validate: function(v){return /^\w+$/.test(v)},
+                validate: function(v){return v && /^\w+$/.test(v)},
+            },
+            {
+                attribute: 'media_missing',
+                value: interview?.media_missing || false,
+                elementType: 'input',
+                type: 'checkbox',
             },
             {
                 elementType: 'select',
-                attribute: 'language_id',
+                attribute: 'primary_language_id',
                 values: languages,
-                value: interview?.language_id,
+                value: interview?.primary_language_id,
                 withEmpty: true,
                 validate: function(v){return /^\d+$/.test(v)},
             },
             {
                 elementType: 'select',
-                attribute: 'translation_language_id',
+                attribute: 'secondary_language_id',
                 values: languages,
-                value: interview?.language_id,
+                value: interview?.secondary_language_id,
                 withEmpty: true,
-                //validate: function(v){return /^\d+$/.test(v)},
+            },
+            {
+                elementType: 'select',
+                attribute: 'primary_translation_language_id',
+                values: languages,
+                value: interview?.primary_translation_language_id,
+                withEmpty: true,
             },
             {
                 elementType: 'select',
@@ -184,9 +194,6 @@ export default function InterviewForm({
 
 InterviewForm.propTypes = {
     interview: PropTypes.object,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     withContributions: PropTypes.bool,

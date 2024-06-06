@@ -1,0 +1,9 @@
+= form_for @translation_value do |f|
+  - if @translation_value.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@translation_value.errors.count, "error")} prohibited this translation_value from being saved:"
+      ul
+        - @translation_value.errors.full_messages.each do |message|
+          li = message
+
+  .actions = f.submit

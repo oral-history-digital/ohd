@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
-import { updateRegistryNameAttributes, updateNormDataAttributes } from './updateRegistryEntryAttributes';
+import { usePathBase, useProject } from 'modules/routes';
+import { updateRegistryNameAttributes, updateNormDataAttributes }
+    from './updateRegistryEntryAttributes';
 import { Spinner } from 'modules/spinners';
 
 function NormDataForDescriptor({
-    locale,
-    project,
     setRegistryEntryAttributes,
     registryEntryAttributes,
     registryNameTypes,
@@ -18,8 +16,9 @@ function NormDataForDescriptor({
     setFromAPI,
     onSubmitCallback,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
+    const { project } = useProject();
     const [filter, setFilter] = useState(null);
     const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
@@ -72,11 +71,13 @@ function NormDataForDescriptor({
     //}
 
     const fetchAPIResults = async(params) => {
-        const filters = [
-            `geo_filter=${params.geo_filter}`,
-            `place_type=${params.place_type}`,
-            //`place=${params.place_extended}`,
-        ]
+        const filters = [];
+        ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
+            if (params[filter]) {
+                filters.push(`${filter}=${params[filter]}`);
+            }
+        });
+
         fetch(`${pathBase}/norm_data_api?expression=${descriptor}&` + filters.join('&'))
             .then(res => res.json())
             .then(json => setApiResult(json));

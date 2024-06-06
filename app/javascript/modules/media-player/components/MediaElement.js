@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
 import speakerImage from 'assets/images/speaker.png';
@@ -28,7 +28,6 @@ export default function MediaElement({
     archiveId,
     className,
     interview,
-    project,
     mediaStreams,
     tape,
     timeChangeRequestAvailable,
@@ -41,12 +40,14 @@ export default function MediaElement({
 }) {
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
+    const { project } = useProject();
     const playerRef = useRef(null);
+    const tapeRef = useRef(tape);  // Used for event handler below.
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
-    const initialSources = mediaStreamsToSources(Object.values(mediaStreams),
+    const initialSources = mediaStreams && mediaStreamsToSources(Object.values(mediaStreams),
         pathBase, interview.media_type, archiveId, interview.tape_count, tape);
 
     const videoJsOptions = {
@@ -169,13 +170,15 @@ export default function MediaElement({
             return;
         }
 
+        tapeRef.current = tape;
+
         const newSources = mediaStreamsToSources(Object.values(mediaStreams),
             pathBase, interview.media_type, archiveId, interview.tape_count, tape);
 
         player.src(newSources);
 
         addTextTracks();
-    }, [tape]);
+    }, [tape, interview.transcript_coupled]);
 
     // Check if time has been changed from outside of component.
     useEffect(() => {
@@ -186,6 +189,8 @@ export default function MediaElement({
 
 
     function addTextTracks() {
+        if (!interview.transcript_coupled) return;
+
         const player = playerRef.current
         if (!player) {
             return;
@@ -197,11 +202,14 @@ export default function MediaElement({
             player.removeRemoteTextTrack(tracks[i]);
         }
 
+        // Use tape number from ref since this function is called from event
+        // handler.
+        const actualTape = tapeRef.current;
         // Add new text tracks.
         let newTracks = [];
         if (interview.media_type === 'video') {
             newTracks = interview.languages.map(lang => ({
-                src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${tape}`,
+                src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
                 language: lang,
                 kind: 'captions',
                 label: t(lang),
@@ -260,6 +268,14 @@ export default function MediaElement({
         return false;
     }
 
+    function handleQualitySelected() {
+        /*
+         * Add text tracks again after quality is selected.
+         * Otherwise, they are lost.
+         */
+        addTextTracks();
+    }
+
     function handlePlayerReady(player) {
         playerRef.current = player;
 
@@ -270,8 +286,13 @@ export default function MediaElement({
         player.on('timeupdate', handleTimeUpdateEvent);
         player.on('ended', handleEndedEvent);
         player.on('contextmenu', handleContextMenuEvent);
+        player.on('qualitySelected', handleQualitySelected);
 
         checkForTimeChangeRequest();
+    }
+
+    if (!mediaStreams) {
+        return null;
     }
 
     return (
@@ -294,7 +315,6 @@ MediaElement.propTypes = {
     archiveId: PropTypes.string.isRequired,
     className: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
     mediaStreams: PropTypes.object.isRequired,
     tape: PropTypes.number,
     timeChangeRequestAvailable: PropTypes.bool,

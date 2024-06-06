@@ -22,7 +22,7 @@ export const PROJECT_ZWAR = 'zwar';
 export const PROJECT_CAMPSCAPES = 'campscapes';
 
 export const DEFAULT_LOCALES = ['de', 'en'];
-export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru'];
+export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru', 'uk'];
 
 export const VIEWMODE_GRID = 'grid';
 export const VIEWMODE_LIST = 'list';
@@ -34,10 +34,19 @@ export const METADATA_SOURCE_REGISTRY_REFERENCE_TYPE = 'RegistryReferenceType';
 export const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 
 export const OHD_LOCATION = 'https://portal.oral-history.digital';
-export const OHD_USAGE_URL = 'https://www.oral-history.digital/impressum/nutzungsbedingungen/index.html';
-export const OHD_PRIVACY_URL = 'https://www.oral-history.digital/impressum/datenschutzhinweise/index.html';
 export const OHD_DOMAINS = {
     development: 'http://portal.oral-history.localhost:3000',
     staging:     'https://staging.oral-history.digital',
     production:  'https://portal.oral-history.digital',
+    test:        'http://test.portal.oral-history.localhost:47001'
 };
+
+const ANALYTICS_URLS = {
+    development: '//localhost:8080/',
+    staging: '//metrics.oral-history.digital/',
+    production: '//metrics.oral-history.digital/',
+};
+export const ANALYTICS_URL_BASE = ANALYTICS_URLS[railsMode];
+export const ANALYTICS_DEFAULT_SITE_ID = 1;
+
+export const SHOW_SYSTEM_WARNING = false;

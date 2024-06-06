@@ -1,11 +1,42 @@
-import { connect } from 'react-redux';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { getLocale, getTranslations } from 'modules/archive';
-import ErrorBoundaryComponent from './ErrorBoundaryComponent';
+export default class ErrorBoundary extends Component {
+    constructor(props) {
+        super(props);
 
-const mapStateToProps = (state) => ({
-    locale: getLocale(state),
-    translations: getTranslations(state),
-});
+        this.state = { error: null };
+    }
 
-export default connect(mapStateToProps)(ErrorBoundaryComponent);
+    static getDerivedStateFromError(error) {
+        return { error };
+    }
+
+    render() {
+        const { small } = this.props;
+        const { error } = this.state;
+
+        if (error) {
+            const message = `Error: ${error.message}`;
+
+            return (
+                <div className="wrapper-content">
+                    {small ?
+                        <p>{message}</p> :
+                        <h1>{message}</h1>
+                    }
+                    <p></p>
+                </div>
+            );
+        }
+        return this.props.children;
+    }
+}
+
+ErrorBoundary.propTypes = {
+    small: PropTypes.bool,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
+};

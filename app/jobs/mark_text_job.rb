@@ -5,7 +5,7 @@ class MarkTextJob < ApplicationJob
     jobs_logger.info "*** marking texts in interview #{interview.archive_id}"
     interview.segments.each do |segment|
       text = segment.text(locale) || segment.text("#{locale}-public")
-      texts_to_mark.each do |t|
+      texts_to_mark.each do |i, t|
         regexp = Regexp.new(Regexp.quote(t['text_to_mark']))
         if text =~ regexp
           text = text.gsub(regexp, t['replacement'])

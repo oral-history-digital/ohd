@@ -1,7 +1,7 @@
 class Task < ApplicationRecord
 
-  belongs_to :user_account
-  belongs_to :supervisor, class_name: 'UserAccount'
+  belongs_to :user
+  belongs_to :supervisor, class_name: 'User'
   belongs_to :task_type
   has_many :permissions, through: :task_type
   belongs_to :interview, touch: true
@@ -61,11 +61,11 @@ class Task < ApplicationRecord
   end
 
   def save_dates_and_inform
-    if user_account_id_changed? && user_account_id != nil
-      AdminMailer.with(task: self, receiver: user_account).task_assigned.deliver_now
-      self.assigned_to_user_account_at = DateTime.now
+    if user_id_changed? && user_id != nil
+      AdminMailer.with(task: self, receiver: user).task_assigned.deliver_now
+      self.assigned_to_user_at = DateTime.now
       interview.touch
-      user_account.touch
+      user.touch
     end
     if supervisor_id_changed? && supervisor_id != nil
       self.assigned_to_supervisor_at = DateTime.now
@@ -88,7 +88,7 @@ class Task < ApplicationRecord
   end
 
   def restart
-    AdminMailer.with(task: self, receiver: user_account).task_restarted.deliver_now if user_account
+    AdminMailer.with(task: self, receiver: user).task_restarted.deliver_now if user
     self.update(restarted_at: DateTime.now)
   end
 

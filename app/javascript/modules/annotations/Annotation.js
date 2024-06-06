@@ -5,18 +5,17 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { DeleteItemForm } from 'modules/forms';
+import { useProject } from 'modules/routes';
 import AnnotationFormContainer from './AnnotationFormContainer';
 
 export default function Annotation({
     annotation,
     contentLocale,
     segment,
-    locale,
-    projectId,
-    projects,
     deleteData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
 
     return (
         <div>
@@ -37,6 +36,8 @@ export default function Annotation({
                                 contentLocale={contentLocale}
                                 onSubmit={closeModal}
                                 onCancel={closeModal}
+                                cancelLabel={t('cancel')}
+                                submitLabel={t('submit')}
                             />
                         )}
                     </Modal>
@@ -47,7 +48,7 @@ export default function Annotation({
                         {closeModal => (
                             <DeleteItemForm
                                 onSubmit={() => {
-                                    deleteData({ locale, projectId, projects }, 'annotations', annotation.id, null, null, true);
+                                    deleteData({ locale, projectId, project }, 'annotations', annotation.id, null, null, true);
                                     closeModal();
                                 }}
                                 onCancel={closeModal}
@@ -65,9 +66,6 @@ export default function Annotation({
 Annotation.propTypes = {
     annotation: PropTypes.object.isRequired,
     segment: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,
 };

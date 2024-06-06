@@ -1,23 +1,15 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams, getRegistryReferenceTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjectLocales, getProjects,
-    getCurrentAccount, getRegistryReferenceTypesForCurrentProject,
+import { fetchData, deleteData, submitData, getCurrentProject,
+    getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
-        editView: getEditView(state),
         data: getRegistryReferenceTypesForCurrentProject(state),
         dataStatus: getRegistryReferenceTypesStatus(state),
         resultPagesCount: getRegistryReferenceTypesStatus(state).resultPagesCount,
@@ -27,7 +19,6 @@ const mapStateToProps = (state) => {
         scope: 'registry_reference_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        baseTabIndex: 4 + project.has_map,
         detailsAttributes: ['name'],
         initialFormValues: {project_id: project.id},
         formElements: [

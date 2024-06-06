@@ -5,17 +5,17 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { RegistrySearchFormContainer } from 'modules/registry';
-import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
+import { useProject } from 'modules/routes';
+import DownloadRegistryEntries from './DownloadRegistryEntries';
 import { PROJECT_MOG } from 'modules/constants';
 
 function RegistryEntriesTabPanel({
-    projectId,
     showRegistryEntriesSearchResults,
-    locale,
     locales,
     changeRegistryEntriesViewMode,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { projectId } = useProject();
 
     return (
         <ErrorBoundary small>
@@ -38,8 +38,8 @@ function RegistryEntriesTabPanel({
                         locales.map((locale) => (
                             <AuthorizedContent key={locale} object={{type: 'General'}} action='edit'>
                                 <div key={locale}>
-                                    <DownloadRegistryEntriesContainer format="pdf" specificLocale={locale} />
-                                    <DownloadRegistryEntriesContainer format="csv" specificLocale={locale} />
+                                    <DownloadRegistryEntries format="pdf" specificLocale={locale} />
+                                    <DownloadRegistryEntries format="csv" specificLocale={locale} />
                                 </div>
                             </AuthorizedContent>
                         )) :
@@ -68,13 +68,8 @@ function RegistryEntriesTabPanel({
 }
 
 RegistryEntriesTabPanel.propTypes = {
-    projectId: PropTypes.string.isRequired,
     showRegistryEntriesSearchResults: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
-    translations: PropTypes.object.isRequired,
-    account: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
     changeRegistryEntriesViewMode: PropTypes.func.isRequired,
 };
 

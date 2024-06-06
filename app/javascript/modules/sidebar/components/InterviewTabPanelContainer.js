@@ -8,7 +8,7 @@ import {
     getIsCatalog
 } from 'modules/data';
 import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/account';
+import { getIsLoggedIn } from 'modules/user';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideSidebar } from '../actions';
 
@@ -17,7 +17,7 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),
-    hasMap: getCurrentProject(state)?.has_map === 1,
+    hasMap: getCurrentProject(state)?.has_map,
     isCatalog: getIsCatalog(state),
     isLoggedIn: getIsLoggedIn(state),
 });

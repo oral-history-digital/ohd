@@ -7,6 +7,7 @@ import { useI18n } from 'modules/i18n';
 
 const CONTRIBUTION_TYPES_SPEAKING = [
     'interviewee',
+    'further_interviewee',
     'interviewer',
     'cinematographer',
     'sound',
@@ -17,7 +18,7 @@ const CONTRIBUTION_TYPES_SPEAKING = [
 export default function UploadTranscript({
     locale,
     projectId,
-    projects,
+    project,
     archiveId,
     interview,
     languages,
@@ -85,7 +86,7 @@ export default function UploadTranscript({
             <Form
                 scope='transcript'
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, projects }, params);
+                    submitData({ locale, projectId, project }, params);
                     setShowForm(false);
                 }}
                 submitText='edit.upload_transcript.title'
@@ -152,7 +153,7 @@ UploadTranscript.propTypes = {
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
 };

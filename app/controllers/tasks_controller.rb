@@ -3,14 +3,14 @@ class TasksController < ApplicationController
   def create
     authorize Task
     @task = Task.create task_params
-    @task.update(supervisor_id: current_user_account.id)
-    @task.user_account.user_registration.touch
+    @task.update(supervisor_id: current_user.id)
+    @task.user.touch
 
     respond_to do |format|
       format.json do
-        render json: data_json(@task.user_account.user_registration,
+        render json: data_json(@task.user,
                                msg: 'processed',
-                               reload_data_type: 'accounts',
+                               reload_data_type: 'users',
                                reload_id: "current"
                               )
       end
@@ -21,8 +21,8 @@ class TasksController < ApplicationController
     @task = Task.find params[:id]
     authorize @task
     @task.update task_params
-    @task.user_account.user_registration.touch if @task.user_account
-    @task.supervisor.user_registration.touch if @task.supervisor
+    @task.user.touch if @task.user
+    @task.supervisor.touch if @task.supervisor
 
     respond_to do |format|
       format.json do
@@ -31,7 +31,7 @@ class TasksController < ApplicationController
           data_type: 'tasks',
           data: ::TaskSerializer.new(@task),
           msg: 'processed',
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end
@@ -45,7 +45,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-tasks-#{@interview.id}-#{@interview.tasks.count}-#{@interview.tasks.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-tasks-#{@interview.id}-#{@interview.tasks.count}-#{@interview.tasks.maximum(:updated_at)}" do
           {
             data: tasks.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'tasks',
@@ -60,15 +60,15 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     authorize @task
-    user_registration = @task.user_account.user_registration
+    user = @task.user
     @task.destroy
-    user_registration.touch
+    user.touch
 
     respond_to do |format|
       format.json {
-        render json: data_json(@task.user_account.user_registration,
+        render json: data_json(@task.user,
                                msg: 'processed',
-                               reload_data_type: 'accounts',
+                               reload_data_type: 'users',
                                reload_id: "current"
                               )
       }
@@ -81,7 +81,7 @@ class TasksController < ApplicationController
     params.require(:task).
       permit(
         :task_type_id,
-        :user_account_id,
+        :user_id,
         :supervisor_id,
         :interview_id,
         :archive_id,

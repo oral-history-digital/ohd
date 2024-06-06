@@ -4,7 +4,7 @@ class Admin::UsersController < Admin::BaseController
   after_action :verify_authorized, except: [:index, :admin]
 
   def show
-    @user = UserAccount.find(params[:id])
+    @user = User.find(params[:id])
     authorize @user
     respond_to do |format|
       format.html
@@ -13,13 +13,13 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-    @user = UserAccount.find(params[:id])
+    @user = User.find(params[:id])
     authorize @user
     @user.update(user_params)
 
     respond_to do |format|
       format.html do
-        redirect_to edit_admin_user_registration_path(object.user_registration_id)
+        redirect_to edit_admin_user_path(object.user_id)
       end
       format.js
     end
@@ -31,13 +31,13 @@ class Admin::UsersController < Admin::BaseController
     %w(first_name last_name login).each do |param|
       filter = params[param]
       unless filter.blank?
-        conditionals << "#{'user_accounts.'}#{param} LIKE ?"
+        conditionals << "#{'users.'}#{param} LIKE ?"
         condition_args << (filter + '%')
       end
     end
     conditions = [conditionals.join(' OR ')] + condition_args
-    @users = policy_scope(UserAccount).joins(:user_registration).
-                  where("user_registrations.workflow_state": 'registered').
+    @users = policy_scope(User).joins(:user).
+                  where("users.workflow_state": 'registered').
                   where(conditions)
 
 
@@ -47,7 +47,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def flag
-    @user = UserAccount.find(params[:id])
+    @user = User.find(params[:id])
     authorize @user
     @user.admin = params['admin']
     @user.save

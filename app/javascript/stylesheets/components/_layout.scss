@@ -57,8 +57,8 @@
 
 .Layout-sidebarToggle {
   position: fixed;
-  right: $base-unit * 0.5;
-  top: $base-unit * 0.5;
+  right: $base-unit;
+  top: $base-unit * 0.75;
   z-index: $z-index-sidebar-toggle;
 }
 

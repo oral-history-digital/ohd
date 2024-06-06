@@ -6,6 +6,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function RowActions({
     row,
+    dataPath,
     displayComponent: DisplayComponent,
     editComponent: EditComponent,
     deleteComponent: DeleteComponent
@@ -34,6 +35,7 @@ export default function RowActions({
                     {closeModal => (
                         <EditComponent
                             data={data}
+                            dataPath={dataPath}
                             onSubmit={closeModal}
                             onCancel={closeModal}
                         />

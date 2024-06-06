@@ -1,10 +1,11 @@
 class ProjectCreator < ApplicationService
   attr_accessor :project_params, :user, :project, :default_registry_name_type,
-    :root_registry_entry
+    :root_registry_entry, :is_ohd
 
-  def initialize(project_params, user)
+  def initialize(project_params, user, is_ohd = false)
     @project_params = project_params
     @user = user
+    @is_ohd = is_ohd
   end
 
   def perform(*args)
@@ -18,23 +19,24 @@ class ProjectCreator < ApplicationService
     # create_default_event_types  # Do not create default event types for now.
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
-    create_default_contribution_types
-    create_default_task_types
+    create_default_contribution_types unless is_ohd
+    create_default_task_types unless is_ohd
     create_default_roles
+    create_default_texts
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
-    )
+    ) unless is_ohd
     project
   end
 
   private
 
   def grant_access_to_creating_user#(project, user)
-    user_registration_project = UserRegistrationProject.create(
+    user_project = UserProject.create(
       project_id: project.id,
-      user_registration_id: user.user_registration.id
+      user_id: user.id
     )
-    user_registration_project.grant_project_access!
+    user_project.grant_project_access!
   end
 
   def create_default_registry_name_types
@@ -217,6 +219,36 @@ class ProjectCreator < ApplicationService
     end
   end
 
+  def create_default_texts
+    %w(conditions ohd_conditions privacy_protection contact legal_info).each do |code|
+      I18n.available_locales.each do |locale|
+        Text.update_or_create_by(
+          project_id: project.id,
+          locale: locale,
+          code: code,
+          text: replace_with_project_params(
+            File.read(File.join(Rails.root, "config/defaults/texts/#{locale}/#{code}.html")),
+            {
+              project_name: project.name(locale),
+              project_manager: project.manager,
+              project_contact_email: project.contact_email,
+              project_leader: project.leader,
+              institution_name: project.institutions.first&.name(locale),
+              institution_website: project.institutions.first&.website,
+              institution_street: project.institutions.first&.street,
+              institution_zip: project.institutions.first&.zip,
+              institution_city: project.institutions.first&.city,
+              institution_country: project.institutions.first&.country,
+              privacy_protection_link: "#{OHD_DOMAIN}/#{locale}/privacy_protection",
+              project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/privacy_protection",
+              ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/condition",
+            }
+          )
+        )
+      end
+    end
+  end
+
   private
 
   def add_translations(record, attribute, translation_key)
@@ -226,6 +258,12 @@ class ProjectCreator < ApplicationService
     end
     record.save
     I18n.locale = project.default_locale
+  end
+
+  def replace_with_project_params(text, params)
+    params.each do |key, value|
+      text.gsub!("%{#{key}}", value)
+    end
   end
 
 end

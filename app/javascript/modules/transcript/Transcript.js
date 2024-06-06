@@ -5,7 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { useIsEditor } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { isSegmentActive } from 'modules/interview-helpers';
 import { usePeople } from 'modules/person';
 import SegmentContainer from './SegmentContainer';
@@ -24,9 +24,6 @@ export default function Transcript({
     mediaTime,
     isIdle,
     tape,
-    locale,
-    projectId,
-    projects,
     autoScroll,
     workbookIsLoading,
     workbookLoaded,
@@ -39,7 +36,8 @@ export default function Transcript({
         openReference: null,
     });
     const { data: people, isLoading: peopleAreLoading } = usePeople();
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
     const isEditor = useIsEditor();
 
@@ -64,7 +62,7 @@ export default function Transcript({
 
     useEffect(() => {
         if (loadSegments && !transcriptFetched) {
-            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
+            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'segments');
         }
     }, [loadSegments, transcriptFetched, archiveId]);
 
@@ -118,7 +116,7 @@ export default function Transcript({
                         }
 
                         const nextSegment = array[index + 1];
-                        const active = isSegmentActive({
+                        const active = interview.transcript_coupled && isSegmentActive({
                             thisSegmentTape: segment.tape_nbr,
                             thisSegmentTime: segment.time,
                             nextSegmentTape: nextSegment?.tape_nbr,
@@ -141,6 +139,7 @@ export default function Transcript({
                                 setOpenReference={setOpenReference}
                                 tabIndex={tabIndex}
                                 active={active}
+                                transcriptCoupled={interview.transcript_coupled}
                             />
                         );
                     })
@@ -151,13 +150,10 @@ export default function Transcript({
 }
 
 Transcript.propTypes = {
-    locale: PropTypes.string.isRequired,
     originalLocale: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
     loadSegments: PropTypes.bool,
     contributionTypes: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     isIdle: PropTypes.bool.isRequired,

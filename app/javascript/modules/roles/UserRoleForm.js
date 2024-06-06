@@ -1,58 +1,82 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { submitDataWithFetch } from 'modules/api';
+import { useMutateData, useMutateDatum } from 'modules/data';
+import { usePathBase } from 'modules/routes';
 
-export default class UserRoleForm extends Component {
-    componentDidMount() {
-        this.loadRoles();
-    }
+export default function UserRoleForm ({
+    dataPath,
+    userId,
+    projectId,
+    project,
+    locale,
+    roles,
+    rolesStatus,
+    fetchData,
+    onSubmit,
+}) {
 
-    componentDidUpdate() {
-        this.loadRoles();
-    }
+    const mutateData = useMutateData('users', dataPath);
+    const mutateDatum = useMutateDatum();
+    const pathBase = usePathBase();
 
-    loadRoles() {
+    useEffect(() => {
         if (
-            !this.props.rolesStatus[`for_projects_${this.props.project?.id}`] ||
-            this.props.rolesStatus[`for_projects_${this.props.project?.id}`].split('-')[0] === 'reload'
+            !rolesStatus[`for_projects_${project?.id}`] ||
+            rolesStatus[`for_projects_${project?.id}`].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'roles', null, null, `for_projects=${this.props.project?.id}`);
+            fetchData( { locale, projectId, project }, 'roles', null, null, `for_projects=${project?.id}`);
         }
-    }
+    });
 
-    render() {
-        return (
-            <div>
-                <Form
-                    scope='user_role'
-                    onSubmit={(params) => { this.props.submitData(this.props, params); this.props.onSubmit(); }}
-                    values={{
-                        user_account_id: this.props.userAccountId,
-                    }}
-                    elements={[
-                        {
-                            elementType: 'select',
-                            attribute: 'role_id',
-                            values: this.props.roles,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''}
-                        },
-                    ]}
-                    helpTextCode="user_role_form"
-                />
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Form
+                scope='user_role'
+                onSubmit={ async (params) => {
+                    mutateData( async users => {
+                        const result = await submitDataWithFetch(pathBase, params);
+                        const updatedDatum = result.data;
+                        const userIndex = users.data.findIndex(u => u.id === userId);
+
+                        if (updatedDatum.id) {
+                            mutateDatum(userId, 'users');
+                        }
+
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
+
+                        const updatedUsers = [...users.data.slice(0, userIndex), updatedDatum, ...users.data.slice(userIndex + 1)];
+                        return { ...users, data: updatedUsers };
+                    });
+                }}
+                values={{
+                    user_id: userId,
+                }}
+                elements={[
+                    {
+                        elementType: 'select',
+                        attribute: 'role_id',
+                        values: roles,
+                        withEmpty: true,
+                        validate: function(v){return v !== ''}
+                    },
+                ]}
+                helpTextCode="user_role_form"
+            />
+        </div>
+    );
 }
 
 UserRoleForm.propTypes = {
     rolesStatus: PropTypes.object.isRequired,
-    userAccountId: PropTypes.number.isRequired,
     roles: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

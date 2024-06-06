@@ -46,6 +46,7 @@ export default function RegistryResult({
                                     tapeNumber={entry.tape_nbr}
                                     time={entry.time}
                                     lang={lang}
+                                    transcriptCoupled={interview.transcript_coupled}
                                 />
                             );
                         })

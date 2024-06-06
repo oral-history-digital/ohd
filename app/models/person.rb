@@ -14,7 +14,6 @@ class Person < ApplicationRecord
   has_many :contributions, dependent: :destroy
   has_many :events, as: :eventable, dependent: :destroy
 
-  has_many :histories, dependent: :destroy
   has_many :biographical_entries, dependent: :destroy
 
   validates :gender, inclusion: %w(male female diverse not_specified),
@@ -71,16 +70,11 @@ class Person < ApplicationRecord
     end
   end
 
-  after_initialize do
-    project && project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
-      define_singleton_method field.name do
-        registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq.compact || []
-      end
-    end
-  end
+  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   after_touch do
-    interviews = self.interviews
+    interviews = self.interviews.compact
     interviews.each(&:touch)
     Sunspot.index! [interviews]
   end
@@ -97,9 +91,9 @@ class Person < ApplicationRecord
   def date_of_birth
     dob = read_attribute(:date_of_birth)
     unless dob.blank?
-      if project.identifier.to_sym === :mog
+      if project.shortname.to_sym === :mog
         dob.sub(/^\.+/, "").split(".").map { |i| "%.2i" % i }.join(".")
-      elsif project.identifier.to_sym === :zwar
+      elsif project.shortname.to_sym === :zwar
         dob.split("-").reverse.join(".")
       else
         dob
@@ -148,18 +142,21 @@ class Person < ApplicationRecord
     ln = anonymous ?
       (last_name_used ? last_name_used.strip.slice(0) + '.' : '') :
       last_name_used
+    gender_key = gender.present? ? gender : 'not_specified'
 
     if fn.blank?
       if reversed
-        "#{I18n.t("honorific.#{gender}")} #{ln}"
+        "#{I18n.t("honorific.#{gender_key}")} #{ln}"
       else
         used_title.blank? ?
-          "#{I18n.t("honorific.#{gender}")} #{ln}" :
-          "#{I18n.t("honorific.#{gender}")} #{used_title} #{ln}"
+          "#{I18n.t("honorific.#{gender_key}")} #{ln}" :
+          "#{I18n.t("honorific.#{gender_key}")} #{used_title} #{ln}"
       end
     else
       if reversed
-        "#{ln}, #{fn}"
+        used_title.blank? ?
+          "#{ln}, #{fn}" :
+          "#{ln}, #{used_title} #{fn}"
       else
         used_title.blank? ?
           "#{fn} #{ln}" :
@@ -205,18 +202,14 @@ class Person < ApplicationRecord
     "#{pseudonym_first_name} #{pseudonym_last_name}".strip
   end
 
-  def identifier
-    id
-  end
-
-  def identifier_method
-    'id'
-  end
-
   def has_biography?(locale)
     biographical_entries.joins(:translations).
       where.not("biographical_entry_translations.text": [nil, '']).
       group(:locale).count.keys.map(&:to_s).include?(locale.to_s)
+  end
+
+  def biography_public?
+    biographical_entries.first && biographical_entries.first.public?
   end
 
   def biography(locale)
@@ -224,9 +217,11 @@ class Person < ApplicationRecord
     biographical_entries.map{|b| b.text(locale)}.join('\n')
   end
 
-  def biography=(text)
-    biographical_entries.destroy_all
-    biographical_entries.build({text: text})
+  def biography=(hash)
+    if hash[:text].present?
+      biographical_entries.destroy_all
+      biographical_entries.build(hash)
+    end
   end
 
   def contributions_with_interviews(project_id)

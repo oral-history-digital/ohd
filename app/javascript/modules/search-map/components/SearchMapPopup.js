@@ -27,9 +27,9 @@ export default function SearchMapPopup({
         onUpdate();
     }, [referenceGroups]);
 
-    function handleClick(archiveId, tape, time) {
+    function handleClick(archiveId, tape, time, transcriptCoupled) {
         dispatch(setArchiveId(archiveId));
-        dispatch(sendTimeChangeRequest(tape, time));
+        transcriptCoupled && dispatch(sendTimeChangeRequest(tape, time));
     }
 
     if (error) {
@@ -57,7 +57,7 @@ export default function SearchMapPopup({
                                                 to={`${pathBase}/interviews/${ref.archive_id}`}
                                                 className="MapPopup-link"
                                             >
-                                                {`${ref.first_name} ${ref.last_name} (${ref.archive_id})`}
+                                                {`${ref.display_name} (${ref.archive_id})`}
                                             </Link>
                                         </li>
                                     ))
@@ -81,7 +81,7 @@ export default function SearchMapPopup({
                                                 className="MapPopup-link"
                                                 to={`${pathBase}/interviews/${refGroup.archive_id}`}
                                             >
-                                                {`${refGroup.first_name} ${refGroup.last_name} (${refGroup.archive_id})`}
+                                                {`${refGroup.display_name} (${refGroup.archive_id})`}
                                             </Link>
                                         </h5>
 
@@ -91,10 +91,10 @@ export default function SearchMapPopup({
                                                     <li key={ref.id}>
                                                         <Link
                                                             className="MapPopup-link MapPopup-link--small"
-                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time)}
+                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time, ref.transcript_coupled)}
                                                             to={`${pathBase}/interviews/${ref.archive_id}`}
                                                         >
-                                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
+                                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} transcriptCoupled={ref.transcript_coupled} />
                                                         </Link>
                                                     </li>
                                                 ))

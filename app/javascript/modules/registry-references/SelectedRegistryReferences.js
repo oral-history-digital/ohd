@@ -12,7 +12,6 @@ export default function SelectedRegistryReferences({
     locale,
     project,
     projectId,
-    projects,
     refObject,
     registryEntriesStatus,
 }) {
@@ -26,7 +25,7 @@ export default function SelectedRegistryReferences({
 
     function loadRegistryEntries() {
         if (!registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`]) {
-            fetchData({ projectId, locale, projects }, 'registry_entries', null, null, `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`);
+            fetchData({ projectId, locale, project }, 'registry_entries', null, null, `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`);
         }
     }
 
@@ -35,7 +34,7 @@ export default function SelectedRegistryReferences({
             !registryEntriesStatus[project.root_registry_entry_id] ||
             registryEntriesStatus[project.root_registry_entry_id].split('-')[0] === 'reload'
         ) {
-            fetchData({ projectId, locale, projects }, 'registry_entries', project.root_registry_entry_id);
+            fetchData({ projectId, locale, project }, 'registry_entries', project.root_registry_entry_id);
         }
     }
 
@@ -78,7 +77,6 @@ SelectedRegistryReferences.propTypes = {
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     refObject: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
 };

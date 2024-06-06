@@ -1,8 +1,5 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
-import { getProjectId } from 'modules/archive';
-import { getProjects } from 'modules/data';
 import { useEventTypes } from 'modules/event-types';
 import {
     useMutatePeople,
@@ -11,6 +8,7 @@ import {
 } from 'modules/person';
 import { Form, validateDate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 
 export default function EventForm({
@@ -23,8 +21,7 @@ export default function EventForm({
     onSubmitCallback,
     onCancel,
 }) {
-    const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
+    const { project, projectId } = useProject();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
@@ -81,7 +78,7 @@ export default function EventForm({
             }}
             onSubmit={params => {
                 if (typeof submitData === 'function') {
-                    submitData({ locale, projectId, projects }, params, index, (updatedEvent) => {
+                    submitData({ locale, projectId, project }, params, index, (updatedEvent) => {
                         const eventHolderId = updatedEvent.eventable_id;
 
                         mutatePeople(async people => {

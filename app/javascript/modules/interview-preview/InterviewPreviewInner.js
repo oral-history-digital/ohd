@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
 
 import { useProjectAccessStatus } from 'modules/auth';
+import { useProject } from 'modules/routes';
 import ThumbnailMetadata from './ThumbnailMetadata';
 import InterviewImage from './InterviewImage';
+import InterviewArchiveDisplay from './InterviewArchiveDisplay';
 
 export default function InterviewPreviewInner({
     interview,
@@ -12,12 +14,13 @@ export default function InterviewPreviewInner({
     isExpanded
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const { project: currentProject } = useProject();
 
     return (
         <>
             <InterviewImage interview={interview} project={project} />
 
-            <p className="InterviewCard-title">
+            <div className="InterviewCard-title u-mt-small">
                 {interview.workflow_state === 'unshared' &&
                     <FaEyeSlash className="u-mr-tiny" />
                 }
@@ -25,14 +28,13 @@ export default function InterviewPreviewInner({
                     interview.short_title?.[locale] :
                     interview.anonymous_title[locale]
                 }
-            </p>
+            </div>
 
-            {!isExpanded && (
-                <ThumbnailMetadata
-                    interview={interview}
-                    project={project}
-                />
+            {currentProject.is_ohd && (
+                <InterviewArchiveDisplay project={project} />
             )}
+
+            {!isExpanded && <ThumbnailMetadata interview={interview} />}
         </>
     );
 };

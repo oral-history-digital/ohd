@@ -17,25 +17,90 @@ es:
     failure:
       already_authenticated: Ya se ha iniciado la sesión.
       inactive: Su cuenta aún no se ha activado.
-      invalid: Nombre de usuaria/o o contraseña inválidos.
+      invalid: Datos de acceso no válidos
       invalid_token: El token de acceso (?) es inválido.
-      locked: Su cuenta se ha bloqueado.
-      not_found_in_database: Dirección de correo electrónico o contraseña inválidos.
+      blocked: Su cuenta está bloqueada.
+      not_found_in_database: Datos de acceso no válidos
       timeout: Su sesión expiró. Por favor, vuelva a iniciar sesión.
       unauthenticated: Tiene que iniciar sesión o registrarse para poder
         continuar.
-      unconfirmed: Tiene que confirmar su cuenta para poder continuar.
+      unconfirmed: El correo electrónico %{email} ya está registrado.
+        Aún debe confirmar su registro.
+        Se le acaba de reenviar un correo electrónico con el enlace necesario.
     mailer:
-      confirmation_instructions:
-        subject: Archivo de entrevistas – Pasos para la activación de su cuenta
-      project_access_granted:
-        subject: Activar su cuenta para la aplicación '%{project_name}'
-      project_access_rejected:
-        subject: Su registro para la aplicación '%{project_name}'
-      reset_password_instructions:
-        subject: Archivo de entrevistas – Pasos para restablecer su contraseña
-      account_deactivated:
+      grant_project_access:
+        subject: Activación de su acceso a la aplicación '%{project_name}'
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Ya tiene acceso a la aplicación '%{project_name}' para el objetivo que ha especificado.</p>
+          <p>Le rogamos que respete el derecho a la intimidad de los entrevistados y los Términos de uso (externer Link conditions einzelarchiv) del archivo.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Su solicitud de acceso para la aplicación '%{project_name}'
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Ha solicitado el acceso para la aplicación %{project_name}.</p>
+          <p>Lamentablemente, la revisión de sus datos arrojó que son insuficientes o no cumplen los Términos de uso (externer Link conditions einzelarchiv).</p>
+          <p>Puede modificar o completar sus datos a través del siguiente enlace.</p>
+          <p>Corregir</p>
+          <p>Si necesita ayuda, contáctenos en %{mail_to}</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Bloqueo de su cuenta
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informamos de que su acceso a la aplicación %{project_name} ha sido bloqueado. Esto se debe al incumplimiento de los Términos de uso (externer Link conditions einzelarchiv) del archivo.</p>
+          <p>Si tiene alguna duda, por favor, póngase en contacto con nosotros a través de %{mail_to}.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
         subject: Su acceso a la aplicación '%{project_name}'
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informarmos de que su acceso a la aplicación %{project_name} ha sido desbloqueado.</p>
+          <p>Ya puede acceder de nuevo a la aplicación %{project_name}.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Su acceso a la aplicación'%{project_name}'
+        text: |
+          <p>Hola %{user_display_name},</p>
+          <p>Su acceso a la aplicación %{project_name} estaba autorizado por tiempo limitado y ha caducado.</p>
+          <p>Puede volver a solicitar el acceso más adelante.</p>
+          <p>Saludos cordiales</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Bloqueo de su cuenta
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informamos de que su acceso a la plataforma Oral-History.Digital ha sido bloqueado. Esto se debe al incumplimiento de los Términos de uso (externer Link conditions ohd).</p>
+          <p>Si tiene alguna duda, póngase en contacto con nosotros a través de %{mail_to}.</p>
+          <p>Saludos cordiales</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Su acceso a la plataforma Oral-History.Digital
+        text: |
+          <p>Hola %{user_display_name}.</p>
+          <p>Por la presente le informamos de que su acceso a la plataforma Oral-History.Digital ha sido desbloqueado.</p>
+          <p>Ya puede acceder de nuevo a la plataforma.</p>
+          <p>Saludos cordiales</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Eliminación de su cuenta
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
+      confirmation_instructions:
+        subject: Confirme su solicitud de registro en Oral-History.Digital
+      new_email_confirmation_instructions:
+        subject: Confirmación de su nueva dirección de correo electrónico para Oral-History.Digital
+      reset_password_instructions:
+        subject: Oral-History.Digital. Pasos para recuperar su contraseña.
     omniauth_callbacks:
       failure: No ha podido iniciar sesión con su cuenta %{kind}, porque '%{reason}'.
       success: Ha iniciado exitosamente la sesión con su cuenta.
@@ -46,7 +111,7 @@ es:
       password_confirmation: Repetir contraseña
       submit: Passwort jetzt ändern
       resend: Passwort ändern
-      link: Passwort wiederherstellen
+      link: Recuperar contraseña
       send_instructions: Por favor introduzca la dirección de correo electrónico, que usó
         para registrarse en el archivo. Recibirá un correo electrónico con el enlace
         para recuperar su contraseña.
@@ -85,15 +150,16 @@ es:
         confirmar su nueva dirección de correo electrónico. Recibirá en pocos minutos un correo electrónico
         con que podrá concluir el cambio de su dirección de correo electrónico.
     sessions:
-      link: Anmelden
-      login: Anmelden
+      link: Iniciar sesión
+      login: Iniciar sesión
       signed_in: Usted ha iniciado la sesión.
       signed_out: Usted ha cerrado la sesión.
       unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
       unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
-      unconfirmed: Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden
-        können.
-      locked: Ihr Zugang wurde gesperrt.
+      unconfirmed: El correo electrónico %{email} ya está registrado.
+        Aún debe confirmar su registro.
+        Se le acaba de reenviar un correo electrónico con el enlace necesario.
+      blocked: Su cuenta está bloqueada.
       invalid: Username oder Passwort ist ungültig.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
@@ -113,10 +179,6 @@ es:
         not_signed_in: nicht angemeldet
     labels:
       send_now: Jetzt zuschicken
-    authentication_keys:
-      login: Benutzer*in
-      email: E-Mail
-      password: Passwort
     workflow_states:
       new_registration: Neuanmeldung
       new_registrations: Neuanmeldungen
@@ -152,61 +214,25 @@ es:
       remove: deaktivieren
       remove_info: Der Zugang des*der Nutzer*in wird deaktiviert (bitte den*die Nutzer*in in einer
         separaten E-Mail informieren).
-    registration_fields:
-      fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
-      select: Bitte auswählen
-      appellation: Anrede
-      first_name: Vorname
-      last_name: Nachname
-      job_description: Beruf
-      email: E-Mail
-      gender: Género
-      research_intentions: Recherche-Anliegen
-      comments: Präzisierung des Anliegens
-      organization: Institution
-      school: Schule
-      homepage: Homepage der Institution
-      street: Straße
-      zipcode: PLZ
-      city: Ort
-      state: Bundesland
-      country: Land
-      tos_agreement: Nutzungsbedingungen
-      tos_agreement_explanation: Ich stimme den %{terms_of_use} zu.
-      priv_agreement: Datenschutzbestimmungen
-      priv_agreement_explanation: Ich stimme den %{privacy_policy} zu.
-      agreed: zugestimmt
-      not_agreed: keine Zustimmung
-      receive_newsletter: Newsletter
-      receive_newsletter_explanation: Ich möchte den Newsletter des Projektes "%{project_name}"
-        abonnieren.
-      requested_at: Datum der Anfrage
-      name: Name
-      adress: Anschrift
-      workflow_state: Registrierungsstatus
-      login: Benutzername
-      created_at: Datum der Registrierung
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: und -wiederholung stimmen nicht überein.
-              too_short: ist zu kurz.
-              too_long: ist zu lang.
-        user_registration:
+        user:
           attributes:
             email:
               taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
                 vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen.
+            password:
+              confirmation: und -wiederholung stimmen nicht überein.
+              too_short: ist zu kurz.
+              too_long: ist zu lang.
       messages:
         blank: fehlt
     attributes:
-      user_account:
-        email: E-Mail
-        login: Login
-        password: Passwort
+      user:
+        email: Correo electrónico
+        login: Iniciar sesión
+        password: Contraseña
         password_confirmation: Passwort-Wiederholung
   errors:
     messages:

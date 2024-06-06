@@ -6,6 +6,7 @@ import queryString from 'query-string';
 
 import { OHD_DOMAINS } from 'modules/constants';
 import { LinkOrA } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
 import { useArchiveSearch } from 'modules/search';
@@ -16,32 +17,23 @@ import InterviewPreviewInner from './InterviewPreviewInner';
 export default function InterviewPreview({
     statuses,
     interview,
-    locale,
     projects,
     setArchiveId,
     selectedArchiveIds,
     addRemoveArchiveId,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const { locale } = useI18n();
     const project = projects[interview.project_id];
-    const projectId = project.identifier;
+    const projectId = project.shortname;
     const { fulltext } = useArchiveSearch();
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
     const linkPath = `interviews/${interview.archive_id}?${paramStr}`;
 
-    /* TODO: Only load search results in certain cases.
-      project.archive_domain === window.location.origin ||
-      !project.archive_domain ||
-      project.archive_domain === ''
-    */
-
     const { isLoading, numResults, data: searchResults } =
-        useInterviewSearch(interview.archive_id, fulltext);
-
-    const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
-    const showSlideShow = (onOHD && (!project.archive_domain || project.archive_domain === '')) || project.archive_domain === window.location.origin;
+        useInterviewSearch(interview.archive_id, fulltext, project);
 
     const doSetArchiveId = () => setArchiveId(interview.archive_id);
 
@@ -70,22 +62,20 @@ export default function InterviewPreview({
                 />
             </LinkOrA>
 
-            {
-                showSlideShow && isExpanded && searchResults && numResults > 0 && (
-                    <div className="slider">
-                        <div className="archive-search-found-segments">
-                            <SlideShowSearchResults
-                                interview={interview}
-                                searchResults={searchResults}
-                                projectId={projectId}
-                                project={project}
-                            />
-                        </div>
+            {isExpanded && searchResults && numResults > 0 && (
+                <div className="slider">
+                    <div className="archive-search-found-segments">
+                        <SlideShowSearchResults
+                            interview={interview}
+                            searchResults={searchResults}
+                            projectId={projectId}
+                            project={project}
+                        />
                     </div>
-                )
-            }
+                </div>
+            )}
 
-            <AuthorizedContent object={{ type: 'Interview', interview_id: interview.id }} action='update'>
+            <AuthorizedContent object={interview} action='update'>
                 <div>
                     <Checkbox
                         className='export-checkbox'
@@ -101,7 +91,6 @@ export default function InterviewPreview({
 InterviewPreview.propTypes = {
     interview: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
     setArchiveId: PropTypes.func.isRequired,

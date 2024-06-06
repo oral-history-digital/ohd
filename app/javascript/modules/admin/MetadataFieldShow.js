@@ -9,7 +9,7 @@ function MetadataFieldShow({data}) {
     const { t } = useI18n();
 
     let name;
-    if (translations[locale].search_facets.hasOwnProperty(data.name)) {
+    if (translations[`search_facets.${data.name}`]) {
         name = t(`search_facets.${data.name}`);
     } else {
         name = data.label && data.label[locale];

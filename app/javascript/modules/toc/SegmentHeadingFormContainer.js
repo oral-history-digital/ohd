@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getProjects } from 'modules/data';
+import { submitData, getCurrentProject } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import SegmentHeadingForm from './SegmentHeadingForm';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: getProjects(state),
+    project: getCurrentProject(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

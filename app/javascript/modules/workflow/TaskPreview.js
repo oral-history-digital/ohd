@@ -2,21 +2,30 @@ import { Component } from 'react';
 import {Link} from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
-export default class TaskPreview extends Component {
+export default function TaskPreview({
+    data,
+    setArchiveId,
+    scope,
+    user,
+}) {
 
-    dateAttribute() {
-        if (this.props.data.user_account_id === this.props.account.id) {
+    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
+
+    const dateAttribute = () => {
+        if (data.user_id === user.id) {
             // tasks assigned to current user
-            if (this.props.data.workflow_state === 'finished') {
+            if (data.workflow_state === 'finished') {
                 return 'finished_at';
             } else {
-                return 'assigned_to_user_account_at';
+                return 'assigned_to_user_at';
             }
-        } else if (this.props.data.supervisor_id === this.props.account.id) {
+        } else if (data.supervisor_id === user.id) {
             // tasks assigned to current user as QM
-            if (this.props.data.workflow_state === 'cleared') {
+            if (data.workflow_state === 'cleared') {
                 return 'cleared_at';
             } else {
                 return 'assigned_to_supervisor_at';
@@ -24,25 +33,23 @@ export default class TaskPreview extends Component {
         }
     }
 
-    render() {
-        return (
-            <div className='base-data box'>
-                <p>
-                    <Link
-                        onClick={() => {
-                            this.props.setArchiveId(this.props.data.archive_id);
-                        }}
-                        to={pathBase(this.props) + '/interviews/' + this.props.data.archive_id}
-                    >
-                        {`${this.props.data.archive_id}: ${this.props.data.name[this.props.locale]}`}
-                    </Link>
-                </p>
-                <p className='created-at'>
-                    <span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.${this.dateAttribute()}`) + ': '}</span>
-                    <span className='content'>{this.props.data[this.dateAttribute()]}</span>
-                </p>
-            </div>
-        )
-    }
+    return (
+        <div className='base-data box'>
+            <p>
+                <Link
+                    onClick={() => {
+                        setArchiveId(data.archive_id);
+                    }}
+                    to={pathBase + '/interviews/' + data.archive_id}
+                >
+                    {`${data.archive_id}: ${data.name[locale]}`}
+                </Link>
+            </p>
+            <p className='created-at'>
+                <span className='title'>{t( `activerecord.attributes.${scope}.${dateAttribute()}`) + ': '}</span>
+                <span className='content'>{data[dateAttribute()]}</span>
+            </p>
+        </div>
+    )
 
 }

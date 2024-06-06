@@ -1,33 +1,62 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  respond_to :html, :json
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
   #before_action :doorkeeper_authorize!
-  before_action :authenticate_user_account!
-  before_action :user_account_by_token
-  def user_account_by_token
-    if doorkeeper_token && !current_user_account
-      user = UserAccount.find(doorkeeper_token.resource_owner_id)
+  before_action :store_user_location!, if: :storable_location?
+  before_action :user_by_token
+  before_action :check_ohd_session
+  before_action :authenticate_user!
+
+  def user_by_token
+    if doorkeeper_token && !current_user
+      user = User.find(doorkeeper_token.resource_owner_id) 
       sign_in(user)
     end
   end
 
-  after_action :verify_authorized, except: :index
+  def check_ohd_session
+    if ( 
+        !current_user &&
+        request.base_url != OHD_DOMAIN &&
+        !params['checked_ohd_session'] &&
+        !params[:open_register_popup] &&
+        storable_location?
+      )
+        path = url_for(
+          only_path: true,
+          controller: 'sessions',
+          action: 'is_logged_in',
+          project: Project.by_domain(request.base_url).identifier,
+          path: request.fullpath,
+        )
+        redirect_to "#{OHD_DOMAIN}#{path}"
+    end
+  end
+
+  after_action :verify_authorized, except: :index, unless: -> { params[:controller] == "devise/registrations" }
   after_action :verify_policy_scoped, only: :index
+  after_action if: -> {Rails.env.development?} do
+    logger = ActiveRecord::Base.logger
+    
+    Rails.logger.info "ActiveRecord: #{logger.query_count} queries performed"
+    logger.reset_query_count
+  end
 
   def pundit_user
-    ProjectContext.new(current_user_account, current_project)
+    ProjectContext.new(current_user, current_project)
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
-    locale ||= (params[:locale] || (current_project ? current_project.default_locale : :de)).to_sym
-    #valid_locales = current_project.available_locales if valid_locales.empty?
-    #locale = I18n.default_locale unless valid_locales.include?(locale)
-    I18n.locale = locale
+    I18n.locale = locale || params[:locale] || I18n.default_locale
   end
 
   # Append the locale to all requests.
@@ -37,9 +66,9 @@ class ApplicationController < ActionController::Base
 
   def current_project
     @current_project = @current_project || (
-      params[:project_id].present? ?
-        Project.where("UPPER(shortname) = ?", params[:project_id].upcase).first :
-        Project.by_host(request.host)
+      (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
+        Project.where(shortname: params[:project_id]).first :
+        Project.where(archive_domain: request.base_url).first
     )
   end
 
@@ -55,30 +84,39 @@ class ApplicationController < ActionController::Base
     @initial_redux_state ||= {
       archive: {
         locale: I18n.locale,
-        projectId: current_project ? current_project.identifier : nil,
+        projectId: current_project ? current_project.shortname : nil,
         viewModes: nil,
         viewMode: nil,
         editView: !!cookies["editView"],
+        translationsView: !!cookies["translationsView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: translations,
+        translations: Rails.cache.fetch("translations-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}") do
+          TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
+            mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
+              mem2[translation.locale] = translation.value
+              mem2
+            end
+            mem
+          end
+        end,
         countryKeys: country_keys,
       },
-      account: {
+      user: {
         isLoggingIn: false,
-        isLoggedIn: !!current_user_account,
-        isLoggedOut: !current_user_account,
+        isLoggedIn: !!current_user,
+        isLoggedOut: !current_user,
         accessToken: params[:access_token],
         checkedOhdSession: params[:checked_ohd_session],
-        firstName: current_user_account && current_user_account.first_name,
-        lastName: current_user_account && current_user_account.last_name,
-        email: current_user_account && current_user_account.email,
-        admin: current_user_account && current_user_account.admin,
+        firstName: current_user && current_user.first_name,
+        lastName: current_user && current_user.last_name,
+        email: current_user && current_user.email,
+        admin: current_user && current_user.admin,
       },
       data: {
         statuses: {
-          accounts: {current: 'fetched'},
+          users: {current: 'fetched', resultPagesCount: 1},
           interviews: {},
           random_featured_interviews: {},
           segments: {},
@@ -93,39 +131,33 @@ class ApplicationController < ActionController::Base
           biographical_entries: {},
           speaker_designations: {},
           mark_text: {},
-          user_registrations: {resultPagesCount: 1},
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {all: 'fetched'},
-          languages: {all: 'fetched'},
-          institutions: {all: 'fetched'},
+          projects: {},
           collections: {},
+          institutions: {},
+          languages: {all: 'fetched'},
+          translation_values: {},
           people: {},
           task_types: {},
           registry_reference_types: {},
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
-          Project.all.
-            includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
-            inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
+        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+          Project.all.inject({}) { |mem, s| mem[s.id] = ProjectBaseSerializer.new(s); mem }
         end,
+        institutions: {},
+        collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
           NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
         languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,
-        institutions: Rails.cache.fetch("institutions-#{Institution.count}-#{Institution.maximum(:updated_at)}") do
-          Institution.all.inject({}){|mem, s| mem[s.id] = InstitutionSerializer.new(s); mem}
-        end,
-        collections: Rails.cache.fetch("collections-#{Collection.maximum(:updated_at)}") do
-          Collection.all.inject({}){|mem, s| mem[s.id] = CollectionSerializer.new(s); mem}
-        end,
-        accounts: {
-          current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
+        users: {
+          current: current_user && ::UserSerializer.new(current_user) || nil #{}
         },
         registry_entries: {},
         interviews: {},
@@ -148,9 +180,9 @@ class ApplicationController < ActionController::Base
   def initial_search_redux_state
     {
       registryEntries: {},
-      user_registrations: {
+      users: {
         query: {
-          'user_registrations.workflow_state': 'account_confirmed',
+          'users.workflow_state': 'confirmed',
           page: 1,
         },
       },
@@ -164,6 +196,7 @@ class ApplicationController < ActionController::Base
       projects: { query: {page: 1} },
       collections: { query: {page: 1} },
       languages: { query: {page: 1} },
+      translation_values: { query: {page: 1} },
       institutions: { query: {page: 1} }
     }
   end
@@ -173,6 +206,27 @@ class ApplicationController < ActionController::Base
     cache_key = ""
     params.reject{|k,v| k == 'controller' || k == 'action'}.each{|k,v| cache_key << "#{k}-#{v}-"}
     cache_key
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(
+      :appellation,
+      :first_name,
+      :last_name,
+      :email,
+      :street,
+      :zipcode,
+      :city,
+      :country,
+      :tos_agreement,
+      :priv_agreement,
+      :default_locale,
+      :pre_register_location,
+      :password,
+      :password_confirmation,
+    )}
   end
 
   private
@@ -197,26 +251,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def translations
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = instance_variable_get("@#{locale}") ||
-                    instance_variable_set("@#{locale}",
-                                          YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
-                      YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]
-                    ).merge(
-                      countries: ISO3166::Country.translations(locale),
-                    ))
-      mem
-    end
-  end
-
   def user_not_authorized
     respond_to do |format|
       format.html do
-        render :template => '/react/app'
+        render template: '/react/app', status: :forbidden
       end
       format.json do
-        render json: {msg: 'not_authorized'}, status: :ok
+        render json: {msg: 'not_authorized'}, status: :forbidden
+      end
+      format.vtt do
+        render plain: 'not_authorized', status: :forbidden
+      end
+      format.csv do
+        render text: 'not_authorized', status: :forbidden
+      end
+      format.pdf do
+        render text: 'not_authorized', status: :forbidden
       end
     end
   end
@@ -224,13 +274,13 @@ class ApplicationController < ActionController::Base
   #
   # serialized compiled cache of an instance
   #
-  def cache_single(data, name = nil, related = nil, cache_key_suffix = nil)
-    cache_key_prefix = current_project ? current_project.cache_key_prefix : 'ohd'
-    cache_key = "#{cache_key_prefix}-#{(name || data.class.name).underscore}"\
-      "-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}"\
-      "-#{cache_key_suffix}"
+  def cache_single(data, opts={})
+    cache_key_prefix = current_project ? current_project.shortname : 'ohd'
+    cache_key = "#{cache_key_prefix}-#{(opts[:serializer_name] || data.class.name).underscore}"\
+      "-#{data.id}-#{data.updated_at}-#{opts[:related] && data.send(opts[:related]).updated_at}"\
+      "-#{opts[:cache_key_suffix]}"
     Rails.cache.fetch(cache_key) do
-      raw = "#{name || data.class.name}Serializer".constantize.new(data)
+      raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db
       #
@@ -248,7 +298,7 @@ class ApplicationController < ActionController::Base
     json = {
       "#{identifier}": data.send(identifier),
       data_type: data.class.name.underscore.pluralize,
-      data: cache_single(data)
+      data: cache_single(data, opts)
     }
     json.update(opts)
     json
@@ -267,10 +317,17 @@ class ApplicationController < ActionController::Base
   end
 
   def update_contributions(interview, contribution_attributes)
-    (contribution_attributes || []).each do |attributes|
+    (contribution_attributes || []).each do |key, attributes|
       contribution = Contribution.find(attributes[:id])
       contribution.update(speaker_designation: attributes[:speaker_designation])
     end
   end
 
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
+  end
+
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
+  end
 end

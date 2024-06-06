@@ -1,126 +1,54 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaGlobeEurope } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
+import { useI18n } from 'modules/i18n';
+import { getRegistryEntries } from 'modules/data';
 import EntryReferencesContainer from './EntryReferencesContainer';
+import OpenStreetMapLink from './OpenStreetMapLink';
+import RegistryEntryBreadcrumbs from './RegistryEntryBreadcrumbs';
 
-export default class RegistryEntryShow extends Component {
-    componentDidMount() {
-        this.loadWithAssociations();
-    }
+export default function RegistryEntryShow({
+    registryEntryId,
+    normDataLinks,
+    onSubmit,
+}) {
+    const { locale } = useI18n();
+    const registryEntries = useSelector(getRegistryEntries);
+    const registryEntry = registryEntries[registryEntryId];
+    const showOpenStreetMapLink = registryEntry.latitude + registryEntry.longitude !== 0;
 
-    componentDidUpdate() {
-        this.loadWithAssociations();
-    }
-
-    loadWithAssociations() {
-        if (
-            !this.registryEntry()?.associations_loaded &&
-            this.props.registryEntriesStatus[this.props.registryEntryId] !== 'fetching'
-        ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntryId, null, 'with_associations=true');
-        }
-    }
-
-    registryEntry() {
-        return this.props.registryEntries[this.props.registryEntryId];
-    }
-
-    show(id, key) {
-        if(this.registryEntry().ancestors[id]){
-            return (
-                <span className={'breadcrumb'} key={key}>
-                    {this.registryEntry().ancestors[id].name[this.props.locale]}
-                    {/* {` (ID: ${id})`} */}
-                </span>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    breadCrumb() {
-        let paths = []
-        let bread_crumbs = this.registryEntry().bread_crumb;
-        if (bread_crumbs) {
-            Object.keys(bread_crumbs).map((id, key) => {
-                let breadCrumbPath = [];
-                breadCrumbPath.push(this.show(id, `${key}`));
-                let current = bread_crumbs[id]
-                let counter = 0
-                while (current) {
-                    counter = counter + 1;
-                    let currentId = Object.keys(current)[0];
-                    breadCrumbPath.push(this.show(currentId, `${key}-${counter}`));
-                    current = current[currentId];
-                }
-                paths.push(breadCrumbPath.reverse().splice(1)); // remove first "Register"
-                paths.push(<br key={key}/>)
-            })
-            paths.splice(-1,1) //remove last <br />
-        }
-        return paths;
-    }
-
-    osmLink() {
-        const { locale } = this.props;
-        const re = this.registryEntry();
-
-        if ((re.latitude + re.longitude === 0) ||
-            typeof re.latitude !== 'number' ||
-            typeof re.longitude !== 'number'
-        ) {
-            return null;
-        }
-
-        return(
-            <small className="u-ml-small">
-                <a
-                    href={`https://www.openstreetmap.org/?mlat=${re.latitude}&mlon=${re.longitude}&zoom=6`}
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <FaGlobeEurope className="Icon Icon--text Icon--small" />
-                    {' '}
-                    {re.latitude.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    {'; '}
-                    {re.longitude.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </a>
-            </small>
-        );
-    }
-
-    render() {
-        const { locale } = this.props;
-
-        if (!this.registryEntry()?.associations_loaded) {
-            return null;
-        }
-
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    {this.breadCrumb()}
-                </div>
-                <h3>
-                    {this.registryEntry().name[locale]}
-                    {this.osmLink()}
-                </h3>
-                <div className='small-right'>
-                    {this.props.normDataLinks}
-                </div>
-                <p>
-                    {this.registryEntry().notes[locale]}
-                </p>
-                <EntryReferencesContainer registryEntry={this.registryEntry()} onSubmit={this.props.onSubmit} />
+                <RegistryEntryBreadcrumbs registryEntry={registryEntry} />
             </div>
-        );
-    }
+            <h3>
+                {registryEntry.name[locale]}
+                {showOpenStreetMapLink && (
+                    <small className="u-ml-small">
+                        <OpenStreetMapLink
+                            lat={registryEntry.latitude}
+                            lng={registryEntry.longitude}
+                        />
+                    </small>
+                )}
+            </h3>
+            <div className='small-right'>
+                {normDataLinks}
+            </div>
+            <p>
+                {registryEntry.notes[locale]}
+            </p>
+            <EntryReferencesContainer
+                registryEntry={registryEntry}
+                onSubmit={onSubmit}
+            />
+        </div>
+    );
 }
 
 RegistryEntryShow.propTypes = {
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    fetchData: PropTypes.func.isRequired,
+    normDataLinks: PropTypes.object,
+    registryEntryId: PropTypes.number.isRequired,
     onSubmit: PropTypes.func.isRequired,
 };

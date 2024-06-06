@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import Element from '../Element';
@@ -25,33 +25,32 @@ export default function Select({
     optionsScope,
     withEmpty,
 }) {
-
+    const defaultValue = value || data?.[attribute];
     const { t, locale } = useI18n();
 
-    const defaultValue = data?.[attribute] || value;
-
-    const [valid, setValid] = useState((typeof validate !== 'function'));
-
     const onChange = (event) => {
-        const value =  event.target.value;
+        const newValue =  event.target.value;
         const name =  event.target.name;
 
-        handleChange(name, value, data);
+        handleChange(name, newValue, data);
 
         if (typeof handlechangecallback === 'function') {
-            handlechangecallback(name, value);
+            handlechangecallback(name, newValue);
         }
 
-        if (typeof(validate) === 'function') {
-            if (validate(value)) {
-                handleErrors(name, false);
-                setValid(true)
-            } else {
-                handleErrors(name, true);
-                setValid(false)
-            }
+        if (typeof validate === 'function') {
+            const valid = validate(newValue);
+            handleErrors(name, !valid);
         }
     }
+
+    useEffect(() => {
+        if (typeof(validate) === 'function') {
+            const valid = validate(defaultValue);
+            handleErrors(attribute, !valid);
+        }
+        handleChange(attribute, defaultValue, data);
+    }, [defaultValue]);
 
     const selectTextAndValueFunction = (value) => {
 
@@ -133,7 +132,7 @@ export default function Select({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={valid}
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
             mandatory={typeof(validate) === 'function'}
             elementType='select'
             individualErrorMsg={individualErrorMsg}

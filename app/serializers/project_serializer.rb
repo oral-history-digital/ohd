@@ -25,13 +25,13 @@ class ProjectSerializer < ApplicationSerializer
     :is_catalog,
     :domain,
     :archive_domain,
+    :domain_with_optional_identifier,
     :doi,
     :cooperation_partner,
     :leader,
     :manager,
     :funder_names,
     :pseudo_funder_names,
-    :contact_email,
     :smtp_server,
     :has_newsletter,
     :logged_out_visible_registry_entry_ids,
@@ -47,6 +47,7 @@ class ProjectSerializer < ApplicationSerializer
     :collection_ids,
     :registry_name_types,
     :registry_reference_types,
+    :registry_reference_type_ids,
     :task_types,
     :contribution_types,
     :metadata_fields,
@@ -61,8 +62,16 @@ class ProjectSerializer < ApplicationSerializer
     :root_registry_entry_id,
     :display_ohd_link,
     :show_preview_img,
+    :show_legend,
     :default_search_order,
-    :workflow_state
+    :workflow_state,
+    :grant_project_access_instantly,
+    :grant_access_without_login,
+    :is_ohd,
+    :analytics_site_id
+
+  has_one :access_config
+  has_many :texts
 
   def title
     object.shortname
@@ -83,6 +92,7 @@ class ProjectSerializer < ApplicationSerializer
     media_streams
     map_sections
     institution_projects
+    collections
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
@@ -93,7 +103,6 @@ class ProjectSerializer < ApplicationSerializer
   # should be loaded only where needed.
   %w(
     people
-    collections
     task_types
     roles
   ).each do |m|
@@ -110,26 +119,19 @@ class ProjectSerializer < ApplicationSerializer
     object.sponsor_logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
   end
 
-  def name
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.name(locale)
-      mem
-    end
-  end
-
   def display_name
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.display_name(locale)
-      mem
-    end
+    object.localized_hash(:display_name)
   end
 
-  def has_map
-    object.has_map ? 1 : 0
+  def name
+    object.localized_hash(:name)
   end
 
   def root_registry_entry_id
     object.root_registry_entry.id
   end
 
+  def is_ohd
+    object.shortname == 'ohd'
+  end
 end

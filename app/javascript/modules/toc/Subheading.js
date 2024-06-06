@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPencilAlt } from 'react-icons/fa';
@@ -9,6 +10,7 @@ import { Modal } from 'modules/ui';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { AuthorizedContent } from 'modules/auth';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
+import { getCurrentInterview } from 'modules/data';
 
 export default function Subheading({
     data,
@@ -17,6 +19,7 @@ export default function Subheading({
 }) {
     const { t } = useI18n();
     const divEl = useRef();
+    const interview = useSelector(getCurrentInterview);
 
     useEffect(() => {
         if (active) {
@@ -30,7 +33,7 @@ export default function Subheading({
             <button
                 type="button"
                 className={classNames('Heading-main', { 'is-active': active })}
-                onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+                onClick={() => interview.transcript_coupled && sendTimeChangeRequest(data.tape_nbr, data.time)}
             >
                 <span className="Heading-chapter">
                     {data.chapter}
@@ -42,7 +45,7 @@ export default function Subheading({
                     </div>
 
                     <div className="Heading-timecode">
-                        <TapeAndTime tape={data.tape_nbr} time={data.time} />
+                        <TapeAndTime tape={data.tape_nbr} time={data.time} transcriptCoupled={interview.transcript_coupled} />
                     </div>
                 </div>
             </button>

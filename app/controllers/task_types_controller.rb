@@ -1,5 +1,5 @@
 class TaskTypesController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index]
 
   def create
     authorize TaskType
@@ -22,7 +22,7 @@ class TaskTypesController < ApplicationController
     respond_to do |format|
       format.html { render :template => '/react/app' }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-#{current_user_account.id}-#{cache_key_params}-#{TaskType.count}-#{TaskType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-#{current_user.id}-#{cache_key_params}-#{TaskType.count}-#{TaskType.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(TaskType).
               includes(:translations, :project).

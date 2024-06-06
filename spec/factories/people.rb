@@ -4,6 +4,7 @@ FactoryBot.define do
     gender { 'female' }
     date_of_birth { '1.1.1950' }
     #association :biographical_entries, factory: :biographical_entry
+    use_pseudonym { true }
     project
   end
 
@@ -14,6 +15,9 @@ FactoryBot.define do
     birth_name { 'Hans' }
     other_first_names { 'Wojtowitsch' }
     alias_names { 'Адамец Константин Войтович Adamez Konstantin' }
+    pseudonym_first_name { 'Max' }
+    pseudonym_last_name { 'Huber' }
+    description { 'Max ist ein freundlicher Mensch' }
   end
 
   factory :biographical_entry do

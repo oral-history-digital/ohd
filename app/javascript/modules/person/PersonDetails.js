@@ -1,8 +1,8 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { humanReadable } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useHumanReadable } from 'modules/data';
 import { usePersonEvents, Event } from 'modules/events';
 import { Spinner } from 'modules/spinners';
 import PersonContributions from './PersonContributions';
@@ -25,7 +25,8 @@ const attributes = [
 export default function PersonDetails({
     data
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
     const { data: events, isLoading: eventsAreLoading } = usePersonEvents(data.id);
 
     return (
@@ -40,7 +41,7 @@ export default function PersonDetails({
                             <b>{`${t(`activerecord.attributes.person.${attribute}`)}:`}</b>
                         </dt>
                         <dd className="u-line-height u-ml-none">
-                            {humanReadable(data, attribute, { locale, translations }, {})}
+                            {humanReadable({obj: data, attribute})}
                         </dd>
                     </Fragment>
                 ))}

@@ -1,15 +1,42 @@
 class AdminMailer < ApplicationMailer
 
   def new_registration_info
-    registration = params[:registration]
+    user = params[:user]
     @project = params[:project]
-    @user_name = registration.full_name
-    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/user_registrations"
+    @user_name = user.full_name
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
-      subject: "Neue Registrierung zur Prüfung",
+      subject: I18n.t('devise.mailer.new_registration_info.subject', locale: @project.default_locale),
       from: "noreply@cedis.fu-berlin.de",
       to: @project.contact_email,
+      date: Time.now
+    )
+  end
+
+  def corrected_project_access_data
+    user = params[:user]
+    @project = params[:project]
+    @user_name = user.full_name
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
+
+    mail(
+      subject: I18n.t('devise.mailer.corrected_project_access_data.subject', locale: @project.default_locale),
+      from: "noreply@cedis.fu-berlin.de",
+      to: @project.contact_email,
+      date: Time.now
+    )
+  end
+
+  def blocked_project_access
+    @project = params[:project]
+    @user = params[:user]
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
+
+    mail(
+      subject: "Sperrung eines Nutzer*innen-Accounts in der Anwendung #{@project.name(:de)}",
+      from: @project.contact_email,
+      to: "mail@cedis.fu-berlin.de",
       date: Time.now
     )
   end

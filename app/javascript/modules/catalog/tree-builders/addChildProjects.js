@@ -12,7 +12,7 @@ export default function addChildProjects(projects, institution) {
         ...institution,
         projects: Object.values(institution.institution_projects)
             .map(ip => projectsById[ip.project_id])
-            .filter(project => project.workflow_state === 'public')
+            .filter(project => project?.workflow_state === 'public')
     };
     return clonedInstitution;
 }

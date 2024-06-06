@@ -1,19 +1,13 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getTranslations, getProjectId } from 'modules/archive';
 import { resetQuery, setQueryParams, getRolesQuery } from 'modules/search';
-import { fetchData, getProjects, getRolesStatus } from 'modules/data';
+import { fetchData } from 'modules/data';
 import { hideSidebar } from 'modules/sidebar';
 import DataSearchForm from './DataSearchForm';
 
 const mapStateToProps = (state) => ({
-    translations: getTranslations(state),
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
     query: getRolesQuery(state),
-    dataStatus: getRolesStatus(state),
     scope: 'role',
     searchableAttributes: [
         {attributeName: 'name'},

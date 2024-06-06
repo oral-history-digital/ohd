@@ -16,37 +16,102 @@ ru:
     failure:
       already_authenticated: Вы уже вошли в систему.
       inactive: Ваша учётная запись ещё не активирована.
-      invalid: Неверный %{authentication_keys} или пароль.
+      invalid: Неверные данные для входа в систему
       invalid_token: Der Anmelde-Token ist ungültig.
-      locked: Ваша учётная запись заблокирована.
-      not_found_in_database: Неверный %{authentication_keys} или пароль.
+      blocked: Ваш акаунт заблокирован
+      not_found_in_database: Неверные данные для входа в систему
       timeout: Ваш сеанс закончился. Пожалуйста, войдите в систему снова.
       unauthenticated: Вам необходимо войти в систему или зарегистрироваться.
-      unconfirmed: Вы должны подтвердить вашу учётную запись.
+      unconfirmed: Электронный адрес %{email} уже зарегистрирован.
+        Вам необходимо подтвердить Вашу регистрацию.
+        Для этого на Ваш электронный адрес был отправлен соответствующий линк.
       last_attempt: У Вас осталась еще одна попытка ввести пароль до блокировки.
     mailer:
+      grant_project_access:
+        subject: Предоставление доступа к приложению '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Вы получили доступ п приложению '%{project_name}' для проведения заявленных Вами исследований.</p>
+          <p>Пожалуйста, соблюдайте личные права интервьюированных и Правила пользования архивом (externer Link conditions einzelarchiv) des Archivs.</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Ваша заявка на получение доступа к приложению '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Вы отправили запрос на получение доступа к приложению %{project_name}</p>
+          <p>Рассмотрение Вашей заявки, к сожалению, показало, что Ваши данные неполные или не соответствуют Правилам пользования архивом (externer Link conditions einzelarchiv).</p>
+          <p>Перейдя за линком, Вы можете уточнить или дополнить Ваши данные.</p>
+          <p>Изменить</p>
+          <p>Если Вам нужна помощь, пожалуйста, обратитесь к нам по адресу %{mail_to}</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Блокирование Вашего пользовательского акаунта
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к приложению %{project_name} заблокирован. Это произошло из-за нарушения Вами Условий пользования архивом (externer Link conditions einzelarchiv).</p>
+          <p>Если у Вас есть вопросы, пожалуйста, обратитесь к нам по адресу %{mail_to}</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
+        subject: Ваш доступ к архиву '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к приложению %{project_name} был разблокирован.</p>
+          <p>Вы снова получаете доступ к приложению %{project_name}</p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Ваш доступ к приложению '%{project_name}'
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Ваш доступ к приложению %{project_name} был ограничен по времени и на данный момент прекращен.</p>
+          <p>Позже вы можете снова подать заявку на предоставление доступа. </p>
+          <p>С уважением,</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Блокирование Вашего пользовательского акаунта
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к платформе Oral-History.Digital был заблокирован. Это произошло из-за нарушения Вами Условий пользования (externer Link conditions ohd)</p>
+          <p>Если у Вас есть вопросы, пожалуйста, обратитесь к нам по адресу %{mail_to}.</p>
+          <p>С уважением,</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Ваш доступ к  платформе Oral-History.Digital
+        text: |
+          <p>Добрый день, %{user_display_name},</p>
+          <p>Сообщаем Вам, что Ваш доступ к платформе Oral-History.Digital был разблокирован.</p>
+          <p>Вы снова получаете доступ к платформе.</p>
+          <p>С уважением,</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Удаление Вашего пользовательского акаунта
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
       confirmation_instructions:
-        subject: 'Архив интервью: шаги по активации Вашего аккаунта'
-      project_access_granted:
-        subject: Активация Вашего аккаунта для доступа к ресурсу '%{project_name}'
-      project_access_rejected:
-        subject: Ваша регистрация для доступа к ресурсу '%{project_name}'
+        subject: Подтверждение Вашей регистрации на Oral-History.Digital
+      new_email_confirmation_instructions:
+        subject: Подтверждение вашего нового адреса электронной почты для Oral-History.Digital
       reset_passwod_instructions:
-        subject: 'Архив интервью: шаги по восстановлению Вашего пароля'
-      account_deactivated:
-        subject: Ваш доступ к проекту '%{project_name}'
+        subject: Oral-History.Digital. Шаги по восстановлению Вашего пароля.
     omniauth_callbacks:
       failure: Вы не можете войти в систему с учётной записью из %{kind}, так как
         "%{reason}".
       success: Вы успешно вошли в Ваш аккаунт.
     passwords:
       change: Изменить пароль
-      forgot: Забыли Ваш пароль?
+      forgot: Возобновление пароля
       password: Пароль
       password_confirmation: Повторить пароль
       submit: Изменить пароль сейчас
       resend: Изменить пароль
-      link: Забыли пароль?
+      link: Возобновление пароля
       send_instructions: В течение нескольких минут вы получите письмо с инструкциями
         по восстановлению вашего пароля.
       updated: Ваш пароль успешно изменён. Теперь вы вошли в систему.
@@ -83,15 +148,17 @@ ru:
         Ваш новый адрес email. Пожалуйста, проверьте свою электронную почту и нажмите
         на ссылку "Подтвердить", чтобы завершить обновления email.
     sessions:
-      link: Войти
-      login: Войти
+      link: Вход
+      login: Вход
       signed_in: Вы вошли в систему.
       signed_out: Вы вышли из системы.
       unauthenticated: Для данного действия необходимо войти в систему.
       unauthenticated_search: Для того, чтобы использовать функцию поиска, Вы должны
         войти в систему.
-      unconfirmed: Чтобы войти в систему, Ваш доступ должен быть сначала активирован.
-      locked: Доступ закрыт.
+      unconfirmed: Электронный адрес %{email} уже зарегистрирован.
+        Вам необходимо подтвердить Вашу регистрацию.
+        Для этого на Ваш электронный адрес был отправлен соответствующий линк.
+      blocked: Ваш акаунт заблокирова
       invalid: Имя пользователя или пароль недействительны.
       invalid_token: Недействительный  код аутентификации.
       timeout: Ваше время нахождения на сайте истекло, пожалуйста, снова войдите в
@@ -112,10 +179,6 @@ ru:
         not_signed_in: Вы не вошли в систему
     labels:
       send_now: Отправить сейчас
-    authentication_keys:
-      login: Пользователь
-      email: Электр. адрес
-      password: Пароль
     workflow_states:
       new_registration: Новая регистрация
       new_registrations: Новые регистрации
@@ -154,59 +217,24 @@ ru:
       remove: деактивировать
       remove_info: Доступ пользователя деактивируется (просба проинформировать пользователя
         в отдельном письме).
-    registration_fields:
-      fill_out_missing_fields_message: 'Пожалуйста, дополните следующие сведения:'
-      select: Пожалуйста, выберите
-      appellation: Обращение
-      first_name: Имя
-      last_name: Фамилия
-      job_description: Профессия
-      gender: Пол
-      email: Электр. адрес
-      research_intentions: Цель изысканий
-      comments: Уточнение цели
-      organization: Учреждение
-      school: Школа
-      homepage: Интернет-страница учреждения
-      street: Улица
-      zipcode: Индекс
-      city: Населённый пункт
-      state: Федеральная земля
-      country: Страна
-      tos_agreement: Правила пользования сайтом
-      tos_agreement_explanation: Я принимаю %{terms_of_use}.
-      priv_agreement: Положения о защите персональных данных
-      priv_agreement_explanation: Я принимаю %{privacy_policy}.
-      agreed: приняты
-      not_agreed: не приняты
-      receive_newsletter: Рассылка
-      receive_newsletter_explanation: Я хочу подписаться на рассылку проекта "%{project_name}".
-      requested_at: Дата запроса
-      name: Имя
-      adress: Адрес
-      workflow_state: Статус регистрации
-      login: Имя пользователя
-      created_at: Дата регистрации
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: не совпадает с первоначальным.
-              too_short: слишком короткий.
-              too_long: слишком длинный.
-        user_registration:
+        user:
           attributes:
             email:
               taken: уже зарегистрирован. Пожалуйста, используйте функцию 'Забыли
                 пароль?' на странице для входа, чтобы восстановить пароль.
+            password:
+              confirmation: не совпадает с первоначальным.
+              too_short: слишком короткий.
+              too_long: слишком длинный.
       messages:
         blank: отсутствует
     attributes:
-      user_account:
-        email: Электр. адрес
-        login: Логин
+      user:
+        email: Электронный адрес
+        login: Вход
         password: Пароль
         password_confirmation: Повторный пароль
   errors:

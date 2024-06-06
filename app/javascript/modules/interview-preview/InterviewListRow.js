@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
-import { usePathBase } from 'modules/routes';
-import { humanReadable } from 'modules/data';
+import { useProject, LinkOrA } from 'modules/routes';
+import { useHumanReadable } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
@@ -18,31 +17,37 @@ import {
 } from 'modules/constants';
 
 export default function InterviewListRow({
-    project,
     interview,
+    projects,
     selectedArchiveIds,
-    languages,
-    collections,
     setArchiveId,
     addRemoveArchiveId,
 }) {
-    const { locale, translations } = useI18n();
+    const { locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
+    const { project } = useProject();
+    const projectOfInterview = projects[interview.project_id];
     const { isAuthorized } = useAuthorization();
-    const { projectAccessGranted } = useProjectAccessStatus(project);
-    const pathBase = usePathBase();
+    const { projectAccessGranted } = useProjectAccessStatus(projectOfInterview);
     const { fulltext } = useArchiveSearch();
-    const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
+    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, projectOfInterview);
+    const { data: interviewee } = usePersonWithAssociations(interview.interviewee_id);
 
-    const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
+    function linkPath() {
+        const params = { fulltext };
+        const paramStr = queryString.stringify(params, { skipNull: true });
+        return `interviews/${interview.archive_id}?${paramStr}`;
+    }
 
-    const params = { fulltext };
-    const paramStr = queryString.stringify(params, { skipNull: true });
-    const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
+    function showCheckboxes() {
+        return isAuthorized(interview, 'show') &&
+            isAuthorized({ type: 'General' }, 'edit');
+    }
 
     return (
         <tr className="Table-row">
             {
-                isAuthorized(interview, 'show') && isAuthorized({ type: 'General' }, 'edit') && (
+                showCheckboxes() && (
                     <td className="Table-cell">
                         <Checkbox
                             className="export-checkbox"
@@ -53,11 +58,11 @@ export default function InterviewListRow({
                 )
             }
             <td className="Table-cell">
-                <Link className="search-result-link"
-                    onClick={() => {
-                        setArchiveId(interview.archive_id);
-                    }}
-                    to={linkUrl}
+                <LinkOrA
+                    project={projectOfInterview}
+                    to={linkPath()}
+                    onLinkClick={() => setArchiveId(interview.archive_id)}
+                    className="search-result-link"
                 >
                     {
                         projectAccessGranted ?
@@ -71,10 +76,10 @@ export default function InterviewListRow({
                             </div> :
                             interview.anonymous_title[locale]
                     }
-                </Link>
+                </LinkOrA>
             </td>
             {
-                project.list_columns.map(column => {
+                project.list_columns?.map(column => {
                     const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
@@ -96,7 +101,7 @@ export default function InterviewListRow({
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {obj && humanReadable(obj, column.name, { locale, translations, languages, collections, optionsScope: 'search_facets' }, {})}
+                            {obj && humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'})}
                         </td>
                     );
                 })
@@ -104,12 +109,14 @@ export default function InterviewListRow({
             {
                 fulltext && numResults > 0 && (
                     <td className="Table-cell">
-                        <Link className="search-result-link"
-                            onClick={() => setArchiveId(interview.archive_id)}
-                            to={`${pathBase}/interviews/${interview.archive_id}`}
+                        <LinkOrA
+                            project={projectOfInterview}
+                            to={linkPath()}
+                            onLinkClick={() => setArchiveId(interview.archive_id)}
+                            className="search-result-link"
                         >
                             {numResults}
-                        </Link>
+                        </LinkOrA>
                     </td>
                 )
             }
@@ -119,9 +126,7 @@ export default function InterviewListRow({
 
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
-    project: PropTypes.object.isRequired,
-    languages: PropTypes.object.isRequired,
-    collections: PropTypes.object.isRequired,
+    projects: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,

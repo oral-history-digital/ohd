@@ -3,18 +3,17 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { getCurrentAccount, getCurrentProject, getProjects } from 'modules/data';
-import { getLocale, setProjectId } from 'modules/archive';
-import { projectByDomain } from 'modules/routes';
+import { getCurrentUser } from 'modules/data';
+import { setProjectId } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { OHD_DOMAINS } from 'modules/constants';
 
 function OHDLink({ className }) {
-    const locale = useSelector(getLocale);
-    const project = useSelector(getCurrentProject);
-    const projects = useSelector(getProjects);
-    const projectHasOwnDomain = projectByDomain(projects);
+    const { locale } = useI18n();
+    const { project } = useProject();
     const dispatch = useDispatch();
-    const currentAccount = useSelector(getCurrentAccount);
+    const currentAccount = useSelector(getCurrentUser);
 
     const accessTokenParam = currentAccount?.access_token ? `access_token=${currentAccount.access_token}` : null;
 
@@ -24,8 +23,8 @@ function OHDLink({ className }) {
     )
 
     return (
-        !project || project.display_ohd_link ?
-            (projectHasOwnDomain ?
+        project.display_ohd_link ?
+            (project.archive_domain ?
                 <a
                     title='OHD'
                     href={`${OHD_DOMAINS[railsMode]}/${locale}` + (!!accessTokenParam ? `?${accessTokenParam}` : '')}

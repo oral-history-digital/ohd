@@ -8,7 +8,7 @@ class BiographicalEntriesController < ApplicationController
       format.json do
         render json: {
           nested_id: @biographical_entry.person_id,
-          data: cache_single(@biographical_entry.person, 'PersonWithAssociations'),
+          data: cache_single(@biographical_entry.person, serializer_name: 'PersonWithAssociations'),
           nested_data_type: "people",
           data_type: 'projects',
           id: current_project.id,
@@ -39,7 +39,7 @@ class BiographicalEntriesController < ApplicationController
       format.json do
         render json: {
           nested_id: @biographical_entry.person_id,
-          data: cache_single(@biographical_entry.person, 'PersonWithAssociations'),
+          data: cache_single(@biographical_entry.person, serializer_name: 'PersonWithAssociations'),
           nested_data_type: "people",
           data_type: 'projects',
           id: current_project.id,

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Form } from 'modules/forms';
 
-import { RegistrySearchResultContainer } from 'modules/registry';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
+import RegistrySearchResult from './RegistrySearchResult';
 
 export default function RegistryNameForm({
     index,
@@ -14,20 +14,14 @@ export default function RegistryNameForm({
     data,
     nested,
     registryEntryId,
-    registryEntryParent,
     registryNameTypes,
-    normDataProviders,
-    setRegistryEntryAttributes,
     registryEntryAttributes,
-    projectId,
-    projects,
-    project,
-    locale,
     foundRegistryEntries,
     searchRegistryEntry,
     setDescriptor,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
     useEffect(() => {
@@ -64,7 +58,7 @@ export default function RegistryNameForm({
         <Form
             scope='registry_name'
             onSubmit={params => {
-                submitData({projectId, locale, projects}, params, index);
+                submitData({projectId, locale, project}, params, index);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
@@ -88,7 +82,7 @@ export default function RegistryNameForm({
                     <h6>{`${t('existing_registry_entries')}:`}</h6>
                     <ul className="RegistryEntryList RegistryEntryList--root">
                         {
-                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} hideCheckbox hideEditButtons />)
+                            foundRegistryEntries?.results?.map(result => <RegistrySearchResult key={result.id} result={result} hideCheckbox hideEditButtons />)
                         }
                     </ul>
                 </>

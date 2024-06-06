@@ -63,7 +63,7 @@ export default function CollectionData({
     const mediaTypesStr = mediaTypes
       .filter(mt => mt.num > 0)
       .sort((a, b) => b.num - a.num)
-      .map(mt => t(`modules.catalog.${mt.type}`, { number: mt.num }))
+      .map(mt => `${mt.num} ${t('modules.catalog.' + mt.type)}`)
       .join(', ');
 
     return (

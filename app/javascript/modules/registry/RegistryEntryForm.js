@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 
 import { Form, validateGeoCoordinate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 import NormDatumFormContainer from './NormDatumFormContainer';
 
 export default function RegistryEntryForm({
-    locale,
-    projectId,
-    projects,
     normDataProviders,
-    translations,
     registryEntries,
     registryEntryId,
     registryEntryParent,
@@ -19,14 +16,21 @@ export default function RegistryEntryForm({
     onSubmit,
     onCancel,
 }){
-
-    const { t } = useI18n();
+    const { project, projectId } = useProject();
+    const { t, locale } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
-    const [descriptor, setDescriptor] = useState(registryEntry?.registry_names[0].descriptor[locale]);
+    const [descriptor, setDescriptor] = useState(initialDescriptor());
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
     const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
+    }
+
+    function initialDescriptor() {
+        const registryName = registryEntry?.registry_names[0];
+        return registryName
+            ? registryName.descriptor[locale]
+            : '';
     }
 
     function showRegistryName(registryName) {
@@ -61,7 +65,7 @@ export default function RegistryEntryForm({
                     const paramsWithNormDataAttributes = {
                         registry_entry: Object.assign({}, registryEntryAttributes, params.registry_entry)
                     };
-                    submitData({projectId, locale, projects}, paramsWithNormDataAttributes);
+                    submitData({projectId, locale, project}, paramsWithNormDataAttributes);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -137,10 +141,7 @@ RegistryEntryForm.propTypes = {
     registryEntryId: PropTypes.number,
     registryEntryParent: PropTypes.object,
     registryEntries: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    normDataProviders: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
     submitData: PropTypes.func.isRequired,
     onCancel: PropTypes.func,

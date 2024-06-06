@@ -6,4 +6,4 @@ export { default as mediaPlayerReducer } from './reducer';
 
 export { getCurrentTape, getMediaTime, getIsPlaying, getIsIdle } from './selectors';
 
-export { default as MediaPlayerContainer } from './components/MediaPlayerContainer';
+export { default as MediaPlayer } from './components/MediaPlayer';

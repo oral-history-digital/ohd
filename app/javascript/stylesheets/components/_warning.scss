@@ -1,0 +1,24 @@
+.Warning {
+  align-items: center;
+  background-color: $warning-color;
+  bottom: 0;
+  display: flex;
+  left: 0;
+  padding: $base-unit * 0.5;
+  position: fixed;
+  right: 0;
+  z-index: $z-index-warning;
+
+  @include screen-m {
+    padding: $base-unit;
+  }
+}
+
+.Warning-body {
+  flex-grow: 1;
+}
+
+.Warning-close {
+  flex-grow: 0;
+  flex-shrink: 0;
+}

@@ -1,4 +1,6 @@
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
 export default function SingleTextInputForm({
     index,
@@ -8,15 +10,15 @@ export default function SingleTextInputForm({
     formClasses,
     data,
     nested,
-    projectId,
-    projects,
-    locale,
 }) {
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
+
     return (
         <Form
             scope='text'
             onSubmit={params => {
-                submitData({projectId, projects, locale}, params, index);
+                submitData({projectId, project, locale}, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}

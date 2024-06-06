@@ -1,16 +1,10 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { submitData, getCurrentProject, getProjectLocales, getProjects } from 'modules/data';
+import { submitData, getCurrentProject } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    locales: getProjectLocales(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    translations: getTranslations(state),
     data: getCurrentProject(state),
     scope: 'project',
     helpTextCode: 'archive_info_form',
@@ -46,6 +40,10 @@ const mapStateToProps = state => ({
         },
         {
             attribute: "pseudo_funder_names"
+        },
+        {
+            attribute: 'media_missing_text',
+            multiLocale: true,
         },
     ],
 });

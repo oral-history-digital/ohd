@@ -32,6 +32,9 @@ el:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Ναι
+    false: Όχι
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -48,11 +51,6 @@ el:
     none: keine
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: στο
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
-  project_access_in_process: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
-    Στη συνέχεια θα ενεργοποιηθεί ο λογαριασμός σας και θα αποκτήσετε πρόσβαση στο Αρχείο Προφορικών Μαρτυριών.
-  registration_needed: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
@@ -65,6 +63,7 @@ el:
   or: or
   show: Zeigen
   hide: Weniger
+  loading: Φόρτωση…
   edit_column_header:
     open_table: "Erschließungstabelle öffnen"
     close_table: "Erschließungstabelle schließen"
@@ -176,14 +175,14 @@ el:
   error: Error
   segment: Απόσπασμα
   publish: Δημοσίευση
-  login: Εγγραφή
+  login: Είσοδος
   login_name: Χρήστης
   logout: Έξοδος
   login_errors: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
   logged_in_as: 'Εγγεγραμμένος/η ως '
   user_name: Χρήστης
   notice: Σήμανση ως αγαπημένο
-  forget_password: Ξεχάσατε τον κωδικό σας
+  forget_password: Ανάκτηση κωδικού πρόσβασης
   account_activation_errors: Ο κωδικός και η επαλήθευση κωδικού πρέπει να είναι ίδιοι
     και μέχρι έξι σημεία
   submit: Αποστολή
@@ -206,7 +205,7 @@ el:
   biographicalentry_results: αποτελέσματα αναζήτησης στο σύντομο βιογραφικό
   observation_results: Search results in the protocol
   person_results: Αποτελέσματα αναζήτησης στα ονόματα
-  user_registration_results: Αποτελέσματα αναζήτησης στους χρήστες
+  user_results: Αποτελέσματα αναζήτησης στους χρήστες
   segment_hits: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
   no_interviews_results: Δε βρέθηκαν συνεντεύξεις.
   interview_id: Κωδικός συνέντευξης
@@ -261,9 +260,11 @@ el:
   history: Σύντομο βιογραφικό
   interview_with: Συνέντευξη με
   transcript_header: Απομαγνητοφωνημένο κείμενο
+  translation_header: Μετάφραση κείμενο
   transcript_title: Απομαγνητοφώνηση της συνέντευξης με
   translation_title: Μετάφραση της συνέντευξης με
   transcript_footer: 'Τρόπος παραπομπής: Απομαγνητοφώνηση της συνέντευξης με'
+  translation_footer: 'Τρόπος παραπομπής: Μετάφραση της συνέντευξης με'
   transcript_template: Υπόδειγμα για την εισαγωγή αρχείων .csv
   biographical_entries_header: 'Σύντομο βιογραφικό: %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Σύντομο βιογραφικό της/του %{interviewee_name}'
@@ -332,9 +333,13 @@ el:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Απουσία μέσων
     signature_original: Signature original
     observations: Observations
     language_id: Language
+    primary_language_id: Erste Sprache
+    secondary_language_id: Zweite Sprache
+    primary_translation_language_id: Erste Übersetzungssprache
     workflow_state: Workflow state
     collection_id: Collection
     home_location: Home location
@@ -504,7 +509,7 @@ el:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: Details
       edit: Bearbeiten
     role:
@@ -589,15 +594,16 @@ el:
     reject: zurückgewiesen
     postpone: zurückgestellt
     activate: aktiviert
-    expire: zurückgestellt
     deactivate_account: sperren
     reactivate_account: reaktivieren
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
+    block: sperren
+    revoke_block: Sperrung aufheben
+    created: angelegt
+    confirmed: bestätigt
+    blocked: gesperrt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -614,13 +620,14 @@ el:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
-      account_confirmed: ungeprüft
-      account_deactivated: gesperrt
+      project_access_requested: ungeprüft
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
   help_texts:
     metadata_fields:
@@ -650,13 +657,13 @@ el:
     research: Ιστορική επεξεργασία
     sound: Ήχος
     other_attender: Άλλοι παρευρισκόμενοι
+    further_interviewee: Further interviewee
     producer: Παραγωγή
     quality_manager: Qualitätsmangement
     quality_manager_translation: Ποιοτικός έλεγχος της μετάφρασης
     quality_manager_transcription: Ποιοτικός έλεγχος της απομαγνητοφώνησης
     quality_manager_interviewing: Ποιοτικός έλεγχος της συνέντευξης
     quality_manager_research: Ποιοτικός έλεγχος της ιστορικής επεξεργασίας
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
@@ -707,21 +714,16 @@ el:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
+  user:
     registration: Εγγραφή
-    registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών "Μνήμες
-      από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα και να εξηγήσετε
-      τους λόγους για τους οποίους επιθυμείτε πρόσβαση στο Αρχείο. Θα πρέπει να συναινέσετε
-      με τους '
-    registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε κατόπιν
-      τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
-    registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα δεδομένα
-      σας, και για ποιο λόγο τα αξιοποιούμε. Μετά από την εγγραφή σας η ομάδα του προγράμματος θα ελέγξει τα στοιχεία σας.
-      Θα σας πληροφορήσουμε για την ενεργοποίηση του λογαριασμού σας εντός δύο εώς τριών ημερών."
-    tos_agreement: Προϋποθέσεις χρήσης
-    priv_agreement: Υποδείξεις για την προστασία δεδομένων
-    notes_on_receive_newsletter: Θα ήθελα να εγγραφώ και να λαμβάνω το newsletter
-      του προγράμματος "Μνήμες από την Κατοχή στην Ελλάδα".
+    registration_text_one: 'Παρακαλούμε εγγραφείτε για να αποκτήσετε πρόσβαση στις συνεντεύξεις. Οι '
+    registration_text_one_ohd: 'Παρακαλούμε εγγραφείτε για να μπορέσετε να χρησιμοποιήσετε την πλατφόρμα. Οι '
+    registration_text_two: ' εξηγούν από ποιον και για ποιους σκοπούς μπορεί να χρησιμοποιηθεί το Oral.History-Digital. Οι '
+    registration_text_three: ' αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα δεδομένα σας, και για ποιο σκοπό τα αξιοποιούμε.
+      Για λόγους προστασίας δεδομένων, θα σας ζητηθεί να επιβεβαιώσετε την εγγραφή σας μέσω e-mail.'
+    registration_text_four: 'Στη συνέχεια, μπορείτε να ζητήσετε την ενεργοποίηση των διάφορων αρχείων μαρτυριών που περιλαμβάνονται στην πλατφόρμα.'
+    tos_agreement: όροι χρήσης
+    priv_agreement: όροι προστασίας προσωπικών δεδομένων
     notes_on_tos_agreement: Συμφωνώ με τις προϋποθέσεις χρήσης
     priv_agreement_alias: προσωπικών δεδομένων
     notes_on_priv_agreement: Συμφωνώ με την προστασία δεδομένων
@@ -734,6 +736,7 @@ el:
       male: άρρεν
       diverse: Άλλο
       not_specified: Καμία καταχώρηση
+  user_project:
     job_description:
       researcher: Λέκτορας/ ερευνητής
       filmmaker: Σκηνοθέτης/τρια, δημοσιογράφος, δάσκαλος/λα
@@ -755,6 +758,8 @@ el:
       university_teaching: Πανεπιστημιακή διδασκαλία
       scientific_paper: Επιστημονικές δημοσιεύσεις
       other: Άλλο
+    notes_on_receive_newsletter: Θα ήθελα να εγγραφώ και να λαμβάνω το newsletter
+      του προγράμματος "Μνήμες από την Κατοχή στην Ελλάδα".
   gender:
     female: θήλυ
     male: άρρεν
@@ -795,6 +800,7 @@ el:
     archive_id: Interview ID
     collection_id: Collection
     media_type: Τύπος μέσου
+    media_missing: Απουσία μέσων
     language_id: Γλώσσα
     age: Ηλικία
     year_of_birth: Έτος γέννησης
@@ -806,11 +812,15 @@ el:
     observations: Protokoll
     tape_count: Anzahl der Bänder
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Status
     date_of_birth: Ημερομηνία γέννησης
     signature_original: Originalsignatur
     startpage_position: Startpage position
+    project_id: Archiv
+    project_access: Archivzugang
+    restricted: beschränkt
+    free: frei
   activerecord:
     models:
       interview:
@@ -882,7 +892,7 @@ el:
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1001,6 +1011,7 @@ el:
         language_id: Γλώσσα
         translation_language_id: Übersetzungssprache
         media_type: Τύπος μέσου
+        media_missing: Απουσία μέσων
         translated: η συνέντευξη έχει ήδη μεταφραστεί;
         workflow_state: 'Κατάσταση'
         tasks_states: Bearbeitungsstand
@@ -1033,6 +1044,7 @@ el:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Media Missing Message
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: Importarten
@@ -1055,9 +1067,12 @@ el:
         pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
-        is_catalog: Ist das Projekt ein Katalog
+        is_catalog: Nur Metadaten anzeigen
+        grant_project_access_instantly: Keine Freischaltung nötig
+        grant_access_without_login: Zugang ohne Login
         display_ohd_link: OHD-Link zeigen
         show_preview_img: Vorschaubild auf Landing-Page zeigen
+        show_legend: Legende im Transkript anzeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
@@ -1101,6 +1116,7 @@ el:
         subheading: Υποκεφάλαιο
         text: Κείμενο
         speaker_id: Ομιλιτής
+        hidden_text: Αυτό το μέρος του κειμένου δεν δημοσιεύεται.
       user_content:
         title: Τίτλος
         description: Σημείωση
@@ -1115,55 +1131,41 @@ el:
         workflow_state: Κατάσταση δημοσίευσης
         heading: Κεφάλαιο
         media_id: ID μέσου
-      user_account:
-        login: Όνομα σύνδεσης
-        password: Κωδικός
-      account:
-        gender: Φύλο
-        first_name: Όνομα
-        last_name: Επώνυμο
-      user_registration:
+      user:
         created_at: Δημιουργήθηκε στις
-        activated_at: Ενεργοποιήθηκε στις
+        confirmed_at: Ενεργοποιήθηκε στις
         processed_at: Επεξεργάστηκε στις
+        activated_at: freigeschaltet am
         admin_comments: Σχόλιο
         default_locale: Γλώσσα
+        login: Όνομα σύνδεσης
+        password: Κωδικός πρόσβασης
         appellation: Προσφώνηση
         first_name: Όνομα
         last_name: Επώνυμο
-        job_description: Επάγγελμα
         gender: Φύλο
-        research_intentions: Ερευνητικά ενδιαφέροντα
-        comments: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
-        organization: Ίδρυμα
         homepage: Ιστοσελίδα ιδρύματος
         address: Διεύθυνση
         street: Οδός
         zipcode: Ταχυδρομικός κώδικας
         city: Τόπος
         country: Χώρα
-        receive_newsletter: Newsletter
+        job_description: Επάγγελμα
+        research_intentions: Ερευνητικά ενδιαφέροντα
+        specification: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
+        organization: Ίδρυμα
         tos_agreement: Προϋποθέσεις χρήσης
         priv_agreement: Υποδείξεις για την προστασία δεδομένων
         register: Αποστολή αιτήματος εγγραφής
         workflow_state: Κατάσταση
         registration: Εγγραφή
-        registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών
-          "Μνήμες από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα
-          και να εξηγήσετε τους λόγους για τους οποίους επιθυμείτε πρόσβαση στο Αρχείο.
-          Θα πρέπει να συναινέσετε με τους '
-        registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε
-          κατόπιν τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
-        registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα
-          δεδομένα σας, και για ποιο λόγο τα αξιοποιούμε. Εντός δύο εργασιακών ημερών
-          μετά την αποστολή της εγγραφής σας, λαμβάνετε τα δεδομένα εισόδου σας και
-          μια απάντηση στο αίτημά σας."
         priv_agreement_alias: προσωπικών δεδομένων
-        user_registration_projects:
+        user_projects:
           workflow_state: Κατάσταση
-      user_registration_project:
+      user_project:
         workflow_state: Κατάσταση
         admin_comments: Kommentar
+        receive_newsletter: Newsletter
       user_role:
         role_id: Rolle
       role:
@@ -1190,12 +1192,12 @@ el:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am
@@ -1357,16 +1359,33 @@ el:
 
   modules:
     registration:
+      registration_needed_ohd: Για να αποκτήσετε πρόσβαση στις συνεντεύξεις πρέπει να πραγματοποιήσετε εγγραφή στο Oral-History. Digital και,
+        εάν είναι απαραίτητο να ενεργοποιήσετε τα επιμέρους αρχεία.
+      registration_needed_archive: Για να αποκτήσετε πρόσβαση στις συνεντεύξεις πρέπει να πραγματοποιήσετε εγγραφή στο Oral-History. Digital
+        και να ενεργοποιήσετε το Aρχείο.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
         account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
-        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
-        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
+        project_access_rejected: Το email %{email} είναι ήδη καταχωρημένο. Ωστόσο, το αίτημά σας για πρόσβαση στην εφαρμογή %{project} απορρίφθηκε.
+        project_access_granted: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη. Παρακαλούμε συνδεθείτε στην ενότητα Είσοδος με τη διεύθυνση ηλεκτρονικού ταχυδρομείου και τον κωδικό πρόσβασής σας.
+        login_and_request_project_access: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη στο Oral-History.Digital αλλά δεν έχει ακόμη πραγματοποιηθεί ενεργοποίηση αυτής της εφαρμογής. Θα ενημερωθείτε με e-mail όταν θα έχετε πρόσβαση σε αυτή την εφαρμογή.
         login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
         account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} δεν έχει ακόμη καταχωρηθεί. Παρακαλώ εγγραφείτε πρώτα.
+        project_access_blocked: Ο λογαριασμός σας είναι κλειδωμένος.
+    project_access:
+      request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_two: 'Schritt 2 - '
+      request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      request_submit: Antrag auf Freischaltung absenden
+      request_access_explanation1: Είστε ήδη εγγεγραμμένος στο Oral-History.Digital, αλλά δεν έχετε ενεργοποιήσει ακόμα αυτό το αρχείο.
+      request_access_explanation2: Παρακαλούμε κάντε αίτηση για ενεργοποίηση.
+      request_access_link: 'Freischaltung für dieses Archiv beantragen'
+      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      request_in_process_text: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
+        Στη συνέχεια θα ενεργοποιηθεί ο λογαριασμός σας και θα αποκτήσετε πρόσβαση στο Αρχείο Προφορικών Μαρτυριών.
+      blocked_text: Sie wurden für dieses Archiv gesperrt.
     admin:
       person_details:
         contributions:
@@ -1381,8 +1400,8 @@ el:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages
@@ -1424,6 +1443,8 @@ el:
       at: at
     interview_metadata:
       add_contributors: Add contributors
+      collection_link_title: Collection in the OHD catalog
+      show_collection_desc: Εμφάνιση περιγραφής συλλογής
     interview_search:
       no_results: Δεν υπάρχουν αποτελέσματα
       annotation_for: Annotation for
@@ -1447,6 +1468,7 @@ el:
         disable: "disable auto-scrolling transcript"
       copy_position: Αντιγραφή θέσης
       copy_position_tooltip: Αντιγραφή της χρονοσφραγίδας ως URL
+      media_missing: "Δυστυχώς, το αρχείο πολυμέσων για αυτήν τη συνέντευξη δεν είναι διαθέσιμο στο διαδίκτυο. Επικοινωνήστε μαζί μας για περισσότερες πληροφορίες σχετικά με τη συνέντευξη και, εφόσον απαιτείται, πρόσβαση στο αρχείο πολυμέσων."
     person:
       no_interviewee: No interviewee
       abbr_titles:

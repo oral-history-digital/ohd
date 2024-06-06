@@ -1,6 +1,6 @@
 class UploadsController < ApplicationController
 
-  skip_before_action :authenticate_user_account!, only: [:new, :metadata_import_template]
+  skip_before_action :authenticate_user!, only: [:new, :metadata_import_template]
   skip_after_action :verify_authorized, only: [:metadata_import_template]
 
   def new
@@ -19,7 +19,7 @@ class UploadsController < ApplicationController
     file_path = create_tmp_file(file)
 
     locale = upload_params[:lang]
-    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, locale)
+    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user, current_project, locale)
 
     respond_to do |format|
       format.html { render 'react/app' }

@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 
-import { humanReadable, getLanguages } from 'modules/data';
+import { useHumanReadable } from 'modules/data';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import {
     METADATA_SOURCE_EVENT_TYPE,
     METADATA_SOURCE_INTERVIEW
@@ -14,13 +15,13 @@ import {
 
 export default function ThumbnailMetadata({
     interview,
-    project,
 }) {
-    const languages = useSelector(getLanguages);
-    const { locale, translations } = useI18n();
+    const { project } = useProject();
+    const { locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
 
-    if (isLoading) {
+    if (isLoading || !project.grid_fields) {
         return <Spinner />;
     }
 
@@ -51,13 +52,12 @@ export default function ThumbnailMetadata({
                     }
 
                     if (obj) {
-                        const value = humanReadable(obj, field.name, {
-                            locale,
-                            translations,
-                            languages,
+                        const value = humanReadable({
+                            obj,
+                            attribute: field.name,
                             optionsScope: 'search_facets',
-                            collections: project.collections,
-                        }, {}, '');
+                            none: null,
+                        });
 
                         if (!value) {
                             return null;
@@ -68,6 +68,7 @@ export default function ThumbnailMetadata({
                                 key={field.name}
                                 className={classNames('DetailList-item', {
                                     'DetailList-item--shortened': field.name === 'description',
+                                    'DetailList-item--one-line': field.name === 'collection_id',
                                 })}
                             >
                                 {value}
@@ -84,13 +85,4 @@ export default function ThumbnailMetadata({
 
 ThumbnailMetadata.propTypes = {
     interview: PropTypes.object.isRequired,
-    interviewee: PropTypes.object,
-    project: PropTypes.object.isRequired,
-    projects: PropTypes.object.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-    languages: PropTypes.object.isRequired,
-    peopleStatus: PropTypes.object.isRequired,
-    fetchData: PropTypes.func.isRequired,
 };

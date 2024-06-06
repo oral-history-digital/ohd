@@ -1,7 +1,7 @@
 class TaskSerializer < ApplicationSerializer
   attributes :id,
     :name,
-    :user_account_id,
+    :user_id,
     :supervisor_id,
     :interview_id,
     :project_id,
@@ -9,7 +9,7 @@ class TaskSerializer < ApplicationSerializer
     :interviewee,
     :workflow_state,
     :workflow_states,
-    :assigned_to_user_account_at,
+    :assigned_to_user_at,
     :assigned_to_supervisor_at,
     :started_at,
     :finished_at,
@@ -54,7 +54,7 @@ class TaskSerializer < ApplicationSerializer
   end
 
   [
-    :assigned_to_user_account_at,
+    :assigned_to_user_at,
     :assigned_to_supervisor_at,
     :started_at,
     :finished_at,

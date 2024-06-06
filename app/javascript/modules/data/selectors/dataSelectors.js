@@ -9,6 +9,8 @@ export const getData = state => state.data;
 
 export const getLanguages = state => getData(state).languages;
 
+export const getTranslationValues = state => getData(state).translation_values;
+
 export const getInstitutions = state => getData(state).institutions;
 
 export const getProjects = state => getData(state).projects;
@@ -21,15 +23,17 @@ export const getPublicProjects = createSelector(
     }
 );
 
+
+
 export const getCollections = state => getData(state).collections;
 
 export const getNormDataProviders = state => getData(state).norm_data_providers;
 
 export const getInterviews = state => getData(state).interviews;
 
-export const getAccounts = state => getData(state).accounts;
+export const getUsers = state => getData(state).users;
 
-export const getCurrentAccount = state => getAccounts(state).current;
+export const getCurrentUser = state => getUsers(state).current;
 
 export const getPermissions = state => getData(state).permissions;
 
@@ -39,17 +43,15 @@ export const getSegments = state => getData(state).segments;
 
 export const getTasks = state => getData(state).tasks;
 
-export const getUserRegistrations = state => getData(state).user_registrations;
-
 export const getRandomFeaturedInterviews = state => getData(state).random_featured_interviews;
 
-export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
+export const getCurrentUserIsAdmin = state => getCurrentUser(state).admin;
 
 /* Statuses */
 
 export const getStatuses = state => getData(state).statuses;
 
-export const getAccountsStatus = state => getStatuses(state).accounts;
+export const getUsersStatus = state => getStatuses(state).users;
 
 export const getCollectionsStatus = state => getStatuses(state).collections;
 
@@ -67,6 +69,8 @@ export const getHeadingsFetched = createSelector(
 );
 
 export const getLanguagesStatus = state => getStatuses(state).languages;
+
+export const getTranslationValuesStatus = state => getStatuses(state).translation_values;
 
 export const getInstitutionsStatus = state => getStatuses(state).institutions;
 
@@ -118,9 +122,6 @@ export const getTasksStatus = state => getStatuses(state).tasks;
 
 export const getTaskTypesStatus = state => getStatuses(state).task_types;
 
-export const getUserRegistrationsStatus = state => getStatuses(state).user_registrations;
-
-
 function projectByDomain(projects) {
     return projects && Object.values(projects).find(
         project => project.archive_domain === window.location.origin
@@ -130,10 +131,17 @@ function projectByDomain(projects) {
 export const getCurrentProject = createSelector(
     [getProjectId, getProjects],
     (projectId, projects) => {
-        const currentProject = projectByDomain(projects) ||
-            Object.values(projects).find(project => project.identifier === projectId);
+        const currentProject = Object.values(projects).find(project => project.shortname === projectId) ||
+            projectByDomain(projects);
 
         return currentProject || null;
+    }
+);
+
+export const getOHDProject = createSelector(
+    [getProjects],
+    (projects) => {
+        return Object.values(projects).find(project => project.shortname === 'ohd');
     }
 );
 
@@ -206,7 +214,7 @@ export const getTranscriptLocale = createSelector(
             return undefined;
         }
 
-        const firstTranslationLocale = interview.languages?.filter(l => l !== interview.lang)[0];
+        const firstTranslationLocale = interview.translation_locale;
         const locale = originalLocale ? interview.lang : firstTranslationLocale;
         return locale;
     }
@@ -257,21 +265,6 @@ export const getContributorsFetched = createSelector(
     }
 );
 
-export const getRootRegistryEntryFetched = createSelector(
-    [getRegistryEntriesStatus, getCurrentProject],
-    (status, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(status[currentProject.root_registry_entry_id]);
-    }
-);
-
-export const getRootRegistryEntry = createSelector(
-    [getRegistryEntries, getCurrentProject],
-    (registryEntries, currentProject) => {
-        return registryEntries[currentProject.root_registry_entry_id];
-    }
-);
-
 export const getRootRegistryEntryReload = createSelector(
     [getRegistryEntriesStatus, getCurrentProject],
     (status, currentProject) => {
@@ -289,16 +282,12 @@ export const getProjectLocales = createSelector(
     }
 );
 
-export const getProjectHasMap = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.has_map;
-    }
-);
-
 export const getStartpageProjects = createSelector(
     [getPublicProjects],
-    projects => shuffle(projects)
+    (projects) => {
+        const projectsWithoutOhd = projects.filter((project) => !project.is_ohd);
+        return shuffle(projectsWithoutOhd);
+    }
 );
 
 export const getCollectionsForCurrentProjectFetched = createSelector(

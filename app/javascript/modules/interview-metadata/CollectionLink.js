@@ -1,32 +1,46 @@
 import PropTypes from 'prop-types';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
+import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
-import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
+import { useProject } from 'modules/routes';
 
 export default function CollectionLink({
-    collection,
+    collectionId,
 }) {
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
+    const { project } = useProject();
 
-    const title = collection.notes && collection.notes[locale] || ''
+    const linkLocale = locale === 'de' ? 'de' : 'en';
+    const linkPath = `/${linkLocale}/catalog/collections/${collectionId}`;
+    const hasOwnDomain = typeof project.archive_domain === 'string'
+        && project.archive_domain !== ''
+        && !project.is_ohd;
 
-    return (
-        <span>
-            <FaInfoCircle
-                className="Icon Icon--unobtrusive u-mr-tiny"
-                title={title}
-            />
-            <a
-                href={collection.homepage[locale]}
-                title={collection.homepage[locale]}
-                target="_blank"
-                rel="noreferrer"
-            >
-                <FaExternalLinkAlt className="Icon Icon--unobtrusive u-mr-tiny" />
-            </a>
-        </span>
+    const ohdDomain = OHD_DOMAINS[railsMode];
+
+    return hasOwnDomain ? (
+        <a
+            href={`${ohdDomain}${linkPath}`}
+            title={t('modules.interview_metadata.collection_link_title')}
+            target="_blank"
+            rel="noreferrer"
+            className="u-ml-tiny"
+        >
+            <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
+        </a>
+    ) : (
+        <Link
+            to={linkPath}
+            title={t('modules.interview_metadata.collection_link_title')}
+            className="u-ml-tiny"
+        >
+            <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
+        </Link>
     );
 }
 
 CollectionLink.propTypes = {
-    collection: PropTypes.object.isRequired,
+    collectionId: PropTypes.number.isRequired,
 };

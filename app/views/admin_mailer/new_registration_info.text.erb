@@ -1,11 +1,20 @@
-Liebe*r Administrator*in,
+<%
+  case I18n.locale.to_sym
+  when :en
+-%>
+  Hello,
+  There is a new activation request in the '<%= @project.name(@project.default_locale) %>' application.
+  Please review it as soon as possible.
+  <%= @url %>
+  Best regards
 
-in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine neue Registrierung vor.
+  Oral-History.Digital
+<% else -%>
+  Guten Tag,
+  in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine neue Anfrage auf Freischaltung vor.
+  Bitte überprüfen Sie diese so schnell wie möglich.
+  <%= @url %>
+  Viele Grüße
 
-Bitte überprüfe diese innerhalb der kommenden zwei Werktage.
-
-<%= @url %>
-
-Viele Grüße
-
-Dein Interview-Archiv
+  Oral-History.Digital
+<% end -%>

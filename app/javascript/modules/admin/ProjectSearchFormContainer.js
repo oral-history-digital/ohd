@@ -2,18 +2,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { resetQuery, setQueryParams } from 'modules/search';
-import { fetchData, getProjects, getProjectsStatus } from 'modules/data';
+import { fetchData } from 'modules/data';
 import { hideSidebar } from 'modules/sidebar';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataSearchForm from './DataSearchForm';
 
 const mapStateToProps = state => ({
-    translations: getTranslations(state),
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
     query: state.search.projects.query,
-    dataStatus: getProjectsStatus(state),
     scope: 'project',
     searchableAttributes: [{ attributeName: 'name' }],
 });

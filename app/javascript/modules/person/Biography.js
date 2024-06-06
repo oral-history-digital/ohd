@@ -34,22 +34,24 @@ export default function Biography() {
 
     return (
         <div>
-            <AuthShowContainer ifLoggedIn={true}>
-                <p>
-                    <span className="flyout-content-label">
-                        {t('history')}:
-                    </span>
-                    { firstPublicEntry ? languagesOfPublicEntries.map(lang => {
-                        return (
-                            <a href={pathBase + '/biographical_entries/' + archiveId + '.pdf?lang=' + lang}>
-                                <FaDownload className="Icon Icon--small" title={t('download')} />
-                                {' '}
-                                {t(lang)}
-                            </a>
-                        )
-                    }).reduce((prev, curr) => [prev, ' ', curr]) : '---' }
-                </p>
-            </AuthShowContainer>
+            { firstPublicEntry &&
+                <AuthShowContainer ifLoggedIn={true}>
+                    <p>
+                        <span className="flyout-content-label">
+                            {t('history')}:
+                        </span>
+                        { languagesOfPublicEntries.map(lang => {
+                            return (
+                                <a href={pathBase + '/biographical_entries/' + archiveId + '.pdf?lang=' + lang}>
+                                    <FaDownload className="Icon Icon--small" title={t('download')} />
+                                    {' '}
+                                    {t(lang)}
+                                </a>
+                            )
+                        }).reduce((prev, curr) => [prev, ' ', curr]) }
+                    </p>
+                </AuthShowContainer>
+            }
             <AuthorizedContent object={{type: 'BiographicalEntry', interview_id: interview?.id}} action='create'>
                 <BiographicalEntriesContainer />
             </AuthorizedContent>

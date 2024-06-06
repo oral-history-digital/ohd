@@ -62,7 +62,8 @@ class Segment < ApplicationRecord
 
     after_commit do
       # run this only after commit of original e.g. 'de' version!
-      if text_previously_changed? && locale.length == 2 && !text.blank?
+      #if text_previously_changed? && locale.length == 2 && !text.blank?
+      if locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
         segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
       end
@@ -76,68 +77,69 @@ class Segment < ApplicationRecord
 
   def write_other_versions(text, locale)
     [:public, :subtitle].each do |version|
-      update(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
+      update(text: enciphered_text(version, text, locale), locale: "#{locale}-#{version}")
     end
   end
 
-  def enciphered_text(version, text_original='')
+  def enciphered_text(version, text_original='', locale)
     text_original ||= ''
     text_original = text_original.gsub('{{', '{[').gsub('}}', ']}') # replace wrong {{ with {[
+    hidden_text = locale.to_sym == :en ? I18n.t("activerecord.attributes.segment.hidden_text", locale: :en) : I18n.t("activerecord.attributes.segment.hidden_text", locale: :de)
     # TODO: replace with utf8 À
     text_enciphered =
       case version
       when :subtitle
         text_original.
           # colonia
-          gsub(/<res\s+(.*?)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht").              # e.g. <res bla bla>
-          gsub(/<an\s+(.*?)>/, "XXX").                                                                                                            # e.g. <an bla bla>
-          gsub(/\s*<n\(([^>]*?)\)>/, "").                                                                                                         # <n(1977)>
-          gsub(/<i\((.*?)\)>/, "").                                                                                                               # <i(Batteriewechsel)>
-          gsub(/<p\d+>/, "").                                                                                                                     # <p1>, <p2>, ...
-          gsub(/<\?\s+(.*?)>/, '(\1?)').                                                                                                          # e.g. <? bla bla>
-          gsub(/<=>/, " ").                                                                                                                       # <=>
-          gsub(/<v\((.+?)\)>/, '').                                                                                                               # e.g. <v(bla bla)>
-          gsub(/<s\((.+?)\)\s*(.*?)>/, '\2').                                                                                                     # e.g. <s(lachend) bla bla>
-          gsub(/<sim\s+(.*?)>/, '\1').                                                                                                            # e.g. <sim bla bla>
-          gsub(/<nl\((.+?)\)\s*(.*?)>/, '\2').                                                                                                    # e.g. <nl(Geräusch) bla bla>
-          gsub(/<g\((.+?)\)\s*(.*?)>/, '\2').                                                                                                     # e.g. <g(Gestik) bla bla>
-          gsub(/<m\((.+?)\)\s*(.*?)>/, '\2').                                                                                                     # e.g. <m(Mimik) bla bla>
+          gsub(/<res\s+(.*?)>/, hidden_text).                    # e.g. <res bla bla>
+          gsub(/<an\s+(.*?)>/, "XXX").                           # e.g. <an bla bla>
+          gsub(/\s*<n\(([^>]*?)\)>/, "").                        # <n(1977)>
+          gsub(/<i\((.*?)\)>/, "").                              # <i(Batteriewechsel)>
+          gsub(/<p\d+>/, "").                                    # <p1>, <p2>, ...
+          gsub(/<\?\s+(.*?)>/, '(\1?)').                         # e.g. <? bla bla>
+          gsub(/<=>/, " ").                                      # <=>
+          gsub(/<v\((.+?)\)>/, '').                              # e.g. <v(bla bla)>
+          gsub(/<s\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <s(lachend) bla bla>
+          gsub(/<sim\s+(.*?)>/, '\1').                           # e.g. <sim bla bla>
+          gsub(/<nl\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <nl(Geräusch) bla bla>
+          gsub(/<g\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <g(Gestik) bla bla>
+          gsub(/<m\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <m(Mimik) bla bla>
           # zwar
-          gsub(/\[.*?\]/, "").                                                                                                                    # e.g. [Kommentar]
-          gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. [...]
-          gsub(/\s*\([-|\d]+\)/, "").                                                                                                             # e.g. (-), (---), (6)
-          gsub(/\{.*?\}/, "").                                                                                                                    # e.g. {[laughs silently]}
-          gsub("~", "").                                                                                                                          # e.g. Wo waren Sie ~en este tiempo~?
-          gsub("...", "_").                                                                                                                       # e.g. ...
-          gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").                                                                                          # e.g. (unverständlich, 1 Wort)
-          gsub(/<\?\d+>/, "(...?)").                                                                                                              # <?1>, <?2>, ...
-          gsub(/<l\((.+?)\)\s*(.*?)>/, '\2').                                                                                                     # e.g. <l(es) bla bla>
-          gsub(/<ld\((.+?)\)\s*(.*?)>/, '\2').                                                                                                    # e.g. <ld(Dialekt) bla bla>
-          gsub(" [---]", "").                                                                                                                     # e.g. Ich war [---] bei Maria Malta, als das passierte.
-          gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s
-          gsub("<***>", "").                                                                                                                      # e.g. <***>
-          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace (more than one)
-          gsub(/\s+([\.\,\?\!\:])/, '\1').                                                                                                           # cleanup whitespace (before .,?!:)
-          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace (beginning of phrase)
+          gsub(/\[.*?\]/, "").                                   # e.g. [Kommentar]
+          gsub(/\[\.\.\.\]/, "XXX").                             # e.g. [...]
+          gsub(/\s*\([-|\d]+\)/, "").                            # e.g. (-), (---), (6)
+          gsub(/\{.*?\}/, "").                                   # e.g. {[laughs silently]}
+          gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
+          #gsub("...", "_").                                      # e.g. ...
+          gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").         # e.g. (unverständlich, 1 Wort)
+          gsub(/<\?\d+>/, "(...?)").                             # <?1>, <?2>, ...
+          gsub(/<l\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <l(es) bla bla>
+          gsub(/<ld\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <ld(Dialekt) bla bla>
+          gsub(" [---]", "").                                    # e.g. Ich war [---] bei Maria Malta, als das passierte.
+          gsub("(???) ", "(...?)").                              # e.g. Nice grandparents, we played football, (???) it’s
+          gsub("<***>", "").                                     # e.g. <***>
+          gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
+          gsub(/\s+([\.\,\?\!\:])/, '\1').                       # cleanup whitespace (before .,?!:)
+          gsub(/^\s+/, "")                                       # cleanup whitespace (beginning of phrase)
       when :public
         text_original.
           # colonia
-          gsub(/<res\s+(.*?)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz nicht veröffentlicht"). # e.g. <res bla bla>
-          gsub(/<an\s+(.*?)>/, "XXX").                                                                                                            # e.g. <an bla bla>
-          gsub(/<n\(([^>]*?)\)>/, '(\1)').                                                                                                        # <n(1977)>
-          gsub(/<i\((.*?)\)>/, "<c(Pause)>").                                                                                                     # <i(Batteriewechsel)>
+          gsub(/<res\s+(.*?)>/, hidden_text).                    # e.g. <res bla bla>
+          gsub(/<an\s+(.*?)>/, "XXX").                           # e.g. <an bla bla>
+          gsub(/<n\(([^>]*?)\)>/, '(\1)').                       # <n(1977)>
+          gsub(/<i\((.*?)\)>/, "<c(Pause)>").                    # <i(Batteriewechsel)>
           # zwar
-          gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. <an bla bla>
-          gsub(/\{\[?(.*?)\]?\}/, '[\1]').                                                                                                        # e.g. {[laughs silently]}
-          gsub("~", "").                                                                                                                          # e.g. Wo waren Sie ~en este tiempo~?
-          gsub("...", "_").                                                                                                                       # e.g. ...
-          gsub(" [---]", "<p>").                                                                                                                  # e.g. Ich war [---] bei Maria Malta, als das passierte.
-          gsub(/\((.*?)\?\)/, '<?\1>').                                                                                                           # e.g. (By now?) it's the next generation
-          gsub("<***>", "<i(Bandende)>").                                                                                                         # e.g. <***>
-          gsub("(???) ", "<?>").                                                                                                                  # e.g. Nice grandparents, we played football, (???) it’s
-          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace (more than one)
-          gsub(/\s+([\.\,\?\!\:])/, '\1').                                                                                                           # cleanup whitespace (before .,?!:)
-          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace (beginning of phrase)
+          gsub(/\[\.\.\.\]/, "XXX").                             # e.g. <an bla bla>
+          gsub(/\{\[?(.*?)\]?\}/, '[\1]').                       # e.g. {[laughs silently]}
+          gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
+          #gsub("...", "_").                                      # e.g. ...
+          gsub(" [---]", "<p>").                                 # e.g. Ich war [---] bei Maria Malta, als das passierte.
+          #gsub(/\((.*?)\?\)/, '<?\1>').                          # e.g. (By now?) it's the next generation
+          gsub("<***>", "<i(Bandende)>").                        # e.g. <***>
+          gsub("(???) ", "<?>").                                 # e.g. Nice grandparents, we played football, (???) it’s
+          gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
+          gsub(/\s+([\.\,\?\!\:])/, '\1').                       # cleanup whitespace (before .,?!:)
+          gsub(/^\s+/, "")                                       # cleanup whitespace (beginning of phrase)
       end
     text_enciphered
   end
@@ -161,7 +163,8 @@ class Segment < ApplicationRecord
   class << self
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
-      if opts[:speaker_id]
+      split = opts.delete(:split)
+      if opts[:speaker_id] || !split
         next_time = Timecode.new(opts.delete(:next_timecode)).time
         duration = next_time - Timecode.new(opts[:timecode]).time
         opts.update(duration: duration) if duration > 0
@@ -199,7 +202,7 @@ class Segment < ApplicationRecord
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
-          person_id = segment.interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first['person_id']
+          person_id = segment.interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first&.person_id
           atts[:speaker_id] = person_id if person_id
           segment.update atts
         else
@@ -241,14 +244,6 @@ class Segment < ApplicationRecord
 
   end
 
-  def identifier
-    id
-  end
-
-  def identifier_method
-    'id'
-  end
-
   def languages
     translations.map{|t| t.locale.to_s.split('-').first}.uniq
   end
@@ -268,7 +263,7 @@ class Segment < ApplicationRecord
 
   searchable do
     string :archive_id, :stored => true do
-      interview.archive_id
+      interview&.archive_id
     end
     string :media_id, :stored => true
     string :timecode
@@ -310,7 +305,7 @@ class Segment < ApplicationRecord
   end
 
   def text_orig
-    text("#{interview.lang}-public")
+    text("#{interview&.lang}-public")
   end
 
 
@@ -327,7 +322,7 @@ class Segment < ApplicationRecord
   end
 
   def orig_locale
-    interview.language && ISO_639.find(interview.language.first_code).alpha2
+    interview.language && ISO_639.find(interview.language.code).alpha2
   end
 
   def media_id=(id)

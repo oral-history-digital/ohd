@@ -6,7 +6,7 @@ import '@reach/tabs/styles.css';
 import { VIEWMODE_GRID, VIEWMODE_LIST, VIEWMODE_WORKFLOW } from 'modules/constants';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import ResultTableContainer from './ResultTableContainer';
+import ResultTable from './ResultTable';
 import WorkflowResultsContainer from './WorkflowResultsContainer';
 import ResultGrid from './ResultGrid';
 
@@ -73,7 +73,7 @@ export default function ArchiveSearchTabs({
                         } else {
                             switch (viewMode) {
                             case VIEWMODE_LIST:
-                                tabContent = <ResultTableContainer interviews={interviews} />;
+                                tabContent = <ResultTable interviews={interviews} />;
                                 break;
                             case VIEWMODE_WORKFLOW:
                                 tabContent = (

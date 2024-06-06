@@ -32,6 +32,9 @@ ru:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Да
+    false: Нет
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -48,12 +51,6 @@ ru:
     none: keine
   in: В
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
-  project_access_in_process: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш аккаунт будет активирован и Вы получите доступ к материалам Архива интервью.
-  registration_needed: В целях защиты персональных данных тех, чьи истории жизни представлены
-    в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
-    ко всем интервью в полном объеме.
   change_to_bcrypt: Недавно мы изменили способ сохранения наших паролей. Пожалуйста,
     щелкните на ссылку <a href="/de/user_accounts/password/new">"восстановить пароль"</a>,
     чтобы создать новый пароль или восстановить старый. Спасибо за понимание
@@ -65,6 +62,7 @@ ru:
   or: or
   show: Zeigen
   hide: Weniger
+  loading: Загрузка…
   edit_column_header:
     open_table: "Erschließungstabelle öffnen"
     close_table: "Erschließungstabelle schließen"
@@ -167,14 +165,14 @@ ru:
   error: Error
   segment: Сегмент
   publish: Опубликовать
-  login: Войти
+  login: Вход
   login_name: логин
   logout: Выйти
   login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
   logged_in_as: Вы вошли как
   user_name: Benutzer*in
   notice: сохранить
-  forget_password: Восстановить пароль
+  forget_password: Возобновление пароля
   account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
     6 Zeichen lang sein
   submit: Absenden
@@ -184,7 +182,7 @@ ru:
   forget_password_question: Passwort wiederherstellen
   enter_email: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv
     registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.
-  email: Адрес эл. почты
+  email: Электронный адрес
   change_password: Passwort ändern
   archive_results: Результаты поиска
   segment_results: Результаты поиска транскриптов
@@ -196,7 +194,7 @@ ru:
   biographicalentry_results: Результаты поиска в Краткой биографии
   observation_results: Search results in the protocol
   person_results: Результаты поиска для людей
-  user_registration_results: Suchergebnisse für Benutzer*innen
+  user_results: Suchergebnisse für Benutzer*innen
   segment_hits: Результаты в тексте
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
@@ -256,6 +254,7 @@ ru:
   transcript_title: Транскрипт интервью (%{lang})
   translation_title: Перевод интервью (%{lang})
   transcript_footer: 'Метод цитирования: Транскрипт интервью'
+  translation_footer: 'Метод цитирования: Перевод интервью'
   transcript_template: Vorlage für den Import von .csv Dateien
   biographical_entries_header: 'Краткая биография: %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Краткая биография: %{interviewee_name}'
@@ -320,7 +319,7 @@ ru:
   interview_type: 'Art: Video'
   language: Язык
   camera: Kamera
-  order_new_password: Passwort wiederherstellen
+  order_new_password: Возобновление пароля
   ordered_new_password: Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres
     Passwortes geschickt.
   conditions: Условия пользования
@@ -374,9 +373,13 @@ ru:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Отсутствует медиа
     signature_original: Signature original
     observations: Observations
     language_id: Language
+    primary_language_id: Erste Sprache
+    secondary_language_id: Zweite Sprache
+    primary_translation_language_id: Erste Übersetzungssprache
     workflow_state: Workflow state
     collection_id: Collection
     home_location: Home location
@@ -546,7 +549,7 @@ ru:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: Details
       edit: Bearbeiten
     role:
@@ -637,9 +640,11 @@ ru:
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
+    block: sperren
+    revoke_block: Sperrung aufheben
+    created: angelegt
+    confirmed: bestätigt
+    blocked: gesperrt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -656,13 +661,14 @@ ru:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
-      account_confirmed: ungeprüft
-      account_deactivated: gesperrt
+      project_access_requested: ungeprüft
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
   help_texts:
     metadata_fields:
@@ -691,14 +697,14 @@ ru:
     proofreader: корректура
     research: обработка
     sound: Ton
-    other_attender: Sonstige Anwesende
+    other_attender: Other attendees
+    further_interviewee: Further interviewee
     producer: Produktion
     quality_manager: Qualitätsmangement
     quality_manager_translation: Qualitätsmangement Übersetzung
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
@@ -754,17 +760,16 @@ ru:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: редакторский формат
-  user_registration:
+  user:
     registration: Регистрация
-    registration_text_one: 'Для поиска информации в архиве "Принудительный труд 1939-1945"
-      необходима регистрация. '
-    registration_text_two: " разъясняют, кто и в каких целях может использовать архив. "
-    registration_text_three: " разъясняют, почему и какие сведения нами обрабатываются
-      и каким образом используются. В течение двух рабочих дней после отправки Ваших
-      данных Вы получите ответное письмо или Ваши данные для доступа."
-    tos_agreement: Правила пользования сайтом
-    priv_agreement: Положения о защите персональных данных
-    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
+    registration_text_one: 'Пожалуйста, зарегистрируйтесь для получения доступа к интервью. В '
+    registration_text_one_ohd: 'Пожалуйста, зарегистрируйтесь для получения доступа к платформе. В '
+    registration_text_two: 'содержится пояснение, кто и с какой целью может использовать Oral.History-Digital. '
+    registration_text_three: ' поясняет, почему мы запрашиваем некоторые данные и для чего их используем.
+      В целях защиты информации Вы получите электронное письмо с просьбой подтвердить Вашу регистрацию.'
+    registration_text_four: 'После этого Вы сможете подать запрос на активацию допуска к различным архивам интервью, размещенным на платформе.'
+    tos_agreement: Условиях пользования
+    priv_agreement: Политика конфиденциальности
     notes_on_tos_agreement: Я принимаю Положения о защите персональных данных.
     priv_agreement_alias: Положения о защите персональных данных
     notes_on_priv_agreement: Я принимаю Правила пользования сайтом.
@@ -777,6 +782,7 @@ ru:
       male: мужчина
       diverse: другие
       not_specified: нет данных
+  user_project:
     job_description:
       researcher: Доцент/Научный сотрудник
       filmmaker: Автор фильмов
@@ -798,6 +804,7 @@ ru:
       university_teaching: Университетское преподавание
       scientific_paper: Научная публикация
       other: Прочее
+    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes %{project} abonnieren.
   gender:
     female: женщина
     male: мужчина
@@ -842,6 +849,7 @@ ru:
     age: Возраст
     year_of_birth: Год рождения
     interview_date: Entstehungszeit
+    media_missing: Отсутствует медиа
     public: öffentlich
     unshared: nicht öffentlich
     description: Beschreibung
@@ -849,11 +857,15 @@ ru:
     observations: Protokoll
     tape_count: Anzahl der Bänder
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Status
     date_of_birth: дата рождения
     signature_original: Originalsignatur
     startpage_position: Startpage position
+    project_id: Archiv
+    project_access: Archivzugang
+    restricted: beschränkt
+    free: frei
   activerecord:
     models:
       interview:
@@ -925,7 +937,7 @@ ru:
       biographical_entry:
         one: Краткая биография
         other: Краткие биографии
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1044,6 +1056,7 @@ ru:
         language_id: Originalsprache
         translation_language_id: Übersetzungssprache
         media_type: Medientyp
+        media_missing: Отсутствует медиа
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status'
         tasks_states: Bearbeitungsstand
@@ -1073,6 +1086,7 @@ ru:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Media Missing Message
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: Importarten
@@ -1095,9 +1109,12 @@ ru:
         pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
-        is_catalog: Ist das Projekt ein Katalog
+        is_catalog: Nur Metadaten anzeigen
+        grant_project_access_instantly: Keine Freischaltung nötig
+        grant_access_without_login: Zugang ohne Login
         display_ohd_link: OHD-Link zeigen
         show_preview_img: Vorschaubild auf Landing-Page zeigen
+        show_legend: Legende im Transkript anzeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
@@ -1141,6 +1158,7 @@ ru:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
+        hidden_text: Эта часть текста не публикуется.
       user_content:
         title: Заглавие
         description: Заметка
@@ -1155,43 +1173,39 @@ ru:
         workflow_state: Статус публикации
         heading: Глава
         media_id: Номер носителя информации
-      user_account:
-        login: Login
-        password: Passwort
-      account:
-        gender: Geschlecht
-        first_name: Имя
-        last_name: Фамилия
-      user_registration:
+      user:
         created_at: Erstellt am
-        activated_at: активирован
+        confirmed_at: активирован
         processed_at: Bearbeitet am
+        activated_at: активирован
         default_locale: Sprache
-        appellation: Обращение
+        login: Вход
+        password: Пароль
+        appellation: Звание
         first_name: Имя
         last_name: Фамилия
         gender: Пол
-        job_description: Профессия
-        research_intentions: Цель изысканий
-        comments: Уточнение цели
-        organization: Учреждение
         homepage: Интернет-страница учреждения
         address: Adresse
         street: Улица
         zipcode: Индекс
         city: Населённый пункт
         country: Страна
-        receive_newsletter: Newsletter
+        job_description: Профессия
+        research_intentions: Цель изысканий
+        specification: Уточнение цели
+        organization: Учреждение
         tos_agreement: Правила пользования сайтом
         priv_agreement: Hinweise zum Datenschutz
         register: Отправить регистрацию
         workflow_state: Status
         transition_to: 'Status'
-        user_registration_projects:
+        user_projects:
           workflow_state: Status
-      user_registration_project:
+      user_project:
         workflow_state: Status
         admin_comments: Kommentar
+        receive_newsletter: Newsletter
       user_role:
         role_id: Rolle
       role:
@@ -1218,12 +1232,12 @@ ru:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am
@@ -1318,7 +1332,7 @@ ru:
         locale: Sprache
         lang: Sprache
         text: Text
-        email: Адрес эл. почты
+        email: Электронный адрес
         url: URL
         href: Href
         file: Datei
@@ -1379,8 +1393,8 @@ ru:
     new: New interview
     edit: Edit interview
   user_account:
-    login: Login
-    password: Password
+    login: Вход
+    password: Пароль
     errors:
       login: Please correct your login
       password: Please correct your password
@@ -1664,7 +1678,7 @@ ru:
     language_id: Язык
     fulltext: Ключевое понятие
   admin_nav:
-    user_registrations: Пользователь
+    users: Пользователь
     import: Импорт
     statistics: Статистика
     permissions: Права
@@ -1770,16 +1784,48 @@ ru:
 
   modules:
     registration:
+      title: Registrierung für Oral-History.Digital
+      registration_needed_ohd: Для получения доступа к интервью необходима регистрация на платформе Oral-History.Digital
+        и при необходимости – активация допуска к одному из архивов.
+      registration_needed_archive: Для получения доступа к интервью необходима регистрация на платформе Oral-History.Digital
+        и активация допуска к архиву.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
-        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
-        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
-        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
-        login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
-        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: Электронный адрес %{email} еще не зарегистрирован. Пожалуйста, пройдите процедуру регистрации.
+        account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+        project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_rejected: Электронный адрес %{email} уже зарегистрирован. Однако Ваш запрос на доступ к приложению %{project} был отклонен.
+        project_access_granted: Электронный адрес %{email} уже зарегистрирован. Пожалуйста, войдите в систему, указав Ваш электронный адрес и пароль.
+        login_and_request_project_access: Электронный адрес %{email} уже зарегистрирован на Oral-History.Digital, но активация допуска еще не состоялась. вы получите подтверждение о получении доступа к приложению по электронной почте.
+        login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer E-Mail-Adresse und ihrem Passwort an.
+        project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project} war zeitlich befristet und ist nun beendet.
+          Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
+        project_access_blocked: Ваш акаунт заблокирован.
+    project_access:
+      request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_one: 'Schritt 1 - '
+      request_step_two: 'Schritt 2 - '
+      request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      request_submit: Antrag auf Freischaltung absenden
+      request_access_explanation1: Вы уже зарегистрированы на портале Oral-History.Digital, но еще не получили допуск к этому архиву.
+      request_access_explanation2: Пожалуйста, подайте заявку на активацию доступа.
+      request_access_link: Freischaltung beantragen
+      request_in_process_title: Ihr Antrag auf Freischaltung wurde erfolgreich abgesendet!
+      request_in_process_text1: Die inhaltliche Prüfung des Antrages kann bis zu zwei Werktage dauern.
+      request_in_process_text2: Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
+      blocked_text: Sie wurden für dieses Archiv gesperrt.
+      terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
+      correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
+      rejected_text: Die Überprüfung Ihres Antrags auf Freischaltung hat ergeben, dass ihre Angaben unzureichend sind oder nicht denNutzungsbedingungen entsprechen. Bitte ändern Sie Ihre Angaben.
+      rejected_button_text: Angaben korrigieren.
+      archive_management_in: Archivmanagement in
+      granted_in: freigeschaltet in
+      actual_workflow_state: aktueller Status
+      at: am
+      one: Freischaltung
+      many: Freischaltungen
     admin:
       person_details:
         contributions:
@@ -1794,8 +1840,8 @@ ru:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages
@@ -1837,6 +1883,8 @@ ru:
       at: at
     interview_metadata:
       add_contributors: Add contributors
+      collection_link_title: Collection in the OHD catalog
+      show_collection_desc: Показать описание коллекции
     interview_search:
       no_results: No results
       annotation_for: Annotation for
@@ -1860,6 +1908,7 @@ ru:
         disable: "disable auto-scrolling transcript"
       copy_position: Копировать позицию
       copy_position_tooltip: Копировать актуальную отметку времени как URL
+      media_missing: "К сожалению, медиафайл для этого интервью недоступен онлайн. Пожалуйста, свяжитесь с нами для получения дополнительной информации об интервью и, при необходимости, доступа к медиафайлу."
     person:
       no_interviewee: No interviewee
       abbr_titles:

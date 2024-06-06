@@ -1,18 +1,10 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, getProjectLocales, submitData, getProjects, getCurrentAccount } from 'modules/data';
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { submitData, getCurrentProject } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    locales: getProjectLocales(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    translations: getTranslations(state),
-    account: getCurrentAccount(state),
-    editView: getEditView(state),
     data: getCurrentProject(state),
     scope: 'project',
     helpTextCode: 'archive_display_form',

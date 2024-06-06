@@ -4,10 +4,10 @@ import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import useSWRImmutable from 'swr/immutable';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
-import { humanReadable } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
@@ -18,43 +18,35 @@ import missingStill from 'assets/images/missing_still.png';
 
 export default function InterviewWorkflowRow({
     interview,
-    locale,
-    translations,
     languages,
     collections,
     project,
     projectId,
-    projects,
     tasks,
     tasksStatus,
-    userAccountsStatus,
     fetchData,
     setArchiveId,
 }) {
     const [collapsed, setCollapsed] = useState(true);
-    const { t } = useI18n();
+    const { t, locale, translations } = useI18n();
     const pathBase = usePathBase();
     const { fulltext } = useArchiveSearch();
     const { data: people, isLoading } = usePeople();
+
+    const usersPath = `${pathBase}/users.json?workflow_users_for_project=${projectId}`;
+    const { isLoading: isLoadingUsers, data: users, error: usersLoadError } = useSWRImmutable(usersPath);
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
     const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
-        loadUserAccounts();
         loadTasks();
     }, []);
 
-    function loadUserAccounts() {
-        if (!userAccountsStatus.all) {
-            fetchData({ projectId, projects, locale }, 'accounts');
-        }
-    }
-
     function loadTasks() {
         if (!tasksStatus[`for_interview_${interview.archive_id}`]) {
-            fetchData({ projectId, projects, locale }, 'tasks', null, null, `for_interview=${interview.archive_id}`);
+            fetchData({ projectId, project, locale }, 'tasks', null, null, `for_interview=${interview.archive_id}`);
         }
     }
 
@@ -87,7 +79,10 @@ export default function InterviewWorkflowRow({
     }
 
     return (
-        <div className='border-top'>
+        <div
+            className='border-top'
+            key={interview.archive_id}
+        >
             <div className='search-result-workflow data boxes'>
                 {isLoading ? <Spinner small /> : (
                     <Link className="Link search-result-link box-10"
@@ -102,18 +97,17 @@ export default function InterviewWorkflowRow({
                             onError={(e)=> { e.target.src = missingStill; }}
                             alt=""
                         />
-                        <span className='workflow' >
-                            {interviewee?.names?.[locale]?.last_name + ', '}<br />
-                            {interviewee?.names?.[locale]?.first_name }
+                        <span className="workflow">
+                            {interview.short_title?.[locale]}
                         </span>
                     </Link>
                 )}
 
-                {box(humanReadable(interview, 'archive_id', { locale, translations }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'media_type', { locale, translations }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'duration', { locale, translations }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'language_id', { locale, translations, languages }, { collapsed }), '10')}
-                {box(humanReadable(interview, 'collection_id', { locale, translations, collections }, { collapsed }), '10')}
+                {box(interview?.archive_id, '10')}
+                {box(t(interview?.media_type), '10')}
+                {box(`${interview?.duration.split(':')[0]} h ${interview?.duration.split(':')[1]} min`, '10')}
+                {box(languages[interview?.language_id]?.name[locale], '10')}
+                {box(collections[interview?.collection_id]?.name[locale], '10')}
 
                 <div className={classNames('box-30', collapsed ? 'workflow-inactive' : 'workflow-active')} >
                     {tasksFetched && (
@@ -151,6 +145,7 @@ export default function InterviewWorkflowRow({
                         elementType={'select'}
                         obj={interview}
                         attribute={'workflow_state'}
+                        value={t(`workflow_states.${interview.workflow_state}`)}
                         values={['public', 'unshared']}
                         optionsScope={'workflow_states'}
                         noStatusCheckbox={true}
@@ -164,7 +159,7 @@ export default function InterviewWorkflowRow({
                     <div className='workflow-active boxes header'>
                         {box(t('activerecord.attributes.task.task_type_id'))}
                         {box(t('activerecord.attributes.task.supervisor_id'))}
-                        {box(t('activerecord.attributes.task.user_account_id'))}
+                        {box(t('activerecord.attributes.task.user_id'))}
                         {box(t('activerecord.attributes.task.workflow_state'))}
                         {box(t('activerecord.attributes.task.comments'), '30')}
                     </div>
@@ -174,7 +169,7 @@ export default function InterviewWorkflowRow({
                         <HelpText code="workflow_tasks" />
                         {interview.task_ids.map(taskId => {
                             if (project.task_types[tasks[taskId].task_type.id]?.use) {
-                                return <TaskContainer task={tasks[taskId]} interview={interview} />
+                                return <TaskContainer task={tasks[taskId]} interview={interview} users={users?.data} />
                             }
                         })}
                     </div>
@@ -186,14 +181,11 @@ export default function InterviewWorkflowRow({
 
 InterviewWorkflowRow.propTypes = {
     interview: PropTypes.object.isRequired,
-    userAccountsStatus: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
+    usersStatus: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     tasks: PropTypes.object,
     tasksStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,

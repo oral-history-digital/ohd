@@ -5,13 +5,14 @@ import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import { TreeSelectContainer } from 'modules/tree-select';
+import { RegistryTreeSelect } from 'modules/registry-tree-select';
 import { HelpText } from 'modules/help-text';
 import { pluralize } from 'modules/strings';
 import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
 import SelectContainer from './input-components/SelectContainer';
 import ColorPicker from './input-components/ColorPicker';
+import Extra from './input-components/Extra';
 import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
 import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
 import NestedScope from './NestedScope';
@@ -22,11 +23,12 @@ const elementTypeToComponent = {
     colorPicker: ColorPicker,
     input: InputContainer,
     registryEntrySelect: RegistryEntrySelectContainer,
-    registryEntryTreeSelect: TreeSelectContainer,
+    registryEntryTreeSelect: RegistryTreeSelect,
     richTextEditor: RichTextEditor,
     select: SelectContainer,
     speakerDesignationInputs: SpeakerDesignationInputs,
-    textarea: Textarea
+    textarea: Textarea,
+    extra: Extra,
 };
 
 export default function FormComponent({
@@ -72,16 +74,18 @@ export default function FormComponent({
                 let value = element.value || (data && data[element.attribute]);
                 error = !(value && element.validate(value));
             }
-            errors[element.attribute] = error;
+            if (element.attribute) errors[element.attribute] = error;
         })
         return errors;
     }
 
     function handleErrors(name, hasError) {
-        setErrors(prevErrors => ({
-            ...prevErrors,
-            [name]: hasError
-        }));
+        if (name !== 'undefined') {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [name]: hasError
+            }));
+        }
     }
 
     function handleChange(name, value, params, identifier) {
@@ -99,12 +103,14 @@ export default function FormComponent({
         let hasErrors = false;
 
         Object.keys(errors).forEach(name => {
-            const element = elements.find(element => element.attribute === name);
+            if (name !== 'undefined') {
+                const element = elements.find(element => element.attribute === name);
 
-            const isHidden = element?.hidden;
-            const isOptional = element?.optional;
+                const isHidden = element?.hidden;
+                const isOptional = element?.optional;
 
-            hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
+                hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
+            }
         })
 
         return !hasErrors;

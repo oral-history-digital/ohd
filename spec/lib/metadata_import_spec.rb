@@ -6,6 +6,7 @@ describe MetadataImport do
     Person.destroy_all
     Interview.destroy_all
     @language = FactoryBot.create(:language) #unless Language.where(name: 'Deutsch').first
+    FactoryBot.create(:language, code: "pol", name: "Polnisch")
 
     @project = project_with_contribution_types_and_metadata_fields
 
@@ -45,8 +46,13 @@ describe MetadataImport do
       expect(Interview.last.interviewees.first.birth_name).to eq('Huber')
       expect(Interview.last.interviewees.first.alias_names).to eq('Meyer')
       expect(Interview.last.interviewees.first.other_first_names).to eq('Laura')
+      expect(Interview.last.interviewees.first.pseudonym_first_name).to eq('Irene')
+      expect(Interview.last.interviewees.first.pseudonym_last_name).to eq('Falsch')
+      expect(Interview.last.interviewees.first.use_pseudonym).to eq(true)
+      expect(Interview.last.interviewees.first.description).to eq('nette alte Dame')
       expect(Interview.last.interviewees.first.date_of_birth).to eq('01/01/01')
       expect(Interview.last.interviewees.first.biographical_entries.first.text).to eq('Geboren und gestorben')
+      expect(Interview.last.interviewees.first.biographical_entries.first.workflow_state).to eq('public')
 
       expect(Interview.last.interviewers.first.first_name).to eq('Matilda')
       expect(Interview.last.interviewers.first.last_name).to eq('Gelb')
@@ -78,6 +84,8 @@ describe MetadataImport do
       expect(Person.count).to eq(5)
 
       expect(Interview.last.language.name).to eq("Deutsch")
+      expect(Interview.last.translation_language.name).to eq("English")
+      expect(Interview.last.languages).to include('pl')
       expect(Interview.last.interview_date).to eq("05/03/20")
       expect(Interview.last.media_type).to eq("audio")
       expect(Interview.last.duration).to eq(9600)
@@ -90,8 +98,13 @@ describe MetadataImport do
       expect(Interview.last.interviewees.first.birth_name).to eq('Hubertus')
       expect(Interview.last.interviewees.first.alias_names).to eq('Meier')
       expect(Interview.last.interviewees.first.other_first_names).to eq('Linda')
+      expect(Interview.last.interviewees.first.pseudonym_first_name).to eq('Maria')
+      expect(Interview.last.interviewees.first.pseudonym_last_name).to eq('Richtig')
+      expect(Interview.last.interviewees.first.use_pseudonym).to eq(false)
+      expect(Interview.last.interviewees.first.description).to eq('gemeine Frau')
       expect(Interview.last.interviewees.first.date_of_birth).to eq('01/02/01')
       expect(Interview.last.interviewees.first.biographical_entries.first.text).to eq('Geboren, gelebt und gestorben')
+      expect(Interview.last.interviewees.first.biographical_entries.first.workflow_state).to eq('unshared')
 
       expect(Interview.last.interviewers.first.first_name).to eq('Mareike')
       expect(Interview.last.interviewers.first.last_name).to eq('Orange')

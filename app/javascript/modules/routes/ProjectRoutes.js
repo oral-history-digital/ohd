@@ -12,7 +12,6 @@ import {
 } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
 import { SearchPage } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
@@ -20,15 +19,17 @@ import { RegistryContainer } from 'modules/registry';
 import {
     EditInterview,
     EditProjectConfig,
+    EditProjectAccessConfig,
     EditProjectDisplay,
     EditProjectInfo,
     EventTypesAdminPage,
     MetadataFieldsContainer,
     PeopleAdminPage,
-    UploadsContainer,
+    UploadsPage,
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
     WrappedLanguagesContainer,
+    WrappedTranslationValuesContainer,
     WrappedPermissionsContainer,
     WrappedRegistryNameTypesContainer,
     WrappedRegistryReferenceTypesContainer,
@@ -38,10 +39,10 @@ import {
 import {
     AccountPage,
     OrderNewPasswordContainer,
-    RegisterContainer,
-    ActivateAccount
-} from 'modules/account';
-import { UserRegistrationsContainer } from 'modules/users';
+    ActivateAccount,
+} from 'modules/user';
+import { UsersAdminPage } from 'modules/admin';
+import { TextPage } from 'modules/layout';
 
 export default function ProjectRoutes() {
     const projectId = useSelector(getProjectId);
@@ -69,15 +70,14 @@ export default function ProjectRoutes() {
                 <Route path="searches/archive" element={<SearchPage />} />
                 <Route path="searches/map" element={<SearchMap />} />
                 <Route path="registry_entries" element={<RegistryContainer />} />
-                <Route path="accounts/current" element={<AccountPage />} />
-                <Route path="user_accounts/password/new" element={<OrderNewPasswordContainer />} />
-                <Route path="user_accounts/password/edit" element={<ActivateAccount />} />
-                <Route path="user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
-                <Route path="user_registrations/new" element={<RegisterContainer />} />
-                <Route path="user_registrations" element={<UserRegistrationsContainer />} />
-                <Route path="uploads/new" element={<UploadsContainer />} />
+                <Route path="users/current" element={<AccountPage />} />
+                <Route path="users/password/new" element={<OrderNewPasswordContainer />} />
+                <Route path="users/password/edit" element={<ActivateAccount />} />
+                <Route path="users" element={<UsersAdminPage />} />
+                <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route path="project/edit-config" element={<EditProjectConfig />} />
+                <Route path="project/edit-access-config" element={<EditProjectAccessConfig />} />
                 <Route path="project/edit-display" element={<EditProjectDisplay />} />
                 <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
                 <Route path="people" element={<PeopleAdminPage />} />
@@ -86,11 +86,16 @@ export default function ProjectRoutes() {
                 <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
                 <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />
                 <Route path="languages" element={<WrappedLanguagesContainer />} />
+                <Route path="translation_values" element={<WrappedTranslationValuesContainer />} />
+                <Route path="conditions" element={<TextPage code='conditions' />} />
+                <Route path="ohd_conditions" element={<TextPage code='ohd_conditions' />} />
+                <Route path="privacy_protection" element={<TextPage code='privacy_protection' />} />
+                <Route path="contact" element={<TextPage code='contact' />} />
+                <Route path="legal_info" element={<TextPage code='legal_info' />} />
                 <Route path="collections" element={<WrappedCollectionsContainer />} />
                 <Route path="roles" element={<WrappedRolesContainer />} />
                 <Route path="permissions" element={<WrappedPermissionsContainer />} />
                 <Route path="task_types" element={<WrappedTaskTypesContainer />} />
-                <Route exact path="/" element={<HomeContainer />} />
             </Routes>
         </ErrorBoundary>
     );

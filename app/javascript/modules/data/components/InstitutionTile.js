@@ -33,6 +33,7 @@ export default function InstitutionTile ({
             <ul>
                 {Object.values(data.institution_projects).map(ip => {
                     const project = projects[ip.project_id];
+                    if (!project) return null;
                     return (
                         <li key={ip.id}>
                             <LinkOrA
@@ -49,6 +50,7 @@ export default function InstitutionTile ({
             <h3>{t('activerecord.models.collection.other')}</h3>
             <ul>
                 {collectionsForInstitute.map(collection => {
+                    if (!collection) return null;
                     const project = projects[collection.project_id];
                     return (
                         <li key={collection.id}>

@@ -2,8 +2,8 @@
 
 <%
   interviewee_name = interview.interviewee.display_name
-  title = "#{I18n.t((interview.lang == content_locale) ? 'transcript_title' : 'translation_title', locale: header_locale, lang: content_locale_human)} #{interviewee_name}"
-  header_text = "#{I18n.t('transcript_header', locale: header_locale, lang: content_locale_human)} #{interviewee_name} (#{I18n.t('archive_id', locale: header_locale)} #{interview.archive_id})"
+  title = "#{I18n.t("#{doc_type}_title", locale: header_locale, lang: content_locale_human)} #{interviewee_name}"
+  header_text = "#{I18n.t("#{doc_type}_header", locale: header_locale, lang: content_locale_human)} #{interviewee_name} (#{I18n.t('archive_id', locale: header_locale)} #{interview.archive_id})"
   tape = 0
   speaker_id = nil
  %>
@@ -36,14 +36,15 @@
   render partial: "latex/info",
     locals: {
       interview: interview,
-      header_locale: header_locale
+      header_locale: header_locale,
+      doc_type: doc_type
   }
 %>
 <%#= render partial: "latex/citation", locals: { interviewee_name: interviewee_name } %>
 
 \newpage
 
-<%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.identifier != 'zwar' %>
+<%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.shortname != 'zwar' %>
 
 <%# set section fontsize: %>
 \titleformat{\section}
@@ -59,13 +60,15 @@
 
 \newpage
 
-<%=
-  render partial: "latex/legend",
-    locals: {
-      header_locale: header_locale,
-      interview: interview
-  }
-%>
+<% if interview.project.show_legend %>
+  <%=
+    render partial: "latex/legend",
+      locals: {
+        header_locale: header_locale,
+        interview: interview
+    }
+  %>
+<% end %>
 
 \newpage
 

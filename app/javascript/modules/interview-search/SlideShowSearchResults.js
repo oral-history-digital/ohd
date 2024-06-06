@@ -60,6 +60,7 @@ export default function SlideShowSearchResults({
                                         tapeNumber={segment.tape_nbr}
                                         time={segment.time}
                                         lang={lang}
+                                        transcriptCoupled={interview.transcript_coupled}
                                     />
                                 </LinkOrA>
                             </div>

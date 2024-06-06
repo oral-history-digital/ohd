@@ -1,26 +1,19 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getInstitutionsQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getProjects, getCurrentAccount,
-    getInstitutions, getInstitutionsStatus, getProjectLocales,
-    getProjectHasMap, InstitutionTile } from 'modules/data';
+import { fetchData, deleteData, submitData, getInstitutions,
+    getStatuses, getInstitutionsStatus, InstitutionTile } from 'modules/data';
 import { getCookie } from 'modules/persistence';
-import DataList from './DataList';
+import WrappedDataList from './WrappedDataList';
 import LogosContainer from './LogosContainer';
-import { INDEX_INSTITUTIONS } from 'modules/sidebar';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    locales: getProjectLocales(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    translations: getTranslations(state),
-    account: getCurrentAccount(state),
     editView: getCookie('editView') === 'true',
     data: getInstitutions(state),
     dataStatus: getInstitutionsStatus(state),
+    statuses: getStatuses(state),
+    otherDataToLoad: ['institution', 'collection'],
     resultPagesCount: getInstitutionsStatus(state).resultPagesCount,
     query: getInstitutionsQuery(state),
     scope: 'institution',
@@ -84,5 +77,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setQueryParams,
 }, dispatch);
 
-//export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

@@ -2,7 +2,7 @@
 
 exports[`renders correctly in closed state 1`] = `
 <button
-  className="BurgerButton is-closed"
+  className="Button BurgerButton is-closed"
   onClick={[Function]}
   type="button"
 >
@@ -30,7 +30,7 @@ exports[`renders correctly in closed state 1`] = `
 
 exports[`renders correctly in open state 1`] = `
 <button
-  className="BurgerButton is-open"
+  className="Button BurgerButton is-open"
   onClick={[Function]}
   type="button"
 >

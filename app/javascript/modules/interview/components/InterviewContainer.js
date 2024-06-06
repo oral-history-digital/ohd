@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getIsLoggedIn } from 'modules/account';
-import { setArchiveId, getInterviewEditView, getProjectId, getLocale } from 'modules/archive';
-import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog, getProjects,
-    fetchData, getCurrentProject } from 'modules/data';
+import { setArchiveId, getInterviewEditView } from 'modules/archive';
+import { getCurrentInterview, getCurrentInterviewFetched,
+    getIsCatalog } from 'modules/data';
 import Interview from './Interview';
 
 const mapStateToProps = state => ({
@@ -12,15 +11,9 @@ const mapStateToProps = state => ({
     interviewIsFetched: getCurrentInterviewFetched(state),
     isCatalog: getIsCatalog(state),
     interviewEditView: getInterviewEditView(state),
-    projectId: getProjectId(state),
-    locale: getLocale(state),
-    projects: getProjects(state),
-    project: getCurrentProject(state),
-    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
     setArchiveId,
 }, dispatch);
 

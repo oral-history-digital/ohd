@@ -1,4 +1,3 @@
-yarn cypress:open#!/usr/bin/env ruby
 if ARGV.any? {|arg| %w[--drb -X --generate-options -G --help -h --version -v].include?(arg)}
   require 'rubygems' unless ENV['NO_RUBYGEMS']
 else

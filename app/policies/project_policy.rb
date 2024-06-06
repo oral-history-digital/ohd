@@ -29,4 +29,14 @@ class ProjectPolicy < ApplicationPolicy
   def edit_config?
     update?
   end
+
+  def edit_access_config?
+    update?
+  end
+
+  Project.non_public_method_names.each do |m|
+    define_method "#{m}?" do
+      update?
+    end
+  end
 end
