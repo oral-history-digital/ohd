@@ -8,11 +8,7 @@ class InstitutionPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
-        scope.all
-      else
-        scope.none
-      end
+      scope.all
     end
   end
 end

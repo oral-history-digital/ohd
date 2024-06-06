@@ -1,6 +1,18 @@
-<p>Liebe*r Administrator*in,</p>
-<p>in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine neue Registrierung vor.</p>
-<p>Bitte überprüfe diese innerhalb der kommenden zwei Werktage.</p>
-<p><%= link_to @url, @url %></p>
-<p>Viele Grüße</p>
-<p>Dein Interview-Archiv</p>
+<%
+  case I18n.locale.to_sym
+  when :en
+-%>
+  <p>Hello,</p>
+  <p>There is a new activation request in the '<%= @project.name(@project.default_locale) %>' application.</p>
+  <p>Please review it as soon as possible.</p>
+  <p><%= @url %></p>
+  <p>Best regards</p>
+  <p>Oral-History.Digital</p>
+<% else -%>
+  <p>Guten Tag,</p>
+  <p>in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine neue Anfrage auf Freischaltung vor.</p>
+  <p>Bitte überprüfen Sie diese so schnell wie möglich.</p>
+  <p><%= link_to @url, @url %></p>
+  <p>Viele Grüße</p>
+  <p>Oral-History.Digital</p>
+<% end -%>

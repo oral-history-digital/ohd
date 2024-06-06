@@ -20,8 +20,7 @@ export default function RegistryReference({
     refObject,
     hideEdit,
     contentLocale,
-    projectId,
-    projects,
+    project,
     registryEntries,
     lowestAllowedRegistryEntryId,
     inTranscript,
@@ -48,14 +47,14 @@ export default function RegistryReference({
             (!registryEntriesStatus[id] || registryEntriesStatus[id] !== 'fetching') &&
             (!registryEntries[id] || (registryEntries[id] && !registryEntries[id].associations_loaded))
         ) {
-            fetchData({ locale, projectId, projects }, 'registry_entries', id, null, 'with_associations=true');
+            fetchData({ locale, project }, 'registry_entries', id, null, 'with_associations=true');
         }
     }
 
     async function destroy() {
         switch (refObject.type) {
         case 'Interview':
-            deleteData({ locale, projectId, projects }, 'interviews', refObject.archiveId || refObject.archive_id || refObject.id,
+            deleteData({ locale, project }, 'interviews', refObject.archiveId || refObject.archive_id || refObject.id,
                 'registry_references', registryReference.id);
             break;
         case 'Person':
@@ -67,7 +66,7 @@ export default function RegistryReference({
             break;
         case 'Segment':
         default:
-            deleteData({ locale, projectId, projects }, 'registry_references', registryReference.id, null, null, true);
+            deleteData({ locale, project }, 'registry_references', registryReference.id, null, null, true);
             break;
         }
     }
@@ -146,8 +145,7 @@ export default function RegistryReference({
 
 RegistryReference.propTypes = {
     locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     hideEdit: PropTypes.bool,
     inTranscript: PropTypes.bool,
     lowestAllowedRegistryEntryId: PropTypes.number,

@@ -1,10 +1,11 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!,
-    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index,
-      :edit_info, :edit_display, :edit_config]
+  skip_before_action :authenticate_user!,
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index]
+      #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-      :edit_display, :edit_config, :edit, :update, :destroy]
+           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy] +
+           Project.non_public_method_names
 
   # GET /projects
   def index
@@ -22,7 +23,7 @@ class ProjectsController < ApplicationController
       format.json do
         json = Rails.cache.fetch "projects-#{extra_params}-#{Project.count}-#{Project.maximum(:updated_at)}" do
           {
-            data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s, serializer_name: 'ProjectBase'); mem},
             data_type: 'projects',
             extra_params: extra_params,
             page: params[:page],
@@ -39,6 +40,25 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html do
         render :template => "/react/app"
+      end
+      format.json do
+        render json: data_json(@project)
+      end
+    end
+  end
+
+  Project.non_public_method_names.each do |m|
+    define_method m do
+      respond_to do |format|
+        format.json do
+          render json: {
+            id: @project.id,
+            data_type: "projects",
+            nested_data_type: m,
+            data: @project.send(m),
+            page: '1'
+          }, status: :ok
+        end
       end
     end
   end
@@ -77,7 +97,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  %w(edit_info edit_display edit_config).each do |m|
+  %w(edit_info edit_display edit_config edit_access_config).each do |m|
     define_method m do
       respond_to do |format|
         format.html do
@@ -90,7 +110,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   def create
     authorize Project
-    @project = ProjectCreator.perform(project_params, current_user_account)
+    @project = ProjectCreator.perform(project_params, current_user)
 
     respond @project
   end
@@ -99,7 +119,15 @@ class ProjectsController < ApplicationController
   def update
     @project.update(project_params)
 
-    respond @project
+    respond_to do |format|
+      format.json do
+        render json: {
+          data: cache_single(@project, serializer_name: 'ProjectFull'),
+          data_type: 'projects',
+          id: @project.id,
+        }
+      end
+    end
   end
 
   # DELETE /projects/1
@@ -118,7 +146,7 @@ class ProjectsController < ApplicationController
   private
     # if a project is updated or destroyed from ohd.de
     def set_project
-      @project = current_project || Project.find(params[:id])
+      @project = params[:id] ? Project.find(params[:id]) : current_project
       authorize @project
     end
 
@@ -129,7 +157,7 @@ class ProjectsController < ApplicationController
             data: cache_single(project),
             data_type: 'projects',
             id: project.id,
-            reload_data_type: 'accounts',
+            reload_data_type: 'users',
             reload_id: 'current'
           }
         end
@@ -158,7 +186,6 @@ class ProjectsController < ApplicationController
           "shortname",
           "archive_id_number_length",
           "domain",
-          "archive_domain",
           "doi",
           "cooperation_partner",
           "leader",
@@ -169,10 +196,21 @@ class ProjectsController < ApplicationController
           "has_newsletter",
           "has_map",
           "is_catalog",
+          "grant_project_access_instantly",
+          "grant_access_without_login",
           "display_ohd_link",
           "show_preview_img",
+          "show_legend",
           "workflow_state",
-          translations_attributes: [:locale, :name, :id, :introduction, :more_text, :landing_page_text]
+          translations_attributes: [
+            :locale,
+            :name,
+            :id,
+            :introduction,
+            :more_text,
+            :landing_page_text,
+            :media_missing_text
+          ]
       )
     end
 

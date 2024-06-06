@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Element from '../Element';
@@ -20,6 +21,8 @@ export default function Textarea({
     handlechangecallback,
     handleErrors,
 }) {
+    const defaultValue = value || data?.[attribute];
+
     const onChange = event => {
         const newValue = event.target.value;
         const name = event.target.name;
@@ -36,7 +39,13 @@ export default function Textarea({
         }
     };
 
-    const actualValue = value || data?.[attribute];
+    useEffect(() => {
+        if (typeof(validate) === 'function') {
+            const valid = validate(defaultValue);
+            handleErrors(attribute, !valid);
+        }
+        handleChange(attribute, defaultValue, data);
+    }, [defaultValue]);
 
     return (
         <Element
@@ -47,16 +56,18 @@ export default function Textarea({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(actualValue) : true}
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
             mandatory={typeof validate === 'function'}
             elementType='textarea'
             individualErrorMsg={individualErrorMsg}
             help={help}
+            htmlFor={`${scope}_${attribute}`}
         >
             <textarea
+                id={`${scope}_${attribute}`}
                 name={attribute}
                 className="Input"
-                defaultValue={actualValue}
+                defaultValue={defaultValue}
                 onChange={onChange}
                 {...htmlOptions}
             />

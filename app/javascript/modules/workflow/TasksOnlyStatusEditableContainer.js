@@ -2,21 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { DataList } from 'modules/admin';
-import { fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { fetchData, deleteData, submitData } from 'modules/data';
 import CommentsContainer from './CommentsContainer';
 import TaskPreviewContainer from './TaskPreviewContainer';
 
 const mapStateToProps = (state) => {
     return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
         //
         // editView should always be true on tasks
-        // because tasks can be seen only in the own account
+        // because tasks can be seen only in the own user
         // or if editView == true in some user administration area
         //
         editView: true,
@@ -27,7 +21,7 @@ const mapStateToProps = (state) => {
             'archive_id',
             'interviewee',
             'name',
-            'assigned_to_user_account_at',
+            'assigned_to_user_at',
             'assigned_to_supervisor_at',
             'started_at',
             'finished_at',

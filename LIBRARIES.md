@@ -30,7 +30,7 @@
 | cyrillizer                                     | MIT                             |
 | active_model_serializers                       | MIT                             |
 | rails-latex                                    | MIT                             |
-| webpacker                                      | MIT                             |
+| shakapacker                                    | MIT                             |
 | react_on_rails                                 | MIT                             |
 | slim-rails                                     | MIT                             |
 | iso-639                                        | MIT                             |
@@ -51,7 +51,6 @@
 | sunspot_rails                                  | MIT                             |
 | sunspot_solr                                   | MIT                             |
 | progress_bar                                   | WTFPL                           |
-| cypress-on-rails                               |                                 |
 | byebug                                         | BSD-2-CLAUSE                    |
 | bcrypt_pbkdf                                   | MIT                             |
 | ed25519                                        | MIT                             |
@@ -86,7 +85,6 @@
 | @babel/preset-env                              | MIT                             |
 | @babel/preset-react                            | MIT                             |
 | @babel/runtime                                 | MIT                             |
-| @rails/webpacker                               | MIT                             |
 | @reach/checkbox                                | MIT                 |
 | @reach/dialog                                  | MIT                 |
 | @reach/disclosure                              | MIT                 |
@@ -158,11 +156,9 @@
 | @pmmmwh/react-refresh-webpack-plugin           | MIT                  |
 | @wojtekmaj/enzyme-adapter-react-17             | MIT                  |
 | babel-jest                                     | MIT                  |
-| cypress                                        | MIT                  |
 | dot-prop-immutable                             | MIT                  |
 | enzyme                                         | MIT                  |
 | eslint                                         | MIT                  |
-| eslint-plugin-cypress                          | MIT                  |
 | eslint-plugin-jest                             | MIT                  |
 | eslint-plugin-jsx-a11y                         | MIT                  |
 | eslint-plugin-react                            | MIT                  |

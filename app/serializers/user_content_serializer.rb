@@ -1,7 +1,7 @@
 class UserContentSerializer < ApplicationSerializer
   attributes :id,
     :description,
-    :user_account_id,
+    :user_id,
     :project_id,
     :title,
     :media_id,

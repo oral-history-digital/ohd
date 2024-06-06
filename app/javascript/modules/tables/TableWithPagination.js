@@ -17,10 +17,21 @@ export default function TableWithPagination({
     className,
     columns,
     data,
-    isLoading
+    isLoading,
+    manualPagination,
+    manualFiltering,
+    manualFilterFunc,
+    manualFilter,
+    manualSorting,
+    manualSortFunc,
+    manualSort,
+    changePageSize = true,
+    setPage,
+    pageCount,
+    children,
 }) {
-    const [sorting, setSorting] = useState([]);
-    const [globalFilter, setGlobalFilter] = useState('');
+    const [sorting, setSorting] = useState(manualSort || []);
+    const [globalFilter, setGlobalFilter] = useState(manualFilter || '');
 
     const [{ pageIndex, pageSize }, setPagination] = useState({
         pageIndex: 0,
@@ -35,6 +46,15 @@ export default function TableWithPagination({
         [pageIndex, pageSize]
     );
 
+    const sortFunc = m => {
+        if (manualSorting) {
+            manualSortFunc(m);
+            setSorting(m);
+        } else {
+            setSorting(m);
+        }
+    }
+
     const table = useReactTable({
         data: data || [],
         columns,
@@ -45,12 +65,16 @@ export default function TableWithPagination({
         },
         globalFilterFn: 'includesString',
         onPaginationChange: setPagination,
-        onSortingChange: setSorting,
+        onSortingChange: sortFunc,
         onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        manualPagination: manualPagination,
+        manualFiltering: manualFiltering,
+        manualSorting: false,
+        pageCount: pageCount,
     });
 
     return (
@@ -58,15 +82,21 @@ export default function TableWithPagination({
             <Filter
                 className="u-mb-small"
                 value={globalFilter}
-                onChange={setGlobalFilter}
+                onChange={value => {
+                    setGlobalFilter(value);
+                    if (typeof manualFilterFunc === 'function') manualFilterFunc(value);
+                    if (typeof(setPage) === 'function') setPage(1);
+                }}
             />
+            {children}
             <Pagination
                 className="u-mb"
                 page={table.getState().pagination.pageIndex + 1}
                 pageCount={table.getPageCount()}
                 pageSize={table.getState().pagination.pageSize}
-                onPageChange={page => table.setPageIndex(page - 1)}
+                onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
                 onPageSizeChange={table.setPageSize}
+                changePageSize={changePageSize}
             />
             <Table table={table} isLoading={isLoading} />
             <Pagination
@@ -74,8 +104,9 @@ export default function TableWithPagination({
                 page={table.getState().pagination.pageIndex + 1}
                 pageCount={table.getPageCount()}
                 pageSize={table.getState().pagination.pageSize}
-                onPageChange={page => table.setPageIndex(page - 1)}
+                onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
                 onPageSizeChange={table.setPageSize}
+                changePageSize={changePageSize}
             />
         </div>
     );

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus, FaPencilAlt } from 'react-icons/fa';
@@ -10,6 +11,7 @@ import { TapeAndTime } from 'modules/interview-helpers';
 import { AuthorizedContent } from 'modules/auth';
 import SubheadingContainer from './SubheadingContainer';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
+import { getCurrentInterview } from 'modules/data';
 
 export default function Heading({
     data,
@@ -20,6 +22,7 @@ export default function Heading({
     const [expanded, setExpanded] = useState(active);
     const { t } = useI18n();
     const divEl = useRef();
+    const interview = useSelector(getCurrentInterview);
 
     const hasSubheadings = data.subheadings.length > 0;
 
@@ -51,7 +54,7 @@ export default function Heading({
                 <button
                     type="button"
                     className={classNames('Heading-main', { 'is-active': active })}
-                    onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+                    onClick={() => interview.transcript_coupled && sendTimeChangeRequest(data.tape_nbr, data.time)}
                 >
                     <span className="Heading-chapter">
                         {data.chapter}
@@ -63,7 +66,7 @@ export default function Heading({
                         </div>
 
                         <div className="Heading-timecode">
-                            <TapeAndTime tape={data.tape_nbr} time={data.time} />
+                            <TapeAndTime tape={data.tape_nbr} time={data.time} transcriptCoupled={interview.transcript_coupled} />
                         </div>
                     </div>
                 </button>

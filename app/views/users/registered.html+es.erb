@@ -1,0 +1,18 @@
+<h1>Ya existe un registro para <span><%= @email %></span></h1>
+
+<% if current_project %>
+  <p>El correo electrónico que usted proporcionó ya existe para <%= current_project.name('es') %>.</p>
+<% end %>
+
+<% if @user %>
+  <% unless @user.confirmed_at %>
+    <p>Usted tiene que activar todavía el acceso. Las informaciones sobre cómo activar su acceso se le acaban de enviar nuevamente por correo electrónico.</p>
+  <% else %>
+    <p>Su acceso ya está activo. Si ha perdido sus datos de acceso, por favor haga clic en el siguiente enlace:
+      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optional_identifier : OHD_DOMAIN}/#{new_user_password_path}", :class => 'new_password link' %>
+    </p>
+  <% end %>
+<% end %>
+
+
+<br/>

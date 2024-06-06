@@ -1,5 +1,6 @@
 import {
     PermissionSearchFormContainer,
+    TranslationValuesSearchFormContainer,
     RoleSearchFormContainer,
     TaskTypeSearchFormContainer
 } from 'modules/admin';
@@ -8,6 +9,7 @@ import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import AdminSubTab from './AdminSubTab';
+import ToggleTranslationsView from './ToggleTranslationsView';
 
 export default function ProjectConfigTabPanel() {
     const { t } = useI18n();
@@ -33,6 +35,12 @@ export default function ProjectConfigTabPanel() {
                 <AdminSubTab
                     title='edit.project.config'
                     url={`${pathBase}/project/edit-config`}
+                    obj={{type: 'Project'}}
+                    action='update'
+                />
+                <AdminSubTab
+                    title='edit.project.access_config'
+                    url={`${pathBase}/project/edit-access-config`}
                     obj={{type: 'Project'}}
                     action='update'
                 />
@@ -63,6 +71,15 @@ export default function ProjectConfigTabPanel() {
                     action='update'
                 >
                     <PermissionSearchFormContainer/>
+                </AdminSubTab>
+                <AdminSubTab
+                    title='edit.translation_value.admin'
+                    url={`${pathBase}/translation_values`}
+                    obj={{type: 'TranslationValue'}}
+                    action='update'
+                >
+                    <ToggleTranslationsView/>
+                    <TranslationValuesSearchFormContainer/>
                 </AdminSubTab>
                 <AdminSubTab
                     title='edit.task_type.admin'

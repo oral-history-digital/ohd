@@ -1,34 +1,23 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, getProjectLocales, submitData, getProjects, getCurrentAccount } from 'modules/data';
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { submitData, getCurrentProject, getCurrentUser } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    locales: getProjectLocales(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    translations: getTranslations(state),
-    account: getCurrentAccount(state),
-    editView: getEditView(state),
     data: getCurrentProject(state),
     scope: 'project',
+    sensitiveAttributes: ['contact_email'],
     helpTextCode: 'archive_config_form',
     formElements: [
         {
             attribute: 'shortname',
             validate: function(v){return /^[\-a-z0-9]{1,11}[a-z]$/.test(v)},
-            hidden: !getCurrentAccount(state).admin,
+            hidden: !getCurrentUser(state).admin,
         },
         {
             attribute: "domain",
             help: 'activerecord.attributes.project.domain_help'
-        },
-        {
-            attribute: "archive_domain",
-            help: 'activerecord.attributes.project.archive_domain_help'
         },
         {
             elementType: 'input',
@@ -52,12 +41,27 @@ const mapStateToProps = state => ({
         },
         {
             elementType: 'input',
+            attribute: "grant_project_access_instantly",
+            type: "checkbox"
+        },
+        {
+            elementType: 'input',
+            attribute: "grant_access_without_login",
+            type: "checkbox"
+        },
+        {
+            elementType: 'input',
             attribute: "display_ohd_link",
             type: "checkbox"
         },
         {
             elementType: 'input',
             attribute: "show_preview_img",
+            type: "checkbox"
+        },
+        {
+            elementType: 'input',
+            attribute: "show_legend",
             type: "checkbox"
         },
         {

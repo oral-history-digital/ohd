@@ -1,22 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, submitData, getProjectLocales, getProjects, getCurrentAccount,
-    getPermissions, getPermissionsStatus } from 'modules/data';
-import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { fetchData, deleteData, submitData, getPermissions, getPermissionsStatus } from 'modules/data';
+import { getEditView } from 'modules/archive';
 import DataList from './DataList';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    locales: getProjectLocales(state),
-    translations: getTranslations(state),
-    account: getCurrentAccount(state),
     editView: getEditView(state),
-    //
-    //
-    //
     joinDataStatus: getPermissionsStatus(state),
     joinDataScope: 'permissions',
     scope: 'task_type_permission',

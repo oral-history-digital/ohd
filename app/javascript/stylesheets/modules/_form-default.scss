@@ -5,7 +5,7 @@ form.default {
  .form-group {
     width: 100%;
     @include clearfix;
-    margin: 0 0 $base-unit;
+    margin: $base-unit 0 0;
  }
   label {
     width: 100%;
@@ -44,6 +44,7 @@ form.default {
     border-color: var(--primary-color);
   }
   input[type=submit], input[type=button] {
+    margin-top: 15px;
     margin-left: 0;
     width: 100%;
     background-color: $ui-background-color;
@@ -74,6 +75,18 @@ form.default {
     min-width: 1em;
     padding: 0;
     width: initial;
+  }
+
+  .is-option {
+    background: $gray-lighter;
+    margin: 0;
+    padding: 0.5rem;
+    label {
+      color: $gray-dark;
+    }
+    input {
+      border-color: $gray-dark;
+    }
   }
 
   .has-error {

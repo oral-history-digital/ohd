@@ -22,38 +22,103 @@ en:
       inactive: Your account is not activated yet.
       invalid: Invalid %{authentication_keys} or password.
       invalid_token: Der Anmelde-Token ist ungültig.
-      locked: Your account is locked.
-      not_found_in_database: Invalid %{authentication_keys} or password.
+      blocked: Invalid credentials
+      not_found_in_database: Invalid credentials
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your email address before continuing.
+      unconfirmed: The email address %{email} is already registered.
+        You still need to confirm your registration.
+        An email with the required link has just been resent to you.
       last_attempt: You have one more attempt before your account is locked.
     mailer:
+      grant_project_access:
+        subject: Activation of your access to the application '%{project_name}'
+        text: |
+          <<p>p>Hello %{user_display_name},</p></p>
+          <<p>p>You now have access to the application '%{project_name}' for the research intention you specified.</p></p>
+          <<p>p>Please respect the interviewees' privacy rights and the archive's %{tos_link}.</p></p>
+          <<p>p>With best regards</p></p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Your request to activate your account for the application '%{project_name}'
+        text: |
+          <p>Hello %{user_display_name},</p>
+          <p>You have requested activation for the application '%{project_name} '.</p>
+          <p>Unfortunately, a review of your information has revealed that it is insufficient or does not comply with the Terms of Use (externer Link conditions einzelarchiv).</p>
+          <p>You can use the following link to change or complete your information.</p>
+          <p>Correct</p>
+          <p>If you need assistance, please contact us at %{mail_to}</p>
+          <p>With best regards</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Blocking of your account
+        text: |
+          <p>Hello %{user_display_name},</p>
+          <p>We hereby inform you that your access to the application %{project_name} has been blocked. This occurs when the archive's Terms of Use (externer Link conditions einzelarchiv) have not been respected.</p>
+          <p>If you have any further questions, please contact us at %{mail_to}.</p>
+          <p>With best regards</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
+        subject: Your access to the archive '%{project_name}'
+        text: |
+          <p>Hello %{user_display_name},</p>
+          <p>we hereby inform you that the access to the application %{project_name} has been unblocked.</p>
+          <p>You can now access the application %{project_name} again.</p>
+          <p>With best regards</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Your access to the archive '%{project_name}'
+        text: |
+          <p>Hello %{user_display_name},</p>
+          <p>Your access to the application %{project_name} was time-limited and has now expired.</p>
+          <p>Please feel free to reapply at a later date.</p>
+          <p>With best regards</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Blocking of your account
+        text: |
+          <p>Hello %{user_display_name},</p>
+          <p>We hereby inform you that your access to the platform Oral-History.Digital has been blocked. This occurs when the platform's Terms of Use (externer Link conditions ohd) have not been respected.</p>
+          <p>If you have any further questions, please contact us at %{mail_to}.</p>
+          <p>With best regards</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Your access to the Oral-History.Digital platform
+        text: |
+          <p>Hello %{user_display_name},</p>
+          <p>we hereby inform you that the access to the Oral-History.Digital platform has been unblocked.</p>
+          <p>You can now access the platform again.</p>
+          <p>With best regards</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Deletion of your user account
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
+      new_registration_info:
+        subject: New activation request for review
+      corrected_project_access_data:
+        subject: Corrected user data for review
       confirmation_instructions:
-        subject: Interview Archive – Steps for the Activation of your Account
-      project_access_granted:
-        subject: Activation of your Account for the Application '%{project_name}'
-      project_access_rejected:
-        subject: Your Registration for the Application '%{project_name}'
+        subject: Confirmation of your registration for Oral-History.Digital
+      new_email_confirmation_instructions:
+        subject: Confirmation of your new email address for Oral-History.Digital
       reset_password_instructions:
-        subject: Interview Archive - Steps to recover your Password
-      account_deactivated:
-        subject: Your access to the application '%{project_name}'
-      email_changed:
-        subject: Email Changed
-      password_change:
-        subject: Password Changed
+        subject: Oral-History.Digital. Steps to recover your password.
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
       success: Successfully authenticated from your account.
     passwords:
       change: Change your password
-      forgot: Forgot your password?
+      forgot: Password recovery
       password: Password
       password_confirmation: Password confirmation
       submit: Change my password
       resend: Change password
-      link: Passwort wiederherstellen
+      link: Password recovery
       send_instructions: You will receive an email with instructions on how to reset
         your password in a few minutes.
       updated: Your password has been changed successfully. You are now signed in.
@@ -90,14 +155,16 @@ en:
         to verify your new email address. Please check your email and follow the confirm
         link to confirm your new email address.
     sessions:
-      link: Sign in
-      login: Sign in
+      link: Log in
+      login: Log in
       signed_in: Signed in successfully.
       signed_out: Signed out successfully.
       unauthenticated: You need to sign in or sign up before continuing.
       unauthenticated_search: In order to search you are required to sign in first.
-      unconfirmed: You have to confirm your account before continuing.
-      locked: Your account is locked.
+      unconfirmed: The email address %{email} is already registered.
+        You still need to confirm your registration.
+        An email with the required link has just been resent to you.
+      blocked: Your account is blocked.
       invalid: Invalid email or password.
       invalid_token: Invalid authentication token.
       timeout: Your session expired, please sign in again to continue.
@@ -117,10 +184,6 @@ en:
         not_signed_in: not signed in
     labels:
       send_now: Resend now
-    authentication_keys:
-      login: Login
-      email: Email
-      password: Password
     workflow_states:
       new_registration: requested
       new_registrations: requested
@@ -157,62 +220,26 @@ en:
       remove: deactivate
       remove_info: The account is deactivated (please inform the user of this in a
         separate Email).
-    registration_fields:
-      fill_out_missing_fields_message: 'Please fill in the missing information:'
-      select: Please select
-      appellation: Title
-      first_name: First name
-      last_name: Last name
-      job_description: Occupation
-      email: Email
-      gender: Gender
-      research_intentions: Research objectives
-      comments: Specification of research objectives
-      organization: Institution
-      school: School
-      homepage: Institution Homepage
-      street: Street Address
-      zipcode: Zipcode
-      city: City
-      state: State
-      country: Country
-      tos_agreement: Terms of Use
-      tos_agreement_explanation: I agree to the %{terms_of_use}.
-      priv_agreement: Privacy Policy
-      priv_agreement_explanation: I agree to the %{privacy_policy}.
-      agreed: zugestimmt
-      not_agreed: keine Zustimmung
-      receive_newsletter: Newsletter
-      receive_newsletter_explanation: I subscribe to the newsletter of the project
-        "%{project_name}".
-      requested_at: Request date
-      name: Name
-      adress: Address
-      workflow_state: Registration status
-      login: Username
-      created_at: Date of Registration
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: and confirmation don't match
-              too_short: is too short
-              too_long: is too long
-        user_registration:
+        user:
           attributes:
             email:
               taken: is already registered here. Please choose 'forgot password' on
                 the sign in page for resetting your password.
+            password:
+              confirmation: and confirmation don't match
+              too_short: is too short
+              too_long: is too long
       messages:
         blank: missing
     attributes:
-      user_account:
+      user:
         email: Email
-        login: login
-        password: password
-        password_confirmation: password confirmation
+        login: Login
+        password: Password
+        password_confirmation: Password Confirmation
   errors:
     messages:
       already_confirmed: was already confirmed, please try signing in

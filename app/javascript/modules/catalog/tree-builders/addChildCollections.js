@@ -15,7 +15,8 @@ export default function addChildCollections(collections, project) {
     const clonedProject = {
         ...project,
         collections: project.collection_ids.map(id => collectionsById[id])
-            .filter(collection => typeof collection !== 'undefined'),
+            .filter((collection) => typeof collection !== 'undefined')
+            .filter((collection) => collection.num_interviews > 0),
     };
     return clonedProject;
 }

@@ -23,3 +23,21 @@ test('can use hms format,', () => {
     const expected = '2h45m05s';
     expect(actual).toEqual(expected);
 });
+
+test('does not crash when input is null', () => {
+    const actual = formatTimecode(null, true);
+    const expected = '0h00m00s';
+    expect(actual).toEqual(expected);
+});
+
+test('does not crash when input is undefined', () => {
+    const actual = formatTimecode(undefined, true);
+    const expected = 'NaNhNaNmNaNs';
+    expect(actual).toEqual(expected);
+});
+
+test('does not crash when input is empty string', () => {
+    const actual = formatTimecode('', true);
+    const expected = '0h00m00s';
+    expect(actual).toEqual(expected);
+});

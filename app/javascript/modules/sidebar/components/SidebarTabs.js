@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
-import { AccountContainer } from 'modules/account';
+import { AccountContainer } from 'modules/user';
 import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import { getLocale } from 'modules/archive';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
-import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
+import ArchiveSearchTabPanel from './ArchiveSearchTabPanel';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
 import WorkbookTabPanel from './WorkbookTabPanel';
 import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
@@ -29,17 +27,16 @@ export default function SidebarTabs({
     archiveId,
     isLoggedIn,
 }) {
-    const [tabIndex, setTabIndex] = useState(indexes.INDEX_ACCOUNT);
-    const { t } = useI18n();
-    const project = useProject();
+    const [tabIndex, setTabIndex] = useState(indexes.INDEX_USER);
+    const { t, locale } = useI18n();
+    const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
-    const locale = useSelector(getLocale);
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const hasMap = project?.has_map === 1;
-    const isCampscapesProject = project?.identifier === 'campscapes';
+    const hasMap = project?.has_map;
+    const isCampscapesProject = project?.shortname === 'campscapes';
 
     useEffect(() => {
         setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
@@ -49,9 +46,9 @@ export default function SidebarTabs({
         setTabIndex(index);
 
         switch (index) {
-        case indexes.INDEX_ACCOUNT:
+        case indexes.INDEX_USER:
             if (isLoggedIn) {
-                navigate(`${pathBase}/accounts/current`);
+                navigate(`${pathBase}/users/current`);
             }
             break;
         case indexes.INDEX_SEARCH:
@@ -83,20 +80,20 @@ export default function SidebarTabs({
     }
 
     const showAccountTab = true //!isCampscapesProject;
-    const showCatalogTab = !project;
+    const showCatalogTab = project.is_ohd;
     const showInterviewTab = !!interview;
-    const showRegistryTab = project && (
+    const showRegistryTab = (
         (!isLoggedIn && project.logged_out_visible_registry_entry_ids?.length > 0) ||
         isLoggedIn
     )
-    const showMapTab = hasMap && project;
+    const showMapTab = hasMap && !project.is_ohd;
     const showWorkbookTab = isLoggedIn;
-    const showIndexingTab = project && isAuthorized({type: 'General'}, 'edit');
-    const showAdministrationTab = project && isAuthorized({type: 'General'}, 'edit');
-    const showProjectAdminTab = project && isAuthorized({type: 'Project'}, 'update');
-    const showProjectsTab = !project && isAuthorized({type: 'Project'}, 'create');
-    const showInstitutionsTab = !project && isAuthorized({type: 'Institution'}, 'create');
-    const showHelpTextsTab = !project && isAuthorized({type: 'HelpText'}, 'update');
+    const showIndexingTab = isAuthorized({type: 'General'}, 'edit');
+    const showAdministrationTab = isAuthorized({type: 'General'}, 'edit');
+    const showProjectAdminTab = isAuthorized({type: 'Project'}, 'update');
+    const showProjectsTab = project.is_ohd && isAuthorized({type: 'Project'}, 'create');
+    const showInstitutionsTab = project.is_ohd && isAuthorized({type: 'Institution'}, 'create');
+    const showHelpTextsTab = project.is_ohd && isAuthorized({type: 'HelpText'}, 'update');
 
     return (
         <Tabs
@@ -120,8 +117,8 @@ export default function SidebarTabs({
                     className="SidebarTabs-tab"
                 >
                     {t((isCampscapesProject && !archiveId) ?
-                        'user_registration.notes_on_tos_agreement' :
-                        (project ? 'archive_search' : 'modules.sidebar.search')
+                        ('user.notes_on_tos_agreement', {project: project.name[locale]}) :
+                        (project.is_ohd ? 'modules.sidebar.search' : 'archive_search')
                     )}
                 </Tab>
 
@@ -216,14 +213,14 @@ export default function SidebarTabs({
 
             <TabPanels>
                 <TabPanel key="1">
-                    {tabIndex === indexes.INDEX_ACCOUNT && (
+                    {tabIndex === indexes.INDEX_USER && (
                         <AccountContainer/>
                     )}
                 </TabPanel>
 
                 <TabPanel key="2">
                     {tabIndex === indexes.INDEX_SEARCH && (
-                        <ArchiveSearchTabPanelContainer selectedArchiveIds={selectedArchiveIds} />
+                        <ArchiveSearchTabPanel selectedArchiveIds={selectedArchiveIds} />
                     )}
                 </TabPanel>
 
@@ -290,6 +287,5 @@ SidebarTabs.propTypes = {
     interview: PropTypes.object,
     archiveId: PropTypes.string,
     isLoggedIn: PropTypes.bool,
-    isCampscapesProject: PropTypes.bool.isRequired,
     selectedArchiveIds: PropTypes.array,
 };

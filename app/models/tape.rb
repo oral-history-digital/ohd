@@ -90,12 +90,6 @@ class Tape < ApplicationRecord
     @interviewee_initials ||= interview.person.firstname.first + interview.person.lastname.first
   end
 
-  # Removes the checklist_item that signals completed checks on
-  # transcription and speakers
-  def reset_interview_speaker_checklist_item!
-    self.interview.checklist_items.select{|i| i.item_type == 'speakers'}.each{|i| i.destroy }
-  end
-
   def to_xml(options = {})
     options.merge!({ :include => :captions_segments, :methods => [] })
     super(options)

@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import classNames from 'classnames';
 
-import { ScrollToTop } from 'modules/user-agent';
-import { getMapSections } from 'modules/data';
+import { useTrackPageView } from 'modules/analytics';
 import { useIsEditor } from 'modules/archive';
-import { MapComponent } from 'modules/map';
-import { useI18n } from 'modules/i18n';
+import { getMapSections } from 'modules/data';
 import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import { MapComponent } from 'modules/map';
+import { useProject, usePathBase } from 'modules/routes';
+import { ScrollToTop } from 'modules/user-agent';
+import { SpinnerOverlay } from 'modules/spinners';
 import useSearchMap from '../search-map/useSearchMap';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
@@ -23,12 +26,14 @@ export default function SearchMap() {
     const mapSections = useSelector(getMapSections);
     const mapView = useSelector(getMapView);
     const isEditor = useIsEditor();
-
+    const pathBase = usePathBase();
+    const { project } = useProject();
     const [currentSection, setCurrentSection] = useState(mapSections[0].name);
     const { t } = useI18n();
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
     const { isLoading: locationsLoading } = useMapLocations();
+    useTrackPageView();
 
     const defaultSection = mapSections.find(section => section.name === currentSection);
     const bounds = [
@@ -43,6 +48,12 @@ export default function SearchMap() {
         }));
     }
 
+    if (!project.has_map) {
+        return (
+            <Navigate to={`${pathBase}/not_found`} replace />
+        );
+    }
+
     return (
         <ScrollToTop>
             <Helmet>
@@ -52,28 +63,27 @@ export default function SearchMap() {
             <div className="wrapper-content map SearchMap">
                 {isEditor && <HelpText code="search_map" className="u-mb" />}
 
-                <div className={classNames('LoadingOverlay', {
-                    'is-loading': locationsLoading,
-                })}>
-                    {
-                        error ?
-                            (<div>
-                                {t('modules.search_map.error')}: {error.message}
-                            </div>) :
-                            (<MapComponent
-                                className="Map--search"
-                                loading={isLoading}
-                                markers={markers || []}
-                                popupComponent={SearchMapPopup}
-                            >
+                {
+                    error ?
+                        (<div>
+                            {t('modules.search_map.error')}: {error.message}
+                        </div>) :
+                        (<MapComponent
+                            className="Map--search"
+                            loading={isLoading}
+                            markers={markers || []}
+                            popupComponent={SearchMapPopup}
+                        >
+                            <>
+                                {locationsLoading && <SpinnerOverlay />}
                                 <MapNewBoundsSetter
                                     bounds={bounds}
                                     view={mapView}
                                     onViewChange={handleViewChange}
                                 />
-                            </MapComponent>)
-                    }
-                </div>
+                            </>
+                        </MapComponent>)
+                }
 
                 <div className="SearchMap-controls">
                     <MapFilterContainer />

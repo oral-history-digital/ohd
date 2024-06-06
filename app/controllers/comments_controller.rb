@@ -6,9 +6,9 @@ class CommentsController < ApplicationController
     ref = comment_params[:ref_type].classify.constantize.find(comment_params[:ref_id])
     authorize ref, :update?
     @comment = Comment.create comment_params
-    receiver = @comment.ref.user_account == current_user_account ? @comment.ref.supervisor : @comment.ref.user_account
-    @comment.update author_id: current_user_account.id, receiver_id: receiver && receiver.id
-    AdminMailer.with(task: @comment.ref, receiver: receiver, author: current_user_account, text: @comment.text).new_comment.deliver_now if receiver
+    receiver = @comment.ref.user == current_user ? @comment.ref.supervisor : @comment.ref.user
+    @comment.update author_id: current_user.id, receiver_id: receiver && receiver.id
+    AdminMailer.with(task: @comment.ref, receiver: receiver, author: current_user, text: @comment.text).new_comment.deliver_now if receiver
 
     respond_to do |format|
       format.json do
@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
           id: @comment.ref_id,
           data_type: 'tasks',
           data: ::TaskSerializer.new(@comment.ref),
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end
@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
           id: @comment.ref_id,
           data_type: 'tasks',
           data: ::TaskSerializer.new(@comment.ref),
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end
@@ -53,7 +53,7 @@ class CommentsController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-comments-#{cache_key_params}-#{Comment.count}-#{Comment.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-comments-#{cache_key_params}-#{Comment.count}-#{Comment.maximum(:updated_at)}" do
           if params.keys.include?("all")
             data = Comment.all.
               order("created_at ASC").
@@ -99,7 +99,7 @@ class CommentsController < ApplicationController
           id: ref.id,
           data_type: 'tasks',
           data: ::TaskSerializer.new(@comment.ref),
-          reload_data_type: 'accounts',
+          reload_data_type: 'users',
           reload_id: 'current' 
         } || {}
       end

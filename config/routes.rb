@@ -5,6 +5,12 @@ Rails.application.routes.draw do
   end
 
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+    devise_for :users,
+      controllers: {
+        sessions: "sessions",
+        confirmations: "confirmations",
+        passwords: "passwords",
+      }
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
     get 'catalog/stats',            to: 'catalog#stats'
@@ -17,18 +23,25 @@ Rails.application.routes.draw do
     get "norm_data_api" => "registry_entries#norm_data_api"
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
+    %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
+      get page, to: "texts#show"
+    end
 
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"
+    get "project/edit-access-config", to: "projects#edit_access_config"
     get "project/edit-display", to: "projects#edit_display"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"
     get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
+    resources :access_configs
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
 
     resources :edit_tables, only: [:create, :show]
     resources :languages
+    resources :translation_values, except: [:show, :new, :edit]
+    get "translations/:id", to: "translation_values#show"
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
     resources :institution_projects
@@ -46,7 +59,9 @@ Rails.application.routes.draw do
     resources :registry_hierarchies, only: [:create, :destroy]
     resources :registry_names, only: [:create, :update, :destroy]
     resources :registry_references, only: [:create, :update, :destroy, :index]
+    get "registry_references/for_reg_entry/:id", to: "registry_references#for_reg_entry"
     resources :registry_reference_types, only: [:create, :update, :index, :destroy]
+    get "registry_reference_types/global", to: "registry_reference_types#global"
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
     resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
@@ -76,6 +91,7 @@ Rails.application.routes.draw do
     end
 
     get "registry_entry_tree", to: "registry_entries#tree"
+    get "global_registry_entry_tree", to: "registry_entries#global_tree"
 
     put "update_speakers/:id", to: "interviews#update_speakers"
     put "mark_texts/:id", to: "interviews#mark_texts"
@@ -83,7 +99,7 @@ Rails.application.routes.draw do
 
     resources :interviews do
       member do
-        get :metadata
+        #get :metadata
         get 'cmdi_metadata', action: :cmdi_metadata
         get :headings
         get :speaker_designations
@@ -158,22 +174,18 @@ Rails.application.routes.draw do
   end
 
   concern :account do
-    resources :accounts, only: [:show, :update, :index] do
+    resources :users, only: [:update, :index] do
       member do
         get :confirm_new_email
       end
       collection do
+        get :current
         get :check_email
         get :access_token
+        get :newsletter_recipients
       end
     end
-    resources :user_registrations do
-      member do
-        post :confirm
-        get :activate
-      end
-    end
-    resources :user_registration_projects, only: [:create, :update]
+    resources :user_projects, only: [:create, :update]
     resources :user_contents do
       collection do
         get :segment_annotation
@@ -212,19 +224,36 @@ Rails.application.routes.draw do
   # but we need them in the routes version with and without :project_id
   #
   concern :unnamed_devise_routes do
-    devise_scope :user_account do
-      post "user_accounts/sign_in", to: "sessions#create"
-      get "user_accounts/sign_in", to: "sessions#new"
-      get "user_accounts/is_logged_in", to: "sessions#is_logged_in"
-      delete "user_accounts/sign_out", to: "sessions#destroy"
-      patch "user_accounts/password", to: "passwords#update"
-      get "user_accounts/password/edit", to: "passwords#edit"
-      get "user_accounts/password/new", to: "passwords#new"
-      put "user_accounts/password", to: "passwords#update"
-      post "user_accounts/password", to: "passwords#create"
-      get "user_accounts/confirmation", to: "devise/confirmations#show"
-      post "user_accounts/confirmation", to: "devise/confirmations#create"
-      get "passwords/check_email", to: "passwords#check_email"
+    devise_scope :user do
+      post "users", to: "devise/registrations#create"
+      post "users/sign_in", to: "sessions#create"
+      get "users/sign_in", to: "sessions#new"
+      get "users/is_logged_in", to: "sessions#is_logged_in"
+      delete "users/sign_out", to: "sessions#destroy"
+      patch "users/password", to: "passwords#update"
+      get "users/password/edit", to: "passwords#edit"
+      get "users/password/new", to: "passwords#new"
+      put "users/password", to: "passwords#update"
+      post "users/password", to: "passwords#create"
+      get "users/confirmation", to: "confirmations#show"
+      post "users/confirmation", to: "confirmations#create"
+      put "user_projects/update", to: "user_projects#update"
+    end
+  end
+
+  concern :basic_project_routes do
+    resources :projects, only: [:show, :update, :destroy] do
+      member do
+        get :contact_email
+      end
+    end
+  end
+
+  concern :all_project_routes do
+    resources :projects, only: [:show, :index, :create, :update, :destroy] do
+      member do
+        get :contact_email
+      end
     end
   end
 
@@ -235,24 +264,28 @@ Rails.application.routes.draw do
   #
   # in production this should be the ohd-domain
   #
-  constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
+  constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     scope "/:locale" do
       get "/", to: "projects#index"
-      resources :projects, only: [:create, :update, :destroy, :index]
+      concerns :all_project_routes
       resources :institutions
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
+      concerns :unnamed_devise_routes, :search, :archive
       concerns :account
-      concerns :unnamed_devise_routes, :search
     end
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
-      get "/", to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
+      get "/", to: redirect{|params, request|
+        project = Project.by_identifier(params[:project_id])
+        "/#{project.identifier}/#{project.default_locale}"
+      }
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
-        resources :projects, only: [:update, :destroy]
+        concerns :basic_project_routes
+        resources :institutions
         concerns :archive
-        concerns :account
         concerns :unnamed_devise_routes, :search
+        concerns :account
       end
     end
   end
@@ -262,14 +295,15 @@ Rails.application.routes.draw do
   #
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
-  constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
-    get "/", to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
+  constraints(lambda { |request| Project.archive_domains.include?(request.base_url) }) do
+    get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
-      resources :projects, only: [:update, :destroy]
+      concerns :basic_project_routes
+      resources :institutions
       concerns :archive
-      concerns :account
       concerns :unnamed_devise_routes, :search
+      concerns :account
     end
   end
 
@@ -281,7 +315,4 @@ Rails.application.routes.draw do
   mount OaiRepository::Engine => "/de/oai_repository"
   root to: redirect("#{OHD_DOMAIN}/de")
 
-  devise_for :user_accounts,
-    controllers: { sessions: "sessions", passwords: "passwords" },
-    skip: [:registrations]
 end

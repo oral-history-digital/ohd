@@ -29,42 +29,35 @@ export default function Input({
     forceUpdateFromProps,
 }) {
 
-    const [valid, setValid] = useState((typeof validate !== 'function') || optional);
+    const defaultValue = value || data?.[attribute];
     const [changeFile, setChangeFile] = useState(false);
-    const [val, setVal] = useState(data?.[attribute] || value);
-
-    useEffect(() => {
-        //console.log('input ' + attribute + ' value: ' + value + ' data: ' + JSON.stringify(data));
-        setVal(data?.[attribute] || value);
-        //cleanProps.value = data?.[attribute] || value;
-    }, [value, data?.[attribute]]);
 
     const onChange = (event) => {
-        let v = event.target.files ? event.target.files[0] : event.target.value;
+        let newValue = event.target.files ? event.target.files[0] : event.target.value;
         if (event.target.type === 'checkbox') {
-            v = event.target.checked;
+            newValue = event.target.checked;
         }
-
-        setVal(v);
-
         const name =  event.target.name;
 
-        handleChange(name, v, data);
+        handleChange(name, newValue, data);
 
         if (typeof handlechangecallback === 'function') {
-            handlechangecallback(name, v, data);
+            handlechangecallback(name, newValue, data);
         }
 
-        if (typeof(validate) === 'function') {
-            if (validate(v, otherError)) {
-                handleErrors(name, false);
-                setValid(true)
-            } else {
-                handleErrors(name, true);
-                setValid(false)
-            }
+        if (typeof validate === 'function') {
+            const valid = validate(newValue, otherError);
+            handleErrors(name, !valid);
         }
     }
+
+    useEffect(() => {
+        if (typeof(validate) === 'function') {
+            const valid = validate(defaultValue);
+            handleErrors(attribute, !valid);
+        }
+        handleChange(attribute, defaultValue, data);
+    }, [defaultValue]);
 
     const cleanProps = () => {
         const props = {
@@ -74,14 +67,14 @@ export default function Input({
             name: attribute,
             readOnly,
             placeholder,
-            defaultChecked: val,
-            defaultValue: val,
+            defaultChecked: defaultValue,
+            defaultValue: defaultValue,
             onChange: onChange,
             onClick: onChange,
         }
 
-        if (forceUpdateFromProps)
-            props.value = val; //data && data[attribute] || val;
+        //if (forceUpdateFromProps)
+            //props.value = val; //data && data[attribute] || val;
 
         return props;
     };
@@ -118,7 +111,7 @@ export default function Input({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={valid}
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
             mandatory={typeof validate === 'function' && !optional}
             elementType={`${type}_input`}
             individualErrorMsg={individualErrorMsg}

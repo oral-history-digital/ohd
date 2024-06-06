@@ -17,7 +17,7 @@ const CONTRIBUTION_TYPES_SPEAKING = [
 export default function UploadEditTable({
     locale,
     projectId,
-    projects,
+    project,
     archiveId,
     interview,
     languages,
@@ -72,7 +72,7 @@ export default function UploadEditTable({
             <Form
                 scope='edit_table'
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, projects }, params);
+                    submitData({ locale, projectId, project }, params);
                     setShowForm(false);
                 }}
                 submitText='edit.upload_edit_table.title'
@@ -102,7 +102,7 @@ UploadEditTable.propTypes = {
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
 };

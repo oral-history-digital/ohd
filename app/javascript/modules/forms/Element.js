@@ -69,7 +69,10 @@ Element.propTypes = {
     attribute: PropTypes.string,
     className: PropTypes.string,
     elementType: PropTypes.string,
-    help: PropTypes.string,
+    help: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+    ]),
     individualErrorMsg: PropTypes.string,
     valid: PropTypes.bool,
     showErrors: PropTypes.bool,

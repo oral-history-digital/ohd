@@ -1,25 +1,27 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { FaPencilAlt } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
-import { humanReadable } from 'modules/data';
+import { useHumanReadable, useSensitiveData } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
 export default function EditData({
     data,
     formElements,
+    sensitiveAttributes = [],
     helpTextCode,
     initialFormValues,
-    translations,
-    locale,
-    projectId,
-    projects,
     scope,
     submitData,
 }) {
     const [editing, setEditing] = useState(false);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
+    const { project, projectId } = useProject();
+
+    useSensitiveData(data, sensitiveAttributes);
 
     function toggleEditing() {
         setEditing(prev => !prev);
@@ -33,7 +35,7 @@ export default function EditData({
                 values={initialFormValues}
                 scope={scope}
                 onSubmit={params => {
-                    submitData({ locale, projectId, projects }, params);
+                    submitData({ locale, projectId, project }, params);
                     toggleEditing();
                 }}
                 onCancel={toggleEditing}
@@ -42,17 +44,17 @@ export default function EditData({
             />
         ) :
         (
-            <>
+            <form className='default'>
                 <dl className="DescriptionList">
                     {formElements.map(element => (
-                        <Fragment key={element.key}>
+                        <div key={element.key} className={element.className}>
                             <dt>
-                                {t(`activerecord.attributes.${scope}.${element.attribute}`)}
+                                {t(element.labelKey || `activerecord.attributes.${scope}.${element.attribute}`)}
                             </dt>
                             <dd>
-                                {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}
+                                {humanReadable({obj: data, attribute: element.attribute, collapsed: true})}
                             </dd>
-                        </Fragment>
+                        </div>
                     ))}
                 </dl>
                 <button
@@ -64,7 +66,7 @@ export default function EditData({
                     {' '}
                     {t('edit.default.edit')}
                 </button>
-            </>
+            </form>
         );
 }
 
@@ -73,11 +75,6 @@ EditData.propTypes = {
     formElements: PropTypes.array.isRequired,
     helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
-    locale: PropTypes.string.isRequired,
-    locales: PropTypes.array.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     scope: PropTypes.string.isRequired,
-    translations: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,
 };

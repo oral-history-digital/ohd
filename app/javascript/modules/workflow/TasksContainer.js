@@ -1,21 +1,15 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, submitData, getProjects, getCurrentAccount, getTaskTypesForCurrentProject } from 'modules/data';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { fetchData, deleteData, submitData, getTaskTypesForCurrentProject } from 'modules/data';
 import { DataList } from 'modules/admin';
 import TaskPreviewContainer from './TaskPreviewContainer';
 
 const mapStateToProps = (state) => {
     return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
         //
         // editView should always be true on tasks
-        // because tasks can be seen only in the own account
+        // because tasks can be seen only in the own user
         // or if editView == true in some user administration area
         //
         editView: true,
@@ -26,7 +20,7 @@ const mapStateToProps = (state) => {
             'archive_id',
             'interviewee',
             'name',
-            'assigned_to_user_account_at',
+            'assigned_to_user_at',
             'assigned_to_supervisor_at',
             'started_at',
             'finished_at',
@@ -46,13 +40,6 @@ const mapStateToProps = (state) => {
                 attribute: 'archive_id',
                 validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
             },
-            //{
-                //attribute: 'interview_id',
-                //elementType: 'select',
-                //values: getInterviews(state),
-                //withEmpty: true,
-                //validate: function(v){return /^\d+$/.test(v)}
-            //},
             {
                 attribute: 'workflow_state',
                 elementType: 'select',

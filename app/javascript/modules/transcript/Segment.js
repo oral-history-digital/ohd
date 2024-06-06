@@ -7,6 +7,7 @@ import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useTranscriptQueryString } from 'modules/query-string';
+import { formatTimecode } from 'modules/interview-helpers';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
@@ -27,6 +28,7 @@ function Segment({
     setOpenReference,
     tabIndex,
     sendTimeChangeRequest,
+    transcriptCoupled,
 }) {
     const divEl = useRef();
     const { isAuthorized } = useAuthorization();
@@ -93,6 +95,8 @@ function Segment({
         <>
             <div
                 id={`segment_${data.id}`}
+                data-tape={data.tape_nbr}
+                data-time={formatTimecode(data.time, true)}
                 ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
@@ -112,11 +116,11 @@ function Segment({
                     type="button"
                     className={classNames('Segment-text', { 'is-active': active })}
                     lang={contentLocale}
-                    onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+                    onClick={() => {transcriptCoupled && sendTimeChangeRequest(data.tape_nbr, data.time)}}
                     // TODO: clean mog segment-texts from html in db
                     //dangerouslySetInnerHTML={{__html: text}}
                 >
-                    {text || <i>{t('modules.transcript.no_text')}</i>}
+                    {text.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || <i>{t('modules.transcript.no_text')}</i>}
                 </button>
 
                 <BookmarkSegmentButton segment={data} />

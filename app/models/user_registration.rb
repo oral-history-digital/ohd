@@ -108,8 +108,6 @@ EVAL
     update_attribute(:updated_at, Time.now)
   end
 
-  private
-
   def serialize_form_parameters
     serialized_form_params = {}
     yaml_fields = [:appellation, :gender, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :country]
@@ -122,7 +120,7 @@ EVAL
 
   def create_account
     self.user_account = UserAccount.where(email: self.email).first_or_initialize
-    self.user_account.login = create_login if self.user_account.login.blank?
+    #self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.tos_agreed_at = DateTime.now
     self.user_account.default_locale = I18n.locale

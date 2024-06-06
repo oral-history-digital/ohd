@@ -1,91 +1,71 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
-import { pathBase } from 'modules/routes';
+import { useProject } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import FetchAccountContainer from './FetchAccountContainer';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
+import Warning from './Warning';
+import { warningShouldBeShown, doNotShowWarningAgain } from './warningFunctions';
+import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
+    CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
+import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
+import { OHD_DOMAINS } from 'modules/constants';
 
 export default function Layout({
     scrollPositionBelowThreshold,
     sidebarVisible,
     children,
     toggleSidebar,
-    locale,
-    project,
-    projectId,
-    projects,
     loggedInAt,
     collectionsStatus,
     projectsStatus,
     languagesStatus,
-    setLocale,
     fetchData,
 }) {
-    const location = useLocation();
-    const navigate = useNavigate();
+    const [warningVisible, setWarningVisible] = useState(warningShouldBeShown());
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
+    const [searchParams, setSearchParams] = useSearchParams();
 
+    useCheckLocaleAgainstProject();
+
+    const ohdDomain = OHD_DOMAINS[railsMode];
+    const ohd = {shortname: 'ohd', archive_domain: ohdDomain};
+
+    // load current project if not already loaded
     useEffect(() => {
-        fitLocale();
-        loadStuff();
-    });
+        if (!projectsStatus[project.id]) {
+            fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
+        }
+        removeAccessTokenParam();
+    }, [project]);
 
-    function fitLocale() {
-        const pathBasePart = /^(?:\/[\-a-z0-9]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
-
-        const found = location.pathname.match(pathBasePart);
-        const pathLocale = Array.isArray(found) ? found[1] : null;
-
-        if (pathLocale) {
-            if (project?.available_locales.indexOf(pathLocale) === -1) {
-                const newPathBase = pathBase({projectId, locale: project.default_locale, projects}) + '/';
-                const newPath = location.pathname.replace(pathBasePart, newPathBase);
-                navigate(newPath);
-                setLocale(locale);
-            } else if (pathLocale !== locale) {
-                setLocale(pathLocale);
-            }
+    function removeAccessTokenParam() {
+        if (searchParams.has('access_token')) {
+            searchParams.delete('access_token');
+            setSearchParams(searchParams);
         }
     }
 
-    function loadStuff() {
-        loadCollections();
-        loadProjects();
-        loadLanguages();
-    }
-
-    function loadCollections() {
-        if (
-            project && !collectionsStatus[`for_projects_${project?.id}`]
-        ) {
-            fetchData({ projectId, locale, projects }, 'collections', null, null, `for_projects=${project?.id}`);
-        }
-    }
-
-    function loadProjects() {
-        if (projectId && !projectsStatus.all) {
-            fetchData({ projectId, locale, projects }, 'projects', null, null, 'all');
-        }
-    }
-
-    function loadLanguages() {
-        if (!languagesStatus.all) {
-            fetchData({ projectId, locale, projects }, 'languages', null, null, 'all');
-        }
+    function handleWarningClose() {
+        setWarningVisible(false);
+        doNotShowWarningAgain();
     }
 
     let titleBase = 'Oral-History.Digital';
     if (project) {
-        titleBase = project?.display_name?.[locale] || project.name[locale];
+        titleBase = project?.display_name?.[locale] || project?.name?.[locale];
     }
 
     return (
@@ -95,6 +75,12 @@ export default function Layout({
                 'is-sticky': scrollPositionBelowThreshold,
             })}>
                 <FetchAccountContainer />
+                <AfterRegisterPopup />
+                <AfterConfirmationPopup />
+                <AfterRequestProjectAccessPopup />
+                <CorrectUserDataPopup />
+                <AfterResetPassword />
+                <ConfirmNewZwarTosPopup />
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}
@@ -131,6 +117,8 @@ export default function Layout({
                     visible={scrollPositionBelowThreshold}
                     fullscreen={!sidebarVisible}
                 />
+
+                {warningVisible && <Warning onClose={handleWarningClose}/>}
             </div>
         </ResizeWatcherContainer>
     );
@@ -139,20 +127,14 @@ export default function Layout({
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
     loggedInAt: PropTypes.number,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string,
-    projects: PropTypes.object.isRequired,
-    project: PropTypes.object,
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
     collectionsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
-    editView: PropTypes.bool.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
     toggleSidebar: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
-    setLocale: PropTypes.func.isRequired,
 };

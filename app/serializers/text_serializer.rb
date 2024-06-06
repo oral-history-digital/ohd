@@ -1,3 +1,7 @@
 class TextSerializer < ApplicationSerializer
-  attributes :id, :name, :project_id
+  attributes :id, :code, :project_id, :text
+
+  def text
+    object.localized_hash(:text)
+  end
 end

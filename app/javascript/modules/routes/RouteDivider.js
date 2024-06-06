@@ -1,22 +1,21 @@
-import { useSelector } from 'react-redux';
-
 import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
-import { getProjects } from 'modules/data';
 import { MemoizedRoutesWithoutProjectId, MemoizedRoutesWithProjectId } from './Routes';
-import projectByDomain from './projectByDomain';
+import { AnalyticsProvider } from 'modules/analytics';
+import useProject from './useProject';
 
 function RouteDivider() {
-    const projects = useSelector(getProjects);
-    const projectFromDomain = projectByDomain(projects);
+    const { project } = useProject();
     const isScrollBelowThreshold = useScrollBelowThreshold();
 
     return (
-        <LayoutContainer scrollPositionBelowThreshold={isScrollBelowThreshold}>
-            {projectFromDomain ?
-                <MemoizedRoutesWithoutProjectId /> :
-                <MemoizedRoutesWithProjectId />
-            }
-        </LayoutContainer>
+        <AnalyticsProvider project={project}>
+            <LayoutContainer scrollPositionBelowThreshold={isScrollBelowThreshold}>
+                {project.archive_domain ?
+                    <MemoizedRoutesWithoutProjectId project={project} /> :
+                    <MemoizedRoutesWithProjectId />
+                }
+            </LayoutContainer>
+        </AnalyticsProvider>
     );
 }
 

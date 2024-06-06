@@ -10,11 +10,11 @@ html
       var developmentMode = #{Rails.env == 'development' ? true : false};
       var railsMode = '#{Rails.env}';
 
-    == javascript_packs_with_chunks_tag 'application'
-    == stylesheet_packs_with_chunks_tag 'application'
+    == javascript_pack_tag 'application'
+    == stylesheet_pack_tag 'application'
 
     = action_cable_meta_tag
-    == favicon_link_tag "/favicon-#{current_project ? current_project.identifier : 'ohd'}.ico"
+    == favicon_link_tag "/favicon-#{current_project ? current_project.shortname : 'ohd'}.ico"
 
     title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
 

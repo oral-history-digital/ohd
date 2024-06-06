@@ -13,7 +13,7 @@ import useFacets from '../useFacets';
 export default function ArchiveFacets() {
     const { locale } = useI18n();
     const { isAuthorized } = useAuthorization();
-    const { facets, isLoading, isValidating } = useFacets();
+    const { facets, isLoading } = useFacets();
     const { isLoading: eventTypesAreLoading, data: eventTypes } = useEventTypes();
 
     if (!facets || eventTypesAreLoading) {
@@ -22,7 +22,7 @@ export default function ArchiveFacets() {
 
     const adminFacets = [
         'workflow_state',
-        'tasks_user_account_ids',
+        'tasks_user_ids',
         'tasks_supervisor_ids',
     ];
 
@@ -40,6 +40,7 @@ export default function ArchiveFacets() {
                     return (
                         <FacetDropdown
                             key={facetName}
+                            facet={facetName}
                             label={facetData.name[locale]}
                         >
                             <BirthYearFacet
@@ -68,6 +69,7 @@ export default function ArchiveFacets() {
                     return (
                         <FacetDropdown
                             key={facetName}
+                            facet={facetName}
                             label={eventType.name}
                         >
                             <RangeFacet
@@ -88,6 +90,7 @@ export default function ArchiveFacets() {
                     return (
                         <FacetDropdown
                             key={facetName}
+                            facet={facetName}
                             label={facetData.name[locale]}
                             admin={isAdminFacet}
                         >

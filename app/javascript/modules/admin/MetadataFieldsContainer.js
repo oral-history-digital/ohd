@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getTranslations, getProjectId } from 'modules/archive';
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount, getRegistryReferenceTypesStatus } from 'modules/data';
+import { getCurrentProject, fetchData, deleteData, submitData,
+    getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
 import MetadataFieldShow from './MetadataFieldShow';
@@ -10,13 +10,6 @@ import MetadataFieldShow from './MetadataFieldShow';
 const mapStateToProps = state => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        translations: getTranslations(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        account: getCurrentAccount(state),
-        editView: true,
-        //
         data: project.metadata_fields,
         outerScope: 'project',
         outerScopeId: project.id,

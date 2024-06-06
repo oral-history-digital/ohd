@@ -12,7 +12,7 @@ class TaskPolicy < ApplicationPolicy
     user && (
       user.admin? ||
       user.roles?(project, 'Task', 'update') ||
-      record.user_account == user ||
+      record.user == user ||
       record.supervisor == user.permissions
     )
   end

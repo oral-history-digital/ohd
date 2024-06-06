@@ -14,6 +14,12 @@
   width: 96vw;
   box-shadow: 3px 3px 10px 5px rgba(0, 0, 0, 0.125);
 
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
   @include screen-m {
     margin: 10vh auto;
     padding: 1.5rem;

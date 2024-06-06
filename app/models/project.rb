@@ -19,9 +19,9 @@ class Project < ApplicationRecord
   has_many :roles, dependent: :destroy
   has_many :external_links, dependent: :destroy
   has_many :registry_entries, dependent: :destroy
-  has_many :user_registration_projects, dependent: :destroy
-  has_many :user_registrations,
-    through: :user_registration_projects
+  has_many :user_projects, dependent: :destroy
+  has_many :users,
+    through: :user_projects
 
   has_many :registry_reference_types, dependent: :destroy
   has_many :registry_name_types, dependent: :destroy
@@ -30,8 +30,11 @@ class Project < ApplicationRecord
   has_many :archiving_batches, dependent: :destroy
   has_many :event_types, dependent: :destroy
 
+  has_one :access_config, dependent: :destroy
+  has_many :texts, dependent: :destroy
+
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
-    fallbacks_for_empty_translations: true, touch: true
+    :media_missing_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array
@@ -44,6 +47,10 @@ class Project < ApplicationRecord
   serialize :hidden_transcript_registry_entry_ids, Array
   serialize :pdf_registry_entry_ids, Array
   # serialize :fullname_on_landing_page
+
+  after_create do
+    create_access_config!
+  end
 
   #
   # define pseudo-methods for serialized attributes
@@ -74,6 +81,8 @@ class Project < ApplicationRecord
   validates :shortname, format: { with: /\A[\-a-z0-9]{1,11}[a-z]\z/ },  uniqueness: true,  presence: true
   validates :workflow_state, inclusion: { in: %w(public unshared),
     message: "%{value} is not a valid workflow state" }
+  validates :upload_types, inclusion: { in: %w(bulk_metadata bulk_photos bulk_registry_entries bulk_texts),
+    message: "%{value} is not a valid upload type" }
 
   scope :shared, -> { where(workflow_state: 'public' )}
 
@@ -104,32 +113,35 @@ class Project < ApplicationRecord
       end
     end
 
-    # TODO: fit this method
-    def current
-      first
+    def ohd
+      where(shortname: 'ohd').first
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').map do |project|
-        uri = Addressable::URI.parse(project.archive_domain)
-        uri && uri.host
-      end.compact
+      where.not(shortname: 'ohd').
+        where.not(archive_domain: ['', nil]).
+        pluck(:archive_domain).uniq
     end
 
-    def by_host(host)
-      all.find do |project|
-        uri = Addressable::URI.parse(project.archive_domain)
-        uri && uri.host == host
-      end
+    def by_domain(domain)
+      where(archive_domain: domain).first
     end
 
     def by_identifier(identifier)
-      where(["lower(shortname) = :value", { value: identifier.downcase }]).first
+      where(shortname: identifier).first
+    end
+
+    def non_public_method_names
+      %w(contact_email)
     end
   end
 
   def identifier
     shortname.downcase
+  end
+
+  def is_ohd?
+    identifier == 'ohd'
   end
 
   def num_interviews
@@ -147,6 +159,10 @@ class Project < ApplicationRecord
     read_attribute :available_locales
   end
 
+  def logo
+    logos.where(locale: I18n.locale).first || logos.first
+  end
+
   def root_registry_entry
     registry_entries.where(code: 'root').first
   end
@@ -161,7 +177,8 @@ class Project < ApplicationRecord
   def search_facets_names
     metadata_fields.
       where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
-      map(&:name)
+      order(:facet_order).
+      pluck(:name)
   end
 
   def event_facets
@@ -185,9 +202,23 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
+  def public_description?
+    description_metadata_field&.use_in_results_list || description_metadata_field&.use_in_results_table
+  end
+
+  def description_metadata_field
+    metadata_fields.where(name: 'description').first
+  end
+
+  def search_results_metadata_fields
+    metadata_fields.where(use_in_results_list: true).
+      or(metadata_fields.where(use_in_results_table: true)).
+      where.not(ref_object_type: [nil, ''])
+  end
+
   # runs only with memcache
   #def clear_cache(namespace)
-    #Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
+    #Rails.cache.delete_matched /^#{shortname}-#{namespace}*/
   #end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
@@ -231,7 +262,7 @@ class Project < ApplicationRecord
         rr = facet.registry_reference_type
         if rr
           cache_key_date = [rr.updated_at, facet.updated_at, RegistryEntry.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
           end
         end
@@ -273,13 +304,13 @@ class Project < ApplicationRecord
           rescue
           end
         # admin facets
-        when "tasks_user_account_ids", "tasks_supervisor_ids"
+        when "tasks_user_ids", "tasks_supervisor_ids"
           # add filters for tasks
           mem[facet.name.to_sym] = {
             name: name,
-            subfacets: (UserAccount.joins(:user_roles) | UserAccount.where(admin: true)).inject({}) do |subfacets, user_account|
-              subfacets[user_account.id.to_s] = {
-                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = user_account.full_name; desc},
+            subfacets: (User.joins(:user_roles) | User.where(admin: true)).inject({}) do |subfacets, user|
+              subfacets[user.id.to_s] = {
+                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = user.full_name; desc},
                 count: 0,
               }
               subfacets
@@ -288,11 +319,15 @@ class Project < ApplicationRecord
         when "collection_id"
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-              subfacets: collections.includes(:translations).inject({}) do |subfacets, sf|
+              subfacets: ( is_ohd? ?
+                Collection.joins(:project).where(project: {workflow_state: 'public'}) :
+                collections
+              ).includes(:translations).inject({}) do |subfacets, sf|
                 subfacets[sf.id.to_s] = {
+                  id: sf.id,
                   name: sf.localized_hash(:name),
                   count: 0,
                   homepage: sf.try(:localized_hash, :homepage),
@@ -305,11 +340,42 @@ class Project < ApplicationRecord
           end
         when "archive_id"
           # do nothing: should not be a facet!
-        when /_id$/ # belongs_to associations like language on interview
+        when "project_id"
+          facet_label_hash = facet.localized_hash(:label)
+          cache_key_date = [Project.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          result = mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}-#{Project.count}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: Project.shared.includes(:translations).inject({}) do |acc, project|
+                acc[project.id.to_s] = {
+                  name: project.localized_hash(:name),
+                  count: 0
+                }
+                acc
+              end
+            }
+          end
+          result
+        when 'language_id', 'primary_language_id', 'secondary_language_id', 'primary_translation_language_id'
+          facet_label_hash = facet.localized_hash(:label)
+          cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: Language.all.includes(:translations).inject({}) do |subfacets, sf|
+                subfacets[sf.id.to_s] = {
+                  name: sf.localized_hash(:name),
+                  count: 0
+                }
+                subfacets
+              end
+            }
+          end
+        when /_id$/ # belongs_to associations
           facet_label_hash = facet.localized_hash(:label)
           associatedModel = facet.name.sub('_id', '').classify.constantize
           cache_key_date = [associatedModel.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: associatedModel.all.includes(:translations).inject({}) do |subfacets, sf|
@@ -325,6 +391,17 @@ class Project < ApplicationRecord
           # do nothing: facets on individual free-text do not make sense
         when "tape_count"
           # do nothing: this is not meant to be a facet
+        when "project_access"
+          mem[:project_access] = {
+            name: facet_label_hash || localized_hash_for("search_facets", :project_access),
+            subfacets: %w(free restricted).inject({}) do |subfacets, access|
+              subfacets[access] = {
+                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = I18n.t("search_facets.#{access}", locale: locale); desc},
+                count: 0
+              }
+              subfacets
+            end
+          }
         else
           begin
             mem[facet.name.to_sym] = {
@@ -337,7 +414,9 @@ class Project < ApplicationRecord
                 subfacets
               end
             }
-          rescue
+          rescue => e
+            logger.warn "Could not create facet for #{facet.name}"
+            logger.warn e.message
           end
         end
       end

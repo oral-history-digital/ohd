@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import { humanReadable } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useHumanReadable } from 'modules/data';
 
 export default function DataDetails({
     detailsAttributes,
@@ -9,7 +9,8 @@ export default function DataDetails({
     scope,
     optionsScope,
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
+    const { humanReadable } = useHumanReadable();
 
     return (
         <div className="details">
@@ -34,10 +35,7 @@ export default function DataDetails({
                                     {t(`activerecord.attributes.${scope}.${attribute}`) + ': '}
                                 </span>
                                 <span className='content'>
-                                    {humanReadable(data, attribute,
-                                        { locale, translations, optionsScope },
-                                        {})
-                                    }
+                                    {humanReadable({obj: data, attribute})}
                                 </span>
                             </p>
                         )

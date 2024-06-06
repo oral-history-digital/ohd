@@ -11,8 +11,7 @@ export default function mapInstitution(locale, institution) {
     const subRows = institution.children
         ?.map(curriedMapInstitution)
         ?.sort(rowComparator) || [];
-    const projectRows = institution.projects
-        .map(curriedMapProject)
+    const projectRows = institution.projects?.map(curriedMapProject)
         .sort(rowComparator);
     const subRowsWithProjects = subRows.concat(projectRows);
 
@@ -20,8 +19,8 @@ export default function mapInstitution(locale, institution) {
         type: 'institution',
         id: institution.id,
         shortname: institution.shortname,
-        name: institution.name[locale],
-        description: institution.description[locale],
+        name: institution.name?.[locale],
+        description: institution.description?.[locale],
         num_interviews: institution.num_interviews,
         parent_id: institution.parent_id,
         hasSubInstitutions: subRows.length > 0,

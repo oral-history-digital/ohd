@@ -4,24 +4,24 @@ import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getEditView, changeToEditView } from 'modules/archive';
-import { getCurrentAccount } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 
 export default function ToggleEditView({
     className,
 }) {
     const { t } = useI18n();
-    const account = useSelector(getCurrentAccount);
+    const user = useSelector(getCurrentUser);
     const editView = useSelector(getEditView);
     const dispatch = useDispatch();
 
-    const showToggleButton = account
-        && Object.keys(account).length > 0
+    const showToggleButton = user
+        && Object.keys(user).length > 0
         && (
-            account.admin
-                || Object.keys(account.tasks).length > 0
-                || Object.keys(account.supervised_tasks).length > 0
-                || Object.keys(account.permissions).length > 0
+            user.admin
+                || Object.keys(user.tasks).length > 0
+                || Object.keys(user.supervised_tasks).length > 0
+                || Object.keys(user.permissions).length > 0
         );
 
     if (!showToggleButton) {

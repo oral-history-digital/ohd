@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { FaEdit, FaSortAmountDown } from 'react-icons/fa';
+import { useEffect } from 'react';
+import { FaEdit, FaSortAmountDown, FaSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -7,6 +8,7 @@ import { useI18n } from 'modules/i18n';
 
 export default function MediaPlayerButtons({
     autoScroll,
+    interview,
     className,
     editViewEnabled,
     enableAutoScroll,
@@ -23,6 +25,12 @@ export default function MediaPlayerButtons({
         }
     }
 
+    useEffect(() => {
+        if (!interview.transcript_coupled) {
+            disableAutoScroll();
+        }
+    }, [interview.transcript_coupled]);
+
     const autoScrollButtonLabel = autoScroll ? t('modules.media_player.auto_scroll.disable') : t('modules.media_player.auto_scroll.enable')
 
     return (
@@ -38,15 +46,21 @@ export default function MediaPlayerButtons({
                 </button>
             </AuthorizedContent>
 
-            <button
-                className={classNames('StateButton', { 'is-pressed': autoScroll })}
-                type="button"
-                aria-label={autoScrollButtonLabel}
-                title={autoScrollButtonLabel}
-                onClick={toggleAutoScroll}
-            >
-                <FaSortAmountDown className="StateButton-icon" />
-            </button>
+            { interview?.transcript_coupled ?
+                <button
+                    className={classNames('StateButton', { 'is-pressed': autoScroll })}
+                    type="button"
+                    aria-label={autoScrollButtonLabel}
+                    title={autoScrollButtonLabel}
+                    onClick={toggleAutoScroll}
+                >
+                    <FaSortAmountDown className="StateButton-icon" />
+                </button> :
+                <div className="StateButton-icon stacked">
+                    <FaSortAmountDown />
+                    <FaSlash className="red" />
+                </div>
+            }
         </div>
     );
 }

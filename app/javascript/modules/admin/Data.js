@@ -4,24 +4,24 @@ import { AuthorizedContent } from 'modules/auth';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import { AdminMenu } from 'modules/ui';
+import { useProject } from 'modules/routes';
 import { DeleteItemForm } from 'modules/forms';
 import { PersonDetails } from 'modules/person';
 import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
 import getDataDisplayName from './getDataDisplayName';
+import { useSensitiveData } from 'modules/data';
 
 const Item = AdminMenu.Item;
 
 export default function Data({
     data,
     joinedData,
-    locale,
-    projectId,
-    projects,
     task,
     form,
     scope,
+    sensitiveAttributes = [],
     outerScope,
     outerScopeId,
     showComponent,
@@ -34,7 +34,10 @@ export default function Data({
     deleteData,
     handleDelete,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
+
+    useSensitiveData(data, sensitiveAttributes);
 
     function destroy(close) {
         // Use custom delete handler if available, skip the rest.
@@ -44,11 +47,11 @@ export default function Data({
         }
 
         // skip remove from state, only remove server-side
-        deleteData({ locale, projectId, projects }, pluralize(scope), data.id,
+        deleteData({ locale, projectId, project }, pluralize(scope), data.id,
             null, null, true);
         // only remove from state
         deleteData(
-            { locale, projectId, projects },
+            { locale, projectId, project },
             outerScope ? pluralize(outerScope) : pluralize(scope),
             outerScopeId || data.id,
             outerScope ? pluralize(scope) : null,
@@ -141,9 +144,6 @@ export default function Data({
 }
 
 Data.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
     joinedData: PropTypes.object,
     task: PropTypes.object,

@@ -44,7 +44,11 @@ def interview_with_contributions(interview_attibutes={})
   FactoryBot.create(:interview, interview_attibutes) do |interview|
     {interviewer: 'INT', interviewee: 'AB', cinematographer: 'KAM'}.each do |code, speaker_designation|
       person = person_with_biographical_entries
-      contribution_type = FactoryBot.create(:contribution_type, code: code)
+      contribution_type = FactoryBot.create(
+        :contribution_type,
+        code: code,
+        project: interview.project
+      )
       FactoryBot.create(
         :contribution,
         interview: interview,

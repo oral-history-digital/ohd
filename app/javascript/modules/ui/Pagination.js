@@ -14,6 +14,7 @@ export default function Pagination({
     pageSize,
     onPageChange,
     onPageSizeChange,
+    changePageSize = true,
     className
 }) {
     const { t } = useI18n();
@@ -76,7 +77,7 @@ export default function Pagination({
                 />
             </button>
 
-            <select
+            { changePageSize && <select
                 className="Pagination-pageSize u-ml-tiny"
                 value={pageSize}
                 onChange={e => {
@@ -88,7 +89,7 @@ export default function Pagination({
                         {t('modules.ui.pagination.show', { pageSize })}
                     </option>
                 ))}
-            </select>
+            </select> }
         </nav>
     );
 }

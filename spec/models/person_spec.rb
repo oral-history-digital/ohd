@@ -18,18 +18,6 @@ describe Person do
     expect(person.biographical_entries.first.text).to eq('Geboren und gestorben')
   end
 
-  describe '#first_name_used' do
-    it 'returns real first name' do
-      expect(person.first_name_used).to eq('Alice')
-    end
-
-    it 'returns pseudonym first name if use_pseudonym is set' do
-      person.use_pseudonym = true
-
-      expect(person.first_name_used).to eq('George')
-    end
-  end
-
   describe '#last_name_used' do
     it 'returns real last name' do
       expect(person.last_name_used).to eq('Henderson')
@@ -56,6 +44,12 @@ describe Person do
       it 'displays a salutation according to gender' do
         person.first_name = ''
         expect(person.display_name).to eq('Frau Henderson')
+      end
+
+      it 'displays a salutation even if gender is nil' do
+        person.first_name = ''
+        person.gender = nil
+        expect(person.display_name).to eq('Person Henderson')
       end
 
       it 'displays title if present' do

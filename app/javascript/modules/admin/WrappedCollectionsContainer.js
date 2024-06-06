@@ -1,26 +1,16 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
 import {
     fetchData, deleteData, submitData, getCurrentProject,
-    getProjectLocales, getProjects, getCurrentAccount,
     getCollectionsForCurrentProject, getCollectionsStatus
 } from 'modules/data';
-import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: getLocale(state),
-        locales: getProjectLocales(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
-        editView: getCookie('editView') === 'true',
         data: getCollectionsForCurrentProject(state),
         dataStatus: getCollectionsStatus(state),
         resultPagesCount: getCollectionsStatus(state).resultPagesCount,
@@ -28,7 +18,8 @@ const mapStateToProps = (state) => {
         outerScope: 'project',
         outerScopeId: project.id,
         scope: 'collection',
-        baseTabIndex: 4 + project.has_map,
+        sortAttribute: 'name',
+        sortAttributeTranslated: true,
         detailsAttributes: ['name', 'homepage', 'responsibles', 'notes'],
         initialFormValues: { project_id: project.id },
         formElements: [
@@ -49,7 +40,7 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'notes',
                 multiLocale: true,
-                elementType: 'textarea',
+                elementType: 'richTextEditor',
             }
         ],
         joinedData: {},

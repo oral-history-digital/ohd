@@ -20,6 +20,12 @@
 
 }
 
+.DetailList-item--one-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .DetailList-item--shortened {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;  /* 1 */

@@ -1,37 +1,48 @@
-export default function t({ locale, translations }, key, params) {
-    let text, defaultKey;
-    let keyArray = key.split('.');
-    let productionFallback = keyArray[keyArray.length - 1];
+import reactStringReplace from 'react-string-replace';
 
-    if (keyArray.length > 2) {
-        keyArray[keyArray.length - 2] = 'default';
-        defaultKey = keyArray.join('.');
-    }
+export default function t(
+    {
+        locale,
+        translations,
+        translationsView,
+    }, key, params
+) {
+    const translation = translations[key]?.[locale];
+    const defaultTranslation = translations[defaultKey(key)]?.[locale];
 
-    try {
-        try {
-            eval(`text = translations.${locale}.${key}`);
-        } catch (e) {
-        } finally {
-            if (typeof(text) !== 'string') {
-                eval(`text = translations.${locale}.${defaultKey}`);
-            }
-        }
-    } catch (e) {
-    } finally {
-        if (typeof(text) === 'string') {
-            if(params) {
-                for (let [key, value] of Object.entries(params)) {
-                    text = text.replace(`%{${key}}`, value)
-                }
-            }
-            return text
-        } else {
-            if (developmentMode === 'true') {
-                return `translation for ${locale}.${key} is missing!`;
-            } else {
-                return productionFallback;
-            }
+    let text = translation || defaultTranslation || productionFallback(key);
+
+    if(params) {
+        for (let [key, value] of Object.entries(params)) {
+            text = reactStringReplace(text, `%{${key}}`, (match, i) => (
+                value
+            ));
         }
     }
+
+    const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
+
+    if (translationsView) {
+        Array.isArray(text) ?
+            text.push(` (${usedKey})`) :
+            text += ` (${usedKey})`;
+    }
+
+    return text;
+}
+
+function defaultKey(key) {
+    const keyArray = key.split('.');
+
+    if (keyArray.length <= 2) {
+        return undefined;
+    }
+
+    keyArray[keyArray.length - 2] = 'default';
+    return keyArray.join('.');
+}
+
+function productionFallback(key) {
+    const keyArray = key.split('.');
+    return keyArray[keyArray.length - 1];
 }

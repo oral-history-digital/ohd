@@ -1,5 +1,5 @@
 class InterviewsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:new, :show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
+  skip_before_action :authenticate_user!, only: [:new, :show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
   skip_after_action :verify_authorized, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
   skip_after_action :verify_policy_scoped, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
 
@@ -40,7 +40,15 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, msg: "processed")
+        render json: data_json(
+          @interview,
+          serializer_name: 'InterviewUpdate',
+          changes: (
+            params[:interview].keys -
+            ["translations_attributes", "public_attributes"]
+          ),
+          msg: "processed"
+        )
       end
     end
   end
@@ -49,7 +57,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
 
-    MarkTextJob.perform_later(@interview, mark_text_params[:texts_attributes].as_json, mark_text_params[:locale], current_user_account)
+    MarkTextJob.perform_later(@interview, mark_text_params[:texts_attributes].as_json, mark_text_params[:locale], current_user)
 
     respond_to do |format|
       format.json do
@@ -72,7 +80,7 @@ class InterviewsController < ApplicationController
     # contributors (update_speakers_params[:contributions]) are people designated through column speaker_id
     #
     contributors = update_speakers_params[:contributions_attributes] && update_speakers_params[:contributions_attributes].map(&:to_h)
-    AssignSpeakersJob.perform_later(@interview, speakers, contributors, current_user_account)
+    AssignSpeakersJob.perform_later(@interview, speakers, contributors, current_user)
 
     respond_to do |format|
       format.json do
@@ -92,7 +100,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           {
             data: @interview.speaker_designations,
             nested_data_type: "speaker_designations",
@@ -113,7 +121,7 @@ class InterviewsController < ApplicationController
 
       if %w(contributions photos registry_references).include?(m)
         association = @interview.send(m)
-        data = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
+        data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
           association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
       else
@@ -140,7 +148,7 @@ class InterviewsController < ApplicationController
     json = {
       id: @interview.archive_id,
       data_type: "interviews",
-      nested_data_type: 'translations',
+      nested_data_type: 'translations_attributes',
       data: @interview.translations,
     }
 
@@ -154,7 +162,7 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
 
-    unless @interview.present?
+    unless @interview.present? && current_project.interviews.include?(@interview)
       raise ActiveRecord::RecordNotFound
     end
 
@@ -171,12 +179,18 @@ class InterviewsController < ApplicationController
         render json: data_json(@interview)
       end
       format.vtt do
-        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
+        unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
+          raise Pundit::NotAuthorizedError
+        end
+        vtt = Rails.cache.fetch "#{current_project.shortname}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
         send_data vtt, filename: "#{filename}.vtt", type: "text/vtt"
       end
       format.csv do
+        unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
+          raise Pundit::NotAuthorizedError
+        end
         send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{filename}.csv", type: "text/csv"
       end
       format.html
@@ -345,12 +359,12 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           segments = @interview.segments.
             includes(:translations, :annotations => [:translations]). #, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
             where.not(timecode: "00:00:00.000")
           {
-            data: segments.with_heading.map { |s| Rails.cache.fetch("#{current_project.cache_key_prefix}-headings-#{s.id}-#{s.updated_at}") { ::HeadingSerializer.new(s).as_json } },
+            data: segments.with_heading.map { |s| Rails.cache.fetch("#{current_project.shortname}-headings-#{s.id}-#{s.updated_at}") { ::HeadingSerializer.new(s).as_json } },
             nested_data_type: "headings",
             data_type: "interviews",
             archive_id: params[:id],
@@ -366,7 +380,7 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
             data: ref_tree.part(current_project.root_registry_entry.id),
@@ -383,13 +397,22 @@ class InterviewsController < ApplicationController
   def random_featured
     respond_to do |format|
       format.json do
-        logged_in = current_user_account.present?
+        logged_in = current_user.present?
         serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
+        public_description = current_project.public_description?
+        search_results_metadata_fields = current_project.search_results_metadata_fields
         featured_interviews = current_project.featured_interviews
 
         if featured_interviews.present?
           data = featured_interviews.inject({}) do |mem, interview|
-            mem[interview.archive_id] = cache_single(interview, serializer_name)
+            mem[interview.archive_id] = cache_single(
+              interview,
+              serializer_name: serializer_name,
+              public_description: public_description,
+              search_results_metadata_fields: search_results_metadata_fields,
+              project_available_locales: current_project.available_locales,
+              project_shortname: current_project.shortname
+            )
             mem
           end
           json = {
@@ -399,7 +422,7 @@ class InterviewsController < ApplicationController
         else
           json = Rails.cache.fetch("#{current_project.shortname}-interview-random-featured-#{logged_in}", expires_in: 30.minutes) do
             data = Interview.random_featured(6, current_project.id).inject({}) do |mem, interview|
-              mem[interview.archive_id] = cache_single(interview, serializer_name)
+              mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name)
               mem
             end
             {
@@ -415,7 +438,7 @@ class InterviewsController < ApplicationController
   end
 
   def initial_interview_redux_state
-    #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user_account ? current_user_account.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
+    #Rails.cache.fetch("#{current_project.shortname}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
     if @interview
       initial_redux_state.update(
         archive: initial_redux_state[:archive].update(
@@ -444,16 +467,19 @@ class InterviewsController < ApplicationController
       "project_id",
       "collection_id",
       "archive_id",
-      "language_id",
-      "translation_language_id",
+      "primary_language_id",
+      "secondary_language_id",
+      "primary_translation_language_id",
       "interview_date",
       "signature_original",
       "tape_count",
+      "transcript_coupled",
       "duration",
       "video",
       "translated",
       "workflow_state",
       "media_type",
+      "media_missing",
       "biographies_workflow_state",
       :startpage_position,
       properties: {},
@@ -494,10 +520,10 @@ class InterviewsController < ApplicationController
     )
     {
       "data": {
-        "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
+        "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
         "type": "dois",
         "attributes": {
-          "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
+          "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(xml),

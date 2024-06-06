@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchData } from 'modules/data';
-import { getProjectId, getLocale } from 'modules/archive';
-import { getProjects, getStatuses } from 'modules/data';
+import { fetchData, getStatuses } from 'modules/data';
+import { getLocale } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
+import { useProject } from 'modules/routes';
 
 export default function Fetch({
     fetchParams,
@@ -17,19 +17,19 @@ export default function Fetch({
     testDataType,
     testIdOrDesc,
 }) {
-    const projectId = useSelector(getProjectId);
-    const projects = useSelector(getProjects);
+    const { project, projectId } = useProject();
+
     const locale = useSelector(getLocale);
     const statuses = useSelector(getStatuses);
     const testResult = (typeof testSelector === 'function') ?
         useSelector(testSelector) :
-        !!(statuses[testDataType] && statuses[testDataType][testIdOrDesc]);
+        !!(statuses[testDataType] && /^fetched/.test(statuses[testDataType][testIdOrDesc]));
     const doReload = reloadSelector && useSelector(reloadSelector);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!testResult) {
-            dispatch(fetchData({ projectId, locale, projects }, ...fetchParams));
+            dispatch(fetchData({ projectId, locale, project }, ...fetchParams));
         }
     }, [JSON.stringify(fetchParams), doReload]);
 
@@ -44,10 +44,6 @@ Fetch.propTypes = {
     fetchParams: PropTypes.array.isRequired,
     testSelector: PropTypes.func,
     testDataType: PropTypes.string,
-    testIdOrDesc: PropTypes.oneOfType([
-        PropTypes.integer,
-        PropTypes.string,
-    ]),
     fallback: PropTypes.element,
     alwaysRenderChildren: PropTypes.bool,
     children: PropTypes.oneOfType([

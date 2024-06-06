@@ -13,12 +13,15 @@ export default function DumbTranscriptResult({
     time,
     className,
     lang,
+    transcriptCoupled,
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
 
     function handleClick() {
-        dispatch(sendTimeChangeRequest(tapeNumber, time));
+        if (transcriptCoupled) {
+            dispatch(sendTimeChangeRequest(tapeNumber, time));
+        }
     }
 
     return (
@@ -37,6 +40,7 @@ export default function DumbTranscriptResult({
                 <TapeAndTime
                     tape={tapeNumber}
                     time={time}
+                    transcriptCoupled={transcriptCoupled}
                 />
             </p>
             <p

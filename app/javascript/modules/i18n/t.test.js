@@ -1,17 +1,18 @@
 import t from './t';
 
 const translations = {
-    de: {
-        warning: 'Achtung!',
-    },
-    en: {
-        warning: 'Beware!'
+    warning: {
+        value: {
+            de: 'Achtung!',
+            en: 'Beware!'
+        }
     },
 };
 
 it('translates into one language', () => {
     const props = {
         translations,
+        statuses: {translations: {warning: 'fetched'}},
         locale: 'de',
     };
 
@@ -23,6 +24,7 @@ it('translates into one language', () => {
 it('translates into another language', () => {
     const props = {
         translations,
+        statuses: {translations: {warning: 'fetched'}},
         locale: 'en',
     };
 

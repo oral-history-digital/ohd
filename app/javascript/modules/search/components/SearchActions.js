@@ -8,10 +8,7 @@ import { useSearchParams } from 'modules/query-string';
 import queryToTitle from '../queryToTitle';
 import useFacets from '../useFacets';
 
-export default function SearchActions({
-    locale,
-    translations,
-}) {
+export default function SearchActions({}) {
     const { t } = useI18n();
     const { facets } = useFacets();
     const { allParams } = useSearchParams();
@@ -25,7 +22,7 @@ export default function SearchActions({
     }
 
     function saveSearchForm(closeModal) {
-        const queryTitle = queryToTitle(allParams, facets, locale, translations);
+        const queryTitle = queryToTitle(allParams, facets);
 
         return <WorkbookItemFormContainer
             title={queryTitle}
@@ -52,7 +49,4 @@ export default function SearchActions({
     );
 }
 
-SearchActions.propTypes = {
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-};
+SearchActions.propTypes = {};

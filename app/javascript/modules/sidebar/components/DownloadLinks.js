@@ -9,7 +9,7 @@ export default function DownloadLinks({
     interview,
 }) {
     const pathBase = usePathBase();
-    const translationLocale = interview.languages?.filter(locale => locale !== interview.lang)[0];
+    const translationLocale = interview.translation_locale;
     const hasTranscript = interview.transcript_locales?.indexOf(interview.lang) > -1;
     const hasTranslation = interview.transcript_locales?.indexOf(translationLocale) > -1;
 

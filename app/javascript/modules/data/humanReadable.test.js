@@ -11,10 +11,8 @@ test('project shortname should not be translated', () => {
             bg: 'bulgarisch',
         },
     };
-    const state = { collapsed: true };
 
-    const actual = humanReadable(project, attribute, { translations, locale },
-        state);
+    const actual = humanReadable({obj: project, attribute, locale});
     const expected = 'bg';
     expect(actual).toEqual(expected);
 });

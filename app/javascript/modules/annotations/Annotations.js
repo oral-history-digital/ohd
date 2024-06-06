@@ -39,6 +39,8 @@ export default function Annotations({
                                 contentLocale={contentLocale}
                                 onSubmit={closeModal}
                                 onCancel={closeModal}
+                                cancelLabel={t('cancel')}
+                                submitLabel={t('submit')}
                             />
                         )}
                     </Modal>

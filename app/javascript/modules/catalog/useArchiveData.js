@@ -18,6 +18,7 @@ export default function useArchiveData(projectId) {
         const projectWithChildren = addChildCollections(collections, project);
         const curriedMapCollection = curry(mapCollection)(locale);
         const collectionRows = projectWithChildren.collections
+            .filter((collection) => collection.num_interviews > 0)
             .map(curriedMapCollection)
             .sort(rowComparator);
 

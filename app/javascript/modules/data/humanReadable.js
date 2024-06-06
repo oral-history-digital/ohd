@@ -1,49 +1,68 @@
-import { t } from 'modules/i18n';
-import { pluralize } from 'modules/strings';
+import isNil from 'lodash.isnil';
 
-/**
- * Needs in props at most: optionsScope, translations, locale, values
- */
+import isDate from './isDate';
+import toDateString from './toDateString';
 
-export default function humanReadable(obj, attribute, props, state, none='---') {
-    let translation = obj.translations_attributes &&
-        (Array.isArray(obj.translations_attributes) ? obj.translations_attributes.find(t => t.locale === props.locale) :
-        Object.values(obj.translations_attributes).find(t => t.locale === props.locale))
-
-    let value = state.value || obj[attribute] || (translation && translation[attribute]);
-
-    if (props.optionsScope && props.translations[props.locale][props.optionsScope].hasOwnProperty(value)) {
-        value = t(props, `${props.optionsScope}.${value}`);
+export default function humanReadable({
+    obj,
+    attribute,
+    collapsed=false,
+    none='---',
+    translations,
+    optionsScope,
+    collections,
+    languages,
+    locale,
+}) {
+    if (obj.translations_attributes) {
+        const translation = (Array.isArray(obj.translations_attributes) ?
+            obj.translations_attributes.find(t => t.locale === locale) :
+            Object.values(obj.translations_attributes).find(t => t.locale === locale))
+        const v = translation?.[attribute];
+        if (v) return v;
     }
 
-    if (props.translations[props.locale][attribute] && props.translations[props.locale][attribute].hasOwnProperty(value)) {
-        value = t(props, `${attribute}.${value}`);
+    let value = obj[attribute];
+
+    if (isNil(value)) {
+        return none;
     }
 
-    if (typeof value === 'string' && props.translations[props.locale].hasOwnProperty(value) && attribute !== 'shortname') {
-        value = t(props, value);
-    }
-
-    if (/\w+_id/.test(attribute) && attribute !== 'archive_id') { // get corresponding name from e.g. collection_id
-        if (props.values) {
-            value = props.values[value]?.name
-        } else {
-            let associatedData = pluralize(attribute.substring(0, attribute.length - 3));
-            value = props[associatedData] && props[associatedData][value]?.name
-        }
-    }
-
-    if (typeof value === 'object' && value !== null) {
-        value = value[props.locale];
+    if (['archive_id', 'signature_original', 'shortname'].includes(attribute)) {
+        return value;
     }
 
     if (attribute === 'duration') {
-        value = `${value.split(':')[0]} h ${value.split(':')[1]} min`
+        return `${value.split(':')[0]} h ${value.split(':')[1]} min`
     }
 
-    if (typeof value === 'string' && state.collapsed) {
-        value = value.substring(0,25)
+    if (isDate(value)) {
+        return toDateString(value, locale);
     }
 
-    return value || none;
+    if (attribute === 'collection_id') {
+        return collections[value]?.name[locale];
+    }
+
+    if (/language_id$/.test(attribute)) {
+        return languages[value]?.name[locale];
+    }
+
+    if (typeof value === 'boolean') {
+        return translations[`boolean_value.${value}`][locale];
+    }
+
+    if (Array.isArray(value)) {
+        return value.join(',');
+    }
+
+    if (typeof value === 'object' && value !== null) {
+        return collapsed ? value[locale]?.substring(0,500) : value[locale];
+    }
+
+    const keyParam = `${optionsScope || attribute}.${value}`;
+
+    return translations[keyParam]?.[locale] ||
+        translations[value]?.[locale] ||
+        value || none;
 }

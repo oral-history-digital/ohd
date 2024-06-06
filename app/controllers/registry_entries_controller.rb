@@ -1,5 +1,5 @@
 class RegistryEntriesController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:index, :show]
   skip_after_action :verify_authorized, only: [:norm_data_api]
   skip_after_action :verify_policy_scoped, only: [:norm_data_api]
 
@@ -43,7 +43,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: "registry_entries",
-          data: params[:with_associations] ? cache_single(@registry_entry, 'RegistryEntryWithAssociations') : cache_single(@registry_entry)
+          data: params[:with_associations] ? cache_single(@registry_entry, serializer_name: 'RegistryEntryWithAssociations') : cache_single(@registry_entry)
         }
       end
     end
@@ -54,6 +54,7 @@ class RegistryEntriesController < ApplicationController
     @registry_entry = RegistryEntry.find params[:id]
     authorize @registry_entry
     @registry_entry.update registry_entry_params
+    @registry_entry.touch
     current_project.touch
 
     respond_to do |format|
@@ -74,7 +75,7 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-re-#{cache_key_params}-#{cache_key_date}-#{RegistryEntry.count}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-re-#{cache_key_params}-#{cache_key_date}-#{RegistryEntry.count}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
@@ -103,7 +104,7 @@ class RegistryEntriesController < ApplicationController
         render plain: json
       end
       format.pdf do
-        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
+        pdf = Rails.cache.fetch "#{current_project.shortname}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           render_to_string(
             template: 'registry_entries/index',
             formats: :pdf,
@@ -118,11 +119,11 @@ class RegistryEntriesController < ApplicationController
         send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", type: "application/pdf" #, :disposition => "attachment"
       end
       format.csv do
-        if current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'RegistryEntry', 'show'))
+        if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
-          csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
+          csv = Rails.cache.fetch "#{current_project.shortname}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
             CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
-              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews', 'Status'] 
+              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews', 'Status']
               root.on_all_descendants do |entry|
                 entry.parents.each do |parent|
                   row << [
@@ -144,7 +145,7 @@ class RegistryEntriesController < ApplicationController
           end
           send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
         else
-          redirect_to account_url('current')
+          redirect_to user_url('current')
         end
       end
     end
@@ -152,6 +153,17 @@ class RegistryEntriesController < ApplicationController
 
   def tree
     registry_entries = RegistryEntry.for_tree(I18n.locale, current_project.id)
+    authorize registry_entries
+
+    respond_to do |format|
+      format.json do
+        render json: registry_entries, each_serializer: SlimRegistryEntrySerializer
+      end
+    end
+  end
+
+  def global_tree
+    registry_entries = RegistryEntry.for_tree(I18n.locale, Project.ohd.id)
     authorize registry_entries
 
     respond_to do |format|
@@ -201,7 +213,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: parent.id,
           data_type: "registry_entries",
-          data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
+          data: Rails.cache.fetch("#{current_project.shortname}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
         }, status: :ok
       end
     end
@@ -230,7 +242,7 @@ class RegistryEntriesController < ApplicationController
       ],
       translations_attributes: [
         :locale,
-        :id, 
+        :id,
         :notes
       ]
     )

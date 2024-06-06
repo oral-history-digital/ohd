@@ -11,7 +11,7 @@ export default function DateCell({
 
     const shortDate = date.toLocaleDateString(locale, { dateStyle: 'medium' });
     const longDate = date.toLocaleString(locale);
-    const dateTime = date.toISOString().split('T')[0];
+    const dateTime = shortDate === "Invalid Date" ? '' : date.toISOString().split('T')[0];
 
     return (
         <time

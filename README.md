@@ -13,9 +13,9 @@ production without any modifications.
 
 * Ruby 2.7.7
 * MySQL/MariaDB
-* Node.js 16
+* Node.js >=16
 * yarn
-* Java Runtime Environment
+* Java Runtime Environment (Version 8)
 * optional: LaTeX for PDF generation (e.g. texlive-base and texlive-xetex packages for Ubuntu)
 
 ## Application Setup
@@ -56,7 +56,7 @@ terminals (this is better for Rails debugging with Byebug):
 ```bash
 bin/start_app
 bin/start_search
-bin/webpack-dev-server
+bin/shakapacker-dev-server
 ```
 
 Or you can use foreman to start all three servers at once (Foreman runs the commands
@@ -121,16 +121,26 @@ bin/rake sunspot:reindex
 
 ## Tests
 
-Backend tests can be run with:
+See above for basic dependencies, then prepare the environment for
+testing:
 
-```bash
-bin/rspec
-```
+* `npm install --legacy-peer-deps`
+* foreman start
 
-Frontend tests can be run with:
+Foreman also starts the development servers as they can be shared with the test
+environment. With that out of the way, run all tests:
 
-```bash
-npm test
-```
+    bundle exec rails test -v test/
+    bundle exec rails test -v test/system
 
-We are currently working on providing basic end-to-end-tests.
+Additional features of the test suite can be controlled with environment
+variables:
+
+* set COVERAGE=true to generate a coverage report to `tmp/coverage/index.html`
+* set RETRY=true to rerun failed tests up to 3 times
+* set HEADLESS=true to run the e2e tests in a headless browser
+
+There is also a script to run all tests in an unattended fashion (with RETRY
+and HEADLESS):
+
+    bin/test

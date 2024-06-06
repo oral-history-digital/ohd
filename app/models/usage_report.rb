@@ -1,6 +1,6 @@
 class UsageReport < ApplicationRecord
 
-  belongs_to :user_account
+  belongs_to :user
 
   LOGIN = 'SessionsController#create'
   INTERVIEW = 'InterviewsController#show'
@@ -29,7 +29,7 @@ class UsageReport < ApplicationRecord
   #def validate
     #case action
       #when LOGIN
-        #validate_user_account
+        #validate_user
       #when INTERVIEW
         #validate_archive_id
       #when MATERIALS
@@ -38,7 +38,7 @@ class UsageReport < ApplicationRecord
           #errors.add_to_base('Incorrect or missing filename parameter for text materials request')
         #end
       #when SEARCHES
-        ## validate_user_account
+        ## validate_user
       #when MAP
         ## nothing
       #else
@@ -54,8 +54,8 @@ class UsageReport < ApplicationRecord
     @parameters = (params || {}).symbolize_keys
     case action
       when LOGIN
-        # use login for later assignment of user_account
-        @login = @parameters[:user_account].blank? ? nil : @parameters[:user_account]['login']
+        # use login for later assignment of user
+        @login = @parameters[:user].blank? ? nil : @parameters[:user]['login']
       when INTERVIEW
         self.resource_id = @parameters[:id]
       when MATERIALS
@@ -90,12 +90,12 @@ class UsageReport < ApplicationRecord
     require 'uri'
     @@geolocation_base ||= 'http://freegeoip.net/csv'
     @@resolved_ips ||= {}
-    # check user_account country or IP geolocation
+    # check user country or IP geolocation
     # add to country row and specific_range column
     # use freegeoip.net/csv/{ip} - "ip","DE","Germany"
     country = nil
-    if self.user_account
-      country = self.user_account.country.upcase
+    if self.user
+      country = self.user.country.upcase
     else
       if @@resolved_ips.keys.include?(self.ip)
         country = @@resolved_ips[self.ip]
@@ -129,7 +129,7 @@ class UsageReport < ApplicationRecord
   end
 
   def self.create_logins_report(date)
-    login_reports = UsageReport.logged_in_month(date).logins.includes(:user_account)
+    login_reports = UsageReport.logged_in_month(date).logins.includes(:user)
     timeframes = [:total,0..999,0..1,1..2,2..3,4..6,6..12,12..999]
     timeframe_titles = ['Logins insgesamt',
                         'Logins verifizierter Nutzer',
@@ -153,8 +153,8 @@ class UsageReport < ApplicationRecord
       logins_per_country[country][:total] += 1
 
       # data per timeframe columns
-      if r.user_account
-        time = (r.logged_at - (r.user_account.confirmed_at || r.user_account.confirmation_sent_at)) / 1.month
+      if r.user
+        time = (r.logged_at - (r.user.confirmed_at || r.user.confirmation_sent_at)) / 1.month
         timeframes.each do |range|
           next unless range.is_a?(Range)
           if time >= range.first && time < range.last
@@ -164,11 +164,11 @@ class UsageReport < ApplicationRecord
           end
         end
         # add unique users
-        unless logins[:users].include?(r.user_account_id)
-          logins[:users] << r.user_account_id
+        unless logins[:users].include?(r.user_id)
+          logins[:users] << r.user_id
         end
-        unless logins_per_country[country][:users].include?(r.user_account_id)
-          logins_per_country[country][:users] << r.user_account_id
+        unless logins_per_country[country][:users].include?(r.user_id)
+          logins_per_country[country][:users] << r.user_id
         end
       end
 
@@ -203,7 +203,7 @@ class UsageReport < ApplicationRecord
   end
 
   def self.create_interview_access_report(date)
-    reports = UsageReport.logged_in_month(date).interviews.includes(:user_account)
+    reports = UsageReport.logged_in_month(date).interviews.includes(:user)
     interview_access = {:total => {}, :users => []}
     countries = {}
     resources = {}
@@ -231,12 +231,12 @@ class UsageReport < ApplicationRecord
       interview_access[archive_id][resource] ||= 0
       interview_access[archive_id][resource] += 1
       interview_access[archive_id][:users] ||= []
-      unless report.user_account_id.blank?
-        unless interview_access[:users].include?(report.user_account_id)
-          interview_access[:users] << report.user_account_id
+      unless report.user_id.blank?
+        unless interview_access[:users].include?(report.user_id)
+          interview_access[:users] << report.user_id
         end
-        unless interview_access[archive_id][:users].include?(report.user_account_id)
-          interview_access[archive_id][:users] << report.user_account_id
+        unless interview_access[archive_id][:users].include?(report.user_id)
+          interview_access[archive_id][:users] << report.user_id
         end
       end
     end
@@ -279,7 +279,7 @@ class UsageReport < ApplicationRecord
   end
 
   def self.create_searches_report(date)
-    reports = UsageReport.logged_in_month(date).searches.includes(:user_account)
+    reports = UsageReport.logged_in_month(date).searches.includes(:user)
     searches = {:total => {:total => 0, :users => []}}
     queries = {}
     facets = {}
@@ -311,9 +311,9 @@ class UsageReport < ApplicationRecord
         searches[:total][facet] ||= 0
         searches[:total][facet] += 1
       end
-      unless report.user_account.nil?
-        searches[:total][:users] << report.user_account_id unless searches[:total][:users].include?(report.user_account_id)
-        searches[query][:users] << report.user_account_id unless searches[query][:users].include?(report.user_account_id)
+      unless report.user.nil?
+        searches[:total][:users] << report.user_id unless searches[:total][:users].include?(report.user_id)
+        searches[query][:users] << report.user_id unless searches[query][:users].include?(report.user_id)
       end
     end
     sorted_queries = queries.to_a.sort{|a,b| b.last <=> a.last}.map{|q| q.first}
@@ -353,14 +353,14 @@ class UsageReport < ApplicationRecord
   end
 
   def self.create_map_report(date)
-    reports = UsageReport.logged_in_month(date).maps.includes(:user_account)
+    reports = UsageReport.logged_in_month(date).maps.includes(:user)
     requests = {:total => {:total => 0, :anonymous => 0, :users => []}}
     countries = {}
     reports.each do |r|
       country = r.country
       countries[country] ||= 0
       countries[country] += 1
-      uid = r.user_account_id
+      uid = r.user_id
       requests[:total][:total] += 1
       requests[country] ||= {:total => 0, :anonymous => 0, :users => []}
       requests[country][:total] += 1
@@ -420,31 +420,30 @@ class UsageReport < ApplicationRecord
 
   protected
 
-  def validate_user_account
-    if user_account_id.nil?
+  def validate_user
+    if user_id.nil?
       if !login.blank?
         # This happens only on 'SessionController#create' actions,
         # but there is no need to check for that here.
         # NOTE: theoretically, it is possible that someone attempts
         # a login with another accounts login details. Also, this
         # method cannot discern unsuccessful login attempts.
-        user_account = UserAccount.find_by_login(login)
-        unless user_account.nil?
-          self.user_account_id = user_account.id
-          UserAccountIp.create({ :user_account_id => user_account.id, :ip => self.ip })
+        user = User.find_by_login(login)
+        unless user.nil?
+          self.user_id = user.id
         else
-          errors.add(:user_account_id, :missing)
+          errors.add(:user_id, :missing)
         end
       else
-        errors.add(:user_account_id, :missing) unless assign_user_account_by_ip
+        errors.add(:user_id, :missing) unless assign_user_by_ip
       end
     end
   end
 
-  def assign_user_account_by_ip
-    user_account_ip = UserAccountIp.find_by_ip(self.ip)
-    unless user_account_ip.nil?
-      self.user_account_id = user_account_ip.user_account_id
+  def assign_user_by_ip
+    user = User.where(current_sign_in_ip: self.ip)
+    unless user.nil?
+      self.user_id = user.id
       return true
     end
     false

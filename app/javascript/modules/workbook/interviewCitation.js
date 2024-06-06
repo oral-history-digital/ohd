@@ -1,10 +1,17 @@
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
 import { formatTimecode } from 'modules/interview-helpers';
 import { OHD_LOCATION } from 'modules/constants';
 
-export default function interviewCitation(interview, project, pathBase, locale,
-    translations, tape, time) {
+export default function interviewCitation(
+    interview,
+    project,
+    pathBase,
+    tape,
+    time
+) {
+    const { t, locale } = useI18n();
+
     const domain = project.archive_domain || OHD_LOCATION;
     const projectName = project.name;
     let selfLink;
@@ -21,11 +28,11 @@ export default function interviewCitation(interview, project, pathBase, locale,
     if (interview.anonymous_title) {
         citation += `${interview.anonymous_title?.[locale]}, `;
     }
-    citation += `${t({ locale, translations }, 'interview')} `;
+    citation += `${t('interview')} `;
     citation += `${interview.archive_id}, `;
     citation += `${interview.interview_date}, `;
     if (tape && time) {
-        citation += `${t({ locale, translations }, 'tape')} ${tape} – ${formatTimecode(time)}, `;
+        citation += `${t('tape')} ${tape} – ${formatTimecode(time)}, `;
     }
     if (projectName) {
         citation += `${projectName[locale]}, `;

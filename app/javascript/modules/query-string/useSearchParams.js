@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 
+import { useTrackPageViewFunction } from 'modules/analytics';
+
 const qsOptions = {
     arrayFormat: 'bracket',
 };
@@ -9,7 +11,8 @@ const qsOptions = {
 export default function useSearchParams() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { search, pathname } = location;
+    const trackPageView = useTrackPageViewFunction();
+    const { search } = location;
 
     const params = useMemo(
         () => queryString.parse(search, qsOptions), [search]
@@ -30,7 +33,6 @@ export default function useSearchParams() {
     delete facets.fulltext;
     delete facets.year_of_birth_min;
     delete facets.year_of_birth_max;
-
 
     function setSortBy(value) {
         setParam('sort', value);
@@ -184,9 +186,10 @@ export default function useSearchParams() {
         // Use location object from window instead of useLocation because
         // the useLocation object does not return the correct pathname.
         // Maybe upgrade to the new React Router API (createBrowserRouter).
-        const all = `${window.location.pathname}?${qs}`;
+        const fullPath = `${window.location.pathname}?${qs}`;
 
-        navigate(all, { replace });
+        navigate(fullPath, { replace });
+        trackPageView();
     }
 
     const memoizedValue = useMemo(() => {

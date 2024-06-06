@@ -32,6 +32,9 @@ en:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Yes
+    false: No
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geo Filter
@@ -48,12 +51,6 @@ en:
     none: keine
   in: in
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
-  project_access_in_process: Your registration is currently being reviewed by the project team, this review may take up to two working days.
-    Only then your access will be activated and you can access the contents of the interview archive.
-  registration_needed: For reasons of privacy you have to register. After registration
-    you have access to all testimonies in full length.
   change_to_bcrypt: We have recently updated the way we store our passwords. Please
     click on the "Forgot your password?" link to recover your password. Thank you
     for your understanding.
@@ -65,6 +62,7 @@ en:
   or: or
   show: Zeigen
   hide: Weniger
+  loading: Loading…
   edit_column_header:
     open_table: "Erschließungstabelle öffnen"
     close_table: "Erschließungstabelle schließen"
@@ -179,7 +177,7 @@ en:
   notice: Save
   forget_password: Recover password
   account_activation_errors: Password and password confirmation must be the same and
-    at least 6 characters long.
+    at least 7 characters long.
   submit: Submit
   platform: platform
   cooperation: In cooperation with
@@ -199,7 +197,7 @@ en:
   biographicalentry_results: Search results in the short biography
   observation_results: Search results in the protocol
   person_results: Search results for persons
-  user_registration_results: Suchergebnisse für Benutzer*innen
+  user_results: Suchergebnisse für Benutzer*innen
   segment_hits: search results
   no_interviews_results: No interviews found.
   interview_id: Interview ID
@@ -258,9 +256,11 @@ en:
   history: Short biography
   interview_with: Interview mit
   transcript_header: 'Transcript (%{lang}):'
+  translation_header: 'Translation (%{lang}):'
   transcript_title: Transcript (%{lang}) of the interview with
   translation_title: Translation (%{lang}) of the interview with
   transcript_footer: 'Citation: Transcript of the Interview with'
+  translation_footer: 'Citation: Translation of the Interview with'
   transcript_template: Vorlage für den Import von .csv Dateien
   biographical_entries_header: 'Short biography (english): %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Short biography (english) of %{interviewee_name}'
@@ -329,9 +329,13 @@ en:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Media missing
     signature_original: Signature original
     observations: Observations
     language_id: Language
+    primary_language_id: Erste Sprache
+    secondary_language_id: Zweite Sprache
+    primary_translation_language_id: Erste Übersetzungssprache
     workflow_state: Workflow state
     collection_id: Collection
     home_location: Home location
@@ -407,6 +411,7 @@ en:
       admin: Archive configuration
       info: Edit archive information
       config: Configure archive
+      access_config: Configure Access
       display: Edit display options
       processed: "Archive created:"
       return: Create another archive
@@ -501,7 +506,7 @@ en:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: Details
       edit: Bearbeiten
     role:
@@ -582,26 +587,10 @@ en:
     unpublish: nicht öffentlich
     public: öffentlich
     publish: öffentlich
-    register: registriert
-    reject: zurückgewiesen
-    postpone: zurückgestellt
-    activate: aktiviert
     expire: zurückgestellt
-    deactivate_account: sperren
-    reactivate_account: reaktivieren
-    grant_project_access: freischalten
-    reject_project_access: ablehnen
-    postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
-    all: alle
     unchecked: unbeantwortet
-    preliminary: preliminary
+    preliminary: vorläufig
     checked: geprüft
-    postponed: zurückgestellt
-    rejected: abgelehnt
-    registered: registriert
     created: zu Bearbeiten
     started: in Bearbeitung
     finished: Bearbeitet/ im QM
@@ -611,14 +600,28 @@ en:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
-  user_registration_projects:
-    workflow_states:
-      project_access_granted: freigeschaltet
-      project_access_rejected: abgelehnt
-      project_access_postponed: zurückgestellt
-      account_confirmed: ungeprüft
-      account_deactivated: gesperrt
-      all: alle
+    users:
+      reject: reject
+      rejected: rejected
+      block: block
+      blocked: blocked
+      remove: remove
+      revoke_block: revoke block
+      confirmed: confirmed
+      all: all
+    user_projects:
+      grant_project_access: grant project access
+      project_access_granted: project access granted
+      reject_project_access: reject project access
+      project_access_rejected: project access rejected
+      project_access_data_corrected: corrected
+      project_access_requested: project access requested
+      project_access_terminated: project access terminated
+      terminate_project_access: terminate project access
+      project_access_blocked: project access blocked
+      revoke_project_access_block: revoke project access block
+      block_project_access: block project access
+      all: all
   help_texts:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
@@ -647,13 +650,13 @@ en:
     research: Research
     sound: Sound
     other_attender: Other attendees
+    further_interviewee: Further interviewee
     producer: Producer
     quality_manager: Quality management
     quality_manager_translation: Qualitätsmangement Übersetzung
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
@@ -706,18 +709,16 @@ en:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
+  user:
     registration: Register
-    registration_text_one: 'Registration is required for research in the archive.
-      The '
-    registration_text_two: " explain for whom and for which purposes the archive can
-      be used. The "
-    registration_text_three: " clarifies which personal data we process and what we
-      use it for. After you have confirmed your registration, the project team will review your registration details.
-      Within two working days you will be informed about the activation of your account for the interview archive."
+    registration_text_one: 'Please register to access the interviews. The '
+    registration_text_one_ohd: 'Please register to use the platform. The '
+    registration_text_two: ' explain who can use Oral.History-Digital and for what purposes. The '
+    registration_text_three: ' explains why we process which data and what we use it for.
+      For privacy reasons, you will be asked to confirm your registration by email.'
+    registration_text_four: 'You can then request activation for various interview archives included in the platform.'
     tos_agreement: Terms of Use
     priv_agreement: Privacy Policy
-    notes_on_receive_newsletter: Ich möchte den Newsletter abonnieren.
     notes_on_tos_agreement: I agree to the Terms of Use.
     priv_agreement_alias: Privacy Policy
     notes_on_priv_agreement: I agree to the Privacy Policy.
@@ -730,6 +731,7 @@ en:
       male: male
       diverse: diverse
       not_specified: not specified
+  user_project:
     job_description:
       researcher: Researcher
       filmmaker: Filmmaker
@@ -751,6 +753,7 @@ en:
       university_teaching: University teaching
       scientific_paper: Scientific paper
       other: Other
+    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes %{project} abonnieren.
   gender:
     female: female
     male: male
@@ -796,6 +799,7 @@ en:
     age: Age
     year_of_birth: Year of birth
     interview_date: Interview date
+    media_missing: Media missing
     public: öffentlich
     unshared: nicht öffentlich
     description: Description
@@ -803,11 +807,15 @@ en:
     observations: Observations
     tape_count: Tape count
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Workflow state
     date_of_birth: Date of birth
     signature_original: Signature original
     startpage_position: Startpage position
+    project_id: Archiv
+    project_access: Archivzugang
+    restricted: beschränkt
+    free: frei
   activerecord:
     models:
       help_text:
@@ -882,7 +890,7 @@ en:
       biographical_entry:
         one: Short Biography
         other: Short Biographies
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -1001,6 +1009,7 @@ en:
         language_id: Originalsprache
         translation_language_id: Übersetzungssprache
         media_type: Media Typ
+        media_missing: Media missing
         translated: ist das Interview bereits übersetzt?
         workflow_state: Interview-Status
         tasks_states: Bearbeitungsstand
@@ -1029,6 +1038,7 @@ en:
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
+        media_missing_text: Media Missing Message
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: Importarten
@@ -1051,9 +1061,12 @@ en:
         pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
-        is_catalog: Ist das Projekt ein Katalog
+        is_catalog: Nur Metadaten anzeigen
+        grant_project_access_instantly: Keine Freischaltung nötig
+        grant_access_without_login: Zugang ohne Login
         display_ohd_link: OHD-Link zeigen
         show_preview_img: Vorschaubild auf Landing-Page zeigen
+        show_legend: Legende im Transkript anzeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
@@ -1097,6 +1110,7 @@ en:
         subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
+        hidden_text: This passage will not be published.
       user_content:
         title: Titel
         description: Notiz
@@ -1111,43 +1125,39 @@ en:
         workflow_state: Veröffentlichungsstatus
         heading: Kapitel
         media_id: Medien ID
-      user_account:
-        login: Login
-        password: Passwort
-      account:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
-      user_registration:
+      user:
         created_at: Created at
-        activated_at: Activated At
+        confirmed_at: Activated At
         processed_at: Processed At
+        activated_at: freigeschaltet am
         admin_comments: Admin Comments
         default_locale: Default Locale
+        login: Login
+        password: Password
         appellation: Title
         first_name: First Name
         last_name: Last Name
         gender: Gender
-        job_description: Job Description
-        research_intentions: Research Intentions
-        comments: Comments
-        organization: Organization
         homepage: Homepage
         address: Adresse
         street: Street
         zipcode: Zipcode
         city: City
         country: Country
-        receive_newsletter: Receive Newsletter
+        job_description: Job Description
+        research_intentions: Research Intentions
+        specification: Comments
+        organization: Organization
         tos_agreement: Tos Agreement
         priv_agreement: Priv Agreement
         register: Register
         workflow_state: Workflow state
-        user_registration_projects:
+        user_projects:
           workflow_state: Status
-      user_registration_project:
+      user_project:
         workflow_state: Status
-        admin_comments: Kommentar
+        admin_comments: Comments
+        receive_newsletter: Receive Newsletter
       user_role:
         role_id: Rolle
       role:
@@ -1174,12 +1184,12 @@ en:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am
@@ -1357,16 +1367,46 @@ en:
 
   modules:
     registration:
+      title: Registrierung für Oral-History.Digital
+      registration_needed_ohd: Access to the interviews requires registration on the Oral-History.Digital platform and, if necessary,
+        activation for individual archives.
+      registration_needed_archive: Access to the interviews requires registration on the Oral-History.Digital platform and activation for the archive.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
-        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
-        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
-        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
-        login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
-        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        still_not_registered: The email address %{email} is not yet registered. Please register first.
+        account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+        project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_rejected: The e-mail %{email} is already registered. However, your request for activation to the %{project} application has been denied.
+        project_access_granted: The email address %{email} is already registered. Please log in with your email address and password.
+        login_and_request_project_access: The email address %{email} is already registered with Oral-History.Digital but has not yet been activated for this archive. You will be notified by email when you can access this archive.
+        login: Die E-Mail-Adresse %{email} ist bereits registriert. Bitte melden Sie sich unter Login mit ihrer E-Mail-Adresse und ihrem Passwort an.
+        project_access_terminated: Ihr Zugang mit der E-Mail-Adresse %{email} zu der Anwendung %{project} war zeitlich befristet und ist nun beendet.
+          Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.
+        project_access_blocked: Your account is blocked.
+    project_access:
+      request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_one: 'Schritt 1 - '
+      request_step_two: 'Schritt 2 - '
+      request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      request_submit: Antrag auf Freischaltung absenden
+      request_access_explanation1: You are already registered in Oral-History.Digital, but not yet activated for this archive.
+      request_access_explanation2: Please apply for activation.
+      request_access_link: Freischaltung beantragen
+      request_in_process_title: Ihr Antrag auf Freischaltung wurde erfolgreich abgesendet!
+      request_in_process_text1: Die inhaltliche Prüfung des Antrages kann bis zu zwei Werktage dauern.
+      request_in_process_text2: Sie werden per E-Mail benachrichtigt, sobald Sie auf die Inhalte des Interview-Archivs zugreifen können.
+      blocked_text: Sie wurden für dieses Archiv gesperrt.
+      terminated_text: Ihre Freischaltung für dieses Archiv wurde beendet.
+      correct_user_data_title: Bitte ändern oder ergänzen Sie Ihre Angaben
+      rejected_text: Ihre Freischaltung für dieses Archiv wurde abgelehnt. Bitte korrigieren Sie Ihre Daten.
+      archive_management_in: Archivmanagement in
+      granted_in: freigeschaltet in
+      actual_workflow_state: aktueller Status
+      at: am
+      one: Freischaltung
+      many: Freischaltungen
     admin:
       person_details:
         contributions:
@@ -1381,8 +1421,8 @@ en:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages
@@ -1424,6 +1464,11 @@ en:
       at: at
     interview_metadata:
       add_contributors: Add contributors
+      collection_link_title: Collection in the OHD catalog
+      show_collection_desc: Show collection description
+    interview_preview:
+      access_requested: Access requested
+      no_access: Access required
     interview_search:
       no_results: No results
       annotation_for: Annotation for
@@ -1447,6 +1492,7 @@ en:
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
       copy_position_tooltip: Copy current timestamp as URL
+      media_missing: "Unfortunately, the media file for this interview is not available online. Please contact us for further information about the interview and, if necessary, access to the media file."
     person:
       no_interviewee: No interviewee
       abbr_titles:
@@ -1490,12 +1536,30 @@ en:
       catalog: Catalog
       search: Search
     site_startpage:
-      introduction: Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen.
-      stats: Derzeit verzeichnet Oral-History.Digital %{numProjects} Archive mit %{numCollections} Sammlungen und %{numInterviews} Interviews von %{numInstitutions} Institutionen.
-      under_construction: Das Portal ist noch im Aufbau.
-      instructions: Anleitung für die Redaktionsansicht
       more_results: Load more results
       sample_archives: Sample Archives
+      access_requested: Access requested
+      no_access: Access required
+      introduction:
+        text1: <b>Oral-History.Digital</b> is a curation and research platform for narrative audio or video interviews. Currently, <b>Oral-History.Digital</b> lists
+        text2: archives with
+        text3: collections and
+        text4: interviews from
+        text5: institutions. The portal is still under construction. Background information can be found on the <a href="https://www.oral-history.digital/en" target="_blank" rel="noreferrer">accompanying website</a>. For guidance, see the <a href="https://wikis.fu-berlin.de/x/0oDGT" target="_blank" rel="noreferrer">help wiki</a>.
+        wiki: help wiki
+      search:
+        heading: Search
+        text1: You can
+        text2: search
+        text3: through individual interviews from different archives. You can <b>filter</b> e.g. by subject, language or gender. <b>Full text search</b> is limited to the archives for which you are activated.
+      catalog:
+        heading: Catalog
+        text1: The
+        text2: catalog
+        text3: lists the institutions, archives, and collections. The <b>archives</b> have different metadata and access regulations. <b>Collections</b> are individual subsets within these archives.
+      access:
+        heading: Access
+        text: To access the interviews, registration in the Oral-History.Digital platform and access for the archive is required. Please register in Oral-History.Digital and ask for admittance to individual archives to access the full interviews.
     tables:
       actions: Actions
       search: Search…

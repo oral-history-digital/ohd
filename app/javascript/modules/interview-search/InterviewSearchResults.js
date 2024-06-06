@@ -5,6 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { showTranslationTab } from 'modules/interview';
 import { useSearchParams } from 'modules/query-string';
 import { Spinner } from 'modules/spinners';
+import { useProject } from 'modules/routes';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';
 import AnnotationResult from './AnnotationResult';
@@ -16,15 +17,13 @@ import useInterviewSearch from './useInterviewSearch';
 export default function InterviewSearchResults({
     archiveId,
     interview,
-    project,
-    projectId,
-    locale,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
     const { fulltext } = useSearchParams();
     const { isLoading, data, numResults, segmentResults, headingResults, registryEntryResults,
         photoResults, biographyResults, annotationResults, observationsResults }
-        = useInterviewSearch(archiveId, fulltext);
+        = useInterviewSearch(archiveId, fulltext, project);
 
     if (isLoading) {
         return (
@@ -46,7 +45,7 @@ export default function InterviewSearchResults({
 
     const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
 
-    const translationLanguages = interview.languages?.filter(lang => lang !== interview.lang);
+    const translationLanguages = [interview.translation_locale];
 
     const translatedTranscriptResultsPerLocale = translationLanguages?.map(resultLocale => [
         resultLocale,
@@ -67,7 +66,7 @@ export default function InterviewSearchResults({
                     className="u-mt"
                 />
             )}
-            {showTranslationTab(projectId, interview.lang, locale) &&
+            {showTranslationTab(project, interview, locale) &&
             translatedTranscriptResultsPerLocale?.map(([resultLocale, results]) => (
                 <ResultList
                     key={resultLocale}
@@ -127,7 +126,4 @@ export default function InterviewSearchResults({
 InterviewSearchResults.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
 };

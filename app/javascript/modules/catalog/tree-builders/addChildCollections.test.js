@@ -8,9 +8,18 @@ test('adds sorted collections to a project', () => {
     };
 
     const collections = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
+        {
+            id: 1,
+            num_interviews: 5,
+        },
+        {
+            id: 2,
+            num_interviews: 3,
+        },
+        {
+            id: 3,
+            num_interviews: 0,
+        },
     ];
 
     const actual = addChildCollections(collections, project);
@@ -19,9 +28,14 @@ test('adds sorted collections to a project', () => {
         shortname: 'zwar',
         collection_ids: [1, 2, 3, 4],
         collections: [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
+            {
+                id: 1,
+                num_interviews: 5,
+            },
+            {
+                id: 2,
+                num_interviews: 3,
+            },
         ],
     };
 

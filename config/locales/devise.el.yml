@@ -19,36 +19,102 @@ el:
     failure:
       already_authenticated: Είστε ήδη συνδεδεμένος.
       inactive: Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα.
-      invalid: Μη έγκυρο email ή κωδικός.
+      invalid: Μη έγκυρα δεδομένα σύνδεσης.
+      not_found_in_database: Μη έγκυρα δεδομένα σύνδεσης.
       invalid_token: Μη έγκυρος κωδικός πιστοποίησης.
-      locked: Ο λογαριασμός σας είναι κλειδωμένος.
+      blocked: Ο λογαριασμός σας είναι κλειδωμένος.
       not_found_in_database: Μη έγκυρo %{authentication_keys} ή κωδικός.
       timeout: Η σύνδεσή σας τερματίστηκε, παρακαλούμε συνδεθείτε ξανά.
       unauthenticated: Χρειάζεται να συνδεθείτε πριν να συνεχίσετε.
-      unconfirmed: Απαιτείται η επιβεβαίωση του λογαριασμού σας πριν συνεχίσετε.
+      unconfirmed: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη.
+        Πρέπει να επιβεβαιώσετε την εγγραφή σας.
+        Ένα e-mail με τον απαραίτητο σύνδεσμο μόλις σας εστάλη.
       last_attempt: Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί.
     mailer:
-      confirmation_instructions:
-        subject: Αρχείο Προφορικών Μαρτυριών – Βήματα για την ενεργοποίηση του λογαριασμού σας
-      project_access_granted:
-        subject: Ενεργοποίηση του λογαριασμού σας για την εφαρμογή '%{project_name}'
-      project_access_rejected:
-        subject: Η εγγραφή σας στην εφαρμογή '%{project_name}'
-      reset_password_instructions:
-        subject:  Αρχείο Προφορικών Μαρτυριών – Επαναφορά του κωδικού σας
-      account_deactivated:
+      grant_project_access:
+        subject: Ενεργοποίηση της πρόσβασής σας στην εφαρμογή '%{project_name}'
+        text: |
+          <p>Καλημέρα %{user_display_name},</p>
+          <p>Έχετε πλέον πρόσβαση στην εφαρμογή "%{project_name}" για το αίτημα έρευνας που καθορίσατε.</p>
+          <p>Παρακαλούμε να σεβαστείτε τα προσωπικά δικαιώματα των συνεντευξιαζόμενων και τους %{tos_link} του αρχείου. </p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Το αίτημά σας για ενεργοποίηση της εφαρμογής '%{project_name}'
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Ζητήσατε ενεργοποίηση της εφαρμογής %{project_name}.</p>
+          <p>Δυστυχώς, ελέγξαμε τα στοιχεία σας και διαπιστώσαμε ότι είναι ανεπαρκή ή δεν συμμορφώνονται με τους %{tos_link}.</p>
+          <p>Μπορείτε να αλλάξετε ή να συμπληρώσετε τα στοιχεία σας στον ακόλουθο σύνδεσμο.</p>
+          <p>Διόρθωση </p>
+          <p>Εάν χρειάζεστε βοήθεια, επικοινωνήστε μαζί μας στο %{mail_to}</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Αποκλεισμός του λογαριασμού σας
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Σας ενημερώνουμε ότι η πρόσβασή σας στην εφαρμογή %{project_name} έχει μπλοκαριστεί. Αυτό οφείλεται στη μη συμμόρφωση με τους %{tos_link} του αρχείου.</p>
+          <p>Εάν έχετε οποιαδήποτε απορία, παρακαλούμε επικοινωνήστε μαζί μας στο %{mail_to}.</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
         subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
+        text: |
+          <p>Γεια σας %{user_display_name}, </p>
+          <p>σας ενημερώνουμε ότι η πρόσβαση στην εφαρμογή %{project_name} έχει αποκατασταθεί.</p>
+          <p>Μπορείτε πλέον να έχετε πρόσβαση στην εφαρμογή %{project_name}.</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
+        text: |
+          <p>Καλημέρα %{user_display_name}, </p>
+          <p>Η πρόσβασή σας στην εφαρμογή %{project_name} ήταν χρονικά περιορισμένη και τώρα τερματίζεται.</p>
+          <p>Μπορείτε ασφαλώς να ζητήσετε εκ νέου ενεργοποίηση σε μεταγενέστερη ημερομηνία.</p>
+          <p>Με εκτίμηση</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Αποκλεισμός του λογαριασμού σας
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Σας ενημερώνουμε ότι η πρόσβασή σας στην πλατφόρμα Oral-History.Digital έχει μπλοκαριστεί. Αυτό συμβαίνει επειδή δεν έχουν τηρηθεί οι %{tos_link}.</p>
+          <p>Εάν έχετε οποιαδήποτε απορία, παρακαλούμε επικοινωνήστε μαζί μας στο %{mail_to}.</p>
+          <p>Με εκτίμηση</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Η πρόσβασή σας στην πλατφόρμα Oral-History.Digital
+        text: |
+          <p>Γεια σας %{user_display_name},</p>
+          <p>Σας ενημερώνουμε ότι η πρόσβαση σας στην πλατφόρμα Oral-History.Digital έχει αποκατασταθεί.</p>
+          <p>Μπορείτε πλέον να έχετε πρόσβαση στην πλατφόρμα.</p>
+          <p>Με εκτίμηση</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Διαγραφή του λογαριασμού σας
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
+      confirmation_instructions:
+        subject: Επιβεβαίωση της εγγραφής σας στο Oral-History.Digital 
+      new_email_confirmation_instructions:
+        subject: Επιβεβαίωση της νέας διεύθυνσης ηλεκτρονικού ταχυδρομείου σας για το Oral-History.Digital
+      reset_password_instructions:
+        subject: Oral-History.Digital. Βήματα για να ανακτήσετε τον κωδικό πρόσβασής σας.
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
       success: Επιτυχής είσοδος με το λογαριασμό σας.
     passwords:
       change: Αλλάξτε τον κωδικό σας
-      forgot: Ξεχάσατε τον κωδικό σας?
-      password: Κωδικός
+      forgot: Ανάκτηση κωδικού πρόσβασης
+      password: Κωδικός πρόσβασης
       password_confirmation: Επανάληψη κωδικού
       submit: Passwort jetzt ändern
       resend: Passwort ändern
-      link: Passwort wiederherstellen
+      link: Ανάκτηση κωδικού πρόσβασης
       send_instructions: Παρακαλώ δώστε την ηλεκτρονική σας διεύθυνση, με την οποία
         έγινε η εγγραφή σας στο Αρχείο. Θα λάβετε στο E-Mail σας ένα σύνδεσμο για
         τον επανακαθορισμό του κωδικού σας.
@@ -92,16 +158,16 @@ el:
         unconfirmed: μη επιβεβαιωμένος. Σας είχε αποσταλεί email με οδηγίες
         locked: κλειδωμένος
     sessions:
-      link: Anmelden
-      login: Anmelden
+      link: Είσοδος
+      login: Είσοδος
       signed_in: Σύνδεση με επιτυχία.
       signed_out: Αποσύνδεση με επιτυχία.
       unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
       unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
-      unconfirmed: Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden
-        können.
-      locked: Ihr Zugang wurde gesperrt.
-      invalid: Username oder Passwort ist ungültig.
+      unconfirmed: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη.
+        Πρέπει να επιβεβαιώσετε την εγγραφή σας.
+        Ένα e-mail με τον απαραίτητο σύνδεσμο μόλις σας εστάλη.
+      blocked: Ο λογαριασμός σας είναι κλειδωμένος.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
       inactive: Ihr Zugang ist zur Zeit deaktiviert.
@@ -119,10 +185,6 @@ el:
         not_signed_in: nicht angemeldet
     labels:
       send_now: Jetzt zuschicken
-    authentication_keys:
-      login: Benutzer*in
-      email: E-Mail
-      password: Passwort
     workflow_states:
       new_registration: Neuanmeldung
       new_registrations: Neuanmeldungen
@@ -158,61 +220,25 @@ el:
       remove: deaktivieren
       remove_info: Der Zugang des*der Nutzer*in wird deaktiviert (bitte den*die Nutzer*in in einer
         separaten E-Mail informieren).
-    registration_fields:
-      fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
-      select: Bitte auswählen
-      appellation: Anrede
-      first_name: Vorname
-      last_name: Nachname
-      job_description: Beruf
-      email: E-Mail
-      gender: Geschlecht
-      research_intentions: Recherche-Anliegen
-      comments: Präzisierung des Anliegens
-      organization: Institution
-      school: Schule
-      homepage: Homepage der Institution
-      street: Straße
-      zipcode: PLZ
-      city: Ort
-      state: Bundesland
-      country: Land
-      tos_agreement: Nutzungsbedingungen
-      tos_agreement_explanation: Ich stimme den %{terms_of_use} zu.
-      priv_agreement: Datenschutzbestimmungen
-      priv_agreement_explanation: Ich stimme den %{privacy_policy} zu.
-      agreed: zugestimmt
-      not_agreed: keine Zustimmung
-      receive_newsletter: Newsletter
-      receive_newsletter_explanation: Ich möchte den Newsletter des Projektes "%{project_name}"
-        abonnieren.
-      requested_at: Datum der Anfrage
-      name: Name
-      adress: Anschrift
-      workflow_state: Registrierungsstatus
-      login: Benutzername
-      created_at: Datum der Registrierung
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: und -wiederholung stimmen nicht überein.
-              too_short: ist zu kurz.
-              too_long: ist zu lang.
-        user_registration:
+        user:
           attributes:
             email:
               taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
                 vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen.
+            password:
+              confirmation: und -wiederholung stimmen nicht überein.
+              too_short: ist zu kurz.
+              too_long: ist zu lang.
       messages:
         blank: fehlt
     attributes:
-      user_account:
+      user:
         email: E-Mail
         login: Login
-        password: Passwort
+        password: Κωδικός πρόσβασης
         password_confirmation: Passwort-Wiederholung
   errors:
     messages:

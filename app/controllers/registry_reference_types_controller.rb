@@ -1,5 +1,5 @@
 class RegistryReferenceTypesController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :global]
 
   def create
     authorize RegistryReferenceType
@@ -23,7 +23,7 @@ class RegistryReferenceTypesController < ApplicationController
     respond @registry_reference_type
   end
 
-  def destroy 
+  def destroy
     @registry_reference_type = RegistryReferenceType.find(params[:id])
     authorize @registry_reference_type
     registry_reference_type = @registry_reference_type
@@ -44,7 +44,7 @@ class RegistryReferenceTypesController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-rrt-#{cache_key_params}-#{RegistryReferenceType.count}-#{RegistryReferenceType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-rrt-#{cache_key_params}-#{RegistryReferenceType.count}-#{RegistryReferenceType.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(RegistryReferenceType).
               includes(:translations, :project).
@@ -70,6 +70,17 @@ class RegistryReferenceTypesController < ApplicationController
           }
         end
         render json: json
+      end
+    end
+  end
+
+  def global
+    ref_types = Project.ohd.registry_reference_types
+    authorize ref_types
+
+    respond_to do |format|
+      format.json do
+        render json: ref_types, each_serializer: RegistryReferenceTypeSerializer
       end
     end
   end

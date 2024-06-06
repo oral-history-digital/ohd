@@ -1,0 +1,19 @@
+/**
+ * MediaMissing message.
+ */
+
+.MediaMissing {
+  margin-bottom: 0;
+  margin-top: $base-unit;
+
+  @include screen-m {
+    margin-top: $base-unit * 2;
+  }
+}
+
+.Layout.is-sticky .MediaMissing {
+  flex-basis: 50%;
+  font-size: $font-size-medium;
+  margin-top: 0;
+  padding: $base-unit * 0.5;
+}

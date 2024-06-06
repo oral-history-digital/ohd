@@ -32,6 +32,9 @@ es:
   workflow_state:
     public: public
     unshared: not public
+  boolean_value:
+    true: Sí
+    false: No
   normdata:
     filter_select: optionale Filterauswahl
     geo_filter: Geofilter
@@ -48,12 +51,6 @@ es:
     none: keine
   in: en
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
-  project_access_in_process: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.
-    Solamente después se activará su acceso y pueda acceder al contenido del archivo de entrevistas.
-  registration_needed: Para garantizar la protección de datos personales, usted se tiene que registrar.
-    Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
@@ -66,6 +63,7 @@ es:
   or: oder
   show: Zeigen
   hide: Weniger
+  loading: Loading…
   edit_column_header:
     open_table: "Erschließungstabelle öffnen"
     close_table: "Erschließungstabelle schließen"
@@ -182,7 +180,7 @@ es:
   user_name: Usuaria/o
   notice: Recordar
   forget_password: Recuperar contraseña
-  account_activation_errors: La contraseña y la confirmación de la contraseña deben ser iguales y tener un mínimo de 6 carácteres
+  account_activation_errors: La contraseña y la confirmación de la contraseña deben ser iguales y tener un mínimo de 7 carácteres
   submit: Enviar
   platform: Una plataforma de
   cooperation: en cooperación con
@@ -201,7 +199,7 @@ es:
   biographicalentry_results: Resultados de búsqueda en la biografía breve
   observation_results: Resultados de búsqueda en las notas
   person_results: Resultados de búsqueda para personas
-  user_registration_results: Resultados de búsqueda para usuaria/os
+  user_results: Resultados de búsqueda para usuaria/os
   segment_hits: Resultados en la transcripción
   no_interviews_results: No se encontraron entrevistas.
   interview_id: ID de la entrevista
@@ -253,9 +251,11 @@ es:
   history: Biografía breve
   interview_with: Entrevista con
   transcript_header: 'Transcripción (%{lang}):'
+  translation_header: 'Traducción (%{lang}):'
   transcript_title: Transcripción (%{lang}) de la entrevista con
   translation_title: Traducción (%{lang}) de la entrevista con
   transcript_footer: 'Cómo citar: Transcripción de la entrevista con'
+  translation_footer: 'Cómo citar: Traducción de la entrevista con'
   transcript_template: Modelo para la importación de archivos .csv
   biographical_entries_header: 'Biografía breve (español): %{interviewee_name} (Interview ID %{archive_id})'
   biographical_entries_title: 'Biografía breve (español) de %{interviewee_name}'
@@ -323,9 +323,13 @@ es:
     archive_id: Interview ID
     interview_location: Interview location
     media_type: Media type
+    media_missing: Falta de medios
     signature_original: Signature original
     observations: Observations
     language_id: Language
+    primary_language_id: Erste Sprache
+    secondary_language_id: Zweite Sprache
+    primary_translation_language_id: Erste Übersetzungssprache
     workflow_state: Workflow state
     collection_id: Collection
     home_location: Home location
@@ -495,7 +499,7 @@ es:
       new: Foto hinzufügen
       edit: Foto bearbeiten
       delete: Foto löschen
-    user_registration:
+    user:
       show: 'Details'
     role:
       new: 'Rolle hinzufügen'
@@ -585,9 +589,11 @@ es:
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: angelegt
-    account_confirmed: ungeprüft
-    account_deactivated: gesperrt
+    block: sperren
+    revoke_block: Sperrung aufheben
+    created: angelegt
+    confirmed: bestätigt
+    blocked: gesperrt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -603,13 +609,14 @@ es:
     start: Bearbeitung beginnen
     finish: dem QM einreichen
     clear: freigeben
-  user_registration_projects:
+  user_projects:
     workflow_states:
       project_access_granted: freigeschaltet
       project_access_rejected: abgelehnt
       project_access_postponed: zurückgestellt
-      account_confirmed: ungeprüft
-      account_deactivated: gesperrt
+      project_access_requested: ungeprüft
+      project_access_terminated: beendet
+      project_access_blocked: gesperrt
       all: alle
     restart: Bearbeitung erneut beginnen
   help_texts:
@@ -640,13 +647,13 @@ es:
     research: Edición científica
     sound: Sonido
     other_attender: Otras personas
+    further_interviewee: Further interviewee
     producer: Producción
     quality_manager: Qualitätsmangement
     quality_manager_translation: Gestión de calidad Traducción
     quality_manager_transcription: Gestión de calidad Transcripción
     quality_manager_interviewing: Gestión de calidad Entrevista
     quality_manager_research: Gestión de calidad Edición científica
-    other_attender: Other attendees
     transcript: Transcript
   events:
     title: Events
@@ -697,18 +704,16 @@ es:
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
-  user_registration:
-    registration: Registro
-    registration_text_one: 'Para ver las entrevistas en el archivo, es
-        necesario registrarse. La '
-    registration_text_two: " declarar, para quién y con qué fines se puede usar el archivo.
-        La "
-    registration_text_three: " explicar, porque procesamos cuales datos y para que
-        los usamos. Dentro de dos días hábiles después de registrarse
-        recibirá sus datos de acceso o una respuesta."
+  user:
+    registration: Registrarse
+    registration_text_one: 'Por favor, regístrese para poder utilizar la plataforma. Los '
+    registration_text_one_ohd: 'Por favor, regístrese para poder utilizar la plataforma. Los '
+    registration_text_two: ' explican para quien y con que fines puede utilizarse Oral.History-Digital. La '
+    registration_text_three: ' explica porque procesamos cuales datos y para que los utilizamos.
+      Por motivos de protección de datos, se le pedirá que confirme su registro por correo electrónico.'
+    registration_text_four: 'Después, podrá solicitar el acceso para varios archivos de entrevistas incluidos en la plataforma.'
     tos_agreement: Términos de uso
-    priv_agreement: Indicaciones sobre la política de privacidad
-    notes_on_receive_newsletter: Sí, me gustaría recibir el boletín del proyecto.
+    priv_agreement: Política de privacidad
     notes_on_tos_agreement: Acepto los términos de uso.
     priv_agreement_alias: Política de privacidad
     notes_on_priv_agreement: Acepto la política de privacidad.
@@ -721,6 +726,7 @@ es:
       male: masculino
       diverse: diverso
       not_specified: no especifica
+  user_project:
     job_description:
       researcher: Docente/Investigador/a
       filmmaker: Director/a de cine
@@ -742,6 +748,7 @@ es:
       university_teaching: Enseñanza universitaria
       scientific_paper: Públicación científica
       other: Otros
+    notes_on_receive_newsletter: Sí, me gustaría recibir el boletín del proyecto %{project}.
   gender:
     female: feminino
     male: masculino
@@ -786,6 +793,7 @@ es:
     age: Edad
     year_of_birth: Año de nacimiento
     interview_date: Fecha de origen
+    media_missing: Falta de medios
     public: öffentlich
     unshared: nicht öffentlich
     description: Beschreibung
@@ -793,11 +801,15 @@ es:
     observations: Protokoll
     tape_count: Anzahl der Bänder
     tasks_supervisor_ids: Qualitätsmanagement
-    tasks_user_account_ids: Bearbeiter*innen
+    tasks_user_ids: Bearbeiter*innen
     workflow_state: Status
     date_of_birth: Fecha de nacimiento
     signature_original: Originalsignatur
     startpage_position: Startpage position
+    project_id: Archiv
+    project_access: Archivzugang
+    restricted: beschränkt
+    free: frei
   activerecord:
     models:
       interview:
@@ -869,7 +881,7 @@ es:
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
-      user_registration:
+      user:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
@@ -988,6 +1000,7 @@ es:
         language_id: Idioma original
         translation_language_id: Übersetzungssprache
         media_type: Formato de medio
+        media_missing: Falta de medios
         translated: se ha traducido la entrevista?
         workflow_state: estatus
         tasks_states: Bearbeitungsstand
@@ -1015,6 +1028,7 @@ es:
         default_locale: default Sprachcode (alpha2)
         view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
+        media_missing_text: Media Missing Message
         pseudo_upload_types: Importarten
         primary_color: Primary color
         secondary_color: Secondary color
@@ -1040,9 +1054,12 @@ es:
         pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
-        is_catalog: Ist das Projekt ein Katalog
+        is_catalog: Nur Metadaten anzeigen
+        grant_project_access_instantly: Keine Freischaltung nötig
+        grant_access_without_login: Zugang ohne Login
         display_ohd_link: OHD-Link zeigen
         show_preview_img: Vorschaubild auf Landing-Page zeigen
+        show_legend: Legende im Transkript anzeigen
         domain_help: "Website with further information about the project"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
         contact_email_help: "This email address is used for communication with users, e.g. to confirm registrations."
@@ -1080,6 +1097,7 @@ es:
         subheading: Encabezado secundario
         text: Texto
         speaker_id: Hablante
+        hidden_text: Esta parte del texto no se publica.
       user_content:
         title: Título
         description: Anotación
@@ -1094,42 +1112,38 @@ es:
         workflow_state: Estado de publicación
         heading: Capítulo
         media_id: ID de medio
-      user_account:
+      user:
+        created_at: Creado el
+        confirmed_at: Activado el
+        processed_at: Editado el
+        activated_at: Activado el
+        default_locale: Idioma por defecto
         login: Iniciar sesión
         password: Contraseña
-      account:
-        gender: Género
-        first_name: Nombre
-        last_name: Apellido
-      user_registration:
-        created_at: Creado el
-        activated_at: Activado el
-        processed_at: Editado el
-        default_locale: Idioma por defecto
         appellation: Título
         first_name: Nombre
         last_name: Apellido
         gender: Género
-        job_description: Profesión
-        research_intentions: Tema de investigación
-        comments: Detalle del tema de investigación
-        organization: Institución
         homepage: Página web de la institución
         address: Dirección
         street: Dirección
         zipcode: Código postal
         city: Lugar
         country: País
-        receive_newsletter: Boletín
+        job_description: Profesión
+        research_intentions: Tema de investigación
+        specification: Detalle del tema de investigación
+        organization: Institución
         tos_agreement: Términos de uso
         priv_agreement: Indicaciones sobre la política de privacidad
         register: Enviar registro
         workflow_state: Estado
-        user_registration_projects:
+        user_projects:
           workflow_state: Estado
-      user_registration_project:
+      user_project:
         workflow_state: Estado
         admin_comments: Comentario
+        receive_newsletter: Boletín
       user_role:
         role_id: Rolle
       role:
@@ -1152,14 +1166,14 @@ es:
       task:
         name: Aufgabe
         interviewee: Interviewte*r
-        user_account_id: Bearbeiter*in
+        user_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
         archive_id: Interview ID
         interviewee: Interviewte*r
-        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_user_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
         started_at: begonnen am
         restarted_at: erneut geöffnet am
@@ -1253,7 +1267,7 @@ es:
         locale: Sprache
         lang: Sprache
         text: Text
-        email: E-Mail
+        email: Correo electrónico
         url: URL
         href: Href
         file: Dato
@@ -1315,16 +1329,34 @@ es:
 
   modules:
     registration:
+      registration_needed_ohd: Para acceder a las entrevistas, es necesario registrarse en Oral-History.Digital y, en caso necesario,
+        solicitar el acceso a los archivos individuales.
+      registration_needed_archive: Para acceder a las entrevistas, es necesario registrarse en Oral-History.Digital y solicitar el acceso al archivo.
       messages:
         header: 'Bitte korrigieren Sie die folgenden Fehler:'
-        account_confirmed: Die Mailadresse "%{email}" ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
-        project_access_rejected: Die Mailadresse "%{email}" ist bereits registriert. Allerdings wurde Ihnen eine Freischaltung verweigert.
-        project_access_postponed: Die Mailadresse "%{email}" ist bereits registriert. Ihre Freischaltung wurde zurückgestellt.
-        project_access_granted: Die Mailadresse "%{email}" ist bereits registriert und freigeschaltet. Bitte loggen Sie sich ein.
-        login_and_request_project_access: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein und beantragen Sie die Freischaltung für das Archiv %{project}.
-        login: Die Mailadresse "%{email}" ist bereits in Oral-History.Digital registriert. Bitte loggen Sie sich ein.
-        account_confirmation_missing: Die Mailadresse "%{email}" ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Die E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
-        still_not_registered: Die Mailadresse "%{email}" ist noch nicht registriert. Bitte registrieren Sie sich zuerst.
+        account_confirmed: Die E-Mail-Adresse %{email} ist bereits registriert. Sie erhalten eine weitere E-Mail sobald Sie freigeschaltet worden sind.
+        project_access_requested: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_data_corrected: Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Die Freischaltung kann bis zu zwei Werktagen dauern, Sie werden per E-Mail informiert, wenn Sie auf diese Anwendung zugreifen können.
+        project_access_rejected: El correo electrónico %{email} ya está registrado. Sin embargo, su solicitud de acceso a la aplicación %{project} ha sido denegada.
+        project_access_granted: El correo electrónico %{email} ya está registrado. Por favor, inicie sesión con su correo electrónico y contraseña.
+        project_access_blocked: Su cuenta está bloqueada.
+        login_and_request_project_access: El correo electrónico %{email} ya está registrado en Oral-History.Digital pero aún no está activado su acceso para este archivo. Se le informará por correo electrónico cuando pueda acceder a este archivo.
+        login:  Die E-Mail-Adresse %{email} ist bereits in Oral-History.Digital registriert, aber noch nicht für diese Anwendung freigeschaltet. Bitte loggen Sie sich ein.
+        account_confirmation_missing: Die E-Mail-Adresse %{email} ist bereits registriert. Sie müssen Ihre Registrierung noch bestätigen. Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+        still_not_registered: El correo electrónico %{email} aún no está registrado. Por favor, regístrese primero.
+    project_access:
+      request_title: Antrag auf Freischaltung für die Anwendung %{project}
+      request_step_two: 'Schritt 2 - '
+      request_description: Um auf die Interviews zugreifen zu können, müssen Sie die Freischaltung beantragen, indem Sie Angaben zu Ihrem Rechercheanliegen machen.
+        Ihre Angaben werden inhaltlich geprüft. Binnen zwei Werktagen werden Sie über die Freischaltung informiert.
+      request_submit: Antrag auf Freischaltung absenden
+      request_access_explanation1: Ya está registrado/a en Oral-History.Digital, pero aún no está activado su acceso para este archivo.
+      request_access_explanation2: Por favor, solicite el acceso.
+      request_access_link: 'Freischaltung für dieses Archiv beantragen'
+      request_in_process_title: Ihr Freischaltungsantrag wurde erfolgreich abgesendet!
+      request_in_process_text: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.
+        Solamente después se activará su acceso y pueda acceder al contenido del archivo de entrevistas.
+      blocked_text: Sie wurden für dieses Archiv gesperrt.
     admin:
       person_details:
         contributions:
@@ -1339,8 +1371,8 @@ es:
       volume: Volume
       web_page: Web page
       media_type: Media type
-      videos: "%{number} videos"
-      audios: "%{number} audios"
+      videos: videos
+      audios: audios
       period: Period
       birthyears: Years of birth
       languages: Interview languages
@@ -1382,6 +1414,8 @@ es:
       at: at
     interview_metadata:
       add_contributors: Add contributors
+      collection_link_title: Collection in the OHD catalog
+      show_collection_desc: Mostrar descripción de la colección
     interview_search:
       no_results: No hay resultados
       annotation_for: Anotaciones para
@@ -1405,6 +1439,7 @@ es:
         disable: "disable auto-scrolling transcript"
       copy_position: Copiar posición
       copy_position_tooltip: Copiar codigo de tiempo como enlace
+      media_missing: "Lamentablemente, el archivo multimedia de esta entrevista no está disponible en línea. Por favor, contáctenos para obtener más información sobre la entrevista y, si es necesario, acceso al archivo multimedia."
     person:
       no_interviewee: No interviewee
       abbr_titles:

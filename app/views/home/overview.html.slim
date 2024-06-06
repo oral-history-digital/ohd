@@ -1,2 +1,2 @@
 - @projects.each do |project|
-  = link_to project.name, "#{project.archive_domain}/#{project.default_locale}" || "/#{project.identifier}/#{project.default_locale}"
+  = link_to project.name, "#{project.archive_domain}/#{project.default_locale}" || "/#{project.shortname}/#{project.default_locale}"

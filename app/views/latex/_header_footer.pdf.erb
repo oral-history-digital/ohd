@@ -40,6 +40,8 @@
    end
 %>
 
+<% project ||= (interview && interview.project) %>
+
 \fancyfoot[L]{
   \fontsize{9}{11}
   \selectfont{
@@ -48,7 +50,8 @@
         \raggedright
         <%= latex_escape(footer_text) %>\\
         \vspace*{0.5cm}
-        \copyright <%= Date.today.strftime("%Y") %> Freie Universit\"at Berlin
+        \copyright <%= Date.today.strftime("%Y") %> <%= (project.institutions.where(parent_id: nil).first ||
+          project.institutions.first)&.name(header_locale) %>
       \end{minipage}
     }
   }

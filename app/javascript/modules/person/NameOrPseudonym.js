@@ -79,7 +79,7 @@ export default function NameOrPseudonym({
 
         <AuthShowContainer ifLoggedOut ifNoProject>
             <ContentField
-                label={t('interviewee_name')}
+                label={label}
                 value={interview?.anonymous_title?.[locale]}
                 fetching={fetching}
             />

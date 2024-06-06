@@ -1,20 +1,19 @@
-class ConfirmationsController < ApplicationController
-  #include Devise::Controllers::InternalHelpers
+class ConfirmationsController < Devise::ConfirmationsController
+  skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
-  # GET /resource/confirmation?confirmation_token=abcdef
   def show
-    self.resource = resource_class.confirm_by_token(params[:confirmation_token])
-
-    if resource.errors.empty?
-      set_flash_message :notice, :confirmed
-      sign_in(resource_name, resource)
-      change_password_token = resource.send(:generate_reset_password_token)
-      resource.save
-      redirect_to edit_user_account_password_url(:reset_password_token => change_password_token)
-    else
-      puts resource.errors.full_messages
-      flash[:alert] = resource.errors.full_messages
-      redirect_to login_url
+    super do |resource|
+      resource.confirm! # workflow
+      Doorkeeper::AccessToken.create!(resource_owner_id: resource.id)
+      sign_in(resource) if resource.errors.empty?
     end
   end
+
+  protected
+
+  def after_confirmation_path_for(resource_name, resource)
+    resource.pre_register_location.split('?')[0]
+  end 
+
 end

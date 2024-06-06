@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaTimes, FaEllipsisH } from 'react-icons/fa';
 import classNames from 'classnames';
@@ -13,8 +13,11 @@ export default function Modal({
     trigger = <FaEllipsisH className="Icon Icon--primary" />,
     disabled = false,
     children,
+    showDialogInitially = false,
+    hideButton = false,
+    hideCloseButton = false,
 }) {
-    const [showDialog, setShowDialog] = useState(false);
+    const [showDialog, setShowDialog] = useState(showDialogInitially);
     const open = () => setShowDialog(true);
     const close = () => setShowDialog(false);
 
@@ -23,24 +26,32 @@ export default function Modal({
         event.stopPropagation();
     };
 
+    useEffect(() => {
+        if (showDialogInitially) {
+            open();
+        }
+    }, [showDialogInitially]);
+
     const dismiss = (event) => {
         // Close if escape key was pressed, not if user clicked outside.
-        if (event.type === 'keydown') {
+        if (!hideCloseButton && event.type === 'keydown') {
             close();
         }
     };
 
     return (
         <>
-            <button
-                type="button"
-                className={classNames('Modal-trigger', triggerClassName)}
-                title={title}
-                onClick={open}
-                disabled={disabled}
-            >
-                {trigger}
-            </button>
+            { !hideButton &&
+                <button
+                    type="button"
+                    className={classNames('Modal-trigger', triggerClassName)}
+                    title={title}
+                    onClick={open}
+                    disabled={disabled}
+                >
+                    {trigger}
+                </button>
+            }
 
             <Dialog
                 className={classNames('Modal-dialog', className)}
@@ -66,13 +77,13 @@ export default function Modal({
                         children
                 }
 
-                <button
+                { !hideCloseButton && <button
                     type="button"
                     className="Modal-close"
                     onClick={close}
                 >
                     <FaTimes className="Modal-icon" />
-                </button>
+                </button> }
             </Dialog>
         </>
     );

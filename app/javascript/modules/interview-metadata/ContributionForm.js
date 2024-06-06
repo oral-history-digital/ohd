@@ -10,7 +10,7 @@ import { Spinner } from 'modules/spinners';
 
 export default function ContributionForm({
     withSpeakerDesignation,
-    projects,
+    project,
     projectId,
     locale,
     data,
@@ -38,7 +38,7 @@ export default function ContributionForm({
     }
 
     const selectedPerson = selectedPersonId !== null ?
-        peopleData[selectedPersonId] :
+        peopleData?.[selectedPersonId] :
         null;
 
     function handlePersonChange(attribute, value) {
@@ -60,7 +60,7 @@ export default function ContributionForm({
             values: peopleData,
             value: data?.person_id,
             withEmpty: true,
-            validate: v => v !== '',
+            validate: function(v){return /^\d+$/.test(v)},
             handlechangecallback: handlePersonChange,
         },
         {
@@ -71,7 +71,7 @@ export default function ContributionForm({
             optionsScope: 'contributions',
             keepOrder: true,
             withEmpty: true,
-            validate: v => v !== '',
+            validate: function(v){return /^\d+$/.test(v)},
         },
         {
             elementType: 'select',
@@ -100,7 +100,7 @@ export default function ContributionForm({
                 }}
                 onSubmit={(params) => {
                     if (typeof submitData === 'function') {
-                        submitData({ locale, projectId, projects }, params, index);
+                        submitData({ locale, projectId, project }, params, index);
                     }
                     if (typeof onSubmit === 'function') {
                         onSubmit();
@@ -171,7 +171,7 @@ ContributionForm.propTypes = {
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,

@@ -9,13 +9,9 @@ class InterviewLoggedInSearchResultSerializer < InterviewBaseSerializer
     :properties,
     :signature_original,
     :task_ids,
-    :tasks_user_account_ids,
+    :tasks_user_ids,
     :tasks_supervisor_ids,
   ]
-
-  def translations
-    object.translations.map(&:as_json)
-  end
 
   def title
     object.localized_hash(:title)
@@ -23,10 +19,6 @@ class InterviewLoggedInSearchResultSerializer < InterviewBaseSerializer
 
   def short_title
     object.localized_hash(:reverted_short_title)
-  end
-
-  def description
-    object.localized_hash(:description)
   end
 
 end

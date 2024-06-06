@@ -1,7 +1,7 @@
 require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
-  after_action :verify_authorized, except: [:index, :locations, :location_references]
+  after_action :verify_authorized, except: [:index, :locations, :location_references, :for_reg_entry]
   after_action :verify_policy_scoped, only: [:index, :locations]
 
   def create
@@ -57,7 +57,7 @@ class RegistryReferencesController < ApplicationController
         elsif ref_object.class.name == 'Person'
           json = {
             nested_id: ref_object.id,
-            data: cache_single(ref_object, 'PersonWithAssociations'),
+            data: cache_single(ref_object, serializer_name: 'PersonWithAssociations'),
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id,
@@ -72,14 +72,14 @@ class RegistryReferencesController < ApplicationController
     policy_scope(RegistryReference)
     respond_to do |format|
       format.html do
-        render layout: 'webpacker'
+        render "react/app"
       end
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
           interviewee = interview.interviewee
-          registry_entries = RegistryEntry.for_map(I18n.locale, [interviewee&.id], [interview.id], 'all')
+          registry_entries = RegistryEntry.for_map([interviewee&.id], [interview.id], 'all')
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer
@@ -97,10 +97,11 @@ class RegistryReferencesController < ApplicationController
         interview = Interview.find_by(archive_id: params[:archive_id])
         registry_entry_id = params[:registry_entry_id]
         interviewee = interview.interviewee
+        repository = RegistryReferenceRepository.new
 
-        person_references = RegistryReference.for_interview_map_person_references(registry_entry_id, I18n.locale, interviewee.id)
-        interview_references = RegistryReference.for_interview_map_interview_references(registry_entry_id, I18n.locale, interview.id)
-        segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
+        person_references = repository.interview_map_person_references_for(registry_entry_id, I18n.locale, interviewee.id)
+        interview_references = repository.interview_map_interview_references_for(registry_entry_id, I18n.locale, interview.id)
+        segment_references = repository.interview_map_segment_references_for(registry_entry_id, interview.id)
 
         combined_references = person_references.to_a + interview_references.to_a
 
@@ -115,6 +116,31 @@ class RegistryReferencesController < ApplicationController
         render json: references
       end
     end
+  end
+
+  def for_reg_entry
+    registry_entry_id = params[:id]
+    signed_in = current_user.present?
+    scope = reg_refs_scope
+
+    repository = RegistryReferenceRepository.new
+
+    interview_refs = repository.interview_references_for(registry_entry_id, scope)
+    interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
+      each_serializer: SlimRegistryReferenceSerializer,
+      default_locale: current_project.default_locale,
+      signed_in: signed_in)
+
+    segment_refs = repository.segment_references_for(registry_entry_id, scope)
+    segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
+      each_serializer: SlimSegmentRegistryReferenceSerializer,
+      default_locale: current_project.default_locale,
+      signed_in: signed_in)
+
+    render json: {
+      interview_references: interview_refs_serialized,
+      segment_references: segment_refs_serialized
+    }
   end
 
   def index
@@ -144,6 +170,14 @@ class RegistryReferencesController < ApplicationController
 
   private
 
+  def reg_refs_scope
+    show_all = ActiveModel::Type::Boolean.new.cast(params[:all])
+    scope = show_all &&
+            current_user &&
+            (current_user.admin? || current_user.roles?(current_project, 'General', 'edit')) ?
+            'all' : 'public'
+  end
+
   def respond registry_reference
     registry_reference.ref_object.touch
     registry_reference.reload
@@ -162,7 +196,7 @@ class RegistryReferencesController < ApplicationController
         elsif registry_reference.ref_object_type == 'Person'
           json = {
             nested_id: registry_reference.ref_object_id,
-            data: cache_single(registry_reference.ref_object, 'PersonWithAssociations'),
+            data: cache_single(registry_reference.ref_object, serializer_name: 'PersonWithAssociations'),
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id

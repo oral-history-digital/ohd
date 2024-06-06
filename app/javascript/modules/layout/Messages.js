@@ -1,24 +1,31 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
-function Messages(props) {
-    if (props.loggedInAt + 5000 > Date.now()) {
+function Messages({
+    loggedInAt,
+    notifications,
+}) {
+    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
+
+    if (loggedInAt + 5000 > Date.now()) {
         return (
             <p className='messages'>
-                {t(props, 'devise.omniauth_callbacks.success')}
+                {t('devise.omniauth_callbacks.success')}
             </p>
         )
-    } else if (props.notifications.length > 0) {
+    } else if (notifications.length > 0) {
         return (
             <div className='notifications'>
-                {props.notifications.map((notification, index) => {
+                {notifications.map((notification, index) => {
                     return (
                         <p key={`notification-${index}`}>
-                            {t(props, notification.title, {file: notification.file, archiveId: notification.archive_id})}
+                            {t(notification.title, {file: notification.file, archiveId: notification.archive_id})}
                             <Link
-                                to={'/' + props.locale + '/interviews/' + notification.archive_id}>
+                                to={pathBase + '/interviews/' + notification.archive_id}>
                                 {notification.archive_id}
                             </Link>
                         </p>
@@ -34,8 +41,6 @@ function Messages(props) {
 Messages.propTypes = {
     loggedInAt: PropTypes.number,
     notifications: PropTypes.array.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 };
 
 export default Messages;

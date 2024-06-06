@@ -19,23 +19,92 @@ de:
       inactive: Ihr Account ist nicht aktiv.
       invalid: Ungültige Anmeldedaten.
       invalid_token: Der Anmelde-Token ist ungültig.
-      locked: Ihr Account ist gesperrt.
-      not_found_in_database: E-Mail-Adresse oder Passwort ungültig.
+      blocked: Ihr Account ist gesperrt.
+      not_found_in_database: Ungültige Anmeldedaten.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
       unauthenticated: Sie müssen sich anmelden oder registrieren, bevor Sie fortfahren
         können.
-      unconfirmed: Sie müssen Ihren Account bestätigen, bevor Sie fortfahren können.
+      unconfirmed: Die E-Mail-Adresse ist bereits registriert.
+        Sie müssen Ihre Registrierung noch bestätigen.
+        Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
     mailer:
-      confirmation_instructions:
-        subject: Interview-Archiv – Schritte für die Freischaltung Ihres Zugangs
-      project_access_granted:
-        subject: Freischaltung Ihres Zugangs zum Interview-Archiv '%{project_name}'
-      project_access_rejected:
-        subject: Ihre Registrierung für die Anwendung '%{project_name}'
-      reset_password_instructions:
-        subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
-      account_deactivated:
+      grant_project_access:
+        subject: Freischaltung Ihres Zugangs zu der Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>Sie haben nun Zugang zu der Anwendung %{project_link} für das von Ihnen angegebene Recherche-Anliegen.</p>
+          <p>Bitte beachten Sie die Persönlichkeitsrechte der Interviewten und die %{tos_link} des Archivs.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      reject_project_access:
+        subject: Ihr Antrag auf Freischaltung für die Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>Sie haben eine Freischaltung für die Anwendung %{project_name} beantragt.</p>
+          <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den %{tos_link} entsprechen.</p>
+          <p>Unter folgendem Link können Sie Ihre Angaben ändern oder ergänzen.</p>
+          <p>%{correct_link}</p>
+          <p>Wenn Sie Unterstützung benötigen, kontaktieren Sie uns bitte unter %{mail_to}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      block_project_access:
+        subject: Sperrung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Anwendung %{project_name} gesperrt wurde. Dies erfolgt, wenn die %{tos_link} des Archivs nicht beachtet wurden.</p>
+          <p>Bei Rückfragen kontaktieren Sie uns bitte unter %{mail_to}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      revoke_project_access_block:
         subject: Ihr Zugang zu der Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Anwendung %{project_name} aufgehoben wurde.</p>
+          <p>Sie haben nun wieder Zugang zu der Anwendung %{project_name}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      terminate_project_access:
+        subject: Ihr Zugang zu der Anwendung '%{project_name}'
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>Ihr Zugang zu der Anwendung %{project_name} war zeitlich befristet und ist nun beendet.</p>
+          <p>Sie können gerne zu einem späteren Zeitpunkt erneut eine Freischaltung beantragen.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>%{project_name}</p>
+      block:
+        subject: Sperrung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass Ihr Zugang zu der Plattform Oral-History.Digital gesperrt wurde. Dies erfolgt, wenn die %{tos_link} nicht beachtet wurden.</p>
+          <p>Bei Rückfragen kontaktieren Sie uns bitte unter %{mail_to}.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History. Digital</p>
+      revoke_block:
+        subject: Ihr Zugang zu der Plattform Oral-History.Digital
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass die Sperrung Ihres Zugangs zu der Plattform Oral-History.Digital aufgehoben wurde.</p>
+          <p>Sie haben nun wieder Zugang zu der Plattform.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History. Digital</p>
+      remove:
+        subject: Löschung Ihres Nutzer*innen-Accounts
+        text: |
+          <p>Guten Tag %{user_display_name},</p>
+          <p>hiermit teilen wir Ihnen mit, dass wir Ihren Nutzer*innen-Account für die Plattform Oral-History.Digital mit allen personenbezogenen Daten gelöscht haben.</p>
+          <p>Wenn Sie auf Oral-History. Digital oder eines der enthaltenen Interview-Archive zugreifen möchten, können Sie sich jederzeit erneut registrieren.</p>
+          <p>Mit freundlichen Grüßen</p>
+          <p>Oral-History.Digital</p>
+      new_registration_info:
+        subject: Neuer Freischaltungsantrag zur Prüfung
+      corrected_project_access_data:
+        subject: Korrigierte Benutzerdaten zur Prüfung
+      confirmation_instructions:
+        subject: Bestätigung Ihrer Registrierung für Oral-History.Digital
+      new_email_confirmation_instructions:
+        subject: Bestätigung Ihrer neuen E-Mail-Adresse für Oral-History.Digital
+      reset_password_instructions:
+        subject: Oral-History.Digital. Schritte für die Wiederherstellung Ihres Passwortes.
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.
       success: Sie haben sich erfolgreich mit Ihrem Account angemeldet.
@@ -47,8 +116,8 @@ de:
       submit: Passwort jetzt ändern
       resend: Passwort ändern
       link: Passwort wiederherstellen
-      send_instructions: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich im
-        Archiv registriert haben. Sie erhalten dann per E-Mail einen Link zur
+      send_instructions: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich
+        registriert haben. Sie erhalten dann per E-Mail einen Link zur
         Passworterneuerung.
       updated: Ihr Passwort wurde geändert. Sie sind jetzt angemeldet.
       no_token: Sie können diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen
@@ -68,8 +137,9 @@ de:
       activate_text: Um Ihren Nutzer*innen-Account zu aktivieren, wählen Sie bitte
         ein geeignetes Passwort für Ihren Zugang.
       successful: Ihre Registrierung ist bei uns eingegangen.
-      signed_up: Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre
-        Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.
+      signed_up_title: Ihre Registrierung wurde erfolgreich abgesendet!
+      signed_up: Bitte überprüfen Sie Ihr E-Mail-Postfach und bestätigen Sie Ihre
+        Registrierung mit dem Link in der E-Mail.
       updated: Ihre Zugangsdaten wurden erfolgreich geändert.
       destroyed: Ihre Zugangsdaten wurden erfolgreich gelöscht.
       welcome: Willkommen! Ihr Zugang zum Archiv wurde soeben freigeschaltet. Sie
@@ -93,9 +163,10 @@ de:
       signed_out: Sie sind jetzt abgemeldet.
       unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
       unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
-      unconfirmed: Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden
-        können.
-      locked: Ihr Zugang wurde gesperrt.
+      unconfirmed: Die E-Mail-Adresse ist bereits registriert.
+        Sie müssen Ihre Registrierung noch bestätigen.
+        Eine E-Mail mit dem dafür notwendigen Link wurde Ihnen eben erneut zugeschickt.
+      blocked: Ihr Account ist gesperrt.
       invalid: Username oder Passwort ist ungültig.
       invalid_token: Ungültiger Authentifizierungscode.
       timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
@@ -115,62 +186,22 @@ de:
         not_signed_in: nicht angemeldet
     labels:
       send_now: Jetzt zuschicken
-    authentication_keys:
-      login: Benutzer*in
-      email: E-Mail
-      password: Passwort
-    registration_fields:
-      fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
-      select: Bitte auswählen
-      appellation: Anrede
-      first_name: Vorname
-      last_name: Nachname
-      job_description: Beruf
-      email: E-Mail
-      gender: Geschlecht
-      research_intentions: Recherche-Anliegen
-      comments: Präzisierung des Anliegens
-      organization: Institution
-      school: Schule
-      homepage: Homepage der Institution
-      street: Straße
-      zipcode: PLZ
-      city: Ort
-      state: Bundesland
-      country: Land
-      tos_agreement: Nutzungsbedingungen
-      tos_agreement_explanation: Ich stimme den %{terms_of_use} zu.
-      priv_agreement: Datenschutzbestimmungen
-      priv_agreement_explanation: Ich stimme den %{privacy_policy} zu.
-      agreed: zugestimmt
-      not_agreed: keine Zustimmung
-      receive_newsletter: Newsletter
-      receive_newsletter_explanation: Ich möchte den Newsletter des Projektes "%{project_name}"
-        abonnieren.
-      requested_at: Datum der Anfrage
-      name: Name
-      adress: Anschrift
-      workflow_state: Registrierungsstatus
-      login: Benutzername
-      created_at: Datum der Registrierung
   activerecord:
     errors:
       models:
-        user_account:
-          attributes:
-            password:
-              confirmation: und -wiederholung stimmen nicht überein.
-              too_short: ist zu kurz.
-              too_long: ist zu lang.
-        user_registration:
+        user:
           attributes:
             email:
               taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
                 vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen.
+            password:
+              confirmation: und -wiederholung stimmen nicht überein.
+              too_short: ist zu kurz.
+              too_long: ist zu lang.
       messages:
         blank: fehlt
     attributes:
-      user_account:
+      user:
         email: E-Mail
         login: Login
         password: Passwort

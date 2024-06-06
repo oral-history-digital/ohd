@@ -46,6 +46,8 @@ export const getViewMode = createSelector(
 // UI: Admin
 export const getEditView = state => getState(state).editView;
 
+export const getTranslationsView = state => getState(state).translationsView;
+
 export const getInterviewEditView = createSelector(
     [getState],
     archive => {

@@ -56,7 +56,6 @@ class MetadataImport
       project_id: project.id,
       archive_id: row[:archive_id],
       signature_original: row[:signature_original],
-      language_id: (language = find_language(row[:language_id]); language ? language.id : nil),
       collection_id: row[:collection_id] && find_or_create_collection(row[:collection_id], project).id,
       interview_date: row[:interview_date],
       media_type: row[:media_type] && row[:media_type].downcase,
@@ -64,6 +63,27 @@ class MetadataImport
       observations: row[:observations],
       description: row[:description],
     }
+
+    interview_languages_attributes = [
+      {
+        language: find_language(row[:primary_language_id]),
+        spec: 'primary'
+      },
+    ]
+
+    primary_translation_language = find_language(row[:primary_translation_language_id])
+    interview_languages_attributes << {
+      language: primary_translation_language,
+      spec: 'primary_translation'
+    } if primary_translation_language
+
+    secondary_language = find_language(row[:secondary_language_id])
+    interview_languages_attributes << {
+      language: secondary_language,
+      spec: 'secondary'
+    } if secondary_language
+
+    interview_data[:interview_languages_attributes] = interview_languages_attributes
 
     # TODO: fit to campscape specifications again
     #properties = {interviewer: data[23], link: data[27], subcollection: data[13]}.select{|k,v| v != nil}
@@ -78,6 +98,7 @@ class MetadataImport
     else
       interview = Interview.create interview_data.update(properties: properties)
     end
+    interview.save
     interview
   end
 
@@ -93,9 +114,13 @@ class MetadataImport
       birth_name: row[:birth_name],
       alias_names: row[:alias_names],
       other_first_names: row[:other_first_names],
+      pseudonym_first_name: row[:pseudonym_first_name],
+      pseudonym_last_name: row[:pseudonym_last_name],
+      use_pseudonym: %w(yes y ja j true t).include?(row[:use_pseudonym]) ? true : false,
+      description: row[:person_description],
       gender: gender(row[:gender]),
       date_of_birth: row[:date_of_birth],
-      biography: row[:biography],
+      biography: {text: row[:biography], workflow_state: %w(yes y ja j true t).include?(row[:biography_public]) ? 'public' : 'unshared'},
     }.select{|k,v| v != nil}
 
     if interview.interviewee
@@ -103,7 +128,12 @@ class MetadataImport
     else
       interviewee = Person.find_or_create_by project_id: project.id, first_name: row[:first_name], last_name: row[:last_name]
       interviewee.update interviewee_data
-      Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: project.contribution_types.find_by_code('interviewee').id
+      Contribution.create(
+        person_id: interviewee.id,
+        interview_id: interview.id,
+        contribution_type_id: project.contribution_types.find_by_code('interviewee').id,
+        workflow_state: 'public'
+      )
     end
   end
 
@@ -114,8 +144,10 @@ class MetadataImport
         'male'
       when 'f', 'female', 'w', 'woman', 'weiblich', 'frau'
         'female'
-      else
+      when 'd', 'diverse', 'divers'
         'diverse'
+      else
+        'not_specified'
       end
     end
   end
@@ -133,22 +165,7 @@ class MetadataImport
   end
 
   def find_language(name)
-    if name
-      languages = name.split(/\s+[ua]nd\s+/)
-      language = Language.where(name: languages.join('/')).first
-      language = Language.where(code: languages.join('/')).first unless language
-      language = Language.where(code: languages.join('-')).first unless language
-      # try to find language by other codes provided by ISO_639
-      unless language
-        iso639_results = languages.map{|l| ISO_639.find(l) }
-        (0..4).each do |n|
-          name_or_code = iso639_results.map{|iso_codes| iso_codes[n]}.join('/')
-          language = Language.where(name: name_or_code).first unless language
-          language = Language.where(code: name_or_code).first unless language
-        end
-      end
-      language
-    end
+    Language.find_by_code_or_name(name) || Language.find_with_iso_code(name)
   end
 
   def create_contributions(interview, contributors_string, contribution_type)
@@ -156,7 +173,12 @@ class MetadataImport
       contributor_string.sub(/\"/, '') if contributor_string.count("\"") == 1
       last_name, first_name = contributor_string.split(/,\s*/)
       contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
-      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: interview.project.contribution_types.find_by_code(contribution_type).id
+      Contribution.create(
+        person_id: contributor.id,
+        interview_id: interview.id,
+        contribution_type_id: interview.project.contribution_types.find_by_code(contribution_type).id,
+        workflow_state: 'public'
+      )
     end
   end
 
@@ -198,7 +220,7 @@ class MetadataImport
 
   def destroy_references(ref_object, ref_type_id, interview)
     if ref_type_id
-      ref_object.registry_references.where(registry_reference_type_id: ref_type_id, interview_id: interview.id).destroy_all
+      ref_object&.registry_references.where(registry_reference_type_id: ref_type_id, interview_id: interview.id).destroy_all
     end
   end
 

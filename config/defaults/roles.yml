@@ -132,6 +132,9 @@
   - :name: Upload create
     :klass: Upload
     :action_name: create
+  - :name: Interview upload_transcript
+    :klass: Interview 
+    :action_name: upload_transcript
   - :name: NormDatum destroy
     :klass: NormDatum
     :action_name: destroy
@@ -296,6 +299,9 @@
   - :name: Upload create
     :klass: Upload
     :action_name: create
+  - :name: Interview upload_transcript
+    :klass: Interview 
+    :action_name: upload_transcript
   - :name: UserRole create
     :klass: UserRole
     :action_name: create
@@ -580,6 +586,9 @@
   - :name: Upload create
     :klass: Upload
     :action_name: create
+  - :name: Interview upload_transcript
+    :klass: Interview 
+    :action_name: upload_transcript
   - :name: UploadedFile create
     :klass: UploadedFile
     :action_name: create
@@ -589,11 +598,11 @@
   - :name: UploadedFile update
     :klass: UploadedFile
     :action_name: update
-  - :name: UserRegistration update
-    :klass: UserRegistration
+  - :name: User update
+    :klass: User
     :action_name: update
-  - :name: UserRegistrationProject update
-    :klass: UserRegistrationProject
+  - :name: UserProject update
+    :klass: UserProject
     :action_name: update
   - :name: UserRole create
     :klass: UserRole
@@ -609,11 +618,11 @@
   - :name: General edit
     :klass: General
     :action_name: edit
-  - :name: UserRegistration update
-    :klass: UserRegistration
+  - :name: User update
+    :klass: User
     :action_name: update
-  - :name: UserRegistrationProject update
-    :klass: UserRegistrationProject
+  - :name: UserProject update
+    :klass: UserProject
     :action_name: update
   - :name: UserRole create
     :klass: UserRole

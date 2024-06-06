@@ -8,9 +8,12 @@ class Interview < ApplicationRecord
 
   belongs_to :project
   belongs_to :collection
-  belongs_to :language
-  belongs_to :translation_language,
-             class_name: 'Language'
+
+  has_many :interview_languages,
+           dependent: :destroy
+
+  #has_many :languages,
+           #through: :interview_languages
 
   has_many :photos,
            #-> {includes(:interview, :translations)},
@@ -70,10 +73,6 @@ class Interview < ApplicationRecord
            through: :segment_registry_references,
            source: :registry_entry
 
-  has_many :checklist_items,
-           -> {order('item_type ASC')},
-           dependent: :destroy
-
   has_many :tasks, dependent: :destroy
 
   has_and_belongs_to_many :archiving_batches
@@ -82,7 +81,21 @@ class Interview < ApplicationRecord
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
-    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id description)
+    atts = %w(
+      archive_id
+      media_type
+      interview_date
+      duration
+      tape_count
+      collection_id
+      signature_original
+      description
+      transcript
+      language_id
+      primary_language_id
+      secondary_language_id
+      primary_translation_language_id
+    )
     update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
@@ -95,7 +108,7 @@ class Interview < ApplicationRecord
 
   translates :observations, :description, fallbacks_for_empty_translations: true, touch: true
 
-  accepts_nested_attributes_for :translations, :contributions
+  accepts_nested_attributes_for :translations, :contributions, :interview_languages
 
   class ProjectConfigValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
@@ -113,7 +126,6 @@ class Interview < ApplicationRecord
 
   searchable do
     integer :project_id, :stored => true, :references => Project
-    integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id_fulltext, :stored => true do
@@ -121,9 +133,12 @@ class Interview < ApplicationRecord
     end
     integer :interviewee_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
-    integer :tasks_user_account_ids, :stored => true, :multiple => true
+    integer :tasks_user_ids, :stored => true, :multiple => true
     integer :tasks_supervisor_ids, :stored => true, :multiple => true
-    string :workflow_state, stored: true
+    string :workflow_state, stored: true do
+      project.workflow_state == 'unshared' ? 'unshared' : workflow_state
+    end
+    string :project_access, stored: true
 
     dynamic_date_range :events, multiple: true do
       interviewee&.events&.inject({}) do |hash, e|
@@ -133,7 +148,7 @@ class Interview < ApplicationRecord
     end
 
     # in order to find pseudonyms with fulltextsearch (dg)
-    #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
+    #(text :pseudonym_string, :stored => true) if project.shortname == 'dg'
 
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true do
@@ -152,18 +167,20 @@ class Interview < ApplicationRecord
     string :media_type, :stored => true
     integer :duration, :stored => true
     string :language, :stored => true do
-      language && language.translations.map(&:name).join(' ')
+      interview_languages.where(spec: ['primary', 'secondary']).map do |il|
+        il.language.translations.map(&:name).join(' ')
+      end.join(' ')
     end
     string :alias_names, :stored => true
 
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
 
-    text :transcript do
-      segments.includes(:translations).inject([]) do |all, segment|
-        all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
-        all
-      end.join(' ')
+    text :transcript, stored: true do
+      Segment::Translation.
+        where(segment_id: segment_ids).
+        where("locale like '%-public'").
+        map(&:text).join(' ')
     end
 
     text :headings do
@@ -174,8 +191,25 @@ class Interview < ApplicationRecord
     end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
-      project.search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = (self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))) || ''
+      ((Project.ohd.present? ? Project.ohd.search_facets: []) | project.search_facets).inject({}) do |mem, facet|
+        if interviewee
+          mem[facet.name] = case facet.source
+            when 'RegistryReferenceType'
+              case facet.ref_object_type
+              when "Person"
+                interviewee.registry_references
+              when "Interview"
+                registry_references
+              when "Segment"
+                segment_registry_references
+              end.where(registry_reference_type_id: facet.registry_reference_type_id).
+              map(&:registry_entry_id).uniq
+            when 'Interview'
+              self.respond_to?(facet.name) && self.send(facet.name)
+            when 'Person'
+              interviewee.respond_to?(facet.name) && interviewee.send(facet.name)
+            end
+        end
         mem
       end
     end
@@ -242,11 +276,14 @@ class Interview < ApplicationRecord
 
   end
 
+  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
+
   scope :shared, -> {where(workflow_state: 'public')}
   scope :with_media_type, -> {where.not(media_type: nil)}
 
-  def interviewee_id
-    interviewees.first && interviewees.first.id
+  def project_access
+    project.grant_project_access_instantly? ? "free" : "restricted"
   end
 
   def contributions_hash
@@ -270,11 +307,11 @@ class Interview < ApplicationRecord
   end
 
   def self.non_public_method_names
-    %w(title short_title description contributions photos registry_references)
+    %w(title short_title description contributions photos registry_references transcript_coupled)
   end
 
-  def tasks_user_account_ids
-    tasks.map(&:user_account_id).compact.uniq
+  def tasks_user_ids
+    tasks.map(&:user_id).compact.uniq
   end
 
   def tasks_supervisor_ids
@@ -308,7 +345,7 @@ class Interview < ApplicationRecord
     (1..d.to_i).each do |t|
       tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
-    self.touch
+    self.touch unless self.new_record?
   end
 
   def self.random_featured(n = 1, project_id)
@@ -321,10 +358,6 @@ class Interview < ApplicationRecord
 
   def identifier
     archive_id
-  end
-
-  def identifier_method
-    'archive_id'
   end
 
   # referenced by archive_id
@@ -344,17 +377,35 @@ class Interview < ApplicationRecord
   end
 
   def interviewee
-    # caching results in 'singleton can't be dumped'-error here. Why?
-    #
-    #Rails.cache.fetch("#{project.cache_key_prefix}-interviewee-for-#{id}-#{updated_at}") do
-      interviewees.first
-    #end
+    interviewees.first
   end
 
-   def place_of_interview
-     ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
-     ref && ref.registry_entry
-   end
+  def interviewee_id
+    interviewee&.id
+  end
+
+  %w(interviewee interviewer).each do |code|
+    define_method "#{code}s" do
+      contributors_by_code(code)
+    end
+  end
+
+  def contributors_by_code(contribution_type_code)
+    contribution_type = project.contribution_types.where(code: contribution_type_code).first
+    contributions.
+      where(contribution_type_id: contribution_type&.id).
+      map(&:person).compact.uniq
+  end
+
+  def registry_references_by_metadata_field_name(metadata_field_name)
+    m = project.metadata_fields.where(name: metadata_field_name).first
+    registry_references.where(registry_reference_type_id: m&.registry_reference_type_id)
+  end
+
+  def place_of_interview
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+    ref && ref.registry_entry
+  end
 
   def title(locale)
     full_title(locale)
@@ -372,47 +423,40 @@ class Interview < ApplicationRecord
     end
   end
 
-  after_initialize do
-    if project
-      project.registry_reference_type_metadata_fields.each do |field|
-        define_singleton_method field.name do
-          case field["ref_object_type"]
-          when "Person"
-            (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
-          when "Interview"
-            registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
-          when "Segment"
-            segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
-          else
-            []
-          end
-        end
-      end
-
-      project.contribution_types.each do |contribution_type|
-        define_singleton_method contribution_type.code.pluralize do
-          contributions.where(contribution_type_id: contribution_type.id).map(&:person)
-        end
-      end
-    end
+  def language
+    interview_languages.where(spec: ['primary']).first&.language
   end
 
   def lang
-    # return only the first language code in cases like 'slk/ces'
-    language && ( ISO_639.find(language.first_code).try(:alpha2) || language.first_code )
+    ISO_639.find(language&.code).try(:alpha2) || language&.code
   end
 
   def languages
-    if language && translation_language
-      [language, translation_language].map do |l|
-        ISO_639.find(l.first_code).try(:alpha2) || l.first_code
+    interview_languages.map do |il|
+      ISO_639.find(il.language&.code).try(:alpha2) || il.language&.code
+    end
+  end
+
+  def language_id
+    [primary_language_id, secondary_language_id].compact
+  end
+
+  %w(primary secondary primary_translation).each do |spec|
+    define_method "#{spec}_language" do
+      interview_languages.where(spec: spec).first.try(:language)
+    end
+
+    define_method "#{spec}_language_id" do
+      interview_languages.where(spec: spec).first.try(:language_id)
+    end
+
+    define_method "#{spec}_language_id=" do |lid|
+      l = interview_languages.where(spec: spec).first
+      if lid.blank?
+        l.destroy if l
+      else
+        l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
       end
-    elsif segments.length > 0
-      segments.joins(:translations).where.not("segment_translations.text": [nil, '']).group(:locale).count.keys.map{|k| k.split('-').first}.uniq
-    elsif language
-      [ISO_639.find(language.first_code).try(:alpha2) || language.first_code]
-    else
-      []
     end
   end
 
@@ -471,7 +515,9 @@ class Interview < ApplicationRecord
   end
 
   def alpha3_transcript_locales
-    language ? language.code.split(/[\/-]/) : []
+    interview_languages.where(spec: ['primary', 'secondary']).map do |il|
+      ISO_639.find(il.language.code).try(:alpha3)
+    end
   end
 
   def right_to_left
@@ -479,7 +525,7 @@ class Interview < ApplicationRecord
   end
 
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
-    ods = Roo::Spreadsheet.open(file_path, { csv_options: { encoding: 'utf-8', col_sep: "\t", quote_char: "\x00" } })
+    ods = Roo::Spreadsheet.open(file_path, { csv_options: { encoding: 'iso-8859-1|utf-8', col_sep: "\t", quote_char: "\x00" } })
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
@@ -497,7 +543,8 @@ class Interview < ApplicationRecord
               tape_id: tape_id,
               text: row[:transcript] || '',
               locale: locale,
-              speaker_id: speaker_id
+              speaker_id: speaker_id,
+              split: true
             })
           end
         end
@@ -518,7 +565,8 @@ class Interview < ApplicationRecord
       next_timecode: Timecode.new(tape.duration).timecode,
       tape_id: tape_id,
       text: text,
-      locale: locale
+      locale: locale,
+      split: true
     })
   end
 
@@ -545,7 +593,8 @@ class Interview < ApplicationRecord
         tape_id: tape_id,
         text: text,
         locale: locale,
-        speaker_id: speaker_id
+        speaker_id: speaker_id,
+        split: false
       })
     end
   end
@@ -613,7 +662,7 @@ class Interview < ApplicationRecord
       title(locale)
     else
       I18n.with_locale locale do
-        if interviewees.blank?
+        if interviewee.blank?
           'no interviewee given'
         else
           interviewee.display_name(anonymous: true)
@@ -708,12 +757,12 @@ class Interview < ApplicationRecord
   class << self
     # https://github.com/sunspot/sunspot#stored-fields
     # in order to get a dropdown list in search field
-    def dropdown_search_values(project, user_account)
-      wf_state = user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ["public", "unshared"] : 'public'
+    def dropdown_search_values(project, user)
+      wf_state = user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ["public", "unshared"] : 'public'
       cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
-      Rails.cache.fetch("#{project ? project.cache_key_prefix : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
+      Rails.cache.fetch("#{project ? project.shortname : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project ? project.interviews.size : Interview.count
@@ -732,11 +781,11 @@ class Interview < ApplicationRecord
       end
     end
 
-    def archive_search(user_account, project, locale, params, per_page = 12)
+    def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
-        with(:project_id, project.id) if project
+        with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        with(:project_id, project.id) unless project.is_ohd?
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project
           dynamic :search_facets do

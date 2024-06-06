@@ -1,21 +1,18 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getEditView, getTranslations } from 'modules/archive';
-import { submitData, getProjects, getCurrentProject, getCurrentAccount } from 'modules/data';
-import { getIsLoggedIn } from 'modules/account';
+import { getEditView } from 'modules/archive';
+import { submitData, getCurrentProject, getCurrentUser,
+    getLanguages } from 'modules/data';
+import { getIsLoggedIn } from 'modules/user';
 import SingleValueWithForm from './SingleValueWithForm';
 
 const mapStateToProps = (state) => {
     return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        project: getCurrentProject(state),
-        account: getCurrentAccount(state),
+        user: getCurrentUser(state),
         editView: getEditView(state),
         isLoggedIn: getIsLoggedIn(state),
-        translations: getTranslations(state),
+        languages: getLanguages(state),
     }
 }
 

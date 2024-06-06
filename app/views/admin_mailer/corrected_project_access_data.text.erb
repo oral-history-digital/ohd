@@ -1,0 +1,20 @@
+<%
+  case I18n.locale.to_sym
+  when :en
+-%>
+  Hello,
+  There is a corrected request for activation from user '<%= @user_name %>' in application '<%= @project.name(@project.default_locale) %>'.
+  Please review it as soon as possible.
+  <%= @url %>
+  Best regards
+
+  Oral-History.Digital
+<% else -%>
+  Guten Tag,
+  in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine benutzerseitig (<%= @user_name %>) korrigierte Anfrage auf Freischaltung vor.
+  Bitte überprüfen Sie diese so schnell wie möglich.
+  <%= @url %>
+  Viele Grüße
+
+  Oral-History.Digital
+<% end -%>

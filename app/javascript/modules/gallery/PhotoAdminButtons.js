@@ -12,12 +12,12 @@ export default function PhotoAdminButtons({
     archiveId,
     locale,
     projectId,
-    projects,
+    project,
     deleteData,
 }) {
     const { t } = useI18n();
 
-    const destroy = () => deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'photos', photo.id);
+    const destroy = () => deleteData({ locale, projectId, project }, 'interviews', archiveId, 'photos', photo.id);
 
     return (
         <AuthorizedContent object={photo} action='update'>
@@ -56,6 +56,6 @@ PhotoAdminButtons.propTypes = {
     archiveId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
 };

@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 
-import { getCurrentProject, getCurrentAccount, getIsCatalog } from 'modules/data';
-import { getIsLoggedIn, getIsLoggedOut } from 'modules/account';
+import { getCurrentUser, getIsCatalog } from 'modules/data';
+import { getIsLoggedIn, getIsLoggedOut } from 'modules/user';
 import AuthShow from './AuthShow';
 
 const mapStateToProps = (state) => ({
     isLoggedIn: getIsLoggedIn(state),
     isLoggedOut: getIsLoggedOut(state),
-    account: getCurrentAccount(state),
-    project: getCurrentProject(state),
+    user: getCurrentUser(state),
     isCatalog: getIsCatalog(state),
 });
 

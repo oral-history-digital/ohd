@@ -24,6 +24,7 @@ export default function TranscriptResult({
             tapeNumber={data.tape_nbr}
             time={data.time}
             lang={lang}
+            transcriptCoupled={interview.transcript_coupled}
         />
     );
 }

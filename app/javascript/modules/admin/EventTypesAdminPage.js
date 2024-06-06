@@ -1,11 +1,10 @@
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { useEventTypeApi } from 'modules/api';
 import { AuthShowContainer } from 'modules/auth';
-import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { useEventTypes, EventTypeForm, useMutateEventTypes } from 'modules/event-types';
 import { useInvalidateAllPersonData } from 'modules/person';
@@ -15,7 +14,7 @@ import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
     const { data, isLoading, isValidating } = useEventTypes();
     const mutateEventTypes = useMutateEventTypes();
     const { deleteEventType } = useEventTypeApi();

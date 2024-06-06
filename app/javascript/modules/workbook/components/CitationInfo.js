@@ -12,11 +12,11 @@ export default function CitationInfo({
     time, /* optional */
     className,
 }) {
-    const { t, locale, translations } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const citationStr = interviewCitation(interview, project, pathBase, locale,
-        translations, tape, time);
+    const citationStr = interviewCitation(interview, project, pathBase,
+        tape, time);
 
     return (
         <section className={className}>

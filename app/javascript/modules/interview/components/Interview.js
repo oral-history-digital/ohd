@@ -1,59 +1,39 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
+import { useTrackPageView } from 'modules/analytics';
+import useLoadInterviewData from '../useLoadInterviewData';
 import { EditTableLoader } from 'modules/edit-table';
-import { MediaPlayerContainer } from 'modules/media-player';
-import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
+import { MediaPlayer } from 'modules/media-player';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
-import { getInterviewsStatus } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
-import InterviewLoggedOut from './InterviewLoggedOut';
+import MediaPreview from './MediaPreview';
 
 export default function Interview({
     interview,
     interviewIsFetched,
     interviewEditView,
     isCatalog,
-    projectId,
-    projects,
-    project,
     setArchiveId,
-    fetchData,
-    isLoggedIn,
 }) {
     const { archiveId } = useParams();
     const { t, locale } = useI18n();
-    const { projectAccessGranted } = useProjectAccessStatus(project);
-    const statuses = useSelector(getInterviewsStatus);
-    const status = statuses[archiveId];
+
+    useTrackPageView();
 
     useEffect(() => {
         setArchiveId(archiveId);
     }, []);
 
-    // fetch interview base data
-    useEffect(() => {
-        if (!status) {
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId);
-        }
-    }, [projectId, locale, archiveId, status]);
-
-    // fetch non-public data if project-access granted
-    useEffect(() => {
-        if (projectAccessGranted) {
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'short_title');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'description');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'observations');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'photos');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'reload_translations');
-        }
-    }, [archiveId, isLoggedIn]);
+    useLoadInterviewData({
+        interview,
+        archiveId,
+    });
 
     // Do not render InterviewTabs component as long as interview.lang is absent.
     // (Strangely, it sometimes becomes present only shortly after this component is rendered.)
@@ -61,17 +41,23 @@ export default function Interview({
         return <Spinner withPadding />;
     }
 
+    const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
+
     if (isCatalog) {
-        return <InterviewDetailsLeftSideContainer />;
+        if (interview?.contributions && Object.keys(interview.contributions).length > 0) {
+            return <InterviewDetailsLeftSideContainer />;
+        } else {
+            return <Spinner withPadding />;
+        }
     } else {
         return (
             <div>
                 <Helmet>
-                    <title>{t('activerecord.models.interview.one')} {interview.archive_id}</title>
+                    <title>{documentTitle}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
-                        <MediaPlayerContainer />
+                        <MediaPlayer />
                         {
                             interviewEditView ?
                                 <EditTableLoader /> :
@@ -81,7 +67,7 @@ export default function Interview({
                     </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut ifNoProject>
-                    <InterviewLoggedOut />
+                    <MediaPreview />
                 </AuthShowContainer>
             </div>
         );
@@ -93,8 +79,5 @@ Interview.propTypes = {
     interviewIsFetched: PropTypes.bool.isRequired,
     isCatalog: PropTypes.bool.isRequired,
     interviewEditView: PropTypes.bool.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
 };

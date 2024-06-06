@@ -2,7 +2,7 @@ xml.instruct!
 xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd", xmlns: "http://datacite.org/schema/kernel-4", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance" do
 
   xml.identifier identifierType: "DOI" do 
-    xml.text! "#{Rails.configuration.datacite['prefix']}/#{interview.project.identifier}.#{interview.archive_id}"
+    xml.text! "#{Rails.configuration.datacite['prefix']}/#{interview.project.shortname}.#{interview.archive_id}"
   end
 
   #xml.AlternateIdentifier AlternateIdentifierType: "URL" do
@@ -29,17 +29,11 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.publicationYear DateTime.now.year
 
   xml.contributors do
-    [
-      %w(interviewers Interviewführung), 
-      %w(cinematographers Kamera),
-      %w(transcriptors Transkripteur),
-      %w(translators Übersetzer),
-      %w(segmentators Erschließer)
-    ].each do |contributors, contribution|
-      if interview.send(contributors).length > 0
-        xml.contributor contributorType: "DataCollector" do 
-          xml.contributorName interview.send(contributors).map{|contributor| "#{contributor.last_name(locale)}, #{contributor.first_name(locale)}"}.join('; ') + " (#{contribution})"
-        end
+    interview.contributions.group_by{|c| c.contribution_type}.each do |contribution_type, contributions|
+      xml.contributor contributorType: "DataCollector" do 
+        xml.contributorName contributions.map{|c|
+          "#{c.person.last_name(locale)}, #{c.person.first_name(locale)}"
+        }.join('; ') + " (#{contribution_type.label(locale)})"
       end
     end
     if !interview.project.cooperation_partner.blank?
@@ -60,7 +54,17 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
 
   xml.subjects do
     interview.project.registry_reference_type_metadata_fields.each do |field|
-      xml.subject "#{field.label(locale)}: #{interview.send(field.name).map{|f| RegistryEntry.find(f).to_s(locale)}.join(', ')}"
+      registry_entry_ids = case field.ref_object_type
+      when "Person"
+        interview.interviewee.registry_references
+      when "Interview"
+        interview.registry_references
+      when "Segment"
+        interview.segment_registry_references
+      end.where(registry_reference_type_id: field.registry_reference_type_id).
+      map(&:registry_entry_id).uniq
+
+      xml.subject "#{field.label(locale)}: #{registry_entry_ids.map{|f| RegistryEntry.find(f).to_s(locale)}.join(', ')}"
     end
   end
 
@@ -87,9 +91,9 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.rightsList do
-    interview.project.external_links.each do |external_link|
-      xml.rights rightsURI: "#{external_link.url}" do 
-        xml.text! "#{external_link.name(locale)} des Interview-Archivs \"#{interview.project.name(locale)}\""
+    %w(conditions privacy_protection).each do |field|
+      xml.rights rightsURI: "#{OHD_DOMAIN}/#{locale}/field" do 
+        xml.text! "#{I18n.t(field, locale: locale)} des Interview-Archivs \"#{interview.project.name(locale)}\""
       end
     end
   end

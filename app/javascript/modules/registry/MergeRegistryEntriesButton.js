@@ -1,22 +1,21 @@
 import PropTypes from 'prop-types';
 
-import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Modal } from 'modules/ui';
 
 export default function MergeRegistryEntriesButton({
-    locale,
-    projectId,
-    projects,
     selectedRegistryEntryIds,
     submitData,
 }) {
-    const { t } = useI18n();
+    const { project, projectId } = useProject();
+    const { t, locale } = useI18n();
 
     const mergeRegistryEntries = () => {
         const firstId = selectedRegistryEntryIds.slice(0, 1);
         const restIds = selectedRegistryEntryIds.slice(1);
 
-        submitData({ locale, projectId, projects }, {merge_registry_entry: {id: firstId, ids: restIds}});
+        submitData({ locale, projectId, project }, {merge_registry_entry: {id: firstId, ids: restIds}});
     }
 
     if (selectedRegistryEntryIds.length < 2) {
@@ -50,9 +49,6 @@ export default function MergeRegistryEntriesButton({
 }
 
 MergeRegistryEntriesButton.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     selectedRegistryEntryIds: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,
 };

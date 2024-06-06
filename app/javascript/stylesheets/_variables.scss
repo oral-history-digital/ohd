@@ -49,9 +49,11 @@ $z-index-map-overlay-spinner:   6;
 $z-index-listbox:               7;
 $z-index-sidebar:               7;  // Keep under 10 because of RichTextarea popup.
 $z-index-sidebar-toggle:        8;
-$z-index-back-to-top:           8;
+$z-index-warning:               8;
+$z-index-back-to-top:           9;
 $lightbox-z-index:           1000;
 $dialog-overlay-z-index:     1002;
+$z-index-spinner-overlay:    1003;
 
 // Basics
 // --------------------------------------------------
