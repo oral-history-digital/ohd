@@ -79,6 +79,14 @@ class Person < ApplicationRecord
     Sunspot.index! [interviews]
   end
 
+  def registry_references_by_metadata_field_name(metadata_field_name)
+    m = project.metadata_fields.
+      where(name: metadata_field_name).
+      where(ref_object_type: 'Person').
+      first
+    registry_references.where(registry_reference_type_id: m&.registry_reference_type_id)
+  end
+
   def interviews
     contributions.joins(:contribution_type).where("contribution_types.code = ?", 'interviewee').map(&:interview)
   end

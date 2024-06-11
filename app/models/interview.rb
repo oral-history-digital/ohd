@@ -398,7 +398,10 @@ class Interview < ApplicationRecord
   end
 
   def registry_references_by_metadata_field_name(metadata_field_name)
-    m = project.metadata_fields.where(name: metadata_field_name).first
+    m = project.metadata_fields.
+      where(name: metadata_field_name).
+      where(ref_object_type: 'Interview').
+      first
     registry_references.where(registry_reference_type_id: m&.registry_reference_type_id)
   end
 
