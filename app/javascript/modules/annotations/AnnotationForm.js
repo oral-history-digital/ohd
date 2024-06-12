@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import RichTextEditor from 'react-rte-17';
+import RichTextEditor from 'react-rte-18support';
 
 export default class AnnotationForm extends Component {
     constructor(props) {

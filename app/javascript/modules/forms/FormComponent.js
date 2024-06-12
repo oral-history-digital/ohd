@@ -1,6 +1,6 @@
 import { createElement, useState } from 'react';
 import PropTypes from 'prop-types';
-import RichTextEditor from 'react-rte-17';
+import RichTextEditor from 'react-rte-18support';
 import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames';
 
