@@ -60,12 +60,12 @@ class Segment < ApplicationRecord
   class Translation
     belongs_to :segment
 
-    after_commit do
+    after_save do
       # run this only after commit of original e.g. 'de' version!
       #if text_previously_changed? && locale.length == 2 && !text.blank?
       if locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
-        segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
+        #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
       end
       if (mainheading_previously_changed? || subheading_previously_changed?)
         has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
@@ -261,7 +261,7 @@ class Segment < ApplicationRecord
     end
   end
 
-  searchable do
+  searchable auto_index: false do
     string :archive_id, :stored => true do
       interview&.archive_id
     end
