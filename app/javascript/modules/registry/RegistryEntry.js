@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { getIsLoggedIn } from 'modules/user';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal, Checkbox } from 'modules/ui';
@@ -30,6 +32,7 @@ export default function RegistryEntry({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const { isAuthorized } = useAuthorization();
+    const isLoggedIn = useSelector(getIsLoggedIn);
 
     const [childrenVisible, setChildrenVisible] = useState(false);
 
@@ -83,7 +86,7 @@ export default function RegistryEntry({
                     />
                 )}
 
-                {hasReferences() ? (
+                {isLoggedIn && hasReferences() ? (
                     <Modal
                         title={t('activerecord.models.registry_entry.actions.show')}
                         triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
