@@ -261,7 +261,7 @@ class Segment < ApplicationRecord
     end
   end
 
-  searchable auto_index: false do
+  searchable do
     string :archive_id, :stored => true do
       interview&.archive_id
     end
