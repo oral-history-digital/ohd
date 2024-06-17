@@ -15,9 +15,9 @@ export default function InterviewTextMaterials({
         interview.properties?.public_attributes?.observations?.toString() === 'true' &&
         interview.observations?.[locale]
     );
-    const showTranscriptPDF = isAuthorized(interview, 'update') || (
-        interview.properties?.public_attributes?.transcript?.toString() === 'true' &&
-        interview.segments?.[1]?.[interview.first_segments_ids[1]]
+    const showTranscriptPDF = interview.segments?.[1]?.[interview.first_segments_ids[1]] && (
+        interview.properties?.public_attributes?.transcript?.toString() === 'true' ||
+        isAuthorized(interview, 'update') 
     );
 
     if (!interview.language_id) {
