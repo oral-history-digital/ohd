@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {},
+          projects: {all: 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
