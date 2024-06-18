@@ -8,6 +8,7 @@ import useArchiveSearch from '../useArchiveSearch';
 import SearchActions from './SearchActions';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
+import { Fetch } from 'modules/data';
 
 const PAGE_SIZE = 12;
 
@@ -44,12 +45,18 @@ function ArchiveSearch() {
 
             <ArchiveSearchSorting className="u-mt-small" />
 
-            <ArchiveSearchTabsContainer
-                className="u-mt-small"
-                interviews={interviews}
-                empty={isEmpty}
-                loading={isLoading}
-            />
+            <Fetch
+                fetchParams={['collections', null, null, 'all']}
+                testDataType='collections'
+                testIdOrDesc='all'
+            >
+                <ArchiveSearchTabsContainer
+                    className="u-mt-small"
+                    interviews={interviews}
+                    empty={isEmpty}
+                    loading={isLoading}
+                />
+            </Fetch>
 
             {error && (
                 <ErrorMessage className="u-mt">

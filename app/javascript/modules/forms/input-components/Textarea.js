@@ -44,7 +44,7 @@ export default function Textarea({
             const valid = validate(defaultValue);
             handleErrors(attribute, !valid);
         }
-        //handleChange(attribute, defaultValue, data);
+        handleChange(attribute, defaultValue, data);
     }, [defaultValue]);
 
     return (

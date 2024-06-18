@@ -16,6 +16,14 @@
   <p>Если вы не регистрировались на платформе Oral-History.Digital, можете проигнорировать это сообщение. Ваши данные будут автоматически удалены через 14 дней.</p>
   <p>С уважением,</p>
   <p>Oral-History.Digital</p>
+<% when :uk -%>
+  <p>Доброго дня, <%= @resource.display_name %>,</p>
+  <p>Ви зареєструвалися на платформі Oral-History.Digital.</p>
+  <p>Будь ласка, підтвердьте свою реєстрацію.</p>
+  <p><p><%= link_to 'Підтвердити реєстрацію', @url %></p></p>
+  <p>Якщо ви не зареєструвалися на платформі Oral-History.Digital, ви можете ігнорувати цей електронний лист. Ваші дані будуть автоматично видалені через 14 днів.</p>
+  <p>З найкращими побажаннями</p>
+  <p>Oral-History.Digital"</p>
 <% when :es -%>
   <p>Hola <%= @resource.display_name %>,</p>
   <p>Se ha registrado/a en la plataforma Oral-History.Digital.</p>

@@ -5,6 +5,7 @@ html
     meta charset="utf-8"
     meta http-equiv="x-ua-compatible" content="ie=edge"
     meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"
+    meta name="analytics_site_id" content="#{current_project.analytics_site_id || 1}"
 
     javascript:
       var developmentMode = #{Rails.env == 'development' ? true : false};

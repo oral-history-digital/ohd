@@ -62,6 +62,7 @@ export default function Account ({
                                 clearStateData('interviews', archiveId, 'short_title');
                                 clearStateData('interviews', archiveId, 'description');
                                 clearStateData('interviews', archiveId, 'observations');
+                                clearStateData('interviews', archiveId, 'translations_attributes');
                                 clearStateData('interviews', archiveId, 'photos');
                                 clearStateData('interviews', archiveId, 'segments');
                                 clearStateData('statuses', 'people');

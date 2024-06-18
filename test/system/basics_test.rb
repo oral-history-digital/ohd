@@ -346,6 +346,7 @@ class BasicsTest < ApplicationSystemTestCase
 
     click_on 'Search the archive'
     click_on 'Rossi, Mario'
+    sleep 1
     click_on 'Link index entry'
 
     # click_on 'Registereintrag verknüpfen'

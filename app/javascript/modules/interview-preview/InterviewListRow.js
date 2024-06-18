@@ -20,8 +20,6 @@ export default function InterviewListRow({
     interview,
     projects,
     selectedArchiveIds,
-    languages,
-    collections,
     setArchiveId,
     addRemoveArchiveId,
 }) {
@@ -41,10 +39,15 @@ export default function InterviewListRow({
         return `interviews/${interview.archive_id}?${paramStr}`;
     }
 
+    function showCheckboxes() {
+        return isAuthorized(interview, 'show') &&
+            isAuthorized({ type: 'General' }, 'edit');
+    }
+
     return (
         <tr className="Table-row">
             {
-                isAuthorized(interview, 'show') && isAuthorized({ type: 'General' }, 'edit') && (
+                showCheckboxes() && (
                     <td className="Table-cell">
                         <Checkbox
                             className="export-checkbox"
@@ -124,8 +127,6 @@ export default function InterviewListRow({
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
     projects: PropTypes.object.isRequired,
-    languages: PropTypes.object.isRequired,
-    collections: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,

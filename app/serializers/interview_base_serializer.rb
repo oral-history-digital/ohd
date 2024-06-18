@@ -26,22 +26,53 @@ class InterviewBaseSerializer < ApplicationSerializer
     :startpage_position,
     :properties,
     :transcript_locales,
-    :toc_locales
+    :toc_locales,
+    :description
   ]
 
   def attributes(*args)
     hash = super
-    object.project.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
-      hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+    instance_options[:search_results_metadata_fields]&.each do |field|
+      field_registry_references = case field["ref_object_type"]
+                                  when "Person"
+                                    object.interviewee&.registry_references
+                                  when "Interview"
+                                    object.registry_references
+                                  when "Segment"
+                                    object.segment_registry_references
+                                  end
+
+      registry_entry_ids = field_registry_references.
+        where(registry_reference_type_id: field.registry_reference_type_id).
+        map(&:registry_entry_id).uniq.compact
+
+      hash[field.name] = (
+        instance_options[:project_available_locales] ||
+        object.project.available_locales
+      ).inject({}) do |mem, locale|
+        mem[locale] = registry_entry_ids.map do |id|
+          RegistryEntry.find(id).to_s(locale)
+        end.join(", ")
         mem
       end
     end
     hash
   end
 
-  def translations
+  def translations_attributes
     []
+  end
+
+  def description
+    instance_options[:public_description] ? object.localized_hash(:description) : {}
+  end
+
+  def contributions
+    object.contributions.inject({}) { |mem, c| mem[c.id] = ContributionSerializer.new(c); mem }
+  end
+
+  def registry_references
+    {}
   end
 
   def video
@@ -58,7 +89,8 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def still_url
     # mog still images have to be renamed!
-    if object.project.shortname.downcase == 'mog'
+    project_shortname = instance_options[:project_shortname] || object.project.shortname
+    if project_shortname.downcase == 'mog'
       "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
     else
       still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
@@ -78,18 +110,6 @@ class InterviewBaseSerializer < ApplicationSerializer
     Timecode.new(object.duration).timecode
   end
 
-  def contributions
-    json =  Rails.cache.fetch("#{object.project.shortname}-interview-contributions-#{object.id}-#{object.contributions.count}-#{object.contributions.maximum(:updated_at)}") do
-      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
-
-  def registry_references
-    json = Rails.cache.fetch("#{object.project.shortname}-interview-registry_references-#{object.id}-#{object.registry_references.count}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
-
   def properties
     object.properties || {}
   end
@@ -99,11 +119,14 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def toc_locales
-    object.project.available_locales.select { |l| object.has_heading?(l) }
+    (
+      instance_options[:project_available_locales] ||
+      object.project.available_locales
+    ).select { |l| object.has_heading?(l) }
   end
 
   def language_id
-    object.language.id
+    object.language&.id
   end
 
   def translation_locale
