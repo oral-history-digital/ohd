@@ -191,8 +191,25 @@ class Interview < ApplicationRecord
     end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
-      ((Project.ohd.present? ? Project.ohd.search_facets_names : []) | project.search_facets_names).inject({}) do |mem, facet|
-        mem[facet] = (self.respond_to?(facet) ? self.send(facet) : (interviewee && interviewee.respond_to?(facet) && interviewee.send(facet))) || ''
+      ((Project.ohd.present? ? Project.ohd.search_facets: []) | project.search_facets).inject({}) do |mem, facet|
+        if interviewee
+          mem[facet.name] = case facet.source
+            when 'RegistryReferenceType'
+              case facet.ref_object_type
+              when "Person"
+                interviewee.registry_references
+              when "Interview"
+                registry_references
+              when "Segment"
+                segment_registry_references
+              end.where(registry_reference_type_id: facet.registry_reference_type_id).
+              map(&:registry_entry_id).uniq
+            when 'Interview'
+              self.respond_to?(facet.name) && self.send(facet.name)
+            when 'Person'
+              interviewee.respond_to?(facet.name) && interviewee.send(facet.name)
+            end
+        end
         mem
       end
     end
@@ -259,15 +276,14 @@ class Interview < ApplicationRecord
 
   end
 
+  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
+
   scope :shared, -> {where(workflow_state: 'public')}
   scope :with_media_type, -> {where.not(media_type: nil)}
 
   def project_access
     project.grant_project_access_instantly? ? "free" : "restricted"
-  end
-
-  def interviewee_id
-    interviewees.first && interviewees.first.id
   end
 
   def contributions_hash
@@ -361,17 +377,38 @@ class Interview < ApplicationRecord
   end
 
   def interviewee
-    # caching results in 'singleton can't be dumped'-error here. Why?
-    #
-    #Rails.cache.fetch("#{project.shortname}-interviewee-for-#{id}-#{updated_at}") do
-      interviewees.first
-    #end
+    interviewees.first
   end
 
-   def place_of_interview
-     ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
-     ref && ref.registry_entry
-   end
+  def interviewee_id
+    interviewee&.id
+  end
+
+  %w(interviewee interviewer).each do |code|
+    define_method "#{code}s" do
+      contributors_by_code(code)
+    end
+  end
+
+  def contributors_by_code(contribution_type_code)
+    contribution_type = project.contribution_types.where(code: contribution_type_code).first
+    contributions.
+      where(contribution_type_id: contribution_type&.id).
+      map(&:person).compact.uniq
+  end
+
+  def registry_references_by_metadata_field_name(metadata_field_name)
+    m = project.metadata_fields.
+      where(name: metadata_field_name).
+      where(ref_object_type: 'Interview').
+      first
+    registry_references.where(registry_reference_type_id: m&.registry_reference_type_id)
+  end
+
+  def place_of_interview
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+    ref && ref.registry_entry
+  end
 
   def title(locale)
     full_title(locale)
@@ -386,31 +423,6 @@ class Interview < ApplicationRecord
       "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
     ensure
       I18n.locale = orig_locale
-    end
-  end
-
-  after_initialize do
-    if project
-      project.registry_reference_type_metadata_fields.each do |field|
-        define_singleton_method field.name do
-          case field["ref_object_type"]
-          when "Person"
-            (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
-          when "Interview"
-            registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
-          when "Segment"
-            segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
-          else
-            []
-          end
-        end
-      end
-
-      project.contribution_types.each do |contribution_type|
-        define_singleton_method contribution_type.code.pluralize do
-          contributions.where(contribution_type_id: contribution_type.id).map(&:person)
-        end
-      end
     end
   end
 
@@ -534,7 +546,8 @@ class Interview < ApplicationRecord
               tape_id: tape_id,
               text: row[:transcript] || '',
               locale: locale,
-              speaker_id: speaker_id
+              speaker_id: speaker_id,
+              split: true
             })
           end
         end
@@ -555,7 +568,8 @@ class Interview < ApplicationRecord
       next_timecode: Timecode.new(tape.duration).timecode,
       tape_id: tape_id,
       text: text,
-      locale: locale
+      locale: locale,
+      split: true
     })
   end
 
@@ -582,7 +596,8 @@ class Interview < ApplicationRecord
         tape_id: tape_id,
         text: text,
         locale: locale,
-        speaker_id: speaker_id
+        speaker_id: speaker_id,
+        split: false
       })
     end
   end

@@ -27,13 +27,14 @@ class SegmentsController < ApplicationController
     respond_to do |format|
       format.json do
         data = Rails.cache.fetch("#{current_project.shortname}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
+          transcript_coupled = @interview.transcript_coupled
           @interview.tapes.inject({}) do |tapes, tape|
             segments_for_tape = tape.segments.
               includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations], project: [:metadata_fields]).
               #where.not(timecode: '00:00:00.000').
               order(:timecode)#.first(20)
 
-            tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+            tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s, transcript_coupled: transcript_coupled); mem}
             tapes
           end
         end

@@ -202,6 +202,20 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
+  def public_description?
+    description_metadata_field&.use_in_results_list || description_metadata_field&.use_in_results_table
+  end
+
+  def description_metadata_field
+    metadata_fields.where(name: 'description').first
+  end
+
+  def search_results_metadata_fields
+    metadata_fields.where(use_in_results_list: true).
+      or(metadata_fields.where(use_in_results_table: true)).
+      where.not(ref_object_type: [nil, ''])
+  end
+
   # runs only with memcache
   #def clear_cache(namespace)
     #Rails.cache.delete_matched /^#{shortname}-#{namespace}*/

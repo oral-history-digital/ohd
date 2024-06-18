@@ -70,20 +70,21 @@ class Person < ApplicationRecord
     end
   end
 
-  after_initialize do
-    project && project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
-      define_singleton_method field.name do
-        registry_references.
-          where(registry_reference_type_id: field.registry_reference_type_id).
-          pluck(:registry_entry_id).uniq.compact || []
-      end
-    end
-  end
+  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   after_touch do
     interviews = self.interviews.compact
     interviews.each(&:touch)
     Sunspot.index! [interviews]
+  end
+
+  def registry_references_by_metadata_field_name(metadata_field_name)
+    m = project.metadata_fields.
+      where(name: metadata_field_name).
+      where(ref_object_type: 'Person').
+      first
+    registry_references.where(registry_reference_type_id: m&.registry_reference_type_id)
   end
 
   def interviews

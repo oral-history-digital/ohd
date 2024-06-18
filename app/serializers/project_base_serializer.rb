@@ -10,6 +10,7 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :view_modes,
     :list_columns,
     :grid_fields,
+    :metadata_fields,
     :collection_ids,
     :registry_reference_type_ids,
     :root_registry_entry_id,

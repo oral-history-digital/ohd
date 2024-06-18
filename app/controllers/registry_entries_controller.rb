@@ -43,7 +43,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: "registry_entries",
-          data: params[:with_associations] ? cache_single(@registry_entry, 'RegistryEntryWithAssociations') : cache_single(@registry_entry)
+          data: params[:with_associations] ? cache_single(@registry_entry, serializer_name: 'RegistryEntryWithAssociations') : cache_single(@registry_entry)
         }
       end
     end

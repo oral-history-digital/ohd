@@ -49,7 +49,7 @@ export default function Select({
             const valid = validate(defaultValue);
             handleErrors(attribute, !valid);
         }
-        //handleChange(attribute, defaultValue, data);
+        handleChange(attribute, defaultValue, data);
     }, [defaultValue]);
 
     const selectTextAndValueFunction = (value) => {

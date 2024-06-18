@@ -35,7 +35,7 @@ export default function Input({
     const onChange = (event) => {
         let newValue = event.target.files ? event.target.files[0] : event.target.value;
         if (event.target.type === 'checkbox') {
-            newValue = event.target.checked;
+            newValue = event.target.checked.toString();
         }
         const name =  event.target.name;
 
@@ -56,7 +56,7 @@ export default function Input({
             const valid = validate(defaultValue);
             handleErrors(attribute, !valid);
         }
-        //handleChange(attribute, defaultValue, data);
+        handleChange(attribute, defaultValue, data);
     }, [defaultValue]);
 
     const cleanProps = () => {

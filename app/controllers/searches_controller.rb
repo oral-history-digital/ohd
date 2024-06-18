@@ -35,7 +35,7 @@ class SearchesController < ApplicationController
           results_count: search.total,
           registry_entries: search.results.map do |result|
             Rails.cache.fetch("#{current_project.shortname}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do
-              cache_single(result, 'RegistryEntryWithAssociations')
+              cache_single(result, serializer_name: 'RegistryEntryWithAssociations')
             end
           end,
           fulltext: params[:fulltext],
@@ -65,7 +65,7 @@ class SearchesController < ApplicationController
 
   def found_instances(model, search, field_name = 'text')
     search.hits.select { |h| h.instance }.map do |hit|
-      instance = cache_single(hit.instance, model == Segment ? "SegmentHit" : nil, nil, field_name)
+      instance = cache_single(hit.instance, serializer_name: model == Segment ? "SegmentHit" : nil, cache_key_suffix: field_name)
       instance[:text] = highlighted_text(hit, field_name)
       instance
     end
@@ -192,10 +192,22 @@ class SearchesController < ApplicationController
       end
       format.json do
         search = Interview.archive_search(current_user, current_project, locale, params)
+        public_description = current_project.is_ohd? ? false : current_project.public_description?
+        search_results_metadata_fields = current_project.is_ohd? ? [] : current_project.search_results_metadata_fields
+
         render json: {
           result_pages_count: search.results.total_pages,
           results_count: search.total,
-          interviews: search.results.map { |i| cache_single(i, current_user ? 'InterviewLoggedInSearchResult' : 'InterviewBase') },
+          interviews: search.results.map do |i|
+            cache_single(
+              i,
+              serializer_name: current_user ? 'InterviewLoggedInSearchResult' : 'InterviewBase',
+              public_description: public_description,
+              search_results_metadata_fields: search_results_metadata_fields,
+              project_available_locales: current_project.available_locales,
+              project_shortname: current_project.shortname
+            )
+          end,
           page: params[:page].to_i || 1,
           fulltext: params[:fulltext]
         }

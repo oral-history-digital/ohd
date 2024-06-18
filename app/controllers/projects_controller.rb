@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
       format.json do
         json = Rails.cache.fetch "projects-#{extra_params}-#{Project.count}-#{Project.maximum(:updated_at)}" do
           {
-            data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s, 'ProjectBase'); mem},
+            data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s, serializer_name: 'ProjectBase'); mem},
             data_type: 'projects',
             extra_params: extra_params,
             page: params[:page],
@@ -122,7 +122,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          data: cache_single(@project, 'ProjectFull'),
+          data: cache_single(@project, serializer_name: 'ProjectFull'),
           data_type: 'projects',
           id: @project.id,
         }

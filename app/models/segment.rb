@@ -60,12 +60,12 @@ class Segment < ApplicationRecord
   class Translation
     belongs_to :segment
 
-    after_commit do
+    after_save do
       # run this only after commit of original e.g. 'de' version!
       #if text_previously_changed? && locale.length == 2 && !text.blank?
       if locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
-        segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
+        #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
       end
       if (mainheading_previously_changed? || subheading_previously_changed?)
         has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
@@ -163,7 +163,8 @@ class Segment < ApplicationRecord
   class << self
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
-      if opts[:speaker_id]
+      split = opts.delete(:split)
+      if opts[:speaker_id] || !split
         next_time = Timecode.new(opts.delete(:next_timecode)).time
         duration = next_time - Timecode.new(opts[:timecode]).time
         opts.update(duration: duration) if duration > 0

@@ -40,7 +40,15 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, msg: "processed")
+        render json: data_json(
+          @interview,
+          serializer_name: 'InterviewUpdate',
+          changes: (
+            params[:interview].keys -
+            ["translations_attributes", "public_attributes"]
+          ),
+          msg: "processed"
+        )
       end
     end
   end
@@ -113,7 +121,7 @@ class InterviewsController < ApplicationController
 
       if %w(contributions photos registry_references).include?(m)
         association = @interview.send(m)
-        data = Rails.cache.fetch("#{@interview.project.shortname}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
+        data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
           association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
       else
@@ -140,7 +148,7 @@ class InterviewsController < ApplicationController
     json = {
       id: @interview.archive_id,
       data_type: "interviews",
-      nested_data_type: 'translations',
+      nested_data_type: 'translations_attributes',
       data: @interview.translations,
     }
 
@@ -391,11 +399,20 @@ class InterviewsController < ApplicationController
       format.json do
         logged_in = current_user.present?
         serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
+        public_description = current_project.public_description?
+        search_results_metadata_fields = current_project.search_results_metadata_fields
         featured_interviews = current_project.featured_interviews
 
         if featured_interviews.present?
           data = featured_interviews.inject({}) do |mem, interview|
-            mem[interview.archive_id] = cache_single(interview, serializer_name)
+            mem[interview.archive_id] = cache_single(
+              interview,
+              serializer_name: serializer_name,
+              public_description: public_description,
+              search_results_metadata_fields: search_results_metadata_fields,
+              project_available_locales: current_project.available_locales,
+              project_shortname: current_project.shortname
+            )
             mem
           end
           json = {
@@ -405,7 +422,7 @@ class InterviewsController < ApplicationController
         else
           json = Rails.cache.fetch("#{current_project.shortname}-interview-random-featured-#{logged_in}", expires_in: 30.minutes) do
             data = Interview.random_featured(6, current_project.id).inject({}) do |mem, interview|
-              mem[interview.archive_id] = cache_single(interview, serializer_name)
+              mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name)
               mem
             end
             {

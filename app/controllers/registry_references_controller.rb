@@ -57,7 +57,7 @@ class RegistryReferencesController < ApplicationController
         elsif ref_object.class.name == 'Person'
           json = {
             nested_id: ref_object.id,
-            data: cache_single(ref_object, 'PersonWithAssociations'),
+            data: cache_single(ref_object, serializer_name: 'PersonWithAssociations'),
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id,
@@ -72,7 +72,7 @@ class RegistryReferencesController < ApplicationController
     policy_scope(RegistryReference)
     respond_to do |format|
       format.html do
-        render layout: 'webpacker'
+        render "react/app"
       end
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
@@ -196,7 +196,7 @@ class RegistryReferencesController < ApplicationController
         elsif registry_reference.ref_object_type == 'Person'
           json = {
             nested_id: registry_reference.ref_object_id,
-            data: cache_single(registry_reference.ref_object, 'PersonWithAssociations'),
+            data: cache_single(registry_reference.ref_object, serializer_name: 'PersonWithAssociations'),
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id
