@@ -28,28 +28,25 @@ export default function NormDatumForm({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const pathBase = usePathBase();
-    const [fromAPI, setFromAPI] = useState(false);
     const [manual, setManual] = useState(false);
 
     return (
         <Tabs
             className="Tabs"
             keyboardActivation="manual"
-            //index={tabIndex}
-            //onChange={setTabIndex}
         >
             <div className="Layout-contentTabs">
                 <TabList className="Tabs-tabList">
                     <Tab className="Tabs-tab">
                         <FaRegFileAlt className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
-                            {fromAPI ? t('back') : t('search_in_normdata', {descriptor: descriptor})}
+                            {t('search_in_normdata')}
                         </span>
                     </Tab>
                     <Tab className="Tabs-tab">
                         <FaRegClone className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
-                            {t('translation')}
+                            {t('enter_normdata_manually')}
                         </span>
                     </Tab>
                 </TabList>
@@ -59,13 +56,15 @@ export default function NormDatumForm({
                 <TabPanels>
                     <TabPanel>
                         { descriptor ?
-                            <NormDataForDescriptorContainer
-                                descriptor={descriptor}
-                                setRegistryEntryAttributes={setRegistryEntryAttributes}
-                                registryEntryAttributes={registryEntryAttributes}
-                                setFromAPI={setFromAPI}
-                                onSubmitCallback={onSubmitCallback}
-                            /> : <p>{t('enter_descriptor_first')}</p>
+                            <>
+                                <p>{t('search_api_for', {descriptor: descriptor})}</p>
+                                <NormDataForDescriptorContainer
+                                    descriptor={descriptor}
+                                    setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                    registryEntryAttributes={registryEntryAttributes}
+                                    onSubmitCallback={onSubmitCallback}
+                                />
+                            </>: <p>{t('enter_descriptor_first')}</p>
                         }
                     </TabPanel>
                     <TabPanel>
