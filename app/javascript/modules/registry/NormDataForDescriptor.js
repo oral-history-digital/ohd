@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -23,6 +23,10 @@ function NormDataForDescriptor({
     const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
+
+    useEffect(() => {
+        setShowResults(false);
+    }, [descriptor]);
 
     let formElements = [
         {
