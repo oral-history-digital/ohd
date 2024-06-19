@@ -13,7 +13,6 @@ function NormDataForDescriptor({
     registryNameTypes,
     normDataProviders,
     descriptor,
-    setFromAPI,
     onSubmitCallback,
 }) {
     const { t, locale } = useI18n();
@@ -115,7 +114,6 @@ function NormDataForDescriptor({
                                             ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
                                         });
                                         onSubmitCallback();
-                                        setFromAPI(false);
                                     }} >
                                         {show(result.Entry)}
                                     </a>
