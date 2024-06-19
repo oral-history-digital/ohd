@@ -204,6 +204,8 @@ export default function FormComponent({
         <div className={classNames(className, 'LoadingOverlay', {
             'is-loading': fetching
         })}>
+            {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
+
             {nestedScopes()}
             <form
                 id={formId || scope}
@@ -212,8 +214,6 @@ export default function FormComponent({
                 })}
                 onSubmit={handleSubmit}
             >
-                {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
-
                 {children}
 
                 {elements.map(props => {
