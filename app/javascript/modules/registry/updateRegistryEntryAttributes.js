@@ -45,9 +45,11 @@ export function updateNormDataAttributes(entry, normDataProviders, registryEntry
     normDataAttributes ||= [];
 
     entry.Identifier.map(provider => {
-        const normDataProvider = Object.values(normDataProviders).find(p => p.name === provider.Provider);
-        const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
-        normDatum.nid = entry.ID;
+        if (provider.Value) {
+            const normDataProvider = Object.values(normDataProviders).find(p => p.name === provider.Provider);
+            const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
+            normDatum.nid = provider.Value;
+        }
     });
 
     //const normDataProvider = Object.values(normDataProviders).find( p => p.api_name === entry.Provider );
