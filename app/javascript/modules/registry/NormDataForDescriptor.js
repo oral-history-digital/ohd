@@ -3,9 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
-import { updateRegistryNameAttributes, updateNormDataAttributes }
-    from './updateRegistryEntryAttributes';
 import { Spinner } from 'modules/spinners';
+import UpdateRegistryEntryAttributesModal from './UpdateRegistryEntryAttributesModal';
 
 function NormDataForDescriptor({
     setRegistryEntryAttributes,
@@ -73,13 +72,6 @@ function NormDataForDescriptor({
         //])
     //}
 
-    const show = (entry) => {
-        return (
-            entry.AlternateName.find(n => n.Lang === locale)?.Name + ', ' +
-            entry.Description.find(n => n.Lang === locale)?.Description.substr(0, 60) + '...'
-        );
-    }
-
     const fetchAPIResults = async(params) => {
         const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
         ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
@@ -106,17 +98,13 @@ function NormDataForDescriptor({
                         {apiResult.response.items.map( result => {
                             return (
                                 <li>
-                                    <a onClick={ () => {
-                                        setRegistryEntryAttributes({
-                                            latitude: result.Entry.Location?.Latitude,
-                                            longitude: result.Entry.Location?.Longitude,
-                                            ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project, locale),
-                                            ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
-                                        });
-                                        onSubmitCallback();
-                                    }} >
-                                        {show(result.Entry)}
-                                    </a>
+                                    <UpdateRegistryEntryAttributesModal
+                                        entry={result.Entry}
+                                        registryEntryAttributes={registryEntryAttributes}
+                                        registryNameTypes={registryNameTypes}
+                                        normDataProviders={normDataProviders}
+                                        setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                    />
                                 </li>
                             )
                         })}
@@ -148,3 +136,4 @@ function NormDataForDescriptor({
 }
 
 export default NormDataForDescriptor;
+
