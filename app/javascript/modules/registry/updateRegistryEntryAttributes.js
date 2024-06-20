@@ -52,11 +52,6 @@ export function updateNormDataAttributes(entry, normDataProviders, registryEntry
         }
     });
 
-    //const normDataProvider = Object.values(normDataProviders).find( p => p.api_name === entry.Provider );
-
-    //const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
-    //normDatum.nid = entry.ID;
-
     return ({norm_data_attributes: normDataAttributes});
 }
 
