@@ -55,6 +55,9 @@ export default function RegistryEntryForm({
         }
     }
 
+    console.log('registryEntryAttributes', registryEntryAttributes);
+    console.log('registryEntry', registryEntry);
+
     return (
         <div>
             {parentRegistryEntry()}
@@ -72,7 +75,7 @@ export default function RegistryEntryForm({
                 }}
                 onCancel={onCancel}
                 helpTextCode="registry_entry_form"
-                data={registryEntry}
+                data={registryEntryAttributes}
                 values={values}
                 elements={[
                     {
@@ -82,14 +85,12 @@ export default function RegistryEntryForm({
                     },
                     {
                         attribute: 'latitude',
-                        value: registryEntryAttributes.latitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
                     {
                         attribute: 'longitude',
-                        value: registryEntryAttributes.longitude,
                         validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
