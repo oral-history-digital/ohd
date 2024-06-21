@@ -3,29 +3,30 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
     let registryNamesAttributes = registryEntryAttributes.registry_names_attributes || registryEntryAttributes.registry_names;
     registryNamesAttributes ||= [];
 
-    const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
-
-    const alternativeNames = entry.AlternativeNames?.AlternativeName;
-
-    if (Array.isArray(alternativeNames)) { // this means entry comes from Normdata-API
+    if (Array.isArray(entry.AlternateName)) { // this means entry comes from Normdata-API
         ['spelling', 'ancient'].map(nameTypeCode => {
 
             const nameType = Object.values(registryNameTypes).find(r => r.code === nameTypeCode);
 
             // set original Name
             if (nameTypeCode === 'spelling')
-                setDescriptor(entry.Name, registryNamesAttributes, defaultNameType.id, 'orig');
+                setDescriptor(entry.Name, registryNamesAttributes, nameType.id, 'orig');
 
             const isOld = nameTypeCode === 'ancient' ? 'true' : 'false';
 
             project.available_locales.map( lang => {
-                const alternativeName = alternativeNames.find(n => n.Lang === lang && n.IsOld === isOld);
-                if (alternativeName) {
-                    setDescriptor(alternativeName.Name, registryNamesAttributes, nameType.id, lang);
+                //const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.IsOld === isOld);
+                const alternateName = Array.isArray(entry.AlternateName) ?
+                    entry.AlternateName.find(n => n.Lang === lang && n.Name)?.Name :
+                    entry.AlternateName?.Name;
+
+                if (alternateName) {
+                    setDescriptor(alternateName, registryNamesAttributes, nameType.id, lang);
                 }
             })
         })
     } else {
+        const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
         setDescriptor(entry.Name, registryNamesAttributes, entry.nameTypeId || defaultNameType.id, locale);
     }
 
@@ -39,6 +40,24 @@ export function setDescriptor(value, registryNamesAttributes, nameTypeId, locale
     const translation = findOrCreate(name.translations_attributes, 'locale', locale);
     translation.descriptor = value;
 };
+
+export function updateRegistryEntryTranslationsAttributes(entry, registryEntryAttributes, project) {
+    let translationsAttributes = registryEntryAttributes.translations_attributes || registryEntryAttributes.translations;
+    translationsAttributes ||= [];
+
+    project.available_locales.map( lang => {
+        const description = Array.isArray(entry.Description) ?
+            entry.Description.find(n => n.Lang === lang && n.Description)?.Description :
+            entry.Description?.Description;
+
+        if (description) {
+            const translation = findOrCreate(translationsAttributes, 'locale', lang);
+            translation.notes = description;
+        }
+    })
+
+    return ({translations_attributes: translationsAttributes});
+}
 
 export function updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes) {
     let normDataAttributes = registryEntryAttributes.norm_data_attributes || registryEntryAttributes.norm_data;
