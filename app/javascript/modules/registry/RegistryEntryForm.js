@@ -30,7 +30,7 @@ export default function RegistryEntryForm({
 
     function initialDescriptor() {
         const registryName = registryEntry?.registry_names[0];
-        return registryName
+        return registryName?.descriptor
             ? registryName.descriptor[locale]
             : '';
     }
