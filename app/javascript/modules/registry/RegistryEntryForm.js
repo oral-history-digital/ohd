@@ -57,9 +57,6 @@ export default function RegistryEntryForm({
         }
     }
 
-    console.log('registryEntryAttributes', registryEntryAttributes);
-    console.log('registryEntry', registryEntry);
-
     return (
         <div>
             {parentRegistryEntry()}
@@ -70,6 +67,7 @@ export default function RegistryEntryForm({
                     const paramsWithNormDataAttributes = {
                         registry_entry: Object.assign({}, registryEntryAttributes, params.registry_entry)
                     };
+                    paramsWithNormDataAttributes.registry_entry.translations_attributes = registryEntryAttributes.translations_attributes;
                     submitData({projectId, locale, project}, paramsWithNormDataAttributes);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
