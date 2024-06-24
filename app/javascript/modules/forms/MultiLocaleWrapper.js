@@ -18,6 +18,7 @@ export default function MultiLocaleWrapper(props) {
         data,
         locales,
         handleChange,
+        origAsLocale ,
     } = props;
 
     const labelFunc = (locale) => {
@@ -89,9 +90,11 @@ export default function MultiLocaleWrapper(props) {
         textarea: Textarea,
     }
 
+    const usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
+
     return (
         <div className='multi-locale-input'>
-            {locales.map(locale => {
+            {usedLocales.map(locale => {
                 return createElement(components[elementType], preparedProps(locale));
             })}
         </div>

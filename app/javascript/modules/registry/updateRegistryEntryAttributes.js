@@ -3,6 +3,9 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
     let registryNamesAttributes = registryEntryAttributes.registry_names_attributes || registryEntryAttributes.registry_names;
     registryNamesAttributes ||= [];
 
+    const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
+    setDescriptor(entry.Name, registryNamesAttributes, defaultNameType.id, 'orig');
+
     if (Array.isArray(entry.AlternateName)) { // this means entry comes from Normdata-API
         ['spelling', 'ancient'].map(nameTypeCode => {
 
@@ -16,9 +19,7 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
 
             project.available_locales.map( lang => {
                 //const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.IsOld === isOld);
-                const alternateName = Array.isArray(entry.AlternateName) ?
-                    entry.AlternateName.find(n => n.Lang === lang && n.Name)?.Name :
-                    entry.AlternateName?.Name;
+                const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.Name)?.Name;
 
                 if (alternateName) {
                     setDescriptor(alternateName, registryNamesAttributes, nameType.id, lang);
@@ -26,7 +27,6 @@ export function updateRegistryNameAttributes(entry, registryNameTypes, registryE
             })
         })
     } else {
-        const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
         setDescriptor(entry.Name, registryNamesAttributes, entry.nameTypeId || defaultNameType.id, locale);
     }
 
