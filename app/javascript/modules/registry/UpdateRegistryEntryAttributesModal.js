@@ -12,6 +12,7 @@ function UpdateRegistryEntryAttributesModal({
     registryNameTypes,
     normDataProviders,
     setRegistryEntryAttributes,
+    setShowElementsInForm,
 }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
@@ -48,6 +49,7 @@ function UpdateRegistryEntryAttributesModal({
                                     ...updateRegistryNameAttributes(entry, registryNameTypes, registryEntryAttributes, project, locale),
                                     ...updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes),
                                 });
+                                setShowElementsInForm(true);
                                 close();
                             }}
                         >

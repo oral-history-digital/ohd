@@ -13,6 +13,7 @@ function NormDataForDescriptor({
     normDataProviders,
     descriptor,
     onSubmitCallback,
+    setShowElementsInForm,
 }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
@@ -104,6 +105,7 @@ function NormDataForDescriptor({
                                         registryNameTypes={registryNameTypes}
                                         normDataProviders={normDataProviders}
                                         setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                        setShowElementsInForm={setShowElementsInForm}
                                     />
                                 </li>
                             )

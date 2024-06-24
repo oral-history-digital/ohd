@@ -14,6 +14,7 @@ export default function NestedScope({
     formProps,
     parent,
     scope,
+    showElementsInForm,
     getNewElements,
     elementRepresentation,
     onDeleteCallback,
@@ -42,6 +43,7 @@ export default function NestedScope({
                         formProps={formProps}
                         scope={scope}
                         elementRepresentation={elementRepresentation}
+                        showForm={showElementsInForm}
                     />
                 )
             })}
@@ -57,10 +59,11 @@ export default function NestedScope({
                         formProps={formProps}
                         scope={scope}
                         elementRepresentation={elementRepresentation}
+                        showForm={showElementsInForm}
                     />
                 )
             })}
-            { editing ?
+            { (editing && !showElementsInForm) ?
                 createElement(formComponent, {...formProps,
                     data: {},
                     nested: true,
