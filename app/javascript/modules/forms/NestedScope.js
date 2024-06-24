@@ -21,9 +21,7 @@ export default function NestedScope({
 }) {
     const { t } = useI18n();
     const elements = (parent?.[`${pluralize(scope)}_attributes`] || parent?.[pluralize(scope)] || []);
-    console.log('elements', elements);
     const newElements = (getNewElements() || []);
-    console.log('newElements', newElements);
     const [editing, setEditing] = useState((newElements.length + elements.length) === 0);
 
     const cancel = () => setEditing(false);
