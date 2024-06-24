@@ -13,6 +13,8 @@ jobs:
       RAILS_ENV: test
       JAVA_HOME: /usr/lib/jvm/temurin-8-jdk-amd64
     steps:
+      - name: Update packages
+        run: sudo apt-get update
       - name: Install pdflatex
         run: sudo apt-get install texlive-latex-base
       #- name: List Javas
