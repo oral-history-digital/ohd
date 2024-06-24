@@ -21,6 +21,8 @@ export default function RegistryEntryForm({
     const registryEntry = registryEntries[registryEntryId];
     const [descriptor, setDescriptor] = useState(initialDescriptor());
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
+    const [showElementsInForm, setShowElementsInForm] = useState(false);
+
     const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
@@ -119,6 +121,8 @@ export default function RegistryEntryForm({
                         parent: registryEntryAttributes,
                         scope: 'registry_name',
                         elementRepresentation: showRegistryName,
+                        showElementsInForm: showElementsInForm,
+
                     },
                     {
                         formComponent: NormDatumFormContainer,
@@ -128,6 +132,7 @@ export default function RegistryEntryForm({
                             ...(registryEntryAttributes.norm_data_attributes?.[0]),
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes: registryEntryAttributes,
+                            setShowElementsInForm: setShowElementsInForm,
                         },
                         parent: registryEntry,
                         scope: 'norm_datum',

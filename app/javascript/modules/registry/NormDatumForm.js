@@ -23,6 +23,7 @@ export default function NormDatumForm({
     normDataProviders,
     setRegistryEntryAttributes,
     registryEntryAttributes,
+    setShowElementsInForm,
 }) {
 
     const { t, locale } = useI18n();
@@ -63,6 +64,7 @@ export default function NormDatumForm({
                                     setRegistryEntryAttributes={setRegistryEntryAttributes}
                                     registryEntryAttributes={registryEntryAttributes}
                                     onSubmitCallback={onSubmitCallback}
+                                    setShowElementsInForm={setShowElementsInForm}
                                 />
                             </>: <p>{t('enter_descriptor_first')}</p>
                         }
