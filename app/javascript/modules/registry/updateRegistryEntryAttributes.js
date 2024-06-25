@@ -1,39 +1,48 @@
-export function updateRegistryNameAttributes(entry, registryNameTypes, registryEntryAttributes, project, locale) {
+export function updateRegistryNameAttributes(
+    entry,
+    registryNameTypes,
+    registryEntryAttributes,
+    project,
+    locale
+) {
 
-    let registryNamesAttributes = registryEntryAttributes.registry_names_attributes || registryEntryAttributes.registry_names;
-    registryNamesAttributes ||= [];
+    let registryNamesAttributes = registryEntryAttributes.registry_names_attributes ||
+        registryEntryAttributes.registry_names || [];
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
-    setDescriptor(entry.Name, registryNamesAttributes, defaultNameType.id, 'orig');
+    const ancientNameType = Object.values(registryNameTypes).find(r => r.code === 'ancient');
+    const langOrig = entry.Country?.toLowerCase();
 
-    if (Array.isArray(entry.AlternateName)) { // this means entry comes from Normdata-API
-        ['spelling', 'ancient'].map(nameTypeCode => {
+    project.available_locales.map( lang => {
+        if (Array.isArray(entry.AlternateName)) {
+            const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.Name)?.Name;
+            if (alternateName)
+                setDescriptor(alternateName, registryNamesAttributes, defaultNameType.id, lang);
+        }
+        if (Array.isArray(entry.Alias)) {
+            const alias = entry.Alias.find(n => n.Lang === lang && n.Alias)?.Alias;
+            if (alias)
+                setDescriptor(alias, registryNamesAttributes, ancientNameType.id, lang);
+        }
+    })
 
-            const nameType = Object.values(registryNameTypes).find(r => r.code === nameTypeCode);
+    const origAlternateName = entry.AlternateName.find(n => n.Lang === langOrig && n.Name)?.Name;
+    if (origAlternateName)
+        setDescriptor(origAlternateName, registryNamesAttributes, defaultNameType.id, 'orig');
 
-            // set original Name
-            if (nameTypeCode === 'spelling')
-                setDescriptor(entry.Name, registryNamesAttributes, nameType.id, 'orig');
-
-            const isOld = nameTypeCode === 'ancient' ? 'true' : 'false';
-
-            project.available_locales.map( lang => {
-                //const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.IsOld === isOld);
-                const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.Name)?.Name;
-
-                if (alternateName) {
-                    setDescriptor(alternateName, registryNamesAttributes, nameType.id, lang);
-                }
-            })
-        })
-    } else {
-        setDescriptor(entry.Name, registryNamesAttributes, entry.nameTypeId || defaultNameType.id, locale);
-    }
+    const origAlias = entry.Alias.find(n => n.Lang === langOrig && n.Alias)?.Alias;
+    if (origAlias)
+        setDescriptor(origAlias, registryNamesAttributes, ancientNameType.id, 'orig');
 
     return ({registry_names_attributes: registryNamesAttributes});
 };
 
-export function setDescriptor(value, registryNamesAttributes, nameTypeId, locale) {
+export function setDescriptor(
+    value,
+    registryNamesAttributes,
+    nameTypeId,
+    locale
+) {
     const name = findOrCreate(registryNamesAttributes, 'registry_name_type_id', nameTypeId);
     name.name_position ||= 1;
     name.translations_attributes ||= [];
@@ -41,9 +50,13 @@ export function setDescriptor(value, registryNamesAttributes, nameTypeId, locale
     translation.descriptor = value;
 };
 
-export function updateRegistryEntryTranslationsAttributes(entry, registryEntryAttributes, project) {
-    let translationsAttributes = registryEntryAttributes.translations_attributes || registryEntryAttributes.translations;
-    translationsAttributes ||= [];
+export function updateRegistryEntryTranslationsAttributes(
+    entry,
+    registryEntryAttributes,
+    project
+) {
+    let translationsAttributes = registryEntryAttributes.translations_attributes ||
+        registryEntryAttributes.translations || [];
 
     project.available_locales.map( lang => {
         const description = Array.isArray(entry.Description) ?
@@ -59,14 +72,23 @@ export function updateRegistryEntryTranslationsAttributes(entry, registryEntryAt
     return ({translations_attributes: translationsAttributes});
 }
 
-export function updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes) {
-    let normDataAttributes = registryEntryAttributes.norm_data_attributes || registryEntryAttributes.norm_data;
-    normDataAttributes ||= [];
+export function updateNormDataAttributes(
+    entry,
+    normDataProviders,
+    registryEntryAttributes
+) {
+    let normDataAttributes = registryEntryAttributes.norm_data_attributes ||
+        registryEntryAttributes.norm_data || [];
 
     entry.Identifier.map(provider => {
         if (provider.Value) {
-            const normDataProvider = Object.values(normDataProviders).find(p => p.name === provider.Provider);
-            const normDatum = findOrCreate(normDataAttributes, 'norm_data_provider_id', normDataProvider.id);
+            const normDataProvider = Object.values(normDataProviders).
+                find(p => p.name === provider.Provider);
+            const normDatum = findOrCreate(
+                normDataAttributes,
+                'norm_data_provider_id',
+                normDataProvider.id
+            );
             normDatum.nid = provider.Value;
         }
     });
@@ -74,7 +96,11 @@ export function updateNormDataAttributes(entry, normDataProviders, registryEntry
     return ({norm_data_attributes: normDataAttributes});
 }
 
-export function findOrCreate(attributes, selectPropertyName, selectedPropertyValue) {
+export function findOrCreate(
+    attributes,
+    selectPropertyName,
+    selectedPropertyValue
+) {
     let isNew = true;
     const datum = attributes.find(t => {
         if (t[selectPropertyName] === selectedPropertyValue) {
