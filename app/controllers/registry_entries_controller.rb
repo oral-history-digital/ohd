@@ -143,7 +143,7 @@ class RegistryEntriesController < ApplicationController
               end
             end
           end
-          send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
+          send_data csv, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.csv"
         else
           redirect_to user_url('current')
         end
