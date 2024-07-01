@@ -16,37 +16,45 @@ production without any modifications.
 * Node.js >=16
 * yarn
 * Java Runtime Environment (Version 8)
-* optional: LaTeX for PDF generation (e.g. texlive-base and texlive-xetex packages for Ubuntu)
+* optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
+
 
 ## Application Setup
 
 This is how to setup the OHD archive software in your development environment
 on Linux.
 
-1. Install packages:
+1. Install system packages:
+   ```bash
+   sudo apt install temurin-8-jdk-amd64
+   sudo update-java-alternatives --set temurin-8-jdk-amd64
+   sudo apt install texlive-base texlive-xetex texlive-lang-all fonts-freefont-ttf fonts-noto
+   ```
+
+2. Install packages:
    ```bash
    bundle install
    yarn install
    ```
 
-2. Copy configuration files:
+3. Copy configuration files:
 
    ```bash
    cp config/database.example.yml config/database.yml
    cp config/datacite.example.yml config/datacite.yml
    ```
 
-3. Adapt the database.yml according to your MySQL configuration and setup the databases:
+4. Adapt the database.yml according to your MySQL configuration and setup the databases:
+
    ```bash
    bin/rake db:setup
    ```
 
-4. Create initial admin user:
+5. Create initial admin user:
 
    ```bash
    bin/rake user:create['alice@example.com','password','Alice','Tester']
    ```
-
 
 ## Starting the Application
 
