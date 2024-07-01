@@ -16,17 +16,11 @@ jobs:
       - name: Update packages
         run: sudo apt-get update
       - name: Install pdflatex
-        run: sudo apt-get install texlive texlive-xetex texlive-lang-all fonts-freefont-ttf fonts-noto
-      #- name: List Javas
-      #  run: sudo update-java-alternatives --list
+        run: sudo apt-get install texlive-base texlive-xetex texlive-lang-all fonts-freefont-ttf fonts-noto
       - name: Remove Javas
         run: sudo apt remove temurin-11-jdk temurin-17-jdk temurin-21-jdk
-      #- name: List Javas again
-      #  run: sudo update-java-alternatives --list
       - name: Use Java 8
         run: sudo update-java-alternatives --set temurin-8-jdk-amd64
-      #- name: Set env variable
-      #  run: export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
       - name: Confirm Java version
         run: java -version
       - name: Checkout code
