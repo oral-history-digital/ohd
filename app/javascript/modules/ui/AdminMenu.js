@@ -6,7 +6,7 @@ import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
 import '@reach/menu-button/styles.css';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
-import VisuallyHidden from '@reach/visually-hidden';
+import { VisuallyHidden } from '@reach/visually-hidden';
 
 import { useI18n } from 'modules/i18n';
 
