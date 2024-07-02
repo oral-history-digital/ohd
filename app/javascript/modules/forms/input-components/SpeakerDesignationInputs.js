@@ -15,7 +15,6 @@ export default function SpeakerDesignationInputs({
     const { data: people, isLoading } = usePeople();
 
     const onChange = (name, v) => {
-        console.log('SpeakerDesignationInputs', contributions.map(c => c.id));
         if (v) {
             handleChange(
                 attribute,
@@ -29,7 +28,7 @@ export default function SpeakerDesignationInputs({
         }
     }
 
-    if (isLoading) {
+    if (isLoading || !people) {
         return <Spinner />;
     }
 
