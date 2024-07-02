@@ -80,7 +80,8 @@ export default function MultiLocaleWrapper(props) {
             data: translation,
             value: value,
             label: labelFunc(locale),
-            key: `${attribute}-${locale}`
+            key: `${attribute}-${locale}`,
+            id: `${attribute}_${locale}`,
         })
     }
 

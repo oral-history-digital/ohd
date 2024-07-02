@@ -20,6 +20,7 @@ export default function Textarea({
     handleChange,
     handlechangecallback,
     handleErrors,
+    id,
 }) {
     const defaultValue = value || data?.[attribute];
 
@@ -64,7 +65,7 @@ export default function Textarea({
             htmlFor={`${scope}_${attribute}`}
         >
             <textarea
-                id={`${scope}_${attribute}`}
+                id={`${scope}_${id ? id : attribute}`}
                 name={attribute}
                 className="Input"
                 defaultValue={defaultValue}
