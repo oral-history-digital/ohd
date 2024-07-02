@@ -27,6 +27,7 @@ export default function Input({
     readOnly,
     placeholder,
     forceUpdateFromProps,
+    id,
 }) {
 
     const defaultValue = value || data?.[attribute];
@@ -61,7 +62,7 @@ export default function Input({
 
     const cleanProps = () => {
         const props = {
-            id: `${scope}_${attribute}`,
+            id: `${scope}_${id ? id : attribute}`,
             className: 'Input',
             type: type,
             name: attribute,

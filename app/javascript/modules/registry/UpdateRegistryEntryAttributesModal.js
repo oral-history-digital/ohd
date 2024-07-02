@@ -36,7 +36,7 @@ function UpdateRegistryEntryAttributesModal({
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
             {close => (
-                <div>
+                <div id="overwrite_registry_entry">
                     <div className="Form-footer u-mt">
                         <button
                             type="button"
