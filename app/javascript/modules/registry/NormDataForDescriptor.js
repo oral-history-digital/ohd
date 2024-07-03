@@ -53,7 +53,7 @@ function NormDataForDescriptor({
                 elementType: 'select',
                 attribute: 'place_type',
                 labelKey: 'normdata.place_type',
-                values: ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'],
+                values: ['location', 'placeOfWorship', 'natural', 'historic', 'tourism'],
                 withEmpty: true,
                 optionsScope: 'normdata',
                 handlechangecallback: (name, value) => setPlaceTypeFilter(value),
@@ -61,17 +61,23 @@ function NormDataForDescriptor({
         ])
     }
 
-    //if (placeTypeFilter === 'town') {
-        //formElements = formElements.concat([
-            //{
-                //elementType: 'select',
-                //attribute: 'place_extended',
-                //values: ['continent', 'state', 'country'],
-                //withEmpty: true,
-                //optionsScope: 'normdata',
-            //},
-        //])
-    //}
+    if (placeTypeFilter === 'location') {
+        formElements = formElements.concat([
+            {
+                elementType: 'select',
+                attribute: 'place_extended',
+                values: [
+                    'continent', 'country', 'state',
+                    'region', 'province', 'district', 'municipality',
+                    'city', 'town',
+                    'borough', 'suburb', 'quarter',
+                    'village', 'hamlet', 'farm'
+                ],
+                withEmpty: true,
+                optionsScope: 'normdata',
+            },
+        ])
+    }
 
     const fetchAPIResults = async(params) => {
         const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
