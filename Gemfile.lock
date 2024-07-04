@@ -511,7 +511,7 @@ DEPENDENCIES
   rack-maintenance
   rails (~> 7.0.8.1)
   rails-erd
-  rails-latex (~> 2.3.4)
+  rails-latex
   rb-readline
   rdoc
   react_on_rails (~> 13.4.0)
