@@ -44,17 +44,15 @@ export default function InterviewTextMaterials({
                     </p>
                 </AuthShowContainer>
             )}
-            <AuthorizedContent object={interview} action="update">
-                <SingleValueWithFormContainer
-                    obj={interview}
-                    collapse
-                    elementType="textarea"
-                    multiLocale
-                    attribute="observations"
-                    value={interview.observations?.[locale]?.substring(0,500)}
-                    noLabel
-                />
-            </AuthorizedContent>
+            <SingleValueWithFormContainer
+                obj={interview}
+                collapse
+                elementType="textarea"
+                multiLocale
+                attribute="observations"
+                value={interview.observations?.[locale]?.substring(0,500)}
+                noLabel
+            />
             {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
                     <p>
