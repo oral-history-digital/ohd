@@ -70,6 +70,11 @@ module DataHelper
       use_in_transcript: true,
     )
 
+    NormDataProvider.create name: 'gnd', url_without_id: 'https://d-nb.info/gnd/'
+    NormDataProvider.create name: 'osm', url_without_id: 'https://www.openstreetmap.org/'
+    NormDataProvider.create name: "wikidata", url_without_id: "http://www.wikidata.org/entity/"
+    NormDataProvider.create name: "geonames", url_without_id: "https://www.geonames.org/"
+
     institution = Institution.create!(
       name: "Test Institute",
       shortname: 'test_inst',
