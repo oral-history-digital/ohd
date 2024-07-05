@@ -47,7 +47,7 @@ export function setDescriptor(
     name.name_position ||= 1;
     name.translations_attributes ||= [];
     const translation = findOrCreate(name.translations_attributes, 'locale', locale);
-    translation.descriptor = value;
+    translation.descriptor = Array.isArray(value) ? value[0] : value;
 };
 
 export function updateRegistryEntryTranslationsAttributes(
