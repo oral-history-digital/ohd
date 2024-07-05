@@ -1,6 +1,5 @@
 \documentclass[fontsize=10pt]{article}
 
-
 <% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'xelatex'}]} %>
 
 \usepackage[a4paper]{geometry}
@@ -14,7 +13,7 @@
 \usepackage{fontspec}
 \usepackage{titlesec}
 
-\renewcommand{\familydefault}{\sfdefault}
+\setmainfont{FiraSans-Regular}
 
 \usepackage{setspace}
 \onehalfspacing
