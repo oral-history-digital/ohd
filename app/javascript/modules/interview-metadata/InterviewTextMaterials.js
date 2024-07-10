@@ -27,22 +27,20 @@ export default function InterviewTextMaterials({
     return (
         <>
             {showObservations && (
-                <AuthShowContainer ifLoggedIn>
-                    <p>
-                        <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                        { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
-                            return (
-                                <InterviewDownloads
-                                    key={locale}
-                                    lang={locale}
-                                    type='observations'
-                                    condition={showObservations}
-                                    showEmpty={true}
-                                />
-                            )
-                        })}
-                    </p>
-                </AuthShowContainer>
+                <p>
+                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
+                    { interview.observations && Object.keys(interview.observations).map( ({ locale }) => {
+                        return (
+                            <InterviewDownloads
+                                key={locale}
+                                lang={locale}
+                                type='observations'
+                                condition={showObservations}
+                                showEmpty={true}
+                            />
+                        )
+                    })}
+                </p>
             )}
             <SingleValueWithFormContainer
                 obj={interview}
