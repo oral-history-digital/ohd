@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_05_104035) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_10_130250) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -586,7 +586,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_104035) do
     t.string "smtp_server"
     t.boolean "has_newsletter"
     t.boolean "is_catalog"
-    t.string "hidden_registry_entry_ids"
+    t.text "hidden_registry_entry_ids"
     t.string "pdf_registry_entry_ids"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false

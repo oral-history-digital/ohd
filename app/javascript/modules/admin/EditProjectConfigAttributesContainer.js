@@ -98,7 +98,8 @@ const mapStateToProps = state => ({
             attribute: "pseudo_logged_out_visible_registry_entry_ids"
         },
         {
-            attribute: "pseudo_hidden_registry_entry_ids"
+            attribute: "pseudo_hidden_registry_entry_ids",
+            elementType: 'textarea',
         },
         {
             attribute: "pseudo_hidden_transcript_registry_entry_ids"
