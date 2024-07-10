@@ -50,7 +50,7 @@ export default function InterviewTextMaterials({
                 elementType="textarea"
                 multiLocale
                 attribute="observations"
-                value={interview.observations?.[locale]?.substring(0,500)}
+                value={interview.observations?.[locale]}
                 noLabel
             />
             {!isCatalog && showTranscriptPDF && (
