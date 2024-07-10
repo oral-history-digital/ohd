@@ -29,16 +29,18 @@ export default function InterviewTextMaterials({
             {showObservations && (
                 <p>
                     <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                    { interview.observations && Object.keys(interview.observations).map( ({ locale }) => {
-                        return (
-                            <InterviewDownloads
-                                key={locale}
-                                lang={locale}
-                                type='observations'
-                                condition={showObservations}
-                                showEmpty={true}
-                            />
-                        )
+                    { interview.observations && Object.keys(interview.observations).map( locale => {
+                        if (interview.observations[locale]) {
+                            return (
+                                <InterviewDownloads
+                                    key={locale}
+                                    lang={locale}
+                                    type='observations'
+                                    condition={showObservations}
+                                    showEmpty={true}
+                                />
+                            )
+                        }
                     })}
                 </p>
             )}
