@@ -17,7 +17,7 @@ gem 'globalize', '~> 6.2.1'
 gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
-gem 'roo', "~> 2.7.0"
+gem 'roo', "~> 2.10.1"
 gem 'henkei'
 gem 'webvtt-ruby'
 gem 'oai_repository', git: 'https://github.com/grgr/oai_repository'
