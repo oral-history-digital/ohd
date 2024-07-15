@@ -13,11 +13,9 @@ class EditTableImport
   end
 
   def parse_sheet
-    csv_options = { col_sep: "\t", row_sep: :auto, quote_char: "\x00" }
-    csv = Roo::Spreadsheet.open(file_path, { csv_options: csv_options })
+    csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS })
     if csv.first.length == 1
-      csv_options.update(col_sep: ";")
-      csv = Roo::Spreadsheet.open(file_path, { csv_options: csv_options })
+      csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS.merge(col_sep: ";") })
     end
 
     interview.tapes.destroy_all

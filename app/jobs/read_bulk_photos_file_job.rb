@@ -40,12 +40,9 @@ class ReadBulkPhotosFileJob < ApplicationJob
 
   def import_photos(photos, csv_file_name, locale)
     I18n.locale = locale
-    csv_options = { col_sep: "\t", row_sep: :auto, quote_char: "\x00" }
-    #csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00", liberal_parsing: true, encoding: "ISO8859-1:utf-8"  }
-    csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
+    csv = Roo::CSV.new(csv_file_name, csv_options: CSV_OPTIONS)
     if csv.first.length == 1
-      csv_options.update(col_sep: ";")
-      csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
+      csv = Roo::CSV.new(csv_file_name, csv_options: CSV_OPTIONS.merge(col_sep: ";"))
     end
 
     interviews_to_reindex = []
