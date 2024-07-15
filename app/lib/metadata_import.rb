@@ -11,11 +11,9 @@ class MetadataImport
   end
 
   def parse_sheet
-    csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00" }
-    csv = Roo::Spreadsheet.open(file_path, { csv_options: csv_options })
+    csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS })
     if csv.first.length == 1
-      csv_options.update(col_sep: "\t")
-      csv = Roo::Spreadsheet.open(file_path, { csv_options: csv_options })
+      csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS.merge(col_sep: ';') })
     end
     csv.sheet('default').parse(MetadataImportTemplate.new(project, locale).columns_hash)
   end
@@ -153,15 +151,8 @@ class MetadataImport
   end
    
   def find_or_create_collection(name, project)
-    collection = nil
-    Collection.where(project_id: project.id).each do |c| 
-      collection = c if c.translations.map(&:name).include?(name)
-    end
-
-    unless collection
-      collection = Collection.create(name: name[0..200], project_id: project.id)
-    end
-    collection
+    project.collections.where(name: name).first_or_create
+    #project.collections.where(name: name.sub(/^\"/, '').gsub(/\"\"/,'')).first_or_create
   end
 
   def find_language(name)
