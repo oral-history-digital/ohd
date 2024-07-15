@@ -152,7 +152,6 @@ class MetadataImport
    
   def find_or_create_collection(name, project)
     project.collections.where(name: name).first_or_create
-    #project.collections.where(name: name.sub(/^\"/, '').gsub(/\"\"/,'')).first_or_create
   end
 
   def find_language(name)
