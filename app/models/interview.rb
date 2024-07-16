@@ -223,15 +223,24 @@ class Interview < ApplicationRecord
         end
       end
 
-      text :"person_name_#{locale}", :stored => true do
+      text :"person_name_#{locale}", stored: true do
         full_title(locale)
       end
 
-      string :"alias_names_#{locale}", :stored => true do
-        (interviewee && interviewee.alias_names(locale)) || ''
+      string :"alias_names_#{locale}", stored: true do
+        return "" if interviewee.blank?
+
+        result = "#{interviewee.alias_names(locale)}"
+        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+        result.strip()
       end
-      text :"alias_names_#{locale}", :stored => true do
-        (interviewee && interviewee.alias_names(locale)) || ''
+
+      text :"alias_names_#{locale}", stored: true do
+        return "" if interviewee.blank?
+
+        result = "#{interviewee.alias_names(locale)}"
+        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+        result.strip()
       end
 
       # contributions
