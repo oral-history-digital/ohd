@@ -18,6 +18,11 @@ export default function BiographicalEntry({
     const { t, locale } = useI18n();
     const { project } = useProject();
     const [open, setOpen] = useState(false);
+    const [deleted, setDeleted] = useState(false);
+
+    if (deleted) {
+        return null;
+    }
 
     const buttons = () => {
         return (
@@ -44,6 +49,7 @@ export default function BiographicalEntry({
                             onSubmit={() => {
                                 deleteData({project, locale}, 'people', data.person_id, 'biographical_entries', data.id, true);
                                 close();
+                                setDeleted(true);
                             }}
                             onCancel={close}
                         >
