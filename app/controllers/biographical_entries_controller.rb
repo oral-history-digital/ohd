@@ -51,6 +51,7 @@ class BiographicalEntriesController < ApplicationController
   def destroy
     @biographical_entry = BiographicalEntry.find(params[:id])
     authorize @biographical_entry
+    person_id = @biographical_entry.person_id
     @biographical_entry.destroy
 
     respond_to do |format|
@@ -59,8 +60,8 @@ class BiographicalEntriesController < ApplicationController
       end
       format.json do
         render json: {
-          nested_id: @biographical_entry.person_id,
-          data: cache_single(@biographical_entry.person),
+          nested_id: person_id,
+          data: cache_single(Person.find(person_id), serializer_name: 'PersonWithAssociations'),
           nested_data_type: "people",
           data_type: 'projects',
           id: current_project.id,
