@@ -59,10 +59,14 @@ class Person < ApplicationRecord
         "#{first_name(locale)} #{last_name(locale)}"
       end
 
-      text :"text_#{locale}", stored: true do
-        "#{first_name(locale)} #{last_name(locale)}"
+      I18n.with_locale locale do
+        text :"text_#{locale}", stored: true do
+          result = []
+          result.push("#{first_name(locale)} #{last_name(locale)}") if !use_pseudonym
+          result.push(pseudonym) if pseudonym
+          result.join(" ")
+        end
       end
-
     end
 
     # contributions
