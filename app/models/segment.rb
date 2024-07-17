@@ -93,7 +93,7 @@ class Segment < ApplicationRecord
       uk: 'Ця частина тексту не опублікована.',
       el: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
     }
-    hidden_text = hidden_texts[locale.to_sym]
+    hidden_text = hidden_texts.fetch(locale.to_sym, "")
 
     # TODO: replace with utf8 À
     text_enciphered =
