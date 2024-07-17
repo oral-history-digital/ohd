@@ -73,7 +73,7 @@
     "react-icons": "^4.2.0",
     "react-intersection-observer": "^8.22.5",
     "react-leaflet": "^4.2.1",
-    "react-on-rails": "13.0.2",
+    "react-on-rails": "14.0.4",
     "react-redux": "^7.2.2",
     "react-resize-aware": "3.1.1",
     "react-router-dom": "^6.11.0",
@@ -91,7 +91,7 @@
     "reselect": "^4.0.0",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
-    "shakapacker": "7.2.3",
+    "shakapacker": "^8.0.1",
     "slick-carousel": "^1.8.1",
     "style-loader": "^3.3.3",
     "superagent": "^5.0.2",
@@ -99,10 +99,10 @@
     "swr": "^2.2.5",
     "terser-webpack-plugin": "^5.3.9",
     "video.js": "^8.12.0",
-    "webpack": "^5.92.0",
-    "webpack-assets-manifest": "^5.1.0",
+    "webpack": "^5.93.0",
+    "webpack-assets-manifest": "^5.2.1",
     "webpack-cli": "^5.1.4",
-    "webpack-merge": "^5.10.0"
+    "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.12.1",
@@ -119,7 +119,7 @@
     "jest-enzyme": "^7.1.2",
     "react-test-renderer": "^18.3.1",
     "timekeeper": "^2.2.0",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^5.0.4"
   },
   "scripts": {
     "lint": "eslint app/javascript",
