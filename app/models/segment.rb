@@ -87,13 +87,12 @@ class Segment < ApplicationRecord
 
     hidden_texts = {
       de: 'Diese Passage wird nicht veröffentlicht.',
-      en: 'This part of the text is not published.',
       es: 'Esta parte del texto no se publica.',
       ru: 'Эта часть текста не публикуется.',
-      uk: 'Ця частина тексту не опублікована.',
+      uk: 'Цей фрагмент не буде опублікований',
       el: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
     }
-    hidden_text = hidden_texts.fetch(locale.to_sym, "")
+    hidden_text = hidden_texts.fetch(locale.to_sym, 'This part of the text is not published.')
 
     # TODO: replace with utf8 À
     text_enciphered =
