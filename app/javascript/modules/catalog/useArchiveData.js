@@ -23,7 +23,7 @@ export default function useArchiveData(projectId) {
             .sort(rowComparator);
 
         return collectionRows;
-    }, [projectId, projects, locale]);
+    }, [projectId, JSON.stringify(projects), locale]);
 
     return data;
 }

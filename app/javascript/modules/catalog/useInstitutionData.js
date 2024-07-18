@@ -26,7 +26,7 @@ export default function useInstitutionData(institutionId) {
         const institutionRows = institutionAsTree.map(curriedMapInstitution);
 
         return institutionRows[0].subRows;
-    }, [institutionId, institutions, locale]);
+    }, [institutionId, JSON.stringify(institutions), locale]);
 
     return data;
 }
