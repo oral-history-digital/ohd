@@ -13,6 +13,7 @@ const CONTRIBUTION_TYPES_SPEAKING = [
     'sound',
     'producer',
     'other_attender',
+    'interpreter',
 ];
 
 export default function UploadTranscript({

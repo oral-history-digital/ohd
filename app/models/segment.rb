@@ -84,7 +84,16 @@ class Segment < ApplicationRecord
   def enciphered_text(version, text_original='', locale)
     text_original ||= ''
     text_original = text_original.gsub('{{', '{[').gsub('}}', ']}') # replace wrong {{ with {[
-    hidden_text = locale.to_sym == :en ? I18n.t("activerecord.attributes.segment.hidden_text", locale: :en) : I18n.t("activerecord.attributes.segment.hidden_text", locale: :de)
+
+    hidden_texts = {
+      de: 'Diese Passage wird nicht veröffentlicht.',
+      es: 'Esta parte del texto no se publica.',
+      ru: 'Эта часть текста не публикуется.',
+      uk: 'Цей фрагмент не буде опублікований',
+      el: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
+    }
+    hidden_text = hidden_texts.fetch(locale.to_sym, 'This part of the text is not published.')
+
     # TODO: replace with utf8 À
     text_enciphered =
       case version

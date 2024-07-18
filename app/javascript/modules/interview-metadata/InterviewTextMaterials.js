@@ -27,10 +27,10 @@ export default function InterviewTextMaterials({
     return (
         <>
             {showObservations && (
-                <AuthShowContainer ifLoggedIn>
-                    <p>
-                        <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                        { interview.translations && Object.values(interview.translations).map( ({ locale }) => {
+                <p>
+                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
+                    { interview.observations && Object.keys(interview.observations).map( locale => {
+                        if (interview.observations[locale]) {
                             return (
                                 <InterviewDownloads
                                     key={locale}
@@ -40,21 +40,19 @@ export default function InterviewTextMaterials({
                                     showEmpty={true}
                                 />
                             )
-                        })}
-                    </p>
-                </AuthShowContainer>
+                        }
+                    })}
+                </p>
             )}
-            <AuthorizedContent object={interview} action="update">
-                <SingleValueWithFormContainer
-                    obj={interview}
-                    collapse
-                    elementType="textarea"
-                    multiLocale
-                    attribute="observations"
-                    value={interview.observations?.[locale]?.substring(0,500)}
-                    noLabel
-                />
-            </AuthorizedContent>
+            <SingleValueWithFormContainer
+                obj={interview}
+                collapse
+                elementType="textarea"
+                multiLocale
+                attribute="observations"
+                value={interview.observations?.[locale]}
+                noLabel
+            />
             {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
                     <p>

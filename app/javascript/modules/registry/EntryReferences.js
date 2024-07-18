@@ -48,7 +48,8 @@ export default function EntryReferences({
 
                             {isLoggedIn && (
                             <ul className="HorizontalList">
-                                {segment_references.map((segmentRef) => (
+                                {segment_references.sort((a,b) => a.tape_nbr - b.tape_nbr || a.time - b.time)
+                                    .map((segmentRef) => (
                                     <li key={segmentRef.id} className="HorizontalList-item">
                                         <SegmentReference
                                             segmentRef={segmentRef}

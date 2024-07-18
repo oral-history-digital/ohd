@@ -8,10 +8,10 @@ import { admin, AuthorizedContent } from 'modules/auth';
 import ContentField from './ContentField';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { useProjectAccessStatus } from 'modules/auth';
 
 export default function SingleValueWithForm ({
     readOnly,
-    projectAccessGranted,
     elementType,
     type,
     multiLocale,
@@ -45,6 +45,7 @@ export default function SingleValueWithForm ({
 
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
 
     const metadataField = Object.values(project.metadata_fields).find(m => m.name === attribute);
 

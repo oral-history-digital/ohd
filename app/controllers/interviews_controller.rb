@@ -221,7 +221,7 @@ class InterviewsController < ApplicationController
           id: interview.archive_id,
           data_type: "interviews",
           nested_data_type: 'observations',
-          data: interview.localized_hash(:observations)
+          data: interview.translations.inject({}) { |mem, t| mem[t.locale] = t.observations; mem }
         }, status: :ok
       end
     end

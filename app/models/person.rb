@@ -29,10 +29,19 @@ class Person < ApplicationRecord
   serialize :properties
 
   after_create :set_public_attributes_to_properties
+  after_update :touch_interviews
 
   def set_public_attributes_to_properties
     atts = %w(first_name last_name alias_names other_first_names gender date_of_birth description)
     update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
+  end
+
+  def touch_interviews
+    # Setting touch: true in the contributions association does not work,
+    # so we touch associated interviews in a callback.
+    interview_ids = contributions.map { |c| c.interview_id }.uniq
+    interviews = Interview.where(id: interview_ids)
+    interviews.touch_all
   end
 
   searchable do
@@ -50,10 +59,14 @@ class Person < ApplicationRecord
         "#{first_name(locale)} #{last_name(locale)}"
       end
 
-      text :"text_#{locale}", stored: true do
-        "#{first_name(locale)} #{last_name(locale)}"
+      I18n.with_locale locale do
+        text :"text_#{locale}", stored: true do
+          result = []
+          result.push("#{first_name(locale)} #{last_name(locale)}") if !use_pseudonym
+          result.push(pseudonym) if pseudonym
+          result.join(" ")
+        end
       end
-
     end
 
     # contributions
