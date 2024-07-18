@@ -136,8 +136,8 @@ function NormDataForDescriptor({
                 !showResults && fetchAPIResults(params.normdata);
                 setShowResults(!showResults);
             }}
-            //elements={[]}
-            elements={formElements}
+            elements={[]}
+            //elements={formElements}
             helpTextCode="normdata_form"
         />
     );
