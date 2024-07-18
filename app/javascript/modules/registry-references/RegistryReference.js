@@ -144,7 +144,6 @@ export default function RegistryReference({
 }
 
 RegistryReference.propTypes = {
-    locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     hideEdit: PropTypes.bool,
     inTranscript: PropTypes.bool,

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import RichTextEditor from 'react-rte-17';
+import RichTextEditor from 'react-rte-18support';
 
 import Element from '../Element';
 

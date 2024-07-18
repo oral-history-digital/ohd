@@ -6,3 +6,4 @@ OHD_DOMAINS = {
 }
 OHD_DOMAIN = OHD_DOMAINS[Rails.env]
 DEFAULT_PRIMARY_COLOR = '#e01217'
+CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: '"'}

@@ -15,11 +15,12 @@ export default function InterviewDownloads({
     const pathBase = usePathBase();
     const interview = useSelector(getCurrentInterview);
 
-    if (condition) {
+    if (condition && lang) {
         return (
             <a
                 href={`${pathBase}/interviews/${interview.archive_id}/${type}.pdf?lang=${lang}`}
                 className="flyout-content-data"
+                key={`${type}-${lang}`}
             >
                 <FaDownload className="Icon Icon--small" title={t('download')} />
                 {' '}

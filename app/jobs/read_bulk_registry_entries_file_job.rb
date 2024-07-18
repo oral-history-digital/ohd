@@ -19,11 +19,9 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
   def read_file(file_path, project, locale)
     I18n.locale = locale
 
-    csv_options = { col_sep: "\t", row_sep: :auto, quote_char: "\x00"}
-    csv = Roo::CSV.new(file_path, csv_options: csv_options)
+    csv = Roo::CSV.new(file_path, csv_options: CSV_OPTIONS)
     if csv.first.length == 1
-      csv_options.update(col_sep: ";")
-      csv = Roo::CSV.new(file_path, csv_options: csv_options)
+      csv = Roo::CSV.new(file_path, csv_options: CSV_OPTIONS.merge(col_sep: ";"))
     end
 
     csv.each_with_index do |data, index|

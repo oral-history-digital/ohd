@@ -243,7 +243,7 @@ class ApplicationController < ActionController::Base
   end
 
   def country_keys
-    Rails.cache.fetch('country-keys') do
+    Rails.cache.fetch('country-keys-20240624') do
       I18n.available_locales.inject({}) do |mem, locale|
         mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
         mem

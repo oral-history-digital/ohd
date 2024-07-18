@@ -223,15 +223,24 @@ class Interview < ApplicationRecord
         end
       end
 
-      text :"person_name_#{locale}", :stored => true do
+      text :"person_name_#{locale}", stored: true do
         full_title(locale)
       end
 
-      string :"alias_names_#{locale}", :stored => true do
-        (interviewee && interviewee.alias_names(locale)) || ''
+      string :"alias_names_#{locale}", stored: true do
+        return "" if interviewee.blank?
+
+        result = "#{interviewee.alias_names(locale)}"
+        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+        result.strip()
       end
-      text :"alias_names_#{locale}", :stored => true do
-        (interviewee && interviewee.alias_names(locale)) || ''
+
+      text :"alias_names_#{locale}", stored: true do
+        return "" if interviewee.blank?
+
+        result = "#{interviewee.alias_names(locale)}"
+        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+        result.strip()
       end
 
       # contributions
@@ -528,7 +537,7 @@ class Interview < ApplicationRecord
   end
 
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
-    ods = Roo::Spreadsheet.open(file_path, { csv_options: { encoding: 'iso-8859-1|utf-8', col_sep: "\t", quote_char: "\x00" } })
+    ods = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS })
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
