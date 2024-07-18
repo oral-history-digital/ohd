@@ -71,9 +71,9 @@ class MetadataImport
 
     interview_languages_attributes = []
 
-    primary_language = find_language(row[:primary_language_id]),
+    primary_language = find_language(row[:primary_language_id])
     interview_languages_attributes << {
-      language: primary_language
+      language: primary_language,
       spec: 'primary'
     } if primary_language != interview&.primary_language
 
