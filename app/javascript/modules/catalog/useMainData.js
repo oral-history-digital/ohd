@@ -31,7 +31,11 @@ export default function useData() {
             .sort(rowComparator);
 
         return institutionRows;
-    }, [institutions, locale]);
+    }, [JSON.stringify(institutions),
+        JSON.stringify(projects),
+        JSON.stringify(collections),
+        locale
+    ]);
 
     return data;
 }
