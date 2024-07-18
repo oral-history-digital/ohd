@@ -62,33 +62,34 @@ class MetadataImport
       description: row[:description],
     }
 
-    interview_languages_attributes = [
-      {
-        language: find_language(row[:primary_language_id]),
-        spec: 'primary'
-      },
-    ]
-
-    primary_translation_language = find_language(row[:primary_translation_language_id])
-    interview_languages_attributes << {
-      language: primary_translation_language,
-      spec: 'primary_translation'
-    } if primary_translation_language
-
-    secondary_language = find_language(row[:secondary_language_id])
-    interview_languages_attributes << {
-      language: secondary_language,
-      spec: 'secondary'
-    } if secondary_language
-
-    interview_data[:interview_languages_attributes] = interview_languages_attributes
-
     # TODO: fit to campscape specifications again
     #properties = {interviewer: data[23], link: data[27], subcollection: data[13]}.select{|k,v| v != nil}
     properties = {link: row[:link_to_interview]}.select{|k,v| v != nil}
 
     interview = Interview.find_by_archive_id(row[:archive_id]) ||
       (row[:signature_original] && Interview.find_by_signature_original(row[:signature_original]))
+
+    interview_languages_attributes = []
+
+    primary_language = find_language(row[:primary_language_id]),
+    interview_languages_attributes << {
+      language: primary_language
+      spec: 'primary'
+    } if primary_language != interview&.primary_language
+
+    primary_translation_language = find_language(row[:primary_translation_language_id])
+    interview_languages_attributes << {
+      language: primary_translation_language,
+      spec: 'primary_translation'
+    } if primary_translation_language != interview&.primary_translation_language
+
+    secondary_language = find_language(row[:secondary_language_id])
+    interview_languages_attributes << {
+      language: secondary_language,
+      spec: 'secondary'
+    } if secondary_language != interview&.secondary_language
+
+    interview_data[:interview_languages_attributes] = interview_languages_attributes
 
     if interview
       interview_properties = interview.properties.update(properties)
