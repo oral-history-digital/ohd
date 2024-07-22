@@ -41,7 +41,7 @@ class SessionsController < Devise::SessionsController
     yield resource if block_given?
     respond_with resource, location: url_with_access_token
   rescue BCrypt::Errors::InvalidHash
-    respond_to do |format|
+    respond_with(resource, location: url_with_access_token) do |format|
       format.json {
         render json: {error: 'change_to_bcrypt', email: params['user_account']['login']}
       }
