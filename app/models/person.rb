@@ -167,7 +167,7 @@ class Person < ApplicationRecord
 
     if fn.blank?
       if reversed
-        "#{I18n.t("honorific.#{gender_key}")} #{ln}"
+        "#{ln}, #{I18n.t("honorific.#{gender_key}")}"
       else
         used_title.blank? ?
           "#{I18n.t("honorific.#{gender_key}")} #{ln}" :
