@@ -194,20 +194,22 @@ class MetadataImport
 
   def create_references(registry_entries, interview, ref_object, ref_type_id=nil)
     registry_entries.each do |registry_entry|
-      RegistryReference.create(
-        registry_entry_id: registry_entry.id,
-        ref_object_id: ref_object.id,
-        ref_object_type:ref_object.class.name,
-        registry_reference_type_id: ref_type_id,
-        ref_position: 0,
-        original_descriptor: "",
-        ref_details: "",
-        ref_comments: "",
-        ref_info: "",
-        workflow_state: "checked",
-        interview_id: interview.id
-      )
-      registry_entry.touch
+      if registry_entry
+        RegistryReference.create(
+          registry_entry_id: registry_entry.id,
+          ref_object_id: ref_object.id,
+          ref_object_type:ref_object.class.name,
+          registry_reference_type_id: ref_type_id,
+          ref_position: 0,
+          original_descriptor: "",
+          ref_details: "",
+          ref_comments: "",
+          ref_info: "",
+          workflow_state: "checked",
+          interview_id: interview.id
+        )
+        registry_entry.touch
+      end
     end
   end
 
