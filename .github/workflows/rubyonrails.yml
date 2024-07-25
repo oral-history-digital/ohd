@@ -16,7 +16,7 @@ jobs:
       - name: Update packages
         run: sudo apt-get update
       - name: Install pdflatex
-        run: sudo apt-get install texlive-latex-base texlive-xetex
+        run: sudo apt-get install texlive-latex-base texlive-xetex texlive-fonts-extra
       #- name: List Javas
       #  run: sudo update-java-alternatives --list
       - name: Remove Javas
