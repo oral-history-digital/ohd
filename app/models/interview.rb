@@ -480,6 +480,10 @@ class Interview < ApplicationRecord
     segment_count > 0
   end
 
+  def languages_with_transcripts
+    languages.select { |l| has_transcript?(l) }
+  end
+
   def has_heading?(locale)
     heading_count = segments
       .with_heading
