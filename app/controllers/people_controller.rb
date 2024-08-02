@@ -97,7 +97,8 @@ class PeopleController < ApplicationController
       format.json do
         paginate = false
         cache_key = "#{current_project.shortname}-people-#{cache_key_params}"\
-          "-#{Person.count}-#{Person.maximum(:updated_at)}-#{I18n.locale.to_s}"
+          "-#{Person.count}-#{Person.maximum(:updated_at)}-#{I18n.locale.to_s}"\
+          "#{params[:for_projects]}"
         json = Rails.cache.fetch(cache_key) do
           if params[:for_projects]
             data = policy_scope(Person).
