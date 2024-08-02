@@ -100,7 +100,9 @@ class PeopleController < ApplicationController
           "-#{Person.count}-#{Person.maximum(:updated_at)}-#{I18n.locale.to_s}"\
           "#{params[:for_projects]}"
         #puts cache_key
+        puts "CACHEKEY: #{cache_key}"
         logger.info("CACHEKEY: #{cache_key}")
+        logger.warn("CACHEKEY: #{cache_key}")
         json = Rails.cache.fetch(cache_key) do
           if params[:for_projects]
             data = policy_scope(Person).
