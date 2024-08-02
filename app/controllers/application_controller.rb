@@ -15,13 +15,13 @@ class ApplicationController < ActionController::Base
 
   def user_by_token
     if doorkeeper_token && !current_user
-      user = User.find(doorkeeper_token.resource_owner_id) 
+      user = User.find(doorkeeper_token.resource_owner_id)
       sign_in(user)
     end
   end
 
   def check_ohd_session
-    if ( 
+    if (
         !current_user &&
         request.base_url != OHD_DOMAIN &&
         !params['checked_ohd_session'] &&
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_policy_scoped, only: :index
   after_action if: -> {Rails.env.development?} do
     logger = ActiveRecord::Base.logger
-    
+
     Rails.logger.info "ActiveRecord: #{logger.query_count} queries performed"
     logger.reset_query_count
   end
@@ -278,7 +278,7 @@ class ApplicationController < ActionController::Base
     cache_key_prefix = current_project ? current_project.shortname : 'ohd'
     cache_key = "#{cache_key_prefix}-#{(opts[:serializer_name] || data.class.name).underscore}"\
       "-#{data.id}-#{data.updated_at}-#{opts[:related] && data.send(opts[:related]).updated_at}"\
-      "-#{opts[:cache_key_suffix]}"
+      "-#{opts[:cache_key_suffix]}-#{I18n.locale}"
     Rails.cache.fetch(cache_key) do
       raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
       # compile raw-json to string first (making all db-requests!!) using to_json
@@ -324,7 +324,7 @@ class ApplicationController < ActionController::Base
   end
 
   def storable_location?
-    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
   end
 
   def store_user_location!
