@@ -1,7 +1,4 @@
 .lightbox {
-  &.hidden {
-    display: none;
-  }
   /** Position and style */
   display: block;
   position: fixed;
@@ -13,6 +10,9 @@
   background: rgba(0,0,0,0.7);
   z-index: $lightbox-z-index;
 
+  &.hidden {
+    display: none;
+  }
   .close {
     position: absolute;
     top: 0.25 * $base-unit;

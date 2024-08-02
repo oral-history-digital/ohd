@@ -4,8 +4,8 @@ form.default {
   }
  .form-group {
     width: 100%;
-    @include clearfix;
     margin: $base-unit 0 0;
+    @include clearfix;
  }
   label {
     width: 100%;

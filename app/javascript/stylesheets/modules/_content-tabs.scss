@@ -17,15 +17,15 @@
     .mainheading {
       display: inline-block;
       width: 92%;
-      @include screen-m {
-        width: 96%;
-      }
       cursor: pointer;
       margin-bottom: 10px;
       padding: 4px 0;
       color: $gray-dark;
       transition: 0.4s;
       transition: 0.4s;
+      @include screen-m {
+        width: 96%;
+      }
       &:hover {
         color: var(--primary-color) !important;
       }
@@ -184,6 +184,9 @@ div.mainheading + div {
 }
 
 .column-sidebar {
+  font-size: $font-size-medium;
+  line-height: $line-height-medium;
+  color: $gray-dark;
   @include screen-xs-s {
     border-top: 1px solid $gray-lighter;
     margin-top: 30px;
@@ -192,10 +195,5 @@ div.mainheading + div {
   @include screen-m {
     width: 24%;
     padding: 2px 40px;
-    //border-left: 1px solid $gray-lighter;
   }
-  // background: $gray-lightest;
-  font-size: $font-size-medium;
-  line-height: $line-height-medium;
-  color: $gray-dark;
 }

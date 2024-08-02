@@ -90,12 +90,12 @@
 // Copied from compass
 
 @mixin pie-clearfix {
+  *zoom: 1;
   &:after {
     content: "";
     display: table;
     clear: both;
   }
-  *zoom: 1;
 }
 
 
