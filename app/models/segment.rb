@@ -89,7 +89,7 @@ class Segment < ApplicationRecord
       de: 'Diese Passage wird nicht veröffentlicht.',
       es: 'Esta parte del texto no se publica.',
       ru: 'Эта часть текста не публикуется.',
-      uk: 'Цей фрагмент не буде опублікований',
+      uk: 'Цей фрагмент не буде опублікований.',
       el: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
     }
     hidden_text = hidden_texts.fetch(locale.to_sym, 'This part of the text is not published.')
