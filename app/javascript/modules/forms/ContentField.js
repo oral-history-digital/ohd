@@ -15,6 +15,8 @@ function ContentField({
 }) {
     let valueArray;
 
+    console.log(label)
+
     if (isNil(value)) {
         valueArray = ['---'];
     } else if (Array.isArray(value)) {

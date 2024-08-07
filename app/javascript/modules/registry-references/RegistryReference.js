@@ -35,6 +35,10 @@ export default function RegistryReference({
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
 
+    if (registryEntry.code === 'berlin') {
+      console.log(registryEntry)
+    }
+
     useEffect(() => {
         loadRegistryEntry();
     })
