@@ -22,6 +22,8 @@ export default function RegistryReferences({
     const { t, locale } = useI18n();
     const { project } = useProject();
 
+    console.log(registryEntries)
+
     if (!registryEntriesStatus[project.root_registry_entry_id] || registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !== 'fetched') {
         return null;
     }

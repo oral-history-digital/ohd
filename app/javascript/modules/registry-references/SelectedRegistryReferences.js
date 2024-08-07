@@ -18,6 +18,8 @@ export default function SelectedRegistryReferences({
     const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
 
+    console.log(refObject)
+
     useEffect(() => {
         loadRegistryEntries();
         loadRootRegistryEntry();
@@ -38,16 +40,31 @@ export default function SelectedRegistryReferences({
         }
     }
 
+    function shouldShowField(field) {
+        if (editView) {
+            return true;
+        }
+
+        if (!refObject.registry_references) {
+            return false;
+        }
+
+        console.log(refObject.registry_references)
+
+        return Object.values(refObject.registry_references).some(
+            ref => ref.registry_reference_type_id === field.registry_reference_type_id
+        );
+    }
+
     const fields = Object.values(project.metadata_fields)
         .filter(field => field.registry_entry_id)
         .filter(field => field.ref_object_type === refObject.type)
         .filter(field => (field.display_on_landing_page && !projectAccessGranted) || (field.use_in_details_view && projectAccessGranted));
 
+    console.log(fields)
+
     return fields.map(field => {
-        if (
-            editView || refObject.registry_references && Object.values(refObject.registry_references).
-            find(r => r.registry_reference_type_id === field.registry_reference_type_id)
-        ) {
+        if (shouldShowField(field)) {
             return (
                 <div
                     key={field.id}
@@ -66,6 +83,7 @@ export default function SelectedRegistryReferences({
                 </div>
             );
         } else {
+            console.log('else')
             return null;
         }
     });
