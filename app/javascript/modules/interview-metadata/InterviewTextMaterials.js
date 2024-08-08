@@ -17,7 +17,7 @@ export default function InterviewTextMaterials({
     );
     const showTranscriptPDF = interview.segments?.[1]?.[interview.first_segments_ids[1]] && (
         interview.properties?.public_attributes?.transcript?.toString() === 'true' ||
-        isAuthorized(interview, 'update') 
+        isAuthorized(interview, 'update')
     );
 
     if (!interview.language_id) {
@@ -59,7 +59,7 @@ export default function InterviewTextMaterials({
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.languages.map((lang) => {
+                        { interview.languages_with_transcripts.map((lang) => {
                             return (
                                 <InterviewDownloads
                                     key={lang}
