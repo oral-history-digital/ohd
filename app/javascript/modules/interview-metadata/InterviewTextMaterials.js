@@ -8,6 +8,7 @@ import InterviewDownloads from './InterviewDownloads';
 export default function InterviewTextMaterials({
     interview,
     isCatalog,
+    editView,
 }) {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -17,7 +18,7 @@ export default function InterviewTextMaterials({
     );
     const showTranscriptPDF = interview.segments?.[1]?.[interview.first_segments_ids[1]] && (
         interview.properties?.public_attributes?.transcript?.toString() === 'true' ||
-        isAuthorized(interview, 'update')
+        isAuthorized(interview, 'update') 
     );
 
     if (!interview.language_id) {
@@ -44,22 +45,20 @@ export default function InterviewTextMaterials({
                     })}
                 </p>
             )}
-            <AuthorizedContent object={interview} action='update'>
-                <SingleValueWithFormContainer
-                    obj={interview}
-                    collapse
-                    elementType="textarea"
-                    multiLocale
-                    attribute="observations"
-                    value={interview.observations?.[locale]}
-                    noLabel
-                />
-            </AuthorizedContent>
+            { editView && <SingleValueWithFormContainer
+                obj={interview}
+                collapse
+                elementType="textarea"
+                multiLocale
+                attribute="observations"
+                value={interview.observations?.[locale]}
+                noLabel
+            /> }
             {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.languages_with_transcripts.map((lang) => {
+                        { interview.languages.map((lang) => {
                             return (
                                 <InterviewDownloads
                                     key={lang}
