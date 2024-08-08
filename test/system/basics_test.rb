@@ -237,8 +237,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'download transcript PDF' do
-    skip "PDF setup does not work at the moment."
-
     Interview.reindex
     DataHelper.test_media
 

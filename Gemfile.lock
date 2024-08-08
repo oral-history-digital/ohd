@@ -358,7 +358,7 @@ GEM
       ffi (>= 0.5.0, < 2)
     rb-readline (0.5.5)
     rdoc (6.0.4)
-    react_on_rails (13.4.0)
+    react_on_rails (14.0.4)
       addressable
       connection_pool
       execjs (~> 2.5)
@@ -390,7 +390,7 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    shakapacker (7.2.3)
+    shakapacker (8.0.1)
       activesupport (>= 5.2)
       package_json
       rack-proxy (>= 0.6.1)
@@ -513,12 +513,12 @@ DEPENDENCIES
   rails-latex
   rb-readline
   rdoc
-  react_on_rails (~> 13.4.0)
+  react_on_rails (~> 14.0.4)
   redis (~> 4.0)
   rexml (~> 3.2.8)
   roo (~> 2.10.1)
   selenium-webdriver
-  shakapacker (= 7.2.3)
+  shakapacker (~> 8.0.1)
   simplecov
   slim-rails
   spork
