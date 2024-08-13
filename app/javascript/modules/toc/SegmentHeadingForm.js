@@ -1,22 +1,26 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
+import { submitData } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Form } from 'modules/forms';
 
 export default function SegmentHeadingForm({
     segment,
-    locale,
-    projectId,
-    project,
-    submitData,
     onSubmit,
     onCancel,
 }) {
+    const { locale } = useI18n();
+    const { project, projectId } = useProject();
+    const dispatch = useDispatch();
+
     return (
         <div>
             <Form
                 scope='segment'
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, project }, params);
+                    dispatch(submitData({ locale, projectId, project }, params));
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -42,10 +46,6 @@ export default function SegmentHeadingForm({
 
 SegmentHeadingForm.propTypes = {
     segment: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };
