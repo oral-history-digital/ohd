@@ -69,6 +69,7 @@ export default function AdminMenu({
                 cleanedChildrenArray.map(child => cloneElement(child, {
                     open: child.props.name === openDialog,
                     onClose: closeDialog,
+                    key: child.props.name,
                 }))
             }
         </>
@@ -128,7 +129,7 @@ AdminMenuItem.propTypes = {
         PropTypes.node,
         PropTypes.func,
     ]),
-    onClose: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
 };
 
 AdminMenu.Item = AdminMenuItem;

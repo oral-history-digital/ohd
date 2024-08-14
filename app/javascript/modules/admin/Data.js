@@ -149,9 +149,11 @@ Data.propTypes = {
     task: PropTypes.object,
     form: PropTypes.func.isRequired,
     scope: PropTypes.string.isRequired,
-    optionsScope: PropTypes.string.isRequired,
     outerScope: PropTypes.string,
-    outerScopeId: PropTypes.string,
+    outerScopeId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+    ]),
     showComponent: PropTypes.element,
     hideShow: PropTypes.bool,
     hideEdit: PropTypes.bool,
