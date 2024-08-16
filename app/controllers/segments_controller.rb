@@ -3,7 +3,6 @@ class SegmentsController < ApplicationController
     @segment = Segment.find params[:id]
     authorize @segment
     @segment.update(segment_params)
-    @segment.update_has_heading
     @segment.reload
 
     respond_to do |format|
@@ -50,6 +49,19 @@ class SegmentsController < ApplicationController
     end
   end
 
+  #def destroy
+    #@segment = Segment.find(params[:id])
+    #@segment.destroy
+
+    #respond_to do |format|
+      #format.html do
+        #render :action => 'index'
+      #end
+      #format.js
+      #format.json { render json: {}, status: :ok }
+    #end
+  #end
+
   def show
     @segment = Segment.find(params[:id])
     authorize @segment
@@ -64,7 +76,11 @@ class SegmentsController < ApplicationController
 
   def segment_params
     params.require(:segment).permit(
+      :text,
+      :mainheading,
+      :subheading,
       :speaker_id,
+      :locale,
       translations_attributes: [:locale, :text, :id, :mainheading, :subheading]
     )
   end

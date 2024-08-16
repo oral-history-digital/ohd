@@ -9,7 +9,7 @@ import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { AuthorizedContent } from 'modules/auth';
-import SegmentHeadingForm from './SegmentHeadingForm';
+import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
 import { getCurrentInterview } from 'modules/data';
 
 export default function Subheading({
@@ -56,7 +56,7 @@ export default function Subheading({
                     trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                 >
                     {closeModal => (
-                        <SegmentHeadingForm
+                        <SegmentHeadingFormContainer
                             segment={data.segment}
                             onSubmit={closeModal}
                         />

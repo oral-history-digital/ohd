@@ -63,9 +63,14 @@ class Segment < ApplicationRecord
     after_save do
       # run this only after commit of original e.g. 'de' version!
       #if text_previously_changed? && locale.length == 2 && !text.blank?
-      if locale.length == 2 && text.present?
+      if locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
         #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
+      end
+      if (mainheading_previously_changed? || subheading_previously_changed?)
+        has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
+          where(segment_id: segment.id).empty?
+        segment.update_attribute(:has_heading, has_heading)
       end
     end
   end
@@ -74,13 +79,6 @@ class Segment < ApplicationRecord
     [:public, :subtitle].each do |version|
       update(text: enciphered_text(version, text, locale), locale: "#{locale}-#{version}")
     end
-  end
-
-  def update_has_heading
-    self.has_heading = translations
-      .where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')")
-      .present?
-    self.save
   end
 
   def enciphered_text(version, text_original='', locale)
