@@ -4,7 +4,7 @@ import { FaHeading, FaPencilAlt, FaStickyNote, FaTag } from 'react-icons/fa';
 
 import { useAuthorization, AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { SegmentHeadingFormContainer } from 'modules/toc';
+import { SegmentHeadingForm } from 'modules/toc';
 import { Modal } from 'modules/ui';
 import SegmentFormContainer from './SegmentFormContainer';
 
@@ -52,7 +52,7 @@ export default function SegmentButtons({
                     triggerClassName="Button Button--icon"
                 >
                     {closeModal => (
-                        <SegmentHeadingFormContainer
+                        <SegmentHeadingForm
                             segment={data}
                             onSubmit={closeModal}
                             onCancel={closeModal}
