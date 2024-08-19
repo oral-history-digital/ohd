@@ -55,7 +55,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       months(live_since, date_attribute)
     ).to_h
 
-    CSV.generate(:col_sep => "\t", quote_char: "\x00") do |csv|
+    CSV.generate(**CSV_OPTIONS) do |csv|
       csv << [
         TranslationValue.for('user_statistics.header', locale, date: Time.now.strftime('%d.%m.%Y')),
       ] + time_slots.keys

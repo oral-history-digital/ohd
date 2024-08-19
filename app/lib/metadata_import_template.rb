@@ -3,7 +3,7 @@ class MetadataImportTemplate
   def initialize(project, locale)
     @locale = locale
     @project = project
-    @csv = CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |csv|
+    @csv = CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |csv|
       csv << columns_hash.values
     end
   end
