@@ -8,6 +8,40 @@ module DataHelper
     )
 
     project = test_project
+    ohd_project_attributes = {
+      shortname: 'ohd',
+      domain: 'http://test.portal.oral-history.localhost:47001',
+      archive_domain: 'http://test.portal.oral-history.localhost:47001',
+      name: 'OHD',
+      introduction: 'This is the test OHD archive of the oral history digital project…',
+      registry_reference_types: [
+        RegistryReferenceType.create(
+          code: "level_of_indexing_ohd",
+          children_only: false,
+          use_in_transcript: false,
+          name: "Erschliessungsgrad (oh.d)"
+        ),
+        RegistryReferenceType.create(
+          code: "subjects_ohd",
+          children_only: false,
+          use_in_transcript: false,
+          name: "Thema (oh.d)"
+        ),
+        RegistryReferenceType.create(
+          code: "countries_ohd",
+          children_only: false,
+          use_in_transcript: false,
+          name: "Länder (oh.d)"
+        ),
+        #RegistryReferenceType.create(
+          #code: "bearbeitungsstand_ohd",
+          #children_only: false,
+          #use_in_transcript: false,
+          #name: "Bearbeitungsstand (oh.d)"
+        #)
+      ]
+    }
+    ohd = test_project(ohd_project_attributes)
 
     jdupont = Person.create!(
       project: project,
@@ -158,6 +192,32 @@ module DataHelper
           name: 'Ehemalige Bezeichnung',
           order_priority: 3
         )
+      ],
+      registry_reference_types: [
+        RegistryReferenceType.create(
+          code: "home_location",
+          children_only: true,
+          use_in_transcript: false,
+          name: "Wohnort"
+        ),
+        RegistryReferenceType.create(
+          code: "birth_location",
+          children_only: true,
+          use_in_transcript: false,
+          name: "Geburtsort"
+        ),
+        RegistryReferenceType.create(
+          code: "interview_location",
+          children_only: true,
+          use_in_transcript: false,
+          name: "Ort des Interviews"
+        ),
+        RegistryReferenceType.create(
+          code: "subjects",
+          children_only: true,
+          use_in_transcript: false,
+          name: "Thema"
+        ),
       ]
     )
 

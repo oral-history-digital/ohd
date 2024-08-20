@@ -23,6 +23,7 @@ class ProjectCreator < ApplicationService
     create_default_task_types unless is_ohd
     create_default_roles
     create_default_texts
+    create_default_media_streams
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
     ) unless is_ohd
@@ -99,10 +100,11 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_registry_reference_types
-    %w(birth_location home_location interview_location).each do |code|
+    %w(birth_location home_location interview_location subjects).each do |code|
+      registry_entry_code = code == 'subjects' ? 'subjects' : 'places'
       ref_type = RegistryReferenceType.create(
         code: code,
-        registry_entry_id: project.registry_entries.where(code: 'places').first.id,
+        registry_entry_id: project.registry_entries.where(code: registry_entry_code).first.id,
         project_id: project.id,
         use_in_transcript: true,
       )
@@ -125,7 +127,7 @@ class ProjectCreator < ApplicationService
   def create_default_registry_reference_type_metadata_fields
     YAML.load_file(File.join(Rails.root, 'config/defaults/registry_reference_type_metadata_fields.yml')).each do |(name, settings)|
       metadata_field = MetadataField.create(
-        registry_reference_type_id: project.registry_reference_types.where(code: name).first.id,
+        registry_reference_type_id: (settings['ohd'] ? Project.ohd : project).registry_reference_types.where(code: name).first.id,
         project_id: project.id,
         name: name,
         source: 'RegistryReferenceType',
@@ -155,6 +157,7 @@ class ProjectCreator < ApplicationService
         use_in_results_table: settings['use_in_results_table'] || false,
         use_in_results_list: settings['use_in_results_list'] || false,
         use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_metadata_import: settings['use_in_metadata_import'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
         list_columns_order: settings['list_columns_order'] || 1.0,
@@ -175,6 +178,7 @@ class ProjectCreator < ApplicationService
         use_in_results_table: settings['use_in_results_table'] || false,
         use_in_results_list: settings['use_in_results_list'] || false,
         use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_metadata_import: settings['use_in_metadata_import'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
         list_columns_order: settings['list_columns_order'] || 1.0,
@@ -186,10 +190,12 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_contribution_types
-    YAML.load_file(File.join(Rails.root, 'config/defaults/contribution_types.yml')).each do |code|
+    YAML.load_file(File.join(Rails.root, 'config/defaults/contribution_types.yml')).each do |(code, settings)|
       contribution_type = ContributionType.create(
         code: code,
         project_id: project.id,
+        use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_export: settings['use_in_export'] || false,
       )
 
       add_translations(contribution_type, 'label', "contributions.#{code}")
@@ -222,10 +228,12 @@ class ProjectCreator < ApplicationService
   def create_default_texts
     %w(conditions ohd_conditions privacy_protection contact legal_info).each do |code|
       I18n.available_locales.each do |locale|
-        Text.update_or_create_by(
+        text = Text.find_or_initialize_by(
           project_id: project.id,
+          code: code
+        )
+        text.update(
           locale: locale,
-          code: code,
           text: replace_with_project_params(
             File.read(File.join(Rails.root, "config/defaults/texts/#{locale}/#{code}.html")),
             {
@@ -249,6 +257,17 @@ class ProjectCreator < ApplicationService
     end
   end
 
+  def create_default_media_streams
+    YAML.load_file(File.join(Rails.root, 'config/defaults/media_streams.yml')).each do |(name, settings)|
+      MediaStream.create(
+        project_id: project.id,
+        media_type: settings['media_type'],
+        path: settings['path'].sub('SHORTNAME', project.shortname),
+        resolution: settings['resolution'],
+      )
+    end
+  end
+
   private
 
   def add_translations(record, attribute, translation_key)
@@ -262,7 +281,7 @@ class ProjectCreator < ApplicationService
 
   def replace_with_project_params(text, params)
     params.each do |key, value|
-      text.gsub!("%{#{key}}", value)
+      text.gsub!("%{#{key}}", value) if value
     end
   end
 

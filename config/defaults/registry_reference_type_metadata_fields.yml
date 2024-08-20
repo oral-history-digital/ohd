@@ -4,6 +4,7 @@
   use_as_facet: true
   facet_order: 6.0
   use_in_details_view: true
+  use_in_metadata_import: true
   use_in_map_search: true
   map_color: "#1c2d8f"
 :home_location:
@@ -11,11 +12,29 @@
   use_as_facet: true
   facet_order: 7.0
   use_in_details_view: true
+  use_in_metadata_import: true
   use_in_map_search: true
   map_color: "#91911d"
 :interview_location:
   ref_object_type: Interview
   use_in_details_view: true
   display_on_landing_page: true
+  use_in_metadata_import: true
   use_in_map_search: true
   map_color: "#911d91"
+:subjects:
+  ref_object_type: Interview
+  use_in_details_view: true
+  use_in_metadata_import: true
+:level_of_indexing_ohd:
+  ohd: true
+  ref_object_type: Interview
+  use_in_metadata_import: true
+:subjects_ohd:
+  ohd: true
+  ref_object_type: Interview
+  use_in_metadata_import: true
+:countries_ohd:
+  ohd: true
+  ref_object_type: Interview
+  use_in_metadata_import: true
