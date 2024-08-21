@@ -2,15 +2,15 @@ require "application_system_test_case"
 
 class BasicsTest < ApplicationSystemTestCase
   test 'transactional fixtures 1/2' do
-    assert_equal 1, Project.count
-    Project.create!(shortname: 'xyz')
     assert_equal 2, Project.count
+    Project.create!(shortname: 'xyz')
+    assert_equal 3, Project.count
   end
 
   test 'transactional fixtures 2/2' do
-    assert_equal 1, Project.count
-    Project.create!(shortname: 'xyz')
     assert_equal 2, Project.count
+    Project.create!(shortname: 'xyz')
+    assert_equal 3, Project.count
   end
 
   test "visiting the project 'home' page" do
