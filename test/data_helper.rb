@@ -33,12 +33,6 @@ module DataHelper
           use_in_transcript: false,
           name: "Länder (oh.d)"
         ),
-        #RegistryReferenceType.create(
-          #code: "bearbeitungsstand_ohd",
-          #children_only: false,
-          #use_in_transcript: false,
-          #name: "Bearbeitungsstand (oh.d)"
-        #)
       ]
     }
     ohd = test_project(ohd_project_attributes)
@@ -64,6 +58,8 @@ module DataHelper
       code: 'root',
       workflow_state: 'public'
     )
+
+    ohd_registry = test_registry(ohd)
 
     # default_registry_name_type = RegistryNameType.find_by!(code: "spelling")
 
@@ -193,32 +189,6 @@ module DataHelper
           order_priority: 3
         )
       ],
-      registry_reference_types: [
-        RegistryReferenceType.create(
-          code: "home_location",
-          children_only: true,
-          use_in_transcript: false,
-          name: "Wohnort"
-        ),
-        RegistryReferenceType.create(
-          code: "birth_location",
-          children_only: true,
-          use_in_transcript: false,
-          name: "Geburtsort"
-        ),
-        RegistryReferenceType.create(
-          code: "interview_location",
-          children_only: true,
-          use_in_transcript: false,
-          name: "Ort des Interviews"
-        ),
-        RegistryReferenceType.create(
-          code: "subjects",
-          children_only: true,
-          use_in_transcript: false,
-          name: "Thema"
-        ),
-      ]
     )
 
     Project.create! attribs
