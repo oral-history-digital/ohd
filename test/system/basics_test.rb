@@ -203,6 +203,7 @@ class BasicsTest < ApplicationSystemTestCase
 
   test 'search in and across archives' do
     Interview.reindex
+    Segment.reindex
     DataHelper.test_media
 
     visit '/'
