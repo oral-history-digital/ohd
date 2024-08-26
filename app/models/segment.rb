@@ -55,7 +55,7 @@ class Segment < ApplicationRecord
   }
 
   translates :mainheading, :subheading, :text, touch: true
-  accepts_nested_attributes_for :translations
+  accepts_nested_attributes_for :translations, :registry_references
 
   class Translation
     belongs_to :segment

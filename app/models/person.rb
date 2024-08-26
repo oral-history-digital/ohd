@@ -22,7 +22,7 @@ class Person < ApplicationRecord
   translates :first_name, :last_name, :birth_name, :other_first_names,
     :alias_names, :description, :pseudonym_first_name, :pseudonym_last_name,
     fallbacks_for_empty_translations: true, touch: true
-  accepts_nested_attributes_for :translations, :events
+  accepts_nested_attributes_for :translations, :events, :biographical_entries
 
   validates_length_of :description, maximum: 1000
 
