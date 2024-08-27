@@ -393,7 +393,7 @@ class Interview < ApplicationRecord
     interviewee&.id
   end
 
-  %w(interviewee interviewer).each do |code|
+  %w(interviewee interviewer transcriptor translator cinematographer researcher).each do |code|
     define_method "#{code}s" do
       contributors_by_code(code)
     end
