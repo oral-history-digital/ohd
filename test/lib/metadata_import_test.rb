@@ -11,22 +11,22 @@ class MetadataImportTest < ActiveSupport::TestCase
     @project = DataHelper.project_with_contribution_types_and_metadata_fields
 
     # create files with valid archive_id for @project
-    metadata_import_template = File.read('spec/files/metadata-import-template.csv')
+    metadata_import_template = File.read('test/files/metadata-import-template.csv')
     metadata_import_template = metadata_import_template.sub('mog900', "#{@project.shortname}900")
-    File.write('spec/files/metadata-import-template-tmp.csv', metadata_import_template)
+    File.write('test/files/metadata-import-template-tmp.csv', metadata_import_template)
 
-    metadata_update_template = File.read('spec/files/metadata-update-template.csv')
+    metadata_update_template = File.read('test/files/metadata-update-template.csv')
     metadata_update_template = metadata_update_template.sub('mog900', "#{@project.shortname}900")
-    File.write('spec/files/metadata-update-template-tmp.csv', metadata_update_template)
+    File.write('test/files/metadata-update-template-tmp.csv', metadata_update_template)
   end
 
   teardown do
-    File.delete('spec/files/metadata-import-template-tmp.csv')
-    File.delete('spec/files/metadata-update-template-tmp.csv')
+    File.delete('test/files/metadata-import-template-tmp.csv')
+    File.delete('test/files/metadata-update-template-tmp.csv')
   end
 
   test 'processing a file should create people and metadata from file entries' do
-    MetadataImport.new('spec/files/metadata-import-template-tmp.csv', @project, :de).process
+    MetadataImport.new('test/files/metadata-import-template-tmp.csv', @project, :de).process
     assert_equal 6, Person.count
 
     interview = Interview.last
@@ -81,7 +81,7 @@ class MetadataImportTest < ActiveSupport::TestCase
   end
 
   test 'processing a file should update people and metadata from file entries' do
-    MetadataImport.new('spec/files/metadata-update-template-tmp.csv', @project, :de).process
+    MetadataImport.new('test/files/metadata-update-template-tmp.csv', @project, :de).process
     assert_equal 6, Person.count
 
     interview = Interview.last
