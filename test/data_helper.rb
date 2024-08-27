@@ -204,19 +204,19 @@ module DataHelper
       ContributionType.create(project: project, code: code, use_in_export: use_in_export)
     end
 
-    places = RegistryEntry.create code: 'places', project: project
+    places = RegistryEntry.create! code: 'places', project: project, workflow_state: 'public'
 
     {
       birth_location: 'Geburtsort',
       interview_location: 'Interviewort'
     }.each do |code, name|
-      registry_reference_type = RegistryReferenceType.create(
+      registry_reference_type = RegistryReferenceType.create!(
         registry_entry: places,
         project: project,
         name: name,
         code: code
       )
-      MetadataField.create(
+      MetadataField.create!(
         registry_reference_type: registry_reference_type,
         ref_object_type: code == :birth_location ? 'Person' : 'Interview',
         source: 'RegistryReferenceType',
