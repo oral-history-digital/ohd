@@ -66,7 +66,7 @@ class MetadataExportTest < ActiveSupport::TestCase
     assert_equal @interview.interviewers.map { |c| "#{c.last_name}, #{c.first_name}" }.join('#').to_s, @first_row_entries[26]
     assert_equal @interview.translators.map { |c| "#{c.last_name}, #{c.first_name}" }.join('#').to_s, @first_row_entries[27]
     assert_equal @interview.transcriptors.map { |c| "#{c.last_name}, #{c.first_name}" }.join('#').to_s, @first_row_entries[28]
-    assert_equal @interview.researchers.map { |c| "#{c.last_name}, #{c.first_name}" }.join('#').to_s, @first_row_entries[29]
+    assert_equal @interview.researchs.map { |c| "#{c.last_name}, #{c.first_name}" }.join('#').to_s, @first_row_entries[29]
     assert_equal @interview.cinematographers.map { |c| "#{c.last_name}, #{c.first_name}" }.join('#').to_s, @first_row_entries[30]
     assert_equal "Deutschland", @first_row_entries[31]
     assert_equal "Deutschland", @first_row_entries[33]
