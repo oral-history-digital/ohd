@@ -434,9 +434,9 @@ module DataHelper
           license: 'GPL',
         }
       ]
-      #file: File.open(Rails.root.join('spec', 'fixtures', 'files', 'photo.jpg')),
+      #file: File.open(Rails.root.join('test', 'fixtures', 'files', 'photo.jpg')),
     )
-    photo.photo.attach(io: File.open(Rails.root.join('spec', 'files', 'cd001_33.jpg')), filename: 'cd001_33.jpg', content_type: 'image/jpeg')
+    photo.photo.attach(io: File.open(Rails.root.join('test', 'files', 'cd001_33.jpg')), filename: 'cd001_33.jpg', content_type: 'image/jpeg')
   end
 
   def self.person_with_biographical_entries(project)
