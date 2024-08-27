@@ -219,13 +219,14 @@ module DataHelper
       MetadataField.create(
         registry_reference_type: registry_reference_type,
         ref_object_type: code == :birth_location ? 'Person' : 'Interview',
+        source: 'RegistryReferenceType',
         project: project,
         use_in_metadata_import: true,
         label: name,
         name: code
       )
     end
-    RegistryReferenceType.create(
+    RegistryNameType.create(
       code: "spelling",
       name: "Bezeichner",
       project: project
@@ -250,18 +251,22 @@ module DataHelper
         project: project,
         interview_languages: [
           InterviewLanguage.new(
-            language: Language.create!(code: 'rus'),
+            language: Language.create!(code: 'rus', name: 'Russisch', locale: 'de'),
             spec: 'primary'
           ),
           InterviewLanguage.new(
-            language: Language.create!(code: 'ger'),
+            language: Language.create!(code: 'pol', name: 'Polnisch', locale: 'de'),
+            spec: 'secondary'
+          ),
+          InterviewLanguage.new(
+            language: Language.create!(code: 'ger', name: 'Deutsch', locale: 'de'),
             spec: 'primary_translation'
           )
         ],
       )
     )
 
-    person = person_with_biographical_entries
+    person = person_with_biographical_entries(project)
 
     {interviewer: 'INT', interviewee: 'AB', cinematographer: 'KAM'}.each do |code, speaker_designation|
       #contribution_type = ContributionType.create!(
@@ -399,13 +404,17 @@ module DataHelper
       workflow_state: "public",
       list_priority: 0,
       project: project,
-      registry_names_attributes: names.map { |locale, name| {
+    )
+    RegistryName.create(
+      registry_entry: registry_entry,
+      name_position: 1,
+      registry_name_type: project.registry_name_types.first,
+      translations_attributes: names.map { |locale, name| {
         locale: locale,
         descriptor: name,
-        name_position: 1,
-        registry_name_type: project.registry_name_types.first
       } }
     )
+    registry_entry
   end
 
   def self.photo_with_translation(interview)
@@ -430,10 +439,10 @@ module DataHelper
     photo.photo.attach(io: File.open(Rails.root.join('spec', 'files', 'cd001_33.jpg')), filename: 'cd001_33.jpg', content_type: 'image/jpeg')
   end
 
-  def self.person_with_biographical_entries
+  def self.person_with_biographical_entries(project)
     entries = [
       [:de, "15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister"],
-      [:ru, "\n\nАдамец Константин Войтович родился 15.09.1925 г. в деревне Стаси Диканьского района Полтавской области. У Константина Войтовича было три брата и одна сестр"]
+      [:ru, "Адамец Константин Войтович родился 15.09.1925 г. в деревне Стаси Диканьского района Полтавской области. У Константина Войтовича было три брата и одна сестр"]
     ]
     person = Person.create(
       first_name: "Константин",
@@ -441,7 +450,9 @@ module DataHelper
       birth_name: "Hans",
       other_first_names: "Войтович",
       alias_names: "Адамец Константин Войтович Adamez Konstantin",
-      biographical_entries_attributes: entries.map { |locale, text| {locale: locale, text: text} }
+      biographical_entries_attributes: entries.map { |locale, text| {locale: locale, text: text} },
+      project: project,
+      gender: 'male'
     )
     person.update(
       locale: 'de',
