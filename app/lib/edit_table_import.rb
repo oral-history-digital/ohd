@@ -6,8 +6,8 @@ class EditTableImport
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang
-    @translation_locale = (@interview.languages - [@interview.lang]).first ||
-      (@interview.project.available_locales - [@interview.lang]).first
+    @translation_locale = ISO_639.find(@interview.primary_translation_language.code).try(:alpha2) ||
+      @interview.primary_translation_language.code
     @file_path = file_path
     @sheet = parse_sheet
   end

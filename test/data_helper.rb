@@ -234,7 +234,7 @@ module DataHelper
     project
   end
 
-  def self.interview_with_everything(project, archive_id_number)
+  def self.interview_with_everything(project, archive_id_number=1)
     attributes = {
       archive_id: "#{project.shortname}#{format('%03d', archive_id_number)}",
       media_type: 'video',
@@ -266,13 +266,9 @@ module DataHelper
       )
     )
 
-    person = person_with_biographical_entries(project)
-
     {interviewer: 'INT', interviewee: 'AB', cinematographer: 'KAM'}.each do |code, speaker_designation|
-      #contribution_type = ContributionType.create!(
-        #code: code,
-        #project: project
-      #)
+      person = person_with_biographical_entries(project)
+
       Contribution.create!(
         interview: interview,
         speaker_designation: speaker_designation,
@@ -283,11 +279,11 @@ module DataHelper
 
     photo = photo_with_translation(interview)
 
-    first_tape = Tape.create(interview: interview, number: 1)
-    second_tape = Tape.create(interview: interview, number: 2)
+    first_tape = Tape.create!(interview: interview, number: 1, media_id: "#{interview.archive_id}_02_01")
+    second_tape = Tape.create!(interview: interview, number: 2, media_id: "#{interview.archive_id}_02_02")
 
-    first_speaker = interview.contributions.first.person
-    second_speaker = interview.contributions.first(2).last.person
+    first_speaker = interview.interviewers.first
+    second_speaker = interview.interviewee
 
     germany = registry_entry_with_names(project)
     france = registry_entry_with_names(project, {de: 'Frankreich', ru: 'Фра́нция'})
@@ -382,15 +378,26 @@ module DataHelper
         locale: :ru
       }]
   )
-    segment = Segment.create(
+    segment = Segment.create!(
       interview: interview,
       tape: tape,
       timecode: timecode,
       speaking_person: speaker,
       translations_attributes: translations_attributes,
-      registry_references_attributes: registry_entries.map { |entry| {registry_entry: entry} },
-      annotations: annotations.map { |annotation| Annotation.new(annotation) }
+      annotations: [Annotation.new(
+        translations_attributes: annotations
+      )]
     )
+    registry_entries.map do |entry|
+      RegistryReference.create!(
+        registry_entry: entry,
+        workflow_state: 'checked',
+        ref_object: segment,
+        ref_position: 1,
+        interview_id: interview.id
+      )
+    end
+    segment
   end
 
   def self.test_tape(interview, number=1)
