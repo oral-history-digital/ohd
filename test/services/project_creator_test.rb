@@ -89,7 +89,7 @@ class ProjectCreatorTest < ActiveSupport::TestCase
   end
 
   test 'creates 3 texts' do
-    assert_equal 8, @project.texts.count
+    assert_equal 3, @project.texts.count
   end
 
   test 'creates Erschliessung-role' do
