@@ -88,6 +88,10 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal 8, @project.media_streams.count
   end
 
+  test 'creates 3 texts' do
+    assert_equal 8, @project.texts.count
+  end
+
   test 'creates Erschliessung-role' do
     erschliessung_role = @project.roles.where(name: 'Erschliessung').first
     assert erschliessung_role.present?
