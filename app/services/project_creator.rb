@@ -226,7 +226,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_texts
-    %w(conditions ohd_conditions privacy_protection contact legal_info).each do |code|
+    %w(conditions contact legal_info).each do |code|
       I18n.available_locales.each do |locale|
         text = Text.find_or_initialize_by(
           project_id: project.id,
@@ -242,6 +242,7 @@ class ProjectCreator < ApplicationService
               project_contact_email: project.contact_email,
               project_leader: project.leader,
               institution_name: project.institutions.first&.name(locale),
+              institution_shortname: project.institutions.first&.shortname,
               institution_website: project.institutions.first&.website,
               institution_street: project.institutions.first&.street,
               institution_zip: project.institutions.first&.zip,
@@ -283,6 +284,7 @@ class ProjectCreator < ApplicationService
     params.each do |key, value|
       text.gsub!("%{#{key}}", value) if value
     end
+    text
   end
 
 end
