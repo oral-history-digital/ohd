@@ -7,6 +7,8 @@ class TaskType < ApplicationRecord
   translates :label, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
+  validates :key, presence: true, uniqueness: { scope: :project_id }
+
   after_create :create_task_for_interviews
   def create_task_for_interviews
     if project.present?
