@@ -1,51 +1,211 @@
 ---
-:media_import:
-- Medienimport (A/V)
-- Med
-:approval:
-- Einverständnis
-- EV
-:protocol:
-- Protokoll
-- Pro
-:transcript:
-- Transkript
-- Trans
-:translation_transcript:
-- Übersetzung/Transkript
-- Ü/Trans
-:metadata:
-- Metadaten
-- Met
-:translation_metadata:
-- Übersetzung/Metadaten
-- Ü/Met
-:photos:
-- Fotos
-- Fot
-:translation_photos:
-- Übersetzung/ Fotos
-- Ü/Fot
-:biography:
-- Kurzbiografie
-- Bio
-:translation_biography:
-- Übersetzung/Kurzbiografie
-- Ü/Bio
-:table_of_contents:
-- Inhaltsverzeichnis
-- Inh
-:translation_table_of_contents:
-- Übersetzung/Inhaltsverzeichnis
-- Ü/Inh
-:register:
-- Register
-- Reg
-:translation_register:
-- Übersetzung/Register
-- Ü/Reg
-:annotations:
-- Anmerkungen
-- Anm
-:anonymisation:
-- AnonymisierungAno
+- :attributes:
+  - key: media_import
+    abbreviation: Medien
+    :translations_attributes: 
+    - label: Medienimport (A/V) prüfen
+      locale: de
+    - label: Check media import (A/V)
+      locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+- :attributes:
+  - key: approval
+    abbreviation: EV
+    :translations_attributes:
+      - label: Einverständnis
+        locale: de
+      - label: Check agreement
+        locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+- :attributes:
+  - key: metadata
+    abbreviation: Meta
+    :translations_attributes:
+      - label: Metadaten prüfen und bearbeiten
+        locale: de
+      - label: Check and edit metadata
+        locale: en
+  :permissions:
+  - :name: Contribution create
+    :klass: Contribution
+    :action_name: create
+  - :name: Contribution update
+    :klass: Contribution
+    :action_name: update
+  - :name: Contribution destroy
+    :klass: Contribution
+    :action_name: destroy
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: Interview update
+    :klass: Interview
+    :action_name: update
+  - :name: Person create
+    :klass: Person
+    :action_name: create
+  - :name: Person update
+    :klass: Person
+    :action_name: update
+  - :name: RegistryReference create
+    :klass: RegistryReference
+    :action_name: create
+  - :name: RegistryReference update
+    :klass: RegistryReference
+    :action_name: update
+  - :name: RegistryReference show
+    :klass: RegistryReference
+    :action_name: show
+- :attributes:
+  - key: transcript
+    abbreviation: Trans
+    :translations_attributes:
+      - label: Transkript hochladen und bearbeiten
+        locale: de
+      - label: Check agreement
+        locale: en
+  :permissions:
+  - :name: Annotation create
+    :klass: Annotation
+    :action_name: create
+  - :name: Annotation update
+    :klass: Annotation
+    :action_name: update
+  - :name: Annotation destroy
+    :klass: Annotation
+    :action_name: destroy
+  - :name: Contribution create
+    :klass: Contribution
+    :action_name: create
+  - :name: Contribution update
+    :klass: Contribution
+    :action_name: update
+  - :name: Contribution destroy
+    :klass: Contribution
+    :action_name: destroy
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: Interview update
+    :klass: Interview
+    :action_name: update
+  - :name: Person create
+    :klass: Person
+    :action_name: create
+  - :name: Person update
+    :klass: Person
+    :action_name: update
+  - :name: RegistryReference create
+    :klass: RegistryReference
+    :action_name: create
+  - :name: RegistryReference update
+    :klass: RegistryReference
+    :action_name: update
+  - :name: RegistryReference show
+    :klass: RegistryReference
+    :action_name: show
+  - :name: Interview update_speakers
+    :klass: Interview
+    :action_name: update_speakers
+  - :name: Interview upload_transcript
+    :klass: Interview
+    :action_name: upload_transcript
+  - :name: Segment update
+    :klass: Segment
+    :action_name: update
+  - :name: Upload create
+    :klass: Upload
+    :action_name: create
+- :attributes:
+  - key: translation_all
+    abbreviation: Über
+    :translations_attributes:
+      - label: Übersetzung
+        locale: de
+      - label: Translation
+        locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: Interview upload_transcript
+    :klass: Interview
+    :action_name: upload_transcript
+  - :name: Segment update
+    :klass: Segment
+    :action_name: update
+  - :name: Upload create
+    :klass: Upload
+    :action_name: create
+- :attributes:
+  - key: table_of_contents
+    abbreviation: Inh
+    :translations_attributes:
+      - label: Inhaltsverzeichnis erstellen
+        locale: de
+      - label: Create table of contents
+        locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: Segment update
+    :klass: Segment
+    :action_name: update
+- :attributes:
+  - key: photos
+    abbreviation: Fotos
+    :translations_attributes:
+      - label: Fotos hochladen und Bildunterschriften bearbeiten
+        locale: de
+      - label: Upload photos and edit captions
+        locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: Upload create
+    :klass: Upload
+    :action_name: create
+  - :name: Photo create
+    :klass: Photo
+    :action_name: create
+  - :name: Photo show
+    :klass: Photo
+    :action_name: show
+  - :name: Photo update
+    :klass: Photo
+    :action_name: update
+  - :name: Photo destroy
+    :klass: Photo
+    :action_name: destroy
+- :attributes:
+  - key: biography
+    abbreviation: Bio
+    :translations_attributes:
+      - label: Kurzbiografie eingeben und bearbeiten
+        locale: de
+      - label: Enter and edit short biography
+        locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: BiographicalEntry create
+    :klass: BiographicalEntry
+    :action_name: create
+  - :name: BiographicalEntry show
+    :klass: BiographicalEntry
+    :action_name: show
+  - :name: BiographicalEntry update
+    :klass: BiographicalEntry
+    :action_name: update
+  - :name: BiographicalEntry destroy
+    :klass: BiographicalEntry
+    :action_name: destroy

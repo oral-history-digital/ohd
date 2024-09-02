@@ -20,8 +20,8 @@ class ProjectCreator < ApplicationService
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
     create_default_contribution_types unless is_ohd
-    create_default_task_types unless is_ohd
     create_default_roles
+    create_default_task_types unless is_ohd
     create_default_texts
     create_default_media_streams
     project.update(
@@ -203,14 +203,17 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_task_types
-    YAML.load_file(File.join(Rails.root, 'config/defaults/task_types.yml')).each do |key, (label, abbreviation)|
-      TaskType.create(
-        key: key,
-        label: label,
-        abbreviation: abbreviation,
+    YAML.load_file(File.join(Rails.root, 'config/defaults/task_types.yml')).each do |task_type_settings|
+      task_type = TaskType.create(
+        **task_type_settings[:attributes][0],
         project_id: project.id,
         use: true
       )
+      task_type_settings[:permissions].each do |permission|
+        perm = Permission.find_or_create_by(klass: permission[:klass], action_name: permission[:action_name])
+        perm.update_attribute(:name, "#{permission[:klass]} #{permission[:action_name]}")
+        TaskTypePermission.find_or_create_by(task_type_id: task_type.id, permission_id: perm.id)
+      end
     end
   end
 
