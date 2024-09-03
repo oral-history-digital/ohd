@@ -228,19 +228,23 @@ class Interview < ApplicationRecord
       end
 
       string :"alias_names_#{locale}", stored: true do
-        return "" if interviewee.blank?
-
-        result = "#{interviewee.alias_names(locale)}"
-        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
-        result.strip()
+        if interviewee.blank?
+          ""
+        else
+          result = "#{interviewee.alias_names(locale)}"
+          result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+          result.strip()
+        end
       end
 
       text :"alias_names_#{locale}", stored: true do
-        return "" if interviewee.blank?
-
-        result = "#{interviewee.alias_names(locale)}"
-        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
-        result.strip()
+        if interviewee.blank?
+          ""
+        else
+          result = "#{interviewee.alias_names(locale)}"
+          result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+          result.strip()
+        end
       end
 
       # contributions
