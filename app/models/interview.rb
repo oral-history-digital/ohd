@@ -218,8 +218,6 @@ class Interview < ApplicationRecord
       text :"observations_#{locale}", stored: true do
         if index_observations?
           observations(locale)
-        else
-          ''
         end
       end
 
@@ -228,9 +226,7 @@ class Interview < ApplicationRecord
       end
 
       string :"alias_names_#{locale}", stored: true do
-        if interviewee.blank?
-          ""
-        else
+        unless interviewee.blank?
           result = "#{interviewee.alias_names(locale)}"
           result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
           result.strip()
@@ -238,9 +234,7 @@ class Interview < ApplicationRecord
       end
 
       text :"alias_names_#{locale}", stored: true do
-        if interviewee.blank?
-          ""
-        else
+        unless interviewee.blank?
           result = "#{interviewee.alias_names(locale)}"
           result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
           result.strip()
