@@ -71,7 +71,7 @@ class ProjectCreator < ApplicationService
       registry_entry_id: root_registry_entry.id,
       registry_name_type_id: default_registry_name_type.id,
       name_position: 0,
-      descriptor: I18n.t('registry', locale: project.default_locale),
+      descriptor: TranslationValue.for('registry', project.default_locale),
       locale: project.default_locale
     )
   end
@@ -136,6 +136,7 @@ class ProjectCreator < ApplicationService
         use_in_results_table: settings['use_in_results_table'] || false,
         use_in_results_list: settings['use_in_results_list'] || false,
         use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_metadata_import: settings['use_in_metadata_import'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
         map_color: settings['map_color'] || '#1c2d8f',
@@ -276,11 +277,9 @@ class ProjectCreator < ApplicationService
 
   def add_translations(record, attribute, translation_key)
     project.available_locales.each do |locale|
-      I18n.locale = locale
-      record.send("#{attribute}=", I18n.t(translation_key))
+      record.send("#{attribute}=", TranslationValue.for(translation_key, locale))
     end
     record.save
-    I18n.locale = project.default_locale
   end
 
   def replace_with_project_params(text, params)
