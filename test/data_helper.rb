@@ -234,7 +234,7 @@ module DataHelper
     project
   end
 
-  def self.interview_with_everything(project, archive_id_number=1)
+  def self.interview_with_everything(project, archive_id_number=1, with_segments=true)
     attributes = {
       archive_id: "#{project.shortname}#{format('%03d', archive_id_number)}",
       media_type: 'video',
@@ -289,62 +289,64 @@ module DataHelper
     france = registry_entry_with_names(project, {de: 'Frankreich', ru: 'Фра́нция'})
     poland = registry_entry_with_names(project, {de: 'Polen', ru: 'По́льша'})
 
-    segment_with_everything(
-      "00:00:02.00",
-      interview,
-      first_tape,
-      first_speaker,
-      [{
-        locale: :ru,
-        text: "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
-        mainheading: "Вступление",
-        subheading: nil
-      }, {
-        locale: :de,
-        text: "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
-        mainheading: "Einleitung",
-        subheading: nil,
-      }],
-      [germany],
-      [
-        {
-          locale: :de,
-          text: "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen",
-        },
-        {
+    if with_segments
+      segment_with_everything(
+        "00:00:02.00",
+        interview,
+        first_tape,
+        first_speaker,
+        [{
           locale: :ru,
-          text: "Главное местонахождение — Берлин Филиал по добыче"
-        }
-      ]
-    )
-    segment_with_everything(
-      "00:02:02.00",
-      interview,
-      second_tape,
-      second_speaker,
-      [{
-        locale: :ru,
-        text: "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
-        mainheading: nil,
-        subheading: "жизнь"
-      }, {
-        locale: :de,
-        text: "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
-        mainheading: nil,
-        subheading: "Leben",
-      }],
-      [france, poland],
-      [
-        {
+          text: "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
+          mainheading: "Вступление",
+          subheading: nil
+        }, {
           locale: :de,
-          text: "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager"
-        },
-        {
+          text: "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
+          mainheading: "Einleitung",
+          subheading: nil,
+        }],
+        [germany],
+        [
+          {
+            locale: :de,
+            text: "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen",
+          },
+          {
+            locale: :ru,
+            text: "Главное местонахождение — Берлин Филиал по добыче"
+          }
+        ]
+      )
+      segment_with_everything(
+        "00:02:02.00",
+        interview,
+        second_tape,
+        second_speaker,
+        [{
           locale: :ru,
-          text: "Построенный для размещения восточных рабочих барачный"
-        }
-      ]
-    )
+          text: "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
+          mainheading: nil,
+          subheading: "жизнь"
+        }, {
+          locale: :de,
+          text: "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
+          mainheading: nil,
+          subheading: "Leben",
+        }],
+        [france, poland],
+        [
+          {
+            locale: :de,
+            text: "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager"
+          },
+          {
+            locale: :ru,
+            text: "Построенный для размещения восточных рабочих барачный"
+          }
+        ]
+      )
+    end
     interview
   end
 

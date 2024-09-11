@@ -62,11 +62,11 @@ class Segment < ApplicationRecord
 
     after_save do
       # run this only after commit of original e.g. 'de' version!
-      #if text_previously_changed? && locale.length == 2 && !text.blank?
-      if locale.length == 2 && text.present?
+      #if locale.length == 2 && text.present?
+      if text_previously_changed? && locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
       end
-      segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
+      #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
     end
   end
 
@@ -449,10 +449,6 @@ class Segment < ApplicationRecord
   end
 
   private
-
-  def zero_counts(object)
-    object.available_locales.map{ |locale| [locale, 0] }.to_h
-  end
 
   # remove workflow comments
   def filter_annotation(text)
