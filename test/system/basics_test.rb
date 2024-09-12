@@ -14,7 +14,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test "visiting the project 'home' page" do
-    #binding.pry
     visit '/'
     assert_text 'This is the test archive of the oral history digital project'
   end
@@ -151,7 +150,7 @@ class BasicsTest < ApplicationSystemTestCase
 
     click_on 'Editing interface'
     click_on 'Curation'
-    click_on 'Neues Interview anlegen'
+    click_on 'Create new interview'
     select 'Dupont, Jean'
     select 'Interviewee'
     fill_in 'Interview ID', with: 'test234'
@@ -161,9 +160,9 @@ class BasicsTest < ApplicationSystemTestCase
     select 'English', from: 'primary_translation_language_id'
     fill_in 'Number of tapes', with: 1
     within '#interview' do
-      click_on 'Neues Interview anlegen'
+      click_on 'Create new interview'
     end
-    assert_text 'Das Interview wurde angelegt'
+    assert_text 'The interview has been created.'
   end
 
   test 'domain login' do
@@ -335,7 +334,7 @@ class BasicsTest < ApplicationSystemTestCase
 
     click_on 'Curation/indexing'
     sleep 1
-    click_on 'Verknüpfungsarten bearbeiten'
+    click_on 'Edit Index Reference Types'
     all("button[title='Add']")[0].click
     sleep 1
     select 'city'
