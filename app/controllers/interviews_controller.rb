@@ -182,7 +182,7 @@ class InterviewsController < ApplicationController
         unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
           raise Pundit::NotAuthorizedError
         end
-        vtt = Rails.cache.fetch "#{current_project.shortname}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
+        vtt = Rails.cache.fetch "#{current_project.shortname}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
         send_data vtt, filename: "#{filename}.vtt", type: "text/vtt"
@@ -403,8 +403,10 @@ class InterviewsController < ApplicationController
         logged_in = current_user.present?
         serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
         public_description = current_project.public_description?
-        search_results_metadata_fields = current_project.search_results_metadata_fields
-        featured_interviews = current_project.featured_interviews
+        search_results_metadata_fields = current_project.search_results_metadata_fields.
+          includes(:translations)
+        featured_interviews = current_project.featured_interviews.
+          includes(:translations, :registry_references)
 
         if featured_interviews.present?
           data = featured_interviews.inject({}) do |mem, interview|
