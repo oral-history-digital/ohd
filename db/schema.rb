@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_10_130250) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_12_104810) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -771,6 +771,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_10_130250) do
     t.boolean "has_heading", default: false
     t.index ["interview_id"], name: "index_segments_on_interview_id"
     t.index ["media_id"], name: "index_segments_on_media_id", length: 191
+    t.index ["speaker_id"], name: "index_segments_on_speaker_id"
+    t.index ["tape_id"], name: "index_segments_on_tape_id"
+    t.index ["timecode"], name: "index_segments_on_timecode"
   end
 
   create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|

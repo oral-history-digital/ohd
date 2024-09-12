@@ -45,6 +45,7 @@ class PeopleController < ApplicationController
     }
 
     current_project.metadata_fields
+      .includes(:translations)
       .where(display_on_landing_page: true)
       .where(ref_object_type: 'Person').each do |m|
         registry_references = @person.registry_references.
@@ -61,6 +62,7 @@ class PeopleController < ApplicationController
     end
 
     current_project.metadata_fields
+      .includes(:translations)
       .where(display_on_landing_page: true)
       .where(source: 'Person').each do |m|
       data[m.name] = @person.send(m.name)
