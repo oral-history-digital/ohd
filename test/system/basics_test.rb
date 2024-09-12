@@ -333,7 +333,7 @@ class BasicsTest < ApplicationSystemTestCase
       click_on 'Submit'
     end
 
-    click_on 'Curation/ indexing'
+    click_on 'Curation/indexing'
     sleep 1
     click_on 'Verknüpfungsarten bearbeiten'
     all("button[title='Add']")[0].click
