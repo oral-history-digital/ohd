@@ -4,7 +4,7 @@ require 'csv'
 class EditTableImportTest < ActiveSupport::TestCase
   setup do
     @project = DataHelper.project_with_contribution_types_and_metadata_fields
-    @interview = DataHelper.interview_with_everything(@project, 1)
+    @interview = DataHelper.interview_with_everything(@project, 1, false)
   end
 
   teardown do
