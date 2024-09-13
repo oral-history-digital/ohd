@@ -183,23 +183,29 @@ class Project < ApplicationRecord
 
   def event_facets
     metadata_fields.
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       where(source: 'EventType', use_as_facet: true).
       order(:facet_order)
   end
 
   def event_facet_names
     metadata_fields.
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       where(source: 'EventType', use_as_facet: true).
       map(&:name).
       map(&:to_sym)
   end
 
   def grid_fields
-    metadata_fields.where(use_in_results_table: true).order(:list_columns_order)
+    metadata_fields.
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+      where(use_in_results_table: true).order(:list_columns_order)
   end
 
   def list_columns
-    metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
+    metadata_fields.
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+      where(use_in_results_list: true).order(:list_columns_order)
   end
 
   def public_description?
@@ -207,11 +213,14 @@ class Project < ApplicationRecord
   end
 
   def description_metadata_field
-    metadata_fields.where(name: 'description').first
+    metadata_fields.
+      includes(:translations).
+      where(name: 'description').first
   end
 
   def search_results_metadata_fields
     metadata_fields.where(use_in_results_list: true).
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       or(metadata_fields.where(use_in_results_table: true)).
       where.not(ref_object_type: [nil, ''])
   end
@@ -224,17 +233,23 @@ class Project < ApplicationRecord
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
     define_method "#{m.underscore}_search_facets" do
-      metadata_fields.where(use_as_facet: true, source: m)
+      metadata_fields.
+        includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+        where(use_as_facet: true, source: m)
     end
     #
     # used for metadata that is not used as facet
     define_method "#{m.underscore}_metadata_fields" do
-      metadata_fields.where(source: m)
+      metadata_fields.
+        includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+        where(source: m)
     end
   end
 
   def registry_reference_type_import_metadata_fields
-    metadata_fields.where(use_in_metadata_import: true, source: 'RegistryReferenceType')
+    metadata_fields.
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+      where(use_in_metadata_import: true, source: 'RegistryReferenceType')
   end
 
   def min_to_max_birth_year_range

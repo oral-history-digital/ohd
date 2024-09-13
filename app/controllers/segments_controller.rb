@@ -27,7 +27,7 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        data = Rails.cache.fetch("#{current_project.shortname}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
+        data = Rails.cache.fetch("interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
           transcript_coupled = @interview.transcript_coupled
           @interview.tapes.inject({}) do |tapes, tape|
             segments_for_tape = tape.segments.
