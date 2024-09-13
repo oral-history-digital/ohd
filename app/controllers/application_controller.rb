@@ -67,9 +67,21 @@ class ApplicationController < ActionController::Base
   def current_project
     @current_project = @current_project || (
       (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
-        Project.where(shortname: params[:project_id]).first :
-        Project.where(archive_domain: request.base_url).first
-    )
+        Project.where(shortname: params[:project_id]) :
+        Project.where(archive_domain: request.base_url)
+    ).includes(
+      :translations,
+      :registry_name_types,
+      :media_streams,
+      :map_sections,
+      registry_reference_types: :translations,
+      contribution_types: :translations,
+      metadata_fields: :translations,
+      external_links: :translations,
+      collections: :translations,
+      #collections: {collection: :translations},
+      institution_projects: {institution: :translations},
+    ).first
   end
 
   helper_method :current_project
@@ -92,7 +104,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: Rails.cache.fetch("translations-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}") do
+        translations: Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}") do
           TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
             mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
               mem2[translation.locale] = translation.value
@@ -134,7 +146,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {all: 'fetched'},
+          projects: {"#{current_project.id}": 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -145,15 +157,15 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          Project.all.inject({}) { |mem, s| mem[s.id] = ProjectBaseSerializer.new(s); mem }
-        end,
+        projects: {
+          "#{current_project.id}" => ProjectBaseSerializer.new(current_project),
+        },
         institutions: {},
         collections: {},
-        norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
+        norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
           NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
-        languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
+        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,
         users: {
@@ -230,17 +242,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-  def search_query
-    if current_project
-      current_project.search_facets_names.inject({page: 1}) do |mem, facet|
-        mem["#{facet}[]"] = params[facet] if params[facet]
-        mem
-      end
-    else
-      {}
-    end
-  end
 
   def country_keys
     Rails.cache.fetch('country-keys-20240624') do
