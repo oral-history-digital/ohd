@@ -106,6 +106,25 @@ class Interview < ApplicationRecord
     end
   end
 
+  def after_save
+    self.update_counter_cache
+  end
+
+  def after_destroy
+    self.update_counter_cache
+  end
+
+  def update_counter_cache
+    self.project.update interviews_count: self.project.interviews.shared.count
+    self.collection.update interviews_count: self.collection.interviews.shared.count
+    self.project.update interviews_count: self.project.interviews.shared.count
+    self.project.institutions.each do |institution|
+      institution.update interviews_count: institution.interviews.shared.count
+      institution.parent&.update interviews_count: institution.parent.interviews.shared.count +
+        institution.parent.children.sum(&:interviews_count)
+    end
+  end
+
   translates :observations, :description, fallbacks_for_empty_translations: true, touch: true
 
   accepts_nested_attributes_for :translations, :contributions, :interview_languages
@@ -158,7 +177,7 @@ class Interview < ApplicationRecord
       end
     end
 
-    dynamic_string :person_name do
+    dynamic_string :person_name, stored: true do
       Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
         hash.merge(locale => full_title(locale))
       end

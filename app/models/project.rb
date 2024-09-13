@@ -9,13 +9,23 @@ class Project < ApplicationRecord
   has_many :sponsor_logos, as: :ref, dependent: :destroy
 
   has_many :institution_projects, dependent: :destroy
-  has_many :institutions, through: :institution_projects
+  has_many :institutions,
+    ->{ includes(:translations) },
+    through: :institution_projects
   has_many :interviews, dependent: :destroy
-  has_many :collections, dependent: :destroy
-  has_many :contribution_types, dependent: :destroy
+  has_many :collections,
+    ->{ includes(:translations) },
+    dependent: :destroy
+  has_many :contribution_types,
+    ->{ includes(:translations) },
+    dependent: :destroy
   has_many :media_streams, dependent: :destroy
-  has_many :metadata_fields, dependent: :destroy
-  has_many :task_types, dependent: :destroy
+  has_many :metadata_fields,
+    ->{ includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}) },
+    dependent: :destroy
+  has_many :task_types,
+    ->{ includes(:translations) },
+    dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :external_links, dependent: :destroy
   has_many :registry_entries, dependent: :destroy
@@ -25,7 +35,12 @@ class Project < ApplicationRecord
 
   has_many :registry_reference_types, dependent: :destroy
   has_many :registry_name_types, dependent: :destroy
-  has_many :people, dependent: :destroy
+  has_many :people,
+    ->{ includes(
+      :translations,
+      contributions: {contribution_type: :translations},
+    ) },
+    dependent: :destroy
   has_many :map_sections, dependent: :destroy
   has_many :archiving_batches, dependent: :destroy
   has_many :event_types, dependent: :destroy
@@ -145,7 +160,7 @@ class Project < ApplicationRecord
   end
 
   def num_interviews
-    interviews.shared.count
+    interviews_count
   end
 
   def domain_with_optional_identifier
