@@ -158,7 +158,7 @@ class ApplicationController < ActionController::Base
           contribution_types: {},
         },
         projects: {
-          "#{current_project.id}" => ProjectBaseSerializer.new(current_project),
+          "#{current_project.id}": cache_single(current_project),
         },
         institutions: {},
         collections: {},
@@ -166,7 +166,7 @@ class ApplicationController < ActionController::Base
           NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
         languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do
-          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
+          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         users: {
           current: current_user && ::UserSerializer.new(current_user) || nil #{}
