@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_12_104810) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_13_090921) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -125,6 +125,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_12_104810) do
     t.datetime "updated_at", precision: nil
     t.integer "project_id"
     t.integer "institution_id"
+    t.integer "interviews_count", default: 0, null: false
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -302,6 +303,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_12_104810) do
     t.integer "parent_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "interviews_count", default: 0, null: false
+    t.integer "projects_count", default: 0, null: false
   end
 
   create_table "interview_languages", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -609,6 +612,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_12_104810) do
     t.boolean "show_legend", default: true
     t.date "live_since"
     t.integer "analytics_site_id"
+    t.integer "interviews_count", default: 0, null: false
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
