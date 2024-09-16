@@ -162,7 +162,11 @@ class ApplicationController < ActionController::Base
           contribution_types: {},
         },
         projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          Project.all.inject({}) do |mem, s|
+          Project.all.includes(
+            :translations,
+            :registry_reference_types,
+            :collections,
+          ).inject({}) do |mem, s|
             mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
             mem
           end
