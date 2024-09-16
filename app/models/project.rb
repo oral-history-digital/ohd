@@ -14,7 +14,7 @@ class Project < ApplicationRecord
     through: :institution_projects
   has_many :interviews, dependent: :destroy
   has_many :collections,
-    ->{ includes(:translations) },
+    #->{ includes(:translations) },
     dependent: :destroy
   has_many :contribution_types,
     ->{ includes(:translations) },
