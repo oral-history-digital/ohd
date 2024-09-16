@@ -146,7 +146,11 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {"#{current_project.id}": 'fetched'},
+          projects: {
+            all: 'fetched',
+            #"#{current_project.id}": 'fetched'
+          },
+          #projects: {"#{current_project.id}": 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -157,9 +161,15 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: {
-          "#{current_project.id}": cache_single(current_project),
-        },
+        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+          Project.all.inject({}) do |mem, s|
+            mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+            mem
+          end
+        end,
+        #projects: {
+          #"#{current_project.id}": cache_single(current_project),
+        #},
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
