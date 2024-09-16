@@ -42,7 +42,8 @@ class CollectionsController < ApplicationController
     nested_data_type = nil
 
     if params.keys.include?("all")
-      collections = policy_scope(Collection).all
+      collections = policy_scope(Collection).
+        includes(:translations).all
       data_type = "collections"
       extra_params = "all"
     elsif params[:for_projects]
