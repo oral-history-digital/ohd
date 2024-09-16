@@ -96,6 +96,9 @@ export default function Transcript({
     let tabIndex = originalLocale ? 0 : 1;
     let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape });
     let shownSegments = sortedWithIndex[1];
+    //let [activeSegment, sortedSegments, index] = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape });
+    //let shownSegments = sortedSegments.slice(index > 5 ? index - 5 : 0, index + 5);
+    //console.log('Transcript.js: shownSegments:', shownSegments);
 
     let currentSpeakerName = '', currentSpeakerId = null;
 
