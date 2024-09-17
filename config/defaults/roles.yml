@@ -526,9 +526,6 @@
   - :name: Role create
     :klass: Role
     :action_name: create
-  - :name: Role update
-    :klass: Role
-    :action_name: update
   - :name: Role destroy
     :klass: Role
     :action_name: destroy
@@ -571,9 +568,6 @@
   - :name: TaskType destroy
     :klass: TaskType
     :action_name: destroy
-  - :name: TaskType update
-    :klass: TaskType
-    :action_name: update
   - :name: TaskTypePermission create
     :klass: TaskTypePermission
     :action_name: create
