@@ -1,9 +1,9 @@
 class ReadEditTableJob < ApplicationJob
   queue_as :default
 
-  def perform(interview, file_path, receiver)
+  def perform(interview, file_path, only_references, receiver)
     jobs_logger.info "*** uploading #{file_path} to interview #{interview.archive_id}"
-    EditTableImport.new(interview.archive_id, file_path).process
+    EditTableImport.new(interview.archive_id, file_path, only_references).process
     #File.delete(file_path) if File.exist?(file_path)
     jobs_logger.info "*** imported edit-table for #{interview.archive_id}"
     interview.touch
