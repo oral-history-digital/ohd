@@ -1,8 +1,9 @@
 class EditTableImport
 
-  attr_accessor :file_path, :sheet, :interview, :contributions, :original_locale, :translation_locale
+  attr_accessor :file_path, :sheet, :interview, :contributions,
+    :original_locale, :translation_locale, :only_references
 
-  def initialize(public_interview_id, file_path)
+  def initialize(public_interview_id, file_path, only_references=false)
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang
@@ -11,6 +12,7 @@ class EditTableImport
       @interview.primary_translation_language.code
     )
     @file_path = file_path
+    @only_references = only_references
     @sheet = parse_sheet
   end
 
@@ -20,8 +22,10 @@ class EditTableImport
       csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS.merge(col_sep: ";") })
     end
 
-    interview.tapes.destroy_all
-    interview.find_or_create_tapes(csv.cell(csv.last_row, 1).to_i)
+    unless only_references
+      interview.tapes.destroy_all
+      interview.find_or_create_tapes(csv.cell(csv.last_row, 1).to_i)
+    end
 
     csv.sheet('default').parse({
       tape_number: 'Band',
@@ -41,30 +45,35 @@ class EditTableImport
 
   def process
     sheet.each do |row|
-      speaker_id = contributions.key(row[:speaker_designation])
+      unless only_references
+        speaker_id = contributions.key(row[:speaker_designation])
 
-      translations_attributes = [{
-        locale: original_locale,
-        text: row[:text_orig],
-        mainheading: row[:mainheading_orig],
-        subheading: row[:subheading_orig],
-      }]
-      translations_attributes << {
-        locale: translation_locale,
-        text: row[:text_trans],
-        mainheading: row[:mainheading_trans],
-        subheading: row[:subheading_trans],
-      } if translation_locale && (row[:text_trans] || row[:mainheading_trans] || row[:subheading_trans])
+        translations_attributes = [{
+          locale: original_locale,
+          text: row[:text_orig],
+          mainheading: row[:mainheading_orig],
+          subheading: row[:subheading_orig],
+        }]
+        translations_attributes << {
+          locale: translation_locale,
+          text: row[:text_trans],
+          mainheading: row[:mainheading_trans],
+          subheading: row[:subheading_trans],
+        } if translation_locale && (row[:text_trans] || row[:mainheading_trans] || row[:subheading_trans])
 
-      segment = Segment.create(
-        interview_id: interview.id,
-        tape_id: interview.tapes.where(number: row[:tape_number]).first.id,
-        speaker_id: speaker_id,
-        timecode: row[:timecode],
-        translations_attributes: translations_attributes
-      )
+        segment = Segment.create(
+          interview_id: interview.id,
+          tape_id: interview.tapes.where(number: row[:tape_number]).first.id,
+          speaker_id: speaker_id,
+          timecode: row[:timecode],
+          translations_attributes: translations_attributes
+        )
+        create_annotations(row, interview, segment)
+      else
+        segment = interview.tapes.where(number: row[:tape_number]).first.
+          segments.where(timecode: row[:timecode]).first
+      end
       create_references(row, interview, segment)
-      create_annotations(row, interview, segment)
     end
   rescue StandardError => e
     log("*** #{interview.archive_id}: ")
