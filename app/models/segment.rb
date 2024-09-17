@@ -176,8 +176,8 @@ class Segment < ApplicationRecord
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       split = opts.delete(:split)
       if opts[:speaker_id] || !split
-        next_time = Timecode.new(opts.delete(:next_timecode)).time
-        duration = next_time - Timecode.new(opts[:timecode]).time
+        next_time = Timecode.new(opts.delete(:next_timecode).dup).time
+        duration = next_time - Timecode.new(opts[:timecode].dup).time
         opts.update(duration: duration) if duration > 0
         segment.update(opts)
       else
