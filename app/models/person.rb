@@ -167,11 +167,11 @@ class Person < ApplicationRecord
 
     if fn.blank?
       if reversed
-        "#{ln}, #{I18n.t("honorific.#{gender_key}")}"
+        "#{ln}, #{TranslationValue.for("honorific.#{gender_key}", I18n.locale)}"
       else
         used_title.blank? ?
-          "#{I18n.t("honorific.#{gender_key}")} #{ln}" :
-          "#{I18n.t("honorific.#{gender_key}")} #{used_title} #{ln}"
+          "#{TranslationValue.for("honorific.#{gender_key}", I18n.locale)} #{ln}" :
+          "#{TranslationValue.for("honorific.#{gender_key}", I18n.locale)} #{used_title} #{ln}"
       end
     else
       if reversed
@@ -190,7 +190,7 @@ class Person < ApplicationRecord
     used_gender = gender == 'female' ? 'female' : 'male'
 
     if title.present?
-      I18n.t("modules.person.abbr_titles.#{title}_#{used_gender}")
+        TranslationValue.for("modules.person.abbr_titles.#{title}_#{used_gender}", I18n.locale)
     else
       ''
     end
