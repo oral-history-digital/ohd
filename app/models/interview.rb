@@ -818,6 +818,7 @@ class Interview < ApplicationRecord
       search = Interview.search do
         fulltext params[:fulltext]
         with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
         if project.is_ohd?
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
         else
