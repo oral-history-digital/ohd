@@ -68,6 +68,7 @@ class EditTableImport
           timecode: row[:timecode],
           translations_attributes: translations_attributes
         )
+        segment.update_has_heading
         create_annotations(row, interview, segment)
       else
         segment = interview.tapes.where(number: row[:tape_number]).first.
