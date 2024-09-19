@@ -193,7 +193,15 @@ export const getFlattenedRefTree = createSelector(
             return acc;
         }
 
-        return flattenTree({}, refTree);
+        let flattenedTree = {};
+        if (refTree?.project) {
+          flattenedTree = flattenTree(flattenedTree, refTree.project);
+        }
+        if (refTree?.ohd) {
+          flattenedTree = flattenTree(flattenedTree, refTree.ohd);
+        }
+
+        return flattenedTree;
     }
 );
 
