@@ -12,4 +12,8 @@ class Contribution < ApplicationRecord
   validates_presence_of :contribution_type_id
   validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type_id ]
 
+  scope :without_interviewees, -> { where.not(
+    contribution_type_id: ContributionType.where(code: 'interviewee')
+  ) }
+
 end
