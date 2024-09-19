@@ -29,16 +29,34 @@ export default function RefTree({
         return <Spinner />;
     }
 
+    function hasProjectReferences() {
+      return Array.isArray(refTree?.project?.children);
+    }
+
+    function hasOHDReferences() {
+      return Array.isArray(refTree?.ohd?.children);
+    }
+
+    function hasAnyReferences() {
+      return hasProjectReferences() || hasOHDReferences();
+    }
+
     return (
         <ScrollToTop>
             {isEditor && <HelpText code="interview_registry" className="u-mb" />}
-            <div className="content-index content-ref-tree">
-                {refTree?.children ? (
-                    <RefTreeChildren entries={refTree.children}/>
-                ) : (
-                    t('without_ref_tree')
+
+            {hasAnyReferences() ? (
+              <div className="content-index content-ref-tree">
+                {hasProjectReferences() && (
+                    <RefTreeChildren entries={refTree.project.children}/>
                 )}
-            </div>
+                {hasOHDReferences() && (
+                    <RefTreeChildren entries={refTree.ohd.children}/>
+                )}
+              </div>
+            ) : (
+              t('without_ref_tree')
+            )}
         </ScrollToTop>
     );
 }
