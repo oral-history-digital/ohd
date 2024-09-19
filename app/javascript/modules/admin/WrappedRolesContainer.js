@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
         formElements: [
             {
                 attribute: 'name',
-                validate: function(v){return v.length > 1}
+                validate: function(v){return v?.length > 1}
             },
             {
                 elementType: 'textarea',
