@@ -172,14 +172,14 @@ class Interview < ApplicationRecord
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true do
       Rails.configuration.i18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = title(locale)
+        mem[locale] = anonymous_title(locale)
         mem
       end
     end
 
     dynamic_string :person_name, stored: true do
       Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
-        hash.merge(locale => full_title(locale))
+        hash.merge(locale => anonymous_title(locale))
       end
     end
 
@@ -241,7 +241,7 @@ class Interview < ApplicationRecord
       end
 
       text :"person_name_#{locale}", stored: true do
-        full_title(locale)
+        anonymous_title(locale)
       end
 
       string :"alias_names_#{locale}", stored: true do
@@ -265,7 +265,7 @@ class Interview < ApplicationRecord
       # e.g.: 'Kamera Hans Peter'
       #
       text :"contributions_#{locale}" do
-        contributions.map do |c|
+        contributions.without_interviewees.map do |c|
           if c.person
             [I18n.t("contributions.#{c.contribution_type}", locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
@@ -660,10 +660,9 @@ class Interview < ApplicationRecord
   end
 
   def full_title(locale)
-    first_interviewee = interviewee
-    if first_interviewee
+    if interviewee
       I18n.with_locale locale do
-        first_interviewee.display_name(reversed: true)
+        interviewee.display_name(reversed: true)
       end
     else
       'no interviewee given'
@@ -818,6 +817,8 @@ class Interview < ApplicationRecord
       search = Interview.search do
         fulltext params[:fulltext]
         with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        # the follwing is a really restrictive approach
+        # it allows only users with project-access to find interviews of those projects
         with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
         if project.is_ohd?
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
