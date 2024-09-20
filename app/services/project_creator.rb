@@ -241,20 +241,20 @@ class ProjectCreator < ApplicationService
           text: replace_with_project_params(
             File.read(File.join(Rails.root, "config/defaults/texts/#{locale}/#{code}.html")),
             {
-              project_name: project.name(locale),
-              project_manager: project.manager,
-              project_contact_email: project.contact_email,
-              project_leader: project.leader,
-              institution_name: project.institutions.first&.name(locale),
-              institution_shortname: project.institutions.first&.shortname,
-              institution_website: project.institutions.first&.website,
-              institution_street: project.institutions.first&.street,
-              institution_zip: project.institutions.first&.zip,
-              institution_city: project.institutions.first&.city,
-              institution_country: project.institutions.first&.country,
+              #project_name: project.name(locale),
+              #project_manager: project.manager,
+              #project_contact_email: project.contact_email,
+              #project_leader: project.leader,
+              #institution_name: project.institutions.first&.name(locale),
+              #institution_shortname: project.institutions.first&.shortname,
+              #institution_website: project.institutions.first&.website,
+              #institution_street: project.institutions.first&.street,
+              #institution_zip: project.institutions.first&.zip,
+              #institution_city: project.institutions.first&.city,
+              #institution_country: project.institutions.first&.country,
               privacy_protection_link: "#{OHD_DOMAIN}/#{locale}/privacy_protection",
-              project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/privacy_protection",
-              ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/condition",
+              project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/conditions",
+              ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/conditions",
             }
           )
         )
