@@ -73,6 +73,20 @@ class EditTableImport
       else
         segment = interview.tapes.where(number: row[:tape_number]).first.
           segments.where(timecode: row[:timecode]).first
+        if row[:mainheading_orig] || row[:subheading_orig]
+          segment.update(
+            mainheading: row[:mainheading_orig],
+            subheading: row[:subheading_orig],
+            locale: original_locale
+          )
+        end
+        if row[:mainheading_trans] || row[:subheading_trans]
+          segment.update(
+            mainheading: row[:mainheading_trans],
+            subheading: row[:subheading_trans],
+            locale: translation_locale
+          )
+        end
       end
       create_references(row, interview, segment)
     end
