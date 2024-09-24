@@ -3,6 +3,7 @@ class MoveTranslationsToAlpha3 < ActiveRecord::Migration[7.0]
     Language.all.each do |language|
       alpha2 = ISO_639.find(language.code).try(:alpha2)
       alpha3 = ISO_639.find(language.code).try(:alpha3)
+      language.update(code: alpha3) if alpha3
 
       [
         #"annotation_translations",

@@ -18,6 +18,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :secondary_language_id,
     :primary_translation_language_id,
     :lang,
+    :alpha2,
     :translation_locale,
     :anonymous_title,
     :media_missing,
