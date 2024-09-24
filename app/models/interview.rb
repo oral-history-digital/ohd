@@ -457,12 +457,19 @@ class Interview < ApplicationRecord
   end
 
   def lang
-    ISO_639.find(language&.code).try(:alpha2) || language&.code
+    ISO_639.find(language&.code).try(:alpha3) || language&.code
+  end
+
+  def translation_lang
+    primary_translation_language && (
+      ISO_639.find(primary_translation_language.code).try(:alpha3) ||
+      primary_translation_language.code
+    )
   end
 
   def languages
     interview_languages.map do |il|
-      ISO_639.find(il.language&.code).try(:alpha2) || il.language&.code
+      ISO_639.find(il.language&.code).try(:alpha3) || il.language&.code
     end
   end
 

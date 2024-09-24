@@ -131,6 +131,6 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def translation_locale
-    object.interview_languages.where(spec: ['primary_translation']).first&.language&.alpha2
+    object.translation_lang
   end
 end
