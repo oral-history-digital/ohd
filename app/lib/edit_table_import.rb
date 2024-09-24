@@ -77,14 +77,16 @@ class EditTableImport
           segment.update(
             mainheading: row[:mainheading_orig],
             subheading: row[:subheading_orig],
-            locale: original_locale
+            locale: original_locale,
+            has_heading: true
           )
         end
         if row[:mainheading_trans] || row[:subheading_trans]
           segment.update(
             mainheading: row[:mainheading_trans],
             subheading: row[:subheading_trans],
-            locale: translation_locale
+            locale: translation_locale,
+            has_heading: true
           )
         end
       end
