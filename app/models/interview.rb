@@ -457,19 +457,20 @@ class Interview < ApplicationRecord
   end
 
   def lang
-    ISO_639.find(language&.code).try(:alpha3) || language&.code
+    language&.code
+  end
+
+  def alpha2
+    ISO_639.find(language&.code).try(:alpha2) || language&.code[0..1]
   end
 
   def translation_lang
-    primary_translation_language && (
-      ISO_639.find(primary_translation_language.code).try(:alpha3) ||
-      primary_translation_language.code
-    )
+    primary_translation_language&.code
   end
 
   def languages
     interview_languages.map do |il|
-      ISO_639.find(il.language&.code).try(:alpha3) || il.language&.code
+      il.language&.code
     end
   end
 
@@ -554,9 +555,9 @@ class Interview < ApplicationRecord
     speakers.flatten.uniq.compact.reject{|s| s == false}
   end
 
-  def alpha3_transcript_locales
+  def transcript_locales
     interview_languages.where(spec: ['primary', 'secondary']).map do |il|
-      ISO_639.find(il.language.code).try(:alpha3)
+      il.language.code
     end
   end
 
