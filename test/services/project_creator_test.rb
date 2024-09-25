@@ -17,6 +17,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     creator = ProjectCreator.new(@project_params, @user)
     assert_equal @project_params, creator.project_params
     assert_equal @user, creator.user
+    assert_equal @project.archive_id_number_length, 4
+    assert_true @project.has_map
   end
 
   test 'creates default registry_name_types' do
@@ -70,6 +72,15 @@ class ProjectCreatorTest < ActiveSupport::TestCase
 
   test 'creates interviewee contribution_type' do
     assert @project.contribution_types.where(code: 'interviewee').exists?
+  end
+
+  test 'contribution_types used in export' do
+    assert_equal 4, @project.contribution_types.
+      where(code: %w(interviewer further_interviewee transcriptor cinematographer)).
+      where(used_in_export: true).count
+    assert_equal 0, @project.contribution_types.
+      where.not(code: %w(interviewer further_interviewee transcriptor cinematographer)).
+      where(used_in_export: true).count
   end
 
   test 'creates 14 contribution_types' do

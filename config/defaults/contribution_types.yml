@@ -1,43 +1,43 @@
 ---
 :interviewee:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: true
 :further_interviewee:
-  use_in_export: true,
+  use_in_export: true
   use_in_details_view: true
 :interviewer:
-  use_in_export: true,
+  use_in_export: true
   use_in_details_view: true
 :interpreter:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :cinematographer:
-  use_in_export: false,
+  use_in_export: true
   use_in_details_view: false
 :sound:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :producer:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :other_attender:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :quality_manager:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :transcriptor:
-  use_in_export: false,
+  use_in_export: true
   use_in_details_view: false
 :segmentator:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :translator:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :proofreader:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
 :research:
-  use_in_export: false,
+  use_in_export: false
   use_in_details_view: false
