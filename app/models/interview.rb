@@ -267,7 +267,7 @@ class Interview < ApplicationRecord
       text :"contributions_#{locale}" do
         contributions.without_interviewees.map do |c|
           if c.person
-            [I18n.t("contributions.#{c.contribution_type}", locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
+            [TranslationValue.for("contributions.#{c.contribution_type.code}", locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
         end.flatten.join(' ')
       end
