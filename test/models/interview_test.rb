@@ -34,7 +34,7 @@ class InterviewTest < ActiveSupport::TestCase
     assert_equal(14, interview.segments.count)
     #assert_equal(3, interview.segments.first.translations.count)
     assert_equal("Victor, kannst Du uns kurz so erklären, wie die Firmen jetzt in der Villa strukturiert sind und warum das vor allem so geworden ist, warum die Aktiengesellschaften <[?]> .", interview.segments.first.text('de'))
-    assert_equal("Victor, kannst Du uns kurz so erklären, wie die Firmen jetzt in der Villa strukturiert sind und warum das vor allem so geworden ist, warum die Aktiengesellschaften <>.", interview.segments.first.text('de-subtitle'))
+    assert_equal("Victor, kannst Du uns kurz so erklären, wie die Firmen jetzt in der Villa strukturiert sind und warum das vor allem so geworden ist, warum die Aktiengesellschaften <[?]>.", interview.segments.first.text('de-subtitle'))
     assert_equal("Victor, kannst Du uns kurz so erklären, wie die Firmen jetzt in der Villa strukturiert sind und warum das vor allem so geworden ist, warum die Aktiengesellschaften <[?]>.", interview.segments.first.text('de-public'))
   end
 
