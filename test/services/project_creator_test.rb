@@ -77,10 +77,10 @@ class ProjectCreatorTest < ActiveSupport::TestCase
   test 'contribution_types used in export' do
     assert_equal 4, @project.contribution_types.
       where(code: %w(interviewer further_interviewee transcriptor cinematographer)).
-      where(used_in_export: true).count
+      where(use_in_export: true).count
     assert_equal 0, @project.contribution_types.
       where.not(code: %w(interviewer further_interviewee transcriptor cinematographer)).
-      where(used_in_export: false).count
+      where(use_in_export: false).count
   end
 
   test 'creates 14 contribution_types' do
