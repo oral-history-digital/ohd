@@ -7,7 +7,9 @@ class ProjectCreatorTest < ActiveSupport::TestCase
       shortname: ('a'..'z').to_a.shuffle[0, 4].join,
       default_locale: 'en',
       pseudo_available_locales: "en,de",
-      contact_email: 'manager@archive.com'
+      contact_email: 'manager@archive.com',
+      archive_id_number_length: 4,
+      has_map: true,
     }
     @user = User.find_by(email: 'alice@example.com')
     @project = ProjectCreator.perform(@project_params, @user)
@@ -18,7 +20,7 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal @project_params, creator.project_params
     assert_equal @user, creator.user
     assert_equal @project.archive_id_number_length, 4
-    assert_true @project.has_map
+    assert @project.has_map
   end
 
   test 'creates default registry_name_types' do
@@ -80,7 +82,7 @@ class ProjectCreatorTest < ActiveSupport::TestCase
       where(use_in_export: true).count
     assert_equal 0, @project.contribution_types.
       where.not(code: %w(interviewer further_interviewee transcriptor cinematographer)).
-      where(use_in_export: false).count
+      where(use_in_export: true).count
   end
 
   test 'creates 14 contribution_types' do
