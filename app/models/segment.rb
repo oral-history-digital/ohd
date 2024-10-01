@@ -141,7 +141,7 @@ class Segment < ApplicationRecord
           #gsub(/<i\((.*?)\)>/, "<c(Pause)>").                    # <i(Batteriewechsel)>
           # zwar
           #gsub(/\[\.\.\.\]/, "XXX").                             # e.g. <an bla bla>
-          #gsub(/\{\[?(.*?)\]?\}/, '[\1]').                       # e.g. {[laughs silently]}
+          gsub(/\{\[?(.*?)\]?\}/, '[\1]').                       # e.g. {[laughs silently]}
           #gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
           ##gsub("...", "_").                                      # e.g. ...
           #gsub(" [---]", "<p>").                                 # e.g. Ich war [---] bei Maria Malta, als das passierte.
