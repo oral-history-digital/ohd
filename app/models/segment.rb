@@ -115,6 +115,9 @@ class Segment < ApplicationRecord
           gsub(/<nl\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <nl(Geräusch) bla bla>
           gsub(/<g\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <g(Gestik) bla bla>
           gsub(/<m\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <m(Mimik) bla bla>
+          gsub(/<\?\d+>/, "(...?)").                             # <?1>, <?2>, ...
+          gsub(/<l\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <l(es) bla bla>
+          gsub(/<ld\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <ld(Dialekt) bla bla>
           # zwar
           #gsub(/\[.*?\]/, "").                                   # e.g. [Kommentar]
           #gsub(/\[\.\.\.\]/, "XXX").                             # e.g. [...]
@@ -123,9 +126,6 @@ class Segment < ApplicationRecord
           #gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
           #gsub("...", "_").                                      # e.g. ...
           #gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").         # e.g. (unverständlich, 1 Wort)
-          #gsub(/<\?\d+>/, "(...?)").                             # <?1>, <?2>, ...
-          #gsub(/<l\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <l(es) bla bla>
-          #gsub(/<ld\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <ld(Dialekt) bla bla>
           #gsub(" [---]", "").                                    # e.g. Ich war [---] bei Maria Malta, als das passierte.
           #gsub("(???) ", "(...?)").                              # e.g. Nice grandparents, we played football, (???) it’s
           #gsub("<***>", "").                                     # e.g. <***>

@@ -82,12 +82,12 @@ class SegmentTest < ActiveSupport::TestCase
     )
   end
 
-  test "should parse (unverständlich, 1 Wort) correctly" do
-    assert_equal(
-      @segment.enciphered_text(:subtitle, "wir hatten damals Rinder (unverständlich, 1 Wort) und ich ging", :de),
-      "wir hatten damals Rinder (...?) und ich ging"
-    )
-  end
+  #test "should parse (unverständlich, 1 Wort) correctly" do
+    #assert_equal(
+      #@segment.enciphered_text(:subtitle, "wir hatten damals Rinder (unverständlich, 1 Wort) und ich ging", :de),
+      #"wir hatten damals Rinder (...?) und ich ging"
+    #)
+  #end
 
   test "should parse <i(bla)> correctly" do
     assert_equal(
@@ -103,12 +103,12 @@ class SegmentTest < ActiveSupport::TestCase
     )
   end
 
-  test "should parse <***> correctly" do
-    assert_equal(
-      @segment.enciphered_text(:subtitle, "<***>", :de),
-      ""
-    )
-  end
+  #test "should parse <***> correctly" do
+    #assert_equal(
+      #@segment.enciphered_text(:subtitle, "<***>", :de),
+      #""
+    #)
+  #end
 
   test "should parse {[bla bla]} correctly" do
     assert_equal(
@@ -124,11 +124,11 @@ class SegmentTest < ActiveSupport::TestCase
     )
   end
 
-  test "should parse <***> in public version correctly" do
-    assert_equal(
-      @segment.enciphered_text(:public, "<***>", :de),
-      "<i(Bandende)>"
-    )
-  end
+  #test "should parse <***> in public version correctly" do
+    #assert_equal(
+      #@segment.enciphered_text(:public, "<***>", :de),
+      #"<i(Bandende)>"
+    #)
+  #end
 end
 

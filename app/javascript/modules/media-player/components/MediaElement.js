@@ -207,15 +207,12 @@ export default function MediaElement({
         // handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
-        let newTracks = [];
-        if (interview.media_type === 'video') {
-            newTracks = interview.languages.map(lang => ({
-                src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
-                language: lang,
-                kind: 'captions',
-                label: t(lang),
-            }));
-        }
+        const newTracks = interview.languages.map(lang => ({
+            src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
+            language: lang,
+            kind: 'captions',
+            label: t(lang),
+        }));
         newTracks.forEach(newTrack => {
             player.addRemoteTextTrack(newTrack, false);
         });

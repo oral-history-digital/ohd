@@ -179,7 +179,7 @@ class Interview < ApplicationRecord
 
     dynamic_string :person_name, stored: true do
       Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
-        hash.merge(locale => anonymous_title(locale))
+        hash.merge(locale => title_for_sorting(locale))
       end
     end
 
@@ -267,7 +267,7 @@ class Interview < ApplicationRecord
       text :"contributions_#{locale}" do
         contributions.without_interviewees.map do |c|
           if c.person
-            [I18n.t("contributions.#{c.contribution_type}", locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
+            [TranslationValue.for("contributions.#{c.contribution_type.code}", locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
         end.flatten.join(' ')
       end
@@ -711,6 +711,10 @@ class Interview < ApplicationRecord
     end
   end
 
+  def title_for_sorting(locale=project.default_locale)
+    full_title(locale)
+  end
+
   def video
     I18n.t("search_facets.#{media_type}")
   end
@@ -831,7 +835,7 @@ class Interview < ApplicationRecord
         if project.is_ohd?
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
         else
-          with(:project_id, project.id) 
+          with(:project_id, project.id)
         end
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project

@@ -35,15 +35,12 @@ export default function useTrackPageViewFunction() {
             }
             setTimeout(() => {
                 // Use setTimeout to wait for the document title to get updated.
-                console.log('about to track...', options)
-                //pushInstruction('setCustomDimension', 1, 'user');
                 matomoTrackPageView(options);
             }, delay);
         }
     }
 
     function shouldTrack() {
-        console.log('currentUser', currentUser)
         return currentUser && !currentUser.do_not_track;
     }
 

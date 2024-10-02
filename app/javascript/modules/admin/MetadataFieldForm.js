@@ -25,7 +25,7 @@ const NAME_VALUES = {
         "project_access", "transcript_coupled"
     ],
     Person: [
-        "date_of_birth", "year_of_birth", "gender", "description",
+        "date_of_birth", "year_of_birth", "gender", "description_interviewee",
         "birth_name", "other_first_names", "alias_names", "pseudonym_or_name"
     ],
 }

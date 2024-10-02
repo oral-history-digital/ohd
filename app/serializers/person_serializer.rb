@@ -12,6 +12,7 @@ class PersonSerializer < ApplicationSerializer
     :gender,
     :title,
     :description,
+    :description_interviewee,
     :associations_loaded,
     :use_pseudonym,
     :events,
@@ -24,6 +25,10 @@ class PersonSerializer < ApplicationSerializer
       mem[locale] = object.description(locale)
       mem
     end
+  end
+
+  def description_interviewee
+    description
   end
 
   def events
