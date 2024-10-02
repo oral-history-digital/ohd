@@ -193,7 +193,15 @@ export const getFlattenedRefTree = createSelector(
             return acc;
         }
 
-        return flattenTree({}, refTree);
+        let flattenedTree = {};
+        if (refTree?.project) {
+          flattenedTree = flattenTree(flattenedTree, refTree.project);
+        }
+        if (refTree?.ohd) {
+          flattenedTree = flattenTree(flattenedTree, refTree.ohd);
+        }
+
+        return flattenedTree;
     }
 );
 
@@ -233,17 +241,13 @@ export const getHasTranscript = createSelector(
             return false;
         }
 
-        const firstSegmentId = interview.first_segments_ids[1];
-        const firstSegment = segmentsOfFirstTape[firstSegmentId];
+        const segmentArray = Object.values(segmentsOfFirstTape);
 
-        if (!firstSegment) {
-            return false;
-        }
+        const result = segmentArray.some((segment) =>
+            segment.text[locale] || segment.text[`${locale}-public`]
+        );
 
-        const hasText = typeof firstSegment.text[locale] === 'string';
-        const hasPublicText = typeof firstSegment.text[`${locale}-public`] === 'string';
-
-        return hasText || hasPublicText;
+        return result;
     }
 );
 

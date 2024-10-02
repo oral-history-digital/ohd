@@ -3,7 +3,10 @@ class ProjectCreator < ApplicationService
     :root_registry_entry, :is_ohd
 
   def initialize(project_params, user, is_ohd = false)
-    @project_params = project_params
+    @project_params = project_params.merge(
+      archive_id_number_length: 4,
+      has_map: true,
+    )
     @user = user
     @is_ohd = is_ohd
   end
