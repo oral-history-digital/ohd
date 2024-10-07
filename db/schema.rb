@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_13_090921) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -630,7 +630,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.integer "parents_count", default: 0
     t.integer "project_id"
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
-    t.index ["project_id"], name: "index_registry_entries_on_project_id"
   end
 
   create_table "registry_entry_relations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -893,7 +892,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -903,7 +902,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
