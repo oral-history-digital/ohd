@@ -124,7 +124,10 @@ class InterviewBaseSerializer < ApplicationSerializer
     (
       instance_options[:project_available_locales] ||
       object.project.available_locales
-    ).select { |l| object.has_heading?(l) }
+    ).map do |l| 
+      alpha3 = ISO_639.find(l).alpha3
+      alpha3 if object.has_heading?(alpha3)
+    end.compact
   end
 
   def language_id
