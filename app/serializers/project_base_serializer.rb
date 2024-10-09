@@ -1,4 +1,4 @@
-class ProjectBaseSerializer < ActiveModel::Serializer 
+class ProjectBaseSerializer < ActiveModel::Serializer
   attributes :id,
     :type,
     :name,
@@ -18,7 +18,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :num_interviews,
     :institution_ids,
     :logos,
-    :is_ohd
+    :is_ohd,
+    :show_preview_img
 
   def display_name
     object.localized_hash(:display_name)
