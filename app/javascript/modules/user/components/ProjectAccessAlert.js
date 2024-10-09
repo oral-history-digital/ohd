@@ -27,8 +27,7 @@ export default function ProjectAccessAlert ({
         currentUserProject?.workflow_state === 'project_access_data_corrected'
     ) {
         return <div className='error'>
-                <p>{`${t('modules.project_access.request_in_process_text1')}`}</p>
-                <p>{`${t('modules.project_access.request_in_process_text2')}`}</p>
+                <p>{`${t('modules.project_access.request_in_process_text')}`}</p>
             </div>
     } else if (currentUserProject?.workflow_state === 'project_access_rejected') {
         return (
