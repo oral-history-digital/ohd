@@ -83,10 +83,10 @@ export default function SegmentPopup({
                                     <FaTimes className="Icon" />
                                 </button>
                                 <div className="SegmentPopup-term">
-                                    {openReference.name[locale]}
+                                    {openReference.name[contentLocale]}
                                 </div>
                                 <div className="SegmentPopup-explanation">
-                                    {openReference.notes[locale]}
+                                    {openReference.notes[contentLocale]}
                                 </div>
                             </div>
                         )
