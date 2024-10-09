@@ -273,44 +273,43 @@ class Segment < ApplicationRecord
   end
 
   searchable do
-    string :archive_id, :stored => true do
+    string :archive_id, stored: true do
       interview&.archive_id
     end
-    string :media_id, :stored => true
+    string :media_id
     string :timecode
     string :sort_key
-    text :speaker, stored: true do
+    text :speaker do
       speaking_person && speaking_person.name.inject(""){|mem, (k,v)| mem << v; mem}
     end
 
     boolean :has_heading
 
     # dummy method, necessary for generic search
-    string :workflow_state do
+    string :workflow_state, stored: true do
       'public'
     end
 
-    I18n.available_locales.each do |locale|
-      text :"text_#{locale}", stored: true do
-        text_translations["#{locale}-public"] or nil
+    Language.all.pluck(:code).each do |code|
+      code_short = code.split('-').first
+      text :"text_#{code_short}", stored: true do
+        text_translations["#{code_short}-public"] or nil
       end
 
-      text :"mainheading_#{locale}", stored: true do
-        mainheading_translations["#{locale}-public"] or mainheading_translations[locale] or nil
+      text :"mainheading_#{code_short}", stored: true do
+        mainheading_translations["#{code_short}-public"] or mainheading_translations[code_short] or nil
       end
 
-      text :"subheading_#{locale}", stored: true do
-        subheading_translations["#{locale}-public"] or subheading_translations[locale] or nil
+      text :"subheading_#{code_short}", stored: true do
+        subheading_translations["#{code_short}-public"] or subheading_translations[code_short] or nil
       end
     end
-
-    # Original text for languages that are not in I18n.available_locales.
-    text :"text_orig", stored: true
   end
 
-  I18n.available_locales.each do |locale|
-    define_method "text_#{locale}" do
-      text("#{locale}-public") # only search in public texts
+  Language.all.pluck(:code).each do |code|
+    code_short = code.split('-').first
+    define_method "text_#{code_short}" do
+      text("#{code_short}-public") # only search in public texts
       # TODO: enable searching over original texts in admin-mode
     end
   end
@@ -333,7 +332,7 @@ class Segment < ApplicationRecord
   end
 
   def orig_locale
-    interview.language && ISO_639.find(interview.language.code).alpha2
+    interview.language.code
   end
 
   def media_id=(id)
