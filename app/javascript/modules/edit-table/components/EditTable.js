@@ -38,14 +38,6 @@ export default function EditTable({
         return <Spinner />;
     }
 
-    let translationLocale = interview.translation_locale;
-    //
-    // use interface-locale if no translation-locale given and if it differs from interview-language
-    //
-    translationLocale ||= interview.lang === locale ?
-        project.available_locales.filter(locale => locale !== interview.lang)[0] :
-        locale;
-
     const allSegments = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[1];
 
     let segments;
@@ -86,7 +78,7 @@ export default function EditTable({
                 key={segment.id}
                 segment={segment}
                 originalLocale={interview.lang}
-                translationLocale={translationLocale}
+                translationLocale={interview.translation_locale}
                 active={active}
             />
         );
