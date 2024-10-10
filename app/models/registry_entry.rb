@@ -190,8 +190,8 @@ class RegistryEntry < ApplicationRecord
       .joins('LEFT JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
       .joins('LEFT JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
       .where('registry_entries.project_id': project_id)
-      .where.not('registry_entries.latitude': [nil, ''])
-      .where.not('registry_entries.longitude': [nil, ''])
+      .where('registry_entries.has_geo_coords': true)
+      # only use where class if scope is public
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
 
     from_sql = entries

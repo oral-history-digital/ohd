@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_10_143230) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -357,6 +357,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.boolean "media_missing", default: false, null: false
     t.boolean "transcript_coupled", default: true
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
+    t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end
 
   create_table "language_translations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -436,6 +437,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.boolean "use_in_metadata_import", default: false
     t.integer "event_type_id"
     t.string "eventable_type"
+    t.index ["ref_object_type", "use_in_map_search"], name: "index_metadata_fields_on_ref_object_type_and_use_in_map_search"
+    t.index ["ref_object_type"], name: "index_metadata_fields_on_ref_object_type"
+    t.index ["use_in_map_search"], name: "index_metadata_fields_on_use_in_map_search"
   end
 
   create_table "norm_data", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -619,8 +623,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
   create_table "registry_entries", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code", limit: 255
     t.string "desc", limit: 255
-    t.string "latitude", limit: 255
-    t.string "longitude", limit: 255
+    t.string "latitude", limit: 255, default: "", null: false
+    t.string "longitude", limit: 255, default: "", null: false
     t.string "workflow_state", limit: 255, null: false
     t.boolean "list_priority"
     t.datetime "created_at", precision: nil
@@ -629,7 +633,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
     t.integer "project_id"
+    t.virtual "has_geo_coords", type: :boolean, as: "`latitude` is not null and `latitude` <> '' and `longitude` is not null and `longitude` <> ''", stored: true
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
+    t.index ["has_geo_coords"], name: "index_registry_entries_on_has_geo_coords"
+    t.index ["latitude"], name: "index_registry_entries_on_latitude"
+    t.index ["longitude"], name: "index_registry_entries_on_longitude"
     t.index ["project_id"], name: "index_registry_entries_on_project_id"
   end
 
@@ -667,6 +675,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: 191
+    t.index ["locale"], name: "index_registry_name_translations_on_locale"
     t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true, length: { locale: 191 }
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
@@ -726,6 +735,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_094538) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "archive_id"
+    t.index ["interview_id"], name: "index_registry_references_on_interview_id"
+    t.index ["registry_entry_id", "interview_id"], name: "index_registry_references_on_registry_entry_id_and_interview_id"
+    t.index ["registry_entry_id"], name: "index_registry_references_on_registry_entry_id"
   end
 
   create_table "role_permissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
