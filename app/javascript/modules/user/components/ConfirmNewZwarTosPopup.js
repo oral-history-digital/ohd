@@ -21,7 +21,9 @@ export default function ConfirmNewZwarTosPopup ({
             return up.project_id === project?.id;
         });
 
-    if (project?.shortname !== 'za') return null;
+    if (['za', 'mog'].indexOf(project.shortname) === -1) {
+        return null;
+    }
     if (!currentProjectAccess) return null;
     if (location.pathname.match(/\/conditions$/)) return null;
 
@@ -46,7 +48,7 @@ export default function ConfirmNewZwarTosPopup ({
             { close => (
                 <>
                     <h2>{t('update.zwar.tos.title')}</h2>
-                    <p>{t('update.zwar.tos.content_one')}</p>
+                    <p>{t('update.zwar.tos.content_one', {archive_name: project.name[locale]})}</p>
                     <p>{t('update.zwar.tos.content_two')}</p>
                     <p>{t('update.zwar.tos.content_three')}</p>
                     <Form
