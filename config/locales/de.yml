@@ -723,7 +723,7 @@ de:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
   user_registration:
-    temporarily_closed: 'Kurzfristig nicht möglich. Bitte versuchen Sie es später nocheinmal'
+    temporarily_closed: 'Aufgrund von Wartungsarbeiten ist eine Registrierung in dem Archiv bis zum 15. Oktober 2024 um 14:00 Uhr nicht möglich.'
     registration: Registrierung
     registration_text_one: 'Um die Interviews im Archiv ansehen zu können ist eine
       Registrierung notwendig. Die '
