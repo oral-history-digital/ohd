@@ -35,17 +35,8 @@ export default function Register({
                                     {t('devise.registrations.link')}
                                 </h1>
                                 <p>
-                                    {t('user_registration.registration_text_one')}
-                                    <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
-                                        {t('user_registration.tos_agreement')}
-                                    </a>
-                                    {t('user_registration.registration_text_two')}
-                                    <a href={privacyLink[locale]} target="_blank" title="" rel="noreferrer">
-                                        {t('user_registration.priv_agreement_alias')}
-                                    </a>
-                                    {t('user_registration.registration_text_three')}
+                                    {t('user_registration.temporarily_closed')}
                                 </p>
-                                <RegisterFormContainer />
                             </div>
                         )
                     }

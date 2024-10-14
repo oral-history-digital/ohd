@@ -167,7 +167,7 @@ Rails.application.routes.draw do
         get :access_token
       end
     end
-    resources :user_registrations do
+    resources :user_registrations, only: [:new, :index] do
       member do
         post :confirm
         get :activate

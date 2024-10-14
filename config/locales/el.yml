@@ -708,6 +708,7 @@ el:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
   user_registration:
+    temporarily_closed: 'Kurzfristig nicht möglich. Bitte versuchen Sie es später nocheinmal'
     registration: Εγγραφή
     registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών "Μνήμες
       από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα και να εξηγήσετε
