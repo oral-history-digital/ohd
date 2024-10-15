@@ -80,7 +80,7 @@ export default function ConfirmNewZwarTosPopup ({
                             {
                                 elementType: 'input',
                                 attribute: 'tos_agreement',
-                                label: t('user.tos_agreement') + ' (ZWAR)',
+                                label: t('user.tos_agreement') + ` (${project.shohrtname === 'za' ? 'ZWAR' : 'MOG'})`,
                                 type: 'checkbox',
                                 validate: function(v){return v && v !== '0'},
                                 help: t('update.zwar.tos.tos_agreement_zwar', {
