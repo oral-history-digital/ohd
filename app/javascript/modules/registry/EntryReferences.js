@@ -52,6 +52,7 @@ export default function EntryReferences({
                                     .map((segmentRef) => (
                                     <li key={segmentRef.id} className="HorizontalList-item">
                                         <SegmentReference
+                                            project={projects[project_id]}
                                             segmentRef={segmentRef}
                                             onSubmit={onSubmit}
                                         />
