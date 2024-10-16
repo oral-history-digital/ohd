@@ -14,7 +14,7 @@ class HeadingSerializer < ApplicationSerializer
 
   def time
     # timecode as seconds 
-    Time.parse(object.timecode).seconds_since_midnight
+    Timecode.new(object.timecode).time
   end
 
   def tape_nbr
