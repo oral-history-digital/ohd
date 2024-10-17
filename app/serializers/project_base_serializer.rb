@@ -19,7 +19,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :institution_ids,
     :logos,
     :is_ohd,
-    :show_preview_img
+    :show_preview_img,
+    :has_map
 
   def display_name
     object.localized_hash(:display_name)
