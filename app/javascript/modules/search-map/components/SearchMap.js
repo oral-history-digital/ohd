@@ -49,9 +49,7 @@ export default function SearchMap() {
     }
 
     if (!project.has_map) {
-        return (
-            <Navigate to={`${pathBase}/not_found`} replace />
-        );
+        return <Navigate to={`${pathBase}/not_found`} replace />;
     }
 
     return (
