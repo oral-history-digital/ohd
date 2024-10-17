@@ -75,7 +75,7 @@
     "react-on-rails": "14.0.4",
     "react-redux": "^7.2.2",
     "react-resize-aware": "3.1.1",
-    "react-router-dom": "^6.11.0",
+    "react-router-dom": "^6.27.0",
     "react-rte-18support": "^0.16.5",
     "react-select": "^5.8.0",
     "react-slick": "^0.30.2",
