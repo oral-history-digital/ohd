@@ -269,9 +269,9 @@ el:
   biographical_entries_header: 'Σύντομο βιογραφικό: %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Σύντομο βιογραφικό της/του %{interviewee_name}'
   biographical_entries_footer: 'Τρόπος παραπομπής: Σύντομο βιογραφικό της/του'
-  observations_header: 'Protokoll (griechisch): %{interviewee_name} (Interview-ID %{archive_id})'
-  observations_title: Protokoll (griechisch) des Interviews mit %{interviewee_name}
-  observations_footer: 'Zitiervorgabe: Protokoll von'
+  observations_header: 'Πρωτόκολλο (ελληνικά): %{interviewee_name} (Interview-ID %{archive_id})'
+  observations_title: Πρωτόκολλο (ελληνικά) της συνέντευξης με %{interviewee_name}
+  observations_footer: 'Τρόπος παραπομπής: Πρωτόκολλο'
   interview_info: Σχετικά με τη συνέντευξη
   place: Τόπος
   group: Gruppe
@@ -809,7 +809,7 @@ el:
     unshared: nicht öffentlich
     description: Beschreibung
     duration: Dauer
-    observations: Protokoll
+    observations: Πρωτόκολλο
     tape_count: Anzahl der Bänder
     tasks_supervisor_ids: Qualitätsmanagement
     tasks_user_ids: Bearbeiter*innen
@@ -1019,7 +1019,7 @@ el:
         collection: Υποσυλλογή
         data: Αρχείο απομαγνητοφώνησης
         timecode: Timecode
-        observations: Protokoll
+        observations: Πρωτόκολλο
         description: Description
       transcript:
         collection_id: Collection
