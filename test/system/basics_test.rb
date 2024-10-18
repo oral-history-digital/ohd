@@ -2,19 +2,18 @@ require "application_system_test_case"
 
 class BasicsTest < ApplicationSystemTestCase
   test 'transactional fixtures 1/2' do
-    assert_equal 1, Project.count
-    Project.create!(shortname: 'xyz')
     assert_equal 2, Project.count
+    Project.create!(shortname: 'xyz')
+    assert_equal 3, Project.count
   end
 
   test 'transactional fixtures 2/2' do
-    assert_equal 1, Project.count
-    Project.create!(shortname: 'xyz')
     assert_equal 2, Project.count
+    Project.create!(shortname: 'xyz')
+    assert_equal 3, Project.count
   end
 
   test "visiting the project 'home' page" do
-    #binding.pry
     visit '/'
     assert_text 'This is the test archive of the oral history digital project'
   end
@@ -151,7 +150,7 @@ class BasicsTest < ApplicationSystemTestCase
 
     click_on 'Editing interface'
     click_on 'Curation'
-    click_on 'Neues Interview anlegen'
+    click_on 'Create new interview'
     select 'Dupont, Jean'
     select 'Interviewee'
     fill_in 'Interview ID', with: 'test234'
@@ -161,9 +160,9 @@ class BasicsTest < ApplicationSystemTestCase
     select 'English', from: 'primary_translation_language_id'
     fill_in 'Number of tapes', with: 1
     within '#interview' do
-      click_on 'Neues Interview anlegen'
+      click_on 'Create new interview'
     end
-    assert_text 'Das Interview wurde angelegt'
+    assert_text 'The interview has been created.'
   end
 
   test 'domain login' do
@@ -203,6 +202,7 @@ class BasicsTest < ApplicationSystemTestCase
 
   test 'search in and across archives' do
     Interview.reindex
+    Segment.reindex
     DataHelper.test_media
 
     visit '/'
@@ -237,8 +237,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'download transcript PDF' do
-    skip "PDF setup does not work at the moment."
-
     Interview.reindex
     DataHelper.test_media
 
@@ -334,9 +332,9 @@ class BasicsTest < ApplicationSystemTestCase
       click_on 'Submit'
     end
 
-    click_on 'Curation/ indexing'
+    click_on 'Curation/indexing'
     sleep 1
-    click_on 'Verknüpfungsarten bearbeiten'
+    click_on 'Edit Index Reference Types'
     all("button[title='Add']")[0].click
     sleep 1
     select 'city'

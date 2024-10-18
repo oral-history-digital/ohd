@@ -42,12 +42,13 @@ class CollectionsController < ApplicationController
     nested_data_type = nil
 
     if params.keys.include?("all")
-      collections = policy_scope(Collection).all
+      collections = policy_scope(Collection).
+        includes(:translations, :institution).all
       data_type = "collections"
       extra_params = "all"
     elsif params[:for_projects]
       collections = policy_scope(Collection).
-        includes(:translations).
+        includes(:translations, :institution).
         order("collection_translations.name ASC")
       data_type = "projects"
       id = current_project.id
@@ -57,7 +58,7 @@ class CollectionsController < ApplicationController
       page = params[:page] || 1
       collections = policy_scope(Collection).
         where(search_params).
-        includes(:translations).
+        includes(:translations, :institution).
         order("collection_translations.name ASC").
         paginate page: page
       data_type = "projects"

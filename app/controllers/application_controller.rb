@@ -15,13 +15,13 @@ class ApplicationController < ActionController::Base
 
   def user_by_token
     if doorkeeper_token && !current_user
-      user = User.find(doorkeeper_token.resource_owner_id) 
+      user = User.find(doorkeeper_token.resource_owner_id)
       sign_in(user)
     end
   end
 
   def check_ohd_session
-    if ( 
+    if (
         !current_user &&
         request.base_url != OHD_DOMAIN &&
         !params['checked_ohd_session'] &&
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_policy_scoped, only: :index
   after_action if: -> {Rails.env.development?} do
     logger = ActiveRecord::Base.logger
-    
+
     Rails.logger.info "ActiveRecord: #{logger.query_count} queries performed"
     logger.reset_query_count
   end
@@ -67,9 +67,21 @@ class ApplicationController < ActionController::Base
   def current_project
     @current_project = @current_project || (
       (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
-        Project.where(shortname: params[:project_id]).first :
-        Project.where(archive_domain: request.base_url).first
-    )
+        Project.where(shortname: params[:project_id]) :
+        Project.where(archive_domain: request.base_url)
+    ).includes(
+      :translations,
+      :registry_name_types,
+      :media_streams,
+      :map_sections,
+      registry_reference_types: :translations,
+      contribution_types: :translations,
+      metadata_fields: :translations,
+      external_links: :translations,
+      collections: :translations,
+      #collections: {collection: :translations},
+      institution_projects: {institution: :translations},
+    ).first
   end
 
   helper_method :current_project
@@ -92,7 +104,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: Rails.cache.fetch("translations-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}") do
+        translations: Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}") do
           TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
             mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
               mem2[translation.locale] = translation.value
@@ -134,7 +146,11 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {all: 'fetched'},
+          projects: {
+            all: 'fetched',
+            #"#{current_project.id}": 'fetched'
+          },
+          #projects: {"#{current_project.id}": 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -146,15 +162,25 @@ class ApplicationController < ActionController::Base
           contribution_types: {},
         },
         projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          Project.all.inject({}) { |mem, s| mem[s.id] = ProjectBaseSerializer.new(s); mem }
+          Project.all.includes(
+            :translations,
+            :registry_reference_types,
+            :collections,
+          ).inject({}) do |mem, s|
+            mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+            mem
+          end
         end,
+        #projects: {
+          #"#{current_project.id}": cache_single(current_project),
+        #},
         institutions: {},
         collections: {},
-        norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
+        norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
           NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
-        languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
-          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
+        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do
+          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         users: {
           current: current_user && ::UserSerializer.new(current_user) || nil #{}
@@ -231,17 +257,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def search_query
-    if current_project
-      current_project.search_facets_names.inject({page: 1}) do |mem, facet|
-        mem["#{facet}[]"] = params[facet] if params[facet]
-        mem
-      end
-    else
-      {}
-    end
-  end
-
   def country_keys
     Rails.cache.fetch('country-keys-20240624') do
       I18n.available_locales.inject({}) do |mem, locale|
@@ -278,7 +293,7 @@ class ApplicationController < ActionController::Base
     cache_key_prefix = current_project ? current_project.shortname : 'ohd'
     cache_key = "#{cache_key_prefix}-#{(opts[:serializer_name] || data.class.name).underscore}"\
       "-#{data.id}-#{data.updated_at}-#{opts[:related] && data.send(opts[:related]).updated_at}"\
-      "-#{opts[:cache_key_suffix]}"
+      "-#{opts[:cache_key_suffix]}-#{I18n.locale}"
     Rails.cache.fetch(cache_key) do
       raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
       # compile raw-json to string first (making all db-requests!!) using to_json
@@ -324,7 +339,7 @@ class ApplicationController < ActionController::Base
   end
 
   def storable_location?
-    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
   end
 
   def store_user_location!

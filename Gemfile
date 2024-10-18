@@ -27,7 +27,7 @@ gem 'open4'
 gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'rails-latex'
-gem 'react_on_rails', '~> 13.4.0'
+gem 'react_on_rails', '~> 14.0.4'
 gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
@@ -48,7 +48,7 @@ gem 'rack-maintenance'
 gem 'sunspot_rails', '~> 2.6.0'
 gem 'sunspot_solr', '~> 2.6.0'
 gem 'progress_bar'
-gem 'shakapacker', '7.2.3'
+gem 'shakapacker', '~> 8.0.1'
 
 
 group :test, :development do

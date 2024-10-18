@@ -128,7 +128,7 @@ class SearchesController < ApplicationController
         search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
 
         json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}" do
-          registry_entries = RegistryEntry.for_map(map_interviewee_ids(search), map_interview_ids(search), scope)
+          registry_entries = RegistryEntry.for_map(current_project.id, map_interviewee_ids(search), map_interview_ids(search), scope)
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer

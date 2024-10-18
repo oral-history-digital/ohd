@@ -3,6 +3,7 @@ class SegmentsController < ApplicationController
     @segment = Segment.find params[:id]
     authorize @segment
     @segment.update(segment_params)
+    @segment.update_has_heading
     @segment.reload
 
     respond_to do |format|
@@ -26,11 +27,12 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        data = Rails.cache.fetch("#{current_project.shortname}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
+        data = Rails.cache.fetch("interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
           transcript_coupled = @interview.transcript_coupled
           @interview.tapes.inject({}) do |tapes, tape|
             segments_for_tape = tape.segments.
-              includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations], project: [:metadata_fields]).
+              includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations]).
+              #includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations], project: [:metadata_fields]).
               #where.not(timecode: '00:00:00.000').
               order(:timecode)#.first(20)
 
@@ -48,19 +50,6 @@ class SegmentsController < ApplicationController
       end
     end
   end
-
-  #def destroy
-    #@segment = Segment.find(params[:id])
-    #@segment.destroy
-
-    #respond_to do |format|
-      #format.html do
-        #render :action => 'index'
-      #end
-      #format.js
-      #format.json { render json: {}, status: :ok }
-    #end
-  #end
 
   def show
     @segment = Segment.find(params[:id])

@@ -7,7 +7,6 @@ import { useI18n } from 'modules/i18n';
 import { RegistrySearchFormContainer } from 'modules/registry';
 import { useProject } from 'modules/routes';
 import DownloadRegistryEntries from './DownloadRegistryEntries';
-import { PROJECT_MOG } from 'modules/constants';
 
 function RegistryEntriesTabPanel({
     showRegistryEntriesSearchResults,
@@ -33,35 +32,14 @@ function RegistryEntriesTabPanel({
                         {t('activerecord.models.registry_entry.actions.' + (showRegistryEntriesSearchResults ? 'show_tree' : 'show_search_results'))}
                     </button>
                 </p>
-                {
-                    projectId != PROJECT_MOG ?
-                        locales.map((locale) => (
-                            <AuthorizedContent key={locale} object={{type: 'General'}} action='edit'>
-                                <div key={locale}>
-                                    <DownloadRegistryEntries format="pdf" specificLocale={locale} />
-                                    <DownloadRegistryEntries format="csv" specificLocale={locale} />
-                                </div>
-                            </AuthorizedContent>
-                        )) :
-                        null
-                }
-                {
-                    (projectId === PROJECT_MOG) ?
-                            <div key={locale}>
-                                <p>
-                                    <a href={`/alfa-${locale}.pdf`}>
-                                        <FaDownload
-                                            className="Icon Icon--primary"
-                                            title={t('download_registry_entries', { format: 'pdf' , locale: locale })}
-                                        />
-                                        {' '}
-                                        {t('download_registry_entries', { format: 'pdf', locale: locale })}
-                                    </a>
-                                </p>
-                            </div>
-                        :
-                        null
-                }
+                { locales.map((locale) => (
+                    <AuthorizedContent key={locale} object={{type: 'General'}} action='edit'>
+                        <div key={locale}>
+                            <DownloadRegistryEntries format="pdf" specificLocale={locale} />
+                            <DownloadRegistryEntries format="csv" specificLocale={locale} />
+                        </div>
+                    </AuthorizedContent>
+                ))}
             </div>
         </ErrorBoundary>
     );

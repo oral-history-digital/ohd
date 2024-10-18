@@ -8,6 +8,7 @@ import InterviewDownloads from './InterviewDownloads';
 export default function InterviewTextMaterials({
     interview,
     isCatalog,
+    editView,
 }) {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -15,10 +16,9 @@ export default function InterviewTextMaterials({
         interview.properties?.public_attributes?.observations?.toString() === 'true' &&
         interview.observations?.[locale]
     );
-    const showTranscriptPDF = interview.segments?.[1]?.[interview.first_segments_ids[1]] && (
-        interview.properties?.public_attributes?.transcript?.toString() === 'true' ||
-        isAuthorized(interview, 'update') 
-    );
+    const showTranscriptPDF = isAuthorized(interview, 'update') ||
+        interview.properties?.public_attributes?.transcript?.toString() === 'true';
+        
 
     if (!interview.language_id) {
         return null;
@@ -44,7 +44,7 @@ export default function InterviewTextMaterials({
                     })}
                 </p>
             )}
-            <SingleValueWithFormContainer
+            { editView && <SingleValueWithFormContainer
                 obj={interview}
                 collapse
                 elementType="textarea"
@@ -52,12 +52,12 @@ export default function InterviewTextMaterials({
                 attribute="observations"
                 value={interview.observations?.[locale]}
                 noLabel
-            />
+            /> }
             {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.languages.map((lang) => {
+                        { interview.languages_with_transcripts.map((lang) => {
                             return (
                                 <InterviewDownloads
                                     key={lang}

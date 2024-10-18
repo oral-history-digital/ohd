@@ -12,6 +12,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :duration,
     :interview_date,
     :languages,
+    :languages_with_transcripts,
     :language_id,
     :primary_language_id,
     :secondary_language_id,

@@ -20,7 +20,7 @@ class ReferenceTree
   def leafe(segment)
     {
       type: 'leafe',
-      time: Time.parse(segment.timecode).seconds_since_midnight,
+      time: Timecode.new(segment.timecode).time,
       timecode: segment.timecode,
       tape_nbr: segment.tape.number,
       text: segment.transcripts
@@ -49,7 +49,7 @@ class ReferenceTree
   end
 
   def deep_find_or_create_node(array, node_id)
-    result, ancestors = deep_find_node(array, node_id) 
+    result, ancestors = deep_find_node(array, node_id)
     unless result
       result = create_node(node_id)
       #array << result
@@ -58,7 +58,7 @@ class ReferenceTree
   end
 
   def deep_find_node(array, node_id, ancestors=[])
-    result = array.select{|node| node[:id] == node_id}.first 
+    result = array.select{|node| node[:id] == node_id}.first
     unless result
       array.each do |node|
         result, this_ancestors = deep_find_node(node[:children], node_id, ancestors + [node]) if node[:children]
@@ -70,7 +70,7 @@ class ReferenceTree
 
   def leafes_with_parent_nodes
     parent_nodes = []
-    @registry_references.each do |ref| 
+    @registry_references.each do |ref|
       if ref.ref_object
         node = find_or_create_node(parent_nodes, ref.registry_entry_id)
         if node
@@ -91,16 +91,16 @@ class ReferenceTree
       node = nodes.shift
       parents = RegistryEntry.find(node[:id]).parents
 
-      if parents.size > 0 
+      if parents.size > 0
         parents.each do |parent|
           # a parent registry_entry exists!
           parents_found = true
           # is one of the current nodes parent of this (shifted) node?
-          parent_node, ancestors = deep_find_node(parent_nodes, parent.id) 
+          parent_node, ancestors = deep_find_node(parent_nodes, parent.id)
           parent_node, ancestors = deep_find_node(nodes, parent.id) unless parent_node
           # the parent-node does not exist in the current nodes-tree:
           unless parent_node
-            parent_node = create_node(parent.id) 
+            parent_node = create_node(parent.id)
             parent_nodes << parent_node
           end
           parent_node[:children] << node
@@ -117,7 +117,7 @@ class ReferenceTree
           parent_node[:children] += node[:children]
           parent_node[:leafe_count] += node[:leafe_count];
         else
-          parent_nodes << node 
+          parent_nodes << node
         end
       end
     end

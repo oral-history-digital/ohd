@@ -9,7 +9,7 @@ module Interview::Export
   end
 
   def to_csv(locale, tape_number=1)
-    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |csv|
+    CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |csv|
       csv << %w(Timecode Speaker Transkript)
 
       tapes[tape_number.to_i - 1].segments.includes(
@@ -25,7 +25,7 @@ module Interview::Export
   end
 
   def photos_csv(locale, only_public)
-    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
+    CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |f|
       f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
 
       photos_to_export = only_public ? photos.where(workflow_state: 'public') : photos

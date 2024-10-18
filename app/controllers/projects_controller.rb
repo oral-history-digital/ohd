@@ -23,7 +23,11 @@ class ProjectsController < ApplicationController
       format.json do
         json = Rails.cache.fetch "projects-#{extra_params}-#{Project.count}-#{Project.maximum(:updated_at)}" do
           {
-            data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s, serializer_name: 'ProjectBase'); mem},
+            data: projects.
+              includes(:translations, metadata_fields: [
+                :translations, registry_reference_type: {registry_entry: {registry_names: :translations}}
+              ]).
+              inject({}){|mem, s| mem[s.id] = cache_single(s, serializer_name: 'ProjectBase'); mem},
             data_type: 'projects',
             extra_params: extra_params,
             page: params[:page],

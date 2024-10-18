@@ -50,5 +50,5 @@ DataDetails.propTypes = {
     detailsAttributes: PropTypes.array.isRequired,
     data: PropTypes.object.isRequired,
     scope: PropTypes.string.isRequired,
-    optionsScope: PropTypes.string.isRequired,
+    optionsScope: PropTypes.string,
 };

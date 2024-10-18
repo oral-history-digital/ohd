@@ -87,6 +87,12 @@ export default function UploadEditTable({
                         validate: function(v){return v instanceof File},
                     },
                     {
+                        elementType: 'input',
+                        help: 'import_edit_table.only_references',
+                        attribute: 'only_references',
+                        type: 'checkbox'
+                    },
+                    {
                         elementType: 'speakerDesignationInputs',
                         attribute: 'contributions_attributes',
                         value: contributions,

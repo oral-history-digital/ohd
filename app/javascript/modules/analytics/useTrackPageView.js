@@ -1,27 +1,12 @@
 import { useEffect } from 'react';
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { useSelector } from 'react-redux';
 
-import { getCurrentUser } from 'modules/data';
-
-const TRACKING_DELAY = 100;
+import { TRACKING_DELAY } from './constants';
+import useTrackPageViewFunction from './useTrackPageViewFunction';
 
 export default function useTrackPageView(title) {
-    const currentUser = useSelector(getCurrentUser);
-    const { trackPageView } = useMatomo();
-
-    let options = title ? { documentTitle: title } : {};
+    const trackPageView = useTrackPageViewFunction();
 
     useEffect(() => {
-        if (shouldTrack()) {
-            setTimeout(() => {
-                // Use setTimeout to wait for the document title to get updated.
-                trackPageView(options);
-            }, TRACKING_DELAY);
-        }
+        trackPageView(title, TRACKING_DELAY);
     }, []);
-
-    function shouldTrack() {
-        return currentUser && !currentUser.do_not_track;
-    }
 }
