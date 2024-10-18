@@ -3,7 +3,7 @@ class MetadataImportTemplate
   def initialize(project, locale)
     @locale = locale
     @project = project
-    @csv = CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |csv|
+    @csv = CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |csv|
       csv << columns_hash.values
     end
   end
@@ -37,7 +37,7 @@ class MetadataImportTemplate
       :tape_count,
       :link_to_interview,
     ].inject({}) do |mem, c| 
-      mem[c] = I18n.t("metadata_labels.#{c}", locale: @locale)
+      mem[c] = TranslationValue.for("metadata_labels.#{c}", @locale)
       mem
     end
   end
@@ -58,14 +58,14 @@ class MetadataImportTemplate
       :biography,
       :biography_public,
     ].inject({}) do |mem, c| 
-      mem[c] = I18n.t("activerecord.attributes.person.#{c}", locale: @locale)
+      mem[c] = TranslationValue.for("activerecord.attributes.person.#{c}", @locale)
       mem
     end
   end
 
   def default_contributor_columns
     @project.contribution_types.where(use_in_export: true).inject({}) do |mem, c| 
-      mem[c.code.to_sym] = I18n.t("contributions.#{c.code}", locale: @locale)
+      mem[c.code.to_sym] = TranslationValue.for("contributions.#{c.code}", @locale)
       mem
     end
   end

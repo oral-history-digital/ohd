@@ -23,11 +23,13 @@ class RolesController < ApplicationController
         json = Rails.cache.fetch "#{current_project.shortname}-roles-visible-for-#{current_user.id}-#{cache_key_params}-#{Role.count}-#{Role.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(Role).
+              includes(:permissions).
               order("name ASC")
             extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
             data = policy_scope(Role).
+              includes(:permissions).
               where(search_params).order("name ASC").
               paginate(page: page)
             paginate = true

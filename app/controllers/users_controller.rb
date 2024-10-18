@@ -164,7 +164,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.csv do
-        csv = CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
+        csv = CSV.generate(**CSV_OPTIONS) do |row|
           row << ['E-Mail', 'Datum der Freischaltung']
           users.each do |u|
             row << [u.email, u.confirmed_at.strftime('%d.%m.%Y')]

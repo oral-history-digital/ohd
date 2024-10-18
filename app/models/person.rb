@@ -22,7 +22,7 @@ class Person < ApplicationRecord
   translates :first_name, :last_name, :birth_name, :other_first_names,
     :alias_names, :description, :pseudonym_first_name, :pseudonym_last_name,
     fallbacks_for_empty_translations: true, touch: true
-  accepts_nested_attributes_for :translations, :events
+  accepts_nested_attributes_for :translations, :events, :biographical_entries
 
   validates_length_of :description, maximum: 1000
 
@@ -167,11 +167,11 @@ class Person < ApplicationRecord
 
     if fn.blank?
       if reversed
-        "#{I18n.t("honorific.#{gender_key}")} #{ln}"
+        "#{ln}, #{TranslationValue.for("honorific.#{gender_key}", I18n.locale)}"
       else
         used_title.blank? ?
-          "#{I18n.t("honorific.#{gender_key}")} #{ln}" :
-          "#{I18n.t("honorific.#{gender_key}")} #{used_title} #{ln}"
+          "#{TranslationValue.for("honorific.#{gender_key}", I18n.locale)} #{ln}" :
+          "#{TranslationValue.for("honorific.#{gender_key}", I18n.locale)} #{used_title} #{ln}"
       end
     else
       if reversed
@@ -190,7 +190,7 @@ class Person < ApplicationRecord
     used_gender = gender == 'female' ? 'female' : 'male'
 
     if title.present?
-      I18n.t("modules.person.abbr_titles.#{title}_#{used_gender}")
+        TranslationValue.for("modules.person.abbr_titles.#{title}_#{used_gender}", I18n.locale)
     else
       ''
     end
@@ -250,6 +250,7 @@ class Person < ApplicationRecord
 
     result = Contribution
       .joins(:contribution_type)
+      .includes(contri_type: :translations)
       .where(person_id: person_id)
       .where('contribution_types.project_id' => project_id)
 

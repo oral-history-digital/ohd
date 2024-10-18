@@ -3,6 +3,6 @@ class SlimSegmentRegistryReferenceSerializer < SlimRegistryReferenceSerializer
 
   def time
     # timecode as seconds
-    Time.parse(object.timecode).seconds_since_midnight
+    Timecode.new(object.timecode).time
   end
 end

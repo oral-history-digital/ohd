@@ -1,4 +1,6 @@
 production:
+  auto_commit_after_request: true
+  auto_commit_after_delete_request: true
   solr:
     hostname: localhost
     port: 8983
@@ -8,6 +10,8 @@ production:
     # open_timeout: 0.5
 
 staging:
+  auto_commit_after_request: true
+  auto_commit_after_delete_request: true
   solr:
     hostname: localhost
     port: 8983

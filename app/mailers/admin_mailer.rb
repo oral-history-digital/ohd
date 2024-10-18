@@ -8,7 +8,7 @@ class AdminMailer < ApplicationMailer
 
     mail(
       subject: I18n.t('devise.mailer.new_registration_info.subject', locale: @project.default_locale),
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @project.contact_email,
       date: Time.now
     )
@@ -22,7 +22,7 @@ class AdminMailer < ApplicationMailer
 
     mail(
       subject: I18n.t('devise.mailer.corrected_project_access_data.subject', locale: @project.default_locale),
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @project.contact_email,
       date: Time.now
     )
@@ -53,7 +53,7 @@ class AdminMailer < ApplicationMailer
     subject = "Interview-Archiv #{@project_name} - #{I18n.backend.translate(:de, 'jobs.'+@type)} #{@filename}"
     mail(
       subject: subject,
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @receiver.email,
       date: Time.now
     )
@@ -66,7 +66,7 @@ class AdminMailer < ApplicationMailer
     @text = params[:text]
     mail(
       subject: 'Interview-Archiv: Neuer Kommentar',
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @receiver.email,
       date: Time.now
     )
@@ -77,7 +77,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe zugewiesen',
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @receiver.email,
       date: Time.now
     )
@@ -88,7 +88,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe abgeschlossen',
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @receiver.email,
       date: Time.now
     )
@@ -99,7 +99,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe erneut geöffnet',
-      from: "noreply@cedis.fu-berlin.de",
+      from: "noreply@oral-history.digital",
       to: @receiver.email,
       date: Time.now
     )

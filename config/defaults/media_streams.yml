@@ -1,0 +1,32 @@
+---
+:still:
+  media_type: 'still'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID.jpg'
+:audio_128k:
+  media_type: 'audio'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_128k.mp3'
+  resolution: '128k'
+:audio_192k:
+  media_type: 'audio'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_192k.mp3'
+  resolution: '192k'
+:audio_256k:
+  media_type: 'audio'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_256k.mp3'
+  resolution: '256k'
+:video_240p:
+  media_type: 'video'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_240p.mp4'
+  resolution: '240p'
+:video_480p:
+  media_type: 'video'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_480p.mp4'
+  resolution: '480p'
+:video_720p:
+  media_type: 'video'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_720p.mp4'
+  resolution: '720p'
+:video_1080p:
+  media_type: 'video'
+  path: 'https://medien.cedis.fu-berlin.de/ohd/SHORTNAME/INTERVIEW_ID/INTERVIEW_ID_TAPE_COUNT_TAPE_NUMBER_1080p.mp4'
+  resolution: '1080p'

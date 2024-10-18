@@ -106,6 +106,25 @@ class Interview < ApplicationRecord
     end
   end
 
+  def after_save
+    self.update_counter_cache
+  end
+
+  def after_destroy
+    self.update_counter_cache
+  end
+
+  def update_counter_cache
+    self.project.update interviews_count: self.project.interviews.shared.count
+    self.collection.update interviews_count: self.collection.interviews.shared.count
+    self.project.update interviews_count: self.project.interviews.shared.count
+    self.project.institutions.each do |institution|
+      institution.update interviews_count: institution.interviews.shared.count
+      institution.parent&.update interviews_count: institution.parent.interviews.shared.count +
+        institution.parent.children.sum(&:interviews_count)
+    end
+  end
+
   translates :observations, :description, fallbacks_for_empty_translations: true, touch: true
 
   accepts_nested_attributes_for :translations, :contributions, :interview_languages
@@ -153,14 +172,14 @@ class Interview < ApplicationRecord
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true do
       Rails.configuration.i18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = title(locale)
+        mem[locale] = anonymous_title(locale)
         mem
       end
     end
 
-    dynamic_string :person_name do
+    dynamic_string :person_name, stored: true do
       Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
-        hash.merge(locale => full_title(locale))
+        hash.merge(locale => title_for_sorting(locale))
       end
     end
 
@@ -218,29 +237,27 @@ class Interview < ApplicationRecord
       text :"observations_#{locale}", stored: true do
         if index_observations?
           observations(locale)
-        else
-          ''
         end
       end
 
       text :"person_name_#{locale}", stored: true do
-        full_title(locale)
+        anonymous_title(locale)
       end
 
       string :"alias_names_#{locale}", stored: true do
-        return "" if interviewee.blank?
-
-        result = "#{interviewee.alias_names(locale)}"
-        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
-        result.strip()
+        unless interviewee.blank?
+          result = "#{interviewee.alias_names(locale)}"
+          result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+          result.strip()
+        end
       end
 
       text :"alias_names_#{locale}", stored: true do
-        return "" if interviewee.blank?
-
-        result = "#{interviewee.alias_names(locale)}"
-        result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
-        result.strip()
+        unless interviewee.blank?
+          result = "#{interviewee.alias_names(locale)}"
+          result += " #{interviewee.pseudonym_first_name(locale)} #{interviewee.pseudonym_last_name(locale)}"
+          result.strip()
+        end
       end
 
       # contributions
@@ -248,9 +265,9 @@ class Interview < ApplicationRecord
       # e.g.: 'Kamera Hans Peter'
       #
       text :"contributions_#{locale}" do
-        contributions.map do |c|
+        contributions.without_interviewees.map do |c|
           if c.person
-            [I18n.t("contributions.#{c.contribution_type}", locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
+            [TranslationValue.for("contributions.#{c.contribution_type.code}", locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
         end.flatten.join(' ')
       end
@@ -393,7 +410,7 @@ class Interview < ApplicationRecord
     interviewee&.id
   end
 
-  %w(interviewee interviewer).each do |code|
+  %w(interviewee interviewer transcriptor translator cinematographer research).each do |code|
     define_method "#{code}s" do
       contributors_by_code(code)
     end
@@ -478,6 +495,10 @@ class Interview < ApplicationRecord
       .where('segment_translations.locale': "#{locale}-public")
       .count
     segment_count > 0
+  end
+
+  def languages_with_transcripts
+    languages.select { |l| has_transcript?(l) }
   end
 
   def has_heading?(locale)
@@ -639,10 +660,9 @@ class Interview < ApplicationRecord
   end
 
   def full_title(locale)
-    first_interviewee = interviewee
-    if first_interviewee
+    if interviewee
       I18n.with_locale locale do
-        first_interviewee.display_name(reversed: true)
+        interviewee.display_name(reversed: true)
       end
     else
       'no interviewee given'
@@ -681,6 +701,10 @@ class Interview < ApplicationRecord
         end
       end
     end
+  end
+
+  def title_for_sorting(locale=project.default_locale)
+    full_title(locale)
   end
 
   def video
@@ -797,7 +821,14 @@ class Interview < ApplicationRecord
       search = Interview.search do
         fulltext params[:fulltext]
         with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
-        with(:project_id, project.id) unless project.is_ohd?
+        # the follwing is a really restrictive approach
+        # it allows only users with project-access to find interviews of those projects
+        #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
+        if project.is_ohd?
+          with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
+        else
+          with(:project_id, project.id)
+        end
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project
           dynamic :search_facets do

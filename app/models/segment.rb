@@ -55,23 +55,18 @@ class Segment < ApplicationRecord
   }
 
   translates :mainheading, :subheading, :text, touch: true
-  accepts_nested_attributes_for :translations
+  accepts_nested_attributes_for :translations, :registry_references
 
   class Translation
     belongs_to :segment
 
     after_save do
       # run this only after commit of original e.g. 'de' version!
-      #if text_previously_changed? && locale.length == 2 && !text.blank?
-      if locale.length == 2 && !text.blank?
+      #if locale.length == 2 && text.present?
+      if text_previously_changed? && locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
-        #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
       end
-      if (mainheading_previously_changed? || subheading_previously_changed?)
-        has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
-          where(segment_id: segment.id).empty?
-        segment.update_attribute(:has_heading, has_heading)
-      end
+      #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
     end
   end
 
@@ -79,6 +74,13 @@ class Segment < ApplicationRecord
     [:public, :subtitle].each do |version|
       update(text: enciphered_text(version, text, locale), locale: "#{locale}-#{version}")
     end
+  end
+
+  def update_has_heading
+    self.has_heading = translations
+      .where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')")
+      .present?
+    self.save
   end
 
   def enciphered_text(version, text_original='', locale)
@@ -89,7 +91,7 @@ class Segment < ApplicationRecord
       de: 'Diese Passage wird nicht veröffentlicht.',
       es: 'Esta parte del texto no se publica.',
       ru: 'Эта часть текста не публикуется.',
-      uk: 'Цей фрагмент не буде опублікований',
+      uk: 'Цей фрагмент не буде опублікований.',
       el: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
     }
     hidden_text = hidden_texts.fetch(locale.to_sym, 'This part of the text is not published.')
@@ -113,20 +115,20 @@ class Segment < ApplicationRecord
           gsub(/<nl\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <nl(Geräusch) bla bla>
           gsub(/<g\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <g(Gestik) bla bla>
           gsub(/<m\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <m(Mimik) bla bla>
-          # zwar
-          gsub(/\[.*?\]/, "").                                   # e.g. [Kommentar]
-          gsub(/\[\.\.\.\]/, "XXX").                             # e.g. [...]
-          gsub(/\s*\([-|\d]+\)/, "").                            # e.g. (-), (---), (6)
-          gsub(/\{.*?\}/, "").                                   # e.g. {[laughs silently]}
-          gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
-          #gsub("...", "_").                                      # e.g. ...
-          gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").         # e.g. (unverständlich, 1 Wort)
           gsub(/<\?\d+>/, "(...?)").                             # <?1>, <?2>, ...
           gsub(/<l\((.+?)\)\s*(.*?)>/, '\2').                    # e.g. <l(es) bla bla>
           gsub(/<ld\((.+?)\)\s*(.*?)>/, '\2').                   # e.g. <ld(Dialekt) bla bla>
-          gsub(" [---]", "").                                    # e.g. Ich war [---] bei Maria Malta, als das passierte.
-          gsub("(???) ", "(...?)").                              # e.g. Nice grandparents, we played football, (???) it’s
-          gsub("<***>", "").                                     # e.g. <***>
+          # zwar
+          #gsub(/\[.*?\]/, "").                                   # e.g. [Kommentar]
+          #gsub(/\[\.\.\.\]/, "XXX").                             # e.g. [...]
+          #gsub(/\s*\([-|\d]+\)/, "").                            # e.g. (-), (---), (6)
+          gsub(/\{.*?\}/, "").                                   # e.g. {[laughs silently]}
+          #gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
+          #gsub("...", "_").                                      # e.g. ...
+          #gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").         # e.g. (unverständlich, 1 Wort)
+          #gsub(" [---]", "").                                    # e.g. Ich war [---] bei Maria Malta, als das passierte.
+          #gsub("(???) ", "(...?)").                              # e.g. Nice grandparents, we played football, (???) it’s
+          #gsub("<***>", "").                                     # e.g. <***>
           gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
           gsub(/\s+([\.\,\?\!\:])/, '\1').                       # cleanup whitespace (before .,?!:)
           gsub(/^\s+/, "")                                       # cleanup whitespace (beginning of phrase)
@@ -136,16 +138,16 @@ class Segment < ApplicationRecord
           gsub(/<res\s+(.*?)>/, hidden_text).                    # e.g. <res bla bla>
           gsub(/<an\s+(.*?)>/, "XXX").                           # e.g. <an bla bla>
           gsub(/<n\(([^>]*?)\)>/, '(\1)').                       # <n(1977)>
-          gsub(/<i\((.*?)\)>/, "<c(Pause)>").                    # <i(Batteriewechsel)>
+          #gsub(/<i\((.*?)\)>/, "<c(Pause)>").                    # <i(Batteriewechsel)>
           # zwar
-          gsub(/\[\.\.\.\]/, "XXX").                             # e.g. <an bla bla>
+          #gsub(/\[\.\.\.\]/, "XXX").                             # e.g. <an bla bla>
           gsub(/\{\[?(.*?)\]?\}/, '[\1]').                       # e.g. {[laughs silently]}
-          gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
-          #gsub("...", "_").                                      # e.g. ...
-          gsub(" [---]", "<p>").                                 # e.g. Ich war [---] bei Maria Malta, als das passierte.
-          #gsub(/\((.*?)\?\)/, '<?\1>').                          # e.g. (By now?) it's the next generation
-          gsub("<***>", "<i(Bandende)>").                        # e.g. <***>
-          gsub("(???) ", "<?>").                                 # e.g. Nice grandparents, we played football, (???) it’s
+          #gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
+          ##gsub("...", "_").                                      # e.g. ...
+          #gsub(" [---]", "<p>").                                 # e.g. Ich war [---] bei Maria Malta, als das passierte.
+          ##gsub(/\((.*?)\?\)/, '<?\1>').                          # e.g. (By now?) it's the next generation
+          #gsub("(???) ", "<?>").                                 # e.g. Nice grandparents, we played football, (???) it’s
+          #gsub("<***>", "<i(Bandende)>").                        # e.g. <***>
           gsub(/\s+/, " ").                                      # cleanup whitespace (more than one)
           gsub(/\s+([\.\,\?\!\:])/, '\1').                       # cleanup whitespace (before .,?!:)
           gsub(/^\s+/, "")                                       # cleanup whitespace (beginning of phrase)
@@ -174,8 +176,8 @@ class Segment < ApplicationRecord
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       split = opts.delete(:split)
       if opts[:speaker_id] || !split
-        next_time = Timecode.new(opts.delete(:next_timecode)).time
-        duration = next_time - Timecode.new(opts[:timecode]).time
+        next_time = Timecode.new(opts.delete(:next_timecode).dup).time
+        duration = next_time - Timecode.new(opts[:timecode].dup).time
         opts.update(duration: duration) if duration > 0
         segment.update(opts)
       else
@@ -447,10 +449,6 @@ class Segment < ApplicationRecord
   end
 
   private
-
-  def zero_counts(object)
-    object.available_locales.map{ |locale| [locale, 0] }.to_h
-  end
 
   # remove workflow comments
   def filter_annotation(text)

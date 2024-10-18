@@ -6,12 +6,14 @@ class EditTableExport
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang.to_s
-    @translation_locale = (@interview.languages - [@interview.lang]).first ||
-      (@interview.project.available_locales - [@interview.lang]).first.to_s
+    @translation_locale = @interview.primary_translation_language && (
+      ISO_639.find(@interview.primary_translation_language.code).try(:alpha2) ||
+      @interview.primary_translation_language.code
+    )
   end
 
   def process
-    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
+    CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |f|
 
       f << [
         'Band',
@@ -37,19 +39,17 @@ class EditTableExport
       ).each do |tape|
         tape.segments.each do |segment|
 
-          segment_locales = segment.translations.map{|t| t.locale.to_s}
-          segment_original_locale = segment_locales.include?(original_locale) ? original_locale : "#{original_locale}-public"
-          segment_translation_locale = segment_locales.include?(translation_locale) ? translation_locale : "#{translation_locale}-public"
+          original = segment.translations.where(locale: original_locale).first
+          original_public = segment.translations.where(locale: "#{original_locale}-public").first
+          translation = segment.translations.where(locale: translation_locale).first
+          translation_public = segment.translations.where(locale: "#{translation_locale}-public").first
 
-          original = segment.translations.where(locale: segment_original_locale).first
-          translation = segment.translations.where(locale: segment_translation_locale).first
-
-          text_orig = original && original.text && original.text.gsub(/[\t\n\r]+/, ' ')
-          text_trans = translation && translation.text && translation.text.gsub(/[\t\n\r]+/, ' ')
-          mainheading_orig = original && original.mainheading
-          subheading_orig = original && original.subheading
-          mainheading_trans = translation && translation.mainheading
-          subheading_trans = translation && translation.subheading
+          text_orig = original&.text&.gsub(/[\t\n\r]+/, ' ') || original_public&.text&.gsub(/[\t\n\r]+/, ' ')
+          text_trans = translation&.text&.gsub(/[\t\n\r]+/, ' ') || translation_public&.text&.gsub(/[\t\n\r]+/, ' ')
+          mainheading_orig = original&.mainheading || original_public&.mainheading
+          subheading_orig = original&.subheading || original_public&.subheading
+          mainheading_trans = translation&.mainheading || translation_public&.mainheading
+          subheading_trans = translation&.subheading || translation_public&.subheading
           registry_references = segment.registry_references.map{|r| r.registry_entry_id}.compact.uniq.join('#')
           annotations = segment.annotations.map{|a| a.text(original_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
           annotations_trans = segment.annotations.map{|a| a.text(translation_locale).blank? ? '' : a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')

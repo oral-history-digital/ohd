@@ -21,11 +21,11 @@ export default function UserDetailsForm({
             elements={[
                 {
                     attribute: 'first_name',
-                    validate: function(v){return v.length > 1}
+                    validate: function(v){return v?.length > 1}
                 },
                 {
                     attribute: 'last_name',
-                    validate: function(v){return v.length > 1}
+                    validate: function(v){return v?.length > 1}
                 },
                 {
                     attribute: 'email',

@@ -182,38 +182,54 @@ class RegistryEntry < ApplicationRecord
     .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
 
-  scope :for_map, -> (person_ids = [], interview_ids = [], scope = 'public') {
-    entries = joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
-      .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
-      .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
-      .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
-      .joins('LEFT JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
-      .joins('LEFT JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
-      .where.not('registry_entries.latitude': [nil, ''])
-      .where.not('registry_entries.longitude': [nil, ''])
-      .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
+  scope :for_map, -> (project_id, person_ids = [], interview_ids = [], scope = 'public') {
+    rrt = RegistryReferenceType
+      .select('registry_reference_types.id, registry_reference_types.code, metadata_fields.ref_object_type')
+      .joins(:metadata_field)
+      .where(metadata_fields: {project_id: project_id, ref_object_type: ["Person", "Interview"], use_in_map_search: true})
+      .to_sql
 
-    entries
-      .where('metadata_fields.ref_object_type': 'Person')
-      .where('registry_references.ref_object_id': person_ids)
-      .where('metadata_fields.use_in_map_search': true)
-      .or(
-        entries
-          .where('metadata_fields.ref_object_type': 'Interview')
-          .where('registry_references.ref_object_id': interview_ids)
-          .where('metadata_fields.use_in_map_search': true)
-      )
-      .or(
-        entries
-          .where('interviews.id': interview_ids)
-          .where('registry_references.ref_object_type': 'Segment')
-      )
-      .group('registry_entries.id')
+    basis = RegistryEntry
+      .joins('INNER JOIN registry_names rn ON rn.registry_entry_id = registry_entries.id')
+      .joins('INNER JOIN registry_name_translations rnt ON rnt.registry_name_id = rn.id')
+      .joins('INNER JOIN registry_references rr ON rr.registry_entry_id = registry_entries.id')
+      .joins('INNER JOIN interviews i ON rr.interview_id = i.id')
+      .joins("LEFT OUTER JOIN (#{rrt}) AS rrt ON rr.registry_reference_type_id = rrt.id")
+
+    query1 = basis
+      .where('rrt.ref_object_type': "Person")
+      .where('rr.ref_object_id': person_ids)
+      .where('registry_entries.has_geo_coords': true)
+    query1 = query1.where('i.workflow_state': 'public') if scope == 'public'
+
+    query2 = basis
+      .where('rrt.ref_object_type': "Interview")
+      .where('rr.ref_object_id': interview_ids)
+      .where('registry_entries.has_geo_coords': true)
+    query2 = query2.where('i.workflow_state': 'public') if scope == 'public'
+
+    query3 = basis
+      .where('rr.ref_object_type': 'Segment')
+      .where('i.id': interview_ids)
+      .where('registry_entries.has_geo_coords': true)
+    query3 = query3.where('i.workflow_state': 'public') if scope == 'public'
+
+    from_sql = query1
+      .or(query2)
+      .or(query3)
+      .group('registry_entries.id, rnt.locale')
       .select("registry_entries.id,
         registry_entries.longitude,
         registry_entries.latitude,
-        JSON_OBJECTAGG(registry_name_translations.locale, registry_name_translations.descriptor) AS agg_names,
-        GROUP_CONCAT(IF(registry_references.ref_object_type = \"Segment\", \"S\", registry_reference_types.id)) AS ref_types")
+        rnt.locale,
+        rnt.descriptor,
+        GROUP_CONCAT(IF(rr.ref_object_type = \"Segment\", \"S\", rr.registry_reference_type_id)) AS ref_types")
+      .to_sql
+
+    result = RegistryEntry
+      .select('sub.id, sub.longitude, sub.latitude, sub.ref_types, JSON_OBJECTAGG(sub.locale, sub.descriptor) AS agg_names')
+      .from("(#{from_sql}) AS sub")
+      .group('sub.id')
   }
 
   searchable do

@@ -3,7 +3,10 @@ class ProjectCreator < ApplicationService
     :root_registry_entry, :is_ohd
 
   def initialize(project_params, user, is_ohd = false)
-    @project_params = project_params
+    @project_params = project_params.merge(
+      archive_id_number_length: 4,
+      has_map: true,
+    )
     @user = user
     @is_ohd = is_ohd
   end
@@ -20,9 +23,10 @@ class ProjectCreator < ApplicationService
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
     create_default_contribution_types unless is_ohd
-    create_default_task_types unless is_ohd
     create_default_roles
+    create_default_task_types unless is_ohd
     create_default_texts
+    create_default_media_streams
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
     ) unless is_ohd
@@ -70,7 +74,7 @@ class ProjectCreator < ApplicationService
       registry_entry_id: root_registry_entry.id,
       registry_name_type_id: default_registry_name_type.id,
       name_position: 0,
-      descriptor: I18n.t('registry', locale: project.default_locale),
+      descriptor: TranslationValue.for('registry', project.default_locale),
       locale: project.default_locale
     )
   end
@@ -99,10 +103,11 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_registry_reference_types
-    %w(birth_location home_location interview_location).each do |code|
+    %w(birth_location home_location interview_location subjects).each do |code|
+      registry_entry_code = code == 'subjects' ? 'subjects' : 'places'
       ref_type = RegistryReferenceType.create(
         code: code,
-        registry_entry_id: project.registry_entries.where(code: 'places').first.id,
+        registry_entry_id: project.registry_entries.where(code: registry_entry_code).first.id,
         project_id: project.id,
         use_in_transcript: true,
       )
@@ -125,7 +130,7 @@ class ProjectCreator < ApplicationService
   def create_default_registry_reference_type_metadata_fields
     YAML.load_file(File.join(Rails.root, 'config/defaults/registry_reference_type_metadata_fields.yml')).each do |(name, settings)|
       metadata_field = MetadataField.create(
-        registry_reference_type_id: project.registry_reference_types.where(code: name).first.id,
+        registry_reference_type_id: (settings['ohd'] ? Project.ohd : project).registry_reference_types.where(code: name).first.id,
         project_id: project.id,
         name: name,
         source: 'RegistryReferenceType',
@@ -134,6 +139,7 @@ class ProjectCreator < ApplicationService
         use_in_results_table: settings['use_in_results_table'] || false,
         use_in_results_list: settings['use_in_results_list'] || false,
         use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_metadata_import: settings['use_in_metadata_import'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
         map_color: settings['map_color'] || '#1c2d8f',
@@ -155,6 +161,7 @@ class ProjectCreator < ApplicationService
         use_in_results_table: settings['use_in_results_table'] || false,
         use_in_results_list: settings['use_in_results_list'] || false,
         use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_metadata_import: settings['use_in_metadata_import'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
         list_columns_order: settings['list_columns_order'] || 1.0,
@@ -175,6 +182,7 @@ class ProjectCreator < ApplicationService
         use_in_results_table: settings['use_in_results_table'] || false,
         use_in_results_list: settings['use_in_results_list'] || false,
         use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_metadata_import: settings['use_in_metadata_import'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
         list_columns_order: settings['list_columns_order'] || 1.0,
@@ -186,10 +194,12 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_contribution_types
-    YAML.load_file(File.join(Rails.root, 'config/defaults/contribution_types.yml')).each do |code|
+    YAML.load_file(File.join(Rails.root, 'config/defaults/contribution_types.yml')).each do |(code, settings)|
       contribution_type = ContributionType.create(
         code: code,
         project_id: project.id,
+        use_in_details_view: settings['use_in_details_view'] || false,
+        use_in_export: settings['use_in_export'] || false,
       )
 
       add_translations(contribution_type, 'label', "contributions.#{code}")
@@ -197,14 +207,17 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_task_types
-    YAML.load_file(File.join(Rails.root, 'config/defaults/task_types.yml')).each do |key, (label, abbreviation)|
-      TaskType.create(
-        key: key,
-        label: label,
-        abbreviation: abbreviation,
+    YAML.load_file(File.join(Rails.root, 'config/defaults/task_types.yml')).each do |task_type_settings|
+      task_type = TaskType.create(
+        **task_type_settings[:attributes][0],
         project_id: project.id,
         use: true
       )
+      task_type_settings[:permissions].each do |permission|
+        perm = Permission.find_or_create_by(klass: permission[:klass], action_name: permission[:action_name])
+        perm.update_attribute(:name, "#{permission[:klass]} #{permission[:action_name]}")
+        TaskTypePermission.find_or_create_by(task_type_id: task_type.id, permission_id: perm.id)
+      end
     end
   end
 
@@ -220,28 +233,31 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_texts
-    %w(conditions ohd_conditions privacy_protection contact legal_info).each do |code|
+    %w(conditions contact legal_info).each do |code|
       I18n.available_locales.each do |locale|
-        Text.update_or_create_by(
+        text = Text.find_or_initialize_by(
           project_id: project.id,
+          code: code
+        )
+        text.update(
           locale: locale,
-          code: code,
           text: replace_with_project_params(
             File.read(File.join(Rails.root, "config/defaults/texts/#{locale}/#{code}.html")),
             {
-              project_name: project.name(locale),
-              project_manager: project.manager,
-              project_contact_email: project.contact_email,
-              project_leader: project.leader,
-              institution_name: project.institutions.first&.name(locale),
-              institution_website: project.institutions.first&.website,
-              institution_street: project.institutions.first&.street,
-              institution_zip: project.institutions.first&.zip,
-              institution_city: project.institutions.first&.city,
-              institution_country: project.institutions.first&.country,
+              #project_name: project.name(locale),
+              #project_manager: project.manager,
+              #project_contact_email: project.contact_email,
+              #project_leader: project.leader,
+              #institution_name: project.institutions.first&.name(locale),
+              #institution_shortname: project.institutions.first&.shortname,
+              #institution_website: project.institutions.first&.website,
+              #institution_street: project.institutions.first&.street,
+              #institution_zip: project.institutions.first&.zip,
+              #institution_city: project.institutions.first&.city,
+              #institution_country: project.institutions.first&.country,
               privacy_protection_link: "#{OHD_DOMAIN}/#{locale}/privacy_protection",
-              project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/privacy_protection",
-              ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/condition",
+              project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/conditions",
+              ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/conditions",
             }
           )
         )
@@ -249,21 +265,30 @@ class ProjectCreator < ApplicationService
     end
   end
 
+  def create_default_media_streams
+    YAML.load_file(File.join(Rails.root, 'config/defaults/media_streams.yml')).each do |(name, settings)|
+      MediaStream.create(
+        project_id: project.id,
+        media_type: settings['media_type'],
+        path: settings['path'].sub('SHORTNAME', project.shortname),
+        resolution: settings['resolution'],
+      )
+    end
+  end
+
   private
 
   def add_translations(record, attribute, translation_key)
     project.available_locales.each do |locale|
-      I18n.locale = locale
-      record.send("#{attribute}=", I18n.t(translation_key))
+      record.update("#{attribute}": TranslationValue.for(translation_key, locale), locale: locale)
     end
-    record.save
-    I18n.locale = project.default_locale
   end
 
   def replace_with_project_params(text, params)
     params.each do |key, value|
-      text.gsub!("%{#{key}}", value)
+      text.gsub!("%{#{key}}", value) if value
     end
+    text
   end
 
 end

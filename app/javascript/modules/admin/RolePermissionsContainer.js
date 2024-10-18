@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
             attribute: 'permission_id',
             values: getPermissions(state),
             withEmpty: true,
-            validate: function(v){return v.length > 0}
+            validate: function(v){return v?.length > 0}
         }
     ],
     hideEdit: true,

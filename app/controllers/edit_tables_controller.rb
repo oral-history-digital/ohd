@@ -9,7 +9,7 @@ class EditTablesController < ApplicationController
 
     update_contributions(interview, edit_table_params[:contributions_attributes])
 
-    ReadEditTableJob.perform_later(interview, file_path, current_user)
+    ReadEditTableJob.perform_later(interview, file_path, edit_table_params[:only_references], current_user)
 
     respond_to do |format|
       format.json do
@@ -41,6 +41,7 @@ class EditTablesController < ApplicationController
     params.require(:edit_table).
       permit(
         :archive_id,
+        :only_references,
         contributions_attributes: [:id, :person_id, :contribution_type_id, :speaker_designation]
     )
   end

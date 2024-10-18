@@ -6,13 +6,15 @@ class Collection < ApplicationRecord
   belongs_to :project, touch: true
   belongs_to :institution, touch: true
 
+  scope :shared, -> { where(workflow_state: 'public' )}
+
   translates :name, :homepage, :countries, :interviewers, :responsibles, :notes, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   validates_presence_of :name, :project_id
 
   def num_interviews
-    interviews.where('workflow_state': 'public').count
+    interviews_count
   end
 
   def to_s

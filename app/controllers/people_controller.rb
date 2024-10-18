@@ -45,6 +45,7 @@ class PeopleController < ApplicationController
     }
 
     current_project.metadata_fields
+      .includes(:translations)
       .where(display_on_landing_page: true)
       .where(ref_object_type: 'Person').each do |m|
         registry_references = @person.registry_references.
@@ -61,6 +62,7 @@ class PeopleController < ApplicationController
     end
 
     current_project.metadata_fields
+      .includes(:translations)
       .where(display_on_landing_page: true)
       .where(source: 'Person').each do |m|
       data[m.name] = @person.send(m.name)
@@ -97,22 +99,19 @@ class PeopleController < ApplicationController
       format.json do
         paginate = false
         cache_key = "#{current_project.shortname}-people-#{cache_key_params}"\
-          "-#{Person.count}-#{Person.maximum(:updated_at)}-#{I18n.locale.to_s}"
+          "-#{Person.count}-#{Person.maximum(:updated_at)}"
         json = Rails.cache.fetch(cache_key) do
           if params[:for_projects]
             data = policy_scope(Person).
-              includes(:translations, :project).
               order("person_translations.last_name ASC")
             extra_params = "for_projects_#{current_project.id}"
           elsif params[:contributors_for_interview]
             data = policy_scope(Person).
-              includes(:translations, :project).
-              where(id: Interview.find(params[:contributors_for_interview]).contributions.map(&:person_id))
+              where(id: Interview.find(params[:contributors_for_interview]).contributions.pluck(:person_id))
             extra_params = "contributors_for_interview_#{params[:contributors_for_interview]}"
           else
             page = params[:page] || 1
             data = policy_scope(Person).
-              includes(:translations, :project).
               where(search_params).order("person_translations.last_name ASC").
               paginate(page: page)
             paginate = true
@@ -120,7 +119,9 @@ class PeopleController < ApplicationController
           end
 
           {
-            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: data.
+              includes(:translations, :project, contributions: {contribution_type: :translations}).
+              inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             nested_data_type: "people",
             data_type: 'projects',
             id: current_project.id,

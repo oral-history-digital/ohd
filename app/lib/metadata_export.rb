@@ -10,7 +10,7 @@ class MetadataExport
   end
 
   def process
-    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
+    CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |f|
       f << MetadataImportTemplate.new(project, locale).columns_hash.values
       Interview.where(archive_id: archive_ids).each do |interview|
 
