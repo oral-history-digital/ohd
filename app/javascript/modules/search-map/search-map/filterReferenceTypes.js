@@ -4,10 +4,13 @@ export default function filterReferenceTypes(filter, locations) {
     }
 
     const filteredLocations = locations.map(location => {
-        const referenceTypes = location.ref_types
-            .split(',')
-            .filter(type => filter.includes(type))
-            .join(',');
+        const referenceTypes = {};
+
+        filter.forEach((f) => {
+          if (f in location.ref_types) {
+            referenceTypes[f] = location.ref_types[f];
+          }
+        })
 
         return {
             ...location,
