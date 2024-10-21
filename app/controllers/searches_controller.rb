@@ -126,9 +126,22 @@ class SearchesController < ApplicationController
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
         scope = map_scope
         search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
+        repository = RegistryEntryRepository.new
 
         json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}" do
-          registry_entries = RegistryEntry.for_map(current_project.id, map_interviewee_ids(search), map_interview_ids(search), scope)
+          interview_registry_entries = repository.interview_entries_for(
+            current_project.id, map_interviewee_ids(search), map_interview_ids(search), scope)
+          segment_registry_entries = repository.segment_entries_for(
+            current_project.id, map_interview_ids(search), scope)
+
+          hash1 = interview_registry_entries.to_h { |entry| [entry.id, entry] }
+          hash2 = segment_registry_entries.to_h { |entry| [entry.id, entry] }
+          hash_combined = hash1.merge(hash2) do |key, old_value, new_value|
+            old_value.ref_types += new_value.ref_types
+            old_value
+          end
+
+          registry_entries = hash_combined.values
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer
