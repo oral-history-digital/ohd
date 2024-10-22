@@ -79,7 +79,8 @@ class RegistryReferencesController < ApplicationController
 
         json = Rails.cache.fetch "#{current_project.shortname}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
           interviewee = interview.interviewee
-          registry_entries = RegistryEntry.for_map(current_project.id, [interviewee&.id], [interview.id], 'all')
+          repository = RegistryEntryRepository.new
+          registry_entries = repository.combined_entries_for(current_project.id, [interviewee&.id], [interview.id], 'all')
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer

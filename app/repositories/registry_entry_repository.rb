@@ -3,6 +3,22 @@ class RegistryEntryRepository
     @db = db
   end
 
+  def combined_entries_for(project_id, person_ids = [], interview_ids = [], scope = 'public')
+    interview_registry_entries = interview_entries_for(
+      project_id, person_ids, interview_ids, scope)
+    segment_registry_entries = segment_entries_for(
+      project_id, interview_ids, scope)
+
+    hash1 = interview_registry_entries.to_h { |entry| [entry.id, entry] }
+    hash2 = segment_registry_entries.to_h { |entry| [entry.id, entry] }
+    hash_combined = hash1.merge(hash2) do |key, old_value, new_value|
+      old_value.ref_types += "," + new_value.ref_types
+      old_value
+    end
+
+    hash_combined.values
+  end
+
   def interview_entries_for(project_id, person_ids = [], interview_ids = [], scope = 'public')
     rrt = RegistryReferenceType
       .select('registry_reference_types.id, registry_reference_types.code, metadata_fields.ref_object_type')
