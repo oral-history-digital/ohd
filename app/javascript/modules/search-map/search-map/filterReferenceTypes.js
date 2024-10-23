@@ -5,10 +5,11 @@ export default function filterReferenceTypes(filter, locations) {
 
     const filteredLocations = locations.map(location => {
         const referenceTypes = {};
+
         filter.forEach((f) => {
-          if (f === 'S') {
+          if (f === 'S' && 'segment' in location.ref_types) {
             referenceTypes.segment = location.ref_types.segment;
-          } else {
+          } else if (f in location.ref_types) {
             referenceTypes[f] = location.ref_types[f];
           }
         })
