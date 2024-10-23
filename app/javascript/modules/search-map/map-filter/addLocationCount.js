@@ -17,12 +17,11 @@ export default function addLocationCount(locations, referenceTypes) {
 }
 
 function locationCountFor(locations, referenceTypeId) {
+    const key = referenceTypeId === 'S' ? 'segment' : referenceTypeId;
     let numLocations = 0;
 
     locations.forEach(location => {
-        const types = location.ref_types.split(',');
-
-        if (types.includes(referenceTypeId.toString())) {
+        if (Object.hasOwn(location.ref_types, key)) {
             numLocations += 1;
         }
     });

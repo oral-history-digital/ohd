@@ -8,33 +8,40 @@ test('transforms registry location data into markers for map component', () => {
     const locations = [
         {
             id: 18220,
-            lat: '52.21',
-            lon: '21.03',
-            agg_names: {
+            lat: 52.21,
+            lon: 21.03,
+            labels: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
-            ref_types: '4,4,4,4,4',
+            ref_types: {4: 5},
         },
         {
             id: 18221,
-            lat: '52.21',
-            lon: '21.03',
-            agg_names: {
+            lat: 52.21,
+            lon: 21.03,
+            labels: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
-            ref_types: '4,4,4,4,4,S,S',
+            ref_types: {
+              4: 5,
+              segment: 2,
+            },
         },
         {
             id: 18222,
-            lat: '53.66',
-            lon: '23.81',
-            agg_names: {
+            lat: 53.66,
+            lon: 23.81,
+            labels: {
                 de: 'Berlin',
                 en: 'Berlin',
             },
-            ref_types: 'S,S,S,4,14',
+            ref_types: {
+              4: 1,
+              14: 1,
+              segment: 3,
+            },
         },
     ];
 
@@ -44,7 +51,7 @@ test('transforms registry location data into markers for map component', () => {
             id: 18220,
             lat: 52.21,
             long: 21.03,
-            agg_names: {
+            labels: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
@@ -58,7 +65,7 @@ test('transforms registry location data into markers for map component', () => {
             id: 18221,
             lat: 52.21,
             long: 21.03,
-            agg_names: {
+            labels: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
@@ -72,7 +79,7 @@ test('transforms registry location data into markers for map component', () => {
             id: 18222,
             lat: 53.66,
             long: 23.81,
-            agg_names: {
+            labels: {
                 de: 'Berlin',
                 en: 'Berlin',
             },
@@ -90,13 +97,17 @@ test('throws when lat lon data is empty', () => {
     const locations = [
         {
             id: 18221,
-            lat: '',
-            lon: '',
-            agg_names: {
+            lat: null,
+            lon: null,
+            labels: {
                 de: 'Berlin',
                 en: 'Berlin',
             },
-            ref_types: 'S,S,S,4,14',
+            ref_types: {
+              4: 1,
+              14: 1,
+              segment: 3,
+            },
         },
     ];
 
