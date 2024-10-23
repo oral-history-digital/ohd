@@ -3,6 +3,7 @@ import transformIntoMarkers from './transformIntoMarkers';
 const colorMap = new Map();
 colorMap.set('4', 'blue');
 colorMap.set('14', 'red');
+colorMap.set('segment', 'yellow');
 
 test('transforms registry location data into markers for map component', () => {
     const locations = [
@@ -88,6 +89,40 @@ test('transforms registry location data into markers for map component', () => {
             numSegmentReferences: 3,
             radius: 6.839903786706788,
             color: 'black',
+        },
+    ];
+    expect(actual).toEqual(expected);
+});
+
+test('works when locations contains only segment refs', () => {
+    const locations = [
+        {
+            id: 18220,
+            lat: 52.21,
+            lon: 21.03,
+            labels: {
+                de: 'Deutschland',
+                en: 'Germany',
+            },
+            ref_types: {segment: 5},
+        },
+    ];
+
+    const actual = transformIntoMarkers(colorMap, locations);
+    const expected = [
+        {
+            id: 18220,
+            lat: 52.21,
+            long: 21.03,
+            labels: {
+                de: 'Deutschland',
+                en: 'Germany',
+            },
+            numReferences: 5,
+            numMetadataReferences: 0,
+            numSegmentReferences: 5,
+            radius: 5.768998281229633,
+            color: 'yellow',
         },
     ];
     expect(actual).toEqual(expected);
