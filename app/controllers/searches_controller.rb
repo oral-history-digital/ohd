@@ -132,8 +132,6 @@ class SearchesController < ApplicationController
             map_interviewee_ids(search), map_interview_ids(search), scope)
           registry_entries = repository.combined_entries_for_map()
 
-          byebug
-
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer
           ).as_json

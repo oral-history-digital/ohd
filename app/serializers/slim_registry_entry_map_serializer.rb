@@ -1,9 +1,20 @@
 class SlimRegistryEntryMapSerializer < ActiveModel::Serializer
-  attributes :id, :ref_types, :agg_names
-  attribute :latitude, key: :lat
-  attribute :longitude, key: :lon
+  attributes :id, :ref_types, :labels, :lat, :lon
 
-  def agg_names
-    JSON.parse(object.agg_names)
+  def ref_types
+    array = JSON.parse(object.ref_types)
+    array.reduce({}, :merge)
+  end
+
+  def labels
+    JSON.parse(object.labels)
+  end
+
+  def lat
+    object.lat.to_f
+  end
+
+  def lon
+    object.lon.to_f
   end
 end
