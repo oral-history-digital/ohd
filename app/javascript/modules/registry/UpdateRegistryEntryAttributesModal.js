@@ -18,14 +18,15 @@ function UpdateRegistryEntryAttributesModal({
     const { project } = useProject();
 
     const show = (entry) => {
-        const alternateName = Array.isArray(entry.AlternateName) ?
-            entry.AlternateName.find(n => n.Lang === locale && n.Name)?.Name :
-            entry.AlternateName?.Name;
+        const alternateName = entry.AlternativeNames?.AlternativeName;
+        const name = Array.isArray(alternateName) ?
+            alternateName.find(n => n.Lang === locale && n.Name)?.Name :
+            alternateName?.Name;
         const description = Array.isArray(entry.Description) ?
             entry.Description.find(n => n.Lang === locale && n.Description)?.Description :
             entry.Description?.Description;
         return (
-            alternateName + ', ' + description
+            name || entry.Name + ', ' + description
         );
     }
 
