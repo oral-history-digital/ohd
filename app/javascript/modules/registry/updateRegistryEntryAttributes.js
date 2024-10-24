@@ -14,8 +14,8 @@ export function updateRegistryNameAttributes(
     const langOrig = entry.Country?.toLowerCase();
 
     project.available_locales.map( lang => {
-        if (Array.isArray(entry.AlternateName)) {
-            const alternateName = entry.AlternateName.find(n => n.Lang === lang && n.Name)?.Name;
+        if (Array.isArray(entry.AlternativeNames?.AlternativeName)) {
+            const alternateName = entry.AlternativeNames?.AlternativeName.find(n => n.Lang === lang && n.Name)?.Name;
             if (alternateName)
                 setDescriptor(alternateName, registryNamesAttributes, defaultNameType.id, lang);
         }
@@ -26,11 +26,10 @@ export function updateRegistryNameAttributes(
         }
     })
 
-    const origAlternateName = entry.AlternateName.find(n => n.Lang === langOrig && n.Name)?.Name;
-    if (origAlternateName)
-        setDescriptor(origAlternateName, registryNamesAttributes, defaultNameType.id, 'orig');
+    if (entry.Name)
+        setDescriptor(entry.Name, registryNamesAttributes, defaultNameType.id, 'orig');
 
-    const origAlias = entry.Alias.find(n => n.Lang === langOrig && n.Alias)?.Alias;
+    const origAlias = entry.Alias?.find(n => n.Lang === langOrig && n.Alias)?.Alias;
     if (origAlias)
         setDescriptor(origAlias, registryNamesAttributes, ancientNameType.id, 'orig');
 
