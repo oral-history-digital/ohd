@@ -27,38 +27,22 @@ export default class SubmitOnBlurForm extends Component {
         }
     }
 
-    //translation() {
-        //if (this.props.locale) {
-            //return this.props.data.translations.find(t => t.locale === this.props.locale)
-        //}
-    //}
-
     value() {
         if (this.props.locale) {
-            //return this.translation()[this.props.attribute];
             return this.props.data[this.props.attribute][this.props.locale] || this.props.data[this.props.attribute][`${this.props.locale}-public`] || ''
         } else {
             return this.props.data[this.props.attribute];
         }
     }
 
-    //{"person"=>{"translations_attributes"=>"[{\"locale\":\"de\",\"id\":\"339\",\"first_name\":\"Ewa Maria\"},{\"locale\":\"en\",\"id\":\"2394\",\"first_name\":\"Eva\"},{\"id\":340,\"locale\":\"ru\",\"first_name\":\"Эва\",\"last_name\":\"Червяковский\",\"birth_name\":null,\"other_first_names\":null,\"alias_names\":null}]"}
-    //
     submit(event) {
         event.preventDefault();
 
-        //let params = {[this.props.scope]: {id: this.props.data.id}};
-
-        //if (this.props.locale) {
-            ////params[this.props.scope].translations_attributes = [{id: this.translation().id, locale: this.props.locale, [this.props.attribute]: this.state.value}];
-            //params[this.props.scope].locale = this.props.locale;
-        //} else {
-            //params[this.props.scope][this.props.attribute] = this.state.value;
-        //}
-
         if(this.state.valid) {
-            //this.props.submitData(this.props, params);
-            this.props.submitData(this.props, {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}});
+            this.props.submitData(
+                { locale: 'de', project: this.props.project, projectId: this.props.projectId },
+                {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}}
+            );
         }
     }
 

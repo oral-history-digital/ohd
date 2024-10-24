@@ -1,4 +1,4 @@
-import { PROJECT_DG } from 'modules/constants';
+import { ALPHA2_TO_ALPHA3, PROJECT_DG } from 'modules/constants';
 
 export default function showTocTab(project, interview, locale) {
     return projectSupportsToc(project)
@@ -10,5 +10,6 @@ function projectSupportsToc(project) {
 }
 
 function tocAvailable(interview, locale) {
-    return interview?.toc_locales.includes(locale);
+    const alpha3 = ALPHA2_TO_ALPHA3[locale];
+    return interview?.toc_locales.includes(alpha3);
 }

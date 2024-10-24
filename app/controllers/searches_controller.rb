@@ -44,10 +44,13 @@ class SearchesController < ApplicationController
     end
   end
 
-  def search(model, order, field_name = 'text')
+  def search(interview, model, order, field_name = 'text')
     search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
-    locales = current_project.available_locales
-    locales += [:orig] if model == Segment && field_name == 'text'
+    if model == Segment
+      locales = interview.languages
+    else
+      locales = current_project.available_locales
+    end
     fields_to_search = locales.map { |locale| "#{field_name}_#{locale}".to_sym }
 
     model.search do
@@ -56,17 +59,17 @@ class SearchesController < ApplicationController
           highlight :"#{field_name}_#{locale}"
         end
       end
-      with(:archive_id, params[:id])
+      with(:archive_id, interview.archive_id)
       with(:workflow_state, (current_user && (current_user.admin? || current_user.roles?(current_project, 'General', 'edit'))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
   end
 
-  def found_instances(model, search, field_name = 'text')
+  def found_instances(interview, model, search, field_name = 'text')
     search.hits.select { |h| h.instance }.map do |hit|
       instance = cache_single(hit.instance, serializer_name: model == Segment ? "SegmentHit" : nil, cache_key_suffix: field_name)
-      instance[:text] = highlighted_text(hit, field_name)
+      instance[:text] = highlighted_text(interview, hit, field_name)
       instance
     end
   end
@@ -80,37 +83,37 @@ class SearchesController < ApplicationController
       [Annotation, :id],
     ]
 
+    interview = Interview.find_by_archive_id(params[:id])
+
     models_and_order.each do |model, order|
-      instance_variable_set "@#{model.name.underscore}_search", search(model, order)
+      instance_variable_set "@#{model.name.underscore}_search", search(interview, model, order)
     end
-    @mainheading_search = search(Segment, :sort_key, 'mainheading')
-    @subheading_search = search(Segment, :sort_key, 'subheading')
-    @observations_search = search(Interview, :archive_id, 'observations')
+    @mainheading_search = search(interview, Segment, :sort_key, 'mainheading')
+    @subheading_search = search(interview, Segment, :sort_key, 'subheading')
+    @observations_search = search(interview, Interview, :archive_id, 'observations')
 
     respond_to do |format|
       format.html do
         render :template => "/interviews/show"
       end
       format.json do
-        interview = Interview.find_by_archive_id(params[:id])
-
         json = {
           fulltext: params[:fulltext],
           archiveId: params[:id],
         }
 
         models_and_order.each do |model, order|
-          json["found_#{model.name.underscore.pluralize}"] = found_instances(model, instance_variable_get("@#{model.name.underscore}_search"))
+          json["found_#{model.name.underscore.pluralize}"] = found_instances(interview, model, instance_variable_get("@#{model.name.underscore}_search"))
         end
 
-        mainheadings = found_instances(Segment, @mainheading_search, 'mainheading')
-        subheadings = found_instances(Segment, @subheading_search, 'subheading')
+        mainheadings = found_instances(interview, Segment, @mainheading_search, 'mainheading')
+        subheadings = found_instances(interview, Segment, @subheading_search, 'subheading')
 
         all_headings = mainheadings.concat(subheadings)
         sorted_headings = all_headings.sort { |a, b| a[:sort_key] <=> b[:sort_key] }
 
         json['found_headings'] = sorted_headings
-        json['found_observations'] = found_instances(Interview, @observations_search, 'observations')
+        json['found_observations'] = found_instances(interview, Interview, @observations_search, 'observations')
 
         render plain: json.to_json
       end
@@ -263,8 +266,8 @@ class SearchesController < ApplicationController
             'all' : 'public'
   end
 
-  def highlighted_text(hit, field_name = 'text')
-    (current_project.available_locales | [:orig]).inject({}) do |mem, locale|
+  def highlighted_text(interview, hit, field_name = 'text')
+    (interview.languages | I18n.available_locales).inject({}) do |mem, locale|
       mem[locale] = hit.highlights("#{field_name}_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()

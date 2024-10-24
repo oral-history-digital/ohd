@@ -47,7 +47,7 @@ export default function InterviewTabs({
     }
 
     function translatedTranscriptIsMoreSuitable() {
-        return locale !== interview.lang
+        return locale !== interview.alpha2
             && showTranslationTab(project, interview, locale);
     }
 

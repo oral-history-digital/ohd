@@ -11,6 +11,6 @@ class LanguageSerializer < ApplicationSerializer
 
   def locale
     l = ISO_639.find(object.code.split(/[\/-]/)[0])
-    l && l.alpha2
+    l && l.alpha3
   end
 end

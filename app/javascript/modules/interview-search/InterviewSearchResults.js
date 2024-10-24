@@ -41,7 +41,7 @@ export default function InterviewSearchResults({
         return null;
     }
 
-    const interviewLang = project.available_locales.indexOf(interview.lang) > -1 ? interview.lang : 'orig';
+    const interviewLang = interview.lang;
 
     const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
 

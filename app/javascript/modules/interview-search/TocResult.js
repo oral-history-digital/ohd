@@ -5,6 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { getCurrentInterview } from 'modules/data';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export default function TocResult({
     data,
@@ -12,6 +13,7 @@ export default function TocResult({
     const dispatch = useDispatch();
     const interview = useSelector(getCurrentInterview);
     const { locale } = useI18n();
+    const alpha3 = ALPHA2_TO_ALPHA3[locale];
 
     function handleClick() {
         interview.transcript_coupled && dispatch(sendTimeChangeRequest(data.tape_nbr, data.time));
@@ -24,9 +26,9 @@ export default function TocResult({
             onClick={handleClick}
         >
             <p className="SearchResult-meta">
-                {data.last_heading?.[locale] && (
+                {data.last_heading?.[alpha3] && (
                     <span>
-                        {data.last_heading[locale]}
+                        {data.last_heading[alpha3]}
                         &nbsp;|&nbsp;
                     </span>
                 )}
@@ -34,7 +36,7 @@ export default function TocResult({
             </p>
             <p
                 className="SearchResult-text"
-                dangerouslySetInnerHTML={{__html: data.text[locale]}}
+                dangerouslySetInnerHTML={{__html: data.text[alpha3]}}
             />
         </button>
     );

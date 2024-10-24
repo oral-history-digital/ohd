@@ -41,6 +41,15 @@ export const OHD_DOMAINS = {
     test:        'http://test.portal.oral-history.localhost:47001'
 };
 
+export const ALPHA2_TO_ALPHA3 = {
+    'de': 'ger',
+    'en': 'eng',
+    'el': 'gre',
+    'es': 'spa',
+    'ru': 'rus',
+    'uk': 'ukr'
+};
+
 const ANALYTICS_URLS = {
     development: '//localhost:8080/',
     staging: '//metrics.oral-history.digital/',
