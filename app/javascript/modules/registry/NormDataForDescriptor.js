@@ -22,6 +22,7 @@ function NormDataForDescriptor({
     const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
+    const [from, setFrom] = useState(0);
 
     useEffect(() => {
         setShowResults(false);
@@ -80,7 +81,7 @@ function NormDataForDescriptor({
     }
 
     const fetchAPIResults = async(params) => {
-        const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
+        const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}&from=${from}`];
         ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
             if (params[filter]) {
                 urlAndFilters.push(`${filter}=${params[filter]}`);
@@ -101,22 +102,26 @@ function NormDataForDescriptor({
                     <p className='notifications'>
                        {t('modules.interview_search.no_results')}
                     </p> :
-                    <ul>
-                        {apiResult.response.items.map( result => {
-                            return (
-                                <li>
-                                    <UpdateRegistryEntryAttributesModal
-                                        entry={result.Entry}
-                                        registryEntryAttributes={registryEntryAttributes}
-                                        registryNameTypes={registryNameTypes}
-                                        normDataProviders={normDataProviders}
-                                        setRegistryEntryAttributes={setRegistryEntryAttributes}
-                                        setShowElementsInForm={setShowElementsInForm}
-                                    />
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    <>
+                        <ul>
+                            {apiResult.response.items.map( result => {
+                                return (
+                                    <li>
+                                        <UpdateRegistryEntryAttributesModal
+                                            entry={result.Entry}
+                                            registryEntryAttributes={registryEntryAttributes}
+                                            registryNameTypes={registryNameTypes}
+                                            normDataProviders={normDataProviders}
+                                            setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                            setShowElementsInForm={setShowElementsInForm}
+                                        />
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                        { from >= 10 && <button onClick={() => setFrom(from - 10)}>Less</button> }
+                        <button onClick={() => setFrom(from + 10)}>More</button>
+                    </>
             );
         } else if (apiResult.error) {
             return (<p className='notifications'>
