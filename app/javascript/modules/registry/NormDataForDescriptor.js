@@ -26,6 +26,7 @@ function NormDataForDescriptor({
 
     useEffect(() => {
         setShowResults(false);
+        setFrom(0);
     }, [descriptor]);
 
     let formElements = [
@@ -102,11 +103,11 @@ function NormDataForDescriptor({
         if (apiResult.response) {
             console.log(apiResult);
             return (
-                apiResult.response?.items?.length === 0 ?
-                    <p className='notifications'>
-                       {t('modules.interview_search.no_results')}
-                    </p> :
-                    <>
+                <>
+                    {apiResult.response?.items?.length === 0 ?
+                        <p className='notifications'>
+                           {t('modules.interview_search.no_results')}
+                        </p> :
                         <ul>
                             {apiResult.response.items.map( result => {
                                 return (
@@ -123,9 +124,10 @@ function NormDataForDescriptor({
                                 )
                             })}
                         </ul>
-                        { from >= 10 && <button onClick={() => {setFrom(from - 10); fetchAPIResults({from: from - 10});}}>Less</button> }
-                        <button onClick={() => {setFrom(from + 10); fetchAPIResults({from: from + 10});}}>More</button>
-                    </>
+                    }
+                    { from >= 10 && <button onClick={() => {setFrom(from - 10); fetchAPIResults({from: from - 10});}}>Less</button> }
+                    <button onClick={() => {setFrom(from + 10); fetchAPIResults({from: from + 10});}}>More</button>
+                </>
             );
         } else if (apiResult.error) {
             return (<p className='notifications'>
