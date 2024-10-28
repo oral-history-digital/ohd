@@ -81,12 +81,16 @@ function NormDataForDescriptor({
     }
 
     const fetchAPIResults = async(params) => {
-        const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}&from=${from}`];
+        const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
         ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
             if (params[filter]) {
                 urlAndFilters.push(`${filter}=${params[filter]}`);
             }
         });
+
+        if (params['from']) {
+            urlAndFilters.push(`from=${params['from']}`);
+        }
 
         fetch(urlAndFilters.join('&'))
             .then(res => res.json())
@@ -119,8 +123,8 @@ function NormDataForDescriptor({
                                 )
                             })}
                         </ul>
-                        { from >= 10 && <button onClick={() => setFrom(from - 10)}>Less</button> }
-                        <button onClick={() => setFrom(from + 10)}>More</button>
+                        { from >= 10 && <button onClick={() => {setFrom(from - 10); fetchAPIResults({from: from - 10});}}>Less</button> }
+                        <button onClick={() => {setFrom(from + 10); fetchAPIResults({from: from + 10});}}>More</button>
                     </>
             );
         } else if (apiResult.error) {
