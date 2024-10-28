@@ -89,6 +89,10 @@ function NormDataForDescriptor({
             }
         });
 
+        if (params['from']) {
+            urlAndFilters.push(`from=${params['from']}`);
+        }
+
         fetch(urlAndFilters.join('&'))
             .then(res => res.json())
             .then(json => setApiResult(json));
@@ -105,24 +109,28 @@ function NormDataForDescriptor({
                     <p className='notifications'>
                        {t('modules.interview_search.no_results')}
                     </p> :
-                    <ul>
-                        { (Array.isArray(items) ? items : [items]).map( result => {
-                            return (
-                                <li>
-                                    <UpdateRegistryEntryAttributesModal
-                                        entry={result.Entry}
-                                        registryEntryAttributes={registryEntryAttributes}
-                                        registryNameTypes={registryNameTypes}
-                                        normDataProviders={normDataProviders}
-                                        setRegistryEntryAttributes={setRegistryEntryAttributes}
-                                        setShowElementsInForm={setShowElementsInForm}
-                                        setResultsFromNormDataSet={setResultsFromNormDataSet}
-                                        replaceNestedFormValues={replaceNestedFormValues}
-                                    />
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    <>
+                        <ul>
+                            { (Array.isArray(items) ? items : [items]).map( result => {
+                                return (
+                                    <li>
+                                        <UpdateRegistryEntryAttributesModal
+                                            entry={result.Entry}
+                                            registryEntryAttributes={registryEntryAttributes}
+                                            registryNameTypes={registryNameTypes}
+                                            normDataProviders={normDataProviders}
+                                            setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                            setShowElementsInForm={setShowElementsInForm}
+                                            setResultsFromNormDataSet={setResultsFromNormDataSet}
+                                            replaceNestedFormValues={replaceNestedFormValues}
+                                        />
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                        { from >= 10 && <button onClick={() => {setFrom(from - 10); fetchAPIResults({from: from - 10});}}>Less</button> }
+                        <button onClick={() => {setFrom(from + 10); fetchAPIResults({from: from + 10});}}>More</button>
+                    </>
             );
         } else if (apiResult.error) {
             return (<p className='notifications'>

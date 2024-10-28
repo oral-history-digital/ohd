@@ -4,7 +4,7 @@ class RegistryEntriesController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:norm_data_api]
 
   def norm_data_api
-    results = NormDataApi.new(params[:expression], params[:place_extended] || params[:place_type], params[:geo_filter]).process
+    results = NormDataApi.new(params[:expression], params[:from], params[:place_extended] || params[:place_type], params[:geo_filter]).process
 
     respond_to do |format|
       format.json do
