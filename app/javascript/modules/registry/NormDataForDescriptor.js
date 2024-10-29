@@ -130,8 +130,26 @@ function NormDataForDescriptor({
                             })}
                         </ul>
                     }
-                    { from >= 10 && <button onClick={() => {setFrom(from - 10); fetchAPIResults({from: from - 10});}}>Less</button> }
-                    <button onClick={() => {setFrom(from + 10); fetchAPIResults({from: from + 10});}}>More</button>
+                    { from >= 10 &&
+                            <button
+                                type="button"
+                                className="Button Button--secondaryAction"
+                                onClick={() => {
+                                    setFrom(from - 10);
+                                    fetchAPIResults({from: from - 10});
+                            }}>
+                                {t('previous')}
+                            </button>
+                    }
+                    <button
+                        type="button"
+                        className="Button Button--primaryAction"
+                        onClick={() => {
+                            setFrom(from + 10);
+                            fetchAPIResults({from: from + 10});
+                    }}>
+                        {t('next')}
+                    </button>
                 </>
             );
         } else if (apiResult.error) {
