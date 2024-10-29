@@ -8,6 +8,7 @@ import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { SearchSpinnerOverlay } from 'modules/spinners';
 import ResultTable from './ResultTable';
 import WorkflowResultsContainer from './WorkflowResultsContainer';
 import ResultGrid from './ResultGrid';
@@ -106,11 +107,9 @@ export default function ArchiveSearchTabs({
 
                                 return (
                                     <TabPanel key={viewMode}>
-                                        <div className={classNames('LoadingOverlay', {
-                                            'is-loading': loading,
-                                        })}>
+                                        <SearchSpinnerOverlay loading={loading}>
                                             {tabContent}
-                                        </div>
+                                        </SearchSpinnerOverlay>
                                     </TabPanel>
                                 );
                             })

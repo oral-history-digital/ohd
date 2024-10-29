@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { Spinner } from 'modules/spinners';
+import { Spinner, SearchSpinnerOverlay } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
 import FacetDropdown from './FacetDropdown';
 import Facet from './Facet';
@@ -27,9 +27,7 @@ export default function ArchiveFacets() {
     ];
 
     return (
-        <div className={classNames('LoadingOverlay', {
-            'is-loading': isLoading,
-        })}>
+        <SearchSpinnerOverlay loading={isLoading}>
             {Object.keys(facets).map(facetName => {
                 const facetData = facets[facetName];
 
@@ -102,6 +100,6 @@ export default function ArchiveFacets() {
                     );
                 }
             })}
-        </div>
+        </SearchSpinnerOverlay>
     );
 }

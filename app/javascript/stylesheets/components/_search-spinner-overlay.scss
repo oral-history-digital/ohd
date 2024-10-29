@@ -1,14 +1,23 @@
-.SpinnerOverlay {
+.SearchSpinnerOverlay {
+  position: relative;
+}
+
+.SearchSpinnerOverlay-outer {
   background-color: rgba(0, 0, 0, 0.4);
   bottom: 0;
+  display: none;
   left: 0;
   position: absolute;
   right: 0;
   top: 0;
-  z-index: $z-index-spinner-overlay;
+  z-index: $z-index-search-spinner-overlay;
 }
 
-.SpinnerOverlay-inner {
+.SearchSpinnerOverlay.is-loading > .SearchSpinnerOverlay-outer {
+  display: initial;
+}
+
+.SearchSpinnerOverlay-inner {
   left: 0;
   top: 0;
   width: 100%;
@@ -16,14 +25,14 @@
   position: absolute;
 }
 
-.SpinnerOverlay-content {
+.SearchSpinnerOverlay-content {
   left: 50%;
   position: absolute;
-  top: 50%;
+  top: min(max($base-unit * 6, 30vh), 50%);
   transform: translate(-50%, -50%);
 }
 
-.SpinnerOverlay-spinner {
+.SearchSpinnerOverlay-spinner {
   width: 75px;
   height: 75px;
   display: inline-block;
