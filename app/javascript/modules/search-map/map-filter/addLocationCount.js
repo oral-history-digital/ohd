@@ -20,7 +20,9 @@ function locationCountFor(locations, referenceTypeId) {
     let numLocations = 0;
 
     locations.forEach(location => {
-        if (Object.hasOwn(location.ref_types, referenceTypeId)) {
+        const types = location.ref_types.split(',');
+
+        if (types.includes(referenceTypeId.toString())) {
             numLocations += 1;
         }
     });

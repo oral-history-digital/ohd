@@ -10,20 +10,20 @@ export default function transformIntoMarkers(colorMap, locations) {
             throw new ReferenceError(`Lat/Lon values are empty for id ${location.id}`);
         }
 
-        const aggregatedRefCounts = Object.values(location.ref_types);
-        const totalRefCount = aggregatedRefCounts.reduce((acc, cur) => acc + cur, 0);
-        const segmentRefCount = location.ref_types.segment || 0;
-        const metadataRefCount = totalRefCount - segmentRefCount;
+        const refs = location.ref_types.split(',');
+        const numReferences = refs.length;
+        const numMetadataReferences = refs.filter(ref => ref !== 'S').length;
+        const numSegmentReferences = numReferences - numMetadataReferences;
 
         return {
             id: location.id,
-            lat: location.lat,
-            long: location.lon,
-            labels: location.labels,
-            numReferences: totalRefCount,
-            numMetadataReferences: metadataRefCount,
-            numSegmentReferences: segmentRefCount,
-            radius: markerRadius(metadataRefCount),
+            lat: Number.parseFloat(location.lat),
+            long: Number.parseFloat(location.lon),
+            agg_names: location.agg_names,
+            numReferences,
+            numMetadataReferences,
+            numSegmentReferences,
+            radius: markerRadius(numMetadataReferences, numSegmentReferences),
             color: color(colorMap, location),
         };
     });
@@ -32,23 +32,24 @@ export default function transformIntoMarkers(colorMap, locations) {
 }
 
 function isEmpty(geoCoordinate) {
-    return (typeof geoCoordinate === 'undefined' || geoCoordinate === null || Number.isNaN(geoCoordinate));
+    return (!geoCoordinate || geoCoordinate.length === 0);
 }
 
-function markerRadius(numMetadataReferences) {
+function markerRadius(numMetadataReferences, numSegmentReferences) {
     return Math.cbrt(numMetadataReferences + 3) * 4;
 }
 
 function color(colorMap, location) {
-    const refTypesClone = {...location.ref_types};
-    delete refTypesClone.segment;
-    const refTypesWithoutSegment = Object.keys(refTypesClone);
+    const typesArray = location.ref_types.split(',');
 
-    if (refTypesWithoutSegment.length > 1) {
+    const typesWithoutSegmentRefs = new Set(typesArray);
+    typesWithoutSegmentRefs.delete('S');
+
+    if (typesWithoutSegmentRefs.size > 1) {
         return MARKER_COLOR_MULTIPLE_TYPES;
-    } else if (refTypesWithoutSegment.length === 1) {
-        return colorMap.get(refTypesWithoutSegment[0]);
     } else {
-        return colorMap.get('segment');
+        const type = typesArray[0];
+
+        return colorMap.get(type);
     }
 }

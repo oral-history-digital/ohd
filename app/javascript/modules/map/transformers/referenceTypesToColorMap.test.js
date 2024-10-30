@@ -11,7 +11,7 @@ test('builds a color map from a reference types array', () => {
             color: 'red',
         },
         {
-            id: 'segment',
+            id: 'S',
             color: 'yellow',
         },
     ];
@@ -21,7 +21,7 @@ test('builds a color map from a reference types array', () => {
     const colorMap = new Map();
     colorMap.set('1', 'blue');
     colorMap.set('2', 'red');
-    colorMap.set('segment', 'yellow');
+    colorMap.set('S', 'yellow');
     const expected = colorMap;
 
     expect(actual).toEqual(expected);

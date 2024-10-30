@@ -20,7 +20,7 @@ export default function useMapReferenceTypes() {
 
     if (data) {
         combinedTypes = data.concat({
-            id: 'segment',
+            id: 'S',
             name: t('modules.map.mentions'),
             color: project.secondary_color || MARKER_COLOR_SEGMENT_TYPE,
         })

@@ -3,46 +3,38 @@ import transformIntoMarkers from './transformIntoMarkers';
 const colorMap = new Map();
 colorMap.set('4', 'blue');
 colorMap.set('14', 'red');
-colorMap.set('segment', 'yellow');
 
 test('transforms registry location data into markers for map component', () => {
     const locations = [
         {
             id: 18220,
-            lat: 52.21,
-            lon: 21.03,
-            labels: {
+            lat: '52.21',
+            lon: '21.03',
+            agg_names: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
-            ref_types: {4: 5},
+            ref_types: '4,4,4,4,4',
         },
         {
             id: 18221,
-            lat: 52.21,
-            lon: 21.03,
-            labels: {
+            lat: '52.21',
+            lon: '21.03',
+            agg_names: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
-            ref_types: {
-              4: 5,
-              segment: 2,
-            },
+            ref_types: '4,4,4,4,4,S,S',
         },
         {
             id: 18222,
-            lat: 53.66,
-            lon: 23.81,
-            labels: {
+            lat: '53.66',
+            lon: '23.81',
+            agg_names: {
                 de: 'Berlin',
                 en: 'Berlin',
             },
-            ref_types: {
-              4: 1,
-              14: 1,
-              segment: 3,
-            },
+            ref_types: 'S,S,S,4,14',
         },
     ];
 
@@ -52,7 +44,7 @@ test('transforms registry location data into markers for map component', () => {
             id: 18220,
             lat: 52.21,
             long: 21.03,
-            labels: {
+            agg_names: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
@@ -66,7 +58,7 @@ test('transforms registry location data into markers for map component', () => {
             id: 18221,
             lat: 52.21,
             long: 21.03,
-            labels: {
+            agg_names: {
                 de: 'Deutschland',
                 en: 'Germany',
             },
@@ -80,7 +72,7 @@ test('transforms registry location data into markers for map component', () => {
             id: 18222,
             lat: 53.66,
             long: 23.81,
-            labels: {
+            agg_names: {
                 de: 'Berlin',
                 en: 'Berlin',
             },
@@ -94,55 +86,17 @@ test('transforms registry location data into markers for map component', () => {
     expect(actual).toEqual(expected);
 });
 
-test('works when locations contains only segment refs', () => {
-    const locations = [
-        {
-            id: 18220,
-            lat: 52.21,
-            lon: 21.03,
-            labels: {
-                de: 'Deutschland',
-                en: 'Germany',
-            },
-            ref_types: {segment: 5},
-        },
-    ];
-
-    const actual = transformIntoMarkers(colorMap, locations);
-    const expected = [
-        {
-            id: 18220,
-            lat: 52.21,
-            long: 21.03,
-            labels: {
-                de: 'Deutschland',
-                en: 'Germany',
-            },
-            numReferences: 5,
-            numMetadataReferences: 0,
-            numSegmentReferences: 5,
-            radius: 5.768998281229633,
-            color: 'yellow',
-        },
-    ];
-    expect(actual).toEqual(expected);
-});
-
 test('throws when lat lon data is empty', () => {
     const locations = [
         {
             id: 18221,
-            lat: null,
-            lon: null,
-            labels: {
+            lat: '',
+            lon: '',
+            agg_names: {
                 de: 'Berlin',
                 en: 'Berlin',
             },
-            ref_types: {
-              4: 1,
-              14: 1,
-              segment: 3,
-            },
+            ref_types: 'S,S,S,4,14',
         },
     ];
 
