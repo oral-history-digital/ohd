@@ -73,7 +73,7 @@ export default function MultiLocaleWrapper(props) {
 
     const preparedProps = (locale) => {
         const alpha3 = ALPHA2_TO_ALPHA3[locale];
-        const usedLocale = data.type === 'Segment' ? alpha3 : locale;
+        const usedLocale = data?.type === 'Segment' ? alpha3 : locale;
 
         const translation = findTranslation(usedLocale) || {locale: usedLocale};
         const value = translation[attribute];
