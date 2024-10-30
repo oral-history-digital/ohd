@@ -4,19 +4,16 @@ test('adds location count property to reference types', () => {
     const locations = [
         {
             id: 1,
-            ref_types: {
-              1: 3,
-              segment: 3,
-            },
+            ref_types: '1,1,1,S,S,S',
         },
         {
             id: 2,
-            ref_types: {1: 3},
+            ref_types: '1,1,1',
         },
         {
             id: 3,
-            ref_types: {1: 3},
-        },
+            ref_types: '1,1,1'
+        }
 
     ];
     const referenceTypes = [
@@ -25,7 +22,7 @@ test('adds location count property to reference types', () => {
             name: 'birthplace',
         },
         {
-            id: 'segment',
+            id: 'S',
             name: 'segment',
         },
     ];
@@ -38,7 +35,7 @@ test('adds location count property to reference types', () => {
             locationCount: 3,
         },
         {
-            id: 'segment',
+            id: 'S',
             name: 'segment',
             locationCount: 1,
         },
