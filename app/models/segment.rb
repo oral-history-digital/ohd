@@ -66,7 +66,7 @@ class Segment < ApplicationRecord
       if text_previously_changed? && locale.length == 3 && !text.blank?
         segment.write_other_versions(text, locale)
       end
-      #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
+      segment.translations.where(text: nil).where("char_length(locale) = 2").destroy_all # where do these empty translations come from?
     end
   end
 
