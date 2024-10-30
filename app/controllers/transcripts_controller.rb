@@ -20,7 +20,7 @@ class TranscriptsController < ApplicationController
 
     update_contributions(interview, transcript_params[:contributions_attributes])
 
-    locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send("alpha2")
+    locale = Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]
 
     ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user, transcript_params[:update_only_speakers])
 
