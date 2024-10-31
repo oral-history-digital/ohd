@@ -1,5 +1,5 @@
 class SlimRegistryReferenceSerializer < ActiveModel::Serializer
-  attributes :id, :archive_id, :project_id, :display_name, :first_name, :last_name
+  attributes :id, :archive_id, :project_id, :shortname, :display_name, :first_name, :last_name
 
   def display_name
     "#{first_name} #{last_name}"
