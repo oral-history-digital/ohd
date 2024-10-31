@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { getRegistryEntries } from 'modules/data';
-import EntryReferencesContainer from './EntryReferencesContainer';
+import EntryReferenceGroups from './EntryReferenceGroups';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryBreadcrumbs from './RegistryEntryBreadcrumbs';
 
@@ -39,7 +39,7 @@ export default function RegistryEntryShow({
             <p>
                 {registryEntry.notes[locale]}
             </p>
-            <EntryReferencesContainer
+            <EntryReferenceGroups
                 registryEntry={registryEntry}
                 onSubmit={onSubmit}
             />
