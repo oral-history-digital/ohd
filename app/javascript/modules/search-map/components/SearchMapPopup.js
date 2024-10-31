@@ -77,12 +77,7 @@ export default function SearchMapPopup({
                                 segmentRefGroups.map(refGroup => (
                                     <li key={refGroup.archive_id}>
                                         <h5 className="MapPopup-subSubHeading">
-                                            <Link
-                                                className="MapPopup-link"
-                                                to={`${pathBase}/interviews/${refGroup.archive_id}`}
-                                            >
-                                                {`${refGroup.display_name} (${refGroup.archive_id})`}
-                                            </Link>
+                                            {`${refGroup.display_name} (${refGroup.archive_id})`}
                                         </h5>
 
                                         <ul className="MapPopup-list">
