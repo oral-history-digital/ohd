@@ -12,7 +12,7 @@ import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
 import { useProject, usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
-import { SpinnerOverlay } from 'modules/spinners';
+import { MapSpinnerOverlay } from 'modules/spinners';
 import useSearchMap from '../search-map/useSearchMap';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
@@ -73,7 +73,7 @@ export default function SearchMap() {
                             popupComponent={SearchMapPopup}
                         >
                             <>
-                                {locationsLoading && <SpinnerOverlay />}
+                                {locationsLoading && <MapSpinnerOverlay />}
                                 <MapNewBoundsSetter
                                     bounds={bounds}
                                     view={mapView}
