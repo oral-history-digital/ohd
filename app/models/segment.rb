@@ -62,8 +62,8 @@ class Segment < ApplicationRecord
 
     after_save do
       # run this only after commit of original e.g. 'de' version!
-      #if locale.length == 2 && text.present?
-      if text_previously_changed? && locale.length == 2 && !text.blank?
+      if locale.length == 2 && text.present?
+      #if text_previously_changed? && locale.length == 2 && !text.blank?
         segment.write_other_versions(text, locale)
       end
       #segment.translations.where(text: nil).destroy_all # where do these empty translations come from?
@@ -141,7 +141,7 @@ class Segment < ApplicationRecord
           #gsub(/<i\((.*?)\)>/, "<c(Pause)>").                    # <i(Batteriewechsel)>
           # zwar
           #gsub(/\[\.\.\.\]/, "XXX").                             # e.g. <an bla bla>
-          gsub(/\{\[?(.*?)\]?\}/, '[\1]').                       # e.g. {[laughs silently]}
+          #gsub(/\{\[?(.*?)\]?\}/, '[\1]').                       # e.g. {[laughs silently]}
           #gsub("~", "").                                         # e.g. Wo waren Sie ~en este tiempo~?
           ##gsub("...", "_").                                      # e.g. ...
           #gsub(" [---]", "<p>").                                 # e.g. Ich war [---] bei Maria Malta, als das passierte.
