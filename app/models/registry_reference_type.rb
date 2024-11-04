@@ -26,7 +26,7 @@ class RegistryReferenceType < ApplicationRecord
     .where('metadata_fields.ref_object_type': ['Person', 'Interview'])
     .where('metadata_fields.use_in_map_search': true)
     .where('metadata_field_translations.locale': locale)
-    .group('registry_reference_types.id')
+    .group('registry_reference_types.id, metadata_fields.facet_order, metadata_fields.map_color, metadata_field_translations.label')
     .order('metadata_fields.facet_order')
     .select('registry_reference_types.id, metadata_fields.map_color, metadata_field_translations.label')
   }
