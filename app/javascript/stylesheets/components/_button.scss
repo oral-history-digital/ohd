@@ -37,6 +37,12 @@ $button-border-width: $base-unit * 0.083333;
   vertical-align: baseline;
 }
 
+.Button--nested {
+  background-color: transparent;
+  border: 2px solid var(--editorial-color);
+  border-radius: 3px;
+}
+
 .Button--primaryAction,
 .Button--secondaryAction {
   border: $button-border-width solid var(--primary-color) !important;
