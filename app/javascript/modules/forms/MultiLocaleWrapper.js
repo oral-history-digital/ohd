@@ -5,6 +5,7 @@ import { useI18n } from 'modules/i18n';
 import RichTextareaContainer from './input-components/RichTextareaContainer';
 import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export default function MultiLocaleWrapper(props) {
     const { t, locale } = useI18n();
@@ -71,7 +72,10 @@ export default function MultiLocaleWrapper(props) {
     }
 
     const preparedProps = (locale) => {
-        const translation = findTranslation(locale) || {locale: locale};
+        const alpha3 = ALPHA2_TO_ALPHA3[locale];
+        const usedLocale = data?.type === 'Segment' ? alpha3 : locale;
+
+        const translation = findTranslation(usedLocale) || {locale: usedLocale};
         const value = translation[attribute];
 
         return Object.assign({}, props, {
