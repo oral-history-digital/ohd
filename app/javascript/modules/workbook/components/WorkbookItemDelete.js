@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 
+import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+
+import useMutateWorkbook from '../useMutateWorkbook';
 
 export default function WorkbookItemDelete({
     id,
@@ -9,13 +11,24 @@ export default function WorkbookItemDelete({
     description,
     onSubmit,
     onCancel,
-    deleteWorkbook,
 }) {
     const { t } = useI18n();
-    const pathBase = usePathBase();
+    const mutateWorkbook = useMutateWorkbook();
+    const { deleteWorkbookItem } = useWorkbookApi();
 
     const destroy = () => {
-        deleteWorkbook(pathBase, id);
+        mutateWorkbook(async workbook => {
+            await deleteWorkbookItem(id);
+
+            const updatedWorkbook = {
+                ...workbook,
+                data: { ...workbook.data }
+            };
+            delete updatedWorkbook.data[id];
+
+            return updatedWorkbook;
+        });
+
         onSubmit();
     };
 
@@ -54,5 +67,4 @@ WorkbookItemDelete.propTypes = {
     description: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    deleteWorkbook: PropTypes.func.isRequired,
 };

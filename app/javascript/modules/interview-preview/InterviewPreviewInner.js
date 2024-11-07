@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
+import classNames from 'classnames';
 
 import { useProjectAccessStatus } from 'modules/auth';
 import { useProject } from 'modules/routes';
@@ -20,7 +21,7 @@ export default function InterviewPreviewInner({
         <>
             <InterviewImage interview={interview} project={project} />
 
-            <div className="InterviewCard-title u-mt-small">
+            <div className={classNames('InterviewCard-title', isExpanded ? 'u-mt' : 'u-mt-small')}>
                 {interview.workflow_state === 'unshared' &&
                     <FaEyeSlash className="u-mr-tiny" />
                 }

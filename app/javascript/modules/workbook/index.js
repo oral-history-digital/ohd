@@ -1,8 +1,5 @@
 export { NAME as WORKBOOK_NAME } from './constants';
 
-export { fetchWorkbook } from './actions';
-export { default as workbookReducer } from './reducer';
-export { getWorkbookAnnotations, getWorkbookIsLoading, getWorkbookLoaded } from './selectors';
-
-export { default as WorkbookContainer } from './components/WorkbookContainer';
-export { default as WorkbookItemFormContainer } from './components/WorkbookItemFormContainer';
+export { default as Workbook } from './components/Workbook';
+export { default as WorkbookItemForm } from './components/WorkbookItemForm';
+export { default as useWorkbook } from './useWorkbook';

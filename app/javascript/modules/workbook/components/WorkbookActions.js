@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
+import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 import { Modal, CopyText } from 'modules/ui';
-import WorkbookItemFormContainer from './WorkbookItemFormContainer';
-import WorkbookItemDeleteContainer from './WorkbookItemDeleteContainer';
+import { usePathBase } from 'modules/routes';
+import WorkbookItemForm from './WorkbookItemForm';
+import WorkbookItemDelete from './WorkbookItemDelete';
 
 export default function WorkbookActions({
     item,
@@ -15,6 +17,7 @@ export default function WorkbookActions({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
+    const interview = useSelector(getCurrentInterview);
     const itemUrl = `${window.location.protocol}//${window.location.host}${pathBase}/${itemPath}`;
 
     return (
@@ -24,7 +27,8 @@ export default function WorkbookActions({
                 trigger={<FaPencilAlt className="Icon Icon--primary" />}
             >
                 {closeModal => (
-                    <WorkbookItemFormContainer
+                    <WorkbookItemForm
+                        interview={interview}
                         id={item.id}
                         title={item.title}
                         description={item.description}
@@ -45,7 +49,7 @@ export default function WorkbookActions({
                 trigger={<FaTrash className="Icon Icon--primary" />}
             >
                 {closeModal => (
-                    <WorkbookItemDeleteContainer
+                    <WorkbookItemDelete
                         id={item.id}
                         title={item.title}
                         description={item.description}

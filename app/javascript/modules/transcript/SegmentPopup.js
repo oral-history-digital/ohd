@@ -4,8 +4,8 @@ import { FaTimes } from 'react-icons/fa';
 import { Annotations } from 'modules/annotations';
 import { useAuthorization } from 'modules/auth';
 import { Fetch } from 'modules/data';
-import { useI18n } from 'modules/i18n';
 import { RegistryReferencesContainer } from 'modules/registry-references';
+import { useWorkbook } from 'modules/workbook';
 import { useProject } from 'modules/routes';
 
 export default function SegmentPopup({
@@ -13,12 +13,11 @@ export default function SegmentPopup({
     data,
     openReference,
     popupType,
-    workbookAnnotations,
     setOpenReference,
 }) {
     const { isAuthorized } = useAuthorization();
-    const { locale } = useI18n();
     const { project } = useProject();
+    const { savedSegments: workbookAnnotations } = useWorkbook();
 
     const annotationsForSegment = workbookAnnotations?.filter(annotation =>
         data.user_annotation_ids.includes(annotation.id));
@@ -102,6 +101,5 @@ SegmentPopup.propTypes = {
     data: PropTypes.object.isRequired,
     openReference: PropTypes.object,
     popupType: PropTypes.string,
-    workbookAnnotations: PropTypes.array,
     setOpenReference: PropTypes.func.isRequired,
 };

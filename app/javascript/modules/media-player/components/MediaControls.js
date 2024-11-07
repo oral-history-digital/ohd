@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { WorkbookItemFormContainer } from 'modules/workbook';
+import { WorkbookItemForm } from 'modules/workbook';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Modal, CopyText } from 'modules/ui';
@@ -66,7 +66,8 @@ export default function MediaControls({
                     triggerClassName="MediaControls-bookmark"
                 >
                     {closeModal => (
-                        <WorkbookItemFormContainer
+                        <WorkbookItemForm
+                            interview={interview}
                             description=""
                             properties={{title: interview.title}}
                             reference_id={interview.id}

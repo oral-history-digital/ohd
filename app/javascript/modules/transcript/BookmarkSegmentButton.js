@@ -4,7 +4,7 @@ import { FaStar } from 'react-icons/fa';
 
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { WorkbookItemFormContainer } from 'modules/workbook';
+import { WorkbookItemForm } from 'modules/workbook';
 import { Modal } from 'modules/ui';
 
 export default function BookmarkSegmentButton({
@@ -20,7 +20,8 @@ export default function BookmarkSegmentButton({
             triggerClassName="Button--hover Segment-hiddenButton"
         >
             {closeModal => (
-                <WorkbookItemFormContainer
+                <WorkbookItemForm
+                    interview={interview}
                     description=''
                     properties={{
                         time: segment.time,
