@@ -43,8 +43,10 @@ $help-text-background-color: #e6ffe6;
 
 .HelpText--small .HelpText-icon {
   color: $help-text-color;
-  font-size: 1.25rem;
-  vertical-align: middle;
+  display: inline-block;
+  font-size: 1.5rem;
+  padding: ($base-unit * 0.125) 0;
+  vertical-align: bottom;
 }
 
 .HelpText--small.HelpText--reversed .HelpText-icon {
