@@ -53,8 +53,9 @@ export default function ContributionForm({
         }
     }
 
-    const sortedPeopleData = Object.values(peopleData)
-        .sort((a, b) => a.name[locale].localeCompare(b.name[locale]));
+    const sortedPeopleData = Object.values(peopleData).sort((a, b) =>
+        a.name[locale].toLowerCase().localeCompare(b.name[locale].toLowerCase())
+    );
 
     const formElements = [
         {
