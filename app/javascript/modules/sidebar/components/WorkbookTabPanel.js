@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { WorkbookContainer } from 'modules/workbook';
+import { Workbook } from 'modules/workbook';
 
 export default function WorkbookTabPanel() {
     const { t } = useI18n();
@@ -13,7 +13,7 @@ export default function WorkbookTabPanel() {
                     { t('user_content') }
                 </h3>
                 <div className='flyout-sub-tabs-container flyout-folder'>
-                    <WorkbookContainer />
+                    <Workbook />
                 </div>
             </AuthShowContainer>
         </ErrorBoundary>
