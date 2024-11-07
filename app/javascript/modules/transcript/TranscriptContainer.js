@@ -12,7 +12,6 @@ import {
 } from 'modules/data';
 import { getCurrentTape, getMediaTime, getIsIdle } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
-import { getWorkbookIsLoading, getWorkbookLoaded, fetchWorkbook } from 'modules/workbook';
 import Transcript from './Transcript';
 
 const mapStateToProps = (state, props) => ({
@@ -26,13 +25,10 @@ const mapStateToProps = (state, props) => ({
     transcriptFetched: getTranscriptFetched(state),
     transcriptLocale: getTranscriptLocale(state, props),
     hasTranscript: getHasTranscript(state, props),
-    workbookIsLoading: getWorkbookIsLoading(state),
-    workbookLoaded: getWorkbookLoaded(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
-    fetchWorkbook,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transcript);

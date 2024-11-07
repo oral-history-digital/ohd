@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
 
-import { WorkbookItemFormContainer } from 'modules/workbook';
+import { WorkbookItemForm } from 'modules/workbook';
 import { Modal } from 'modules/ui';
 import { InterviewInfoContainer, InterviewContributorsContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
@@ -44,7 +44,8 @@ export default function InterviewDetailsLeftSide({
                     triggerClassName="Button Button--transparent"
                 >
                     {closeModal => (
-                        <WorkbookItemFormContainer
+                        <WorkbookItemForm
+                            interview={interview}
                             description=""
                             properties={{title: interview.title}}
                             reference_id={interview.id}

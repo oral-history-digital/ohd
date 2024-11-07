@@ -1,57 +1,33 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-
-import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { useWorkbook } from 'modules/workbook';
 import WorkbookItemList from './WorkbookItemList';
 
-export default function Workbook({
-    user,
-    workbookIsLoading,
-    workbookLoaded,
-    workbookSearches,
-    workbookInterviews,
-    workbookAnnotations,
-    fetchWorkbook,
-}) {
-    const { t } = useI18n();
-    const pathBase = usePathBase();
+export default function Workbook() {
+    const {
+        isValidating,
+        savedSearches,
+        savedInterviews,
+        savedSegments,
+    } = useWorkbook();
 
-    useEffect(() => {
-        if (user.email && !user.error && !workbookLoaded && !workbookIsLoading) {
-            fetchWorkbook(pathBase);
-        }
-    }, [user.email]);
-
-    if (workbookIsLoading) {
+    if (isValidating) {
         return <Spinner />;
     }
 
     return (
         <div>
             <WorkbookItemList
-                contents={workbookSearches}
-                title={t('saved_searches')}
+                type="saved_searches"
+                contents={savedSearches}
             />
             <WorkbookItemList
-                contents={workbookInterviews}
-                title={t('saved_interviews')}
+                type="saved_interviews"
+                contents={savedInterviews}
             />
             <WorkbookItemList
-                contents={workbookAnnotations}
-                title={t('saved_annotations')}
+                type="saved_annotations"
+                contents={savedSegments}
             />
         </div>
     );
 }
-
-Workbook.propTypes = {
-    user: PropTypes.object,
-    workbookIsLoading: PropTypes.bool.isRequired,
-    workbookLoaded: PropTypes.bool.isRequired,
-    workbookSearches: PropTypes.array,
-    workbookInterviews: PropTypes.array,
-    workbookAnnotations: PropTypes.array,
-    fetchWorkbook: PropTypes.func.isRequired,
-};
