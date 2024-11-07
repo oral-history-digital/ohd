@@ -5,4 +5,4 @@ export { default as workbookReducer } from './reducer';
 export { getWorkbookAnnotations, getWorkbookIsLoading, getWorkbookLoaded } from './selectors';
 
 export { default as WorkbookContainer } from './components/WorkbookContainer';
-export { default as WorkbookItemFormContainer } from './components/WorkbookItemFormContainer';
+export { default as WorkbookItemForm } from './components/WorkbookItemForm';

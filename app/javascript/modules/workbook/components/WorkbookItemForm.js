@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { formatTimecode } from 'modules/interview-helpers';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';
+import { createWorkbook, updateWorkbook } from '../actions';
 
 export default function WorkbookItemForm({
     id,
@@ -21,13 +23,12 @@ export default function WorkbookItemForm({
     shared,
     interview,
     submitLabel,
-    createWorkbook,
-    updateWorkbook,
     onSubmit,
     onCancel,
 }) {
     const { project } = useProject();
     const { t, locale } = useI18n();
+    const dispatch = useDispatch();
     const pathBase = usePathBase();
     const [formState, setFormState] = useState({
         id,
@@ -80,9 +81,9 @@ export default function WorkbookItemForm({
         event.preventDefault();
         if (valid()) {
             if (id) {
-                updateWorkbook(pathBase, id, {user_content: formState});
+                dispatch(updateWorkbook(pathBase, id, {user_content: formState}));
             } else {
-                createWorkbook(pathBase, {user_content: formState});
+                dispatch(createWorkbook(pathBase, {user_content: formState}));
             }
             onSubmit();
         } else {
@@ -206,6 +207,4 @@ WorkbookItemForm.propTypes = {
     interview: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
-    createWorkbook: PropTypes.func.isRequired,
-    updateWorkbook: PropTypes.func.isRequired,
 };

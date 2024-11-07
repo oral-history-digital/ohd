@@ -5,7 +5,7 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Modal, CopyText } from 'modules/ui';
-import WorkbookItemFormContainer from './WorkbookItemFormContainer';
+import WorkbookItemForm from './WorkbookItemForm';
 import WorkbookItemDeleteContainer from './WorkbookItemDeleteContainer';
 
 export default function WorkbookActions({
@@ -24,7 +24,7 @@ export default function WorkbookActions({
                 trigger={<FaPencilAlt className="Icon Icon--primary" />}
             >
                 {closeModal => (
-                    <WorkbookItemFormContainer
+                    <WorkbookItemForm
                         id={item.id}
                         title={item.title}
                         description={item.description}

@@ -3,6 +3,11 @@
   position: relative;
 }
 
+.InterviewCard-star {
+  position: absolute;
+  z-index: 1;
+}
+
 .InterviewCard.is-expanded {
 
 }

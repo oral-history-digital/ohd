@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { WorkbookItemFormContainer } from 'modules/workbook';
+import { WorkbookItemForm } from 'modules/workbook';
 import { useSearchParams } from 'modules/query-string';
 import queryToTitle from '../queryToTitle';
 import useFacets from '../useFacets';
@@ -24,7 +23,7 @@ export default function SearchActions({}) {
     function saveSearchForm(closeModal) {
         const queryTitle = queryToTitle(allParams, facets);
 
-        return <WorkbookItemFormContainer
+        return <WorkbookItemForm
             title={queryTitle}
             description=''
             properties={allParams}
