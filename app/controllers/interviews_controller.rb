@@ -203,7 +203,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        send_data(interview.to_pdf(params[:locale], params[:lang]),
+        send_data(interview.to_pdf(params[:locale], ISO_639.find_by_code(params[:lang]).alpha2),
           filename: "#{interview.archive_id}_transcript_#{params[:lang]}.pdf",
           type: "application/pdf"
         )
@@ -217,7 +217,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        send_data interview.observations_pdf(params[:locale], params[:lang]), filename: "#{interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
+        send_data interview.observations_pdf(params[:locale], ISO_639.find_by_code(params[:lang]).alpha2), filename: "#{interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
       end
       format.json do
         render json: {
