@@ -27,10 +27,6 @@ class CompleteExport
       end
 
       project.available_locales.each do |locale|
-        if interview.has_transcript?(locale)
-          zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
-          zip.write(interview.to_pdf(:de, locale))
-        end
         if interview.interviewee.has_biography?(locale)
           zip.put_next_entry("#{interview.archive_id}_biography_#{locale}.pdf")
           zip.write(interview.biography_pdf(:de, locale))
@@ -38,6 +34,13 @@ class CompleteExport
         if interview.has_protocol?(locale)
           zip.put_next_entry("#{interview.archive_id}_protocol_#{locale}.pdf")
           zip.write(interview.observations_pdf(:de, locale))
+        end
+      end
+
+      interview.languages.each do |locale|
+        if interview.has_transcript?(locale)
+          zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
+          zip.write(interview.to_pdf(:de, ISO_639.find_by_code(locale).alpha2))
         end
       end
 
