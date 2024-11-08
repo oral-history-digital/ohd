@@ -13,7 +13,7 @@ class Contribution < ApplicationRecord
   validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type_id ]
 
   scope :without_interviewees, -> { where.not(
-    contribution_type_id: ContributionType.where(code: 'interviewee')
+    contribution_type_id: ContributionType.where(code: ['interviewee', 'further_interviewee']).pluck(:id)
   ) }
 
 end
