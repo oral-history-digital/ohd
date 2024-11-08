@@ -179,11 +179,11 @@ class Interview < ApplicationRecord
 
     dynamic_string :person_name, stored: true do
       Rails.configuration.i18n.available_locales.inject({}) do |hash, locale|
-        hash.merge(locale => anonymous_title(locale))
+        #hash.merge(locale => anonymous_title(locale))
         # using full title here would allow to find people
         # by their full name with fulltextsearch
         # this is a security risk, so we use the anonymous_title
-        #hash.merge(locale => title_for_sorting(locale))
+        hash.merge(locale => title_for_sorting(locale))
       end
     end
 
