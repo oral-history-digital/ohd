@@ -64,7 +64,7 @@ module Interview::Export
           header_locale: header_locale,
           content_locale: content_locale,
           content_locale_public: "#{content_locale}-public",
-          content_locale_human: I18n.t(ISO_639.find_by_code(content_locale).alpha2 || content_locale, locale: header_locale),
+          content_locale_human: content_locale_human,
           headings_in_content_locale: !!first_segment_with_heading &&
             (first_segment_with_heading.mainheading(content_locale) || first_segment_with_heading.subheading(content_locale))
         }
