@@ -529,10 +529,13 @@ class Interview < ApplicationRecord
   end
 
   def index_observations?
-    public_attributes = properties.fetch(:public_attributes, {})
-    observations_public = public_attributes.fetch('observations', true)
+    #public_attributes = properties.fetch(:public_attributes, {})
+    #observations_public = public_attributes.fetch('observations', true)
+    observations_public = properties[:public_attributes]['observations'] if properties[:public_attributes]
 
+    binding.pry
     if observations_public != true
+    binding.pry
       false
     else
       field = project.metadata_fields.where(name: 'observations').first
