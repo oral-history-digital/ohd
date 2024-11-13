@@ -50,6 +50,8 @@ module Interview::Export
   def to_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     first_segment_with_heading = segments.with_heading.first
+    content_locale_alpha2 = ISO_639.find_by_code(content_locale).alpha2
+    content_locale_human = TranslationValue.for(content_locale_alpha2.blank? ? content_locale : content_locale_alpha2, header_locale)
 
     I18n.with_locale header_locale.to_sym do
       ApplicationController.new.render_to_string(
@@ -62,7 +64,7 @@ module Interview::Export
           header_locale: header_locale,
           content_locale: content_locale,
           content_locale_public: "#{content_locale}-public",
-          content_locale_human: I18n.t(content_locale, locale: header_locale),
+          content_locale_human: content_locale_human,
           headings_in_content_locale: !!first_segment_with_heading &&
             (first_segment_with_heading.mainheading(content_locale) || first_segment_with_heading.subheading(content_locale))
         }
