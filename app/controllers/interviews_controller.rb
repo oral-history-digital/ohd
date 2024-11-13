@@ -203,7 +203,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        send_data(interview.to_pdf(params[:locale], ISO_639.find_by_code(params[:lang]).alpha2),
+        send_data(interview.to_pdf(params[:locale], ISO_639.find_by_code(params[:lang]).alpha3),
           filename: "#{interview.archive_id}_transcript_#{params[:lang]}.pdf",
           type: "application/pdf"
         )
