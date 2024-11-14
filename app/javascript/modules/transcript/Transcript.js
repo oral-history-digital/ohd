@@ -154,9 +154,7 @@ export default function Transcript({
 
 Transcript.propTypes = {
     originalLocale: PropTypes.bool,
-    editView: PropTypes.bool.isRequired,
     loadSegments: PropTypes.bool,
-    contributionTypes: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     isIdle: PropTypes.bool.isRequired,
