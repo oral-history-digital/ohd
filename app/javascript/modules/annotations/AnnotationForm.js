@@ -8,11 +8,11 @@ export default class AnnotationForm extends Component {
         this.state = {
             values: {
                 id: props.annotation && props.annotation.id,
-                locale: this.props.contentLocale,
+                locale: this.props.locale,
                 segment_id: props.segment.id,
                 interview_id: props.segment.interview_id,
-                text: props.annotation && props.annotation.text[props.contentLocale] ?
-                    RichTextEditor.createValueFromString(props.annotation.text[props.contentLocale], 'html') :
+                text: props.annotation?.text ?
+                    RichTextEditor.createValueFromString(props.annotation.text, 'html') :
                     RichTextEditor.createEmptyValue()
             }
         };
@@ -78,7 +78,6 @@ AnnotationForm.propTypes = {
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    contentLocale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
