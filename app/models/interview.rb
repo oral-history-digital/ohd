@@ -469,9 +469,10 @@ class Interview < ApplicationRecord
   end
 
   def languages
-    interview_languages.map do |il|
+    result = interview_languages.map do |il|
       il.language&.code
     end
+    result.uniq
   end
 
   def language_id
