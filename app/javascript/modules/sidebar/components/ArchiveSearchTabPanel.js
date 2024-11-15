@@ -2,6 +2,7 @@ import { useSelector} from 'react-redux';
 
 import { getSelectedArchiveIds } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { useProject } from 'modules/routes';
@@ -16,14 +17,15 @@ export default function ArchiveSearchTabPanel() {
 
     return (
         <ErrorBoundary small>
-            <h3 className='SidebarTabs-title'>
+            <h3 className="SidebarTabs-title u-flex">
                 {t(isOhd ? 'modules.sidebar.search' : 'archive_search')}
+                <HelpText code="search_page" small />
             </h3>
 
             <ArchiveSearchFormContainer/>
 
-            <div className='flyout-sub-tabs-container flyout-video'>
-                <AuthorizedContent object={{type: 'General'}} action='edit'>
+            <div className="flyout-sub-tabs-container flyout-video">
+                <AuthorizedContent object={{type: 'General'}} action="edit">
                     <SubTab title={t('admin_actions')} >
                         <AdminActionsContainer archiveIds={selectedArchiveIds} />
                     </SubTab>
