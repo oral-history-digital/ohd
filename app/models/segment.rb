@@ -62,7 +62,7 @@ class Segment < ApplicationRecord
 
     after_save do
       # run this only after commit of original e.g. 'de' version!
-      if locale.length == 3 && text.present?
+      if (locale.length == 3 || locale == 'ukr-rus') && text.present?
       #if text_previously_changed? && locale.length == 3 && !text.blank?
         segment.write_other_versions(text, locale)
       end
