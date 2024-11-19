@@ -60,10 +60,11 @@ class Segment < ApplicationRecord
   class Translation
     belongs_to :segment
 
+      binding.pry
     after_save do
       # run this only after commit of original e.g. 'de' version!
-      if (locale.length == 3 || locale == 'ukr-rus') && text.present?
-      #if text_previously_changed? && locale.length == 3 && !text.blank?
+      if (locale.length == 3 || locale == :'ukr-rus') && text.present?
+      #if text_previously_changed? && (locale.length == 3 || locale == :'ukr-rus') && !text.blank?
         segment.write_other_versions(text, locale)
       end
       segment.translations.where(text: nil).where("char_length(locale) = 2").destroy_all # where do these empty translations come from?
