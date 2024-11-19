@@ -60,7 +60,6 @@ class Segment < ApplicationRecord
   class Translation
     belongs_to :segment
 
-      binding.pry
     after_save do
       # run this only after commit of original e.g. 'de' version!
       if (locale.length == 3 || locale == :'ukr-rus') && text.present?
