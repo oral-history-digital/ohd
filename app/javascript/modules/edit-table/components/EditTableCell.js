@@ -159,7 +159,20 @@ export default function EditTableCell({
             >
                 <Annotations
                     segment={segment}
-                    contentLocale={locale}
+                    contentLocale={originalLocale}
+                />
+            </div>
+        );
+    case 'annotations_translated':
+        return (
+            <div
+                className={classNames('EditTable-cell', {
+                    'has-data': segment.annotations_count !== 0,
+                })}
+            >
+                <Annotations
+                    segment={segment}
+                    contentLocale={translationLocale}
                 />
             </div>
         );

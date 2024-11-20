@@ -13,6 +13,7 @@ const columnOrder = [
     'subheading_translated',
     'registry_references',
     'annotations',
+    'annotations_translated',
 ];
 
 export default function useColumns(interview) {
@@ -27,6 +28,7 @@ export default function useColumns(interview) {
             columns.push('registry_references');
         if (isAuthorized({type: 'Annotation', interview_id: interviewId}, 'update'))
             columns.push('annotations');
+            columns.push('annotations_translated');
         return columns;
     }
 
