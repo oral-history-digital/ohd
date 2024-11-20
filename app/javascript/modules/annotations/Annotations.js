@@ -9,18 +9,21 @@ import AnnotationContainer from './AnnotationContainer';
 
 export default function Annotations({
     segment,
+    contentLocale,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
 
     return (
         <div>
             {
                 Object.values(segment.annotations)
+                    .filter(annotation => annotation.text.hasOwnProperty(contentLocale))
                     .map(annotation => (
                         <AnnotationContainer
                             annotation={annotation}
                             segment={segment}
                             key={annotation.id}
+                            contentLocale={contentLocale}
                         />
                     ))
             }
@@ -33,7 +36,7 @@ export default function Annotations({
                         {closeModal => (
                             <AnnotationFormContainer
                                 segment={segment}
-                                locale={locale}
+                                contentLocale={contentLocale}
                                 onSubmit={closeModal}
                                 onCancel={closeModal}
                                 cancelLabel={t('cancel')}
@@ -49,4 +52,5 @@ export default function Annotations({
 
 Annotations.propTypes = {
     segment: PropTypes.object.isRequired,
+    contentLocale: PropTypes.string.isRequired,
 };

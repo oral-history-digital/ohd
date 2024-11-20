@@ -33,6 +33,7 @@ export default function SegmentPopup({
                         popupType === 'annotations' && (data.annotations_count > 0 || isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'create')) && (
                             <Annotations
                                 segment={data}
+                                contentLocale={contentLocale}
                             />
                         )
                     }
