@@ -10,6 +10,7 @@ import AnnotationFormContainer from './AnnotationFormContainer';
 
 export default function Annotation({
     annotation,
+    contentLocale,
     segment,
     deleteData,
 }) {
@@ -20,7 +21,7 @@ export default function Annotation({
         <div>
             <p
                 className=""
-                dangerouslySetInnerHTML={{__html: annotation.text}}
+                dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}}
             />
             <AuthorizedContent object={annotation} action='update'>
                 <span className="flyout-sub-tabs-content-ico">
@@ -32,7 +33,7 @@ export default function Annotation({
                             <AnnotationFormContainer
                                 annotation={annotation}
                                 segment={segment}
-                                locale={locale}
+                                contentLocale={contentLocale}
                                 onSubmit={closeModal}
                                 onCancel={closeModal}
                                 cancelLabel={t('cancel')}
@@ -52,7 +53,7 @@ export default function Annotation({
                                 }}
                                 onCancel={closeModal}
                             >
-                                <p dangerouslySetInnerHTML={{__html: annotation.text}} />
+                                <p dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}} />
                             </DeleteItemForm>
                         )}
                     </Modal>
@@ -65,5 +66,6 @@ export default function Annotation({
 Annotation.propTypes = {
     annotation: PropTypes.object.isRequired,
     segment: PropTypes.object.isRequired,
+    contentLocale: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
