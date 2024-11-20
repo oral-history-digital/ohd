@@ -50,6 +50,15 @@ export const ALPHA2_TO_ALPHA3 = {
     'uk': 'ukr'
 };
 
+export const ALPHA3_TO_ALPHA2 = {
+    'ger': 'de',
+    'eng': 'en',
+    'gre': 'el',
+    'spa': 'es',
+    'rus': 'ru',
+    'ukr': 'uk'
+};
+
 const ANALYTICS_URLS = {
     development: '//localhost:8080/',
     staging: '//metrics.oral-history.digital/',
