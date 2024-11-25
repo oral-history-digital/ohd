@@ -14,7 +14,7 @@ class SegmentsController < ApplicationController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: cache_single(@segment),
+          data: cache_single(@segment, allowed_to_see_all: true),
           reload_data_type: 'headings',
           reload_id: "for_interviews_#{@segment.interview.archive_id}"
         }
