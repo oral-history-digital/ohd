@@ -86,7 +86,7 @@ export const ALPHA3_TO_ALPHA2 = {
     'spa': 'es',
     'cat': 'ca',
     'ukr-rus': 'uk',
-    'zza': 'zza'
+    'zza': 'zz'
 };
 
 const ANALYTICS_URLS = {
