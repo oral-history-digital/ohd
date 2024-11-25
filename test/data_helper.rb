@@ -309,11 +309,11 @@ module DataHelper
         [germany],
         [
           {
-            locale: :ger,
+            locale: :de,
             text: "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen",
           },
           {
-            locale: :rus,
+            locale: :ru,
             text: "Главное местонахождение — Берлин Филиал по добыче"
           }
         ]
