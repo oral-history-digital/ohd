@@ -28,7 +28,7 @@ class SegmentsController < ApplicationController
     respond_to do |format|
       format.json do
         json = {
-          data: policy_scope(@interview.segments.first),
+          data: policy_scope(@interview.segments.first || Segment.new(interview: @interview)),
           nested_data_type: 'segments',
           data_type: 'interviews',
           archive_id: params[:interview_id]
