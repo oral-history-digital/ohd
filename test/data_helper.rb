@@ -296,12 +296,12 @@ module DataHelper
         first_tape,
         first_speaker,
         [{
-          locale: :ru,
+          locale: :rus,
           text: "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
           mainheading: "Вступление",
           subheading: nil
         }, {
-          locale: :de,
+          locale: :ger,
           text: "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
           mainheading: "Einleitung",
           subheading: nil,
@@ -309,11 +309,11 @@ module DataHelper
         [germany],
         [
           {
-            locale: :de,
+            locale: :ger,
             text: "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen",
           },
           {
-            locale: :ru,
+            locale: :rus,
             text: "Главное местонахождение — Берлин Филиал по добыче"
           }
         ]
@@ -324,12 +324,12 @@ module DataHelper
         second_tape,
         second_speaker,
         [{
-          locale: :ru,
+          locale: :rus,
           text: "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
           mainheading: nil,
           subheading: "жизнь"
         }, {
-          locale: :de,
+          locale: :ger,
           text: "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
           mainheading: nil,
           subheading: "Leben",
@@ -357,13 +357,13 @@ module DataHelper
     speaker=nil,
     translations_attributes=[
       {
-        locale: :de,
+        locale: :ger,
         text: 'Am Anfang, also das war...',
         mainheading: 'Anfang',
         subheading: 'Morgens'
       },
       {
-        locale: :en,
+        locale: :eng,
         text: 'In the begining, it was...',
         mainheading: 'Beginning',
         subheading: 'In the morning'
@@ -553,7 +553,8 @@ module DataHelper
       tape: i.tapes.last,
       speaking_person: Person.find_by!(last_name: 'Rossi'),
       timecode: '00:17:12.00',
-      text: 'My name is Mario Rossi'
+      text: 'My name is Mario Rossi',
+      locale: :ger
     )
 
     i
