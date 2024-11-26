@@ -1,12 +1,15 @@
 class EditTableExport
 
-  attr_accessor :interview, :contributions, :original_locale, :translation_locale
+  attr_accessor :interview, :contributions, :original_locale, :translation_locale,
+    :original_locale_alpha2, :translation_locale_alpha2
 
   def initialize(public_interview_id)
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang.to_s
     @translation_locale = @interview.translation_lang
+    @original_locale_alpha2 = @interview.alpha2
+    @translation_locale_alpha2 = @interview.translation_alpha2
   end
 
   def process
@@ -48,8 +51,8 @@ class EditTableExport
           mainheading_trans = translation&.mainheading || translation_public&.mainheading
           subheading_trans = translation&.subheading || translation_public&.subheading
           registry_references = segment.registry_references.map{|r| r.registry_entry_id}.compact.uniq.join('#')
-          annotations = segment.annotations.map{|a| a.text(original_locale).blank? ? '' : a.text(original_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
-          annotations_trans = segment.annotations.map{|a| a.text(translation_locale).blank? ? '' : a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations = segment.annotations.map{|a| a.text(original_locale_alpha2).blank? ? '' : a.text(original_locale_alpha2).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations_trans = segment.annotations.map{|a| a.text(translation_locale_alpha2).blank? ? '' : a.text(translation_locale_alpha2).gsub(/[\t\n\r]+/, ' ')}.join('#')
 
           f << [
             tape.number,
