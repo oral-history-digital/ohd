@@ -468,6 +468,10 @@ class Interview < ApplicationRecord
     primary_translation_language&.code
   end
 
+  def translation_alpha2
+    ISO_639.find(primary_translation_language&.code).try(:alpha2) || language&.code[0..1]
+  end
+
   def languages
     result = interview_languages.map do |il|
       il.language&.code
