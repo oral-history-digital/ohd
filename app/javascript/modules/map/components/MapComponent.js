@@ -21,9 +21,9 @@ export default function MapComponent({
     const defaultLocale = project.default_locale;
 
     function getMarkerName(marker) {
-        const result = marker.agg_names[locale]
-            ? marker.agg_names[locale]
-            : marker.agg_names[defaultLocale];
+        const result = marker.labels[locale]
+            ? marker.labels[locale]
+            : marker.labels[defaultLocale];
         return result || '';
     }
 
@@ -82,7 +82,7 @@ MapComponent.propTypes = {
         id: PropTypes.number.isRequired,
         lat: PropTypes.number.isRequired,
         long: PropTypes.number.isRequired,
-        agg_names: PropTypes.object.isRequired,
+        labels: PropTypes.object.isRequired,
         numReferences: PropTypes.number.isRequired,
         radius: PropTypes.number.isRequired,
         color: PropTypes.string.isRequired,
