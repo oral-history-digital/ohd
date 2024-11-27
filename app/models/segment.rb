@@ -54,6 +54,43 @@ class Segment < ApplicationRecord
      .limit(1)
   }
 
+  searchable auto_index: false do
+    string :archive_id, stored: true do
+      interview&.archive_id
+    end
+    string :media_id
+    string :timecode
+    string :sort_key
+    text :speaker do
+      speaking_person && speaking_person.name.inject(""){|mem, (k,v)| mem << v; mem}
+    end
+
+    boolean :has_heading
+
+    # dummy method, necessary for generic search
+    string :workflow_state, stored: true do
+      'public'
+    end
+
+    Language.all.pluck(:code).each do |code|
+      code_short = code.split('-').first
+      text :"text_#{code_short}", stored: true do
+        text_translations["#{code_short}-public"] or nil
+      end
+
+      text :"mainheading_#{code_short}", stored: true do
+        mainheading_translations["#{code_short}-public"] or mainheading_translations[code_short] or nil
+      end
+
+      text :"subheading_#{code_short}", stored: true do
+        subheading_translations["#{code_short}-public"] or subheading_translations[code_short] or nil
+      end
+    end
+  end
+
+  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
+
   translates :mainheading, :subheading, :text, touch: true
   accepts_nested_attributes_for :translations, :registry_references
 
@@ -73,6 +110,11 @@ class Segment < ApplicationRecord
   def write_other_versions(text, locale)
     [:public, :subtitle].each do |version|
       update(text: enciphered_text(version, text, locale), locale: "#{locale}-#{version}")
+      if version == :public
+        # do not re-index after each version update
+        # push indexing to delayed job
+        delay.solr_index!
+      end
     end
   end
 
@@ -269,40 +311,6 @@ class Segment < ApplicationRecord
       raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{self.interview_id}" if tape.nil?
 
       self.tape_id = tape.id
-    end
-  end
-
-  searchable do
-    string :archive_id, stored: true do
-      interview&.archive_id
-    end
-    string :media_id
-    string :timecode
-    string :sort_key
-    text :speaker do
-      speaking_person && speaking_person.name.inject(""){|mem, (k,v)| mem << v; mem}
-    end
-
-    boolean :has_heading
-
-    # dummy method, necessary for generic search
-    string :workflow_state, stored: true do
-      'public'
-    end
-
-    Language.all.pluck(:code).each do |code|
-      code_short = code.split('-').first
-      text :"text_#{code_short}", stored: true do
-        text_translations["#{code_short}-public"] or nil
-      end
-
-      text :"mainheading_#{code_short}", stored: true do
-        mainheading_translations["#{code_short}-public"] or mainheading_translations[code_short] or nil
-      end
-
-      text :"subheading_#{code_short}", stored: true do
-        subheading_translations["#{code_short}-public"] or subheading_translations[code_short] or nil
-      end
     end
   end
 
