@@ -101,34 +101,34 @@ class Interview::ExportTest < ActiveSupport::TestCase
     assert_equal(@first_row_entries[9], 'ja')
   end
 
-  #test 'should export transcript PDF correctly' do
-    #pdf = interview.to_pdf(:ru, :ger)
-    ## analyze returns strings without whitespace
-    ##pdf_analysis = PDF::Inspector::Text.analyze(pdf)
-    ##expect(pdf_analysis.strings.include?("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez".gsub(/\s+/, ""))).to be_truthy
-    #reader = PDF::Reader.new(StringIO.new(pdf))
-    #assert_match(/Das Interview-Archiv/, reader.pages[0].text)
-    #assert_match(/Also gut, heute ist der 10. September 2005, und wir sind bei/, reader.pages[4].text)
-    #assert_match(/Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte/, reader.pages[4].text)
-  #end
+  test 'should export transcript PDF correctly' do
+    pdf = interview.to_pdf(:ru, 'ger')
+    # analyze returns strings without whitespace
+    #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+    #expect(pdf_analysis.strings.include?("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez".gsub(/\s+/, ""))).to be_truthy
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    assert_match(/Перевод интервью Константин Адамец/, reader.pages[0].text)
+    assert_match(/Also gut, heute ist der 10. September 2005, und wir sind bei/, reader.pages[3].text)
+    assert_match(/Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte/, reader.pages[3].text)
+  end
 
-  #test 'should export biography PDF correctly' do
-    #pdf = interview.biography_pdf(:de, :de)
-    ##pdf_analysis = PDF::Inspector::Text.analyze(pdf)
-    ##expect(pdf_analysis.strings.include?("15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister".gsub(/\s+/, ""))).to be_truthy
-    #reader = PDF::Reader.new(StringIO.new(pdf))
-    #assert_match(/Das Interview-Archiv/, reader.pages[0].text)
-    #assert_match(/15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet /, reader.pages[0].text)
-  #end
+  test 'should export biography PDF correctly' do
+    pdf = interview.biography_pdf(:de, :de)
+    #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+    #expect(pdf_analysis.strings.include?("15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister".gsub(/\s+/, ""))).to be_truthy
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    assert_match(/Kurzbiografie: Konstantin Adamez/, reader.pages[0].text)
+    assert_match(/15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet /, reader.pages[0].text)
+  end
 
-  #test 'should export observations PDF correctly' do
-    #pdf = interview.observations_pdf(:ru, :de)
-    ##pdf_analysis = PDF::Inspector::Text.analyze(pdf)
-    ##expect(pdf_analysis.strings.include?('1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch'.gsub(/\s+/, ""))).to be_truthy
-    #reader = PDF::Reader.new(StringIO.new(pdf))
-    #assert_match(/Das Interview-Archiv/, reader.pages[0].text)
-    #assert_match(/International Slave- und Forced Labourers Documentation Project/, reader.pages[0].text)
-  #end
+  test 'should export observations PDF correctly' do
+    pdf = interview.observations_pdf(:ru, :de)
+    #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+    #expect(pdf_analysis.strings.include?('1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch'.gsub(/\s+/, ""))).to be_truthy
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    assert_match(/Protokoll \(deutsch\) des Interviews mit Константин Адамец/, reader.pages[0].text)
+    assert_match(/International Slave- und Forced Labourers Documentation Project/, reader.pages[0].text)
+  end
 
 end
 
