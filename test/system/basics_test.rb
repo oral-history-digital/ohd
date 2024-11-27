@@ -245,7 +245,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Search the archive'
     click_on 'Rossi, Mario'
     click_on 'About the interview'
-    click_on 'English'
+    click_on 'eng'
 
     # -> no error, we are happy
   end
