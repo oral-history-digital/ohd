@@ -450,8 +450,14 @@ module DataHelper
 
   def self.person_with_biographical_entries(project)
     entries = [
-      [:de, "15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister"],
-      [:ru, "Адамец Константин Войтович родился 15.09.1925 г. в деревне Стаси Диканьского района Полтавской области. У Константина Войтовича было три брата и одна сестр"]
+      {
+        locale: :de,
+        text: "15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister"
+      },
+      {
+        locale: :ru,
+        text: "Адамец Константин Войтович родился 15.09.1925 г. в деревне Стаси Диканьского района Полтавской области. У Константина Войтовича было три брата и одна сестр"
+      }
     ]
     person = Person.create(
       first_name: "Константин",
@@ -459,9 +465,10 @@ module DataHelper
       birth_name: "Hans",
       other_first_names: "Войтович",
       alias_names: "Адамец Константин Войтович Adamez Konstantin",
-      biographical_entries_attributes: entries.map { |locale, text| {locale: locale, text: text} },
+      biographical_entries_attributes: [{workflow_state: 'public', translations_attributes: entries}],
       project: project,
-      gender: 'male'
+      gender: 'male',
+      locale: 'ru'
     )
     person.update(
       locale: 'de',
