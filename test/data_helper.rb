@@ -3,7 +3,7 @@ module DataHelper
     I18n.locale = :en
 
     language = Language.create!(
-      code: 'en',
+      code: 'eng',
       name: 'English'
     )
 
@@ -514,7 +514,7 @@ module DataHelper
       media_type: 'audio',
       interview_languages: [
         InterviewLanguage.new(
-          language: Language.find_by!(code: 'en'),
+          language: Language.find_by!(code: 'eng'),
           spec: 'primary'
         )
       ],
@@ -554,7 +554,7 @@ module DataHelper
       speaking_person: Person.find_by!(last_name: 'Rossi'),
       timecode: '00:17:12.00',
       text: 'My name is Mario Rossi',
-      locale: :ger
+      locale: :eng
     )
 
     i
