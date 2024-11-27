@@ -48,6 +48,7 @@ module Interview::Export
   end
 
   def to_pdf(header_locale, content_locale)
+    content_locale = content_locale.split('-').first # surschik has 'ukr-rus'
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     first_segment_with_heading = segments.with_heading.first
     content_locale_alpha2 = ISO_639.find_by_code(content_locale).alpha2
