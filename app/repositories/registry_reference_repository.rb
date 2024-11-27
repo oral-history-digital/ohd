@@ -83,7 +83,7 @@ class RegistryReferenceRepository
         entries.where('metadata_fields.ref_object_type': 'Interview')
           .where('registry_references.ref_object_id': interview_ids)
         )
-      .group('registry_references.id')
+      .group('registry_references.id, people.use_pseudonym')
       .select("registry_references.id,
         registry_reference_types.id as registry_reference_type_id,
         interviews.archive_id,
@@ -113,7 +113,7 @@ class RegistryReferenceRepository
       .where('registry_references.ref_object_type': 'Segment')
       .where('contribution_types.code': 'interviewee')
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
-      .group('registry_references.id')
+      .group('registry_references.id, people.use_pseudonym')
       .select("registry_references.id,
         registry_references.ref_object_type,
         segments.timecode,
