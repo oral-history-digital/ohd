@@ -364,7 +364,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Editing interface'
 
     click_on 'Add heading'
-    fill_in 'Hauptüberschrift (en)', with: 'introduction'
+    fill_in 'Main heading (en)', with: 'introduction'
     click_on 'Submit'
     reload_page
     click_on 'Table of contents'
