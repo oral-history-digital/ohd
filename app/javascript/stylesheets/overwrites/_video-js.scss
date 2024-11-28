@@ -5,3 +5,7 @@
 .video-js .vjs-remaining-time {
   display: none;
 }
+
+.vjs-poster img {
+  object-fit: cover;
+}
