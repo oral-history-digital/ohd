@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import queryString from 'query-string';
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import { LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
@@ -51,7 +51,7 @@ export default function InterviewPreview({
             />
             <Modal
                 title={t('save_interview_reference_tooltip')}
-                trigger={<FaStar />}
+                trigger={<FaRegStar />}
                 triggerClassName="InterviewCard-star"
             >
                 {closeModal => (
