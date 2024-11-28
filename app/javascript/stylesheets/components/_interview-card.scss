@@ -22,6 +22,10 @@
   opacity: 1;
 }
 
+.InterviewCard-star:disabled {
+  cursor: initial;
+}
+
 .InterviewCard.is-expanded {
 
 }

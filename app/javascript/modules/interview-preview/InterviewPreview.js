@@ -7,7 +7,7 @@ import { FaStar, FaRegStar } from 'react-icons/fa';
 import { LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Modal, Checkbox } from 'modules/ui';
-import { WorkbookItemForm } from 'modules/workbook';
+import { WorkbookItemForm, useWorkbook } from 'modules/workbook';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
 import { useArchiveSearch } from 'modules/search';
@@ -28,6 +28,7 @@ export default function InterviewPreview({
     const project = projects[interview.project_id];
     const projectId = project.shortname;
     const { fulltext } = useArchiveSearch();
+    const { itemsByInterview } = useWorkbook();
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
@@ -42,6 +43,8 @@ export default function InterviewPreview({
         return null;
     }
 
+    const isInWorkbook = itemsByInterview && interview.archive_id in itemsByInterview;
+
     return (
         <div className={classNames('InterviewCard', { 'is-expanded': isExpanded })}>
             <ThumbnailBadge
@@ -51,8 +54,11 @@ export default function InterviewPreview({
             />
             <Modal
                 title={t('save_interview_reference_tooltip')}
-                trigger={<FaRegStar />}
-                triggerClassName="InterviewCard-star"
+                trigger={isInWorkbook ? <FaStar /> : <FaRegStar />}
+                triggerClassName={classNames('InterviewCard-star', {
+                    'is-active': isInWorkbook,
+                })}
+                disabled={isInWorkbook}
             >
                 {closeModal => (
                     <WorkbookItemForm

@@ -6,3 +6,5 @@ export { getWorkbookAnnotations, getWorkbookIsLoading, getWorkbookLoaded } from 
 
 export { default as WorkbookContainer } from './components/WorkbookContainer';
 export { default as WorkbookItemForm } from './components/WorkbookItemForm';
+
+export { default as useWorkbook } from './useWorkbook';
