@@ -8,6 +8,7 @@ class MetadataImportTemplateTest < ActiveSupport::TestCase
     @project = DataHelper.test_project(shortname: 'mdt')
     @csv = MetadataImportTemplate.new(@project, :de).csv
     expected_headers = [
+      "true",
       "Interview-ID", "Originalsignatur", "Sprache",
       "Zweite Sprache", "Erste Übersetzungssprache", "Sammlung", 
       "Interview-Datum", "Medientyp", "Dauer", "Protokoll", 
@@ -25,6 +26,7 @@ class MetadataImportTemplateTest < ActiveSupport::TestCase
     @project = DataHelper.project_with_contribution_types_and_metadata_fields
     @csv = MetadataImportTemplate.new(@project, :de).csv
     expected_headers = [
+      "true",
       "Interview-ID", "Originalsignatur", "Sprache",
       "Zweite Sprache", "Erste Übersetzungssprache", "Sammlung", 
       "Interview-Datum", "Medientyp", "Dauer", "Protokoll", 
