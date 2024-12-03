@@ -53,7 +53,7 @@ export default function InterviewPreview({
                 onClick={() => setIsExpanded(prev => !prev)}
             />
             <Modal
-                title={t('save_interview_reference_tooltip')}
+                title={isInWorkbook ? '' : t('save_interview_reference_tooltip')}
                 trigger={isInWorkbook ? <FaStar /> : <FaRegStar />}
                 triggerClassName={classNames('InterviewCard-star', {
                     'is-active': isInWorkbook,
