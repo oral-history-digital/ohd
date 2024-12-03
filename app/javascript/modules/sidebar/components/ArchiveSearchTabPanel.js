@@ -19,7 +19,7 @@ export default function ArchiveSearchTabPanel() {
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title u-flex">
                 {t(isOhd ? 'modules.sidebar.search' : 'archive_search')}
-                <HelpText code="search_page" small />
+                {isOhd && <HelpText code="search_page" small className="u-ml-tiny" />}
             </h3>
 
             <ArchiveSearchFormContainer/>

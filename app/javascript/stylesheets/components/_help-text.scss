@@ -1,4 +1,5 @@
 $help-text-color: #004d00;
+$help-text-small-color: #416841;
 $help-text-background-color: #e6ffe6;
 
 .HelpText {
@@ -42,7 +43,7 @@ $help-text-background-color: #e6ffe6;
 }
 
 .HelpText--small .HelpText-icon {
-  color: $help-text-color;
+  color: $help-text-small-color;
   display: inline-block;
   font-size: 1.5rem;
   padding: ($base-unit * 0.125) 0;
