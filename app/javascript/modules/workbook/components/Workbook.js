@@ -1,28 +1,16 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { useWorkbook } from 'modules/workbook';
 import WorkbookItemList from './WorkbookItemList';
 
-export default function Workbook({
-    user,
-    workbookIsLoading,
-    workbookLoaded,
-    workbookSearches,
-    workbookInterviews,
-    workbookAnnotations,
-    fetchWorkbook,
-}) {
+export default function Workbook() {
     const { t } = useI18n();
-    const pathBase = usePathBase();
-
-    useEffect(() => {
-        if (user.email && !user.error && !workbookLoaded && !workbookIsLoading) {
-            fetchWorkbook(pathBase);
-        }
-    }, [user.email]);
+    const {
+        isValidating: workbookIsLoading,
+        savedSearches: workbookSearches,
+        savedInterviews: workbookInterviews,
+        savedSegments: workbookAnnotations,
+    } = useWorkbook();
 
     if (workbookIsLoading) {
         return <Spinner />;
@@ -45,13 +33,3 @@ export default function Workbook({
         </div>
     );
 }
-
-Workbook.propTypes = {
-    user: PropTypes.object,
-    workbookIsLoading: PropTypes.bool.isRequired,
-    workbookLoaded: PropTypes.bool.isRequired,
-    workbookSearches: PropTypes.array,
-    workbookInterviews: PropTypes.array,
-    workbookAnnotations: PropTypes.array,
-    fetchWorkbook: PropTypes.func.isRequired,
-};

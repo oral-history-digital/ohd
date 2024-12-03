@@ -6,13 +6,13 @@ import { useAuthorization, AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { SegmentHeadingForm } from 'modules/toc';
 import { Modal } from 'modules/ui';
+import { useWorkbook } from 'modules/workbook';
 import SegmentFormContainer from './SegmentFormContainer';
 
 export default function SegmentButtons({
     contentLocale,
     data,
     popupType,
-    workbookAnnotations,
     tabIndex,
     active,
     openPopup,
@@ -20,6 +20,7 @@ export default function SegmentButtons({
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
+    const { savedSegments: workbookAnnotations } = useWorkbook();
 
     const annotationsForSegment = workbookAnnotations?.filter(annotation =>
         data.user_annotation_ids.includes(annotation.id));
@@ -92,7 +93,6 @@ SegmentButtons.propTypes = {
     data: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
     popupType: PropTypes.string,
-    workbookAnnotations: PropTypes.array,
     tabIndex: PropTypes.number.isRequired,
     active: PropTypes.bool,
     openPopup: PropTypes.func.isRequired,

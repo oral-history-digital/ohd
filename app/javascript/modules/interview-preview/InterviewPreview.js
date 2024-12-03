@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import queryString from 'query-string';
+import keyBy from 'lodash.keyby';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import { LinkOrA } from 'modules/routes';
@@ -28,7 +29,7 @@ export default function InterviewPreview({
     const project = projects[interview.project_id];
     const projectId = project.shortname;
     const { fulltext } = useArchiveSearch();
-    const { itemsByInterview } = useWorkbook();
+    const { savedInterviews } = useWorkbook();
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
@@ -43,6 +44,7 @@ export default function InterviewPreview({
         return null;
     }
 
+    const itemsByInterview = keyBy(savedInterviews, 'media_id');
     const isInWorkbook = itemsByInterview && interview.archive_id in itemsByInterview;
 
     return (

@@ -4,8 +4,6 @@ import { NAME } from './constants';
 
 const getState = state => state[NAME];
 
-export const getWorkbookIsLoading = state => getState(state).isLoading;
-
 export const getWorkbookData = state => getState(state).data;
 
 export const getSortedWorkbookData = createSelector(
@@ -21,28 +19,6 @@ export const getSortedWorkbookData = createSelector(
                 const bDate = new Date(b.created_at);
                 return bDate - aDate;
             });
-    }
-);
-
-export const getWorkbookAnnotations = createSelector(
-    getSortedWorkbookData,
-    data => data?.filter(item => item.type === 'UserAnnotation') || null,
-);
-
-export const getWorkbookSearches = createSelector(
-    getSortedWorkbookData,
-    data => data?.filter(item => item.type === 'Search') || null,
-);
-
-export const getWorkbookInterviews = createSelector(
-    getSortedWorkbookData,
-    data => data?.filter(item => item.type === 'InterviewReference') || null,
-);
-
-export const getWorkbookLoaded = createSelector(
-    [getWorkbookData],
-    data => {
-        return (data !== null) && (typeof data !== 'undefined');
     }
 );
 
