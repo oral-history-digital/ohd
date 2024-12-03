@@ -13,7 +13,7 @@ class MetadataImportTemplate
   end
 
   def columns_hash
-    hash = {}
+    hash = {clean: true}
     hash.update(default_interview_columns)
     hash.update(default_interviewee_columns)
     hash.update(default_contributor_columns)
