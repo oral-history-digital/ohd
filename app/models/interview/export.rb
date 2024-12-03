@@ -50,7 +50,7 @@ module Interview::Export
   def to_pdf(header_locale, content_locale)
     header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
     first_segment_with_heading = segments.with_heading.first
-    content_locale_alpha2 = ISO_639.find_by_code(content_locale.split('-').first).alpha2
+    content_locale_alpha2 = content_locale == "ukr-rus" ? "uk-ru" : ISO_639.find_by_code(content_locale).alpha2
     content_locale_human = TranslationValue.for(content_locale_alpha2.blank? ? content_locale : content_locale_alpha2, header_locale)
 
     I18n.with_locale header_locale.to_sym do

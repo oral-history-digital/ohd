@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
     formElements: [
         {
             attribute: 'key',
-            validate: function(v){return /^[a-z1-9\.\_]+$/.test(v)}
+            validate: function(v){return /^[a-z1-9\.\_\-]+$/.test(v)}
         },
         {
             attribute: 'value',
