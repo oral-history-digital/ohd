@@ -6,28 +6,28 @@ import WorkbookItemList from './WorkbookItemList';
 export default function Workbook() {
     const { t } = useI18n();
     const {
-        isValidating: workbookIsLoading,
-        savedSearches: workbookSearches,
-        savedInterviews: workbookInterviews,
-        savedSegments: workbookAnnotations,
+        isValidating,
+        savedSearches,
+        savedInterviews,
+        savedSegments,
     } = useWorkbook();
 
-    if (workbookIsLoading) {
+    if (isValidating) {
         return <Spinner />;
     }
 
     return (
         <div>
             <WorkbookItemList
-                contents={workbookSearches}
+                contents={savedSearches}
                 title={t('saved_searches')}
             />
             <WorkbookItemList
-                contents={workbookInterviews}
+                contents={savedInterviews}
                 title={t('saved_interviews')}
             />
             <WorkbookItemList
-                contents={workbookAnnotations}
+                contents={savedSegments}
                 title={t('saved_annotations')}
             />
         </div>

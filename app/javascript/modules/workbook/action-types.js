@@ -6,6 +6,3 @@ export const CREATE_WORKBOOK_FAILED = `${NAME}/createFailed`;
 export const UPDATE_WORKBOOK_STARTED = `${NAME}/updateStarted`;
 export const UPDATE_WORKBOOK_SUCCEEDED = `${NAME}/updateSucceeded`;
 export const UPDATE_WORKBOOK_FAILED = `${NAME}/updateFailed`;
-export const DELETE_WORKBOOK_STARTED = `${NAME}/deleteStarted`;
-export const DELETE_WORKBOOK_SUCCEEDED = `${NAME}/deleteSucceeded`;
-export const DELETE_WORKBOOK_FAILED = `${NAME}/deleteFailed`;

@@ -7,9 +7,6 @@ import {
     UPDATE_WORKBOOK_STARTED,
     UPDATE_WORKBOOK_SUCCEEDED,
     UPDATE_WORKBOOK_FAILED,
-    DELETE_WORKBOOK_STARTED,
-    DELETE_WORKBOOK_SUCCEEDED,
-    DELETE_WORKBOOK_FAILED,
 } from './action-types';
 
 export function createWorkbook(pathBase, params) {
@@ -30,16 +27,6 @@ export function updateWorkbook(pathBase, id, params) {
             method: 'PUT',
             endpoint: `${pathBase}/user_contents/${id}`,
             body: params,
-        },
-    };
-}
-
-export function deleteWorkbook(pathBase, id) {
-    return {
-        [CALL_API]: {
-            types: [DELETE_WORKBOOK_STARTED, DELETE_WORKBOOK_SUCCEEDED, DELETE_WORKBOOK_FAILED],
-            method: 'DELETE',
-            endpoint: `${pathBase}/user_contents/${id}`,
         },
     };
 }
