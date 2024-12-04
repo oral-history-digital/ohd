@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
-import { usePathBase, useProject } from 'modules/routes';
+import { useProject } from 'modules/routes';
 import { formatTimecode } from 'modules/interview-helpers';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';
@@ -30,10 +29,8 @@ export default function WorkbookItemForm({
 }) {
     const { project } = useProject();
     const { t, locale } = useI18n();
-    const mutateWorkbook = useMutateWorkbook();
     const { createWorkbookItem, updateWorkbookItem } = useWorkbookApi();
-    const dispatch = useDispatch();
-    const pathBase = usePathBase();
+    const mutateWorkbook = useMutateWorkbook();
     const [formState, setFormState] = useState({
         id,
         title: title || defaultTitle(),
@@ -86,21 +83,23 @@ export default function WorkbookItemForm({
 
         if (valid()) {
             mutateWorkbook(async workbook => {
-                let savedWorkbookItem;
+                let serverResult, returnedId;
                 if (id) {
-                    const result = await updateWorkbookItem(id, formState);
-                    savedWorkbookItem = result.data;
+                    serverResult = await updateWorkbookItem(id, formState);
+                    returnedId = id;
                 } else {
-                    savedWorkbookItem = await createWorkbookItem(formState);
+                    serverResult = await createWorkbookItem(formState);
+                    returnedId = serverResult.id;
                 }
+
+                const savedWorkbookItem = serverResult.data;
                 console.log(savedWorkbookItem);
 
-                return workbook;
                 const updatedWorkbook = {
                     ...workbook,
                     data: {
                         ...workbook.data,
-                        [id]: formState,
+                        [returnedId]: savedWorkbookItem,
                     },
                 };
 
