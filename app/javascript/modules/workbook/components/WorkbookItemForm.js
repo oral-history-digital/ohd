@@ -2,12 +2,14 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
+import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { formatTimecode } from 'modules/interview-helpers';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';
-import { createWorkbook, updateWorkbook } from '../actions';
+
+import useMutateWorkbook from '../useMutateWorkbook';
 
 export default function WorkbookItemForm({
     id,
@@ -28,6 +30,8 @@ export default function WorkbookItemForm({
 }) {
     const { project } = useProject();
     const { t, locale } = useI18n();
+    const mutateWorkbook = useMutateWorkbook();
+    const { createWorkbookItem, updateWorkbookItem } = useWorkbookApi();
     const dispatch = useDispatch();
     const pathBase = usePathBase();
     const [formState, setFormState] = useState({
@@ -79,12 +83,29 @@ export default function WorkbookItemForm({
         const { id } = formState;
 
         event.preventDefault();
+
         if (valid()) {
-            if (id) {
-                dispatch(updateWorkbook(pathBase, id, {user_content: formState}));
-            } else {
-                dispatch(createWorkbook(pathBase, {user_content: formState}));
-            }
+            mutateWorkbook(async workbook => {
+                let savedWorkbookItem;
+                if (id) {
+                    const result = await updateWorkbookItem(id, formState);
+                    savedWorkbookItem = result.data;
+                } else {
+                    savedWorkbookItem = await createWorkbookItem(formState);
+                }
+                console.log(savedWorkbookItem);
+
+                return workbook;
+                const updatedWorkbook = {
+                    ...workbook,
+                    data: {
+                        ...workbook.data,
+                        [id]: formState,
+                    },
+                };
+
+                return updatedWorkbook;
+            });
             onSubmit();
         } else {
             setErrors();
