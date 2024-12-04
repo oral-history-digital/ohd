@@ -7,7 +7,7 @@ import { useSearchParams } from 'modules/query-string';
 import queryToTitle from '../queryToTitle';
 import useFacets from '../useFacets';
 
-export default function SearchActions({}) {
+export default function SearchActions() {
     const { t } = useI18n();
     const { facets } = useFacets();
     const { allParams } = useSearchParams();

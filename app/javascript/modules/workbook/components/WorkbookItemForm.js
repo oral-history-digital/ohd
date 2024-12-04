@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { useWorkbookApi } from 'modules/api';
+import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
 import { formatTimecode } from 'modules/interview-helpers';
-import CitationInfo from './CitationInfo';
-import SegmentLink from './SegmentLink';
+import { useProject } from 'modules/routes';
 
 import useMutateWorkbook from '../useMutateWorkbook';
+import CitationInfo from './CitationInfo';
+import SegmentLink from './SegmentLink';
 
 export default function WorkbookItemForm({
     id,
     title,
+    interview: passedInterview,
     description,
     properties,
     reference_id,
@@ -22,12 +25,13 @@ export default function WorkbookItemForm({
     segmentIndex,
     workflow_state,
     shared,
-    interview,
     submitLabel,
     onSubmit,
     onCancel,
 }) {
     const { project } = useProject();
+    const currentInterview = useSelector(getCurrentInterview);
+    const interview = passedInterview ? passedInterview : currentInterview;
     const { t, locale } = useI18n();
     const { createWorkbookItem, updateWorkbookItem } = useWorkbookApi();
     const mutateWorkbook = useMutateWorkbook();
@@ -214,6 +218,7 @@ export default function WorkbookItemForm({
 WorkbookItemForm.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
+    interview: PropTypes.object,
     description: PropTypes.string,
     properties: PropTypes.object,
     reference_id: PropTypes.number,
@@ -224,7 +229,6 @@ WorkbookItemForm.propTypes = {
     workflow_state: PropTypes.string,
     shared: PropTypes.bool,
     submitLabel: PropTypes.string,
-    interview: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
 };
