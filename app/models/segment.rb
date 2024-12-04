@@ -113,7 +113,8 @@ class Segment < ApplicationRecord
       if version == :public
         # do not re-index after each version update
         # push indexing to delayed job
-        delay.solr_index!
+        # index only if segment was not recently created, like e.g. with transcript-upload (it will be indexed after this)
+        delay.solr_index! if Time.now - created_at > 1.hour
       end
     end
   end
