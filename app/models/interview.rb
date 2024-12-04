@@ -265,7 +265,7 @@ class Interview < ApplicationRecord
       # e.g.: 'Kamera Hans Peter'
       #
       text :"contributions_#{locale}" do
-        contributions.without_interviewees.map do |c|
+        contributions.without_interviewees.public.map do |c|
           if c.person
             [TranslationValue.for("contributions.#{c.contribution_type.code}", locale), c.person.first_name(locale), c.person.last_name(locale)]
           end

@@ -16,4 +16,6 @@ class Contribution < ApplicationRecord
     contribution_type_id: ContributionType.where(code: ['interviewee', 'further_interviewee']).pluck(:id)
   ) }
 
+  scope :public, -> { where(workflow_state: 'public') }
+
 end
