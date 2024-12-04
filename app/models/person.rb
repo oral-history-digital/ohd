@@ -157,21 +157,21 @@ class Person < ApplicationRecord
     "#{last_name(locale)}, #{first_name(locale)}"
   end
 
-  def display_name(anonymous: false, reversed: false)
-    used_title = display_title_part
-    fn = first_name_used
+  def display_name(anonymous: false, reversed: false, locale: I18n.locale)
+    used_title = display_title_part(locale)
+    fn = first_name_used(locale)
     ln = anonymous ?
-      (last_name_used ? last_name_used.strip.slice(0) + '.' : '') :
-      last_name_used
+      (last_name_used(locale) ? last_name_used(locale).strip.slice(0) + '.' : '') :
+      last_name_used(locale)
     gender_key = gender.present? ? gender : 'not_specified'
 
     if fn.blank?
       if reversed
-        "#{ln}, #{TranslationValue.for("honorific.#{gender_key}", I18n.locale)}"
+        "#{ln}, #{TranslationValue.for("honorific.#{gender_key}", locale)}"
       else
         used_title.blank? ?
-          "#{TranslationValue.for("honorific.#{gender_key}", I18n.locale)} #{ln}" :
-          "#{TranslationValue.for("honorific.#{gender_key}", I18n.locale)} #{used_title} #{ln}"
+          "#{TranslationValue.for("honorific.#{gender_key}", locale)} #{ln}" :
+          "#{TranslationValue.for("honorific.#{gender_key}", locale)} #{used_title} #{ln}"
       end
     else
       if reversed
@@ -186,11 +186,11 @@ class Person < ApplicationRecord
     end
   end
 
-  def display_title_part
+  def display_title_part(locale = I18n.locale)
     used_gender = gender == 'female' ? 'female' : 'male'
 
     if title.present?
-        TranslationValue.for("modules.person.abbr_titles.#{title}_#{used_gender}", I18n.locale)
+      TranslationValue.for("modules.person.abbr_titles.#{title}_#{used_gender}", locale)
     else
       ''
     end
@@ -211,16 +211,16 @@ class Person < ApplicationRecord
     part.strip[0].upcase
   end
 
-  def first_name_used
-    use_pseudonym ? pseudonym_first_name : first_name
+  def first_name_used(locale = I18n.locale)
+    use_pseudonym ? pseudonym_first_name(locale) : first_name(locale)
   end
 
-  def last_name_used
-    use_pseudonym ? pseudonym_last_name : last_name
+  def last_name_used(locale = I18n.locale)
+    use_pseudonym ? pseudonym_last_name(locale) : last_name(locale)
   end
 
-  def pseudonym
-    "#{pseudonym_first_name} #{pseudonym_last_name}".strip
+  def pseudonym(locale = I18n.locale)
+    "#{pseudonym_first_name(locale)} #{pseudonym_last_name(locale)}".strip
   end
 
   def has_biography?(locale)
