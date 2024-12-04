@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { useWorkbookApi } from 'modules/api';
-import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
-
 import useMutateWorkbook from '../useMutateWorkbook';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';
 
 export default function WorkbookItemForm({
+    project: suppliedProject,
     id,
     title,
-    interview: passedInterview,
+    interview,
     description,
     properties,
     reference_id,
@@ -29,9 +27,9 @@ export default function WorkbookItemForm({
     onSubmit,
     onCancel,
 }) {
-    const { project } = useProject();
-    const currentInterview = useSelector(getCurrentInterview);
-    const interview = passedInterview ? passedInterview : currentInterview;
+    const { project: currentProject } = useProject();
+    const project = suppliedProject ? suppliedProject : currentProject;
+
     const { t, locale } = useI18n();
     const { createWorkbookItem, updateWorkbookItem } = useWorkbookApi();
     const mutateWorkbook = useMutateWorkbook();
@@ -87,17 +85,20 @@ export default function WorkbookItemForm({
 
         if (valid()) {
             mutateWorkbook(async workbook => {
+                const itemData = { ...formState };
+                if (suppliedProject) {
+                    itemData.project_id = suppliedProject.id;
+                }
                 let serverResult, returnedId;
                 if (id) {
-                    serverResult = await updateWorkbookItem(id, formState);
+                    serverResult = await updateWorkbookItem(id, itemData);
                     returnedId = id;
                 } else {
-                    serverResult = await createWorkbookItem(formState);
+                    serverResult = await createWorkbookItem(itemData);
                     returnedId = serverResult.id;
                 }
 
                 const savedWorkbookItem = serverResult.data;
-                console.log(savedWorkbookItem);
 
                 const updatedWorkbook = {
                     ...workbook,
@@ -216,9 +217,10 @@ export default function WorkbookItemForm({
 }
 
 WorkbookItemForm.propTypes = {
+    project: PropTypes.object,
     id: PropTypes.number,
     title: PropTypes.string,
-    interview: PropTypes.object,
+    interview: PropTypes.object.isRequired,
     description: PropTypes.string,
     properties: PropTypes.object,
     reference_id: PropTypes.number,

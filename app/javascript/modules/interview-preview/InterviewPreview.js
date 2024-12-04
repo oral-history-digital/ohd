@@ -64,6 +64,7 @@ export default function InterviewPreview({
             >
                 {closeModal => (
                     <WorkbookItemForm
+                        project={project}
                         interview={interview}
                         description=""
                         properties={{title: interview.title}}

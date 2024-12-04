@@ -1,10 +1,8 @@
-import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { useWorkbook } from 'modules/workbook';
 import WorkbookItemList from './WorkbookItemList';
 
 export default function Workbook() {
-    const { t } = useI18n();
     const {
         isValidating,
         savedSearches,
@@ -19,16 +17,16 @@ export default function Workbook() {
     return (
         <div>
             <WorkbookItemList
+                type="saved_searches"
                 contents={savedSearches}
-                title={t('saved_searches')}
             />
             <WorkbookItemList
+                type="saved_interviews"
                 contents={savedInterviews}
-                title={t('saved_interviews')}
             />
             <WorkbookItemList
+                type="saved_annotations"
                 contents={savedSegments}
-                title={t('saved_annotations')}
             />
         </div>
     );

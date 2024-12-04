@@ -1,9 +1,12 @@
+import { useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
 
+import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useSearchParams } from 'modules/query-string';
 import { Modal } from 'modules/ui';
 import { WorkbookItemForm } from 'modules/workbook';
-import { useSearchParams } from 'modules/query-string';
+
 import queryToTitle from '../queryToTitle';
 import useFacets from '../useFacets';
 
@@ -11,6 +14,7 @@ export default function SearchActions() {
     const { t } = useI18n();
     const { facets } = useFacets();
     const { allParams } = useSearchParams();
+    const interview = useSelector(getCurrentInterview);
 
     function showSaveButton() {
         const filters = { ...allParams };
@@ -23,15 +27,18 @@ export default function SearchActions() {
     function saveSearchForm(closeModal) {
         const queryTitle = queryToTitle(allParams, facets);
 
-        return <WorkbookItemForm
-            title={queryTitle}
-            description=''
-            properties={allParams}
-            type='Search'
-            submitLabel={t('save_search')}
-            onSubmit={closeModal}
-            onCancel={closeModal}
-        />
+        return (
+            <WorkbookItemForm
+                interview={interview}
+                title={queryTitle}
+                description=''
+                properties={allParams}
+                type='Search'
+                submitLabel={t('save_search')}
+                onSubmit={closeModal}
+                onCancel={closeModal}
+            />
+        );
     }
 
     if (!showSaveButton()) {

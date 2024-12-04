@@ -3,13 +3,15 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import WorkbookItemContainer from './WorkbookItemContainer';
 
 export default function WorkbookItemList({
+    type,
     contents,
-    title,
 }) {
+    const { t } = useI18n();
     const [open, setOpen] = useState(false);
     const { project, isOhd } = useProject();
 
@@ -32,7 +34,7 @@ export default function WorkbookItemList({
                 className={classNames('Button', 'accordion', {'active': open})}
                 onClick={handleClick}
             >
-                {title}
+                {t(type)}
                 {
                     open ?
                         <FaMinus className="Icon Icon--primary" /> :
@@ -55,6 +57,6 @@ export default function WorkbookItemList({
 }
 
 WorkbookItemList.propTypes = {
+    type: PropTypes.oneOf(['saved_searches', 'saved_interviews', 'saved_annotations']).isRequired,
     contents: PropTypes.array,
-    title: PropTypes.string,
 };
