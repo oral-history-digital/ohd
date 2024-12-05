@@ -17,8 +17,12 @@ export default function SlideShowSearchResults({
 
     const segments = searchResults.found_segments;
 
-    if (!segments) {
+    if (!Array.isArray(segments)) {
         return null;
+    }
+
+    if (segments.length === 0) {
+        return <SlideShowSearchStats searchResults={searchResults}/>;
     }
 
     return (

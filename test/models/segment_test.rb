@@ -117,12 +117,13 @@ class SegmentTest < ActiveSupport::TestCase
     )
   end
 
-  test "should parse {[bla bla]} in public version correctly" do
-    assert_equal(
-      @segment.enciphered_text(:public, "{[laughs silently]}", :de),
-      "[laughs silently]"
-    )
-  end
+  # should not be parsed any more
+  #test "should parse {[bla bla]} in public version correctly" do
+    #assert_equal(
+      #@segment.enciphered_text(:public, "{[laughs silently]}", :de),
+      #"[laughs silently]"
+    #)
+  #end
 
   #test "should parse <***> in public version correctly" do
     #assert_equal(

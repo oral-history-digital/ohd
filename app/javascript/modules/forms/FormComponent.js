@@ -228,10 +228,11 @@ export default function FormComponent({
                     { nested ?
                         <button
                             type="submit"
-                            className="Button Button--transparent Button--icon"
-                            value={t(submitText || 'submit')}
+                            className="Button Button--nested Button--editorialColor Button--icon"
                         >
                             <FaCheckCircle className="Icon Icon--editorial" />
+                            {' '}
+                            {t(submitText || 'apply')}
                         </button> :
                         <input
                             type="submit"
@@ -243,11 +244,13 @@ export default function FormComponent({
                     {typeof onCancel === 'function' && (
                         nested ?
                             <button
-                                className="Button Button--transparent Button--icon"
-                                title={t('edit.default.cancel')}
+                                type="reset"
+                                className="Button Button--nested Button--editorialColor Button--icon"
                                 onClick={onCancel}
                             >
                                 <FaTimes className="Icon Icon--editorial" />
+                                {' '}
+                                {t('discard')}
                             </button> :
                             <input
                                 type="button"

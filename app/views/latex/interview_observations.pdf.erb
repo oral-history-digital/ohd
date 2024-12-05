@@ -1,9 +1,9 @@
 \definecolor{primaryColor}{HTML}{<%= "#{(interview.project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
 
 <%
-  interviewee_name = interview.interviewee.display_name
-  title = "#{I18n.t('observations_title', interviewee_name: interviewee_name, archive_id: interview.archive_id, locale: header_locale)}"
-  header_text = "#{I18n.t('observations_header', interviewee_name: interviewee_name, archive_id: interview.archive_id, locale: header_locale)}"
+  interviewee_name = "#{interview.interviewee.first_name(header_locale)} #{interview.interviewee.last_name(header_locale)}"
+  title = "#{TranslationValue.for('observations_title', header_locale, interviewee_name: interviewee_name, archive_id: interview.archive_id)}"
+  header_text = "#{TranslationValue.for('observations_header', header_locale, interviewee_name: interviewee_name, archive_id: interview.archive_id)}"
 %>
 
 \title{<%= title %>}

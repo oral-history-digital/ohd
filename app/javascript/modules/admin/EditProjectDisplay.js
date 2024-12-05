@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import { getCurrentProject } from 'modules/data';
+import { getCurrentProject, getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import LogosContainer from './LogosContainer';
 import EditProjectDisplayAttributesContainer from './EditProjectDisplayAttributesContainer';
@@ -13,6 +13,7 @@ import EditViewOrRedirect from './EditViewOrRedirect';
 export default function EditProjectDisplay() {
     const { t } = useI18n();
     const project = useSelector(getCurrentProject);
+    const user = useSelector(getCurrentUser);
 
     return (
         <EditViewOrRedirect>
@@ -32,8 +33,12 @@ export default function EditProjectDisplay() {
                     />
                     <h2 className='registry-entries-title'>{t(`edit.sponsor_logo.admin`)}</h2>
                     <SponsorLogosContainer />
-                    <h2 className='registry-entries-title'>{t(`edit.media_stream.admin`)}</h2>
-                    <MediaStreamsContainer />
+                    { user?.admin &&
+                        <>
+                            <h2 className='registry-entries-title'>{t(`edit.media_stream.admin`)}</h2>
+                            <MediaStreamsContainer />
+                        </>
+                    }
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                     {t('devise.failure.unauthenticated')}

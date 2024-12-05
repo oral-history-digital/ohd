@@ -7,10 +7,7 @@ class EditTableImport
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang
-    @translation_locale = @interview.primary_translation_language && (
-      ISO_639.find(@interview.primary_translation_language.code).try(:alpha2) ||
-      @interview.primary_translation_language.code
-    )
+    @translation_locale = @interview.translation_lang
     @file_path = file_path
     @only_references = only_references
     @sheet = parse_sheet
@@ -124,14 +121,16 @@ class EditTableImport
 
       translation = annotations_trans && annotations_trans[index]
 
+      original_alpha2 = ISO_639.find(original_locale).alpha2
       original_annotation = text && {
         text: text,
-        locale: original_locale
+        locale: original_alpha2.blank? ? original_locale : original_alpha2
       }
 
+      translation_alpha2 = ISO_639.find(translation_locale).alpha2
       translated_annotation = translation && translation_locale && {
         text: translation,
-        locale: translation_locale
+        locale: translation_alpha2.blank? ? translation_locale : translation_alpha2
       }
 
       translations_attributes = [

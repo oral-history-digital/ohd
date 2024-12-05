@@ -6,6 +6,7 @@ class RegistryReferenceRepository
   # For registry.
   def interview_references_for(registry_entry_id, scope = 'public')
     result = @db.joins('INNER JOIN interviews i ON registry_references.interview_id = i.id')
+      .joins('INNER JOIN projects p ON i.project_id = p.id')
       .joins('INNER JOIN registry_entries re ON registry_references.registry_entry_id = re.id')
       .joins('INNER JOIN contributions c ON c.interview_id = i.id')
       .joins('INNER JOIN contribution_types ct ON c.contribution_type_id = ct.id')
@@ -18,6 +19,7 @@ class RegistryReferenceRepository
       .select("registry_references.id,
         i.archive_id,
         i.project_id,
+        p.shortname,
         people.use_pseudonym,
         JSON_OBJECTAGG(pt.locale, pt.last_name) AS agg_last_names,
         JSON_OBJECTAGG(pt.locale, pt.first_name) AS agg_first_names,
@@ -29,6 +31,7 @@ class RegistryReferenceRepository
   def segment_references_for(registry_entry_id, scope = 'public')
     result = @db.joins('INNER JOIN registry_entries re ON registry_references.registry_entry_id = re.id')
       .joins('INNER JOIN interviews i ON registry_references.interview_id = i.id')
+      .joins('INNER JOIN projects p ON i.project_id = p.id')
       .joins('INNER JOIN contributions c ON c.interview_id = i.id')
       .joins('INNER JOIN contribution_types ct ON c.contribution_type_id = ct.id')
       .joins('INNER JOIN people ON c.person_id = people.id')
@@ -47,6 +50,7 @@ class RegistryReferenceRepository
         t.number AS tape_nbr,
         i.archive_id,
         i.project_id,
+        p.shortname,
         i.transcript_coupled,
         people.use_pseudonym,
         JSON_OBJECTAGG(pt.locale, pt.last_name) AS agg_last_names,
@@ -79,7 +83,7 @@ class RegistryReferenceRepository
         entries.where('metadata_fields.ref_object_type': 'Interview')
           .where('registry_references.ref_object_id': interview_ids)
         )
-      .group('registry_references.id')
+      .group('registry_references.id, people.use_pseudonym')
       .select("registry_references.id,
         registry_reference_types.id as registry_reference_type_id,
         interviews.archive_id,
@@ -109,7 +113,7 @@ class RegistryReferenceRepository
       .where('registry_references.ref_object_type': 'Segment')
       .where('contribution_types.code': 'interviewee')
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
-      .group('registry_references.id')
+      .group('registry_references.id, people.use_pseudonym')
       .select("registry_references.id,
         registry_references.ref_object_type,
         segments.timecode,

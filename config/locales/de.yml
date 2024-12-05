@@ -24,6 +24,9 @@ de:
   sl: slowenisch
   sr: serbisch
   uk: ukrainisch
+  zza: Zazaki
+  ger: Deutsch
+  tur: Türkisch
   default_locales:
     de: deutsch
     el: griechisch

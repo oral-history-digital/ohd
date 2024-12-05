@@ -3,6 +3,7 @@ class BiographicalEntry < ApplicationRecord
   belongs_to :person, touch: true
 
   translates :text, :start_date, :end_date, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 
   scope :with_public_state, ->{ where(workflow_state: 'public') }
 

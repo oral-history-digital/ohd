@@ -3,7 +3,7 @@ import shuffle from 'lodash.shuffle';
 
 import { getArchiveId, getProjectId, getLocale  } from 'modules/archive';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
-import { DEFAULT_LOCALES } from 'modules/constants';
+import { DEFAULT_LOCALES, ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export const getData = state => state.data;
 
@@ -407,13 +407,14 @@ export const getPreparedHeadings = createSelector(
         let subheading = '';
         let headings = [];
         let lastMainheading = '';
+        const alpha3 = ALPHA2_TO_ALPHA3[locale];
 
         if (interview?.headings) {
             Object.values(interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
-                mainheading = segment.mainheading[locale] ||
-                    segment.mainheading[`${locale}-public`]
-                subheading = segment.subheading[locale] ||
-                    segment.subheading[`${locale}-public`]
+                mainheading = segment.mainheading[alpha3] ||
+                    segment.mainheading[`${alpha3}-public`]
+                subheading = segment.subheading[alpha3] ||
+                    segment.subheading[`${alpha3}-public`]
                 //
                 // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp:
                 // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
@@ -474,7 +475,7 @@ export const getPreparedHeadings = createSelector(
                             }
                         }
                     } else {
-                        console.log(`segment ${segment.id} with locale ${locale} tries to add a subheading to headings with index ${mainIndex -1}`);
+                        console.log(`segment ${segment.id} with alpha3 ${alpha3} tries to add a subheading to headings with index ${mainIndex -1}`);
                         console.log(`There are ${headings.length} headings at this point`);
                     }
                 }

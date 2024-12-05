@@ -13,6 +13,7 @@ class ReadTranscriptFileJob < ApplicationJob
     when 'vtt', 'srt'
       interview.create_or_update_segments_from_vtt(file_path, tape_id, locale)
     end
+    Sunspot.index! interview.segments
     File.delete(file_path) if File.exist?(file_path)
     jobs_logger.info "*** created  segments for #{interview.archive_id}"
     interview.touch

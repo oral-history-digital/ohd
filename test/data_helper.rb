@@ -3,7 +3,7 @@ module DataHelper
     I18n.locale = :en
 
     language = Language.create!(
-      code: 'en',
+      code: 'eng',
       name: 'English'
     )
 
@@ -301,12 +301,12 @@ module DataHelper
         first_tape,
         first_speaker,
         [{
-          locale: :ru,
+          locale: :rus,
           text: "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
           mainheading: "Вступление",
           subheading: nil
         }, {
-          locale: :de,
+          locale: :ger,
           text: "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
           mainheading: "Einleitung",
           subheading: nil,
@@ -329,12 +329,12 @@ module DataHelper
         second_tape,
         second_speaker,
         [{
-          locale: :ru,
+          locale: :rus,
           text: "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
           mainheading: nil,
           subheading: "жизнь"
         }, {
-          locale: :de,
+          locale: :ger,
           text: "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
           mainheading: nil,
           subheading: "Leben",
@@ -362,13 +362,13 @@ module DataHelper
     speaker=nil,
     translations_attributes=[
       {
-        locale: :de,
+        locale: :ger,
         text: 'Am Anfang, also das war...',
         mainheading: 'Anfang',
         subheading: 'Morgens'
       },
       {
-        locale: :en,
+        locale: :eng,
         text: 'In the begining, it was...',
         mainheading: 'Beginning',
         subheading: 'In the morning'
@@ -455,8 +455,14 @@ module DataHelper
 
   def self.person_with_biographical_entries(project)
     entries = [
-      [:de, "15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister"],
-      [:ru, "Адамец Константин Войтович родился 15.09.1925 г. в деревне Стаси Диканьского района Полтавской области. У Константина Войтовича было три брата и одна сестр"]
+      {
+        locale: :de,
+        text: "15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister"
+      },
+      {
+        locale: :ru,
+        text: "Адамец Константин Войтович родился 15.09.1925 г. в деревне Стаси Диканьского района Полтавской области. У Константина Войтовича было три брата и одна сестр"
+      }
     ]
     person = Person.create(
       first_name: "Константин",
@@ -464,9 +470,10 @@ module DataHelper
       birth_name: "Hans",
       other_first_names: "Войтович",
       alias_names: "Адамец Константин Войтович Adamez Konstantin",
-      biographical_entries_attributes: entries.map { |locale, text| {locale: locale, text: text} },
+      biographical_entries_attributes: [{workflow_state: 'public', translations_attributes: entries}],
       project: project,
-      gender: 'male'
+      gender: 'male',
+      locale: 'ru'
     )
     person.update(
       locale: 'de',
@@ -519,7 +526,7 @@ module DataHelper
       media_type: 'audio',
       interview_languages: [
         InterviewLanguage.new(
-          language: Language.find_by!(code: 'en'),
+          language: Language.find_by!(code: 'eng'),
           spec: 'primary'
         )
       ],
@@ -558,7 +565,8 @@ module DataHelper
       tape: i.tapes.last,
       speaking_person: Person.find_by!(last_name: 'Rossi'),
       timecode: '00:17:12.00',
-      text: 'My name is Mario Rossi'
+      text: 'My name is Mario Rossi',
+      locale: :eng
     )
 
     i

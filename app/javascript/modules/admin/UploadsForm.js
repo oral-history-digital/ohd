@@ -32,20 +32,20 @@ export default function UploadsForm() {
         return null;
     }
 
-    let link;
-    switch (explanation) {
-    case 'bulk_metadata':
-        link = (<a href={`${pathBase}/metadata-import-template.csv`} download>{`metadata-import-template.csv`}</a>);
-        break;
-    case 'bulk_registry_entries':
-        link = (<a href={`/registry-entries-import-template.csv`} download>{`registry-entries-import-template.csv`}</a>);
-        break;
-    case 'bulk_photos':
-        link = (<a href={`/photos-import-template.csv`} download>{`photos-import-template.csv`}</a>);
-        break;
-    default:
-        link = null;
+    function getLinkData(explanation) {
+        switch (explanation) {
+            case 'bulk_metadata':
+                return [`${pathBase}/metadata-import-template.csv`, 'metadata-import-template.csv'];
+            case 'bulk_registry_entries':
+                return [`/registry-entries-import-template.csv`, 'registry-entries-import-template.csv'];
+            case 'bulk_photos':
+                return [`/photos-import-template.csv`, 'photos-import-template.csv'];
+            default:
+                return null;
+        }
     }
+
+    const linkData = getLinkData(explanation);
 
     return showForm ? (
         <div>
@@ -53,7 +53,17 @@ export default function UploadsForm() {
                 <p className="explanation">
                     {t(`upload.explanation.${explanation}`)}
                 </p>
-                {link}
+                {linkData && (
+                    <p className="u-mt u-mb">
+                        <a
+                            className="Button Button--secondaryAction"
+                            href={linkData[0]}
+                            download
+                        >
+                            {linkData[1]}
+                        </a>
+                    </p>
+                )}
             </div>
             <Form
                 scope='upload'

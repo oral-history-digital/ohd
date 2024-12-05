@@ -53,11 +53,15 @@ export default function ContributionForm({
         }
     }
 
+    const sortedPeopleData = Object.values(peopleData).sort((a, b) =>
+        a.name[locale].toLowerCase().localeCompare(b.name[locale].toLowerCase())
+    );
+
     const formElements = [
         {
             elementType: 'select',
             attribute: 'person_id',
-            values: peopleData,
+            values: sortedPeopleData,
             value: data?.person_id,
             withEmpty: true,
             validate: function(v){return /^\d+$/.test(v)},

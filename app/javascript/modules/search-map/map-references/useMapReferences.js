@@ -41,7 +41,7 @@ export default function useMapReferences(registryEntryId) {
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 
     const interviewReferences = data?.interview_references;
-    const segmentReferences = filter.includes('S') ? data?.segment_references : [];
+    const segmentReferences = filter.includes('segment') ? data?.segment_references : [];
     const numSegmentRefs = segmentReferences?.length;
 
     let referenceGroups = [];

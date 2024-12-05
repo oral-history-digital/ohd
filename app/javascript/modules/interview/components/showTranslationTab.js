@@ -8,11 +8,11 @@ export default function showTranslationTab(project, interview, locale) {
 function projectSupportsTranslatedTranscript(project, interview, locale) {
     switch (project.shortname) {
     case PROJECT_CDOH:
-        return interview.lang !== locale;
+        return interview.alpha2 !== locale;
     case PROJECT_ZWAR:
-        return interview.lang !== 'de';
+        return interview.alpha2 !== 'de';
     default:
-        return interview.lang !== locale;
+        return interview.alpha2 !== locale;
     }
 }
 

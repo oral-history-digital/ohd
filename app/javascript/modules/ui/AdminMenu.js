@@ -1,7 +1,7 @@
 import { cloneElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaTimes, FaEllipsisV } from 'react-icons/fa';
+import { FaTimes, FaEllipsisH } from 'react-icons/fa';
 import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
 import '@reach/menu-button/styles.css';
 import { Dialog } from '@reach/dialog';
@@ -42,13 +42,13 @@ export default function AdminMenu({
         <>
             <Menu className={classNames(className)}>
                 <MenuButton
-                    className="Button Button--transparent Button--icon"
+                    className="Button Button--transparent Button--icon Button--editorial"
                     disabled={disabled}
                 >
                     <VisuallyHidden>
                         {t('modules.ui.admin_menu.actions')}
                     </VisuallyHidden>
-                    <FaEllipsisV className="Icon Icon--small Icon--editorial" />
+                    <FaEllipsisH className="Icon Icon--small Icon--editorial" />
                 </MenuButton>
                 <MenuList>
                     {

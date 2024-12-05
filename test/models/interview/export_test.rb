@@ -12,22 +12,22 @@ class Interview::ExportTest < ActiveSupport::TestCase
   end
 
   test 'exporting to vtt should write the original transcript of tape 1' do
-    @vtt = interview.to_vtt(:ru, 1)
+    @vtt = interview.to_vtt(:rus, 1)
     assert_equal("WEBVTT\n\n1\n00:00:02.000 --> 00:00:09.000\nИтак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца\n", @vtt)
   end
 
   test 'exporting to vtt should write the original transcript of tape 2' do
-    @vtt = interview.to_vtt(:ru, 2)
+    @vtt = interview.to_vtt(:rus, 2)
     assert_equal("WEBVTT\n\n1\n00:02:02.000 --> 00:02:09.000\nИ, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни\n", @vtt)
   end
 
   test 'exporting to vtt should write the translation of tape 1' do
-    @vtt = interview.to_vtt(:de, 1)
+    @vtt = interview.to_vtt(:ger, 1)
     assert_equal("WEBVTT\n\n1\n00:00:02.000 --> 00:00:09.000\nAlso gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez\n", @vtt)
   end
 
   test 'exporting to csv should write the header correctly' do
-    @csv = interview.to_csv(:ru, 1)
+    @csv = interview.to_csv(:rus, 1)
     @rows = @csv.split(/\n/)
     @header_row_entries = @rows[0].split(/\t/)
 
@@ -37,7 +37,7 @@ class Interview::ExportTest < ActiveSupport::TestCase
   end
 
   test 'exporting to csv should write the original transcript of tape 1' do
-    @csv = interview.to_csv(:ru, 1)
+    @csv = interview.to_csv(:rus, 1)
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
 
@@ -47,7 +47,7 @@ class Interview::ExportTest < ActiveSupport::TestCase
   end
 
   test 'exporting to csv should write the original transcript of tape 2' do
-    @csv = interview.to_csv(:ru, 2)
+    @csv = interview.to_csv(:rus, 2)
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
 
@@ -57,7 +57,7 @@ class Interview::ExportTest < ActiveSupport::TestCase
   end
 
   test 'exporting to csv should write the translation of tape 1' do
-    @csv = interview.to_csv(:de, 1)
+    @csv = interview.to_csv(:ger, 1)
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
 
@@ -101,34 +101,34 @@ class Interview::ExportTest < ActiveSupport::TestCase
     assert_equal(@first_row_entries[9], 'ja')
   end
 
-  #test 'should export transcript PDF correctly' do
-    #pdf = interview.to_pdf(:ru, :de)
-    ## analyze returns strings without whitespace
-    ##pdf_analysis = PDF::Inspector::Text.analyze(pdf)
-    ##expect(pdf_analysis.strings.include?("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez".gsub(/\s+/, ""))).to be_truthy
-    #reader = PDF::Reader.new(StringIO.new(pdf))
-    #assert_match(/Das Interview-Archiv/, reader.pages[0].text)
-    #assert_match(/Also gut, heute ist der 10. September 2005, und wir sind bei/, reader.pages[4].text)
-    #assert_match(/Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte/, reader.pages[4].text)
-  #end
+  test 'should export transcript PDF correctly' do
+    pdf = interview.to_pdf(:ru, 'ger')
+    # analyze returns strings without whitespace
+    #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+    #expect(pdf_analysis.strings.include?("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez".gsub(/\s+/, ""))).to be_truthy
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    assert_match(/Перевод интервью Константин Адамец/, reader.pages[0].text)
+    assert_match(/Also gut, heute ist der 10. September 2005, und wir sind bei/, reader.pages[3].text)
+    assert_match(/Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte/, reader.pages[3].text)
+  end
 
-  #test 'should export biography PDF correctly' do
-    #pdf = interview.biography_pdf(:de, :de)
-    ##pdf_analysis = PDF::Inspector::Text.analyze(pdf)
-    ##expect(pdf_analysis.strings.include?("15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister".gsub(/\s+/, ""))).to be_truthy
-    #reader = PDF::Reader.new(StringIO.new(pdf))
-    #assert_match(/Das Interview-Archiv/, reader.pages[0].text)
-    #assert_match(/15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet /, reader.pages[0].text)
-  #end
+  test 'should export biography PDF correctly' do
+    pdf = interview.biography_pdf(:de, :de)
+    #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+    #expect(pdf_analysis.strings.include?("15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet Poltawa. Konstantin Wojtowitsch hat vier Geschwister".gsub(/\s+/, ""))).to be_truthy
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    assert_match(/Kurzbiografie: Konstantin Adamez/, reader.pages[0].text)
+    assert_match(/15.09.1925: Geburt im Dorf Stasi, Bez. Dikanka, Gebiet /, reader.pages[0].text)
+  end
 
-  #test 'should export observations PDF correctly' do
-    #pdf = interview.observations_pdf(:ru, :de)
-    ##pdf_analysis = PDF::Inspector::Text.analyze(pdf)
-    ##expect(pdf_analysis.strings.include?('1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch'.gsub(/\s+/, ""))).to be_truthy
-    #reader = PDF::Reader.new(StringIO.new(pdf))
-    #assert_match(/Das Interview-Archiv/, reader.pages[0].text)
-    #assert_match(/International Slave- und Forced Labourers Documentation Project/, reader.pages[0].text)
-  #end
+  test 'should export observations PDF correctly' do
+    pdf = interview.observations_pdf(:ru, :de)
+    #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
+    #expect(pdf_analysis.strings.include?('1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch'.gsub(/\s+/, ""))).to be_truthy
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    assert_match(/Protokoll \(deutsch\) des Interviews mit Константин Адамец/, reader.pages[0].text)
+    assert_match(/International Slave- und Forced Labourers Documentation Project/, reader.pages[0].text)
+  end
 
 end
 

@@ -41,6 +41,54 @@ export const OHD_DOMAINS = {
     test:        'http://test.portal.oral-history.localhost:47001'
 };
 
+export const ALPHA2_TO_ALPHA3 = {
+    'de': 'ger',
+    'en': 'eng',
+    'el': 'gre',
+    'es': 'spa',
+    'ru': 'rus',
+    'uk': 'ukr'
+};
+
+export const ALPHA3_TO_ALPHA2 = {
+    'ger': 'de',
+    'ita': 'it',
+    'eng': 'en',
+    'dut': 'nl',
+    'fre': 'fr',
+    'ara': 'ar',
+    'rus': 'ru',
+    'gre': 'el',
+    'bel': 'be',
+    'bos': 'bs',
+    'bul': 'bg',
+    'cze': 'cs',
+    'heb': 'he',
+    'hrv': 'hr',
+    'hun': 'hu',
+    'lav': 'lv',
+    'lit': 'lt',
+    'mac': 'mk',
+    'nor': 'no',
+    'per': 'fa',
+    'pol': 'pl',
+    'rum': 'ro',
+    'slo': 'sk',
+    'slv': 'sl',
+    'spa': 'es',
+    'srp': 'sr',
+    'tam': 'ta',
+    'tir': 'ti',
+    'tur': 'tr',
+    'ukr': 'uk',
+    // using alpha-3 for languages without alpha-2
+    'rom': 'rom',
+    'spa': 'es',
+    'cat': 'ca',
+    'ukr-rus': 'uk',
+    'zza': 'zz'
+};
+
 const ANALYTICS_URLS = {
     development: '//localhost:8080/',
     staging: '//metrics.oral-history.digital/',
