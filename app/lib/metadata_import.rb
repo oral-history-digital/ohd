@@ -15,7 +15,7 @@ class MetadataImport
     if csv.first.length == 1
       csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS.merge(col_sep: ';') })
     end
-    csv.sheet('default').parse(MetadataImportTemplate.new(project, locale).columns_hash)
+    csv.sheet('default').parse(MetadataImportTemplate.new(project, locale).columns_hash.merge({clean: true}))
   end
 
   def process
