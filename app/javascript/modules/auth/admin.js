@@ -23,7 +23,7 @@ export default function admin(props, obj={}, action) {
 
         if (
             props.user.admin ||
-            ((obj.type && (obj.id || action)) && (
+            ((obj.type && (obj.id || action) && (!obj.project_id || obj.project_id === props.project.id)) && (
                 //
                 // if obj is a task of current_user, he/she should be able to edit it
                 (
@@ -50,7 +50,7 @@ export default function admin(props, obj={}, action) {
                 // if obj.type and/or id correspond to a role-permission, current_user should be able to edit it
                 (
                     !!Object.values(props.user.user_roles).
-                    filter(r => r.project_id && r.project_id === props.project?.id).
+                    filter(r => r.project_id === props.project.id).
                     flatMap(r => Object.values(r.role_permissions)).
                     find(permission => {
                         return (

@@ -14,7 +14,7 @@ class SegmentsController < ApplicationController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: cache_single(@segment),
+          data: cache_single(@segment, allowed_to_see_all: true),
           reload_data_type: 'headings',
           reload_id: "for_interviews_#{@segment.interview.archive_id}"
         }
@@ -24,24 +24,11 @@ class SegmentsController < ApplicationController
 
   def index
     @interview = Interview.find_by_archive_id(params[:interview_id])
-    policy_scope(Segment)
+
     respond_to do |format|
       format.json do
-        data = Rails.cache.fetch("interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
-          transcript_coupled = @interview.transcript_coupled
-          @interview.tapes.inject({}) do |tapes, tape|
-            segments_for_tape = tape.segments.
-              includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations]).
-              #includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations], project: [:metadata_fields]).
-              #where.not(timecode: '00:00:00.000').
-              order(:timecode)#.first(20)
-
-            tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s, transcript_coupled: transcript_coupled); mem}
-            tapes
-          end
-        end
         json = {
-          data: data,
+          data: policy_scope(@interview.segments.first || Segment.new(interview: @interview)),
           nested_data_type: 'segments',
           data_type: 'interviews',
           archive_id: params[:interview_id]

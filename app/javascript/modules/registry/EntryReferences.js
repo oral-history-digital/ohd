@@ -1,77 +1,56 @@
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Spinner } from 'modules/spinners';
+import { setArchiveId } from 'modules/archive';
+import { getProjects } from 'modules/data';
+import { getIsLoggedIn } from 'modules/user';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import SegmentReference from './SegmentReference';
-import useEntryReferences from './useEntryReferences';
 
 export default function EntryReferences({
-    projects,
-    registryEntry,
-    isLoggedIn,
+    references,
     onSubmit,
-    setArchiveId,
 }) {
     const { t } = useI18n();
-    const { isLoading, interviewReferences, error } = useEntryReferences(registryEntry);
-
-    const referencesCount = interviewReferences?.length || 0;
-
-    function title() {
-        const refTranslation = referencesCount === 1
-            ? t('activerecord.models.registry_reference.one')
-            : t('activerecord.models.registry_reference.other');
-        return `${referencesCount} ${refTranslation}`;
-    }
-
-    if (isLoading) {
-        return <Spinner/>;
-    }
+    const dispatch = useDispatch();
+    const projects = useSelector(getProjects);
+    const isLoggedIn = useSelector(getIsLoggedIn);
 
     return (
-        <>
-            <h4>{title()}</h4>
-            <ul className="UnorderedList">
-                {interviewReferences?.map(({ archive_id, project_id, display_name,
-                    segment_references }) => {
-                    return (
-                        <li key={archive_id}>
-                            <LinkOrA
-                                project={projects[project_id]}
-                                to={`interviews/${archive_id}`}
-                                onLinkClick={() => setArchiveId(archive_id)}
-                                className="search-result-link"
-                            >
-                                {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${display_name} (${archive_id})`}
-                            </LinkOrA>
+        <ul className="UnorderedList">
+            {references.map(({ archive_id, project_id, display_name, segment_references }) => (
+                <li key={archive_id}>
+                    <LinkOrA
+                        project={projects[project_id]}
+                        to={`interviews/${archive_id}`}
+                        onLinkClick={() => dispatch(setArchiveId(archive_id))}
+                        className="search-result-link"
+                    >
+                        {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${display_name} (${archive_id})`}
+                    </LinkOrA>
 
-                            {isLoggedIn && (
-                            <ul className="HorizontalList">
-                                {segment_references.sort((a,b) => a.tape_nbr - b.tape_nbr || a.time - b.time)
-                                    .map((segmentRef) => (
-                                    <li key={segmentRef.id} className="HorizontalList-item">
-                                        <SegmentReference
-                                            project={projects[project_id]}
-                                            segmentRef={segmentRef}
-                                            onSubmit={onSubmit}
-                                        />
-                                    </li>
-                                ))}
-                            </ul>
-                            )}
-                        </li>
-                    );
-                })}
-            </ul>
-        </>
-    )
+                    {isLoggedIn && (
+                    <ul className="HorizontalList">
+                        {segment_references.sort((a,b) => a.tape_nbr - b.tape_nbr || a.time - b.time)
+                            .map((segmentRef) => (
+                            <li key={segmentRef.id} className="HorizontalList-item">
+                                <SegmentReference
+                                    project={projects[project_id]}
+                                    segmentRef={segmentRef}
+                                    onSubmit={onSubmit}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                    )}
+                </li>
+            ))}
+        </ul>
+    );
 }
 
 EntryReferences.propTypes = {
-    projects: PropTypes.array.isRequired,
-    registryEntry: PropTypes.object,
-    isLoggedIn: PropTypes.bool,
+    references: PropTypes.array.isRequired,
     onSubmit: PropTypes.func,
-    setArchiveId: PropTypes.func,
 };

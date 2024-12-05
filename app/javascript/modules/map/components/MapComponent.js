@@ -6,12 +6,10 @@ import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import MapPopup from './MapPopup';
-import MapOverlay from './MapOverlay';
 import MapTooltip from './MapTooltip';
 import MapResizeHandler from './MapResizeHandler';
 
 export default function MapComponent({
-    loading = false,
     className,
     markers = [],
     bounds,
@@ -23,9 +21,9 @@ export default function MapComponent({
     const defaultLocale = project.default_locale;
 
     function getMarkerName(marker) {
-        const result = marker.agg_names[locale]
-            ? marker.agg_names[locale]
-            : marker.agg_names[defaultLocale];
+        const result = marker.labels[locale]
+            ? marker.labels[locale]
+            : marker.labels[defaultLocale];
         return result || '';
     }
 
@@ -39,8 +37,6 @@ export default function MapComponent({
                 zoomAnimation={false}
             >
                 <MapResizeHandler />
-
-                {loading && <MapOverlay />}
 
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -86,7 +82,7 @@ MapComponent.propTypes = {
         id: PropTypes.number.isRequired,
         lat: PropTypes.number.isRequired,
         long: PropTypes.number.isRequired,
-        agg_names: PropTypes.object.isRequired,
+        labels: PropTypes.object.isRequired,
         numReferences: PropTypes.number.isRequired,
         radius: PropTypes.number.isRequired,
         color: PropTypes.string.isRequired,

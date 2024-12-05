@@ -21,10 +21,12 @@ export default function InterviewArchiveDisplay({
         ? t('modules.interview_preview.access_requested')
         : t('modules.interview_preview.no_access');
 
+    const archiveName = project.display_name[locale] || project.name[locale];
+
     return (
         <div className={classNames('InterviewCard-archive', className)}>
-            <span className="InterviewCard-archiveName">
-                {project.display_name[locale] || project.name[locale]}
+            <span className="InterviewCard-archiveName" title={archiveName}>
+                {archiveName}
             </span>
             {showLock && (
                 <span

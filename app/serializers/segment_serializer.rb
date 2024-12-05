@@ -21,9 +21,16 @@ class SegmentSerializer < ApplicationSerializer
              :speaker
              #:speaker_is_interviewee
 
+  def translations_attributes
+    if instance_options[:allowed_to_see_all]
+      object.translations.map(&:as_json)
+    else
+      []
+    end
+  end
 
   def text
-    object.transcripts
+    object.transcripts(instance_options[:allowed_to_see_all])
   end
 
   def annotations

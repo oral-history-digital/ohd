@@ -265,7 +265,7 @@ class Interview < ApplicationRecord
       # e.g.: 'Kamera Hans Peter'
       #
       text :"contributions_#{locale}" do
-        contributions.without_interviewees.map do |c|
+        contributions.without_interviewees.shared.map do |c|
           if c.person
             [TranslationValue.for("contributions.#{c.contribution_type.code}", locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
@@ -457,13 +457,26 @@ class Interview < ApplicationRecord
   end
 
   def lang
-    ISO_639.find(language&.code).try(:alpha2) || language&.code
+    language&.code
+  end
+
+  def alpha2
+    ISO_639.find(language&.code).try(:alpha2) || language&.code[0..1]
+  end
+
+  def translation_lang
+    primary_translation_language&.code
+  end
+
+  def translation_alpha2
+    ISO_639.find(primary_translation_language&.code).try(:alpha2) || language&.code[0..1]
   end
 
   def languages
-    interview_languages.map do |il|
-      ISO_639.find(il.language&.code).try(:alpha2) || il.language&.code
+    result = interview_languages.map do |il|
+      il.language&.code
     end
+    result.uniq
   end
 
   def language_id
@@ -521,8 +534,9 @@ class Interview < ApplicationRecord
   end
 
   def index_observations?
-    public_attributes = properties.fetch(:public_attributes, {})
-    observations_public = public_attributes.fetch('observations', true)
+    #public_attributes = properties.fetch(:public_attributes, {})
+    #observations_public = public_attributes.fetch('observations', true)
+    observations_public = properties[:public_attributes]['observations'] if properties[:public_attributes]
 
     if observations_public != true
       false
@@ -547,9 +561,9 @@ class Interview < ApplicationRecord
     speakers.flatten.uniq.compact.reject{|s| s == false}
   end
 
-  def alpha3_transcript_locales
+  def transcript_locales
     interview_languages.where(spec: ['primary', 'secondary']).map do |il|
-      ISO_639.find(il.language.code).try(:alpha3)
+      il.language.code
     end
   end
 

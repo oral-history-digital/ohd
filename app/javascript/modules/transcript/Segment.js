@@ -168,7 +168,6 @@ Segment.propTypes = {
     setOpenReference: PropTypes.func.isRequired,
     active: PropTypes.bool.isRequired,
     tabIndex: PropTypes.number.isRequired,
-    locale: PropTypes.string.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
 };
 

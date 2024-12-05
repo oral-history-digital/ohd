@@ -245,7 +245,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Search the archive'
     click_on 'Rossi, Mario'
     click_on 'About the interview'
-    click_on 'English'
+    click_on 'eng'
 
     # -> no error, we are happy
   end
@@ -364,7 +364,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Editing interface'
 
     click_on 'Add heading'
-    fill_in 'Hauptüberschrift (en)', with: 'introduction'
+    fill_in 'Main heading (en)', with: 'introduction'
     click_on 'Submit'
     reload_page
     click_on 'Table of contents'

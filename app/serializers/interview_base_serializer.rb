@@ -18,6 +18,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :secondary_language_id,
     :primary_translation_language_id,
     :lang,
+    :alpha2,
     :translation_locale,
     :anonymous_title,
     :media_missing,
@@ -123,7 +124,10 @@ class InterviewBaseSerializer < ApplicationSerializer
     (
       instance_options[:project_available_locales] ||
       object.project.available_locales
-    ).select { |l| object.has_heading?(l) }
+    ).map do |l| 
+      alpha3 = ISO_639.find(l).alpha3
+      alpha3 if object.has_heading?(alpha3)
+    end.compact
   end
 
   def language_id
@@ -131,6 +135,6 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def translation_locale
-    object.interview_languages.where(spec: ['primary_translation']).first&.language&.alpha2
+    object.translation_lang
   end
 end

@@ -116,12 +116,14 @@ export default function RegistryEntry({
                     )}
 
                     {showEditButtons && (
-                        <AuthorizedContent object={data} action="update">
-                            <RegistryEntryEditButtons
-                                registryEntry={data}
-                                parentRegistryEntry={registryEntryParent}
-                            />
-                        </AuthorizedContent>
+                        <span className="u-ml-tiny">
+                            <AuthorizedContent object={data} action="update">
+                                <RegistryEntryEditButtons
+                                    registryEntry={data}
+                                    parentRegistryEntry={registryEntryParent}
+                                />
+                            </AuthorizedContent>
+                        </span>
                     )}
                 </div>
             </div>
