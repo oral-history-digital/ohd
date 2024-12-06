@@ -46,6 +46,7 @@ function UpdateRegistryEntryAttributesModal({
                                 setRegistryEntryAttributes({
                                     latitude: entry.Location?.Latitude,
                                     longitude: entry.Location?.Longitude,
+                                    has_geo_coords: !!(entry.Location?.Latitude && entry.Location?.Longitude),
                                     ...updateRegistryEntryTranslationsAttributes(entry, registryEntryAttributes, project),
                                     ...updateRegistryNameAttributes(entry, registryNameTypes, registryEntryAttributes, project, locale),
                                     ...updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes),

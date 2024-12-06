@@ -20,7 +20,9 @@ export default function RegistryEntryForm({
     const { t, locale } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [descriptor, setDescriptor] = useState(initialDescriptor());
-    const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
+    const [registryEntryAttributes, setRegistryEntryAttributes] = useState(
+        {...registryEntry, has_geo_coords: !!registryEntry?.has_geo_coords}
+    );
     const [showElementsInForm, setShowElementsInForm] = useState(false);
 
     const values = {
