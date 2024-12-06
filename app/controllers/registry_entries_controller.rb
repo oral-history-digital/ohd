@@ -227,6 +227,7 @@ class RegistryEntriesController < ApplicationController
       :parent_id,
       :latitude,
       :longitude,
+      :has_geo_coords,
       norm_data_attributes: [
         :id,
         :registry_entry_id,
