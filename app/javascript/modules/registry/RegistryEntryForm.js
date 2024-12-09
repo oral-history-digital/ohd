@@ -134,7 +134,7 @@ export default function RegistryEntryForm({
                             registryEntryAttributes: registryEntryAttributes,
                             setShowElementsInForm: setShowElementsInForm,
                         },
-                        parent: registryEntry,
+                        parent: registryEntryAttributes,
                         scope: 'norm_datum',
                         elementRepresentation: showNormDatum,
                     }
