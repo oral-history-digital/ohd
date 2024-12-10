@@ -78,8 +78,7 @@ export default function RegistryEntryForm({
                 }}
                 onCancel={onCancel}
                 helpTextCode="registry_entry_form"
-                data={registryEntry}
-                //data={registryEntryAttributes}
+                data={registryEntryAttributes}
                 values={values}
                 elements={[
                     {
@@ -124,7 +123,6 @@ export default function RegistryEntryForm({
                         scope: 'registry_name',
                         elementRepresentation: showRegistryName,
                         showElementsInForm: showElementsInForm,
-
                     },
                     {
                         formComponent: NormDatumFormContainer,
@@ -139,6 +137,7 @@ export default function RegistryEntryForm({
                         parent: registryEntryAttributes,
                         scope: 'norm_datum',
                         elementRepresentation: showNormDatum,
+                        showElementsInForm: showElementsInForm,
                     }
                 ]}
             />
