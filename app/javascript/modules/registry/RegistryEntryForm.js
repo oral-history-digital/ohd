@@ -6,6 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 import NormDatumFormContainer from './NormDatumFormContainer';
+import NormDatumFormWrapper from './NormDatumFormWrapper';
 
 export default function RegistryEntryForm({
     normDataProviders,
@@ -125,6 +126,7 @@ export default function RegistryEntryForm({
                         showElementsInForm: showElementsInForm,
                     },
                     {
+                        wrapperComponent: NormDatumFormWrapper,
                         formComponent: NormDatumFormContainer,
                         formProps: {
                             descriptor: descriptor,

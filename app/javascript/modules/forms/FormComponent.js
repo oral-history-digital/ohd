@@ -144,7 +144,6 @@ export default function FormComponent({
 
     function replaceNestedFormValues(nestedScopeName, nestedScopeValues) {
         // for translations identifier is 'locale' to not multiply translations
-        console.log('replaceNestedFormValues', nestedScopeName, nestedScopeValues);
         setValues(prevValues => ({
             ...prevValues,
             [nestedScopeName]: nestedScopeValues

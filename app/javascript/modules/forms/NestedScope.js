@@ -12,6 +12,7 @@ export default function NestedScope({
     onDelete,
     formComponent,
     formProps,
+    wrapperComponent,
     parent,
     scope,
     showElementsInForm,
@@ -23,12 +24,23 @@ export default function NestedScope({
     const { t } = useI18n();
     const elements = (parent?.[`${pluralize(scope)}_attributes`] || parent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
-    //console.log('scope', scope);
-    //console.log('NestedScope elements:', elements);
-    //console.log('NestedScope newElements:', newElements);
-    const [editing, setEditing] = useState((newElements.length + elements.length) === 0);
-
+    const [editing, setEditing] = useState(!showElementsInForm);
     const cancel = () => setEditing(false);
+
+    const form = createElement(formComponent, {...formProps,
+        data: {},
+        nested: true,
+        submitData: onSubmit,
+        onSubmitCallback: setEditing,
+        onCancel: cancel,
+        formClasses: 'nested-form default',
+    })
+
+    const wrapper = wrapperComponent && createElement(wrapperComponent, {
+        ...formProps,
+        children: [form],
+        replaceNestedFormValues: replaceNestedFormValues,
+    });
 
     return (
         <div className={classNames('nested-scope', scope)} >
@@ -65,16 +77,8 @@ export default function NestedScope({
                     />
                 )
             })}
-            { (editing && !showElementsInForm) ?
-                createElement(formComponent, {...formProps,
-                    data: {},
-                    nested: true,
-                    submitData: onSubmit,
-                    onSubmitCallback: setEditing,
-                    onCancel: cancel,
-                    formClasses: 'nested-form default',
-                    replaceNestedFormValues: replaceNestedFormValues,
-                }) :
+            { editing ?
+                (wrapper ? wrapper : form) :
                 <button
                     type="button"
                     className="Button Button--transparent Button--icon"
