@@ -24,7 +24,7 @@ export default function RegistryEntryForm({
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState(
         {...registryEntry, has_geo_coords: !!registryEntry?.has_geo_coords}
     );
-    const [showElementsInForm, setShowElementsInForm] = useState(false);
+    const [showElementsInForm, setShowElementsInForm] = useState(!registryEntry);
 
     const values = {
         parent_id: registryEntryParent?.id,
