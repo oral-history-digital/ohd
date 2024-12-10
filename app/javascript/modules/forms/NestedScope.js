@@ -24,7 +24,7 @@ export default function NestedScope({
     const { t } = useI18n();
     const elements = (parent?.[`${pluralize(scope)}_attributes`] || parent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
-    const [editing, setEditing] = useState(!showElementsInForm);
+    const [editing, setEditing] = useState(showElementsInForm);
     const cancel = () => setEditing(false);
 
     const form = createElement(formComponent, {...formProps,
