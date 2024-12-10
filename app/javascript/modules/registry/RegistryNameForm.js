@@ -15,7 +15,6 @@ export default function RegistryNameForm({
     nested,
     registryEntryId,
     registryNameTypes,
-    registryEntryAttributes,
     foundRegistryEntries,
     searchRegistryEntry,
     setDescriptor,
@@ -43,7 +42,6 @@ export default function RegistryNameForm({
             multiLocale: true,
             validate: function(v){return v && v.length > 1},
             handlechangecallback: handleDescriptorChange,
-            forceUpdateFromProps: true,
             origAsLocale: true,
         },
         {
@@ -68,7 +66,7 @@ export default function RegistryNameForm({
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}
-            data={registryEntryAttributes?.registry_names_attributes?.[index] || data}
+            data={data}
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,

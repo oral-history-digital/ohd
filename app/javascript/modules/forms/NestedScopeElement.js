@@ -29,6 +29,10 @@ export default function NestedScopeElement({
 
     const cancel = () => setEditing(false);
 
+    if (scope === 'registry_name') {
+        console.log('element', element);
+    }
+
     return (
         <div className={classNames('nested-scope-element', scope)} >
             { editing ?
