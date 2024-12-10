@@ -13,6 +13,7 @@ function UpdateRegistryEntryAttributesModal({
     normDataProviders,
     setRegistryEntryAttributes,
     setShowElementsInForm,
+    replaceNestedFormValues
 }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
@@ -47,10 +48,10 @@ function UpdateRegistryEntryAttributesModal({
                                     latitude: entry.Location?.Latitude,
                                     longitude: entry.Location?.Longitude,
                                     has_geo_coords: !!(entry.Location?.Latitude && entry.Location?.Longitude),
-                                    ...updateRegistryEntryTranslationsAttributes(entry, registryEntryAttributes, project),
-                                    ...updateRegistryNameAttributes(entry, registryNameTypes, registryEntryAttributes, project, locale),
-                                    ...updateNormDataAttributes(entry, normDataProviders, registryEntryAttributes),
                                 });
+                                replaceNestedFormValues('translations_attributes', updateRegistryEntryTranslationsAttributes(entry, project)),
+                                replaceNestedFormValues('registry_names_attributes', updateRegistryNameAttributes(entry, registryNameTypes, project, locale)),
+                                replaceNestedFormValues('norm_data_attributes', updateNormDataAttributes(entry, normDataProviders)),
                                 setShowElementsInForm(true);
                                 close();
                             }}

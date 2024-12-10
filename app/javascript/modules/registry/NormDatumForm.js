@@ -24,6 +24,7 @@ export default function NormDatumForm({
     setRegistryEntryAttributes,
     registryEntryAttributes,
     setShowElementsInForm,
+    replaceNestedFormValues
 }) {
 
     const { t, locale } = useI18n();
@@ -63,6 +64,7 @@ export default function NormDatumForm({
                                     registryEntryAttributes={registryEntryAttributes}
                                     onSubmitCallback={onSubmitCallback}
                                     setShowElementsInForm={setShowElementsInForm}
+                                    replaceNestedFormValues={replaceNestedFormValues}
                                 />
                             </>: <p>{t('enter_descriptor_first')}</p>
                         }

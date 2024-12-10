@@ -14,6 +14,7 @@ function NormDataForDescriptor({
     descriptor,
     onSubmitCallback,
     setShowElementsInForm,
+    replaceNestedFormValues
 }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
@@ -112,6 +113,7 @@ function NormDataForDescriptor({
                                         normDataProviders={normDataProviders}
                                         setRegistryEntryAttributes={setRegistryEntryAttributes}
                                         setShowElementsInForm={setShowElementsInForm}
+                                        replaceNestedFormValues={replaceNestedFormValues}
                                     />
                                 </li>
                             )

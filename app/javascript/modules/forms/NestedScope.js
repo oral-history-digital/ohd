@@ -18,10 +18,14 @@ export default function NestedScope({
     getNewElements,
     elementRepresentation,
     onDeleteCallback,
+    replaceNestedFormValues
 }) {
     const { t } = useI18n();
     const elements = (parent?.[`${pluralize(scope)}_attributes`] || parent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
+    //console.log('scope', scope);
+    //console.log('NestedScope elements:', elements);
+    //console.log('NestedScope newElements:', newElements);
     const [editing, setEditing] = useState((newElements.length + elements.length) === 0);
 
     const cancel = () => setEditing(false);
@@ -69,6 +73,7 @@ export default function NestedScope({
                     onSubmitCallback: setEditing,
                     onCancel: cancel,
                     formClasses: 'nested-form default',
+                    replaceNestedFormValues: replaceNestedFormValues,
                 }) :
                 <button
                     type="button"
