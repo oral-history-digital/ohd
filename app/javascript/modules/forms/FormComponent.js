@@ -142,8 +142,16 @@ export default function FormComponent({
         return `${pluralize(scope)}_attributes`;
     }
 
-    function writeNestedObjectToStateValues(params, identifier, index) {
+    function replaceNestedFormValues(nestedScopeName, nestedScopeValues) {
         // for translations identifier is 'locale' to not multiply translations
+        console.log('replaceNestedFormValues', nestedScopeName, nestedScopeValues);
+        setValues(prevValues => ({
+            ...prevValues,
+            [nestedScopeName]: nestedScopeValues
+        }));
+    }
+
+    function writeNestedObjectToStateValues(params, identifier, index) {
         identifier ||= 'id';
         let scope = Object.keys(params)[0];
         let nestedObject = params[scope];
@@ -151,8 +159,7 @@ export default function FormComponent({
         if (index === undefined)
             index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
         index = index === -1 ? nestedObjects.length : index;
-
-        setValues(prevValues => ({
+        setValues( prevValues => ({
             ...prevValues,
             [nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {
                 [index]: Object.assign({}, nestedObjects[index], nestedObject)
@@ -171,6 +178,7 @@ export default function FormComponent({
                 onSubmit={handleNestedFormSubmit}
                 onDelete={deleteNestedObject}
                 getNewElements={() => values[nestedRailsScopeName(props.scope)]}
+                replaceNestedFormValues={replaceNestedFormValues}
             />
         ))
     }

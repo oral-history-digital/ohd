@@ -28,6 +28,7 @@ export default function RegistryEntryForm({
     const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
+        has_geo_coords: !!registryEntry?.has_geo_coords
     }
 
     function initialDescriptor() {
@@ -77,7 +78,8 @@ export default function RegistryEntryForm({
                 }}
                 onCancel={onCancel}
                 helpTextCode="registry_entry_form"
-                data={registryEntryAttributes}
+                data={registryEntry}
+                //data={registryEntryAttributes}
                 values={values}
                 elements={[
                     {

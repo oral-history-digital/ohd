@@ -1,13 +1,11 @@
 export function updateRegistryNameAttributes(
     entry,
     registryNameTypes,
-    registryEntryAttributes,
     project,
-    locale
+    locale,
+    replaceNestedFormValues,
 ) {
-
-    let registryNamesAttributes = registryEntryAttributes.registry_names_attributes ||
-        registryEntryAttributes.registry_names || [];
+    let registryNamesAttributes = [];
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
     const ancientNameType = Object.values(registryNameTypes).find(r => r.code === 'ancient');
@@ -33,7 +31,7 @@ export function updateRegistryNameAttributes(
     if (origAlias)
         setDescriptor(origAlias, registryNamesAttributes, ancientNameType.id, 'orig');
 
-    return ({registry_names_attributes: registryNamesAttributes});
+    return registryNamesAttributes;
 };
 
 export function setDescriptor(
@@ -51,11 +49,10 @@ export function setDescriptor(
 
 export function updateRegistryEntryTranslationsAttributes(
     entry,
-    registryEntryAttributes,
-    project
+    project,
+    replaceNestedFormValues
 ) {
-    let translationsAttributes = registryEntryAttributes.translations_attributes ||
-        registryEntryAttributes.translations || [];
+    let translationsAttributes = [];
 
     project.available_locales.map( lang => {
         const description = Array.isArray(entry.Description) ?
@@ -68,16 +65,15 @@ export function updateRegistryEntryTranslationsAttributes(
         }
     })
 
-    return ({translations_attributes: translationsAttributes});
+    return translationsAttributes;
 }
 
 export function updateNormDataAttributes(
     entry,
     normDataProviders,
-    registryEntryAttributes
+    replaceNestedFormValues
 ) {
-    let normDataAttributes = registryEntryAttributes.norm_data_attributes ||
-        registryEntryAttributes.norm_data || [];
+    let normDataAttributes = [];
 
     entry.Identifier.map(provider => {
         if (provider.Value) {
@@ -92,7 +88,7 @@ export function updateNormDataAttributes(
         }
     });
 
-    return ({norm_data_attributes: normDataAttributes});
+    return normDataAttributes;
 }
 
 export function findOrCreate(
