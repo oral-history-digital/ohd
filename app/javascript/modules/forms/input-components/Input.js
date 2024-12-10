@@ -26,7 +26,6 @@ export default function Input({
     className,
     readOnly,
     placeholder,
-    forceUpdateFromProps,
     id,
 }) {
 
@@ -73,9 +72,6 @@ export default function Input({
             onChange: onChange,
             onClick: onChange,
         }
-
-        //if (forceUpdateFromProps)
-            //props.value = val; //data && data[attribute] || val;
 
         return props;
     };

@@ -49,9 +49,9 @@ function UpdateRegistryEntryAttributesModal({
                                     longitude: entry.Location?.Longitude,
                                     has_geo_coords: !!(entry.Location?.Latitude && entry.Location?.Longitude),
                                 });
-                                replaceNestedFormValues('translations_attributes', updateRegistryEntryTranslationsAttributes(entry, project)),
                                 replaceNestedFormValues('registry_names_attributes', updateRegistryNameAttributes(entry, registryNameTypes, project, locale)),
                                 replaceNestedFormValues('norm_data_attributes', updateNormDataAttributes(entry, normDataProviders)),
+                                replaceNestedFormValues('translations_attributes', updateRegistryEntryTranslationsAttributes(entry, project)),
                                 setShowElementsInForm(true);
                                 close();
                             }}

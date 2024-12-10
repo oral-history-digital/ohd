@@ -168,6 +168,7 @@ export default function FormComponent({
 
     // props is a dummy here
     function handleNestedFormSubmit(props, params, index) {
+        console.log('handleNestedFormSubmit', props, params, index);
         writeNestedObjectToStateValues(params, null, index);
     }
 

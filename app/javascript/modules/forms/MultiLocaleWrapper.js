@@ -19,7 +19,7 @@ export default function MultiLocaleWrapper(props) {
         data,
         locales,
         handleChange,
-        origAsLocale ,
+        origAsLocale,
     } = props;
 
     const labelFunc = (locale) => {
