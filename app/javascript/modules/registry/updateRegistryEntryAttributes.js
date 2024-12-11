@@ -1,4 +1,4 @@
-export function updateRegistryNameAttributes(
+export function prepareRegistryNameAttributes(
     entry,
     registryNameTypes,
     project,
@@ -65,10 +65,10 @@ export function updateRegistryEntryTranslationsAttributes(
         }
     })
 
-    return translationsAttributes;
+    return ({translations_attributes: translationsAttributes});
 }
 
-export function updateNormDataAttributes(
+export function prepareNormDataAttributes(
     entry,
     normDataProviders,
     replaceNestedFormValues
