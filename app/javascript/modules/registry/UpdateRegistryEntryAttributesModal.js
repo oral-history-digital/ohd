@@ -1,10 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { updateRegistryNameAttributes, updateNormDataAttributes,
     updateRegistryEntryTranslationsAttributes } from './updateRegistryEntryAttributes';
 import { Modal } from 'modules/ui';
+import { deleteData } from 'modules/data';
 
 function UpdateRegistryEntryAttributesModal({
     entry,
@@ -13,10 +15,11 @@ function UpdateRegistryEntryAttributesModal({
     normDataProviders,
     setRegistryEntryAttributes,
     setShowElementsInForm,
-    replaceNestedFormValues
+    replaceNestedFormValues,
 }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, projectId } = useProject();
+    const dispatch = useDispatch();
 
     const show = (entry) => {
         const alternateName = entry.AlternativeNames?.AlternativeName;
@@ -29,6 +32,17 @@ function UpdateRegistryEntryAttributesModal({
         return (
             name || entry.Name + ', ' + description
         );
+    }
+
+    const deletePersistendNestedValues = () => {
+        ['registry_names', 'norm_data'].map( nestedScope => {
+            console.log('deletePersistendNestedValues', nestedScope);
+            console.log('registryEntryAttributes', registryEntryAttributes);
+            registryEntryAttributes[nestedScope].map((value, index) => {
+                if (value.id)
+                    dispatch(deleteData({locale, projectId, project}, nestedScope, value.id));
+            });
+        });
     }
 
     return (
@@ -49,6 +63,7 @@ function UpdateRegistryEntryAttributesModal({
                                     longitude: entry.Location?.Longitude,
                                     has_geo_coords: !!(entry.Location?.Latitude && entry.Location?.Longitude),
                                 });
+                                deletePersistendNestedValues();
                                 replaceNestedFormValues('registry_names_attributes', updateRegistryNameAttributes(entry, registryNameTypes, project, locale)),
                                 replaceNestedFormValues('norm_data_attributes', updateNormDataAttributes(entry, normDataProviders)),
                                 replaceNestedFormValues('translations_attributes', updateRegistryEntryTranslationsAttributes(entry, project)),
