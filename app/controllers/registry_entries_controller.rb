@@ -228,6 +228,7 @@ class RegistryEntriesController < ApplicationController
       :latitude,
       :longitude,
       :has_geo_coords,
+      :delete_persistent_values,
       norm_data_attributes: [
         :id,
         :registry_entry_id,

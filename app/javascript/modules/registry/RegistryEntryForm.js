@@ -68,11 +68,10 @@ export default function RegistryEntryForm({
                 key={registryEntryId}
                 scope='registry_entry'
                 onSubmit={params => {
-                    const paramsWithNormDataAttributes = {
+                    const updatedParams = {
                         registry_entry: Object.assign({}, registryEntryAttributes, params.registry_entry)
                     };
-                    paramsWithNormDataAttributes.registry_entry.translations_attributes = registryEntryAttributes.translations_attributes;
-                    submitData({projectId, locale, project}, paramsWithNormDataAttributes);
+                    submitData({projectId, locale, project}, updatedParams);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
