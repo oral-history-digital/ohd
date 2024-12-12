@@ -44,9 +44,9 @@ export default function WorkbookItemForm({
     });
 
     function defaultTitle() {
-        const name = interview.anonymous_title?.[locale];
+        const name = interview?.anonymous_title?.[locale];
         const interviewStr = t('activerecord.models.interview.one');
-        const archiveId = interview.archive_id;
+        const archiveId = interview?.archive_id;
         const tapeStr = t('tape');
 
         switch (type) {
