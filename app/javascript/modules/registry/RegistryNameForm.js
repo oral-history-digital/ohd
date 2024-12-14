@@ -72,6 +72,7 @@ export default function RegistryNameForm({
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
                 registry_name_type_id: (data?.registry_name_type_id) || defaultNameType.id,
                 name_position: 1,
+                translations_attributes: data?.translations_attributes || [],
             }}
             submitText='submit'
             elements={formElements}
