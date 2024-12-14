@@ -68,7 +68,7 @@ export default function MultiLocaleWrapper(props) {
     }
 
     const onChange = (name, value, translation) => {
-        let params = {translations_attributes: {[name]: value, locale: translation.locale, id: translation.id}};
+        let params = {translation: {[name]: value, locale: translation.locale, id: translation.id}};
         handleChange(null, null, params, 'locale');
     }
 
