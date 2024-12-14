@@ -143,7 +143,6 @@ export default function FormComponent({
     }
 
     function replaceNestedFormValues(nestedScopeName, nestedScopeValues) {
-        // for translations identifier is 'locale' to not multiply translations
         setValues(prevValues => ({
             ...prevValues,
             [nestedScopeName]: nestedScopeValues
@@ -151,24 +150,22 @@ export default function FormComponent({
     }
 
     function writeNestedObjectToStateValues(params, identifier, index) {
+        // for translations identifier is 'locale' to not multiply translations
         identifier ||= 'id';
-        let scope = Object.keys(params)[0];
-        let nestedObject = params[scope];
-        let nestedObjects = values[nestedRailsScopeName(scope)] || [];
+        let nestedScope = Object.keys(params)[0];
+        let nestedObject = params[nestedScope];
+        let nestedObjects = values[nestedRailsScopeName(nestedScope)] || [];
         if (index === undefined)
             index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
         index = index === -1 ? nestedObjects.length : index;
         setValues( prevValues => ({
             ...prevValues,
-            [nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {
-                [index]: Object.assign({}, nestedObjects[index], nestedObject)
-            })
+            [nestedRailsScopeName(nestedScope)]: nestedObjects.slice(0, index).concat([nestedObject]).concat(nestedObjects.slice(index + 1))
         }));
     }
 
     // props is a dummy here
     function handleNestedFormSubmit(props, params, index) {
-        console.log('handleNestedFormSubmit', props, params, index);
         writeNestedObjectToStateValues(params, null, index);
     }
 

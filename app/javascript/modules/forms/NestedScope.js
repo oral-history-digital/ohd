@@ -29,6 +29,7 @@ export default function NestedScope({
 
     const form = createElement(formComponent, {...formProps,
         data: {},
+        index: newElements.length,
         nested: true,
         submitData: onSubmit,
         onSubmitCallback: setEditing,
