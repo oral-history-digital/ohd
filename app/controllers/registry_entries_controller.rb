@@ -116,7 +116,8 @@ class RegistryEntriesController < ApplicationController
             }
           )
         end
-        send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", type: "application/pdf" #, :disposition => "attachment"
+        send_data csv, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.pdf",
+          type: "application/pdf"
       end
       format.csv do
         if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
