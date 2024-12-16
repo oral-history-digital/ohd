@@ -150,6 +150,7 @@ class SearchesController < ApplicationController
       format.json do
         registry_entry_id = params[:id]
         signed_in = current_user.present?
+        has_permission = current_user&.accessible_projects&.include?(current_project)
         scope = map_scope
 
         search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
@@ -161,14 +162,16 @@ class SearchesController < ApplicationController
         interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs,
           each_serializer: SlimInterviewRegistryReferenceSerializer,
           default_locale: current_project.default_locale,
-          signed_in: signed_in)
+          signed_in: signed_in,
+          has_permission: has_permission)
 
         segment_refs = repository.map_segment_references_for(registry_entry_id,
           interview_ids, scope)
         segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs,
           each_serializer: SlimSegmentRegistryReferenceSerializer,
           default_locale: current_project.default_locale,
-          signed_in: signed_in)
+          signed_in: signed_in,
+          has_permission: has_permission)
 
         references = {
           interview_references: interview_refs_serialized,
