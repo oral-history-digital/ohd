@@ -63,7 +63,7 @@ export default function InterviewDetailsLeftSide({
             <h3>{t('person_info')}</h3>
             <div>
                 <PersonDataContainer />
-                {intervieweeIsLoading ?
+                {!interviewee || intervieweeIsLoading ?
                     <Spinner /> :
                     <SelectedRegistryReferencesContainer refObject={interviewee} />
                 }
