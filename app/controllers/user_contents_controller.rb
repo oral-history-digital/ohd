@@ -4,7 +4,7 @@ class UserContentsController < ApplicationController
     authorize(UserContent)
     @user_content = UserContent.new(user_content_params)
     @user_content.user_id = current_user.id
-    @user_content.project_id = current_project.id
+    @user_content.project_id = current_project.id if user_content_params[:project_id].blank?
     @user_content.save
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
     @user_content.reference.touch if @user_content.type == 'UserAnnotation'
@@ -73,9 +73,9 @@ class UserContentsController < ApplicationController
   private
 
   def user_content_params
-    #properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
     params.require(:user_content).
       permit(:description,
+             :project_id,
              :title,
              :media_id,
              :reference_id,
@@ -87,10 +87,5 @@ class UserContentsController < ApplicationController
              :persistent,
              properties: {}
       )
-
-      #       tap do |whitelisted|
-      #  whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
-      #end
   end
-
 end
