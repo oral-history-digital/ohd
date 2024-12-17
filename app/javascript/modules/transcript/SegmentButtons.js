@@ -7,7 +7,7 @@ import { useI18n } from 'modules/i18n';
 import { SegmentHeadingForm } from 'modules/toc';
 import { Modal } from 'modules/ui';
 import { useWorkbook } from 'modules/workbook';
-import SegmentFormContainer from './SegmentFormContainer';
+import SegmentForm from './SegmentForm';
 
 export default function SegmentButtons({
     contentLocale,
@@ -39,7 +39,7 @@ export default function SegmentButtons({
                     triggerClassName="Button Button--icon"
                 >
                     {closeModal => (
-                        <SegmentFormContainer
+                        <SegmentForm
                             segment={data}
                             contentLocale={contentLocale}
                             onSubmit={closeModal}
