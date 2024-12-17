@@ -40,13 +40,13 @@ export default function Textarea({
         }
     };
 
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(defaultValue);
-            handleErrors(attribute, !valid);
-        }
-        handleChange(attribute, defaultValue, data);
-    }, [defaultValue]);
+    //useEffect(() => {
+        //if (typeof(validate) === 'function') {
+            //const valid = validate(defaultValue);
+            //handleErrors(attribute, !valid);
+        //}
+        //handleChange(attribute, defaultValue, data);
+    //}, [defaultValue]);
 
     return (
         <Element

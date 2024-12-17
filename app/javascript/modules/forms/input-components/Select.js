@@ -45,13 +45,13 @@ export default function Select({
         }
     }
 
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(defaultValue);
-            handleErrors(attribute, !valid);
-        }
-        handleChange(attribute, defaultValue, data);
-    }, [defaultValue]);
+    //useEffect(() => {
+        //if (typeof(validate) === 'function') {
+            //const valid = validate(defaultValue);
+            //handleErrors(attribute, !valid);
+        //}
+        //handleChange(attribute, defaultValue, data);
+    //}, [defaultValue]);
 
     const selectTextAndValueFunction = (value) => {
 
