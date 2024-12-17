@@ -1,30 +1,42 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
+import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
 export default function SegmentForm({
-    locale,
-    projectId,
-    project,
     contentLocale,
     segment,
-    submitData,
     onSubmit,
     onCancel,
 }) {
+    const dispatch = useDispatch();
+    const { locale } = useI18n();
+    const { project, projectId } = useProject();
+
     const { data: people, isLoading } = usePeople();
 
     if (isLoading) {
         return <Spinner />;
     }
 
+    let textValue = segment?.text[contentLocale];
+    if (typeof textValue === 'undefined') {
+        textValue = segment?.text[`${contentLocale}-public`];
+    }
+
     return (
         <div>
             <Form
                 scope='segment'
-                onSubmit={(params) => { submitData({ locale, projectId, project }, params); onSubmit(); }}
+                onSubmit={(params) => {
+                    dispatch(submitData({ locale, projectId, project }, params));
+                    onSubmit();
+                }}
                 onCancel={onCancel}
                 data={segment}
                 helpTextCode="segment_form"
@@ -41,7 +53,7 @@ export default function SegmentForm({
                     },
                     {
                         elementType: 'textarea',
-                        value: (segment?.text[contentLocale] || segment?.text[`${contentLocale}-public`]),
+                        value: textValue,
                         attribute: 'text',
                     },
                 ]}
@@ -51,12 +63,8 @@ export default function SegmentForm({
 }
 
 SegmentForm.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
     segment: PropTypes.object,
-    submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
 };
