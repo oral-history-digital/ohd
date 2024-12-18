@@ -20,6 +20,7 @@ export default function InterviewPreview({
     statuses,
     interview,
     projects,
+    isLoggedIn,
     setArchiveId,
     selectedArchiveIds,
     addRemoveArchiveId,
@@ -54,30 +55,32 @@ export default function InterviewPreview({
                 numSearchResults={numResults}
                 onClick={() => setIsExpanded(prev => !prev)}
             />
-            <Modal
-                title={isInWorkbook ? '' : t('save_interview_reference_tooltip')}
-                trigger={isInWorkbook ? <FaStar /> : <FaRegStar />}
-                triggerClassName={classNames('InterviewCard-star', {
-                    'is-active': isInWorkbook,
-                })}
-                disabled={isInWorkbook}
-            >
-                {closeModal => (
-                    <WorkbookItemForm
-                        project={project}
-                        interview={interview}
-                        description=""
-                        properties={{title: interview.title}}
-                        reference_id={interview.id}
-                        reference_type='Interview'
-                        media_id={interview.archive_id}
-                        type='InterviewReference'
-                        submitLabel={t('modules.workbook.bookmark')}
-                        onSubmit={closeModal}
-                        onCancel={closeModal}
-                    />
-                )}
-            </Modal>
+            {isLoggedIn && (
+                <Modal
+                    title={isInWorkbook ? '' : t('save_interview_reference_tooltip')}
+                    trigger={isInWorkbook ? <FaStar /> : <FaRegStar />}
+                    triggerClassName={classNames('InterviewCard-star', {
+                        'is-active': isInWorkbook,
+                    })}
+                    disabled={isInWorkbook}
+                >
+                    {closeModal => (
+                        <WorkbookItemForm
+                            project={project}
+                            interview={interview}
+                            description=""
+                            properties={{title: interview.title}}
+                            reference_id={interview.id}
+                            reference_type='Interview'
+                            media_id={interview.archive_id}
+                            type='InterviewReference'
+                            submitLabel={t('modules.workbook.bookmark')}
+                            onSubmit={closeModal}
+                            onCancel={closeModal}
+                        />
+                    )}
+                </Modal>
+            )}
             <LinkOrA
                 project={project}
                 to={linkPath}
@@ -121,6 +124,7 @@ export default function InterviewPreview({
 InterviewPreview.propTypes = {
     interview: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
     setArchiveId: PropTypes.func.isRequired,
