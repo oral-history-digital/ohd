@@ -22,10 +22,6 @@ export default function RegistryReferences({
     const { t, locale } = useI18n();
     const { project } = useProject();
 
-    if (!registryEntriesStatus[project.root_registry_entry_id] || registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !== 'fetched') {
-        return null;
-    }
-
     if (!refObject || !registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`] ||
         registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`].split('-')[0] !== 'fetched') {
         return null;
