@@ -10,6 +10,7 @@ import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { Annotations } from 'modules/annotations';
 import fieldHasData from './fieldHasData';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export default function EditTableCell({
     type,
@@ -19,6 +20,28 @@ export default function EditTableCell({
 }) {
     const dispatch = useDispatch();
     const { locale } = useI18n();
+    const alpha3Locales = Object.values(ALPHA2_TO_ALPHA3);
+    let alpha3Locale, attribute;
+
+    if (/heading/.test(type)) {
+        alpha3Locale = type.split('_').pop();
+        attribute = type.split('_').shift();
+        return (
+            <div
+                className={classNames('EditTable-cell', {
+                    'has-data': fieldHasData(segment.mainheading[alpha3Locale])
+                })}
+            >
+                <SubmitOnBlurForm
+                    data={segment}
+                    scope="segment"
+                    locale={alpha3Locale}
+                    attribute={attribute}
+                    type="input"
+                />
+            </div>
+        );
+    }
 
     switch (type) {
     case 'timecode':
@@ -66,71 +89,8 @@ export default function EditTableCell({
                 />
             </div>
         );
-    case 'mainheading_orig':
-        return (
-            <div
-                className={classNames('EditTable-cell', {
-                    'has-data': fieldHasData(segment.mainheading[originalLocale])
-                })}
-            >
-                <SubmitOnBlurForm
-                    data={segment}
-                    scope="segment"
-                    locale={originalLocale}
-                    attribute="mainheading"
-                    type="input"
-                />
-            </div>
-        );
-    case 'mainheading_translated':
-        return (
-            <div
-                className={classNames('EditTable-cell', {
-                    'has-data': fieldHasData(segment.mainheading[translationLocale])
-                })}
-            >
-                <SubmitOnBlurForm
-                    data={segment}
-                    scope="segment"
-                    locale={translationLocale}
-                    attribute="mainheading"
-                    type="input"
-                />
-            </div>
-        );
-    case 'subheading_orig':
-        return (
-            <div
-                className={classNames('EditTable-cell', {
-                    'has-data': fieldHasData(segment.subheading[originalLocale])
-                })}
-            >
-                <SubmitOnBlurForm
-                    data={segment}
-                    scope="segment"
-                    locale={originalLocale}
-                    attribute="subheading"
-                    type="input"
-                />
-            </div>
-        );
-    case 'subheading_translated':
-        return (
-            <div
-                className={classNames('EditTable-cell', {
-                    'has-data': fieldHasData(segment.subheading[translationLocale])
-                })}
-            >
-                <SubmitOnBlurForm
-                    data={segment}
-                    scope="segment"
-                    locale={translationLocale}
-                    attribute="subheading"
-                    type="input"
-                />
-            </div>
-        );
     case 'registry_references':
+            console.log('registry_references');
         return (
             <div
                 className={classNames('EditTable-cell', {
@@ -177,6 +137,7 @@ export default function EditTableCell({
             </div>
         );
     default:
+            console.log('EditTableCell default', type);
     }
 }
 
