@@ -90,7 +90,6 @@ export default function EditTableCell({
             </div>
         );
     case 'registry_references':
-            console.log('registry_references');
         return (
             <div
                 className={classNames('EditTable-cell', {
@@ -137,7 +136,6 @@ export default function EditTableCell({
             </div>
         );
     default:
-            console.log('EditTableCell default', type);
     }
 }
 
