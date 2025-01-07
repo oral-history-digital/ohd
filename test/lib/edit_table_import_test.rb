@@ -27,15 +27,15 @@ class EditTableImportTest < ActiveSupport::TestCase
         'Band',
         'Timecode',
         'Sprecher',
-        'Transkript',
-        'Übersetzung',
-        'Hauptüberschrift',
-        'Zwischenüberschrift',
-        'Hauptüberschrift (Übersetzung)',
-        'Zwischenüberschrift (Übersetzung)',
-        'Registerverknüpfungen',
-        'Anmerkungen',
-        'Anmerkungen (Übersetzung)'
+        'Transkript (rus)',
+        'Übersetzung (ger)',
+        'Hauptüberschrift (rus)',
+        'Zwischenüberschrift (rus)',
+        'Hauptüberschrift (ger)',
+        'Zwischenüberschrift (ger)',
+        'Verknüpfungen',
+        'Anmerkungen (rus)',
+        'Anmerkungen (ger)'
       ]
       f << [
         1,
@@ -67,7 +67,7 @@ class EditTableImportTest < ActiveSupport::TestCase
       ]
     end
 
-    EditTableImport.new(@interview.archive_id, File.join(Rails.root, 'test', 'files', 'edit-table-import-template.csv')).process
+    msg = EditTableImport.new(@interview.archive_id, File.join(Rails.root, 'test', 'files', 'edit-table-import-template.csv')).process
 
     assert_equal 2, @interview.segments.count
     #assert_equal 6, @interview.segments.first.translations.count # there is still one translation too much (don't knoehow to fix)
@@ -79,7 +79,7 @@ class EditTableImportTest < ActiveSupport::TestCase
     assert_equal 2, @interview.segments.first(2).last.registry_references.count
     assert_equal 'Deutschland', @interview.segments.first.registry_references.first.registry_entry.descriptor(:de)
     assert_equal 1, @interview.segments.first.annotations.count
-    assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @interview.segments.first(2).last.annotations.first.text(:de)
+    assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @interview.segments.first(2).last.annotations.first.text('ger')
     assert_equal 1, @interview.tapes.first.segments.count
     assert_equal 1, @interview.tapes.last.segments.count
     assert_not_nil @interview.segments.first.speaking_person

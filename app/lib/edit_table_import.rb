@@ -24,20 +24,7 @@ class EditTableImport
       interview.find_or_create_tapes(csv.cell(csv.last_row, 1).to_i)
     end
 
-    csv.sheet('default').parse({
-      tape_number: 'Band',
-      timecode: 'Timecode',
-      speaker_designation: 'Sprecher',
-      text_orig: 'Transkript',
-      text_trans: 'Übersetzung',
-      mainheading_orig: 'Hauptüberschrift',
-      subheading_orig: 'Zwischenüberschrift',
-      mainheading_trans: 'Hauptüberschrift (Übersetzung)',
-      subheading_trans: 'Zwischenüberschrift (Übersetzung)',
-      registry_references: 'Registerverknüpfungen',
-      annotations: 'Anmerkungen',
-      annotations_trans: 'Anmerkungen (Übersetzung)'
-    })
+    csv.sheet('default').parse(interview.edit_table_headers)
   end
 
   def process
@@ -45,20 +32,21 @@ class EditTableImport
       unless only_references
         speaker_id = contributions.key(row[:speaker_designation])
 
-        translations_attributes = [{
-          locale: original_locale,
-          text: row[:text_orig],
-          mainheading: row[:mainheading_orig],
-          subheading: row[:subheading_orig],
-        }]
-        translations_attributes << {
-          locale: translation_locale,
-          text: row[:text_trans],
-          mainheading: row[:mainheading_trans],
-          subheading: row[:subheading_trans],
-        } if translation_locale && (row[:text_trans] || row[:mainheading_trans] || row[:subheading_trans])
+        translations_attributes = []
+        (interview.languages | interview.project.available_locales.map{|l| ISO_639.find(l).alpha3}).each do |locale|
+          text = nil
+          text = row[:text_orig] if locale == original_locale
+          text = row[:text_translated] if locale == translation_locale
 
-        segment = Segment.create(
+          translations_attributes << {
+            locale: locale,
+            text: text,
+            mainheading: row["mainheading_#{locale}".to_sym],
+            subheading: row["subheading_#{locale}".to_sym],
+          } if text || row["mainheading_#{locale}".to_sym] || row["subheading_#{locale}".to_sym]
+        end
+
+        segment = Segment.create!(
           interview_id: interview.id,
           tape_id: interview.tapes.where(number: row[:tape_number]).first.id,
           speaker_id: speaker_id,
@@ -70,28 +58,22 @@ class EditTableImport
       else
         segment = interview.tapes.where(number: row[:tape_number]).first.
           segments.where(timecode: row[:timecode]).first
-        if row[:mainheading_orig] || row[:subheading_orig]
+        interview.project.available_locales.map{|l| ISO_639.find(l).alpha3}.each do |locale|
           segment.update(
-            mainheading: row[:mainheading_orig],
-            subheading: row[:subheading_orig],
-            locale: original_locale,
+            mainheading: row["mainheading_#{locale}".to_sym],
+            subheading: row["subheading_#{locale}".to_sym],
+            locale: locale,
             has_heading: true
-          )
-        end
-        if row[:mainheading_trans] || row[:subheading_trans]
-          segment.update(
-            mainheading: row[:mainheading_trans],
-            subheading: row[:subheading_trans],
-            locale: translation_locale,
-            has_heading: true
-          )
+          ) if row["mainheading_#{locale}".to_sym] || row["subheading_#{locale}".to_sym]
         end
       end
       create_references(row, interview, segment)
     end
+    "Success"
   rescue StandardError => e
     log("*** #{interview.archive_id}: ")
     log("#{e.message}: #{e.backtrace}")
+    "#{e.message}: #{e.backtrace[0..500]}"
   end
 
   def create_references(row, interview, ref_object)
@@ -116,21 +98,19 @@ class EditTableImport
   end
 
   def create_annotations(row, interview, segment)
-    annotations_trans = row[:annotations_trans] && row[:annotations_trans].split('#')
+    annotations_translated = row[:annotations_translated] && row[:annotations_translated].split('#')
     row[:annotations] && row[:annotations].split('#').each_with_index do |text, index|
 
-      translation = annotations_trans && annotations_trans[index]
+      translation = annotations_translated && annotations_translated[index]
 
-      original_alpha2 = ISO_639.find(original_locale).alpha2
       original_annotation = text && {
         text: text,
-        locale: original_alpha2.blank? ? original_locale : original_alpha2
+        locale: original_locale
       }
 
-      translation_alpha2 = ISO_639.find(translation_locale).alpha2
       translated_annotation = translation && translation_locale && {
         text: translation,
-        locale: translation_alpha2.blank? ? translation_locale : translation_alpha2
+        locale: translation_locale
       }
 
       translations_attributes = [

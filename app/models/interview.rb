@@ -914,4 +914,40 @@ class Interview < ApplicationRecord
       #   map(&:archive_id).uniq
     end
   end
+
+  def edit_table_header_columns
+    first_columns = %w(
+      tape_number
+      timecode
+      speaker_designation
+      text_orig
+      text_translated
+    )
+    last_columns = %w(
+      registry_references
+      annotations
+      annotations_translated
+    )
+    heading_columns =  project.available_locales.map do |locale|
+      alpha3 = ISO_639.find(locale).alpha3
+      ["mainheading_#{alpha3}", "subheading_#{alpha3}"]
+    end.flatten
+    first_columns + heading_columns + last_columns
+  end
+
+  def edit_table_headers(locale=:de)
+    translation_params = {
+      original_locale: lang,
+      translation_locale: translation_lang,
+    }
+    edit_table_header_columns.inject({}) do |mem, column|
+      if column =~ /heading/
+        mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column.split('_')[0]}", locale) + " (#{column.split('_')[1]})"
+      else
+        mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column}", locale, translation_params)
+      end
+      mem
+    end
+  end
+
 end
