@@ -197,6 +197,7 @@ module DataHelper
   def self.project_with_contribution_types_and_metadata_fields
     project = test_project(
       shortname: ('a'..'z').to_a.shuffle[0,4].join,
+      available_locales: ['ru', 'de']
     )
 
     %w(interviewee interviewer translator transcriptor research cinematographer).each do |code|
