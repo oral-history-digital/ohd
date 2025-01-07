@@ -9,8 +9,9 @@ export default function useColumns(interview) {
     const { isAuthorized } = useAuthorization();
     const selectedColumns = useSelector(getSelectedColumns);
     const { project } = useProject();
-    const headingColumns = project.available_locales.map(locale => `mainheading_${ALPHA2_TO_ALPHA3[locale]}`).concat(
-          project.available_locales.map(locale => `subheading_${ALPHA2_TO_ALPHA3[locale]}`));
+    const headingColumns = project.available_locales.map( locale => 
+        [`mainheading_${ALPHA2_TO_ALPHA3[locale]}`, `subheading_${ALPHA2_TO_ALPHA3[locale]}`]
+    ).flat();
 
     const columnOrder = [
         'timecode',
