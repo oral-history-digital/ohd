@@ -8,7 +8,7 @@ import tableHeader from '../tableHeader';
 export default function SelectColumnsForm({
     interview,
     selectedColumns,
-    setColumns,
+    setColumnsWithCookie,
     onSubmit,
     onCancel,
 }) {
@@ -21,7 +21,7 @@ export default function SelectColumnsForm({
             if (params.select_interview_edit_columns[column])
                 values.push(column);
         })
-        setColumns(values);
+        setColumnsWithCookie(values);
         onSubmit();
     };
 
@@ -55,7 +55,7 @@ SelectColumnsForm.propTypes = {
     selectedColumns: PropTypes.array.isRequired,
     user: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    setColumns: PropTypes.func.isRequired,
+    setColumnsWithCookie: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
 };

@@ -126,6 +126,20 @@ class ApplicationController < ActionController::Base
         email: current_user && current_user.email,
         admin: current_user && current_user.admin,
       },
+      'edit-table': {
+        columns: cookies["editTableColumns"] ?
+          JSON.parse(cookies["editTableColumns"]) :
+          %w(
+             timecode
+             tape_number
+             speaker_designation
+             text_orig
+             text_translated
+             registry_references
+             annotations
+             annotations_translated
+          ).to_json,
+      },
       data: {
         statuses: {
           users: {current: 'fetched', resultPagesCount: 1},
