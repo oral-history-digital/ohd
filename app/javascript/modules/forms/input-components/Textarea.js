@@ -21,9 +21,7 @@ export default function Textarea({
     handlechangecallback,
     handleErrors,
 }) {
-    const defaultValue = typeof value === 'undefined' || value === null ?
-        data?.[attribute] :
-        value;
+    const defaultValue = value || data?.[attribute];
 
     const onChange = event => {
         const newValue = event.target.value;
