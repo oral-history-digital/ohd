@@ -37,7 +37,7 @@ class MetadataImportTemplate
       :tape_count,
       :link_to_interview,
     ].inject({}) do |mem, c| 
-      mem[c] = TranslationValue.for("metadata_labels.#{c}", @locale)
+      mem[c] = TranslationValue.for("metadata_labels.#{c}", @locale).strip
       mem
     end
   end
@@ -58,14 +58,14 @@ class MetadataImportTemplate
       :biography,
       :biography_public,
     ].inject({}) do |mem, c| 
-      mem[c] = TranslationValue.for("activerecord.attributes.person.#{c}", @locale)
+      mem[c] = TranslationValue.for("activerecord.attributes.person.#{c}", @locale).strip
       mem
     end
   end
 
   def default_contributor_columns
     @project.contribution_types.where(use_in_export: true).inject({}) do |mem, c| 
-      mem[c.code.to_sym] = TranslationValue.for("contributions.#{c.code}", @locale)
+      mem[c.code.to_sym] = TranslationValue.for("contributions.#{c.code}", @locale).strip
       mem
     end
   end

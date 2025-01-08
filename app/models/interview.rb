@@ -116,7 +116,7 @@ class Interview < ApplicationRecord
 
   def update_counter_cache
     self.project.update interviews_count: self.project.interviews.shared.count
-    self.collection.update interviews_count: self.collection.interviews.shared.count
+    self.collection&.update interviews_count: self.collection.interviews.shared.count
     self.project.update interviews_count: self.project.interviews.shared.count
     self.project.institutions.each do |institution|
       institution.update interviews_count: institution.interviews.shared.count

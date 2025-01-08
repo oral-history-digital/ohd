@@ -8,8 +8,8 @@ import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/interview-helpers';
-import SegmentButtonsContainer from './SegmentButtonsContainer';
-import SegmentPopupContainer from './SegmentPopupContainer';
+import SegmentButtons from './SegmentButtons';
+import SegmentPopup from './SegmentPopup';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
 import Initials from './Initials';
 
@@ -127,7 +127,7 @@ function Segment({
 
                 {
                     showButtons && (
-                        <SegmentButtonsContainer
+                        <SegmentButtons
                             data={data}
                             contentLocale={contentLocale}
                             popupType={popupType}
@@ -141,7 +141,7 @@ function Segment({
             </div>
             {
                 popupType && (
-                    <SegmentPopupContainer
+                    <SegmentPopup
                         contentLocale={contentLocale}
                         data={data}
                         openReference={openReference}

@@ -3,6 +3,29 @@
   position: relative;
 }
 
+.InterviewCard-star {
+  background-color: white !important;
+  color: $gray-dark;
+  opacity: 0.25;
+  position: absolute;
+  transition: opacity $transition-duration;
+  z-index: 1;
+}
+
+.InterviewCard-star svg {
+  vertical-align: text-top;
+}
+
+.InterviewCard-star:hover,
+.InterviewCard-star:focus,
+.InterviewCard-star.is-active {
+  opacity: 1;
+}
+
+.InterviewCard-star:disabled {
+  cursor: initial;
+}
+
 .InterviewCard.is-expanded {
 
 }
