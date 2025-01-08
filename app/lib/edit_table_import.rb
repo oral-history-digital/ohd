@@ -69,7 +69,7 @@ class EditTableImport
       end
       create_references(row, interview, segment)
     end
-    "Success"
+    "Keine Fehlermeldungen"
   rescue StandardError => e
     log("*** #{interview.archive_id}: ")
     log("#{e.message}: #{e.backtrace}")
