@@ -5,7 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { useIsEditor } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
-import { usePathBase, useProject } from 'modules/routes';
+import { useProject } from 'modules/routes';
 import { isSegmentActive } from 'modules/interview-helpers';
 import { usePeople } from 'modules/person';
 import SegmentContainer from './SegmentContainer';
@@ -25,10 +25,7 @@ export default function Transcript({
     isIdle,
     tape,
     autoScroll,
-    workbookIsLoading,
-    workbookLoaded,
     fetchData,
-    fetchWorkbook,
 }) {
     const [popupState, setPopupState] = useState({
         popupSegmentId: null,
@@ -38,7 +35,6 @@ export default function Transcript({
     const { data: people, isLoading: peopleAreLoading } = usePeople();
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
-    const pathBase = usePathBase();
     const isEditor = useIsEditor();
 
     const contributorInformation = useMemo(() => getContributorInformation(
@@ -51,12 +47,6 @@ export default function Transcript({
         // Otherwise, scrolling is handled in Segment component.
         if (!autoScroll && isIdle) {
             window.scrollTo(0, 0);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!workbookLoaded && !workbookIsLoading) {
-            fetchWorkbook(pathBase);
         }
     }, []);
 
@@ -161,10 +151,7 @@ Transcript.propTypes = {
     transcriptFetched: PropTypes.bool.isRequired,
     hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
-    workbookIsLoading: PropTypes.bool.isRequired,
-    workbookLoaded: PropTypes.bool.isRequired,
     fetchData: PropTypes.func.isRequired,
-    fetchWorkbook: PropTypes.func.isRequired,
 };
 
 Transcript.defaultProps = {

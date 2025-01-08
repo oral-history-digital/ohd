@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Checkbox } from 'modules/ui';
 import queryString from 'query-string';
+import keyBy from 'lodash.keyby';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
-import { OHD_DOMAINS } from 'modules/constants';
 import { LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { Modal, Checkbox } from 'modules/ui';
+import { WorkbookItemForm, useWorkbook } from 'modules/workbook';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
 import { useArchiveSearch } from 'modules/search';
@@ -18,15 +20,17 @@ export default function InterviewPreview({
     statuses,
     interview,
     projects,
+    isLoggedIn,
     setArchiveId,
     selectedArchiveIds,
     addRemoveArchiveId,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
     const project = projects[interview.project_id];
     const projectId = project.shortname;
     const { fulltext } = useArchiveSearch();
+    const { savedInterviews } = useWorkbook();
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
@@ -41,6 +45,9 @@ export default function InterviewPreview({
         return null;
     }
 
+    const itemsByInterview = keyBy(savedInterviews, 'media_id');
+    const isInWorkbook = itemsByInterview && interview.archive_id in itemsByInterview;
+
     return (
         <div className={classNames('InterviewCard', { 'is-expanded': isExpanded })}>
             <ThumbnailBadge
@@ -48,6 +55,32 @@ export default function InterviewPreview({
                 numSearchResults={numResults}
                 onClick={() => setIsExpanded(prev => !prev)}
             />
+            {isLoggedIn && (
+                <Modal
+                    title={isInWorkbook ? '' : t('save_interview_reference_tooltip')}
+                    trigger={isInWorkbook ? <FaStar /> : <FaRegStar />}
+                    triggerClassName={classNames('InterviewCard-star', {
+                        'is-active': isInWorkbook,
+                    })}
+                    disabled={isInWorkbook}
+                >
+                    {closeModal => (
+                        <WorkbookItemForm
+                            project={project}
+                            interview={interview}
+                            description=""
+                            properties={{title: interview.title}}
+                            reference_id={interview.id}
+                            reference_type='Interview'
+                            media_id={interview.archive_id}
+                            type='InterviewReference'
+                            submitLabel={t('modules.workbook.bookmark')}
+                            onSubmit={closeModal}
+                            onCancel={closeModal}
+                        />
+                    )}
+                </Modal>
+            )}
             <LinkOrA
                 project={project}
                 to={linkPath}
@@ -91,6 +124,7 @@ export default function InterviewPreview({
 InterviewPreview.propTypes = {
     interview: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
     setArchiveId: PropTypes.func.isRequired,

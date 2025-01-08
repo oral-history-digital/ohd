@@ -131,11 +131,11 @@ class Segment < ApplicationRecord
     text_original = text_original.gsub('{{', '{[').gsub('}}', ']}') # replace wrong {{ with {[
 
     hidden_texts = {
-      de: 'Diese Passage wird nicht veröffentlicht.',
-      es: 'Esta parte del texto no se publica.',
-      ru: 'Эта часть текста не публикуется.',
-      uk: 'Цей фрагмент не буде опублікований.',
-      el: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
+      ger: 'Diese Passage wird nicht veröffentlicht.',
+      spa: 'Esta parte del texto no se publica.',
+      rus: 'Эта часть текста не публикуется.',
+      ukr: 'Цей фрагмент не буде опублікований.',
+      gre: 'Αυτό το μέρος του κειμένου δεν δημοσιεύεται.'
     }
     hidden_text = hidden_texts.fetch(locale.to_sym, 'This part of the text is not published.')
 

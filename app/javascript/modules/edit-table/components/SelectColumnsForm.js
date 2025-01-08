@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import useColumns from './useColumns';
+import tableHeader from '../tableHeader';
 
 export default function SelectColumnsForm({
     interview,
@@ -11,6 +13,7 @@ export default function SelectColumnsForm({
     onCancel,
 }) {
     const { permittedColumns } = useColumns(interview);
+    const { t } = useI18n();
 
     const handleSelect = (params) => {
         let values = [];
@@ -26,7 +29,7 @@ export default function SelectColumnsForm({
         elementType: 'input',
         type: 'checkbox',
         attribute: column,
-        labelKey: `edit_column_header.${column}`,
+        label: tableHeader({ interview, column, t }),
     }));
 
     const selectedValues = {};

@@ -140,14 +140,14 @@ class Person < ApplicationRecord
   end
 
   def names
-    translations.inject({}) do |mem, translation|
-      mem[translation.locale] = {
-        first_name: translation.first_name || first_name(I18n.default_locale),
-        last_name: translation.last_name || last_name(I18n.default_locale),
-        alias_name: translation.alias_names || alias_names(I18n.default_locale),
-        birth_name: translation.birth_name || birth_name(I18n.default_locale),
-        pseudonym_first_name: translation.pseudonym_first_name || pseudonym_first_name(I18n.default_locale),
-        pseudonym_last_name: translation.pseudonym_last_name || pseudonym_last_name(I18n.default_locale)
+    project.available_locales.inject({}) do |mem, locale|
+      mem[locale] = {
+        first_name: first_name(locale),
+        last_name: last_name(locale),
+        alias_name: alias_names(locale),
+        birth_name: birth_name(locale),
+        pseudonym_first_name: pseudonym_first_name(locale),
+        pseudonym_last_name: pseudonym_last_name(locale),
       }
       mem
     end
