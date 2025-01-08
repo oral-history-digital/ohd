@@ -1,34 +1,18 @@
 class EditTableExport
 
-  attr_accessor :interview, :contributions, :original_locale, :translation_locale,
-    :original_locale_alpha2, :translation_locale_alpha2
+  attr_accessor :interview, :contributions, :original_locale, :translation_locale
 
   def initialize(public_interview_id)
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang.to_s
     @translation_locale = @interview.translation_lang
-    @original_locale_alpha2 = @interview.alpha2
-    @translation_locale_alpha2 = @interview.translation_alpha2
   end
 
   def process
     CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |f|
 
-      f << [
-        'Band',
-        'Timecode',
-        'Sprecher',
-        'Transkript',
-        'Übersetzung',
-        'Hauptüberschrift',
-        'Zwischenüberschrift',
-        'Hauptüberschrift (Übersetzung)',
-        'Zwischenüberschrift (Übersetzung)',
-        'Registerverknüpfungen',
-        'Anmerkungen',
-        'Anmerkungen (Übersetzung)'
-      ]
+      f << interview.edit_table_headers.values
 
       interview.tapes.includes(
         segments: [
@@ -46,13 +30,9 @@ class EditTableExport
 
           text_orig = original&.text&.gsub(/[\t\n\r]+/, ' ') || original_public&.text&.gsub(/[\t\n\r]+/, ' ')
           text_trans = translation&.text&.gsub(/[\t\n\r]+/, ' ') || translation_public&.text&.gsub(/[\t\n\r]+/, ' ')
-          mainheading_orig = original&.mainheading || original_public&.mainheading
-          subheading_orig = original&.subheading || original_public&.subheading
-          mainheading_trans = translation&.mainheading || translation_public&.mainheading
-          subheading_trans = translation&.subheading || translation_public&.subheading
           registry_references = segment.registry_references.map{|r| r.registry_entry_id}.compact.uniq.join('#')
-          annotations = segment.annotations.map{|a| a.text(original_locale_alpha2).blank? ? '' : a.text(original_locale_alpha2).gsub(/[\t\n\r]+/, ' ')}.join('#')
-          annotations_trans = segment.annotations.map{|a| a.text(translation_locale_alpha2).blank? ? '' : a.text(translation_locale_alpha2).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations = segment.annotations.map{|a| a.text(original_locale).blank? ? '' : a.text(original_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations_trans = segment.annotations.map{|a| a.text(translation_locale).blank? ? '' : a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
 
           f << [
             tape.number,
@@ -60,10 +40,7 @@ class EditTableExport
             contributions[segment.speaker_id],
             text_orig.blank? ? nil : text_orig,
             text_trans.blank? ? nil : text_trans,
-            mainheading_orig.blank? ? nil : mainheading_orig,
-            subheading_orig.blank? ? nil : subheading_orig,
-            mainheading_trans.blank? ? nil : mainheading_trans,
-            subheading_trans.blank? ? nil : subheading_trans,
+          ] + headings(segment) + [
             registry_references.blank? ? nil : registry_references,
             annotations.blank? ? nil : annotations,
             annotations_trans.blank? ? nil : annotations_trans
@@ -71,6 +48,15 @@ class EditTableExport
         end
       end
     end
+  end
+
+  def headings(segment)
+    segment.interview.project.available_locales.map do |locale|
+      alpha3 = ISO_639.find(locale).alpha3
+      mainheading = segment.mainheading(alpha3) || segment.mainheading("#{alpha3}-public")
+      subheading = segment.subheading(alpha3) || segment.subheading("#{alpha3}-public")
+      [mainheading, subheading]
+    end.flatten
   end
 
 end

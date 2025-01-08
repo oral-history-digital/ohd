@@ -310,11 +310,11 @@ module DataHelper
         [germany],
         [
           {
-            locale: :de,
+            locale: :ger,
             text: "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen",
           },
           {
-            locale: :ru,
+            locale: :rus,
             text: "Главное местонахождение — Берлин Филиал по добыче"
           }
         ]
@@ -338,11 +338,11 @@ module DataHelper
         [france, poland],
         [
           {
-            locale: :de,
+            locale: :ger,
             text: "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager"
           },
           {
-            locale: :ru,
+            locale: :rus,
             text: "Построенный для размещения восточных рабочих барачный"
           }
         ]
@@ -374,11 +374,11 @@ module DataHelper
     annotations=[
       {
         text: 'Für die Unterbringung der Ostarbeiter errichtetes Barackenlager',
-        locale: :de
+        locale: :ger
       },
       {
         text: 'Построенный для размещения восточных рабочих барачный',
-        locale: :ru
+        locale: :rus
       }]
   )
     segment = Segment.create!(

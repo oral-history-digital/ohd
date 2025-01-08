@@ -11,7 +11,7 @@ class EditTableExportTest < ActiveSupport::TestCase
   end
 
   test 'should write a csv containing all relevant data' do
-    assert_equal "Band\tTimecode\tSprecher\tTranskript\tÜbersetzung\tHauptüberschrift\tZwischenüberschrift\tHauptüberschrift (Übersetzung)\tZwischenüberschrift (Übersetzung)\tRegisterverknüpfungen\tAnmerkungen\tAnmerkungen (Übersetzung)", @rows[0]
+    assert_equal "Band\tTimecode\tSprecher\tTranskript (rus)\tÜbersetzung (ger)\tHauptüberschrift (rus)\tZwischenüberschrift (rus)\tHauptüberschrift (ger)\tZwischenüberschrift (ger)\tVerknüpfungen\tAnmerkungen (rus)\tAnmerkungen (ger)", @rows[0]
 
     assert_equal "1", @first_row_entries[0]
     assert_equal "00:00:02.00", @first_row_entries[1]
