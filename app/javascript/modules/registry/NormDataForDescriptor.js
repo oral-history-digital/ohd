@@ -97,13 +97,15 @@ function NormDataForDescriptor({
         //if (apiResult.success) {
         if (apiResult.response) {
             console.log(apiResult);
+            const items = apiResult.response?.items;
+
             return (
-                apiResult.response?.items?.length === 0 ?
+                items?.length === 0 ?
                     <p className='notifications'>
                        {t('modules.interview_search.no_results')}
                     </p> :
                     <ul>
-                        {apiResult.response.items.map( result => {
+                        { (Array.isArray(items) ? items : [items]).map( result => {
                             return (
                                 <li>
                                     <UpdateRegistryEntryAttributesModal
