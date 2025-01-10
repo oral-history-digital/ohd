@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -9,23 +9,15 @@ import { ScrollToTop } from 'modules/user-agent';
 import { getInstitutions, Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
-import { usePathBase } from 'modules/routes';
 import InstitutionCatalog from './InstitutionCatalog';
 
 export default function InstitutionCatalogPage() {
     const allInstitutions = useSelector(getInstitutions);
     const { t, locale } = useI18n();
     const id = Number(useParams().id);
-    const pathBase = usePathBase();
     useTrackPageView();
 
     const institution = allInstitutions[id];
-
-    //if (!institution) {
-        //return (
-            //<Navigate to={`${pathBase}/not_found`} replace />
-        //);
-    //}
 
     const title = institution?.name[locale];
 
@@ -128,11 +120,9 @@ export default function InstitutionCatalogPage() {
                         </dd>
                     </dl>
 
-                    <div>
-                        {institution?.num_interviews && (
-                            <InstitutionCatalog id={Number.parseInt(id)} />
-                        )}
-                    </div>
+                    {(institution?.num_projects > 0) &&
+                        <InstitutionCatalog id={Number.parseInt(id)} />
+                    }
                 </div>
                 </Fetch>
             </ErrorBoundary>
