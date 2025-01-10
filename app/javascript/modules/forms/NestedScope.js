@@ -32,7 +32,7 @@ export default function NestedScope({
         index: newElements.length,
         nested: true,
         submitData: onSubmit,
-        onSubmitCallback: setEditing,
+        onSubmitCallback: cancel,
         onCancel: cancel,
         formClasses: 'nested-form default',
     })
@@ -58,7 +58,7 @@ export default function NestedScope({
                         formProps={formProps}
                         scope={scope}
                         elementRepresentation={elementRepresentation}
-                        showForm={showElementsInForm}
+                        showForm={editing}
                     />
                 )
             })}
@@ -74,7 +74,7 @@ export default function NestedScope({
                         formProps={formProps}
                         scope={scope}
                         elementRepresentation={elementRepresentation}
-                        showForm={showElementsInForm}
+                        showForm={editing}
                     />
                 )
             })}
