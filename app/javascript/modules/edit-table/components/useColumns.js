@@ -2,30 +2,28 @@ import { useSelector } from 'react-redux';
 
 import { useAuthorization } from 'modules/auth';
 import { getSelectedColumns } from '../selectors';
-import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
-import { useProject } from 'modules/routes';
+
+const columnOrder = [
+    'timecode',
+    'text_orig',
+    'text_translated',
+    'mainheading_orig',
+    'subheading_orig',
+    'mainheading_translated',
+    'subheading_translated',
+    'registry_references',
+    'annotations',
+    'annotations_translated',
+];
 
 export default function useColumns(interview) {
     const { isAuthorized } = useAuthorization();
     const selectedColumns = useSelector(getSelectedColumns);
-    const { project } = useProject();
-    const headingColumns = project.available_locales.map(locale => `mainheading_${ALPHA2_TO_ALPHA3[locale]}`).concat(
-          project.available_locales.map(locale => `subheading_${ALPHA2_TO_ALPHA3[locale]}`));
-
-    const columnOrder = [
-        'timecode',
-        'text_orig',
-        'text_translated',
-    ].concat(headingColumns).concat([
-        'registry_references',
-        'annotations',
-        'annotations_translated',
-    ]);
 
     function getPermittedColumns(interviewId) {
         let columns = ['timecode'];
         if (isAuthorized({type: 'Segment', interview_id: interviewId}, 'update'))
-          columns = columns.concat(['text_orig', 'text_translated']).concat(headingColumns);
+          columns = columns.concat(['text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'mainheading_translated', 'subheading_translated'])
         if (isAuthorized({type: 'RegistryReference', interview_id: interviewId}, 'update'))
             columns.push('registry_references');
         if (isAuthorized({type: 'Annotation', interview_id: interviewId}, 'update'))
