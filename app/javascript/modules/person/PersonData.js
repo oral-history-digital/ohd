@@ -91,7 +91,7 @@ export default function PersonData({
                 );
             })}
 
-            {!project.is_catalog && person && <Biography />}
+            {person && <Biography />}
         </>
     );
 }
