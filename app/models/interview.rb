@@ -119,9 +119,8 @@ class Interview < ApplicationRecord
     self.collection&.update interviews_count: self.collection.interviews.shared.count
     self.project.update interviews_count: self.project.interviews.shared.count
     self.project.institutions.each do |institution|
-      institution.update interviews_count: institution.interviews.shared.count
-      institution.parent&.update interviews_count: institution.parent.interviews.shared.count +
-        institution.parent.children.sum(&:interviews_count)
+      institution.update_interviews_count
+      institution.parent&.update_interviews_count
     end
   end
 
