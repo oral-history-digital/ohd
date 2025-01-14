@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import Element from '../Element';
@@ -44,7 +44,16 @@ export default function Select({
         }
     }
 
+    useEffect(() => {
+        if (typeof(validate) === 'function') {
+            const valid = validate(defaultValue);
+            handleErrors(attribute, !valid);
+        }
+        handleChange(attribute, defaultValue, data);
+    }, [defaultValue]);
+
     const selectTextAndValueFunction = (value) => {
+
         if (typeof value === 'string') {
             let translationPrefix = optionsScope || `${scope}.${attribute}`;
             return function(value) {

@@ -66,19 +66,14 @@ export default function FormComponent({
         return values;
     }
 
-    function hasError(element, data) {
-        let error = false;
-        if (typeof(element.validate) === 'function') {
-            let value = element.value || (data && data[element.attribute]);
-            error = !(value && element.validate(value));
-        }
-        return error;
-    }
-
     function initErrors() {
         let errors = {};
         elements.map((element) => {
-            const error = hasError(element, values);
+            let error = false;
+            if (typeof(element.validate) === 'function') {
+                let value = element.value || (data && data[element.attribute]);
+                error = !(value && element.validate(value));
+            }
             if (element.attribute) errors[element.attribute] = error;
         })
         return errors;
@@ -114,9 +109,7 @@ export default function FormComponent({
                 const isHidden = element?.hidden;
                 const isOptional = element?.optional;
 
-                const error = hasError(element, values);
-
-                hasErrors = hasErrors || (!isHidden && !isOptional && error);
+                hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
             }
         })
 
