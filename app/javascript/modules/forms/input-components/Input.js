@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { createElement, useState, useEffect } from 'react';
+import { createElement, useState } from 'react';
 import { FaPencilAlt} from 'react-icons/fa';
 
 import { Checkbox } from 'modules/ui';
@@ -50,14 +50,6 @@ export default function Input({
             handleErrors(name, !valid);
         }
     }
-
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(defaultValue);
-            handleErrors(attribute, !valid);
-        }
-        handleChange(attribute, defaultValue, data);
-    }, [defaultValue]);
 
     const cleanProps = () => {
         const props = {
