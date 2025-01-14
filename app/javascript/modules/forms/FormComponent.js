@@ -69,8 +69,10 @@ export default function FormComponent({
     function hasError(element, data) {
         let error = false;
         if (typeof(element.validate) === 'function') {
-            let value = element.value || (data && data[element.attribute]);
-            error = !(value && element.validate(value));
+            const values = data?.translations_attributes?.map(t => t[element.attribute]);
+            const value = element.value || data?.[element.attribute];
+            error = element.multiLocale ? !(values?.some( value => element.validate(value))) :
+                !(value && element.validate(value))
         }
         return error;
     }
