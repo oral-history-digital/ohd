@@ -49,7 +49,7 @@ export default function RegistryNameForm({
             attribute: 'registry_name_type_id',
             value: (data?.registry_name_type_id) || defaultNameType.id,
             values: registryNameTypes && Object.values(registryNameTypes),
-            //validate: function(v){return /^\d+$/.test(v)},
+            validate: function(v){return /^\d+$/.test(v)},
         },
     ]
 
