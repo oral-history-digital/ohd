@@ -80,6 +80,7 @@ export default function FormComponent({
     function initErrors() {
         let errors = {};
         elements.map((element) => {
+
             const error = hasError(element, values);
             if (element.attribute) errors[element.attribute] = error;
         })
@@ -117,7 +118,6 @@ export default function FormComponent({
                 const isOptional = element?.optional;
 
                 const error = hasError(element, values);
-
                 hasErrors = hasErrors || (!isHidden && !isOptional && error);
             }
         })
@@ -169,7 +169,9 @@ export default function FormComponent({
         index = index === -1 ? nestedObjects.length : index;
         setValues( prevValues => ({
             ...prevValues,
-            [nestedRailsScopeName(nestedScope)]: nestedObjects.slice(0, index).concat([nestedObject]).concat(nestedObjects.slice(index + 1))
+            [nestedRailsScopeName(nestedScope)]: nestedObjects.slice(0, index).concat(
+                [Object.assign({}, nestedObjects[index], nestedObject)]
+            ).concat(nestedObjects.slice(index + 1))
         }));
     }
 
