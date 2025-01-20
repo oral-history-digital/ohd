@@ -51,7 +51,7 @@ function UpdateRegistryEntryAttributesModal({
                                     delete_persistent_values: true,
                                     ...updateRegistryEntryTranslationsAttributes(entry, project),
                                 });
-                                replaceNestedFormValues('registry_names_attributes', prepareRegistryNameAttributes(entry, registryNameTypes, project, locale)),
+                                replaceNestedFormValues('registry_names_attributes', prepareRegistryNameAttributes(entry, registryNameTypes, project)),
                                 replaceNestedFormValues('norm_data_attributes', prepareNormDataAttributes(entry, normDataProviders)),
                                 setShowElementsInForm(true);
                                 close();

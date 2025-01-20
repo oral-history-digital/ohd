@@ -11,8 +11,6 @@ export default function NormDatumForm({
     data,
     nested,
     registryEntryId,
-    norm_data_provider_id,
-    nid,
     normDataProviders,
 }) {
 
@@ -24,14 +22,7 @@ export default function NormDatumForm({
             scope='norm_datum'
             helpTextCode="norm_datum_form"
             onSubmit={params => {
-                const paramsWithSelectedEntryValues = {
-                    norm_datum: Object.assign({}, params.norm_datum, {
-                        registry_entry_id: (data?.registry_entry_id) || registryEntryId,
-                        norm_data_provider_id: norm_data_provider_id,
-                        nid:  nid,
-                    }),
-                };
-                submitData({projectId, locale, project}, nid ? paramsWithSelectedEntryValues : params, index);
+                submitData({projectId, locale, project}, params, index);
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
@@ -43,20 +34,22 @@ export default function NormDatumForm({
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
+                value: data?.norm_data_provider_id,
+                value: data?.nid,
             }}
             submitText='submit'
             elements={[
                 {
                     attribute: 'norm_data_provider_id',
                     elementType: 'select',
-                    value: norm_data_provider_id,
+                    value: data?.norm_data_provider_id,
                     values: normDataProviders,
                     validate: function(v){return /^\d+$/.test(v)},
                     withEmpty: true,
                 },
                 {
                     attribute: 'nid',
-                    value: nid,
+                    value: data?.nid,
                     validate: function(v){return /^[a-zA-Z0-9-_/]+$/.test(v)},
                 },
             ]}

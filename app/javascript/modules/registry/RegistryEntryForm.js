@@ -130,7 +130,6 @@ export default function RegistryEntryForm({
                         formProps: {
                             descriptor: descriptor,
                             registryEntryId: registryEntryId,
-                            ...(registryEntryAttributes.norm_data_attributes?.[0]),
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes: registryEntryAttributes,
                             setShowElementsInForm: setShowElementsInForm,

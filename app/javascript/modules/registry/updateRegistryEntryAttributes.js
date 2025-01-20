@@ -2,7 +2,6 @@ export function prepareRegistryNameAttributes(
     entry,
     registryNameTypes,
     project,
-    locale,
     replaceNestedFormValues,
 ) {
     let registryNamesAttributes = [];
