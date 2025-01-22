@@ -127,7 +127,7 @@ class EditTableImport
         locale: original_alpha2.blank? ? original_locale : original_alpha2
       }
 
-      translation_alpha2 = ISO_639.find(translation_locale).alpha2
+      translation_alpha2 = ISO_639.find(translation_locale)&.alpha2
       translated_annotation = translation && translation_locale && {
         text: translation,
         locale: translation_alpha2.blank? ? translation_locale : translation_alpha2
