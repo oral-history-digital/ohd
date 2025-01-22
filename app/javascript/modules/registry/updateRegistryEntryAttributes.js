@@ -23,8 +23,13 @@ export function prepareRegistryNameAttributes(
         }
     })
 
-    if (entry.Name)
-        setDescriptor(entry.Name, registryNamesAttributes, defaultNameType.id, 'orig');
+    let originalName;
+    if (Array.isArray(entry.AlternativeNames?.AlternativeName)) {
+        originalName = entry.AlternativeNames?.AlternativeName.find(n => n.Lang === langOrig && n.Name)?.Name;
+    }
+    originalName = originalName || entry.Name;
+    if (originalName)
+        setDescriptor(originalName, registryNamesAttributes, defaultNameType.id, 'orig');
 
     const origAlias = entry.Alias?.find(n => n.Lang === langOrig && n.Alias)?.Alias;
     if (origAlias)
