@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { FaDownload } from 'react-icons/fa';
+import classNames from 'classnames';
 
 import { getArchiveId } from 'modules/archive';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
@@ -33,7 +34,7 @@ export default function Biography() {
         [];
 
     return (
-        <div>
+        <div className={classNames('ContentField', 'LoadingOverlay')}>
             { firstPublicEntry &&
                 <AuthShowContainer ifLoggedIn={true}>
                     <p>

@@ -66,13 +66,16 @@ export default function FormComponent({
         return values;
     }
 
-    function hasError(element, data) {
+    function hasError(element) {
         let error = false;
         if (typeof(element.validate) === 'function') {
-            const values = data?.translations_attributes?.map(t => t[element.attribute]);
-            const value = element.value || data?.[element.attribute];
-            error = element.multiLocale ? !(values?.some( value => element.validate(value))) :
-                !(value && element.validate(value))
+            const elementValues = (
+                (data?.translations_attributes?.map(t => t[element.attribute]) || []).concat(
+                (values?.translations_attributes?.map(t => t[element.attribute]) || [])
+            ));
+            const elementValue = element.value || data?.[element.attribute] || values?.[element.attribute];
+            error = element.multiLocale ? !(elementValues?.some( value => element.validate(value))) :
+                !(elementValue && element.validate(elementValue))
         }
         return error;
     }
@@ -80,8 +83,7 @@ export default function FormComponent({
     function initErrors() {
         let errors = {};
         elements.map((element) => {
-
-            const error = hasError(element, values);
+            const error = hasError(element);
             if (element.attribute) errors[element.attribute] = error;
         })
         return errors;
@@ -117,7 +119,8 @@ export default function FormComponent({
                 const isHidden = element?.hidden;
                 const isOptional = element?.optional;
 
-                const error = hasError(element, values);
+                const error = hasError(element);
+
                 hasErrors = hasErrors || (!isHidden && !isOptional && error);
             }
         })
