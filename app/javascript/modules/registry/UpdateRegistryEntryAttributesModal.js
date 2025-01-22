@@ -13,6 +13,7 @@ function UpdateRegistryEntryAttributesModal({
     normDataProviders,
     setRegistryEntryAttributes,
     setShowElementsInForm,
+    setResultsFromNormDataSet,
     replaceNestedFormValues,
 }) {
     const { t, locale } = useI18n();
@@ -54,6 +55,7 @@ function UpdateRegistryEntryAttributesModal({
                                 replaceNestedFormValues('registry_names_attributes', prepareRegistryNameAttributes(entry, registryNameTypes, project)),
                                 replaceNestedFormValues('norm_data_attributes', prepareNormDataAttributes(entry, normDataProviders)),
                                 setShowElementsInForm(true);
+                                setResultsFromNormDataSet(true)
                                 close();
                             }}
                         >

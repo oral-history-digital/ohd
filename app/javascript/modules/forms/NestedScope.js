@@ -16,6 +16,7 @@ export default function NestedScope({
     parent,
     scope,
     showElementsInForm,
+    disableAddingElements,
     getNewElements,
     elementRepresentation,
     onDeleteCallback,
@@ -78,7 +79,7 @@ export default function NestedScope({
                     />
                 )
             })}
-            { editing ?
+            { disableAddingElements ? null : editing ?
                 (wrapper ? wrapper : form) :
                 <button
                     type="button"

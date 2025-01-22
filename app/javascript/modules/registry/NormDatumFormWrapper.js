@@ -13,6 +13,7 @@ export default function NormDatumFormWrapper({
     registryEntryAttributes,
     setRegistryEntryAttributes,
     setShowElementsInForm,
+    setResultsFromNormDataSet,
     replaceNestedFormValues,
     children,
 }) {
@@ -53,6 +54,7 @@ export default function NormDatumFormWrapper({
                                     registryEntryAttributes={registryEntryAttributes}
                                     onSubmitCallback={onSubmitCallback}
                                     setShowElementsInForm={setShowElementsInForm}
+                                    setResultsFromNormDataSet={setResultsFromNormDataSet}
                                     replaceNestedFormValues={replaceNestedFormValues}
                                 />
                             </>: <p>{t('enter_descriptor_first')}</p>
