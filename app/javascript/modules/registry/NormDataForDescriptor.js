@@ -24,6 +24,7 @@ function NormDataForDescriptor({
     const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
+    const [from, setFrom] = useState(0);
 
     useEffect(() => {
         setShowResults(false);

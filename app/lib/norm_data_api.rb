@@ -1,9 +1,10 @@
 class NormDataApi
 
-  attr_accessor :expression, :place_type, :geo_filter
+  attr_accessor :expression, :from, :place_type, :geo_filter
 
-  def initialize(expression, place_type, geo_filter)
+  def initialize(expression, from, place_type, geo_filter)
     @expression = expression
+    @from = from
     @place_type = place_type
     @geo_filter = geo_filter
   end
@@ -28,7 +29,7 @@ class NormDataApi
         placeType: place_type,
         geoFilter: geo_filter,
         displayLang: I18n.available_locales,
-        #from: 30,
+        from: from,
         #size: 10
       }.to_json
       response = http.request request
