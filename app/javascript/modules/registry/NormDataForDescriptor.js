@@ -14,6 +14,7 @@ function NormDataForDescriptor({
     descriptor,
     onSubmitCallback,
     setShowElementsInForm,
+    setResultsFromNormDataSet,
     replaceNestedFormValues
 }) {
     const { t, locale } = useI18n();
@@ -115,6 +116,7 @@ function NormDataForDescriptor({
                                         normDataProviders={normDataProviders}
                                         setRegistryEntryAttributes={setRegistryEntryAttributes}
                                         setShowElementsInForm={setShowElementsInForm}
+                                        setResultsFromNormDataSet={setResultsFromNormDataSet}
                                         replaceNestedFormValues={replaceNestedFormValues}
                                     />
                                 </li>

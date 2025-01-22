@@ -25,6 +25,7 @@ export default function RegistryEntryForm({
         {...registryEntry, has_geo_coords: !!registryEntry?.has_geo_coords}
     );
     const [showElementsInForm, setShowElementsInForm] = useState(!registryEntry);
+    const [resultsFromNormDataSet, setResultsFromNormDataSet] = useState(false);
 
     const values = {
         parent_id: registryEntryParent?.id,
@@ -123,6 +124,7 @@ export default function RegistryEntryForm({
                         scope: 'registry_name',
                         elementRepresentation: showRegistryName,
                         showElementsInForm: showElementsInForm,
+                        disableAddingElements: resultsFromNormDataSet
                     },
                     {
                         wrapperComponent: NormDatumFormWrapper,
@@ -133,6 +135,7 @@ export default function RegistryEntryForm({
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes: registryEntryAttributes,
                             setShowElementsInForm: setShowElementsInForm,
+                            setResultsFromNormDataSet: setResultsFromNormDataSet,
                         },
                         parent: registryEntryAttributes,
                         scope: 'norm_datum',
