@@ -38,18 +38,18 @@ export default function RegistryNameForm({
 
     const formElements = [
         {
-            attribute: 'descriptor',
-            multiLocale: true,
-            validate: function(v){return v && v.length > 1},
-            handlechangecallback: handleDescriptorChange,
-            origAsLocale: true,
-        },
-        {
             elementType: 'select',
             attribute: 'registry_name_type_id',
             value: (data?.registry_name_type_id) || defaultNameType.id,
             values: registryNameTypes && Object.values(registryNameTypes),
             validate: function(v){return /^\d+$/.test(v)},
+        },
+        {
+            attribute: 'descriptor',
+            multiLocale: true,
+            validate: function(v){return v && v.length > 1},
+            handlechangecallback: handleDescriptorChange,
+            origAsLocale: true,
         },
     ]
 
