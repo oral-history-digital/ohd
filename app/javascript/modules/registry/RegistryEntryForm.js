@@ -89,24 +89,24 @@ export default function RegistryEntryForm({
                     },
                     {
                         attribute: 'latitude',
-                        validate: validateGeoCoordinate,
+                        //validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
                     {
                         attribute: 'longitude',
-                        validate: validateGeoCoordinate,
+                        //validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
-                    {
-                        elementType: 'select',
-                        attribute: 'workflow_state',
-                        values: ['preliminary', 'public', 'rejected'],
-                        value: registryEntry?.workflow_state || 'preliminary',
-                        withEmpty: true,
-                        optionsScope: 'workflow_states',
-                    }
+                    //{
+                        //elementType: 'select',
+                        //attribute: 'workflow_state',
+                        //values: ['preliminary', 'public', 'rejected'],
+                        //value: registryEntry?.workflow_state || 'preliminary',
+                        //withEmpty: true,
+                        //optionsScope: 'workflow_states',
+                    //}
                 ]}
 
                 nestedScopeProps={[
