@@ -1,10 +1,12 @@
 import { useState, createElement } from 'react';
+import { useSelector } from 'react-redux';
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { pluralize } from 'modules/strings';
+import { pluralize, underscore } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
+import { getData } from 'modules/data';
 import NestedScopeElementContainer from './NestedScopeElementContainer';
 
 export default function NestedScope({
@@ -23,7 +25,10 @@ export default function NestedScope({
     replaceNestedFormValues
 }) {
     const { t } = useI18n();
-    const elements = (parent?.[`${pluralize(scope)}_attributes`] || parent?.[pluralize(scope)] || []);
+    const dataState = useSelector(getData);
+    // get parent from state to keep it actual
+    const actualParent = parent && dataState[pluralize(underscore(parent.type))][parent.id];
+    const elements = (actualParent?.[`${pluralize(scope)}_attributes`] || actualParent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
     const [editing, setEditing] = useState(showElementsInForm);
     const cancel = () => setEditing(false);
