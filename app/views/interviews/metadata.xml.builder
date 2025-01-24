@@ -108,7 +108,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
     
   xml.dates do
     xml.date dateType: "Created" do
-      xml.text! interview.interview_date && Date.parse(interview.interview_date).strftime("%d.%m.%Y")
+      xml.text! interview.interview_date && Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date
     end
   end
 
