@@ -70,8 +70,9 @@ export default function FormComponent({
         let error = false;
         if (typeof(element.validate) === 'function') {
             const elementValues = (
-                (data?.translations_attributes?.map(t => t[element.attribute]) || []).concat(
-                (values?.translations_attributes?.map(t => t[element.attribute]) || [])
+                (data?.translations_attributes && Object.values(data.translations_attributes) || []).concat(
+                (values?.translations_attributes && Object.values(values.translations_attributes) || [])
+                    .map(t => t[element.attribute])
             ));
             const elementValue = element.value || data?.[element.attribute] || values?.[element.attribute];
             error = element.multiLocale ? !(elementValues?.some( value => element.validate(value))) :
