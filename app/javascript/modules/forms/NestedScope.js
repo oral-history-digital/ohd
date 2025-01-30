@@ -27,7 +27,7 @@ export default function NestedScope({
     const { t } = useI18n();
     const dataState = useSelector(getData);
     // get parent from state to keep it actual
-    const actualParent = parent && dataState[pluralize(underscore(parent.type))][parent.id];
+    const actualParent = parent?.type && dataState[pluralize(underscore(parent.type))][parent.id];
     const elements = (actualParent?.[`${pluralize(scope)}_attributes`] || actualParent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
     const [editing, setEditing] = useState(showElementsInForm);

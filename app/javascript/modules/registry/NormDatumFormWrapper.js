@@ -61,6 +61,9 @@ export default function NormDatumFormWrapper({
                         }
                     </TabPanel>
                     <TabPanel>
+                        <span className="Tabs-tabText">
+                            {t('extend_normdata_manually')}
+                        </span>
                         { children }
                     </TabPanel>
                 </TabPanels>

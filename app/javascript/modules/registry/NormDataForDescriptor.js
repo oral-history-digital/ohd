@@ -134,7 +134,7 @@ function NormDataForDescriptor({
                     { from >= 10 &&
                             <button
                                 type="button"
-                                className="Button Button--secondaryAction"
+                                className="Icon Icon--secondary"
                                 onClick={() => {
                                     setFrom(from - 10);
                                     fetchAPIResults({from: from - 10});
@@ -144,7 +144,7 @@ function NormDataForDescriptor({
                     }
                     <button
                         type="button"
-                        className="Button Button--primaryAction"
+                        className="Icon Icon--primary"
                         onClick={() => {
                             setFrom(from + 10);
                             fetchAPIResults({from: from + 10});
@@ -174,6 +174,7 @@ function NormDataForDescriptor({
             elements={[]}
             //elements={formElements}
             helpTextCode="normdata_form"
+            submitText={t('search')}
         />
     );
 }
