@@ -42,7 +42,7 @@ export default function NormDatumFormWrapper({
                 </TabList>
             </div>
 
-            <div className='wrapper-content'>
+            <div className="u-mt-small">
                 <TabPanels>
                     <TabPanel>
                         { descriptor ?
