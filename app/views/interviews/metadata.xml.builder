@@ -93,7 +93,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.rightsList do
     %w(conditions privacy_protection).each do |field|
       xml.rights rightsURI: "#{OHD_DOMAIN}/#{locale}/field" do 
-        xml.text! "#{I18n.t(field, locale: locale)} des Interview-Archivs \"#{interview.project.name(locale)}\""
+        xml.text! "#{TranslationValue.for(field, locale)} des Interview-Archivs \"#{interview.project.name(locale)}\""
       end
     end
   end

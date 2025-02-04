@@ -321,7 +321,7 @@ class UsageReport < ApplicationRecord
     sorted_facets = facets.to_a.sort{|a,b| b.last <=> a.last}.map{|f| f.first}
     data = []
     row = %w(Suchbegriff Aufrufe Nutzer)
-    row += sorted_facets.map{|f| I18n.t(f, :scope => 'activerecord.attributes.interview', :locale => :de)}
+    row += sorted_facets.map{|f| TranslationValue.for(f, 'de', scope: 'activerecord.attributes.interview')}
     row += sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
     (['Insgesamt'] + sorted_queries).each do |q|
@@ -398,7 +398,7 @@ class UsageReport < ApplicationRecord
 
   def self.country_name(code)
     return 'Unbekannt' if code.blank?
-    I18n.translate(:countries, :locale => :de)[code.to_sym]
+    TranslationValue.for("countries.#{code.to_sym}", :de)
   end
 
   def self.save_report_file(name, data)
