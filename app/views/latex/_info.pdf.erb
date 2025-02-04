@@ -1,14 +1,14 @@
 <% unless interview.place_of_interview.nil? %>
-  \par{<%= latex_escape( "#{I18n.t('place_of_interview', locale: header_locale)}: #{interview.place_of_interview.descriptor(header_locale)}" ) %>}
+  \par{<%= latex_escape( "#{TranslationValue.for('place_of_interview', header_locale)}: #{interview.place_of_interview.descriptor(header_locale)}" ) %>}
 <% end %>
-\par{<%= latex_escape( "#{I18n.t('date', locale: header_locale)}: #{Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date}" ) %>}
-\par{<%= latex_escape( "#{I18n.t('language', locale: header_locale)}: #{interview.language.to_s(header_locale)} #{(interview.translated) ? I18n.t('status.translated', locale: header_locale) : ''}" ) %>}
+\par{<%= latex_escape( "#{TranslationValue.for('date', header_locale)}: #{Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date}" ) %>}
+\par{<%= latex_escape( "#{TranslationValue.for('language', header_locale)}: #{interview.language.to_s(header_locale)} #{(interview.translated) ? TranslationValue.for('status.translated', header_locale) : ''}" ) %>}
 <% unless interview.duration.nil? %>
-  \par{<%= latex_escape( "#{I18n.t('duration', locale: header_locale)}: #{Time.at(interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
+  \par{<%= latex_escape( "#{TranslationValue.for('duration', header_locale)}: #{Time.at(interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
 <% end %>
 
 <% if (interview.tapes.count > 1) %>
-  \par{<%= latex_escape( "#{I18n.t('tapes', locale: header_locale)}: #{interview.tapes.count}") %>}
+  \par{<%= latex_escape( "#{TranslationValue.for('tapes', header_locale)}: #{interview.tapes.count}") %>}
 <% end %>
 
 <%
@@ -24,7 +24,7 @@
       names = contributors.map{|i| "#{i.first_name(header_locale)} #{i.last_name(header_locale)}" }.join(", ")
       unless names.blank?
 %>
-        \par{<%= latex_escape( "#{I18n.t(translation_key, locale: header_locale)}: #{names}" ) %>}
+        \par{<%= latex_escape( "#{TranslationValue.for(translation_key, header_locale)}: #{names}" ) %>}
 <%
       end
     end

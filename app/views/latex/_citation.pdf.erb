@@ -1,6 +1,6 @@
 <%= render partial: "latex/title",
            locals: {
-               title: "#{latex_escape(I18n.backend.translate(@locale,'citation'))}:",
+               title: "#{latex_escape(TranslationValue.for('citation', @locale))}:",
                space_above: 6,
                space_below: 0,
                font_size: 13
@@ -8,10 +8,10 @@
 
 \par{
   <%= "#{interviewee_name},
-  #{I18n.backend.translate(@locale, 'interview')}
+  #{TranslationValue.for('interview', @locale)}
   #{@interview.archive_id},
   #{@interview.created_at.strftime("%d.%m.%Y")},
-  #{I18n.backend.translate(@locale, 'interview_archive')} #{current_project.name(@locale)}, #{current_project.archive_domain},
-  #{I18n.backend.translate(@locale, 'doi.name')}: #{current_project.doi + @interview.archive_id},
-  (#{I18n.backend.translate(@locale, 'called')}: #{Date.today.strftime("%d.%m.%Y")})" %>
+  #{TranslationValue.for('interview_archive', @locale)} #{current_project.name(@locale)}, #{current_project.archive_domain},
+  #{TranslationValue.for('doi.name', @locale)}: #{current_project.doi + @interview.archive_id},
+  (#{TranslationValue.for('called', @locale)}: #{Date.today.strftime("%d.%m.%Y")})" %>
 }

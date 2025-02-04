@@ -76,7 +76,7 @@ class Person < ApplicationRecord
     text :contributions, stored: true do
       project.available_locales.inject({}) do |mem, locale|
         mem[locale] = contributions.map{|contribution| contribution.contribution_type.code}.uniq.map do |c|
-          [I18n.t(c, locale: locale), first_name(locale), last_name(locale)]
+          [TranslationValue.for(c, locale), first_name(locale), last_name(locale)]
         end.flatten.join(" ") rescue nil
         mem
       end

@@ -1,6 +1,6 @@
 \definecolor{primaryColor}{HTML}{<%= "#{(project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
 <%
-  title = I18n.t('registry', locale: locale)
+  title = TranslationValue.for('registry', locale)
   last_entry = nil
 %>
 
@@ -47,7 +47,7 @@
 \newpage
 
 <%# set title of  tableofcontents: %>
-\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: locale) %>}
+\renewcommand{\contentsname}{<%= TranslationValue.for('table_of_contents', locale) %>}
 \tableofcontents
 
 \newpage

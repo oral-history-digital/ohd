@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
-      subject: I18n.t('devise.mailer.new_registration_info.subject', locale: @project.default_locale),
+      subject: TranslationValue.for('devise.mailer.new_registration_info.subject', @project.default_locale),
       from: "noreply@oral-history.digital",
       to: @project.contact_email,
       date: Time.now
@@ -21,7 +21,7 @@ class AdminMailer < ApplicationMailer
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
 
     mail(
-      subject: I18n.t('devise.mailer.corrected_project_access_data.subject', locale: @project.default_locale),
+      subject: TranslationValue.for('devise.mailer.corrected_project_access_data.subject', @project.default_locale),
       from: "noreply@oral-history.digital",
       to: @project.contact_email,
       date: Time.now
@@ -50,7 +50,7 @@ class AdminMailer < ApplicationMailer
     @file = params[:file]
     @filename = @file && @file.split('/').last
     @locale = params[:locale]
-    subject = "Interview-Archiv #{@project_name} - #{I18n.backend.translate(:de, 'jobs.'+@type)} #{@filename}"
+    subject = "Interview-Archiv #{@project_name} - #{TranslationValue.for('jobs.'+@type, 'de')} #{@filename}"
     mail(
       subject: subject,
       from: "noreply@oral-history.digital",

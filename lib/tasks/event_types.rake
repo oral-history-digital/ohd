@@ -20,7 +20,9 @@ namespace :event_types do
         # Create translations.
         project.available_locales.each do |locale|
           I18n.locale = locale.to_sym
-          event_type.name = I18n.t(translation_key)
+          event_type.name = TranslationValue.for(translation_key, locale)
+          event_type.save
+        end
         end
 
         event_type.save

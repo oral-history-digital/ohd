@@ -63,7 +63,7 @@ class UserContent < ApplicationRecord
   end
 
   def description
-    read_attribute(:description) || [I18n.t(:no_placeholder, :content => UserContent.human_attribute_name(:description))].join(' ')
+    read_attribute(:description) || [TranslationValue.for(:no_placeholder, I18n.locale, content: UserContent.human_attribute_name(:description))].join(' ')
   end
 
   def reverse_position_order_str

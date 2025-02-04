@@ -1,6 +1,6 @@
 <%= render partial: "latex/title",
            locals: {
-               title: latex_escape(I18n.backend.translate(header_locale, 'observation')),
+               title: latex_escape(TranslationValue.for('observation', header_locale)),
                space_above: 0,
                space_below: 0.01,
                font_size: 13

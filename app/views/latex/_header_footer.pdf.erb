@@ -26,15 +26,15 @@
 <%
   interviewee_name = interview && interview.anonymous_title(header_locale.to_sym)
   footer_text = ""
-  footer_text += "#{I18n.t("#{doc_type}_footer", locale: header_locale)} #{interviewee_name}" if interview
-  footer_text += ", #{I18n.t('interview', locale: header_locale)} #{interview.archive_id}, #{interview.interview_date && Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date}" if interview && interview.interview_date
+  footer_text += "#{TranslationValue.for("#{doc_type}_footer", header_locale)} #{interviewee_name}" if interview
+  footer_text += ", #{TranslationValue.for('interview', header_locale)} #{interview.archive_id}, #{interview.interview_date && Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date}" if interview && interview.interview_date
   footer_text += ", #{project.name(header_locale)}"
   footer_text += ", Teilsammlung \"Deutsche Seelen\"" if interview && interview.collection && interview.collection.name =~ /Deutsche Seelen/
   footer_text += ", #{project.domain_with_optional_identifier}/#{header_locale}/interviews/#{interview.archive_id}" if interview
 %>
 
 <% if interview && interview.doi_status == 'created'
-     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{project.shortname}.#{interview.archive_id}, (#{I18n.t('called', locale: header_locale)}: #{Date.today.strftime("%d.%m.%Y")})."
+     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{project.shortname}.#{interview.archive_id}, (#{TranslationValue.for('called', header_locale)}: #{Date.today.strftime("%d.%m.%Y")})."
    else
      footer_text += "."
    end

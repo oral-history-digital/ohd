@@ -61,9 +61,9 @@ class UsersController < ApplicationController
       reset_password_error = true
     end
 
-    translated_msg = msg && I18n.backend.translate(
-      params[:locale],
+    translated_msg = msg && TranslationValue.for(
       "modules.registration.messages.#{msg}",
+      params[:locale],
       email: email,
       project: current_project ? current_project.name : 'Oral-History.Digital'
     )

@@ -2,8 +2,8 @@
 
 <%
   interviewee_name = interview.interviewee.display_name
-  title = "#{I18n.t("#{doc_type}_title", locale: header_locale, lang: content_locale_human)} #{interviewee_name}"
-  header_text = "#{I18n.t("#{doc_type}_header", locale: header_locale, lang: content_locale_human)} #{interviewee_name} (#{I18n.t('archive_id', locale: header_locale)} #{interview.archive_id})"
+  title = "#{TranslationValue.for("#{doc_type}_title", header_locale, lang: content_locale_human)} #{interviewee_name}"
+  header_text = "#{TranslationValue.for("#{doc_type}_header", header_locale, lang: content_locale_human)} #{interviewee_name} (#{TranslationValue.for('archive_id', header_locale)} #{interview.archive_id})"
   tape = 0
   speaker_id = nil
  %>
@@ -54,7 +54,7 @@
 
 <%# set title of  tableofcontents: %>
 <% if headings_in_content_locale %>
-  \renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: header_locale) %>}
+  \renewcommand{\contentsname}{<%= TranslationValue.for('table_of_contents', header_locale) %>}
   \tableofcontents
 <% end %>
 
@@ -89,7 +89,7 @@
       \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(content_locale_public)) %>}
       <% if tape != segment.tape.number %>
         <% space_above = 0 %>
-        <%= render partial: "latex/title", locals: {title: "#{I18n.t('tape', locale: header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
+        <%= render partial: "latex/title", locals: {title: "#{TranslationValue.for('tape', header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
       <% end %>
       <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
     <% end %>
