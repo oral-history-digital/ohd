@@ -15,15 +15,28 @@ class Institution < ApplicationRecord
   end
 
   def num_interviews
-    # TODO: This only works with two-level-hierarchies.
     interviews_count
-    #all_interviews = Institution.where(id: id)
-      #.or(Institution.where(parent_id: id))
-      #.joins(projects: :interviews)
-      #.where('projects.workflow_state': 'public')
-      #.where('interviews.workflow_state': 'public')
-      #.select(:archive_id)
-      #.distinct
-      #.count
+  end
+
+  def update_interviews_count
+    # Note: This only works with two-level-hierarchies.
+    projects_of_institution = Project
+      .select(:id, :shortname, :interviews_count)
+      .joins(:institutions)
+      .where("institutions.id = ?", self.id)
+      .where(workflow_state: 'public')
+
+    projects_of_children = Project
+      .select(:id, :shortname, :interviews_count)
+      .joins("INNER JOIN institution_projects ip ON ip.project_id = projects.id")
+      .joins("INNER JOIN institutions children ON children.id = ip.institution_id")
+      .joins("INNER JOIN institutions parent ON parent.id = children.parent_id")
+      .where("parent.id = ?", self.id)
+      .where(workflow_state: 'public')
+
+    combined = projects_of_institution.to_a.concat(projects_of_children).uniq
+    sum = combined.inject(0) { |agg, project| agg + project.interviews_count }
+    self.interviews_count = sum
+    self.save
   end
 end

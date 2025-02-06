@@ -66,14 +66,25 @@ export default function FormComponent({
         return values;
     }
 
+    function hasError(element) {
+        let error = false;
+        if (typeof(element.validate) === 'function') {
+            const elementValues = (
+                (data?.translations_attributes && Object.values(data.translations_attributes) || []).concat(
+                (values?.translations_attributes && Object.values(values.translations_attributes) || [])
+                    .map(t => t[element.attribute])
+            ));
+            const elementValue = element.value || data?.[element.attribute] || values?.[element.attribute];
+            error = element.multiLocale ? !(elementValues?.some( value => element.validate(value))) :
+                !(elementValue && element.validate(elementValue))
+        }
+        return error;
+    }
+
     function initErrors() {
         let errors = {};
         elements.map((element) => {
-            let error = false;
-            if (typeof(element.validate) === 'function') {
-                let value = element.value || (data && data[element.attribute]);
-                error = !(value && element.validate(value));
-            }
+            const error = hasError(element);
             if (element.attribute) errors[element.attribute] = error;
         })
         return errors;
@@ -109,7 +120,9 @@ export default function FormComponent({
                 const isHidden = element?.hidden;
                 const isOptional = element?.optional;
 
-                hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
+                const error = hasError(element);
+
+                hasErrors = hasErrors || (!isHidden && !isOptional && error);
             }
         })
 

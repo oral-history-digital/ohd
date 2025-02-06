@@ -78,6 +78,7 @@ class Interview < ApplicationRecord
   has_and_belongs_to_many :archiving_batches
 
   serialize :properties
+  serialize :links, Array
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
@@ -116,12 +117,11 @@ class Interview < ApplicationRecord
 
   def update_counter_cache
     self.project.update interviews_count: self.project.interviews.shared.count
-    self.collection.update interviews_count: self.collection.interviews.shared.count
+    self.collection&.update interviews_count: self.collection.interviews.shared.count
     self.project.update interviews_count: self.project.interviews.shared.count
     self.project.institutions.each do |institution|
-      institution.update interviews_count: institution.interviews.shared.count
-      institution.parent&.update interviews_count: institution.parent.interviews.shared.count +
-        institution.parent.children.sum(&:interviews_count)
+      institution.update_interviews_count
+      institution.parent&.update_interviews_count
     end
   end
 
@@ -950,4 +950,10 @@ class Interview < ApplicationRecord
     end
   end
 
+  def pseudo_links=(string)
+    write_attribute(:links, string.strip.split(/,\s*/)) if string
+  end
+  def pseudo_links
+    read_attribute :links
+  end
 end

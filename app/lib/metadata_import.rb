@@ -60,11 +60,8 @@ class MetadataImport
       duration: row[:duration],
       observations: row[:observations],
       description: row[:description],
+      pseudo_links: row[:link_to_interview],
     }
-
-    # TODO: fit to campscape specifications again
-    #properties = {interviewer: data[23], link: data[27], subcollection: data[13]}.select{|k,v| v != nil}
-    properties = {link: row[:link_to_interview]}.select{|k,v| v != nil}
 
     interview = Interview.find_by_archive_id(row[:archive_id]) ||
       (row[:signature_original] && Interview.find_by_signature_original(row[:signature_original]))
@@ -92,10 +89,9 @@ class MetadataImport
     interview_data[:interview_languages_attributes] = interview_languages_attributes
 
     if interview
-      interview_properties = interview.properties.update(properties)
-      interview.update interview_data.select{|k,v| v != nil}.update(properties: interview_properties)
+      interview.update interview_data.select{|k,v| v != nil}
     else
-      interview = Interview.create interview_data.update(properties: properties)
+      interview = Interview.create interview_data
     end
     interview.save
     interview

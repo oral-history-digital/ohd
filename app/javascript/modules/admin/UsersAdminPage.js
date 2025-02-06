@@ -11,9 +11,10 @@ export default function UsersAdminPage() {
     const { t } = useI18n();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(hideSidebar());
-    }, []);
+    // INTARCH-2924: do not hide sidebar
+    //useEffect(() => {
+        //dispatch(hideSidebar());
+    //}, []);
 
     return (
         <div className='wrapper-content register'>
