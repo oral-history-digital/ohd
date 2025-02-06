@@ -1,6 +1,6 @@
 class AddLinksToInterviews < ActiveRecord::Migration[7.0]
   def up
-    #add_column :interviews, :links, :string
+    add_column :interviews, :links, :string
     Interview.all.each do |interview|
       interview.update(pseudo_links: interview&.properties[:link])
     end
