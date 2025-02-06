@@ -30,6 +30,7 @@ import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
 import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
+import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default function InterviewTabPanel({
     archiveId,
@@ -120,6 +121,13 @@ export default function InterviewTabPanel({
                                     <InterviewInfoContainer/>
                                     <InterviewContributorsContainer/>
                                     <InterviewTextMaterialsContainer/>
+                                    <SingleValueWithFormContainer
+                                        obj={interview}
+                                        value={interview?.links}
+                                        attribute="pseudo_links"
+                                        hideEmpty
+                                        linkUrls
+                                    />
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>

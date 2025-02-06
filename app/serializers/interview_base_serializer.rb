@@ -29,7 +29,9 @@ class InterviewBaseSerializer < ApplicationSerializer
     :properties,
     :transcript_locales,
     :toc_locales,
-    :description
+    :description,
+    :links,
+    :pseudo_links,
   ]
 
   def attributes(*args)

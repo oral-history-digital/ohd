@@ -241,7 +241,7 @@ module DataHelper
       observations: '1\nInternational Slave- und Forced Labourers Documentation Project – Internationales Sklaven- und Zwangsarbeiter Befragungsprojekt\nInterview mit Adamez Konstantin Wojtowitsch\nProtokoll\nAudiointerview am 10. September 2005 in Minsk \t\n(Weißrussland/Belarus)\nAdresse: Wohnung von Adamez Konstantin Wojtowitsch',
       description: 'an einem Sonntag ...',
       collection: Collection.create!(name: 'Test collection', project: project),
-      properties: {link: 'http://bla.de'},
+      links: ['http://bla.de'],
       interview_date: '2.3.1978',
       signature_original: 'karlheinz23',
     }

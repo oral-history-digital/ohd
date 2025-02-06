@@ -17,6 +17,7 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useSearchSuggestions } from 'modules/search';
 import { getNextInterview, getPreviousInterview } from '../getInterviews';
+import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default function InterviewDetailsLeftSide({
     archiveId,
@@ -81,20 +82,13 @@ export default function InterviewDetailsLeftSide({
                     value={interview.properties.subcollection}
                 />
             }
-            {interview?.properties?.link && (
-                <ContentField
-                    label="Link"
-                    value={(
-                        <a
-                            href={interview.properties.link}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {interview.properties.link}
-                        </a>
-                    )}
-                />)
-            }
+            <SingleValueWithFormContainer
+                obj={interview}
+                value={interview?.links}
+                attribute="pseudo_links"
+                hideEmpty
+                linkUrls
+            />
             {projectId === 'campscapes' && (
                 <div className="footer-navigation">
                     <Link

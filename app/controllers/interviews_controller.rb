@@ -488,6 +488,7 @@ class InterviewsController < ApplicationController
       "media_type",
       "media_missing",
       "biographies_workflow_state",
+      "pseudo_links",
       :startpage_position,
       properties: {},
       public_attributes: {},
