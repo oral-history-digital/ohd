@@ -5,7 +5,6 @@ import { SelectedRegistryReferencesContainer } from 'modules/registry-references
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { useProjectAccessStatus } from 'modules/auth';
 import InterviewCollectionInfo from './InterviewCollectionInfo';
 
 export default function InterviewInfo({
@@ -14,8 +13,6 @@ export default function InterviewInfo({
 }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
-
-    const { projectAccessGranted } = useProjectAccessStatus(project);
 
     if (!interview?.language_id) {
         return null;
@@ -27,7 +24,6 @@ export default function InterviewInfo({
                 obj={interview}
                 attribute="archive_id"
                 value={interview.archive_id}
-                projectAccessGranted={projectAccessGranted}
                 readOnly
                 hideEmpty
             />
@@ -35,21 +31,18 @@ export default function InterviewInfo({
                 obj={interview}
                 attribute={'signature_original'}
                 value={interview.signature_original}
-                projectAccessGranted={projectAccessGranted}
                 hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
                 attribute={'interview_date'}
                 value={interview.interview_date}
-                projectAccessGranted={projectAccessGranted}
                 hideEmpty
             />
             <SingleValueWithFormContainer
                 obj={interview}
                 attribute={'description'}
                 value={interview.description?.[locale]}
-                projectAccessGranted={projectAccessGranted}
                 elementType="textarea"
                 multiLocale
                 linkUrls
@@ -64,7 +57,6 @@ export default function InterviewInfo({
                 value={t(`search_facets.${interview.media_type}`)}
                 attribute={'media_type'}
                 value={t(interview.media_type)}
-                projectAccessGranted={projectAccessGranted}
             />
             <SingleValueWithFormContainer
                 obj={interview}
@@ -72,7 +64,6 @@ export default function InterviewInfo({
                 value={t(`boolean_value.${interview.media_missing}`)}
                 elementType="input"
                 type="checkbox"
-                projectAccessGranted={projectAccessGranted}
                 noStatusCheckbox
                 hideEmpty
             />
@@ -81,7 +72,6 @@ export default function InterviewInfo({
                 validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
                 attribute={'duration'}
                 value={`${interview.duration.split(':')[0]} h ${interview.duration.split(':')[1]} min`}
-                projectAccessGranted={projectAccessGranted}
                 hideEmpty
             />
             <SingleValueWithFormContainer
@@ -89,7 +79,6 @@ export default function InterviewInfo({
                 validate={function(v){return /^\d+$/.test(v)}}
                 attribute={'tape_count'}
                 value={interview.tape_count}
-                projectAccessGranted={projectAccessGranted}
                 hideEmpty
             />
             <SingleValueWithFormContainer
@@ -98,7 +87,6 @@ export default function InterviewInfo({
                 type='checkbox'
                 attribute={'transcript_coupled'}
                 value={t(`boolean_value.${interview.transcript_coupled}`)}
-                projectAccessGranted={projectAccessGranted}
                 hideEmpty
             />
             { ['primary_language_id', 'secondary_language_id', 'primary_translation_language_id'].map((attribute) => (
@@ -110,7 +98,6 @@ export default function InterviewInfo({
                     //validate={function(v){return /^\d+$/.test(v)}}
                     attribute={attribute}
                     value={languages[interview[attribute]]?.name[locale]}
-                    projectAccessGranted={projectAccessGranted}
                     hideEmpty
                 />
             ))}
@@ -133,7 +120,6 @@ export default function InterviewInfo({
                 obj={interview}
                 attribute="startpage_position"
                 value={interview.startpage_position}
-                projectAccessGranted={projectAccessGranted}
                 noStatusCheckbox
             />
 
