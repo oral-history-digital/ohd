@@ -75,3 +75,6 @@
   use_in_details_view: true
 :media_missing:
   use_in_details_view: true
+:pseudo_links:
+  use_in_details_view: true
+  display_on_landing_page: true
