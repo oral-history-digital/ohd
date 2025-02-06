@@ -49,7 +49,7 @@ class MetadataExportTest < ActiveSupport::TestCase
     assert_equal @interview.observations(:de), @first_row_entries[9]
     assert_equal @interview.description(:de), @first_row_entries[10]
     assert_equal @interview.tape_count.to_s, @first_row_entries[11]
-    assert_equal @interview.properties[:link], @first_row_entries[12]
+    assert_equal @interview.links.join(', '), @first_row_entries[12]
     assert_equal @interview.interviewee.first_name, @first_row_entries[13]
     assert_equal @interview.interviewee.last_name, @first_row_entries[14]
     assert_equal @interview.interviewee.birth_name, @first_row_entries[15]

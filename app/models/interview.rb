@@ -78,6 +78,7 @@ class Interview < ApplicationRecord
   has_and_belongs_to_many :archiving_batches
 
   serialize :properties
+  serialize :links, Array
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
@@ -912,5 +913,12 @@ class Interview < ApplicationRecord
       #   order("person_translations.last_name", "person_translations.first_name").
       #   map(&:archive_id).uniq
     end
+  end
+
+  def pseudo_links=(string)
+    write_attribute(:links, string.strip.split(/,\s*/)) if string
+  end
+  def pseudo_links
+    read_attribute :links
   end
 end
