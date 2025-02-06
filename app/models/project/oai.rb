@@ -1,14 +1,6 @@
 module Project::Oai
   include OaiRepository::Set
 
-  def sets
-    oai_sets = [ OAI::Set.new({name: 'Interview-Archiv', spec: "archive:#{shortname}"}) ]
-    #if name.match('multimeter')
-      #oai_sets << OAI::Set.new({name: 'Meters', spec: 'meters'})
-    #end
-    oai_sets
-  end
-
   def oai_dc_identifier
     "oai:#{shortname}"
   end

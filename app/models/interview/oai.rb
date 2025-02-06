@@ -1,5 +1,13 @@
 module Interview::Oai
 
+  def sets
+    oai_sets = [ OAI::Set.new({name: 'Interview-Archiv', spec: "archive:#{project.shortname}"}) ]
+    #if name.match('multimeter')
+      #oai_sets << OAI::Set.new({name: 'Meters', spec: 'meters'})
+    #end
+    oai_sets
+  end
+
   def oai_dc_identifier
     "oai:#{project.shortname}:#{archive_id}"
     #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"

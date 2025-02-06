@@ -5,7 +5,10 @@ import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
 
 import { WorkbookItemForm } from 'modules/workbook';
 import { Modal } from 'modules/ui';
-import { InterviewInfoContainer, InterviewContributorsContainer } from 'modules/interview-metadata';
+import { InterviewInfoContainer,
+    InterviewContributorsContainer,
+    InterviewTextMaterialsContainer,
+} from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { ContentField } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
@@ -14,6 +17,7 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useSearchSuggestions } from 'modules/search';
 import { getNextInterview, getPreviousInterview } from '../getInterviews';
+import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default function InterviewDetailsLeftSide({
     archiveId,
@@ -71,26 +75,20 @@ export default function InterviewDetailsLeftSide({
             <h3>{t('interview_info')}</h3>
             <InterviewInfoContainer />
             <InterviewContributorsContainer/>
+            <InterviewTextMaterialsContainer/>
             { interview?.properties?.subcollection &&
                 <ContentField
                     label={t('subcollection')}
                     value={interview.properties.subcollection}
                 />
             }
-            {interview?.properties?.link && (
-                <ContentField
-                    label="Link"
-                    value={(
-                        <a
-                            href={interview.properties.link}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {interview.properties.link}
-                        </a>
-                    )}
-                />)
-            }
+            <SingleValueWithFormContainer
+                obj={interview}
+                value={interview?.links}
+                attribute="pseudo_links"
+                hideEmpty
+                linkUrls
+            />
             {projectId === 'campscapes' && (
                 <div className="footer-navigation">
                     <Link

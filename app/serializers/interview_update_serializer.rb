@@ -5,6 +5,8 @@ class InterviewUpdateSerializer < ApplicationSerializer
     :observations,
     :duration,
     :tape_count,
+    :links,
+    :pseudo_links,
   ]
 
   def attributes(*args)

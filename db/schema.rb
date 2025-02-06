@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_18_125424) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_06_094635) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -356,6 +356,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_18_125424) do
     t.integer "translation_language_id"
     t.boolean "media_missing", default: false, null: false
     t.boolean "transcript_coupled", default: true
+    t.string "links"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end
@@ -631,7 +632,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_18_125424) do
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
     t.integer "project_id"
-    t.boolean "has_geo_coords", null: false
+    t.boolean "has_geo_coords"
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
     t.index ["has_geo_coords"], name: "index_registry_entries_on_has_geo_coords"
     t.index ["project_id"], name: "index_registry_entries_on_project_id"

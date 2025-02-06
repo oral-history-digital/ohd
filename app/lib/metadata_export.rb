@@ -27,7 +27,7 @@ class MetadataExport
           interview.observations(locale) && interview.observations(locale).gsub(/[\r\n\t]/, ' '),
           interview.description(locale) && interview.description(locale).gsub(/[\r\n\t]/, ' '),
           interview.tape_count,
-          interview.properties[:link],
+          interview.links&.join(', '),
           interview.interviewee.first_name,
           interview.interviewee.last_name,
           interview.interviewee.birth_name,

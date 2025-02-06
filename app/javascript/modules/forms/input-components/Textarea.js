@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Element from '../Element';
@@ -21,9 +20,7 @@ export default function Textarea({
     handlechangecallback,
     handleErrors,
 }) {
-    const defaultValue = typeof value === 'undefined' || value === null ?
-        data?.[attribute] :
-        value;
+    const defaultValue = value || data?.[attribute];
 
     const onChange = event => {
         const newValue = event.target.value;
@@ -40,14 +37,6 @@ export default function Textarea({
             handleErrors(name, !valid);
         }
     };
-
-    useEffect(() => {
-        if (typeof(validate) === 'function') {
-            const valid = validate(defaultValue);
-            handleErrors(attribute, !valid);
-        }
-        handleChange(attribute, defaultValue, data);
-    }, [defaultValue]);
 
     return (
         <Element

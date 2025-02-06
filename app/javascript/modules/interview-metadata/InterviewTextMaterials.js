@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer, AuthorizedContent, useAuthorization } from 'modules/auth';
 import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
+import { useProject } from 'modules/routes';
 import InterviewDownloads from './InterviewDownloads';
 
 export default function InterviewTextMaterials({
@@ -11,13 +12,17 @@ export default function InterviewTextMaterials({
     editView,
 }) {
     const { t, locale } = useI18n();
+    const { project } = useProject();
+
     const { isAuthorized } = useAuthorization();
     const showObservations = isAuthorized(interview, 'update') || (
         interview.properties?.public_attributes?.observations?.toString() === 'true' &&
         interview.observations?.[locale]
     );
-    const showTranscriptPDF = isAuthorized(interview, 'update') ||
-        interview.properties?.public_attributes?.transcript?.toString() === 'true';
+    const showTranscriptPDF = !project.is_catalog && (
+        isAuthorized(interview, 'update') ||
+        interview.properties?.public_attributes?.transcript?.toString() === 'true'
+    );
         
 
     if (!interview.language_id) {
