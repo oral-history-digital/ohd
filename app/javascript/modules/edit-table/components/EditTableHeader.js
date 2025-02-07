@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import EditTableHeaderOptions from './EditTableHeaderOptions';
 import useColumns from './useColumns';
+import tableHeader from '../tableHeader';
 
 export default function EditTableHeader({
     numElements,
@@ -26,7 +27,7 @@ export default function EditTableHeader({
                             key={column}
                             className="EditTableHeader-cell"
                         >
-                            {t(`edit_column_header.${column}`)}
+                            { tableHeader({ interview, column, t }) }
                         </div>
                     ))
                 }
