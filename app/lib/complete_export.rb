@@ -12,6 +12,10 @@ class CompleteExport
       if interview.segments.count > 0
         tape_count = format('%02d', interview.tape_count)
         interview.languages.each do |locale|
+          if interview.has_transcript?(locale)
+            zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
+            zip.write(interview.to_pdf(:de, locale))
+          end
           interview.tapes.each do |tape|
             tape_number = format('%02d', tape.number)
             trans = interview.lang == locale ? 'tr' : 'ue'
@@ -27,10 +31,6 @@ class CompleteExport
       end
 
       project.available_locales.each do |locale|
-        if interview.has_transcript?(locale)
-          zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
-          zip.write(interview.to_pdf(:de, locale))
-        end
         if interview.interviewee.has_biography?(locale)
           zip.put_next_entry("#{interview.archive_id}_biography_#{locale}.pdf")
           zip.write(interview.biography_pdf(:de, locale))
