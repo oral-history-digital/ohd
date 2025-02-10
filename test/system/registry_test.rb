@@ -9,11 +9,13 @@ class RegistryTest < ApplicationSystemTestCase
 
   test 'create registry entry from norm-data-api' do
     click_on 'Add new subentry'
+    click_on 'Add index name'
     within '#registry_name' do
       fill_in 'registry_name_descriptor_en', with: 'Istanbul'
     end
+    click_on 'Add authority files'
     within '#normdata' do
-      click_on 'Submit'
+      click_on 'Search'
     end
     sleep 1
     click_on 'Istanbul'
@@ -40,6 +42,7 @@ class RegistryTest < ApplicationSystemTestCase
 
   test 'create registry entry without norm-data-api' do
     click_on 'Add new subentry'
+    click_on 'Add index name'
     within '#registry_name' do
       fill_in 'registry_name_descriptor_en', with: 'Neukölln'
       click_on 'Submit'
