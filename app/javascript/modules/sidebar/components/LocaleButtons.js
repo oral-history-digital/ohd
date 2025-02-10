@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useNavigate, useMatch, useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { DEFAULT_LOCALES, SYSTEM_LOCALES } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { setLocale } from 'modules/archive';
 
 const projectLocales = (project) => project ?
     project.available_locales :
     DEFAULT_LOCALES;
 
-export default function LocaleButtons({
-    className,
-    setLocale,
-}) {
+export default function LocaleButtons({ className }) {
+    const dispatch = useDispatch();
     const { project } = useProject();
     const locales = projectLocales(project);
     const { locale: currentLocale } = useI18n();
@@ -51,7 +51,7 @@ export default function LocaleButtons({
         }
 
         navigate(newPath);
-        setLocale(locale);
+        dispatch(setLocale(locale));
     }
 
     return (
@@ -75,5 +75,4 @@ export default function LocaleButtons({
 
 LocaleButtons.propTypes = {
     className: PropTypes.string,
-    setLocale: PropTypes.func.isRequired,
 };

@@ -20,6 +20,19 @@ $button-border-width: $base-unit * 0.083333;
   padding: 0 !important;
 }
 
+.Button--asLink {
+  border: none;
+  color: var(--primary-color);
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.Button--asLink:hover {
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+
 .Button--fullWidth {
   width: 100% !important;
 }
