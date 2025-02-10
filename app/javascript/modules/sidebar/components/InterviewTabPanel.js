@@ -14,7 +14,6 @@ import {
     CitationInfoContainer
 } from 'modules/interview-metadata';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { AccountContainer } from 'modules/user';
 import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
@@ -63,11 +62,6 @@ export default function InterviewTabPanel({
             <h3 className='SidebarTabs-title'>
                 {t('interview')}
             </h3>
-            {projectId !== PROJECT_CAMPSCAPES && (
-                <AuthShowContainer ifLoggedOut ifNoProject>
-                    <AccountContainer/>
-                </AuthShowContainer>
-            )}
             <div className={classNames('flyout-sub-tabs-container', 'flyout-video', {
                 'hidden': projectId === PROJECT_CAMPSCAPES,
             })}>
