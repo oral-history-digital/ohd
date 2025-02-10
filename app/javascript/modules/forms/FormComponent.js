@@ -155,21 +155,27 @@ export default function FormComponent({
         return `${pluralize(scope)}_attributes`;
     }
 
+    function replaceNestedFormValues(nestedScopeName, nestedScopeValues) {
+        setValues(prevValues => ({
+            ...prevValues,
+            [nestedScopeName]: nestedScopeValues
+        }));
+    }
+
     function writeNestedObjectToStateValues(params, identifier, index) {
         // for translations identifier is 'locale' to not multiply translations
         identifier ||= 'id';
-        let scope = Object.keys(params)[0];
-        let nestedObject = params[scope];
-        let nestedObjects = values[nestedRailsScopeName(scope)] || [];
+        let nestedScope = Object.keys(params)[0];
+        let nestedObject = params[nestedScope];
+        let nestedObjects = values[nestedRailsScopeName(nestedScope)] || [];
         if (index === undefined)
             index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
         index = index === -1 ? nestedObjects.length : index;
-
-        setValues(prevValues => ({
+        setValues( prevValues => ({
             ...prevValues,
-            [nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {
-                [index]: Object.assign({}, nestedObjects[index], nestedObject)
-            })
+            [nestedRailsScopeName(nestedScope)]: nestedObjects.slice(0, index).concat(
+                [Object.assign({}, nestedObjects[index], nestedObject)]
+            ).concat(nestedObjects.slice(index + 1))
         }));
     }
 
@@ -184,6 +190,7 @@ export default function FormComponent({
                 onSubmit={handleNestedFormSubmit}
                 onDelete={deleteNestedObject}
                 getNewElements={() => values[nestedRailsScopeName(props.scope)]}
+                replaceNestedFormValues={replaceNestedFormValues}
             />
         ))
     }
@@ -217,6 +224,8 @@ export default function FormComponent({
         <div className={classNames(className, 'LoadingOverlay', {
             'is-loading': fetching
         })}>
+            {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
+
             {nestedScopes()}
             <form
                 id={formId || scope}
@@ -225,8 +234,6 @@ export default function FormComponent({
                 })}
                 onSubmit={handleSubmit}
             >
-                {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
-
                 {children}
 
                 {elements.map(props => {

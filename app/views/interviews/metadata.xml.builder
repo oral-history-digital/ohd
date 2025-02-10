@@ -31,9 +31,11 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.contributors do
     interview.contributions.group_by{|c| c.contribution_type}.each do |contribution_type, contributions|
       xml.contributor contributorType: "DataCollector" do 
-        xml.contributorName contributions.map{|c|
-          "#{c.person.last_name(locale)}, #{c.person.first_name(locale)}"
-        }.join('; ') + " (#{contribution_type.label(locale)})"
+        if !contribution_type.nil?
+          xml.contributorName contributions.map{|c|
+            "#{c.person.last_name(locale)}, #{c.person.first_name(locale)}"
+          }.join('; ') + " (#{contribution_type.label(locale)})"
+        end
       end
     end
     if !interview.project.cooperation_partner.blank?

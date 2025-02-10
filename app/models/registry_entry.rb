@@ -132,6 +132,7 @@ class RegistryEntry < ApplicationRecord
         descriptor(locale)
       end
     end
+    text :names
     #text :desc
   end
 
@@ -181,10 +182,6 @@ class RegistryEntry < ApplicationRecord
     .group('registry_entries.id, registry_hierarchies.ancestor_id')
     .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
-
-  searchable do
-    text :names
-  end
 
   def parent_id=(pid)
     RegistryHierarchy.create(ancestor_id: pid, descendant_id: id)
@@ -416,4 +413,10 @@ class RegistryEntry < ApplicationRecord
       #join(", ")
   end
 
+  def delete_persistent_values=(bool)
+    if bool
+      registry_names.destroy_all
+      norm_data.destroy_all
+    end
+  end
 end

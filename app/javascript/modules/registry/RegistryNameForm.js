@@ -15,7 +15,6 @@ export default function RegistryNameForm({
     nested,
     registryEntryId,
     registryNameTypes,
-    registryEntryAttributes,
     foundRegistryEntries,
     searchRegistryEntry,
     setDescriptor,
@@ -39,18 +38,18 @@ export default function RegistryNameForm({
 
     const formElements = [
         {
-            attribute: 'descriptor',
-            multiLocale: true,
-            validate: function(v){return v && v.length > 1},
-            handlechangecallback: handleDescriptorChange,
-            forceUpdateFromProps: true,
-        },
-        {
             elementType: 'select',
             attribute: 'registry_name_type_id',
             value: (data?.registry_name_type_id) || defaultNameType.id,
             values: registryNameTypes && Object.values(registryNameTypes),
             validate: function(v){return /^\d+$/.test(v)},
+        },
+        {
+            attribute: 'descriptor',
+            multiLocale: true,
+            validate: function(v){return v && v.length > 1},
+            handlechangecallback: handleDescriptorChange,
+            origAsLocale: true,
         },
     ]
 
@@ -67,12 +66,13 @@ export default function RegistryNameForm({
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
             formClasses={formClasses}
-            data={registryEntryAttributes?.registry_names_attributes?.[index] || data}
+            data={data}
             nested={nested}
             values={{
                 registry_entry_id: (data?.registry_entry_id) || registryEntryId,
                 registry_name_type_id: (data?.registry_name_type_id) || defaultNameType.id,
                 name_position: 1,
+                translations_attributes: data?.translations_attributes || [],
             }}
             submitText='submit'
             elements={formElements}

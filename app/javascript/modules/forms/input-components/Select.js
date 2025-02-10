@@ -24,6 +24,7 @@ export default function Select({
     doNotTranslate,
     optionsScope,
     withEmpty,
+    id,
 }) {
     const defaultValue = value || data?.[attribute];
     const { t, locale } = useI18n();
@@ -130,6 +131,7 @@ export default function Select({
             help={help}
         >
             <select
+                id={`${scope}_${id ? id : attribute}`}
                 name={attribute}
                 className="Input"
                 defaultValue={defaultValue}

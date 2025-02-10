@@ -14,21 +14,40 @@ export default function NestedScope({
     onDelete,
     formComponent,
     formProps,
+    wrapperComponent,
     parent,
     scope,
+    showElementsInForm,
+    disableAddingElements,
     getNewElements,
     elementRepresentation,
     onDeleteCallback,
+    replaceNestedFormValues
 }) {
     const { t } = useI18n();
     const dataState = useSelector(getData);
     // get parent from state to keep it actual
-    const actualParent = parent && dataState[pluralize(underscore(parent.type))][parent.id];
+    const actualParent = parent?.type && dataState[pluralize(underscore(parent.type))][parent.id];
     const elements = (actualParent?.[`${pluralize(scope)}_attributes`] || actualParent?.[pluralize(scope)] || []);
     const newElements = (getNewElements() || []);
-    const [editing, setEditing] = useState((newElements.length + elements.length) === 0);
-
+    const [editing, setEditing] = useState(showElementsInForm);
     const cancel = () => setEditing(false);
+
+    const form = createElement(formComponent, {...formProps,
+        data: {},
+        index: newElements.length,
+        nested: true,
+        submitData: onSubmit,
+        onSubmitCallback: cancel,
+        onCancel: cancel,
+        formClasses: 'nested-form default',
+    })
+
+    const wrapper = wrapperComponent && createElement(wrapperComponent, {
+        ...formProps,
+        children: [form],
+        replaceNestedFormValues: replaceNestedFormValues,
+    });
 
     return (
         <div className={classNames('nested-scope', scope)} >
@@ -45,6 +64,7 @@ export default function NestedScope({
                         formProps={formProps}
                         scope={scope}
                         elementRepresentation={elementRepresentation}
+                        showForm={editing}
                     />
                 )
             })}
@@ -60,18 +80,12 @@ export default function NestedScope({
                         formProps={formProps}
                         scope={scope}
                         elementRepresentation={elementRepresentation}
+                        showForm={editing}
                     />
                 )
             })}
-            { editing ?
-                createElement(formComponent, {...formProps,
-                    data: {},
-                    nested: true,
-                    submitData: onSubmit,
-                    onSubmitCallback: setEditing,
-                    onCancel: cancel,
-                    formClasses: 'nested-form default',
-                }) :
+            { disableAddingElements ? null : editing ?
+                (wrapper ? wrapper : form) :
                 <button
                     type="button"
                     className="Button Button--transparent Button--icon"
