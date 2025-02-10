@@ -49,7 +49,7 @@ module DataHelper
       last_name: 'Rossi'
     )
 
-    registry = test_registry(project)
+    #registry = test_registry(project)
     germany = registry_entry_with_names(project)
     france = registry_entry_with_names(project, {de: 'Frankreich', ru: 'Фра́нция'})
     poland = registry_entry_with_names(project, {de: 'Polen', ru: 'По́льша'})
@@ -63,7 +63,7 @@ module DataHelper
       #workflow_state: 'public'
     #)
 
-    ohd_registry = test_registry(ohd)
+    #ohd_registry = test_registry(ohd)
 
     # default_registry_name_type = RegistryNameType.find_by!(code: "spelling")
 
@@ -200,7 +200,9 @@ module DataHelper
       ],
     )
 
-    Project.create! attribs
+    project = Project.create! attribs
+    registry = test_registry(project)
+    project
   end
 
   def self.project_with_contribution_types_and_metadata_fields
