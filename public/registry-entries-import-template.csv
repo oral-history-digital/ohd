@@ -1,3 +1,5 @@
-parent_name	parent_id	name	id	description	latitude	longitude	 GND ID	OSM ID
-Personen	81	Contreras, Manuel	68					
-Personen	81	Allende, Salvador						
+parent_name	parent_id	name	id	description	latitude	longitude	 GND ID	OSM ID	Verknüpfte Interviews	Status
+Orte	456988	Deutschland	457020				4011882-4			public
+Deutschland	457020	Baden-Württemberg 	1369239							public
+Baden-Württemberg 	1369239	Heidelberg			49.4093582	8.694724		relation/285864		public
+Baden-Württemberg 	1369239	Konstanz								preliminary

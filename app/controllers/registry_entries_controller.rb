@@ -4,7 +4,7 @@ class RegistryEntriesController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:norm_data_api]
 
   def norm_data_api
-    results = NormDataApi.new(params[:expression], params[:place_type], params[:geo_filter]).process
+    results = NormDataApi.new(params[:expression], params[:from], params[:place_extended] || params[:place_type], params[:geo_filter]).process
 
     respond_to do |format|
       format.json do
@@ -116,7 +116,8 @@ class RegistryEntriesController < ApplicationController
             }
           )
         end
-        send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", type: "application/pdf" #, :disposition => "attachment"
+        send_data csv, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.pdf",
+          type: "application/pdf"
       end
       format.csv do
         if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
@@ -143,7 +144,7 @@ class RegistryEntriesController < ApplicationController
               end
             end
           end
-          send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
+          send_data csv, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.csv"
         else
           redirect_to user_url('current')
         end
@@ -227,6 +228,8 @@ class RegistryEntriesController < ApplicationController
       :parent_id,
       :latitude,
       :longitude,
+      :has_geo_coords,
+      :delete_persistent_values,
       norm_data_attributes: [
         :id,
         :registry_entry_id,

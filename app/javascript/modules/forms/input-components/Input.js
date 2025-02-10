@@ -26,7 +26,7 @@ export default function Input({
     className,
     readOnly,
     placeholder,
-    forceUpdateFromProps,
+    id,
 }) {
 
     const defaultValue = value || data?.[attribute];
@@ -53,7 +53,7 @@ export default function Input({
 
     const cleanProps = () => {
         const props = {
-            id: `${scope}_${attribute}`,
+            id: `${scope}_${id ? id : attribute}`,
             className: 'Input',
             type: type,
             name: attribute,
@@ -64,9 +64,6 @@ export default function Input({
             onChange: onChange,
             onClick: onChange,
         }
-
-        //if (forceUpdateFromProps)
-            //props.value = val; //data && data[attribute] || val;
 
         return props;
     };
