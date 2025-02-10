@@ -151,6 +151,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Editing interface'
     click_on 'Curation'
     click_on 'Create new interview'
+    click_on 'Add Contributor'
     select 'Dupont, Jean'
     select 'Interviewee'
     fill_in 'Interview ID', with: 'test234'
