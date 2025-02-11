@@ -23,18 +23,14 @@ export default function Sidebar({
                 || Object.keys(user.permissions).length > 0
         );
 
-    if (!showToggleEditViewButton) {
-        return null;
-    }
-
     return (
         <div className={classNames(className, 'Sidebar', 'wrapper-flyout')}>
             <header className="Sidebar-header">
                 <LocaleButtons />
-                <SessionButtons />
+                <SessionButtons className="u-ml" />
             </header>
 
-            {showToggleEditViewButton && <ToggleEditView className="u-ml u-mb" />}
+            {showToggleEditViewButton && <ToggleEditView className="u-mt u-mb" />}
 
             <CurrentArchive className="Sidebar-title u-mt-none u-mb u-ml" />
             <SidebarTabsContainer />

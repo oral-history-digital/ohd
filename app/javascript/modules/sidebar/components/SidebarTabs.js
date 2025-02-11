@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
-import { AccountContainer } from 'modules/user';
 import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { usePathBase, useProject } from 'modules/routes';
@@ -79,7 +78,6 @@ export default function SidebarTabs({
         }
     }
 
-    const showAccountTab = true //!isCampscapesProject;
     const showCatalogTab = project.is_ohd;
     const showInterviewTab = !!interview;
     const showRegistryTab = (
@@ -104,14 +102,6 @@ export default function SidebarTabs({
             onChange={handleTabClick}
         >
             <TabList>
-                <Tab
-                    key="1"
-                    className="SidebarTabs-tab"
-                    disabled={!showAccountTab}
-                >
-                    {t(isLoggedIn ? 'account_page' : 'login_page')}
-                </Tab>
-
                 <Tab
                     key="2"
                     className="SidebarTabs-tab"
@@ -212,12 +202,6 @@ export default function SidebarTabs({
             </TabList>
 
             <TabPanels>
-                <TabPanel key="1">
-                    {tabIndex === indexes.INDEX_USER && (
-                        <AccountContainer/>
-                    )}
-                </TabPanel>
-
                 <TabPanel key="2">
                     {tabIndex === indexes.INDEX_SEARCH && (
                         <ArchiveSearchTabPanel selectedArchiveIds={selectedArchiveIds} />
