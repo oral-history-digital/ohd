@@ -2,21 +2,11 @@ import { matchPath } from 'react-router-dom';
 
 import * as indexes from './constants';
 
-export default function tabIndexFromRoute(pathBase, pathname, isCampscapesProject = false) {
+export default function tabIndexFromRoute(pathBase, pathname) {
     let index;
 
-    if (matchPath(`${pathBase}/users/current`, pathname)) {
-        index = indexes.INDEX_USER;
-    } else if (matchPath(`${pathBase}/users/password/new`, pathname)) {
-        index = indexes.INDEX_USER;
-    } else if (matchPath(`${pathBase}/users/password/edit`, pathname)) {
-        index = indexes.INDEX_USER;
-    } else if (matchPath(`${pathBase}/users/:resetPasswordToken/activate`, pathname)) {
-        index = indexes.INDEX_USER;
-    } else if (matchPath(`${pathBase}/users/new`, pathname)) {
-        index = indexes.INDEX_USER;
-    } else if (matchPath(`${pathBase}/not_found`, pathname)) {
-        index = indexes.INDEX_USER;
+    if (matchPath(`${pathBase}/not_found`, pathname)) {
+        index = indexes.INDEX_NONE;
     } else if (matchPath(`${pathBase}/users`, pathname)) {
         index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/searches/archive`, pathname)) {
@@ -70,7 +60,7 @@ export default function tabIndexFromRoute(pathBase, pathname, isCampscapesProjec
     } else if (matchPath(`${pathBase}/help_texts`, pathname)) {
         index = indexes.INDEX_HELP_TEXTS;
     } else if (matchPath(`${pathBase}`, pathname)) {
-        index = isCampscapesProject ? indexes.INDEX_NONE : indexes.INDEX_USER;
+        index = indexes.INDEX_NONE;
     } else {
         index = indexes.INDEX_NONE;
     }

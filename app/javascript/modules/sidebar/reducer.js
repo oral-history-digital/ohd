@@ -1,9 +1,9 @@
 import { SHOW_SIDEBAR, HIDE_SIDEBAR, TOGGLE_SIDEBAR } from './action-types';
-import { INDEX_USER } from './constants';
+import { INDEX_NONE } from './constants';
 
 export const initialState = {
     visible: false,
-    index: INDEX_USER,
+    index: INDEX_NONE,
 };
 
 export default function sidebar(state = initialState, action) {
