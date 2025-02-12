@@ -51,7 +51,7 @@ class CompleteExport
 
       if interview.photos.count > 0
         zip.put_next_entry("#{interview.archive_id}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip")
-        photos_zip = PhotoExport.new(interview.archive_id, project, false).process
+        photos_zip = PhotoExport.new(interview.archive_id, project, true).process
         photos_zip.rewind
         zip.write photos_zip.read
       end
