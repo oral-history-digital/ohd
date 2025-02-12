@@ -26,10 +26,9 @@ export default function SessionButtons({ className }) {
             <Link to={`${pathBase}/users/current`}>
                 {t('account_page')}
             </Link>
-            {' '}
             <button
                 type="button"
-                className='Button Button--asLink'
+                className="Button Button--asLink u-ml-small"
                 onClick={() => {
                     // clear non-public data
                     if (archiveId) {
@@ -56,8 +55,7 @@ export default function SessionButtons({ className }) {
     ) : (
         <div className={classNames('SessionButtons', className)}>
             <RegisterPopupLink />
-            {' '}
-            <a href={loginURL}>{t('login')}</a>
+            <a href={loginURL} className="u-ml-small">{t('login')}</a>
         </div>
     );
 }

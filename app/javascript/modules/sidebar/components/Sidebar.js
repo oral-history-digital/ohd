@@ -30,9 +30,11 @@ export default function Sidebar({
                 <SessionButtons className="u-ml" />
             </header>
 
-            {showToggleEditViewButton && <ToggleEditView className="u-mt u-mb" />}
 
-            <CurrentArchive className="Sidebar-title u-mt-none u-mb u-ml" />
+            <div className="u-ml u-mb">
+                <CurrentArchive className="Sidebar-title u-mt-none u-mb-none" />
+                {showToggleEditViewButton && <ToggleEditView />}
+            </div>
             <SidebarTabsContainer />
         </div>
     );
