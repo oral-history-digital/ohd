@@ -1,4 +1,4 @@
-.flow {
+.Flow {
   box-sizing: border-box;
   counter-reset: item;
   display: flex;
@@ -9,14 +9,14 @@
   padding-left: 0;
 }
 
-.flow__item {
+.Flow-item {
   align-items: center;
   background-color: oklch(80% 0.0 0.0);
   counter-increment: item;
   display: flex;
 }
 
-.flow__item:before {
+.Flow-item:before {
   background-color: oklch(60% 0 0);
   clip-path: polygon(0 0, 75% 0, 100% 50%, 75% 100%, 0 100%);
   color: white;
@@ -30,16 +30,16 @@
   width: 4rem;
 }
 
-.flow__item--active:before {
+.Flow-item--active:before {
   background-color: var(--primary-color);
 }
 
-.flow__text {
+.Flow-text {
   display: none;
   padding-left: 0.5lh;
   padding-right: 0.5lh;
 }
 
-.flow__item--active > .flow__text {
+.Flow-item--active > .Flow-text {
   display: flex;
 }
