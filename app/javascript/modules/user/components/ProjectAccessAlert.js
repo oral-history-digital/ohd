@@ -1,15 +1,11 @@
-import { useSelector } from 'react-redux';
-
 import { Modal } from 'modules/ui';
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
 import { useI18n } from 'modules/i18n';
-import { getCurrentProject, getCurrentUser, getUsersStatus } from 'modules/data';
 
 export default function ProjectAccessAlert ({
     user,
     project,
-    fetchData,
 }) {
 
     const { t } = useI18n();
