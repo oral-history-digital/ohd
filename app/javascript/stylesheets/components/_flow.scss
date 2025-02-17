@@ -36,8 +36,17 @@
 
 .Flow-text {
   display: none;
-  padding-left: 0.5lh;
-  padding-right: 0.5lh;
+  padding-inline: 0.5lh;
+}
+
+button.Flow-text {
+  border: none;
+  padding-inline: 0.5lh;
+  text-align: left;
+}
+
+button.Flow-text:hover {
+  text-decoration: underline;
 }
 
 .Flow-item--active > .Flow-text {

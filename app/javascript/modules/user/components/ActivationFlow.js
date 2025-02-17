@@ -56,7 +56,7 @@ export default function ActivationFlow({
                 <Modal
                     key='request-project-access-popup'
                     title={t('modules.project_access.request_access_link')}
-                    triggerClassName='Flow-text Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
+                    triggerClassName="Flow-text"
                     trigger="Freischaltung im Archiv beantragen"
                 >
                     {close => (
