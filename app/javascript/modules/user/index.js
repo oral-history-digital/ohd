@@ -16,3 +16,4 @@ export { default as CorrectUserDataPopup } from './components/CorrectUserDataPop
 export { default as AfterResetPassword } from './components/AfterResetPassword';
 export { default as ConfirmNewZwarTosPopup } from './components/ConfirmNewZwarTosPopup';
 export { default as RegisterPopupLink } from './components/RegisterPopupLink';
+export { default as ActivationFlow } from './components/ActivationFlow';

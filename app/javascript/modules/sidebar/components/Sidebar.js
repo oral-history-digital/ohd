@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { ActivationFlow } from 'modules/auth';
 import { getCurrentUser } from 'modules/data';
+import { ActivationFlow } from 'modules/user';
 import LocaleButtons from './LocaleButtons';
 import SessionButtons from './SessionButtons';
 import ToggleEditView from './ToggleEditView';
