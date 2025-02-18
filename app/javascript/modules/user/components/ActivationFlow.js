@@ -29,6 +29,8 @@ export default function ActivationFlow({
         showActivationFlow = false;
     } else if (projectAccessGranted) {
         showActivationFlow = false;
+    } else if (projectAccessStatus === 'project_access_blocked' || projectAccessStatus === 'project_access_rejected') {
+        showActivationFlow = false;
     }
 
     if (!showActivationFlow) {
@@ -39,7 +41,7 @@ export default function ActivationFlow({
     if (isLoggedIn) {
         activationStep = 2;
     }
-    if (projectAccessStatus === 'project_access_requested') {
+    if (projectAccessStatus === 'project_access_requested' || projectAccessStatus === 'project_access_data_corrected') {
         activationStep = 3;
     }
 
