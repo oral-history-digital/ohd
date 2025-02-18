@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { getCurrentUser } from 'modules/data';
-import { ActivationFlow } from 'modules/user';
+import { ActivationFlow, ActivationActions } from 'modules/user';
 import LocaleButtons from './LocaleButtons';
 import SessionButtons from './SessionButtons';
 import ToggleEditView from './ToggleEditView';
@@ -37,6 +37,8 @@ export default function Sidebar({
             </div>
 
             <ActivationFlow className="u-mr u-mb u-ml" />
+
+            <ActivationActions className="u-mr u-mb u-ml" />
 
             <SidebarTabsContainer />
         </div>
