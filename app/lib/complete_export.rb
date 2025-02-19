@@ -31,11 +31,12 @@ class CompleteExport
       end
 
       project.available_locales.each do |locale|
-        if interview.interviewee.has_biography?(locale)
+        if interview.interviewee.biography_public? && interview.interviewee.has_biography?(locale)
           zip.put_next_entry("#{interview.archive_id}_biography_#{locale}.pdf")
           zip.write(interview.biography_pdf(:de, locale))
         end
-        if interview.has_protocol?(locale)
+        if interview.has_protocol?(locale) && properties[:public_attributes] &&
+            properties[:public_attributes]['observations']
           zip.put_next_entry("#{interview.archive_id}_protocol_#{locale}.pdf")
           zip.write(interview.observations_pdf(:de, locale))
         end
