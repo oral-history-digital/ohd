@@ -25,11 +25,15 @@ export default function ActivationFlow({
             return up.project_id === project?.id
         });
 
-    if (project.grant_access_without_login) {
+    if (!user) {
+        return null;
+    } else if (project.grant_access_without_login) {
         return null;
     } else if (isLoggedIn && project?.grant_project_access_instantly) {
         return null;
     } else if (isOhd) {
+        return null;
+    } else if (projectAccessStatus === 'project_access_requested' || projectAccessStatus === 'project_access_data_corrected') {
         return null;
     } else if (projectAccessGranted) {
         return null;
