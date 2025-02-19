@@ -597,8 +597,6 @@ class Interview < ApplicationRecord
         end
       end
     end
-  rescue  Roo::HeaderRowNotFoundError
-    'header_row_not_found'
   end
 
   # tape_id is a dummy here

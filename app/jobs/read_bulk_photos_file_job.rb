@@ -3,14 +3,12 @@ require 'open-uri'
 class ReadBulkPhotosFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver, project, locale)
-    jobs_logger.info "*** uploading #{file_path} photos"
-
+  def perform(opts)
     # open zip and write content to temporary files
     #
     photos = []
     csv_file_name = ''
-    Zip::File.open(file_path) do |zip_file|
+    Zip::File.open(opts[:file_path]) do |zip_file|
       zip_file.each do |entry|
         entry_name = entry.name.split('/').last
         if entry_name.split('.').last == 'csv' 
@@ -24,18 +22,8 @@ class ReadBulkPhotosFileJob < ApplicationJob
       end
     end
 
-    interview = import_photos(photos, csv_file_name, locale)
-    File.delete(file_path) if File.exist?(file_path)
+    interview = import_photos(photos, csv_file_name, opts[:locale])
     File.delete(csv_file_name) if File.exist?(csv_file_name)
-
-    #WebNotificationsChannel.broadcast_to(
-      #receiver,
-      #title: 'edit.upload_bulk_photo.processed',
-      #file: File.basename(file_path),
-    #)
-
-    jobs_logger.info "*** uploaded #{file_path} photos"
-    AdminMailer.with(receiver: receiver, type: 'read_bulk_photos', file: file_path).finished_job.deliver_now
   end
 
   def import_photos(photos, csv_file_name, locale)
@@ -57,7 +45,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           if archive_id
             interview = Interview.find_by_archive_id(archive_id)
           else
-            log("*** no archive_id found in data: #{data}")
+            jobs_logger.info("*** no archive_id found in data: #{data}")
           end
 
           photo = Photo.find_or_create_by(
@@ -97,17 +85,9 @@ class ReadBulkPhotosFileJob < ApplicationJob
             log("*** photo could not be saved because #{photo.errors}! data: '{data}")
           end
         end
-      rescue StandardError => e
-        log("#{e.message}: #{e.backtrace}")
       end
       Sunspot.index interviews_to_reindex.uniq
       interview
-    end
-  end
-
-  def log(text, error=true)
-    File.open(File.join(Rails.root, 'log', 'photo_import.log'), 'a') do |f|
-      f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
     end
   end
 

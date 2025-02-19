@@ -50,7 +50,7 @@ class AdminMailer < ApplicationMailer
     @file = params[:file]
     @filename = @file && @file.split('/').last
     @locale = params[:locale]
-    @msg = params[:msg]
+    @error = params[:error]
     subject = "Interview-Archiv #{@project_name} - #{I18n.backend.translate(:de, 'jobs.'+@type)} #{@filename}"
     mail(
       subject: subject,

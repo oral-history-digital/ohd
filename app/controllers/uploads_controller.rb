@@ -19,7 +19,13 @@ class UploadsController < ApplicationController
     file_path = create_tmp_file(file)
 
     locale = upload_params[:lang]
-    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user, current_project, locale)
+    "read_#{upload_params[:type]}_file_job".
+      classify.constantize.perform_later({
+        file_path: file_path,
+        user: current_user,
+        project: current_project,
+        locale: locale,
+      })
 
     respond_to do |format|
       format.html { render 'react/app' }

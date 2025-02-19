@@ -1,19 +1,8 @@
 class ReadBulkRegistryEntriesFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver, project, locale)
-    jobs_logger.info "*** uploading #{file_path} registry-entries"
-    read_file(file_path, project, locale)
-
-    #WebNotificationsChannel.broadcast_to(
-      #receiver,
-      #title: 'edit.upload_bulk_metadata.processed',
-      #file: File.basename(file_path),
-    #)
-
-    jobs_logger.info "*** uploaded #{file_path} registry-entries"
-    AdminMailer.with(project: project, receiver: receiver, type: 'read_bulk_registry_entries', file: file_path).finished_job.deliver_now
-    File.delete(file_path) if File.exist?(file_path)
+  def perform(opts)
+    read_file(opts[:file_path], opts[:project], opts[:locale])
   end
 
   def read_file(file_path, project, locale)
@@ -90,18 +79,10 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
 
             RegistryHierarchy.find_or_create_by(ancestor_id: parent.id, descendant_id: entry.id) if parent
           end
-        rescue StandardError => e
-          log("#{e.message}: #{e.backtrace}")
         end
       end
     end
     project.registry_entries.update_all(updated_at: Time.now)
-  end
-
-  def log(text, error=true)
-    File.open(File.join(Rails.root, 'log', 'registry_entries_import.log'), 'a') do |f|
-      f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
-    end
   end
 
 end

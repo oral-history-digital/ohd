@@ -1,10 +1,9 @@
 class ReadBulkTextsFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver, project, locale)
-    jobs_logger.info "*** uploading #{file_path} text-files"
+  def perform(opts)
     zip_content = []
-    Zip::File.open(file_path) do |zip_file|
+    Zip::File.open(opts[:file_path]) do |zip_file|
       zip_file.each do |entry|
         entry_name = entry.name.split('/').last
         if entry_name.split('.').last == 'xlsx' 
@@ -77,22 +76,9 @@ class ReadBulkTextsFileJob < ApplicationJob
           jobs_logger.info "*** DON'T KNOW WHAT TO DO WITH #{File.basename(text_file_name)}!!!"
         end
       end
-
-      File.delete(text_file_name) if File.exist?(text_file_name)
-    rescue StandardError => e
-      jobs_logger.info("*** #{archive_id}: #{e.message}!!!")
-      jobs_logger.info("*** #{archive_id}: #{e.backtrace}!!!")
     end
-    File.delete(file_path) if File.exist?(file_path)
 
-    #WebNotificationsChannel.broadcast_to(
-      #receiver,
-      #title: 'edit.upload_bulk_texts.processed',
-      #file: File.basename(file_path),
-    #)
-
-    jobs_logger.info "*** uploaded #{file_path} text-files"
-    AdminMailer.with(receiver: receiver, type: 'read_bulk_texts', file: file_path).finished_job.deliver_now
+    File.delete(text_file_name) if File.exist?(text_file_name)
   end
 
 end

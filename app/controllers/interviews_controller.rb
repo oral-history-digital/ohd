@@ -57,7 +57,12 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
 
-    MarkTextJob.perform_later(@interview, mark_text_params[:texts_attributes].as_json, mark_text_params[:locale], current_user)
+    MarkTextJob.perform_later({
+      interview: @interview,
+      texts_to_mark: mark_text_params[:texts_attributes].as_json,
+      locale: mark_text_params[:locale],
+      user: current_user,
+    })
 
     respond_to do |format|
       format.json do
