@@ -1,21 +1,10 @@
 class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver, project, locale)
-    jobs_logger.info "*** uploading #{file_path} metadata"
-    MetadataImport.new(file_path, project, locale).process
-
-    #WebNotificationsChannel.broadcast_to(
-      #receiver,
-      #title: 'edit.upload_bulk_metadata.processed',
-      #file: File.basename(file_path),
-    #)
-
-    Sunspot.index project.interviews
-    project.touch
-    jobs_logger.info "*** uploaded #{file_path} metadata"
-    AdminMailer.with(project: project, receiver: receiver, type: 'read_bulk_metadata', file: file_path).finished_job.deliver_now
-    File.delete(file_path) if File.exist?(file_path)
+  def perform(opts)
+    MetadataImport.new(opts[:file_path], opts[:project], opts[:locale]).process
+    Sunspot.index opts[:project].interviews
+    opts[:project].touch
   end
 
 end

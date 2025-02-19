@@ -17,10 +17,13 @@
   <% end %>
 </ul>
 
-<p>Der Job wurde mit folgender Nachricht beendet:</p>
-<%= @msg %>
-
-<p>Bitte prüfen Sie Vollständigkeit und Korrektheit der importierten Daten.</p>
+<% if @error %>
+  <p>Es gab folgende Fehlermeldung:</p>
+  <%= @error.message %>
+  <%= @error.backtrace[0..5] %>
+<% else %>
+  <p>Bitte prüfen Sie Vollständigkeit und Korrektheit der importierten Daten.</p>
+<% end %>
 
 <p>Mit freundlichen Grüßen,</p>
 <p>Das Projekt-Team "Oral-History.Digital"</p>

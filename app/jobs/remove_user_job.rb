@@ -1,8 +1,8 @@
 class RemoveUserJob < ApplicationJob
   queue_as :default
 
-  def perform(user_id)
-    user = User.find(user_id)
+  def perform(opts)
+    user = User.find(opts[:user_id])
     user.destroy
   end
 end

@@ -22,7 +22,14 @@ class TranscriptsController < ApplicationController
 
     locale = Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]
 
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user, transcript_params[:update_only_speakers])
+    ReadTranscriptFileJob.perform_later({
+      interview: interview,
+      file_path: file_path,
+      tape_id: tape.id,
+      locale: locale,
+      user: current_user,
+      update_only_speakers: transcript_params[:update_only_speakers],
+    })
 
     respond_to do |format|
       format.json do

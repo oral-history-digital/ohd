@@ -3,8 +3,8 @@ class EditTableImport
   attr_accessor :file_path, :sheet, :interview, :contributions,
     :original_locale, :translation_locale, :only_references
 
-  def initialize(public_interview_id, file_path, only_references=false)
-    @interview = Interview.find_by_archive_id(public_interview_id)
+  def initialize(interview, file_path, only_references=false)
+    @interview = interview
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang
     @translation_locale = @interview.translation_lang
@@ -69,11 +69,6 @@ class EditTableImport
       end
       create_references(row, interview, segment)
     end
-    "Keine Fehlermeldungen"
-  rescue StandardError => e
-    log("*** #{interview.archive_id}: ")
-    log("#{e.message}: #{e.backtrace}")
-    "#{e.message}: #{e.backtrace[0..500]}"
   end
 
   def create_references(row, interview, ref_object)
@@ -126,12 +121,6 @@ class EditTableImport
           translations_attributes: translations_attributes
         )
       end
-    end
-  end
-
-  def log(text, error=true)
-    File.open(File.join(Rails.root, 'log', 'edit_table_import.log'), 'a') do |f|
-      f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
     end
   end
 end
