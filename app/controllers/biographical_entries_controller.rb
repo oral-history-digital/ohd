@@ -73,7 +73,17 @@ class BiographicalEntriesController < ApplicationController
   private
 
   def biographical_entry_params
-    params.require(:biographical_entry).permit(:person_id, :text, :start_date, :end_date, :workflow_state)
+    params.require(:biographical_entry).permit(
+      :person_id,
+      :workflow_state,
+      translations_attributes: [
+        :locale,
+        :id,
+        :text,
+        :start_date,
+        :end_date,
+      ]
+    )
   end
 
 end
