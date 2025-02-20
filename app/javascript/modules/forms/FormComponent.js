@@ -74,7 +74,7 @@ export default function FormComponent({
                 (values?.translations_attributes && Object.values(values.translations_attributes) || [])
                     .map(t => t[element.attribute])
             ));
-            const elementValue = element.value || data?.[element.attribute] || values?.[element.attribute];
+            const elementValue = element.value || values?.[element.attribute] || data?.[element.attribute];
             error = element.multiLocale ? !(elementValues?.some( value => element.validate(value))) :
                 !(elementValue && element.validate(elementValue))
         }
