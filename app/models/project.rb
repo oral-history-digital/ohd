@@ -264,6 +264,7 @@ class Project < ApplicationRecord
   def registry_reference_type_import_metadata_fields
     metadata_fields.
       includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
+      left_joins(:registry_reference_type).where.not(registry_reference_type: {id: nil}).
       where(use_in_metadata_import: true, source: 'RegistryReferenceType')
   end
 
