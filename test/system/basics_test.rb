@@ -116,6 +116,9 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Submit'
     assert_text 'activated'
 
+    john = User.where(email: 'john@example.com').first
+    assert !john.user_projects.last.mail_text.blank?
+
     Capybara.reset_sessions!
     login_as 'john@example.com'
     assert_text 'The test archive'
@@ -151,6 +154,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Editing interface'
     click_on 'Curation'
     click_on 'Create new interview'
+    click_on 'Add Contributor'
     select 'Dupont, Jean'
     select 'Interviewee'
     fill_in 'Interview ID', with: 'test234'
