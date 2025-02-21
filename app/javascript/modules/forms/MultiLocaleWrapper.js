@@ -19,11 +19,17 @@ export default function MultiLocaleWrapper(props) {
         data,
         locales,
         handleChange,
+        origAsLocale,
     } = props;
+
+    const usedLocale = (locale) => {
+        const alpha3 = ALPHA2_TO_ALPHA3[locale];
+        return data?.type === 'Segment' ? alpha3 : locale;
+    }
 
     const labelFunc = (locale) => {
         return (label || t(`activerecord.attributes.${scope}.${attribute}`)) +
-            (mandatory ? ' *' : '') + ` (${locale})`;
+            (mandatory ? ' *' : '') + ` (${usedLocale(locale)})`;
     }
 
     const findTranslation = (locale) => {
@@ -72,10 +78,7 @@ export default function MultiLocaleWrapper(props) {
     }
 
     const preparedProps = (locale) => {
-        const alpha3 = ALPHA2_TO_ALPHA3[locale];
-        const usedLocale = data?.type === 'Segment' ? alpha3 : locale;
-
-        const translation = findTranslation(usedLocale) || {locale: usedLocale};
+        const translation = findTranslation(usedLocale(locale)) || {locale: usedLocale(locale)};
         const value = translation[attribute];
 
         return Object.assign({}, props, {
@@ -83,7 +86,8 @@ export default function MultiLocaleWrapper(props) {
             data: translation,
             value: value,
             label: labelFunc(locale),
-            key: `${attribute}-${locale}`
+            key: `${attribute}-${locale}`,
+            id: `${attribute}_${locale}`,
         })
     }
 
@@ -93,9 +97,11 @@ export default function MultiLocaleWrapper(props) {
         textarea: Textarea,
     }
 
+    const usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
+
     return (
         <div className='multi-locale-input'>
-            {locales.map(locale => {
+            {usedLocales.map(locale => {
                 return createElement(components[elementType], preparedProps(locale));
             })}
         </div>

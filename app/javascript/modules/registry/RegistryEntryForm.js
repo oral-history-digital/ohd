@@ -6,6 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 import NormDatumFormContainer from './NormDatumFormContainer';
+import NormDatumFormWrapper from './NormDatumFormWrapper';
 
 export default function RegistryEntryForm({
     normDataProviders,
@@ -20,15 +21,22 @@ export default function RegistryEntryForm({
     const { t, locale } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [descriptor, setDescriptor] = useState(initialDescriptor());
-    const [registryEntryAttributes, setRegistryEntryAttributes] = useState({...registryEntry})
+    const [registryEntryAttributes, setRegistryEntryAttributes] = useState(
+        {...registryEntry, has_geo_coords: !!registryEntry?.has_geo_coords}
+    );
+    const [showElementsInForm, setShowElementsInForm] = useState(false);
+    //const [showElementsInForm, setShowElementsInForm] = useState(!registryEntry);
+    const [resultsFromNormDataSet, setResultsFromNormDataSet] = useState(false);
+
     const values = {
         parent_id: registryEntryParent?.id,
         workflow_state: registryEntry?.workflow_state || 'preliminary',
+        has_geo_coords: !!registryEntry?.has_geo_coords
     }
 
     function initialDescriptor() {
         const registryName = registryEntry?.registry_names[0];
-        return registryName
+        return registryName?.descriptor
             ? registryName.descriptor[locale]
             : '';
     }
@@ -62,17 +70,17 @@ export default function RegistryEntryForm({
                 key={registryEntryId}
                 scope='registry_entry'
                 onSubmit={params => {
-                    const paramsWithNormDataAttributes = {
+                    const updatedParams = {
                         registry_entry: Object.assign({}, registryEntryAttributes, params.registry_entry)
                     };
-                    submitData({projectId, locale, project}, paramsWithNormDataAttributes);
+                    submitData({projectId, locale, project}, updatedParams);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
                 }}
                 onCancel={onCancel}
                 helpTextCode="registry_entry_form"
-                data={registryEntry}
+                data={registryEntryAttributes}
                 values={values}
                 elements={[
                     {
@@ -82,26 +90,24 @@ export default function RegistryEntryForm({
                     },
                     {
                         attribute: 'latitude',
-                        value: registryEntryAttributes.latitude,
-                        validate: validateGeoCoordinate,
+                        //validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
                     {
                         attribute: 'longitude',
-                        value: registryEntryAttributes.longitude,
-                        validate: validateGeoCoordinate,
+                        //validate: validateGeoCoordinate,
                         optional: true,
                         individualErrorMsg: 'format',
                     },
-                    {
-                        elementType: 'select',
-                        attribute: 'workflow_state',
-                        values: ['preliminary', 'public', 'rejected'],
-                        value: registryEntry?.workflow_state || 'preliminary',
-                        withEmpty: true,
-                        optionsScope: 'workflow_states',
-                    }
+                    //{
+                        //elementType: 'select',
+                        //attribute: 'workflow_state',
+                        //values: ['preliminary', 'public', 'rejected'],
+                        //value: registryEntry?.workflow_state || 'preliminary',
+                        //withEmpty: true,
+                        //optionsScope: 'workflow_states',
+                    //}
                 ]}
 
                 nestedScopeProps={[
@@ -113,23 +119,29 @@ export default function RegistryEntryForm({
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes,
                             setDescriptor: setDescriptor,
+                            index: 0,
                         },
-                        parent: registryEntry,
+                        parent: registryEntryAttributes,
                         scope: 'registry_name',
                         elementRepresentation: showRegistryName,
+                        showElementsInForm: showElementsInForm,
+                        disableAddingElements: resultsFromNormDataSet
                     },
                     {
+                        wrapperComponent: NormDatumFormWrapper,
                         formComponent: NormDatumFormContainer,
                         formProps: {
                             descriptor: descriptor,
                             registryEntryId: registryEntryId,
-                            ...(registryEntryAttributes.norm_data_attributes?.[0]),
                             setRegistryEntryAttributes: setRegistryEntryAttributes,
                             registryEntryAttributes: registryEntryAttributes,
+                            setShowElementsInForm: setShowElementsInForm,
+                            setResultsFromNormDataSet: setResultsFromNormDataSet,
                         },
-                        parent: registryEntry,
+                        parent: registryEntryAttributes,
                         scope: 'norm_datum',
                         elementRepresentation: showNormDatum,
+                        showElementsInForm: showElementsInForm,
                     }
                 ]}
             />

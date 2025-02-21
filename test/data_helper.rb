@@ -49,17 +49,21 @@ module DataHelper
       last_name: 'Rossi'
     )
 
-    registry = test_registry(project)
+    #registry = test_registry(project)
+    germany = registry_entry_with_names(project)
+    france = registry_entry_with_names(project, {de: 'Frankreich', ru: 'Фра́нция'})
+    poland = registry_entry_with_names(project, {de: 'Polen', ru: 'По́льша'})
+
     ct = test_contribution_type(project)
     i = test_interview(project)
 
-    root_registry_entry = RegistryEntry.create!(
-      project_id: project.id,
-      code: 'root',
-      workflow_state: 'public'
-    )
+    #root_registry_entry = RegistryEntry.create!(
+      #project_id: project.id,
+      #code: 'root',
+      #workflow_state: 'public'
+    #)
 
-    ohd_registry = test_registry(ohd)
+    #ohd_registry = test_registry(ohd)
 
     # default_registry_name_type = RegistryNameType.find_by!(code: "spelling")
 
@@ -99,6 +103,11 @@ module DataHelper
       project_id: project.id,
       use_in_transcript: true,
     )
+
+    NormDataProvider.create name: 'gnd', url_without_id: 'https://d-nb.info/gnd/'
+    NormDataProvider.create name: 'osm', url_without_id: 'https://www.openstreetmap.org/'
+    NormDataProvider.create name: "wikidata", url_without_id: "http://www.wikidata.org/entity/"
+    NormDataProvider.create name: "geonames", url_without_id: "https://www.geonames.org/"
 
     institution = Institution.create!(
       name: "Test Institute",
@@ -191,7 +200,9 @@ module DataHelper
       ],
     )
 
-    Project.create! attribs
+    project = Project.create! attribs
+    registry = test_registry(project)
+    project
   end
 
   def self.project_with_contribution_types_and_metadata_fields
@@ -423,6 +434,10 @@ module DataHelper
         locale: locale,
         descriptor: name,
       } }
+    )
+    RegistryHierarchy.create(
+      ancestor: project.root_registry_entry,
+      descendant: registry_entry,
     )
     registry_entry
   end

@@ -21,11 +21,11 @@ const mapStateToProps = (state) => {
         detailsAttributes: ['name'],
         initialFormValues: {project_id: project.id},
         formElements: [
-            {
-                attribute: 'code',
-                help: 'help_texts.registry_name_types.code',
-                validate: function(v){return /^\w+$/.test(v)}
-            },
+            //{
+                //attribute: 'code',
+                //help: 'help_texts.registry_name_types.code',
+                //validate: function(v){return /^\w+$/.test(v)}
+            //},
             {
                 attribute: 'name',
             },

@@ -12,6 +12,10 @@ class CompleteExport
       if interview.segments.count > 0
         tape_count = format('%02d', interview.tape_count)
         interview.languages.each do |locale|
+          if interview.has_transcript?(locale)
+            zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
+            zip.write(interview.to_pdf(:de, locale))
+          end
           interview.tapes.each do |tape|
             tape_number = format('%02d', tape.number)
             trans = interview.lang == locale ? 'tr' : 'ue'
@@ -27,15 +31,12 @@ class CompleteExport
       end
 
       project.available_locales.each do |locale|
-        if interview.has_transcript?(locale)
-          zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
-          zip.write(interview.to_pdf(:de, locale))
-        end
-        if interview.interviewee.has_biography?(locale)
+        if interview.interviewee.biography_public? && interview.interviewee.has_biography?(locale)
           zip.put_next_entry("#{interview.archive_id}_biography_#{locale}.pdf")
           zip.write(interview.biography_pdf(:de, locale))
         end
-        if interview.has_protocol?(locale)
+        if interview.has_protocol?(locale) && properties[:public_attributes] &&
+            properties[:public_attributes]['observations']
           zip.put_next_entry("#{interview.archive_id}_protocol_#{locale}.pdf")
           zip.write(interview.observations_pdf(:de, locale))
         end
@@ -51,7 +52,7 @@ class CompleteExport
 
       if interview.photos.count > 0
         zip.put_next_entry("#{interview.archive_id}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip")
-        photos_zip = PhotoExport.new(interview.archive_id, project, false).process
+        photos_zip = PhotoExport.new(interview.archive_id, project, true).process
         photos_zip.rewind
         zip.write photos_zip.read
       end

@@ -37,6 +37,17 @@ export default function UserForm({
     correctHref += '?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED';
     const correctLinkTitle = originalT({translations, translationsView, locale: responseLocale}, 'user.correct_link');
 
+    const mailText = workflowState ? originalT({translations, translationsView, locale: responseLocale},
+        `devise.mailer.${workflowState}.text`,
+        {
+            project_name: project.name[responseLocale],
+            project_link: `<a href='${projectLink}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
+            tos_link: `<a href='${conditionsLink}' target="_blank" title="Externer Link" rel="noreferrer">${conditionsLinkTitle}</a>`,
+            user_display_name: `${data.first_name} ${data.last_name}`,
+            mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
+            correct_link: `<a href='${correctHref}'>${correctLinkTitle}</a>`,
+        }).join('') : '';
+
     const formElements = [
         {
             elementType: 'select',
@@ -54,14 +65,7 @@ export default function UserForm({
             //elementType: 'richTextEditor',
             elementType: 'textarea',
             attribute: 'mail_text',
-            value: workflowState ? originalT({translations, translationsView, locale: responseLocale}, `devise.mailer.${workflowState}.text`, {
-                project_name: project.name[responseLocale],
-                project_link: `<a href='${projectLink}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
-                tos_link: `<a href='${conditionsLink}' target="_blank" title="Externer Link" rel="noreferrer">${conditionsLinkTitle}</a>`,
-                user_display_name: `${data.first_name} ${data.last_name}`,
-                mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
-                correct_link: `<a href='${correctHref}'>${correctLinkTitle}</a>`,
-            }).join('') : '',
+            value: mailText,
             validate: (v) => (v && v.length > 100),
         },
     ];
@@ -89,7 +93,7 @@ export default function UserForm({
                 scope={scope}
                 onSubmit={ async (params) => {
                     mutateData( async users => {
-                        const result = await submitDataWithFetch(pathBase, params);
+                        const result = await submitDataWithFetch(pathBase, {user_project: {mail_text: mailText, ...params.user_project}});
                         const updatedDatum = result.data;
                         const userIndex = users.data.findIndex(u => u.id === userId);
 

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
-import { updateRegistryNameAttributes, updateNormDataAttributes }
-    from './updateRegistryEntryAttributes';
 import { Spinner } from 'modules/spinners';
+import UpdateRegistryEntryAttributesModal from './UpdateRegistryEntryAttributesModal';
 
 function NormDataForDescriptor({
     setRegistryEntryAttributes,
@@ -13,8 +12,10 @@ function NormDataForDescriptor({
     registryNameTypes,
     normDataProviders,
     descriptor,
-    setFromAPI,
     onSubmitCallback,
+    setShowElementsInForm,
+    setResultsFromNormDataSet,
+    replaceNestedFormValues
 }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
@@ -23,6 +24,12 @@ function NormDataForDescriptor({
     const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
+    const [from, setFrom] = useState(0);
+
+    useEffect(() => {
+        setShowResults(false);
+        setFrom(0);
+    }, [descriptor]);
 
     let formElements = [
         {
@@ -50,7 +57,7 @@ function NormDataForDescriptor({
                 elementType: 'select',
                 attribute: 'place_type',
                 labelKey: 'normdata.place_type',
-                values: ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'],
+                values: ['location', 'placeOfWorship', 'natural', 'historic', 'tourism'],
                 withEmpty: true,
                 optionsScope: 'normdata',
                 handlechangecallback: (name, value) => setPlaceTypeFilter(value),
@@ -58,58 +65,93 @@ function NormDataForDescriptor({
         ])
     }
 
-    //if (placeTypeFilter === 'town') {
-        //formElements = formElements.concat([
-            //{
-                //elementType: 'select',
-                //attribute: 'place_extended',
-                //values: ['continent', 'state', 'country'],
-                //withEmpty: true,
-                //optionsScope: 'normdata',
-            //},
-        //])
-    //}
+    if (placeTypeFilter === 'location') {
+        formElements = formElements.concat([
+            {
+                elementType: 'select',
+                attribute: 'place_extended',
+                values: [
+                    'continent', 'country', 'state',
+                    'region', 'province', 'district', 'municipality',
+                    'city', 'town',
+                    'borough', 'suburb', 'quarter',
+                    'village', 'hamlet', 'farm'
+                ],
+                withEmpty: true,
+                optionsScope: 'normdata',
+            },
+        ])
+    }
 
     const fetchAPIResults = async(params) => {
-        const filters = [];
+        const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
         ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
             if (params[filter]) {
-                filters.push(`${filter}=${params[filter]}`);
+                urlAndFilters.push(`${filter}=${params[filter]}`);
             }
         });
 
-        fetch(`${pathBase}/norm_data_api?expression=${descriptor}&` + filters.join('&'))
+        if (params['from']) {
+            urlAndFilters.push(`from=${params['from']}`);
+        }
+
+        fetch(urlAndFilters.join('&'))
             .then(res => res.json())
             .then(json => setApiResult(json));
     };
 
     const displayResults = () => {
-        if (apiResult.success) {
+        //if (apiResult.success) {
+        if (apiResult.response) {
+            console.log(apiResult);
+            const items = apiResult.response?.items;
+
             return (
-                apiResult.response?.items?.length === 0 ?
-                    <p className='notifications'>
-                       {t('modules.interview_search.no_results')}
-                    </p> :
-                    <ul>
-                        {apiResult.response.items.map( result => {
-                            return (
-                                <li>
-                                    <a onClick={ () => {
-                                        setRegistryEntryAttributes({
-                                            latitude: result.Entry.Location?.Latitude,
-                                            longitude: result.Entry.Location?.Longitude,
-                                            ...updateRegistryNameAttributes(result.Entry, registryNameTypes, registryEntryAttributes, project, locale),
-                                            ...updateNormDataAttributes(result.Entry, normDataProviders, registryEntryAttributes),
-                                        });
-                                        onSubmitCallback();
-                                        setFromAPI(false);
-                                    }} >
-                                        {`${result.Entry.Name}: ${result.Entry.Label}, ${result.Entry.Type}`}
-                                    </a>
-                                </li>
-                            )
-                        })}
-                    </ul>
+                <>
+                    {(Array.isArray(items) ? items : [items]).length === 0 ?
+                        <p className='notifications'>
+                           {t('modules.interview_search.no_results')}
+                        </p> :
+                        <ul>
+                            { (Array.isArray(items) ? items : [items]).map( result => {
+                                return (
+                                    <li>
+                                        <UpdateRegistryEntryAttributesModal
+                                            entry={result.Entry}
+                                            registryEntryAttributes={registryEntryAttributes}
+                                            registryNameTypes={registryNameTypes}
+                                            normDataProviders={normDataProviders}
+                                            setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                            setShowElementsInForm={setShowElementsInForm}
+                                            setResultsFromNormDataSet={setResultsFromNormDataSet}
+                                            replaceNestedFormValues={replaceNestedFormValues}
+                                        />
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    }
+                    { from >= 10 &&
+                            <button
+                                type="button"
+                                className="Icon Icon--secondary"
+                                onClick={() => {
+                                    setFrom(from - 10);
+                                    fetchAPIResults({from: from - 10});
+                            }}>
+                                {t('previous')}
+                            </button>
+                    }
+                    <button
+                        type="button"
+                        className="Icon Icon--primary"
+                        onClick={() => {
+                            setFrom(from + 10);
+                            fetchAPIResults({from: from + 10});
+                    }}>
+                        {t('next')}
+                    </button>
+                </>
             );
         } else if (apiResult.error) {
             return (<p className='notifications'>
@@ -129,10 +171,13 @@ function NormDataForDescriptor({
                 !showResults && fetchAPIResults(params.normdata);
                 setShowResults(!showResults);
             }}
-            elements={formElements}
+            elements={[]}
+            //elements={formElements}
             helpTextCode="normdata_form"
+            submitText={t('search')}
         />
     );
 }
 
 export default NormDataForDescriptor;
+
