@@ -67,7 +67,8 @@ class EditTableImportTest < ActiveSupport::TestCase
       ]
     end
 
-    msg = EditTableImport.new(@interview.archive_id, File.join(Rails.root, 'test', 'files', 'edit-table-import-template.csv')).process
+    EditTableImport.new(@interview, File.join(Rails.root, 'test', 'files', 'edit-table-import-template.csv')).process
+    @interview.reload
 
     assert_equal 2, @interview.segments.count
     #assert_equal 6, @interview.segments.first.translations.count # there is still one translation too much (don't knoehow to fix)
