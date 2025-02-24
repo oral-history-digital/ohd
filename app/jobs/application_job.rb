@@ -36,7 +36,6 @@ class ApplicationJob < ActiveJob::Base
   end
 
   rescue_from(StandardError) do |error|
-    binding.pry
     jobs_logger.error("*** #{opts[:interview]&.archive_id}: ")
     jobs_logger.error("#{error.message}: #{error.backtrace}")
 
