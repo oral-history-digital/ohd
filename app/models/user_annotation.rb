@@ -55,7 +55,7 @@ class UserAnnotation < UserContent
   end
 
   def timecode_string(locale)
-    @timecode_string ||= "#{I18n.t(Tape, locale: locale)} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
+    @timecode_string ||= "#{TranslationValue.for('tape', locale)} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
   end
 
   def translated=(trans)
@@ -74,7 +74,7 @@ class UserAnnotation < UserContent
   end
 
   def default_title(locale)
-    title_tokens = [I18n.t('activerecord.models.user_annotation.one', locale: locale) + I18n.t('user_interface.annotations.connective', locale: locale)]
+    title_tokens = [TranslationValue.for('activerecord.models.user_annotation.one', locale) + TranslationValue.for('user_interface.annotations.connective', locale)]
     title_tokens << reference.interview.short_title(locale)
     title_tokens << "(#{reference.interview.archive_id})"
     title_tokens << reference.tape_number

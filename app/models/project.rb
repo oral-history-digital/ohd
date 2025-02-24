@@ -427,7 +427,10 @@ class Project < ApplicationRecord
             name: facet_label_hash || localized_hash_for("search_facets", :project_access),
             subfacets: %w(free restricted).inject({}) do |subfacets, access|
               subfacets[access] = {
-                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = I18n.t("search_facets.#{access}", locale: locale); desc},
+                name: I18n.available_locales.inject({}) do |desc, locale|
+                  desc[locale] = TranslationValue.for("search_facets.#{access}", locale)
+                  desc
+                end,
                 count: 0
               }
               subfacets
@@ -458,7 +461,7 @@ class Project < ApplicationRecord
   def localized_hash_for(specifier, key = nil)
     key == "" && key = "nil"
     I18n.available_locales.inject({}) do |desc, locale|
-      desc[locale] = I18n.t([specifier, key].compact.join("."), locale: locale)
+      desc[locale] = TranslationValue.for([specifier, key].compact.join("."), locale)
       desc
     end
   end

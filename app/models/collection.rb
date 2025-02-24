@@ -33,7 +33,7 @@ class Collection < ApplicationRecord
   end
 
   def self.human_name
-    I18n.t(:collection)
+    TranslationValue.for(:collection, I18n.locale)
   end
 
 end

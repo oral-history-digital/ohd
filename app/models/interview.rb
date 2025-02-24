@@ -720,7 +720,7 @@ class Interview < ApplicationRecord
   end
 
   def video
-    I18n.t("search_facets.#{media_type}")
+    TranslationValue.for("search_facets.#{media_type}", I18n.locale)
   end
 
   def video?

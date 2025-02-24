@@ -83,19 +83,19 @@ class User < ApplicationRecord
   end
 
   def block
-    subject = I18n.t('devise.mailer.block.subject', locale: self.locale_with_project_fallback)
+    subject = TranslationValue.for('devise.mailer.block.subject', self.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
     access_tokens.destroy_all
     sessions.destroy_all
   end
 
   def revoke_block
-    subject = I18n.t('devise.mailer.revoke_block.subject', locale: self.locale_with_project_fallback)
+    subject = TranslationValue.for('devise.mailer.revoke_block.subject', self.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
   end
 
   def remove
-    subject = I18n.t('devise.mailer.remove.subject', locale: self.locale_with_project_fallback)
+    subject = TranslationValue.for('devise.mailer.remove.subject', self.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
     RemoveUserJob.set(wait: 10.seconds).perform_later(self.id)
   end
@@ -154,7 +154,7 @@ class User < ApplicationRecord
 
   def display_name
     if !self.appellation.blank?
-      [I18n.t("user.appellation.#{self.appellation}"), self.full_name].compact.join(' ')
+      [TranslationValue.for("user.appellation.#{self.appellation}", I18n.locale), self.full_name].compact.join(' ')
     else
       self.full_name
     end

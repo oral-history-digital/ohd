@@ -2,7 +2,7 @@ Sehr geehrte/r <%= @receiver.display_name %>,
 
 Sie haben im Interview-Portal "Oral-History.Digital" folgenden Arbeitsschritt vorgenommen:
 
-  <%= I18n.backend.translate(:de, 'jobs.'+@type) %>:
+  <%= TranslationValue.for('jobs.'+@type, :de) %>:
 
   - Sammlungsname: <%= @project_name %>
   <% if @interview %>
