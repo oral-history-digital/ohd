@@ -19,7 +19,7 @@ class SystemInitializer
         proofreader
         research
       ).each do |code|
-        ContributionType.create code: code, label: I18n.t("contributions.#{code}", locale: :de), locale: :de
+        ContributionType.create code: code, label: TranslationValue.for("contributions.#{code}", :de), locale: :de
       end
     end
 

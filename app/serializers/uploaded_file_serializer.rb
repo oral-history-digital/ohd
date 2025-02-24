@@ -11,7 +11,7 @@ class UploadedFileSerializer < ApplicationSerializer
 
   def name
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = I18n.t("activerecord.models.#{object.type.underscore}.one", locale: locale) + " #{object.locale}"
+      mem[locale] = TranslationValue.for("activerecord.models.#{object.type.underscore}.one", locale) + " #{object.locale}"
       mem
     end
   end

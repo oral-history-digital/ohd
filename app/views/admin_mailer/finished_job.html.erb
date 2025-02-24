@@ -2,7 +2,7 @@
 
 <p>Sie haben im Interview-Portal "Oral-History.Digital" folgenden Arbeitsschritt vorgenommen:</p>
 
-<p><%= I18n.backend.translate(:de, 'jobs.'+@type) %>:</p>
+<p><%= TranslationValue.for('jobs.'+@type, :de) %>:</p>
 
 <ul>
   <li>Sammlungsname: <%= @project_name %></li>

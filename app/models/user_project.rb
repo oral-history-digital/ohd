@@ -52,14 +52,14 @@ class UserProject < ApplicationRecord
 
   def grant_project_access
     update(activated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.grant_project_access.subject', project_name: project.name(user.locale_with_project_fallback(project)), locale: user.locale_with_project_fallback(project))
+    subject = TranslationValue.for('devise.mailer.grant_project_access.subject', user.locale_with_project_fallback(project), project_name: project.name(user.locale_with_project_fallback(project)))
     CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 1.seconds)
   end
 
   def reject_project_access
     update(processed_at: Date.today)
     Doorkeeper::AccessToken.create!(resource_owner_id: user.id)
-    subject = I18n.t('devise.mailer.reject_project_access.subject', project_name: project.name(user.locale_with_project_fallback(project)), locale: user.locale_with_project_fallback(project))
+    subject = TranslationValue.for('devise.mailer.reject_project_access.subject', user.locale_with_project_fallback(project), project_name: project.name(user.locale_with_project_fallback(project)))
     # wait until params are updated before sending the mail. Like this mail_text will be available in the mail.
     CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 1.seconds)
   end
@@ -70,20 +70,20 @@ class UserProject < ApplicationRecord
 
   def terminate_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.terminate_project_access.subject', project_name: project.name(user.locale_with_project_fallback(project)), locale: user.locale_with_project_fallback(project))
+    subject = TranslationValue.for('devise.mailer.terminate_project_access.subject', user.locale_with_project_fallback(project), project_name: project.name(user.locale_with_project_fallback(project)))
     CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 1.seconds)
   end
 
   def block_project_access
     update(terminated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.block_project_access.subject', project_name: project.name(user.locale_with_project_fallback(project)), locale: user.locale_with_project_fallback(project))
+    subject = TranslationValue.for('devise.mailer.block_project_access.subject', user.locale_with_project_fallback(project), project_name: project.name(user.locale_with_project_fallback(project)))
     CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 1.seconds)
     AdminMailer.with(user: self.user, project: project).blocked_project_access.deliver_now
   end
 
   def revoke_project_access_block
     update(activated_at: Date.today, processed_at: Date.today)
-    subject = I18n.t('devise.mailer.revoke_project_access_block.subject', project_name: project.name(user.locale_with_project_fallback(project)), locale: user.locale_with_project_fallback(project))
+    subject = TranslationValue.for('devise.mailer.revoke_project_access_block.subject', user.locale_with_project_fallback(project), project_name: project.name(user.locale_with_project_fallback(project)))
     CustomDeviseMailer.access_mail(user, {subject: subject, project: project, user_project: self}).deliver_later(wait: 1.seconds)
   end
 
