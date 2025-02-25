@@ -15,25 +15,39 @@ namespace :repair do
 
   desc 'remove doubled segment translations without headings'
   task remove_doubled_segment_translations: :environment do
+    Segment::Translation.
+      where(mainheading: ['', nil], subheading: ['', nil]).
+      group("segment_id", "locale", "text").
+      having("count(segment_id) > 1").find_each batch_size: 10 do |segment_translation|
+        segment = segment_translation.segment
+        locale = segment_translation.locale
+
+        segment.translations.where(locale: locale).
+          order("id DESC").offset(1).delete_all
+    end
+
+    # The following pure SQL-Query does the same as the above Ruby-Code
+    # but it takes too much memory for the configuration of the live system
+    # 
     # the second subquery is fake to make the query work
     # mysql would otherwise complain with:
     # "You can't specify target table 'segment_translations' for update in FROM clause"
-    ActiveRecord::Base.connection.execute <<-SQL     
-      DELETE FROM segment_translations     
-      WHERE mainheading IS NULL AND subheading IS NULL AND id NOT IN (
-        SELECT tid FROM (
-          SELECT MAX(id) AS tid
-          FROM segment_translations
-          GROUP BY segment_id, locale, text
-        ) AS t
-      )     
-    SQL
+    #ActiveRecord::Base.connection.execute <<-SQL     
+      #DELETE FROM segment_translations     
+      #WHERE mainheading IS NULL AND subheading IS NULL AND id NOT IN (
+        #SELECT tid FROM (
+          #SELECT MAX(id) AS tid
+          #FROM segment_translations
+          #GROUP BY segment_id, locale, text
+        #) AS t
+      #)     
+    #SQL
   end
 
   desc 'remove doubled segment translations with headings'
   task remove_doubled_segment_translations_with_headings: :environment do
     Segment::Translation.group("segment_id", "locale").
-      having("count(segment_id) > 1").each do |segment_translation|
+      having("count(segment_id) > 1").find_each batch_size: 10 do |segment_translation|
         segment = segment_translation.segment
         locale = segment_translation.locale
 
@@ -46,7 +60,7 @@ namespace :repair do
 
         # delete all translations except the newest one
         segment.translations.where(locale: locale).
-          order("id DESC").offset(1).destroy_all
+          order("id DESC").offset(1).delete_all
 
         # update the newest translation with the newest headings and text
         segment.translations.where(locale: locale).first.
