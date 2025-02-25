@@ -1,5 +1,59 @@
 namespace :repair do
 
+  desc 'remove alpha2 segment translations'
+  task remove_alpha2_segment_translations: :environment do
+    Segment::Translation.where("char_length(locale) = 2").delete_all
+  end
+
+  desc 'remove empty segment translations'
+  task remove_empty_segment_translations: :environment do
+    ActiveRecord::Base.connection.execute <<-SQL     
+      DELETE FROM segment_translations     
+      WHERE mainheading IS NULL AND subheading IS NULL AND text IS NULL
+    SQL
+  end
+
+  desc 'remove doubled segment translations without headings'
+  task remove_doubled_segment_translations: :environment do
+    # the second subquery is fake to make the query work
+    # mysql would otherwise complain with:
+    # "You can't specify target table 'segment_translations' for update in FROM clause"
+    ActiveRecord::Base.connection.execute <<-SQL     
+      DELETE FROM segment_translations     
+      WHERE mainheading IS NULL AND subheading IS NULL AND id NOT IN (
+        SELECT tid FROM (
+          SELECT MAX(id) AS tid
+          FROM segment_translations
+          GROUP BY segment_id, locale, text
+        ) AS t
+      )     
+    SQL
+  end
+
+  desc 'remove doubled segment translations with headings'
+  task remove_doubled_segment_translations_with_headings: :environment do
+    Segment::Translation.group("segment_id", "locale").
+      having("count(segment_id) > 1").each do |segment_translation|
+        segment = segment_translation.segment
+        locale = segment_translation.locale
+
+        newest_mainheading = segment.translations.where(locale: locale).
+          where.not(mainheading: [nil, '']).order("id DESC").first&.mainheading
+        newest_subheading = segment.translations.where(locale: locale).
+          where.not(subheading: [nil, '']).order("id DESC").first&.subheading
+        newest_text = segment.translations.where(locale: locale).
+          where.not(text: [nil, '']).order("id DESC").first&.text
+
+        # delete all translations except the newest one
+        segment.translations.where(locale: locale).
+          order("id DESC").offset(1).destroy_all
+
+        # update the newest translation with the newest headings and text
+        segment.translations.where(locale: locale).first.
+          update(mainheading: newest_mainheading, subheading: newest_subheading, text: newest_text)
+      end
+  end
+
   desc 'add a default tape to interviews that do not have at least one tape'
   task :add_default_tape => :environment do
     Interview.left_outer_joins(:tapes).where(tapes: {id: nil}).each do |i| 
