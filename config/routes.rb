@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     resources :access_configs
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
+    get 'edit-table-import-template', to: "edit_tables#import_template"
 
     resources :edit_tables, only: [:create, :show]
     resources :languages

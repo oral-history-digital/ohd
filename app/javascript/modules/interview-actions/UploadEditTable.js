@@ -4,6 +4,7 @@ import { FaDownload } from 'react-icons/fa';
 
 import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
 const CONTRIBUTION_TYPES_SPEAKING = [
     'interviewee',
@@ -24,6 +25,7 @@ export default function UploadEditTable({
     submitData,
 }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
 
     if (!interview.contributions) {
@@ -60,7 +62,7 @@ export default function UploadEditTable({
     return (
         <>
             <p>
-                <a href="/edit_table-import-template.csv" download>
+                <a href={`${pathBase}/edit-table-import-template.csv?id=${archiveId}&locale=${locale}`} download>
                     <span className="flyout-sub-tabs-content-ico-link">
                         <FaDownload className="Icon Icon--small" title={t('download')} />
                         {' '}
