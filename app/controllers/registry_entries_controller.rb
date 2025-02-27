@@ -116,7 +116,7 @@ class RegistryEntriesController < ApplicationController
             }
           )
         end
-        send_data csv, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.pdf",
+        send_data pdf, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.pdf",
           type: "application/pdf"
       end
       format.csv do
