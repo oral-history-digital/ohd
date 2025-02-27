@@ -1,5 +1,8 @@
 class EditTablesController < ApplicationController
 
+  skip_before_action :authenticate_user!, only: [:import_template]
+  skip_after_action :verify_authorized, only: [:import_template]
+
   def create
     interview = Interview.find_by_archive_id(edit_table_params[:archive_id])
     authorize interview, :update?
@@ -36,6 +39,17 @@ class EditTablesController < ApplicationController
     respond_to do |format|
       format.csv do
         send_data EditTableExport.new(params[:id]).process, type: "application/csv", filename: "#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
+      end
+    end
+  end
+
+  def import_template
+    interview = Interview.find_by_archive_id(params[:id])
+    csv = EditTableImportTemplate.new(interview, params[:locale]).csv
+
+    respond_to do |format|
+      format.csv do
+        send_data csv, filename: 'edit-table-import-template.csv', type: 'text/csv'
       end
     end
   end
