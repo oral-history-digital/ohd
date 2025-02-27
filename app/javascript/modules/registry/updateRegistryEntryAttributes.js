@@ -31,7 +31,7 @@ export function prepareRegistryNameAttributes(
     if (originalName)
         setDescriptor(originalName, registryNamesAttributes, defaultNameType.id, 'orig');
 
-    const origAlias = entry.Alias?.find(n => n.Lang === langOrig && n.Alias)?.Alias;
+    const origAlias = Array.isArray(entry.Alias) && entry.Alias.find(n => n.Lang === langOrig && n.Alias)?.Alias;
     if (origAlias)
         setDescriptor(origAlias, registryNamesAttributes, ancientNameType.id, 'orig');
 
