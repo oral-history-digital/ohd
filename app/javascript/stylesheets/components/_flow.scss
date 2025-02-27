@@ -1,0 +1,51 @@
+.Flow {
+  box-sizing: border-box;
+  counter-reset: item;
+  display: flex;
+  line-height: $base-unit;
+  list-style: none;
+  margin-block: 0;
+  padding-left: 0;
+}
+
+.Flow-item {
+  align-items: center;
+  background-color: oklch(80% 0.0 0.0);
+  counter-increment: item;
+  display: flex;
+}
+
+.Flow-item:before {
+  background-color: oklch(60% 0 0);
+  clip-path: polygon(0 0, 75% 0, 100% 50%, 75% 100%, 0 100%);
+  color: white;
+  content: counter(item);
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding-block: 0.5 * $base-unit;
+  padding-inline: $base-unit;
+  width: 4rem;
+}
+
+.Flow-item--active:before {
+  background-color: var(--primary-color);
+}
+
+.Flow-text {
+  display: none;
+  padding-inline: 0.5 * $base-unit;
+}
+
+button.Flow-text {
+  border: none;
+  padding-inline: 0.5 * $base-unit;
+  text-align: left;
+}
+
+button.Flow-text:hover {
+  text-decoration: underline;
+}
+
+.Flow-item--active > .Flow-text {
+  display: flex;
+}
