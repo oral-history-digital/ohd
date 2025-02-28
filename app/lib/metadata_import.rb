@@ -44,9 +44,6 @@ class MetadataImport
 
       interview.touch
     end
-  rescue StandardError => e
-    log("*** #{project.shortname} - #{project.id}")
-    log("#{e.message}: #{e.backtrace}")
   end
 
   def update_or_create_interview(project, row)
@@ -212,12 +209,6 @@ class MetadataImport
   def destroy_references(ref_object, ref_type_id, interview)
     if ref_type_id
       ref_object&.registry_references.where(registry_reference_type_id: ref_type_id, interview_id: interview.id).destroy_all
-    end
-  end
-
-  def log(text, error=true)
-    File.open(File.join(Rails.root, 'log', 'metadata_import.log'), 'a') do |f|
-      f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
     end
   end
 end
