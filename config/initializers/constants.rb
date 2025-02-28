@@ -10,4 +10,4 @@ DEFAULT_PRIMARY_COLOR = '#e01217'
 # using the "\x00" char as delimiter will move values between columns
 # when the document is created with default options ( " as quote_char)
 #CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: "\x00"}
-CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: '"'}
+CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: '"', liberal_parsing: true}
