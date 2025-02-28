@@ -46,26 +46,30 @@ namespace :repair do
 
   desc 'remove doubled segment translations with headings'
   task remove_doubled_segment_translations_with_headings: :environment do
-    Segment::Translation.group("segment_id", "locale").
-      having("count(segment_id) > 1").each do |segment_translation|
-        segment = segment_translation.segment
-        locale = segment_translation.locale
+    Interview.find_each batch_size: 1 do |interview|
+      p "*** cleaning segments for interview #{interview.archive_id}"
+      Segment::Translation.where(id: interview.segments.pluck(:id)).
+        group("segment_id", "locale").
+        having("count(segment_id) > 1").each do |segment_translation|
+          segment = segment_translation.segment
+          locale = segment_translation.locale
 
-        newest_mainheading = segment.translations.where(locale: locale).
-          where.not(mainheading: [nil, '']).order("id DESC").first&.mainheading
-        newest_subheading = segment.translations.where(locale: locale).
-          where.not(subheading: [nil, '']).order("id DESC").first&.subheading
-        newest_text = segment.translations.where(locale: locale).
-          where.not(text: [nil, '']).order("id DESC").first&.text
+          newest_mainheading = segment.translations.where(locale: locale).
+            where.not(mainheading: [nil, '']).order("id DESC").first&.mainheading
+          newest_subheading = segment.translations.where(locale: locale).
+            where.not(subheading: [nil, '']).order("id DESC").first&.subheading
+          newest_text = segment.translations.where(locale: locale).
+            where.not(text: [nil, '']).order("id DESC").first&.text
 
-        # delete all translations except the newest one
-        segment.translations.where(locale: locale).
-          order("id DESC").offset(1).delete_all
+          # delete all translations except the newest one
+          segment.translations.where(locale: locale).
+            order("id DESC").offset(1).delete_all
 
-        # update the newest translation with the newest headings and text
-        segment.translations.where(locale: locale).first.
-          update(mainheading: newest_mainheading, subheading: newest_subheading, text: newest_text)
-      end
+          # update the newest translation with the newest headings and text
+          segment.translations.where(locale: locale).first.
+            update(mainheading: newest_mainheading, subheading: newest_subheading, text: newest_text)
+        end
+    end
   end
 
   desc 'add a default tape to interviews that do not have at least one tape'
