@@ -63,9 +63,9 @@ class ActiveSupport::TestCase
     unless system_test?
       return devise_login_as user_or_email
     end
-    
+
     visit '/'
-    within '.flyout-login-container' do
+    within '.SessionButtons' do
       click_on 'Login'
     end
     fill_in 'Email', with: user_or_email
