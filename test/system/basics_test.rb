@@ -22,7 +22,12 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
 
-    assert_text 'Logged in as Alice Henderson'
+    within '.SessionButtons' do
+      click_on 'Account'
+    end
+
+    assert_text 'First Name: Alice'
+    assert_text 'Last Name: Henderson'
   end
 
   test "register as a new user" do
@@ -194,7 +199,7 @@ class BasicsTest < ApplicationSystemTestCase
     assert_text 'My Project'
 
     # log in without returning to page root
-    within '.flyout-login-container' do
+    within '.SessionButtons' do
       click_on 'Login'
     end
     fill_in 'Email', with: 'john@example.com'
@@ -256,6 +261,9 @@ class BasicsTest < ApplicationSystemTestCase
 
   test 'change password' do
     visit '/'
+    within '.SessionButtons' do
+      click_on 'Login'
+    end
     click_on 'Recover password'
     fill_in 'Email', with: 'john@example.com'
     click_on 'Submit'
