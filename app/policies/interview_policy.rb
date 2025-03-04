@@ -48,6 +48,10 @@ class InterviewPolicy < ApplicationPolicy
     download?
   end
 
+  def tei?
+    download?
+  end
+
   Interview.non_public_method_names.each do |m|
     define_method "#{m}?" do
       user

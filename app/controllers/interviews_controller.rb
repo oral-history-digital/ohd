@@ -276,6 +276,16 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def tei
+    interview = Interview.find_by_archive_id(params[:id])
+    authorize interview
+    respond_to do |format|
+      format.xml do
+        send_data interview.tei(params[:locale], params[:lang]), type: "application/xml", filename: "#{params[:id]}_tei_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
+      end
+    end
+  end
+
   def cmdi_metadata
     interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
