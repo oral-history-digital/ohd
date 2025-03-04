@@ -22,7 +22,12 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
 
-    assert_text 'Logged in as Alice Henderson'
+    within '.SessionButtons' do
+      click_on 'Account'
+    end
+
+    assert_text 'First Name: Alice'
+    assert_text 'Last Name: Henderson'
   end
 
   test "register as a new user" do
@@ -91,7 +96,6 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'john@example.com'
 
     assert_text 'The test archive'
-    assert_text 'Please apply for activation'
     click_on 'Request activation for this archive'
 
     fill_in 'Institution', with: 'Nowhere University'
@@ -122,7 +126,7 @@ class BasicsTest < ApplicationSystemTestCase
     Capybara.reset_sessions!
     login_as 'john@example.com'
     assert_text 'The test archive'
-    assert_no_text 'Please apply for activation'
+    assert_no_text 'Request activation for this archive'
   end
 
   test 'validate inputs on archive access request' do
@@ -130,7 +134,6 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'john@example.com'
 
     assert_text 'The test archive'
-    assert_text 'Please apply for activation'
     click_on 'Request activation for this archive'
 
     # the following fields should not be filled to trigger validation errors:
@@ -194,7 +197,7 @@ class BasicsTest < ApplicationSystemTestCase
     assert_text 'My Project'
 
     # log in without returning to page root
-    within '.flyout-login-container' do
+    within '.SessionButtons' do
       click_on 'Login'
     end
     fill_in 'Email', with: 'john@example.com'
@@ -256,6 +259,9 @@ class BasicsTest < ApplicationSystemTestCase
 
   test 'change password' do
     visit '/'
+    within '.SessionButtons' do
+      click_on 'Login'
+    end
     click_on 'Recover password'
     fill_in 'Email', with: 'john@example.com'
     click_on 'Submit'
