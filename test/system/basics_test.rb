@@ -96,7 +96,6 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'john@example.com'
 
     assert_text 'The test archive'
-    assert_text 'Please apply for activation'
     click_on 'Request activation for this archive'
 
     fill_in 'Institution', with: 'Nowhere University'
@@ -127,7 +126,7 @@ class BasicsTest < ApplicationSystemTestCase
     Capybara.reset_sessions!
     login_as 'john@example.com'
     assert_text 'The test archive'
-    assert_no_text 'Please apply for activation'
+    assert_no_text 'Request activation for this archive'
   end
 
   test 'validate inputs on archive access request' do
