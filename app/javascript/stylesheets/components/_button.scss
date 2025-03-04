@@ -21,6 +21,7 @@ $button-border-width: $base-unit * 0.083333;
 }
 
 .Button--asLink {
+  background-color: transparent;
   border: none;
   color: var(--primary-color);
   padding-block: 0;
