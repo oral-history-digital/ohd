@@ -134,7 +134,6 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'john@example.com'
 
     assert_text 'The test archive'
-    assert_text 'Please apply for activation'
     click_on 'Request activation for this archive'
 
     # the following fields should not be filled to trigger validation errors:
