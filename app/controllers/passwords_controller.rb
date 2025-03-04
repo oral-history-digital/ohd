@@ -37,7 +37,7 @@ class PasswordsController < Devise::PasswordsController
       url = resource.pre_register_location
       last_token ? "#{url}#{url.include?('?') ? '&' : '?'}access_token=#{last_token}" : url
     rescue
-      "current_project.domain_with_optional_identifier/#{params[:locale]}"
-    end 
+      "#{current_project.domain_with_optional_identifier}/#{params[:locale]}"
+    end
 
 end
