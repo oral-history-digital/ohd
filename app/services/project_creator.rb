@@ -46,7 +46,7 @@ class ProjectCreator < ApplicationService
   def create_default_registry_name_types
     {
       spelling: 'Bezeichner',
-      ancient: 'Alias oder ehemalige Bezeichnung'
+      ancient: 'Alias'
     }.each do |code, name|
       RegistryNameType.create(
         code: code,
