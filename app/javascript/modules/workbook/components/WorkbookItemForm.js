@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { useTrackEventFunction, EVENT_CATEGORY_WORKBOOK, SAVE_SEARCH,
+    BOOKMARK_INTERVIEW, BOOKMARK_SEGMENT, EDIT_WORKBOOK_ITEM } from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
@@ -29,7 +31,7 @@ export default function WorkbookItemForm({
 }) {
     const { project: currentProject } = useProject();
     const project = suppliedProject ? suppliedProject : currentProject;
-
+    const trackEvent = useTrackEventFunction();
     const { t, locale } = useI18n();
     const { createWorkbookItem, updateWorkbookItem } = useWorkbookApi();
     const mutateWorkbook = useMutateWorkbook();
@@ -64,6 +66,18 @@ export default function WorkbookItemForm({
         }
     }
 
+    function getCreateEventAction() {
+        switch(type) {
+            case 'Search':
+                return SAVE_SEARCH;
+            case 'UserAnnotation':
+                return BOOKMARK_SEGMENT;
+            case 'InterviewReference':
+            default:
+                return BOOKMARK_INTERVIEW;
+        }
+    }
+
     function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
@@ -93,9 +107,11 @@ export default function WorkbookItemForm({
                 if (id) {
                     serverResult = await updateWorkbookItem(id, itemData);
                     returnedId = id;
+                    trackEvent(EVENT_CATEGORY_WORKBOOK, EDIT_WORKBOOK_ITEM);
                 } else {
                     serverResult = await createWorkbookItem(itemData);
                     returnedId = serverResult.id;
+                    trackEvent(EVENT_CATEGORY_WORKBOOK, getCreateEventAction());
                 }
 
                 const savedWorkbookItem = serverResult.data;

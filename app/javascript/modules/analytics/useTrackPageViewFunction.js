@@ -14,7 +14,7 @@ import {
  */
 export default function useTrackPageViewFunction() {
     const currentUser = useSelector(getCurrentUser);
-    const { trackPageView: matomoTrackPageView, pushInstruction } = useMatomo();
+    const { trackPageView: matomoTrackPageView } = useMatomo();
 
     let options = {
         customDimensions: [
