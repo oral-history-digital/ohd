@@ -13,7 +13,6 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
       xml.particDesc do
         interview.contributors.each do |contributor|
           xml.person "xml:id": contributor.id, sex: contributor.gender do
-            xml.creatorName interview.anonymous_title(locale)
             xml.givenName contributor.first_name(locale)
             if interview.project.fullname_on_landing_page
               xml.familyName contributor.last_name(locale)
