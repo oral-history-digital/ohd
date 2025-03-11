@@ -89,11 +89,13 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           xml.spanGr type: TranslationValue.for('annotations', locale) do
             segment.annotations.each do |annotation|
               annotation.translations.each do |translation|
-                xml.span type: translation.locale,
-                  from: "T#{tape.number}_S#{segment.id}",
-                  to: s_end do
-                    xml.text! translation.text
-                  end
+                unless translation.text.blank?
+                  xml.span type: translation.locale,
+                    from: "T#{tape.number}_S#{segment.id}",
+                    to: s_end do
+                      xml.text! translation.text
+                    end
+                end
               end
             end
           end
