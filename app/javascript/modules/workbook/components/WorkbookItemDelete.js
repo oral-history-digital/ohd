@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { useTrackEventFunction, EVENT_CATEGORY_WORKBOOK, REMOVE_WORKBOOK_ITEM } from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 
@@ -15,6 +16,7 @@ export default function WorkbookItemDelete({
     const { t } = useI18n();
     const mutateWorkbook = useMutateWorkbook();
     const { deleteWorkbookItem } = useWorkbookApi();
+    const trackEvent = useTrackEventFunction();
 
     const destroy = () => {
         mutateWorkbook(async workbook => {
@@ -25,6 +27,8 @@ export default function WorkbookItemDelete({
                 data: { ...workbook.data }
             };
             delete updatedWorkbook.data[id];
+
+            trackEvent(EVENT_CATEGORY_WORKBOOK, REMOVE_WORKBOOK_ITEM);
 
             return updatedWorkbook;
         });

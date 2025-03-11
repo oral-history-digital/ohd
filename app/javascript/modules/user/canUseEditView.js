@@ -1,6 +1,4 @@
 export default function canUseEditView(user) {
-    console.log(user);
-
     if (!user || Object.keys(user).length === 0) {
         return false;
     }
