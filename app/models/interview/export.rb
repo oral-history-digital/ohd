@@ -120,14 +120,13 @@ module Interview::Export
     )
   end
 
-  def tei(locale, lang)
+  def tei(locale)
     ApplicationController.new.render_to_string(
       template: 'interviews/tei',
       formats: :xml,
       locals: {
         interview: self,
         locale: locale,
-        lang: lang,
       }
     )
   end
