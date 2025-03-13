@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_06_094635) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -343,7 +343,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_06_094635) do
     t.string "citation_media_id", limit: 255
     t.string "citation_timecode", limit: 18
     t.datetime "indexed_at", precision: nil
-    t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
     t.text "properties", size: :medium
@@ -606,7 +605,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_06_094635) do
     t.integer "archive_id_number_length"
     t.string "hidden_transcript_registry_entry_ids"
     t.boolean "display_ohd_link", default: false
-    t.integer "default_search_order", default: 0, null: false
+    t.integer "default_search_order", default: 1, null: false
     t.string "logged_out_visible_registry_entry_ids"
     t.string "workflow_state", default: "public", null: false
     t.boolean "show_preview_img", default: false
