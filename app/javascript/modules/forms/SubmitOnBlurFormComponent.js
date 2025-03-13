@@ -1,72 +1,65 @@
-import { createElement, Component } from 'react';
+import { createElement, useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default class SubmitOnBlurForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            valid: this.props.validate === undefined,
-            value: this.value(),
-        };
+const SubmitOnBlurForm = ({
+    attribute,
+    scope,
+    type = 'input',
+    validate,
+    data,
+    locale,
+    projectId,
+    project,
+    submitData,
+}) => {
+    const translation = data.translations_attributes.find(t => t.locale === locale);
+    const translationPublic = data.translations_attributes.find(t => t.locale === `${locale}-public`);
+    const initialValue = translation?.[attribute] || translationPublic?.[attribute] || '';
+    
+    const [value, setValue] = useState(initialValue);
+    const [valid, setValid] = useState(validate === undefined);
 
-        this.handleChange = this.handleChange.bind(this);
-        this.submit = this.submit.bind(this);
-    }
+    const handleChange = (event) => {
+        const newValue = event.target.value;
+        setValue(newValue);
 
-    // is the attribute part of a translation-table
-    handleChange(event) {
-        let value = event.target.value;
-        this.setState({value: value})
-
-        if (this.props.validate !== undefined) {
-            if (this.props.validate(value)) {
-                this.setState({valid: true})
-            } else {
-                this.setState({valid: false})
-            }
+        if (validate) {
+            setValid(validate(newValue));
         }
-    }
+    };
 
-    value() {
-        if (this.props.locale) {
-            return this.props.data[this.props.attribute][this.props.locale] || this.props.data[this.props.attribute][`${this.props.locale}-public`] || ''
-        } else {
-            return this.props.data[this.props.attribute];
-        }
-    }
-
-    submit(event) {
+    const submit = (event) => {
         event.preventDefault();
-
-        if(this.state.valid) {
-            this.props.submitData(
-                { locale: 'de', project: this.props.project, projectId: this.props.projectId },
-                {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}}
+        if (valid) {
+            submitData(
+                { locale: 'de', project, projectId },
+                { [scope]: {
+                    id: data.id,
+                    translations_attributes: [{
+                        id: translation?.id || translationPublic?.id,
+                        locale,
+                        [attribute]: value,
+                    }]
+                }}
             );
         }
-    }
+    };
 
-    input() {
-        return createElement(this.props.type || 'input', {
-            onBlur: this.submit,
-            onChange: this.handleChange,
-            defaultValue: this.value(),
-        });
-    }
-
-    render() {
-        return (
-            <form className={'submit-on-focus-out'}>
-                {this.input()}
-            </form>
-        );
-    }
-}
+    return (
+        <form className="submit-on-focus-out">
+            {createElement(type, {
+                onBlur: submit,
+                onChange: handleChange,
+                defaultValue: initialValue,
+            })}
+        </form>
+    );
+};
 
 SubmitOnBlurForm.propTypes = {
     attribute: PropTypes.string.isRequired,
     scope: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
     validate: PropTypes.func,
     data: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
@@ -74,3 +67,5 @@ SubmitOnBlurForm.propTypes = {
     project: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
 };
+
+export default SubmitOnBlurForm;
