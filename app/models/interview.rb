@@ -81,6 +81,10 @@ class Interview < ApplicationRecord
   serialize :links, Array
 
   after_create :set_public_attributes_to_properties
+  after_create :create_tasks
+  after_save :update_counter_cache
+  after_destroy :update_counter_cache
+
   def set_public_attributes_to_properties
     atts = %w(
       archive_id
@@ -100,25 +104,15 @@ class Interview < ApplicationRecord
     update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
-  after_create :create_tasks
   def create_tasks
     project.task_types.each do |task_type|
       Task.create(interview_id: id, task_type_id: task_type.id)
     end
   end
 
-  def after_save
-    self.update_counter_cache
-  end
-
-  def after_destroy
-    self.update_counter_cache
-  end
-
   def update_counter_cache
-    self.project.update interviews_count: self.project.interviews.shared.count
-    self.collection&.update interviews_count: self.collection.interviews.shared.count
-    self.project.update interviews_count: self.project.interviews.shared.count
+    self.project.update_interviews_count
+    self.collection&.update_interviews_count
     self.project.institutions.each do |institution|
       institution.update_interviews_count
       institution.parent&.update_interviews_count
