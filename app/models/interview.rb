@@ -107,15 +107,10 @@ class Interview < ApplicationRecord
     end
   end
 
-  def after_save
-    self.update_counter_cache
-  end
-
-  def after_destroy
-    self.update_counter_cache
-  end
-
-  def update_counter_cache
+  after_save :update_counter_cache
+  after_destroy :update_counter_cache2
+  def update_counter_cache()
+    puts "UPDATE_COUNTER_CACHE"
     self.project.update interviews_count: self.project.interviews.shared.count
     self.collection&.update interviews_count: self.collection.interviews.shared.count
     self.project.update interviews_count: self.project.interviews.shared.count
