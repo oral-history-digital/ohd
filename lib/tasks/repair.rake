@@ -48,7 +48,7 @@ namespace :repair do
   task remove_doubled_segment_translations_with_headings: :environment do
     Interview.find_each batch_size: 1 do |interview|
       p "*** cleaning segments for interview #{interview.archive_id}"
-      Segment::Translation.where(id: interview.segments.pluck(:id)).
+      Segment::Translation.where(segment_id: interview.segments.pluck(:id)).
         group("segment_id", "locale").
         having("count(segment_id) > 1").each do |segment_translation|
           segment = segment_translation.segment
