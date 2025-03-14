@@ -57,6 +57,6 @@ class ApplicationJob < ActiveJob::Base
   end
 
   def job_type
-    self.class.name.underscore.chomp('_job')
+    self.class.name.underscore.chomp('_job').chomp('_file')
   end
 end
