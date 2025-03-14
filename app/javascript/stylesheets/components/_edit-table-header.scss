@@ -1,7 +1,7 @@
 .EditTableHeader {
   background-color: var(--primary-color);
   color: white;
-  height: 3 * $base-unit;
+  //height: 3 * $base-unit;
   position: sticky;
   top: 0;
   z-index: $z-index-edit-table-header;
