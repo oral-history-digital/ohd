@@ -69,7 +69,7 @@ class MetadataImport
     interview_languages_attributes << {
       language: primary_language,
       spec: 'primary'
-    } if primary_language != interview&.primary_language
+    } if primary_language && primary_language != interview&.primary_language
 
     primary_translation_language = find_language(row[:primary_translation_language_id])
     interview_languages_attributes << {
