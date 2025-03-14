@@ -24,7 +24,7 @@ export default function InterviewDownloads({
             >
                 <FaDownload className="Icon Icon--small" title={t('download')} />
                 {' '}
-                {lang}
+                {t(lang)}
             </a>
         )
     } else if (showEmpty) {
