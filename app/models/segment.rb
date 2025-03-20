@@ -198,6 +198,37 @@ class Segment < ApplicationRecord
     text_enciphered
   end
 
+  def tokenized_text(locale)
+    ordinary_text = []
+    comments = []
+
+    unless text(locale).blank?
+      parts = text(locale).split(/([\{|\[|<]{1,2}[^\{\[<>\]\}]*[\}|\]|>]{1,2})/).map do |part|
+        if part =~ /[\{|\[|<]{1,2}[^\{\[<>\]\}]*[\}|\]|>]{1,2}/
+          part
+        else
+          part.split(/(\?|\.|!|,|:)/).map do |subpart|
+            subpart.split
+          end
+        end
+      end.flatten
+      parts.each_with_index do |part, index|
+        case part
+          when /<.*>/
+            comments << {content: part, index: index, type: part[/<(\w+).*/,1]}
+          when /[\{|\[]{1,2}[^\{\[\]\}]*[\}|\]]{1,2}/
+            comments << {content: part, index: index, type: "za"}
+          when /(\?|\.|!|,|:)/
+            ordinary_text << {content: part, index: index, type: :pc}
+          else
+            ordinary_text << {content: part, index: index, type: :w}
+          end
+      end
+    end
+
+    [ordinary_text, comments]
+  end
+
   validates_presence_of :timecode#, :media_id
 
   # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!
