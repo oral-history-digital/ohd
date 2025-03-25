@@ -3,7 +3,7 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": ".devcontainer/scripts/post-create.sh",
+  "postCreateCommand": "bash .devcontainer/scripts/platform-fixes.sh && bash .devcontainer/scripts/post-create.sh",
   "customizations": {
     "vscode": {
       "settings": {
@@ -19,10 +19,12 @@
         "wingrunr21.vscode-ruby",
         "castwide.solargraph",
         "ms-azuretools.vscode-docker",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "github.copilot"
       ]
     }
   },
   "forwardPorts": [3000, 8983, 3035],
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "postStartCommand": ".devcontainer/scripts/start-app.sh"
 }
