@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useI18n } from 'modules/i18n';
 
 import { usePathBase } from 'modules/routes';
 import LinksForTapes from './LinksForTapes';
@@ -8,6 +9,7 @@ export default function DownloadLinks({
     numTapes,
     interview,
 }) {
+    const { t } = useI18n();
     const pathBase = usePathBase();
     const translationLocale = interview.translation_locale;
     const hasTranscript = interview.transcript_locales?.indexOf(interview.lang) > -1;
@@ -48,11 +50,11 @@ export default function DownloadLinks({
                         format="vtt"
                     />
                 )}
-                { hasTranscript && dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
-                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos (alle)') }
-                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip?only_public=true`, 'Fotos (nur öffentliche)') }
-                { dataLink(`${pathBase}/interviews/${archiveId}/download_metadata.xml`, 'Metadaten (DataCite)') }
-                { dataLink(`${pathBase}/interviews/${archiveId}/export_all.zip`, 'Alle Daten herunterladen') }
+                { hasTranscript && dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, `${t('edit_table')} ${t('all_tapes')} (csv)`) }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, `${t('photos')} (${t('workflow_states.all')})`) }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip?only_public=true`, `${t('photos')} (${t('only_public')})`) }
+                { dataLink(`${pathBase}/interviews/${archiveId}/download_metadata.xml`, `${t('activerecord.models.metadata_field.other')} (DataCite)`) }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_all.zip`, `${t('download_all_data')}`) }
             </ul>
         </div>
     );
