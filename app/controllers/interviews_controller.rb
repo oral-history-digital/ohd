@@ -326,6 +326,16 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def reindex
+    authorize Interview, :download?
+    ReindexJob.perform_later(archive_id: params[:archive_ids])
+    respond_to do |format|
+      format.json do
+        render json: {}, status: :ok
+      end
+    end
+  end
+
   def export_metadata
     authorize Interview, :download?
     respond_to do |format|
