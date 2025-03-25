@@ -119,6 +119,7 @@ Rails.application.routes.draw do
       collection do
         post :dois
         get :export_metadata
+        post :reindex
       end
       resources :contributions, only: [:create, :destroy]
       resources :photos, only: [:create, :update, :destroy]
