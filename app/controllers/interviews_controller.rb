@@ -340,7 +340,7 @@ class InterviewsController < ApplicationController
     authorize Interview, :download?
     respond_to do |format|
       format.csv do
-        send_data MetadataExport.new(params[:archive_ids], current_project, :de).process,
+        send_data MetadataExport.new(params[:archive_ids], current_project, params[:locale]).process,
         type: "application/csv",
         filename: "metadata_#{current_project.shortname}_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
       end
