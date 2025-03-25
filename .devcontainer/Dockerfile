@@ -1,5 +1,8 @@
 FROM ruby:3.0.7
 
+# Add platform-specific fixes
+ENV BUNDLE_FORCE_RUBY_PLATFORM=1
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
