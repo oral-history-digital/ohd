@@ -59,7 +59,7 @@ export default function MediaElement({
         language: locale,
         sources: initialSources,
         poster: interview.still_url || speakerImage,
-        playbackRates: [0.5, 1, 1.5, 2],
+        playbackRates: [0.6, 0.8, 1, 1.2, 2],
         enableSourceset: false,
         controlBar: {
             children: [
