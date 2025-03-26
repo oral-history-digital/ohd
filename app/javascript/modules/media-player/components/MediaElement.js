@@ -63,7 +63,9 @@ export default function MediaElement({
         enableSourceset: false,
         controlBar: {
             children: [
+                'skipBackward',
                 'playToggle',
+                'skipForward',
                 'progressControl',
                 'currentTimeDisplay',
                 'volumePanel',
@@ -72,18 +74,16 @@ export default function MediaElement({
                 'qualitySelector',
                 'fullscreenToggle',
             ],
+            skipButtons: {
+                forward: FORWARD_STEP,
+                backward: BACKWARD_STEP
+            }
         },
         userActions: {
             click: true,
             doubleClick: true,
             hotkeys: handleKeyPress,
         },
-        // plugins: {
-        //     seekButtons: {
-        //         forward: FORWARD_STEP,
-        //         back: BACKWARD_STEP,
-        //     },
-        // },
     };
 
     function handleKeyPress(event) {
