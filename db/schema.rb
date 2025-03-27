@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_27_114822) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -745,9 +745,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
+  create_table "role_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["locale"], name: "index_role_translations_on_locale"
+    t.index ["role_id"], name: "index_role_translations_on_role_id"
+  end
+
   create_table "roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "desc", size: :long
-    t.string "name", limit: 255
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "project_id"
