@@ -35,6 +35,7 @@ export default function NestedScopeElement({
                 createElement(formComponent, {...formProps,
                     nested: true,
                     data: element,
+                    key: `nse-form-${index}-${element.creation_date}`,
                     index: index,
                     submitData: !!element.id ? submitData : onSubmit,
                     onSubmitCallback: cancel,
