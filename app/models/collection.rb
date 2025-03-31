@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Collection < ApplicationRecord
+  include Oai
 
   has_many :interviews
   belongs_to :project, touch: true

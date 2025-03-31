@@ -2,9 +2,9 @@ module Interview::Oai
 
   def sets
     oai_sets = [ OAI::Set.new({name: 'Interview-Archiv', spec: "archive:#{project.shortname}"}) ]
-    #if name.match('multimeter')
-      #oai_sets << OAI::Set.new({name: 'Meters', spec: 'meters'})
-    #end
+    unless collection.nil?
+      oai_sets << OAI::Set.new({name: 'Interview-Sammlung', spec: "collection:#{collection&.shortname}"})
+    end
     oai_sets
   end
 

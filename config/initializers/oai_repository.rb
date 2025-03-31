@@ -33,7 +33,7 @@ OaiRepository.setup do |config|
     # You must supply at least one model.
     # TODO: reuse the following line after having run project-migrations
     # and created a project
-    config.models = [ Interview, Project ]
+    config.models = [ Interview, Project, Collection ]
 
     # List the sets (and the ActiveRecord model they belong to). E.g.
     #
@@ -63,6 +63,24 @@ OaiRepository.setup do |config|
          name: 'Interview-Archiv',
          model: Interview,
          description: 'Archiv'
+       },
+       {
+         spec: 'class:collection',
+         name: 'Interview-Sammlung',
+         model: Interview,
+         description: 'Sammlung'
+       },
+       {
+         spec: 'class:project',
+         name: 'Interview-Archive',
+         model: Project,
+         description: 'Archive'
+       },
+       {
+         spec: 'class:collection',
+         name: 'Interview-Sammlungen',
+         model: Collection,
+         description: 'Sammlungen'
        }
     ]
 

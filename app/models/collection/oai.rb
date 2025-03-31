@@ -1,20 +1,21 @@
-module Project::Oai
+module Collection::Oai
   #include OaiRepository::Set
 
   def sets
-    [ OAI::Set.new({name: 'Interview-Archive', spec: "archives"}) ]
+    [ OAI::Set.new({name: 'Interview-Sammlungen', spec: "collections"}) ]
   end
 
   def oai_dc_identifier
     "oai:#{shortname}"
+    #"oai:#{project.shortname}:#{shortname}"
   end
 
   def oai_dc_creator
-    leader
+    project.leader
   end
 
   def oai_dc_subject
-    "Interview Archiv"
+    "Interview Sammlung"
   end
 
   def oai_dc_title
@@ -22,7 +23,7 @@ module Project::Oai
   end
 
   def oai_dc_description
-    "Interview Archiv"
+    "Interview Sammlung"
   end
 
   def oai_dc_publisher
@@ -30,29 +31,27 @@ module Project::Oai
   end
 
   def oai_dc_contributor
-    institutions.map{|i| i.name(:de)} + [cooperation_partner]
+    "#{institution&.name(:de)} #{[project.cooperation_partner]}"
   end
 
   def oai_dc_date
   end
 
   def oai_dc_type
-    'Archiv'
+    'Sammlung'
   end
 
   def type
-    'Project'
+    'Collection'
   end
 
   def oai_dc_format
   end
 
   def oai_dc_source
-    "#{domain_with_optional_identifier}/#{default_locale}"
   end
 
   def oai_dc_language
-    available_locales
   end
 
   #def oai_dc_relation
@@ -62,7 +61,7 @@ module Project::Oai
   #end
 
   def oai_dc_rights
-    "#{domain_with_optional_identifier}/#{default_locale}/conditions"
+    "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions"
   end
 
 end

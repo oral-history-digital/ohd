@@ -28,6 +28,9 @@ const mapStateToProps = (state) => {
                 multiLocale: true,
             },
             {
+                attribute: 'shortname',
+            },
+            {
                 attribute: 'homepage',
                 multiLocale: true,
             },
