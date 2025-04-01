@@ -2,7 +2,10 @@ module Collection::Oai
   #include OaiRepository::Set
 
   def sets
-    [ OAI::Set.new({name: 'Interview-Sammlungen', spec: "collections"}) ]
+    [
+      OAI::Set.new({name: 'Interview-Sammlungen', spec: "collections"}),
+      OAI::Set.new({name: 'Interview-Archiv', spec: "archive:#{project.shortname}"})
+    ]
   end
 
   def oai_dc_identifier
