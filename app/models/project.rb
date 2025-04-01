@@ -2,6 +2,8 @@ require "globalize"
 
 class Project < ApplicationRecord
   include Oai
+  include OaiDc
+  include OaiDatacite
 
   enum default_search_order: [:title, :random]
 

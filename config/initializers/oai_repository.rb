@@ -94,7 +94,12 @@ OaiRepository.setup do |config|
     # config.additional_formats = [
     #   OAI::Provider::Metadata::RIFCS
     # ]
-    config.additional_formats = []
+
+    require 'oai/provider/datacite_format'
+
+    config.additional_formats = [
+      OAI::Provider::Metadata::Datacite
+    ]
 
   end
 end
