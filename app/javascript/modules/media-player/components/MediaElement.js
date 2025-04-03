@@ -56,6 +56,7 @@ export default function MediaElement({
         controls: true,
         responsive: false,
         fluid: false,
+        //aspectRatio,
         language: locale,
         sources: initialSources,
         poster: interview.still_url || speakerImage,
@@ -75,7 +76,6 @@ export default function MediaElement({
                 'skipForward',
                 'volumePanel',
                 'subsCapsButton',
-                /*                 'qualitySelector', */
                 'fullscreenToggle',
             ],
             skipButtons: {
@@ -94,54 +94,54 @@ export default function MediaElement({
         let newTime, newVolume;
 
         switch (event.which) {
-            case KEYCODE_F:
-                if (this.isFullscreen()) {
-                    this.exitFullscreen();
-                } else {
-                    this.requestFullscreen();
-                }
-                break;
-            case KEYCODE_M:
-                if (this.muted()) {
-                    this.muted(false);
-                } else {
-                    this.muted(true);
-                }
-                break;
-            case KEYCODE_P:
-            case KEYCODE_SPACE:
-                if (this.paused()) {
-                    this.play();
-                } else {
-                    this.pause();
-                }
-                break;
-            case KEYCODE_LEFT:
-                newTime = this.currentTime() - BACKWARD_STEP;
-                if (newTime < 0) {
-                    newTime = 0;
-                }
-                this.currentTime(newTime);
-                break;
-            case KEYCODE_RIGHT:
-                newTime = this.currentTime() + FORWARD_STEP;
-                this.currentTime(newTime);
-                break;
-            case KEYCODE_UP:
-                newVolume = this.volume() + 0.1;
-                if (newVolume > 1) {
-                    newVolume = 1;
-                }
-                this.volume(newVolume);
-                break;
-            case KEYCODE_DOWN:
-                newVolume = this.volume() - 0.1;
-                if (newVolume < 0) {
-                    newVolume = 0;
-                }
-                this.volume(newVolume);
-                break;
-            default:
+        case KEYCODE_F:
+            if (this.isFullscreen()) {
+                this.exitFullscreen();
+            } else {
+                this.requestFullscreen();
+            }
+            break;
+        case KEYCODE_M:
+            if (this.muted()) {
+                this.muted(false);
+            } else {
+                this.muted(true);
+            }
+            break;
+        case KEYCODE_P:
+        case KEYCODE_SPACE:
+            if (this.paused()) {
+                this.play();
+            } else {
+                this.pause();
+            }
+            break;
+        case KEYCODE_LEFT:
+            newTime = this.currentTime() - BACKWARD_STEP;
+            if (newTime < 0) {
+                newTime = 0;
+            }
+            this.currentTime(newTime);
+            break;
+        case KEYCODE_RIGHT:
+            newTime = this.currentTime() + FORWARD_STEP;
+            this.currentTime(newTime);
+            break;
+        case KEYCODE_UP:
+            newVolume = this.volume() + 0.1;
+            if (newVolume > 1) {
+                newVolume = 1;
+            }
+            this.volume(newVolume);
+            break;
+        case KEYCODE_DOWN:
+            newVolume = this.volume() - 0.1;
+            if (newVolume < 0) {
+                newVolume = 0;
+            }
+           this.volume(newVolume);
+            break;
+        default:
         }
     }
 
