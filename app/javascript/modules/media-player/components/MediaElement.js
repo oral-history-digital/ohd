@@ -9,6 +9,7 @@ import speakerImage from 'assets/images/speaker.png';
 import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
+import './configurationMenuPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -55,29 +56,32 @@ export default function MediaElement({
         controls: true,
         responsive: false,
         fluid: false,
-        //aspectRatio,
         language: locale,
         sources: initialSources,
         poster: interview.still_url || speakerImage,
         playbackRates: [0.6, 0.8, 1, 1.2, 2],
         enableSourceset: false,
         controlBar: {
+            volumePanel: {
+                inline: false,
+                volumeControl: {
+                    vertical: true,
+                },
+            },
             children: [
+                'progressControl',
                 'skipBackward',
                 'playToggle',
                 'skipForward',
-                'progressControl',
-                'currentTimeDisplay',
                 'volumePanel',
                 'subsCapsButton',
-                'playbackRateMenuButton',
-                'qualitySelector',
+                /*                 'qualitySelector', */
                 'fullscreenToggle',
             ],
             skipButtons: {
                 forward: FORWARD_STEP,
-                backward: BACKWARD_STEP
-            }
+                backward: BACKWARD_STEP,
+            },
         },
         userActions: {
             click: true,
@@ -90,54 +94,54 @@ export default function MediaElement({
         let newTime, newVolume;
 
         switch (event.which) {
-        case KEYCODE_F:
-            if (this.isFullscreen()) {
-                this.exitFullscreen();
-            } else {
-                this.requestFullscreen();
-            }
-            break;
-        case KEYCODE_M:
-            if (this.muted()) {
-                this.muted(false);
-            } else {
-                this.muted(true);
-            }
-            break;
-        case KEYCODE_P:
-        case KEYCODE_SPACE:
-            if (this.paused()) {
-                this.play();
-            } else {
-                this.pause();
-            }
-            break;
-        case KEYCODE_LEFT:
-            newTime = this.currentTime() - BACKWARD_STEP;
-            if (newTime < 0) {
-                newTime = 0;
-            }
-            this.currentTime(newTime);
-            break;
-        case KEYCODE_RIGHT:
-            newTime = this.currentTime() + FORWARD_STEP;
-            this.currentTime(newTime);
-            break;
-        case KEYCODE_UP:
-            newVolume = this.volume() + 0.1;
-            if (newVolume > 1) {
-                newVolume = 1;
-            }
-            this.volume(newVolume);
-            break;
-        case KEYCODE_DOWN:
-            newVolume = this.volume() - 0.1;
-            if (newVolume < 0) {
-                newVolume = 0;
-            }
-            this.volume(newVolume);
-            break;
-        default:
+            case KEYCODE_F:
+                if (this.isFullscreen()) {
+                    this.exitFullscreen();
+                } else {
+                    this.requestFullscreen();
+                }
+                break;
+            case KEYCODE_M:
+                if (this.muted()) {
+                    this.muted(false);
+                } else {
+                    this.muted(true);
+                }
+                break;
+            case KEYCODE_P:
+            case KEYCODE_SPACE:
+                if (this.paused()) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+                break;
+            case KEYCODE_LEFT:
+                newTime = this.currentTime() - BACKWARD_STEP;
+                if (newTime < 0) {
+                    newTime = 0;
+                }
+                this.currentTime(newTime);
+                break;
+            case KEYCODE_RIGHT:
+                newTime = this.currentTime() + FORWARD_STEP;
+                this.currentTime(newTime);
+                break;
+            case KEYCODE_UP:
+                newVolume = this.volume() + 0.1;
+                if (newVolume > 1) {
+                    newVolume = 1;
+                }
+                this.volume(newVolume);
+                break;
+            case KEYCODE_DOWN:
+                newVolume = this.volume() - 0.1;
+                if (newVolume < 0) {
+                    newVolume = 0;
+                }
+                this.volume(newVolume);
+                break;
+            default:
         }
     }
 
@@ -266,7 +270,9 @@ export default function MediaElement({
         return false;
     }
 
+
     function handleQualitySelected() {
+
         /*
          * Add text tracks again after quality is selected.
          * Otherwise, they are lost.
@@ -276,8 +282,23 @@ export default function MediaElement({
 
     function handlePlayerReady(player) {
         playerRef.current = player;
+        player.configurationMenuPlugin();
 
+        // Get available qualities from sources
+        const qualities = player
+            .currentSources()
+            .map((source) => source.label || (source.height ? `${source.height}p` : "Default"))
+            .filter(Boolean)
+
+        // Call the plugin with the options
+        player.configurationMenuPlugin({
+            playbackRates: videoJsOptions.playbackRates,
+            qualities: qualities,
+        })
+        
         addTextTracks();
+
+
 
         player.on('play', handlePlayEvent);
         player.on('pause', handlePauseEvent);
