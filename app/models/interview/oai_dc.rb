@@ -1,7 +1,8 @@
 module Interview::OaiDc
 
   def oai_dc_identifier
-    "oai:#{project.shortname}:#{archive_id}"
+    oai_identifier
+    #"oai:#{project.shortname}:#{archive_id}"
     #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"
   end
 
@@ -10,13 +11,11 @@ module Interview::OaiDc
   end
 
   def oai_dc_subject
-    #project.registry_reference_type_metadata_fields.where(use_in_results_table: true, ref_object_type: 'Interview').each do |field|
-      #"#{field.label(project.default_locale)}: #{self.send(field.name).map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(';')}"
-    #end
+    oai_subjects
   end
 
   def oai_dc_title
-    "Lebensgeschichtliches #{media_type.classify}-Interview mit #{anonymous_title(:de)} vom #{interview_date}"
+    oai_title(:de)
   end
 
   def oai_dc_description
@@ -28,23 +27,19 @@ module Interview::OaiDc
   end
 
   def oai_dc_contributor
-    project.institutions.map{|i| i.name(:de)} + [project.cooperation_partner]
+    oai_contributor
   end
 
   def oai_dc_date
-    interview_date && Date.parse(interview_date).strftime("%d.%m.%Y") rescue interview_date
+    oai_date
   end
 
   def oai_dc_type
-    'Interview'
-  end
-
-  def type
-    'Interview'
+    oai_type
   end
 
   def oai_dc_format
-    media_type == 'audio' ? 'audio/mp3' : 'video/mp4'  
+    oai_format
   end
 
   def oai_dc_source
@@ -52,7 +47,7 @@ module Interview::OaiDc
   end
 
   def oai_dc_language
-    language && language.code
+    oai_language
   end
 
   def oai_dc_relation
