@@ -3,6 +3,8 @@ require 'webvtt'
 
 class Interview < ApplicationRecord
   include Oai
+  include OaiDc
+  include OaiDatacite
   include ActiveModel::Validations
   include Export
 
