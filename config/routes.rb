@@ -100,7 +100,7 @@ Rails.application.routes.draw do
 
     resources :interviews do
       member do
-        #get :metadata
+        #get :datacite
         get 'cmdi_metadata', action: :cmdi_metadata
         get :headings
         get :speaker_designations
@@ -109,7 +109,7 @@ Rails.application.routes.draw do
         get :transcript
         get :observations
         get :export_photos
-        get :download_metadata
+        get :download_datacite
         get :tei
         get :export_all
         Interview.non_public_method_names.each do |m|
