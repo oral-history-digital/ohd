@@ -1,4 +1,7 @@
 .video-js {
+  position: relative; // Asegura que los elementos posicionados sean relativos al contenedor
+  overflow: hidden; // Evita que los elementos fuera del contenedor generen scroll
+
   .vjs-time-control {
     display: block;
   }
@@ -13,8 +16,8 @@
 
   /* Progress bar */
   .vjs-progress-control {
-    position: absolute;
-    top: -10px;
+    position: absolute; // Saca la barra de progreso del flujo normal
+    top: -10px; // Ajusta la posición para que quede encima del área de control
     left: 0;
     right: 0;
     width: 100%;
@@ -33,7 +36,7 @@
       padding: 0;
       border-radius: 0;
 
-      /* Hide the scrubber (circle) while keeping the progress bar */
+      /* Ocultar el scrubber (círculo) mientras se mantiene la barra de progreso */
       .vjs-play-progress .vjs-slider-bar::before,
       .vjs-play-progress:before {
         display: none;

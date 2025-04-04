@@ -139,7 +139,7 @@ export default function MediaElement({
             if (newVolume < 0) {
                 newVolume = 0;
             }
-           this.volume(newVolume);
+            this.volume(newVolume);
             break;
         default:
         }
@@ -284,21 +284,17 @@ export default function MediaElement({
         playerRef.current = player;
         player.configurationMenuPlugin();
 
-        // Get available qualities from sources
         const qualities = player
             .currentSources()
             .map((source) => source.label || (source.height ? `${source.height}p` : "Default"))
             .filter(Boolean)
 
-        // Call the plugin with the options
         player.configurationMenuPlugin({
             playbackRates: videoJsOptions.playbackRates,
             qualities: qualities,
         })
         
         addTextTracks();
-
-
 
         player.on('play', handlePlayEvent);
         player.on('pause', handlePauseEvent);

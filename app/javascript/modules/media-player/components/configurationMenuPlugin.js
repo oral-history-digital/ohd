@@ -1,75 +1,135 @@
 "use client"
-
+import React from "react"
 import videojs from "video.js"
 import PropTypes from "prop-types"
 import { createRoot } from "react-dom/client"
 
-// Librerías de @reach/menu-button
 import { Menu, MenuList, MenuButton, MenuItem } from "@reach/menu-button"
 import "@reach/menu-button/styles.css"
 
-// Icono de engranaje, por ejemplo
 import { BsGearFill } from "react-icons/bs"
+import { MdSlowMotionVideo } from "react-icons/md";
+import { LuSettings2 } from "react-icons/lu";
+import { IoIosArrowForward } from "react-icons/io";
 
-// Tomamos el "Button" de Video.js
 const VjsButton = videojs.getComponent("Button")
 
 /**
- * MyConfigMenu
- * ------------
- * Componente React que usa @reach/menu-button para renderizar el menú.
- * - Recibe:
- *     player (objeto Video.js)
- *     playbackRates (array de números)
- *     qualities (array de strings)
+ * ConfigurationControl
+ * --------------------
+ * Extiende un Button de Video.js y monta MyConfigMenu.
  */
 function MyConfigMenu({ player, playbackRates, qualities }) {
+  const [isMenuVisible, setIsMenuVisible] = React.useState(false);
+  const [selectedRate, setSelectedRate] = React.useState(player.playbackRate()); // Velocidad seleccionada
+  const [selectedQuality, setSelectedQuality] = React.useState(
+    qualities?.find((q) => q === "Default") || qualities?.[0] || null // Calidad seleccionada
+  );
+
+  const menuTimeout = React.useRef(null);
+
   // Cuando seleccionen una velocidad:
   const handlePlaybackRate = (rate) => {
-    player.playbackRate(rate)
-  }
+    player.playbackRate(rate);
+    setSelectedRate(rate); // Marca la velocidad seleccionada
+    setIsMenuVisible(false);
+  };
 
   // Cuando seleccionen una calidad:
   const handleQualitySelect = (qualityLabel) => {
-    // Podrías llamar directamente a un plugin de calidad, o disparar un evento
-    // para que el resto de tu app se entere y cambie la calidad.
-    player.trigger("qualitySelected", { quality: qualityLabel })
-  }
+    player.trigger("qualitySelected", { quality: qualityLabel });
+    setSelectedQuality(qualityLabel); // Marca la calidad seleccionada
+    setIsMenuVisible(false);
+  };
+
+  const showMenu = () => {
+    if (menuTimeout.current) {
+      clearTimeout(menuTimeout.current); // Cancela el temporizador si existe
+    }
+    setIsMenuVisible(true);
+  };
+  
+  const hideMenu = () => {
+    menuTimeout.current = setTimeout(() => {
+      setIsMenuVisible(false);
+    }, 100); // Retraso de 100ms
+  };
+
+  // Limpia el temporizador al desmontar el componente
+  React.useEffect(() => {
+    return () => {
+      if (menuTimeout.current) {
+        clearTimeout(menuTimeout.current);
+      }
+    };
+  }, []);
 
   return (
-    <Menu>
-      <MenuButton>
-        <BsGearFill style={{ marginRight: "4px", fontSize: '1.5em' }} />
-      </MenuButton>
-      <MenuList>
-        {/* Velocidades */}
-        <MenuItem disabled>Velocidades:</MenuItem>
-        {playbackRates.map((rate) => (
-          <MenuItem key={rate} onSelect={() => handlePlaybackRate(rate)}>
-            {rate}x
-          </MenuItem>
-        ))}
+    <div
+      className="vjs-configuration-menu-container"
+      onMouseEnter={showMenu} // Show menu on hover
+      onMouseLeave={hideMenu} // Hide menu on mouse leave
+    >
+      {/* Botón del menú */}
+      <Menu>
+        <MenuButton className="vjs-configuration-menu-button">
+          <BsGearFill className="vjs-configuration-menu-icon" />
+        </MenuButton>
 
-        <hr />
+        {/* Lista del menú */}
+        {isMenuVisible && (
+          <MenuList className="vjs-configuration-menu">
+            {/* Velocidades */}
+            <MenuItem className="vjs-configuration-menu-item main-container disabled">
+            <div className="menu-item-title-container">
+                <MdSlowMotionVideo className="rate-icon" />
+                <span>Rate</span>
+              </div>
+              <IoIosArrowForward />
+            </MenuItem>
+            {playbackRates.map((rate) => (
+              <MenuItem
+                key={rate}
+                className={`vjs-configuration-menu-item ${selectedRate === rate ? "selected" : ""
+                  }`}
+                onSelect={() => handlePlaybackRate(rate)}
+              >
+                {rate}x
+              </MenuItem>
+            ))}
 
-        {/* Calidades */}
-        <MenuItem disabled>Calidades:</MenuItem>
-        {qualities.map((q) => (
-          <MenuItem key={q} onSelect={() => handleQualitySelect(q)}>
-            {q}
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
-  )
+            <hr className="vjs-configuration-menu-divider" />
+
+            {/* Calidades */}
+            <MenuItem className="vjs-configuration-menu-item main-container disabled">
+              <div className="menu-item-title-container">
+                <LuSettings2 />
+                <span>Quality</span>
+              </div>
+              <IoIosArrowForward />
+            </MenuItem>
+            {qualities.map((q) => (
+              <MenuItem
+                key={q}
+                className={`vjs-configuration-menu-item ${selectedQuality === q ? "selected" : ""
+                  }`}
+                onSelect={() => handleQualitySelect(q)}
+              >
+                {q}
+              </MenuItem>
+            ))}
+          </MenuList>
+        )}
+      </Menu>
+    </div>
+  );
 }
 
 MyConfigMenu.propTypes = {
   player: PropTypes.object.isRequired,
   playbackRates: PropTypes.arrayOf(PropTypes.number),
   qualities: PropTypes.arrayOf(PropTypes.string),
-}
-
+};
 // No necesitamos defaultProps aquí, los valores por defecto se manejarán en el plugin
 
 /**
@@ -102,7 +162,7 @@ class ConfigurationControl extends VjsButton {
       <MyConfigMenu
         player={this.player_}
         playbackRates={this.options_.playbackRates || this.player_.options_.playbackRates || [0.5, 1, 1.5, 2]}
-        qualities={this.options_.qualities || ["480p", "720p", "1080p"]}
+        qualities={this.options_.qualities || ["Default"]}
       />,
     )
 
@@ -149,4 +209,5 @@ function configurationMenuPlugin(pluginOptions = {}) {
 videojs.registerPlugin("configurationMenuPlugin", configurationMenuPlugin)
 
 export default configurationMenuPlugin
+
 

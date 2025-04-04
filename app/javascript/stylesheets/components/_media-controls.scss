@@ -52,3 +52,89 @@
     color: $gray-light;
   }
 }
+
+.vjs-configuration-menu-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.vjs-configuration-menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.vjs-configuration-menu-icon {
+  font-size: 1.5em;
+  margin-right: 4px;
+  color: #fff;
+}
+
+.vjs-configuration-menu {
+  position: absolute;
+  bottom: calc(100% + 15px); // Posiciona el menú hacia arriba
+  left: 50%; // Centra el menú horizontalmente
+  transform: translateX(-50%); // Ajusta el centrado
+  margin-bottom: 10px; // Espaciado entre el botón y el menú
+  background: rgba(43, 51, 63, 0.7);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  width: 150px;
+}
+
+.vjs-configuration-menu-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #fff; // Texto blanco por defecto
+  transition: color 0.3s ease, background 0.3s ease; // Transición suave
+
+  &:hover {
+    background: #fff; // Fondo blanco al hacer hover
+    color: rgba(43, 51, 63, 0.7); // Texto del color del fondo original
+    user-select: none; // Evita que el texto sea seleccionable
+  }
+
+  &.disabled {
+    cursor: default; // Cambia el cursor para indicar que no es interactivo
+    user-select: none; // Evita que el texto sea seleccionable
+    background: transparent !important; // Asegura que el fondo no cambie
+    color: #fff; // Mantiene el texto blanco
+  }
+
+  &.selected {
+    background: #fff; // Fondo blanco para la opción seleccionada
+    color: rgba(43, 51, 63, 0.7); // Texto del color del fondo original
+    font-weight: bold; // Opcional: resalta la opción seleccionada
+  }
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 5px;
+}
+
+.vjs-configuration-menu-divider {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 8px 0;
+}
+
+.menu-item-title-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .rate-icon {
+  font-size: 1.4em;
+  }
+}
