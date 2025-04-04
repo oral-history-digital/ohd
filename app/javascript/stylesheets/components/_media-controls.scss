@@ -6,10 +6,9 @@
   flex-direction: column;
 }
 
-.MediaControls-selects {
-}
+.MediaControls-selects {}
 
-.Layout.is-sticky .MediaControls > * {
+.Layout.is-sticky .MediaControls>* {
   margin-top: $base-unit * 0.5;
 }
 
@@ -75,10 +74,10 @@
 
 .vjs-configuration-menu {
   position: absolute;
-  bottom: calc(100% + 15px); // Posiciona el menú hacia arriba
-  left: 50%; // Centra el menú horizontalmente
-  transform: translateX(-50%); // Ajusta el centrado
-  margin-bottom: 10px; // Espaciado entre el botón y el menú
+  bottom: calc(100% + 15px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
   background: rgba(43, 51, 63, 0.7);
   color: #fff;
   border: 1px solid #444;
@@ -92,26 +91,26 @@
 .vjs-configuration-menu-item {
   padding: 5px 10px;
   cursor: pointer;
-  color: #fff; // Texto blanco por defecto
-  transition: color 0.3s ease, background 0.3s ease; // Transición suave
+  color: #fff;
+  transition: color 0.3s ease, background 0.3s ease;
 
   &:hover {
-    background: #fff; // Fondo blanco al hacer hover
-    color: rgba(43, 51, 63, 0.7); // Texto del color del fondo original
-    user-select: none; // Evita que el texto sea seleccionable
+    background: #fff;
+    color: rgba(43, 51, 63, 0.7);
+    user-select: none;
   }
 
   &.disabled {
-    cursor: default; // Cambia el cursor para indicar que no es interactivo
-    user-select: none; // Evita que el texto sea seleccionable
-    background: transparent !important; // Asegura que el fondo no cambie
-    color: #fff; // Mantiene el texto blanco
+    cursor: default;
+    user-select: none;
+    background: transparent !important;
+    color: #fff;
   }
 
   &.selected {
-    background: #fff; // Fondo blanco para la opción seleccionada
-    color: rgba(43, 51, 63, 0.7); // Texto del color del fondo original
-    font-weight: bold; // Opcional: resalta la opción seleccionada
+    background: #fff;
+    color: rgba(43, 51, 63, 0.7);
+    font-weight: bold;
   }
 }
 
@@ -135,6 +134,42 @@
   gap: 5px;
 
   .rate-icon {
-  font-size: 1.4em;
+    font-size: 1.4em;
+  }
+}
+
+.vjs-configuration-submenu.horizontal-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background: rgba(43, 51, 63, 0.7);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: auto;
+}
+
+.vjs-configuration-submenu-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+  color: #fff;
+
+  .vjs-configuration-submenu-item:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .vjs-configuration-submenu-item.selected {
+    background: #fff;
+    color: rgba(43, 51, 63, 0.7);
+    font-weight: bold;
   }
 }
