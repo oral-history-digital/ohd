@@ -1,7 +1,7 @@
 class InterviewsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new, :show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
-  skip_after_action :verify_authorized, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
-  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
+  skip_before_action :authenticate_user!, only: [:new, :show, :metadata, :download_datacite, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_authorized, only: [:show, :metadata, :download_datacite, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :download_datacite, :cmdi_metadata, :random_featured]
 
   def new
     authorize Interview
@@ -255,23 +255,23 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def metadata
-    interview = Interview.find_by_archive_id(params[:id])
-    respond_to do |format|
-      format.xml do
-        render :metadata, locals: {
-          interview: interview,
-          locale: params[:locale]
-        }
-      end
-    end
-  end
+  #def datacite
+    #interview = Interview.find_by_archive_id(params[:id])
+    #respond_to do |format|
+      #format.xml do
+        #render :datacite, locals: {
+          #interview: interview,
+          #locale: params[:locale]
+        #}
+      #end
+    #end
+  #end
 
-  def download_metadata
+  def download_datacite
     interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.xml do
-        send_data interview.metadata_xml(params[:locale]), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
+        send_data interview.datacite_xml(params[:locale]), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
       end
     end
   end
