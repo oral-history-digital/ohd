@@ -10,8 +10,16 @@ module Interview::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier identifierType: "URL" do
+      xml.identifier do
+        xml.text! oai_identifier
+      end
+
+      xml.alternateIentifier identfierType: "URL" do
         xml.text! oai_url_identifier
+      end
+
+      xml.alternateIentifier identfierType: "DOI" do
+        xml.text! oai_doi_identifier
       end
 
       xml.titles do

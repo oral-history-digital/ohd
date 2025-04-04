@@ -12,6 +12,11 @@ module Interview::Oai
     %w(de en)
   end
 
+  def oai_identifier
+    "oai:#{project.shortname}:#{archive_id}"
+    #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"
+  end
+
   def oai_doi_identifier
     "#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
@@ -40,6 +45,10 @@ module Interview::Oai
 
   def oai_type
     media_type
+  end
+
+  def type
+    'Interview'
   end
 
   def oai_format
