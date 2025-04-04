@@ -18,6 +18,10 @@ class Collection < ApplicationRecord
     interviews_count
   end
 
+  def update_interviews_count
+    self.update interviews_count: self.interviews.shared.count
+  end
+
   def to_s
     name(I18n.locale)
   end

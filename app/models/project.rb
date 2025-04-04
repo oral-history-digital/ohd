@@ -165,6 +165,10 @@ class Project < ApplicationRecord
     interviews_count
   end
 
+  def update_interviews_count
+    self.update interviews_count: self.interviews.shared.count
+  end
+
   def domain_with_optional_identifier
     archive_domain.blank? ? "#{OHD_DOMAIN}/#{identifier}" : archive_domain
   end
