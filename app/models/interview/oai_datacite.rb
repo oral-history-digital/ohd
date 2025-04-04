@@ -14,16 +14,18 @@ module Interview::OaiDatacite
         xml.text! oai_identifier
       end
 
-      xml.alternateIentifier identfierType: "URL" do
-        xml.text! oai_url_identifier
+      oai_locales.each do |locale|
+        xml.alternateIdentifier "xml:lang": locale, identfierType: "URL" do
+          xml.text! oai_url_identifier(locale)
+        end
       end
 
-      xml.alternateIentifier identfierType: "DOI" do
+      xml.alternateIdentifier identfierType: "DOI" do
         xml.text! oai_doi_identifier
       end
 
       xml.titles do
-        %w(de en).each do |locale|
+        oai_locales.each do |locale|
           xml.title "xml:lang": locale do
             xml.text! oai_title(locale)
           end
@@ -42,7 +44,11 @@ module Interview::OaiDatacite
         end
       end
 
-      xml.publisher project.institutions.first&.name
+      oai_locales.each do |locale|
+        xml.publisher "xml:lang": locale do
+          xml.text! oai_publisher(locale)
+        end
+      end
       xml.publicationYear DateTime.now.year
 
       xml.contributors do
