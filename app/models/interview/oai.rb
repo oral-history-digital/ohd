@@ -21,8 +21,9 @@ module Interview::Oai
     "#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
 
-  def oai_url_identifier
-    "#{project.domain_with_optional_identifier}/#{project.default_locale}/interviews/#{archive_id}"
+  def oai_url_identifier(locale)
+    "#{project.domain_with_optional_identifier}/#{locale}/interviews/#{archive_id}"
+    #"#{project.domain_with_optional_identifier}/#{project.default_locale}/interviews/#{archive_id}"
   end
 
   def oai_title(locale)
@@ -37,6 +38,10 @@ module Interview::Oai
 
   def oai_contributor
     project.institutions.map(&:name).join(", ")
+  end
+
+  def oai_publisher(locale)
+    project.institutions.first&.name(locale)
   end
 
   def oai_date
