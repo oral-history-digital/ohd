@@ -9,6 +9,7 @@ import usePosterImage from '../usePosterImage';
 import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
+import './configurationMenuPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -72,16 +73,19 @@ export default function MediaElement({
         playbackRates: [0.6, 0.8, 1, 1.2, 2],
         enableSourceset: false,
         controlBar: {
+            volumePanel: {
+                inline: false,
+                volumeControl: {
+                    vertical: true,
+                },
+            },
             children: [
+                'progressControl',
                 'skipBackward',
                 'playToggle',
                 'skipForward',
-                'progressControl',
-                'currentTimeDisplay',
                 'volumePanel',
                 'subsCapsButton',
-                'playbackRateMenuButton',
-                'qualitySelector',
                 'fullscreenToggle',
             ],
             skipButtons: {
@@ -300,6 +304,21 @@ export default function MediaElement({
 
     function handlePlayerReady(player) {
         playerRef.current = player;
+        player.configurationMenuPlugin();
+
+        const qualities = player
+            .currentSources()
+            .map(
+                (source) =>
+                    source.label ||
+                    (source.height ? `${source.height}p` : 'Default')
+            )
+            .filter(Boolean);
+
+        player.configurationMenuPlugin({
+            playbackRates: videoJsOptions.playbackRates,
+            qualities: qualities,
+        });
 
         addTextTracks();
 
