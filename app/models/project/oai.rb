@@ -9,8 +9,8 @@ module Project::Oai
   end
 
   def oai_identifier
-    "oai:#{shortname}"
-    #"oai:oral-history.digital:#{shortname}"
+    #"oai:#{shortname}"
+    "oai:oral-history.digital:#{shortname}"
   end
 
   def oai_dc_identifier
@@ -25,7 +25,7 @@ module Project::Oai
     name(locale)
   end
 
-  def oai_contributor
+  def oai_contributor(locale)
     institutions.map{|i| i.name(locale)}.join(", ")
   end
 

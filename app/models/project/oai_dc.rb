@@ -41,7 +41,12 @@ module Project::OaiDc
 
       xml.tag!('dc:contributor', leader)
       xml.tag!('dc:contributor', manager)
-      xml.tag!('dc:contributor', oai_contributor)
+      oai_locales.each do |locale|
+        xml.tag!('dc:contributor', "xml:lang": locale) do
+          xml.text! oai_contributor(locale)
+        end
+      end
+
 
       xml.tag!('dc:date', oai_date)
 
