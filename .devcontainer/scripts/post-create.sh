@@ -118,6 +118,12 @@ test:
 # Production environment intentionally removed
 EOL
 
+# Configure datacite.yml if needed
+if [ ! -f config/datacite.yml ]; then
+  cp config/datacite.example.yml config/datacite.yml
+  echo "Created datacite.yml from example"
+fi
+
 # Wait for MySQL with better retry logic
 log_message "Waiting for MySQL to be ready..."
 max_attempts=30
