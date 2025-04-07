@@ -18,7 +18,6 @@
   font-family: FiraSans;
   font-size: 0.75rem;
   outline: none;
-  transition: box-shadow $transition-duration;
 }
 
 .MediaControls-tapeSelector:focus,
@@ -32,7 +31,6 @@
   font-size: $font-size-large;
   line-height: $line-height-large;
   cursor: pointer;
-  transition: $transition-duration;
 
   @include screen-l {
     font-size: $font-size-small;
@@ -92,7 +90,6 @@
   padding: 5px 10px;
   cursor: pointer;
   color: #fff;
-  transition: color 0.3s ease, background 0.3s ease;
 
   &:hover {
     background: #fff;
@@ -160,7 +157,6 @@
   cursor: pointer;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
-  transition: background 0.3s ease;
   color: #fff;
 
   .vjs-configuration-submenu-item:hover {
