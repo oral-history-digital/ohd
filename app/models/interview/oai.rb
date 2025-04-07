@@ -17,6 +17,10 @@ module Interview::Oai
     #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"
   end
 
+  def oai_dc_identifier
+    oai_identifier
+  end
+
   def oai_doi_identifier
     "#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
