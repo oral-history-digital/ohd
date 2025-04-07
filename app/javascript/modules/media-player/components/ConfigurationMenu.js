@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
+import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import '@reach/menu-button/styles.css';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 import { BsGearFill } from 'react-icons/bs';
-import { MdSlowMotionVideo } from 'react-icons/md';
-import { LuSettings2 } from 'react-icons/lu';
 import { IoIosArrowForward } from 'react-icons/io';
+import { LuSettings2 } from 'react-icons/lu';
+import { MdSlowMotionVideo } from 'react-icons/md';
 
 function ConfigurationMenu({ player, playbackRates, qualities }) {
     const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -23,7 +24,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         player.playbackRate(rate);
         setSelectedRate(rate);
         setShowRateSubmenu(false);
-        setIsMenuVisible(false); // Cierra el menú principal al seleccionar una opción
+        setIsMenuVisible(false); // Close the menu after selecting a rate
     };
 
     const handleQualitySelect = (qualityLabel) => {
@@ -166,5 +167,11 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         </div>
     );
 }
+
+ConfigurationMenu.propTypes = {
+    player: PropTypes.object.isRequired,
+    playbackRates: PropTypes.arrayOf(PropTypes.number).isRequired,
+    qualities: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default ConfigurationMenu;
