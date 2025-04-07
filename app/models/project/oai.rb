@@ -26,7 +26,7 @@ module Project::Oai
   end
 
   def oai_contributor
-    institutions.map(&:name).join(", ")
+    institutions.map{|i| i.name(locale)}.join(", ")
   end
 
   def oai_creator(locale)

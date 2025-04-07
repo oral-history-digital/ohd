@@ -32,7 +32,7 @@ module Collection::Oai
   end
 
   def oai_contributor(locale)
-    project.institutions.map(&:name).join(", ")
+    project.institutions.map{|i| i.name(locale)}.join(", ")
   end
 
   def oai_creator(locale)
