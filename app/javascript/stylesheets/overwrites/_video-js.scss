@@ -1,46 +1,46 @@
 .video-js {
-  position: relative; // Asegura que los elementos posicionados sean relativos al contenedor
-  overflow: hidden; // Evita que los elementos fuera del contenedor generen scroll
+    position: relative; // Ensures that positioned elements are relative to the container
+    overflow: hidden; // Prevents elements outside the container from generating scroll
 
-  .vjs-time-control {
-    display: block;
-  }
-
-  .vjs-remaining-time {
-    display: none;
-  }
-
-  .vjs-poster img {
-    object-fit: cover;
-  }
-
-  /* Progress bar */
-  .vjs-progress-control {
-    position: absolute; // Saca la barra de progreso del flujo normal
-    top: -10px; // Ajusta la posición para que quede encima del área de control
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 10px;
-    padding: 0;
-    margin: 0;
-
-    .vjs-slider-horizontal {
-      margin: 0;
+    .vjs-time-control {
+        display: block;
     }
-    
-    .vjs-progress-holder {
-      height: 10px;
-      transition: height 0.3s ease;
-      margin: 0;
-      padding: 0;
-      border-radius: 0;
 
-      /* Ocultar el scrubber (círculo) mientras se mantiene la barra de progreso */
-      .vjs-play-progress .vjs-slider-bar::before,
-      .vjs-play-progress:before {
+    .vjs-remaining-time {
         display: none;
-      }
     }
-  }  
+
+    .vjs-poster img {
+        object-fit: cover;
+    }
+
+    /* Progress bar */
+    .vjs-progress-control {
+        position: absolute; // Takes the progress bar out of the normal flow
+        top: -10px; // Adjusts the position to be above the control area
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 10px;
+        padding: 0;
+        margin: 0;
+
+        .vjs-slider-horizontal {
+            margin: 0;
+        }
+
+        .vjs-progress-holder {
+            height: 10px;
+            transition: height 0.3s ease;
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+
+            /* Hide the scrubber (circle) while maintaining the progress bar */
+            .vjs-play-progress .vjs-slider-bar::before,
+            .vjs-play-progress:before {
+                display: none;
+            }
+        }
+    }
 }

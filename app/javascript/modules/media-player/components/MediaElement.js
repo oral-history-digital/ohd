@@ -43,13 +43,21 @@ export default function MediaElement({
     const { t, locale } = useI18n();
     const { project } = useProject();
     const playerRef = useRef(null);
-    const tapeRef = useRef(tape);  // Used for event handler below.
+    const tapeRef = useRef(tape); // Used for event handler below.
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
-    const initialSources = mediaStreams && mediaStreamsToSources(Object.values(mediaStreams),
-        pathBase, interview.media_type, archiveId, interview.tape_count, tape);
+    const initialSources =
+        mediaStreams &&
+        mediaStreamsToSources(
+            Object.values(mediaStreams),
+            pathBase,
+            interview.media_type,
+            archiveId,
+            interview.tape_count,
+            tape
+        );
 
     const videoJsOptions = {
         autoplay: false,
@@ -94,54 +102,54 @@ export default function MediaElement({
         let newTime, newVolume;
 
         switch (event.which) {
-        case KEYCODE_F:
-            if (this.isFullscreen()) {
-                this.exitFullscreen();
-            } else {
-                this.requestFullscreen();
-            }
-            break;
-        case KEYCODE_M:
-            if (this.muted()) {
-                this.muted(false);
-            } else {
-                this.muted(true);
-            }
-            break;
-        case KEYCODE_P:
-        case KEYCODE_SPACE:
-            if (this.paused()) {
-                this.play();
-            } else {
-                this.pause();
-            }
-            break;
-        case KEYCODE_LEFT:
-            newTime = this.currentTime() - BACKWARD_STEP;
-            if (newTime < 0) {
-                newTime = 0;
-            }
-            this.currentTime(newTime);
-            break;
-        case KEYCODE_RIGHT:
-            newTime = this.currentTime() + FORWARD_STEP;
-            this.currentTime(newTime);
-            break;
-        case KEYCODE_UP:
-            newVolume = this.volume() + 0.1;
-            if (newVolume > 1) {
-                newVolume = 1;
-            }
-            this.volume(newVolume);
-            break;
-        case KEYCODE_DOWN:
-            newVolume = this.volume() - 0.1;
-            if (newVolume < 0) {
-                newVolume = 0;
-            }
-            this.volume(newVolume);
-            break;
-        default:
+            case KEYCODE_F:
+                if (this.isFullscreen()) {
+                    this.exitFullscreen();
+                } else {
+                    this.requestFullscreen();
+                }
+                break;
+            case KEYCODE_M:
+                if (this.muted()) {
+                    this.muted(false);
+                } else {
+                    this.muted(true);
+                }
+                break;
+            case KEYCODE_P:
+            case KEYCODE_SPACE:
+                if (this.paused()) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+                break;
+            case KEYCODE_LEFT:
+                newTime = this.currentTime() - BACKWARD_STEP;
+                if (newTime < 0) {
+                    newTime = 0;
+                }
+                this.currentTime(newTime);
+                break;
+            case KEYCODE_RIGHT:
+                newTime = this.currentTime() + FORWARD_STEP;
+                this.currentTime(newTime);
+                break;
+            case KEYCODE_UP:
+                newVolume = this.volume() + 0.1;
+                if (newVolume > 1) {
+                    newVolume = 1;
+                }
+                this.volume(newVolume);
+                break;
+            case KEYCODE_DOWN:
+                newVolume = this.volume() - 0.1;
+                if (newVolume < 0) {
+                    newVolume = 0;
+                }
+                this.volume(newVolume);
+                break;
+            default:
         }
     }
 
@@ -170,15 +178,21 @@ export default function MediaElement({
 
     // Update sources and tracks if tape has been changed.
     useEffect(() => {
-        const player = playerRef.current
+        const player = playerRef.current;
         if (!player) {
             return;
         }
 
         tapeRef.current = tape;
 
-        const newSources = mediaStreamsToSources(Object.values(mediaStreams),
-            pathBase, interview.media_type, archiveId, interview.tape_count, tape);
+        const newSources = mediaStreamsToSources(
+            Object.values(mediaStreams),
+            pathBase,
+            interview.media_type,
+            archiveId,
+            interview.tape_count,
+            tape
+        );
 
         player.src(newSources);
 
@@ -192,11 +206,10 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     });
 
-
     function addTextTracks() {
         if (!interview.transcript_coupled) return;
 
-        const player = playerRef.current
+        const player = playerRef.current;
         if (!player) {
             return;
         }
@@ -211,13 +224,13 @@ export default function MediaElement({
         // handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
-        const newTracks = interview.languages.map(lang => ({
+        const newTracks = interview.languages.map((lang) => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
             language: lang,
             kind: 'captions',
             label: t(lang),
         }));
-        newTracks.forEach(newTrack => {
+        newTracks.forEach((newTrack) => {
             player.addRemoteTextTrack(newTrack, false);
         });
     }
@@ -225,7 +238,7 @@ export default function MediaElement({
     function checkForTimeChangeRequest() {
         // We use Redux as an event system here.
         // If a request is available, it is immediately cleared and processed.
-        const player = playerRef.current
+        const player = playerRef.current;
         if (!player) {
             return;
         }
@@ -270,9 +283,7 @@ export default function MediaElement({
         return false;
     }
 
-
     function handleQualitySelected() {
-
         /*
          * Add text tracks again after quality is selected.
          * Otherwise, they are lost.
@@ -286,14 +297,18 @@ export default function MediaElement({
 
         const qualities = player
             .currentSources()
-            .map((source) => source.label || (source.height ? `${source.height}p` : "Default"))
-            .filter(Boolean)
+            .map(
+                (source) =>
+                    source.label ||
+                    (source.height ? `${source.height}p` : 'Default')
+            )
+            .filter(Boolean);
 
         player.configurationMenuPlugin({
             playbackRates: videoJsOptions.playbackRates,
             qualities: qualities,
-        })
-        
+        });
+
         addTextTracks();
 
         player.on('play', handlePlayEvent);
@@ -311,11 +326,17 @@ export default function MediaElement({
     }
 
     return (
-        <div className={classNames('MediaElement', className,
-            `MediaElement--${aspectRatio}`, {
-            'MediaElement--video': interview.media_type === 'video',
-            'MediaElement--audio': interview.media_type === 'audio',
-        })}>
+        <div
+            className={classNames(
+                'MediaElement',
+                className,
+                `MediaElement--${aspectRatio}`,
+                {
+                    'MediaElement--video': interview.media_type === 'video',
+                    'MediaElement--audio': interview.media_type === 'audio',
+                }
+            )}
+        >
             <VideoJS
                 type={interview.media_type}
                 options={videoJsOptions}
