@@ -13,6 +13,10 @@ module Project::Oai
     #"oai:oral-history.digital:#{shortname}"
   end
 
+  def oai_dc_identifier
+    oai_identifier
+  end
+
   def oai_url_identifier(locale)
     "#{domain_with_optional_identifier}/#{locale}"
   end
