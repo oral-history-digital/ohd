@@ -1,58 +1,59 @@
 services:
-  app:
-    build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
-    volumes:
-      - ..:/workspace:cached
-      # Exclude node_modules from the mount to prevent host/container conflicts
-      - /workspace/node_modules
-      - /workspace/tmp/cache
-      - /workspace/.bundle
-      # Create a volume for logs
-      - setup-logs:/workspace/.devcontainer/logs
-    command: sleep infinity
-    depends_on:
-      - db
-      - solr
-    environment:
-      # Critical environment settings
-      RAILS_ENV: development
-      RACK_ENV: development
-      NODE_ENV: development
-      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-      # Point to Solr container instead of localhost:8982
-      SOLR_URL: http://solr:8983/solr/default
-      SOLR_HOST: solr
-      SOLR_PORT: 8983
-      DISABLE_SPRING: true
+    app:
+        platform: linux/amd64
+        build:
+            context: ..
+            dockerfile: .devcontainer/Dockerfile
+        volumes:
+            - ..:/workspace:cached
+            # Exclude node_modules from the mount to prevent host/container conflicts
+            - /workspace/node_modules
+            - /workspace/tmp/cache
+            - /workspace/.bundle
+            # Create a volume for logs
+            - setup-logs:/workspace/.devcontainer/logs
+        command: sleep infinity
+        depends_on:
+            - db
+            - solr
+        environment:
+            # Critical environment settings
+            RAILS_ENV: development
+            RACK_ENV: development
+            NODE_ENV: development
+            DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+            # Point to Solr container instead of localhost:8982
+            SOLR_URL: http://solr:8983/solr/default
+            SOLR_HOST: solr
+            SOLR_PORT: 8983
+            DISABLE_SPRING: true
 
-  db:
-    image: mariadb:10.5
-    restart: unless-stopped
-    volumes:
-      - db-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: ohd_development
-    ports:
-      - "3306:3306"
+    db:
+        image: mariadb:10.5
+        restart: unless-stopped
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: ohd_development
+        ports:
+            - '3306:3306'
 
-  solr:
-    image: solr:8
-    ports:
-      - "8983:8983"
-    volumes:
-      - solr-data:/var/solr
-      # Mount the Solr configuration directly
-      - ../solr/configsets:/opt/solr/server/solr/configsets
-    command:
-      # Use precreate with our custom config
-      - solr-precreate
-      - default
-      - /opt/solr/server/solr/configsets/sunspot/conf
+    solr:
+        image: solr:8
+        ports:
+            - '8983:8983'
+        volumes:
+            - solr-data:/var/solr
+            # Mount the Solr configuration directly
+            - ../solr/configsets:/opt/solr/server/solr/configsets
+        command:
+            # Use precreate with our custom config
+            - solr-precreate
+            - default
+            - /opt/solr/server/solr/configsets/sunspot/conf
 
 volumes:
-  db-data:
-  solr-data:
-  setup-logs:
+    db-data:
+    solr-data:
+    setup-logs:
