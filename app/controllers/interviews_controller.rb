@@ -329,6 +329,9 @@ class InterviewsController < ApplicationController
   def reindex
     authorize Interview, :download?
     ReindexJob.perform_later(archive_id: params[:archive_ids])
+    Interview.where(archive_id: params[:archive_ids]).update_all(
+      updated_at: Time.now
+    )
     respond_to do |format|
       format.json do
         render json: {}, status: :ok
