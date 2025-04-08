@@ -10,6 +10,7 @@ import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
 import './configurationMenuPlugin.js';
+import './toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -294,6 +295,7 @@ export default function MediaElement({
     function handlePlayerReady(player) {
         playerRef.current = player;
         player.configurationMenuPlugin();
+        player.toggleSizePlugin();
 
         const qualities = player
             .currentSources()
