@@ -46,9 +46,9 @@ class InterviewBaseSerializer < ApplicationSerializer
                                     object.segment_registry_references
                                   end
 
-      registry_entry_ids = field_registry_references.
+      registry_entry_ids = field_registry_references ? field_registry_references.
         where(registry_reference_type_id: field.registry_reference_type_id).
-        map(&:registry_entry_id).uniq.compact
+        map(&:registry_entry_id).uniq.compact : []
 
       hash[field.name] = (
         instance_options[:project_available_locales] ||
