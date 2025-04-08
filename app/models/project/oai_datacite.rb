@@ -49,7 +49,11 @@ module Project::OaiDatacite
           xml.contributorName manager
         end
         xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor
+          oai_locales.each do |locale|
+            xml.contributor "xml:lang": locale do
+              xml.text! oai_contributor(locale)
+            end
+          end
         end
       end
 
