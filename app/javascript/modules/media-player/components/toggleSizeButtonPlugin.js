@@ -9,12 +9,26 @@ class ToggleSizeButton extends VjsButton {
     super(player, options);
     this.addClass('vjs-toggle-size-button');
     this.options_ = options;
+    this.isOriginalSize = false; // Estado para rastrear el tamaño actual
   }
 
   handleClick() {
-    if (typeof this.options_.onToggleSize === 'function') {
-      this.options_.onToggleSize();
+    const layoutElement = document.querySelector('.Layout'); // Contenedor principal
+    const mediaPlayerElement = document.querySelector('.MediaPlayer'); // Contenedor del reproductor
+
+    if (!layoutElement || !mediaPlayerElement) return;
+
+    if (layoutElement.classList.contains('is-sticky')) {
+      // Si está en modo sticky, cambia al tamaño original
+      layoutElement.classList.remove('is-sticky');
+      mediaPlayerElement.style.height = ''; // Restablece el tamaño original
+    } else {
+      // Si no está en modo sticky, cambia al tamaño reducido
+      layoutElement.classList.add('is-sticky');
+      mediaPlayerElement.style.height = 'var(--media-player-height-sticky)'; // Tamaño reducido
     }
+
+    this.isOriginalSize = !this.isOriginalSize; // Alterna el estado
   }
 
   createEl() {
@@ -26,7 +40,7 @@ class ToggleSizeButton extends VjsButton {
     const root = createRoot(el);
     root.render(
       <span className="vjs-icon-placeholder">
-        <MdOutlineFitScreen style={{ fontSize: '1.2rem' }}/>
+        <MdOutlineFitScreen style={{ fontSize: '1.2rem' }} />
       </span>
     );
 

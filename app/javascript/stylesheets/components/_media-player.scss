@@ -1,3 +1,8 @@
+:root {
+  --media-player-height-sticky: 10rem; // Tamaño reducido
+  --media-player-height-expanded: 20rem; // Tamaño expandido
+}
+
 .MediaPlayer {
   background: $gray-darker;
   color: #fff;
@@ -25,11 +30,36 @@
 
 .Layout.is-sticky .MediaPlayer {
   flex-direction: row-reverse;
-  height: $media-player-height-sticky;
+  height: var(--media-player-height-sticky);
   justify-content: flex-end;
   left: 0;
   padding: 0;
   position: fixed;
   right: 0;
   top: 0;
+}
+
+.Layout.is-expanded .MediaPlayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-index-media-player;
+  height: var(--media-player-height-expanded); // Tamaño expandido
+}
+
+.wrapper-content {
+  margin-top: var(--media-player-height-sticky) + $horizontal-tabs-height;
+
+  @include screen-m {
+    margin-top: var(--media-player-height-sticky) + $horizontal-tabs-height;
+  }
+
+  .Layout.is-expanded & {
+    margin-top: var(--media-player-height-expanded) + $horizontal-tabs-height;
+
+    @include screen-m {
+      margin-top: var(--media-player-height-expanded) + $horizontal-tabs-height;
+    }
+  }
 }
