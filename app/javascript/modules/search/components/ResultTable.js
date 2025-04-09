@@ -28,6 +28,13 @@ export default function ResultTable({
                         {t('interviewee_name')}
                     </th>
                     {
+                        project.is_ohd && (
+                            <th className="Table-header">
+                                {t('activerecord.models.project.one')}
+                            </th>
+                        )
+                    }
+                    {
                         project.list_columns?.map(column => (
                             <th key={column.name} className="Table-header">
                                 {project.metadata_fields?.[column.id]?.label?.[locale] || t(column.name)}

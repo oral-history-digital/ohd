@@ -79,6 +79,13 @@ export default function InterviewListRow({
                 </LinkOrA>
             </td>
             {
+                project.is_ohd && (
+                    <td className="Table-cell">
+                        {projectOfInterview.display_name[locale] || projectOfInterview.name[locale]}
+                    </td>
+                )
+            }
+            {
                 project.list_columns?.map(column => {
                     const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
