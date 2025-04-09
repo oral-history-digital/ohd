@@ -72,6 +72,16 @@ module Collection::OaiDatacite
         xml.language language
       end
 
+      xml.subjects do
+        oai_subject_registry_entry_ids.each do |registry_entry_id|
+          oai_locales.each do |locale|
+            xml.subject "xml:lang": locale do
+              xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
+            end
+          end
+        end
+      end
+
       xml.rightsList do
         oai_locales.each do |locale|
           xml.rights(

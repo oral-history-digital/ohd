@@ -60,6 +60,14 @@ module Project::OaiDc
         xml.tag!('dc:language', language)
       end
 
+      oai_subject_registry_entry_ids.each do |registry_entry_id|
+        oai_locales.each do |locale|
+          xml.tag!('dc:subject', "xml:lang": locale) do
+            xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
+          end
+        end
+      end
+
       xml.tag!('dc:relation', domain_with_optional_identifier)
       xml.tag!('dc:relation', "https://portal.oral-history.digital")
       xml.tag!('dc:relation', domain)

@@ -72,6 +72,15 @@ module Collection::Oai
     Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code)
   end
 
+  def oai_subject_registry_entry_ids
+    subjects_registry_entry = RegistryEntry.find 21898673
+    RegistryReference.where(
+      registry_entry_id: subjects_registry_entry.children.pluck(:id),
+      ref_object_id: interviews.pluck(:id),
+      ref_object_type: "Person",
+    ).pluck(:registry_entry_id).uniq
+  end
+
   def oai_abstract_description(locale)
     ActionView::Base.full_sanitizer.sanitize(project.introduction(locale))
   end

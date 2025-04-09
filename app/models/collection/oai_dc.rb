@@ -58,6 +58,14 @@ module Collection::OaiDc
         xml.tag!('dc:language', language)
       end
 
+      oai_subject_registry_entry_ids.each do |registry_entry_id|
+        oai_locales.each do |locale|
+          xml.tag!('dc:subject', "xml:lang": locale) do
+            xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
+          end
+        end
+      end
+
       xml.tag!('dc:relation', OHD_DOMAIN)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}")
       xml.tag!('dc:relation', project.domain)

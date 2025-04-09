@@ -89,12 +89,10 @@ module Interview::OaiDatacite
       xml.language oai_language
 
       xml.subjects do
-        oai_subject_registry_entry_ids.each do |registry_entry_ids|
-          unless registry_entry_ids.empty?
-            oai_locales.each do |locale|
-              xml.subject "xml:lang": locale do
-                xml.text! registry_entry_ids.map{|f| RegistryEntry.find(f).to_s(locale)}.join(', ')
-              end
+        oai_subject_registry_entry_ids.each do |registry_entry_id|
+          oai_locales.each do |locale|
+            xml.subject "xml:lang": locale do
+              xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
             end
           end
         end

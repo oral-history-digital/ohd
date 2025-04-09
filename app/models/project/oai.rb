@@ -67,17 +67,12 @@ module Project::Oai
   end
 
   def oai_subject_registry_entry_ids
-    registry_reference_type_metadata_fields.inject([]) do |registry_entry_ids, field|
-      registry_entry_ids << case field.ref_object_type
-      when "Person"
-        interviewee.registry_references
-      when "Interview"
-        registry_references
-      when "Segment"
-        segment_registry_references
-      end.where(registry_reference_type_id: field.registry_reference_type_id).
-      map(&:registry_entry_id).uniq
-    end
+    subjects_registry_entry = RegistryEntry.find 21898673
+    RegistryReference.where(
+      registry_entry_id: subjects_registry_entry.children.pluck(:id),
+      ref_object_id: interviews.pluck(:id),
+      ref_object_type: "Person",
+    ).pluck(:registry_entry_id).uniq
   end
 
   def oai_abstract_description(locale)
