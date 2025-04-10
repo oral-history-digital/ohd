@@ -122,6 +122,7 @@ class CollectionsController < ApplicationController
         'project_id', 
         'institution_id',
         'shortname',
+        'publication_date',
         translations_attributes: [:locale, :id, :name, :responsibles, :notes, :countries, :homepage, :interviewers]
     )
   end

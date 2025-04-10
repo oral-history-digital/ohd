@@ -53,6 +53,10 @@ module Interview::Oai
     interview_date && Date.parse(interview_date).strftime("%d.%m.%Y") rescue interview_date
   end
 
+  def oai_publication_date
+    publication_date
+  end
+
   def oai_type
     media_type
   end

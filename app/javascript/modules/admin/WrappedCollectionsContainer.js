@@ -31,6 +31,9 @@ const mapStateToProps = (state) => {
                 attribute: 'shortname',
             },
             {
+                attribute: 'publication_date',
+            },
+            {
                 attribute: 'homepage',
                 multiLocale: true,
             },

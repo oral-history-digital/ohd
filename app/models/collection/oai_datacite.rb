@@ -39,7 +39,10 @@ module Collection::OaiDatacite
           xml.text! oai_publisher(locale)
         end
       end
-      xml.publicationYear DateTime.now.year
+
+      if oai_publication_date
+        xml.publicationYear oai_publication_date
+      end
 
       xml.contributors do
         xml.contributor contributorType: "DataManager" do
