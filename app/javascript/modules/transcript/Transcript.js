@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
@@ -41,6 +42,11 @@ export default function Transcript({
         interview.contributions, people),
         [interview.contributions, people]
     );
+
+    const isRtlLanguage = (locale) => {
+        const rtlLanguages = ['ara', 'heb'];
+        return rtlLanguages.includes(locale);
+    }
 
     useEffect(() => {
         // Only scroll to top if media has not started yet and auto scroll is off.
@@ -91,7 +97,9 @@ export default function Transcript({
     return (
         <>
             {isEditor && <HelpText code="interview_transcript" className="u-mb" />}
-            <div className="Transcript">
+            <div  className={classNames('Transcript', {
+                    'Transcript--rtl': isRtlLanguage(transcriptLocale),
+                })}>
                 {
                     shownSegments.map((segment, index, array) => {
                         segment.speaker_is_interviewee = intervieweeId === segment.speaker_id;
