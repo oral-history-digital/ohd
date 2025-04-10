@@ -21,4 +21,8 @@ class CollectionSerializer < ApplicationSerializer
     object.institution ? object.institution.localized_hash(:name) : {}
   end
 
+  def publication_date
+    object.publication_date || object.project.publication_date
+  end
+
 end

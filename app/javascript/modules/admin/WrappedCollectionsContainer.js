@@ -32,6 +32,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'publication_date',
+                validate: function(v){return /^\d{4}$/.test(v)},
             },
             {
                 attribute: 'homepage',

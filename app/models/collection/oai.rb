@@ -46,7 +46,7 @@ module Collection::Oai
   end
 
   def oai_publication_date
-    publication_date #created_at.strftime("%d.%m.%Y")
+    publication_date || project.publication_date
   end
 
   def oai_type

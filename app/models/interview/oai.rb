@@ -54,7 +54,7 @@ module Interview::Oai
   end
 
   def oai_publication_date
-    publication_date
+    publication_date || project.publication_date
   end
 
   def oai_type
