@@ -550,7 +550,7 @@ class InterviewsController < ApplicationController
     interview = Interview.find_by_archive_id(archive_id)
     locale = params[:locale]
     xml = render_to_string(
-      template: "interviews/metadata",
+      template: "interviews/datacite",
       layout: false,
       formats: :xml,
       locals: {interview: interview, locale: locale}
