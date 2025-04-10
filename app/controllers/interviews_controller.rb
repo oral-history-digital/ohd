@@ -506,6 +506,7 @@ class InterviewsController < ApplicationController
       "secondary_language_id",
       "primary_translation_language_id",
       "interview_date",
+      "publication_date",
       "signature_original",
       "tape_count",
       "transcript_coupled",

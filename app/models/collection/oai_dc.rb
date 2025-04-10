@@ -46,7 +46,9 @@ module Collection::OaiDc
         end
       end
 
-      xml.tag!('dc:date', oai_date)
+      if oai_publication_date
+        xml.tag!('dc:date', oai_publication_date)
+      end
 
       xml.tag!('dc:type', oai_type)
 

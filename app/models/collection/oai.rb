@@ -45,8 +45,8 @@ module Collection::Oai
       project.institutions.first&.name(locale)
   end
 
-  def oai_date
-    created_at.strftime("%d.%m.%Y")
+  def oai_publication_date
+    publication_date #created_at.strftime("%d.%m.%Y")
   end
 
   def oai_type

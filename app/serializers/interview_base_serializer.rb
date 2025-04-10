@@ -11,6 +11,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :media_type,
     :duration,
     :interview_date,
+    :publication_date,
     :languages,
     :languages_with_transcripts,
     :language_id,

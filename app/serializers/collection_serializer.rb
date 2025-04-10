@@ -2,6 +2,7 @@ class CollectionSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :shortname,
+    :publication_date,
     :institution,
     :project_id,
     :homepage,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_31_113720) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_10_080721) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -127,6 +127,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_31_113720) do
     t.integer "institution_id"
     t.integer "interviews_count", default: 0, null: false
     t.string "shortname"
+    t.string "publication_date"
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -357,6 +358,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_31_113720) do
     t.boolean "media_missing", default: false, null: false
     t.boolean "transcript_coupled", default: true
     t.string "links"
+    t.string "publication_date"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end
@@ -616,6 +618,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_31_113720) do
     t.date "live_since"
     t.integer "analytics_site_id"
     t.integer "interviews_count", default: 0, null: false
+    t.string "publication_date"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
