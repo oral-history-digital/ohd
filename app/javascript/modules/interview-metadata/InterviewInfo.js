@@ -43,6 +43,7 @@ export default function InterviewInfo({
                 obj={interview}
                 attribute={'publication_date'}
                 value={interview.publication_date}
+                validate={function(v){return /^\d{4}$/.test(v)}}
                 hideEmpty
             />
             <SingleValueWithFormContainer

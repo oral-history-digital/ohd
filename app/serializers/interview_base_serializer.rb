@@ -64,6 +64,10 @@ class InterviewBaseSerializer < ApplicationSerializer
     hash
   end
 
+  def publication_date
+    object.publication_date || object.project.publication_date
+  end
+
   def translations_attributes
     []
   end
