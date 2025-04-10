@@ -77,7 +77,7 @@ module Collection::Oai
     RegistryReference.where(
       registry_entry_id: subjects_registry_entry.children.pluck(:id),
       ref_object_id: interviews.pluck(:id),
-      ref_object_type: "Person",
+      ref_object_type: "Interview",
     ).pluck(:registry_entry_id).uniq
   end
 
