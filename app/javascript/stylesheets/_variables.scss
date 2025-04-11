@@ -127,15 +127,15 @@ $line-length:                 32.5rem;
 $site-header-height-mobile:   5rem;
 $site-header-height-desktop:  6.25rem;
 $media-player-height-mobile:  20rem;
-$media-player-height-desktop: 28rem;
-$media-player-height-sticky:  10rem;
+$media-player-height-small:  10rem;
+$media-player-height-medium: 28rem;
 $horizontal-tabs-height:      $base-unit * 2;
 
 
 // Export as CSS variables
 :root {
-    --media-player-height-desktop: #{$media-player-height-desktop};
-    --media-player-height-sticky: #{$media-player-height-sticky};
+    --media-player-height-medium: #{$media-player-height-medium};
+    --media-player-height-small: #{$media-player-height-small};
 }
 
 // Miscellaneous

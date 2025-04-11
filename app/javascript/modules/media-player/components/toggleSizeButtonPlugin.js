@@ -52,8 +52,8 @@ class ToggleSizeButton extends VjsButton {
     const mediaPlayerElement = document.querySelector('.MediaPlayer');
     if (mediaPlayerElement) {
       const heightVariable = newSize === 'small' ? 
-        'var(--media-player-height-sticky)' : 
-        'var(--media-player-height-expanded)';
+        'var(--media-player-height-small)' : 
+        'var(--media-player-height-medium)';
       mediaPlayerElement.style.height = heightVariable;
       
       // Ensure Layout classes are also updated for proper styling
