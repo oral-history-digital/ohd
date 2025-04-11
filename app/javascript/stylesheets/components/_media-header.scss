@@ -25,7 +25,8 @@
   margin-left: auto;
 }
 
-.Layout.is-sticky .MediaHeader {
+// Small player mode header styles
+.Layout.is-small-player .MediaHeader {
   align-items: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -37,16 +38,17 @@
   }
 }
 
-.Layout.is-sticky .MediaHeader-title {
+.Layout.is-sticky .MediaHeader-title,
+.Layout.is-small-player .MediaHeader-title {
   font-size: $font-size-larger;
   line-height: $base-unit;
   margin-right: 0;
 }
 
-.Layout.is-sticky .MediaHeader-controls {
+.Layout.is-small-player .MediaHeader-controls {
   margin-left: 0;
 }
 
-.Layout.is-sticky .MediaHeader--mediaMissing {
+.Layout.is-small-player .MediaHeader--mediaMissing {
   flex-shrink: 0;
 }

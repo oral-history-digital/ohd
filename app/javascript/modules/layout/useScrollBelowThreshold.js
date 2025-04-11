@@ -35,6 +35,5 @@ export function useScrollBelowThreshold() {
 
         return cleanup;
     }, []);
-
     return isBelow;
 }

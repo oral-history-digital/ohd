@@ -2,11 +2,13 @@
     display: flex;
 }
 
-.Layout.is-sticky .MediaControls {
+.Layout.is-sticky .MediaControls,
+.Layout.is-small-player .MediaControls {
     flex-direction: column;
 }
 
-.Layout.is-sticky .MediaControls > * {
+.Layout.is-sticky .MediaControls > *,
+.Layout.is-small-player .MediaControls > * {
     margin-top: $base-unit * 0.5;
 }
 

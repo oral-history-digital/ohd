@@ -132,6 +132,12 @@ $media-player-height-sticky:  10rem;
 $horizontal-tabs-height:      $base-unit * 2;
 
 
+// Export as CSS variables
+:root {
+    --media-player-height-desktop: #{$media-player-height-desktop};
+    --media-player-height-sticky: #{$media-player-height-sticky};
+}
+
 // Miscellaneous
 // --------------------------------------------------
 
