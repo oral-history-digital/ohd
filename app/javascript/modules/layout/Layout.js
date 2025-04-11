@@ -73,6 +73,8 @@ export default function Layout({
             <div className={classNames('Layout', {
                 'sidebar-is-visible': sidebarVisible,
                 'is-sticky': scrollPositionBelowThreshold,
+                // Default to small-player when sticky
+                'is-small-player': scrollPositionBelowThreshold,
             })}>
                 <FetchAccountContainer />
                 <AfterRegisterPopup />

@@ -1,6 +1,6 @@
 :root {
-  --media-player-height-sticky: 10rem; // Tamaño reducido
-  --media-player-height-expanded: 20rem; // Tamaño expandido
+  --media-player-height-sticky: 10rem; // Small size
+  --media-player-height-expanded: 20rem; // Medium size
 }
 
 .MediaPlayer {
@@ -28,10 +28,8 @@
   right: 0.5rem;
 }
 
+// Sticky position styles - applied when scrolling below threshold
 .Layout.is-sticky .MediaPlayer {
-  flex-direction: row-reverse;
-  height: var(--media-player-height-sticky);
-  justify-content: flex-end;
   left: 0;
   padding: 0;
   position: fixed;
@@ -39,27 +37,32 @@
   top: 0;
 }
 
-.Layout.is-expanded .MediaPlayer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: $z-index-media-player;
-  height: var(--media-player-height-expanded); // Tamaño expandido
+// Small player size styles
+.Layout.is-small-player .MediaPlayer {
+  flex-direction: row-reverse;
+  height: var(--media-player-height-sticky);
+  justify-content: flex-end;
+  padding: 0;
 }
 
-.wrapper-content {
+// // Medium player size styles
+// .Layout.is-medium-player .MediaPlayer {
+//   height: var(--media-player-height-expanded);
+// }
+
+// Adjust wrapper content margin based on player size when sticky
+.Layout.is-sticky.is-small-player .wrapper-content {
   margin-top: var(--media-player-height-sticky) + $horizontal-tabs-height;
+}
 
-  @include screen-m {
-    margin-top: var(--media-player-height-sticky) + $horizontal-tabs-height;
-  }
+.Layout.is-sticky.is-medium-player .wrapper-content {
+  margin-top: var(--media-player-height-expanded) + $horizontal-tabs-height;
+}
 
-  .Layout.is-expanded & {
-    margin-top: var(--media-player-height-expanded) + $horizontal-tabs-height;
-
-    @include screen-m {
-      margin-top: var(--media-player-height-expanded) + $horizontal-tabs-height;
-    }
+// Sidebar adjustments when sticky
+.Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
+.Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
+  @include screen-xl {
+    right: 36%;
   }
 }

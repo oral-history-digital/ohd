@@ -9,26 +9,28 @@ class ToggleSizeButton extends VjsButton {
     super(player, options);
     this.addClass('vjs-toggle-size-button');
     this.options_ = options;
-    this.isOriginalSize = false; // Estado para rastrear el tamaño actual
+    this.isSmallSize = false; // State to track current size
   }
 
   handleClick() {
-    const layoutElement = document.querySelector('.Layout'); // Contenedor principal
-    const mediaPlayerElement = document.querySelector('.MediaPlayer'); // Contenedor del reproductor
+    const layoutElement = document.querySelector('.Layout'); // Main container
+    const mediaPlayerElement = document.querySelector('.MediaPlayer'); // Player container
 
     if (!layoutElement || !mediaPlayerElement) return;
 
-    if (layoutElement.classList.contains('is-sticky')) {
-      // Si está en modo sticky, cambia al tamaño original
-      layoutElement.classList.remove('is-sticky');
-      mediaPlayerElement.style.height = ''; // Restablece el tamaño original
+    if (layoutElement.classList.contains('is-small-player')) {
+      // If in small size, change to medium size
+      layoutElement.classList.remove('is-small-player');
+      layoutElement.classList.add('is-medium-player');
+      mediaPlayerElement.style.height = 'var(--media-player-height-desktop)'; // Medium size
     } else {
-      // Si no está en modo sticky, cambia al tamaño reducido
-      layoutElement.classList.add('is-sticky');
-      mediaPlayerElement.style.height = 'var(--media-player-height-sticky)'; // Tamaño reducido
+      // If in medium (or default) size, change to small size
+      layoutElement.classList.add('is-small-player');
+      layoutElement.classList.remove('is-medium-player');
+      mediaPlayerElement.style.height = 'var(--media-player-height-sticky)'; // Small size
     }
 
-    this.isOriginalSize = !this.isOriginalSize; // Alterna el estado
+    this.isSmallSize = !this.isSmallSize; // Toggle state
   }
 
   createEl() {
@@ -36,7 +38,7 @@ class ToggleSizeButton extends VjsButton {
       className: 'vjs-control vjs-button vjs-toggle-size-button',
     });
 
-    // Renderiza el ícono dinámico usando React
+    // Render dynamic icon using React
     const root = createRoot(el);
     root.render(
       <span className="vjs-icon-placeholder">

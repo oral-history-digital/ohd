@@ -32,7 +32,8 @@
   }
 }
 
-.Layout.is-sticky .MediaElement {
+// Small player size styles
+.Layout.is-small-player .MediaElement {
   margin: $base-unit 0 0;
   text-align: initial;
   width: initial;
@@ -42,7 +43,7 @@
   }
 }
 
-.Layout.is-sticky .MediaElement-element {
+.Layout.is-small-player .MediaElement-element {
   background-color: black;
   height: 7rem;
   width: 12.4444rem;  /* 1 */
@@ -57,7 +58,7 @@
 	font-family: $font-family;
 }
 
-.Layout.is-sticky .MediaElement video:not(:fullscreen)::cue {
+.Layout.is-small-player .MediaElement video:not(:fullscreen)::cue {
   visibility: hidden;
 }
 
