@@ -5,6 +5,7 @@ import {
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
     CLEAR_TIME_CHANGE_REQUEST,
+    SET_PLAYER_SIZE,
 } from './action-types';
 
 export const updateMediaTime = (time) => ({
@@ -33,3 +34,8 @@ export const sendTimeChangeRequest = (tape, time) => ({
 });
 
 export const clearTimeChangeRequest = () => ({ type: CLEAR_TIME_CHANGE_REQUEST });
+
+export const setPlayerSize = (size) => ({
+    type: SET_PLAYER_SIZE,
+    payload: { size },
+});

@@ -1,36 +1,73 @@
 import { createRoot } from 'react-dom/client';
 import videojs from 'video.js';
 import { MdOutlineFitScreen } from "react-icons/md";
+import { SET_PLAYER_SIZE } from '../action-types';
 
 const VjsButton = videojs.getComponent('Button');
+
+// A singleton to store a reference to the Redux store
+let storeInstance = null;
+
+// Function to be called by React components to set the store reference
+export function setStoreReference(store) {
+  storeInstance = store;
+}
 
 class ToggleSizeButton extends VjsButton {
   constructor(player, options) {
     super(player, options);
     this.addClass('vjs-toggle-size-button');
     this.options_ = options;
-    this.isSmallSize = false; // State to track current size
+    this.currentPlayerSize = 'medium'; // Track size locally
   }
 
   handleClick() {
-    const layoutElement = document.querySelector('.Layout'); // Main container
-    const mediaPlayerElement = document.querySelector('.MediaPlayer'); // Player container
-
-    if (!layoutElement || !mediaPlayerElement) return;
-
-    if (layoutElement.classList.contains('is-small-player')) {
-      // If in small size, change to medium size
-      layoutElement.classList.remove('is-small-player');
-      layoutElement.classList.add('is-medium-player');
-      mediaPlayerElement.style.height = 'var(--media-player-height-desktop)'; // Medium size
-    } else {
-      // If in medium (or default) size, change to small size
-      layoutElement.classList.add('is-small-player');
-      layoutElement.classList.remove('is-medium-player');
-      mediaPlayerElement.style.height = 'var(--media-player-height-sticky)'; // Small size
+    if (!storeInstance) {
+      console.error('Redux store reference not set');
+      return;
     }
 
-    this.isSmallSize = !this.isSmallSize; // Toggle state
+    // Get current state from Redux
+    const state = storeInstance.getState();
+    const mediaPlayerState = state.mediaPlayer;
+    
+    // Use our local tracking if Redux state seems inconsistent
+    const currentSize = mediaPlayerState?.playerSize || this.currentPlayerSize;
+    
+    // Toggle size between small and medium
+    const newSize = currentSize === 'small' ? 'medium' : 'small';
+    this.currentPlayerSize = newSize; // Update our local tracking
+    
+    
+    // Use the exact action type constant imported from action-types.js
+    const setPlayerSize = (size) => ({
+      type: SET_PLAYER_SIZE,
+      payload: { size }
+    });
+    
+    // Dispatch action to Redux
+    storeInstance.dispatch(setPlayerSize(newSize));
+    
+    // Update height directly for immediate visual feedback
+    const mediaPlayerElement = document.querySelector('.MediaPlayer');
+    if (mediaPlayerElement) {
+      const heightVariable = newSize === 'small' ? 
+        'var(--media-player-height-sticky)' : 
+        'var(--media-player-height-expanded)';
+      mediaPlayerElement.style.height = heightVariable;
+      
+      // Ensure Layout classes are also updated for proper styling
+      const layoutElement = document.querySelector('.Layout');
+      if (layoutElement) {
+        if (newSize === 'small') {
+          layoutElement.classList.add('is-small-player');
+          layoutElement.classList.remove('is-medium-player');
+        } else {
+          layoutElement.classList.add('is-medium-player');
+          layoutElement.classList.remove('is-small-player');
+        }
+      }
+    }
   }
 
   createEl() {
