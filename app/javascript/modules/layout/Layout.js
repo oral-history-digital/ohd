@@ -3,12 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { getPlayerSize } from 'modules/media-player';
 import FetchAccountContainer from './FetchAccountContainer';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
@@ -34,6 +36,7 @@ export default function Layout({
     fetchData,
 }) {
     const [warningVisible, setWarningVisible] = useState(warningShouldBeShown());
+    const playerSize = useSelector(getPlayerSize);
     const { project, projectId } = useProject();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -73,8 +76,8 @@ export default function Layout({
             <div className={classNames('Layout', {
                 'sidebar-is-visible': sidebarVisible,
                 'is-sticky': scrollPositionBelowThreshold,
-                // Default to small-player when sticky
-                'is-small-player': scrollPositionBelowThreshold,
+                'is-small-player': playerSize === 'small',
+                'is-medium-player': playerSize === 'medium',
             })}>
                 <FetchAccountContainer />
                 <AfterRegisterPopup />

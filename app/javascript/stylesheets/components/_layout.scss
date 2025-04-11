@@ -64,10 +64,18 @@
 
 .Layout.is-sticky .Layout-contentTabs {
   position: fixed;
-  top: 10rem;
   left: 0;
   right: 0;
 }
+
+.Layout.is-sticky.is-small-player .Layout-contentTabs {
+  top: 10rem;
+}
+
+.Layout.is-sticky.is-medium-player .Layout-contentTabs {
+  top: 28rem;
+}
+
 
 .Layout.is-sticky .Layout-mediaPlayer {
 
