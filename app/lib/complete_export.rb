@@ -11,7 +11,7 @@ class CompleteExport
     Zip::OutputStream.write_buffer do |zip|
       if interview.segments.count > 0
         tape_count = format('%02d', interview.tape_count)
-        interview.languages.each do |locale|
+        interview.alpha3s.each do |locale|
           if interview.has_transcript?(locale)
             zip.put_next_entry("#{interview.archive_id}_transcript_#{locale}.pdf")
             zip.write(interview.to_pdf(:de, locale))
