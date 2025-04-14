@@ -18,7 +18,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :primary_translation_language_id,
     :lang,
     :alpha2,
-    :languages,
+    :alpha3s,
     :alpha3s_with_transcript,
     :translation_locale,
     :toc_locales,

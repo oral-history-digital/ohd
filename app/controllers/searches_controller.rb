@@ -47,7 +47,7 @@ class SearchesController < ApplicationController
   def search(interview, model, order, field_name = 'text')
     search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
     if model == Segment
-      locales = interview.languages
+      locales = interview.alpha3s
     else
       locales = current_project.available_locales
     end
@@ -272,7 +272,7 @@ class SearchesController < ApplicationController
   end
 
   def highlighted_text(interview, hit, field_name = 'text')
-    (interview.languages | I18n.available_locales).inject({}) do |mem, locale|
+    (interview.alpha3s | I18n.available_locales).inject({}) do |mem, locale|
       mem[locale] = hit.highlights("#{field_name}_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()

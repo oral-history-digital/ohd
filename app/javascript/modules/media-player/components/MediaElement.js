@@ -207,7 +207,7 @@ export default function MediaElement({
         // handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
-        const newTracks = interview.languages.map(lang => ({
+        const newTracks = interview.alpha3s.map(lang => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
             language: lang,
             kind: 'captions',

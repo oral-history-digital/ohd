@@ -468,15 +468,14 @@ class Interview < ApplicationRecord
     ISO_639.find(primary_translation_language&.code).try(:alpha2) || language&.code[0..1]
   end
 
-  def languages
-    result = interview_languages.map do |il|
+  def alpha3s
+    interview_languages.map do |il|
       il.language&.code
-    end
-    result.uniq
+    end.uniq
   end
 
   def alpha3s_with_transcript
-    languages.select { |l| has_transcript?(l) }
+    alpha3s.select { |l| has_transcript?(l) }
   end
 
   def has_transcript?(locale)

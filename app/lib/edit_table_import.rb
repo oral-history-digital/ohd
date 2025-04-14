@@ -33,7 +33,7 @@ class EditTableImport
         speaker_id = contributions.key(row[:speaker_designation])
 
         translations_attributes = []
-        (interview.languages | interview.project.available_locales.map{|l| ISO_639.find(l).alpha3}).each do |locale|
+        (interview.alpha3s | interview.project.available_locales.map{|l| ISO_639.find(l).alpha3}).each do |locale|
           text = nil
           text = row[:text_orig] if locale == original_locale
           text = row[:text_translated] if locale == translation_locale

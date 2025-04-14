@@ -329,7 +329,7 @@ class Segment < ApplicationRecord
 
   end
 
-  def languages
+  def alpha3s
     translations.map{|t| t.locale.to_s.split('-').first}.uniq
   end
 
@@ -448,7 +448,7 @@ class Segment < ApplicationRecord
   def last_heading
     mainheadings = Segment.mainheadings_until(self)
     if mainheadings.count > 0
-      mainheadings_count = mainheadings.map{|mh| mh.mainheading("#{interview.languages.first}-public") || mh.mainheading("#{interview.languages.first}-original")}.count
+      mainheadings_count = mainheadings.map{|mh| mh.mainheading("#{interview.alpha3s.first}-public") || mh.mainheading("#{interview.alpha3s.first}-original")}.count
       subheadings = Segment.subheadings_until(self, mainheadings.last)
 
       if subheadings.count > 0
