@@ -452,7 +452,7 @@ class Interview < ApplicationRecord
     interview_languages.where(spec: ['primary']).first&.language
   end
 
-  def lang
+  def alpha3
     language&.code
   end
 
