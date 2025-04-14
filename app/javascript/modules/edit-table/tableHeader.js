@@ -5,7 +5,7 @@ export default function tableHeader({
 }) {
     const translationParams = {
         original_locale: interview.alpha3,
-        translation_locale: interview.translation_locale,
+        translation_locale: interview.translation_alpha3,
     };
 
     const header = /heading/.test(column) ?

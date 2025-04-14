@@ -7,7 +7,7 @@ class EditTableExport
     @locale = locale
     @contributions = @interview.contributions_hash
     @original_locale = @interview.alpha3.to_s
-    @translation_locale = @interview.translation_lang
+    @translation_locale = @interview.translation_alpha3
   end
 
   def process

@@ -79,11 +79,11 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           end
 
           # translation
-          if interview.translation_lang
-            xml.spanGr type: interview.translation_lang do
+          if interview.translation_alpha3
+            xml.spanGr type: interview.translation_alpha3 do
               xml.span from: "T#{tape.number}_S#{segment.id}",
                 to: s_end do
-                  xml.text! segment.text(interview.translation_lang)
+                  xml.text! segment.text(interview.translation_alpha3)
                 end
             end
           end

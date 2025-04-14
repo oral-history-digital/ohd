@@ -20,7 +20,8 @@ class InterviewBaseSerializer < ApplicationSerializer
     :alpha2,
     :alpha3s,
     :alpha3s_with_transcript,
-    :translation_locale,
+    :translation_alpha3,
+    :translation_alpha3s,
     :toc_locales,
     :anonymous_title,
     :media_missing,
@@ -136,7 +137,4 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.language&.id
   end
 
-  def translation_locale
-    object.translation_lang
-  end
 end
