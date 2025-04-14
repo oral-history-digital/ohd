@@ -4,7 +4,7 @@ export default function tableHeader({
     t: t,
 }) {
     const translationParams = {
-        original_locale: interview.lang,
+        original_locale: interview.alpha3,
         translation_locale: interview.translation_locale,
     };
 

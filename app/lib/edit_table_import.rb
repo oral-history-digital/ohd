@@ -6,7 +6,7 @@ class EditTableImport
   def initialize(interview, file_path, only_references=false)
     @interview = interview
     @contributions = @interview.contributions_hash
-    @original_locale = @interview.lang
+    @original_locale = @interview.alpha3
     @translation_locale = @interview.translation_lang
     @file_path = file_path
     @only_references = only_references

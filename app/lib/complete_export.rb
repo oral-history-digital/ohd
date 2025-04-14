@@ -18,7 +18,7 @@ class CompleteExport
           end
           interview.tapes.each do |tape|
             tape_number = format('%02d', tape.number)
-            trans = interview.lang == locale ? 'tr' : 'ue'
+            trans = interview.alpha3 == locale ? 'tr' : 'ue'
             filename = "#{interview.archive_id}_#{tape_count}_#{tape_number}_#{trans}_#{locale}_#{DateTime.now.strftime("%Y_%m_%d")}"
 
             zip.put_next_entry("#{filename}.vtt")

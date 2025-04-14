@@ -223,7 +223,7 @@ export const getTranscriptLocale = createSelector(
         }
 
         const firstTranslationLocale = interview.translation_locale;
-        const locale = originalLocale ? interview.lang : firstTranslationLocale;
+        const locale = originalLocale ? interview.alpha3 : firstTranslationLocale;
         return locale;
     }
 );

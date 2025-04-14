@@ -41,7 +41,7 @@ export default function InterviewSearchResults({
         return null;
     }
 
-    const interviewLang = interview.lang;
+    const interviewLang = interview.alpha3;
 
     const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
 

@@ -39,7 +39,7 @@ export default function SlideShowSearchResults({
                     for (const [key, value] of Object.entries(segment.text)) {
                         if (value?.length > 0) {
                             if (key === 'orig') {
-                                lang = interview.lang;
+                                lang = interview.alpha3;
                             } else {
                                 lang = key;
                             }

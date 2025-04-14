@@ -355,7 +355,7 @@ class Segment < ApplicationRecord
   end
 
   def text_orig
-    text("#{interview&.lang}-public")
+    text("#{interview&.alpha3}-public")
   end
 
 
