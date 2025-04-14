@@ -60,7 +60,7 @@ module Interview::Export
         layout: 'latex',
         locals: {
           interview: self,
-          doc_type: self.lang == content_locale ? 'transcript' : 'translation',
+          doc_type: self.alpha3 == content_locale ? 'transcript' : 'translation',
           header_locale: header_locale,
           content_locale: content_locale,
           content_locale_public: "#{content_locale}-public",

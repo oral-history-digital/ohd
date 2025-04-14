@@ -6,7 +6,7 @@ class EditTableExport
     @interview = Interview.find_by_archive_id(public_interview_id)
     @locale = locale
     @contributions = @interview.contributions_hash
-    @original_locale = @interview.lang.to_s
+    @original_locale = @interview.alpha3.to_s
     @translation_locale = @interview.translation_lang
   end
 
