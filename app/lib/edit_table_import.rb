@@ -7,7 +7,7 @@ class EditTableImport
     @interview = interview
     @contributions = @interview.contributions_hash
     @original_locale = @interview.alpha3
-    @translation_locale = @interview.translation_lang
+    @translation_locale = @interview.translation_alpha3
     @file_path = file_path
     @only_references = only_references
     @sheet = parse_sheet

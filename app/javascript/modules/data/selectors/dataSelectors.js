@@ -222,7 +222,7 @@ export const getTranscriptLocale = createSelector(
             return undefined;
         }
 
-        const firstTranslationLocale = interview.translation_locale;
+        const firstTranslationLocale = interview.translation_alpha3;
         const locale = originalLocale ? interview.alpha3 : firstTranslationLocale;
         return locale;
     }

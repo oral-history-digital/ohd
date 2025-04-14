@@ -460,8 +460,12 @@ class Interview < ApplicationRecord
     ISO_639.find(language&.code).try(:alpha2) || language&.code[0..1]
   end
 
-  def translation_lang
-    primary_translation_language&.code
+  def translation_language
+    primary_translation_language
+  end
+
+  def translation_alpha3
+    translation_language&.code
   end
 
   def translation_alpha2
@@ -476,6 +480,12 @@ class Interview < ApplicationRecord
 
   def alpha3s_with_transcript
     alpha3s.select { |l| has_transcript?(l) }
+  end
+
+  def translation_alpha3s
+    interview_languages.where("spec like '%_translation'").map do |il|
+      il.language&.code
+    end.uniq
   end
 
   def has_transcript?(locale)
@@ -924,8 +934,8 @@ class Interview < ApplicationRecord
 
   def edit_table_headers(locale=:de)
     translation_params = {
-      original_locale: lang,
-      translation_locale: translation_lang,
+      original_locale: alpha3,
+      translation_locale: translation_alpha3,
     }
     edit_table_header_columns.inject({}) do |mem, column|
       if column =~ /heading/

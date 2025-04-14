@@ -78,7 +78,7 @@ export default function EditTable({
                 key={segment.id}
                 segment={segment}
                 originalLocale={interview.alpha3}
-                translationLocale={interview.translation_locale}
+                translationLocale={interview.translation_alpha3}
                 active={active}
             />
         );
