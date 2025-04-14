@@ -475,6 +475,27 @@ class Interview < ApplicationRecord
     result.uniq
   end
 
+  def alpha3s_with_transcript
+    languages.select { |l| has_transcript?(l) }
+  end
+
+  def has_transcript?(locale)
+    segment_count = segments
+      .joins(:translations)
+      .where('segment_translations.locale': "#{locale}-public")
+      .count
+    segment_count > 0
+  end
+
+  def has_heading?(locale)
+    heading_count = segments
+      .with_heading
+      .joins(:translations)
+      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
+      .count
+    heading_count > 0
+  end
+
   def language_id
     [primary_language_id, secondary_language_id].compact
   end
@@ -496,27 +517,6 @@ class Interview < ApplicationRecord
         l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
       end
     end
-  end
-
-  def has_transcript?(locale)
-    segment_count = segments
-      .joins(:translations)
-      .where('segment_translations.locale': "#{locale}-public")
-      .count
-    segment_count > 0
-  end
-
-  def languages_with_transcripts
-    languages.select { |l| has_transcript?(l) }
-  end
-
-  def has_heading?(locale)
-    heading_count = segments
-      .with_heading
-      .joins(:translations)
-      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
-      .count
-    heading_count > 0
   end
 
   def has_protocol?(locale)
@@ -555,12 +555,6 @@ class Interview < ApplicationRecord
       speakers << segment.speaker_designation
     end
     speakers.flatten.uniq.compact.reject{|s| s == false}
-  end
-
-  def transcript_locales
-    interview_languages.where(spec: ['primary', 'secondary']).map do |il|
-      il.language.code
-    end
   end
 
   def right_to_left
