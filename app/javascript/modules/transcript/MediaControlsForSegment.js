@@ -150,10 +150,10 @@ const MediaControlsForSegment = ({
                     {isPlaying ?
                         <HiPauseCircle
                             onClick={handlePlayToggle}
-                            className='media-control-icon' /> :
+                            className='media-control-icon-start-stop' /> :
                         <AiFillPlayCircle
                             onClick={handlePlayToggle}
-                            className='media-control-icon' />}
+                            className='media-control-icon-start-stop' />}
                     <FaForward
                         className='media-control-icon'
                         onClick={() => handleTimeChange(currentTime + 5)} />
