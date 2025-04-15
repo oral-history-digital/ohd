@@ -6,9 +6,9 @@ import {
     fetchData,
     getCurrentInterview,
     getCurrentIntervieweeId,
-    getHasTranscript,
+    //getHasTranscript,
     getTranscriptFetched,
-    getTranscriptLocale
+    //getTranscriptLocale
 } from 'modules/data';
 import { getCurrentTape, getMediaTime, getIsIdle } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
@@ -23,8 +23,8 @@ const mapStateToProps = (state, props) => ({
     isIdle: getIsIdle(state),
     autoScroll: getAutoScroll(state),
     transcriptFetched: getTranscriptFetched(state),
-    transcriptLocale: getTranscriptLocale(state, props),
-    hasTranscript: getHasTranscript(state, props),
+    //transcriptLocale: getTranscriptLocale(state, props),
+    //hasTranscript: getHasTranscript(state, props),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
