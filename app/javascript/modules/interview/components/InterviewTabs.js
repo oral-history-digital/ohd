@@ -65,6 +65,23 @@ export default function InterviewTabs({
             || tabIndex === 2 && !showTocTab(project, interview, locale);
     }
 
+    const translationAlpha3s = () => {
+        return interview.translation_alpha3s.map( a => {
+            if (a === translationLocale) {
+                return (
+                    <b className='u-ml-tiny'>{a}</b>
+                );
+            } else {
+                return (
+                    <a
+                        onClick={() => setTranslationLocale(a)}
+                        className='u-ml-tiny'
+                    >{a}</a>
+                );
+            }
+        })
+    }
+
     return (
         <Tabs
             className="Tabs"
@@ -86,13 +103,8 @@ export default function InterviewTabs({
                     >
                         <FaRegClone className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
-                            {`${t('translation')} (`}
-                            {
-                                interview.translation_alpha3s.map( a =>
-                                    <a onClick={() => setTranslationLocale(a)}>{a}</a>
-                                )
-                            }
-                            )
+                            {t('translation')}
+                            {translationAlpha3s()}
                         </span>
                     </Tab>
                     <Tab
