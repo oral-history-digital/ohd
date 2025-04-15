@@ -215,42 +215,6 @@ export const getTranscriptFetched = createSelector(
 
 const getOriginalLocaleFromProps = (_, props) => props.originalLocale;
 
-export const getTranscriptLocale = createSelector(
-    [getCurrentInterview, getOriginalLocaleFromProps],
-    (interview, originalLocale) => {
-        if (!interview) {
-            return undefined;
-        }
-
-        const firstTranslationLocale = interview.translation_alpha3;
-        const locale = originalLocale ? interview.alpha3 : firstTranslationLocale;
-        return locale;
-    }
-);
-
-export const getHasTranscript = createSelector(
-    [getCurrentInterview, getTranscriptLocale],
-    (interview, locale) => {
-        if (!interview || !locale) {
-            return false;
-        }
-
-        const segmentsOfFirstTape = interview.segments?.[1];
-
-        if (!segmentsOfFirstTape) {
-            return false;
-        }
-
-        const segmentArray = Object.values(segmentsOfFirstTape);
-
-        const result = segmentArray.some((segment) =>
-            segment.text[locale] || segment.text[`${locale}-public`]
-        );
-
-        return result;
-    }
-);
-
 export const getContributorsFetched = createSelector(
     [getCurrentInterview, getPeopleStatus, getCurrentProject],
     (interview, peopleStatus, currentProject) => {

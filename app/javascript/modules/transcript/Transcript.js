@@ -18,7 +18,6 @@ export default function Transcript({
     archiveId,
     transcriptFetched,
     transcriptLocale,
-    //hasTranscript,
     originalLocale,
     loadSegments,
     mediaTime,
@@ -150,7 +149,6 @@ Transcript.propTypes = {
     interview: PropTypes.object.isRequired,
     intervieweeId: PropTypes.number,
     transcriptFetched: PropTypes.bool.isRequired,
-    //hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
 };
