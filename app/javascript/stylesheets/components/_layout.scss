@@ -17,8 +17,28 @@
 
 .Layout.is-sticky {
   .wrapper-content {
+    // Default margin when sticky (without player size class)
     margin-top: $media-player-height-mobile + $horizontal-tabs-height;
 
+    @include screen-m {
+      margin-top: $media-player-height-medium + $horizontal-tabs-height;
+    }
+  }
+  
+  // Override with specific margins based on player size class
+  &.is-small-player .wrapper-content {
+    margin-top: $media-player-height-small + $horizontal-tabs-height;
+    
+    // Ensure this works across all screen sizes
+    @include screen-m {
+      margin-top: $media-player-height-small + $horizontal-tabs-height;
+    }
+  }
+  
+  &.is-medium-player .wrapper-content {
+    margin-top: $media-player-height-medium + $horizontal-tabs-height;
+    
+    // Ensure this works across all screen sizes
     @include screen-m {
       margin-top: $media-player-height-medium + $horizontal-tabs-height;
     }

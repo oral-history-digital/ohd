@@ -40,15 +40,6 @@
   padding: 0;
 }
 
-// Adjust wrapper content margin based on player size when sticky
-.Layout.is-sticky.is-small-player .wrapper-content {
-  margin-top: var(--media-player-height-small) + $horizontal-tabs-height;
-}
-
-.Layout.is-sticky.is-medium-player .wrapper-content {
-  margin-top: var(--media-player-height-medium) + $horizontal-tabs-height;
-}
-
 // Sidebar adjustments when sticky
 .Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
 .Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
