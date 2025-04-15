@@ -509,7 +509,7 @@ class Interview < ApplicationRecord
     [primary_language_id, secondary_language_id].compact
   end
 
-  %w(primary secondary primary_translation).each do |spec|
+  %w(primary secondary primary_translation secondary_translation).each do |spec|
     define_method "#{spec}_language" do
       interview_languages.where(spec: spec).first.try(:language)
     end

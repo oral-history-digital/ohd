@@ -505,6 +505,7 @@ class InterviewsController < ApplicationController
       "primary_language_id",
       "secondary_language_id",
       "primary_translation_language_id",
+      "secondary_translation_language_id",
       "interview_date",
       "publication_date",
       "signature_original",

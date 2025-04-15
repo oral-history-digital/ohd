@@ -16,6 +16,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :primary_language_id,
     :secondary_language_id,
     :primary_translation_language_id,
+    :secondary_translation_language_id,
     :alpha3,
     :alpha2,
     :alpha3s,
