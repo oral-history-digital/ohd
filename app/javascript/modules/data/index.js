@@ -23,7 +23,6 @@ export {
     getCurrentRefTree,
     getCurrentRefTreeStatus,
     getFlattenedRefTree,
-    getHasTranscript,
     getHeadings,
     getHeadingsFetched,
     getHeadingsStatus,
@@ -68,7 +67,6 @@ export {
     getTasks,
     getTasksStatus,
     getTranscriptFetched,
-    getTranscriptLocale,
     getUsers,
     getUsersStatus,
 } from './selectors/dataSelectors';
