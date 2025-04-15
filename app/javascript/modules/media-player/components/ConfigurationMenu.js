@@ -16,6 +16,9 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         qualities?.find((q) => q === 'Default') || qualities?.[0] || null
     );
 
+    const rateMenuItemRef = useRef(null);
+    const qualityMenuItemRef = useRef(null);
+
     const menuTimeout = useRef(null);
     const rateSubmenuTimeout = useRef(null);
     const qualitySubmenuTimeout = useRef(null);
@@ -91,6 +94,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                 {isMenuVisible && (
                     <MenuList className="vjs-configuration-menu">
                         <MenuItem
+                            ref={rateMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
                             onMouseEnter={showRateSub}
                             onMouseLeave={hideRateSub}
@@ -107,6 +111,10 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 className="vjs-configuration-submenu horizontal-menu"
                                 onMouseEnter={showRateSub}
                                 onMouseLeave={hideRateSub}
+                                style={{
+                                    top: rateMenuItemRef.current ? 
+                                        rateMenuItemRef.current.offsetTop - 5 : 0
+                                }}
                             >
                                 {playbackRates.map((rate) => (
                                     <button
@@ -128,6 +136,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         <hr className="vjs-configuration-menu-divider" />
 
                         <MenuItem
+                            ref={qualityMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
                             onMouseEnter={showQualitySub}
                             onMouseLeave={hideQualitySub}
@@ -144,6 +153,10 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 className="vjs-configuration-submenu horizontal-menu"
                                 onMouseEnter={showQualitySub}
                                 onMouseLeave={hideQualitySub}
+                                style={{
+                                    top: qualityMenuItemRef.current ? 
+                                        qualityMenuItemRef.current.offsetTop - 5 : 0
+                                }}
                             >
                                 {qualities.map((q) => (
                                     <button
