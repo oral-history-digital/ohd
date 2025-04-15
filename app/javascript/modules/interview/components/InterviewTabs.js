@@ -13,6 +13,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import showTranslationTab from './showTranslationTab';
 import showTocTab from './showTocTab';
+import LocaleSwitch from './LocaleSwitch';
 
 export default function InterviewTabs({
     interview,
@@ -65,23 +66,6 @@ export default function InterviewTabs({
             || tabIndex === 2 && !showTocTab(project, interview, locale);
     }
 
-    const translationAlpha3s = () => {
-        return interview.translation_alpha3s.map( a => {
-            if (a === translationLocale) {
-                return (
-                    <b className='u-ml-tiny'>{a}</b>
-                );
-            } else {
-                return (
-                    <a
-                        onClick={() => setTranslationLocale(a)}
-                        className='u-ml-tiny'
-                    >{a}</a>
-                );
-            }
-        })
-    }
-
     return (
         <Tabs
             className="Tabs"
@@ -104,7 +88,11 @@ export default function InterviewTabs({
                         <FaRegClone className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
                             {t('translation')}
-                            {translationAlpha3s()}
+                            <LocaleSwitch
+                                interview={interview}
+                                selected={translationLocale}
+                                setTranslationLocale={setTranslationLocale}
+                            />
                         </span>
                     </Tab>
                     <Tab
