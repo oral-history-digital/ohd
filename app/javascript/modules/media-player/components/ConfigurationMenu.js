@@ -23,8 +23,6 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         return qualities[0] || null;
       });
 
-    console.log(player.currentSources())
-
     useEffect(() => {
         if (!player) return;
     

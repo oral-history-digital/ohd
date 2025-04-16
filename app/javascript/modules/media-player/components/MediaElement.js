@@ -179,7 +179,7 @@ export default function MediaElement({
                     timeInSeconds
                 );
             } catch (e) {
-                console.log('error in time format, skipping');
+                console.warn('Invalid time format, skipping');
             }
         }
     }, []);
