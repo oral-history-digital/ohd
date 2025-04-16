@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
         formElements: [
             {
                 attribute: 'name',
+                multiLocale: true,
                 validate: function(v){return v?.length > 1}
             },
             {

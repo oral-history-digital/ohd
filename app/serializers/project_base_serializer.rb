@@ -4,6 +4,7 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :name,
     :display_name,
     :shortname,
+    :publication_date,
     :archive_domain,
     :available_locales,
     :default_locale,

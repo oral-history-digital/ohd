@@ -306,7 +306,8 @@ export default function MediaElement({
 
     function handlePlayerReady(player) {
         playerRef.current = player;
-        
+        window.mainPlayerInstance = player;
+
         player.configurationMenuPlugin();
         const qualities = player
           .currentSources()
@@ -351,6 +352,7 @@ export default function MediaElement({
                 if (qualitySelector) qualitySelector.hide();
             }
         });
+        
 
         addTextTracks();
 
@@ -363,6 +365,16 @@ export default function MediaElement({
 
         checkForTimeChangeRequest();
     }
+
+    useEffect(() => {
+        return resetMedia;
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            window.mainPlayerInstance = null;
+        };
+    }, []);
 
     if (!mediaStreams) {
         return null;

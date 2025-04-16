@@ -2,76 +2,85 @@ module Interview::Oai
 
   def sets
     oai_sets = [ OAI::Set.new({name: 'Interview-Archiv', spec: "archive:#{project.shortname}"}) ]
-    #if name.match('multimeter')
-      #oai_sets << OAI::Set.new({name: 'Meters', spec: 'meters'})
-    #end
+    unless collection.nil?
+      oai_sets << OAI::Set.new({name: 'Interview-Sammlung', spec: "collection:#{collection_id}"})
+      #oai_sets << OAI::Set.new({name: 'Interview-Sammlung', spec: "collection:#{collection&.shortname}"})
+    end
     oai_sets
   end
 
-  def oai_dc_identifier
+  def oai_locales
+    %w(de en)
+  end
+
+  def oai_identifier
     "oai:#{project.shortname}:#{archive_id}"
     #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"
   end
 
-  def oai_dc_creator
-    anonymous_title(:de)
+  def oai_dc_identifier
+    oai_identifier
   end
 
-  def oai_dc_subject
-    #project.registry_reference_type_metadata_fields.where(use_in_results_table: true, ref_object_type: 'Interview').each do |field|
-      #"#{field.label(project.default_locale)}: #{self.send(field.name).map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(';')}"
-    #end
+  def oai_doi_identifier
+    "#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
 
-  def oai_dc_title
-    "Lebensgeschichtliches #{media_type.classify}-Interview mit #{anonymous_title(:de)} vom #{interview_date}"
+  def oai_url_identifier(locale)
+    "#{project.domain_with_optional_identifier}/#{locale}/interviews/#{archive_id}"
+    #"#{project.domain_with_optional_identifier}/#{project.default_locale}/interviews/#{archive_id}"
   end
 
-  def oai_dc_description
-    "#{media_type.classify}-Interview auf #{language.name(:de)}."
+  def oai_title(locale)
+    TranslationValue.for(
+      'oai.xml_title',
+      locale,
+      interviewee: anonymous_title(locale),
+      media_type: media_type,
+      date: interview_date
+    )
   end
 
-  def oai_dc_publisher
-    "Interview-Archiv \"#{project.name('de')}\""
+  def oai_contributor
+    project.institutions.map(&:name).join(", ")
   end
 
-  def oai_dc_contributor
-    project.institutions.map{|i| i.name(:de)} + [project.cooperation_partner]
+  def oai_publisher(locale)
+    project.institutions.first&.name(locale)
   end
 
-  def oai_dc_date
+  def oai_date
     interview_date && Date.parse(interview_date).strftime("%d.%m.%Y") rescue interview_date
   end
 
-  def oai_dc_type
-    'Interview'
+  def oai_publication_date
+    publication_date || project.publication_date
+  end
+
+  def oai_type
+    media_type
   end
 
   def type
     'Interview'
   end
 
-  def oai_dc_format
-    media_type == 'audio' ? 'audio/mp3' : 'video/mp4'  
+  def oai_format
+    media_type == 'audio' ? 'audio/mp3' : 'video/mp4'
   end
 
-  def oai_dc_source
-    project.domain_with_optional_identifier 
+  def oai_size
+    duration ? Time.at(duration).utc.strftime("%H h %M min") : nil
   end
 
-  def oai_dc_language
-    language && language.code
+  def oai_language
+    language&.code
   end
 
-  def oai_dc_relation
-    collection && collection.name(:de)
-  end
-
-  #def oai_dc_coverage
-  #end
-
-  def oai_dc_rights
-    "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions"
+  def oai_subject_registry_entry_ids
+    subjects_registry_entry = RegistryEntry.find 21898673
+    registry_references.where(registry_entry_id: subjects_registry_entry.children.pluck(:id)).
+      pluck(:registry_entry_id).uniq
   end
 
 end

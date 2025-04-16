@@ -72,6 +72,15 @@ export default function AdminActions({
                     </li>
                 </AuthorizedContent>{' '}
 
+                <AuthorizedContent object={{ type: 'Interview' }} action='download'>
+                    <li>
+                        <SubmitInterviewIds
+                            selectedArchiveIds={selectedArchiveIds}
+                            action="reindex"
+                        />
+                    </li>
+                </AuthorizedContent>{' '}
+
                 <li>
                     <DeleteInterviews selectedArchiveIds={selectedArchiveIds} />
                 </li>

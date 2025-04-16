@@ -100,6 +100,7 @@ function Segment({
                 ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
+                    'is-active': active
                 })}>
                 {
                     data.speakerIdChanged && (
@@ -135,6 +136,8 @@ function Segment({
                             closePopup={closePopup}
                             tabIndex={tabIndex}
                             active={popupType !== null}
+                            sendTimeChangeRequest={sendTimeChangeRequest}
+                            transcriptCoupled={transcriptCoupled}
                         />
                     )
                 }
