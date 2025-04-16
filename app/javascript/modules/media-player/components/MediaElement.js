@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
-import speakerImage from 'assets/images/speaker.png';
+import usePosterImage from '../usePosterImage';
 import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
@@ -59,6 +59,8 @@ export default function MediaElement({
             tape
         );
 
+    const { posterUrl } = usePosterImage(interview);
+
     const videoJsOptions = {
         autoplay: false,
         controls: true,
@@ -67,7 +69,7 @@ export default function MediaElement({
         //aspectRatio,
         language: locale,
         sources: initialSources,
-        poster: interview.still_url || speakerImage,
+        poster: posterUrl,
         playbackRates: [0.6, 0.8, 1, 1.2, 2],
         enableSourceset: false,
         controlBar: {
@@ -152,6 +154,15 @@ export default function MediaElement({
             default:
         }
     }
+
+    // Update the player's poster when it changes
+    useEffect(() => {
+        const player = playerRef.current;
+        if (!player) return;
+
+        // Only update if the poster has changed and player is ready
+        player.poster(posterUrl);
+    }, [posterUrl]);
 
     // Check if time params exist in query string.
     useEffect(() => {

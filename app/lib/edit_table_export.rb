@@ -1,9 +1,10 @@
 class EditTableExport
 
-  attr_accessor :interview, :contributions, :original_locale, :translation_locale
+  attr_accessor :interview, :locale, :contributions, :original_locale, :translation_locale
 
-  def initialize(public_interview_id)
+  def initialize(public_interview_id, locale)
     @interview = Interview.find_by_archive_id(public_interview_id)
+    @locale = locale
     @contributions = @interview.contributions_hash
     @original_locale = @interview.lang.to_s
     @translation_locale = @interview.translation_lang
@@ -12,7 +13,7 @@ class EditTableExport
   def process
     CSV.generate(**CSV_OPTIONS.merge(headers: true)) do |f|
 
-      f << interview.edit_table_headers.values
+      f << interview.edit_table_headers(@locale).values
 
       interview.tapes.includes(
         segments: [

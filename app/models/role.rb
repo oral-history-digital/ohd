@@ -6,4 +6,7 @@ class Role < ApplicationRecord
   has_many :users, through: :user_roles
 
   belongs_to :project
+
+  translates :name, fallbacks_for_empty_translations: true
+  accepts_nested_attributes_for :translations, allow_destroy: true
 end

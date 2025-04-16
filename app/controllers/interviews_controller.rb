@@ -1,7 +1,7 @@
 class InterviewsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new, :show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
-  skip_after_action :verify_authorized, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
-  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
+  skip_before_action :authenticate_user!, only: [:new, :show, :metadata, :download_datacite, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_authorized, only: [:show, :metadata, :download_datacite, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :download_datacite, :cmdi_metadata, :random_featured]
 
   def new
     authorize Interview
@@ -255,23 +255,23 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def metadata
-    interview = Interview.find_by_archive_id(params[:id])
-    respond_to do |format|
-      format.xml do
-        render :metadata, locals: {
-          interview: interview,
-          locale: params[:locale]
-        }
-      end
-    end
-  end
+  #def datacite
+    #interview = Interview.find_by_archive_id(params[:id])
+    #respond_to do |format|
+      #format.xml do
+        #render :datacite, locals: {
+          #interview: interview,
+          #locale: params[:locale]
+        #}
+      #end
+    #end
+  #end
 
-  def download_metadata
+  def download_datacite
     interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.xml do
-        send_data interview.metadata_xml(params[:locale]), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
+        send_data interview.datacite_xml(params[:locale]), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
       end
     end
   end
@@ -326,11 +326,24 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def reindex
+    authorize Interview, :download?
+    ReindexJob.perform_later(archive_id: params[:archive_ids])
+    Interview.where(archive_id: params[:archive_ids]).update_all(
+      updated_at: Time.now
+    )
+    respond_to do |format|
+      format.json do
+        render json: {}, status: :ok
+      end
+    end
+  end
+
   def export_metadata
     authorize Interview, :download?
     respond_to do |format|
       format.csv do
-        send_data MetadataExport.new(params[:archive_ids], current_project, :de).process,
+        send_data MetadataExport.new(params[:archive_ids], current_project, params[:locale]).process,
         type: "application/csv",
         filename: "metadata_#{current_project.shortname}_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
       end
@@ -493,6 +506,7 @@ class InterviewsController < ApplicationController
       "secondary_language_id",
       "primary_translation_language_id",
       "interview_date",
+      "publication_date",
       "signature_original",
       "tape_count",
       "transcript_coupled",
@@ -536,7 +550,7 @@ class InterviewsController < ApplicationController
     interview = Interview.find_by_archive_id(archive_id)
     locale = params[:locale]
     xml = render_to_string(
-      template: "interviews/metadata",
+      template: "interviews/datacite",
       layout: false,
       formats: :xml,
       locals: {interview: interview, locale: locale}
