@@ -4,7 +4,7 @@ class EditTableExportTest < ActiveSupport::TestCase
   setup do
     @project = DataHelper.project_with_contribution_types_and_metadata_fields
     @interview = DataHelper.interview_with_everything(@project, 1)
-    @csv = EditTableExport.new(@interview.archive_id).process
+    @csv = EditTableExport.new(@interview.archive_id, :de).process
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
     @second_row_entries = @rows[2].split(/\t/)

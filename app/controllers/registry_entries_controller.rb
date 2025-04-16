@@ -122,9 +122,10 @@ class RegistryEntriesController < ApplicationController
       format.csv do
         if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
+          header_keys = %w(parent_name parent_id name id description latitude longitude gnd_id osm_id linked_interviews status)
           csv = Rails.cache.fetch "#{current_project.shortname}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
             CSV.generate(**CSV_OPTIONS) do |row|
-              row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID', 'Verknüpfte Interviews', 'Status']
+              row << header_keys.map{|k| TranslationValue.for("activerecord.attributes.registry_entry.#{k}", params[:lang])}
               root.on_all_descendants do |entry|
                 entry.parents.each do |parent|
                   row << [

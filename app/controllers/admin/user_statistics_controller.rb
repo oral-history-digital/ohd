@@ -110,8 +110,9 @@ class Admin::UserStatisticsController < Admin::BaseController
 
   def label_for(category, entry, locale)
     category_title = TranslationValue.for("activerecord.attributes.user.#{category}", locale)
+    not_specified = TranslationValue.for('user_statistics.not_specified', locale)
     if entry.blank?
-      "k. A. (#{category_title})"
+      "#{not_specified} (#{category_title})"
     elsif category == 'country'
       TranslationValue.for("countries.#{entry}", locale)
     elsif entry == 'other'

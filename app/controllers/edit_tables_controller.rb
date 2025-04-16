@@ -38,7 +38,9 @@ class EditTablesController < ApplicationController
 
     respond_to do |format|
       format.csv do
-        send_data EditTableExport.new(params[:id]).process, type: "application/csv", filename: "#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
+        send_data EditTableExport.new(params[:id], params[:locale]).process,
+          type: "application/csv",
+          filename: "#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
       end
     end
   end

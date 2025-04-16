@@ -78,3 +78,5 @@
 :pseudo_links:
   use_in_details_view: true
   display_on_landing_page: true
+:publication_date:
+  use_in_details_view: true

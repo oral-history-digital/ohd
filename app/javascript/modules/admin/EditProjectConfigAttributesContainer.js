@@ -20,6 +20,10 @@ const mapStateToProps = state => ({
             help: 'activerecord.attributes.project.domain_help'
         },
         {
+            attribute: "publication_date",
+            validate: function(v){return /^\d{4}$/.test(v)},
+        },
+        {
             elementType: 'input',
             attribute: 'contact_email',
             type: 'email',

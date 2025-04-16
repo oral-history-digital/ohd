@@ -9,6 +9,9 @@ import { Modal } from 'modules/ui';
 import { useWorkbook } from 'modules/workbook';
 import SegmentFormContainer from './SegmentFormContainer';
 
+import { scrollSmoothlyTo } from 'modules/user-agent';
+import { SCROLL_OFFSET } from 'modules/constants';
+
 export default function SegmentButtons({
     contentLocale,
     data,
@@ -17,18 +20,35 @@ export default function SegmentButtons({
     active,
     openPopup,
     closePopup,
+    sendTimeChangeRequest,
+    transcriptCoupled
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { savedSegments: workbookAnnotations } = useWorkbook();
 
-    const annotationsForSegment = workbookAnnotations?.filter(annotation =>
+    const annotationsForSegment = workbookAnnotations?.some(annotation =>
         data.user_annotation_ids.includes(annotation.id));
 
-    const hasAnnotations = (data.annotations_count + (annotationsForSegment?.length || 0)) > 0;
+    const hasAnnotationsInContentLocale = Object.values(data.annotations).some(annotation => annotation.text.hasOwnProperty(contentLocale));
+    const hasAnnotations = hasAnnotationsInContentLocale || annotationsForSegment;
     const hasReferences = data.registry_references_count > 0;
     const showAnnotationsButton = isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'update') || hasAnnotations;
     const showReferencesButton = isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'update') || hasReferences;
+
+     const handleButtonClick = () => {
+        const segmentElement = document.getElementById(`segment_${data.id}`);
+        if (segmentElement) {
+            const topOfSegment = segmentElement.offsetTop;
+            if (topOfSegment !== 0) {
+                scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+            }
+        }
+        
+        if (transcriptCoupled) {
+            sendTimeChangeRequest(data.tape_nbr, data.time);
+        }
+    };
 
     return (
         <div className={classNames('Segment-buttons', { 'is-active': active })}>
@@ -37,6 +57,7 @@ export default function SegmentButtons({
                     title={t(tabIndex === 1 ? 'edit.segment.translation' : 'edit.segment.transcript')}
                     trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                     triggerClassName="Button Button--icon"
+                    onBeforeOpen={handleButtonClick} 
                 >
                     {closeModal => (
                         <SegmentFormContainer
@@ -97,4 +118,6 @@ SegmentButtons.propTypes = {
     active: PropTypes.bool,
     openPopup: PropTypes.func.isRequired,
     closePopup: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
+    transcriptCoupled: PropTypes.bool.isRequired,
 };
