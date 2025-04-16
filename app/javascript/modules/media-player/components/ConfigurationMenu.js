@@ -12,9 +12,38 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
     const [showRateSubmenu, setShowRateSubmenu] = useState(false);
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
     const [selectedRate, setSelectedRate] = useState(player.playbackRate());
-    const [selectedQuality, setSelectedQuality] = useState(
-        qualities?.find((q) => q === 'Default') || qualities?.[0] || null
-    );
+    const [selectedQuality, setSelectedQuality] = useState(() => {
+        if (player && typeof player.currentSources === 'function') {
+          const sources = player.currentSources();
+          if (sources && sources.length > 0) {
+            const defaultSource = sources.find(source => source.selected) || sources[0];
+            return defaultSource.label || (defaultSource.height ? `${defaultSource.height}p` : qualities[0]);
+          }
+        }
+        return qualities[0] || null;
+      });
+
+    console.log(player.currentSources())
+
+    useEffect(() => {
+        if (!player) return;
+    
+        const handleRateChange = () => {
+          setSelectedRate(player.playbackRate());
+        };
+    
+        const handleQualitySelected = (event, { quality }) => {
+          setSelectedQuality(quality);
+        };
+    
+        player.on('ratechange', handleRateChange);
+        player.on('qualitySelected', handleQualitySelected);
+    
+        return () => {
+          player.off('ratechange', handleRateChange);
+          player.off('qualitySelected', handleQualitySelected);
+        };
+      }, [player]);
 
     const rateMenuItemRef = useRef(null);
     const qualityMenuItemRef = useRef(null);
@@ -27,7 +56,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         player.playbackRate(rate);
         setSelectedRate(rate);
         setShowRateSubmenu(false);
-        setIsMenuVisible(false); // Close the menu after selecting a rate
+        setIsMenuVisible(false);
     };
 
     const handleQualitySelect = (qualityLabel) => {
