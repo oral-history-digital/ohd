@@ -304,6 +304,8 @@ export default function MediaElement({
 
     function handlePlayerReady(player) {
         playerRef.current = player;
+        window.mainPlayerInstance = player;
+
         player.configurationMenuPlugin();
 
         const qualities = player
@@ -319,6 +321,7 @@ export default function MediaElement({
             playbackRates: videoJsOptions.playbackRates,
             qualities: qualities,
         });
+        
 
         addTextTracks();
 
@@ -331,6 +334,16 @@ export default function MediaElement({
 
         checkForTimeChangeRequest();
     }
+
+    useEffect(() => {
+        return resetMedia;
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            window.mainPlayerInstance = null;
+        };
+    }, []);
 
     if (!mediaStreams) {
         return null;
