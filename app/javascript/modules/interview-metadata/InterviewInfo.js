@@ -41,6 +41,13 @@ export default function InterviewInfo({
             />
             <SingleValueWithFormContainer
                 obj={interview}
+                attribute={'publication_date'}
+                value={interview.publication_date}
+                validate={function(v){return /^\d{4}$/.test(v)}}
+                hideEmpty
+            />
+            <SingleValueWithFormContainer
+                obj={interview}
                 attribute={'description'}
                 value={interview.description?.[locale]}
                 elementType="textarea"

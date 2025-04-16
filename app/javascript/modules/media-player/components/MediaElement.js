@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
-import speakerImage from 'assets/images/speaker.png';
+import usePosterImage from '../usePosterImage';
 import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
@@ -60,6 +60,8 @@ export default function MediaElement({
             tape
         );
 
+    const { posterUrl } = usePosterImage(interview);
+
     const videoJsOptions = {
         autoplay: false,
         controls: true,
@@ -68,7 +70,7 @@ export default function MediaElement({
         //aspectRatio,
         language: locale,
         sources: initialSources,
-        poster: interview.still_url || speakerImage,
+        poster: posterUrl,
         playbackRates: [0.6, 0.8, 1, 1.2, 2],
         enableSourceset: false,
         controlBar: {
@@ -84,6 +86,8 @@ export default function MediaElement({
                 'playToggle',
                 'skipForward',
                 'volumePanel',
+                'playbackRateMenuButton',
+                'qualitySelector',
                 'subsCapsButton',
                 'fullscreenToggle',
             ],
@@ -154,6 +158,15 @@ export default function MediaElement({
         }
     }
 
+    // Update the player's poster when it changes
+    useEffect(() => {
+        const player = playerRef.current;
+        if (!player) return;
+
+        // Only update if the poster has changed and player is ready
+        player.poster(posterUrl);
+    }, [posterUrl]);
+
     // Check if time params exist in query string.
     useEffect(() => {
         const numTapes = Number.parseInt(interview.tape_count);
@@ -167,7 +180,7 @@ export default function MediaElement({
                     timeInSeconds
                 );
             } catch (e) {
-                console.log('error in time format, skipping');
+                console.warn('Invalid time format, skipping');
             }
         }
     }, []);
@@ -294,22 +307,55 @@ export default function MediaElement({
 
     function handlePlayerReady(player) {
         playerRef.current = player;
+        window.mainPlayerInstance = player;
+
         player.configurationMenuPlugin();
         player.toggleSizePlugin();
 
         const qualities = player
-            .currentSources()
-            .map(
-                (source) =>
-                    source.label ||
-                    (source.height ? `${source.height}p` : 'Default')
-            )
-            .filter(Boolean);
-
+          .currentSources()
+          .map((source) =>
+            source.label || (source.height ? `${source.height}p` : 'Default')
+          )
+          .filter(Boolean);
+      
         player.configurationMenuPlugin({
-            playbackRates: videoJsOptions.playbackRates,
-            qualities: qualities,
+          playbackRates: videoJsOptions.playbackRates,
+          qualities: qualities,
         });
+
+        player.ready(() => {
+            const configControl = player.controlBar.getChild('ConfigurationControl');
+            const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
+            const qualitySelector = player.controlBar.getChild('qualitySelector');
+    
+            if (player.isFullscreen()) {
+                if (configControl) configControl.hide();
+                if (playbackRateMenuButton) playbackRateMenuButton.show();
+                if (qualitySelector) qualitySelector.show();
+            } else {
+                if (configControl) configControl.show();
+                if (playbackRateMenuButton) playbackRateMenuButton.hide();
+                if (qualitySelector) qualitySelector.hide();
+            }
+        });
+    
+        player.on('fullscreenchange', () => {
+            const configControl = player.controlBar.getChild('ConfigurationControl');
+            const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
+            const qualitySelector = player.controlBar.getChild('qualitySelector');
+    
+            if (player.isFullscreen()) {
+                if (configControl) configControl.hide();
+                if (playbackRateMenuButton) playbackRateMenuButton.show();
+                if (qualitySelector) qualitySelector.show();
+            } else {
+                if (configControl) configControl.show();
+                if (playbackRateMenuButton) playbackRateMenuButton.hide();
+                if (qualitySelector) qualitySelector.hide();
+            }
+        });
+        
 
         addTextTracks();
 
@@ -322,6 +368,16 @@ export default function MediaElement({
 
         checkForTimeChangeRequest();
     }
+
+    useEffect(() => {
+        return resetMedia;
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            window.mainPlayerInstance = null;
+        };
+    }, []);
 
     if (!mediaStreams) {
         return null;

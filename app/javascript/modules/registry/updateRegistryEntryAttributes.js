@@ -111,5 +111,6 @@ export function findOrCreate(
 
     if (isNew) attributes.push(datum);
 
+    datum.creation_date ||= new Date().toISOString();
     return datum;
 };
