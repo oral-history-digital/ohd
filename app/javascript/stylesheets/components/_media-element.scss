@@ -77,19 +77,3 @@
     padding: 0;
   }
 }
-
-.SegmentMediaControls-buttons {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-
-  .media-control-icon {
-    font-size: 1.3em;
-    color: grey;
-  }
-
-  .media-control-icon-start-stop{
-    font-size: 1.8em;
-    color: grey;
-  }
-}

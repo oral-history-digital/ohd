@@ -119,8 +119,6 @@ const MediaControlsForSegment = ({
         setIsFocused(false);
     }
 
-
-
     return (
         <div
             className={classNames('SegmentMediaControls', className, {
@@ -129,11 +127,7 @@ const MediaControlsForSegment = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
         >
-            <div className="SegmentMediaControls-wrapper">
-                <div className="SegmentMediaControls-time">
-                    {formatTimecode(currentTime)} / {window.mainPlayerInstance ? formatTimecode(window.mainPlayerInstance.duration() || 0) : '00:00:00'}
-                </div>
-
+            <div className="SegmentMediaControls-wrapper" >
                 <div className="SegmentMediaControls-progressBar">
                     <input
                         type="range"
@@ -143,20 +137,30 @@ const MediaControlsForSegment = ({
                         onChange={(e) => handleTimeChange(parseFloat(e.target.value))}
                     />
                 </div>
+                <div className='SegmentMediaControls-time-container'>
+                    <div className="SegmentMediaControls-time">
+                        {formatTimecode(currentTime)}
+                    </div>
 
-                <div className="SegmentMediaControls-buttons">
-                    <FaBackward className='media-control-icon'
-                        onClick={() => handleTimeChange(Math.max(0, currentTime - 5))} />
-                    {isPlaying ?
-                        <HiPauseCircle
-                            onClick={handlePlayToggle}
-                            className='media-control-icon-start-stop' /> :
-                        <AiFillPlayCircle
-                            onClick={handlePlayToggle}
-                            className='media-control-icon-start-stop' />}
-                    <FaForward
-                        className='media-control-icon'
-                        onClick={() => handleTimeChange(currentTime + 5)} />
+                    <div className="SegmentMediaControls-time">
+                        {window.mainPlayerInstance ? formatTimecode(window.mainPlayerInstance.duration() || 0) : '00:00:00'}
+                    </div>
+
+                    {/* Botones centrados en el espacio entre los tiempos */}
+                    <div className="SegmentMediaControls-buttons">
+                        <FaBackward className='media-control-icon'
+                            onClick={() => handleTimeChange(Math.max(0, currentTime - 5))} />
+                        {isPlaying ?
+                            <HiPauseCircle
+                                onClick={handlePlayToggle}
+                                className='media-control-icon-start-stop' /> :
+                            <AiFillPlayCircle
+                                onClick={handlePlayToggle}
+                                className='media-control-icon-start-stop' />}
+                        <FaForward
+                            className='media-control-icon'
+                            onClick={() => handleTimeChange(currentTime + 5)} />
+                    </div>
                 </div>
             </div>
         </div>
