@@ -26,7 +26,9 @@
 }
 
 // Small player mode header styles
-.Layout.is-small-player .MediaHeader {
+.Layout.is-small-player {
+  
+  .MediaHeader {
   align-items: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -38,17 +40,17 @@
   }
 }
 
-.Layout.is-sticky .MediaHeader-title,
-.Layout.is-small-player .MediaHeader-title {
-  font-size: $font-size-larger;
-  line-height: $base-unit;
-  margin-right: 0;
-}
+  .MediaHeader-title {
+    font-size: $font-size-larger;
+    line-height: $base-unit;
+    margin-right: 0;
+  }
 
-.Layout.is-small-player .MediaHeader-controls {
-  margin-left: 0;
-}
+  .MediaHeader-controls {
+    margin-left: 0;
+  }
 
-.Layout.is-small-player .MediaHeader--mediaMissing {
-  flex-shrink: 0;
+  .MediaHeader--mediaMissing {
+    flex-shrink: 0;
+  }
 }
