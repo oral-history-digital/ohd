@@ -16,12 +16,18 @@ export default function Modal({
     showDialogInitially = false,
     hideButton = false,
     hideCloseButton = false,
+    onBeforeOpen = null,
 }) {
     const [showDialog, setShowDialog] = useState(showDialogInitially);
-    const open = () => setShowDialog(true);
     const close = () => setShowDialog(false);
 
-    // Stop some events here so that they don't influence elements below the modal.
+    const open = () => {
+        if (typeof onBeforeOpen === 'function') {
+            onBeforeOpen();
+        }
+        setShowDialog(true);
+    };
+
     const handleClick = (event) => {
         event.stopPropagation();
     };
@@ -101,4 +107,8 @@ Modal.propTypes = {
         PropTypes.node,
         PropTypes.func,
     ]),
+    showDialogInitially: PropTypes.bool,
+    hideButton: PropTypes.bool,
+    hideCloseButton: PropTypes.bool,
+    onBeforeOpen: PropTypes.func,
 };
