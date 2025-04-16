@@ -12,9 +12,39 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
     const [showRateSubmenu, setShowRateSubmenu] = useState(false);
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
     const [selectedRate, setSelectedRate] = useState(player.playbackRate());
-    const [selectedQuality, setSelectedQuality] = useState(
-        qualities?.find((q) => q === 'Default') || qualities?.[0] || null
-    );
+    const [selectedQuality, setSelectedQuality] = useState(() => {
+        if (player && typeof player.currentSources === 'function') {
+          const sources = player.currentSources();
+          if (sources && sources.length > 0) {
+            const defaultSource = sources.find(source => source.selected) || sources[0];
+            return defaultSource.label || (defaultSource.height ? `${defaultSource.height}p` : qualities[0]);
+          }
+        }
+        return qualities[0] || null;
+      });
+
+    useEffect(() => {
+        if (!player) return;
+    
+        const handleRateChange = () => {
+          setSelectedRate(player.playbackRate());
+        };
+    
+        const handleQualitySelected = (event, { quality }) => {
+          setSelectedQuality(quality);
+        };
+    
+        player.on('ratechange', handleRateChange);
+        player.on('qualitySelected', handleQualitySelected);
+    
+        return () => {
+          player.off('ratechange', handleRateChange);
+          player.off('qualitySelected', handleQualitySelected);
+        };
+      }, [player]);
+
+    const rateMenuItemRef = useRef(null);
+    const qualityMenuItemRef = useRef(null);
 
     const menuTimeout = useRef(null);
     const rateSubmenuTimeout = useRef(null);
@@ -24,7 +54,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         player.playbackRate(rate);
         setSelectedRate(rate);
         setShowRateSubmenu(false);
-        setIsMenuVisible(false); // Close the menu after selecting a rate
+        setIsMenuVisible(false);
     };
 
     const handleQualitySelect = (qualityLabel) => {
@@ -91,6 +121,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                 {isMenuVisible && (
                     <MenuList className="vjs-configuration-menu">
                         <MenuItem
+                            ref={rateMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
                             onMouseEnter={showRateSub}
                             onMouseLeave={hideRateSub}
@@ -107,6 +138,10 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 className="vjs-configuration-submenu horizontal-menu"
                                 onMouseEnter={showRateSub}
                                 onMouseLeave={hideRateSub}
+                                style={{
+                                    top: rateMenuItemRef.current ? 
+                                        rateMenuItemRef.current.offsetTop - 5 : 0
+                                }}
                             >
                                 {playbackRates.map((rate) => (
                                     <button
@@ -128,6 +163,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         <hr className="vjs-configuration-menu-divider" />
 
                         <MenuItem
+                            ref={qualityMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
                             onMouseEnter={showQualitySub}
                             onMouseLeave={hideQualitySub}
@@ -144,6 +180,10 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 className="vjs-configuration-submenu horizontal-menu"
                                 onMouseEnter={showQualitySub}
                                 onMouseLeave={hideQualitySub}
+                                style={{
+                                    top: qualityMenuItemRef.current ? 
+                                        qualityMenuItemRef.current.offsetTop - 5 : 0
+                                }}
                             >
                                 {qualities.map((q) => (
                                     <button

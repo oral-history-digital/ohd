@@ -33,7 +33,6 @@ export default function usePosterImage(interview) {
             setPosterUrl(interview.still_url);
             setStillImageError(false);
             loadingAttemptRef.current = false;
-            console.log('Image loaded successfully:', interview.still_url);
         };
 
         img.onerror = () => {
@@ -41,7 +40,7 @@ export default function usePosterImage(interview) {
             setPosterUrl(createFallbackPoster(interview));
             setStillImageError(true);
             loadingAttemptRef.current = false;
-            console.log('Image failed to load:', interview.still_url);
+            console.error('Image failed to load:', interview.still_url);
         };
 
         // Start loading the image with cache-busting parameter
@@ -75,8 +74,6 @@ function createFallbackPoster(interview) {
     const iconColor = '#ffffff';
     const horizontalPosition = 50; // Centered horizontally
     const verticalPosition = 50; // Centered vertically
-
-    console.log('iconType', iconType);
 
     let iconPath;
 
