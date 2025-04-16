@@ -7,6 +7,7 @@ import { Fetch } from 'modules/data';
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { useWorkbook } from 'modules/workbook';
 import { useProject } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 
 export default function SegmentPopup({
     contentLocale,
@@ -18,6 +19,7 @@ export default function SegmentPopup({
     const { isAuthorized } = useAuthorization();
     const { project } = useProject();
     const { savedSegments: workbookAnnotations } = useWorkbook();
+    const { t, locale } = useI18n();
 
     const annotationsForSegment = workbookAnnotations?.filter(annotation =>
         data.user_annotation_ids.includes(annotation.id));
@@ -82,10 +84,10 @@ export default function SegmentPopup({
                                     <FaTimes className="Icon" />
                                 </button>
                                 <div className="SegmentPopup-term">
-                                    {openReference.name[contentLocale]}
+                                    {openReference.name[locale]}
                                 </div>
                                 <div className="SegmentPopup-explanation">
-                                    {openReference.notes[contentLocale]}
+                                    {openReference.notes[locale]}
                                 </div>
                             </div>
                         )

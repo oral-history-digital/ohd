@@ -71,10 +71,11 @@ class MetadataImportTemplate
   end
 
   def registry_reference_type_import_metadata_field_columns
+    topic = TranslationValue.for('direct_topic', @locale)
     @project.registry_reference_type_import_metadata_fields.inject({}) do |mem, field|
       label = field.label(@locale)
       mem["rrt_#{field.registry_reference_type_id}".to_sym] = label
-      mem["rrt_sub_#{field.registry_reference_type_id}".to_sym] = "#{label} (direkter Oberbegriff)"
+      mem["rrt_sub_#{field.registry_reference_type_id}".to_sym] = "#{label} (#{topic})"
       mem
     end
   end

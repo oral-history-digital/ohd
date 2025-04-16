@@ -44,7 +44,7 @@ class CompleteExport
 
       if interview.segments.count > 0
         zip.put_next_entry("#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.csv")
-        zip.write(EditTableExport.new(interview.archive_id).process)
+        zip.write(EditTableExport.new(interview.archive_id, :de).process)
       end
 
       zip.put_next_entry("#{interview.archive_id}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml")
