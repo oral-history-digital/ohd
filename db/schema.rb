@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_14_094701) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -126,6 +126,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
     t.integer "project_id"
     t.integer "institution_id"
     t.integer "interviews_count", default: 0, null: false
+    t.string "shortname"
+    t.string "publication_date"
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -356,6 +358,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
     t.boolean "media_missing", default: false, null: false
     t.boolean "transcript_coupled", default: true
     t.string "links"
+    t.string "publication_date"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end
@@ -615,6 +618,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
     t.date "live_since"
     t.integer "analytics_site_id"
     t.integer "interviews_count", default: 0, null: false
+    t.string "publication_date"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
@@ -675,9 +679,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
+  create_table "registry_name_type_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "registry_name_type_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["locale"], name: "index_registry_name_type_translations_on_locale"
+    t.index ["registry_name_type_id"], name: "index_registry_name_type_translations_on_registry_name_type_id"
+  end
+
   create_table "registry_name_types", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code", limit: 255
-    t.string "name", limit: 255
     t.integer "order_priority"
     t.boolean "allows_multiple"
     t.boolean "mandatory"
@@ -745,9 +758,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_13_104558) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
+  create_table "role_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["locale"], name: "index_role_translations_on_locale"
+    t.index ["role_id"], name: "index_role_translations_on_role_id"
+  end
+
   create_table "roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "desc", size: :long
-    t.string "name", limit: 255
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "project_id"

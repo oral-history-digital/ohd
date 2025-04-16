@@ -16,9 +16,6 @@ export default function RegistryEntryLabel({
     return (
         <span className="RegistryEntry-label">
             {name}
-            <AuthorizedContent object={registryEntry} action='update'>
-                {` (ID: ${registryEntry.id})`}
-            </AuthorizedContent>
         </span>
     );
 }

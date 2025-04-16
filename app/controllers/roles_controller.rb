@@ -24,12 +24,14 @@ class RolesController < ApplicationController
           if params[:for_projects]
             data = policy_scope(Role).
               includes(:permissions).
+              joins(:translations).
               order("name ASC")
             extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
             data = policy_scope(Role).
               includes(:permissions).
+              joins(:translations).
               where(search_params).order("name ASC").
               paginate(page: page)
             paginate = true
@@ -81,7 +83,8 @@ class RolesController < ApplicationController
       permit(
         :name,
         :desc,
-        :project_id
+        :project_id,
+        translations_attributes: [:locale, :id, :name]
     )
   end
 

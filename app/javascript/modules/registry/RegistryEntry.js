@@ -86,22 +86,27 @@ export default function RegistryEntry({
                     />
                 )}
 
-                {isLoggedIn && hasReferences() ? (
-                    <Modal
-                        title={t('activerecord.models.registry_entry.actions.show')}
-                        triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
-                        trigger={<RegistryEntryLabel registryEntry={data} />}
-                    >
-                        {close => (
-                            <RegistryEntryShow
-                                registryEntryId={data.id}
-                                onSubmit={close}
-                                normDataLinks={<NormDataLinks registryEntry={data} />}
-                            />
-                        )}
-                    </Modal>
-                ) : <RegistryEntryLabel registryEntry={data} />
-                }
+                <>
+                    {isLoggedIn && hasReferences() ? (
+                        <Modal
+                            title={t('activerecord.models.registry_entry.actions.show')}
+                            triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
+                            trigger={<RegistryEntryLabel registryEntry={data} />}
+                        >
+                            {close => (
+                                <RegistryEntryShow
+                                    registryEntryId={data.id}
+                                    onSubmit={close}
+                                    normDataLinks={<NormDataLinks registryEntry={data} />}
+                                />
+                            )}
+                        </Modal>
+                    ) : <RegistryEntryLabel registryEntry={data} />
+                    }
+                    <AuthorizedContent object={data} action='update'>
+                        <span className="u-ml-tiny">{`(ID: ${data.id})`}</span>
+                    </AuthorizedContent>
+                </>
 
                 <div>
                     <AuthorizedContent object={data} action="update">

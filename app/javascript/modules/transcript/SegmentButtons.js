@@ -22,10 +22,11 @@ export default function SegmentButtons({
     const { isAuthorized } = useAuthorization();
     const { savedSegments: workbookAnnotations } = useWorkbook();
 
-    const annotationsForSegment = workbookAnnotations?.filter(annotation =>
+    const annotationsForSegment = workbookAnnotations?.some(annotation =>
         data.user_annotation_ids.includes(annotation.id));
 
-    const hasAnnotations = (data.annotations_count + (annotationsForSegment?.length || 0)) > 0;
+    const hasAnnotationsInContentLocale = Object.values(data.annotations).some(annotation => annotation.text.hasOwnProperty(contentLocale));
+    const hasAnnotations = hasAnnotationsInContentLocale || annotationsForSegment;
     const hasReferences = data.registry_references_count > 0;
     const showAnnotationsButton = isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'update') || hasAnnotations;
     const showReferencesButton = isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'update') || hasReferences;
