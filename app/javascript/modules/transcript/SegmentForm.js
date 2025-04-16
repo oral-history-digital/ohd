@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import { Form } from 'modules/forms';
 import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import { getCurrentInterview } from 'modules/data';
+
+import { useSelector } from 'react-redux';
+
+
+import MediaControlsForSegment from './MediaControlsForSegment';
 
 export default function SegmentForm({
     locale,
@@ -15,12 +21,20 @@ export default function SegmentForm({
     onCancel,
 }) {
     const { data: people, isLoading } = usePeople();
+    const interview = useSelector(getCurrentInterview);
 
     if (isLoading) {
         return <Spinner />;
     }
 
     return (
+        <>
+            <div className="SegmentForm-mediaControls">
+                <MediaControlsForSegment 
+                    className="SegmentForm-mediaControlsInner"
+                    interview={interview}
+                />
+            </div>
         <div>
             <Form
                 scope='segment'
@@ -47,6 +61,7 @@ export default function SegmentForm({
                 ]}
             />
         </div>
+        </>
     );
 }
 
