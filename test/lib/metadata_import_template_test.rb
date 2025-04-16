@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MetadataImportTemplateTest < ActiveSupport::TestCase
 
-    #assert_equal "Interview-ID\tOriginalsignatur\tErste Sprache\tZweite Sprache\tErste Übersetzungssprache\tSammlung\tInterview-Datum\tMedientyp\tDauer\tProtokoll\tBeschreibung\tAnzahl der Bänder\tLink zum Interview\tVorname\tNachname\tGeburtsname\tWeitere Namen\tWeitere Vornamen\tPseudonym Vorname\tPseudonym Nachname\tPseudonym benutzen\tPersonenbeschreibung\tGeschlecht\tGeburtsdatum\tBiographie\tBiographie öffentlich\tInterviewführung\tÜbersetzung\tTranskription\tErschließung\tKamera\tGeburtsort\tGeburtsort (direkter Oberbegriff)\tInterviewort\tInterviewort (direkter Oberbegriff)", @rows[0]
+    #assert_equal "Interview-ID\tOriginalsignatur\tErste Sprache\tZweite Sprache\tErste Übersetzungssprache\tSammlung\tInterview-Datum\tMedientyp\tDauer\tProtokoll\tBeschreibung\tAnzahl der Bänder\tLink\tVorname\tNachname\tGeburtsname\tWeitere Namen\tWeitere Vornamen\tPseudonym Vorname\tPseudonym Nachname\tPseudonym benutzen\tPersonenbeschreibung\tGeschlecht\tGeburtsdatum\tBiographie\tBiographie öffentlich\tInterviewführung\tÜbersetzung\tTranskription\tErschließung\tKamera\tGeburtsort\tGeburtsort (direkter Oberbegriff)\tInterviewort\tInterviewort (direkter Oberbegriff)", @rows[0]
 
   test 'basic generation should contain all base column-headers' do
     @project = DataHelper.test_project(shortname: 'mdt')
@@ -11,7 +11,7 @@ class MetadataImportTemplateTest < ActiveSupport::TestCase
       "Interview-ID", "Originalsignatur", "Sprache",
       "Zweite Sprache", "Erste Übersetzungssprache", "Sammlung", 
       "Interview-Datum", "Medientyp", "Dauer", "Protokoll", 
-      "Beschreibung (Interview)", "Anzahl der Bänder", "Link zum Interview", 
+      "Beschreibung (Interview)", "Anzahl der Bänder", "Link", 
       "Vorname", "Nachname", "Geburtsname", "Weitere Namen", 
       "Weitere Vornamen", "Pseudonym Vorname", "Pseudonym Nachname", 
       "Pseudonym benutzen", "Personenbeschreibung", "Geschlecht", 
@@ -28,7 +28,7 @@ class MetadataImportTemplateTest < ActiveSupport::TestCase
       "Interview-ID", "Originalsignatur", "Sprache",
       "Zweite Sprache", "Erste Übersetzungssprache", "Sammlung", 
       "Interview-Datum", "Medientyp", "Dauer", "Protokoll", 
-      "Beschreibung (Interview)", "Anzahl der Bänder", "Link zum Interview", 
+      "Beschreibung (Interview)", "Anzahl der Bänder", "Link", 
       "Vorname", "Nachname", "Geburtsname", "Weitere Namen", 
       "Weitere Vornamen", "Pseudonym Vorname", "Pseudonym Nachname", 
       "Pseudonym benutzen", "Personenbeschreibung", "Geschlecht", 

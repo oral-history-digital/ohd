@@ -33,7 +33,7 @@ OaiRepository.setup do |config|
     # You must supply at least one model.
     # TODO: reuse the following line after having run project-migrations
     # and created a project
-    config.models = [ Interview ]
+    config.models = [ Interview, Project, Collection ]
 
     # List the sets (and the ActiveRecord model they belong to). E.g.
     #
@@ -61,8 +61,26 @@ OaiRepository.setup do |config|
        {
          spec: 'class:project',
          name: 'Interview-Archiv',
-         model: Project,
+         model: Interview,
          description: 'Archiv'
+       },
+       {
+         spec: 'class:collection',
+         name: 'Interview-Sammlung',
+         model: Interview,
+         description: 'Sammlung'
+       },
+       {
+         spec: 'class:project',
+         name: 'Interview-Archive',
+         model: Project,
+         description: 'Archive'
+       },
+       {
+         spec: 'class:collection',
+         name: 'Interview-Sammlungen',
+         model: Collection,
+         description: 'Sammlungen'
        }
     ]
 
@@ -76,7 +94,12 @@ OaiRepository.setup do |config|
     # config.additional_formats = [
     #   OAI::Provider::Metadata::RIFCS
     # ]
-    config.additional_formats = []
+
+    require 'oai/provider/datacite_format'
+
+    config.additional_formats = [
+      OAI::Provider::Metadata::Datacite
+    ]
 
   end
 end

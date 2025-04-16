@@ -28,6 +28,7 @@ const mapStateToProps = (state) => {
             //},
             {
                 attribute: 'name',
+                multiLocale: true,
             },
         ],
         joinedData: { },
