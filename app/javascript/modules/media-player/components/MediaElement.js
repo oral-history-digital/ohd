@@ -85,6 +85,8 @@ export default function MediaElement({
                 'playToggle',
                 'skipForward',
                 'volumePanel',
+                'playbackRateMenuButton',
+                'qualitySelector',
                 'subsCapsButton',
                 'fullscreenToggle',
             ],
@@ -177,7 +179,7 @@ export default function MediaElement({
                     timeInSeconds
                 );
             } catch (e) {
-                console.log('error in time format, skipping');
+                console.warn('Invalid time format, skipping');
             }
         }
     }, []);
@@ -307,19 +309,48 @@ export default function MediaElement({
         window.mainPlayerInstance = player;
 
         player.configurationMenuPlugin();
-
         const qualities = player
-            .currentSources()
-            .map(
-                (source) =>
-                    source.label ||
-                    (source.height ? `${source.height}p` : 'Default')
-            )
-            .filter(Boolean);
-
+          .currentSources()
+          .map((source) =>
+            source.label || (source.height ? `${source.height}p` : 'Default')
+          )
+          .filter(Boolean);
+      
         player.configurationMenuPlugin({
-            playbackRates: videoJsOptions.playbackRates,
-            qualities: qualities,
+          playbackRates: videoJsOptions.playbackRates,
+          qualities: qualities,
+        });
+
+        player.ready(() => {
+            const configControl = player.controlBar.getChild('ConfigurationControl');
+            const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
+            const qualitySelector = player.controlBar.getChild('qualitySelector');
+    
+            if (player.isFullscreen()) {
+                if (configControl) configControl.hide();
+                if (playbackRateMenuButton) playbackRateMenuButton.show();
+                if (qualitySelector) qualitySelector.show();
+            } else {
+                if (configControl) configControl.show();
+                if (playbackRateMenuButton) playbackRateMenuButton.hide();
+                if (qualitySelector) qualitySelector.hide();
+            }
+        });
+    
+        player.on('fullscreenchange', () => {
+            const configControl = player.controlBar.getChild('ConfigurationControl');
+            const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
+            const qualitySelector = player.controlBar.getChild('qualitySelector');
+    
+            if (player.isFullscreen()) {
+                if (configControl) configControl.hide();
+                if (playbackRateMenuButton) playbackRateMenuButton.show();
+                if (qualitySelector) qualitySelector.show();
+            } else {
+                if (configControl) configControl.show();
+                if (playbackRateMenuButton) playbackRateMenuButton.hide();
+                if (qualitySelector) qualitySelector.hide();
+            }
         });
         
 
