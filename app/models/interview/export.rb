@@ -109,9 +109,9 @@ module Interview::Export
     end
   end
 
-  def metadata_xml(locale)
+  def datacite_xml(locale)
     ApplicationController.new.render_to_string(
-      template: 'interviews/metadata',
+      template: 'interviews/datacite',
       formats: :xml,
       locals: {
         interview: self,

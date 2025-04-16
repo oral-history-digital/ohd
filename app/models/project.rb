@@ -2,6 +2,8 @@ require "globalize"
 
 class Project < ApplicationRecord
   include Oai
+  include OaiDc
+  include OaiDatacite
 
   enum default_search_order: [:title, :random]
 
@@ -161,6 +163,10 @@ class Project < ApplicationRecord
 
   def num_interviews
     interviews_count
+  end
+
+  def update_interviews_count
+    self.update interviews_count: self.interviews.shared.count
   end
 
   def domain_with_optional_identifier

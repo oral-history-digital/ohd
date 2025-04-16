@@ -188,6 +188,7 @@ class ProjectsController < ApplicationController
           "aspect_x",
           "aspect_y",
           "shortname",
+          "publication_date",
           "archive_id_number_length",
           "domain",
           "doi",

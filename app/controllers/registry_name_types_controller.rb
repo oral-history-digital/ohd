@@ -92,7 +92,8 @@ class RegistryNameTypesController < ApplicationController
       params.require(:registry_name_type).permit(
         :code,
         :name,
-        :project_id
+        :project_id,
+        translations_attributes: [:locale, :id, :name]
       )
     end
 

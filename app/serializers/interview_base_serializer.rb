@@ -11,6 +11,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :media_type,
     :duration,
     :interview_date,
+    :publication_date,
     :languages,
     :languages_with_transcripts,
     :language_id,
@@ -46,9 +47,9 @@ class InterviewBaseSerializer < ApplicationSerializer
                                     object.segment_registry_references
                                   end
 
-      registry_entry_ids = field_registry_references.
+      registry_entry_ids = field_registry_references ? field_registry_references.
         where(registry_reference_type_id: field.registry_reference_type_id).
-        map(&:registry_entry_id).uniq.compact
+        map(&:registry_entry_id).uniq.compact : []
 
       hash[field.name] = (
         instance_options[:project_available_locales] ||
@@ -61,6 +62,10 @@ class InterviewBaseSerializer < ApplicationSerializer
       end
     end
     hash
+  end
+
+  def publication_date
+    object.publication_date || object.project.publication_date
   end
 
   def translations_attributes
