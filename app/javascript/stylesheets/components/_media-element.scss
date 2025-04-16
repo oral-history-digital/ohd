@@ -33,24 +33,26 @@
 }
 
 // Small player size styles
-.Layout.is-small-player .MediaElement {
-  margin: $base-unit 0 0;
-  text-align: initial;
-  width: initial;
+.Layout.is-small-player {
+  .MediaElement {
+    margin: $base-unit 0 0;
+    text-align: initial;
+    width: initial;
 
-  @include screen-m {
-    margin: 0;
+    @include screen-m {
+      margin: 0;
+    }
   }
-}
 
-.Layout.is-small-player .MediaElement-element {
-  background-color: black;
-  height: 7rem;
-  width: 12.4444rem;  /* 1 */
-
-  @include screen-m {
-    height: 10rem;
-    width: 17.7777rem;  /* 1 */
+  .MediaElement-element {
+    background-color: black;
+    height: 7rem;
+    width: calc(7rem * (16 / 9));
+    
+    @include screen-m {
+      height: var(--media-player-height-small);
+      width: calc(var(--media-player-height-small) * (16 / 9));
+    }
   }
 }
 
