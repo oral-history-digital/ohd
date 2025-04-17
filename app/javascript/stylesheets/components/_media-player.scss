@@ -31,12 +31,28 @@
   top: 0;
 }
 
-// Small player size styles
+// Small player size styles - only apply in XL screens
 .Layout.is-small-player .MediaPlayer {
-  flex-direction: row-reverse;
-  height: var(--media-player-height-small);
-  justify-content: flex-end;
-  padding: 0;
+  @include screen-xl {
+    flex-direction: row-reverse;
+    height: var(--media-player-height-small);
+    justify-content: flex-end;
+    padding: 0;
+  }
+  
+  @media (max-width: $screen-m-max) {
+    height: $media-player-height-mobile;
+    flex-direction: column;
+    justify-content: initial;
+    padding: $base-unit 5%;
+  }
+  
+  @media (min-width: $screen-m) and (max-width: $screen-l-max) {
+    height: $media-player-height-medium;
+    flex-direction: column;
+    padding-bottom: $base-unit * 2;
+    padding-top: $base-unit * 1.5;
+  }
 }
 
 // Sidebar adjustments when sticky

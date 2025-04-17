@@ -41,10 +41,15 @@ function Segment({
     // Calculate dynamic scroll offset based on player size
     const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * CSS_BASE_UNIT;
     const getScrollOffset = useCallback(() => {
-        // Use player size from Redux to determine the height
-        const playerHeight = playerSize === 'small' ? 
-            10 * 16 : // Small player: 10rem (10 * 16px)
-            28 * 16;  // Medium player: 28rem (28 * 16px)
+        let playerHeight;
+        
+        if (window.innerWidth < 768) { // $screen-m = 768px
+            playerHeight = 20 * 16; // 20rem convertido a px
+        } else {
+            playerHeight = playerSize === 'small' ? 
+                12.5 * 16 : // Small player: 12.5rem (12.5 * 16px)
+                28 * 16;    // Medium player: 28rem (28 * 16px)
+        }
         
         return playerHeight + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
     }, [SPACE_BEFORE_ACTIVE_ELEMENT, playerSize]);
