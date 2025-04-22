@@ -1435,11 +1435,12 @@ es:
       mentions: Lugares mencionados
     media_player:
       auto_scroll:
-        enable: "enable auto-scrolling transcript"
-        disable: "disable auto-scrolling transcript"
+        enable: "activar desplazamiento automático"
+        disable: "desactivar desplazamiento automático"
       copy_position: Copiar posición
       copy_position_tooltip: Copiar codigo de tiempo como enlace
       media_missing: "Lamentablemente, el archivo multimedia de esta entrevista no está disponible en línea. Por favor, contáctenos para obtener más información sobre la entrevista y, si es necesario, acceso al archivo multimedia."
+      toggle_size: "Cambiar tamaño del reproductor"
     person:
       no_interviewee: No interviewee
       abbr_titles:

@@ -4,6 +4,32 @@ import ConfigurationMenu from './ConfigurationMenu';
 
 const VjsButton = videojs.getComponent('Button');
 
+/* ------------------------------------------------------------------ */
+/*  Small helpers                                                     */
+/* ------------------------------------------------------------------ */
+
+/** Resolve playback‑rate array from plugin options or player defaults */
+const getPlaybackRates = (player, opts) =>
+  opts.playbackRates || player.options_.playbackRates || [0.5, 1, 1.5, 2];
+
+/** Resolve quality list */
+const getQualities = (opts) => opts.qualities || ['Default'];
+
+/** Render (or re‑render) React menu into given root */
+const renderMenu = (root, player, opts) => {
+  root.render(
+    <ConfigurationMenu
+      player={player}
+      playbackRates={getPlaybackRates(player, opts)}
+      qualities={getQualities(opts)}
+    />,
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  Video.js component                                                */
+/* ------------------------------------------------------------------ */
+
 class ConfigurationControl extends VjsButton {
   constructor(player, options) {
     super(player, options);
@@ -16,68 +42,52 @@ class ConfigurationControl extends VjsButton {
       className: 'vjs-configuration-plugin-container',
     });
 
+    /* Prepare a div for React */
     this.reactRoot = document.createElement('div');
     el.appendChild(this.reactRoot);
 
-    // Create a React root and initially render the ConfigurationMenu.
+    /* Mount React once */
     this.root = createRoot(this.reactRoot);
-    this.root.render(
-      <ConfigurationMenu
-        player={this.player_}
-        playbackRates={
-          this.options_.playbackRates ||
-          this.player_.options_.playbackRates ||
-          [0.5, 1, 1.5, 2]
-        }
-        qualities={this.options_.qualities || ['Default']}
-      />
-    );
+    renderMenu(this.root, this.player_, this.options_);
 
     return el;
   }
 
+  /** Update menu when plugin options change (called by plugin) */
+  updateOptions(newOpts) {
+    this.options_ = { ...this.options_, ...newOpts };
+    renderMenu(this.root, this.player_, this.options_);
+  }
+
   dispose() {
-    if (this.root) {
-      this.root.unmount();
-    }
+    this.root?.unmount();
     super.dispose();
   }
 }
 
-function configurationMenuPlugin(pluginOptions = {}) {
-  // If the plugin is not yet initialized, initialize it.
+videojs.registerComponent('ConfigurationControl', ConfigurationControl);
+
+/* ------------------------------------------------------------------ */
+/*  Video.js plugin wrapper                                           */
+/* ------------------------------------------------------------------ */
+
+function configurationMenuPlugin(opts = {}) {
   if (!this.configurationMenuPluginInitialized) {
     this.configurationMenuPluginInitialized = true;
-    if (!videojs.getComponent('ConfigurationControl')) {
-      videojs.registerComponent('ConfigurationControl', ConfigurationControl);
-    }
 
-    // Use the default playback rates if not provided
-    if (!pluginOptions.playbackRates && this.options_.playbackRates) {
-      pluginOptions.playbackRates = this.options_.playbackRates;
-    }
-
-    this.getChild('controlBar').addChild('ConfigurationControl', pluginOptions, 6);
+    /* Add the control once */
+    this
+      .getChild('controlBar')
+      .addChild('ConfigurationControl', opts, 6);
   } else {
-    // Plugin is already in place; update its options.
-    const control = this.getChild('controlBar').getChild('ConfigurationControl');
-    if (control) {
-      control.options_ = { ...control.options_, ...pluginOptions };
-      control.root.render(
-        <ConfigurationMenu
-          player={control.player_}
-          playbackRates={
-            control.options_.playbackRates ||
-            control.player_.options_.playbackRates ||
-            [0.5, 1, 1.5, 2]
-          }
-          qualities={control.options_.qualities || ['Default']}
-        />
-      );
-    }
+    /* Already exists: just pass new options down */
+    const control = this
+      .getChild('controlBar')
+      .getChild('ConfigurationControl');
+
+    control?.updateOptions(opts);
   }
 }
 
 videojs.registerPlugin('configurationMenuPlugin', configurationMenuPlugin);
-
 export default configurationMenuPlugin;
