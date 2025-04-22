@@ -313,15 +313,15 @@ export default function MediaElement({
         player.toggleSizePlugin();
 
         const qualities = player
-          .currentSources()
-          .map((source) =>
-            source.label || (source.height ? `${source.height}p` : 'Default')
-          )
-          .filter(Boolean);
-      
+            .currentSources()
+            .map((source) =>
+                source.label || (source.height ? `${source.height}p` : 'Default')
+            )
+            .filter(Boolean);
+
         player.configurationMenuPlugin({
-          playbackRates: videoJsOptions.playbackRates,
-          qualities: qualities,
+            playbackRates: videoJsOptions.playbackRates,
+            qualities: qualities,
         });
 
         player.ready(() => {
@@ -329,27 +329,70 @@ export default function MediaElement({
             const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
             const qualitySelector = player.controlBar.getChild('qualitySelector');
             const toggleSizeButton = player.controlBar.getChild('ToggleSizeButton');
-    
+            const subsCapsButton = player.controlBar.getChild('subsCapsButton');
+
+            const currentSize = toggleSizeButton ? toggleSizeButton.currentPlayerSize : 'medium';
+
+            // Disable subtitles if start size is small
+            if (currentSize === 'small' && subsCapsButton) {
+                subsCapsButton.disable();
+                const textTracks = player.textTracks();
+                for (let i = 0; i < textTracks.length; i++) {
+                    if (textTracks[i].mode === 'showing') {
+                        textTracks[i].mode = 'disabled';
+                    }
+                }
+            }
+
             if (player.isFullscreen()) {
                 if (configControl) configControl.hide();
                 if (playbackRateMenuButton) playbackRateMenuButton.show();
                 if (qualitySelector) qualitySelector.show();
                 if (toggleSizeButton) toggleSizeButton.hide();
+
+                // Enable subtitles button in fullscreen
+                if (subsCapsButton) {
+                    subsCapsButton.enable();
+
+                    // If toggleSizeButton exists and has saved subtitles, restore them
+                    if (toggleSizeButton && toggleSizeButton.subtitleTrackWasEnabled) {
+                        toggleSizeButton.restoreActiveSubtitleTrack();
+                    }
+                }
             } else {
                 if (configControl) configControl.show();
                 if (playbackRateMenuButton) playbackRateMenuButton.hide();
                 if (qualitySelector) qualitySelector.hide();
                 if (toggleSizeButton) toggleSizeButton.show();
 
+                // When exiting fullscreen, check if we need to disable subtitles
+                if (toggleSizeButton && toggleSizeButton.currentPlayerSize === 'small') {
+                    if (subsCapsButton) {
+                        // Save current subtitle state before disabling
+                        if (toggleSizeButton.saveActiveSubtitleTrack) {
+                            toggleSizeButton.saveActiveSubtitleTrack();
+                        }
+
+                        subsCapsButton.disable();
+
+                        // Disable active subtitle tracks
+                        const textTracks = player.textTracks();
+                        for (let i = 0; i < textTracks.length; i++) {
+                            if (textTracks[i].mode === 'showing') {
+                                textTracks[i].mode = 'disabled';
+                            }
+                        }
+                    }
+                }
             }
         });
-    
+
         player.on('fullscreenchange', () => {
             const configControl = player.controlBar.getChild('ConfigurationControl');
             const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
             const qualitySelector = player.controlBar.getChild('qualitySelector');
             const toggleSizeButton = player.controlBar.getChild('ToggleSizeButton');
-    
+
             if (player.isFullscreen()) {
                 if (configControl) configControl.hide();
                 if (playbackRateMenuButton) playbackRateMenuButton.show();
@@ -362,7 +405,7 @@ export default function MediaElement({
                 if (toggleSizeButton) toggleSizeButton.show();
             }
         });
-        
+
 
         addTextTracks();
 
