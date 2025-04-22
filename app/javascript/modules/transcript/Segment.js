@@ -1,13 +1,15 @@
-import { useEffect, useRef, memo } from 'react';
+import { useCallback, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 
-import { SCROLL_OFFSET } from 'modules/constants';
+import { CONTENT_TABS_HEIGHT, CSS_BASE_UNIT } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/interview-helpers';
+import { getPlayerSize } from 'modules/media-player';
 import SegmentButtons from './SegmentButtons';
 import SegmentPopup from './SegmentPopup';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
@@ -34,6 +36,23 @@ function Segment({
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
+    const playerSize = useSelector(getPlayerSize);
+    
+    // Calculate dynamic scroll offset based on player size
+    const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * CSS_BASE_UNIT;
+    const getScrollOffset = useCallback(() => {
+        let playerHeight;
+        
+        if (window.innerWidth < 768) { // $screen-m = 768px
+            playerHeight = 20 * 16; // 20rem converted to px
+        } else {
+            playerHeight = playerSize === 'small' ? 
+                12.5 * 16 : // Small player: 12.5rem (12.5 * 16px)
+                28 * 16;    // Medium player: 28rem (28 * 16px)
+        }
+        
+        return playerHeight + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
+    }, [SPACE_BEFORE_ACTIVE_ELEMENT, playerSize]);
 
     useEffect(() => {
         // Checking for divEl.current is necessary because sometimes component returns null.
@@ -49,7 +68,7 @@ function Segment({
                 return;
             }
 
-            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+            window.scrollTo(0, topOfSegment - getScrollOffset());
         } else if (segmentParam === data.id) {
             const topOfSegment = divEl.current.offsetTop;
 
@@ -58,9 +77,9 @@ function Segment({
                 return;
             }
 
-            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+            window.scrollTo(0, topOfSegment - getScrollOffset());
         }
-    }, []);
+    }, [active, data.id, getScrollOffset, playerSize, segmentParam]);
 
     useEffect(() => {
         // Checking for divEl.current is necessary because sometimes component returns null.
@@ -72,9 +91,9 @@ function Segment({
                 return;
             }
 
-            scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+            scrollSmoothlyTo(0, topOfSegment - getScrollOffset());
         }
-    }, [autoScroll, active])
+    }, [autoScroll, active, playerSize, getScrollOffset])
 
     const text = isAuthorized(data, 'update') ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
@@ -172,6 +191,7 @@ Segment.propTypes = {
     active: PropTypes.bool.isRequired,
     tabIndex: PropTypes.number.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
+    transcriptCoupled: PropTypes.bool.isRequired,
 };
 
 const MemoizedSegment = memo(Segment);

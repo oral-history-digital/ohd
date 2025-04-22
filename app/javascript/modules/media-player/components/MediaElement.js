@@ -10,6 +10,7 @@ import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
 import './configurationMenuPlugin.js';
+import './toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -309,6 +310,8 @@ export default function MediaElement({
         window.mainPlayerInstance = player;
 
         player.configurationMenuPlugin();
+        player.toggleSizePlugin();
+
         const qualities = player
           .currentSources()
           .map((source) =>
@@ -325,15 +328,19 @@ export default function MediaElement({
             const configControl = player.controlBar.getChild('ConfigurationControl');
             const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
             const qualitySelector = player.controlBar.getChild('qualitySelector');
+            const toggleSizeButton = player.controlBar.getChild('ToggleSizeButton');
     
             if (player.isFullscreen()) {
                 if (configControl) configControl.hide();
                 if (playbackRateMenuButton) playbackRateMenuButton.show();
                 if (qualitySelector) qualitySelector.show();
+                if (toggleSizeButton) toggleSizeButton.hide();
             } else {
                 if (configControl) configControl.show();
                 if (playbackRateMenuButton) playbackRateMenuButton.hide();
                 if (qualitySelector) qualitySelector.hide();
+                if (toggleSizeButton) toggleSizeButton.show();
+
             }
         });
     
@@ -341,15 +348,18 @@ export default function MediaElement({
             const configControl = player.controlBar.getChild('ConfigurationControl');
             const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
             const qualitySelector = player.controlBar.getChild('qualitySelector');
+            const toggleSizeButton = player.controlBar.getChild('ToggleSizeButton');
     
             if (player.isFullscreen()) {
                 if (configControl) configControl.hide();
                 if (playbackRateMenuButton) playbackRateMenuButton.show();
                 if (qualitySelector) qualitySelector.show();
+                if (toggleSizeButton) toggleSizeButton.hide();
             } else {
                 if (configControl) configControl.show();
                 if (playbackRateMenuButton) playbackRateMenuButton.hide();
                 if (qualitySelector) qualitySelector.hide();
+                if (toggleSizeButton) toggleSizeButton.show();
             }
         });
         
