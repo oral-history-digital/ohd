@@ -23,6 +23,7 @@ import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPo
     CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 import { OHD_DOMAINS } from 'modules/constants';
+import { isMobile } from 'modules/user-agent';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -78,6 +79,7 @@ export default function Layout({
                 'is-sticky': scrollPositionBelowThreshold,
                 'is-small-player': playerSize === 'small',
                 'is-medium-player': playerSize === 'medium',
+                'is-mobile': isMobile(),
             })}>
                 <FetchAccountContainer />
                 <AfterRegisterPopup />

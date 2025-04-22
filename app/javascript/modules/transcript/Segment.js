@@ -44,7 +44,7 @@ function Segment({
         let playerHeight;
         
         if (window.innerWidth < 768) { // $screen-m = 768px
-            playerHeight = 20 * 16; // 20rem convertido a px
+            playerHeight = 20 * 16; // 20rem converted to px
         } else {
             playerHeight = playerSize === 'small' ? 
                 12.5 * 16 : // Small player: 12.5rem (12.5 * 16px)
