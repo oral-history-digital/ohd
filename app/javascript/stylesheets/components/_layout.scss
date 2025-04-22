@@ -74,18 +74,30 @@
   z-index: $z-index-sidebar-toggle;
 }
 
-.Layout.is-sticky .Layout-contentTabs {
-  position: fixed;
-  left: 0;
-  right: 0;
-}
+.Layout.is-sticky {
+  .Layout-contentTabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+  }
+  
+  &.is-small-player {
+    .Layout-contentTabs {
+      top: var(--media-player-height-small);
+    }
+  }
+  
+  &.is-medium-player {
+    .Layout-contentTabs {
+      top: var(--media-player-height-medium);
+    }
+  }
 
-.Layout.is-sticky.is-small-player .Layout-contentTabs {
-  top: var(--media-player-height-small);
-}
-
-.Layout.is-sticky.is-medium-player .Layout-contentTabs {
-  top: var(--media-player-height-medium);
+  &.is-mobile {
+    .Layout-contentTabs {
+      top: var(--media-player-height-mobile);
+    }
+  }
 }
 
 .Layout.sidebar-is-visible > .Layout-page {

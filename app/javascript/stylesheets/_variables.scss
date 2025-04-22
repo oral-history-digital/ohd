@@ -136,6 +136,7 @@ $horizontal-tabs-height:      $base-unit * 2;
 :root {
     --media-player-height-medium: #{$media-player-height-medium};
     --media-player-height-small: #{$media-player-height-small};
+    --media-player-height-mobile: #{$media-player-height-mobile};
 }
 
 // Miscellaneous
