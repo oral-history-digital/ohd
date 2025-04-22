@@ -10,7 +10,7 @@ const VjsButton = videojs.getComponent('Button');
 /*  Simple utilities                                                  */
 /* ------------------------------------------------------------------ */
 
-/** Mobile OR <1200px ⇒ we treat the viewport as “compact” */
+/** Mobile OR <1200px ⇒ we treat the viewport as "compact" */
 const isCompactViewport = () => isMobile() || window.innerWidth < 1200;
 
 /** Redux action creator */
@@ -54,6 +54,8 @@ class ToggleSizeButton extends VjsButton {
     this.addClass('vjs-toggle-size-button');
     this.currentPlayerSize = 'medium';
     this.store = storeInstance || options.store; // fall‑back if passed via plugin
+    this.subtitleTrackWasEnabled = false; // Track subtitle state
+    this.lastActiveTrackIndex = -1; // Track which track was active
 
     /* Hide on compact viewports right from the start */
     if (isCompactViewport()) this.hide();
@@ -61,6 +63,10 @@ class ToggleSizeButton extends VjsButton {
     /* Bind & attach resize listener */
     this.handleResize = this.handleResize.bind(this);
     window.addEventListener('resize', this.handleResize);
+    
+    /* Handle fullscreen changes */
+    this.handleFullscreenChange = this.handleFullscreenChange.bind(this);
+    this.player_.on('fullscreenchange', this.handleFullscreenChange);
   }
 
   /* -------- event handlers ---------------------------------------- */
@@ -72,6 +78,68 @@ class ToggleSizeButton extends VjsButton {
         this.hide();
       } else {
         this.show();
+      }
+    }
+  }
+  
+  // Saves the currently active subtitle track
+  saveActiveSubtitleTrack() {
+    const textTracks = this.player_.textTracks();
+    this.lastActiveTrackIndex = -1;
+    this.subtitleTrackWasEnabled = false;
+    
+    for (let i = 0; i < textTracks.length; i++) {
+      if (textTracks[i].mode === 'showing') {
+        this.subtitleTrackWasEnabled = true;
+        this.lastActiveTrackIndex = i;
+        break;
+      }
+    }
+    
+    return this.subtitleTrackWasEnabled;
+  }
+  
+  // Restores the previously active subtitle track
+  restoreActiveSubtitleTrack() {
+    if (this.subtitleTrackWasEnabled && this.lastActiveTrackIndex >= 0) {
+      const textTracks = this.player_.textTracks();
+      if (textTracks.length > this.lastActiveTrackIndex) {
+        textTracks[this.lastActiveTrackIndex].mode = 'showing';
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  handleFullscreenChange() {
+    const subsCapsButton = this.player_.controlBar.getChild('subsCapsButton');
+    
+    if (this.player_.isFullscreen()) {
+      // In fullscreen, always enable subtitles
+      if (subsCapsButton) {
+        subsCapsButton.enable();
+        
+        // If subtitles were previously enabled, restore them
+        if (this.subtitleTrackWasEnabled) {
+          this.restoreActiveSubtitleTrack();
+        }
+      }
+    } else if (this.currentPlayerSize === 'small') {
+      // When exiting fullscreen, if we're in small size
+      if (subsCapsButton) {
+        // Save current subtitle state before disabling
+        this.saveActiveSubtitleTrack();
+        
+        // Disable button and subtitles
+        subsCapsButton.disable();
+        
+        // Disable active subtitle tracks
+        const textTracks = this.player_.textTracks();
+        for (let i = 0; i < textTracks.length; i++) {
+          if (textTracks[i].mode === 'showing') {
+            textTracks[i].mode = 'disabled';
+          }
+        }
       }
     }
   }
@@ -87,6 +155,35 @@ class ToggleSizeButton extends VjsButton {
     const currentSize = mediaPlayer.playerSize || this.currentPlayerSize;
     const newSize = currentSize === 'small' ? 'medium' : 'small';
     this.currentPlayerSize = newSize;
+
+    // Manage subtitle button and track state when changing sizes
+    const subsCapsButton = this.player_.controlBar.getChild('subsCapsButton');
+    
+    if (newSize === 'small') {
+      if (subsCapsButton) {
+        // Save current subtitle state before disabling
+        this.saveActiveSubtitleTrack();
+        
+        // Disable the button
+        subsCapsButton.disable();
+        
+        // Disable active subtitle tracks
+        const textTracks = this.player_.textTracks();
+        for (let i = 0; i < textTracks.length; i++) {
+          if (textTracks[i].mode === 'showing') {
+            textTracks[i].mode = 'disabled';
+          }
+        }
+      }
+    } else {
+      // Re-enable button when returning to medium size
+      if (subsCapsButton) {
+        subsCapsButton.enable();
+        
+        // If subtitles were previously enabled, turn them back on
+        this.restoreActiveSubtitleTrack();
+      }
+    }
 
     this.store.dispatch(setPlayerSize(newSize));
     applyLayoutSize(newSize);
@@ -112,6 +209,7 @@ class ToggleSizeButton extends VjsButton {
 
   dispose() {
     window.removeEventListener('resize', this.handleResize);
+    this.player_.off('fullscreenchange', this.handleFullscreenChange);
     super.dispose();
   }
 }
@@ -131,7 +229,7 @@ function toggleSizePlugin(options = {}) {
 
   /* Add the control only on non‑compact viewports (desktop) */
   if (!isCompactViewport()) {
-    this.getChild('controlBar').addChild('ToggleSizeButton', options, 7);
+    this.getChild('controlBar').addChild('ToggleSizeButton', options, 9);
   }
 }
 
