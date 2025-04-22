@@ -97,6 +97,7 @@ class ToggleSizeButton extends VjsButton {
   createEl() {
     const el = super.createEl('button', {
       className: 'vjs-control vjs-button vjs-toggle-size-button',
+      title: 'Toggle player size' // Fallback title attribute
     });
 
     /* Render icon with React inside the native Video.js button */
