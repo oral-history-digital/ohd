@@ -39,7 +39,6 @@ export {
     getNormDataProviders,
     getPermissions,
     getPermissionsStatus,
-    getPreparedHeadings,
     getProjectLocales,
     getProjects,
     getProjectsStatus,

@@ -14,6 +14,7 @@ import { useProject } from 'modules/routes';
 import showTranslationTab from './showTranslationTab';
 import showTocTab from './showTocTab';
 import LocaleSwitch from './LocaleSwitch';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export default function InterviewTabs({
     interview,
@@ -22,6 +23,7 @@ export default function InterviewTabs({
     const { project } = useProject();
     const [tabIndex, setTabIndex] = useState(0);
     const [translationLocale, setTranslationLocale] = useState(interview.translation_alpha3);
+    const [tocLocale, setTocLocale] = useState(ALPHA2_TO_ALPHA3[locale]);
 
     const { fulltext } = useSearchParams();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
@@ -89,7 +91,7 @@ export default function InterviewTabs({
                         <span className="Tabs-tabText">
                             {t('translation')}
                             <LocaleSwitch
-                                interview={interview}
+                                alpha3s={interview.translation_alpha3s}
                                 selected={translationLocale}
                                 setTranslationLocale={setTranslationLocale}
                             />
@@ -102,6 +104,11 @@ export default function InterviewTabs({
                         <FaList className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
                             {t('table_of_contents')}
+                            <LocaleSwitch
+                                alpha3s={interview.toc_locales}
+                                selected={tocLocale}
+                                setTranslationLocale={setTocLocale}
+                            />
                         </span>
                     </Tab>
                     <Tab className="Tabs-tab">
@@ -141,7 +148,9 @@ export default function InterviewTabs({
                     </TabPanel>
                     <TabPanel>
                         {tabIndex === 2 &&
-                            <TableOfContentsContainer/>
+                            <TableOfContentsContainer
+                                alpha3={tocLocale}
+                            />
                         }
                     </TabPanel>
                     <TabPanel>

@@ -1,9 +1,9 @@
 export default function LocaleSwitch({
-    interview,
+    alpha3s,
     selected,
     setTranslationLocale,
 }) {
-    return interview.translation_alpha3s.map( a => {
+    return alpha3s.map( a => {
         if (a === selected) {
             return (
                 <b className='u-ml-tiny'>{a}</b>
