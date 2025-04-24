@@ -88,8 +88,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
   end
 
   create_table "banners", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.text "message_en", default: "", null: false
-    t.text "message_de", default: "", null: false
+    t.text "message_en"
+    t.text "message_de"
     t.boolean "active", default: false, null: false
     t.datetime "start_date", default: -> { "current_timestamp(6)" }, null: false
     t.datetime "end_date", null: false
