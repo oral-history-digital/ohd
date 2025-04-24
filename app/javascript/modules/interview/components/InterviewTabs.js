@@ -105,7 +105,7 @@ export default function InterviewTabs({
                         <span className="Tabs-tabText">
                             {t('table_of_contents')}
                             <LocaleSwitch
-                                alpha3s={interview.toc_locales}
+                                alpha3s={interview.toc_alpha3s}
                                 selected={tocLocale}
                                 setTranslationLocale={setTocLocale}
                             />

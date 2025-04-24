@@ -23,7 +23,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :alpha3s_with_transcript,
     :translation_alpha3,
     :translation_alpha3s,
-    :toc_locales,
+    :toc_alpha3s,
     :anonymous_title,
     :media_missing,
     :still_url,
@@ -124,7 +124,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.properties || {}
   end
 
-  def toc_locales
+  def toc_alpha3s
     (
       instance_options[:project_available_locales] ||
       object.project.available_locales
