@@ -11,7 +11,7 @@ class EditTableExportTest < ActiveSupport::TestCase
   end
 
   test 'should write a csv containing all relevant data' do
-    assert_equal "Band\tTimecode\tSprecher\tTranskript (rus)\tÜbersetzung (ger)\tHauptüberschrift (rus)\tZwischenüberschrift (rus)\tHauptüberschrift (ger)\tZwischenüberschrift (ger)\tVerknüpfungen\tAnmerkungen (rus)\tAnmerkungen (ger)", @rows[0]
+    assert_equal "Band\tTimecode\tSprecher\tTranskript (rus)\tÜbersetzung (ger)\tHauptüberschrift (rus)\tZwischenüberschrift (rus)\tHauptüberschrift (ger)\tZwischenüberschrift (ger)\tVerknüpfungen\tAnmerkungen (rus)\tAnmerkungen (pol)\tAnmerkungen (ger)", @rows[0]
 
     assert_equal "1", @first_row_entries[0]
     assert_equal "00:00:02.00", @first_row_entries[1]
@@ -24,7 +24,7 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "", @first_row_entries[8]
     assert_equal @interview.segments.first.registry_references.first.registry_entry_id.to_i, @first_row_entries[9].to_i
     assert_equal "Главное местонахождение — Берлин Филиал по добыче", @first_row_entries[10]
-    assert_equal "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", @first_row_entries[11]
+    assert_equal "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", @first_row_entries[12]
 
     assert_equal "2", @second_row_entries[0]
     assert_equal "00:02:02.00", @second_row_entries[1]
@@ -37,6 +37,6 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "Leben", @second_row_entries[8]
     assert_equal @interview.segments.first(2).last.registry_references.map(&:registry_entry_id).join('#'), @second_row_entries[9]
     assert_equal "Построенный для размещения восточных рабочих барачный", @second_row_entries[10]
-    assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @second_row_entries[11]
+    assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @second_row_entries[12]
   end
 end

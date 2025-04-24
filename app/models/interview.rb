@@ -917,31 +917,29 @@ class Interview < ApplicationRecord
       tape_number
       timecode
       speaker_designation
-      text_orig
-      text_translated
+      transcript
     )
-    last_columns = %w(
+    registry_columns = %w(
       registry_references
-      annotations
-      annotations_translated
     )
+    translation_columns = translation_alpha3s.map{|alpha3| "translation_#{alpha3}"}
+    annotation_columns = alpha3s.map{|alpha3| "annotation_#{alpha3}"}
     heading_columns =  project.available_locales.map do |locale|
       alpha3 = ISO_639.find(locale).alpha3
       ["mainheading_#{alpha3}", "subheading_#{alpha3}"]
     end.flatten
-    first_columns + heading_columns + last_columns
+    first_columns + translation_columns + heading_columns + registry_columns + annotation_columns
   end
 
   def edit_table_headers(locale=:de)
-    translation_params = {
+    params = {
       original_locale: alpha3,
-      translation_locale: translation_alpha3,
     }
     edit_table_header_columns.inject({}) do |mem, column|
-      if column =~ /heading/
+      if column =~ /heading|translation|annotation/
         mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column.split('_')[0]}", locale) + " (#{column.split('_')[1]})"
       else
-        mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column}", locale, translation_params)
+        mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column}", locale, params)
       end
       mem
     end
