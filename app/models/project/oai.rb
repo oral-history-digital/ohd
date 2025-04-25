@@ -38,7 +38,7 @@ module Project::Oai
   end
 
   def oai_publication_date
-    publication_date && Date.parse(publication_date).strftime("%Y-%m-%d") rescue publication_date
+    publication_date
   end
 
   def oai_type
