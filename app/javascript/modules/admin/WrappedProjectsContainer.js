@@ -31,8 +31,8 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'publication_date',
-                validate: function(v){return /^\d{4}-\d{2}-\d{2}$/.test(v)},
-                help: 'YYYY-MM-DD'
+                validate: function(v){return /^\d{4}$/.test(v)},
+                help: 'YYYY'
             },
             {
                 attribute: 'default_locale',
