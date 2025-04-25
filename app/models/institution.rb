@@ -10,6 +10,20 @@ class Institution < ApplicationRecord
   translates :name, :description, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
+  def root
+    parent ? parent.root : self
+  end
+
+  def with_ancestors
+    ancestors = []
+    current = self
+    while current
+      ancestors << current
+      current = current.parent
+    end
+    ancestors.reverse
+  end
+
   def num_projects
     projects_count
   end

@@ -10,7 +10,7 @@ module Interview::Oai
   end
 
   def oai_locales
-    %w(de en)
+    project.available_locales
   end
 
   def oai_identifier
@@ -41,16 +41,16 @@ module Interview::Oai
     )
   end
 
-  def oai_contributor
-    project.institutions.map(&:name).join(", ")
+  def oai_contributor(locale)
+    project.institutions_with_ancestors_names(locale)
   end
 
   def oai_publisher(locale)
-    project.institutions.first&.name(locale)
+    project.root_institutions_names(locale)
   end
 
   def oai_date
-    interview_date && Date.parse(interview_date).strftime("%d.%m.%Y") rescue interview_date
+    interview_date && Date.parse(interview_date).strftime("%Y-%m-%d") rescue interview_date
   end
 
   def oai_publication_date

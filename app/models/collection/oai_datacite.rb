@@ -7,15 +7,11 @@ module Collection::OaiDatacite
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
         http://datacite.org/schema/kernel-4
-        http://schema.datacite.org/meta/kernel-4.1/metadata.xsd
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
-      xml.identifier do
-        xml.text! oai_identifier
-      end
-
       oai_locales.each do |locale|
-        xml.alternateIdentifier "xml:lang": locale, identfierType: "URL" do
+        xml.alternateIdentifier alternateIdentfierType: "URL" do
           xml.text! oai_url_identifier(locale)
         end
       end
@@ -34,11 +30,7 @@ module Collection::OaiDatacite
         end
       end
 
-      oai_locales.each do |locale|
-        xml.publisher "xml:lang": locale do
-          xml.text! oai_publisher(locale)
-        end
-      end
+      xml.publisher oai_publisher(:de)
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -131,6 +123,8 @@ module Collection::OaiDatacite
           xml.description "xml:lang": locale, descriptionType: "Abstract" do
             xml.text! oai_abstract_description(locale)
           end
+        end
+        oai_locales.each do |locale|
           xml.description "xml:lang": locale, descriptionType: "TechnicalInfo" do
             xml.text! oai_media_files_description(locale)
           end
@@ -144,7 +138,3 @@ module Collection::OaiDatacite
     xml.target!
   end
 end
-
-
-
-

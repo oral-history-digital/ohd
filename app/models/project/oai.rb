@@ -5,7 +5,7 @@ module Project::Oai
   end
 
   def oai_locales
-    %w(de en)
+    available_locales
   end
 
   def oai_identifier
@@ -26,21 +26,19 @@ module Project::Oai
   end
 
   def oai_contributor(locale)
-    institutions.map{|i| i.name(locale)}.join(", ")
+    institutions_with_ancestors_names(locale)
   end
 
   def oai_creator(locale)
-    institutions.where.not(parent_id: nil).first&.name(locale) ||
-      institutions.first&.name(locale)
+    root_institutions_names(locale)
   end
 
   def oai_publisher(locale)
-    institutions.where(parent_id: nil).first&.name(locale) ||
-      institutions.first&.name(locale)
+    root_institutions_names(locale)
   end
 
   def oai_publication_date
-    publication_date #created_at.strftime("%d.%m.%Y")
+    publication_date && Date.parse(publication_date).strftime("%Y-%m-%d") rescue publication_date
   end
 
   def oai_type
