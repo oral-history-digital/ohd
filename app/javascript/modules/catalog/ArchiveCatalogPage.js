@@ -172,6 +172,13 @@ export default function ArchiveCatalogPage() {
                         }
                     </dd>
 
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.publication_date')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {project.publication_date}
+                    </dd>
+
                     <ArchiveCatalog id={Number.parseInt(id)} />
                 </div>
             </ErrorBoundary>
