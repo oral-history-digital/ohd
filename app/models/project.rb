@@ -290,6 +290,26 @@ class Project < ApplicationRecord
       .order(startpage_position: :asc)
   end
 
+  def root_institutions
+    institutions.map{|i| i.root }.uniq
+  end
+
+  def root_institutions_names(locale = I18n.locale)
+    root_institutions.map{|i| i.name(locale) }.join(", ")
+  end
+
+  def institutions_with_ancestors
+    institutions.map do |institution|
+      institution.with_ancestors
+    end.flatten.uniq
+  end
+
+  def institutions_with_ancestors_names(locale = I18n.locale)
+    institutions_with_ancestors.map do |i|
+      i.name(locale)
+    end.join(", ")
+  end
+
   def search_facets_hash
     # TODO: there is potential to make the following (uncached) faster
     #

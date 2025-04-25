@@ -7,15 +7,11 @@ module Project::OaiDatacite
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
         http://datacite.org/schema/kernel-4
-        http://schema.datacite.org/meta/kernel-4.1/metadata.xsd
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
-      xml.identifier do
-        xml.text! oai_identifier
-      end
-
       oai_locales.each do |locale|
-        xml.alternateIdentifier "xml:lang": locale, identfierType: "URL" do
+        xml.alternateIdentifier alternateIdentfierType: "URL" do
           xml.text! oai_url_identifier(locale)
         end
       end
@@ -34,11 +30,7 @@ module Project::OaiDatacite
         end
       end
 
-      oai_locales.each do |locale|
-        xml.publisher "xml:lang": locale do
-          xml.text! oai_publisher(locale)
-        end
-      end
+      xml.publisher oai_publisher(:de)
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -61,6 +53,14 @@ module Project::OaiDatacite
         end
       end
 
+      xml.fundingReferences do
+        funder_names.each do |funder|
+          xml.fundingReference do
+            xml.funderName funder
+          end
+        end
+      end
+        
       xml.resourceType resourceTypeGeneral: "Audiovisual" do 
         xml.text! "audio/video"
       end
@@ -108,11 +108,6 @@ module Project::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-        oai_locales.each do |locale|
-          xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
-            xml.text! TranslationValue.for('privacy_protection', locale)
-          end
-        end
       end
 
       xml.relatedIdentifiers do
@@ -135,6 +130,8 @@ module Project::OaiDatacite
           xml.description "xml:lang": locale, descriptionType: "Abstract" do
             xml.text! oai_abstract_description(locale)
           end
+        end
+        oai_locales.each do |locale|
           xml.description "xml:lang": locale, descriptionType: "TechnicalInfo" do
             xml.text! oai_media_files_description(locale)
           end
@@ -144,14 +141,6 @@ module Project::OaiDatacite
         end
       end
 
-      xml.fundingReferences do
-        funder_names.each do |funder|
-          xml.fundingReference do
-            xml.funderName funder
-          end
-        end
-      end
-        
     end
     xml.target!
   end
