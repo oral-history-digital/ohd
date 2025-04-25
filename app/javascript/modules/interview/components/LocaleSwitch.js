@@ -3,18 +3,22 @@ export default function LocaleSwitch({
     selected,
     setTranslationLocale,
 }) {
-    return alpha3s.map( a => {
-        if (a === selected) {
-            return (
-                <b className='u-ml-tiny'>{a}</b>
-            );
-        } else {
-            return (
-                <a
-                    onClick={() => setTranslationLocale(a)}
-                    className='u-ml-tiny'
-                >{a}</a>
-            );
-        }
-    })
+    const links = alpha3s.map( (a, i) => (
+        a === selected ? (
+            <b className='u-ml-tiny'>{a}</b>
+        ) : (
+            <a
+                onClick={() => setTranslationLocale(a)}
+                className='u-ml-tiny'
+            >{a}</a>
+        )
+    ))
+    .reduce((prev, curr) => [prev, '|', curr]);
+
+    return (
+        <div className="LocaleSwitch">
+            ({links})
+        </div>
+    );
 }
+            //{ `(${links})` }
