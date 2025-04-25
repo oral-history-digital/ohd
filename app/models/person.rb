@@ -250,7 +250,7 @@ class Person < ApplicationRecord
 
     result = Contribution
       .joins(:contribution_type)
-      .includes(contri_type: :translations)
+      .includes(contribution_type: :translations)
       .where(person_id: person_id)
       .where('contribution_types.project_id' => project_id)
 
