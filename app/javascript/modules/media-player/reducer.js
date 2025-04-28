@@ -5,6 +5,7 @@ import {
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
     CLEAR_TIME_CHANGE_REQUEST,
+    SET_PLAYER_SIZE,
 } from './action-types';
 
 export const initialState = {
@@ -12,6 +13,7 @@ export const initialState = {
     mediaTime: 0,
     isPlaying: false,
     timeChangeRequest: null,
+    playerSize: 'medium',
 };
 
 const mediaPlayer = (state = initialState, action) => {
@@ -43,6 +45,11 @@ const mediaPlayer = (state = initialState, action) => {
             return {
                 ...state,
                 timeChangeRequest: null,
+            };
+        case SET_PLAYER_SIZE:
+            return {
+                ...state,
+                playerSize: action.payload.size,
             };
         default:
             return state;

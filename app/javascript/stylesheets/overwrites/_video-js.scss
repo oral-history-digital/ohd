@@ -1,11 +1,46 @@
-.video-js .vjs-time-control {
-  display: block;
-}
+.video-js {
+    position: relative; // Ensures that positioned elements are relative to the container
+    overflow: hidden; // Prevents elements outside the container from generating scroll
 
-.video-js .vjs-remaining-time {
-  display: none;
-}
+    .vjs-time-control {
+        display: block;
+    }
 
-.vjs-poster img {
-  object-fit: cover;
+    .vjs-remaining-time {
+        display: none;
+    }
+
+    .vjs-poster img {
+        object-fit: cover;
+    }
+
+    /* Progress bar */
+    .vjs-progress-control {
+        position: absolute; // Takes the progress bar out of the normal flow
+        top: -10px; // Adjusts the position to be above the control area
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 10px;
+        padding: 0;
+        margin: 0;
+
+        .vjs-slider-horizontal {
+            margin: 0;
+        }
+
+        .vjs-progress-holder {
+            height: 10px;
+            transition: height 0.3s ease;
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+
+            /* Hide the scrubber (circle) while maintaining the progress bar */
+            .vjs-play-progress .vjs-slider-bar::before,
+            .vjs-play-progress:before {
+                display: none;
+            }
+        }
+    }
 }
