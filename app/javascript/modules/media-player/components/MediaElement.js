@@ -5,10 +5,12 @@ import classNames from 'classnames';
 import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
-import speakerImage from 'assets/images/speaker.png';
+import usePosterImage from '../usePosterImage';
 import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
+import './configurationMenuPlugin.js';
+import './toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -42,13 +44,23 @@ export default function MediaElement({
     const { t, locale } = useI18n();
     const { project } = useProject();
     const playerRef = useRef(null);
-    const tapeRef = useRef(tape);  // Used for event handler below.
+    const tapeRef = useRef(tape); // Used for event handler below.
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
-    const initialSources = mediaStreams && mediaStreamsToSources(Object.values(mediaStreams),
-        pathBase, interview.media_type, archiveId, interview.tape_count, tape);
+    const initialSources =
+        mediaStreams &&
+        mediaStreamsToSources(
+            Object.values(mediaStreams),
+            pathBase,
+            interview.media_type,
+            archiveId,
+            interview.tape_count,
+            tape
+        );
+
+    const { posterUrl } = usePosterImage(interview);
 
     const videoJsOptions = {
         autoplay: false,
@@ -58,88 +70,102 @@ export default function MediaElement({
         //aspectRatio,
         language: locale,
         sources: initialSources,
-        poster: interview.still_url || speakerImage,
-        playbackRates: [0.5, 1, 1.5, 2],
+        poster: posterUrl,
+        playbackRates: [0.6, 0.8, 1, 1.2, 2],
         enableSourceset: false,
         controlBar: {
+            volumePanel: {
+                inline: false,
+                volumeControl: {
+                    vertical: true,
+                },
+            },
             children: [
-                'playToggle',
                 'progressControl',
-                'currentTimeDisplay',
+                'skipBackward',
+                'playToggle',
+                'skipForward',
                 'volumePanel',
-                'subsCapsButton',
                 'playbackRateMenuButton',
                 'qualitySelector',
+                'subsCapsButton',
                 'fullscreenToggle',
             ],
+            skipButtons: {
+                forward: FORWARD_STEP,
+                backward: BACKWARD_STEP,
+            },
         },
         userActions: {
             click: true,
             doubleClick: true,
             hotkeys: handleKeyPress,
         },
-        // plugins: {
-        //     seekButtons: {
-        //         forward: FORWARD_STEP,
-        //         back: BACKWARD_STEP,
-        //     },
-        // },
     };
 
     function handleKeyPress(event) {
         let newTime, newVolume;
 
         switch (event.which) {
-        case KEYCODE_F:
-            if (this.isFullscreen()) {
-                this.exitFullscreen();
-            } else {
-                this.requestFullscreen();
-            }
-            break;
-        case KEYCODE_M:
-            if (this.muted()) {
-                this.muted(false);
-            } else {
-                this.muted(true);
-            }
-            break;
-        case KEYCODE_P:
-        case KEYCODE_SPACE:
-            if (this.paused()) {
-                this.play();
-            } else {
-                this.pause();
-            }
-            break;
-        case KEYCODE_LEFT:
-            newTime = this.currentTime() - BACKWARD_STEP;
-            if (newTime < 0) {
-                newTime = 0;
-            }
-            this.currentTime(newTime);
-            break;
-        case KEYCODE_RIGHT:
-            newTime = this.currentTime() + FORWARD_STEP;
-            this.currentTime(newTime);
-            break;
-        case KEYCODE_UP:
-            newVolume = this.volume() + 0.1;
-            if (newVolume > 1) {
-                newVolume = 1;
-            }
-            this.volume(newVolume);
-            break;
-        case KEYCODE_DOWN:
-            newVolume = this.volume() - 0.1;
-            if (newVolume < 0) {
-                newVolume = 0;
-            }
-            this.volume(newVolume);
-            break;
-        default:
+            case KEYCODE_F:
+                if (this.isFullscreen()) {
+                    this.exitFullscreen();
+                } else {
+                    this.requestFullscreen();
+                }
+                break;
+            case KEYCODE_M:
+                if (this.muted()) {
+                    this.muted(false);
+                } else {
+                    this.muted(true);
+                }
+                break;
+            case KEYCODE_P:
+            case KEYCODE_SPACE:
+                if (this.paused()) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+                break;
+            case KEYCODE_LEFT:
+                newTime = this.currentTime() - BACKWARD_STEP;
+                if (newTime < 0) {
+                    newTime = 0;
+                }
+                this.currentTime(newTime);
+                break;
+            case KEYCODE_RIGHT:
+                newTime = this.currentTime() + FORWARD_STEP;
+                this.currentTime(newTime);
+                break;
+            case KEYCODE_UP:
+                newVolume = this.volume() + 0.1;
+                if (newVolume > 1) {
+                    newVolume = 1;
+                }
+                this.volume(newVolume);
+                break;
+            case KEYCODE_DOWN:
+                newVolume = this.volume() - 0.1;
+                if (newVolume < 0) {
+                    newVolume = 0;
+                }
+                this.volume(newVolume);
+                break;
+            default:
         }
     }
+
+    // Update the player's poster when it changes
+    useEffect(() => {
+        const player = playerRef.current;
+        if (!player) return;
+
+        // Only update if the poster has changed and player is ready
+        player.poster(posterUrl);
+    }, [posterUrl]);
 
     // Check if time params exist in query string.
     useEffect(() => {
@@ -154,7 +180,7 @@ export default function MediaElement({
                     timeInSeconds
                 );
             } catch (e) {
-                console.log('error in time format, skipping');
+                console.warn('Invalid time format, skipping');
             }
         }
     }, []);
@@ -166,15 +192,21 @@ export default function MediaElement({
 
     // Update sources and tracks if tape has been changed.
     useEffect(() => {
-        const player = playerRef.current
+        const player = playerRef.current;
         if (!player) {
             return;
         }
 
         tapeRef.current = tape;
 
-        const newSources = mediaStreamsToSources(Object.values(mediaStreams),
-            pathBase, interview.media_type, archiveId, interview.tape_count, tape);
+        const newSources = mediaStreamsToSources(
+            Object.values(mediaStreams),
+            pathBase,
+            interview.media_type,
+            archiveId,
+            interview.tape_count,
+            tape
+        );
 
         player.src(newSources);
 
@@ -188,11 +220,10 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     });
 
-
     function addTextTracks() {
         if (!interview.transcript_coupled) return;
 
-        const player = playerRef.current
+        const player = playerRef.current;
         if (!player) {
             return;
         }
@@ -207,13 +238,13 @@ export default function MediaElement({
         // handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
-        const newTracks = interview.languages.map(lang => ({
+        const newTracks = interview.languages.map((lang) => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
             language: lang,
             kind: 'captions',
             label: t(lang),
         }));
-        newTracks.forEach(newTrack => {
+        newTracks.forEach((newTrack) => {
             player.addRemoteTextTrack(newTrack, false);
         });
     }
@@ -221,7 +252,7 @@ export default function MediaElement({
     function checkForTimeChangeRequest() {
         // We use Redux as an event system here.
         // If a request is available, it is immediately cleared and processed.
-        const player = playerRef.current
+        const player = playerRef.current;
         if (!player) {
             return;
         }
@@ -276,6 +307,105 @@ export default function MediaElement({
 
     function handlePlayerReady(player) {
         playerRef.current = player;
+        window.mainPlayerInstance = player;
+
+        player.configurationMenuPlugin();
+        player.toggleSizePlugin();
+
+        const qualities = player
+            .currentSources()
+            .map((source) =>
+                source.label || (source.height ? `${source.height}p` : 'Default')
+            )
+            .filter(Boolean);
+
+        player.configurationMenuPlugin({
+            playbackRates: videoJsOptions.playbackRates,
+            qualities: qualities,
+        });
+
+        player.ready(() => {
+            const configControl = player.controlBar.getChild('ConfigurationControl');
+            const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
+            const qualitySelector = player.controlBar.getChild('qualitySelector');
+            const toggleSizeButton = player.controlBar.getChild('ToggleSizeButton');
+            const subsCapsButton = player.controlBar.getChild('subsCapsButton');
+
+            const currentSize = toggleSizeButton ? toggleSizeButton.currentPlayerSize : 'medium';
+
+            // Disable subtitles if start size is small
+            if (currentSize === 'small' && subsCapsButton) {
+                subsCapsButton.disable();
+                const textTracks = player.textTracks();
+                for (let i = 0; i < textTracks.length; i++) {
+                    if (textTracks[i].mode === 'showing') {
+                        textTracks[i].mode = 'disabled';
+                    }
+                }
+            }
+
+            if (player.isFullscreen()) {
+                if (configControl) configControl.hide();
+                if (playbackRateMenuButton) playbackRateMenuButton.show();
+                if (qualitySelector) qualitySelector.show();
+                if (toggleSizeButton) toggleSizeButton.hide();
+
+                // Enable subtitles button in fullscreen
+                if (subsCapsButton) {
+                    subsCapsButton.enable();
+
+                    // If toggleSizeButton exists and has saved subtitles, restore them
+                    if (toggleSizeButton && toggleSizeButton.subtitleTrackWasEnabled) {
+                        toggleSizeButton.restoreActiveSubtitleTrack();
+                    }
+                }
+            } else {
+                if (configControl) configControl.show();
+                if (playbackRateMenuButton) playbackRateMenuButton.hide();
+                if (qualitySelector) qualitySelector.hide();
+                if (toggleSizeButton) toggleSizeButton.show();
+
+                // When exiting fullscreen, check if we need to disable subtitles
+                if (toggleSizeButton && toggleSizeButton.currentPlayerSize === 'small') {
+                    if (subsCapsButton) {
+                        // Save current subtitle state before disabling
+                        if (toggleSizeButton.saveActiveSubtitleTrack) {
+                            toggleSizeButton.saveActiveSubtitleTrack();
+                        }
+
+                        subsCapsButton.disable();
+
+                        // Disable active subtitle tracks
+                        const textTracks = player.textTracks();
+                        for (let i = 0; i < textTracks.length; i++) {
+                            if (textTracks[i].mode === 'showing') {
+                                textTracks[i].mode = 'disabled';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        player.on('fullscreenchange', () => {
+            const configControl = player.controlBar.getChild('ConfigurationControl');
+            const playbackRateMenuButton = player.controlBar.getChild('playbackRateMenuButton');
+            const qualitySelector = player.controlBar.getChild('qualitySelector');
+            const toggleSizeButton = player.controlBar.getChild('ToggleSizeButton');
+
+            if (player.isFullscreen()) {
+                if (configControl) configControl.hide();
+                if (playbackRateMenuButton) playbackRateMenuButton.show();
+                if (qualitySelector) qualitySelector.show();
+                if (toggleSizeButton) toggleSizeButton.hide();
+            } else {
+                if (configControl) configControl.show();
+                if (playbackRateMenuButton) playbackRateMenuButton.hide();
+                if (qualitySelector) qualitySelector.hide();
+                if (toggleSizeButton) toggleSizeButton.show();
+            }
+        });
+
 
         addTextTracks();
 
@@ -289,16 +419,32 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     }
 
+    useEffect(() => {
+        return resetMedia;
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            window.mainPlayerInstance = null;
+        };
+    }, []);
+
     if (!mediaStreams) {
         return null;
     }
 
     return (
-        <div className={classNames('MediaElement', className,
-            `MediaElement--${aspectRatio}`, {
-            'MediaElement--video': interview.media_type === 'video',
-            'MediaElement--audio': interview.media_type === 'audio',
-        })}>
+        <div
+            className={classNames(
+                'MediaElement',
+                className,
+                `MediaElement--${aspectRatio}`,
+                {
+                    'MediaElement--video': interview.media_type === 'video',
+                    'MediaElement--audio': interview.media_type === 'audio',
+                }
+            )}
+        >
             <VideoJS
                 type={interview.media_type}
                 options={videoJsOptions}
