@@ -1,0 +1,27 @@
+.Transcript {
+  direction: ltr;
+  text-align: left;
+
+  &--rtl {
+    direction: rtl;
+    text-align: right;
+
+    .Segment {
+      text-align: right;
+      padding-left: 0;
+      padding-right: $segment-icon-width;
+
+      .Segment-text {
+        text-align: right;
+      }
+
+      .Segment-icon {
+        margin-right: 0;
+      }
+    }
+    
+    .Segment--withSpeaker {
+      padding-right: 0;
+    }
+  }
+}
