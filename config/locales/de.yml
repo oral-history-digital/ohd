@@ -106,7 +106,7 @@ de:
         welche die Interviewpartner*innen für Deutsch hielten; Aussagen in
         weiteren Sprachen, die nicht (Haupt-)Sprache des Interviews sind
         (betrifft nicht zweisprachige Interviews), allerdings ohne Benennung
-        der Originalsprache
+        der Originalspache
       quote: Zitate, wörtliche Rede, Buch- und sonstige Titel werden in
         Anführungszeichen gemäß den in den Originalsprachen geltenden
         Regeln gesetzt
@@ -1514,6 +1514,7 @@ de:
       copy_position: Position kopieren
       copy_position_tooltip: Aktuelle Zeitmarke als URL kopieren
       media_missing: "Leider ist die Mediendatei für dieses Interview online nicht verfügbar. Bitte kontaktieren Sie uns, um weitere Informationen zum Interview und ggf. Zugang zur Mediendatei zu erhalten."
+      toggle_size: "Playergröße umschalten"
     person:
       no_interviewee: Keine interviewte Person
       abbr_titles:
