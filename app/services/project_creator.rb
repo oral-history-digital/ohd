@@ -223,7 +223,10 @@ class ProjectCreator < ApplicationService
 
   def create_default_roles
     YAML.load_file(File.join(Rails.root, 'config/defaults/roles.yml')).each do |role_permission|
-      role = Role.find_or_create_by(name: role_permission[:name], project_id: project.id)
+      role = Role.create(
+        **role_permission[:attributes][0],
+        project_id: project.id
+      )
       role_permission[:permissions].each do |permission|
         perm = Permission.find_or_create_by(klass: permission[:klass], action_name: permission[:action_name])
         perm.update_attribute(:name, "#{permission[:klass]} #{permission[:action_name]}")
