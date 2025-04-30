@@ -18,7 +18,7 @@ module Project::OaiDc
         end
       end
 
-      xml.tag!('dc:source', oai_identifier)
+      #xml.tag!('dc:source', oai_identifier)
 
       oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
@@ -61,7 +61,7 @@ module Project::OaiDc
       end
 
       oai_subject_registry_entry_ids.each do |registry_entry_id|
-        oai_locales.each do |locale|
+        %w(de en).each do |locale|
           xml.tag!('dc:subject', "xml:lang": locale) do
             xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
           end
@@ -78,6 +78,8 @@ module Project::OaiDc
         xml.tag!('dc:description', "xml:lang": locale) do
           xml.text! oai_abstract_description(locale)
         end
+      end
+      %w(de en).each do |locale|
         xml.tag!('dc:description', "xml:lang": locale) do
           xml.text! oai_media_files_description(locale)
         end

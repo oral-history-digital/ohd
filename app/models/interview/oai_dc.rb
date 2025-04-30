@@ -18,11 +18,11 @@ module Interview::OaiDc
         end
       end
 
-      xml.tag!('dc:identifier') do
-        xml.text! oai_doi_identifier
-      end
+      #xml.tag!('dc:identifier') do
+        #xml.text! oai_doi_identifier
+      #end
 
-      xml.tag!('dc:source', oai_identifier)
+      #xml.tag!('dc:source', oai_identifier)
 
       oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do

@@ -10,12 +10,12 @@ module Interview::Oai
   end
 
   def oai_locales
-    project.available_locales
+    %w(de en)
+    #project.available_locales
   end
 
   def oai_identifier
     "oai:#{project.shortname}:#{archive_id}"
-    #project.domain_with_optional_identifier + "/#{project.default_locale}/interviews/#{archive_id}"
   end
 
   def oai_dc_identifier

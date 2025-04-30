@@ -10,9 +10,11 @@ module Project::OaiDatacite
         http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
-      oai_locales.each do |locale|
-        xml.alternateIdentifier alternateIdentfierType: "URL" do
-          xml.text! oai_url_identifier(locale)
+      xml.alternateIdentifiers do
+        oai_locales.each do |locale|
+          xml.alternateIdentifier alternateIdentfierType: "URL" do
+            xml.text! oai_url_identifier(locale)
+          end
         end
       end
 
@@ -45,11 +47,7 @@ module Project::OaiDatacite
           xml.contributorName manager
         end
         xml.contributor contributorType: "HostingInstitution" do
-          oai_locales.each do |locale|
-            xml.contributor "xml:lang": locale do
-              xml.text! oai_contributor(locale)
-            end
-          end
+          xml.contributorName oai_contributor(:de)
         end
       end
 
@@ -81,7 +79,7 @@ module Project::OaiDatacite
 
       xml.subjects do
         oai_subject_registry_entry_ids.each do |registry_entry_id|
-          oai_locales.each do |locale|
+          %w(de en).each do |locale|
             xml.subject "xml:lang": locale do
               xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
             end
@@ -131,7 +129,7 @@ module Project::OaiDatacite
             xml.text! oai_abstract_description(locale)
           end
         end
-        oai_locales.each do |locale|
+        %w(de en).each do |locale|
           xml.description "xml:lang": locale, descriptionType: "TechnicalInfo" do
             xml.text! oai_media_files_description(locale)
           end
