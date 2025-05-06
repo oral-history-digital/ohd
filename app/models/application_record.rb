@@ -27,4 +27,16 @@ class ApplicationRecord < ActiveRecord::Base
   def identifier
     self.id
   end
+
+  def ohd_subject_registry_entry_ids
+    if respond_to?(:interviews)
+      RegistryReference.where(
+        registry_entry_id: RegistryEntry.ohd_subjects.children.pluck(:id),
+        ref_object_id: interviews.pluck(:id),
+        ref_object_type: "Interview",
+      ).pluck(:registry_entry_id).uniq
+    else
+      []
+    end
+  end
 end

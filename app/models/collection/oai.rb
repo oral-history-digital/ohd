@@ -72,12 +72,7 @@ module Collection::Oai
   end
 
   def oai_subject_registry_entry_ids
-    subjects_registry_entry = RegistryEntry.find 21898673
-    RegistryReference.where(
-      registry_entry_id: subjects_registry_entry.children.pluck(:id),
-      ref_object_id: interviews.pluck(:id),
-      ref_object_type: "Interview",
-    ).pluck(:registry_entry_id).uniq
+    ohd_subject_registry_entry_ids
   end
 
   def oai_abstract_description(locale)

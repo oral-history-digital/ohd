@@ -8,7 +8,9 @@ class CollectionSerializer < ApplicationSerializer
     :homepage,
     :notes,
     :responsibles,
-    :num_interviews
+    :num_interviews,
+    :subjects
+
   attribute :linkable?, key: :is_linkable
 
   %w(name homepage notes responsibles).each do |m|
@@ -25,4 +27,9 @@ class CollectionSerializer < ApplicationSerializer
     object.publication_date || object.project.publication_date
   end
 
+  def subjects
+    object.ohd_subject_registry_entry_ids.map do |id|
+      {descriptor: RegistryEntry.find(id).localized_hash(:descriptor)}
+    end
+  end
 end
