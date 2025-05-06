@@ -179,6 +179,18 @@ export default function ArchiveCatalogPage() {
                         {project.publication_date}
                     </dd>
 
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.subjects')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {project?.subjects.map((s, i) => (
+                            <span key={`subject-${i}`}>
+                                {s.descriptor[locale]}
+                                {i < project?.subjects.length - 1 && ', '}
+                            </span>
+                        ))}
+                    </dd>
+
                     <ArchiveCatalog id={Number.parseInt(id)} />
                 </div>
             </ErrorBoundary>

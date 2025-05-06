@@ -117,6 +117,18 @@ export default function CollectionCatalogPage() {
                                 {' '}
                                 {t('activerecord.models.interview.other')}
                             </dd>
+
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.subjects')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {collection?.subjects.map((s, i) => (
+                                    <span key={`subject-${i}`}>
+                                        {s.descriptor[locale]}
+                                        {i < collection?.subjects.length - 1 && ', '}
+                                    </span>
+                                ))}
+                            </dd>
                         </dl>
                     </div>
                 </ErrorBoundary>

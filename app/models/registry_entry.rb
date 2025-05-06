@@ -207,12 +207,26 @@ class RegistryEntry < ApplicationRecord
     end.flatten.uniq.join(', ')
   end
 
-  def self.merge(opts={})
-    merge_to_id = opts[:id]
-    where(id: opts[:ids]).each do |registry_entry|
-      registry_entry.move_associated_to(merge_to_id)
-      registry_entry.reload
-      registry_entry.destroy
+  class << self
+    def ohd_subjects
+      find 21898673
+    end
+
+    def merge(opts={})
+      merge_to_id = opts[:id]
+      where(id: opts[:ids]).each do |registry_entry|
+        registry_entry.move_associated_to(merge_to_id)
+        registry_entry.reload
+        registry_entry.destroy
+      end
+    end
+
+    def pdf_entries(project)
+      where(id: project.pdf_registry_entry_ids).includes(registry_names: :translations).map{|e| e.all_relatives}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
+    end
+
+    def csv_entries(project)
+      project.registry_entries.includes(registry_names: :translations).map{|e| e.all_relatives}
     end
   end
 
@@ -222,14 +236,6 @@ class RegistryEntry < ApplicationRecord
 
     child_registry_hierarchies.update_all(ancestor_id: merge_to_id)
     parent_registry_hierarchies.destroy_all
-  end
-
-  def self.pdf_entries(project)
-    where(id: project.pdf_registry_entry_ids).includes(registry_names: :translations).map{|e| e.all_relatives}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
-  end
-
-  def self.csv_entries(project)
-    project.registry_entries.includes(registry_names: :translations).map{|e| e.all_relatives}
   end
 
   def all_relatives(descending=true)

@@ -21,7 +21,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :logos,
     :is_ohd,
     :show_preview_img,
-    :has_map
+    :has_map,
+    :subjects
 
   def display_name
     object.localized_hash(:display_name)
@@ -49,6 +50,12 @@ class ProjectBaseSerializer < ActiveModel::Serializer
 
   def logos
     object.logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
+  end
+
+  def subjects
+    object.ohd_subject_registry_entry_ids.map do |id|
+      {descriptor: RegistryEntry.find(id).localized_hash(:descriptor)}
+    end
   end
 
 end
