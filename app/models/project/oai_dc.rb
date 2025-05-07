@@ -12,14 +12,13 @@ module Project::OaiDc
           http://www.openarchives.org/OAI/2.0/oai_dc.xsd}
     ) do
 
-      xml.tag!('dc:identifier', oai_identifier)
-      xml.tag!('dc:source', oai_identifier)
-
       oai_locales.each do |locale|
-        xml.tag!('dc:identifier', "xml:lang": locale, identfierType: "URL") do
+        xml.tag!('dc:identifier', "xml:lang": locale) do
           xml.text! oai_url_identifier(locale)
         end
       end
+
+      #xml.tag!('dc:source', oai_identifier)
 
       oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
@@ -62,7 +61,7 @@ module Project::OaiDc
       end
 
       oai_subject_registry_entry_ids.each do |registry_entry_id|
-        oai_locales.each do |locale|
+        %w(de en).each do |locale|
           xml.tag!('dc:subject', "xml:lang": locale) do
             xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
           end
@@ -79,6 +78,8 @@ module Project::OaiDc
         xml.tag!('dc:description', "xml:lang": locale) do
           xml.text! oai_abstract_description(locale)
         end
+      end
+      %w(de en).each do |locale|
         xml.tag!('dc:description', "xml:lang": locale) do
           xml.text! oai_media_files_description(locale)
         end
@@ -100,11 +101,6 @@ module Project::OaiDc
       oai_locales.each do |locale|
         xml.tag!('dc:rights', "xml:lang": locale) do
           xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
-        end
-      end
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
         end
       end
 

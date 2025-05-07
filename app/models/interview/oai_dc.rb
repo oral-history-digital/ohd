@@ -12,17 +12,17 @@ module Interview::OaiDc
           http://www.openarchives.org/OAI/2.0/oai_dc.xsd}
     ) do
 
-      xml.tag!('dc:identifier', oai_identifier)
-
       oai_locales.each do |locale|
-        xml.tag!('dc:identifier', "xml:lang": locale, identfierType: "URL") do
+        xml.tag!('dc:identifier', "xml:lang": locale) do
           xml.text! oai_url_identifier(locale)
         end
       end
 
-      xml.tag!('dc:identifier', identfierType: "DOI") do
-        xml.text! oai_doi_identifier
-      end
+      #xml.tag!('dc:identifier') do
+        #xml.text! oai_doi_identifier
+      #end
+
+      #xml.tag!('dc:source', oai_identifier)
 
       oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
@@ -41,6 +41,12 @@ module Interview::OaiDc
       oai_locales.each do |locale|
         xml.tag!('dc:publisher', "xml:lang": locale) do
           xml.text! oai_publisher(locale)
+        end
+      end
+
+      oai_locales.each do |locale|
+        xml.tag!('dc:contributor', "xml:lang": locale) do
+          xml.text! oai_contributor(locale)
         end
       end
 
