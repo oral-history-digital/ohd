@@ -23,7 +23,6 @@ export default function InterviewTabs({
     const { project } = useProject();
     const [tabIndex, setTabIndex] = useState(0);
     const [translationLocale, setTranslationLocale] = useState(interview.translation_alpha3);
-    const [tocLocale, setTocLocale] = useState(ALPHA2_TO_ALPHA3[locale]);
 
     const { fulltext } = useSearchParams();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
@@ -104,11 +103,6 @@ export default function InterviewTabs({
                         <FaList className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
                             {t('table_of_contents')}
-                            <LocaleSwitch
-                                alpha3s={interview.toc_alpha3s}
-                                selected={tocLocale}
-                                setTranslationLocale={setTocLocale}
-                            />
                         </span>
                     </Tab>
                     <Tab className="Tabs-tab">
@@ -149,7 +143,7 @@ export default function InterviewTabs({
                     <TabPanel>
                         {tabIndex === 2 &&
                             <TableOfContentsContainer
-                                alpha3={tocLocale}
+                                alpha3={ALPHA2_TO_ALPHA3[locale]}
                             />
                         }
                     </TabPanel>
