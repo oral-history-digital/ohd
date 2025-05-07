@@ -12,14 +12,13 @@ module Collection::OaiDc
           http://www.openarchives.org/OAI/2.0/oai_dc.xsd}
     ) do
 
-      xml.tag!('dc:identifier', oai_identifier)
-      xml.tag!('dc:source', oai_identifier)
-
       oai_locales.each do |locale|
-        xml.tag!('dc:identifier', "xml:lang": locale, identfierType: "URL") do
+        xml.tag!('dc:identifier', "xml:lang": locale) do
           xml.text! oai_url_identifier(locale)
         end
       end
+
+      xml.tag!('dc:source', oai_identifier)
 
       oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
@@ -99,11 +98,6 @@ module Collection::OaiDc
       oai_locales.each do |locale|
         xml.tag!('dc:rights', "xml:lang": locale) do
           xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
-        end
-      end
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
         end
       end
 

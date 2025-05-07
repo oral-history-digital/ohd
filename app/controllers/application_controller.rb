@@ -211,7 +211,12 @@ class ApplicationController < ActionController::Base
         autoScroll: true,
         tabIndex: 0
       },
-      search: initial_search_redux_state
+      search: initial_search_redux_state,
+      banner: {
+        active: banner_present?,
+        message_en: banner_present? ? current_banner.message_en : "",
+        message_de: banner_present? ? current_banner.message_de : "",
+      },
     }
   end
 
@@ -244,6 +249,16 @@ class ApplicationController < ActionController::Base
     cache_key = ""
     params.reject{|k,v| k == 'controller' || k == 'action'}.each{|k,v| cache_key << "#{k}-#{v}-"}
     cache_key
+  end
+
+  def banner_present?
+    current_banner.present?
+  end
+
+  def current_banner
+    @current_banner ||= Banner.where(active: true)
+                               .where("start_date <= ? AND end_date >= ?", Time.current, Time.current)
+                               .first
   end
 
   protected

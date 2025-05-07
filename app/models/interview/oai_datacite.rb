@@ -6,22 +6,19 @@ module Interview::OaiDatacite
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
         http://datacite.org/schema/kernel-4
-        http://schema.datacite.org/meta/kernel-4.1/metadata.xsd
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier do
-        xml.text! oai_identifier
-      end
-
-      oai_locales.each do |locale|
-        xml.alternateIdentifier "xml:lang": locale, identfierType: "URL" do
-          xml.text! oai_url_identifier(locale)
+      xml.alternateIdentifiers do
+        oai_locales.each do |locale|
+          xml.alternateIdentifier alternateIdentfierType: "URL" do
+            xml.text! oai_url_identifier(locale)
+          end
         end
-      end
-
-      xml.alternateIdentifier identfierType: "DOI" do
-        xml.text! oai_doi_identifier
+        #xml.alternateIdentifier alternateIdentfierType: "DOI" do
+          #xml.text! oai_doi_identifier
+        #end
       end
 
       xml.titles do
@@ -44,11 +41,7 @@ module Interview::OaiDatacite
         end
       end
 
-      oai_locales.each do |locale|
-        xml.publisher "xml:lang": locale do
-          xml.text! oai_publisher(locale)
-        end
-      end
+      xml.publisher oai_publisher(:de)
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -67,10 +60,18 @@ module Interview::OaiDatacite
           xml.contributorName project.manager
         end
         xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor
+          xml.contributorName oai_contributor(:de)
         end
       end
 
+      xml.fundingReferences do
+        project.funder_names.each do |funder|
+          xml.fundingReference do
+            xml.funderName funder
+          end
+        end
+      end
+        
       xml.dates do
         xml.date dateType: "Created" do
           xml.text! oai_date
@@ -121,11 +122,6 @@ module Interview::OaiDatacite
           end
         end
         oai_locales.each do |locale|
-          xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
-            xml.text! TranslationValue.for('privacy_protection', locale)
-          end
-        end
-        oai_locales.each do |locale|
           xml.rights(
             "xml:lang": locale,
             rightsIdentifier: "CC-BY-4.0",
@@ -145,14 +141,6 @@ module Interview::OaiDatacite
         end
       end
 
-      xml.fundingReferences do
-        project.funder_names.each do |funder|
-          xml.fundingReference do
-            xml.funderName funder
-          end
-        end
-      end
-        
     end
     xml.target!
   end

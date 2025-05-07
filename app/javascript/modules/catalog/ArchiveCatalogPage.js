@@ -172,6 +172,37 @@ export default function ArchiveCatalogPage() {
                         }
                     </dd>
 
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.publication_date')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {project.publication_date}
+                    </dd>
+
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.subjects')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {project?.subjects.map((s, i) => (
+                            <span key={`subject-${i}`}>
+                                {s.descriptor[locale]}
+                                {i < project?.subjects.length - 1 && ', '}
+                            </span>
+                        ))}
+                    </dd>
+
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.level_of_indexing')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {project?.levels_of_indexing.map((s, i) => (
+                            <span key={`loi-${i}`}>
+                                {`${s.count} ${s.descriptor[locale]}`}
+                                {i < project?.levels_of_indexing.length - 1 && ', '}
+                            </span>
+                        ))}
+                    </dd>
+
                     <ArchiveCatalog id={Number.parseInt(id)} />
                 </div>
             </ErrorBoundary>

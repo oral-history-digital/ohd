@@ -59,25 +59,25 @@ OaiRepository.setup do |config|
          #description: 'Interviews'
        #},
        {
-         spec: 'class:project',
+         spec: 'archive',
          name: 'Interview-Archiv',
          model: Interview,
          description: 'Archiv'
        },
        {
-         spec: 'class:collection',
+         spec: 'collection',
          name: 'Interview-Sammlung',
          model: Interview,
          description: 'Sammlung'
        },
        {
-         spec: 'class:project',
+         spec: 'archives',
          name: 'Interview-Archive',
          model: Project,
          description: 'Archive'
        },
        {
-         spec: 'class:collection',
+         spec: 'collections',
          name: 'Interview-Sammlungen',
          model: Collection,
          description: 'Sammlungen'
