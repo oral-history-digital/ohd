@@ -22,7 +22,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :is_ohd,
     :show_preview_img,
     :has_map,
-    :subjects
+    :subjects,
+    :levels_of_indexing
 
   def display_name
     object.localized_hash(:display_name)
@@ -53,9 +54,11 @@ class ProjectBaseSerializer < ActiveModel::Serializer
   end
 
   def subjects
-    object.ohd_subject_registry_entry_ids.map do |id|
-      {descriptor: RegistryEntry.find(id).localized_hash(:descriptor)}
-    end
+    object.ohd_subject_registry_entries
+  end
+
+  def levels_of_indexing
+    object.ohd_level_of_indexing_registry_entries
   end
 
 end

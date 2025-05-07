@@ -129,6 +129,19 @@ export default function CollectionCatalogPage() {
                                     </span>
                                 ))}
                             </dd>
+
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.level_of_indexing')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {collection?.levels_of_indexing.map((s, i) => (
+                                    <span key={`loi-${i}`}>
+                                        {`${s.count} ${s.descriptor[locale]}`}
+                                        {i < collection?.levels_of_indexing.length - 1 && ', '}
+                                    </span>
+                                ))}
+                            </dd>
+
                         </dl>
                     </div>
                 </ErrorBoundary>
