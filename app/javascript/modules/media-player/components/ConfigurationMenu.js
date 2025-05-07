@@ -7,7 +7,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
 
-function ConfigurationMenu({ player, playbackRates, qualities }) {
+function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [showRateSubmenu, setShowRateSubmenu] = useState(false);
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
@@ -22,6 +22,12 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         }
         return qualities[0] || null;
       });
+
+    // Use provided translations with fallbacks
+    const t = (key) => {
+        if (!translations) return key;
+        return translations[key] || key;
+    };
 
     useEffect(() => {
         if (!player) return;
@@ -128,7 +134,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         >
                             <div className="menu-item-title-container">
                                 <MdSlowMotionVideo className="rate-icon" />
-                                <span>Rate</span>
+                                <span>{t('playbackRate')}</span>
                             </div>
                             <IoIosArrowForward />
                         </MenuItem>
@@ -170,7 +176,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         >
                             <div className="menu-item-title-container">
                                 <LuSettings2 className="quality-icon" />
-                                <span>Quality</span>
+                                <span>{t('playbackQuality')}</span>
                             </div>
                             <IoIosArrowForward />
                         </MenuItem>
@@ -212,6 +218,7 @@ ConfigurationMenu.propTypes = {
     player: PropTypes.object.isRequired,
     playbackRates: PropTypes.arrayOf(PropTypes.number).isRequired,
     qualities: PropTypes.arrayOf(PropTypes.string).isRequired,
+    translations: PropTypes.object,
 };
 
 export default ConfigurationMenu;

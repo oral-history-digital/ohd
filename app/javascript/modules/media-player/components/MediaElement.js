@@ -310,7 +310,9 @@ export default function MediaElement({
         window.mainPlayerInstance = player;
 
         player.configurationMenuPlugin();
-        player.toggleSizePlugin();
+        player.toggleSizePlugin({
+            buttonTitle: t('media_player.toggle_size_button')
+        });
 
         const qualities = player
             .currentSources()
@@ -322,6 +324,10 @@ export default function MediaElement({
         player.configurationMenuPlugin({
             playbackRates: videoJsOptions.playbackRates,
             qualities: qualities,
+            translations: {
+                playbackRate: t('media_player.playback_rate'),
+                playbackQuality: t('media_player.playback_quality')
+              }
         });
 
         player.ready(() => {
