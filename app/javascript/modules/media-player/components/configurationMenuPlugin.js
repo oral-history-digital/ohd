@@ -15,6 +15,9 @@ const getPlaybackRates = (player, opts) =>
 /** Resolve quality list */
 const getQualities = (opts) => opts.qualities || ['Default'];
 
+/** Get translations from options */
+const getTranslations = (opts) => opts.translations || {};
+
 /** Render (or re‑render) React menu into given root */
 const renderMenu = (root, player, opts) => {
   root.render(
@@ -22,6 +25,7 @@ const renderMenu = (root, player, opts) => {
       player={player}
       playbackRates={getPlaybackRates(player, opts)}
       qualities={getQualities(opts)}
+      translations={getTranslations(opts)}
     />,
   );
 };
