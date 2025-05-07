@@ -52,13 +52,21 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def ohd_level_of_indexing_registry_entries
+  def ohd_level_of_indexing_registry_entry_groups
     if respond_to?(:interviews)
       RegistryReference.where(
         registry_entry_id: RegistryEntry.ohd_level_of_indexing.children.pluck(:id),
         ref_object_id: interviews.pluck(:id),
         ref_object_type: "Interview",
-      ).group(:registry_entry_id).count.map do |id, count|
+      ).group(:registry_entry_id).count
+    else
+      []
+    end
+  end
+
+  def ohd_level_of_indexing_registry_entries
+    if respond_to?(:interviews)
+      ohd_level_of_indexing_registry_entry_groups.map do |id, count|
         {
           descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
           count: count
