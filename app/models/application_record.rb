@@ -28,13 +28,21 @@ class ApplicationRecord < ActiveRecord::Base
     self.id
   end
 
-  def ohd_subject_registry_entries
+  def ohd_subject_registry_entry_ids
     if respond_to?(:interviews)
       RegistryReference.where(
         registry_entry_id: RegistryEntry.ohd_subjects.children.pluck(:id),
         ref_object_id: interviews.pluck(:id),
         ref_object_type: "Interview",
-      ).pluck(:registry_entry_id).uniq.map do |id|
+      ).pluck(:registry_entry_id).uniq
+    else
+      []
+    end
+  end
+
+  def ohd_subject_registry_entries
+    if respond_to?(:interviews)
+      ohd_subject_registry_entry_ids.map do |id|
         {
           descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
         }
