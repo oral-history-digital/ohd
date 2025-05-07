@@ -9,7 +9,8 @@ class CollectionSerializer < ApplicationSerializer
     :notes,
     :responsibles,
     :num_interviews,
-    :subjects
+    :subjects,
+    :levels_of_indexing
 
   attribute :linkable?, key: :is_linkable
 
@@ -28,8 +29,10 @@ class CollectionSerializer < ApplicationSerializer
   end
 
   def subjects
-    object.ohd_subject_registry_entry_ids.map do |id|
-      {descriptor: RegistryEntry.find(id).localized_hash(:descriptor)}
-    end
+    object.ohd_subject_registry_entries
+  end
+
+  def levels_of_indexing
+    object.ohd_level_of_indexing_registry_entries
   end
 end

@@ -28,13 +28,34 @@ class ApplicationRecord < ActiveRecord::Base
     self.id
   end
 
-  def ohd_subject_registry_entry_ids
+  def ohd_subject_registry_entries
     if respond_to?(:interviews)
       RegistryReference.where(
         registry_entry_id: RegistryEntry.ohd_subjects.children.pluck(:id),
         ref_object_id: interviews.pluck(:id),
         ref_object_type: "Interview",
-      ).pluck(:registry_entry_id).uniq
+      ).pluck(:registry_entry_id).uniq.map do |id|
+        {
+          descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
+        }
+      end
+    else
+      []
+    end
+  end
+
+  def ohd_level_of_indexing_registry_entries
+    if respond_to?(:interviews)
+      RegistryReference.where(
+        registry_entry_id: RegistryEntry.ohd_level_of_indexing.children.pluck(:id),
+        ref_object_id: interviews.pluck(:id),
+        ref_object_type: "Interview",
+      ).group(:registry_entry_id).count.map do |id, count|
+        {
+          descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
+          count: count
+        }
+      end
     else
       []
     end

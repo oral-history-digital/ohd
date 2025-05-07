@@ -212,6 +212,10 @@ class RegistryEntry < ApplicationRecord
       find 21898673
     end
 
+    def ohd_level_of_indexing
+      find 21898470
+    end
+
     def merge(opts={})
       merge_to_id = opts[:id]
       where(id: opts[:ids]).each do |registry_entry|
