@@ -79,7 +79,7 @@ OaiRepository.setup do |config|
       } 
     end + Collection.all.map do |collection|
       {
-        spec: "collection-#{collection.id}",
+        spec: "collection:#{collection.id}",
         name: collection.name,
         model: Collection,
         description: collection.oai_abstract_description(:de)
