@@ -69,7 +69,7 @@ module Project::Oai
   end
 
   def oai_abstract_description(locale)
-    ActionView::Base.full_sanitizer.sanitize(introduction(locale))
+    introduction(locale) ? ActionView::Base.full_sanitizer.sanitize(introduction(locale)) : ''
   end
   def oai_media_files_description(locale)
     TranslationValue.for('media_files', locale)
