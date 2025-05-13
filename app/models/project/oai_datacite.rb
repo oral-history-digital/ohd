@@ -10,11 +10,29 @@ module Project::OaiDatacite
         http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
+
+      xml.identifier oai_catalog_identifier(:de)
+
       xml.alternateIdentifiers do
+        xml.alternateIdentifier alternateIdentfierType: "URL" do
+          xml.text! oai_catalog_identifier(:en)
+        end
+      end
+
+      xml.relatedIdentifiers do
         oai_locales.each do |locale|
-          xml.alternateIdentifier alternateIdentfierType: "URL" do
-            xml.text! oai_url_identifier(locale)
+          xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "Describes" do
+            xml.text! domain_with_optional_identifier + '/' + locale
           end
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
+          xml.text! "https://portal.oral-history.digital"
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
+          xml.text! domain
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
+          xml.text! "https://portal.oral-history.digital/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}"
         end
       end
 
@@ -106,20 +124,14 @@ module Project::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-      end
-
-      xml.relatedIdentifiers do
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "Describes" do
-          xml.text! domain_with_optional_identifier
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "https://portal.oral-history.digital"
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
-          xml.text! domain
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
-          xml.text! "https://portal.oral-history.digital/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}"
+        oai_locales.each do |locale|
+          xml.rights(
+            "xml:lang": locale,
+            rightsIdentifier: "CC-BY-4.0",
+            rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          ) do
+            xml.text! "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International"
+          end
         end
       end
 

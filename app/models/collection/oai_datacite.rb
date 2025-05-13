@@ -101,6 +101,15 @@ module Collection::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
+        oai_locales.each do |locale|
+          xml.rights(
+            "xml:lang": locale,
+            rightsIdentifier: "CC-BY-4.0",
+            rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          ) do
+            xml.text! "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International"
+          end
+        end
       end
 
       xml.relatedIdentifiers do

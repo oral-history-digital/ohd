@@ -103,7 +103,7 @@ module Interview::OaiDatacite
       end
 
       xml.rightsList do
-        oai_locales.each do |locale|
+        oai_locales_full.each do |locale|
           xml.rights(
             "xml:lang": locale,
             rightsURI: "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions"
@@ -111,17 +111,17 @@ module Interview::OaiDatacite
             xml.text! "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})"
           end
         end
-        oai_locales.each do |locale|
+        oai_locales_full.each do |locale|
           xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions" do
             xml.text! "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)"
           end
         end
-        oai_locales.each do |locale|
+        oai_locales_full.each do |locale|
           xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-        oai_locales.each do |locale|
+        oai_locales_full.each do |locale|
           xml.rights(
             "xml:lang": locale,
             rightsIdentifier: "CC-BY-4.0",
