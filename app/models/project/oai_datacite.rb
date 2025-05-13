@@ -26,18 +26,18 @@ module Project::OaiDatacite
           end
         end
         xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "https://portal.oral-history.digital"
+          xml.text! "#{OHD_DOMAIN}"
         end
         xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
           xml.text! domain
         end
         xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
-          xml.text! "https://portal.oral-history.digital/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}"
+          xml.text! "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}"
         end
       end
 
       xml.titles do
-        oai_locales.each do |locale|
+        [:de, :en].each do |locale|
           xml.title "xml:lang": locale do
             xml.text! oai_title(locale)
           end

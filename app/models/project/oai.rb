@@ -18,7 +18,7 @@ module Project::Oai
   end
 
   def oai_catalog_identifier(locale)
-    "https://portal.oral-history.digital/#{locale}/catalog/archives/90408823"
+    "#{OHD_DOMAIN}/#{locale}/catalog/archives/#{id}"
   end
 
   def oai_url_identifier(locale)
@@ -34,7 +34,8 @@ module Project::Oai
   end
 
   def oai_creator(locale)
-    root_institutions_names(locale)
+    institutions.first&.name(locale)
+    #root_institutions_names(locale)
   end
 
   def oai_publisher(locale)

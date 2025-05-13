@@ -23,8 +23,12 @@ module Collection::Oai
     oai_identifier
   end
 
-  def oai_url_identifier(locale)
-    "#{project.domain_with_optional_identifier}/#{locale}/catalog/collections/#{id}"
+  #def oai_url_identifier(locale)
+    #"#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
+  #end
+
+  def oai_catalog_identifier(locale)
+    "#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   end
 
   def oai_title(locale)
@@ -36,7 +40,7 @@ module Collection::Oai
   end
 
   def oai_creator(locale)
-    project.root_institutions_names(locale)
+    project.institutions.first&.name(locale)
   end
 
   def oai_publisher(locale)

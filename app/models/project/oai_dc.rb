@@ -12,7 +12,7 @@ module Project::OaiDc
           http://www.openarchives.org/OAI/2.0/oai_dc.xsd}
     ) do
 
-      oai_locales.each do |locale|
+      [:de, :en].each do |locale|
         xml.tag!('dc:identifier', "xml:lang": locale) do
           xml.text! oai_catalog_identifier(locale)
         end
@@ -20,7 +20,7 @@ module Project::OaiDc
 
       #xml.tag!('dc:source', oai_identifier)
 
-      oai_locales.each do |locale|
+      [:de, :en].each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
           xml.text! oai_title(locale)
         end
@@ -69,9 +69,9 @@ module Project::OaiDc
       end
 
       xml.tag!('dc:relation', domain_with_optional_identifier)
-      xml.tag!('dc:relation', "https://portal.oral-history.digital")
+      xml.tag!('dc:relation', "#{OHD_DOMAIN}")
       xml.tag!('dc:relation', domain)
-      xml.tag!('dc:relation', "https://portal.oral-history.digital/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}")
+      xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}")
 
       xml.tag!('dc:description', oai_size)
       oai_locales.each do |locale|

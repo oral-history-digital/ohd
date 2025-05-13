@@ -10,9 +10,7 @@ module Interview::Oai
   end
 
   def oai_locales
-    %w(de en)
-  end
-  def oai_locales_full
+    #%w(de en)
     project.available_locales
   end
 
