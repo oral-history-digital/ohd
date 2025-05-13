@@ -14,7 +14,7 @@ module Project::OaiDc
 
       oai_locales.each do |locale|
         xml.tag!('dc:identifier', "xml:lang": locale) do
-          xml.text! oai_url_identifier(locale)
+          xml.text! oai_catalog_identifier(locale)
         end
       end
 
@@ -101,6 +101,11 @@ module Project::OaiDc
       oai_locales.each do |locale|
         xml.tag!('dc:rights', "xml:lang": locale) do
           xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
+        end
+      end
+      oai_locales.each do |locale|
+        xml.tag!('dc:rights', "xml:lang": locale) do
+          xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
         end
       end
 

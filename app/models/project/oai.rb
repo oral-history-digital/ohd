@@ -17,6 +17,10 @@ module Project::Oai
     oai_identifier
   end
 
+  def oai_catalog_identifier(locale)
+    "https://portal.oral-history.digital/#{locale}/catalog/archives/90408823"
+  end
+
   def oai_url_identifier(locale)
     "#{domain_with_optional_identifier}/#{locale}"
   end

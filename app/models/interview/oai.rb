@@ -11,7 +11,9 @@ module Interview::Oai
 
   def oai_locales
     %w(de en)
-    #project.available_locales
+  end
+  def oai_locales_full
+    project.available_locales
   end
 
   def oai_identifier
