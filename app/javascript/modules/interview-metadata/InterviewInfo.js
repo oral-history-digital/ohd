@@ -116,7 +116,7 @@ export default function InterviewInfo({
                     elementType={'select'}
                     obj={interview}
                     attribute={'workflow_state'}
-                    values={['public', 'unshared']}
+                    values={['public', 'restricted', 'unshared']}
                     value={t(`workflow_states.${interview.workflow_state}`)}
                     optionsScope={'workflow_states'}
                     noStatusCheckbox
