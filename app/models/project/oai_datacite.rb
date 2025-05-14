@@ -11,10 +11,12 @@ module Project::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier oai_catalog_identifier(:de)
+      xml.identifier identifierType: "URL" do
+        xml.text! oai_catalog_identifier(:de)
+      end
 
       xml.alternateIdentifiers do
-        xml.alternateIdentifier alternateIdentfierType: "URL" do
+        xml.alternateIdentifier alternateIdentifierType: "URL" do
           xml.text! oai_catalog_identifier(:en)
         end
       end
@@ -91,9 +93,7 @@ module Project::OaiDatacite
         xml.size oai_size
       end
 
-      oai_languages.each do |language|
-        xml.language language
-      end
+      xml.language oai_languages
 
       xml.subjects do
         oai_subject_registry_entry_ids.each do |registry_entry_id|
@@ -124,7 +124,7 @@ module Project::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-        oai_locales.each do |locale|
+        [:de, :en].each do |locale|
           xml.rights(
             "xml:lang": locale,
             rightsIdentifier: "CC-BY-4.0",
