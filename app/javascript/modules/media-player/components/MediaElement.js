@@ -419,16 +419,6 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     }
 
-    useEffect(() => {
-        return resetMedia;
-    }, []);
-
-    useEffect(() => {
-        return () => {
-            window.mainPlayerInstance = null;
-        };
-    }, []);
-
     if (!mediaStreams) {
         return null;
     }

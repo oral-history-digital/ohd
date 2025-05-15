@@ -8,8 +8,6 @@ import { getCurrentInterview } from 'modules/data';
 import { useSelector } from 'react-redux';
 
 
-import MediaControlsForSegment from './MediaControlsForSegment';
-
 export default function SegmentForm({
     locale,
     projectId,
@@ -28,13 +26,6 @@ export default function SegmentForm({
     }
 
     return (
-        <>
-            <div className="SegmentForm-mediaControls">
-                <MediaControlsForSegment 
-                    className="SegmentForm-mediaControlsInner"
-                    interview={interview}
-                />
-            </div>
         <div>
             <Form
                 scope='segment'
@@ -61,7 +52,6 @@ export default function SegmentForm({
                 ]}
             />
         </div>
-        </>
     );
 }
 
