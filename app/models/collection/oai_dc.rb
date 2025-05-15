@@ -20,7 +20,7 @@ module Collection::OaiDc
 
       xml.tag!('dc:source', oai_identifier)
 
-      [:de, :en].each do |locale|
+      oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
           xml.text! oai_title(locale)
         end

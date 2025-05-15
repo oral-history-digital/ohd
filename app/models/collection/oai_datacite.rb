@@ -37,7 +37,7 @@ module Collection::OaiDatacite
       end
 
       xml.titles do
-        [:de, :en].each do |locale|
+        oai_locales.each do |locale|
           xml.title "xml:lang": locale do
             xml.text! oai_title(locale)
           end
