@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import {useEffect} from 'react'
+import { useEffect } from 'react';
+import { isRtlLang } from 'rtl-detect';
 
 import { Form } from 'modules/forms';
 import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { getCurrentInterview } from 'modules/data';
-import classNames from 'classnames';
 
 import { useSelector } from 'react-redux';
 
@@ -24,16 +24,9 @@ export default function SegmentForm({
     const { data: people, isLoading } = usePeople();
     const interview = useSelector(getCurrentInterview);
 
-    if (isLoading) {
-        return <Spinner />;
-    }
-
-    const isRtlLanguage = (locale) => {
-        const rtlLanguages = ['ara', 'heb'];
-        return rtlLanguages.includes(locale);
-    }
-
-    const isRtl = isRtlLanguage(contentLocale);
+    // Use Intl.Locale to extract two-letter language code for rtl-detect
+    const langCode = new Intl.Locale(contentLocale).language;
+    const isRtl = isRtlLang(langCode);
 
     useEffect(() => {
         if (isRtl) {
@@ -46,24 +39,31 @@ export default function SegmentForm({
         }
     }, [isRtl]);
 
+    if (isLoading) {
+        return <Spinner />;
+    }
+
     return (
         <>
             <div className="SegmentForm-mediaControls">
-                <MediaControlsForSegment 
-                    className='SegmentForm-mediaControlsInner'
+                <MediaControlsForSegment
+                    className="SegmentForm-mediaControlsInner"
                     interview={interview}
                 />
             </div>
             <div>
                 <Form
                     className="SegmentForm-textarea"
-                    scope='segment'
-                    onSubmit={(params) => { submitData({ locale, projectId, project }, params); onSubmit(); }}
+                    scope="segment"
+                    onSubmit={(params) => {
+                        submitData({ locale, projectId, project }, params);
+                        onSubmit();
+                    }}
                     onCancel={onCancel}
                     data={segment}
                     helpTextCode="segment_form"
-                    values={{locale: contentLocale}}
-                    submitText='submit'
+                    values={{ locale: contentLocale }}
+                    submitText="submit"
                     elements={[
                         {
                             elementType: 'select',
@@ -71,11 +71,13 @@ export default function SegmentForm({
                             values: Object.values(people),
                             value: segment?.speaker_id,
                             withEmpty: true,
-                            individualErrorMsg: 'empty'
+                            individualErrorMsg: 'empty',
                         },
                         {
                             elementType: 'textarea',
-                            value: (segment?.text[contentLocale] || segment?.text[`${contentLocale}-public`]),
+                            value:
+                                segment?.text[contentLocale] ||
+                                segment?.text[`${contentLocale}-public`],
                             attribute: 'text',
                             className: isRtl ? 'textarea-rtl' : '',
                             dir: isRtl ? 'rtl' : 'ltr',
