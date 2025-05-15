@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_15_081859) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -87,11 +87,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
-  create_table "banners", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "banners", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "message_en"
     t.text "message_de"
     t.boolean "active", default: false, null: false
-    t.datetime "start_date", default: -> { "current_timestamp(6)" }, null: false
+    t.datetime "start_date", null: false
     t.datetime "end_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -323,6 +323,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.integer "interview_id", null: false
     t.integer "language_id", null: false
     t.string "spec"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "interview_permissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "interview_id"
+    t.integer "user_id"
+    t.string "action_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -645,7 +653,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
     t.integer "project_id"
-    t.virtual "has_geo_coords", type: :boolean, as: "`latitude` is not null and `latitude` <> '' and `longitude` is not null and `longitude` <> ''", stored: true
+    t.boolean "has_geo_coords"
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
     t.index ["has_geo_coords"], name: "index_registry_entries_on_has_geo_coords"
     t.index ["project_id"], name: "index_registry_entries_on_project_id"
@@ -689,7 +697,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
-  create_table "registry_name_type_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "registry_name_type_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "registry_name_type_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -768,7 +776,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
-  create_table "role_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "role_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -933,7 +941,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -943,7 +951,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

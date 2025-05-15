@@ -192,10 +192,10 @@ class Interview < ApplicationRecord
     # string :birth_location, :stored => true
 
     text :transcript, stored: true do
-      Segment::Translation.
-        where(segment_id: segment_ids).
-        where("locale like '%-public'").
-        map(&:text).join(' ')
+      workflow_state == 'public' ? segments.inject([]) do |all, segment|
+        all << segment.translations.where("locale like '%-public'").inject([]){|mem, t| mem << t.text; mem}.join(' ')
+        all
+      end.join(' ') : ''
     end
 
     text :headings do
@@ -828,7 +828,7 @@ class Interview < ApplicationRecord
     def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'restricted', 'unshared'] : 'public')
         # the follwing is a really restrictive approach
         # it allows only users with project-access to find interviews of those projects
         #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')

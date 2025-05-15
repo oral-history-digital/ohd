@@ -31,6 +31,8 @@ class User < ApplicationRecord
   has_many :roles, through: :user_roles
   has_many :permissions, through: :roles
 
+  has_many :interview_permissions # permissions to see restricted access interviews
+
   has_many :tasks
   has_many :supervised_tasks,
            class_name: 'Task',
