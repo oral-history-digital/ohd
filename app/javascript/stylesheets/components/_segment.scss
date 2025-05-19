@@ -96,3 +96,19 @@ $segment-icon-width: 1.5 * $base-unit;
   text-align: right;
   transition: border-color $transition-duration;
 }
+
+.SegmentForm-textarea {
+  direction: ltr;
+  text-align: left;
+  
+  &-rtl {
+    direction: rtl;
+    text-align: right;
+  }
+}
+
+.textarea-rtl textarea,
+.form-group.textarea-rtl .Input {
+  direction: rtl;
+  text-align: right;
+}
