@@ -107,7 +107,6 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         const wanted = qualityLabel.replace(/\D/g, '');
         r.enabled(!wanted || String(r.height) === wanted);
       });
-      console.log(`[Quality] (HLS) → ${qualityLabel}`);
     }
     /* ——— B) MP4 progresive ——— */
     else {
@@ -120,8 +119,6 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
       const others     = all.filter((s) => s !== selected);
       const time       = player.currentTime();
       const wasPaused  = player.paused();
-
-      console.log(`[Quality] (MP4) → ${qualityLabel}`);
 
       player.src([selected, ...others]);
 
