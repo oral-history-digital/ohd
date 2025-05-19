@@ -20,8 +20,6 @@ export default function SegmentButtons({
     active,
     openPopup,
     closePopup,
-    sendTimeChangeRequest,
-    transcriptCoupled
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -43,10 +41,6 @@ export default function SegmentButtons({
             if (topOfSegment !== 0) {
                 scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
             }
-        }
-        
-        if (transcriptCoupled) {
-            sendTimeChangeRequest(data.tape_nbr, data.time);
         }
     };
 
@@ -118,6 +112,4 @@ SegmentButtons.propTypes = {
     active: PropTypes.bool,
     openPopup: PropTypes.func.isRequired,
     closePopup: PropTypes.func.isRequired,
-    sendTimeChangeRequest: PropTypes.func.isRequired,
-    transcriptCoupled: PropTypes.bool.isRequired,
 };
