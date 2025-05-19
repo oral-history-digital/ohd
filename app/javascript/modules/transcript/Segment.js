@@ -155,8 +155,6 @@ function Segment({
                             closePopup={closePopup}
                             tabIndex={tabIndex}
                             active={popupType !== null}
-                            sendTimeChangeRequest={sendTimeChangeRequest}
-                            transcriptCoupled={transcriptCoupled}
                         />
                     )
                 }
