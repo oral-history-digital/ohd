@@ -14,34 +14,46 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
     const [selectedRate, setSelectedRate] = useState(player.playbackRate());
     const [selectedQuality, setSelectedQuality] = useState(() => {
         if (player && typeof player.currentSources === 'function') {
-          const sources = player.currentSources();
-          if (sources && sources.length > 0) {
-            const defaultSource = sources.find(source => source.selected) || sources[0];
-            return defaultSource.label || (defaultSource.height ? `${defaultSource.height}p` : qualities[0]);
-          }
+            const sources = player.currentSources();
+            if (sources && sources.length > 0) {
+                const defaultSource =
+                    sources.find((source) => source.selected) || sources[0];
+                return (
+                    defaultSource.label ||
+                    (defaultSource.height
+                        ? `${defaultSource.height}p`
+                        : qualities[0])
+                );
+            }
         }
         return qualities[0] || null;
-      });
+    });
+
+    // Video element reference
+    const videoElementRef = useRef(null);
 
     useEffect(() => {
         if (!player) return;
-    
+
+        // Get the actual HTML video element
+        videoElementRef.current = player.el().querySelector('video');
+
         const handleRateChange = () => {
-          setSelectedRate(player.playbackRate());
+            setSelectedRate(player.playbackRate());
         };
-    
+
         const handleQualitySelected = (event, { quality }) => {
-          setSelectedQuality(quality);
+            setSelectedQuality(quality);
         };
-    
+
         player.on('ratechange', handleRateChange);
         player.on('qualitySelected', handleQualitySelected);
-    
+
         return () => {
-          player.off('ratechange', handleRateChange);
-          player.off('qualitySelected', handleQualitySelected);
+            player.off('ratechange', handleRateChange);
+            player.off('qualitySelected', handleQualitySelected);
         };
-      }, [player]);
+    }, [player]);
 
     const rateMenuItemRef = useRef(null);
     const qualityMenuItemRef = useRef(null);
@@ -99,6 +111,42 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         }, 100);
     };
 
+    // Control standard PiP attribute for Chrome, Safari, etc.
+    useEffect(() => {
+        const videoElement = videoElementRef.current;
+        if (!videoElement) return;
+
+        if (showRateSubmenu || showQualitySubmenu) {
+            // Disable PiP when submenus are open (works for Chrome, Safari, Edge)
+            videoElement.disablePictureInPicture = true;
+        } else {
+            // Re-enable PiP when submenus are closed
+            videoElement.disablePictureInPicture = false;
+        }
+    }, [showRateSubmenu, showQualitySubmenu]);
+
+    // Apply Firefox-specific solution and other browser compatibility fixes
+    useEffect(() => {
+        if (!player) return;
+
+        const videoEl = player.el();
+        if (!videoEl) return;
+
+        // Update the player class based on menu state
+        if (showRateSubmenu || showQualitySubmenu) {
+            videoEl.classList.add('pip-blocker');
+        } else {
+            videoEl.classList.remove('pip-blocker');
+        }
+
+        return () => {
+            // Clean up when component unmounts
+            if (videoEl) {
+                videoEl.classList.remove('pip-blocker');
+            }
+        };
+    }, [showRateSubmenu, showQualitySubmenu, player]);
+
     useEffect(() => {
         return () => {
             clearTimeout(menuTimeout.current);
@@ -113,6 +161,11 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
             onMouseEnter={showMenu}
             onMouseLeave={hideMenu}
         >
+            {/* Add overlay div that blocks clicks when any submenu is open */}
+            {(showRateSubmenu || showQualitySubmenu) && (
+                <div className="vjs-pip-interaction-blocker" />
+            )}
+
             <Menu>
                 <MenuButton className="vjs-configuration-menu-button">
                     <BsGearFill className="vjs-configuration-menu-icon" />
@@ -139,8 +192,9 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 onMouseEnter={showRateSub}
                                 onMouseLeave={hideRateSub}
                                 style={{
-                                    top: rateMenuItemRef.current ? 
-                                        rateMenuItemRef.current.offsetTop - 5 : 0
+                                    top: rateMenuItemRef.current
+                                        ? rateMenuItemRef.current.offsetTop - 5
+                                        : 0,
                                 }}
                             >
                                 {playbackRates.map((rate) => (
@@ -181,8 +235,10 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 onMouseEnter={showQualitySub}
                                 onMouseLeave={hideQualitySub}
                                 style={{
-                                    top: qualityMenuItemRef.current ? 
-                                        qualityMenuItemRef.current.offsetTop - 5 : 0
+                                    top: qualityMenuItemRef.current
+                                        ? qualityMenuItemRef.current.offsetTop -
+                                          5
+                                        : 0,
                                 }}
                             >
                                 {qualities.map((q) => (
