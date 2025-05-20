@@ -1,5 +1,10 @@
 services:
     app:
+        ports:
+            - '3000:3000'
+            - '3035:3035'
+        # Override the base entrypoint and run a long-lived sleep so VS Code can attach
+        entrypoint: ['sleep', 'infinity']
         platform: linux/amd64
         build:
             context: ..
@@ -12,10 +17,13 @@ services:
             - /workspace/.bundle
             # Create a volume for logs
             - setup-logs:/workspace/.devcontainer/logs
-        command: sleep infinity
+        extra_hosts:
+            - 'portal.oral-history.localhost:127.0.0.1'
         depends_on:
-            - db
-            - solr
+            db:
+                condition: service_healthy
+            solr:
+                condition: service_healthy
         environment:
             # Critical environment settings
             RAILS_ENV: development
@@ -38,6 +46,22 @@ services:
             MYSQL_DATABASE: ohd_development
         ports:
             - '3306:3306'
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'mysql',
+                    '-h',
+                    'db',
+                    '-u',
+                    'root',
+                    '-prootpassword',
+                    '-e',
+                    'SELECT 1',
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     solr:
         image: solr:8
@@ -52,6 +76,12 @@ services:
             - solr-precreate
             - default
             - /opt/solr/server/solr/configsets/sunspot/conf
+        healthcheck:
+            test:
+                ['CMD', 'curl', '-f', 'http://localhost:8983/solr/admin/cores']
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
 volumes:
     db-data:

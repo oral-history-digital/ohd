@@ -199,7 +199,6 @@
     }
 }
 
-
 .SegmentMediaControls-buttons {
     display: flex;
     gap: 8px;
@@ -214,4 +213,37 @@
         font-size: 2em;
         color: grey;
     }
+}
+
+// Overlay to block the PiP button
+.vjs-pip-interaction-blocker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background-color: transparent;
+    pointer-events: auto;
+    cursor: auto;
+}
+
+// PiP button blocker styles
+.video-js.pip-blocker::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: transparent;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+// WebKit browser controls targeting
+video::-webkit-media-controls-overflow-button,
+video::-webkit-media-controls-fullscreen-button {
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
