@@ -314,7 +314,12 @@ export default function MediaElement({
         player.toggleSizePlugin({
             buttonTitle: t('media_player.toggle_size_button'),
         });
-        player.customSkipButtonsPlugin();
+        player.customSkipButtonsPlugin({
+            translations: {
+                skipBack: t('media_player.skip_backwards'),
+                skipForward: t('media_player.skip_forwards'),
+            },
+        });
 
         const qualities = player
             .currentSources()
