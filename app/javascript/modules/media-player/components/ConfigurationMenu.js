@@ -267,7 +267,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 }}
                                 style={{
                                     top: rateMenuItemRef.current
-                                        ? rateMenuItemRef.current.offsetTop - 5
+                                        ? rateMenuItemRef.current.offsetTop - 10
                                         : 0,
                                 }}
                             >
@@ -329,7 +329,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                                 style={{
                                     top: qualityMenuItemRef.current
                                         ? qualityMenuItemRef.current.offsetTop -
-                                          5
+                                          10
                                         : 0,
                                 }}
                             >
