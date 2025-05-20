@@ -8,7 +8,7 @@ import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
 
 function ConfigurationMenu({ player, playbackRates, qualities }) {
-    /* ──────────── state ──────────── */
+    /* ------------------ State ------------------ */
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [showRateSubmenu, setShowRateSubmenu] = useState(false);
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
@@ -24,12 +24,12 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         return qualities[0];
     });
 
-    /* ──────────── refs ──────────── */
+    /* ------------------ Refs ------------------ */
     const rateMenuItemRef = useRef(null);
     const qualityMenuItemRef = useRef(null);
     const allSourcesRef = useRef([]);
 
-    /* guardar fuentes al montar */
+    /* Save sources when mounting */
     useEffect(() => {
         if (player?.currentSources)
             allSourcesRef.current = player.currentSources();
@@ -39,13 +39,13 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
     const rateSubTimeout = useRef(null);
     const qualitySubTimeout = useRef(null);
 
-    /* helper: es HLS/DASH ? */
+    /* Helper: Check if video is HLS/DASH */
     const isHls = () =>
         (player.currentSource().type || '').includes('mpegURL') || player.vhs;
 
-    /* helper: ocultar controles nativos no deseados */
+    /* Helper: Hide unwanted native controls */
     const hideNativeControls = () => {
-        /* QualitySelector nativo */
+        /* Native QualitySelector */
         const nativeQS =
             player.controlBar?.getChild('qualitySelector') ||
             player.controlBar?.children_.find(
@@ -53,7 +53,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
             );
         if (nativeQS && !player.isFullscreen()) nativeQS.hide();
 
-        /* PlaybackRateMenuButton nativo */
+        /* Native PlaybackRateMenuButton */
         const nativePR =
             player.controlBar?.getChild('playbackRateMenuButton') ||
             player.controlBar?.children_.find(
@@ -61,12 +61,12 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
             );
         if (nativePR && !player.isFullscreen()) nativePR.hide();
 
-        /* Asegurar que tu ConfigurationControl siga visible */
+        /* Ensure ConfigurationControl stays visible */
         const cfg = player.controlBar?.getChild('ConfigurationControl');
         if (cfg && !player.isFullscreen()) cfg.show();
     };
 
-    /* listeners globales */
+    /* Global event listeners */
     useEffect(() => {
         if (!player) return;
 
@@ -78,7 +78,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         player.on('loadstart', afterEvt);
         player.on('fullscreenchange', afterEvt);
 
-        hideNativeControls(); // inicial
+        hideNativeControls(); // initial call
 
         return () => {
             player.off('ratechange', onRate);
@@ -88,7 +88,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         };
     }, [player]);
 
-    /* handler: cambio de velocidad */
+    /* Handler: Playback rate change */
     const handlePlaybackRate = (rate) => {
         player.playbackRate(rate);
         setSelectedRate(rate);
@@ -96,11 +96,11 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         setIsMenuVisible(false);
     };
 
-    /* handler: cambio de calidad */
+    /* Handler: Quality selection */
     const handleQualitySelect = (qualityLabel) => {
         if (!player) return;
 
-        /* ───── HLS/DASH ───── */
+        /* ----- HLS/DASH ----- */
         if (isHls()) {
             const reps = player.vhs?.representations?.() || [];
             reps.forEach((r) => {
@@ -109,7 +109,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
             });
             console.log(`[Quality] (HLS) → ${qualityLabel}`);
         } else {
-            /* ───── MP4 progresivo ───── */
+            /* ----- Progressive MP4 ----- */
             const all = allSourcesRef.current;
             const selected = all.find(
                 (s) => (s.label || `${s.height}p`) === qualityLabel
@@ -124,7 +124,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
 
             player.src([selected, ...others]);
 
-            /* al empezar a cargar, esconder controles nativos y big-play si estaba en play */
+            /* When loading starts, hide native controls and big-play if video was playing */
             player.one('loadstart', () => {
                 setTimeout(hideNativeControls, 0);
                 if (!wasPaused) player.getChild('BigPlayButton')?.hide();
@@ -136,7 +136,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
             });
         }
 
-        /* actualizar UI & cerrar menús */
+        /* Update UI & close menus */
         setSelectedQuality(qualityLabel);
         setTimeout(() => {
             setShowQualitySubmenu(false);
@@ -146,7 +146,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         player.trigger('qualitySelected', { quality: qualityLabel });
     };
 
-    /* limpiar timeouts al desmontar */
+    /* Clear timeouts when unmounting */
     useEffect(
         () => () => {
             clearTimeout(menuTimeout.current);
@@ -156,7 +156,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         []
     );
 
-    /* ──────────── UI ──────────── */
+    /* ------------------ UI ------------------ */
     return (
         <div
             className="vjs-configuration-menu-container"
@@ -179,7 +179,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
 
                 {isMenuVisible && (
                     <MenuList className="vjs-configuration-menu">
-                        {/* RATE */}
+                        {/* Playback rate */}
                         <MenuItem
                             ref={rateMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
@@ -240,7 +240,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
 
                         <hr className="vjs-configuration-menu-divider" />
 
-                        {/* QUALITY */}
+                        {/* Video quality */}
                         <MenuItem
                             ref={qualityMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
