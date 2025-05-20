@@ -8,48 +8,88 @@ import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
 
 function ConfigurationMenu({ player, playbackRates, qualities }) {
+    /* ------------------ State ------------------ */
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [showRateSubmenu, setShowRateSubmenu] = useState(false);
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
     const [selectedRate, setSelectedRate] = useState(player.playbackRate());
+
     const [selectedQuality, setSelectedQuality] = useState(() => {
-        if (player && typeof player.currentSources === 'function') {
-          const sources = player.currentSources();
-          if (sources && sources.length > 0) {
-            const defaultSource = sources.find(source => source.selected) || sources[0];
-            return defaultSource.label || (defaultSource.height ? `${defaultSource.height}p` : qualities[0]);
-          }
+        if (player?.currentSources?.length) {
+            const src =
+                player.currentSources().find((s) => s.selected) ||
+                player.currentSources()[0];
+            return src.label || (src.height ? `${src.height}p` : qualities[0]);
         }
-        return qualities[0] || null;
-      });
+        return qualities[0];
+    });
 
-    useEffect(() => {
-        if (!player) return;
-    
-        const handleRateChange = () => {
-          setSelectedRate(player.playbackRate());
-        };
-    
-        const handleQualitySelected = (event, { quality }) => {
-          setSelectedQuality(quality);
-        };
-    
-        player.on('ratechange', handleRateChange);
-        player.on('qualitySelected', handleQualitySelected);
-    
-        return () => {
-          player.off('ratechange', handleRateChange);
-          player.off('qualitySelected', handleQualitySelected);
-        };
-      }, [player]);
-
+    /* ------------------ Refs ------------------ */
     const rateMenuItemRef = useRef(null);
     const qualityMenuItemRef = useRef(null);
+    const allSourcesRef = useRef([]);
+    const videoElementRef = useRef(null); // Reference to the video element needed for PiP blocking
+
+    /* Save sources when mounting */
+    useEffect(() => {
+        if (player?.currentSources)
+            allSourcesRef.current = player.currentSources();
+    }, [player]);
 
     const menuTimeout = useRef(null);
-    const rateSubmenuTimeout = useRef(null);
-    const qualitySubmenuTimeout = useRef(null);
+    const rateSubTimeout = useRef(null);
+    const qualitySubTimeout = useRef(null);
 
+    /* Helper: Check if video is HLS/DASH */
+    const isHls = () =>
+        (player.currentSource().type || '').includes('mpegURL') || player.vhs;
+
+    /* Helper: Hide unwanted native controls */
+    const hideNativeControls = () => {
+        /* Native QualitySelector */
+        const nativeQS =
+            player.controlBar?.getChild('qualitySelector') ||
+            player.controlBar?.children_.find(
+                (c) => c?.constructor?.name === 'QualitySelector'
+            );
+        if (nativeQS && !player.isFullscreen()) nativeQS.hide();
+
+        /* Native PlaybackRateMenuButton */
+        const nativePR =
+            player.controlBar?.getChild('playbackRateMenuButton') ||
+            player.controlBar?.children_.find(
+                (c) => c?.constructor?.name === 'PlaybackRateMenuButton'
+            );
+        if (nativePR && !player.isFullscreen()) nativePR.hide();
+
+        /* Ensure ConfigurationControl stays visible */
+        const cfg = player.controlBar?.getChild('ConfigurationControl');
+        if (cfg && !player.isFullscreen()) cfg.show();
+    };
+
+    /* Global event listeners */
+    useEffect(() => {
+        if (!player) return;
+
+        const onRate = () => setSelectedRate(player.playbackRate());
+        player.on('ratechange', onRate);
+
+        const afterEvt = () => setTimeout(hideNativeControls, 0);
+        player.on('sourceset', afterEvt);
+        player.on('loadstart', afterEvt);
+        player.on('fullscreenchange', afterEvt);
+
+        hideNativeControls(); // initial call
+
+        return () => {
+            player.off('ratechange', onRate);
+            player.off('sourceset', afterEvt);
+            player.off('loadstart', afterEvt);
+            player.off('fullscreenchange', afterEvt);
+        };
+    }, [player]);
+
+    /* Handler: Playback rate change */
     const handlePlaybackRate = (rate) => {
         player.playbackRate(rate);
         setSelectedRate(rate);
@@ -57,62 +97,132 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         setIsMenuVisible(false);
     };
 
+    /* Handler: Quality selection */
     const handleQualitySelect = (qualityLabel) => {
-        player.trigger('qualitySelected', { quality: qualityLabel });
+        if (!player) return;
+
+        /* ----- HLS/DASH ----- */
+        if (isHls()) {
+            const reps = player.vhs?.representations?.() || [];
+            reps.forEach((r) => {
+                const wanted = qualityLabel.replace(/\D/g, '');
+                r.enabled(!wanted || String(r.height) === wanted);
+            });
+            console.log(`[Quality] (HLS) → ${qualityLabel}`);
+        } else {
+            /* ----- Progressive MP4 ----- */
+            const all = allSourcesRef.current;
+            const selected = all.find(
+                (s) => (s.label || `${s.height}p`) === qualityLabel
+            );
+            if (!selected) return;
+
+            const others = all.filter((s) => s !== selected);
+            const time = player.currentTime();
+            const wasPaused = player.paused();
+
+            console.log(`[Quality] (MP4) → ${qualityLabel}`);
+
+            player.src([selected, ...others]);
+
+            /* When loading starts, hide native controls and big-play if video was playing */
+            player.one('loadstart', () => {
+                setTimeout(hideNativeControls, 0);
+                if (!wasPaused) player.getChild('BigPlayButton')?.hide();
+            });
+
+            player.one('loadedmetadata', () => {
+                player.currentTime(time);
+                if (!wasPaused) player.play();
+            });
+        }
+
+        /* Update UI & close menus */
         setSelectedQuality(qualityLabel);
-        setShowQualitySubmenu(false);
-        setIsMenuVisible(false);
-    };
-
-    const showMenu = () => {
-        clearTimeout(menuTimeout.current);
-        setIsMenuVisible(true);
-    };
-
-    const hideMenu = () => {
-        menuTimeout.current = setTimeout(() => {
+        setTimeout(() => {
+            setShowQualitySubmenu(false);
             setIsMenuVisible(false);
-            setShowRateSubmenu(false);
-            setShowQualitySubmenu(false);
-        }, 100);
+        }, 0);
+
+        player.trigger('qualitySelected', { quality: qualityLabel });
     };
 
-    const showRateSub = () => {
-        clearTimeout(rateSubmenuTimeout.current);
-        setShowRateSubmenu(true);
-    };
-
-    const hideRateSub = () => {
-        rateSubmenuTimeout.current = setTimeout(() => {
-            setShowRateSubmenu(false);
-        }, 100);
-    };
-
-    const showQualitySub = () => {
-        clearTimeout(qualitySubmenuTimeout.current);
-        setShowQualitySubmenu(true);
-    };
-
-    const hideQualitySub = () => {
-        qualitySubmenuTimeout.current = setTimeout(() => {
-            setShowQualitySubmenu(false);
-        }, 100);
-    };
+    /* ------------------ Block Picture in Picture ------------------ */
 
     useEffect(() => {
-        return () => {
-            clearTimeout(menuTimeout.current);
-            clearTimeout(rateSubmenuTimeout.current);
-            clearTimeout(qualitySubmenuTimeout.current);
-        };
-    }, []);
+        if (!player) return;
 
+        // Get the actual HTML video element
+        videoElementRef.current = player.el().querySelector('video');
+    }, [player]);
+
+    // Control standard PiP attribute for Chrome, Safari, etc.
+    useEffect(() => {
+        const videoElement = videoElementRef.current;
+        if (!videoElement) return;
+
+        if (showRateSubmenu || showQualitySubmenu) {
+            // Disable PiP when submenus are open (works for Chrome, Safari, Edge)
+            videoElement.disablePictureInPicture = true;
+        } else {
+            // Re-enable PiP when submenus are closed
+            videoElement.disablePictureInPicture = false;
+        }
+    }, [showRateSubmenu, showQualitySubmenu]);
+
+    // Apply Firefox-specific solution and other browser compatibility fixes
+    useEffect(() => {
+        if (!player) return;
+
+        const videoEl = player.el();
+        if (!videoEl) return;
+
+        // Update the player class based on menu state
+        if (showRateSubmenu || showQualitySubmenu) {
+            videoEl.classList.add('pip-blocker');
+        } else {
+            videoEl.classList.remove('pip-blocker');
+        }
+
+        return () => {
+            // Clean up when component unmounts
+            if (videoEl) {
+                videoEl.classList.remove('pip-blocker');
+            }
+        };
+    }, [showRateSubmenu, showQualitySubmenu, player]);
+
+    /* Clear timeouts when unmounting */
+    useEffect(
+        () => () => {
+            clearTimeout(menuTimeout.current);
+            clearTimeout(rateSubTimeout.current);
+            clearTimeout(qualitySubTimeout.current);
+        },
+        []
+    );
+
+    /* ------------------ UI ------------------ */
     return (
         <div
             className="vjs-configuration-menu-container"
-            onMouseEnter={showMenu}
-            onMouseLeave={hideMenu}
+            onMouseEnter={() => {
+                clearTimeout(menuTimeout.current);
+                setIsMenuVisible(true);
+            }}
+            onMouseLeave={() => {
+                menuTimeout.current = setTimeout(() => {
+                    setIsMenuVisible(false);
+                    setShowRateSubmenu(false);
+                    setShowQualitySubmenu(false);
+                }, 100);
+            }}
         >
+            {/* Add overlay div that blocks clicks when any submenu is open */}
+            {(showRateSubmenu || showQualitySubmenu) && (
+                <div className="vjs-pip-interaction-blocker" />
+            )}
+
             <Menu>
                 <MenuButton className="vjs-configuration-menu-button">
                     <BsGearFill className="vjs-configuration-menu-icon" />
@@ -120,11 +230,20 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
 
                 {isMenuVisible && (
                     <MenuList className="vjs-configuration-menu">
+                        {/* Playback rate */}
                         <MenuItem
                             ref={rateMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
-                            onMouseEnter={showRateSub}
-                            onMouseLeave={hideRateSub}
+                            onMouseEnter={() => {
+                                clearTimeout(rateSubTimeout.current);
+                                setShowRateSubmenu(true);
+                            }}
+                            onMouseLeave={() => {
+                                rateSubTimeout.current = setTimeout(
+                                    () => setShowRateSubmenu(false),
+                                    100
+                                );
+                            }}
                         >
                             <div className="menu-item-title-container">
                                 <MdSlowMotionVideo className="rate-icon" />
@@ -136,37 +255,56 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         {showRateSubmenu && (
                             <div
                                 className="vjs-configuration-submenu horizontal-menu"
-                                onMouseEnter={showRateSub}
-                                onMouseLeave={hideRateSub}
+                                onMouseEnter={() => {
+                                    clearTimeout(rateSubTimeout.current);
+                                    setShowRateSubmenu(true);
+                                }}
+                                onMouseLeave={() => {
+                                    rateSubTimeout.current = setTimeout(
+                                        () => setShowRateSubmenu(false),
+                                        100
+                                    );
+                                }}
                                 style={{
-                                    top: rateMenuItemRef.current ? 
-                                        rateMenuItemRef.current.offsetTop - 5 : 0
+                                    top: rateMenuItemRef.current
+                                        ? rateMenuItemRef.current.offsetTop - 10
+                                        : 0,
                                 }}
                             >
                                 {playbackRates.map((rate) => (
-                                    <button
+                                    <MenuItem
                                         key={rate}
-                                        type="button"
                                         className={`vjs-configuration-submenu-item ${
                                             selectedRate === rate
                                                 ? 'selected'
                                                 : ''
                                         }`}
-                                        onClick={() => handlePlaybackRate(rate)}
+                                        onSelect={() =>
+                                            handlePlaybackRate(rate)
+                                        }
                                     >
                                         {rate}x
-                                    </button>
+                                    </MenuItem>
                                 ))}
                             </div>
                         )}
 
                         <hr className="vjs-configuration-menu-divider" />
 
+                        {/* Video quality */}
                         <MenuItem
                             ref={qualityMenuItemRef}
                             className="vjs-configuration-menu-item main-container"
-                            onMouseEnter={showQualitySub}
-                            onMouseLeave={hideQualitySub}
+                            onMouseEnter={() => {
+                                clearTimeout(qualitySubTimeout.current);
+                                setShowQualitySubmenu(true);
+                            }}
+                            onMouseLeave={() => {
+                                qualitySubTimeout.current = setTimeout(
+                                    () => setShowQualitySubmenu(false),
+                                    100
+                                );
+                            }}
                         >
                             <div className="menu-item-title-container">
                                 <LuSettings2 className="quality-icon" />
@@ -178,26 +316,35 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         {showQualitySubmenu && (
                             <div
                                 className="vjs-configuration-submenu horizontal-menu"
-                                onMouseEnter={showQualitySub}
-                                onMouseLeave={hideQualitySub}
+                                onMouseEnter={() => {
+                                    clearTimeout(qualitySubTimeout.current);
+                                    setShowQualitySubmenu(true);
+                                }}
+                                onMouseLeave={() => {
+                                    qualitySubTimeout.current = setTimeout(
+                                        () => setShowQualitySubmenu(false),
+                                        100
+                                    );
+                                }}
                                 style={{
-                                    top: qualityMenuItemRef.current ? 
-                                        qualityMenuItemRef.current.offsetTop - 5 : 0
+                                    top: qualityMenuItemRef.current
+                                        ? qualityMenuItemRef.current.offsetTop -
+                                          10
+                                        : 0,
                                 }}
                             >
                                 {qualities.map((q) => (
-                                    <button
+                                    <MenuItem
                                         key={q}
-                                        type="button"
                                         className={`vjs-configuration-submenu-item ${
                                             selectedQuality === q
                                                 ? 'selected'
                                                 : ''
                                         }`}
-                                        onClick={() => handleQualitySelect(q)}
+                                        onSelect={() => handleQualitySelect(q)}
                                     >
                                         {q}
-                                    </button>
+                                    </MenuItem>
                                 ))}
                             </div>
                         )}
