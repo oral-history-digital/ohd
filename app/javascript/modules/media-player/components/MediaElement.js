@@ -11,6 +11,7 @@ import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
 import './configurationMenuPlugin.js';
 import './toggleSizeButtonPlugin.js';
+import './customSkipButtonsPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -311,6 +312,7 @@ export default function MediaElement({
 
         player.configurationMenuPlugin();
         player.toggleSizePlugin();
+        player.customSkipButtonsPlugin();
 
         const qualities = player
             .currentSources()
@@ -418,16 +420,6 @@ export default function MediaElement({
 
         checkForTimeChangeRequest();
     }
-
-    useEffect(() => {
-        return resetMedia;
-    }, []);
-
-    useEffect(() => {
-        return () => {
-            window.mainPlayerInstance = null;
-        };
-    }, []);
 
     if (!mediaStreams) {
         return null;

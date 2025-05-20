@@ -28,6 +28,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
     const rateMenuItemRef = useRef(null);
     const qualityMenuItemRef = useRef(null);
     const allSourcesRef = useRef([]);
+    const videoElementRef = useRef(null); // Reference to the video element needed for PiP blocking
 
     /* Save sources when mounting */
     useEffect(() => {
@@ -146,6 +147,51 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
         player.trigger('qualitySelected', { quality: qualityLabel });
     };
 
+    /* ------------------ Block Picture in Picture ------------------ */
+
+    useEffect(() => {
+        if (!player) return;
+
+        // Get the actual HTML video element
+        videoElementRef.current = player.el().querySelector('video');
+    }, [player]);
+
+    // Control standard PiP attribute for Chrome, Safari, etc.
+    useEffect(() => {
+        const videoElement = videoElementRef.current;
+        if (!videoElement) return;
+
+        if (showRateSubmenu || showQualitySubmenu) {
+            // Disable PiP when submenus are open (works for Chrome, Safari, Edge)
+            videoElement.disablePictureInPicture = true;
+        } else {
+            // Re-enable PiP when submenus are closed
+            videoElement.disablePictureInPicture = false;
+        }
+    }, [showRateSubmenu, showQualitySubmenu]);
+
+    // Apply Firefox-specific solution and other browser compatibility fixes
+    useEffect(() => {
+        if (!player) return;
+
+        const videoEl = player.el();
+        if (!videoEl) return;
+
+        // Update the player class based on menu state
+        if (showRateSubmenu || showQualitySubmenu) {
+            videoEl.classList.add('pip-blocker');
+        } else {
+            videoEl.classList.remove('pip-blocker');
+        }
+
+        return () => {
+            // Clean up when component unmounts
+            if (videoEl) {
+                videoEl.classList.remove('pip-blocker');
+            }
+        };
+    }, [showRateSubmenu, showQualitySubmenu, player]);
+
     /* Clear timeouts when unmounting */
     useEffect(
         () => () => {
@@ -172,6 +218,11 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                 }, 100);
             }}
         >
+            {/* Add overlay div that blocks clicks when any submenu is open */}
+            {(showRateSubmenu || showQualitySubmenu) && (
+                <div className="vjs-pip-interaction-blocker" />
+            )}
+
             <Menu>
                 <MenuButton className="vjs-configuration-menu-button">
                     <BsGearFill className="vjs-configuration-menu-icon" />
