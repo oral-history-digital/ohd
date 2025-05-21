@@ -7,8 +7,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
 
-function ConfigurationMenu({ player, playbackRates, qualities }) {
-    /* ------------------ State ------------------ */
+function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [showRateSubmenu, setShowRateSubmenu] = useState(false);
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
@@ -29,6 +28,12 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
     const qualityMenuItemRef = useRef(null);
     const allSourcesRef = useRef([]);
     const videoElementRef = useRef(null); // Reference to the video element needed for PiP blocking
+
+    // Use provided translations with fallbacks
+    const t = (key) => {
+        if (!translations) return key;
+        return translations[key] || key;
+    };
 
     /* Save sources when mounting */
     useEffect(() => {
@@ -247,7 +252,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         >
                             <div className="menu-item-title-container">
                                 <MdSlowMotionVideo className="rate-icon" />
-                                <span>Rate</span>
+                                <span>{t('playbackRate')}</span>
                             </div>
                             <IoIosArrowForward />
                         </MenuItem>
@@ -308,7 +313,7 @@ function ConfigurationMenu({ player, playbackRates, qualities }) {
                         >
                             <div className="menu-item-title-container">
                                 <LuSettings2 className="quality-icon" />
-                                <span>Quality</span>
+                                <span>{t('playbackQuality')}</span>
                             </div>
                             <IoIosArrowForward />
                         </MenuItem>
@@ -359,6 +364,7 @@ ConfigurationMenu.propTypes = {
     player: PropTypes.object.isRequired,
     playbackRates: PropTypes.arrayOf(PropTypes.number).isRequired,
     qualities: PropTypes.arrayOf(PropTypes.string).isRequired,
+    translations: PropTypes.object,
 };
 
 export default ConfigurationMenu;
