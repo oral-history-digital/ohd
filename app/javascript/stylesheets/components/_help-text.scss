@@ -1,3 +1,5 @@
+@use "../variables";
+
 $help-text-color: #004d00;
 $help-text-small-color: #416841;
 $help-text-background-color: #e6ffe6;
@@ -12,8 +14,8 @@ $help-text-background-color: #e6ffe6;
   border: 0.1rem solid $help-text-color;
   display: flex;
   margin-left: auto;
-  max-width: 30 * $base-unit;
-  padding: $base-unit * 0.5;
+  max-width: 30 * variables.$base-unit;
+  padding: variables.$base-unit * 0.5;
 }
 
 .HelpText-icon {
@@ -26,7 +28,7 @@ $help-text-background-color: #e6ffe6;
 }
 
 .HelpText-text {
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0 !important;
 }
 
@@ -46,7 +48,7 @@ $help-text-background-color: #e6ffe6;
   color: $help-text-small-color;
   display: inline-block;
   font-size: 1.5rem;
-  padding: ($base-unit * 0.125) 0;
+  padding: (variables.$base-unit * 0.125) 0;
   vertical-align: bottom;
 }
 

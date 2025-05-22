@@ -1,16 +1,19 @@
+@use "../mixins";
+@use "../variables";
+
 .SearchMap {
 }
 
 .SearchMap-controls {
-  @include screen-m {
+  @include mixins.screen-m {
     display: flex;
   }
 }
 
 .SearchMap-sections {
-  margin-top: $base-unit;
+  margin-top: variables.$base-unit;
 
-  @include screen-m {
+  @include mixins.screen-m {
     margin-left: auto;
     margin-top: 0;
   }

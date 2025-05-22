@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../variables";
+
 .LocaleButtons {
 }
 
@@ -5,25 +8,25 @@
   background-color: transparent;
   border: none;
   outline: none;
-  color: $ui-background-color;
+  color: variables.$ui-background-color;
   cursor: pointer;
-  font-family: $font-family;;
-  font-size: $font-size-large;
-  line-height: $base-unit;
-  padding: 0 ($base-unit * 0.25);
+  font-family: variables.$font-family;;
+  font-size: variables.$font-size-large;
+  line-height: variables.$base-unit;
+  padding: 0 (variables.$base-unit * 0.25);
   text-transform: uppercase;
-  transition: color $transition-duration;
+  transition: color variables.$transition-duration;
 }
 
 .LocaleButtons-button:not(:first-child) {
-  border-left: 0.125rem solid lighten($ui-background-color, 10%);
+  border-left: 0.125rem solid color.adjust(variables.$ui-background-color, $lightness: 10%);
 }
 
 .LocaleButtons-button:disabled {
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
   cursor: default;
 }
 
 .LocaleButtons-button:hover {
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
 }

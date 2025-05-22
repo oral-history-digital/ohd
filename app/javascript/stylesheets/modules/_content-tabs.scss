@@ -1,3 +1,6 @@
+@use "../mixins";
+@use "../variables";
+
 // Tabs Content
 
 .wrapper-content {
@@ -20,10 +23,10 @@
       cursor: pointer;
       margin-bottom: 10px;
       padding: 4px 0;
-      color: $gray-dark;
+      color: variables.$gray-dark;
       transition: 0.4s;
       transition: 0.4s;
-      @include screen-m {
+      @include mixins.screen-m {
         width: 96%;
       }
       &:hover {
@@ -31,21 +34,21 @@
       }
       &.active {
         background-color: rgba(255,250,129,0.5);
-        color: $gray-darkest;
+        color: variables.$gray-darkest;
       }
     }
     .subheading {
       cursor: pointer;
       margin-bottom: 10px;
       padding: 4px 0;
-      color: $gray-dark;
+      color: variables.$gray-dark;
       transition: 0.4s;
       &:hover {
         color: var(--primary-color);
       }
       &.active {
         background-color: rgba(255,250,129,0.5);
-        color: $gray-darkest;
+        color: variables.$gray-darkest;
       }
     }
     .chapter-number{
@@ -54,21 +57,21 @@
       width: 15%;
       font-weight: bold;
       letter-spacing: 0.1rem;
-      @include screen-m {
+      @include mixins.screen-m {
         width: 6%;
       }
     }
     .chapter-text{
       width: 85%;
       display: inline-block;
-      @include screen-m {
+      @include mixins.screen-m {
         width: 94%;
       }
     }
   }
   .expanded {
     margin-left: 8%;
-    @include screen-m {
+    @include mixins.screen-m {
       margin-left: 4%;
     }
     .mainheading {
@@ -87,13 +90,13 @@
     margin-top: 5px;
   }
   .content-tags-segment-timecode {
-    font-size: $font-size-medium;
-    line-height: $line-height-medium ;
+    font-size: variables.$font-size-medium;
+    line-height: variables.$line-height-medium ;
     margin-bottom: 0;
   }
   .content-tags-segment-text {
     margin-bottom: 0;
-    color: $gray-dark;
+    color: variables.$gray-dark;
   }
 }
 div.mainheading + div {
@@ -110,18 +113,18 @@ div.mainheading + div {
 
 .content-search-legend {
   margin-bottom: 20px;
-  font-size: $font-size-medium;
+  font-size: variables.$font-size-medium;
 }
 
 
 .content-search {
-  font-size: $font-size-larger;
+  font-size: variables.$font-size-larger;
   margin-bottom: 30px;
 
   .content-search-form {
     display: flex;
-    border-bottom: 2px solid $gray-light;
-    border-top: 2px solid $gray-light;
+    border-bottom: 2px solid variables.$gray-light;
+    border-top: 2px solid variables.$gray-light;
   }
 
   .search-input {
@@ -130,7 +133,7 @@ div.mainheading + div {
   }
 
   .search-input:focus {
-    box-shadow: 0 0 0 $focus-radius $focus-color;
+    box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
   }
 
   ::placeholder {
@@ -143,7 +146,7 @@ div.mainheading + div {
     margin-left: auto;
     padding: 10px;
     &:hover {
-      color: $gray-light;
+      color: variables.$gray-light;
     }
   }
   button,
@@ -171,28 +174,28 @@ div.mainheading + div {
 
 .column-content,
 .column-sidebar {
-  @include screen-m {
+  @include mixins.screen-m {
     float: left;
   }
 }
 
 .column-content {
-  @include screen-m {
+  @include mixins.screen-m {
     width: 70%;
     margin-right: 1%;
   }
 }
 
 .column-sidebar {
-  font-size: $font-size-medium;
-  line-height: $line-height-medium;
-  color: $gray-dark;
-  @include screen-xs-s {
-    border-top: 1px solid $gray-lighter;
+  font-size: variables.$font-size-medium;
+  line-height: variables.$line-height-medium;
+  color: variables.$gray-dark;
+  @include mixins.screen-xs-s {
+    border-top: 1px solid variables.$gray-lighter;
     margin-top: 30px;
     padding-top: 30px;
   }
-  @include screen-m {
+  @include mixins.screen-m {
     width: 24%;
     padding: 2px 40px;
   }

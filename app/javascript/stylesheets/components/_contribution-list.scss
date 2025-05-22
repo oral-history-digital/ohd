@@ -1,11 +1,13 @@
+@use "../variables";
+
 /**
  * ContributionList component
  */
 
 .ContributionList {
-    color: $gray-darkest;
-    font-size: $font-size-medium;
-    line-height: $line-height-medium;
+    color: variables.$gray-darkest;
+    font-size: variables.$font-size-medium;
+    line-height: variables.$line-height-medium;
     list-style-type: none;
     margin: 0;
     padding-left: 0;

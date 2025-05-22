@@ -1,20 +1,22 @@
+@use "../variables";
+
 /* Style the buttons that are used to open and close the accordion panel */
 .flyout-search,
 .flyout-video,
 .flyout-folder {
   button.accordion {
     background-color: transparent;
-    border-top: 1px solid $gray-dark;
+    border-top: 1px solid variables.$gray-dark;
     color: var(--primary-color);
     cursor: pointer;
-    font-size: $font-size-large;
-    line-height: $base-unit;
+    font-size: variables.$font-size-large;
+    line-height: variables.$base-unit;
     margin-bottom: 2px;
     outline: none;
-    padding-bottom: $base-unit * 0.5;
+    padding-bottom: variables.$base-unit * 0.5;
     padding-left: 0;
     padding-right: 15px;
-    padding-top: $base-unit * 0.5 - 0.0625rem;
+    padding-top: variables.$base-unit * 0.5 - 0.0625rem;
     text-align: left;
     text-transform: uppercase;
     transition: 0.4s;
@@ -23,11 +25,11 @@
       color: var(--editorial-color);
     }
     &:hover {
-      color: $gray-dark;
+      color: variables.$gray-dark;
     }
     svg {
       float: right;
-      margin-top: 0.125 * $base-unit;
+      margin-top: 0.125 * variables.$base-unit;
     }
   }
   .panel {
@@ -37,14 +39,14 @@
     transition: 0.2s ease-out;
     &.open {
       overflow: initial;
-      padding-bottom: $base-unit;
+      padding-bottom: variables.$base-unit;
       max-height: 100%;
     }
   }
   p, form {
-    font-size: $font-size-medium;
-    line-height: $line-height-medium;
-    color: $gray-darkest;
+    font-size: variables.$font-size-medium;
+    line-height: variables.$line-height-medium;
+    color: variables.$gray-darkest;
     margin: 0 0 10px 0;
   }
   .flyout-content-label {
@@ -73,7 +75,7 @@
     margin-left: 5px;
     margin-right: 5px;
     &:hover {
-      color: $gray-dark;
+      color: variables.$gray-dark;
     }
   }
   .flyout-sub-tabs-content-download {
@@ -85,23 +87,23 @@
     color: var(--primary-color);
   }
   .explanation {
-    font-size: $font-size-medium;
-    line-height: $line-height-medium;
-    color: $gray-darkest;
+    font-size: variables.$font-size-medium;
+    line-height: variables.$line-height-medium;
+    color: variables.$gray-darkest;
     margin: 0 0 10px 0;
   }
 }
 
 .flyout-folder {
   h3 {
-    font-size: $font-size-large;
-    line-height: $line-height-large;
+    font-size: variables.$font-size-large;
+    line-height: variables.$line-height-large;
     margin-top: 0;
   }
   p {
-    font-size: $font-size-medium;
-    line-height: $line-height-medium;
-    color: $gray-darkest;
+    font-size: variables.$font-size-medium;
+    line-height: variables.$line-height-medium;
+    color: variables.$gray-darkest;
     //padding: 0 0 0 20px;
     margin: 0;
   }
@@ -109,7 +111,7 @@
     display: inline-block;
     margin-right: 10px;
     margin-bottom: 5px;
-    color: $gray-dark;
+    color: variables.$gray-dark;
   }
   .flyout-content-data {
     display: inline-block;
@@ -149,7 +151,7 @@ a.flyout-download-link-lang {
 span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-child) {
   margin-right: 15px;
   padding-right: 10px;
-  border-right: 1px solid $gray-light;
+  border-right: 1px solid variables.$gray-light;
   .fa {
     margin-right: 0;
   }
@@ -171,9 +173,9 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
     color: var(--primary-color);
   }
   &.active {
-    background-color: $gray-lighter;
+    background-color: variables.$gray-lighter;
     .fa {
-      color: $gray-dark;
+      color: variables.$gray-dark;
     }
   }
   &.warn {
@@ -185,9 +187,9 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
     background-color: yellow;
   }
   &:hover {
-    background-color: $gray-lighter;
+    background-color: variables.$gray-lighter;
     .fa {
-      color: $gray-dark;
+      color: variables.$gray-dark;
     }
   }
 }

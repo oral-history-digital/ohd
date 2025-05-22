@@ -1,17 +1,19 @@
+@use "../variables";
+
 .StateButton {
   background: transparent;
   border: none;
   color: white;
   cursor: pointer;
-  margin-left: $base-unit * 0.125;
+  margin-left: variables.$base-unit * 0.125;
   outline: none;
   padding: 0.25rem 0.25rem;
-  transition-duration: $transition-duration;
+  transition-duration: variables.$transition-duration;
   transition-property: background-color, box-shadow, filter;
 }
 
 .StateButton:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .StateButton.is-pressed {

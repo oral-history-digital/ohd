@@ -1,8 +1,10 @@
+@use "../variables";
+
 /*
  * 1. Ellipsis
  */
 
-$segment-icon-width: 1.5 * $base-unit;
+$segment-icon-width: 1.5 * variables.$base-unit;
 
 .Segment {
   align-items: flex-start;
@@ -16,18 +18,18 @@ $segment-icon-width: 1.5 * $base-unit;
 }
 
 .Segment:not(:first-of-type) {
-  margin-top: $base-unit * 0.5;
+  margin-top: variables.$base-unit * 0.5;
 }
 
 .Segment--withSpeaker:not(:first-of-type) {
-  margin-top: $base-unit;
+  margin-top: variables.$base-unit;
 }
 
 .Segment-icon {
   display: inline-block;
   flex-basis: $segment-icon-width;
   flex-shrink: 0;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
   opacity: 0.75;
   overflow: hidden; /* 1 */
@@ -44,23 +46,23 @@ $segment-icon-width: 1.5 * $base-unit;
 }
 
 .Segment-icon--secondary {
-  color: $gray-dark;
+  color: variables.$gray-dark;
 }
 
 .Segment-text {
   background-color: transparent;
   border: none;
-  color: $body-text-color;
+  color: variables.$body-text-color;
   cursor: pointer;
   flex-grow: 1;
-  font-family: $font-family;
-  line-height: $base-unit;
-  max-width: $line-length;
+  font-family: variables.$font-family;
+  line-height: variables.$base-unit;
+  max-width: variables.$line-length;
   outline: none;
   padding: 0;
   text-align: left;
   transition-property: background-color, box-shadow, color;
-  transition-duration: $transition-duration;
+  transition-duration: variables.$transition-duration;
   user-select: text;
 }
 
@@ -73,12 +75,12 @@ $segment-icon-width: 1.5 * $base-unit;
 }
 
 .Segment-text:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .Segment-hiddenButton {
   opacity: 0;
-  transition: opacity $transition-duration;
+  transition: opacity variables.$transition-duration;
 }
 
 .Segment:hover > .Segment-hiddenButton,
@@ -92,7 +94,7 @@ $segment-icon-width: 1.5 * $base-unit;
   justify-content: flex-end;
   flex-grow: 1;
   margin-left: auto;
-  min-width: $base-unit * 2;
+  min-width: variables.$base-unit * 2;
   text-align: right;
-  transition: border-color $transition-duration;
+  transition: border-color variables.$transition-duration;
 }

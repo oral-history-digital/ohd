@@ -1,3 +1,5 @@
+@use "../variables";
+
 .TreeSelect {
   margin-bottom: 1.5rem;
 }
@@ -21,7 +23,7 @@
 }
 
 .TreeSelect-select .search::placeholder {
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
 }
 
 .TreeSelect-select .node {
@@ -41,13 +43,13 @@
 }
 
 .TreeSelect-select .dropdown-trigger {
-  border-color: $gray-medium !important;
+  border-color: variables.$gray-medium !important;
   outline: none;
-  transition: box-shadow $transition-duration;
+  transition: box-shadow variables.$transition-duration;
 }
 
 .TreeSelect-select .dropdown-trigger:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .TreeSelect-select .dropdown-content {
@@ -62,7 +64,7 @@
   color: var(--primary-color) !important;
   font: normal normal normal 16px/1 FontAwesome;
   margin: 0 0.375rem 0 0.25rem;
-  padding: 0 (0.125 * $base-unit);
+  padding: 0 (0.125 * variables.$base-unit);
   white-space: pre;
 }
 

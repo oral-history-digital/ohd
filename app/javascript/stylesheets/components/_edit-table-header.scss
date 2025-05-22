@@ -1,38 +1,40 @@
+@use "../variables";
+
 .EditTableHeader {
   background-color: var(--primary-color);
   color: white;
   //height: 3 * $base-unit;
   position: sticky;
   top: 0;
-  z-index: $z-index-edit-table-header;
+  z-index: variables.$z-index-edit-table-header;
 }
 
 .EditTableHeader-options {
-  border-bottom: (0.0625 * $base-unit) solid rgba(255, 255, 255, 0.25);
+  border-bottom: (0.0625 * variables.$base-unit) solid rgba(255, 255, 255, 0.25);
   display: flex;
   font-size: 0.875rem;
   //margin-left: -0.5 * $base-unit;
   //margin-right: -0.5 * $base-unit;
-  padding: 0.25 * $base-unit;
+  padding: 0.25 * variables.$base-unit;
 }
 
 .EditTableHeader-options > *:not(:first-child) {
-  margin-left: $base-unit;
+  margin-left: variables.$base-unit;
 }
 
 .EditTableHeader-columns {
   display: grid;
   font-weight: bold;
-  padding: ((0.25 - 0.0625) * $base-unit) 0 (0.25 * $base-unit);
+  padding: ((0.25 - 0.0625) * variables.$base-unit) 0 (0.25 * variables.$base-unit);
 }
 
 .Layout.is-sticky .EditTableHeader {
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-  top: $media-player-height-sticky;
+  top: variables.$media-player-height-sticky;
 }
 
 .EditTableHeader-cell {
-  padding: 0 (0.25 * $base-unit);
+  padding: 0 (0.25 * variables.$base-unit);
 }
 
 .EditTableHeader-button {
@@ -42,12 +44,12 @@
 }
 
 .EditTableHeader-select {
-  font-family: $font-family;
+  font-family: variables.$font-family;
   font-size: 0.875rem;
   line-height: 1;
   outline: none;
 }
 
 .EditTableHeader-select:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

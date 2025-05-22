@@ -1,14 +1,16 @@
+@use "../variables";
+
 .ArchiveTile {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   display: block;
-  transition: opacity $transition-duration;
+  transition: opacity variables.$transition-duration;
 }
 
 .ArchiveTile:link,
 .ArchiveTile:hover,
 .ArchiveTile:active,
 .ArchiveTile:visited {
-  color: $body-text-color;
+  color: variables.$body-text-color;
 }
 
 .ArchiveTile:hover,
@@ -25,14 +27,14 @@
   background-color: #bbbbbbcc;
   border-radius: 50%;
   display: flex;
-  height: $base-unit * 1.5;
+  height: variables.$base-unit * 1.5;
   justify-content: center;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   position: absolute;
-  right: $base-unit * 0.5;
+  right: variables.$base-unit * 0.5;
   text-align: center;
-  top: $base-unit * 0.5;
-  width: $base-unit * 1.5;
+  top: variables.$base-unit * 0.5;
+  width: variables.$base-unit * 1.5;
   z-index: 1;
 }
 
@@ -51,18 +53,18 @@
 }
 
 .ArchiveTile-body {
-  padding: $base-unit * 0.5;
+  padding: variables.$base-unit * 0.5;
 }
 
 .ArchiveTile-title {
   color: black;
   font-weight: bold;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
 }
 
 .ArchiveTile-text {
-  color: $body-text-color;
+  color: variables.$body-text-color;
   margin: 0;
 }
 

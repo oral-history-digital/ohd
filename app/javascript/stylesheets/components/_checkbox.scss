@@ -1,3 +1,5 @@
+@use "../variables";
+
 /**
  * Checkbox component based on ReachUI checkboxes.
  *
@@ -10,7 +12,7 @@ $checkbox-border-width: 0.125rem;
 $checkbox-inner-width: $checkbox-width - 2 * $checkbox-border-width;
 
 .Checkbox {
-  border: $checkbox-border-width solid $ui-background-color;
+  border: $checkbox-border-width solid variables.$ui-background-color;
   border-radius: 0.125rem;
   margin-right: 0;
 }
@@ -32,5 +34,5 @@ $checkbox-inner-width: $checkbox-width - 2 * $checkbox-border-width;
 .Checkbox[data-focused],
 .Checkbox:focus,
 .Checkbox:focus-within {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

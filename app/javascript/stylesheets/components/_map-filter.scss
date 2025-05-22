@@ -1,3 +1,5 @@
+@use "../variables";
+
 .MapFilter {}
 
 .MapFilter-form {
@@ -11,7 +13,7 @@
   align-items: center;
   display: flex;
   font-size: 1rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   opacity: 0.5;
   user-select: none;
 }
@@ -22,9 +24,9 @@
 
 .MapFilter p {
   font-size: 1rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin-bottom: 0;
-  margin-left: $base-unit;
+  margin-left: variables.$base-unit;
   user-select: none;
 }
 

@@ -1,3 +1,5 @@
+@use "../variables";
+
 .Facet {
 
 }
@@ -8,7 +10,7 @@
   color: var(--primary-color) !important;
   display: flex;
   justify-content: space-between;
-  padding: ($base-unit * 0.25) 0;
+  padding: (variables.$base-unit * 0.25) 0;
   text-align: left;
   text-transform: uppercase !important;
   width: 100%;
@@ -24,13 +26,13 @@
 
 .Facet-icon {
   margin-left: auto;
-  margin-right: 0.5 * $base-unit;
+  margin-right: 0.5 * variables.$base-unit;
 }
 
 .Facet-panel {
   display: none;
-  line-height: $base-unit;
-  padding-bottom: $base-unit * 0.5;
+  line-height: variables.$base-unit;
+  padding-bottom: variables.$base-unit * 0.5;
 }
 
 .Facet.is-open .Facet-panel {
@@ -38,7 +40,7 @@
 }
 
 .Facet-value {
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   font-size: 0.875rem;
 }
 
@@ -64,5 +66,5 @@
 
 .Facet-count {
   flex-shrink: 0;
-  margin-left: $base-unit * 0.25;
+  margin-left: variables.$base-unit * 0.25;
 }

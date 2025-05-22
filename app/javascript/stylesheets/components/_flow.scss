@@ -1,8 +1,10 @@
+@use "../variables";
+
 .Flow {
   box-sizing: border-box;
   counter-reset: item;
   display: flex;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   list-style: none;
   margin-block: 0;
   padding-left: 0;
@@ -22,8 +24,8 @@
   content: counter(item);
   font-size: 1.25rem;
   font-weight: bold;
-  padding-block: 0.5 * $base-unit;
-  padding-inline: $base-unit;
+  padding-block: 0.5 * variables.$base-unit;
+  padding-inline: variables.$base-unit;
   width: 4rem;
 }
 
@@ -33,12 +35,12 @@
 
 .Flow-text {
   display: none;
-  padding-inline: 0.5 * $base-unit;
+  padding-inline: 0.5 * variables.$base-unit;
 }
 
 button.Flow-text {
   border: none;
-  padding-inline: 0.5 * $base-unit;
+  padding-inline: 0.5 * variables.$base-unit;
   text-align: left;
 }
 

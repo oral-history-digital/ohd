@@ -1,17 +1,21 @@
+@use "sass:color";
+@use "../mixins";
+@use "../variables";
+
 form.default {
   header {
     margin: 0 0 20px 0;
   }
  .form-group {
     width: 100%;
-    margin: $base-unit 0 0;
-    @include clearfix;
+    margin: variables.$base-unit 0 0;
+    @include mixins.clearfix;
  }
   label {
     width: 100%;
     float: none;
     padding: 5px 0;
-    @include screen-l {
+    @include mixins.screen-l {
       width: 25%;
       float: left;
       padding-right: 10px;
@@ -23,9 +27,9 @@ form.default {
   textarea,
   .richtextarea {
     width: 100%;
-    border: 1px solid $gray-medium;
+    border: 1px solid variables.$gray-medium;
     padding: 5px 10px;
-    @include screen-l {
+    @include mixins.screen-l {
       width: 72%;
     }
   }
@@ -47,22 +51,22 @@ form.default {
     margin-top: 15px;
     margin-left: 0;
     width: 100%;
-    background-color: $ui-background-color;
-    transition: background-color $transition-duration;
+    background-color: variables.$ui-background-color;
+    transition: background-color variables.$transition-duration;
     color: #fff;
     padding: 10px;
     border: none;
     cursor: pointer;
 
     &:hover {
-      background-color: lighten($ui-background-color, 10%);
+      background-color: color.adjust(variables.$ui-background-color, $lightness: 10%);
     }
     &.single-value {
       width: 48%;
     }
   }
   input[type=button] {
-    background-color: $gray-medium;
+    background-color: variables.$gray-medium;
   }
 
   /* Checkboxes */
@@ -78,14 +82,14 @@ form.default {
   }
 
   .is-option {
-    background: $gray-lighter;
+    background: variables.$gray-lighter;
     margin: 0;
     padding: 0.5rem;
     label {
-      color: $gray-dark;
+      color: variables.$gray-dark;
     }
     input {
-      border-color: $gray-dark;
+      border-color: variables.$gray-dark;
     }
   }
 
@@ -99,12 +103,12 @@ form.default {
   }
 
   .help-block {
-    color: $gray-dark;
-    font-size: $font-size-medium;
-    line-height: $base-unit;
+    color: variables.$gray-dark;
+    font-size: variables.$font-size-medium;
+    line-height: variables.$base-unit;
     margin: 0;
 
-    @include screen-l {
+    @include mixins.screen-l {
       margin-left: 28%;
     }
 
@@ -117,7 +121,7 @@ form.default {
   .form-label {
     width: 100%;
     float: none;
-    @include screen-l {
+    @include mixins.screen-l {
       width: 25%;
       float: left;
       margin-right: 3%;
@@ -135,14 +139,14 @@ form.default {
     background-image: none;
     background: transparent;
     border-radius: 0;
-    border: 1px solid $gray-medium;
+    border: 1px solid variables.$gray-medium;
     box-shadow: none;
-    height: $base-unit * 1.5;
-    line-height: $base-unit;
+    height: variables.$base-unit * 1.5;
+    line-height: variables.$base-unit;
     padding: 5px 10px;
     width: 100%;
 
-    @include screen-l {
+    @include mixins.screen-l {
       width: 72%;
     }
   }
@@ -156,7 +160,7 @@ form.default {
 }
 
 .nested-scope {
-  border: 1px solid $gray-medium;
+  border: 1px solid variables.$gray-medium;
   padding: 1% 2%;
   margin-bottom: 2%;
   .nested-scope-element {

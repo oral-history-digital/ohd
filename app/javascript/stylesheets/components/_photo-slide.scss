@@ -1,10 +1,13 @@
+@use "../mixins";
+@use "../variables";
+
 .PhotoSlide {
   align-items: center;
   min-width: 1px;
 
-  padding: $base-unit 0;
+  padding: variables.$base-unit 0;
 
-  @include screen-m {
+  @include mixins.screen-m {
     display: flex;
     height: 100vh;
     padding: 0;
@@ -17,7 +20,7 @@
   justify-content: center;
   align-items: flex-end;
 
-  @include screen-m {
+  @include mixins.screen-m {
     width: 50%;
   }
 }
@@ -29,7 +32,7 @@
   max-width: 100%;
   object-fit: contain;
 
-  @include screen-m {
+  @include mixins.screen-m {
     max-height: 85vh;
   }
 }
@@ -39,7 +42,7 @@
   flex-direction: column;
   justify-content: center;
 
-  @include screen-m {
+  @include mixins.screen-m {
     width: 50%;
   }
 }

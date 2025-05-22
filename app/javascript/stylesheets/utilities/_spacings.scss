@@ -1,3 +1,5 @@
+@use "../variables";
+
 /**
  * Spacing utility classes
  *
@@ -30,10 +32,10 @@ $spacing-properties: (
 
 $spacing-sizes: (
   '-none':  0,
-  '-small': 0.5 * $base-unit,
-  '-tiny': 0.25 * $base-unit,
-  null:       1 * $base-unit,
-  '-large':   2 * $base-unit,
+  '-small': 0.5 * variables.$base-unit,
+  '-tiny': 0.25 * variables.$base-unit,
+  null:       1 * variables.$base-unit,
+  '-large':   2 * variables.$base-unit,
 ) !default;
 
 @each $property, $property-namespace in $spacing-properties {

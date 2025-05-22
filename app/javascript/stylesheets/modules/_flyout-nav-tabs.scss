@@ -1,3 +1,6 @@
+@use "../mixins";
+@use "../variables";
+
 .flyout {
   list-style: none;
   margin: 40px 0 0 0;
@@ -7,31 +10,31 @@
 .flyout-search {
   margin: 0;
   padding: 0 20px;
-  @include screen-l {
+  @include mixins.screen-l {
     padding: 0 25px 0 20px;
   }
 }
 
 .flyout-search {
   .flyout-search-input {
-    background-color: $gray-paler;
-    border: 1px solid $gray-dark;
+    background-color: variables.$gray-paler;
+    border: 1px solid variables.$gray-dark;
     display: flex;
-    margin-bottom: $base-unit;
+    margin-bottom: variables.$base-unit;
 
-    @include screen-xs-m {
+    @include mixins.screen-xs-m {
       margin-bottom: 0;
     }
   }
 
   .search-input {
     flex-grow: 1;
-    line-height: $base-unit;
-    padding: (0.5 * $base-unit) 0 (0.5 * $base-unit) (0.5 * $base-unit);
+    line-height: variables.$base-unit;
+    padding: (0.5 * variables.$base-unit) 0 (0.5 * variables.$base-unit) (0.5 * variables.$base-unit);
   }
 
   .search-input:focus {
-    box-shadow: 0 0 0 $focus-radius $focus-color;
+    box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
   }
 
   ::placeholder {
@@ -43,12 +46,12 @@
   .search-button {
     cursor: pointer;
     color: var(--primary-color);
-    padding-left: 0.5 * $base-unit;
-    padding-right: 0.5 * $base-unit;
+    padding-left: 0.5 * variables.$base-unit;
+    padding-right: 0.5 * variables.$base-unit;
     text-align: right;
     transition: color 0.3s;
     &:hover {
-      color: $gray-light;
+      color: variables.$gray-light;
     }
   }
   .lonely-search-button {
@@ -56,14 +59,14 @@
     color: var(--primary-color);
     transition: color 0.3s;
     padding: 10px;
-    border-top: 1px solid $gray-dark;
-    border-bottom: 1px solid $gray-dark;
-    border-right: 1px solid $gray-dark;
-    background-color: $gray-paler;
+    border-top: 1px solid variables.$gray-dark;
+    border-bottom: 1px solid variables.$gray-dark;
+    border-right: 1px solid variables.$gray-dark;
+    background-color: variables.$gray-paler;
     text-align: middle;
     margin-bottom: 40px;
     &:hover {
-      color: $gray-light;
+      color: variables.$gray-light;
     }
   }
 }

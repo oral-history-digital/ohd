@@ -1,5 +1,7 @@
+@use "../variables";
+
 .Rule {
   margin: 0;
-  border-top: 1px solid $ui-background-color;
+  border-top: 1px solid variables.$ui-background-color;
   height: 1px;
 }

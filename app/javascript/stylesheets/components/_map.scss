@@ -1,7 +1,9 @@
+@use "../variables";
+
 .Map {
-  margin-bottom: $base-unit;
+  margin-bottom: variables.$base-unit;
   width: 100%;
-  z-index: $z-index-map;
+  z-index: variables.$z-index-map;
 }
 
 .Map .leaflet-overlay-pane {
@@ -14,10 +16,10 @@
 
 .Map--search {
   height: 66vh;
-  max-height: $base-unit * 30;
-  min-height: $base-unit * 10;
+  max-height: variables.$base-unit * 30;
+  min-height: variables.$base-unit * 10;
 }
 
 .Map--interview {
-  height: $base-unit * 14;
+  height: variables.$base-unit * 14;
 }

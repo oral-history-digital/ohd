@@ -1,14 +1,16 @@
+@use "../variables";
+
 .InterviewCard {
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   position: relative;
 }
 
 .InterviewCard-star {
   background-color: white !important;
-  color: $gray-dark;
+  color: variables.$gray-dark;
   opacity: 0.25;
   position: absolute;
-  transition: opacity $transition-duration;
+  transition: opacity variables.$transition-duration;
   z-index: 1;
 }
 
@@ -35,7 +37,7 @@
 }
 
 .InterviewCard-link:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .InterviewCard-image {
@@ -48,16 +50,16 @@
 .InterviewCard-image img {
   max-width: 100%;
   width: 100%;
-  transition: transform $transition-duration;
+  transition: transform variables.$transition-duration;
   transform: scale(1.05);
 };
 
 .InterviewCard-archive {
   align-items: center;
-  color: $gray-dark !important;
+  color: variables.$gray-dark !important;
   display: flex;
   font-size: 0.875rem !important;
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
   margin: 0 !important;
 }
 
@@ -86,7 +88,7 @@
 .InterviewCard-title {
   color: var(--primary-color) !important;
   font-size: 1rem !important;
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
   margin: 0 !important;
 }
 
@@ -97,13 +99,13 @@
 
 .InterviewCard-icon {
   align-items: center;
-  background-color: $ui-background-color;
+  background-color: variables.$ui-background-color;
   color: white;
   display: flex;
   height: 100%;
   justify-content: center;
   transform: scale(1.05);
-  transition: transform $transition-duration;
+  transition: transform variables.$transition-duration;
   width: 100%;
 }
 

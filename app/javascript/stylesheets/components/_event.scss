@@ -1,8 +1,10 @@
+@use "../variables";
+
 .Event {
-  background-color: $gray-lightest;
-  border: 1px solid $ui-background-color;
-  border-radius: $border-radius;
-  padding: 0 ($base-unit * 0.25);
+  background-color: variables.$gray-lightest;
+  border: 1px solid variables.$ui-background-color;
+  border-radius: variables.$border-radius;
+  padding: 0 (variables.$base-unit * 0.25);
 }
 
 .Event-category {
@@ -14,5 +16,5 @@
 }
 
 .Event-text--slight {
-  color: $ui-background-color;
+  color: variables.$ui-background-color;
 }

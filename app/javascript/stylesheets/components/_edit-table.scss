@@ -1,9 +1,11 @@
+@use "../variables";
+
 /**
  * 1. Why is it 28rem?? This is the non-sticky header height!?
  *    Maybe something to do with react-virtuoso virtual list.
  */
 
-$edit-table-row-height: 4 * $base-unit;
+$edit-table-row-height: 4 * variables.$base-unit;
 
 .EditTable {
 }
@@ -17,7 +19,7 @@ $edit-table-row-height: 4 * $base-unit;
 }
 
 .EditTable-row {
-  border-bottom: 1px solid $gray-pale;
+  border-bottom: 1px solid variables.$gray-pale;
   display: grid;
   height: $edit-table-row-height;
 }
@@ -31,7 +33,7 @@ $edit-table-row-height: 4 * $base-unit;
   height: $edit-table-row-height;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0.25 * $base-unit;
+  padding: 0.25 * variables.$base-unit;
 }
 
 .EditTable-cell.has-data {
@@ -45,7 +47,7 @@ $edit-table-row-height: 4 * $base-unit;
 .EditTable-cell textarea {
   border: none;
   display: block;
-  height: $edit-table-row-height - 0.5 * $base-unit;
+  height: $edit-table-row-height - 0.5 * variables.$base-unit;
   margin: 0;
   padding: 0;
   resize: none;
@@ -53,23 +55,23 @@ $edit-table-row-height: 4 * $base-unit;
 
 .EditTable-cell textarea,
 .EditTable-cell input {
-  font-family: $font-family;
+  font-family: variables.$font-family;
   font-size: 0.875rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   width: 100%;
 }
 
 .EditTable-button {
   background: transparent;
   border: none;
-  font-family: $font-family;
+  font-family: variables.$font-family;
   font-size: 0.875rem;
-  line-height: $base-unit;
-  margin: 0 $base-unit * 0.125;
+  line-height: variables.$base-unit;
+  margin: 0 variables.$base-unit * 0.125;
   outline: none;
   padding: 0;
 }
 
 .EditTable-button:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

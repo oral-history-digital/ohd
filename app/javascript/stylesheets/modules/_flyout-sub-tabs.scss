@@ -1,11 +1,15 @@
+@use "sass:color";
+@use "../mixins";
+@use "../variables";
+
 .flyout-sub-tabs-container {
   display: block;
   padding: 0 20px;
-  @include screen-l {
+  @include mixins.screen-l {
     padding: 0 40px 0 20px;
   }
   button.return-to-form {
-    color: $flyout-tab-title-text-color;
+    color: variables.$flyout-tab-title-text-color;
     background-color: var(--secondary-color);
     margin-bottom: 20px;
     padding: 10px;
@@ -13,8 +17,8 @@
 }
 
 .flyout-sub-tabs-label {
-  font-size: $font-size-large;
-  color: $gray-dark;
+  font-size: variables.$font-size-large;
+  color: variables.$gray-dark;
 }
 
 
@@ -26,7 +30,7 @@
 .flyout-radio-container {
   width: 100%;
   padding: 0;
-  font-size: $font-size-medium;
+  font-size: variables.$font-size-medium;
   color: var(--primary-color);
 
   input[type=checkbox].with-font {
@@ -41,7 +45,7 @@
   }
 
   input[type=checkbox].with-font:checked ~ label {
-    color: $gray-darker;
+    color: variables.$gray-darker;
     margin-right: 0;
   }
 }
@@ -57,23 +61,23 @@
 .wrapper-flyout {
   button.reset {
     align-items: center;
-    background-color: $gray-warm-dark;
+    background-color: variables.$gray-warm-dark;
     border: none;
     color: #fff;
     cursor: pointer;
     display: flex;
-    font-size: $font-size-large;
+    font-size: variables.$font-size-large;
     margin: 0 0 20px;
     outline: none;
     padding: 10px 15px;
     text-align: left;
-    transition: background-color $transition-duration;
+    transition: background-color variables.$transition-duration;
     width: 100%;
   }
 
   button.reset.active,
   button.reset:hover {
-    background-color: lighten($gray-warm-dark, 10%);
+    background-color: color.adjust(variables.$gray-warm-dark, $lightness: 10%);
   }
 
   button.reset > svg {
@@ -98,7 +102,7 @@
 
 .rc-slider-dot {
   border: 0 !important;
-  background-color: lighten($gray-warm, 20%) !important;
+  background-color: color.adjust(variables.$gray-warm, $lightness: 20%) !important;
 }
 
 .rc-slider-dot-active {
@@ -107,7 +111,7 @@
 }
 
 .rc-slider-rail {
-  background-color: lighten($gray-warm, 20%) !important;
+  background-color: color.adjust(variables.$gray-warm, $lightness: 20%) !important;
 }
 
 .rc-slider-tooltip {

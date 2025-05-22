@@ -1,4 +1,6 @@
-$slider-dot-size: $base-unit * 0.333333;
+@use "../variables";
+
+$slider-dot-size: variables.$base-unit * 0.333333;
 
 .Slider {
 
@@ -9,11 +11,11 @@ $slider-dot-size: $base-unit * 0.333333;
 }
 
 .Slider--thumbnail .slick-arrow {
-  color: $gray-dark;
+  color: variables.$gray-dark;
   position: absolute;
   bottom: -8px;
   top: auto;
-  z-index: $z-index-thumbnail-arrows;
+  z-index: variables.$z-index-thumbnail-arrows;
 }
 
 .Slider--thumbnail .slick-arrow::before {
@@ -41,14 +43,14 @@ $slider-dot-size: $base-unit * 0.333333;
 
 .Slider-dots > li {
   display: inline-block;
-  margin: 0 ($base-unit * 0.25);
+  margin: 0 (variables.$base-unit * 0.25);
 }
 
 .Slider-dots > li > button {
-  background-color: $gray-dark;
+  background-color: variables.$gray-dark;
   border-radius: 50%;
   border: none;
-  color: $gray-dark;
+  color: variables.$gray-dark;
   height: $slider-dot-size;
   padding: 0;
   text-indent: -1000em;
@@ -56,5 +58,5 @@ $slider-dot-size: $base-unit * 0.333333;
 }
 
 .Slider-dots > li.slick-active > button {
-  background-color: $gray-light;
+  background-color: variables.$gray-light;
 }

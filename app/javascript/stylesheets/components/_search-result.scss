@@ -1,8 +1,10 @@
+@use "../variables";
+
 .SearchResult {
   background: transparent;
   border: none;
   display: block;
-  font-family: $font-family;
+  font-family: variables.$font-family;
   max-width: 40rem;
   outline: none;
   padding: 0;
@@ -10,11 +12,11 @@
 }
 
 .SearchResult:not(:first-child) {
-  margin-top: $base-unit * 0.5;
+  margin-top: variables.$base-unit * 0.5;
 }
 
 .SearchResult:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .SearchResult-meta {
@@ -26,37 +28,37 @@
 .SearchResult-heading {
   font-size: 1rem !important;
   font-weight: bold;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
-  transition: background-color $transition-duration, color $transition-duration;
+  transition: background-color variables.$transition-duration, color variables.$transition-duration;
 }
 
 .SearchResult-text {
   font-size: 1rem !important;
-  transition: background-color $transition-duration, color $transition-duration;
+  transition: background-color variables.$transition-duration, color variables.$transition-duration;
 }
 
 .SearchResult-meta,
 .SearchResult-text {
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
   margin: 0 !important;
 }
 
 // Needed for annotation texts, which are wrapped in a <p> element.
 .SearchResult-text > p {
   font-size: 1rem !important;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
 }
 
 .SearchResult .highlight {
   padding: 0 4px;
   background-color: rgba(255,250,129,0.6);
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
 }
 
 .SearchResult.is-highlighted .SearchResult-text {
   background-color: rgba(255,250,129,0.5);
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
 }
 
 .SearchResult:hover .SearchResult-text {

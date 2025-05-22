@@ -1,3 +1,5 @@
+@use "../variables";
+
 .DescriptionList {
 }
 
@@ -8,6 +10,6 @@
 
 .DescriptionList > dd,
 .DescriptionList-description {
-  margin-bottom: $base-unit;
+  margin-bottom: variables.$base-unit;
   margin-left: 0;
 }

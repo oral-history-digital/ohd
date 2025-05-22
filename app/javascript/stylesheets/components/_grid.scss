@@ -1,3 +1,6 @@
+@use "../mixins";
+@use "../variables";
+
 /**
  * 1. minmax() is used because of Slick carousel.
  */
@@ -5,23 +8,23 @@
 .Grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr)); /* 1 */
-  grid-gap: $base-unit;
+  grid-gap: variables.$base-unit;
 
-  @include screen-s {
+  @include mixins.screen-s {
     grid-template-columns: repeat(2, minmax(0, 1fr)); /* 1 */
   }
 
-  @include screen-m {
+  @include mixins.screen-m {
     grid-template-columns: repeat(3, minmax(0, 1fr)); /* 1 */
   }
 }
 
 .Grid--2 {
-  @include screen-s {
+  @include mixins.screen-s {
     grid-template-columns: repeat(1, minmax(0, 1fr)); /* 1 */
   }
 
-  @include screen-m {
+  @include mixins.screen-m {
     grid-template-columns: repeat(2, minmax(0, 1fr)); /* 1 */
   }
 }

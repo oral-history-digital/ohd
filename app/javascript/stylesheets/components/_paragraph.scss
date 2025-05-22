@@ -1,4 +1,6 @@
+@use "../variables";
+
 .Paragraph {
   font-size: 1rem !important;
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
 }

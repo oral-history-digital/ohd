@@ -1,5 +1,7 @@
+@use "../variables";
+
 .Gallery {
-  background-color: $gray-dark;
+  background-color: variables.$gray-dark;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -27,19 +29,19 @@
   color: white;
   font-size: 1.5rem;
   opacity: 0;
-  transition: opacity $transition-duration;
+  transition: opacity variables.$transition-duration;
 }
 
 .Gallery-image {
   height: 100%;
   object-fit: cover;
   opacity: 1;
-  transition: opacity $transition-duration;
+  transition: opacity variables.$transition-duration;
   width: 100%;
 }
 
 .Gallery-button:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .Gallery-button:focus > .Gallery-icon,

@@ -1,9 +1,11 @@
+@use "../mixins";
+
 .logo-img {
   display: block;
   height: 3.5rem;
   max-width: 100%;
 
-  @include screen-m {
+  @include mixins.screen-m {
     height: 4.75rem;
   }
 }

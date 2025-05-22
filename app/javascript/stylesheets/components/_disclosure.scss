@@ -1,3 +1,5 @@
+@use "../variables";
+
 .Disclosure {
 }
 
@@ -7,9 +9,9 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-family: $font-family;
+  font-family: variables.$font-family;
   font-size: 1rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
   outline: none;
   padding: 0;
@@ -17,7 +19,7 @@
 }
 
 .Disclosure-toggle:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .Disclosure-icon {
@@ -27,14 +29,14 @@
 .Disclosure-title {
   display: inline-block;
   font-size: 1rem !important;
-  line-height: $base-unit;
-  margin: 0 0 0 ($base-unit * 0.333333) !important;
+  line-height: variables.$base-unit;
+  margin: 0 0 0 (variables.$base-unit * 0.333333) !important;
 }
 
 .Disclosure-content {
   display: none;
-  margin-left: $base-unit;
-  margin-top: $base-unit * 0.5;
+  margin-left: variables.$base-unit;
+  margin-top: variables.$base-unit * 0.5;
 }
 
 .Disclosure-content.is-expanded {

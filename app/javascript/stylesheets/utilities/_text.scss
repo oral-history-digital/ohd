@@ -1,3 +1,5 @@
+@use "../variables";
+
 /*
  * Text utilities
  */
@@ -27,19 +29,19 @@
 }
 
 .u-line-height {
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
 }
 
 .u-color-text {
-  color: $body-text-color !important;
+  color: variables.$body-text-color !important;
 }
 
 .u-color-ui {
-  color: $ui-background-color !important;
+  color: variables.$ui-background-color !important;
 }
 
 .u-color-attention {
-  color: $attention-color !important;
+  color: variables.$attention-color !important;
 }
 
 .u-color-primary {

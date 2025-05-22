@@ -1,3 +1,5 @@
+@use "../variables";
+
 /**
  * RegistryEntry component
  */
@@ -26,7 +28,7 @@
   cursor: pointer;
   flex-shrink: 0;
   margin-right: 8px;
-  width: $base-unit;
+  width: variables.$base-unit;
 }
 
 .RegistryEntry-label {

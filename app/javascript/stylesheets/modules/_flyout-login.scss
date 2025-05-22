@@ -1,22 +1,26 @@
+@use "sass:color";
+@use "../mixins";
+@use "../variables";
+
 
 .flyout-login-container {
   padding: 0 20px;
-  @include screen-l {
+  @include mixins.screen-l {
     padding: 0 40px 0 20px;
   }
   .logout, .change-to-admin-view {
     margin-left: 0;
     margin-bottom: 5px;
     width: 100%;
-    background-color: $ui-background-color;
+    background-color: variables.$ui-background-color;
     color: #fff;
     padding: 10px;
     border: none;
     text-align: center;
     cursor: pointer;
-		transition: background-color $transition-duration;
+		transition: background-color variables.$transition-duration;
     &:hover {
-      background-color: lighten($ui-background-color, 10%);
+      background-color: color.adjust(variables.$ui-background-color, $lightness: 10%);
     }
   }
   .info {
@@ -43,7 +47,7 @@ form.flyout-login {
 	vertical-align: top;
   width: 100%;
   // max-width: 200px;
-	height: $base-unit * 2;
+	height: variables.$base-unit * 2;
 
 	margin: 0 10px 0 0;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
@@ -135,7 +139,7 @@ form.flyout-login {
 /* Transition
 ========================== */
 .switch-label, .switch-handle {
-	transition: All $transition-duration ease;
+	transition: All variables.$transition-duration ease;
 }
 
 /* Switch Light
@@ -146,11 +150,11 @@ form.flyout-login {
 	background-image: none;
 }
 .switch-light .switch-label {
-	background-color: $ui-background-color;
+	background-color: variables.$ui-background-color;
 
   box-shadow: none;
   &:hover {
-    background-color: lighten($ui-background-color, 10%);
+    background-color: color.adjust(variables.$ui-background-color, $lightness: 10%);
   }
 }
 .switch-light .switch-label:after {

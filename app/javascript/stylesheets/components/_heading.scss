@@ -1,3 +1,5 @@
+@use "../variables";
+
 .Heading {
   align-items: flex-start;
   display: flex;
@@ -15,16 +17,16 @@
   cursor: pointer;
   display: flex;
   flex-grow: 1;
-  font-family: $font-family;
+  font-family: variables.$font-family;
   line-height: 1.5rem;
   outline: none;
   padding: 0;
   text-align: left;
-  transition: box-shadow $transition-duration;
+  transition: box-shadow variables.$transition-duration;
 }
 
 .Heading-main:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .Heading-main.is-active {
@@ -50,17 +52,17 @@
   padding: 0.25rem 0.5rem;
   position: absolute;
   top: 0;
-  transition: box-shadow $transition-duration;
+  transition: box-shadow variables.$transition-duration;
 }
 
 .Heading-chapter {
   letter-spacing: 0.1rem;
   min-width: 3rem;
-  transition: color $transition-duration;
+  transition: color variables.$transition-duration;
 }
 
 .Heading-heading {
-  transition: color $transition-duration;
+  transition: color variables.$transition-duration;
 }
 
 .Heading--main .Heading-chapter,
@@ -74,7 +76,7 @@
 }
 
 .Heading-timecode {
-  color: $gray-dark;
+  color: variables.$gray-dark;
   font-size: 0.75rem;
   margin-left: auto;
 }
@@ -89,5 +91,5 @@
 
 .Heading-toggle:focus {
   outline: none;
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

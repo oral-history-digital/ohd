@@ -1,3 +1,5 @@
+@use "../variables";
+
 .SearchSpinnerOverlay {
   position: relative;
 }
@@ -10,7 +12,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  z-index: $z-index-search-spinner-overlay;
+  z-index: variables.$z-index-search-spinner-overlay;
 }
 
 .SearchSpinnerOverlay.is-loading > .SearchSpinnerOverlay-outer {
@@ -28,7 +30,7 @@
 .SearchSpinnerOverlay-content {
   left: 50%;
   position: absolute;
-  top: min(max($base-unit * 6, 30vh), 50%);
+  top: min(max(variables.$base-unit * 6, 30vh), 50%);
   transform: translate(-50%, -50%);
 }
 

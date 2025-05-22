@@ -1,3 +1,6 @@
+@use "../mixins";
+@use "../variables";
+
 .Layout {
 
 }
@@ -13,22 +16,22 @@
 }
 
 .Layout-contentTabs {
-  background-color: $gray-lighter;
-  height: $base-unit * 2;
+  background-color: variables.$gray-lighter;
+  height: variables.$base-unit * 2;
   overflow: hidden;
-  z-index: $z-index-content-tabs;
+  z-index: variables.$z-index-content-tabs;
 }
 
 .wrapper-content {
-  padding: ($base-unit * 2) 5% ($base-unit * 2);
+  padding: (variables.$base-unit * 2) 5% (variables.$base-unit * 2);
 }
 
 .Layout.is-sticky {
   .wrapper-content {
-    margin-top: $media-player-height-mobile + $horizontal-tabs-height;
+    margin-top: variables.$media-player-height-mobile + variables.$horizontal-tabs-height;
 
-    @include screen-m {
-      margin-top: $media-player-height-desktop + $horizontal-tabs-height;
+    @include mixins.screen-m {
+      margin-top: variables.$media-player-height-desktop + variables.$horizontal-tabs-height;
     }
   }
 }
@@ -40,26 +43,26 @@
   right: 0;
   top: 0;
   width: 100%;
-  z-index: $z-index-sidebar;
+  z-index: variables.$z-index-sidebar;
 
-  @include screen-m {
+  @include mixins.screen-m {
     width: 44%;
   }
 
-  @include screen-l {
+  @include mixins.screen-l {
     width: 40%;
   }
 
-  @include screen-xl {
+  @include mixins.screen-xl {
     width: 36%;
   }
 }
 
 .Layout-sidebarToggle {
   position: fixed;
-  right: $base-unit;
-  top: $base-unit * 0.75;
-  z-index: $z-index-sidebar-toggle;
+  right: variables.$base-unit;
+  top: variables.$base-unit * 0.75;
+  z-index: variables.$z-index-sidebar-toggle;
 }
 
 .Layout.is-sticky .Layout-contentTabs {
@@ -78,7 +81,7 @@
 }
 
 .Layout.sidebar-is-visible > .Layout-page {
-  @include screen-xl {
+  @include mixins.screen-xl {
     width: 64%;
   }
 }
@@ -89,7 +92,7 @@
 
 .Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
 .Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
-  @include screen-xl {
+  @include mixins.screen-xl {
     right: 36%;
   }
 }

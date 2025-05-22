@@ -1,7 +1,9 @@
+@use "../variables";
+
 .UnorderedList {
   margin-bottom: 0;
   margin-top: 0;
-  padding-left: $base-unit;
+  padding-left: variables.$base-unit;
 }
 
 .UnorderedList--plain {

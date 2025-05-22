@@ -1,3 +1,5 @@
+@use "../variables";
+
 .SearchStats {
 
 }
@@ -5,7 +7,7 @@
 .SearchStats-heading {
   font-size: 1rem;
   font-weight: bold;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
 }
 

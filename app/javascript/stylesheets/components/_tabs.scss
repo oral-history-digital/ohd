@@ -1,19 +1,22 @@
+@use "../mixins";
+@use "../variables";
+
 .Tabs {
 }
 
 .Tabs-tabList {
   background: transparent;
-  height: $horizontal-tabs-height;
+  height: variables.$horizontal-tabs-height;
 }
 
 .Tabs-tab {
-  background-color: $gray-lighter;
-  border-bottom-color: $gray-lighter;
+  background-color: variables.$gray-lighter;
+  border-bottom-color: variables.$gray-lighter;
   border-bottom-style: solid;
-  border-bottom-width: $base-unit * 0.125 !important;
-  line-height: $base-unit;
+  border-bottom-width: variables.$base-unit * 0.125 !important;
+  line-height: variables.$base-unit;
   margin-right: 1px;
-  padding: 0 $base-unit;
+  padding: 0 variables.$base-unit;
 }
 
 .Tabs-tab[data-selected] {
@@ -27,11 +30,11 @@
 }
 
 .Tabs-tab:focus {
-  border-bottom-color: $focus-color;
+  border-bottom-color: variables.$focus-color;
 }
 
 .Tabs-tab:active {
-  background-color: $gray-lighter;
+  background-color: variables.$gray-lighter;
 }
 
 .Tabs-tab[data-selected]:active {
@@ -39,7 +42,7 @@
 }
 
 .Tabs-tabIcon {
-  @include screen-m {
+  @include mixins.screen-m {
     display: none;
   }
 }
@@ -47,7 +50,7 @@
 .Tabs-tabText {
   display: none;
 
-  @include screen-m {
+  @include mixins.screen-m {
     display: initial;
   }
 }

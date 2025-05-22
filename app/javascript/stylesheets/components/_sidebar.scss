@@ -1,18 +1,21 @@
+@use "../mixins";
+@use "../variables";
+
 .Sidebar {
-  background: $sidebar-background-color;
+  background: variables.$sidebar-background-color;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding-bottom: $base-unit * 2;
+  padding-bottom: variables.$base-unit * 2;
 
-  @include screen-m {
-    border-left: 1px solid $gray-light;
+  @include mixins.screen-m {
+    border-left: 1px solid variables.$gray-light;
     padding-right: 9px;
   }
 }
 
 .Sidebar-header {
   display: flex;
-  padding: $base-unit $base-unit $base-unit ($base-unit * 0.75);
+  padding: variables.$base-unit variables.$base-unit variables.$base-unit (variables.$base-unit * 0.75);
 }
 
 .Sidebar-title {

@@ -1,23 +1,26 @@
+@use "../mixins";
+@use "../variables";
+
 .MediaHeader {
   align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-bottom: $base-unit;
+  margin-bottom: variables.$base-unit;
 }
 
 .MediaHeader-title {
   color: #fff;
-  font-size: $font-size-heading-h1;
-  line-height: $line-height-heading-h1;
-  margin: 0 $base-unit 0 0;
+  font-size: variables.$font-size-heading-h1;
+  line-height: variables.$line-height-heading-h1;
+  margin: 0 variables.$base-unit 0 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  @include screen-m {
-    font-size: $font-size-heading-h1-large;
-    line-height: $line-height-heading-h1-large;
+  @include mixins.screen-m {
+    font-size: variables.$font-size-heading-h1-large;
+    line-height: variables.$line-height-heading-h1-large;
   }
 }
 
@@ -29,17 +32,17 @@
   align-items: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
-  margin: $base-unit 0 0 ($base-unit * 0.5);
-  margin-top: $base-unit;
+  margin: variables.$base-unit 0 0 (variables.$base-unit * 0.5);
+  margin-top: variables.$base-unit;
 
-  @include screen-m {
-    margin-left: $base-unit;
+  @include mixins.screen-m {
+    margin-left: variables.$base-unit;
   }
 }
 
 .Layout.is-sticky .MediaHeader-title {
-  font-size: $font-size-larger;
-  line-height: $base-unit;
+  font-size: variables.$font-size-larger;
+  line-height: variables.$base-unit;
   margin-right: 0;
 }
 

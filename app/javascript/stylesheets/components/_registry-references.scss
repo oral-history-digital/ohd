@@ -1,11 +1,13 @@
+@use "../variables";
+
 /**
  * RegistryReferences component
  */
 
 .RegistryReferences {
-  color: $gray-darkest;
-  font-size: $font-size-medium;
-  line-height: $line-height-medium;
+  color: variables.$gray-darkest;
+  font-size: variables.$font-size-medium;
+  line-height: variables.$line-height-medium;
 }
 
 .RegistryReferences-label {
@@ -25,5 +27,5 @@
   cursor: pointer;
   outline: none;
   padding: 0;
-  transition: $transition-duration;
+  transition: variables.$transition-duration;
 }

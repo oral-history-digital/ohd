@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../mixins";
+@use "../variables";
+
 .lightbox {
   /** Position and style */
   display: block;
@@ -8,36 +12,36 @@
   top: 0;
   left: 0;
   background: rgba(0,0,0,0.7);
-  z-index: $lightbox-z-index;
+  z-index: variables.$lightbox-z-index;
 
   &.hidden {
     display: none;
   }
   .close {
     position: absolute;
-    top: 0.25 * $base-unit;
-    right: 0.25 * $base-unit;
+    top: 0.25 * variables.$base-unit;
+    right: 0.25 * variables.$base-unit;
   }
 }
 
 .any-button {
-  background-color: $gray-warm-dark;
+  background-color: variables.$gray-warm-dark;
   border: none;
   color: #fff;
   cursor: pointer;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin-left: 0;
-  padding: $base-unit * 0.5;
+  padding: variables.$base-unit * 0.5;
   text-align: center;
-  transition: background-color $transition-duration;
+  transition: background-color variables.$transition-duration;
   width: 30%;
 
-  @include screen-m {
+  @include mixins.screen-m {
     margin-left: 28%;
   }
 
   &:hover {
-    background-color: lighten($gray-warm-dark, 10%);
+    background-color: color.adjust(variables.$gray-warm-dark, $lightness: 10%);
   }
 }
 
@@ -49,13 +53,13 @@
   padding: 35px 15px 5px 15px;
   position: relative;
   overflow: auto;
-  @include screen-m {
+  @include mixins.screen-m {
     width: 70%;
     height: 80%;
     margin: 10% auto;
     padding: 35px 30px 5px 30px;
   }
-  @include screen-xl {
+  @include mixins.screen-xl {
     width: 60%;
     height: 60%;
     //margin: 20% auto;
@@ -76,7 +80,7 @@
       //background-color: black;
       color: #fff;
       font-size: 1.5rem;
-      @include screen-m {
+      @include mixins.screen-m {
         width: 2em;
         height: 2rem;
         color: #fff;
@@ -103,13 +107,13 @@
   width: 100%;
   overflow: hidden;
   margin: 0 0 15px 0;
-  @include clearfix;
+  @include mixins.clearfix;
 }
 .popup-segment-nav-label {
   width: 100%;
   float: none;
   padding: 5px 0;
-  @include screen-l {
+  @include mixins.screen-l {
     width: 25%;
     float: left;
     padding-right: 10px;
@@ -121,8 +125,8 @@
   width: auto;
   padding: 0 10px;
   margin-top: 5px;
-  color: $gray-dark;
-  @include screen-l {
+  color: variables.$gray-dark;
+  @include mixins.screen-l {
     width: 72%;
   }
 }
@@ -132,9 +136,9 @@
   width: 100%;
   padding: 0;
   margin-top: 5px;
-  color: $gray-dark;
+  color: variables.$gray-dark;
   float: none;
-  @include screen-l {
+  @include mixins.screen-l {
     width: 72%;
     float: right;
   }
@@ -142,10 +146,10 @@
     color: var(--primary-color);
     cursor: pointer;
     &:hover {
-      color: $gray-dark;
+      color: variables.$gray-dark;
     }
     &.inactive {
-      color: $gray-dark;
+      color: variables.$gray-dark;
       cursor:default;
     }
   }
@@ -154,7 +158,7 @@
   margin-bottom: 10px;
   padding: 5px 10px;
   background-color: rgba(255,250,129,0.7);
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
 }
 .popup-segment-nav-befor {
   margin-right: 20px;
@@ -168,14 +172,14 @@ form.default label.publish-label {
   float: left;
   padding-right: 10px;
   margin-right: 0;
-  @include screen-l {
+  @include mixins.screen-l {
     width: 25%;
     margin-right: 3%;
   }
 }
 form.default input[type=checkbox].publish-input {
   width: 50%;
-  @include screen-l {
+  @include mixins.screen-l {
     width: auto;
   }
 }

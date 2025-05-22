@@ -1,4 +1,6 @@
+@use "../variables";
+
 .ErrorMessage {
-  border: 1px solid $warning-color;
-  padding: $base-unit;
+  border: 1px solid variables.$warning-color;
+  padding: variables.$base-unit;
 }

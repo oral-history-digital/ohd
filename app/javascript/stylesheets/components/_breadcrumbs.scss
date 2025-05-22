@@ -1,11 +1,13 @@
+@use "../variables";
+
 .Breadcrumbs {
-  color: $ui-background-color;
+  color: variables.$ui-background-color;
   font-size: 0.875rem;
 }
 
 .Breadcrumbs-separator {
-  padding-left: 0.25 * $base-unit;
-  padding-right: 0.25 * $base-unit;
+  padding-left: 0.25 * variables.$base-unit;
+  padding-right: 0.25 * variables.$base-unit;
 }
 
 .Breadcrumbs-lastItem {

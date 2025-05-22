@@ -1,3 +1,6 @@
+@use "../mixins";
+@use "../variables";
+
 /**
  * SiteHeader component
  */
@@ -6,12 +9,12 @@
   align-items: flex-start;
   background: #fff;
   display: flex;
-  height: $site-header-height-mobile;
+  height: variables.$site-header-height-mobile;
   overflow: hidden;
-  padding: ($base-unit * 0.5) 5%;
+  padding: (variables.$base-unit * 0.5) 5%;
 
-  @include screen-m {
-    height: $site-header-height-desktop;
+  @include mixins.screen-m {
+    height: variables.$site-header-height-desktop;
   }
 }
 
@@ -24,7 +27,7 @@
 
 .SiteHeader-link--collection {
   flex-shrink: 1;
-  max-width: 17.5 * $base-unit;
+  max-width: 17.5 * variables.$base-unit;
 }
 
 .SiteHeader-logo {
@@ -32,7 +35,7 @@
   max-width: 100%;
   vertical-align: bottom;
 
-  @include screen-m {
+  @include mixins.screen-m {
     max-height: 4.75rem;
   }
 }

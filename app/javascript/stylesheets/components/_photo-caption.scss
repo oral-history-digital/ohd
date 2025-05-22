@@ -1,22 +1,25 @@
+@use "../mixins";
+@use "../variables";
+
 .PhotoCaption {
   color: white;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   text-align: left;
 
-  @include screen-m {
-    margin-left: $base-unit;
+  @include mixins.screen-m {
+    margin-left: variables.$base-unit;
   }
 }
 
 .PhotoCaption-heading {
   color: inherit;
   font-size: 1.25rem;
-  line-height: $base-unit;
-  margin-bottom: $base-unit * 0.5;
-  margin-top: $base-unit;
+  line-height: variables.$base-unit;
+  margin-bottom: variables.$base-unit * 0.5;
+  margin-top: variables.$base-unit;
   max-width: 30rem;
 
-  @include screen-m {
+  @include mixins.screen-m {
     margin-top: 0;
   }
 }
@@ -27,7 +30,7 @@
   max-width: 30rem;
   padding-left: 0;
   font-size: 1rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
 }
 
 .PhotoCaption-listItem {

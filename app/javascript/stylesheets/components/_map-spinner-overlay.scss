@@ -1,3 +1,5 @@
+@use "../variables";
+
 .MapSpinnerOverlay {
   background-color: rgba(0, 0, 0, 0.4);
   bottom: 0;
@@ -5,7 +7,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  z-index: $z-index-map-spinner-overlay;
+  z-index: variables.$z-index-map-spinner-overlay;
 }
 
 .MapSpinnerOverlay-inner {

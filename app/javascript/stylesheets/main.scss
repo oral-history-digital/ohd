@@ -4,143 +4,144 @@
  */
 
 /* Variables and mixins */
-@import "variables";
-@import "mixins";
+@use "sass:meta";
+@use "variables";
+@use "mixins";
 
 /* Normalize */
-@import "normalize";
+@use "normalize";
 
 /* Vendors */
 $slick-loader-path: "~slick-carousel/slick/";
 $slick-font-path: "~slick-carousel/slick/fonts/";
-@import "~slick-carousel/slick/slick.scss";
-@import "~slick-carousel/slick/slick-theme.scss";
+@use "~slick-carousel/slick/slick.scss";
+@use "~slick-carousel/slick/slick-theme.scss";
 
 // Reach-ui
 [data-reach-dialog-overlay],
 [data-reach-menu-popover] {
-  z-index: $dialog-overlay-z-index;
+  z-index: variables.$dialog-overlay-z-index;
 }
 
 @import "react-dropdown-tree-select/dist/styles.css";
 
 /* Partials */
-@import "dev";
-@import "fonts";
-@import "structure";
-@import "content";
-@import "utils";
-@import "nav";
-@import "grid";
+@include meta.load-css("dev");
+@include meta.load-css("fonts");
+@include meta.load-css("structure");
+@include meta.load-css("content");
+@include meta.load-css("utils");
+@include meta.load-css("nav");
+@include meta.load-css("grid");
 
 /* Modules */
-@import "modules/header";
-@import "modules/content-tabs";
-@import "modules/flyout-sub-tabs";
-@import "modules/flyout-nav-tabs";
-@import "modules/flyout-login";
-@import "modules/accordion";
-@import "modules/popup";
-@import "modules/form-default";
+@include meta.load-css("modules/header");
+@include meta.load-css("modules/content-tabs");
+@include meta.load-css("modules/flyout-sub-tabs");
+@include meta.load-css("modules/flyout-nav-tabs");
+@include meta.load-css("modules/flyout-login");
+@include meta.load-css("modules/accordion");
+@include meta.load-css("modules/popup");
+@include meta.load-css("modules/form-default");
 
 /* Components */
-@import "components/archive-tile";
-@import "components/aspect-ratio";
-@import "components/back-to-top";
-@import "components/banner";
-@import "components/breadcrumbs";
-@import "components/burger-button";
-@import "components/button";
-@import "components/catalog-table";
-@import "components/checkbox";
-@import "components/color-picker";
-@import "components/container";
-@import "components/content-field";
-@import "components/contribution-list";
-@import "components/description-list";
-@import "components/detail-list";
-@import "components/disclosure";
-@import "components/edit-table-header";
-@import "components/edit-table";
-@import "components/error-message";
-@import "components/event";
-@import "components/facet";
-@import "components/features";
-@import "components/flow";
-@import "components/form-label";
-@import "components/form";
-@import "components/gallery";
-@import "components/grid";
-@import "components/heading";
-@import "components/help-text";
-@import "components/horizontal-list";
-@import "components/icon";
-@import "components/image";
-@import "components/input";
-@import "components/interview-card";
-@import "components/layout";
-@import "components/link";
-@import "components/loading-overlay";
-@import "components/locale-buttons";
-@import "components/map-filter";
-@import "components/map-popup";
-@import "components/map-spinner-overlay";
-@import "components/map";
-@import "components/media-controls";
-@import "components/media-element";
-@import "components/media-header";
-@import "components/media-missing";
-@import "components/media-object";
-@import "components/media-player";
-@import "components/media-preview";
-@import "components/modal";
-@import "components/pagination";
-@import "components/paragraph";
-@import "components/photo-admin-buttons";
-@import "components/photo-caption";
-@import "components/photo-modal";
-@import "components/photo-slide";
-@import "components/pixel-loader";
-@import "components/project-tile";
-@import "components/prominent-link";
-@import "components/registry-entry-list";
-@import "components/registry-entry";
-@import "components/registry-reference";
-@import "components/registry-references";
-@import "components/rule";
-@import "components/search-map";
-@import "components/search-result";
-@import "components/search-sorting";
-@import "components/search-spinner-overlay";
-@import "components/search-stats";
-@import "components/segment-popup";
-@import "components/segment";
-@import "components/sidebar-tabs";
-@import "components/sidebar";
-@import "components/site-header";
-@import "components/site";
-@import "components/slider";
-@import "components/sort-order-button";
-@import "components/spinner";
-@import "components/startpage";
-@import "components/state-button";
-@import "components/table";
-@import "components/tabs";
-@import "components/thumbnail-badge";
-@import "components/tree-select";
-@import "components/unordered-list";
-@import "components/workbook-entry";
-@import "components/wrapper-page";
+@include meta.load-css("components/archive-tile");
+@include meta.load-css("components/aspect-ratio");
+@include meta.load-css("components/back-to-top");
+@include meta.load-css("components/banner");
+@include meta.load-css("components/breadcrumbs");
+@include meta.load-css("components/burger-button");
+@include meta.load-css("components/button");
+@include meta.load-css("components/catalog-table");
+@include meta.load-css("components/checkbox");
+@include meta.load-css("components/color-picker");
+@include meta.load-css("components/container");
+@include meta.load-css("components/content-field");
+@include meta.load-css("components/contribution-list");
+@include meta.load-css("components/description-list");
+@include meta.load-css("components/detail-list");
+@include meta.load-css("components/disclosure");
+@include meta.load-css("components/edit-table-header");
+@include meta.load-css("components/edit-table");
+@include meta.load-css("components/error-message");
+@include meta.load-css("components/event");
+@include meta.load-css("components/facet");
+@include meta.load-css("components/features");
+@include meta.load-css("components/flow");
+@include meta.load-css("components/form-label");
+@include meta.load-css("components/form");
+@include meta.load-css("components/gallery");
+@include meta.load-css("components/grid");
+@include meta.load-css("components/heading");
+@include meta.load-css("components/help-text");
+@include meta.load-css("components/horizontal-list");
+@include meta.load-css("components/icon");
+@include meta.load-css("components/image");
+@include meta.load-css("components/input");
+@include meta.load-css("components/interview-card");
+@include meta.load-css("components/layout");
+@include meta.load-css("components/link");
+@include meta.load-css("components/loading-overlay");
+@include meta.load-css("components/locale-buttons");
+@include meta.load-css("components/map-filter");
+@include meta.load-css("components/map-popup");
+@include meta.load-css("components/map-spinner-overlay");
+@include meta.load-css("components/map");
+@include meta.load-css("components/media-controls");
+@include meta.load-css("components/media-element");
+@include meta.load-css("components/media-header");
+@include meta.load-css("components/media-missing");
+@include meta.load-css("components/media-object");
+@include meta.load-css("components/media-player");
+@include meta.load-css("components/media-preview");
+@include meta.load-css("components/modal");
+@include meta.load-css("components/pagination");
+@include meta.load-css("components/paragraph");
+@include meta.load-css("components/photo-admin-buttons");
+@include meta.load-css("components/photo-caption");
+@include meta.load-css("components/photo-modal");
+@include meta.load-css("components/photo-slide");
+@include meta.load-css("components/pixel-loader");
+@include meta.load-css("components/project-tile");
+@include meta.load-css("components/prominent-link");
+@include meta.load-css("components/registry-entry-list");
+@include meta.load-css("components/registry-entry");
+@include meta.load-css("components/registry-reference");
+@include meta.load-css("components/registry-references");
+@include meta.load-css("components/rule");
+@include meta.load-css("components/search-map");
+@include meta.load-css("components/search-result");
+@include meta.load-css("components/search-sorting");
+@include meta.load-css("components/search-spinner-overlay");
+@include meta.load-css("components/search-stats");
+@include meta.load-css("components/segment-popup");
+@include meta.load-css("components/segment");
+@include meta.load-css("components/sidebar-tabs");
+@include meta.load-css("components/sidebar");
+@include meta.load-css("components/site-header");
+@include meta.load-css("components/site");
+@include meta.load-css("components/slider");
+@include meta.load-css("components/sort-order-button");
+@include meta.load-css("components/spinner");
+@include meta.load-css("components/startpage");
+@include meta.load-css("components/state-button");
+@include meta.load-css("components/table");
+@include meta.load-css("components/tabs");
+@include meta.load-css("components/thumbnail-badge");
+@include meta.load-css("components/tree-select");
+@include meta.load-css("components/unordered-list");
+@include meta.load-css("components/workbook-entry");
+@include meta.load-css("components/wrapper-page");
 
 /* Vendor overwrites */
-@import "overwrites/reach-ui";
-@import "overwrites/react-rte";
-@import "overwrites/video-js";
+@include meta.load-css("overwrites/reach-ui");
+@include meta.load-css("overwrites/react-rte");
+@include meta.load-css("overwrites/video-js");
 
 /* Print */
-@import "print";
+@include meta.load-css("print");
 
 /* Utilities */
-@import "utilities/display";
-@import "utilities/spacings";
-@import "utilities/text";
+@include meta.load-css("utilities/display");
+@include meta.load-css("utilities/spacings");
+@include meta.load-css("utilities/text");

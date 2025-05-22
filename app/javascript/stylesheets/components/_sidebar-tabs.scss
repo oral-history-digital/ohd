@@ -1,3 +1,5 @@
+@use "../variables";
+
 /**
  * 1. Lines between tabs.
  */
@@ -7,17 +9,17 @@
 }
 
 .SidebarTabs-tab {
-  background-color: $ui-background-color;
-  border-left: ($base-unit * 0.25) solid $ui-background-color;
+  background-color: variables.$ui-background-color;
+  border-left: (variables.$base-unit * 0.25) solid variables.$ui-background-color;
   border-bottom: 0 !important;
-  box-shadow: 0 -1px 1px $sidebar-background-color;  /* 1 */
+  box-shadow: 0 -1px 1px variables.$sidebar-background-color;  /* 1 */
   color: white;
   font-size: 1.2rem;
-  line-height: $base-unit * 1.5;
+  line-height: variables.$base-unit * 1.5;
   outline: none;
-  padding: ($base-unit * 0.5) $base-unit ($base-unit * 0.5) ($base-unit * 0.75);
+  padding: (variables.$base-unit * 0.5) variables.$base-unit (variables.$base-unit * 0.5) (variables.$base-unit * 0.75);
   text-align: left;
-  transition-duration: $transition-duration;
+  transition-duration: variables.$transition-duration;
   transition-property: background-color, border-left-color;
 }
 
@@ -36,11 +38,11 @@
 }
 
 .SidebarTabs-tab:focus {
-    border-left-color: $focus-color;
+    border-left-color: variables.$focus-color;
 }
 
 .SidebarTabs-tab:active {
-    background-color: $ui-background-color;
+    background-color: variables.$ui-background-color;
 }
 
 .SidebarTabs-tab--admin:active {
@@ -53,7 +55,7 @@
 
 .SidebarTabs-title {
   font-size: 1.25rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
-  padding: ($base-unit * 0.5) 20px;
+  padding: (variables.$base-unit * 0.5) 20px;
 }

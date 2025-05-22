@@ -1,3 +1,5 @@
+@use "../variables";
+
 .ColorPicker {
   display: inline-block;
   width: 72%;
@@ -6,16 +8,16 @@
 .ColorPicker-swatch {
   border: none;
   border-radius: 0.25rem;
-  height: $base-unit;
+  height: variables.$base-unit;
   outline: none;
   padding: 0;
-  width: $base-unit;
+  width: variables.$base-unit;
 }
 
 .ColorPicker-picker {
-  margin-top: $base-unit * 0.5;
+  margin-top: variables.$base-unit * 0.5;
 }
 
 .ColorPicker-swatch:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

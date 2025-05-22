@@ -1,6 +1,8 @@
+@use "../variables";
+
 .Icon {
   font-size: 0.875rem;
-  transition: color $transition-duration;
+  transition: color variables.$transition-duration;
 }
 
 .Icon--small {
@@ -28,21 +30,21 @@
 }
 
 .Icon--danger {
-  color: $danger-color;
+  color: variables.$danger-color;
 }
 
 .Icon--attention {
-  color: $attention-color;
+  color: variables.$attention-color;
 }
 
 .Icon--warning {
-  color: $warning-color;
+  color: variables.$warning-color;
 }
 
 .Icon--text {
-  color: $gray-darkest;
+  color: variables.$gray-darkest;
 }
 
 .Icon--unobtrusive {
-  color: $gray-dark;
+  color: variables.$gray-dark;
 }

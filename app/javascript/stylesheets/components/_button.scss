@@ -1,14 +1,16 @@
-$button-border-width: $base-unit * 0.083333;
+@use "../variables";
+
+$button-border-width: variables.$base-unit * 0.083333;
 
 .Button {
   cursor: pointer;
-  font-family: $font-family;
-  line-height: $base-unit;
+  font-family: variables.$font-family;
+  line-height: variables.$base-unit;
   outline: none;
 }
 
 .Button:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .Button--transparent {
@@ -65,8 +67,8 @@ $button-border-width: $base-unit * 0.083333;
 .Button--primaryAction,
 .Button--secondaryAction {
   border: $button-border-width solid var(--primary-color) !important;
-  padding: ($base-unit * 0.5 - $button-border-width) ($base-unit - $button-border-width);
-  transition: filter $transition-duration !important;
+  padding: (variables.$base-unit * 0.5 - $button-border-width) (variables.$base-unit - $button-border-width);
+  transition: filter variables.$transition-duration !important;
   width: initial;
 }
 

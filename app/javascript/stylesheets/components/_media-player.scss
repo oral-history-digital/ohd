@@ -1,18 +1,21 @@
+@use "../mixins";
+@use "../variables";
+
 .MediaPlayer {
-  background: $gray-darker;
+  background: variables.$gray-darker;
   color: #fff;
   display: flex;
   flex-direction: column;
-  height: $media-player-height-mobile;
+  height: variables.$media-player-height-mobile;
   overflow-y: hidden;
-  padding: $base-unit 5%;
+  padding: variables.$base-unit 5%;
   position: relative;
-  z-index: $z-index-media-player;
+  z-index: variables.$z-index-media-player;
 
-  @include screen-m {
-    height: $media-player-height-desktop;
-    padding-bottom: $base-unit * 2;
-    padding-top: $base-unit * 1.5;
+  @include mixins.screen-m {
+    height: variables.$media-player-height-desktop;
+    padding-bottom: variables.$base-unit * 2;
+    padding-top: variables.$base-unit * 1.5;
   }
 }
 
@@ -25,7 +28,7 @@
 
 .Layout.is-sticky .MediaPlayer {
   flex-direction: row-reverse;
-  height: $media-player-height-sticky;
+  height: variables.$media-player-height-sticky;
   justify-content: flex-end;
   left: 0;
   padding: 0;

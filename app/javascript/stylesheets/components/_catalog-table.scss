@@ -1,3 +1,5 @@
+@use "../variables";
+
 /* Wrapper */
 
 .CatalogTable {
@@ -15,7 +17,7 @@
 /* Rows */
 
 .CatalogTable-row {
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
 }
 
 .CatalogTable-row:nth-child(even) {
@@ -23,7 +25,7 @@
 }
 
 .CatalogTable-row:nth-child(odd) {
-  background-color: $gray-lightest;
+  background-color: variables.$gray-lightest;
 }
 
 .CatalogTable-row--institution {
@@ -58,7 +60,7 @@
 
 .CatalogTable-header,
 .CatalogTable-cell {
-  padding: ($base-unit * 0.25) ($base-unit * 0.5);
+  padding: (variables.$base-unit * 0.25) (variables.$base-unit * 0.5);
 }
 
 .CatalogTable-cell--number {

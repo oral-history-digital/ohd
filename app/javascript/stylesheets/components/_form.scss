@@ -1,3 +1,5 @@
+@use "../variables";
+
 .Form {
 }
 
@@ -18,5 +20,5 @@
 
 .Form-footer > button:not(:first-child),
 .Form-footer > input:not(:first-child) {
-  margin-left: $base-unit * 0.5 !important;
+  margin-left: variables.$base-unit * 0.5 !important;
 }

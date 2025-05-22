@@ -1,3 +1,5 @@
+@use "../variables";
+
 .WorkbookEntry {
 
 }
@@ -5,7 +7,7 @@
 .WorkbookEntry-title {
   font-size: 1rem;
   font-weight: bold;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin-bottom: 0;
 }
 
@@ -20,13 +22,13 @@
 .WorkbookEntry-list dt,
 .WorkbookEntry-list dd {
   font-size: 0.875rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
 }
 
 .WorkbookEntry-list dt {
-  color: $ui-background-color;
-  margin-right: 0.25 * $base-unit;
+  color: variables.$ui-background-color;
+  margin-right: 0.25 * variables.$base-unit;
 }
 
 .WorkbookEntry-list dt:after {
@@ -35,7 +37,7 @@
 
 .WorkbookEntry-link {
   font-size: 0.875rem;
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
   margin: 0;
 }
 

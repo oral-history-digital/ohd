@@ -1,7 +1,9 @@
+@use "../variables";
+
 .Table {
   border-collapse: collapse;
-  margin-left: -0.5 * $base-unit;
-  margin-right: -0.5 * $base-unit;
+  margin-left: -0.5 * variables.$base-unit;
+  margin-right: -0.5 * variables.$base-unit;
 }
 
 .Table--searchResults {
@@ -17,7 +19,7 @@
 }
 
 .Table-body > .Table-row:nth-child(odd) {
-  background-color: $gray-lightest;
+  background-color: variables.$gray-lightest;
 }
 
 .Table-body > .Table-row:nth-child(even) {
@@ -27,6 +29,6 @@
 .Table-header,
 .Table-cell {
   font-size: 1rem;
-  line-height: $base-unit;
-  padding: ($base-unit * 0.25) ($base-unit * 0.5);
+  line-height: variables.$base-unit;
+  padding: (variables.$base-unit * 0.25) (variables.$base-unit * 0.5);
 }

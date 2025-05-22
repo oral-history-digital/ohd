@@ -1,3 +1,5 @@
+@use "../variables";
+
 /**
  * DetailList component
  *
@@ -7,10 +9,10 @@
  */
 
 .DetailList {
-  color: $gray-dark;
-  font-size: $font-size-medium;
+  color: variables.$gray-dark;
+  font-size: variables.$font-size-medium;
   hyphens: auto;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   list-style-type: none;
   margin: 0;
   padding-left: 0;
@@ -30,6 +32,6 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;  /* 1 */
   display: -webkit-box;
-  max-height: $base-unit * 3;  /* 2 */
+  max-height: variables.$base-unit * 3;  /* 2 */
   overflow: hidden;
 }

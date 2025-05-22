@@ -1,41 +1,43 @@
+@use "../variables";
+
 .SegmentPopup {
   max-width: 45rem;
 }
 
 .SegmentPopup-inner {
-  border: 2px solid $gray-lighter;
-  padding: $base-unit * 0.5;
+  border: 2px solid variables.$gray-lighter;
+  padding: variables.$base-unit * 0.5;
   margin-left: auto;
   width: 80%;
 }
 
 .SegmentPopup-glossary {
-  border-top: 1px solid $gray-lighter;
-  margin-top: $base-unit * 0.25;
-  padding-top: $base-unit * 0.5;
+  border-top: 1px solid variables.$gray-lighter;
+  margin-top: variables.$base-unit * 0.25;
+  padding-top: variables.$base-unit * 0.5;
   position: relative;
 }
 
 .SegmentPopup-collapse {
-  background-color: $gray-lightest;
-  color: $gray-dark;
+  background-color: variables.$gray-lightest;
+  color: variables.$gray-dark;
   position: absolute;
-  top: $base-unit * 0.5;
+  top: variables.$base-unit * 0.5;
   right: 0;
 }
 
 .SegmentPopup-collapse:hover {
-  background-color: $gray-lightest;
+  background-color: variables.$gray-lightest;
 }
 
 .SegmentPopup-term {
-  color: $gray-dark;
-  font-size: $font-size-large;
+  color: variables.$gray-dark;
+  font-size: variables.$font-size-large;
   font-weight: bold;
   letter-spacing: 0.05em;
 }
 
 .SegmentPopup-explanation {
-  color: $gray-dark;
-  margin-top: $base-unit * 0.5;
+  color: variables.$gray-dark;
+  margin-top: variables.$base-unit * 0.5;
 }

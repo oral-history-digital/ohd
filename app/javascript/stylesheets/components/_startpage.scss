@@ -1,13 +1,15 @@
+@use "../variables";
+
 .Startpage {
 
 }
 
 .Startpage-heading {
   font-size: 1.75rem;
-  line-height: $base-unit * 2;
+  line-height: variables.$base-unit * 2;
   text-transform: uppercase;
 }
 
 .Startpage-icon {
-  font-size: $base-unit * 2;
+  font-size: variables.$base-unit * 2;
 }

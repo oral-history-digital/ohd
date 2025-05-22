@@ -1,3 +1,5 @@
+@use "mixins";
+
 //
 // Grid system
 // --------------------------------------------------
@@ -48,7 +50,7 @@
   width: 7.5%;
 }
 
-@include screen-xs {
+@include mixins.screen-xs {
   .box {
     display: block;
     width: 100%;

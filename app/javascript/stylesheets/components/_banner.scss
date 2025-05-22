@@ -1,16 +1,19 @@
+@use "../mixins";
+@use "../variables";
+
 .Banner {
   align-items: center;
-  background-color: $banner-color;
+  background-color: variables.$banner-color;
   bottom: 0;
   display: flex;
   left: 0;
-  padding: $base-unit * 0.5;
+  padding: variables.$base-unit * 0.5;
   position: fixed;
   right: 0;
-  z-index: $z-index-banner;
+  z-index: variables.$z-index-banner;
 
-  @include screen-m {
-    padding: $base-unit;
+  @include mixins.screen-m {
+    padding: variables.$base-unit;
   }
 }
 

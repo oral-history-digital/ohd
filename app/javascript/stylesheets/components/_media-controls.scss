@@ -1,3 +1,6 @@
+@use "../mixins";
+@use "../variables";
+
 .MediaControls {
   display: flex;
 }
@@ -10,45 +13,45 @@
 }
 
 .Layout.is-sticky .MediaControls > * {
-  margin-top: $base-unit * 0.5;
+  margin-top: variables.$base-unit * 0.5;
 }
 
 .MediaControls-tapeSelector,
 .MediaControls-resolutionSelector {
-  margin-right: $base-unit * 0.5;
+  margin-right: variables.$base-unit * 0.5;
   font-family: FiraSans;
   font-size: 0.75rem;
   outline: none;
-  transition: box-shadow $transition-duration;
+  transition: box-shadow variables.$transition-duration;
 }
 
 .MediaControls-tapeSelector:focus,
 .MediaControls-resolutionSelector:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .MediaControls-bookmark,
 .MediaControls-annotation {
   color: #fff;
-  font-size: $font-size-large;
-  line-height: $line-height-large;
+  font-size: variables.$font-size-large;
+  line-height: variables.$line-height-large;
   cursor: pointer;
-  transition: $transition-duration;
+  transition: variables.$transition-duration;
 
-  @include screen-l {
-    font-size: $font-size-small;
-    line-height: $base-unit;
+  @include mixins.screen-l {
+    font-size: variables.$font-size-small;
+    line-height: variables.$base-unit;
   }
 
   span {
     display: none;
 
-    @include screen-l {
+    @include mixins.screen-l {
       display: inline-block;
     }
   }
 
   &:hover {
-    color: $gray-light;
+    color: variables.$gray-light;
   }
 }

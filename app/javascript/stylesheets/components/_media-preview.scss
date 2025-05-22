@@ -1,5 +1,7 @@
+@use "../variables";
+
 .MediaPreview {
-  margin-top: $base-unit;
+  margin-top: variables.$base-unit;
   padding: 0 5%;
 }
 
@@ -8,14 +10,14 @@
 }
 
 .MediaPreview-body {
-  margin-top: $base-unit;
+  margin-top: variables.$base-unit;
 }
 
 .MediaPreview-image {
-  max-width: $base-unit * 20;
+  max-width: variables.$base-unit * 20;
   width: 100%;
 }
 
 .MediaPreview-icon {
-  font-size: $base-unit * 3;
+  font-size: variables.$base-unit * 3;
 }

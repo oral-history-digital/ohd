@@ -1,6 +1,8 @@
+@use "../variables";
+
 .Input {
-  font-family: $font-family;
-  line-height: $base-unit;
+  font-family: variables.$font-family;
+  line-height: variables.$base-unit;
   outline: none;
 }
 
@@ -9,9 +11,9 @@
 }
 
 .Input:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .Input-clear {
-  margin-left: -$base-unit;
+  margin-left: -(variables.$base-unit);
 }

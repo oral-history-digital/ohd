@@ -1,37 +1,40 @@
+@use "../mixins";
+@use "../variables";
+
 /**
  * 1. Button height/width is $base-unit * 1.5
  * 2. Needed for correct height.
  */
 
-$back-to-top-margin: $base-unit;
+$back-to-top-margin: variables.$base-unit;
 
 .BackToTop {
   background-color: var(--primary-color);
-  border-radius: $border-radius;
+  border-radius: variables.$border-radius;
   border: none;
   bottom: $back-to-top-margin;
   color: white;
   display: block;
-  font-size: $base-unit * 0.75; /* 1 */
+  font-size: variables.$base-unit * 0.75; /* 1 */
   line-height: 1;
   opacity: 0;
   outline: none;
-  padding: $base-unit * 0.375; /* 1 */
+  padding: variables.$base-unit * 0.375; /* 1 */
   pointer-events: none;
   position: fixed;
   right: $back-to-top-margin;
-  transition: filter $transition-duration, opacity $transition-duration;
-  z-index: $z-index-back-to-top;
+  transition: filter variables.$transition-duration, opacity variables.$transition-duration;
+  z-index: variables.$z-index-back-to-top;
 
-  @include screen-m {
+  @include mixins.screen-m {
     right: calc(44% + #{$back-to-top-margin});
   }
 
-  @include screen-l {
+  @include mixins.screen-l {
     right: calc(40% + #{$back-to-top-margin});
   }
 
-  @include screen-xl {
+  @include mixins.screen-xl {
     right: calc(36% + #{$back-to-top-margin});
   }
 }
@@ -51,7 +54,7 @@ $back-to-top-margin: $base-unit;
 }
 
 .BackToTop:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }
 
 .BackToTop-icon {

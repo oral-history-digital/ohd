@@ -1,3 +1,5 @@
+@use "../variables";
+
 .PhotoModal-trigger {
 }
 
@@ -14,7 +16,7 @@
 .PhotoModal-close {
   background-color: transparent;
   border: none;
-  color: $gray-light;
+  color: variables.$gray-light;
   font-size: 1.5rem;
   line-height: 1;
   outline: none;
@@ -22,7 +24,7 @@
   position: absolute;
   right: 1rem;
   top: 1rem;
-  transition: box-shadow $transition-duration;
+  transition: box-shadow variables.$transition-duration;
 }
 
 .PhotoModal-icon {
@@ -31,5 +33,5 @@
 
 .PhotoModal-trigger:focus,
 .PhotoModal-close:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

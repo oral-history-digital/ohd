@@ -1,8 +1,11 @@
+@use "../mixins";
+@use "../variables";
+
 .Modal-trigger {
   background-color: transparent;
   border: none;
-  font-family: $font-family;
-  line-height: $base-unit;
+  font-family: variables.$font-family;
+  line-height: variables.$base-unit;
   outline: none;
   padding: 0 0.25rem;
 }
@@ -20,13 +23,13 @@
     cursor: pointer;
   }
 
-  @include screen-m {
+  @include mixins.screen-m {
     margin: 10vh auto;
     padding: 1.5rem;
     width: 70vw;
   }
 
-  @include screen-xl {
+  @include mixins.screen-xl {
     padding: 1.5rem;
     width: 60vw;
   }
@@ -62,5 +65,5 @@
 
 .Modal-trigger:focus,
 .Modal-close:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  box-shadow: 0 0 0 variables.$focus-radius variables.$focus-color;
 }

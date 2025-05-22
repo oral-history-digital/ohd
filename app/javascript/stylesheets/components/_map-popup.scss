@@ -1,53 +1,55 @@
+@use "../variables";
+
 /**
  * Natural height when just one reference is displayed.
  */
 
 .MapPopup {
-  font-family: $font-family;
-  max-height: $base-unit * 10;
-  min-height: $base-unit * 4;  /* 1 */
+  font-family: variables.$font-family;
+  max-height: variables.$base-unit * 10;
+  min-height: variables.$base-unit * 4;  /* 1 */
   overflow-y: auto;
   padding: 0;
-  width: $base-unit * 10;
+  width: variables.$base-unit * 10;
 }
 
 .MapPopup-heading {
   color: black;
   font-size: 1rem;
   font-weight: bold;
-  line-height: $base-unit;
-  margin: 0 0 ($base-unit * 0.5);
+  line-height: variables.$base-unit;
+  margin: 0 0 (variables.$base-unit * 0.5);
 }
 
 .MapPopup-subHeading {
   color: black;
   font-size: 1rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
 }
 
 .MapPopup-subSubHeading {
   background: none;
   font-size: 0.875rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
   margin: 0;
   padding: 0;
 }
 
 .MapPopup-list {
   list-style-type: none;
-  margin: 0 0 ($base-unit * 0.5);
+  margin: 0 0 (variables.$base-unit * 0.5);
   padding: 0;
 }
 
 .MapPopup-text {
   font-size: 0.875rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
 }
 
 .MapPopup-link {
   font-size: 0.875rem;
-  line-height: $base-unit;
+  line-height: variables.$base-unit;
 }
 
 .MapPopup-link--small {
@@ -71,7 +73,7 @@
   color: var(--primary-color) !important;
   cursor: pointer;
   font-size: 0.75rem;
-  line-height: $base-unit !important;
+  line-height: variables.$base-unit !important;
   margin: 0;
   outline: none;
   padding: 0;

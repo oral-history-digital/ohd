@@ -1,12 +1,14 @@
+@use "../variables";
+
 .BurgerButton {
     background-color: rgba(255, 255, 255, 0.8);
     border: none;
-    color: $gray-dark;
+    color: variables.$gray-dark;
     cursor: pointer;
-    font-size: $base-unit;
-    line-height: $base-unit;
+    font-size: variables.$base-unit;
+    line-height: variables.$base-unit;
     outline: none;
-    padding: $base-unit * 0.25;
+    padding: variables.$base-unit * 0.25;
 }
 
 .BurgerButton-icon {

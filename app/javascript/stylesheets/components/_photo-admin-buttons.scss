@@ -1,9 +1,12 @@
-.PhotoAdminButtons {
-  margin-top: $base-unit;
+@use "../mixins";
+@use "../variables";
 
-  @include screen-m {
-    margin-bottom: $base-unit;
-    margin-left: $base-unit;
+.PhotoAdminButtons {
+  margin-top: variables.$base-unit;
+
+  @include mixins.screen-m {
+    margin-bottom: variables.$base-unit;
+    margin-left: variables.$base-unit;
     margin-top: 0;
   }
 }
@@ -14,5 +17,5 @@
 }
 
 .PhotoAdminButtons-edit {
-  margin-right: $base-unit * 0.5;
+  margin-right: variables.$base-unit * 0.5;
 }

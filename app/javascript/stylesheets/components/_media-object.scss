@@ -1,3 +1,5 @@
+@use "../variables";
+
 .Media {
   display: flex;
 }
@@ -9,5 +11,5 @@
 
 .Media-body {
   flex-grow: 1;
-  margin-left: $base-unit;
+  margin-left: variables.$base-unit;
 }
