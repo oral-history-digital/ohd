@@ -127,6 +127,13 @@ For reindexing the search index, run:
 bin/rake sunspot:reindex
 ```
 
+## Solr configuration in production
+
+The Solr configuration is saved in *solr/configsets/sunspot/conf/schema.xml*
+Two changes two the original config file have been made so far:
+* charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters
+* GermanLightStemFilter for analyzing German language
+
 ## Tests
 
 See above for basic dependencies, then prepare the environment for
