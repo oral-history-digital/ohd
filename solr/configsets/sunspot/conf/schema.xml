@@ -65,7 +65,10 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.PorterStemFilterFactory"/>
+        <filter class="solr.HyphenationCompoundWordTokenFilterFactory" hyphenator="lang/de_DR.xml"
+          dictionary="lang/dictionary-de.txt" onlyLongestMatch="true" minSubwordSize="4"/>
+        <filter class="solr.GermanNormalizationFilterFactory"/>
+        <filter class="solr.GermanLightStemFilterFactory"/>
       </analyzer>
     </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->
