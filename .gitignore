@@ -37,3 +37,4 @@ solr/pids
 /.tool-versions
 .devcontainer/logs
 .devcontainer/db/*.sql.gz
+.directory
