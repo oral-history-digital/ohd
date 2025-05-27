@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { FaStepBackward, FaStepForward } from 'react-icons/fa';
+import { TbRewindBackward5, TbRewindForward5 } from 'react-icons/tb';
 import videojs from 'video.js';
 
 // Import the necessary Video.js components
@@ -41,7 +41,7 @@ class CustomForwardButton extends Button {
         const iconContainer = el.querySelector('.vjs-icon-placeholder') || el;
         if (iconContainer) {
             createRoot(iconContainer).render(
-                <FaStepForward style={{ fontSize: '.8rem' }} />
+                <TbRewindForward5 style={{ fontSize: '1.2rem' }} />
             );
         }
 
@@ -77,7 +77,7 @@ class CustomBackwardButton extends Button {
         const iconContainer = el.querySelector('.vjs-icon-placeholder') || el;
         if (iconContainer) {
             createRoot(iconContainer).render(
-                <FaStepBackward style={{ fontSize: '.8rem' }} />
+                <TbRewindBackward5 style={{ fontSize: '1.2rem' }} />
             );
         }
 
