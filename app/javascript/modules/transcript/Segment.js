@@ -37,7 +37,7 @@ function Segment({
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
     const playerSize = useSelector(getPlayerSize);
-    
+   
     // Calculate dynamic scroll offset based on player size
     const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * CSS_BASE_UNIT;
     const getScrollOffset = useCallback(() => {
@@ -54,46 +54,25 @@ function Segment({
         return playerHeight + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
     }, [SPACE_BEFORE_ACTIVE_ELEMENT, playerSize]);
 
+    // Handle scrolling to active segments for auto-scroll during playback and URL-based navigation
     useEffect(() => {
         // Checking for divEl.current is necessary because sometimes component returns null.
-        if (!divEl.current) {
-            return;
-        }
+        if (!divEl.current) return;
 
-        if (active && !segmentParam) {
+        // Determine if we should scroll based on different conditions
+        const shouldScrollForAutoPlay = autoScroll && active;
+        const shouldScrollForUrlParam = segmentParam === data.id;
+        const shouldScrollForInitialActive = active && !segmentParam && autoScroll;
+
+        if (shouldScrollForAutoPlay || shouldScrollForUrlParam || shouldScrollForInitialActive) {
             const topOfSegment = divEl.current.offsetTop;
 
-            // Quickfix for wrong offsetTop values.
-            if (topOfSegment === 0) {
-                return;
-            }
-
-            window.scrollTo(0, topOfSegment - getScrollOffset());
-        } else if (segmentParam === data.id) {
-            const topOfSegment = divEl.current.offsetTop;
-
-            // Quickfix for wrong offsetTop values.
-            if (topOfSegment === 0) {
-                return;
-            }
-
-            window.scrollTo(0, topOfSegment - getScrollOffset());
-        }
-    }, [active, data.id, getScrollOffset, playerSize, segmentParam]);
-
-    useEffect(() => {
-        // Checking for divEl.current is necessary because sometimes component returns null.
-        if (autoScroll && active && divEl.current) {
-            const topOfSegment = divEl.current.offsetTop;
-
-            // Quickfix for wrong offsetTop values.
-            if (topOfSegment === 0) {
-                return;
-            }
+            // If the segment is at the top of the page, no need to scroll
+            if (topOfSegment === 0) return;
 
             scrollSmoothlyTo(0, topOfSegment - getScrollOffset());
         }
-    }, [autoScroll, active, playerSize, getScrollOffset])
+    }, [autoScroll, active, data.id, getScrollOffset, playerSize, segmentParam]);
 
     const text = isAuthorized(data, 'update') ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
