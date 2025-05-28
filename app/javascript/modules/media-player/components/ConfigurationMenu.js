@@ -95,16 +95,20 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
     useEffect(() => {
         if (!player) return;
 
+        // Update selectedRate state when playback rate changes
         const onRate = () => setSelectedRate(player.playbackRate());
         player.on('ratechange', onRate);
 
+        // After certain player events, ensure custom controls are visible.
+        // setTimeout is used to defer the call until after the event completes.
         const afterEvt = () => setTimeout(handleControlVisibility, 0);
-        player.on('sourceset', afterEvt);
-        player.on('loadstart', afterEvt);
-        player.on('fullscreenchange', afterEvt);
+        player.on('sourceset', afterEvt); // When video sources change
+        player.on('loadstart', afterEvt); // When a new video starts loading
+        player.on('fullscreenchange', afterEvt); // When fullscreen mode changes
 
-        handleControlVisibility(); // initial call
+        handleControlVisibility(); // Ensure controls are visible on mount
 
+        // Cleanup: Remove all event listeners when component unmounts or player changes
         return () => {
             player.off('ratechange', onRate);
             player.off('sourceset', afterEvt);
