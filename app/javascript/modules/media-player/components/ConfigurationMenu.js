@@ -1,11 +1,14 @@
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import '@reach/menu-button/styles.css';
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsGearFill } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
 import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
+import getPlayerSources from '../getPlayerSources';
+import getQualityLabel from '../getQualityLabel';
+import manageControlVisibility from '../manageControlVisibility';
 
 function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
     const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -13,17 +16,17 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
     const [showQualitySubmenu, setShowQualitySubmenu] = useState(false);
     const [selectedRate, setSelectedRate] = useState(player.playbackRate());
 
+    // Initialize with player's current selected quality or a reasonable default
     const [selectedQuality, setSelectedQuality] = useState(() => {
-        if (player?.currentSources?.length) {
-            const src =
-                player.currentSources().find((s) => s.selected) ||
-                player.currentSources()[0];
-            return src.label || (src.height ? `${src.height}p` : qualities[0]);
+        const sources = player?.sources || [];
+        if (sources.length > 0) {
+            const currentSrc = sources.find((s) => s.selected) || sources[0];
+            return getQualityLabel(currentSrc);
         }
-        return qualities[0];
+        return '480p';
     });
 
-    /* ------------------ Refs ------------------ */
+    // ------------------ Refs ------------------
     const rateMenuItemRef = useRef(null);
     const qualityMenuItemRef = useRef(null);
     const allSourcesRef = useRef([]);
@@ -35,66 +38,86 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
         return translations[key] || key;
     };
 
-    /* Save sources when mounting */
+    // Initialize all sources once
     useEffect(() => {
-        if (player?.currentSources)
-            allSourcesRef.current = player.currentSources();
+        if (!player) return;
+
+        const sources = getPlayerSources(player);
+        if (sources.length > 0) {
+            allSourcesRef.current = sources;
+        }
+    }, [player]);
+
+    // Update quality display based on current selection
+    useEffect(() => {
+        if (!player) return;
+
+        const updateQualityDisplay = () => {
+            const sources = getPlayerSources(player);
+            if (sources.length > 0) {
+                // Update our source reference
+                allSourcesRef.current = sources;
+
+                const currentSrc =
+                    sources.find((s) => s.selected) || sources[0];
+                const newQuality = getQualityLabel(currentSrc);
+                setSelectedQuality(newQuality);
+            }
+        };
+
+        // Update immediately
+        updateQualityDisplay();
+
+        // Listen for source changes
+        player.on('sourceset', updateQualityDisplay);
+        player.on('loadstart', updateQualityDisplay);
+
+        return () => {
+            player.off('sourceset', updateQualityDisplay);
+            player.off('loadstart', updateQualityDisplay);
+        };
     }, [player]);
 
     const menuTimeout = useRef(null);
     const rateSubTimeout = useRef(null);
     const qualitySubTimeout = useRef(null);
 
-    /* Helper: Check if video is HLS/DASH */
+    // Helper: Check if video is HLS/DASH
     const isHls = () =>
         (player.currentSource().type || '').includes('mpegURL') || player.vhs;
 
-    /* Helper: Hide unwanted native controls */
-    const hideNativeControls = () => {
-        /* Native QualitySelector */
-        const nativeQS =
-            player.controlBar?.getChild('qualitySelector') ||
-            player.controlBar?.children_.find(
-                (c) => c?.constructor?.name === 'QualitySelector'
-            );
-        if (nativeQS && !player.isFullscreen()) nativeQS.hide();
+    // Wrapper for the control visibility manager
+    const handleControlVisibility = useCallback(() => {
+        manageControlVisibility(player);
+    }, [player]);
 
-        /* Native PlaybackRateMenuButton */
-        const nativePR =
-            player.controlBar?.getChild('playbackRateMenuButton') ||
-            player.controlBar?.children_.find(
-                (c) => c?.constructor?.name === 'PlaybackRateMenuButton'
-            );
-        if (nativePR && !player.isFullscreen()) nativePR.hide();
-
-        /* Ensure ConfigurationControl stays visible */
-        const cfg = player.controlBar?.getChild('ConfigurationControl');
-        if (cfg && !player.isFullscreen()) cfg.show();
-    };
-
-    /* Global event listeners */
+    // Global event listeners
     useEffect(() => {
         if (!player) return;
 
+        // Update selectedRate state when playback rate changes
         const onRate = () => setSelectedRate(player.playbackRate());
         player.on('ratechange', onRate);
 
-        const afterEvt = () => setTimeout(hideNativeControls, 0);
-        player.on('sourceset', afterEvt);
-        player.on('loadstart', afterEvt);
-        player.on('fullscreenchange', afterEvt);
+        // After certain player events, ensure custom controls are visible.
+        // setTimeout is used to defer the call until after the event completes.
+        const afterEvt = () => setTimeout(handleControlVisibility, 0);
+        player.on('sourceset', afterEvt); // When video sources change
+        player.on('loadstart', afterEvt); // When a new video starts loading
+        player.on('fullscreenchange', afterEvt); // When fullscreen mode changes
 
-        hideNativeControls(); // initial call
+        handleControlVisibility(); // Ensure controls are visible on mount
 
+        // Cleanup: Remove all event listeners when component unmounts or player changes
         return () => {
             player.off('ratechange', onRate);
             player.off('sourceset', afterEvt);
             player.off('loadstart', afterEvt);
             player.off('fullscreenchange', afterEvt);
         };
-    }, [player]);
+    }, [player, handleControlVisibility]);
 
-    /* Handler: Playback rate change */
+    // Handler: Playback rate change
     const handlePlaybackRate = (rate) => {
         player.playbackRate(rate);
         setSelectedRate(rate);
@@ -102,37 +125,43 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
         setIsMenuVisible(false);
     };
 
-    /* Handler: Quality selection */
+    // Handler: Quality selection
     const handleQualitySelect = (qualityLabel) => {
         if (!player) return;
 
-        /* ----- HLS/DASH ----- */
+        // ----- HLS/DASH -----
         if (isHls()) {
             const reps = player.vhs?.representations?.() || [];
             reps.forEach((r) => {
                 const wanted = qualityLabel.replace(/\D/g, '');
                 r.enabled(!wanted || String(r.height) === wanted);
             });
-            console.log(`[Quality] (HLS) → ${qualityLabel}`);
+            console.debug(`[Quality] (HLS) → ${qualityLabel}`);
         } else {
-            /* ----- Progressive MP4 ----- */
+            // ----- Progressive MP4 -----
             const all = allSourcesRef.current;
             const selected = all.find(
                 (s) => (s.label || `${s.height}p`) === qualityLabel
             );
             if (!selected) return;
 
-            const others = all.filter((s) => s !== selected);
             const time = player.currentTime();
             const wasPaused = player.paused();
 
-            console.log(`[Quality] (MP4) → ${qualityLabel}`);
+            console.debug(`[Quality] (MP4) → ${qualityLabel}`);
 
-            player.src([selected, ...others]);
+            // Update selected state in all sources to maintain native quality selector compatibility
+            const updatedSources = all.map((source) => ({
+                ...source,
+                selected: source === selected,
+            }));
+
+            // Update sources while preserving native quality selector state
+            player.src(updatedSources);
 
             /* When loading starts, hide native controls and big-play if video was playing */
             player.one('loadstart', () => {
-                setTimeout(hideNativeControls, 0);
+                setTimeout(handleControlVisibility, 0);
                 if (!wasPaused) player.getChild('BigPlayButton')?.hide();
             });
 
@@ -142,7 +171,7 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
             });
         }
 
-        /* Update UI & close menus */
+        // Update UI & close menus
         setSelectedQuality(qualityLabel);
         setTimeout(() => {
             setShowQualitySubmenu(false);
@@ -152,7 +181,7 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
         player.trigger('qualitySelected', { quality: qualityLabel });
     };
 
-    /* ------------------ Block Picture in Picture ------------------ */
+    // ------------------ Block Picture in Picture ------------------
 
     useEffect(() => {
         if (!player) return;
@@ -197,7 +226,7 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
         };
     }, [showRateSubmenu, showQualitySubmenu, player]);
 
-    /* Clear timeouts when unmounting */
+    // Clear timeouts when unmounting
     useEffect(
         () => () => {
             clearTimeout(menuTimeout.current);
@@ -207,7 +236,7 @@ function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
         []
     );
 
-    /* ------------------ UI ------------------ */
+    // ------------------ UI ------------------
     return (
         <div
             className="vjs-configuration-menu-container"
