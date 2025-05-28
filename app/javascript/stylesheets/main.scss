@@ -12,16 +12,16 @@
 @use "normalize";
 
 /* Vendors */
-$slick-loader-path: "~slick-carousel/slick/";
-$slick-font-path: "~slick-carousel/slick/fonts/";
-@use "~slick-carousel/slick/slick.scss";
-@use "~slick-carousel/slick/slick-theme.scss";
+@use "~slick-carousel/slick/slick.scss" with (
+  $slick-loader-path: "~slick-carousel/slick/",
+  $slick-font-path: "~slick-carousel/slick/fonts/"
+);
 
-// Reach-ui
-[data-reach-dialog-overlay],
-[data-reach-menu-popover] {
-  z-index: variables.$dialog-overlay-z-index;
-}
+@use "~slick-carousel/slick/slick-theme.scss" with (
+  $slick-loader-path: "~slick-carousel/slick/",
+  $slick-font-path: "~slick-carousel/slick/fonts/"
+);
+
 
 @import "react-dropdown-tree-select/dist/styles.css";
 

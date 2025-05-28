@@ -9,3 +9,8 @@
 [data-reach-listbox-popover] {
   z-index: variables.$z-index-listbox;
 }
+
+[data-reach-dialog-overlay],
+[data-reach-menu-popover] {
+  z-index: variables.$dialog-overlay-z-index;
+}
