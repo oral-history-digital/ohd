@@ -8,6 +8,7 @@ import { useTimeQueryString } from 'modules/query-string';
 import usePosterImage from '../usePosterImage';
 import mediaStreamsToSources from '../mediaStreamsToSources';
 import humanTimeToSeconds from '../humanTimeToSeconds';
+import getQualityLabel from '../getQualityLabel';
 import VideoJS from './VideoJS';
 import './configurationMenuPlugin.js';
 import './toggleSizeButtonPlugin.js';
@@ -323,11 +324,7 @@ export default function MediaElement({
 
         const qualities = player
             .currentSources()
-            .map(
-                (source) =>
-                    source.label ||
-                    (source.height ? `${source.height}p` : 'Default')
-            )
+            .map(getQualityLabel)
             .filter(Boolean);
 
         player.configurationMenuPlugin({
