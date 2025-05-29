@@ -12,11 +12,7 @@
 @use "normalize";
 
 /* Vendors */
-@use "~slick-carousel/slick/slick.scss" with (
-  $slick-loader-path: "~slick-carousel/slick/",
-  $slick-font-path: "~slick-carousel/slick/fonts/"
-);
-
+@use "~slick-carousel/slick/slick.scss";
 @use "~slick-carousel/slick/slick-theme.scss" with (
   $slick-loader-path: "~slick-carousel/slick/",
   $slick-font-path: "~slick-carousel/slick/fonts/"
