@@ -8,6 +8,7 @@ import { getCurrentProject, getProjects, Fetch,
 import { TableWithPagination, DateCell } from 'modules/tables';
 import useUsers from './useUsers';
 import UserRowActions from './UserRowActions';
+import UserRowInterviewPermissions from './UserRowInterviewPermissions';
 import ArchiveManagementInCell from './ArchiveManagementInCell';
 import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 import RolesCell from './RolesCell';
@@ -154,6 +155,13 @@ export default function UserTable() {
             header: t('modules.tables.actions'),
             accessorFn: getDataPath,
             cell: UserRowActions,
+        },
+        {
+            id: 'interviewPermissions',
+            enableSorting: false,
+            header: t('modules.tables.interviewPermissions'),
+            accessorFn: getDataPath,
+            cell: UserRowInterviewPermissions,
         }
     ]), [locale, project, dataPath]);
 
