@@ -227,7 +227,7 @@ class ApplicationController < ActionController::Base
       registryEntries: {},
       users: {
         query: {
-          'users.workflow_state': 'confirmed',
+          'users.workflow_state': 'afirmed',
           page: 1,
         },
       },
