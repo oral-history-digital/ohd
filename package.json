@@ -91,7 +91,7 @@
     "reselect": "^4.0.0",
     "sass": "1.77.6",
     "sass-loader": "^16.0.0",
-    "shakapacker": "^8.0.1",
+    "shakapacker": "8.0.2",
     "slick-carousel": "^1.8.1",
     "style-loader": "^4.0.0",
     "superagent": "^5.0.2",

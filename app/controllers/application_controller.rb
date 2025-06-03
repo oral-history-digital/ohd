@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -354,7 +354,7 @@ class ApplicationController < ActionController::Base
 
   def create_tmp_file(file)
     dir_path = File.join(Rails.root, 'tmp', 'files')
-    Dir.mkdir(dir_path) unless File.exists?(dir_path)
+    Dir.mkdir(dir_path) unless File.exist?(dir_path)
     file_path = File.join(dir_path, file.original_filename)
     File.open(file_path, 'wb') {|f| f.write(file.read) }
     file_path
