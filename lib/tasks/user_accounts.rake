@@ -6,7 +6,7 @@ namespace :user_accounts do
 
         file = args[:file] || ENV['file']
         raise 'No file argument specified (file=). Aborting.' if file.nil?
-        raise "No such file: #{file}. Try again." unless File.exists?(file)
+        raise "No such file: #{file}. Try again." unless File.exist?(file)
 
         puts 'KCODE: ' + (ENV['KCODE'] || 'none').to_s
         raise "Please set $KCODE to 'u' before importing" if ENV['KCODE'].nil? || ENV['KCODE'].downcase[/^u/].blank?
