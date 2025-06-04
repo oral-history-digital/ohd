@@ -5,7 +5,7 @@ module Project::Oai
   end
 
   def oai_locales
-    %w(de en)
+    available_locales
   end
 
   def oai_identifier
@@ -17,6 +17,10 @@ module Project::Oai
     oai_identifier
   end
 
+  def oai_catalog_identifier(locale)
+    "#{OHD_DOMAIN}/#{locale}/catalog/archives/#{id}"
+  end
+
   def oai_url_identifier(locale)
     "#{domain_with_optional_identifier}/#{locale}"
   end
@@ -26,21 +30,20 @@ module Project::Oai
   end
 
   def oai_contributor(locale)
-    institutions.map{|i| i.name(locale)}.join(", ")
+    institutions_with_ancestors_names(locale)
   end
 
   def oai_creator(locale)
-    institutions.where.not(parent_id: nil).first&.name(locale) ||
-      institutions.first&.name(locale)
+    institutions.first&.name(locale)
+    #root_institutions_names(locale)
   end
 
   def oai_publisher(locale)
-    institutions.where(parent_id: nil).first&.name(locale) ||
-      institutions.first&.name(locale)
+    root_institutions_names(locale)
   end
 
   def oai_publication_date
-    publication_date #created_at.strftime("%d.%m.%Y")
+    publication_date
   end
 
   def oai_type
@@ -63,20 +66,15 @@ module Project::Oai
   end
 
   def oai_languages
-    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code)
+    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
   end
 
   def oai_subject_registry_entry_ids
-    subjects_registry_entry = RegistryEntry.find 21898673
-    RegistryReference.where(
-      registry_entry_id: subjects_registry_entry.children.pluck(:id),
-      ref_object_id: interviews.pluck(:id),
-      ref_object_type: "Interview",
-    ).pluck(:registry_entry_id).uniq
+    ohd_subject_registry_entry_ids
   end
 
   def oai_abstract_description(locale)
-    ActionView::Base.full_sanitizer.sanitize(introduction(locale))
+    introduction(locale) ? ActionView::Base.full_sanitizer.sanitize(introduction(locale)) : ''
   end
   def oai_media_files_description(locale)
     TranslationValue.for('media_files', locale)

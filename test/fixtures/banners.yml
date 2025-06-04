@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message_en: MyString
+  message_de: MyString
+  active: false
+  start_date: 2025-04-23 16:01:16
+  end_date: 2025-04-23 16:01:16
+
+two:
+  message_en: MyString
+  message_de: MyString
+  active: false
+  start_date: 2025-04-23 16:01:16
+  end_date: 2025-04-23 16:01:16

@@ -73,6 +73,13 @@ export default function InterviewForm({
                 elementType: 'input',
             },
             {
+                attribute: 'publication_date',
+                value: interview?.publication_date,
+                elementType: 'input',
+                validate: function(v){return /^\d{4}$/.test(v)},
+                help: 'YYYY'
+            },
+            {
                 attribute: 'description',
                 value: interview?.description,
                 elementType: 'textarea',

@@ -26,6 +26,7 @@ $gray-warm-dark: #6b6b5e !default;
 $danger-color:  red;
 $attention-color: #0ebd15;
 $warning-color: orange;
+$banner-color: $warning-color;
 
 $flyout-tab-title-text-color: #fff !default;
 $ui-background-color: $gray-warm-dark;
@@ -47,8 +48,8 @@ $z-index-map:                    5;
 $z-index-search-spinner-overlay: 6;
 $z-index-listbox:                7;
 $z-index-sidebar:                7;  // Keep under 10 because of RichTextarea popup.
+$z-index-banner:                 8;
 $z-index-sidebar-toggle:         8;
-$z-index-warning:                8;
 $z-index-back-to-top:            9;
 $lightbox-z-index:            1000;
 $dialog-overlay-z-index:      1002;

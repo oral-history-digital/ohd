@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -17,8 +17,7 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
-import Warning from './Warning';
-import { warningShouldBeShown, doNotShowWarningAgain } from './warningFunctions';
+import { Banner, bannerHasNotBeenHiddenByUser, doNotShowBannerAgainThisSession } from 'modules/banner';
 import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
     CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
@@ -31,14 +30,13 @@ export default function Layout({
     children,
     toggleSidebar,
     loggedInAt,
-    collectionsStatus,
     projectsStatus,
-    languagesStatus,
+    bannerActive,
+    hideBanner,
     fetchData,
 }) {
-    const [warningVisible, setWarningVisible] = useState(warningShouldBeShown());
     const playerSize = useSelector(getPlayerSize);
-    const { project, projectId } = useProject();
+    const { project } = useProject();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -62,9 +60,9 @@ export default function Layout({
         }
     }
 
-    function handleWarningClose() {
-        setWarningVisible(false);
-        doNotShowWarningAgain();
+    function handleBannerClose() {
+        hideBanner();
+        doNotShowBannerAgainThisSession();
     }
 
     let titleBase = 'Oral-History.Digital';
@@ -125,7 +123,7 @@ export default function Layout({
                     fullscreen={!sidebarVisible}
                 />
 
-                {warningVisible && <Warning onClose={handleWarningClose}/>}
+                {bannerActive && bannerHasNotBeenHiddenByUser() && <Banner onClose={handleBannerClose}/>}
             </div>
         </ResizeWatcherContainer>
     );
@@ -134,14 +132,14 @@ export default function Layout({
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
     loggedInAt: PropTypes.number,
-    languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
-    collectionsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
+    bannerActive: PropTypes.bool.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
     toggleSidebar: PropTypes.func.isRequired,
+    hideBanner: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };
