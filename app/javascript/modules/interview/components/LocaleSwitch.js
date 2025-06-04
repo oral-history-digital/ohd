@@ -3,6 +3,9 @@ export default function LocaleSwitch({
     selected,
     setTranslationLocale,
 }) {
+    if (!alpha3s || alpha3s.length === 0)
+        return null;
+
     const links = alpha3s.map( a => (
         a === selected ?
             <b>{a}</b> :
