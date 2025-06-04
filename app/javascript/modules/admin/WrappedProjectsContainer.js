@@ -30,6 +30,11 @@ const mapStateToProps = (state) => {
                 validate: function(v){return /^[\-a-z0-9]{1,11}[a-z]$/.test(v)}
             },
             {
+                attribute: 'publication_date',
+                validate: function(v){return /^\d{4}$/.test(v)},
+                help: 'YYYY'
+            },
+            {
                 attribute: 'default_locale',
                 validate: function(v){return /^[a-z]{2}$/.test(v)}
             },

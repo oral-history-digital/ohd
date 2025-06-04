@@ -8,7 +8,10 @@ class CollectionSerializer < ApplicationSerializer
     :homepage,
     :notes,
     :responsibles,
-    :num_interviews
+    :num_interviews,
+    :subjects,
+    :levels_of_indexing
+
   attribute :linkable?, key: :is_linkable
 
   %w(name homepage notes responsibles).each do |m|
@@ -25,4 +28,11 @@ class CollectionSerializer < ApplicationSerializer
     object.publication_date || object.project.publication_date
   end
 
+  def subjects
+    object.ohd_subject_registry_entries
+  end
+
+  def levels_of_indexing
+    object.ohd_level_of_indexing_registry_entries
+  end
 end

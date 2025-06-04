@@ -1,24 +1,28 @@
-.Warning {
+.Banner {
   align-items: center;
-  background-color: $warning-color;
+  background-color: $banner-color;
   bottom: 0;
   display: flex;
   left: 0;
   padding: $base-unit * 0.5;
   position: fixed;
   right: 0;
-  z-index: $z-index-warning;
+  z-index: $z-index-banner;
 
   @include screen-m {
     padding: $base-unit;
   }
 }
 
-.Warning-body {
+.Banner-inner {
   flex-grow: 1;
 }
 
-.Warning-close {
+.Banner-close {
   flex-grow: 0;
   flex-shrink: 0;
+}
+
+.Banner-inner p {
+  margin-block: 0;
 }

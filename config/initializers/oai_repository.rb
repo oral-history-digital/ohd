@@ -59,30 +59,32 @@ OaiRepository.setup do |config|
          #description: 'Interviews'
        #},
        {
-         spec: 'class:project',
-         name: 'Interview-Archiv',
-         model: Interview,
-         description: 'Archiv'
-       },
-       {
-         spec: 'class:collection',
-         name: 'Interview-Sammlung',
-         model: Interview,
-         description: 'Sammlung'
-       },
-       {
-         spec: 'class:project',
+         spec: 'archives',
          name: 'Interview-Archive',
          model: Project,
          description: 'Archive'
        },
        {
-         spec: 'class:collection',
+         spec: 'collections',
          name: 'Interview-Sammlungen',
          model: Collection,
          description: 'Sammlungen'
        }
-    ]
+    ] + Project.shared.map do |project|
+      {
+        spec: "archive:#{project.shortname}",
+        name: project.name(:de),
+        model: Project,
+        description: project.oai_abstract_description(:de)
+      } 
+    end + Collection.all.map do |collection|
+      {
+        spec: "collection:#{collection.id}",
+        name: collection.name(:de),
+        model: Collection,
+        description: collection.oai_abstract_description(:de)
+      }
+    end
 
     # By default, an OAI repository must emit its records in OAI_DC (Dublin Core)
     # format. If you want to provide other output formats for your repository

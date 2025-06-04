@@ -8,7 +8,7 @@ module Collection::Oai
   end
 
   def oai_locales
-    %w(de en)
+    project.available_locales
   end
 
   def oai_identifier
@@ -23,8 +23,12 @@ module Collection::Oai
     oai_identifier
   end
 
-  def oai_url_identifier(locale)
-    "#{project.domain_with_optional_identifier}/#{locale}/catalog/collections/#{id}"
+  #def oai_url_identifier(locale)
+    #"#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
+  #end
+
+  def oai_catalog_identifier(locale)
+    "#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   end
 
   def oai_title(locale)
@@ -32,21 +36,20 @@ module Collection::Oai
   end
 
   def oai_contributor(locale)
-    project.institutions.map{|i| i.name(locale)}.join(", ")
+    project.institutions_with_ancestors_names(locale)
   end
 
   def oai_creator(locale)
-    project.institutions.where.not(parent_id: nil).first&.name(locale) ||
-      project.institutions.first&.name(locale)
+    project.institutions.first&.name(locale)
   end
 
   def oai_publisher(locale)
-    project.institutions.where(parent_id: nil).first&.name(locale) ||
-      project.institutions.first&.name(locale)
+    project.root_institutions_names(locale)
   end
 
   def oai_publication_date
-    publication_date || project.publication_date
+    (publication_date || project.publication_date) &&
+      Date.parse(publication_date || project.publication_date).strftime("%Y-%m-%d") rescue publication_date || project.publication_date
   end
 
   def oai_type
@@ -69,20 +72,15 @@ module Collection::Oai
   end
 
   def oai_languages
-    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code)
+    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
   end
 
   def oai_subject_registry_entry_ids
-    subjects_registry_entry = RegistryEntry.find 21898673
-    RegistryReference.where(
-      registry_entry_id: subjects_registry_entry.children.pluck(:id),
-      ref_object_id: interviews.pluck(:id),
-      ref_object_type: "Interview",
-    ).pluck(:registry_entry_id).uniq
+    ohd_subject_registry_entry_ids
   end
 
   def oai_abstract_description(locale)
-    ActionView::Base.full_sanitizer.sanitize(project.introduction(locale))
+    notes(locale) ? ActionView::Base.full_sanitizer.sanitize(notes(locale)) : ''
   end
   def oai_media_files_description(locale)
     TranslationValue.for('media_files', locale)

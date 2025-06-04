@@ -7,16 +7,32 @@ module Collection::OaiDatacite
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
         http://datacite.org/schema/kernel-4
-        http://schema.datacite.org/meta/kernel-4.1/metadata.xsd
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
-      xml.identifier do
-        xml.text! oai_identifier
+
+      xml.identifier identifierType: "URL" do
+        xml.text! oai_catalog_identifier(:de)
       end
 
-      oai_locales.each do |locale|
-        xml.alternateIdentifier "xml:lang": locale, identfierType: "URL" do
-          xml.text! oai_url_identifier(locale)
+      xml.alternateIdentifiers do
+        xml.alternateIdentifier alternateIdentifierType: "URL" do
+          xml.text! oai_catalog_identifier(:en)
+        end
+      end
+
+      xml.relatedIdentifiers do
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
+          xml.text! OHD_DOMAIN
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
+          xml.text! "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}"
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
+          xml.text! project.domain
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
+          xml.text! "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=collection:#{id}"
         end
       end
 
@@ -34,11 +50,7 @@ module Collection::OaiDatacite
         end
       end
 
-      oai_locales.each do |locale|
-        xml.publisher "xml:lang": locale do
-          xml.text! oai_publisher(locale)
-        end
-      end
+      xml.publisher oai_publisher(:de)
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -71,13 +83,11 @@ module Collection::OaiDatacite
         xml.size oai_size
       end
 
-      oai_languages.each do |language|
-        xml.language language
-      end
+      xml.language oai_languages
 
       xml.subjects do
         oai_subject_registry_entry_ids.each do |registry_entry_id|
-          oai_locales.each do |locale|
+          [:de, :en].each do |locale|
             xml.subject "xml:lang": locale do
               xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
             end
@@ -109,20 +119,14 @@ module Collection::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-      end
-
-      xml.relatedIdentifiers do
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! OHD_DOMAIN
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}"
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
-          xml.text! project.domain
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
-          xml.text! "https://portal.oral-history.digital/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=collection:#{id}"
+        [:de, :en].each do |locale|
+          xml.rights(
+            "xml:lang": locale,
+            rightsIdentifier: "CC-BY-4.0",
+            rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          ) do
+            xml.text! "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International"
+          end
         end
       end
 
@@ -131,6 +135,8 @@ module Collection::OaiDatacite
           xml.description "xml:lang": locale, descriptionType: "Abstract" do
             xml.text! oai_abstract_description(locale)
           end
+        end
+        oai_locales.each do |locale|
           xml.description "xml:lang": locale, descriptionType: "TechnicalInfo" do
             xml.text! oai_media_files_description(locale)
           end
@@ -144,7 +150,3 @@ module Collection::OaiDatacite
     xml.target!
   end
 end
-
-
-
-
