@@ -23,8 +23,12 @@ module Collection::Oai
     oai_identifier
   end
 
-  def oai_url_identifier(locale)
-    "#{project.domain_with_optional_identifier}/#{locale}/catalog/collections/#{id}"
+  #def oai_url_identifier(locale)
+    #"#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
+  #end
+
+  def oai_catalog_identifier(locale)
+    "#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   end
 
   def oai_title(locale)
@@ -36,7 +40,7 @@ module Collection::Oai
   end
 
   def oai_creator(locale)
-    project.root_institutions_names(locale)
+    project.institutions.first&.name(locale)
   end
 
   def oai_publisher(locale)
@@ -68,7 +72,7 @@ module Collection::Oai
   end
 
   def oai_languages
-    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code)
+    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
   end
 
   def oai_subject_registry_entry_ids
@@ -76,7 +80,7 @@ module Collection::Oai
   end
 
   def oai_abstract_description(locale)
-    ActionView::Base.full_sanitizer.sanitize(project.introduction(locale))
+    notes(locale) ? ActionView::Base.full_sanitizer.sanitize(notes(locale)) : ''
   end
   def oai_media_files_description(locale)
     TranslationValue.for('media_files', locale)
