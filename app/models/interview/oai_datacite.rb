@@ -10,19 +10,38 @@ module Interview::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
+      xml.identifier identifierType: "URL" do
+        xml.text! oai_url_identifier(:de)
+      end
+
       xml.alternateIdentifiers do
-        oai_locales.each do |locale|
-          xml.alternateIdentifier alternateIdentfierType: "URL" do
-            xml.text! oai_url_identifier(locale)
-          end
+        xml.alternateIdentifier alternateIdentifierType: "URL" do
+          xml.text! oai_url_identifier(:en)
         end
-        #xml.alternateIdentifier alternateIdentfierType: "DOI" do
-          #xml.text! oai_doi_identifier
+      end
+
+      #xml.alternateIdentifiers do
+        #oai_locales.each do |locale|
+          #xml.alternateIdentifier alternateIdentifierType: "URL" do
+            #xml.text! oai_url_identifier(locale)
+          #end
         #end
+        ##xml.alternateIdentifier alternateIdentifierType: "DOI" do
+          ##xml.text! oai_doi_identifier
+        ##end
+      #end
+
+      xml.relatedIdentifiers do
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
+          xml.text! "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}"
+        end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
+          xml.text! "#{OHD_DOMAIN}/de/catalog/collections/#{collection_id}"
+        end
       end
 
       xml.titles do
-        oai_locales.each do |locale|
+        [:de, :en].each do |locale|
           xml.title "xml:lang": locale do
             xml.text! oai_title(locale)
           end
@@ -94,7 +113,7 @@ module Interview::OaiDatacite
 
       xml.subjects do
         oai_subject_registry_entry_ids.each do |registry_entry_id|
-          oai_locales.each do |locale|
+          [:de, :en].each do |locale|
             xml.subject "xml:lang": locale do
               xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
             end
@@ -121,7 +140,7 @@ module Interview::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-        oai_locales.each do |locale|
+        [:de, :en].each do |locale|
           xml.rights(
             "xml:lang": locale,
             rightsIdentifier: "CC-BY-4.0",
@@ -129,15 +148,6 @@ module Interview::OaiDatacite
           ) do
             xml.text! "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International"
           end
-        end
-      end
-
-      xml.relatedIdentifiers do
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "https://portal.oral-history.digital/de/catalog/archives/#{project_id}"
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "https://portal.oral-history.digital/de/catalog/collections/#{collection_id}"
         end
       end
 
