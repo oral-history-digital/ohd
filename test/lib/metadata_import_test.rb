@@ -87,7 +87,7 @@ class MetadataImportTest < ActiveSupport::TestCase
     interview = Interview.last
     assert_equal "Deutsch", interview.language.name
     assert_equal "English", interview.primary_translation_language.name
-    assert_includes interview.languages, 'pol'
+    assert_includes interview.alpha3s, 'pol'
     assert_equal "05/03/20", interview.interview_date
     assert_equal "audio", interview.media_type
     assert_equal 9600, interview.duration

@@ -452,7 +452,7 @@ class Interview < ApplicationRecord
     interview_languages.where(spec: ['primary']).first&.language
   end
 
-  def lang
+  def alpha3
     language&.code
   end
 
@@ -460,26 +460,56 @@ class Interview < ApplicationRecord
     ISO_639.find(language&.code).try(:alpha2) || language&.code[0..1]
   end
 
-  def translation_lang
-    primary_translation_language&.code
+  def translation_language
+    primary_translation_language
+  end
+
+  def translation_alpha3
+    translation_language&.code
   end
 
   def translation_alpha2
     ISO_639.find(primary_translation_language&.code).try(:alpha2) || language&.code[0..1]
   end
 
-  def languages
-    result = interview_languages.map do |il|
+  def alpha3s
+    interview_languages.map do |il|
       il.language&.code
-    end
-    result.uniq
+    end.uniq
+  end
+
+  def alpha3s_with_transcript
+    alpha3s.select { |l| has_transcript?(l) }
+  end
+
+  def translation_alpha3s
+    interview_languages.where("spec like '%_translation'").map do |il|
+      il.language&.code
+    end.uniq
+  end
+
+  def has_transcript?(locale)
+    segment_count = segments
+      .joins(:translations)
+      .where('segment_translations.locale': "#{locale}-public")
+      .count
+    segment_count > 0
+  end
+
+  def has_heading?(locale)
+    heading_count = segments
+      .with_heading
+      .joins(:translations)
+      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
+      .count
+    heading_count > 0
   end
 
   def language_id
     [primary_language_id, secondary_language_id].compact
   end
 
-  %w(primary secondary primary_translation).each do |spec|
+  %w(primary secondary primary_translation secondary_translation).each do |spec|
     define_method "#{spec}_language" do
       interview_languages.where(spec: spec).first.try(:language)
     end
@@ -496,27 +526,6 @@ class Interview < ApplicationRecord
         l&.update(language_id: lid) || interview_languages.build(language_id: lid, spec: spec)
       end
     end
-  end
-
-  def has_transcript?(locale)
-    segment_count = segments
-      .joins(:translations)
-      .where('segment_translations.locale': "#{locale}-public")
-      .count
-    segment_count > 0
-  end
-
-  def languages_with_transcripts
-    languages.select { |l| has_transcript?(l) }
-  end
-
-  def has_heading?(locale)
-    heading_count = segments
-      .with_heading
-      .joins(:translations)
-      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
-      .count
-    heading_count > 0
   end
 
   def has_protocol?(locale)
@@ -555,12 +564,6 @@ class Interview < ApplicationRecord
       speakers << segment.speaker_designation
     end
     speakers.flatten.uniq.compact.reject{|s| s == false}
-  end
-
-  def transcript_locales
-    interview_languages.where(spec: ['primary', 'secondary']).map do |il|
-      il.language.code
-    end
   end
 
   def right_to_left
@@ -914,31 +917,29 @@ class Interview < ApplicationRecord
       tape_number
       timecode
       speaker_designation
-      text_orig
-      text_translated
+      transcript
     )
-    last_columns = %w(
+    registry_columns = %w(
       registry_references
-      annotations
-      annotations_translated
     )
+    translation_columns = translation_alpha3s.map{|alpha3| "translation_#{alpha3}"}
+    annotation_columns = alpha3s.map{|alpha3| "annotation_#{alpha3}"}
     heading_columns =  project.available_locales.map do |locale|
       alpha3 = ISO_639.find(locale).alpha3
       ["mainheading_#{alpha3}", "subheading_#{alpha3}"]
     end.flatten
-    first_columns + heading_columns + last_columns
+    first_columns + translation_columns + heading_columns + registry_columns + annotation_columns
   end
 
   def edit_table_headers(locale=:de)
-    translation_params = {
-      original_locale: lang,
-      translation_locale: translation_lang,
+    params = {
+      original_locale: alpha3,
     }
     edit_table_header_columns.inject({}) do |mem, column|
-      if column =~ /heading/
+      if column =~ /heading|translation|annotation/
         mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column.split('_')[0]}", locale) + " (#{column.split('_')[1]})"
       else
-        mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column}", locale, translation_params)
+        mem[column.to_sym] = TranslationValue.for("edit_column_header.#{column}", locale, params)
       end
       mem
     end

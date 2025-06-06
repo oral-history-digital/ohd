@@ -25,7 +25,7 @@ class CollectionSerializer < ApplicationSerializer
   end
 
   def publication_date
-    object.publication_date || object.project.publication_date
+    object.publication_date || object.project&.publication_date
   end
 
   def subjects
