@@ -35,9 +35,9 @@ export default function Interview({
         archiveId,
     });
 
-    // Do not render InterviewTabs component as long as interview.lang is absent.
+    // Do not render InterviewTabs component as long as interview.alpha3 is absent.
     // (Strangely, it sometimes becomes present only shortly after this component is rendered.)
-    if (!interviewIsFetched || typeof interview?.lang !== 'string') {
+    if (!interviewIsFetched || typeof interview?.alpha3 !== 'string') {
         return <Spinner withPadding />;
     }
 

@@ -11,5 +11,5 @@ function projectSupportsToc(project) {
 
 function tocAvailable(interview, locale) {
     const alpha3 = ALPHA2_TO_ALPHA3[locale];
-    return interview?.toc_locales.includes(alpha3);
+    return interview?.toc_alpha3s.includes(alpha3);
 }

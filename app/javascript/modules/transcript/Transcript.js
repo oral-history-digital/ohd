@@ -19,7 +19,6 @@ export default function Transcript({
     archiveId,
     transcriptFetched,
     transcriptLocale,
-    hasTranscript,
     originalLocale,
     loadSegments,
     mediaTime,
@@ -37,6 +36,7 @@ export default function Transcript({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const isEditor = useIsEditor();
+    const hasTranscript = interview.alpha3s_with_transcript.indexOf(transcriptLocale) > -1;
 
     const contributorInformation = useMemo(() => getContributorInformation(
         interview.contributions, people),
@@ -157,7 +157,6 @@ Transcript.propTypes = {
     interview: PropTypes.object.isRequired,
     intervieweeId: PropTypes.number,
     transcriptFetched: PropTypes.bool.isRequired,
-    hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
 };

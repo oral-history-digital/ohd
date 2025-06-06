@@ -35,7 +35,7 @@ export default function MarkTextForm({
                         {
                             elementType: 'select',
                             attribute: 'locale',
-                            values: interview.languages,
+                            values: interview.alpha3s,
                             withEmpty: true,
                             validate: function(v){return v !== ''},
                             individualErrorMsg: 'empty'
