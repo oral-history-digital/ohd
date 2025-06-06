@@ -106,7 +106,7 @@ class EditTableImport
         translations_attributes = []
         interview.alpha3s.each do |alpha3|
           translations_attributes << {
-            text: annotations_with_translations[alpha3].pop,
+            text: annotations_with_translations[alpha3]&.pop,
             locale: alpha3
           }
         end
