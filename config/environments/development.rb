@@ -8,6 +8,8 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  config.log_level = :debug
+
   # Enable server timing
   config.server_timing = true
 

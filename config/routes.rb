@@ -22,10 +22,13 @@ Rails.application.routes.draw do
   concern :archive do
     get "norm_data_api" => "registry_entries#norm_data_api"
     get "random_featured_interviews", to: "interviews#random_featured"
+    get "restricted_interviews", to: "interviews#restricted"
     resources :texts
     %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
       get page, to: "texts#show"
     end
+
+    resources :interview_permissions, only: [:create, :destroy]
 
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"

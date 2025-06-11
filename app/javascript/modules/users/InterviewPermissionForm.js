@@ -7,12 +7,12 @@ import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
 import { usePathBase } from 'modules/routes';
+import useRestrictedInterviews from './useRestrictedInterviews';
 
 export default function InterviewPermissionForm({
     data,
     dataPath,
     userId,
-    scope,
     locale,
     project,
     onSubmit,
@@ -21,37 +21,27 @@ export default function InterviewPermissionForm({
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
     const { t } = useI18n();
+    const { interviews } = useRestrictedInterviews();
 
-    const formElements = restrictedInterviews.map(interview => ({
+    if (!interviews) {
+        return null;
+    }
+
+    const formElements = interviews?.map(interview => ({
         elementType: 'input',
         attribute: 'interview_id',
         type: 'checkbox',
+        value: interview.id,
+        label: interview.title,
     }));
 
     return (
         <>
-            <Dialog aria-label='confirm-rm' isOpen={showConfirmDialog} onDismiss={close} className={'Modal-dialog'} >
-                <h2>{t('user.remove_permanently.confirmation.text')}</h2>
-                <div className="Form-footer u-mt">
-                    <input
-                        type="button"
-                        className="Button Button--secondaryAction"
-                        value={t('cancel')}
-                        onClick={() => setShowConfirmDialog(false)}
-                    />
-                    <input
-                        type="button"
-                        className="Button Button--primaryAction"
-                        value={'OK'}
-                        onClick={() => setShowConfirmDialog(false)}
-                    />
-                </div>
-            </Dialog>
             <Form
-                scope={scope}
+                scope={'interview_permission'}
                 onSubmit={ async (params) => {
                     mutateData( async users => {
-                        const result = await submitDataWithFetch(pathBase, {user_project: {mail_text: mailText, ...params.user_project}});
+                        const result = await submitDataWithFetch(pathBase, params);
                         const updatedDatum = result.data;
                         const userIndex = users.data.findIndex(u => u.id === userId);
 
@@ -72,7 +62,7 @@ export default function InterviewPermissionForm({
                         return { ...users, data: updatedUsers };
                     });
                 }}
-                values={{ id: data?.id }}
+                //values={{ id: data?.id }}
                 submitText='submit'
                 elements={formElements}
             />
