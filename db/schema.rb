@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_11_160617) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -87,7 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
-  create_table "banners", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "banners", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.text "message_en"
     t.text "message_de"
     t.boolean "active", default: false, null: false
@@ -508,6 +508,26 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_23_140116) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  end
+
+  create_table "pdf_translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "pdf_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.index ["locale"], name: "index_pdf_translations_on_locale"
+    t.index ["pdf_id"], name: "index_pdf_translations_on_pdf_id"
+  end
+
+  create_table "pdfs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "attachable_type"
+    t.bigint "attachable_id"
+    t.string "language", default: "", null: false
+    t.string "workflow_state", default: "unshared", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_pdfs_on_attachable"
   end
 
   create_table "people", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
