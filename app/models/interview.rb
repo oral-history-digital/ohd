@@ -77,6 +77,8 @@ class Interview < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
 
+  has_many :pdfs, as: :attachable
+
   has_and_belongs_to_many :archiving_batches
 
   serialize :properties
