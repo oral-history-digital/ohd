@@ -206,6 +206,7 @@ export default function FormComponent({
             values[props.attribute] :
             props.value;
         preparedProps.data = data;
+        preparedProps.accept = props.accept;
 
         // set defaults for the possibility to shorten elements list
         if (!props.elementType) {

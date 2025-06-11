@@ -525,6 +525,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
     t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
   end
 
+  create_table "pdf_translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "pdf_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.text "description"
+    t.index ["locale"], name: "index_pdf_translations_on_locale"
+    t.index ["pdf_id"], name: "index_pdf_translations_on_pdf_id"
+  end
+
+  create_table "pdfs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "attachable_type"
+    t.bigint "attachable_id"
+    t.string "workflow_state", default: "unshared", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_pdfs_on_attachable"
+  end
+
   create_table "people", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "date_of_birth", limit: 255
     t.string "gender", limit: 255

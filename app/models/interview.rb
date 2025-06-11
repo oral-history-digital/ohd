@@ -77,6 +77,8 @@ class Interview < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
 
+  has_many :pdfs, as: :attachable
+
   has_and_belongs_to_many :archiving_batches
 
   has_many :interview_permissions
@@ -339,7 +341,7 @@ class Interview < ApplicationRecord
   end
 
   def self.non_public_method_names
-    %w(title short_title description contributions photos registry_references transcript_coupled)
+    %w(title short_title description contributions photos pdfs registry_references transcript_coupled)
   end
 
   def tasks_user_ids
