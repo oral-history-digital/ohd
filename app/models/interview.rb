@@ -302,6 +302,7 @@ class Interview < ApplicationRecord
   handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   scope :shared, -> {where(workflow_state: 'public')}
+  scope :restricted, -> {where(workflow_state: 'restricted')}
   scope :with_media_type, -> {where.not(media_type: nil)}
 
   def project_access
