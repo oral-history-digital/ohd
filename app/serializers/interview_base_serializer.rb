@@ -34,6 +34,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :description,
     :links,
     :pseudo_links,
+    :material_count,
   ]
 
   def attributes(*args)
@@ -128,7 +129,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     (
       instance_options[:project_available_locales] ||
       object.project.available_locales
-    ).map do |l| 
+    ).map do |l|
       alpha3 = ISO_639.find(l).alpha3
       alpha3 if object.has_heading?(alpha3)
     end.compact
@@ -137,5 +138,4 @@ class InterviewBaseSerializer < ApplicationSerializer
   def language_id
     object.language&.id
   end
-
 end

@@ -6,6 +6,7 @@ class Collection < ApplicationRecord
   include OaiDatacite
 
   has_many :interviews
+  has_many :materials, as: :attachable
   belongs_to :project, touch: true
   belongs_to :institution, touch: true
 

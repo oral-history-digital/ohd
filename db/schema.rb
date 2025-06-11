@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -416,6 +416,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
     t.integer "order", default: 0, null: false
     t.bigint "project_id", null: false
     t.index ["project_id"], name: "index_map_sections_on_project_id"
+  end
+
+  create_table "material_translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "material_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.text "description"
+    t.index ["locale"], name: "index_material_translations_on_locale"
+    t.index ["material_id"], name: "index_material_translations_on_material_id"
+  end
+
+  create_table "materials", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "attachable_type"
+    t.bigint "attachable_id"
+    t.string "workflow_state", default: "unshared", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_materials_on_attachable"
   end
 
   create_table "media_streams", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
