@@ -1,5 +1,4 @@
 import { useSWRConfig } from 'swr';
-import { useSelector } from 'react-redux';
 
 import { usePathBase } from 'modules/routes';
 
