@@ -28,8 +28,6 @@ Rails.application.routes.draw do
       get page, to: "texts#show"
     end
 
-    resources :interview_permissions, only: [:create, :destroy]
-
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-access-config", to: "projects#edit_access_config"
@@ -142,6 +140,8 @@ Rails.application.routes.draw do
     resources :roles#, only: [:create, :update, :index]
     resources :role_permissions, only: [:create, :destroy]
     resources :permissions
+    resources :interview_permissions, only: [:create, :destroy]
+
 
     resources :tasks
     resources :task_types#, only: [:create, :update, :index]
