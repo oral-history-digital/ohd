@@ -479,11 +479,11 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.json do
         logged_in = current_user.present?
-        json = Rails.cache.fetch("#{current_project.shortname}-interview-restricted-#{logged_in}-#{current_project.updated_at}") do
+        json = Rails.cache.fetch("#{current_project.shortname}-interview-restricted-#{logged_in}-#{current_project.interviews.maximum(:updated_at)}") do
           data = restricted.inject({}) do |mem, interview|
             mem[interview.archive_id] = {
               id: interview.id,
-              title: interview.title(I18n.locale),
+              name: interview.title(I18n.locale),
             }
             mem
           end
