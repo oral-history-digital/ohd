@@ -2,13 +2,12 @@ class InterviewPermissionsController < ApplicationController
   before_action :set_interview_permission, only: [:destroy]
 
   def create
-    binding.pry
     authorize InterviewPermission
     @interview_permission = InterviewPermission.create interview_permission_params
 
     respond_to do |format|
       format.json do
-        render json: {id: @interview_permission.user_id, data_type: 'users', data: ::UserSerializer.new(user)}
+        render json: {id: @interview_permission.user_id, data_type: 'users', data: ::UserSerializer.new(@interview_permission.user)}
       end
     end
   end
