@@ -9,11 +9,18 @@ export default function UserRowActions({
 }) {
     const dataPath = getValue();
     return (
-        <RowActions
-            row={row}
-            dataPath={dataPath}
-            editComponent={InterviewPermissionForm}
-        />
+        <>
+            {row.original.interview_permissions.map((interviewPermission) => (
+                <span key={interviewPermission.id}>
+                    {interviewPermission.name}, &nbsp;
+                </span>
+            ))}
+            <RowActions
+                row={row}
+                dataPath={dataPath}
+                editComponent={InterviewPermissionForm}
+            />
+        </>
     );
 }
 

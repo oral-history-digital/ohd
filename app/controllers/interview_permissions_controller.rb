@@ -7,7 +7,7 @@ class InterviewPermissionsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: {id: @interview_permission.user_id, data_type: 'users', data: ::UserSerializer.new(@interview_permission.user)}
+        render json: data_json(@interview_permission.user, msg: 'processed')
       end
     end
   end
@@ -19,7 +19,7 @@ class InterviewPermissionsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: {id: user.id, data_type: 'users', data: ::UserSerializer.new(user)}
+        render json: data_json(user, msg: 'processed')
       end
     end
   end

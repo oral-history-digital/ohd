@@ -2,7 +2,6 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog } from '@reach/dialog';
 
-import { useI18n } from 'modules/i18n';
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
@@ -12,28 +11,23 @@ import useRestrictedInterviews from './useRestrictedInterviews';
 export default function InterviewPermissionForm({
     data,
     dataPath,
-    userId,
-    locale,
-    project,
     onSubmit,
 }) {
     const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
-    const { t } = useI18n();
     const { interviews } = useRestrictedInterviews();
 
     if (!interviews) {
         return null;
     }
 
-    const formElements = interviews?.map(interview => ({
-        elementType: 'input',
+    const formElements = [{
+        values: interviews,
+        elementType: 'select',
         attribute: 'interview_id',
-        type: 'checkbox',
-        value: interview.id,
-        label: interview.title,
-    }));
+        withEmpty: true,
+    }];
 
     return (
         <>
@@ -42,27 +36,29 @@ export default function InterviewPermissionForm({
                 onSubmit={ async (params) => {
                     mutateData( async users => {
                         const result = await submitDataWithFetch(pathBase, params);
-                        const updatedDatum = result.data;
-                        const userIndex = users.data.findIndex(u => u.id === userId);
+                        const updatedUser = result.data;
+                        const userIndex = users.data.findIndex(u => u.id === updatedUser.id);
+                        console.log('userIndex', userIndex);
+                        console.log('UserId', updatedUser.id);
 
-                        if (updatedDatum.id) {
-                            mutateDatum(userId, 'users');
+                        if (updatedUser.id) {
+                            mutateDatum(updatedUser.id, 'users');
                         }
 
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
 
-                        let updatedUsers;
-                        if (updatedDatum.workflow_state !== 'removed') {
-                            updatedUsers = [...users.data.slice(0, userIndex), updatedDatum, ...users.data.slice(userIndex + 1)];
-                        } else {
-                            updatedUsers = [...users.data.slice(0, userIndex), ...users.data.slice(userIndex + 1)];
+                        if (userIndex === -1) {
+                            console.error('User not found in the list');
+                            return users;
                         }
+
+                        const updatedUsers = [...users.data.slice(0, userIndex), updatedUser, ...users.data.slice(userIndex + 1)];
                         return { ...users, data: updatedUsers };
                     });
                 }}
-                //values={{ id: data?.id }}
+                values={{ user_id: data?.id }}
                 submitText='submit'
                 elements={formElements}
             />
@@ -72,8 +68,6 @@ export default function InterviewPermissionForm({
 
 InterviewPermissionForm.propTypes = {
     data: PropTypes.object,
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
 };
 

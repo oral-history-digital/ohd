@@ -1,6 +1,6 @@
 class InterviewPermission < ApplicationRecord
   belongs_to :interview
-  belongs_to :user
+  belongs_to :user, touch: true
 
   validates :interview_id, presence: true
   validates :user_id, presence: true
