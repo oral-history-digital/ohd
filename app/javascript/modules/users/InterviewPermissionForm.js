@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '@reach/dialog';
 
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
@@ -18,16 +17,39 @@ export default function InterviewPermissionForm({
     const pathBase = usePathBase();
     const { interviews } = useRestrictedInterviews();
 
+    const [checkedInterviewIds, setCheckedInterviewIds] = useState(data?.interview_permissions?.map(permission => permission.interview_id) || []);
+
     if (!interviews) {
         return null;
     }
 
-    const formElements = [{
-        values: interviews,
-        elementType: 'select',
-        attribute: 'interview_id',
-        withEmpty: true,
-    }];
+    //const formElements = [{
+        //values: interviews,
+        //elementType: 'select',
+        //attribute: 'interview_id',
+        //withEmpty: true,
+    //}];
+
+    const formElements = interviews?.map(interview => ({
+        elementType: 'input',
+        type: 'checkbox',
+        attribute: `interview_id[${interview.id}]`,
+        value: interview.id,
+        handlechangecallback: (name, value) => {
+            console.log('handleChangeCallback', name, value);
+            setCheckedInterviewIds(prev => {
+                if (value) {
+                    console.log('Adding interview ID:', interview.id);
+                    return [...prev, interview.id];
+                } else {
+                    console.log('Removing interview ID:', interview.id);
+                    return prev.filter(id => id !== interview.id);
+                }
+            });
+        },
+        value: data?.interview_permissions?.some(permission => permission.interview_id === interview.id ? interview.id : null) || false,
+        label: interview.name,
+    }));
 
     return (
         <>
@@ -35,11 +57,9 @@ export default function InterviewPermissionForm({
                 scope={'interview_permission'}
                 onSubmit={ async (params) => {
                     mutateData( async users => {
-                        const result = await submitDataWithFetch(pathBase, params);
+                        const result = await submitDataWithFetch(pathBase, {interview_permission: { user_id: data.id, interview_ids: checkedInterviewIds } })
                         const updatedUser = result.data;
                         const userIndex = users.data.findIndex(u => u.id === updatedUser.id);
-                        console.log('userIndex', userIndex);
-                        console.log('UserId', updatedUser.id);
 
                         if (updatedUser.id) {
                             mutateDatum(updatedUser.id, 'users');
