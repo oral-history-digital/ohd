@@ -21,24 +21,15 @@ export default function InterviewPermissionForm({
         data?.interview_permissions?.map(permission => permission.interview_id) || []
     );
 
-    const isChecked = (interviewId) => checkedInterviewIds.includes(interviewId);
-
     if (!interviews) {
         return null;
     }
-
-    //const formElements = [{
-        //values: interviews,
-        //elementType: 'select',
-        //attribute: 'interview_id',
-        //withEmpty: true,
-    //}];
 
     const formElements = [{
         elementType: 'input',
         type: 'checkbox',
         attribute: `all_interview_ids`,
-        value: false,
+        value: checkedInterviewIds.length === interviews.length,
         handlechangecallback: (name, value) => {
             setCheckedInterviewIds(value ? interviews.map(interview => interview.id) : []);
         },
@@ -47,18 +38,15 @@ export default function InterviewPermissionForm({
         type: 'checkbox',
         attribute: `interview_id[${interview.id}]`,
         handlechangecallback: (name, value) => {
-            console.log('handleChangeCallback', name, value);
             setCheckedInterviewIds(prev => {
                 if (value) {
-                    console.log('Adding interview ID:', interview.id);
                     return [...prev, interview.id];
                 } else {
-                    console.log('Removing interview ID:', interview.id);
                     return prev.filter(id => id !== interview.id);
                 }
             });
         },
-        value: isChecked(interview.id),
+        value: checkedInterviewIds.includes(interview.id),
         label: interview.name,
     })));
 
@@ -81,7 +69,6 @@ export default function InterviewPermissionForm({
                         }
 
                         if (userIndex === -1) {
-                            console.error('User not found in the list');
                             return users;
                         }
 
