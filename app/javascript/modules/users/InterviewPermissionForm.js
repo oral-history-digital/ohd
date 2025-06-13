@@ -17,7 +17,11 @@ export default function InterviewPermissionForm({
     const pathBase = usePathBase();
     const { interviews } = useRestrictedInterviews();
 
-    const [checkedInterviewIds, setCheckedInterviewIds] = useState(data?.interview_permissions?.map(permission => permission.interview_id) || []);
+    const [checkedInterviewIds, setCheckedInterviewIds] = useState(
+        data?.interview_permissions?.map(permission => permission.interview_id) || []
+    );
+
+    const isChecked = (interviewId) => checkedInterviewIds.includes(interviewId);
 
     if (!interviews) {
         return null;
@@ -30,11 +34,18 @@ export default function InterviewPermissionForm({
         //withEmpty: true,
     //}];
 
-    const formElements = interviews?.map(interview => ({
+    const formElements = [{
+        elementType: 'input',
+        type: 'checkbox',
+        attribute: `all_interview_ids`,
+        value: false,
+        handlechangecallback: (name, value) => {
+            setCheckedInterviewIds(value ? interviews.map(interview => interview.id) : []);
+        },
+    }].concat(interviews?.map(interview => ({
         elementType: 'input',
         type: 'checkbox',
         attribute: `interview_id[${interview.id}]`,
-        value: interview.id,
         handlechangecallback: (name, value) => {
             console.log('handleChangeCallback', name, value);
             setCheckedInterviewIds(prev => {
@@ -47,9 +58,9 @@ export default function InterviewPermissionForm({
                 }
             });
         },
-        value: data?.interview_permissions?.some(permission => permission.interview_id === interview.id ? interview.id : null) || false,
+        value: isChecked(interview.id),
         label: interview.name,
-    }));
+    })));
 
     return (
         <>
@@ -81,6 +92,7 @@ export default function InterviewPermissionForm({
                 values={{ user_id: data?.id }}
                 submitText='submit'
                 elements={formElements}
+                key={`interview-permission-form-${checkedInterviewIds.join('-')}`}
             />
         </>
     );
