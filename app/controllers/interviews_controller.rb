@@ -483,7 +483,7 @@ class InterviewsController < ApplicationController
           data = restricted.inject({}) do |mem, interview|
             mem[interview.archive_id] = {
               id: interview.id,
-              name: interview.title(I18n.locale),
+              name: interview.archive_id,
             }
             mem
           end

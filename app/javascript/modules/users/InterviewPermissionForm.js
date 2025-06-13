@@ -28,7 +28,7 @@ export default function InterviewPermissionForm({
     const formElements = [{
         elementType: 'input',
         type: 'checkbox',
-        attribute: `all_interview_ids`,
+        attribute: 'all',
         value: checkedInterviewIds.length === interviews.length,
         handlechangecallback: (name, value) => {
             setCheckedInterviewIds(value ? interviews.map(interview => interview.id) : []);
