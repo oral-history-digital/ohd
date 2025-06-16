@@ -64,7 +64,7 @@ group :development do
   # Automatic tests
   gem 'rails-erd'
   gem 'guard-spork'
-  gem 'capistrano', '~> 3.17.0'
+  gem 'capistrano', '~> 3.17.3'
   gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
