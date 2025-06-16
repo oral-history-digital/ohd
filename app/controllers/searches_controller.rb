@@ -201,7 +201,7 @@ class SearchesController < ApplicationController
       format.json do
         search = Interview.archive_search(current_user, current_project, locale, params)
         public_description = current_project.is_ohd? ? false : current_project.public_description?
-        search_results_metadata_fields = current_project.is_ohd? ? [] : current_project.search_results_metadata_fields
+        search_results_metadata_fields = current_project.search_results_metadata_fields
 
         render json: {
           result_pages_count: search.results.total_pages,
