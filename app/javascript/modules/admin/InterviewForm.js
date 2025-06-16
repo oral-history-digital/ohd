@@ -75,7 +75,6 @@ export default function InterviewForm({
             {
                 attribute: 'publication_date',
                 value: interview?.publication_date,
-                elementType: 'input',
                 validate: function(v){return /^\d{4}$/.test(v)},
                 help: 'YYYY'
             },
