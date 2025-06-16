@@ -524,7 +524,7 @@ DEPENDENCIES
   bcrypt_pbkdf
   bundler-audit (~> 0.9.1)
   byebug (~> 11.1)
-  capistrano (~> 3.17.0)
+  capistrano (~> 3.17.3)
   capistrano-passenger
   capistrano-rails
   capistrano-rbenv
