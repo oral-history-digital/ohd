@@ -1,0 +1,38 @@
+{
+    "name": "Oral History Digital Dev Container",
+
+    // point at your Compose file(s)
+    "dockerComposeFile": ["docker-compose.yml"],
+    "service": "app",
+    "workspaceFolder": "/workspace",
+
+    // user inside the container
+    "remoteUser": "root",
+
+    // lifecycle hooks
+    "postCreateCommand": "bash .devcontainer/scripts/setup.sh",
+    "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
+
+    // ports to forward
+    "forwardPorts": [3000, 8983, 3035],
+
+    // VS Code client customizations
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "ruby.useBundler": true,
+                "ruby.useLanguageServer": true,
+                "ruby.lint": { "rubocop": true }
+            },
+            "extensions": [
+                "rebornix.ruby",
+                "wingrunr21.vscode-ruby",
+                "castwide.solargraph",
+                "ms-azuretools.vscode-docker",
+                "dbaeumer.vscode-eslint",
+                "github.copilot"
+            ]
+        }
+    }
+}

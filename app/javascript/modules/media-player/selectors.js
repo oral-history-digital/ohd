@@ -20,3 +20,5 @@ export const getIsIdle = createSelector(
 export const getTimeChangeRequest = state => getState(state).timeChangeRequest;
 
 export const getTimeChangeRequestAvailable = state => getTimeChangeRequest(state) !== null;
+
+export const getPlayerSize = state => getState(state).playerSize;

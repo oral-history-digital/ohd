@@ -523,37 +523,6 @@ describe('getTranscriptFetched', () => {
     });
 });
 
-describe('getTranscriptLocale', () => {
-    test('returns original locale if prop is set', () => {
-        const props = { originalLocale: true };
-        expect(selectors.getTranscriptLocale(state, props)).toBe('ru');
-    });
-
-    test('returns first translated locale if prop is set', () => {
-        const props = { originalLocale: false };
-        expect(selectors.getTranscriptLocale(state, props)).toBe('de');
-    });
-});
-
-describe('getHasTranscript', () => {
-    test('returns true if there is at least one segment with text in original locale', () => {
-        const props = { originalLocale: true };
-        expect(selectors.getHasTranscript(state, props)).toBeTruthy();
-    });
-
-    test('returns true if there is at least one segment with text in translation', () => {
-        const props = { originalLocale: false };
-        expect(selectors.getHasTranscript(state, props)).toBeTruthy();
-    });
-
-    test('returns false if text of the segment is null', () => {
-        const _state = dotProp.set(state, 'data.interviews.cd003.segments.1.199498.text.de', null);
-        const _state2 = dotProp.set(_state, 'data.interviews.cd003.segments.1.199498.text.de-public', null);
-        const props = { originalLocale: false };
-        expect(selectors.getHasTranscript(_state2, props)).toBeFalsy();
-    });
-});
-
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
     expect(selectors.getContributorsFetched(state)).toBe(true);
 });

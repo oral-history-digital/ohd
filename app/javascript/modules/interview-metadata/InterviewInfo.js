@@ -96,7 +96,7 @@ export default function InterviewInfo({
                 value={t(`boolean_value.${interview.transcript_coupled}`)}
                 hideEmpty
             />
-            { ['primary_language_id', 'secondary_language_id', 'primary_translation_language_id'].map((attribute) => (
+            { ['primary_language_id', 'secondary_language_id', 'primary_translation_language_id', 'secondary_translation_language_id'].map((attribute) => (
                 <SingleValueWithFormContainer
                     elementType={'select'}
                     obj={interview}

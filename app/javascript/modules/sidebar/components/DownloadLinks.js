@@ -11,45 +11,27 @@ export default function DownloadLinks({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const translationLocale = interview.translation_locale;
-    const hasTranscript = interview.transcript_locales?.indexOf(interview.lang) > -1;
-    const hasTranslation = interview.transcript_locales?.indexOf(translationLocale) > -1;
+    const hasTranscript = interview.alpha3s_with_transcript.length > 0;
 
     return (
         <div>
             <ul className="UnorderedList">
-                {hasTranscript && (
-                    <LinksForTapes
-                        archiveId={archiveId}
-                        numTapes={numTapes}
-                        locale={interview.lang}
-                        format="csv"
-                    />
-                )}
-                {hasTranscript && (
-                    <LinksForTapes
-                        archiveId={archiveId}
-                        numTapes={numTapes}
-                        locale={interview.lang}
-                        format="vtt"
-                    />
-                )}
-                {hasTranslation && translationLocale && (
-                    <LinksForTapes
-                        archiveId={archiveId}
-                        numTapes={numTapes}
-                        locale={translationLocale}
-                        format="csv"
-                    />
-                )}
-                {hasTranslation && translationLocale && (
-                    <LinksForTapes
-                        archiveId={archiveId}
-                        numTapes={numTapes}
-                        locale={translationLocale}
-                        format="vtt"
-                    />
-                )}
+                { interview.alpha3s_with_transcript.map((locale) => (
+                    <>
+                        <LinksForTapes
+                            archiveId={archiveId}
+                            numTapes={numTapes}
+                            locale={interview.alpha3}
+                            format="csv"
+                        />
+                        <LinksForTapes
+                            archiveId={archiveId}
+                            numTapes={numTapes}
+                            locale={interview.alpha3}
+                            format="vtt"
+                        />
+                    </>
+                )) }
                 { hasTranscript && dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, `${t('edit_table')} ${t('all_tapes')} (csv)`) }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, `${t('photos')} (${t('workflow_states.all')})`) }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip?only_public=true`, `${t('photos')} (${t('only_public')})`) }

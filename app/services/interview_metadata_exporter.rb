@@ -42,10 +42,6 @@ class InterviewMetadataExporter
     end
   end
 
-  def transcript_languages
-    @interview.languages.select { |lang| @interview.has_transcript?(lang) }
-  end
-
   def recording_date
     Date.parse(@interview.interview_date)
 
