@@ -1,13 +1,15 @@
-import { useEffect, useRef, memo } from 'react';
+import { useCallback, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 
-import { SCROLL_OFFSET } from 'modules/constants';
+import { CONTENT_TABS_HEIGHT, CSS_BASE_UNIT } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/interview-helpers';
+import { getPlayerSize } from 'modules/media-player';
 import SegmentButtons from './SegmentButtons';
 import SegmentPopup from './SegmentPopup';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
@@ -34,47 +36,43 @@ function Segment({
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
+    const playerSize = useSelector(getPlayerSize);
+   
+    // Calculate dynamic scroll offset based on player size
+    const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * CSS_BASE_UNIT;
+    const getScrollOffset = useCallback(() => {
+        let playerHeight;
+        
+        if (window.innerWidth < 768) { // $screen-m = 768px
+            playerHeight = 20 * 16; // 20rem converted to px
+        } else {
+            playerHeight = playerSize === 'small' ? 
+                12.5 * 16 : // Small player: 12.5rem (12.5 * 16px)
+                28 * 16;    // Medium player: 28rem (28 * 16px)
+        }
+        
+        return playerHeight + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
+    }, [SPACE_BEFORE_ACTIVE_ELEMENT, playerSize]);
 
+    // Handle scrolling to active segments for auto-scroll during playback and URL-based navigation
     useEffect(() => {
         // Checking for divEl.current is necessary because sometimes component returns null.
-        if (!divEl.current) {
-            return;
-        }
+        if (!divEl.current) return;
 
-        if (active && !segmentParam) {
+        // Determine if we should scroll based on different conditions
+        const shouldScrollForAutoPlay = autoScroll && active;
+        const shouldScrollForUrlParam = segmentParam === data.id;
+        const shouldScrollForInitialActive = active && !segmentParam && autoScroll;
+
+        if (shouldScrollForAutoPlay || shouldScrollForUrlParam || shouldScrollForInitialActive) {
             const topOfSegment = divEl.current.offsetTop;
 
-            // Quickfix for wrong offsetTop values.
-            if (topOfSegment === 0) {
-                return;
-            }
+            // If the segment is at the top of the page, no need to scroll
+            if (topOfSegment === 0) return;
 
-            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
-        } else if (segmentParam === data.id) {
-            const topOfSegment = divEl.current.offsetTop;
-
-            // Quickfix for wrong offsetTop values.
-            if (topOfSegment === 0) {
-                return;
-            }
-
-            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+            scrollSmoothlyTo(0, topOfSegment - getScrollOffset());
         }
-    }, []);
-
-    useEffect(() => {
-        // Checking for divEl.current is necessary because sometimes component returns null.
-        if (autoScroll && active && divEl.current) {
-            const topOfSegment = divEl.current.offsetTop;
-
-            // Quickfix for wrong offsetTop values.
-            if (topOfSegment === 0) {
-                return;
-            }
-
-            scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
-        }
-    }, [autoScroll, active])
+    }, [autoScroll, active, data.id, getScrollOffset, playerSize, segmentParam]);
 
     const text = isAuthorized(data, 'update') ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
@@ -100,6 +98,7 @@ function Segment({
                 ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
+                    'is-active': active
                 })}>
                 {
                     data.speakerIdChanged && (
@@ -169,6 +168,7 @@ Segment.propTypes = {
     active: PropTypes.bool.isRequired,
     tabIndex: PropTypes.number.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
+    transcriptCoupled: PropTypes.bool.isRequired,
 };
 
 const MemoizedSegment = memo(Segment);

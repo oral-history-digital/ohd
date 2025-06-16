@@ -1,10 +1,20 @@
 ---
-- :name: Redaktion
+- :attributes:
+  - :translations_attributes: 
+    - name: Redaktion
+      locale: de
+    - name: Editor
+      locale: en
   :permissions:
   - :name: General edit
     :klass: General
     :action_name: edit
-- :name: Erschließung
+- :attributes:
+  - :translations_attributes: 
+    - name: Erschließung
+      locale: de
+    - name: Developer
+      locale: en
   :permissions:
   - :name: Annotation create
     :klass: Annotation
@@ -138,7 +148,12 @@
   - :name: NormDatum destroy
     :klass: NormDatum
     :action_name: destroy
-- :name: Qualitätsmanagement
+- :attributes:
+  - :translations_attributes: 
+    - name: Qualitätsmanagement
+      locale: de
+    - name: Quality Control
+      locale: en
   :permissions:
   - :name: Annotation create
     :klass: Annotation
@@ -311,7 +326,12 @@
   - :name: NormDatum destroy
     :klass: NormDatum
     :action_name: destroy
-- :name: Archivmanagement
+- :attributes:
+  - :translations_attributes: 
+    - name: Archivmanagement
+      locale: de
+    - name: Archive Manager
+      locale: en
   :permissions:
   - :name: Annotation create
     :klass: Annotation
@@ -607,7 +627,12 @@
   - :name: NormDatum destroy
     :klass: NormDatum
     :action_name: destroy
-- :name: Benutzer*innenverwaltung
+- :attributes:
+  - :translations_attributes: 
+    - name: Benutzer*innenverwaltung
+      locale: de
+    - name: User administration
+      locale: en
   :permissions:
   - :name: General edit
     :klass: General

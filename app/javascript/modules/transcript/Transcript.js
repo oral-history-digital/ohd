@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
@@ -18,7 +19,6 @@ export default function Transcript({
     archiveId,
     transcriptFetched,
     transcriptLocale,
-    hasTranscript,
     originalLocale,
     loadSegments,
     mediaTime,
@@ -36,11 +36,17 @@ export default function Transcript({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const isEditor = useIsEditor();
+    const hasTranscript = interview.alpha3s_with_transcript.indexOf(transcriptLocale) > -1;
 
     const contributorInformation = useMemo(() => getContributorInformation(
         interview.contributions, people),
         [interview.contributions, people]
     );
+
+    const isRtlLanguage = (locale) => {
+        const rtlLanguages = ['ara', 'heb'];
+        return rtlLanguages.includes(locale);
+    }
 
     useEffect(() => {
         // Only scroll to top if media has not started yet and auto scroll is off.
@@ -91,7 +97,9 @@ export default function Transcript({
     return (
         <>
             {isEditor && <HelpText code="interview_transcript" className="u-mb" />}
-            <div className="Transcript">
+            <div  className={classNames('Transcript', {
+                    'Transcript--rtl': isRtlLanguage(transcriptLocale),
+                })}>
                 {
                     shownSegments.map((segment, index, array) => {
                         segment.speaker_is_interviewee = intervieweeId === segment.speaker_id;
@@ -149,7 +157,6 @@ Transcript.propTypes = {
     interview: PropTypes.object.isRequired,
     intervieweeId: PropTypes.number,
     transcriptFetched: PropTypes.bool.isRequired,
-    hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
 };

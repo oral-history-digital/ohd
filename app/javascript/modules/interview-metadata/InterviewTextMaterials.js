@@ -62,7 +62,7 @@ export default function InterviewTextMaterials({
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.languages_with_transcripts.map((lang) => {
+                        { interview.alpha3s_with_transcript.map((lang) => {
                             return (
                                 <InterviewDownloads
                                     key={lang}

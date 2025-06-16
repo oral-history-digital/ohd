@@ -48,7 +48,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
     interview.tapes.each do |tape|
       tape.segments.each do |segment|
 
-        ordinary_text_parts, comments = segment.tokenized_text(interview.lang)
+        ordinary_text_parts, comments = segment.tokenized_text(interview.alpha3)
         s_end = segment.next.nil? ? "T_END" : "T#{segment.next.tape.number}_S#{segment.next.id}" 
 
         xml.annotationBlock "xml:id": "ab#{segment.id}",
@@ -75,15 +75,15 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           end
 
           xml.spanGr type: "original", "xml:id": "so#{segment.id}" do
-            xml.text! segment.text(interview.lang)
+            xml.text! segment.text(interview.alpha3)
           end
 
           # translation
-          if interview.translation_lang
-            xml.spanGr type: interview.translation_lang do
+          if interview.translation_alpha3
+            xml.spanGr type: interview.translation_alpha3 do
               xml.span from: "T#{tape.number}_S#{segment.id}",
                 to: s_end do
-                  xml.text! segment.text(interview.translation_lang)
+                  xml.text! segment.text(interview.translation_alpha3)
                 end
             end
           end

@@ -9,6 +9,9 @@ import { Modal } from 'modules/ui';
 import { useWorkbook } from 'modules/workbook';
 import SegmentFormContainer from './SegmentFormContainer';
 
+import { scrollSmoothlyTo } from 'modules/user-agent';
+import { SCROLL_OFFSET } from 'modules/constants';
+
 export default function SegmentButtons({
     contentLocale,
     data,
@@ -31,6 +34,16 @@ export default function SegmentButtons({
     const showAnnotationsButton = isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'update') || hasAnnotations;
     const showReferencesButton = isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'update') || hasReferences;
 
+     const handleButtonClick = () => {
+        const segmentElement = document.getElementById(`segment_${data.id}`);
+        if (segmentElement) {
+            const topOfSegment = segmentElement.offsetTop;
+            if (topOfSegment !== 0) {
+                scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+            }
+        }
+    };
+
     return (
         <div className={classNames('Segment-buttons', { 'is-active': active })}>
             <AuthorizedContent object={data} action='update'>
@@ -38,6 +51,7 @@ export default function SegmentButtons({
                     title={t(tabIndex === 1 ? 'edit.segment.translation' : 'edit.segment.transcript')}
                     trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                     triggerClassName="Button Button--icon"
+                    onBeforeOpen={handleButtonClick} 
                 >
                     {closeModal => (
                         <SegmentFormContainer

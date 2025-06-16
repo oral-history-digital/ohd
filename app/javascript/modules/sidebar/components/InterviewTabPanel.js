@@ -195,7 +195,6 @@ export default function InterviewTabPanel({
                     <DownloadLinks
                         archiveId={archiveId}
                         numTapes={Number.parseInt(interview.tape_count)}
-                        languages={interview.languages}
                         interview={interview}
                     />
                 </AdminSubTab>

@@ -7,7 +7,7 @@ describe('ZWAR', () => {
         const interview = {
             lang: 'de',
             languages: ['de', 'ru'],
-            transcript_locales: ['de', 'ru'],
+            locales_with_transcript: ['de', 'ru'],
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
@@ -19,7 +19,7 @@ describe('ZWAR', () => {
         const interview = {
             lang: 'ru',
             languages: ['de', 'ru'],
-            transcript_locales: ['de', 'ru'],
+            locales_with_transcript: ['de', 'ru'],
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = true;
@@ -33,7 +33,7 @@ describe('CDOH', () => {
         const interview = {
             lang: 'es',
             languages: ['de', 'es'],
-            transcript_locales: ['de', 'es'],
+            locales_with_transcript: ['de', 'es'],
         };
         const actual = showTranslationTab(project, interview, 'es');
         const expected = false;
@@ -45,7 +45,7 @@ describe('CDOH', () => {
         const interview = {
             lang: 'es',
             languages: ['de', 'es'],
-            transcript_locales: ['de', 'es'],
+            locales_with_transcript: ['de', 'es'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -59,7 +59,7 @@ describe('other projects', () => {
         const interview = {
             lang: 'en',
             languages: ['en', 'de'],
-            transcript_locales: ['en', 'de'],
+            locales_with_transcript: ['en', 'de'],
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
@@ -71,7 +71,7 @@ describe('other projects', () => {
         const interview = {
             lang: 'en',
             languages: ['en', 'de'],
-            transcript_locales: ['en', 'de'],
+            locales_with_transcript: ['en', 'de'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -85,7 +85,7 @@ describe('transcript availability', () => {
         const interview = {
             lang: 'en',
             languages: ['en', 'de'],
-            transcript_locales: ['en', 'de'],
+            locales_with_transcript: ['en', 'de'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -97,7 +97,7 @@ describe('transcript availability', () => {
         const interview = {
             lang: 'en',
             languages: ['en', 'de'],
-            transcript_locales: ['en'],
+            locales_with_transcript: ['en'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = false;
