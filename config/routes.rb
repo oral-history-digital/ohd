@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  use_doorkeeper_openid_connect
 
   use_doorkeeper do
-    skip_controllers :authorizations, :applications, :authorized_applications
+    controllers applications: 'oauth/applications'
   end
 
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do

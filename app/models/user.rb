@@ -162,6 +162,14 @@ class User < ApplicationRecord
     end
   end
 
+  def preferred_username
+    if respond_to?(:full_name) && full_name.present?
+      full_name.parameterize  # turns "John Doe" into "john-doe"
+    else
+      email.split('@').first.parameterize  # fallback: "j.doe@example.com" → "j-doe"
+    end
+  end
+
   def active_for_authentication?
     super && !blocked?
   end
@@ -170,7 +178,7 @@ class User < ApplicationRecord
     !blocked? ? super : :blocked
   end
 
-  def self.send_reset_password_instructions(attributes = {}) 
+  def self.send_reset_password_instructions(attributes = {})
     recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
     if recoverable.persisted?
       if attributes[:from]

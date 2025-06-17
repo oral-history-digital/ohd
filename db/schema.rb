@@ -519,6 +519,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "oauth_openid_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "access_grant_id", null: false
+    t.string "nonce", null: false
+    t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
+  end
+
   create_table "people", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "date_of_birth", limit: 255
     t.string "gender", limit: 255
@@ -1121,4 +1127,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
   add_foreign_key "event_types", "projects"
   add_foreign_key "map_sections", "projects"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
 end
