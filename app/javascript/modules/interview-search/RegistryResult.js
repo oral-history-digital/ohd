@@ -37,7 +37,7 @@ export default function RegistryResult({
                 <div className="u-mt-small">
                     {
                         flattenedRefTree[data.id]?.children.map((entry, index) => {
-                            const [text, lang] = getTextAndLang(entry.text, locale, interview.lang);
+                            const [text, lang] = getTextAndLang(entry.text, locale, interview.alpha3);
 
                             return (
                                 <DumbTranscriptResult

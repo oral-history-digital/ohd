@@ -173,7 +173,7 @@ class InterviewsController < ApplicationController
 
     @locale = params[:lang]
     if params[:tape_number]
-      trans = @interview.lang == @locale ? 'tr' : 'ue'
+      trans = @interview.alpha3 == @locale ? 'tr' : 'ue'
       tape_count = format('%02d', @interview.tape_count)
       tape_number = format('%02d', params[:tape_number])
       filename = "#{@interview.archive_id}_#{tape_count}_#{tape_number}_#{trans}_#{params[:lang]}_#{DateTime.now.strftime("%Y_%m_%d")}"
@@ -531,6 +531,7 @@ class InterviewsController < ApplicationController
       "primary_language_id",
       "secondary_language_id",
       "primary_translation_language_id",
+      "secondary_translation_language_id",
       "interview_date",
       "publication_date",
       "signature_original",

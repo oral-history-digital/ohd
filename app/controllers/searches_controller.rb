@@ -47,7 +47,7 @@ class SearchesController < ApplicationController
   def search(interview, model, order, field_name = 'text')
     search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
     if model == Segment
-      locales = interview.languages
+      locales = interview.alpha3s
     else
       locales = current_project.available_locales
     end
@@ -207,7 +207,7 @@ class SearchesController < ApplicationController
       format.json do
         search = Interview.archive_search(current_user, current_project, locale, params)
         public_description = current_project.is_ohd? ? false : current_project.public_description?
-        search_results_metadata_fields = current_project.is_ohd? ? [] : current_project.search_results_metadata_fields
+        search_results_metadata_fields = current_project.search_results_metadata_fields
 
         render json: {
           result_pages_count: search.results.total_pages,
@@ -278,7 +278,7 @@ class SearchesController < ApplicationController
   end
 
   def highlighted_text(interview, hit, field_name = 'text')
-    (interview.languages | I18n.available_locales).inject({}) do |mem, locale|
+    (interview.alpha3s | I18n.available_locales).inject({}) do |mem, locale|
       mem[locale] = hit.highlights("#{field_name}_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()

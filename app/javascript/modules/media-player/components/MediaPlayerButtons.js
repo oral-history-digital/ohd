@@ -31,42 +31,56 @@ export default function MediaPlayerButtons({
         }
     }, [interview.transcript_coupled]);
 
-    const autoScrollButtonLabel = autoScroll ? t('modules.media_player.auto_scroll.disable') : t('modules.media_player.auto_scroll.enable')
+    const autoScrollButtonLabel = autoScroll
+        ? t('modules.media_player.auto_scroll.disable')
+        : t('modules.media_player.auto_scroll.enable');
 
     return (
         <div className={classNames(className)}>
-            <AuthorizedContent object={{type: 'General'}} action='edit'>
+            <AuthorizedContent object={{ type: 'General' }} action="edit">
                 <button
-                    className={classNames('StateButton', { 'is-pressed': editViewEnabled })}
+                    className={classNames('StateButton', {
+                        'is-pressed': editViewEnabled,
+                    })}
                     type="button"
-                    title={t(`edit_column_header.${editViewEnabled ? 'close_table' : 'open_table'}`)}
+                    title={t(
+                        `edit_column_header.${
+                            editViewEnabled ? 'close_table' : 'open_table'
+                        }`
+                    )}
                     onClick={() => changeToInterviewEditView(!editViewEnabled)}
                 >
                     <FaEdit className="StateButton-icon" />
                 </button>
             </AuthorizedContent>
 
-            { interview?.transcript_coupled ?
+            {interview?.transcript_coupled ? (
                 <button
-                    className={classNames('StateButton', { 'is-pressed': autoScroll })}
+                    className={classNames('StateButton', {
+                        'is-pressed': autoScroll,
+                    })}
                     type="button"
                     aria-label={autoScrollButtonLabel}
                     title={autoScrollButtonLabel}
                     onClick={toggleAutoScroll}
                 >
                     <FaSortAmountDown className="StateButton-icon" />
-                </button> :
+                </button>
+            ) : (
                 <div className="StateButton-icon stacked">
                     <FaSortAmountDown />
                     <FaSlash className="red" />
                 </div>
-            }
+            )}
         </div>
     );
 }
 
 MediaPlayerButtons.propTypes = {
     autoScroll: PropTypes.bool.isRequired,
+    interview: PropTypes.shape({
+        transcript_coupled: PropTypes.bool,
+    }).isRequired,
     className: PropTypes.string,
     editViewEnabled: PropTypes.bool.isRequired,
     enableAutoScroll: PropTypes.func.isRequired,

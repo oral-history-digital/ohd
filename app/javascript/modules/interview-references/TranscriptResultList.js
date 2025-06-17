@@ -13,7 +13,7 @@ export default function TranscriptResultList({
     const { locale } = useI18n();
 
     return transcriptResults.map((entry, index) => {
-        const [text, lang] = getTextAndLang(entry.text, locale, interview.lang);
+        const [text, lang] = getTextAndLang(entry.text, locale, interview.alpha3);
 
         return (
             <DumbTranscriptResult

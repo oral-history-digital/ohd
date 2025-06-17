@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import throttle from 'lodash.throttle';
+import { useEffect, useState } from 'react';
 
-import { SITE_HEADER_HEIGHT_MOBILE, SITE_HEADER_HEIGHT_DESKTOP, MEDIA_PLAYER_HEIGHT_MOBILE,
-    MEDIA_PLAYER_HEIGHT_DESKTOP, MEDIA_PLAYER_HEIGHT_STICKY } from 'modules/constants';
+import { SITE_HEADER_HEIGHT_DESKTOP, SITE_HEADER_HEIGHT_MOBILE} from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
 
 export function useScrollBelowThreshold() {
@@ -11,11 +10,13 @@ export function useScrollBelowThreshold() {
     const handleScroll = (e) => {
         const scrollY = e.target.scrollingElement.scrollTop;
 
-        const headerAndPlayerHeight = isMobile() ?
-            SITE_HEADER_HEIGHT_MOBILE + MEDIA_PLAYER_HEIGHT_MOBILE :
-            SITE_HEADER_HEIGHT_DESKTOP + MEDIA_PLAYER_HEIGHT_DESKTOP;
-
-        const stickyThreshold = headerAndPlayerHeight - MEDIA_PLAYER_HEIGHT_STICKY;
+        // Calculate header height
+        const headerHeight = isMobile() ? 
+            SITE_HEADER_HEIGHT_MOBILE : 
+            SITE_HEADER_HEIGHT_DESKTOP;
+        
+        // Trigger after scrolling 1/3 of the header height
+        const stickyThreshold = headerHeight / 3;
 
         if (scrollY > stickyThreshold) {
             setIsBelow(true);
@@ -28,13 +29,16 @@ export function useScrollBelowThreshold() {
 
     useEffect(() => {
         window.addEventListener('scroll', throttledHandleScroll);
+        
+        // Initial check in case page is loaded already scrolled
+        handleScroll({ target: { scrollingElement: document.documentElement } });
 
         const cleanup = () => {
             window.removeEventListener('scroll', throttledHandleScroll);
         }
 
         return cleanup;
-    }, []);
-
+    }, [throttledHandleScroll]);
+    
     return isBelow;
 }

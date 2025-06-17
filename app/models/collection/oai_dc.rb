@@ -20,7 +20,7 @@ module Collection::OaiDc
 
       xml.tag!('dc:source', oai_identifier)
 
-      [:de, :en].each do |locale|
+      oai_locales.each do |locale|
         xml.tag!('dc:title', "xml:lang": locale) do
           xml.text! oai_title(locale)
         end
@@ -55,9 +55,7 @@ module Collection::OaiDc
         xml.tag!('dc:format', format)
       end
 
-      oai_languages.each do |language|
-        xml.tag!('dc:language', language)
-      end
+      xml.tag!('dc:language', oai_languages)
 
       oai_subject_registry_entry_ids.each do |registry_entry_id|
         [:de, :en].each do |locale|
@@ -100,7 +98,7 @@ module Collection::OaiDc
           xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
       end
-      oai_locales.each do |locale|
+      [:de, :en].each do |locale|
         xml.tag!('dc:rights', "xml:lang": locale) do
           xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
         end

@@ -10,21 +10,23 @@ module Interview::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier oai_url_identifier(:de)
+      xml.identifier identifierType: "URL" do
+        xml.text! oai_url_identifier(:de)
+      end
 
       xml.alternateIdentifiers do
-        xml.alternateIdentifier alternateIdentfierType: "URL" do
+        xml.alternateIdentifier alternateIdentifierType: "URL" do
           xml.text! oai_url_identifier(:en)
         end
       end
 
       #xml.alternateIdentifiers do
         #oai_locales.each do |locale|
-          #xml.alternateIdentifier alternateIdentfierType: "URL" do
+          #xml.alternateIdentifier alternateIdentifierType: "URL" do
             #xml.text! oai_url_identifier(locale)
           #end
         #end
-        ##xml.alternateIdentifier alternateIdentfierType: "DOI" do
+        ##xml.alternateIdentifier alternateIdentifierType: "DOI" do
           ##xml.text! oai_doi_identifier
         ##end
       #end
@@ -138,7 +140,7 @@ module Interview::OaiDatacite
             xml.text! TranslationValue.for('privacy_protection', locale)
           end
         end
-        oai_locales.each do |locale|
+        [:de, :en].each do |locale|
           xml.rights(
             "xml:lang": locale,
             rightsIdentifier: "CC-BY-4.0",

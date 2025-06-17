@@ -13,6 +13,8 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import showTranslationTab from './showTranslationTab';
 import showTocTab from './showTocTab';
+import LocaleSwitch from './LocaleSwitch';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export default function InterviewTabs({
     interview,
@@ -20,6 +22,7 @@ export default function InterviewTabs({
     const { t, locale } = useI18n();
     const { project } = useProject();
     const [tabIndex, setTabIndex] = useState(0);
+    const [translationLocale, setTranslationLocale] = useState(interview.translation_alpha3);
 
     const { fulltext } = useSearchParams();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
@@ -76,7 +79,7 @@ export default function InterviewTabs({
                     <Tab className="Tabs-tab">
                         <FaRegFileAlt className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
-                            {t('transcript')}
+                            {`${t('transcript')} (${interview.alpha3})`}
                         </span>
                     </Tab>
                     <Tab
@@ -86,6 +89,11 @@ export default function InterviewTabs({
                         <FaRegClone className="Tabs-tabIcon"/>
                         <span className="Tabs-tabText">
                             {t('translation')}
+                            <LocaleSwitch
+                                alpha3s={interview.translation_alpha3s}
+                                selected={translationLocale}
+                                setTranslationLocale={setTranslationLocale}
+                            />
                         </span>
                     </Tab>
                     <Tab
@@ -118,17 +126,25 @@ export default function InterviewTabs({
                         various useEffect-related problems. */}
                     <TabPanel>
                         {tabIndex === 0 &&
-                            <TranscriptContainer originalLocale loadSegments />
+                            <TranscriptContainer
+                                transcriptLocale={interview.alpha3}
+                                originalLocale
+                                loadSegments
+                            />
                         }
                     </TabPanel>
                     <TabPanel>
                         {tabIndex === 1 &&
-                            <TranscriptContainer />
+                            <TranscriptContainer
+                                transcriptLocale={translationLocale}
+                            />
                         }
                     </TabPanel>
                     <TabPanel>
                         {tabIndex === 2 &&
-                            <TableOfContentsContainer/>
+                            <TableOfContentsContainer
+                                alpha3={ALPHA2_TO_ALPHA3[locale]}
+                            />
                         }
                     </TabPanel>
                     <TabPanel>

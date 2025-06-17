@@ -7,6 +7,7 @@ import { DEFAULT_LOCALES, SYSTEM_LOCALES } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { setLocale } from 'modules/archive';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 const projectLocales = (project) => project ?
     project.available_locales :
@@ -23,7 +24,7 @@ export default function LocaleButtons({ className }) {
     const [searchParams, setSearchParams] = useSearchParams();
 
     function handleButtonClick(e) {
-        const locale = e.target.textContent;
+        const locale = e.target.value;
 
         let pathBaseStr = '/de';  // Fallback.
         let newPath;
@@ -60,12 +61,13 @@ export default function LocaleButtons({ className }) {
                 locales?.map(locale => (
                     <button
                         key={locale}
+                        value={locale}
                         type="button"
                         className="Button LocaleButtons-button"
                         disabled={locale === currentLocale}
                         onClick={handleButtonClick}
                     >
-                        {locale}
+                        {ALPHA2_TO_ALPHA3[locale]}
                     </button>
                 ))
             }

@@ -4,11 +4,11 @@ export default function tableHeader({
     t: t,
 }) {
     const translationParams = {
-        original_locale: interview.lang,
-        translation_locale: interview.translation_locale,
+        original_locale: interview.alpha3,
+        translation_locale: interview.translation_alpha3,
     };
 
-    const header = /heading/.test(column) ?
+    const header = /heading|translation|annotation/.test(column) ?
         (t(`edit_column_header.${column.split('_')[0]}`) + ` (${column.split('_')[1]})`) :
         t(`edit_column_header.${column}`, translationParams).join('');
     return header;
