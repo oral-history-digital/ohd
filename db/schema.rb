@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_15_081859) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_17_112531) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -591,6 +591,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_15_081859) do
     t.text "landing_page_text", size: :medium
     t.string "display_name"
     t.text "media_missing_text"
+    t.text "restricted_landing_page_text"
     t.index ["locale"], name: "index_project_translations_on_locale"
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
