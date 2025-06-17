@@ -21,7 +21,6 @@ export default function ArchiveFacets() {
     }
 
     const adminFacets = [
-        'workflow_state',
         'tasks_user_ids',
         'tasks_supervisor_ids',
     ];
