@@ -12,7 +12,8 @@ Doorkeeper.configure do
     if current_user
       current_user
     else
-      warden.authenticate!(scope: :user)
+      redirect_to main_app.new_user_session_path(locale: I18n.locale)
+      # warden.authenticate!(scope: :user)
       nil
     end
   end

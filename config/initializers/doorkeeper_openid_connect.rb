@@ -3,8 +3,9 @@
 Doorkeeper::OpenidConnect.configure do
   issuer do |resource_owner, application|
     # 'for testing??'
+    'http://portal.oral-history.localhost:3000'
     # staging? 'https://staging.oral-history.digital'
-    'https://portal.oral-history.digital'
+    # 'https://portal.oral-history.digital'
   end
 
   signing_key <<~KEY
@@ -71,4 +72,18 @@ Doorkeeper::OpenidConnect.configure do
   #     resource_owner.bar
   #   end
   # end
+
+  claims do
+    normal_claim :preferred_username, scope: :profile do |resource_owner|
+      resource_owner.preferred_username
+    end
+
+    normal_claim :email, scope: :email do |resource_owner|
+      resource_owner.email
+    end
+
+    normal_claim :name, scope: :profile do |resource_owner|
+      resource_owner.name
+    end
+  end
 end
