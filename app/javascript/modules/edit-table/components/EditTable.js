@@ -77,8 +77,8 @@ export default function EditTable({
             <EditTableRowContainer
                 key={segment.id}
                 segment={segment}
-                originalLocale={interview.lang}
-                translationLocale={interview.translation_locale}
+                originalLocale={interview.alpha3}
+                translationLocale={interview.translation_alpha3}
                 active={active}
             />
         );

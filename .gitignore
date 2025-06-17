@@ -35,3 +35,6 @@ solr/pids
 /config/master.key
 
 /.tool-versions
+.devcontainer/logs
+.devcontainer/db/*.sql.gz
+.directory

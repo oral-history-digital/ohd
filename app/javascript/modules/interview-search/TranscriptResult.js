@@ -15,7 +15,7 @@ export default function TranscriptResult({
     const localeUsed = locale || localeFromUi;
     const segmentText = data.text[localeUsed];
 
-    const lang = localeUsed === 'orig' ? interview.lang : localeUsed;
+    const lang = localeUsed === 'orig' ? interview.alpha3 : localeUsed;
 
     return (
         <DumbTranscriptResult

@@ -81,7 +81,7 @@ module Interview::OaiDc
           xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
       end
-      oai_locales.each do |locale|
+      [:de, :en].each do |locale|
         xml.tag!('dc:rights', "xml:lang": locale) do
           xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
         end

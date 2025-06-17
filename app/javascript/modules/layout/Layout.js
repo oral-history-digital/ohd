@@ -3,12 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { getPlayerSize } from 'modules/media-player';
 import FetchAccountContainer from './FetchAccountContainer';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
@@ -20,6 +22,7 @@ import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPo
     CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 import { OHD_DOMAINS } from 'modules/constants';
+import { isMobile } from 'modules/user-agent';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -32,6 +35,7 @@ export default function Layout({
     hideBanner,
     fetchData,
 }) {
+    const playerSize = useSelector(getPlayerSize);
     const { project } = useProject();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -71,6 +75,9 @@ export default function Layout({
             <div className={classNames('Layout', {
                 'sidebar-is-visible': sidebarVisible,
                 'is-sticky': scrollPositionBelowThreshold,
+                'is-small-player': playerSize === 'small',
+                'is-medium-player': playerSize === 'medium',
+                'is-mobile': isMobile(),
             })}>
                 <FetchAccountContainer />
                 <AfterRegisterPopup />

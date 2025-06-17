@@ -1,54 +1,249 @@
 .MediaControls {
-  display: flex;
+    display: flex;
 }
 
-.Layout.is-sticky .MediaControls {
-  flex-direction: column;
+.Layout.is-small-player .MediaControls {
+    flex-direction: column;
 }
 
-.MediaControls-selects {
-}
-
-.Layout.is-sticky .MediaControls > * {
-  margin-top: $base-unit * 0.5;
+.Layout.is-small-player .MediaControls > * {
+    margin-top: $base-unit * 0.5;
 }
 
 .MediaControls-tapeSelector,
 .MediaControls-resolutionSelector {
-  margin-right: $base-unit * 0.5;
-  font-family: FiraSans;
-  font-size: 0.75rem;
-  outline: none;
-  transition: box-shadow $transition-duration;
+    margin-right: $base-unit * 0.5;
+    font-family: FiraSans;
+    font-size: 0.75rem;
+    outline: none;
 }
 
 .MediaControls-tapeSelector:focus,
 .MediaControls-resolutionSelector:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+    box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
 .MediaControls-bookmark,
 .MediaControls-annotation {
-  color: #fff;
-  font-size: $font-size-large;
-  line-height: $line-height-large;
-  cursor: pointer;
-  transition: $transition-duration;
-
-  @include screen-l {
-    font-size: $font-size-small;
-    line-height: $base-unit;
-  }
-
-  span {
-    display: none;
+    color: #fff;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    cursor: pointer;
 
     @include screen-l {
-      display: inline-block;
+        font-size: $font-size-small;
+        line-height: $base-unit;
     }
-  }
 
-  &:hover {
-    color: $gray-light;
-  }
+    span {
+        display: none;
+
+        @include screen-l {
+            display: inline-block;
+        }
+    }
+
+    &:hover {
+        color: $gray-light;
+    }
+}
+
+.vjs-configuration-menu-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.vjs-configuration-menu-button {
+    background: none;
+    border: none;
+    margin-top: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.vjs-configuration-menu-icon {
+    font-size: 1.5em;
+    margin-right: 4px;
+    color: #fff;
+}
+
+.vjs-configuration-menu {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 10px;
+    background: rgba(43, 51, 63, 0.7);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    width: 150px;
+}
+
+.vjs-configuration-menu-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #fff;
+    position: relative;
+
+    &:hover {
+        background: #fff;
+        color: rgba(43, 51, 63, 0.7);
+        user-select: none;
+    }
+
+    &.disabled {
+        cursor: default;
+        user-select: none;
+        background: transparent !important;
+        color: #fff;
+    }
+
+    &.selected {
+        background: #fff;
+        color: rgba(43, 51, 63, 0.7);
+        font-weight: bold;
+    }
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 5px;
+}
+
+.vjs-configuration-menu-divider {
+    border: none;
+    border-top: 1px solid #444;
+    margin: 8px 0;
+}
+
+.menu-item-title-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .rate-icon {
+        font-size: 1.4em;
+    }
+}
+
+.vjs-configuration-submenu.horizontal-menu {
+    position: absolute;
+    left: 100%;
+    background: rgba(43, 51, 63, 0.7);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: auto;
+    margin-left: 0;
+}
+
+.vjs-configuration-submenu-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: #fff;
+}
+
+.vjs-configuration-submenu-item:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.vjs-configuration-submenu-item.selected {
+    background: #fff;
+    color: rgba(43, 51, 63, 0.7);
+    font-weight: bold;
+}
+
+.SegmentMediaControls-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    position: relative;
+
+    .SegmentMediaControls-progressBar {
+        input {
+            width: 100%;
+        }
+    }
+
+    .SegmentMediaControls-time-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+    }
+
+    .SegmentMediaControls-buttons {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+    }
+}
+
+.SegmentMediaControls-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .media-control-icon {
+        font-size: 1.5em;
+        color: grey;
+    }
+
+    .media-control-icon-start-stop {
+        font-size: 2em;
+        color: grey;
+    }
+}
+
+// Overlay to block the PiP button
+.vjs-pip-interaction-blocker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background-color: transparent;
+    pointer-events: auto;
+    cursor: auto;
+}
+
+// PiP button blocker styles
+.video-js.pip-blocker::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: transparent;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+// WebKit browser controls targeting
+video::-webkit-media-controls-overflow-button,
+video::-webkit-media-controls-fullscreen-button {
+    opacity: 0 !important;
+    pointer-events: none !important;
 }

@@ -9,7 +9,65 @@ At the moment, you can set up the OHD software in your development environment.
 Without any modifications, it is probably not yet suitable for running in
 production without any modifications.
 
-## Prerequisites
+## Development Options
+
+There are two ways to set up this project for development:
+
+1. [Setup with VS Code Dev Containers](#vs-code-dev-containers-setup) (recommended)
+2. [Manual Setup](#manual-setup)
+
+## VS Code Dev Containers Setup
+
+This project includes a fully configured Dev Container setup for easy development with Visual Studio Code.
+
+### Prerequisites
+
+* [Docker](https://www.docker.com/get-started) (version 20.10.7 or later)
+* [Visual Studio Code](https://code.visualstudio.com/)
+* [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code
+
+### Setup Process
+
+1. Clone this repository
+2. Open the repository in Visual Studio Code
+3. Download the database dump and place it as `dump.sql.gz` in `.devcontainer/db/`
+4. When prompted, click on "Reopen in Container" to start the development container
+
+The Dev Container setup will automatically:
+- Build the Docker image with Ruby 3.0.7, Node.js 18.x, and other dependencies
+- Set up the MySQL database and Solr search server
+- Install application dependencies
+- Configure the database and other required services
+- Import the database dump
+
+### Running the Application
+
+Once the container is built and configured, the application should start automatically. If you need to restart it, use:
+
+```sh
+/workspace/.devcontainer/scripts/start-app.sh
+```
+
+### Accessing the Application
+
+After starting the application, you can access it at:
+
+- URL: [http://portal.oral-history.localhost:3000/za/de](http://portal.oral-history.localhost:3000/za/de)
+- Admin login: `alice@example.com`
+- Password: `password`
+
+### Container Components
+
+The development environment consists of three services:
+- `app`: The main Rails application container
+- `db`: MariaDB 10.5 database
+- `solr`: Solr 8 search engine
+
+For more detailed information about the Dev Container setup, see [.devcontainer/README.md](.devcontainer/README.md).
+
+## Manual Setup
+
+### Prerequisites
 
 * Ruby 3.0.7
 * MySQL/MariaDB
@@ -18,8 +76,7 @@ production without any modifications.
 * Java Runtime Environment (Version 8)
 * optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
 
-
-## Application Setup
+### Application Setup
 
 This is how to setup the OHD archive software in your development environment
 on Linux.
@@ -84,7 +141,6 @@ http://portal.oral-history.localhost:3000
 
 respectively.
 
-
 ## Routing/ Domains
 
 We use fixed domains in the routing process.
@@ -112,7 +168,6 @@ To set an own domain on a specific project you can update it as follows in the r
 Project.where(shortname: 'yourprojectsshortname').update(archive_domain: 'http://specific-project.localhost:3000')
 ```
 
-
 ## Caching and Reindexing
 
 To activate caching in development (which is recommended at the moment), run:
@@ -126,6 +181,16 @@ For reindexing the search index, run:
 ```bash
 bin/rake sunspot:reindex
 ```
+
+## Solr configuration in production
+
+The Solr configuration is saved in *solr/configsets/sunspot/conf/schema.xml*.
+The configuration is automatically picked up when using Sunspot Solr in
+development but needs to be set up by hand in staging or production.
+
+Two changes to the original config file have been made so far:
+* charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters
+* GermanLightStemFilter for analyzing German language
 
 ## Tests
 

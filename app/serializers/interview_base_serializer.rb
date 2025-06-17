@@ -12,15 +12,18 @@ class InterviewBaseSerializer < ApplicationSerializer
     :duration,
     :interview_date,
     :publication_date,
-    :languages,
-    :languages_with_transcripts,
     :language_id,
     :primary_language_id,
     :secondary_language_id,
     :primary_translation_language_id,
-    :lang,
+    :secondary_translation_language_id,
+    :alpha3,
     :alpha2,
-    :translation_locale,
+    :alpha3s,
+    :alpha3s_with_transcript,
+    :translation_alpha3,
+    :translation_alpha3s,
+    :toc_alpha3s,
     :anonymous_title,
     :media_missing,
     :still_url,
@@ -28,8 +31,6 @@ class InterviewBaseSerializer < ApplicationSerializer
     :registry_references,
     :startpage_position,
     :properties,
-    :transcript_locales,
-    :toc_locales,
     :description,
     :links,
     :pseudo_links,
@@ -123,11 +124,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.properties || {}
   end
 
-  def transcript_locales
-    object.languages.select{|l| object.has_transcript?(l)}
-  end
-
-  def toc_locales
+  def toc_alpha3s
     (
       instance_options[:project_available_locales] ||
       object.project.available_locales
@@ -141,7 +138,4 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.language&.id
   end
 
-  def translation_locale
-    object.translation_lang
-  end
 end

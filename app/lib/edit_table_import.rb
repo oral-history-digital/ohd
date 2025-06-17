@@ -1,13 +1,12 @@
 class EditTableImport
 
   attr_accessor :file_path, :sheet, :interview, :contributions,
-    :original_locale, :translation_locale, :only_references
+    :original_locale, :only_references
 
   def initialize(interview, file_path, only_references=false)
     @interview = interview
     @contributions = @interview.contributions_hash
-    @original_locale = @interview.lang
-    @translation_locale = @interview.translation_lang
+    @original_locale = @interview.alpha3
     @file_path = file_path
     @only_references = only_references
     @sheet = parse_sheet
@@ -33,10 +32,13 @@ class EditTableImport
         speaker_id = contributions.key(row[:speaker_designation])
 
         translations_attributes = []
-        (interview.languages | interview.project.available_locales.map{|l| ISO_639.find(l).alpha3}).each do |locale|
+        (interview.alpha3s | interview.project.available_locales.map{|l| ISO_639.find(l).alpha3}).each do |locale|
           text = nil
-          text = row[:text_orig] if locale == original_locale
-          text = row[:text_translated] if locale == translation_locale
+          if locale == original_locale
+            text = row[:transcript]
+          else
+            text = row["translation_#{locale}".to_sym]
+          end
 
           translations_attributes << {
             locale: locale,
@@ -93,27 +95,22 @@ class EditTableImport
   end
 
   def create_annotations(row, interview, segment)
-    annotations_translated = row[:annotations_translated] && row[:annotations_translated].split('#')
-    row[:annotations] && row[:annotations].split('#').each_with_index do |text, index|
+    annotations_with_translations = {}
+    interview.alpha3s.map do |alpha3|
+      annotations_with_translations[alpha3] = row["annotation_#{alpha3}".to_sym]&.split('#')
+    end
 
-      translation = annotations_translated && annotations_translated[index]
+    original = annotations_with_translations[interview.alpha3]
+    if original
+      while original&.length > 0
+        translations_attributes = []
+        interview.alpha3s.each do |alpha3|
+          translations_attributes << {
+            text: annotations_with_translations[alpha3]&.pop,
+            locale: alpha3
+          }
+        end
 
-      original_annotation = text && {
-        text: text,
-        locale: original_locale
-      }
-
-      translated_annotation = translation && translation_locale && {
-        text: translation,
-        locale: translation_locale
-      }
-
-      translations_attributes = [
-        original_annotation,
-        translated_annotation
-      ].compact
-
-      unless text.blank? && translation.blank?
         Annotation.create(
           segment_id: segment.id,
           interview_id: interview.id,

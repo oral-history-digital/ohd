@@ -1493,6 +1493,7 @@ en:
       copy_position: Copy position
       copy_position_tooltip: Copy current timestamp as URL
       media_missing: "Unfortunately, the media file for this interview is not available online. Please contact us for further information about the interview and, if necessary, access to the media file."
+      toggle_size: "Toggle player size"
     person:
       no_interviewee: No interviewee
       abbr_titles:

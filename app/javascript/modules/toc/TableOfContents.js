@@ -5,11 +5,12 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import HeadingContainer from './HeadingContainer';
+import { getPreparedHeadings } from './getPreparedHeadings';
 
 export default function TableOfContents({
     headingsFetched,
     headings,
-    preparedHeadings,
+    alpha3,
     isIdle,
     archiveId,
     fetchData,
@@ -36,6 +37,8 @@ export default function TableOfContents({
     if (!headingsFetched) {
         return <Spinner />;
     }
+
+    const preparedHeadings = getPreparedHeadings(headings, alpha3);
 
     let emptyHeadingsNote;
     if (Object.values(headings).length <= 0) {

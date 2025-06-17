@@ -133,11 +133,9 @@ class ApplicationController < ActionController::Base
              timecode
              tape_number
              speaker_designation
-             text_orig
-             text_translated
+             transcript
              registry_references
              annotations
-             annotations_translated
           ).to_json,
       },
       data: {
