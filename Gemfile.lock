@@ -243,7 +243,7 @@ GEM
       railties (>= 3.2.16)
     json (2.12.2)
     jsonapi-renderer (0.2.2)
-    libv8-node (23.6.1.0-x86_64-linux)
+    libv8-node (18.19.0.0-x86_64-linux)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -271,8 +271,8 @@ GEM
       benchmark
       logger
     mini_mime (1.1.5)
-    mini_racer (0.18.1)
-      libv8-node (~> 23.6.1.0)
+    mini_racer (0.16.0)
+      libv8-node (~> 18.19.0.0)
     minitest (5.25.5)
     minitest-retry (0.2.5)
       minitest (>= 5.0)
@@ -552,7 +552,7 @@ DEPENDENCIES
   mime-types
   mini_exiftool
   mini_magick
-  mini_racer
+  mini_racer (~> 0.16.0)
   minitest-retry
   mysql2 (~> 0.5.6)
   net-http
