@@ -37,7 +37,7 @@ gem 'rack-brotli', '~> 2.0'
 gem 'rack-cors'
 gem 'sprockets-rails'
 gem 'rexml', '~> 3.2.8'
-gem 'base64', '~> 0.1.0'
+gem 'base64', '~> 0.2.0'
 
 # Gems specific to public archive app:
 gem 'unicode'
