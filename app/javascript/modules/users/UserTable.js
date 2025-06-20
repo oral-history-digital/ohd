@@ -46,12 +46,12 @@ export default function UserTable() {
         'el',
     ] : project.available_locales);
 
-    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'confirmed' : 'project_access_requested');
+    const [workflowStateFilter, setWorkflowStateFilter] = useState(project.is_ohd ? 'afirmed' : 'project_access_requested');
     const handleWorkflowStateFilterChange = (name, value) => {
         setWorkflowStateFilter(value);
     };
     const workflowStateFilterValues = project.is_ohd ? [
-        'confirmed',
+        'afirmed',
         'blocked',
         'all',
     ] : [

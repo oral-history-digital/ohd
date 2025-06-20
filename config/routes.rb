@@ -210,7 +210,7 @@ Rails.application.routes.draw do
   end
 
   concern :search do
-    resources :searches, only: [:new, :facets, :suggestions, :archive, :interview, :map] do
+    resources :searches, only: [:new] do
       collection do
         get :facets
         get :suggestions

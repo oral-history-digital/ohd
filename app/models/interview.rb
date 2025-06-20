@@ -80,7 +80,7 @@ class Interview < ApplicationRecord
   has_and_belongs_to_many :archiving_batches
 
   serialize :properties
-  serialize :links, Array
+  serialize :links, type: Array
 
   after_create :set_public_attributes_to_properties
   after_create :create_tasks
