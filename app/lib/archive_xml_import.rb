@@ -31,7 +31,7 @@ class ArchiveXmlImport < Nokogiri::XML::SAX::Document
     end
 
     # Load XML-to-model mapping meta data.
-    @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
+    @mappings = File.exist?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
 
     # Load the interview to be imported.
     @archive_id = (filename.split('/').last[Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase

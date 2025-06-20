@@ -4,7 +4,7 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   def show
     super do |resource|
-      resource.confirm! # workflow
+      resource.afirm! # workflow
       Doorkeeper::AccessToken.create!(resource_owner_id: resource.id)
       sign_in(resource) if resource.errors.empty?
     end

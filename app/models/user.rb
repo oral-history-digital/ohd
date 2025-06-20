@@ -60,15 +60,15 @@ class User < ApplicationRecord
 
   workflow do
     state :created do
-      event :confirm, :transitions_to => :confirmed
+      event :afirm, :transitions_to => :afirmed
     end
-    state :confirmed do
+    state :afirmed do
       event :block, :transitions_to => :blocked
       # pseudo
       event :remove, :transitions_to => :removed
     end
     state :blocked do
-      event :revoke_block, :transitions_to => :confirmed
+      event :revoke_block, :transitions_to => :afirmed
       # pseudo
       event :remove, :transitions_to => :removed
     end

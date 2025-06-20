@@ -6,7 +6,7 @@ namespace :web_statistics do
     require 'fileutils'
 
     file = args[:file]
-    raise "No such file: #{file.inspect}! Please provide a valid log file via the file= argument." unless File.exists?(file)
+    raise "No such file: #{file.inspect}! Please provide a valid log file via the file= argument." unless File.exist?(file)
 
     last_report = UsageReport.first(:order => "logged_at DESC")
     report_time = (last_report.nil? ? '2008-01-01' : last_report.logged_at).to_s
@@ -155,7 +155,7 @@ namespace :web_statistics do
     month_num = Time.now.month - 1 + (Time.now.year - 2011) * 12
 
     csv_file = "#{Project.project_shortname}-logins-nach-monat.csv"
-    if File.exists?(csv_file)
+    if File.exist?(csv_file)
       FileUtils.rm(csv_file)
     end
     fields = ['Jahr','Monat','Nutzer mit letztem Login in diesem Monat']
@@ -179,7 +179,7 @@ namespace :web_statistics do
     require 'fileutils'
 
     csv_file = "#{Project.project_shortname}-logins-gesamt.csv"
-    if File.exists?(csv_file)
+    if File.exist?(csv_file)
       FileUtils.rm(csv_file)
     end
     system "touch #{csv_file}"
