@@ -8,11 +8,7 @@ Doorkeeper::OpenidConnect.configure do
     # 'https://portal.oral-history.digital'
   end
 
-  signing_key <<~KEY
-    -----BEGIN RSA PRIVATE KEY-----
-    ....
-    -----END RSA PRIVATE KEY-----
-  KEY
+  signing_key Rails.application.credentials.openid_connect_signing_key
 
   subject_types_supported [:public]
 
@@ -74,16 +70,17 @@ Doorkeeper::OpenidConnect.configure do
   # end
 
   claims do
-    normal_claim :preferred_username, scope: :profile do |resource_owner|
-      resource_owner.preferred_username
-    end
+    #normal_claim :preferred_username, scope: :profile do |resource_owner|
+    #  # resource_owner.preferred_username
+    #  "test_user"
+    #end
 
     normal_claim :email, scope: :email do |resource_owner|
       resource_owner.email
     end
 
     normal_claim :name, scope: :profile do |resource_owner|
-      resource_owner.name
+      resource_owner.full_name
     end
   end
 end
