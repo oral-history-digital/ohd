@@ -70,7 +70,7 @@ class EditTableImportTest < ActiveSupport::TestCase
       ]
     end
 
-    EditTableImport.new(@interview, File.join(Rails.root, 'test', 'files', 'edit-table-import-template.csv')).process
+    EditTableImport.new(@interview, File.join(Rails.root, 'test', 'files', 'edit-table-import-template.csv'), :de).process
     @interview.reload
 
     assert_equal 2, @interview.segments.count
