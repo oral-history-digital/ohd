@@ -15,6 +15,7 @@ class EditTablesController < ApplicationController
     ReadEditTableJob.perform_later({
       interview: interview,
       file_path: file_path,
+      locale: params[:locale],
       only_references: edit_table_params[:only_references],
       user: current_user
     })
