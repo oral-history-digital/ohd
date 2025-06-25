@@ -70,10 +70,10 @@ Doorkeeper::OpenidConnect.configure do
   # end
 
   claims do
-    #normal_claim :preferred_username, scope: :profile do |resource_owner|
-    #  # resource_owner.preferred_username
-    #  "test_user"
-    #end
+    normal_claim :preferred_username, scope: :profile do |resource_owner|
+      puts resource_owner.preferred_username
+      resource_owner.preferred_username
+    end
 
     normal_claim :email, scope: :email do |resource_owner|
       resource_owner.email
