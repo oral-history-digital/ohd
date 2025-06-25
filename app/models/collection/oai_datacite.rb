@@ -28,8 +28,10 @@ module Collection::OaiDatacite
         xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
           xml.text! "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}"
         end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
-          xml.text! project.domain
+        if project.domain
+          xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
+            xml.text! project.domain
+          end
         end
         xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
           xml.text! "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=collection:#{id}"
