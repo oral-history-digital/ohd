@@ -16,7 +16,6 @@ const CONTRIBUTION_TYPES_SPEAKING = [
 ];
 
 export default function UploadEditTable({
-    locale,
     projectId,
     project,
     archiveId,
@@ -24,7 +23,7 @@ export default function UploadEditTable({
     languages,
     submitData,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
 
