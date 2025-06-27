@@ -1,5 +1,5 @@
 class UserAnnotation < UserContent
-  include Workflow
+  include WorkflowActiverecord
 
   # A UserAnnotation is a UserContent referencing an interview segment.
   # In it's normal, base state, it is just a private user_content.
