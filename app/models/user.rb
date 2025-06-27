@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Workflow
+  include WorkflowActiverecord
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable

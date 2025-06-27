@@ -5,7 +5,7 @@ gem 'rails', '~> 8.0.2'
 gem 'mysql2', '~> 0.5.6'
 gem "redis", "~> 4.0"
 gem 'pundit'
-gem 'workflow'
+gem 'workflow-activerecord', '~> 6.0'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'will_paginate', '~> 3.3.1'
