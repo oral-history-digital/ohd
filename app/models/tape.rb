@@ -1,5 +1,5 @@
 class Tape < ApplicationRecord
-  include Workflow
+  include WorkflowActiverecord
 
   belongs_to :interview
 
