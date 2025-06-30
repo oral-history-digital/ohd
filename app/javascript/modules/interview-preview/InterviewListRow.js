@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
+import { GiKeyLock } from "react-icons/gi";
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
@@ -68,10 +69,11 @@ export default function InterviewListRow({
                         projectAccessGranted ?
                             <div>
                                 {interview.short_title && interview.short_title[locale]}
-                                {
-                                    interview.workflow_state === 'unshared' && (
-                                        <FaEyeSlash className="u-ml-tiny" />
-                                    )
+                                {interview.workflow_state === 'unshared' &&
+                                    <FaEyeSlash className="u-ml-tiny" />
+                                }
+                                {interview.workflow_state === 'restricted' &&
+                                    <GiKeyLock className="u-mr-tiny" />
                                 }
                             </div> :
                             interview.anonymous_title[locale]

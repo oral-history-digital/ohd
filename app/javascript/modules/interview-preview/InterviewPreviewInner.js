@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
-import { MdSyncLock } from "react-icons/md";
 import { GiKeyLock } from "react-icons/gi";
 
 import classNames from 'classnames';
