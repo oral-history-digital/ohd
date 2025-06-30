@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaEyeSlash } from 'react-icons/fa';
-import { MdSyncLock } from "react-icons/md";
-import { GiKeyLock } from "react-icons/gi";
+import { FaEyeSlash, FaBan} from 'react-icons/fa';
 
 import classNames from 'classnames';
 
@@ -26,10 +24,10 @@ export default function InterviewPreviewInner({
 
             <div className={classNames('InterviewCard-title', isExpanded ? 'u-mt' : 'u-mt-small')}>
                 {interview.workflow_state === 'unshared' &&
-                    <FaEyeSlash className="u-mr-tiny" />
+                    <FaBan className="u-mr-tiny" />
                 }
                 {interview.workflow_state === 'restricted' &&
-                    <GiKeyLock className="u-mr-tiny" />
+                    <FaEyeSlash className="u-mr-tiny" />
                 }
                 {projectAccessGranted ?
                     interview.short_title?.[locale] :
