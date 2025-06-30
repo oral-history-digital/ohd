@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import useSWRImmutable from 'swr/immutable';
+import useSWR from 'swr';
 
 import { getIsLoggedIn } from 'modules/user';
 import { fetcher } from 'modules/api';
@@ -13,7 +13,7 @@ export default function useRestrictedInterviews() {
     // strings to differentiate between the two calls. Maybe this is temporary.
     const path = `${pathBase}/restricted_interviews.json?logged-in=${isLoggedIn}`;
 
-    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isValidating, data, error } = useSWR(path, fetcher);
     const interviews = data ? Object.values(data.data) : null;
 
     return {

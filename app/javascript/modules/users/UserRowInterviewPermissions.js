@@ -13,14 +13,17 @@ export default function UserRowActions({
     const dataPath = getValue();
     const { interviews } = useRestrictedInterviews();
 
-    const none = !row.original.interview_permissions || row.original.interview_permissions.length === 0
-    const names = row.original.interview_permissions.map(i => i.name).slice(0, 3).join(', ');
-    const hasMore = row.original.interview_permissions.length > 3;
+    const currentProjectInterviewPermissions = row.original.interview_permissions?.filter(permission => {
+        return interviews?.some(interview => interview.id === permission.interview_id);
+    });
+    const none = !currentProjectInterviewPermissions || currentProjectInterviewPermissions.length === 0
+    const names = currentProjectInterviewPermissions.map(i => i.name).slice(0, 3).join(', ');
+    const hasMore = currentProjectInterviewPermissions.length > 3;
 
     return (
         interviews?.length === 0 ? null :
         <>
-            <span>{!none && `${row.original.interview_permissions.length} ${t('activerecord.models.interview_permission.other')}: `}</span>
+            <span>{!none && `${currentProjectInterviewPermissions.length} ${t('activerecord.models.interview_permission.other')}: `}</span>
             <span>
                 {!none && names}
                 {hasMore && '...'}
