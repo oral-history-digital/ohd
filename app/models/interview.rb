@@ -79,12 +79,15 @@ class Interview < ApplicationRecord
 
   has_and_belongs_to_many :archiving_batches
 
+  has_many :interview_permissions
+
   serialize :properties
   serialize :links, type: Array
 
   after_create :set_public_attributes_to_properties
   after_create :create_tasks
   after_save :update_counter_cache
+  after_save :destroy_permissions
   after_destroy :update_counter_cache
 
   def set_public_attributes_to_properties
@@ -118,6 +121,12 @@ class Interview < ApplicationRecord
     self.project.institutions.each do |institution|
       institution.update_interviews_count
       institution.parent&.update_interviews_count
+    end
+  end
+
+  def destroy_permissions
+    if workflow_state_previously_changed? && workflow_state_previously_was == 'restricted' && workflow_state == 'public'
+      interview_permissions.destroy_all
     end
   end
 
