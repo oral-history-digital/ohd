@@ -73,7 +73,7 @@ export default function InterviewListRow({
                                     <FaEyeSlash className="u-ml-tiny" />
                                 }
                                 {interview.workflow_state === 'restricted' &&
-                                    <GiKeyLock className="u-mr-tiny" />
+                                    <GiKeyLock className="u-ml-tiny" />
                                 }
                             </div> :
                             interview.anonymous_title[locale]
