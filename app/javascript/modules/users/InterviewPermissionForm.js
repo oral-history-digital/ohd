@@ -20,6 +20,8 @@ export default function InterviewPermissionForm({
     const [checkedInterviewIds, setCheckedInterviewIds] = useState(
         data?.interview_permissions?.map(permission => permission.interview_id) || []
     );
+    console.log('checkedInterviewIds', checkedInterviewIds);
+    console.log('interviews', interviews);
 
     if (!interviews) {
         return null;
@@ -40,7 +42,7 @@ export default function InterviewPermissionForm({
         handlechangecallback: (name, value) => {
             setCheckedInterviewIds(prev => {
                 if (value) {
-                    return [...prev, interview.id];
+                    return prev.indexOf(interview.id) === -1 ? [...prev, interview.id] : prev;
                 } else {
                     return prev.filter(id => id !== interview.id);
                 }
