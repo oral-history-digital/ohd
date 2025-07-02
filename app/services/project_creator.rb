@@ -283,7 +283,9 @@ class ProjectCreator < ApplicationService
 
   def add_translations(record, attribute, translation_key)
     project.available_locales.each do |locale|
-      record.update("#{attribute}": TranslationValue.for(translation_key, locale), locale: locale)
+      if TranslationValue.available?(translation_key, locale)
+        record.update("#{attribute}": TranslationValue.for(translation_key, locale), locale: locale)
+      end
     end
   end
 
