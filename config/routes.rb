@@ -110,6 +110,7 @@ Rails.application.routes.draw do
         get :transcript
         get :observations
         get :export_photos
+        get :export_pdfs
         get :download_datacite
         get :tei
         get :export_all
@@ -124,6 +125,7 @@ Rails.application.routes.draw do
       end
       resources :contributions, only: [:create, :destroy]
       resources :photos, only: [:create, :update, :destroy]
+      resources :pdfs, only: [:create, :update, :destroy]
       resources :registry_references, only: [:create, :update, :destroy]
       resources :segments, only: [:create, :update, :index, :destroy]
       resources :tapes do

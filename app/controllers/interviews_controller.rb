@@ -124,7 +124,7 @@ class InterviewsController < ApplicationController
       @interview = Interview.find_by_archive_id(params[:id])
       authorize @interview
 
-      if %w(contributions photos registry_references).include?(m)
+      if %w(contributions photos registry_references pdfs).include?(m)
         association = @interview.send(m)
         data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
           association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
@@ -324,6 +324,11 @@ class InterviewsController < ApplicationController
         send_data zip.read, type: "application/zip", filename: "#{params[:id]}_photos_#{!!params[:only_public] ? 'public_' : ''}#{DateTime.now.strftime("%Y_%m_%d")}.zip"
       end
     end
+  end
+
+  def export_pdfs
+    # Implement
+    interview = Interview.find_by_archive_id(params[:id])
   end
 
   def reindex
