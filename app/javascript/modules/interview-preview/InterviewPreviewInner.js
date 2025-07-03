@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaEyeSlash } from 'react-icons/fa';
-import { GiKeyLock } from "react-icons/gi";
+import { FaEyeSlash, FaKey } from 'react-icons/fa';
 
 import classNames from 'classnames';
 
@@ -28,7 +27,7 @@ export default function InterviewPreviewInner({
                     <FaEyeSlash className="u-mr-tiny" />
                 }
                 {interview.workflow_state === 'restricted' &&
-                    <GiKeyLock className="u-mr-tiny" />
+                    <FaKey className="u-mr-tiny" />
                 }
                 {projectAccessGranted ?
                     interview.short_title?.[locale] :
