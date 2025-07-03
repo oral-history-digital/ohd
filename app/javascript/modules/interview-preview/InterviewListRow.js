@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaEyeSlash } from 'react-icons/fa';
-import { GiKeyLock } from "react-icons/gi";
+import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
@@ -73,7 +72,7 @@ export default function InterviewListRow({
                                     <FaEyeSlash className="u-ml-tiny" />
                                 }
                                 {interview.workflow_state === 'restricted' &&
-                                    <GiKeyLock className="u-ml-tiny" />
+                                    <FaKey className="u-ml-tiny" />
                                 }
                             </div> :
                             interview.anonymous_title[locale]
