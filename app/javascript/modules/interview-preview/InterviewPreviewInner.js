@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 
@@ -5,6 +6,7 @@ import classNames from 'classnames';
 
 import { useProjectAccessStatus } from 'modules/auth';
 import { useProject } from 'modules/routes';
+import { getCurrentUser } from 'modules/data';
 import ThumbnailMetadata from './ThumbnailMetadata';
 import InterviewImage from './InterviewImage';
 import InterviewArchiveDisplay from './InterviewArchiveDisplay';
@@ -17,6 +19,8 @@ export default function InterviewPreviewInner({
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const { project: currentProject } = useProject();
+    const currentUser = useSelector(getCurrentUser);
+    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
 
     return (
         <>
@@ -27,7 +31,7 @@ export default function InterviewPreviewInner({
                     <FaEyeSlash className="u-mr-tiny" />
                 }
                 {interview.workflow_state === 'restricted' &&
-                    <FaKey className="u-mr-tiny" />
+                    <FaKey className="u-mr-tiny" style={{ color: permitted ? 'grey' : 'black' }} />
                 }
                 {projectAccessGranted ?
                     interview.short_title?.[locale] :
