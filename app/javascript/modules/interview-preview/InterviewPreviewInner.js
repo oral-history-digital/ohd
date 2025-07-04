@@ -31,7 +31,7 @@ export default function InterviewPreviewInner({
                     <FaEyeSlash className="u-mr-tiny" />
                 }
                 {interview.workflow_state === 'restricted' &&
-                    <FaKey className="u-mr-tiny" style={{ filter: permitted ? 'brightness(150%)' : 'brightness(100%)' }} />
+                    <FaKey className="u-mr-tiny" style={{ filter: permitted ? 'opacity(40%)' : 'opacity(90%)' }} />
                 }
                 {projectAccessGranted && (
                     interview.workflow_state === 'public' ||
