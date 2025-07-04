@@ -16,6 +16,7 @@ export default function InterviewPermissionForm({
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
     const { interviews } = useRestrictedInterviews();
+    const [filteredInterviews, setFilteredInterviews] = useState(interviews);
 
     const [checkedInterviewIds, setCheckedInterviewIds] = useState(
         data?.interview_permissions?.map(permission => permission.interview_id) || []
@@ -29,11 +30,11 @@ export default function InterviewPermissionForm({
         elementType: 'input',
         type: 'checkbox',
         attribute: 'all',
-        value: checkedInterviewIds.length === interviews.length,
+        value: filteredInterviews.length > 0 && checkedInterviewIds.length === filteredInterviews.length,
         handlechangecallback: (name, value) => {
-            setCheckedInterviewIds(value ? interviews.map(interview => interview.id) : []);
+            setCheckedInterviewIds(value ? filteredInterviews.map(interview => interview.id) : []);
         },
-    }].concat(interviews?.sort((a,b) => a.archive_id - b.archive_id).map(interview => ({
+    }].concat(filteredInterviews?.sort((a,b) => a.archive_id - b.archive_id).map(interview => ({
         elementType: 'input',
         type: 'checkbox',
         attribute: `interview_id[${interview.id}]`,
@@ -52,6 +53,16 @@ export default function InterviewPermissionForm({
 
     return (
         <>
+            <input
+                type="text"
+                placeholder="Search interviews..."
+                onChange={(e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    setFilteredInterviews(prev => 
+                        interviews.filter(interview => interview.name.toLowerCase().includes(searchTerm))
+                    );
+                }}
+            />
             <Form
                 scope={'interview_permission'}
                 onSubmit={ async (params) => {
