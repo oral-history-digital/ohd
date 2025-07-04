@@ -485,7 +485,7 @@ class InterviewsController < ApplicationController
               id: interview.id,
               archive_id: interview.archive_id,
               name: interview.title(current_project.default_locale),
-              collection: interview.collection ? interview.collection.shortname : '',
+              collection: interview.collection&.shortname,
             }
             mem
           end
