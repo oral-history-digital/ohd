@@ -20,8 +20,6 @@ export default function InterviewPermissionForm({
     const [checkedInterviewIds, setCheckedInterviewIds] = useState(
         data?.interview_permissions?.map(permission => permission.interview_id) || []
     );
-    console.log('checkedInterviewIds', checkedInterviewIds);
-    console.log('interviews', interviews);
 
     if (!interviews) {
         return null;
@@ -35,7 +33,7 @@ export default function InterviewPermissionForm({
         handlechangecallback: (name, value) => {
             setCheckedInterviewIds(value ? interviews.map(interview => interview.id) : []);
         },
-    }].concat(interviews?.map(interview => ({
+    }].concat(interviews?.sort((a,b) => a.archive_id - b.archive_id).map(interview => ({
         elementType: 'input',
         type: 'checkbox',
         attribute: `interview_id[${interview.id}]`,
@@ -49,7 +47,7 @@ export default function InterviewPermissionForm({
             });
         },
         value: checkedInterviewIds.includes(interview.id),
-        label: interview.name,
+        label: `${interview.archive_id}, ${interview.name}, ${interview.collection ? interview.collection : ''}`,
     })));
 
     return (
