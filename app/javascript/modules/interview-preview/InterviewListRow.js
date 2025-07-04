@@ -78,7 +78,7 @@ export default function InterviewListRow({
                         <FaEyeSlash className="u-ml-tiny" />
                     }
                     {interview.workflow_state === 'restricted' &&
-                        <FaKey className="u-ml-tiny" style={{ color: permitted ? 'grey' : 'black' }} />
+                        <FaKey className="u-ml-tiny" style={{ filter: permitted ? 'brightness(150%)' : 'brightness(100%)' }} />
                     }
                 </LinkOrA>
             </td>
