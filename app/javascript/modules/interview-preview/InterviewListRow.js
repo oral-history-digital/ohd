@@ -1,10 +1,11 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
 import { useProject, LinkOrA } from 'modules/routes';
-import { useHumanReadable } from 'modules/data';
+import { useHumanReadable, getCurrentUser } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
@@ -32,6 +33,8 @@ export default function InterviewListRow({
     const { fulltext } = useArchiveSearch();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext, projectOfInterview);
     const { data: interviewee } = usePersonWithAssociations(interview.interviewee_id);
+    const currentUser = useSelector(getCurrentUser);
+    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
 
     function linkPath() {
         const params = { fulltext };
@@ -72,7 +75,7 @@ export default function InterviewListRow({
                                     <FaEyeSlash className="u-ml-tiny" />
                                 }
                                 {interview.workflow_state === 'restricted' &&
-                                    <FaKey className="u-ml-tiny" />
+                                    <FaKey className="u-ml-tiny" style={{ color: permitted ? 'grey' : 'black' }} />
                                 }
                             </div> :
                             interview.anonymous_title[locale]
