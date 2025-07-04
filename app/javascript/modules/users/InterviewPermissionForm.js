@@ -6,6 +6,7 @@ import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 import useRestrictedInterviews from './useRestrictedInterviews';
+import { useI18n } from 'modules/i18n';
 
 export default function InterviewPermissionForm({
     data,
@@ -15,6 +16,7 @@ export default function InterviewPermissionForm({
     const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
+    const { t } = useI18n();
     const { interviews } = useRestrictedInterviews();
     const [filteredInterviews, setFilteredInterviews] = useState(interviews);
 
@@ -55,7 +57,7 @@ export default function InterviewPermissionForm({
         <>
             <input
                 type="text"
-                placeholder="Search interviews..."
+                placeholder={t('search')}
                 onChange={(e) => {
                     const searchTerm = e.target.value.toLowerCase();
                     setFilteredInterviews(prev => 
