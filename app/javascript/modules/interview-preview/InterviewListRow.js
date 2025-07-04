@@ -67,18 +67,18 @@ export default function InterviewListRow({
                     onLinkClick={() => setArchiveId(interview.archive_id)}
                     className="search-result-link"
                 >
-                    {
-                        projectAccessGranted ?
-                            <div>
-                                {interview.short_title && interview.short_title[locale]}
-                                {interview.workflow_state === 'unshared' &&
-                                    <FaEyeSlash className="u-ml-tiny" />
-                                }
-                                {interview.workflow_state === 'restricted' &&
-                                    <FaKey className="u-ml-tiny" style={{ color: permitted ? 'grey' : 'black' }} />
-                                }
-                            </div> :
-                            interview.anonymous_title[locale]
+                    {projectAccessGranted && (
+                        interview.workflow_state === 'public' ||
+                        (interview.workflow_state === 'restricted' && permitted)
+                    ) ?
+                        interview.short_title?.[locale] :
+                        interview.anonymous_title[locale]
+                    }
+                    {interview.workflow_state === 'unshared' &&
+                        <FaEyeSlash className="u-ml-tiny" />
+                    }
+                    {interview.workflow_state === 'restricted' &&
+                        <FaKey className="u-ml-tiny" style={{ color: permitted ? 'grey' : 'black' }} />
                     }
                 </LinkOrA>
             </td>

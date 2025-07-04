@@ -33,7 +33,10 @@ export default function InterviewPreviewInner({
                 {interview.workflow_state === 'restricted' &&
                     <FaKey className="u-mr-tiny" style={{ color: permitted ? 'grey' : 'black' }} />
                 }
-                {projectAccessGranted ?
+                {projectAccessGranted && (
+                    interview.workflow_state === 'public' ||
+                    (interview.workflow_state === 'restricted' && permitted)
+                ) ?
                     interview.short_title?.[locale] :
                     interview.anonymous_title[locale]
                 }
