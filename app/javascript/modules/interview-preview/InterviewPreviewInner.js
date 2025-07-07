@@ -4,7 +4,7 @@ import { FaEyeSlash, FaKey } from 'react-icons/fa';
 
 import classNames from 'classnames';
 
-import { useProjectAccessStatus } from 'modules/auth';
+import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
 import { useProject } from 'modules/routes';
 import { getCurrentUser } from 'modules/data';
 import ThumbnailMetadata from './ThumbnailMetadata';
@@ -18,6 +18,7 @@ export default function InterviewPreviewInner({
     isExpanded
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const { isAuthorized } = useAuthorization();
     const { project: currentProject } = useProject();
     const currentUser = useSelector(getCurrentUser);
     const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
@@ -35,7 +36,8 @@ export default function InterviewPreviewInner({
                 }
                 {projectAccessGranted && (
                     interview.workflow_state === 'public' ||
-                    (interview.workflow_state === 'restricted' && permitted)
+                    (interview.workflow_state === 'restricted' && permitted) ||
+                    isAuthorized(interview, 'update')
                 ) ?
                     interview.short_title?.[locale] :
                     interview.anonymous_title[locale]

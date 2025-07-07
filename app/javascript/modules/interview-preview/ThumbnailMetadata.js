@@ -35,7 +35,7 @@ export default function ThumbnailMetadata({
             {
                 project.grid_fields.map((field) => {
                     const allowedToSee = !isRestricted ||
-                        (isRestricted && field.show_on_landing_page) ||
+                        (isRestricted && field.display_on_landing_page) ||
                         (isRestricted && permitted) ||
                         isAuthorized(interview, 'update');
 
