@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 
 import { useHumanReadable, getCurrentUser } from 'modules/data';
+import { useAuthorization } from 'modules/auth';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
@@ -23,6 +24,7 @@ export default function ThumbnailMetadata({
     const currentUser = useSelector(getCurrentUser);
     const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
     const isRestricted = interview.workflow_state === 'restricted';
+    const { isAuthorized } = useAuthorization();
 
     if (isLoading || !project.grid_fields) {
         return <Spinner />;
