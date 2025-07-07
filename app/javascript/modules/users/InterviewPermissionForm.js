@@ -64,7 +64,7 @@ export default function InterviewPermissionForm({
                 onChange={(e) => {
                     const searchTerm = e.target.value.toLowerCase();
                     setFilteredInterviews(prev => 
-                        interviews.filter(interview => interview.name.toLowerCase().includes(searchTerm))
+                        interviews.filter(interview => interview.archive_id.includes(searchTerm) || interview.name.toLowerCase().includes(searchTerm))
                     );
                 }}
             />
