@@ -35,6 +35,7 @@ export default function InterviewListRow({
     const { data: interviewee } = usePersonWithAssociations(interview.interviewee_id);
     const currentUser = useSelector(getCurrentUser);
     const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
+    const isRestricted = interview.workflow_state === 'restricted';
 
     function linkPath() {
         const params = { fulltext };
@@ -90,7 +91,13 @@ export default function InterviewListRow({
                 )
             }
             {
-                project.list_columns?.map(column => {
+                project.list_columns?.
+                    filter((field) => {
+                        return !isRestricted ||
+                            (isRestricted && field.show_on_landing_page) ||
+                            (isRestricted && permitted);
+                    }).
+                    map(column => {
                     const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;

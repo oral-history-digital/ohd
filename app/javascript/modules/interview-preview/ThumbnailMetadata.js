@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 
-import { useHumanReadable } from 'modules/data';
+import { useHumanReadable, getCurrentUser } from 'modules/data';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
@@ -20,6 +20,9 @@ export default function ThumbnailMetadata({
     const { locale } = useI18n();
     const { humanReadable } = useHumanReadable();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
+    const currentUser = useSelector(getCurrentUser);
+    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
+    const isRestricted = interview.workflow_state === 'restricted';
 
     if (isLoading || !project.grid_fields) {
         return <Spinner />;
@@ -28,7 +31,13 @@ export default function ThumbnailMetadata({
     return (
         <ul className="DetailList" lang={locale}>
             {
-                project.grid_fields.map((field) => {
+                project.grid_fields.
+                    filter((field) => {
+                        return !isRestricted ||
+                            (isRestricted && field.show_on_landing_page) ||
+                            (isRestricted && permitted);
+                    }).
+                    map((field) => {
                     const obj = (field.ref_object_type === 'Interview' || field.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
