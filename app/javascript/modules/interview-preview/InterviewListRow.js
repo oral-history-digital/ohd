@@ -70,7 +70,8 @@ export default function InterviewListRow({
                 >
                     {projectAccessGranted && (
                         interview.workflow_state === 'public' ||
-                        (interview.workflow_state === 'restricted' && permitted)
+                        (interview.workflow_state === 'restricted' && permitted) ||
+                        isAuthorized(interview, 'update')
                     ) ?
                         interview.short_title?.[locale] :
                         interview.anonymous_title[locale]
@@ -93,7 +94,7 @@ export default function InterviewListRow({
             {
                 project.list_columns?.map(column => {
                     const allowedToSee = !isRestricted ||
-                        (isRestricted && column.show_on_landing_page) ||
+                        (isRestricted && column.display_on_landing_page) ||
                         (isRestricted && permitted) ||
                         isAuthorized(interview, 'update');
 
@@ -111,14 +112,14 @@ export default function InterviewListRow({
 
                         return (
                             <td key={column.name} className="Table-cell">
-                                {allowedToSee && formattedEvents}
+                                {allowedToSee ? formattedEvents : '---'}
                             </td>
                         );
                     }
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {allowedToSee && obj && humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'})}
+                            {(allowedToSee && obj) ? humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'}) : '---'}
                         </td>
                     );
                 })
