@@ -36,7 +36,10 @@ export default function InterviewPermissionForm({
         handlechangecallback: (name, value) => {
             setCheckedInterviewIds(value ? filteredInterviews.map(interview => interview.id) : []);
         },
-    }].concat(filteredInterviews?.sort((a,b) => a.archive_id - b.archive_id).map(interview => ({
+    }].concat(filteredInterviews?.sort((a,b) =>
+            a.archive_id.localeCompare(b.archive_id, undefined, { numeric: true })
+        ).
+        map(interview => ({
         elementType: 'input',
         type: 'checkbox',
         attribute: `interview_id[${interview.id}]`,
