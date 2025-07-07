@@ -31,13 +31,12 @@ export default function ThumbnailMetadata({
     return (
         <ul className="DetailList" lang={locale}>
             {
-                project.grid_fields.
-                    filter((field) => {
-                        return !isRestricted ||
-                            (isRestricted && field.show_on_landing_page) ||
-                            (isRestricted && permitted);
-                    }).
-                    map((field) => {
+                project.grid_fields.map((field) => {
+                    const allowedToSee = !isRestricted ||
+                        (isRestricted && field.show_on_landing_page) ||
+                        (isRestricted && permitted) ||
+                        isAuthorized(interview, 'update');
+
                     const obj = (field.ref_object_type === 'Interview' || field.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
@@ -55,7 +54,7 @@ export default function ThumbnailMetadata({
                                 key={field.name}
                                 className="DetailList-item"
                             >
-                                {formattedEvents}
+                                {allowedToSee && formattedEvents}
                             </li>
                         );
                     }
@@ -80,7 +79,7 @@ export default function ThumbnailMetadata({
                                     'DetailList-item--one-line': field.name === 'collection_id',
                                 })}
                             >
-                                {value}
+                                {allowedToSee && value}
                             </li>
                         );
                     } else {

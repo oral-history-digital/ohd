@@ -91,13 +91,12 @@ export default function InterviewListRow({
                 )
             }
             {
-                project.list_columns?.
-                    filter((field) => {
-                        return !isRestricted ||
-                            (isRestricted && field.show_on_landing_page) ||
-                            (isRestricted && permitted);
-                    }).
-                    map(column => {
+                project.list_columns?.map(column => {
+                    const allowedToSee = !isRestricted ||
+                        (isRestricted && column.show_on_landing_page) ||
+                        (isRestricted && permitted) ||
+                        isAuthorized(interview, 'update');
+
                     const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
@@ -112,14 +111,14 @@ export default function InterviewListRow({
 
                         return (
                             <td key={column.name} className="Table-cell">
-                                {formattedEvents}
+                                {allowedToSee && formattedEvents}
                             </td>
                         );
                     }
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {obj && humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'})}
+                            {allowedToSee && obj && humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'})}
                         </td>
                     );
                 })
