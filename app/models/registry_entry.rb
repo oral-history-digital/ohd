@@ -209,11 +209,11 @@ class RegistryEntry < ApplicationRecord
 
   class << self
     def ohd_subjects
-      find 21898673
+      find 21898673 rescue nil
     end
 
     def ohd_level_of_indexing
-      find 21898470
+      find 21898470 rescue nil
     end
 
     def merge(opts={})
