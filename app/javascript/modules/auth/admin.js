@@ -21,6 +21,9 @@ export default function admin(props, obj={}, action) {
         let activeTasksPermissions = activeTasks.flatMap(t => Object.values(t.permissions));
         let activeSupervisedTasksPermissions = activeSupervisedTasks.flatMap(t => Object.values(t.permissions));
 
+        let interviewPermissions = Object.values(props.user.interview_permissions).
+            filter(p => p.interview_id === obj.id && p.action_name === action);
+
         if (
             props.user.admin ||
             ((obj.type && (obj.id || action) && (!obj.project_id || obj.project_id === props.project.id)) && (
@@ -58,7 +61,9 @@ export default function admin(props, obj={}, action) {
                             permission.action_name === action
                         )
                     })
-                )
+                ) ||
+                // if there is a interview permission for the current user and the obj is an interview, he/she should be able to see it
+                interviewPermissions.length > 0
             ))
         ) {
             return true;

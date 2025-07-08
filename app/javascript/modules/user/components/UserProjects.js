@@ -15,6 +15,9 @@ function UserProjects() {
     const roles = user?.user_roles && Object.values(user.user_roles);
     const groupedRoles = groupBy(roles, 'project_id');
 
+    const interviewPermissions = user?.interview_permissions && Object.values(user.interview_permissions);
+    const groupedInterviewPermissions= groupBy(interviewPermissions, 'project_id');
+
     const tasks = user?.tasks && Object.values(user.tasks);
     const groupedTasks = groupBy(tasks, 'project_id');
 
@@ -29,6 +32,7 @@ function UserProjects() {
                     key={currentProject.id}
                     userProject={currentUserProject}
                     roles={groupedRoles[currentProject.id]}
+                    interviewPermissions={groupedInterviewPermissions[currentProject.id]}
                     tasks={groupedTasks[currentProject.id]}
                     supervisedTasks={groupedSupervisedTasks[currentProject.id]}
                 />
@@ -41,6 +45,7 @@ function UserProjects() {
                                 key={urp.id}
                                 userProject={urp}
                                 roles={groupedRoles[urp.project_id]}
+                                interviewPermissions={groupedInterviewPermissions[urp.project_id]}
                                 tasks={groupedTasks[urp.project_id]}
                                 supervisedTasks={groupedSupervisedTasks[urp.project_id]}
                             />

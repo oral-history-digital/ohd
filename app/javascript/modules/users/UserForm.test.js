@@ -75,7 +75,7 @@ describe('<UserForm />', () => {
             created_at: '',
         },
         user_roles: {},
-        workflow_state: "confirmed",
+        workflow_state: "afirmed",
         workflow_states: [ "block", "remove" ],
         zipcode: "87979",
     };

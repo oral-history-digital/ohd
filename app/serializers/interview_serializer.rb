@@ -13,9 +13,21 @@ class InterviewSerializer < InterviewBaseSerializer
   ]
 
   def landing_page_texts
-    json = Rails.cache.fetch("#{object.project.shortname}-landing-page-texts-#{object.archive_id}-#{object.project.updated_at}") do
+    json = Rails.cache.fetch(
+      "#{object.project.shortname}-landing-page-texts-#{object.archive_id}-#{object.workflow_state}-#{object.project.updated_at}"
+    ) do
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.project.landing_page_text(locale) && object.project.landing_page_text(locale).gsub('INTERVIEWEE', object.project.fullname_on_landing_page ? object.short_title(locale) : object.anonymous_title(locale))
+
+        text = object.workflow_state == 'restricted' ?
+          object.project.restricted_landing_page_text(locale) :
+          object.project.landing_page_text(locale)
+
+        mem[locale] = text&.gsub(
+          'INTERVIEWEE',
+          object.project.fullname_on_landing_page ?
+          object.short_title(locale) :
+          object.anonymous_title(locale)
+        )
         mem
       end
     end

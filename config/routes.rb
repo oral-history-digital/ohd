@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   concern :archive do
     get "norm_data_api" => "registry_entries#norm_data_api"
     get "random_featured_interviews", to: "interviews#random_featured"
+    get "restricted_interviews", to: "interviews#restricted"
     resources :texts
     %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
       get page, to: "texts#show"
@@ -139,6 +140,8 @@ Rails.application.routes.draw do
     resources :roles#, only: [:create, :update, :index]
     resources :role_permissions, only: [:create, :destroy]
     resources :permissions
+    resources :interview_permissions, only: [:create, :destroy]
+
 
     resources :tasks
     resources :task_types#, only: [:create, :update, :index]
@@ -207,7 +210,7 @@ Rails.application.routes.draw do
   end
 
   concern :search do
-    resources :searches, only: [:new, :facets, :suggestions, :archive, :interview, :map] do
+    resources :searches, only: [:new] do
       collection do
         get :facets
         get :suggestions

@@ -472,6 +472,34 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def restricted
+    restricted = current_project.interviews.restricted
+    authorize restricted
+
+    respond_to do |format|
+      format.json do
+        logged_in = current_user.present?
+        json = Rails.cache.fetch("#{current_project.shortname}-interview-restricted-#{logged_in}-#{current_project.interviews.maximum(:updated_at)}") do
+          data = restricted.inject({}) do |mem, interview|
+            mem[interview.archive_id] = {
+              id: interview.id,
+              archive_id: interview.archive_id,
+              name: interview.title(current_project.default_locale),
+              collection: interview.collection&.shortname,
+            }
+            mem
+          end
+          {
+            data: data,
+            data_type: "restricted_interviews",
+          }
+        end.to_json
+
+        render plain: json
+      end
+    end
+  end
+
   def initial_interview_redux_state
     #Rails.cache.fetch("#{current_project.shortname}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
     if @interview

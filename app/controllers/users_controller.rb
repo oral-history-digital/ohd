@@ -105,7 +105,7 @@ class UsersController < ApplicationController
     users = policy_scope(User).
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
 
-    users = users.where(workflow_state: params[:workflow_state] || 'confirmed') if current_project.is_ohd? && params[:workflow_state] != 'all'
+    users = users.where(workflow_state: params[:workflow_state] || 'afirmed') if current_project.is_ohd? && params[:workflow_state] != 'all'
     users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all' && params[:workflow_users_for_project].blank?
     users = users.joins(:user_projects).where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
 
