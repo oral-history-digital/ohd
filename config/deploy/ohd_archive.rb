@@ -8,5 +8,5 @@ set :project_yml, "ohd_archive.yml"
 set :branch, ENV.fetch('BRANCH', 'main')
 
 set :rbenv_type, :system
-set :rbenv_ruby, '3.0.7'
+set :rbenv_ruby, '3.3.4'
 set :rbenv_custom_path, '/opt/rbenv'
