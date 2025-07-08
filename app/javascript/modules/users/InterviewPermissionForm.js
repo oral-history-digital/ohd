@@ -53,7 +53,7 @@ export default function InterviewPermissionForm({
             });
         },
         value: checkedInterviewIds.includes(interview.id),
-        label: `${interview.archive_id}, ${interview.name}, ${interview.collection ? interview.collection : ''}`,
+        label: `${interview.archive_id}, ${interview.name}${interview.collection ? ', ' + interview.collection : ''}`,
     })));
 
     return (
