@@ -1,4 +1,4 @@
-FROM ruby:3.0.7
+FROM ruby:3.3.4
 
 # Force compiling native gems
 ENV BUNDLE_FORCE_RUBY_PLATFORM=1
@@ -47,7 +47,8 @@ WORKDIR /workspace
 
 # Install Ruby gems
 COPY Gemfile Gemfile.lock* /workspace/
-RUN bundle install --jobs=4 --retry=3
+RUN gem install bundler:2.5.14 \
+  && bundle install --jobs=4 --retry=3
 
 # Install JS packages
 COPY package.json yarn.lock /workspace/

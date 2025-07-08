@@ -16,9 +16,8 @@ wait_for_port() {
   done
 }
 
-log "Starting Solr..."
-bin/rake sunspot:solr:start
-wait_for_port localhost 8983
+log "Waiting for Solr to be available..."
+wait_for_port solr 8983
 
 log "Starting Rails server..."
 bin/rails server -b 0.0.0.0 -d
