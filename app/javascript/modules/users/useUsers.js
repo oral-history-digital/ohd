@@ -1,4 +1,4 @@
-import useSWRImmutable from 'swr/immutable';
+import useSWR from 'swr';
 
 import { usePathBase } from 'modules/routes';
 
@@ -33,7 +33,7 @@ export default function useUsers(
         dataPath += `&order=${sorting[0].id}&direction=${sorting[0].desc ? 'desc' : 'asc'}`;
     }
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(dataPath);
+    const { isLoading, isValidating, data, error } = useSWR(dataPath);
 
     return { isLoading, isValidating, data: data, error, dataPath };
 }

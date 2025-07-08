@@ -23,7 +23,7 @@ namespace :storage do
 
           if file_name.match(Regexp.new("^#{Project.project_initials}\\d{3}\\.(png|jpg)$", Regexp::IGNORECASE))
 
-            if interview.still_image_file_name == nil or not File.exists?(interview.still_image_file_name)
+            if interview.still_image_file_name == nil or not File.exist?(interview.still_image_file_name)
               interview.still_image = File.open(file)
               interview.save!
               puts "#{file_name} added"

@@ -52,6 +52,10 @@ class InterviewPolicy < ApplicationPolicy
     download?
   end
 
+  def restricted?
+    user && (user.accessible_projects.include?(project) || user.admin?)
+  end
+
   Interview.non_public_method_names.each do |m|
     define_method "#{m}?" do
       user

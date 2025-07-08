@@ -1,5 +1,7 @@
+require 'stringio'
+
 # config valid only for current version of Capistrano
-lock "3.17.0"
+lock "3.17.3"
 
 set :repo_url, "https://github.com/oral-history-digital/ohd.git"
 

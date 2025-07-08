@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Workflow
+  include WorkflowActiverecord
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable
@@ -31,6 +31,8 @@ class User < ApplicationRecord
   has_many :roles, through: :user_roles
   has_many :permissions, through: :roles
 
+  has_many :interview_permissions # permissions to see restricted access interviews
+
   has_many :tasks
   has_many :supervised_tasks,
            class_name: 'Task',
@@ -58,15 +60,15 @@ class User < ApplicationRecord
 
   workflow do
     state :created do
-      event :confirm, :transitions_to => :confirmed
+      event :afirm, :transitions_to => :afirmed
     end
-    state :confirmed do
+    state :afirmed do
       event :block, :transitions_to => :blocked
       # pseudo
       event :remove, :transitions_to => :removed
     end
     state :blocked do
-      event :revoke_block, :transitions_to => :confirmed
+      event :revoke_block, :transitions_to => :afirmed
       # pseudo
       event :remove, :transitions_to => :removed
     end
