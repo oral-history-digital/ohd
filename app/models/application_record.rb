@@ -29,7 +29,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def ohd_subject_registry_entry_ids
-    if respond_to?(:interviews)
+    if respond_to?(:interviews) && RegistryEntry.ohd_subjects
       RegistryReference.where(
         registry_entry_id: RegistryEntry.ohd_subjects.children.pluck(:id),
         ref_object_id: interviews.pluck(:id),
@@ -53,7 +53,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def ohd_level_of_indexing_registry_entry_groups
-    if respond_to?(:interviews)
+    if respond_to?(:interviews) && RegistryEntry.ohd_level_of_indexing
       RegistryReference.where(
         registry_entry_id: RegistryEntry.ohd_level_of_indexing.children.pluck(:id),
         ref_object_id: interviews.pluck(:id),
