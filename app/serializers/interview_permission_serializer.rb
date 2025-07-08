@@ -10,7 +10,7 @@ class InterviewPermissionSerializer < ApplicationSerializer
   ]
 
   def name
-    object.interview.archive_id
+    object.interview.localized_hash(:title)
   end
 
   def action_name

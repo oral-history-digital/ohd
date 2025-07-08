@@ -17,7 +17,9 @@ export default function UserRowActions({
         return interviews?.some(interview => interview.id === permission.interview_id);
     });
     const none = !currentProjectInterviewPermissions || currentProjectInterviewPermissions.length === 0
-    const names = currentProjectInterviewPermissions.map(i => i.name).slice(0, 3).join(', ');
+    const names = currentProjectInterviewPermissions?.sort((a,b) =>
+            a.archive_id.localeCompare(b.archive_id, undefined, { numeric: true })
+        ).map(i => i.archive_id).slice(0, 3).join(', ');
     const hasMore = currentProjectInterviewPermissions.length > 3;
 
     return (

@@ -96,13 +96,16 @@ export default function UserProject({
                                     showinterviewPermissions ?
                                     <ul className="DetailList">
                                         {
-                                            interviewPermissions?.map((permission, index) => (
+                                            interviewPermissions?.sort((a,b) =>
+                                                a.name[locale].localeCompare(b.name[locale], undefined, { numeric: true })
+                                            ).
+                                            map((permission, index) => (
                                                 <li key={`interview-permission-${index}`} className="DetailList-item">
                                                     <LinkOrA
                                                         project={project}
                                                         to={`interviews/${permission.archive_id}`}
                                                     >
-                                                        {permission.name}
+                                                        {`${permission.archive_id}, ${permission.name[locale]}`}
                                                     </LinkOrA>
                                                 </li>
                                             ))
