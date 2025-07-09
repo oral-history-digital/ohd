@@ -44,7 +44,7 @@ class UserContent < ApplicationRecord
   end
 
   def get_properties
-    @properties ||= (YAML.load(read_attribute(:properties) || '') || {})
+    @properties ||= (YAML.load(read_attribute(:properties) || '', permitted_classes: [ActiveSupport::HashWithIndifferentAccess]) || {})
   end
 
   # The title is usually created from (translated) attributes of the

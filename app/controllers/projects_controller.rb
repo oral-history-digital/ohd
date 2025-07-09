@@ -214,6 +214,7 @@ class ProjectsController < ApplicationController
             :introduction,
             :more_text,
             :landing_page_text,
+            :restricted_landing_page_text,
             :media_missing_text
           ]
       )

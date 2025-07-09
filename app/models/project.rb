@@ -5,7 +5,7 @@ class Project < ApplicationRecord
   include OaiDc
   include OaiDatacite
 
-  enum default_search_order: [:title, :random]
+  enum :default_search_order, [:title, :random]
 
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
@@ -50,19 +50,19 @@ class Project < ApplicationRecord
   has_one :access_config, dependent: :destroy
   has_many :texts, dependent: :destroy
 
-  translates :name, :display_name, :introduction, :more_text, :landing_page_text,
+  translates :name, :display_name, :introduction, :more_text, :landing_page_text, :restricted_landing_page_text,
     :media_missing_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
-  serialize :view_modes, Array
-  serialize :available_locales, Array
-  serialize :upload_types, Array
-  #serialize :name, Array
-  serialize :funder_names, Array
-  serialize :logged_out_visible_registry_entry_ids, Array
-  serialize :hidden_registry_entry_ids, Array
-  serialize :hidden_transcript_registry_entry_ids, Array
-  serialize :pdf_registry_entry_ids, Array
+  serialize :view_modes, type: Array
+  serialize :available_locales, type: Array
+  serialize :upload_types, type: Array
+  #serialize :name, type: Array
+  serialize :funder_names, type: Array
+  serialize :logged_out_visible_registry_entry_ids, type: Array
+  serialize :hidden_registry_entry_ids, type: Array
+  serialize :hidden_transcript_registry_entry_ids, type: Array
+  serialize :pdf_registry_entry_ids, type: Array
   # serialize :fullname_on_landing_page
 
   after_create do

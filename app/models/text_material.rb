@@ -43,12 +43,12 @@ class TextMaterial < ApplicationRecord
       #else
         ## use the specified document path or the default Repository content
         #doc_path = File.join(Project.archive_management_dir, archive_id, 'text', (filename || '').split('/').last.to_s)
-        #unless File.exists?(doc_path)
+        #unless File.exist?(doc_path)
           #doc_path = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
         #end
         #doc_path
       #end
-      #return unless File.exists?(filepath)
+      #return unless File.exist?(filepath)
       #File.open(filepath, 'r') do |file|
         #self.document = file
       #end

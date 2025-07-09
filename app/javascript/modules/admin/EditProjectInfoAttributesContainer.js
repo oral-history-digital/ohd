@@ -30,6 +30,12 @@ const mapStateToProps = state => ({
             help: 'activerecord.attributes.project.landing_page_edit_help'
         },
         {
+            attribute: 'restricted_landing_page_text',
+            elementType: 'richTextEditor',
+            multiLocale: true,
+            help: 'activerecord.attributes.project.restricted_landing_page_edit_help'
+        },
+        {
             attribute: "cooperation_partner"
         },
         {

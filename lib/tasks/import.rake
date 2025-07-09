@@ -286,7 +286,7 @@ namespace :import do
       reindex = !(args[:reindex] || ENV['reindex']).blank?
       require 'nokogiri'
       #
-      raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file.to_s)
+      raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exist?(file.to_s)
       #
       @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXmlImport.new(file))
 

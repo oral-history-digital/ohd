@@ -99,6 +99,13 @@ export default function AdminActions({
                     <li>
                         <UpdateInterviews
                             selectedArchiveIds={selectedArchiveIds}
+                            params={{ workflow_state: 'restricted' }}
+                            action="restrict"
+                        />
+                    </li>
+                    <li>
+                        <UpdateInterviews
+                            selectedArchiveIds={selectedArchiveIds}
                             params={{ workflow_state: 'unshared' }}
                             action="unpublish"
                         />

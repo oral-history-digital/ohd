@@ -35,4 +35,7 @@ class TranslationValue < ApplicationRecord
     text
   end
 
+  def self.available?(key, locale)
+    !!find_by(key: key)&.value(locale)
+  end
 end

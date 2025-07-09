@@ -26,6 +26,7 @@ class ProjectCreator < ApplicationService
     create_default_roles
     create_default_task_types unless is_ohd
     create_default_texts
+    create_default_landing_page_texts
     create_default_media_streams
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
@@ -268,6 +269,22 @@ class ProjectCreator < ApplicationService
     end
   end
 
+  def create_default_landing_page_texts
+    restricted_landing_page_texts = {
+      de: 'Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail',
+      en: 'For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.',
+      ru: 'По юридическим или этическим причинам это интервью доступно только по запросу. Пожалуйста, подайте заявку на расширенный доступ via e-mail.',
+      es: 'Por razones legales o éticas, esta entrevista sólo es accesible previa solicitud. Por favor, solicite acceso ampliado via e-mail.',
+      el: 'Για νομικούς ή δεοντολογικούς λόγους, η συνέντευξη αυτή είναι προσβάσιμη μόνο κατόπιν αιτήματος. Παρακαλείστε να υποβάλετε αίτηση για εκτεταμένη πρόσβαση via e-mail.',
+      uk: "З юридичних та етичних причин це інтерв'ю доступне лише за запитом. Будь ласка, подайте заявку на розширений доступ via e-mail.",
+      ar: "بسبب أسباب قانونية أو أخلاقية، هذه المقابلة متاحة فقط مع قيود. يرجى طلب الوصول الموسع عبر البريد الإلكتروني'"
+    }
+
+    project.available_locales.each do |locale|
+      project.update(restricted_landing_page_text: restricted_landing_page_texts[locale], locale: locale)
+    end
+  end
+
   def create_default_media_streams
     YAML.load_file(File.join(Rails.root, 'config/defaults/media_streams.yml')).each do |(name, settings)|
       MediaStream.create(
@@ -283,7 +300,9 @@ class ProjectCreator < ApplicationService
 
   def add_translations(record, attribute, translation_key)
     project.available_locales.each do |locale|
-      record.update("#{attribute}": TranslationValue.for(translation_key, locale), locale: locale)
+      if TranslationValue.available?(translation_key, locale)
+        record.update("#{attribute}": TranslationValue.for(translation_key, locale), locale: locale)
+      end
     end
   end
 

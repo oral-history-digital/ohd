@@ -1,5 +1,5 @@
 class UserProject < ApplicationRecord
-  include Workflow
+  include WorkflowActiverecord
 
   belongs_to :user, touch: true
   belongs_to :project

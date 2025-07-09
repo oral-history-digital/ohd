@@ -29,7 +29,7 @@ install_plugin Capistrano::SCM::Git
 # require "capistrano/rvm"
  require "capistrano/rbenv"
 # require "capistrano/chruby"
- #require "capistrano/bundler"
+ require "capistrano/bundler"
  require 'capistrano/delayed_job'
  require "capistrano/rails"
  #require "capistrano/rails/assets"

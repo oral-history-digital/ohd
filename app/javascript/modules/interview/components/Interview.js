@@ -56,7 +56,12 @@ export default function Interview({
                     <title>{documentTitle}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
-                    <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
+                    <AuthorizedContent
+                        object={interview}
+                        action='show'
+                        unauthorizedContent={<MediaPreview />}
+                        showIfPublic
+                    >
                         <MediaPlayer />
                         {
                             interviewEditView ?

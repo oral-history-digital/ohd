@@ -1,4 +1,5 @@
 class Task < ApplicationRecord
+  include WorkflowActiverecord
 
   belongs_to :user
   belongs_to :supervisor, class_name: 'User'
@@ -11,8 +12,6 @@ class Task < ApplicationRecord
   validates_uniqueness_of :task_type_id, :scope => [:interview_id]
 
   before_save :save_dates_and_inform
-
-  include Workflow
 
   # every state should be possible from all others
   # workflow is still in here only  because of the callbacks

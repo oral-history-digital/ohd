@@ -77,6 +77,25 @@ class Admin::UserStatisticsController < Admin::BaseController
         end
       end
 
+      # restricted interviews
+      date_attribute = 'interview_permissions.created_at'
+      time_slots = (
+        total(date_attribute, locale) +
+        years(live_since, date_attribute) +
+        months(live_since, date_attribute)
+      ).to_h
+
+      csv << []
+      csv << [
+        "'=== #{TranslationValue.for("modules.tables.interviewPermissions", locale)} ==='"
+      ] + time_slots.map do |k, conditions|
+        users.
+          joins(:interview_permissions).
+          where(conditions).
+          where("interview_permissions.interview_id": current_project.interviews.pluck(:id)).
+          count
+      end
+
       # add a row for each archive
       if current_project.is_ohd?
         date_attribute = 'user_projects.activated_at'

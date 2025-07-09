@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
 
-  enum title: { doctor: 0, professor: 1, professor_with_promotion: 2 }
+  enum :title, { doctor: 0, professor: 1, professor_with_promotion: 2 }
 
   belongs_to :project, touch: true
 

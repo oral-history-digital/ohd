@@ -27,7 +27,7 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     get url
     assert_response :unauthorized
 
-    sign_in User.find_by!(login: 'alice@example.com')
+    login_as 'alice@example.com'
     get url
     assert_response :success
   end

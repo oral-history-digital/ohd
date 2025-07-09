@@ -105,6 +105,11 @@ export default function UserForm({
                             onSubmit();
                         }
 
+                        if (userIndex === -1) {
+                            console.error('User not found in the list');
+                            return users;
+                        }
+
                         let updatedUsers;
                         if (updatedDatum.workflow_state !== 'removed') {
                             updatedUsers = [...users.data.slice(0, userIndex), updatedDatum, ...users.data.slice(userIndex + 1)];

@@ -1,10 +1,11 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FaEyeSlash } from 'react-icons/fa';
+import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
 import { useProject, LinkOrA } from 'modules/routes';
-import { useHumanReadable } from 'modules/data';
+import { useHumanReadable, getCurrentUser } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
@@ -32,6 +33,9 @@ export default function InterviewListRow({
     const { fulltext } = useArchiveSearch();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext, projectOfInterview);
     const { data: interviewee } = usePersonWithAssociations(interview.interviewee_id);
+    const currentUser = useSelector(getCurrentUser);
+    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
+    const isRestricted = interview.workflow_state === 'restricted';
 
     function linkPath() {
         const params = { fulltext };
@@ -64,17 +68,19 @@ export default function InterviewListRow({
                     onLinkClick={() => setArchiveId(interview.archive_id)}
                     className="search-result-link"
                 >
-                    {
-                        projectAccessGranted ?
-                            <div>
-                                {interview.short_title && interview.short_title[locale]}
-                                {
-                                    interview.workflow_state === 'unshared' && (
-                                        <FaEyeSlash className="u-ml-tiny" />
-                                    )
-                                }
-                            </div> :
-                            interview.anonymous_title[locale]
+                    {projectAccessGranted && (
+                        interview.workflow_state === 'public' ||
+                        (interview.workflow_state === 'restricted' && permitted) ||
+                        isAuthorized(interview, 'update')
+                    ) ?
+                        interview.short_title?.[locale] :
+                        interview.anonymous_title[locale]
+                    }
+                    {interview.workflow_state === 'unshared' &&
+                        <FaEyeSlash className="u-ml-tiny" />
+                    }
+                    {interview.workflow_state === 'restricted' &&
+                        <FaKey className="u-ml-tiny" style={{ filter: permitted ? 'opacity(40%)' : 'opacity(90%)' }} />
                     }
                 </LinkOrA>
             </td>
@@ -87,6 +93,11 @@ export default function InterviewListRow({
             }
             {
                 project.list_columns?.map(column => {
+                    const allowedToSee = !isRestricted ||
+                        (isRestricted && column.display_on_landing_page) ||
+                        (isRestricted && permitted) ||
+                        isAuthorized(interview, 'update');
+
                     const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
@@ -101,14 +112,14 @@ export default function InterviewListRow({
 
                         return (
                             <td key={column.name} className="Table-cell">
-                                {formattedEvents}
+                                {allowedToSee ? formattedEvents : '---'}
                             </td>
                         );
                     }
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {obj && humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'})}
+                            {(allowedToSee && obj) ? humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'}) : '---'}
                         </td>
                     );
                 })

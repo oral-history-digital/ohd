@@ -6,6 +6,7 @@ function AuthorizedContent({
     object,
     action,
     children,
+    unauthorizedContent,
     showUnauthorizedMsg,
     showIfPublic
 }) {
@@ -21,7 +22,9 @@ function AuthorizedContent({
         return children || null;
     }
 
-    if (showUnauthorizedMsg) {
+    if (unauthorizedContent) {
+        return unauthorizedContent;
+    } else if (showUnauthorizedMsg) {
         return (
             <p>
                 {t('unauthorized')}

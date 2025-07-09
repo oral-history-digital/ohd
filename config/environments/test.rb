@@ -44,5 +44,5 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
   config.active_storage.service = :test
 
-  config.active_record.legacy_connection_handling = false
+  #config.active_record.legacy_connection_handling = false
 end

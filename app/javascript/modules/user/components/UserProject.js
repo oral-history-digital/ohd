@@ -5,6 +5,7 @@ import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { getCurrentUser, ProjectShow, getProjects } from 'modules/data';
 import { ContentField } from 'modules/forms'
+import { LinkOrA } from 'modules/routes';
 import { UserRoles } from 'modules/roles';
 import UserTasks from './UserTasks';
 import { useI18n } from 'modules/i18n';
@@ -12,6 +13,7 @@ import { useI18n } from 'modules/i18n';
 export default function UserProject({
     userProject,
     roles,
+    interviewPermissions,
     tasks,
     supervisedTasks
 }) {
@@ -20,6 +22,7 @@ export default function UserProject({
     const projects = useSelector(getProjects);
     const [showProject, setShowProject] = useState(false);
     const [showRoles, setShowRoles] = useState(false);
+    const [showinterviewPermissions, setShowinterviewPermissions] = useState(false);
 
     const project = projects[userProject?.project_id];
 
@@ -73,6 +76,45 @@ export default function UserProject({
                             </div>
                         </p>
                         <p>
+                            <div className="interview_permissions box">
+
+                                <h4 className='title'>
+                                    {t('activerecord.models.interview_permission.other')}
+                                    <button
+                                        type="button"
+                                        className="Button Button--transparent Button--icon"
+                                        onClick={() => setShowinterviewPermissions(prev => !prev)}
+                                    >
+                                        {
+                                            showinterviewPermissions ?
+                                                <FaAngleUp className="Icon Icon--primary" /> :
+                                                <FaAngleDown className="Icon Icon--primary" />
+                                        }
+                                    </button>
+                                </h4>
+                                {
+                                    showinterviewPermissions ?
+                                    <ul className="DetailList">
+                                        {
+                                            interviewPermissions?.sort((a,b) =>
+                                                a.name[locale].localeCompare(b.name[locale], undefined, { numeric: true })
+                                            ).
+                                            map((permission, index) => (
+                                                <li key={`interview-permission-${index}`} className="DetailList-item">
+                                                    <LinkOrA
+                                                        project={project}
+                                                        to={`interviews/${permission.archive_id}`}
+                                                    >
+                                                        {`${permission.archive_id}, ${permission.name[locale]}`}
+                                                    </LinkOrA>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul> : null
+                                }
+                            </div>
+                        </p>
+                        <p>
                             <div className="tasks box">
                                 <h4 className='title'>{t('activerecord.models.task.other')}</h4>
                                 <UserTasks
@@ -90,7 +132,8 @@ export default function UserProject({
 
 UserProject.propTypes = {
     userProject: PropTypes.object.isRequired,
-    roles: PropTypes.object,
-    tasks: PropTypes.object,
-    supervisedTasks: PropTypes.object,
+    roles: PropTypes.array,
+    interviewPermissions: PropTypes.array,
+    tasks: PropTypes.array,
+    supervisedTasks: PropTypes.array,
 };

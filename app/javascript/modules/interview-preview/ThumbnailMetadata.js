@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 
-import { useHumanReadable } from 'modules/data';
+import { useHumanReadable, getCurrentUser } from 'modules/data';
+import { useAuthorization } from 'modules/auth';
 import { usePersonWithAssociations } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import { formatEventShort } from 'modules/events';
@@ -20,6 +21,10 @@ export default function ThumbnailMetadata({
     const { locale } = useI18n();
     const { humanReadable } = useHumanReadable();
     const { data: interviewee, isLoading } = usePersonWithAssociations(interview.interviewee_id);
+    const currentUser = useSelector(getCurrentUser);
+    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
+    const isRestricted = interview.workflow_state === 'restricted';
+    const { isAuthorized } = useAuthorization();
 
     if (isLoading || !project.grid_fields) {
         return <Spinner />;
@@ -29,6 +34,11 @@ export default function ThumbnailMetadata({
         <ul className="DetailList" lang={locale}>
             {
                 project.grid_fields.map((field) => {
+                    const allowedToSee = !isRestricted ||
+                        (isRestricted && field.display_on_landing_page) ||
+                        (isRestricted && permitted) ||
+                        isAuthorized(interview, 'update');
+
                     const obj = (field.ref_object_type === 'Interview' || field.source === METADATA_SOURCE_INTERVIEW) ?
                         interview :
                         interviewee;
@@ -46,7 +56,7 @@ export default function ThumbnailMetadata({
                                 key={field.name}
                                 className="DetailList-item"
                             >
-                                {formattedEvents}
+                                {allowedToSee && formattedEvents}
                             </li>
                         );
                     }
@@ -71,7 +81,7 @@ export default function ThumbnailMetadata({
                                     'DetailList-item--one-line': field.name === 'collection_id',
                                 })}
                             >
-                                {value}
+                                {allowedToSee && value}
                             </li>
                         );
                     } else {

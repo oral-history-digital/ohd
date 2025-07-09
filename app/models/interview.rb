@@ -79,12 +79,15 @@ class Interview < ApplicationRecord
 
   has_and_belongs_to_many :archiving_batches
 
+  has_many :interview_permissions
+
   serialize :properties
-  serialize :links, Array
+  serialize :links, type: Array
 
   after_create :set_public_attributes_to_properties
   after_create :create_tasks
   after_save :update_counter_cache
+  after_save :destroy_permissions
   after_destroy :update_counter_cache
 
   def set_public_attributes_to_properties
@@ -118,6 +121,12 @@ class Interview < ApplicationRecord
     self.project.institutions.each do |institution|
       institution.update_interviews_count
       institution.parent&.update_interviews_count
+    end
+  end
+
+  def destroy_permissions
+    if workflow_state_previously_changed? && workflow_state_previously_was == 'restricted' && workflow_state == 'public'
+      interview_permissions.destroy_all
     end
   end
 
@@ -192,10 +201,10 @@ class Interview < ApplicationRecord
     # string :birth_location, :stored => true
 
     text :transcript, stored: true do
-      Segment::Translation.
-        where(segment_id: segment_ids).
-        where("locale like '%-public'").
-        map(&:text).join(' ')
+      workflow_state == 'public' ? segments.inject([]) do |all, segment|
+        all << segment.translations.where("locale like '%-public'").inject([]){|mem, t| mem << t.text; mem}.join(' ')
+        all
+      end.join(' ') : ''
     end
 
     text :headings do
@@ -302,6 +311,7 @@ class Interview < ApplicationRecord
   handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   scope :shared, -> {where(workflow_state: 'public')}
+  scope :restricted, -> {where(workflow_state: 'restricted')}
   scope :with_media_type, -> {where.not(media_type: nil)}
 
   def project_access
@@ -831,7 +841,12 @@ class Interview < ApplicationRecord
     def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user && (user.admin? || user.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        with(
+          :workflow_state,
+          user && (user.admin? || user.roles?(project, 'General', 'edit')) ?
+          ['public', 'restricted', 'unshared'] :
+          ['restricted', 'public']
+        )
         # the follwing is a really restrictive approach
         # it allows only users with project-access to find interviews of those projects
         #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')

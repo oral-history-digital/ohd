@@ -32,6 +32,8 @@ class UserSerializer < ApplicationSerializer
     :access_token,
     :do_not_track
 
+  has_many :interview_permissions
+
   def user_id
     object.id
   end
