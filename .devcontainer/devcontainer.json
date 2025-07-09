@@ -28,7 +28,6 @@
             "extensions": [
                 "rebornix.ruby",
                 "wingrunr21.vscode-ruby",
-                "castwide.solargraph",
                 "ms-azuretools.vscode-docker",
                 "dbaeumer.vscode-eslint",
                 "github.copilot"
