@@ -60,28 +60,76 @@ if [ ! -f config/datacite.yml ]; then
   echo "Created config/datacite.yml"
 fi
 
-# 5) Database setup or import dump
+log_message "Configuring sunspot.yml for devcontainer…"
+# Always overwrite in devcontainer to ensure correct settings
+cp .devcontainer/config/sunspot.yml config/sunspot.yml
+log_message "  ✓ config/sunspot.yml updated for devcontainer"
+log_message "  ✓ Sunspot config now points to: $(grep 'path:' config/sunspot.yml | head -1 | sed 's/.*path: //')"
+
+# 5) Fix bundle paths and install only missing gems (git repos mainly)
+log_message "Ensuring bundle paths are correct for git-based gems…"
+# This will be fast since most gems are already installed in base image
+# Only git-based gems need to be checked out to the right location
+bundle install --quiet
+
+log_message "Updating frontend dependencies if needed…"
+yarn install --frozen-lockfile
+
+# 6) Wait for Solr core to be properly configured
+log_message "Waiting for Solr to be ready with sunspot configuration…"
+
+# Verify the core is properly configured
+RETRY_COUNT=0
+MAX_RETRIES=20
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+  # Check if default core exists and is active
+  if curl -s "http://solr:8983/solr/admin/cores?action=STATUS&wt=json" 2>/dev/null | grep -q '"default"' && \
+     curl -s "http://solr:8983/solr/default/admin/ping?wt=json" 2>/dev/null | grep -q '"status":"OK"'; then
+    log_message "  ✅ Solr default core is active and responding"
+    
+    # Now check for sunspot-specific fields (this might take a moment to be available)
+    if curl -s "http://solr:8983/solr/default/schema/fields?wt=json" 2>/dev/null | grep -q '"class_name"'; then
+      log_message "  ✅ Sunspot schema is properly loaded and ready for indexing"
+      break
+    else
+      log_message "  ⏳ Core exists but sunspot schema not yet loaded... (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)"
+    fi
+  else
+    log_message "  ⏳ Waiting for default core to be created... (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)"
+  fi
+  
+  sleep 5
+  RETRY_COUNT=$((RETRY_COUNT + 1))
+done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+  log_message "  ⚠️  Solr setup verification failed after $MAX_RETRIES attempts"
+  log_message "     Check Solr logs: docker compose -f .devcontainer/docker-compose.yml logs solr"
+  log_message "     Check Solr admin: http://localhost:8983/solr/#/"
+  log_message "     Continuing anyway - Solr might work despite verification failure"
+else
+  log_message "  ✅ Solr is fully configured and ready"
+fi
+
+# 7) Database setup or import dump
 DUMP_PATH="/workspace/.devcontainer/db/dump.sql.gz"
 if [ -f "$DUMP_PATH" ]; then
   log_message "Database dump found at $DUMP_PATH – importing into ohd_development…"
-  # drop any existing data, import dump, then migrate
+  # Drop any existing data, import dump, then migrate
   mysql -h db -u root -prootpassword -e "DROP DATABASE IF EXISTS ohd_development; CREATE DATABASE ohd_development CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
   gunzip < "$DUMP_PATH" | mysql -h db -u root -prootpassword ohd_development
   log_message "Dump import complete – running migrations to catch up…"
-  RAILS_ENV=development bin/rails db:migrate
+  RAILS_ENV=development bundle exec rails db:migrate
 else
   log_message "No database dump found – running full db:setup…"
-  bin/rake db:setup
+  bundle exec rake db:setup
   log_message "Seeding database…"
-  RAILS_ENV=development bin/rails db:seed
+  RAILS_ENV=development bundle exec rails db:seed
 fi
 
-# 6) JS install
-log_message "Installing frontend dependencies…"
-yarn install --frozen-lockfile
-
-# Precompile webpack packs for static serve
+# 8) JS install and precompile
 log_message "Precompiling webpack packs…"
-bin/shakapacker
+bundle exec bin/shakapacker
 
 echo "✅ All setup steps complete"
+echo "To reindex Solr, run: bin/rails sunspot:reindex"

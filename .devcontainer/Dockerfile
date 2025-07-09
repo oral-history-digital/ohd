@@ -1,3 +1,4 @@
+# Use pre-built Rails base image with Java and Node.js
 FROM ghcr.io/yotkadata/rails-base:latest
 
 # Create the 'vscode' user matching devcontainer.json remoteUser
@@ -13,7 +14,13 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 WORKDIR /workspace
 
-# Copy your application code (this is fast unless you have a huge repo)
+# Copy dependency files first for better layer caching
+COPY Gemfile Gemfile.lock* package.json yarn.lock ./
+
+# Install JS dependencies only (Ruby gems already in base image)
+RUN yarn install --frozen-lockfile --network-timeout 600000
+
+# Copy your application code (this layer changes most often)
 COPY . .
 
 # Optionally: Check versions for sanity
