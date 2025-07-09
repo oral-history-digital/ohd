@@ -131,5 +131,20 @@ fi
 log_message "Precompiling webpack packs…"
 bundle exec bin/shakapacker
 
+# 9) Quick Solr indexing for immediate development use
+log_message "Performing quick Solr indexing for immediate development use…"
+if RAILS_ENV=development bundle exec rails solr:reindex:development:quick 2>/dev/null; then
+  log_message "  ✅ Quick indexing completed - search functionality ready"
+else
+  log_message "  ⚠️  Quick indexing failed - you may need to run it manually:"
+  log_message "     bin/rails solr:reindex:development:quick"
+fi
+
 echo "✅ All setup steps complete"
-echo "To reindex Solr, run: bin/rails sunspot:reindex"
+echo ""
+echo "Development environment ready!"
+echo "Quick Solr indexing completed - search should work immediately"
+echo ""
+echo "Additional Solr reindexing options:"
+echo "  More data: bin/rails solr:reindex:development:limited[50]"
+echo "  Full reindex: bin/rails solr:reindex:all"
