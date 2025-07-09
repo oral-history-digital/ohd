@@ -33,10 +33,13 @@ log "Current Solr index contains $solr_doc_count documents"
 
 if [[ "$solr_doc_count" -eq 0 ]]; then
   log "⚠️  Solr index appears to be empty"
-  log "Run this to reindex: bin/rails solr:reindex:all"
+  log "Quick start: bin/rails solr:reindex:development:quick"
+  log "More data: bin/rails solr:reindex:development:limited[10]"
+  log "Full reindex: bin/rails solr:reindex:all"
 elif [[ "$solr_doc_count" -lt 100 ]]; then
   log "⚠️  Solr index has only $solr_doc_count documents (seems low)"
-  log "Run this to reindex: bin/rails solr:reindex:all"
+  log "Limited reindex: bin/rails solr:reindex:development:limited[100]"
+  log "Full reindex: bin/rails solr:reindex:all"
 fi
 
 log "Starting Rails server..."
@@ -48,5 +51,10 @@ bin/shakapacker-dev-server &>/dev/null &
 wait_for_port localhost 3035 || log "⚠️  webpack port not open (optional)"
 
 log "✅ All services are up!"
-log "Run this to reindex Solr: bin/rails solr:reindex:all"
-log "Open in browser via http://portal.oral-history.localhost:3000/za/en/"
+log ""
+log "Solr reindexing options:"
+log "  Quick (10 interviews):           bin/rails solr:reindex:development:quick"
+log "  Limited (10 interviews + data):  bin/rails solr:reindex:development:limited[10]"
+log "  Full (all data, slow):           bin/rails solr:reindex:all"
+log ""
+log "🌐 Open in browser: http://portal.oral-history.localhost:3000/za/en/"
