@@ -1,11 +1,11 @@
 import { getProjects, ProjectShow } from 'modules/data';
 import { ContentField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import UserProjectInterviewPermissions from './UserProjectInterviewPermissions';
 import UserProjectRoles from './UserProjectRoles';
 import UserTasks from './UserTasks';
 
@@ -19,7 +19,6 @@ export default function UserProject({
     const { t, locale } = useI18n();
     const projects = useSelector(getProjects);
     const [showProject, setShowProject] = useState(false);
-    const [showPermissions, setShowPermissions] = useState(false);
 
     const project = projects[userProject?.project_id];
 
@@ -59,53 +58,10 @@ export default function UserProject({
             {showProject ? (
                 <>
                     <UserProjectRoles roles={roles} />
-                    {hasPermissions && (
-                        <div className="interview_permissions">
-                            <h4 className="title">
-                                {t(
-                                    'activerecord.models.interview_permission.other'
-                                )}
-                                <button
-                                    type="button"
-                                    className="Button Button--transparent Button--icon"
-                                    onClick={() =>
-                                        setShowPermissions((prev) => !prev)
-                                    }
-                                >
-                                    {showPermissions ? (
-                                        <FaAngleUp className="Icon Icon--primary" />
-                                    ) : (
-                                        <FaAngleDown className="Icon Icon--primary" />
-                                    )}
-                                </button>
-                            </h4>
-                            {showPermissions ? (
-                                <ul className="DetailList">
-                                    {interviewPermissions
-                                        ?.sort((a, b) =>
-                                            a.name[locale].localeCompare(
-                                                b.name[locale],
-                                                undefined,
-                                                { numeric: true }
-                                            )
-                                        )
-                                        .map((permission, index) => (
-                                            <li
-                                                key={`interview-permission-${index}`}
-                                                className="DetailList-item"
-                                            >
-                                                <LinkOrA
-                                                    project={project}
-                                                    to={`interviews/${permission.archive_id}`}
-                                                >
-                                                    {`${permission.archive_id}, ${permission.name[locale]}`}
-                                                </LinkOrA>
-                                            </li>
-                                        ))}
-                                </ul>
-                            ) : null}
-                        </div>
-                    )}
+                    <UserProjectInterviewPermissions
+                        interviewPermissions={interviewPermissions}
+                        project={project}
+                    />
                     {(hasTasks || hasSupervisedTasks) && (
                         <UserTasks
                             tasks={tasks || {}}
