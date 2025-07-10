@@ -1,16 +1,18 @@
-import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
-
 import { useTrackPageView } from 'modules/analytics';
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { useIsEditor } from 'modules/archive';
-import { HelpText } from 'modules/help-text';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { getCurrentUser } from 'modules/data';
 import { Features } from 'modules/features';
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
-import UserProjects from './UserProjects';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { Modal } from 'modules/ui';
+import { Helmet } from 'react-helmet';
+import { FaPencilAlt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import UserDetailsContainer from './UserDetailsContainer';
+import UserDetailsFormContainer from './UserDetailsFormContainer';
+import UserProjects from './UserProjects';
 
 export default function AccountPage() {
     const { t } = useI18n();
@@ -19,27 +21,44 @@ export default function AccountPage() {
     useTrackPageView();
 
     return (
-        <div className='wrapper-content register'>
+        <div className="wrapper-content register account-page">
             <Helmet>
                 <title>{t('account_page')}</title>
             </Helmet>
             <ErrorBoundary>
-                <AuthShowContainer ifLoggedIn ifNoProject >
+                <AuthShowContainer ifLoggedIn ifNoProject>
                     {isEditor && <HelpText code="account_page" />}
 
-                    <h1>{t('account_page')}</h1>
+                    <div className="account-page-header">
+                        <h1>{t('account_page')}</h1>
 
-                    <div className='user-registration boxes'>
-                        {
-                            user && <UserDetailsContainer />
-                        }
+                        <div className="edit-account-icon">
+                            <Modal
+                                title={t('edit.user.edit')}
+                                trigger={
+                                    <FaPencilAlt className="Icon Icon--primary" />
+                                }
+                            >
+                                {(close) => (
+                                    <UserDetailsFormContainer
+                                        onSubmit={close}
+                                        onCancel={close}
+                                    />
+                                )}
+                            </Modal>
+                        </div>
                     </div>
-                    <div className='user-registration boxes'>
-                        {
-                            user && <UserProjects />
-                        }
+
+                    <div className="user-registration boxes">
+                        {user && <UserDetailsContainer />}
                     </div>
-                    <AuthorizedContent object={{type: 'General'}} action='edit'>
+                    <div className="user-registration boxes">
+                        {user && <UserProjects />}
+                    </div>
+                    <AuthorizedContent
+                        object={{ type: 'General' }}
+                        action="edit"
+                    >
                         <Features />
                     </AuthorizedContent>
                 </AuthShowContainer>
