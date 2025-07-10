@@ -67,10 +67,13 @@ log_message "  ✓ config/sunspot.yml updated for devcontainer"
 log_message "  ✓ Sunspot config now points to: $(grep 'path:' config/sunspot.yml | head -1 | sed 's/.*path: //')"
 
 # 5) Fix bundle paths and install only missing gems (git repos mainly)
-log_message "Ensuring bundle paths are correct for git-based gems…"
-# This will be fast since most gems are already installed in base image
-# Only git-based gems need to be checked out to the right location
-bundle install --quiet
+log_message "Checking if bundle install is needed…"
+if bundle check > /dev/null 2>&1; then
+  log_message "  ✅ All gems already satisfied, skipping bundle install"
+else
+  log_message "  ⏳ Some gems missing, running bundle install (this may take several minutes)…"
+  bundle install --quiet
+fi
 
 log_message "Updating frontend dependencies if needed…"
 yarn install --frozen-lockfile
