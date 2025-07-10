@@ -14,13 +14,22 @@ This guide covers how to set up and run the Oral History Digital application in 
 
 ## Setup Process
 
-The Dev Container setup process includes:
+The Dev Container setup uses a pre-built base image for faster startup times. The setup process includes:
 
-- Building the Docker image with Ruby 3.0.7, Node.js 18.x, and other dependencies
+- Pulling the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
+- Building the development image with application-specific dependencies
 - Setting up the MySQL database and Solr search server
 - Installing application dependencies via Bundler and Yarn
 - Configuring the database and other required services
 - Importing the database dump
+
+## Docker Architecture
+
+The development environment uses a two-stage Docker setup:
+
+1. **Base Image (`Dockerfile.ruby-base`)**: Creates a foundation image with Ruby 3.3.4, Node.js 18.x, Java, and pre-installed system dependencies. This image is built and published to GitHub Container Registry as `ghcr.io/yotkadata/rails-base:latest`.
+
+2. **Development Image (`.devcontainer/Dockerfile`)**: Uses the pre-built base image and adds application-specific dependencies and configuration for the development environment.
 
 ## Environment Configuration
 
