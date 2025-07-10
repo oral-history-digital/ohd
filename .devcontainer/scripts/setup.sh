@@ -116,18 +116,61 @@ fi
 
 # 7) Database setup or import dump
 DUMP_PATH="/workspace/.devcontainer/db/dump.sql.gz"
-if [ -f "$DUMP_PATH" ]; then
-  log_message "Database dump found at $DUMP_PATH – importing into ohd_development…"
-  # Drop any existing data, import dump, then migrate
-  mysql -h db -u root -prootpassword -e "DROP DATABASE IF EXISTS ohd_development; CREATE DATABASE ohd_development CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-  gunzip < "$DUMP_PATH" | mysql -h db -u root -prootpassword ohd_development
-  log_message "Dump import complete – running migrations to catch up…"
-  RAILS_ENV=development bundle exec rails db:migrate
+
+# Check if database already exists
+DB_EXISTS=false
+if mysql -h db -u root -prootpassword -e "USE ohd_development;" 2>/dev/null; then
+  # Check if database has tables (not just empty)
+  TABLE_COUNT=$(mysql -h db -u root -prootpassword -e "SELECT COUNT(*) as count FROM information_schema.tables WHERE table_schema='ohd_development';" 2>/dev/null | tail -n 1)
+  if [ "$TABLE_COUNT" -gt 0 ]; then
+    DB_EXISTS=true
+    log_message "⚠️  Database 'ohd_development' already exists with $TABLE_COUNT tables"
+  fi
+fi
+
+if [ "$DB_EXISTS" = "true" ]; then
+  log_message "Database setup options:"
+  log_message "  1) Keep existing database (skip database setup)"
+  log_message "  2) Overwrite with dump (if available) or fresh setup"
+  
+  # In non-interactive environments, default to keeping existing
+  if [ -t 0 ]; then
+    echo -n "Choose option [1/2]: "
+    read -r choice
+  else
+    choice="1"
+    log_message "Non-interactive mode: keeping existing database"
+  fi
+  
+  case "$choice" in
+    2)
+      log_message "User chose to overwrite existing database"
+      ;;
+    *)
+      log_message "User chose to keep existing database - skipping database setup"
+      # Skip to the next step
+      ;;
+  esac
 else
-  log_message "No database dump found – running full db:setup…"
-  bundle exec rake db:setup
-  log_message "Seeding database…"
-  RAILS_ENV=development bundle exec rails db:seed
+  choice="2"  # No existing database, proceed with setup
+fi
+
+if [ "$choice" = "2" ]; then
+  if [ -f "$DUMP_PATH" ]; then
+    log_message "Database dump found at $DUMP_PATH – importing into ohd_development…"
+    # Drop any existing data, import dump, then migrate
+    mysql -h db -u root -prootpassword -e "DROP DATABASE IF EXISTS ohd_development; CREATE DATABASE ohd_development CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    gunzip < "$DUMP_PATH" | mysql -h db -u root -prootpassword ohd_development
+    log_message "Dump import complete – running migrations to catch up…"
+    RAILS_ENV=development bundle exec rails db:migrate
+  else
+    log_message "No database dump found – running full db:setup…"
+    bundle exec rake db:setup
+    log_message "Seeding database…"
+    RAILS_ENV=development bundle exec rails db:seed
+  fi
+else
+  log_message "Skipped database setup - using existing database"
 fi
 
 # 8) JS install and precompile
