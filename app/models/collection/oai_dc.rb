@@ -67,7 +67,9 @@ module Collection::OaiDc
 
       xml.tag!('dc:relation', OHD_DOMAIN)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}")
-      xml.tag!('dc:relation', project.domain)
+      if project.domain
+        xml.tag!('dc:relation', project.domain)
+      end
       xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_dc&set=collection:#{id}")
 
       xml.tag!('dc:description', oai_size)

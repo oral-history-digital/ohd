@@ -52,7 +52,6 @@ module Interview::OaiDatacite
         interviewees.each do |interviewee|
           xml.creator do
             xml.creatorName anonymous_title(:de)
-            xml.givenName interviewee.first_name(:de)
             if project.fullname_on_landing_page
               xml.familyName interviewee.last_name(:de)
             end
