@@ -62,12 +62,10 @@ export default function UserProject({
                         interviewPermissions={interviewPermissions}
                         project={project}
                     />
-                    {(hasTasks || hasSupervisedTasks) && (
-                        <UserTasks
-                            tasks={tasks || {}}
-                            supervisedTasks={supervisedTasks || {}}
-                        />
-                    )}
+                    <UserTasks
+                        tasks={tasks}
+                        supervisedTasks={supervisedTasks}
+                    />
                 </>
             ) : null}
         </ProjectShow>
