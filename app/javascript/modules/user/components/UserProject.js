@@ -1,12 +1,12 @@
-import { getCurrentUser, getProjects, ProjectShow } from 'modules/data';
+import { getProjects, ProjectShow } from 'modules/data';
 import { ContentField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { UserRoles } from 'modules/roles';
 import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import UserProjectRoles from './UserProjectRoles';
 import UserTasks from './UserTasks';
 
 export default function UserProject({
@@ -17,10 +17,8 @@ export default function UserProject({
     supervisedTasks,
 }) {
     const { t, locale } = useI18n();
-    const user = useSelector(getCurrentUser);
     const projects = useSelector(getProjects);
     const [showProject, setShowProject] = useState(false);
-    const [showRoles, setShowRoles] = useState(false);
     const [showPermissions, setShowPermissions] = useState(false);
 
     const project = projects[userProject?.project_id];
@@ -60,34 +58,7 @@ export default function UserProject({
             />
             {showProject ? (
                 <>
-                    {hasRoles && (
-                        <div className="roles">
-                            <h4 className="title">
-                                {t('activerecord.models.role.other')}
-                                <button
-                                    type="button"
-                                    className="Button Button--transparent Button--icon"
-                                    onClick={() =>
-                                        setShowRoles((prev) => !prev)
-                                    }
-                                >
-                                    {showRoles ? (
-                                        <FaAngleUp className="Icon Icon--primary" />
-                                    ) : (
-                                        <FaAngleDown className="Icon Icon--primary" />
-                                    )}
-                                </button>
-                            </h4>
-                            {showRoles ? (
-                                <UserRoles
-                                    userRoles={roles}
-                                    userId={user.id}
-                                    hideEdit={true}
-                                    hideAdd={true}
-                                />
-                            ) : null}
-                        </div>
-                    )}
+                    <UserProjectRoles roles={roles} />
                     {hasPermissions && (
                         <div className="interview_permissions">
                             <h4 className="title">
