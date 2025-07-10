@@ -46,8 +46,8 @@ ENV BUNDLE_WITHOUT=production
 # Use workspace-compatible paths from the start
 WORKDIR /workspace
 
-# Copy dependency files for maximum layer cache
-COPY Gemfile Gemfile.lock* package.json yarn.lock ./
+# Copy dependency files for maximum layer cache (from parent directory)
+COPY ../Gemfile ../Gemfile.lock* ../package.json ../yarn.lock ./
 
 # Install Ruby gems and JS packages with workspace-compatible paths
 RUN gem install bundler:2.5.14 \
