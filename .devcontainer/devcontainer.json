@@ -21,16 +21,25 @@
         "vscode": {
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
-                "ruby.useBundler": true,
-                "ruby.useLanguageServer": true,
-                "ruby.lint": { "rubocop": true }
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.formatOnSave": true,
+                "[javascript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[json]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                }
             },
             "extensions": [
-                "rebornix.ruby",
-                "wingrunr21.vscode-ruby",
+                "shopify.ruby-lsp",
                 "ms-azuretools.vscode-docker",
                 "dbaeumer.vscode-eslint",
-                "github.copilot"
+                "github.copilot",
+                "eamodio.gitlens",
+                "esbenp.prettier-vscode"
             ]
         }
     }
