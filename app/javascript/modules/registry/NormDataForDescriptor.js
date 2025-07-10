@@ -34,58 +34,70 @@ function NormDataForDescriptor({
     let formElements = [
         {
             elementType: 'select',
-            attribute: 'filter_select',
-            labelKey: 'normdata.filter_select',
-            values: ['none', 'geo'],
-            withEmpty: true,
+            attribute: 'api',
+            labelKey: 'normdata.api',
+            values: ['gnd', 'wikidata', 'geonames', 'openstreetmap'],
+            //withEmpty: true,
             optionsScope: 'normdata',
             handlechangecallback: (name, value) => setFilter(value),
         }
     ];
 
-    if (filter === 'geo') {
-        formElements = formElements.concat([
-            {
-                elementType: 'select',
-                attribute: 'geo_filter',
-                labelKey: 'normdata.geo_filter',
-                values: ['de', 'eu'],
-                withEmpty: true,
-                optionsScope: 'normdata',
-            },
-            {
-                elementType: 'select',
-                attribute: 'place_type',
-                labelKey: 'normdata.place_type',
-                values: ['location', 'placeOfWorship', 'natural', 'historic', 'tourism'],
-                withEmpty: true,
-                optionsScope: 'normdata',
-                handlechangecallback: (name, value) => setPlaceTypeFilter(value),
-            },
-        ])
-    }
+    //let formElements = [
+        //{
+            //elementType: 'select',
+            //attribute: 'filter_select',
+            //labelKey: 'normdata.filter_select',
+            //values: ['none', 'geo'],
+            //withEmpty: true,
+            //optionsScope: 'normdata',
+            //handlechangecallback: (name, value) => setFilter(value),
+        //}
+    //];
 
-    if (placeTypeFilter === 'location') {
-        formElements = formElements.concat([
-            {
-                elementType: 'select',
-                attribute: 'place_extended',
-                values: [
-                    'continent', 'country', 'state',
-                    'region', 'province', 'district', 'municipality',
-                    'city', 'town',
-                    'borough', 'suburb', 'quarter',
-                    'village', 'hamlet', 'farm'
-                ],
-                withEmpty: true,
-                optionsScope: 'normdata',
-            },
-        ])
-    }
+    //if (filter === 'geo') {
+        //formElements = formElements.concat([
+            //{
+                //elementType: 'select',
+                //attribute: 'geo_filter',
+                //labelKey: 'normdata.geo_filter',
+                //values: ['de', 'eu'],
+                //withEmpty: true,
+                //optionsScope: 'normdata',
+            //},
+            //{
+                //elementType: 'select',
+                //attribute: 'place_type',
+                //labelKey: 'normdata.place_type',
+                //values: ['location', 'placeOfWorship', 'natural', 'historic', 'tourism'],
+                //withEmpty: true,
+                //optionsScope: 'normdata',
+                //handlechangecallback: (name, value) => setPlaceTypeFilter(value),
+            //},
+        //])
+    //}
+
+    //if (placeTypeFilter === 'location') {
+        //formElements = formElements.concat([
+            //{
+                //elementType: 'select',
+                //attribute: 'place_extended',
+                //values: [
+                    //'continent', 'country', 'state',
+                    //'region', 'province', 'district', 'municipality',
+                    //'city', 'town',
+                    //'borough', 'suburb', 'quarter',
+                    //'village', 'hamlet', 'farm'
+                //],
+                //withEmpty: true,
+                //optionsScope: 'normdata',
+            //},
+        //])
+    //}
 
     const fetchAPIResults = async(params) => {
         const urlAndFilters = [`${pathBase}/norm_data_api?expression=${descriptor}`];
-        ['geo_filter', 'place_type', 'place_extended'].forEach((filter) => {
+        ['geo_filter', 'place_type', 'place_extended', 'api'].forEach((filter) => {
             if (params[filter]) {
                 urlAndFilters.push(`${filter}=${params[filter]}`);
             }
@@ -144,12 +156,22 @@ function NormDataForDescriptor({
                     }
                     <button
                         type="button"
-                        className="Icon Icon--primary"
+                        className="Icon Icon--primary u-ml-tiny"
                         onClick={() => {
                             setFrom(from + 10);
                             fetchAPIResults({from: from + 10});
                     }}>
                         {t('next')}
+                    </button>
+                    <button
+                        type="button"
+                        className="Icon Icon--primary u-ml-tiny"
+                        onClick={() => {
+                            setShowResults(false);
+                            setApiResult({});
+                            setFrom(0);
+                    }}>
+                        {t('normdata.reset')}
                     </button>
                 </>
             );
@@ -172,7 +194,7 @@ function NormDataForDescriptor({
                 setShowResults(!showResults);
             }}
             elements={[]}
-            //elements={formElements}
+            elements={formElements}
             helpTextCode="normdata_form"
             submitText={t('search')}
         />
