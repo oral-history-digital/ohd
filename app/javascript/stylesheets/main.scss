@@ -4,144 +4,145 @@
  */
 
 /* Variables and mixins */
-@import "variables";
-@import "mixins";
+@import 'variables';
+@import 'mixins';
 
 /* Normalize */
-@import "normalize";
+@import 'normalize';
 
 /* Vendors */
-$slick-loader-path: "~slick-carousel/slick/";
-$slick-font-path: "~slick-carousel/slick/fonts/";
-@import "~slick-carousel/slick/slick.scss";
-@import "~slick-carousel/slick/slick-theme.scss";
+$slick-loader-path: '~slick-carousel/slick/';
+$slick-font-path: '~slick-carousel/slick/fonts/';
+@import '~slick-carousel/slick/slick.scss';
+@import '~slick-carousel/slick/slick-theme.scss';
 
 // Reach-ui
 [data-reach-dialog-overlay],
 [data-reach-menu-popover] {
-  z-index: $dialog-overlay-z-index;
+    z-index: $dialog-overlay-z-index;
 }
 
-@import "react-dropdown-tree-select/dist/styles.css";
+@import 'react-dropdown-tree-select/dist/styles.css';
 
 /* Partials */
-@import "dev";
-@import "fonts";
-@import "structure";
-@import "content";
-@import "utils";
-@import "nav";
-@import "grid";
+@import 'dev';
+@import 'fonts';
+@import 'structure';
+@import 'content';
+@import 'utils';
+@import 'nav';
+@import 'grid';
 
 /* Modules */
-@import "modules/header";
-@import "modules/content-tabs";
-@import "modules/flyout-sub-tabs";
-@import "modules/flyout-nav-tabs";
-@import "modules/flyout-login";
-@import "modules/accordion";
-@import "modules/popup";
-@import "modules/form-default";
+@import 'modules/accordion';
+@import 'modules/content-tabs';
+@import 'modules/flyout-sub-tabs';
+@import 'modules/flyout-nav-tabs';
+@import 'modules/flyout-login';
+@import 'modules/form-default';
+@import 'modules/header';
+@import 'modules/popup';
+@import 'modules/user';
 
 /* Components */
-@import "components/archive-tile";
-@import "components/aspect-ratio";
-@import "components/back-to-top";
-@import "components/banner";
-@import "components/breadcrumbs";
-@import "components/burger-button";
-@import "components/button";
-@import "components/catalog-table";
-@import "components/checkbox";
-@import "components/color-picker";
-@import "components/container";
-@import "components/content-field";
-@import "components/contribution-list";
-@import "components/description-list";
-@import "components/detail-list";
-@import "components/disclosure";
-@import "components/edit-table-header";
-@import "components/edit-table";
-@import "components/error-message";
-@import "components/event";
-@import "components/facet";
-@import "components/features";
-@import "components/flow";
-@import "components/form-label";
-@import "components/form";
-@import "components/gallery";
-@import "components/grid";
-@import "components/heading";
-@import "components/help-text";
-@import "components/horizontal-list";
-@import "components/icon";
-@import "components/image";
-@import "components/input";
-@import "components/interview-card";
-@import "components/layout";
-@import "components/link";
-@import "components/loading-overlay";
-@import "components/locale-buttons";
-@import "components/map-filter";
-@import "components/map-popup";
-@import "components/map-spinner-overlay";
-@import "components/map";
-@import "components/media-controls";
-@import "components/media-element";
-@import "components/media-header";
-@import "components/media-missing";
-@import "components/media-object";
-@import "components/media-player";
-@import "components/media-preview";
-@import "components/modal";
-@import "components/pagination";
-@import "components/paragraph";
-@import "components/photo-admin-buttons";
-@import "components/photo-caption";
-@import "components/photo-modal";
-@import "components/photo-slide";
-@import "components/pixel-loader";
-@import "components/project-tile";
-@import "components/prominent-link";
-@import "components/registry-entry-list";
-@import "components/registry-entry";
-@import "components/registry-reference";
-@import "components/registry-references";
-@import "components/rule";
-@import "components/search-map";
-@import "components/search-result";
-@import "components/search-sorting";
-@import "components/search-spinner-overlay";
-@import "components/search-stats";
-@import "components/segment-popup";
-@import "components/segment";
-@import "components/sidebar-tabs";
-@import "components/sidebar";
-@import "components/site-header";
-@import "components/site";
-@import "components/slider";
-@import "components/sort-order-button";
-@import "components/spinner";
-@import "components/startpage";
-@import "components/state-button";
-@import "components/table";
-@import "components/tabs";
-@import "components/thumbnail-badge";
-@import "components/transcript";
-@import "components/tree-select";
-@import "components/unordered-list";
-@import "components/workbook-entry";
-@import "components/wrapper-page";
+@import 'components/archive-tile';
+@import 'components/aspect-ratio';
+@import 'components/back-to-top';
+@import 'components/banner';
+@import 'components/breadcrumbs';
+@import 'components/burger-button';
+@import 'components/button';
+@import 'components/catalog-table';
+@import 'components/checkbox';
+@import 'components/color-picker';
+@import 'components/container';
+@import 'components/content-field';
+@import 'components/contribution-list';
+@import 'components/description-list';
+@import 'components/detail-list';
+@import 'components/disclosure';
+@import 'components/edit-table-header';
+@import 'components/edit-table';
+@import 'components/error-message';
+@import 'components/event';
+@import 'components/facet';
+@import 'components/features';
+@import 'components/flow';
+@import 'components/form-label';
+@import 'components/form';
+@import 'components/gallery';
+@import 'components/grid';
+@import 'components/heading';
+@import 'components/help-text';
+@import 'components/horizontal-list';
+@import 'components/icon';
+@import 'components/image';
+@import 'components/input';
+@import 'components/interview-card';
+@import 'components/layout';
+@import 'components/link';
+@import 'components/loading-overlay';
+@import 'components/locale-buttons';
+@import 'components/map-filter';
+@import 'components/map-popup';
+@import 'components/map-spinner-overlay';
+@import 'components/map';
+@import 'components/media-controls';
+@import 'components/media-element';
+@import 'components/media-header';
+@import 'components/media-missing';
+@import 'components/media-object';
+@import 'components/media-player';
+@import 'components/media-preview';
+@import 'components/modal';
+@import 'components/pagination';
+@import 'components/paragraph';
+@import 'components/photo-admin-buttons';
+@import 'components/photo-caption';
+@import 'components/photo-modal';
+@import 'components/photo-slide';
+@import 'components/pixel-loader';
+@import 'components/project-tile';
+@import 'components/prominent-link';
+@import 'components/registry-entry-list';
+@import 'components/registry-entry';
+@import 'components/registry-reference';
+@import 'components/registry-references';
+@import 'components/rule';
+@import 'components/search-map';
+@import 'components/search-result';
+@import 'components/search-sorting';
+@import 'components/search-spinner-overlay';
+@import 'components/search-stats';
+@import 'components/segment-popup';
+@import 'components/segment';
+@import 'components/sidebar-tabs';
+@import 'components/sidebar';
+@import 'components/site-header';
+@import 'components/site';
+@import 'components/slider';
+@import 'components/sort-order-button';
+@import 'components/spinner';
+@import 'components/startpage';
+@import 'components/state-button';
+@import 'components/table';
+@import 'components/tabs';
+@import 'components/thumbnail-badge';
+@import 'components/transcript';
+@import 'components/tree-select';
+@import 'components/unordered-list';
+@import 'components/workbook-entry';
+@import 'components/wrapper-page';
 
 /* Vendor overwrites */
-@import "overwrites/reach-ui";
-@import "overwrites/react-rte";
-@import "overwrites/video-js";
+@import 'overwrites/reach-ui';
+@import 'overwrites/react-rte';
+@import 'overwrites/video-js';
 
 /* Print */
-@import "print";
+@import 'print';
 
 /* Utilities */
-@import "utilities/display";
-@import "utilities/spacings";
-@import "utilities/text";
+@import 'utilities/display';
+@import 'utilities/spacings';
+@import 'utilities/text';
