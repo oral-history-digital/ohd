@@ -5,16 +5,24 @@ import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
 function UserTasks({ tasks, supervisedTasks }) {
-    const other = Object.values(tasks).filter(
+    const hasTasks = tasks && Object.keys(tasks).length > 0;
+    const hasSupervisedTasks =
+        supervisedTasks && Object.keys(supervisedTasks).length > 0;
+
+    if (!hasTasks && !hasSupervisedTasks) {
+        return null;
+    }
+
+    const other = Object.values(tasks || {}).filter(
         (t) => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'
     );
-    const closedOther = Object.values(tasks).filter(
+    const closedOther = Object.values(tasks || {}).filter(
         (t) => t.workflow_state === 'finished' || t.workflow_state === 'cleared'
     );
-    const supervised = Object.values(supervisedTasks).filter(
+    const supervised = Object.values(supervisedTasks || {}).filter(
         (t) => t.workflow_state !== 'cleared'
     );
-    const closedSupervised = Object.values(supervisedTasks).filter(
+    const closedSupervised = Object.values(supervisedTasks || {}).filter(
         (t) => t.workflow_state === 'cleared'
     );
 
@@ -81,8 +89,8 @@ TaskGroup.propTypes = {
 };
 
 UserTasks.propTypes = {
-    tasks: PropTypes.object.isRequired,
-    supervisedTasks: PropTypes.object.isRequired,
+    tasks: PropTypes.object,
+    supervisedTasks: PropTypes.object,
 };
 
 export default UserTasks;
