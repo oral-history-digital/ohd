@@ -28,7 +28,7 @@ function UpdateRegistryEntryAttributesModal({
             entry.Description.find(n => n.Lang === locale && n.Description)?.Description :
             entry.Description?.Description;
         return (
-            name || entry.Name + ', ' + description
+            (name || entry.Name) + (description ? (', ' + description) : '')
         );
     }
 
