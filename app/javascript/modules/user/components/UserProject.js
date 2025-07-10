@@ -22,15 +22,12 @@ export default function UserProject({
 
     const project = projects[userProject?.project_id];
 
-    const hasRoles = roles && Object.keys(roles).length > 0;
-    const hasPermissions =
-        interviewPermissions && Object.keys(interviewPermissions).length > 0;
-    const hasTasks = tasks && Object.keys(tasks).length > 0;
-    const hasSupervisedTasks =
-        supervisedTasks && Object.keys(supervisedTasks).length > 0;
-
+    const hasData = (obj) => obj && Object.keys(obj).length > 0;
     const hasContent =
-        hasRoles || hasPermissions || hasTasks || hasSupervisedTasks;
+        hasData(roles) ||
+        hasData(interviewPermissions) ||
+        hasData(tasks) ||
+        hasData(supervisedTasks);
 
     return project ? (
         <ProjectShow data={project} hideLogo>
