@@ -21,6 +21,7 @@ function NormDataSelect({
     const [selectedValue, setSelectedValue] = useState(null);
     const [geoFilter, setGeoFilter] = useState(null);
     const [placeType, setPlaceType] = useState(null);
+    const [api, setApi] = useState('gnd');
 
     const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
     const handleInputChange = value => {
@@ -70,7 +71,8 @@ function NormDataSelect({
         if (inputValue?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {fulltext: inputValue});
         }
-        return fetch(`${pathBase}/norm_data_api?expression=${inputValue}&geo_filter=${geoFilter}&place_type=${placeType}`).then(res => res.json());
+        return fetch(`${pathBase}/norm_data_api?expression=${inputValue}&geo_filter=${geoFilter}&place_type=${placeType}&api=${api}`)
+            .then(res => res.json());
     };
 
     return (
