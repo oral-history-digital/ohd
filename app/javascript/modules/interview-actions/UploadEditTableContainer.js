@@ -2,12 +2,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData } from 'modules/data';
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
+import { getProjectId, getArchiveId } from 'modules/archive';
 import { getCurrentInterview, getLanguages, getCurrentProject } from 'modules/data';
 import UploadEditTable from './UploadEditTable';
 
 const mapStateToProps = state => ({
-    locale: getLocale(state),
     projectId: getProjectId(state),
     project: getCurrentProject(state),
     interview: getCurrentInterview(state),

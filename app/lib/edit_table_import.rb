@@ -1,13 +1,14 @@
 class EditTableImport
 
   attr_accessor :file_path, :sheet, :interview, :contributions,
-    :original_locale, :only_references
+    :original_locale, :only_references, :locale
 
-  def initialize(interview, file_path, only_references=false)
+  def initialize(interview, file_path, locale, only_references=false)
     @interview = interview
     @contributions = @interview.contributions_hash
     @original_locale = @interview.alpha3
     @file_path = file_path
+    @locale = locale
     @only_references = only_references
     @sheet = parse_sheet
   end
@@ -23,7 +24,7 @@ class EditTableImport
       interview.find_or_create_tapes(csv.cell(csv.last_row, 1).to_i)
     end
 
-    csv.sheet('default').parse(interview.edit_table_headers)
+    csv.sheet('default').parse(interview.edit_table_headers(locale))
   end
 
   def process

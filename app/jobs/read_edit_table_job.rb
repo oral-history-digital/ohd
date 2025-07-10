@@ -5,6 +5,7 @@ class ReadEditTableJob < ApplicationJob
     EditTableImport.new(
       opts[:interview],
       opts[:file_path],
+      opts[:locale],
       opts[:only_references],
     ).process
 
