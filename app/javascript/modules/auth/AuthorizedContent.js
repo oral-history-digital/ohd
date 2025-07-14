@@ -15,8 +15,8 @@ function AuthorizedContent({
 
     if (
         Array.isArray(object) ? 
-        object.find(obj => (showIfPublic && obj.workflow_state === 'public') || isAuthorized(obj, action)) : 
-        (showIfPublic && object.workflow_state === 'public') || isAuthorized(object, action)
+        object.find(obj => (showIfPublic && obj.workflow_state !== 'unshared') || isAuthorized(obj, action)) : 
+        (showIfPublic && object.workflow_state !== 'unshared') || isAuthorized(object, action)
     )
     {
         return children || null;

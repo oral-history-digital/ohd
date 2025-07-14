@@ -9,15 +9,19 @@ export default function AuthShow({
     ifNoProject,
     ifCatalog,
     user,
+    interview,
     isCatalog,
     children,
 }) {
     const { project } = useProject();
+    const isRestricted = interview?.workflow_state === 'restricted';
+    const hasPermission = user?.interview_permissions?.some(perm => perm.interview_id === interview?.id);
 
     if (
         // logged in and registered for the current project
         //(isLoggedIn && ifLoggedIn) ||
         (
+            ((isRestricted && hasPermission) || !isRestricted) &&
             isLoggedIn && ifLoggedIn && user && (
                 user.admin ||
                 project.grant_access_without_login ||
@@ -38,6 +42,9 @@ export default function AuthShow({
             !project?.grant_project_access_instantly &&
             !project.grant_access_without_login &&
             !Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
+        ) ||
+        (
+            isLoggedIn && ifLoggedOut && isRestricted && !hasPermission
         )
     ) {
         // logged out or still not registered for a project

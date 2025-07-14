@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { underscore } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import { useProjectAccessStatus } from 'modules/auth';
 import RegistryReferencesContainer from './RegistryReferencesContainer';
+import { getCurrentUser, getCurrentInterview } from 'modules/data';
 
 export default function SelectedRegistryReferences({
     editView,
@@ -17,6 +19,8 @@ export default function SelectedRegistryReferences({
 }) {
     const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const user = useSelector(getCurrentUser);
+    const interview = useSelector(getCurrentInterview);
 
     useEffect(() => {
         loadRegistryEntries();
@@ -38,10 +42,20 @@ export default function SelectedRegistryReferences({
         }
     }
 
+    const hasInterviewPermission = interview.workflow_state === 'public' || (
+        interview.workflow_state === 'restricted' &&
+        user?.interview_permissions?.some(perm => perm.interview_id === interview.id)
+    );
+
     const fields = Object.values(project.metadata_fields)
         .filter(field => field.registry_entry_id)
         .filter(field => field.ref_object_type === refObject.type)
-        .filter(field => (field.display_on_landing_page && !projectAccessGranted) || (field.use_in_details_view && projectAccessGranted));
+        .filter(field => (
+            field.display_on_landing_page && (!projectAccessGranted || !hasInterviewPermission)
+        ) ||
+        (
+            field.use_in_details_view && projectAccessGranted && hasInterviewPermission
+        ));
 
     return fields.map(field => {
         if (

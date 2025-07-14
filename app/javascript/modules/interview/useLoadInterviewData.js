@@ -35,7 +35,7 @@ export default function useLoadInterviewData({
         if (interview && metadataFieldDescription?.display_on_landing_page) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'description'));
         }
-        if (interview && projectAccessGranted) {
+        if (interview?.workflow_state === 'public' && projectAccessGranted) {
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'short_title'));
             dispatch(fetchData({ projectId, locale, project }, 'interviews', archiveId, 'photos'));
