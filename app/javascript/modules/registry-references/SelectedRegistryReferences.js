@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { underscore } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus } from 'modules/auth';
+import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
 import RegistryReferencesContainer from './RegistryReferencesContainer';
 import { getCurrentUser, getCurrentInterview } from 'modules/data';
 
@@ -19,6 +19,7 @@ export default function SelectedRegistryReferences({
 }) {
     const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
+    const { isAuthorized } = useAuthorization();
     const user = useSelector(getCurrentUser);
     const interview = useSelector(getCurrentInterview);
 
@@ -42,9 +43,10 @@ export default function SelectedRegistryReferences({
         }
     }
 
-    const hasInterviewPermission = interview.workflow_state === 'public' || (
-        interview.workflow_state === 'restricted' &&
-        user?.interview_permissions?.some(perm => perm.interview_id === interview.id)
+    const hasInterviewPermission = interview.workflow_state === 'public' ||
+        isAuthorized(interview, 'show') || (
+            interview.workflow_state === 'restricted' &&
+            user?.interview_permissions?.some(perm => perm.interview_id === interview.id)
     );
 
     const fields = Object.values(project.metadata_fields)

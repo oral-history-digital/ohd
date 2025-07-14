@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { useProject } from 'modules/routes';
+import { useAuthorization } from './authorization-hook';
 
 export default function AuthShow({
     isLoggedIn,
@@ -14,8 +15,10 @@ export default function AuthShow({
     children,
 }) {
     const { project } = useProject();
+    const { isAuthorized } = useAuthorization();
     const isRestricted = interview?.workflow_state === 'restricted';
-    const hasPermission = user?.interview_permissions?.some(perm => perm.interview_id === interview?.id);
+    const hasPermission = isAuthorized(interview, 'show') ||
+        user?.interview_permissions?.some(perm => perm.interview_id === interview?.id);
 
     if (
         // logged in and registered for the current project
