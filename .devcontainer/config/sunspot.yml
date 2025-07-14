@@ -1,0 +1,13 @@
+development:
+  solr:
+    hostname: solr
+    port: 8983
+    log_level: INFO
+    path: /solr/default
+
+test:
+  solr:
+    hostname: solr
+    port: 8983
+    log_level: INFO
+    path: /solr/default
