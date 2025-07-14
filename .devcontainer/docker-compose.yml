@@ -14,7 +14,8 @@ services:
             # Exclude node_modules from the mount to prevent host/container conflicts
             - /workspace/node_modules
             - /workspace/tmp/cache
-            - /workspace/.bundle
+            # Use a named volume for bundle to persist gems across container restarts
+            - bundle-data:/workspace/vendor/bundle
             # Create a volume for logs
             - setup-logs:/workspace/.devcontainer/logs
         extra_hosts:
@@ -30,7 +31,7 @@ services:
             RACK_ENV: development
             NODE_ENV: development
             DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-            # Point to Solr container instead of localhost:8982
+            # Point to Solr container default core
             SOLR_URL: http://solr:8983/solr/default
             SOLR_HOST: solr
             SOLR_PORT: 8983
@@ -69,21 +70,28 @@ services:
             - '8983:8983'
         volumes:
             - solr-data:/var/solr
-            # Mount the Solr configuration directly
-            - ../solr/configsets:/opt/solr/server/solr/configsets
-        command:
-            # Use precreate with our custom config
-            - solr-precreate
-            - default
-            - /opt/solr/server/solr/configsets/sunspot/conf
+            - ../solr/configsets:/var/solr/data/configsets
+            - ../.devcontainer/scripts/solr-setup.sh:/usr/local/bin/solr-setup.sh:ro
+            - ../:/workspace:ro
+        environment:
+            - SOLR_HEAP=512m
+        # Use the external script for setup
+        entrypoint: ['/bin/bash', '/usr/local/bin/solr-setup.sh']
         healthcheck:
             test:
-                ['CMD', 'curl', '-f', 'http://localhost:8983/solr/admin/cores']
-            interval: 10s
-            timeout: 5s
-            retries: 5
+                [
+                    'CMD',
+                    'bash',
+                    '-c',
+                    'curl -s "http://localhost:8983/solr/admin/cores?action=STATUS&wt=json" | grep -q "\"default\"" && curl -s "http://localhost:8983/solr/default/admin/ping?wt=json" | grep -q "\"status\":\"OK\""',
+                ]
+            interval: 15s
+            timeout: 10s
+            retries: 12
+            start_period: 90s
 
 volumes:
     db-data:
     solr-data:
     setup-logs:
+    bundle-data:
