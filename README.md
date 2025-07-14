@@ -34,11 +34,20 @@ This project includes a fully configured Dev Container setup for easy developmen
 4. When prompted, click on "Reopen in Container" to start the development container
 
 The Dev Container setup will automatically:
-- Build the Docker image with Ruby 3.0.7, Node.js 18.x, and other dependencies
+- Pull the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
+- Build the development image with application-specific dependencies
 - Set up the MySQL database and Solr search server
-- Install application dependencies
+- Install application dependencies via Bundler and Yarn
 - Configure the database and other required services
 - Import the database dump
+
+### Docker Architecture
+
+The development environment uses a two-stage Docker setup for faster build times:
+
+1. **Base Image (`Dockerfile.ruby-base`)**: Creates a foundation image with Ruby 3.3.4, Node.js 18.x, Java, and pre-installed system dependencies. This image is built and published to GitHub Container Registry as `ghcr.io/yotkadata/rails-base:latest`.
+
+2. **Development Image (`.devcontainer/Dockerfile`)**: Uses the pre-built base image and adds application-specific dependencies and configuration for the development environment.
 
 ### Running the Application
 
