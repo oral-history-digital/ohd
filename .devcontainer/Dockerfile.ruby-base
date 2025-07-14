@@ -1,0 +1,67 @@
+FROM ruby:3.3.4
+
+# Force compiling native gems
+ENV BUNDLE_FORCE_RUBY_PLATFORM=1
+
+# Install system and language dependencies (Node 18, DB, Java, etc.)
+RUN mkdir -p /etc/apt/keyrings \
+  && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+       | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+  && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" \
+       | tee /etc/apt/sources.list.d/nodesource.list \
+  && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    --no-install-recommends \
+    git \
+    ca-certificates \
+    curl \
+    gnupg \
+    netcat-openbsd \
+    build-essential \
+    pkg-config \
+    cmake \
+    autoconf \
+    libxml2-dev \
+    libxslt1-dev \
+    libmagickwand-dev \
+    libffi-dev \
+    default-mysql-client \
+    libmariadb-dev \
+    default-jdk-headless \
+    texlive-base \
+    texlive-xetex \
+    texlive-lang-all \
+    fonts-freefont-ttf \
+    fonts-noto \
+    nodejs \
+  && npm install -g yarn \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Set JAVA_HOME for gems that need Java headers
+ENV JAVA_HOME=/usr/lib/jvm/default-java
+ENV BUNDLE_PATH=/workspace/vendor/bundle
+ENV BUNDLE_APP_CONFIG=/workspace/.bundle
+ENV BUNDLE_WITHOUT=production
+
+# Use workspace-compatible paths from the start
+WORKDIR /workspace
+
+# Copy dependency files for maximum layer cache (from parent directory)
+COPY ../Gemfile ../Gemfile.lock* ../package.json ../yarn.lock ./
+
+# Install Ruby gems and JS packages with workspace-compatible paths
+RUN gem install bundler:2.5.14 \
+  && bundle config set --global deployment 'false' \
+  && bundle config set --global path '/workspace/vendor/bundle' \
+  && bundle config set --global without 'production' \
+  && bundle config set --global jobs $(nproc) \
+  && bundle config set --global retry 3 \
+  && bundle config set --global force_ruby_platform true \
+  && bundle config set --global git.allow_insecure true \
+  && bundle config set --global disable_shared_gems false \
+  && bundle install --verbose \
+  && yarn install --frozen-lockfile --network-timeout 600000
+
+# Create a global bundle config that will be inherited
+RUN mkdir -p /usr/local/bundle/config \
+  && cp /workspace/.bundle/config /usr/local/bundle/config/ || true

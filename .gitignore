@@ -25,6 +25,9 @@ coverage
 !/storage/.keep
 /.env
 
+# Ruby/Bundler
+vendor/
+
 # Sunspot
 solr/data
 solr/test/data
