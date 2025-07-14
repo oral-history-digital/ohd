@@ -146,7 +146,7 @@ export default function InterviewWorkflowRow({
                         obj={interview}
                         attribute={'workflow_state'}
                         value={t(`workflow_states.${interview.workflow_state}`)}
-                        values={['public', 'unshared']}
+                        values={['public', 'unshared', 'restricted']}
                         optionsScope={'workflow_states'}
                         noStatusCheckbox={true}
                         noLabel={true}
