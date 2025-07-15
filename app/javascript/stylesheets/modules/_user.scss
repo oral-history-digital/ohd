@@ -1,0 +1,24 @@
+div.account-page {
+    div.account-page-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .edit-account-icon {
+            cursor: pointer;
+            margin: 2rem 0 11px 0;
+        }
+    }
+
+    div.user-registration {
+        margin: 1.5rem 0;
+
+        .box {
+            padding: 0;
+
+            p.detail {
+                margin-bottom: 0.2rem;
+            }
+        }
+    }
+}
