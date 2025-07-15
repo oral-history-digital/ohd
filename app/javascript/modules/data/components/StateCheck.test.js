@@ -1,5 +1,4 @@
 import renderer from 'react-test-renderer';
-
 import StateCheck from './StateCheck';
 
 const mockedState = {
@@ -9,12 +8,13 @@ const mockedState = {
 
 jest.mock('react-redux', () => ({
     ...jest.requireActual('react-redux'),
-    useSelector: jest.fn()
-      .mockImplementation(callback => callback(mockedState))
-  }));
+    useSelector: jest
+        .fn()
+        .mockImplementation((callback) => callback(mockedState)),
+}));
 
 it('renders the children if selector returns true', () => {
-    const selector = state => state.isTrue;
+    const selector = (state) => state.isTrue;
 
     const tree = renderer
         .create(
@@ -27,12 +27,12 @@ it('renders the children if selector returns true', () => {
 });
 
 it('renders Spinner component if selector returns false', () => {
-    const selector = state => state.isFalse;
+    const selector = (state) => state.isFalse;
 
     const tree = renderer
         .create(
             <StateCheck testSelector={selector}>
-                <p>won't be shown</p>
+                <p>won&#39;t be shown</p>
             </StateCheck>
         )
         .toJSON();
@@ -40,15 +40,12 @@ it('renders Spinner component if selector returns false', () => {
 });
 
 it('renders custom fallback', () => {
-    const selector = state => state.isFalse;
+    const selector = (state) => state.isFalse;
 
     const tree = renderer
         .create(
-            <StateCheck
-                testSelector={selector}
-                fallback={<p>Loading...</p>}
-            >
-                <p>won't be shown</p>
+            <StateCheck testSelector={selector} fallback={<p>Loading...</p>}>
+                <p>won&#39;t be shown</p>
             </StateCheck>
         )
         .toJSON();
