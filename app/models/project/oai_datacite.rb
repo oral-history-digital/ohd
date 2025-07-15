@@ -62,11 +62,15 @@ module Project::OaiDatacite
 
 
       xml.contributors do
-        xml.contributor contributorType: "ProjectLeader" do
-          xml.contributorName leader
+        oai_leaders.each do |leader_name|
+          xml.contributor contributorType: "ProjectLeader" do
+            xml.contributorName leader_name.strip
+          end
         end
-        xml.contributor contributorType: "ContactPerson" do
-          xml.contributorName manager
+        oai_managers.each do |manager_name|
+          xml.contributor contributorType: "ContactPerson" do
+            xml.contributorName manager_name.strip
+          end
         end
         xml.contributor contributorType: "HostingInstitution" do
           xml.contributorName oai_contributor(:de)

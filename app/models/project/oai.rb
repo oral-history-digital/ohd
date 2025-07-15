@@ -42,6 +42,14 @@ module Project::Oai
     root_institutions_names(locale)
   end
 
+  def oai_leaders
+    leader&.split(/\s*,\s*/) || []
+  end
+
+  def oai_managers
+    manager&.split(/\s*,\s*/) || []
+  end
+
   def oai_publication_date
     publication_date
   end
