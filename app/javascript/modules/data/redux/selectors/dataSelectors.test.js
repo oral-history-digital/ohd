@@ -457,7 +457,7 @@ test('getTasks gets tasks object', () => {
 
 test('getTaskTypesForCurrentProject gets task types object', () => {
     expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(
-        state.data.task_types
+        state.data.projects[1].task_types
     );
 });
 
@@ -583,7 +583,7 @@ test('getContributorsFetched retrieves if contributors for current interview hav
 
 test('getContributionTypesForCurrentProject retrieves contributionTypes object', () => {
     expect(selectors.getContributionTypesForCurrentProject(state)).toEqual(
-        state.data.contribution_types
+        state.data.projects[1].contribution_types
     );
 });
 

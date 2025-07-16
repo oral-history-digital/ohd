@@ -1,10 +1,26 @@
 import shuffle from 'lodash.shuffle';
-import { getArchiveId, getProjectId } from 'modules/archive';
+import { getArchiveId } from 'modules/archive';
 import { DEFAULT_LOCALES } from 'modules/constants';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { createSelector } from 'reselect';
+import {
+    getCurrentInterview,
+    getCurrentProject,
+    getData,
+    getProjects,
+    getPublicProjects,
+} from './baseSelectors';
 
-export const getData = (state) => state.data;
+// Re-export selectors from baseSelectors
+export {
+    getContributionTypesForCurrentProject,
+    getCurrentInterview,
+    getCurrentProject,
+    getData,
+    getInterviews,
+    getProjects,
+    getPublicProjects,
+} from './baseSelectors';
 
 export const getLanguages = (state) => getData(state).languages;
 
@@ -13,23 +29,10 @@ export const getTranslationValues = (state) =>
 
 export const getInstitutions = (state) => getData(state).institutions;
 
-export const getProjects = (state) => getData(state).projects;
-
-export const getPublicProjects = createSelector(
-    getProjects,
-    (projectObject) => {
-        return Object.values(projectObject).filter(
-            (project) => project.workflow_state === 'public'
-        );
-    }
-);
-
 export const getCollections = (state) => getData(state).collections;
 
 export const getNormDataProviders = (state) =>
     getData(state).norm_data_providers;
-
-export const getInterviews = (state) => getData(state).interviews;
 
 export const getUsers = (state) => getData(state).users;
 
@@ -130,39 +133,11 @@ export const getTasksStatus = (state) => getStatuses(state).tasks;
 
 export const getTaskTypesStatus = (state) => getStatuses(state).task_types;
 
-function projectByDomain(projects) {
-    return (
-        projects &&
-        Object.values(projects).find(
-            (project) => project.archive_domain === window.location.origin
-        )
-    );
-}
-
-export const getCurrentProject = createSelector(
-    [getProjectId, getProjects],
-    (projectId, projects) => {
-        const currentProject =
-            Object.values(projects).find(
-                (project) => project.shortname === projectId
-            ) || projectByDomain(projects);
-
-        return currentProject || null;
-    }
-);
-
 export const getOHDProject = createSelector([getProjects], (projects) => {
     return Object.values(projects).find(
         (project) => project.shortname === 'ohd'
     );
 });
-
-export const getCurrentInterview = createSelector(
-    [getInterviews, getArchiveId],
-    (interviews, archiveId) => {
-        return interviews && interviews[archiveId];
-    }
-);
 
 export const getCurrentInterviewFetched = (state) => {
     const currentInterview = getCurrentInterview(state);
@@ -217,6 +192,10 @@ export const getFlattenedRefTree = createSelector(
         }
         if (refTree?.ohd) {
             flattenedTree = flattenTree(flattenedTree, refTree.ohd);
+        }
+        // Handle case where refTree is the direct tree structure
+        if (refTree && !refTree.project && !refTree.ohd && refTree.children) {
+            flattenedTree = flattenTree(flattenedTree, refTree);
         }
 
         return flattenedTree;
@@ -342,26 +321,11 @@ export const getRegistryReferenceTypesForCurrentProject = createSelector(
     }
 );
 
-export const getRegistryNameTypesForCurrentProject = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.registry_name_types;
-    }
-);
+export const getRegistryNameTypesForCurrentProject = (state) =>
+    getData(state).registry_name_types;
 
-export const getMediaStreamsForCurrentProject = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.media_streams;
-    }
-);
-
-export const getContributionTypesForCurrentProject = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.contribution_types;
-    }
-);
+export const getMediaStreamsForCurrentProject = (state) =>
+    getData(state).mediaStreams;
 
 export const getCurrentIntervieweeId = createSelector(
     getCurrentInterview,

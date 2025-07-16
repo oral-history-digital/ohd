@@ -1,6 +1,6 @@
 import { getLocale, getProjectId } from 'modules/archive';
 import { createSelector } from 'reselect';
-import { getCurrentProject } from './dataSelectors';
+import { getCurrentProject } from './baseSelectors';
 
 export const DEFAULT_MAP_SECTION = {
     id: 0,
@@ -65,7 +65,7 @@ export const getIsCatalog = createSelector(
 export const getMapSections = createSelector(
     [getCurrentProject],
     (currentProject) => {
-        if (!currentProject.map_sections) {
+        if (!currentProject || !currentProject.map_sections) {
             return [DEFAULT_MAP_SECTION];
         }
 
