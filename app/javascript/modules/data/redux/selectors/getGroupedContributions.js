@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import {
     getContributionTypesForCurrentProject,
     getCurrentInterview,
-} from './dataSelectors';
+} from './baseSelectors';
 
 const getGroupedContributions = createSelector(
     [getEditView, getCurrentInterview, getContributionTypesForCurrentProject],
