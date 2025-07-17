@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { useScrollOffset } from 'hooks/useScrollOffset';
 import { AuthorizedContent } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
+import { useScrollOffset } from 'modules/media-player';
 import { Modal } from 'modules/ui';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import PropTypes from 'prop-types';

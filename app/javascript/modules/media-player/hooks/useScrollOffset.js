@@ -1,6 +1,5 @@
-import { getPlayerSize } from 'modules/media-player';
+import { getPlayerSize, getScrollOffset } from 'modules/media-player';
 import { useSelector } from 'react-redux';
-import { getScrollOffset } from 'utils/getScrollOffset';
 
 /**
  * React hook to get the current scroll offset based on the Redux player size.
