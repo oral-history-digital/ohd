@@ -1,61 +1,60 @@
-import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaPencilAlt } from 'react-icons/fa';
-
-import { SCROLL_OFFSET } from 'modules/constants';
-import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
-import { TapeAndTime } from 'modules/interview-helpers';
+import { useScrollOffset } from 'hooks/useScrollOffset';
 import { AuthorizedContent } from 'modules/auth';
-import SegmentHeadingForm from './SegmentHeadingForm';
 import { getCurrentInterview } from 'modules/data';
+import { TapeAndTime } from 'modules/interview-helpers';
+import { Modal } from 'modules/ui';
+import { scrollSmoothlyTo } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
+import { FaPencilAlt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import SegmentHeadingForm from './SegmentHeadingForm';
 
-export default function Subheading({
-    data,
-    active,
-    sendTimeChangeRequest,
-}) {
-    const { t } = useI18n();
+export default function Subheading({ data, active, sendTimeChangeRequest }) {
+    const scrollOffset = useScrollOffset();
+
     const divEl = useRef();
     const interview = useSelector(getCurrentInterview);
 
     useEffect(() => {
-        if (active) {
+        if (active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
-            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+            scrollSmoothlyTo(0, topOfSegment - scrollOffset);
         }
-    }, []);
+    }, [active, scrollOffset]);
 
     return (
         <div ref={divEl} className="Heading Heading--sub">
             <button
                 type="button"
                 className={classNames('Heading-main', { 'is-active': active })}
-                onClick={() => interview.transcript_coupled && sendTimeChangeRequest(data.tape_nbr, data.time)}
+                onClick={() =>
+                    interview.transcript_coupled &&
+                    sendTimeChangeRequest(data.tape_nbr, data.time)
+                }
             >
-                <span className="Heading-chapter">
-                    {data.chapter}
-                </span>
+                <span className="Heading-chapter">{data.chapter}</span>
 
                 <div>
-                    <div className="Heading-heading">
-                        {data.heading}
-                    </div>
+                    <div className="Heading-heading">{data.heading}</div>
 
                     <div className="Heading-timecode">
-                        <TapeAndTime tape={data.tape_nbr} time={data.time} transcriptCoupled={interview.transcript_coupled} />
+                        <TapeAndTime
+                            tape={data.tape_nbr}
+                            time={data.time}
+                            transcriptCoupled={interview.transcript_coupled}
+                        />
                     </div>
                 </div>
             </button>
 
-            <AuthorizedContent object={data.segment} action='update'>
+            <AuthorizedContent object={data.segment} action="update">
                 <Modal
                     title=""
                     trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <SegmentHeadingForm
                             segment={data.segment}
                             onSubmit={closeModal}

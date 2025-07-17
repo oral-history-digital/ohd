@@ -1,19 +1,16 @@
-import { useCallback, useEffect, useRef, memo } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-
-import { CONTENT_TABS_HEIGHT, CSS_BASE_UNIT } from 'modules/constants';
+import { useScrollOffset } from 'hooks/useScrollOffset';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { scrollSmoothlyTo } from 'modules/user-agent';
-import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/interview-helpers';
-import { getPlayerSize } from 'modules/media-player';
-import SegmentButtons from './SegmentButtons';
-import SegmentPopup from './SegmentPopup';
+import { useTranscriptQueryString } from 'modules/query-string';
+import { scrollSmoothlyTo } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { memo, useEffect, useRef } from 'react';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
 import Initials from './Initials';
+import SegmentButtons from './SegmentButtons';
+import SegmentPopup from './SegmentPopup';
 
 function Segment({
     data,
@@ -36,23 +33,7 @@ function Segment({
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
-    const playerSize = useSelector(getPlayerSize);
-   
-    // Calculate dynamic scroll offset based on player size
-    const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * CSS_BASE_UNIT;
-    const getScrollOffset = useCallback(() => {
-        let playerHeight;
-        
-        if (window.innerWidth < 768) { // $screen-m = 768px
-            playerHeight = 20 * 16; // 20rem converted to px
-        } else {
-            playerHeight = playerSize === 'small' ? 
-                12.5 * 16 : // Small player: 12.5rem (12.5 * 16px)
-                28 * 16;    // Medium player: 28rem (28 * 16px)
-        }
-        
-        return playerHeight + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
-    }, [SPACE_BEFORE_ACTIVE_ELEMENT, playerSize]);
+    const scrollOffset = useScrollOffset();
 
     // Handle scrolling to active segments for auto-scroll during playback and URL-based navigation
     useEffect(() => {
@@ -62,27 +43,33 @@ function Segment({
         // Determine if we should scroll based on different conditions
         const shouldScrollForAutoPlay = autoScroll && active;
         const shouldScrollForUrlParam = segmentParam === data.id;
-        const shouldScrollForInitialActive = active && !segmentParam && autoScroll;
+        const shouldScrollForInitialActive =
+            active && !segmentParam && autoScroll;
 
-        if (shouldScrollForAutoPlay || shouldScrollForUrlParam || shouldScrollForInitialActive) {
+        if (
+            shouldScrollForAutoPlay ||
+            shouldScrollForUrlParam ||
+            shouldScrollForInitialActive
+        ) {
             const topOfSegment = divEl.current.offsetTop;
 
             // If the segment is at the top of the page, no need to scroll
             if (topOfSegment === 0) return;
 
-            scrollSmoothlyTo(0, topOfSegment - getScrollOffset());
+            scrollSmoothlyTo(0, topOfSegment - scrollOffset);
         }
-    }, [autoScroll, active, data.id, getScrollOffset, playerSize, segmentParam]);
+    }, [autoScroll, active, data.id, segmentParam, scrollOffset]);
 
-    const text = isAuthorized(data, 'update') ?
-        (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
-        data.text[`${contentLocale}-public`];
+    const text = isAuthorized(data, 'update')
+        ? data.text[contentLocale] || data.text[`${contentLocale}-public`]
+        : data.text[`${contentLocale}-public`];
 
     const showSegment = text || editView;
 
-    const showButtons = isAuthorized(data) ||
+    const showButtons =
+        isAuthorized(data) ||
         isAuthorized({ type: 'General' }, 'edit') ||
-        (data.annotations_count + data.user_annotation_ids.length) > 0 ||
+        data.annotations_count + data.user_annotation_ids.length > 0 ||
         data.registry_references_count > 0;
 
     if (!showSegment) {
@@ -98,57 +85,62 @@ function Segment({
                 ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
-                    'is-active': active
-                })}>
-                {
-                    data.speakerIdChanged && (
-                        <Initials
-                            initials={speakerInitials || data.speaker}
-                            className={classNames('Segment-icon',
-                                data.speaker_is_interviewee ? 'Segment-icon--primary' :
-                                    'Segment-icon--secondary')}
-                            title={speakerName || data.speaker}
-                        />
-                    )
-                }
+                    'is-active': active,
+                })}
+            >
+                {data.speakerIdChanged && (
+                    <Initials
+                        initials={speakerInitials || data.speaker}
+                        className={classNames(
+                            'Segment-icon',
+                            data.speaker_is_interviewee
+                                ? 'Segment-icon--primary'
+                                : 'Segment-icon--secondary'
+                        )}
+                        title={speakerName || data.speaker}
+                    />
+                )}
                 <button
                     type="button"
-                    className={classNames('Segment-text', { 'is-active': active })}
+                    className={classNames('Segment-text', {
+                        'is-active': active,
+                    })}
                     lang={contentLocale}
-                    onClick={() => {transcriptCoupled && sendTimeChangeRequest(data.tape_nbr, data.time)}}
+                    onClick={() => {
+                        transcriptCoupled &&
+                            sendTimeChangeRequest(data.tape_nbr, data.time);
+                    }}
                     // TODO: clean mog segment-texts from html in db
                     //dangerouslySetInnerHTML={{__html: text}}
                 >
-                    {text?.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || <i>{t('modules.transcript.no_text')}</i>}
+                    {text?.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || (
+                        <i>{t('modules.transcript.no_text')}</i>
+                    )}
                 </button>
 
                 <BookmarkSegmentButton segment={data} />
 
-                {
-                    showButtons && (
-                        <SegmentButtons
-                            data={data}
-                            contentLocale={contentLocale}
-                            popupType={popupType}
-                            openPopup={openPopup}
-                            closePopup={closePopup}
-                            tabIndex={tabIndex}
-                            active={popupType !== null}
-                        />
-                    )
-                }
-            </div>
-            {
-                popupType && (
-                    <SegmentPopup
-                        contentLocale={contentLocale}
+                {showButtons && (
+                    <SegmentButtons
                         data={data}
-                        openReference={openReference}
+                        contentLocale={contentLocale}
                         popupType={popupType}
-                        setOpenReference={setOpenReference}
+                        openPopup={openPopup}
+                        closePopup={closePopup}
+                        tabIndex={tabIndex}
+                        active={popupType !== null}
                     />
-                )
-            }
+                )}
+            </div>
+            {popupType && (
+                <SegmentPopup
+                    contentLocale={contentLocale}
+                    data={data}
+                    openReference={openReference}
+                    popupType={popupType}
+                    setOpenReference={setOpenReference}
+                />
+            )}
         </>
     );
 }
