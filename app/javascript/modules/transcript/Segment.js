@@ -4,10 +4,10 @@ import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { useTranscriptQueryString } from 'modules/query-string';
-import { scrollSmoothlyTo } from 'modules/user-agent';
 import PropTypes from 'prop-types';
-import { memo, useEffect, useRef } from 'react';
+import { memo, useRef } from 'react';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
+import { useAutoScrollToRef } from './hooks/useAutoScrollToRef';
 import Initials from './Initials';
 import SegmentButtons from './SegmentButtons';
 import SegmentPopup from './SegmentPopup';
@@ -35,30 +35,18 @@ function Segment({
     const { segment: segmentParam } = useTranscriptQueryString();
     const scrollOffset = useScrollOffset();
 
-    // Handle scrolling to active segments for auto-scroll during playback and URL-based navigation
-    useEffect(() => {
-        // Checking for divEl.current is necessary because sometimes component returns null.
-        if (!divEl.current) return;
+    const shouldScroll =
+        (autoScroll && active) || // Segment is active and autoScroll is enabled (e.g. during playback)
+        segmentParam === data.id || // Segment is targeted by the URL param (segmentParam === data.id)
+        (active && !segmentParam && autoScroll); // Segment is initially active and autoScroll is enabled, but no segmentParam is present
 
-        // Determine if we should scroll based on different conditions
-        const shouldScrollForAutoPlay = autoScroll && active;
-        const shouldScrollForUrlParam = segmentParam === data.id;
-        const shouldScrollForInitialActive =
-            active && !segmentParam && autoScroll;
-
-        if (
-            shouldScrollForAutoPlay ||
-            shouldScrollForUrlParam ||
-            shouldScrollForInitialActive
-        ) {
-            const topOfSegment = divEl.current.offsetTop;
-
-            // If the segment is at the top of the page, no need to scroll
-            if (topOfSegment === 0) return;
-
-            scrollSmoothlyTo(0, topOfSegment - scrollOffset);
-        }
-    }, [autoScroll, active, data.id, segmentParam, scrollOffset]);
+    // Use custom hook for auto-scroll logic
+    useAutoScrollToRef(divEl, scrollOffset, shouldScroll, [
+        autoScroll,
+        active,
+        data.id,
+        segmentParam,
+    ]);
 
     const text = isAuthorized(data, 'update')
         ? data.text[contentLocale] || data.text[`${contentLocale}-public`]
