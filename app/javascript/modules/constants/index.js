@@ -1,23 +1,19 @@
+/* global railsMode */
+
 /**
  * Put global constants here.
  */
 
-const ONE_REM = 16;
+export const ONE_REM = 16;
 export const CSS_BASE_UNIT = 24;
 
-export const SITE_HEADER_HEIGHT_MOBILE =   5    * ONE_REM;
-export const SITE_HEADER_HEIGHT_DESKTOP =  6.25 * ONE_REM;
-export const MEDIA_PLAYER_HEIGHT_MOBILE =  20   * ONE_REM
-export const MEDIA_PLAYER_HEIGHT_DESKTOP = 28   * ONE_REM;
-export const MEDIA_PLAYER_HEIGHT_STICKY =  10   * ONE_REM;
-export const CONTENT_TABS_HEIGHT =         3    * ONE_REM;
-const SPACE_BEFORE_ACTIVE_ELEMENT =        1.5  * CSS_BASE_UNIT;
+export const SITE_HEADER_HEIGHT_MOBILE = 5 * ONE_REM;
+export const SITE_HEADER_HEIGHT_DESKTOP = 6.25 * ONE_REM;
+export const CONTENT_TABS_HEIGHT = 3 * ONE_REM;
 
-export const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
-
-export const PROJECT_CDOH = 'cdoh'
-export const PROJECT_DG   = 'dg';
-export const PROJECT_MOG  = 'mog';
+export const PROJECT_CDOH = 'cdoh';
+export const PROJECT_DG = 'dg';
+export const PROJECT_MOG = 'mog';
 export const PROJECT_ZWAR = 'zwar';
 export const PROJECT_CAMPSCAPES = 'campscapes';
 
@@ -36,58 +32,57 @@ export const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 export const OHD_LOCATION = 'https://portal.oral-history.digital';
 export const OHD_DOMAINS = {
     development: 'http://portal.oral-history.localhost:3000',
-    staging:     'https://staging.oral-history.digital',
-    production:  'https://portal.oral-history.digital',
-    test:        'http://test.portal.oral-history.localhost:47001'
+    staging: 'https://staging.oral-history.digital',
+    production: 'https://portal.oral-history.digital',
+    test: 'http://test.portal.oral-history.localhost:47001',
 };
 
 export const ALPHA2_TO_ALPHA3 = {
-    'de': 'ger',
-    'en': 'eng',
-    'el': 'gre',
-    'es': 'spa',
-    'ru': 'rus',
-    'uk': 'ukr',
-    'ar': 'ara',
+    de: 'ger',
+    en: 'eng',
+    el: 'gre',
+    es: 'spa',
+    ru: 'rus',
+    uk: 'ukr',
+    ar: 'ara',
 };
 
 export const ALPHA3_TO_ALPHA2 = {
-    'ger': 'de',
-    'ita': 'it',
-    'eng': 'en',
-    'dut': 'nl',
-    'fre': 'fr',
-    'ara': 'ar',
-    'rus': 'ru',
-    'gre': 'el',
-    'bel': 'be',
-    'bos': 'bs',
-    'bul': 'bg',
-    'cze': 'cs',
-    'heb': 'he',
-    'hrv': 'hr',
-    'hun': 'hu',
-    'lav': 'lv',
-    'lit': 'lt',
-    'mac': 'mk',
-    'nor': 'no',
-    'per': 'fa',
-    'pol': 'pl',
-    'rum': 'ro',
-    'slo': 'sk',
-    'slv': 'sl',
-    'spa': 'es',
-    'srp': 'sr',
-    'tam': 'ta',
-    'tir': 'ti',
-    'tur': 'tr',
-    'ukr': 'uk',
+    ger: 'de',
+    ita: 'it',
+    eng: 'en',
+    dut: 'nl',
+    fre: 'fr',
+    ara: 'ar',
+    rus: 'ru',
+    gre: 'el',
+    bel: 'be',
+    bos: 'bs',
+    bul: 'bg',
+    cze: 'cs',
+    heb: 'he',
+    hrv: 'hr',
+    hun: 'hu',
+    lav: 'lv',
+    lit: 'lt',
+    mac: 'mk',
+    nor: 'no',
+    per: 'fa',
+    pol: 'pl',
+    rum: 'ro',
+    slo: 'sk',
+    slv: 'sl',
+    spa: 'es',
+    srp: 'sr',
+    tam: 'ta',
+    tir: 'ti',
+    tur: 'tr',
+    ukr: 'uk',
     // using alpha-3 for languages without alpha-2
-    'rom': 'rom',
-    'spa': 'es',
-    'cat': 'ca',
+    rom: 'rom',
+    cat: 'ca',
     'ukr-rus': 'uk',
-    'zza': 'zz'
+    zza: 'zz',
 };
 
 const ANALYTICS_URLS = {
