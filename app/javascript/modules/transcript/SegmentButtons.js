@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { useScrollOffset } from 'hooks/useScrollOffset';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { useScrollOffset } from 'modules/media-player';
 import { SegmentHeadingForm } from 'modules/toc';
 import { Modal } from 'modules/ui';
 import { scrollSmoothlyTo } from 'modules/user-agent';

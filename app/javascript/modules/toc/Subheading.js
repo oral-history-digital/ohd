@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useScrollOffset } from 'hooks/useScrollOffset';
+import { useScrollOffset } from 'modules/media-player';
 import { AuthorizedContent } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { TapeAndTime } from 'modules/interview-helpers';

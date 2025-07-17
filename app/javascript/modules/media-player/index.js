@@ -1,3 +1,13 @@
+export { sendTimeChangeRequest, setPlayerSize } from './actions';
+export { default as mediaPlayerReducer } from './reducer';
+export {
+    getCurrentTape,
+    getIsIdle,
+    getIsPlaying,
+    getMediaTime,
+    getPlayerSize,
+} from './selectors';
+
 export {
     DEFAULT_AUDIO_RESOLUTION,
     DEFAULT_PLAYER_SIZE,
@@ -8,16 +18,7 @@ export {
     NAME as MEDIA_PLAYER_NAME,
 } from './constants';
 
-export { sendTimeChangeRequest, setPlayerSize } from './actions';
-
-export { default as mediaPlayerReducer } from './reducer';
-
-export {
-    getCurrentTape,
-    getIsIdle,
-    getIsPlaying,
-    getMediaTime,
-    getPlayerSize,
-} from './selectors';
+export { getScrollOffset } from './utils/getScrollOffset';
+export { useScrollOffset } from './hooks/useScrollOffset';
 
 export { default as MediaPlayer } from './components/MediaPlayer';

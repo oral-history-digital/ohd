@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { useScrollOffset } from 'hooks/useScrollOffset';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
+import { useScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { memo, useRef } from 'react';
