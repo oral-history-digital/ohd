@@ -1,0 +1,4 @@
+# These must be tab-separated.
+lagers	lager
+lagern	lager
+
