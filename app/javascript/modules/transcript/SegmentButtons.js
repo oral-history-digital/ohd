@@ -1,16 +1,14 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaHeading, FaPencilAlt, FaStickyNote, FaTag } from 'react-icons/fa';
-
-import { useAuthorization, AuthorizedContent } from 'modules/auth';
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { useScrollOffset } from 'modules/media-player';
 import { SegmentHeadingForm } from 'modules/toc';
 import { Modal } from 'modules/ui';
-import { useWorkbook } from 'modules/workbook';
-import SegmentFormContainer from './SegmentFormContainer';
-
 import { scrollSmoothlyTo } from 'modules/user-agent';
-import { SCROLL_OFFSET } from 'modules/constants';
+import { useWorkbook } from 'modules/workbook';
+import PropTypes from 'prop-types';
+import { FaHeading, FaPencilAlt, FaStickyNote, FaTag } from 'react-icons/fa';
+import SegmentFormContainer from './SegmentFormContainer';
 
 export default function SegmentButtons({
     contentLocale,
@@ -24,36 +22,56 @@ export default function SegmentButtons({
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { savedSegments: workbookAnnotations } = useWorkbook();
+    const scrollOffset = useScrollOffset();
 
-    const annotationsForSegment = workbookAnnotations?.some(annotation =>
-        data.user_annotation_ids.includes(annotation.id));
+    const annotationsForSegment = workbookAnnotations?.some((annotation) =>
+        data.user_annotation_ids.includes(annotation.id)
+    );
 
-    const hasAnnotationsInContentLocale = Object.values(data.annotations).some(annotation => annotation.text.hasOwnProperty(contentLocale));
-    const hasAnnotations = hasAnnotationsInContentLocale || annotationsForSegment;
+    const hasAnnotationsInContentLocale = Object.values(data.annotations).some(
+        (annotation) =>
+            Object.prototype.hasOwnProperty.call(annotation.text, contentLocale)
+    );
+    const hasAnnotations =
+        hasAnnotationsInContentLocale || annotationsForSegment;
     const hasReferences = data.registry_references_count > 0;
-    const showAnnotationsButton = isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'update') || hasAnnotations;
-    const showReferencesButton = isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'update') || hasReferences;
+    const showAnnotationsButton =
+        isAuthorized(
+            { type: 'Annotation', interview_id: data.interview_id },
+            'update'
+        ) || hasAnnotations;
+    const showReferencesButton =
+        isAuthorized(
+            { type: 'RegistryReference', interview_id: data.interview_id },
+            'update'
+        ) || hasReferences;
 
-     const handleButtonClick = () => {
+    const handleButtonClick = () => {
         const segmentElement = document.getElementById(`segment_${data.id}`);
         if (segmentElement) {
             const topOfSegment = segmentElement.offsetTop;
+            // Scroll to the top of the segment, minus an offset to account for fixed headers
+            // or other UI elements that might obscure the segment.
             if (topOfSegment !== 0) {
-                scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+                scrollSmoothlyTo(0, topOfSegment - scrollOffset);
             }
         }
     };
 
     return (
         <div className={classNames('Segment-buttons', { 'is-active': active })}>
-            <AuthorizedContent object={data} action='update'>
+            <AuthorizedContent object={data} action="update">
                 <Modal
-                    title={t(tabIndex === 1 ? 'edit.segment.translation' : 'edit.segment.transcript')}
+                    title={t(
+                        tabIndex === 1
+                            ? 'edit.segment.translation'
+                            : 'edit.segment.transcript'
+                    )}
                     trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                     triggerClassName="Button Button--icon"
-                    onBeforeOpen={handleButtonClick} 
+                    onBeforeOpen={handleButtonClick}
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <SegmentFormContainer
                             segment={data}
                             contentLocale={contentLocale}
@@ -63,11 +81,24 @@ export default function SegmentButtons({
                     )}
                 </Modal>
                 <Modal
-                    title={t(data.has_heading ? 'edit.segment.heading.edit' : 'edit.segment.heading.new')}
-                    trigger={<FaHeading className={classNames('Icon', data.has_heading ? 'Icon--primary' : 'Icon--editorial')} />}
+                    title={t(
+                        data.has_heading
+                            ? 'edit.segment.heading.edit'
+                            : 'edit.segment.heading.new'
+                    )}
+                    trigger={
+                        <FaHeading
+                            className={classNames(
+                                'Icon',
+                                data.has_heading
+                                    ? 'Icon--primary'
+                                    : 'Icon--editorial'
+                            )}
+                        />
+                    }
                     triggerClassName="Button Button--icon"
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <SegmentHeadingForm
                             segment={data}
                             onSubmit={closeModal}
@@ -76,30 +107,52 @@ export default function SegmentButtons({
                     )}
                 </Modal>
             </AuthorizedContent>
-            {
-                showAnnotationsButton && (
-                    <button
-                        type="button"
-                        className="Button Button--transparent Button--icon"
-                        title={t(hasAnnotations ? 'edit.segment.annotations.edit' : 'edit.segment.annotations.new')}
-                        onClick={() => popupType === 'annotations' ? closePopup() : openPopup(data.id, 'annotations')}
-                    >
-                        <FaStickyNote className={classNames('Icon', hasAnnotations ? 'Icon--primary' : 'Icon--editorial')} />
-                    </button>
-                )
-            }
-            {
-                showReferencesButton && (
-                    <button
-                        type="button"
-                        className="Button Button--transparent Button--icon"
-                        title={t(hasReferences ? 'edit.segment.references.edit' : 'edit.segment.references.new')}
-                        onClick={() => popupType === 'references' ? closePopup() : openPopup(data.id, 'references')}
-                    >
-                        <FaTag className={classNames('Icon', hasReferences ? 'Icon--primary' : 'Icon--editorial')} />
-                    </button>
-                )
-            }
+            {showAnnotationsButton && (
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t(
+                        hasAnnotations
+                            ? 'edit.segment.annotations.edit'
+                            : 'edit.segment.annotations.new'
+                    )}
+                    onClick={() =>
+                        popupType === 'annotations'
+                            ? closePopup()
+                            : openPopup(data.id, 'annotations')
+                    }
+                >
+                    <FaStickyNote
+                        className={classNames(
+                            'Icon',
+                            hasAnnotations ? 'Icon--primary' : 'Icon--editorial'
+                        )}
+                    />
+                </button>
+            )}
+            {showReferencesButton && (
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t(
+                        hasReferences
+                            ? 'edit.segment.references.edit'
+                            : 'edit.segment.references.new'
+                    )}
+                    onClick={() =>
+                        popupType === 'references'
+                            ? closePopup()
+                            : openPopup(data.id, 'references')
+                    }
+                >
+                    <FaTag
+                        className={classNames(
+                            'Icon',
+                            hasReferences ? 'Icon--primary' : 'Icon--editorial'
+                        )}
+                    />
+                </button>
+            )}
         </div>
     );
 }

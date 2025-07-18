@@ -1,4 +1,4 @@
-import { NAME } from './constants';
+import { NAME } from '../constants';
 
 export const UPDATE_MEDIA_TIME = `${NAME}/updateMediaTime`;
 export const UPDATE_IS_PLAYING = `${NAME}/updateIsPlaying`;

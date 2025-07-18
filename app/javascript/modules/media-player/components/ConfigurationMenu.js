@@ -6,9 +6,11 @@ import { BsGearFill } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
 import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
-import getPlayerSources from '../getPlayerSources';
-import getQualityLabel from '../getQualityLabel';
-import manageControlVisibility from '../manageControlVisibility';
+import {
+    getPlayerSources,
+    getQualityLabel,
+    manageControlVisibility,
+} from '../utils';
 
 function ConfigurationMenu({ player, playbackRates, qualities, translations }) {
     const [isMenuVisible, setIsMenuVisible] = useState(false);

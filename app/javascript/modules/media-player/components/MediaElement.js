@@ -1,18 +1,19 @@
-import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
-import usePosterImage from '../usePosterImage';
-import mediaStreamsToSources from '../mediaStreamsToSources';
-import humanTimeToSeconds from '../humanTimeToSeconds';
-import getQualityLabel from '../getQualityLabel';
+import { usePathBase, useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
+import { usePosterImage } from '../hooks';
+import {
+    getQualityLabel,
+    humanTimeToSeconds,
+    mediaStreamsToSources,
+} from '../utils';
 import VideoJS from './VideoJS';
 import './configurationMenuPlugin.js';
-import './toggleSizeButtonPlugin.js';
 import './customSkipButtonsPlugin.js';
+import './toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -240,7 +241,7 @@ export default function MediaElement({
         // handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
-        const newTracks = interview.alpha3s.map(lang => ({
+        const newTracks = interview.alpha3s.map((lang) => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
             language: lang,
             kind: 'captions',

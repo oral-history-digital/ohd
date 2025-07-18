@@ -1,4 +1,4 @@
-import manageControlVisibility from './manageControlVisibility';
+import { manageControlVisibility } from './manageControlVisibility';
 
 describe('manageControlVisibility', () => {
     let mockPlayer;

@@ -1,4 +1,4 @@
-import getQualityLabel from './getQualityLabel';
+import { getQualityLabel } from './getQualityLabel';
 
 describe('getQualityLabel', () => {
     test('returns label when available', () => {

@@ -1,4 +1,4 @@
-import humanTimeToSeconds from './humanTimeToSeconds';
+import { humanTimeToSeconds } from './humanTimeToSeconds';
 
 test('converts human time string to seconds', () => {
     const actual = humanTimeToSeconds('02h35m12s');
@@ -10,7 +10,7 @@ test('also accepts single digit numbers', () => {
     const actual = humanTimeToSeconds('1h5m3s');
     const expected = 3903;
     expect(actual).toEqual(expected);
-})
+});
 
 test('throws error if format is not acceptable', () => {
     expect(() => {

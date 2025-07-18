@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaPlus, FaMinus, FaPencilAlt } from 'react-icons/fa';
-
-import { SCROLL_OFFSET } from 'modules/constants';
-import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
-import { TapeAndTime } from 'modules/interview-helpers';
 import { AuthorizedContent } from 'modules/auth';
-import SubheadingContainer from './SubheadingContainer';
-import SegmentHeadingForm from './SegmentHeadingForm';
 import { getCurrentInterview } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { TapeAndTime } from 'modules/interview-helpers';
+import { useScrollOffset } from 'modules/media-player';
+import { Modal } from 'modules/ui';
+import { scrollSmoothlyTo } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
+import { FaMinus, FaPencilAlt, FaPlus } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import SegmentHeadingForm from './SegmentHeadingForm';
+import SubheadingContainer from './SubheadingContainer';
 
 export default function Heading({
     data,
@@ -19,19 +19,21 @@ export default function Heading({
     active,
     sendTimeChangeRequest,
 }) {
-    const [expanded, setExpanded] = useState(active);
     const { t } = useI18n();
-    const divEl = useRef();
+    const scrollOffset = useScrollOffset();
+
     const interview = useSelector(getCurrentInterview);
+    const [expanded, setExpanded] = useState(active);
+    const divEl = useRef();
 
     const hasSubheadings = data.subheadings.length > 0;
 
     useEffect(() => {
-        if (active && !hasSubheadings) {
+        if (active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
-            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+            scrollSmoothlyTo(0, topOfSegment - scrollOffset);
         }
-    }, []);
+    }, [active, scrollOffset]);
 
     return (
         <>
@@ -41,42 +43,49 @@ export default function Heading({
                         type="button"
                         className="Heading-toggle"
                         onClick={() => setExpanded(!expanded)}
-                        aria-label={expanded ? t('modules.toc.collapse') : t('modules.toc.expand')}
-                    >
-                        {
-                            expanded ?
-                                <FaMinus /> :
-                                <FaPlus />
+                        aria-label={
+                            expanded
+                                ? t('modules.toc.collapse')
+                                : t('modules.toc.expand')
                         }
+                    >
+                        {expanded ? <FaMinus /> : <FaPlus />}
                     </button>
                 )}
 
                 <button
                     type="button"
-                    className={classNames('Heading-main', { 'is-active': active })}
-                    onClick={() => interview.transcript_coupled && sendTimeChangeRequest(data.tape_nbr, data.time)}
+                    className={classNames('Heading-main', {
+                        'is-active': active,
+                    })}
+                    onClick={() =>
+                        interview.transcript_coupled &&
+                        sendTimeChangeRequest(data.tape_nbr, data.time)
+                    }
                 >
-                    <span className="Heading-chapter">
-                        {data.chapter}
-                    </span>
+                    <span className="Heading-chapter">{data.chapter}</span>
 
                     <div>
-                        <div className="Heading-heading">
-                            {data.heading}
-                        </div>
+                        <div className="Heading-heading">{data.heading}</div>
 
                         <div className="Heading-timecode">
-                            <TapeAndTime tape={data.tape_nbr} time={data.time} transcriptCoupled={interview.transcript_coupled} />
+                            <TapeAndTime
+                                tape={data.tape_nbr}
+                                time={data.time}
+                                transcriptCoupled={interview.transcript_coupled}
+                            />
                         </div>
                     </div>
                 </button>
 
-                <AuthorizedContent object={data.segment} action='update'>
+                <AuthorizedContent object={data.segment} action="update">
                     <Modal
                         title=""
-                        trigger={<FaPencilAlt className="Icon Icon--editorial" />}
+                        trigger={
+                            <FaPencilAlt className="Icon Icon--editorial" />
+                        }
                     >
-                        {closeModal => (
+                        {(closeModal) => (
                             <SegmentHeadingForm
                                 segment={data.segment}
                                 onSubmit={closeModal}
@@ -86,21 +95,23 @@ export default function Heading({
                 </AuthorizedContent>
             </div>
 
-            {
-                data.main && (
-                    <div className={classNames('Heading-subheadings', {
+            {data.main && (
+                <div
+                    className={classNames('Heading-subheadings', {
                         'is-expanded': expanded,
-                    })}>
-                        {data.subheadings.map((subheading, index) => (
-                            <SubheadingContainer
-                                key={subheading.segment.id}
-                                data={subheading}
-                                nextSubHeading={data.subheadings[index + 1] || nextHeading}
-                            />
-                        ))}
-                    </div>
-                )
-            }
+                    })}
+                >
+                    {data.subheadings.map((subheading, index) => (
+                        <SubheadingContainer
+                            key={subheading.segment.id}
+                            data={subheading}
+                            nextSubHeading={
+                                data.subheadings[index + 1] || nextHeading
+                            }
+                        />
+                    ))}
+                </div>
+            )}
         </>
     );
 }

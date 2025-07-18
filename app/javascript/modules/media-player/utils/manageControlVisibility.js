@@ -4,7 +4,7 @@
  *
  * @param {Object} player - The VideoJS player instance
  */
-export default function manageControlVisibility(player) {
+export function manageControlVisibility(player) {
     if (!player?.controlBar) return;
 
     const isFullscreen = player.isFullscreen();
