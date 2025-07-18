@@ -25,10 +25,13 @@ class NormDataApi
 
     #2025-07-08:
     api_keys = {
-      gnd: 'C1B5C042736BAB4F52CBB9B911573158',
-      geonames: '4DA93D864AE635746FF0310972423144',
-      wikidata: 'A2E90A7CD165EE60D3A5F07E6DA3F1D7',
-      openstreetmap: '165221FEA25287AAB2829CD56F518FF3',
+      gnd_geo: 'C1B5C042736BAB4F52CBB9B911573158',
+      geonames_geo: '4DA93D864AE635746FF0310972423144',
+      wikidata_geo: 'A2E90A7CD165EE60D3A5F07E6DA3F1D7',
+      openstreetmap_geo: '165221FEA25287AAB2829CD56F518FF3',
+      gnd_people: '500F8BA7E3620E3642EEB481486C8362',
+      gnd_terms: '53414C219D900B5D22B31F3EFE7DF287',
+      gnd_entities: '14748D3CE824796B8A24F66DF22EA231',
     }
 
     uri = URI.parse("https://c105-230.cloud.gwdg.de/transformation_nxt/call/#{api_keys[api] || 'C1B5C042736BAB4F52CBB9B911573158'}")
