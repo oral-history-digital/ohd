@@ -70,7 +70,7 @@ OaiRepository.setup do |config|
          model: Collection,
          description: 'Sammlungen'
        }
-    ] + Project.shared.map do |project|
+    ] + (Rails.env.test? ? [] : Project.shared.map do |project|
       {
         spec: "archive:#{project.shortname}",
         name: project.name(:de),
@@ -84,7 +84,7 @@ OaiRepository.setup do |config|
         model: Collection,
         description: collection.oai_abstract_description(:de)
       }
-    end
+    end)
 
     # By default, an OAI repository must emit its records in OAI_DC (Dublin Core)
     # format. If you want to provide other output formats for your repository
