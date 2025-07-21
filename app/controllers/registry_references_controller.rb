@@ -8,8 +8,7 @@ class RegistryReferencesController < ApplicationController
     authorize RegistryReference
     @registry_reference = RegistryReference.create(registry_reference_params)
 
-    interview = Interview.find(registry_reference_params[:interview_id])
-    Sunspot.index! interview
+    ReindexJob.perform_later(archive_id: @registry_reference.archive_id)
 
     respond @registry_reference
   end
@@ -19,7 +18,7 @@ class RegistryReferencesController < ApplicationController
     authorize @registry_reference
     @registry_reference.update registry_reference_params
 
-    Sunspot.index! @registry_reference.interview
+    ReindexJob.perform_later(archive_id: @registry_reference.archive_id)
 
     respond @registry_reference
   end
@@ -32,7 +31,7 @@ class RegistryReferencesController < ApplicationController
 
     @registry_reference.destroy
     ref_object.touch
-    Sunspot.index! interview
+    ReindexJob.perform_later(archive_id: @registry_reference.archive_id)
 
     respond_to do |format|
       format.html do
@@ -218,7 +217,15 @@ class RegistryReferencesController < ApplicationController
   end
 
   def registry_reference_params
-    params.require(:registry_reference).permit(:registry_reference_type_id, :ref_object_id, :ref_object_type, :registry_entry_id, :ref_position, :workflow_state, :interview_id)
+    params.require(:registry_reference).permit(
+      :registry_reference_type_id,
+      :ref_object_id,
+      :ref_object_type,
+      :registry_entry_id,
+      :ref_position,
+      :workflow_state,
+      :interview_id
+    )
   end
 
 end

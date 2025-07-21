@@ -3,7 +3,7 @@
 class BaseRegistryReference < ApplicationRecord
   self.abstract_class = true
 
-  belongs_to :interview
+  belongs_to :interview, touch: true
 
   belongs_to :ref_object, polymorphic: true, counter_cache: :registry_references_count, touch: true
 
