@@ -19,3 +19,5 @@
 dontstems
 zwhacky
 
+# Actual German terms, also see stemdict.txt for morphological forms.
+lager
