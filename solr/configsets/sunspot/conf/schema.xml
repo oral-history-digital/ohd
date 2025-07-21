@@ -70,6 +70,8 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+        <filter class="solr.StemmerOverrideFilterFactory" dictionary="stemdict.txt"/>
         <filter class="solr.GermanLightStemFilterFactory"/>
       </analyzer>
     </fieldType>
