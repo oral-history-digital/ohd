@@ -1,7 +1,6 @@
 import dotProp from 'dot-prop-immutable';
-
+import { NAME } from '../constants';
 import * as selectors from './selectors';
-import { NAME } from './constants';
 
 const state = {
     [NAME]: {
@@ -44,7 +43,9 @@ test('getIsPlaying retrieves wether medium is playing', () => {
 });
 
 test('getTimeChangeRequest gets requested time change', () => {
-    expect(selectors.getTimeChangeRequest(state)).toEqual(state[NAME].timeChangeRequest);
+    expect(selectors.getTimeChangeRequest(state)).toEqual(
+        state[NAME].timeChangeRequest
+    );
 });
 
 describe('getTimeChangeRequestAvailable', () => {
