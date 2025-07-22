@@ -21,13 +21,13 @@ export default function DownloadLinks({
                         <LinksForTapes
                             archiveId={archiveId}
                             numTapes={numTapes}
-                            locale={interview.alpha3}
+                            locale={locale}
                             format="csv"
                         />
                         <LinksForTapes
                             archiveId={archiveId}
                             numTapes={numTapes}
-                            locale={interview.alpha3}
+                            locale={locale}
                             format="vtt"
                         />
                     </>
