@@ -49,20 +49,25 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
       tape.segments.each do |segment|
 
         ordinary_text_parts, comments = segment.tokenized_text(interview.alpha3)
+        s_start = "T#{tape.number}_S#{segment.id}"
         s_end = segment.next.nil? ? "T_END" : "T#{segment.next.tape.number}_S#{segment.next.id}" 
 
         xml.annotationBlock "xml:id": "ab#{segment.id}",
           who: "p#{segment.speaker_id || segment.speaker}",
-          start: "T#{tape.number}_S#{segment.id}",
+          start: s_start,
           end: s_end do
 
           xml.u "xml:id": "u#{segment.id}" do
-            xml.seg type: "contribution", "xml:id": "s#{segment.id}" do
+            xml.seg type: "contribution", "xml:id": "s#{segment.id}", "xml:lang": interview.alpha3 do
+              xml.anchor "synch": s_start
+
               ordinary_text_parts.each do |part|
                 xml.tag!("tei:#{part[:type]}", "xmlns:tei":"http://www.tei-c.org/ns/1.0", "xml:id": "s#{segment.id}_#{part[:index]}") do
                   xml.text! part[:content]
                 end
               end
+
+              xml.anchor "synch": s_end
             end
           end
 
