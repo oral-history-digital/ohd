@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import { getEditView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { useIsEditor } from 'modules/archive';
 import { getBanner } from './selectors';
 
 export default function Banner({
@@ -11,9 +11,9 @@ export default function Banner({
 }) {
     const { locale } = useI18n();
     const banner = useSelector(getBanner);
-    const editView = useSelector(getEditView);
+    const isEditor = useIsEditor();
 
-    if (banner.edit_mode_only && !editView) {
+    if (banner.edit_mode_only && !isEditor) {
         return null;
     }
 
