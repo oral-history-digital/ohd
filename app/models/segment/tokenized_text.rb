@@ -18,6 +18,11 @@ module Segment::TokenizedText
         case part
         when /<p\d+>/
           ordinary_text << {index: index, type: 'pause', attributes: {rend: part, dur: "PT#{part[/(\d+)/,1]}.0S"}}
+        when "[---]"
+          ordinary_text << {index: index, type: 'pause', attributes: {type: 'long'}}
+        when /<v\((.+?)\)>/
+          #content = Builder::XmlMarkup.new.desc(part[/<v\((.+?)\)>/,1])
+          ordinary_text << {content: [:desc, part[/<v\((.+?)\)>/,1]], index: index, type: 'vocal', attributes: {rend: part}}
         when /<.*>/
           comments << {content: part, index: index, type: part[/<(\w+).*/,1]}
         when /[\{|\[]{1,2}[^\{\[\]\}]*[\}|\]]{1,2}/
