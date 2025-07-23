@@ -62,8 +62,8 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
               xml.anchor "synch": s_start
 
               ordinary_text_parts.each do |part|
-                xml.tag!("tei:#{part[:type]}", "xmlns:tei":"http://www.tei-c.org/ns/1.0", "xml:id": "s#{segment.id}_#{part[:index]}") do
-                  xml.text! part[:content]
+                xml.tag!(part[:type], (part[:attributes] || {}).merge("xml:id": "s#{segment.id}_#{part[:index]}")) do
+                  part[:content] && xml.text!(part[:content])
                 end
               end
 
