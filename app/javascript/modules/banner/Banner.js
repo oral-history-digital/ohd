@@ -2,14 +2,20 @@ import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import { getBanner } from './selectors';
+import { getEditView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { getBanner } from './selectors';
 
 export default function Banner({
     onClose,
 }) {
     const { locale } = useI18n();
     const banner = useSelector(getBanner);
+    const editView = useSelector(getEditView);
+
+    if (banner.edit_mode_only && !editView) {
+        return null;
+    }
 
     const bannerMessage = locale == 'de' ? banner.message_de : banner.message_en;
 
