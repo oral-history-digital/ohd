@@ -62,8 +62,19 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
               xml.anchor "synch": s_start
 
               ordinary_text_parts.each do |part|
-                xml.tag!(part[:type], (part[:attributes] || {}).merge("xml:id": "s#{segment.id}_#{part[:index]}")) do
-                  part[:content] && xml.text!(part[:content])
+                type = part[:type]
+                attributes = (part[:attributes] || {}).merge("xml:id": "s#{segment.id}_#{part[:index]}")
+
+                if part[:content]&.is_a?(Array)
+                  xml.tag!(type, attributes) do
+                    xml.tag!(part[:content].first, part[:content].last)
+                  end
+                elsif part[:content]
+                  xml.tag!(type, attributes) do
+                    xml.text!(part[:content])
+                  end
+                else
+                  xml.tag!(type, attributes)
                 end
               end
 
@@ -71,13 +82,13 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
             end
           end
 
-          comments.each do |comment|
-            xml.spanGr type: "comment" do
-              xml.span from: "s#{segment.id}_#{comment[:index]-1}", to: "s#{segment.id}_#{comment[:index]+1}", type: comment[:type] do
-                xml.text! comment[:content]
-              end
-            end
-          end
+          #comments.each do |comment|
+            #xml.spanGr type: "comment" do
+              #xml.span from: "s#{segment.id}_#{comment[:index]-1}", to: "s#{segment.id}_#{comment[:index]+1}", type: comment[:type] do
+                #xml.text! comment[:content]
+              #end
+            #end
+          #end
 
           xml.spanGr type: "original", "xml:id": "so#{segment.id}" do
             xml.text! segment.text(interview.alpha3)
