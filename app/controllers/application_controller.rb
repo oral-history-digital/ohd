@@ -214,6 +214,7 @@ class ApplicationController < ActionController::Base
       search: initial_search_redux_state,
       banner: {
         active: banner_present?,
+        edit_mode_only: banner_present? ? current_banner.edit_mode_only : false,
         message_en: banner_present? ? current_banner.message_en : "",
         message_de: banner_present? ? current_banner.message_de : "",
       },
