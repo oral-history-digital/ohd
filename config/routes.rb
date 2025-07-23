@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     resources :contributions, only: [:create, :update, :destroy]
     resources :biographical_entries, only: [:create, :show, :update]
     resources :photos, only: [:create, :update, :destroy]
+    resources :pdfs, only: [:create, :update, :destroy]
     resources :logos, only: [:create, :update, :destroy]
     resources :sponsor_logos, only: [:create, :update, :destroy]
     get "media_streams/:archive_id/:tape/:resolution", to: "media_streams#show"

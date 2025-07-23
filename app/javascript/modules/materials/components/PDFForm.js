@@ -20,29 +20,13 @@ export default function PDFForm({
     function elements() {
         let elements = [
             {
-                attribute: 'public_id',
-            },
-            {
-                attribute: 'caption',
+                attribute: 'title',
                 multiLocale: true,
             },
             {
-                attribute: 'place',
-                multiLocale: true,
+                attribute: 'language',
             },
-            {
-                attribute: 'date',
-                multiLocale: true,
-            },
-            {
-                attribute: 'photographer',
-                multiLocale: true,
-            },
-            {
-                attribute: 'license',
-                multiLocale: true,
-            },
-        ]
+        ];
 
         if (pdf?.id) {
             elements.push({
