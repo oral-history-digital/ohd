@@ -1,51 +1,53 @@
-class PhotosController < ApplicationController
+class PdfsController < ApplicationController
   require 'open-uri'
 
   def create
-    authorize Photo
-    data = params[:photo].delete(:data)
-    @photo = Photo.create(photo_params)
-    @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}", metadata: {title: photo_params[:caption]})
-    @photo.write_iptc_metadata
-    @photo.recalculate_checksum # integrity verification fails since upgrading to rails 7
+    authorize Pdf
+    data = params[:pdf].delete(:data)
+
+    adapted_params = pdf_params
+    adapted_params[:attachable_id] = adapted_params.delete(:interview_id)
+    adapted_params[:attachable_type] = "Interview"
+
+    @pdf = Pdf.create(adapted_params)
+    @pdf.file.attach(io: data)
 
     respond_to do |format|
       format.json do
         render json: {
           data_type: 'interviews',
-          id: @photo.interview.archive_id,
-          nested_data_type: 'photos',
-          nested_id: @photo.id,
-          data: ::PhotoSerializer.new(@photo).as_json
+          id: @pdf.interview.archive_id,
+          nested_data_type: 'pdfs',
+          nested_id: @pdf.id,
+          data: ::PdfSerializer.new(@pdf).as_json
         }
       end
     end
   end
 
   def update
-    @photo = Photo.find(params[:id])
-    authorize @photo
-    @photo.update(photo_params)
-    @photo.write_iptc_metadata
+    @pdf = Pdf.find(params[:id])
+    authorize @pdf
+    @pdf.update(pdf_params)
 
     respond_to do |format|
       format.json do
         render json: {
           data_type: 'interviews',
-          id: @photo.interview.archive_id,
-          nested_data_type: 'photos',
-          nested_id: @photo.id,
-          data: ::PhotoSerializer.new(@photo).as_json
+          id: @pdf.interview.archive_id,
+          nested_data_type: 'pdfs',
+          nested_id: @pdf.id,
+          data: ::PdfSerializer.new(@pdf).as_json
         }
       end
     end
   end
 
   def destroy
-    @photo = Photo.find(params[:id])
-    authorize @photo
-    @photo.destroy
-    clear_cache @photo.interview
+    @pdf = Pdf.find(params[:id])
+    authorize @pdf
+    @pdf.destroy
+    clear_cache @pdf.interview
 
     respond_to do |format|
       format.html do
@@ -57,13 +59,11 @@ class PhotosController < ApplicationController
 
   private
 
-  def photo_params
-    params.require(:photo).permit(
+  def pdf_params
+    params.require(:pdf).permit(
       :interview_id,
-      :public_id,
       :workflow_state,
-      translations_attributes: [:locale, :id, :caption, :place, :date, :photographer, :license]
+      translations_attributes: [:locale, :id, :title]
     )
   end
-
 end

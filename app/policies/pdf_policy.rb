@@ -1,0 +1,2 @@
+class PdfPolicy < ApplicationPolicy
+end

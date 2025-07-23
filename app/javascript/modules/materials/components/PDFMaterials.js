@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
@@ -16,7 +15,9 @@ export default function PDFMaterials() {
 
     return (
         <div>
-            PDF Materials
+            <div>
+                PDF Materials
+            </div>
 
             <AuthorizedContent object={{ type: 'PDF', interview_id: interview.id }} action='create'>
                 <Modal
@@ -27,6 +28,7 @@ export default function PDFMaterials() {
                         closeModal => (
                             <PDFForm
                                 interview={interview}
+                                withUpload
                                 onSubmit={closeModal}
                                 onCancel={closeModal}
                             />
