@@ -1,7 +1,15 @@
 import { sortedSegmentsWithActiveIndexForTape } from './sortedSegmentsWithActiveIndexForTape';
 
-// props needs to contain: interview, tape
-
+/**
+ * Returns the active segment, a sorted array of all segments, and the index of the active segment for a given time and tape.
+ *
+ * Iterates over all tapes in the interview, concatenates sorted segments, and determines the active segment and its index
+ * for the specified tape and time using sortedSegmentsWithActiveIndexForTape.
+ *
+ * @param {number} time - The time to find the active segment for.
+ * @param {Object} props - The props object containing interview, tape, and related metadata.
+ * @returns {[Object|null, Array, number]} An array containing the active segment (or null), all sorted segments, and the active index.
+ */
 export function sortedSegmentsWithActiveIndex(time, props) {
     let sortedSegments = [];
     let index = 0;
