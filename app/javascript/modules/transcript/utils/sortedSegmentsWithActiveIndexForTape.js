@@ -1,12 +1,20 @@
 import { sortedSegmentsForTape } from './sortedSegmentsForTape';
 
+/**
+ * Returns the active segment, sorted segments array, and active index for a given time and tape.
+ *
+ * Uses a heuristic to estimate the active segment index based on time, then adjusts to find the segment
+ * whose time is closest to the input time. If no segments exist, returns null for the active segment.
+ *
+ * @param {number} time - The time to find the active segment for.
+ * @param {Object} props - The props object containing interview, tape, and related metadata.
+ * @returns {[Object|null, Array, number]} An array containing the active segment (or null), all sorted segments, and the active index.
+ */
 export function sortedSegmentsWithActiveIndexForTape(time, props) {
     let found = false;
-    //let sortedSegments = Object.values(segments(props)).sort(function(a, b) {return a.time - b.time})
     let sorted = sortedSegmentsForTape(props, props.tape);
-    //
-    // aproximation based on the asumption that the mean or median segment duration is 7s
-    //
+
+    // Aproximation based on the asumption that the mean or median segment duration is 7s
     let index = Math.round(time / 7);
     let firstSegment = sorted[0];
 

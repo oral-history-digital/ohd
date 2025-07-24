@@ -1,3 +1,14 @@
+/**
+ * Returns contributor information (initials and full name) for each person referenced in contributions.
+ *
+ * Iterates over the contributions, looks up each contributor in the people object,
+ * and builds an object mapping contributor IDs to their initials and full name.
+ * If a referenced person does not exist in people, logs a warning.
+ *
+ * @param {Object} contributions - An object mapping contribution IDs to contribution objects. Each contribution should have a person_id and optionally a speaker_designation.
+ * @param {Object} people - An object mapping person IDs to person objects. Each person should have id, initials, and display_name properties.
+ * @returns {Object} An object mapping contributor IDs to their information: { initials, fullname }.
+ */
 export function getContributorInformation(contributions, people) {
     if (!people) {
         return {};
