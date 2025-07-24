@@ -1,16 +1,8 @@
 import PropTypes from 'prop-types';
 
-export default function Initials({
-    initials = '?',
-    className,
-    title,
-}) {
+export default function Initials({ initials = '?', className, title }) {
     return (
-        <span
-            className={className}
-            title={title}
-            aria-label={title}
-        >
+        <span className={className} title={title} aria-label={title}>
             {initials}
         </span>
     );
