@@ -94,6 +94,7 @@ function Segment({
                         'is-active': active,
                     })}
                     lang={contentLocale}
+                    dir="auto"
                     onClick={() => {
                         transcriptCoupled &&
                             sendTimeChangeRequest(data.tape_nbr, data.time);
