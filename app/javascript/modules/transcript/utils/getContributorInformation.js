@@ -1,4 +1,4 @@
-export default function getContributorInformation(contributions, people) {
+export function getContributorInformation(contributions, people) {
     if (!people) {
         return {};
     }
@@ -6,11 +6,13 @@ export default function getContributorInformation(contributions, people) {
     const contributionArray = Object.values(contributions);
     const contributorInfo = {};
 
-    contributionArray.forEach(contribution => {
+    contributionArray.forEach((contribution) => {
         const contributor = people[contribution.person_id];
 
         if (typeof contributor === 'undefined') {
-            const message = `The below contribution references person ${contribution.person_id} which does not exist: ${JSON.stringify(contribution)}`;
+            const message = `The below contribution references person ${
+                contribution.person_id
+            } which does not exist: ${JSON.stringify(contribution)}`;
             console.warn(message);
             return;
             // TODO: Clean up MOG database and throw error again:
@@ -18,12 +20,15 @@ export default function getContributorInformation(contributions, people) {
         }
 
         if (contributor.id in contributorInfo) {
-          return;
+            return;
         }
 
         contributorInfo[contributor.id] = {
-            initials: contributor.initials || contribution.speaker_designation || undefined,
-            fullname: contributor.display_name
+            initials:
+                contributor.initials ||
+                contribution.speaker_designation ||
+                undefined,
+            fullname: contributor.display_name,
         };
     });
 

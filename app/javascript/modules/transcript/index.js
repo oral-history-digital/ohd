@@ -1,2 +1,3 @@
 export { default as TranscriptContainer } from './TranscriptContainer';
-export { default as sortedSegmentsWithActiveIndex } from './sortedSegmentsWithActiveIndex';
+export * from './hooks';
+export * from './utils';
