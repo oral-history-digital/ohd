@@ -1,1 +1,1 @@
-export { default as PDFMaterials } from './components/PDFMaterials';
+export { default as PDFMaterialList } from './components/PDFMaterialList';

@@ -5,6 +5,7 @@ class PdfSerializer < ApplicationSerializer
              :titles,
              :language,
              :attachable_id,
+             :attachable_type,
              :workflow_state
 
   def titles

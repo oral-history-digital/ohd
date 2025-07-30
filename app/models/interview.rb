@@ -341,7 +341,7 @@ class Interview < ApplicationRecord
   end
 
   def self.non_public_method_names
-    %w(title short_title description contributions photos registry_references transcript_coupled)
+    %w(title short_title description contributions photos pdfs registry_references transcript_coupled)
   end
 
   def tasks_user_ids

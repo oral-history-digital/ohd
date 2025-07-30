@@ -21,7 +21,7 @@ import { SelectedRegistryReferencesContainer } from 'modules/registry-references
 import { Spinner } from 'modules/spinners';
 import { InterviewMap } from 'modules/interview-map';
 import { GalleryContainer } from 'modules/gallery';
-import { PDFMaterials } from 'modules/materials';
+import { PDFMaterialList } from 'modules/materials';
 import { usePathBase } from 'modules/routes';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -178,7 +178,7 @@ export default function InterviewTabPanel({
                         {showPDFSection && (
                             <AuthorizedContent object={interview} action="show" showIfPublic>
                                 <SubTab title={t('materials')}>
-                                    <PDFMaterials/>
+                                    <PDFMaterialList/>
                                 </SubTab>
                             </AuthorizedContent>
                         )}
