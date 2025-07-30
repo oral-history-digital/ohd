@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
+import PDFAdminButtons from './PDFAdminButtons';
 
 export default function PDFMaterial({ pdf }) {
     const { t, locale } = useI18n();
@@ -20,6 +20,7 @@ export default function PDFMaterial({ pdf }) {
                     </a>
                 </p>
             </div>
+            <PDFAdminButtons pdf={pdf} />
         </li>
     );
 }
