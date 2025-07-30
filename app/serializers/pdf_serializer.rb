@@ -1,10 +1,11 @@
 class PdfSerializer < ApplicationSerializer
   attributes :id,
-             :filename
-             :path
+             :filename,
+             :path,
              :titles,
+             :language,
              :attachable_id,
-             :workflow_state,
+             :workflow_state
 
   def titles
     I18n.available_locales.inject({}) do |mem, locale|
@@ -15,10 +16,10 @@ class PdfSerializer < ApplicationSerializer
   end
 
   def filename
-    file.filename.to_s
+    object.file.filename.to_s
   end
 
   def path
-    Rails.application.routes.url_helpers.rails_blob_path(p.file, only_path: true)
+    Rails.application.routes.url_helpers.rails_blob_path(object.file, only_path: true)
   end
 end

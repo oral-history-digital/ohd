@@ -3,20 +3,23 @@ class PdfsController < ApplicationController
 
   def create
     authorize Pdf
+
     data = params[:pdf].delete(:data)
+
+    # if data.content_type != "application/pdf"
 
     adapted_params = pdf_params
     adapted_params[:attachable_id] = adapted_params.delete(:interview_id)
     adapted_params[:attachable_type] = "Interview"
 
     @pdf = Pdf.create(adapted_params)
-    @pdf.file.attach(io: data)
+    @pdf.file.attach(io: data, filename: data.original_filename)
 
     respond_to do |format|
       format.json do
         render json: {
           data_type: 'interviews',
-          id: @pdf.interview.archive_id,
+          id: @pdf.attachable.archive_id,
           nested_data_type: 'pdfs',
           nested_id: @pdf.id,
           data: ::PdfSerializer.new(@pdf).as_json
@@ -62,6 +65,7 @@ class PdfsController < ApplicationController
   def pdf_params
     params.require(:pdf).permit(
       :interview_id,
+      :language,
       :workflow_state,
       translations_attributes: [:locale, :id, :title]
     )
