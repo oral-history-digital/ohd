@@ -65,9 +65,8 @@ class PdfsController < ApplicationController
   def pdf_params
     params.require(:pdf).permit(
       :interview_id,
-      :language,
       :workflow_state,
-      translations_attributes: [:locale, :id, :title]
+      translations_attributes: [:locale, :id, :title, :description]
     )
   end
 end

@@ -2,19 +2,11 @@ class PdfSerializer < ApplicationSerializer
   attributes :id,
              :filename,
              :path,
-             :titles,
-             :language,
+             :title,
+             :description,
              :attachable_id,
              :attachable_type,
              :workflow_state
-
-  def titles
-    I18n.available_locales.inject({}) do |mem, locale|
-      t = object.translations.where(locale: locale).first
-      mem[locale] = ActionView::Base.full_sanitizer.sanitize(t && t.title)
-      mem
-    end
-  end
 
   def filename
     object.file.filename.to_s

@@ -531,6 +531,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+    t.text "description"
     t.index ["locale"], name: "index_pdf_translations_on_locale"
     t.index ["pdf_id"], name: "index_pdf_translations_on_pdf_id"
   end
@@ -538,7 +539,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_124407) do
   create_table "pdfs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "attachable_type"
     t.bigint "attachable_id"
-    t.string "language", default: "", null: false
     t.string "workflow_state", default: "unshared", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -24,8 +24,9 @@ export default function PDFForm({
                 multiLocale: true,
             },
             {
-                attribute: 'language',
-            },
+                attribute: 'description',
+                multiLocale: true,
+            }
         ];
 
         if (pdf?.id) {
