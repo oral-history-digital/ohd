@@ -1,13 +1,23 @@
 .Card {
-  border: 1px solid gray;
-  border-radius: 3px;
+  //border: 1px solid gray;
+  //border-radius: 3px;
+  line-height: $base-unit;
+}
+
+.Card:nth-of-type(even) {
+  background-color: lightgray;
 }
 
 .Card-title {
   font-size: 1rem;
   font-weight: bold;
+  line-height: $base-unit !important;
 }
 
 .Card-body {
   font-size: 0.875rem;
+}
+
+.Card-body p {
+  line-height: $base-unit !important;
 }

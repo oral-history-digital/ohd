@@ -13,7 +13,9 @@ export default function PDFMaterial({ pdf }) {
                 {pdf.titles[locale] || pdf.titles["de"]}
             </h4>
             <div className="Card-body">
-                <p className="u-mb-none">{pdf.language}</p>
+                <p className="u-mb-none">
+                    {t(pdf.language)}
+                </p>
                 <p className="u-mb-none">
                     <a href={pdf.path} target="_blank" rel="noreferrer">
                         {pdf.filename}

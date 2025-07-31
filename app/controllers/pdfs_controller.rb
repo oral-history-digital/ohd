@@ -37,7 +37,7 @@ class PdfsController < ApplicationController
       format.json do
         render json: {
           data_type: 'interviews',
-          id: @pdf.interview.archive_id,
+          id: @pdf.attachable.archive_id,
           nested_data_type: 'pdfs',
           nested_id: @pdf.id,
           data: ::PdfSerializer.new(@pdf).as_json
@@ -50,7 +50,7 @@ class PdfsController < ApplicationController
     @pdf = Pdf.find(params[:id])
     authorize @pdf
     @pdf.destroy
-    clear_cache @pdf.interview
+    clear_cache @pdf.attachable
 
     respond_to do |format|
       format.html do

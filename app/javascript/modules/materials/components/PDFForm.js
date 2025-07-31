@@ -32,7 +32,7 @@ export default function PDFForm({
             elements.push({
                 elementType: 'select',
                 attribute: 'workflow_state',
-                values: Object.values(pdf.workflow_states),
+                values: ['unshared', 'public'],
                 value: pdf.workflow_state || 'unshared',
                 optionsScope: 'workflow_states',
             })
