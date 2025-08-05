@@ -13,8 +13,8 @@ class Tei
     combined_index = start_index
 
     unless original_text.blank?
-      parts = original_text.split(/([\{|\[|<]{1,2}[^\{\[<>\]\}]*[\}|\]|>]{1,2})/).map do |part|
-        if part =~ /[\{|\[|<]{1,2}[^\{\[<>\]\}]*[\}|\]|>]{1,2}/
+      parts = parse_nested_tags(original_text).map do |part|
+        if is_tag?(part)
           part
         else
           part.split(/(\?|\.|!|,|:)/).map do |subpart|
@@ -44,23 +44,64 @@ class Tei
             type: 'vocal',
             attributes: {rend: part}
           }
-        when /<g\s*\(.*\)>/
+        when /^<s\s*\(.+\) .+>$/
+          # Handle speech tags with content (like <s(gedehnt) Na ja,>)
+          speech_desc, content = parse_speech_tag_with_content(part)
+          if speech_desc && content
+            part_ordinary_text, part_comments, index_carryover = Tei.new(content, combined_index).tokenized_text
+            comments << {
+              content: speech_desc,
+              index_from: combined_index,
+              index_to: combined_index + index_carryover - 1,
+              type: 'speech'
+            }
+            comments.concat(part_comments)
+            ordinary_text.concat(part_ordinary_text)
+          else
+            # Fallback to treating as generic tag if parsing fails
+            comments << {
+              content: part,
+              index_from: combined_index,
+              index_to: combined_index + 1,
+              type: part[/<(\w+).*/,1] || 'unknown'
+            }
+          end
+        when /^<s\s*\(.*\)>$/
+          # Handle speech tags without content (like <s(gedehnt)>)
+          ordinary_text << {
+            content: [:desc, part[/<s\s*\((.*)\)>/,1]],
+            index: combined_index,
+            type: 'speech'
+          }
+        when /^<g\s*\(.+\) .+>$/
+          # Handle kinesic tags with content (potentially nested) - must come before simpler <g(...)> pattern
+          gesture_desc, content = parse_kinesic_tag_with_content(part)
+          if gesture_desc && content
+            part_ordinary_text, part_comments, index_carryover = Tei.new(content, combined_index).tokenized_text
+            comments << {
+              content: gesture_desc,
+              index_from: combined_index,
+              index_to: combined_index + index_carryover - 1,
+              type: 'kinestic'
+            }
+            comments.concat(part_comments)
+            ordinary_text.concat(part_ordinary_text)
+          else
+            # Fallback to treating as generic tag if parsing fails
+            comments << {
+              content: part,
+              index_from: combined_index,
+              index_to: combined_index + 1,
+              type: part[/<(\w+).*/,1] || 'unknown'
+            }
+          end
+        when /^<g\s*\(.*\)>$/
           ordinary_text << {
             content: [:desc, part[/<g\s*\((.*)\)>/,1]],
             index: combined_index,
             type: 'kinesic'
           }
-        when /<g\s*\(.*\) .*>/
-          part_ordinary_text, part_comments, index_carryover = Tei.new(part[/<g\s*\((.*)\) (.*)>/,2], combined_index).tokenized_text
-          comments << {
-            content: part[/<g\s*\((.*)\) (.*)>/,1],
-            index_from: combined_index,
-            index_to: combined_index + index_carryover - 1,
-            type: 'kinestic'
-          }
-          comments.concat(part_comments)
-          ordinary_text.concat(part_ordinary_text)
-        when /<.*>/
+        when /^<.*>$/
           comments << {
             content: part,
             index_from: combined_index,
@@ -92,5 +133,81 @@ class Tei
     end
 
     [ordinary_text, comments, index_carryover = parts.size]
+  end
+
+  private
+
+  # Parse nested tags correctly by tracking bracket depth
+  def parse_nested_tags(text)
+    parts = []
+    current_part = ""
+    bracket_depth = 0
+    i = 0
+    
+    while i < text.length
+      char = text[i]
+      
+      case char
+      when '<', '{', '['
+        if bracket_depth == 0 && !current_part.empty?
+          # Save the previous non-tag part
+          parts << current_part
+          current_part = ""
+        end
+        current_part += char
+        bracket_depth += 1
+      when '>', '}', ']'
+        current_part += char
+        bracket_depth -= 1
+        
+        if bracket_depth == 0
+          # We've closed the outermost tag
+          parts << current_part
+          current_part = ""
+        end
+      else
+        current_part += char
+      end
+      
+      i += 1
+    end
+    
+    # Add any remaining part
+    parts << current_part unless current_part.empty?
+    
+    parts.reject(&:empty?)
+  end
+
+  # Check if a part is a tag (starts with <, {, or [)
+  def is_tag?(part)
+    part =~ /^[\{|\[|<]/
+  end
+
+  # Parse kinesic tags with content, handling nested structures
+  # Input: "<g(description) content with <nested> tags>"
+  # Output: ["description", "content with <nested> tags"]
+  def parse_kinesic_tag_with_content(tag)
+    # Match the opening <g( part
+    if tag =~ /^<g\s*\(([^)]+)\)\s+(.+)>$/
+      description = $1
+      content = $2
+      return [description, content]
+    end
+    
+    nil
+  end
+
+  # Parse speech tags with content, handling nested structures
+  # Input: "<s(description) content>"
+  # Output: ["description", "content"]
+  def parse_speech_tag_with_content(tag)
+    # Match the opening <s( part
+    if tag =~ /^<s\s*\(([^)]+)\)\s+(.+)>$/
+      description = $1
+      content = $2
+      return [description, content]
+    end
+    
+    nil
   end
 end
