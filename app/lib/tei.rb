@@ -127,6 +127,11 @@ class Tei
             index: combined_index,
             type: 'kinesic'
           }
+        when /^<sim .+>$/
+          # Handle simultaneity tags with content (like <sim Nichts, nichts,>)
+          part_ordinary_text, part_index_carryover = parse_simultaneity_tag(part, combined_index)
+          ordinary_text.concat(part_ordinary_text)
+          index_carryover = part_index_carryover
         when /^<.*>$/
           comments << {
             content: part,
@@ -251,5 +256,34 @@ class Tei
     end
     
     nil
+  end
+
+  # Parse simultaneity tags, handling nested structures
+  # Input: "<sim content>"
+  # Output: [ordinary_text_parts, index_carryover]
+  def parse_simultaneity_tag(tag, start_index)
+    ordinary_text_parts = [{
+        index: start_index,
+        type: :anchor,
+        attributes: {type: 'SIM-START'}
+    }]
+    index_carryover = 1
+
+    # Extract content inside <sim ...>
+    if tag =~ /^<sim\s+(.+)>$/
+      content = $1.strip
+      part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index + 1).tokenized_text
+      ordinary_text_parts.concat(part_ordinary_text)
+      #comments.concat(part_comments)
+      index_carryover = part_index_carryover + 1 # +1 for the <sim> tag itself
+    end
+
+    ordinary_text_parts << {
+      index: index_carryover,
+      type: :anchor,
+      attributes: {type: 'SIM-END'}
+    }
+    
+    [ordinary_text_parts, index_carryover + 1]
   end
 end
