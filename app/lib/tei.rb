@@ -22,10 +22,11 @@ class Tei
           end
         end
       end.flatten
+      
       parts.each_with_index do |part|
         index_carryover = 1
         case part
-        when /<p\d+>/
+        when /^<p\d+>$/
           ordinary_text << {
             index: combined_index,
             type: 'pause',
@@ -37,7 +38,30 @@ class Tei
             type: 'pause',
             attributes: {type: 'long'}
           }
-        when /<v\((.*)\)>/
+        when /^<v\s*\(.+\) .+>$/
+          # Handle vocal tags with content (like <v(inner) some text>)
+          vocal_desc, content = parse_vocal_tag_with_content(part)
+          if vocal_desc && content
+            part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, combined_index).tokenized_text
+            comments << {
+              content: vocal_desc,
+              index_from: combined_index,
+              index_to: combined_index + part_index_carryover - 1,
+              type: 'vocal'
+            }
+            comments.concat(part_comments)
+            ordinary_text.concat(part_ordinary_text)
+            index_carryover = part_index_carryover
+          else
+            # Fallback to treating as simple vocal tag
+            ordinary_text << {
+              content: [:desc, part[/<v\s*\((.*)\)>/,1]],
+              index: combined_index,
+              type: 'vocal',
+              attributes: {rend: part}
+            }
+          end
+        when /^<v\((.*)\)>$/
           ordinary_text << {
             content: [:desc, part[/<v\((.*)\)>/,1]],
             index: combined_index,
@@ -48,15 +72,16 @@ class Tei
           # Handle speech tags with content (like <s(gedehnt) Na ja,>)
           speech_desc, content = parse_speech_tag_with_content(part)
           if speech_desc && content
-            part_ordinary_text, part_comments, index_carryover = Tei.new(content, combined_index).tokenized_text
+            part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, combined_index).tokenized_text
             comments << {
               content: speech_desc,
               index_from: combined_index,
-              index_to: combined_index + index_carryover - 1,
+              index_to: combined_index + part_index_carryover - 1,
               type: 'speech'
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
+            index_carryover = part_index_carryover
           else
             # Fallback to treating as generic tag if parsing fails
             comments << {
@@ -77,15 +102,16 @@ class Tei
           # Handle kinesic tags with content (potentially nested) - must come before simpler <g(...)> pattern
           gesture_desc, content = parse_kinesic_tag_with_content(part)
           if gesture_desc && content
-            part_ordinary_text, part_comments, index_carryover = Tei.new(content, combined_index).tokenized_text
+            part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, combined_index).tokenized_text
             comments << {
               content: gesture_desc,
               index_from: combined_index,
-              index_to: combined_index + index_carryover - 1,
+              index_to: combined_index + part_index_carryover - 1,
               type: 'kinestic'
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
+            index_carryover = part_index_carryover
           else
             # Fallback to treating as generic tag if parsing fails
             comments << {
@@ -108,14 +134,14 @@ class Tei
             index_to: combined_index + 1,
             type: part[/<(\w+).*/,1]
           }
-        when /[\{|\[]{1,2}[^\{\[\]\}]*[\}|\]]{1,2}/
+        when /^[\{|\[]{1,2}[^\{\[\]\}]*[\}|\]]{1,2}$/
           comments << {
             content: part,
             index_from: combined_index,
             index_to: combined_index + 1,
             type: "za"
           }
-        when /(\?|\.|!|,|:)/
+        when /^(\?|\.|!|,|:)$/
           ordinary_text << {
             content: part,
             index: combined_index,
@@ -130,9 +156,11 @@ class Tei
         end
         combined_index += index_carryover
       end
+      
+      [ordinary_text, comments, parts.size]
+    else
+      [ordinary_text, comments, 0]
     end
-
-    [ordinary_text, comments, index_carryover = parts.size]
   end
 
   private
@@ -203,6 +231,20 @@ class Tei
   def parse_speech_tag_with_content(tag)
     # Match the opening <s( part
     if tag =~ /^<s\s*\(([^)]+)\)\s+(.+)>$/
+      description = $1
+      content = $2
+      return [description, content]
+    end
+    
+    nil
+  end
+
+  # Parse vocal tags with content, handling nested structures
+  # Input: "<v(description) content>"
+  # Output: ["description", "content"]
+  def parse_vocal_tag_with_content(tag)
+    # Match the opening <v( part
+    if tag =~ /^<v\s*\(([^)]+)\)\s+(.+)>$/
       description = $1
       content = $2
       return [description, content]
