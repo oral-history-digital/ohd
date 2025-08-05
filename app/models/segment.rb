@@ -2,7 +2,6 @@ require 'globalize'
 
 class Segment < ApplicationRecord
   include EncipheredText
-  include TokenizedText
 
   belongs_to :interview, touch: true
   has_one :project, through: :interview
