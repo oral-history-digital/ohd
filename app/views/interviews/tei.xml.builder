@@ -48,7 +48,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
     interview.tapes.each do |tape|
       tape.segments.each do |segment|
 
-        ordinary_text_parts, comments = segment.tokenized_text(interview.alpha3)
+        ordinary_text_parts, comments = Tei.new(segment.text(interview.alpha3)).tokenized_text
         s_start = "T#{tape.number}_S#{segment.id}"
         s_end = segment.next.nil? ? "T_END" : "T#{segment.next.tape.number}_S#{segment.next.id}" 
 
@@ -82,13 +82,13 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
             end
           end
 
-          #comments.each do |comment|
-            #xml.spanGr type: "comment" do
-              #xml.span from: "s#{segment.id}_#{comment[:index]-1}", to: "s#{segment.id}_#{comment[:index]+1}", type: comment[:type] do
-                #xml.text! comment[:content]
-              #end
-            #end
-          #end
+          comments.each do |comment|
+            xml.spanGr type: comment[:type] do
+              xml.span from: "s#{segment.id}_#{comment[:index_from]}", to: "s#{segment.id}_#{comment[:index_to]}" do
+                xml.text! comment[:content]
+              end
+            end
+          end
 
           xml.spanGr type: "original", "xml:id": "so#{segment.id}" do
             xml.text! segment.text(interview.alpha3)
