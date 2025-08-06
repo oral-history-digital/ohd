@@ -97,8 +97,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal 5, @project.roles.count
   end
 
-  test 'creates 8 media_streams' do
-    assert_equal 8, @project.media_streams.count
+  test 'creates 3 media_streams' do
+    assert_equal 3, @project.media_streams.count
   end
 
   test 'creates 3 texts' do
