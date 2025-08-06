@@ -1,7 +1,7 @@
 import speakerImage from 'assets/images/speaker.png';
 import { useEffect, useRef, useState } from 'react';
 
-export default function usePosterImage(interview) {
+export function usePosterImage(interview) {
     const [posterUrl, setPosterUrl] = useState(null);
     const [stillImageError, setStillImageError] = useState(false);
     const loadingAttemptRef = useRef(false);
