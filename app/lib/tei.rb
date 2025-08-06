@@ -162,7 +162,7 @@ class Tei
             attributes: {type: 'latching'}
           }
           index += 1 # Skip the next part since it's already included
-        when /^\(.+\)$/
+        when /^\(.+\?\)$/
           ordinary_text << {
             content: part[/^\(.+\)$/,1],
             index: combined_index,
@@ -201,6 +201,13 @@ class Tei
             content: part,
             index: combined_index,
             type: :pc
+          }
+        when /^(\w+\_)$/
+          ordinary_text << {
+            content: part.chop,
+            index: combined_index,
+            type: :wi,
+            attributes: {type: 'cut-off'}
           }
         else
           ordinary_text << {
@@ -350,7 +357,11 @@ class Tei
       content = $1.strip
       part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index + 1).tokenized_text
       ordinary_text_parts = part_ordinary_text.map do |part|
-        part[:attributes] = {type: 'uncertain'}
+        if part[:attributes].nil?
+          part[:attributes] = {type: 'uncertain'}
+        else
+          part[:attributes].merge!(type: ['uncertain', part[:attributes][:type].to_s].join(' '))
+        end
         part
       end
       #comments.concat(part_comments)
