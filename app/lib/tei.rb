@@ -38,6 +38,13 @@ class Tei
             type: 'pause',
             attributes: {type: 'long'}
           }
+        when /\[\w+\]/
+          ordinary_text << {
+            content: [:desc, part[/\[\(\w+\)\]/,1]],
+            index: combined_index,
+            type: 'incident',
+            attributes: {rend: part}
+          }
         when /^<v\s*\(.+\) .+>$/
           # Handle vocal tags with content (like <v(inner) some text>)
           vocal_desc, content = parse_vocal_tag_with_content(part)
@@ -130,6 +137,11 @@ class Tei
         when /^<sim .+>$/
           # Handle simultaneity tags with content (like <sim Nichts, nichts,>)
           part_ordinary_text, part_index_carryover = parse_simultaneity_tag(part, combined_index)
+          ordinary_text.concat(part_ordinary_text)
+          index_carryover = part_index_carryover
+        when /^<\? .+>$/
+          # Handle transcriber uncertainty tags with content (like <? Da hat es>)
+          part_ordinary_text, part_index_carryover = parse_uncertainty_tag(part, combined_index)
           ordinary_text.concat(part_ordinary_text)
           index_carryover = part_index_carryover
         when /^<.*>$/
@@ -285,5 +297,27 @@ class Tei
     }
     
     [ordinary_text_parts, index_carryover + 1]
+  end
+
+  # Parse uncertainty tags, handling nested structures
+  # Input: "<? content>"
+  # Output: [ordinary_text_parts, index_carryover]
+  def parse_uncertainty_tag(tag, start_index)
+    ordinary_text_parts = []
+    index_carryover = 1
+
+    # Extract content inside <? ...>
+    if tag =~ /^<\?\s+(.+)>$/
+      content = $1.strip
+      part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index + 1).tokenized_text
+      ordinary_text_parts = part_ordinary_text.map do |part|
+        part[:attributes] = {type: 'uncertain'}
+        part
+      end
+      #comments.concat(part_comments)
+      index_carryover = part_index_carryover
+    end
+    
+    [ordinary_text_parts, index_carryover]
   end
 end
