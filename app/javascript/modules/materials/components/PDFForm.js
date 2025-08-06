@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import { submitDataWithFetch } from 'modules/api';
 
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
+import useMutatePDFMaterials from '../hooks/useMutatePDFMaterials';
 
 export default function PDFForm({
     interview,
@@ -15,7 +18,10 @@ export default function PDFForm({
 }) {
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
+    const pathBase = usePathBase();
     const { projectId, project } = useProject();
+    const mutatePDFMaterials = useMutatePDFMaterials();
+    const [isFetching, setIsFetching] = useState(false);
 
     function elements() {
         let elements = [
@@ -55,11 +61,31 @@ export default function PDFForm({
         <Form
             scope="pdf"
             helpTextCode="pdf_form"
-            onSubmit={params => {
+            oldOnSubmit={params => {
                 dispatch(submitData({ projectId, project, locale }, params));
-                if (onSubmit) {
-                    onSubmit();
-                }
+            }}
+            onSubmit={async (params) => {
+                mutatePDFMaterials(async materials => {
+                    setIsFetching(true);
+                    const result = await submitDataWithFetch(pathBase, params);
+                    const updatedMaterial = result.data;
+
+                    // Other stuff that needs to be done after result is returned.
+                    setIsFetching(false);
+
+                    if (typeof onSubmit === 'function') {
+                        onSubmit();
+                    }
+
+                    const updatedMaterials = {
+                        ...materials,
+                        data: {
+                            ...materials.data,
+                            [updatedMaterial.id]: updatedMaterial,
+                        }
+                    };
+                    return updatedMaterials;
+                });
             }}
             onCancel={onCancel}
             data={pdf}
@@ -68,6 +94,7 @@ export default function PDFForm({
                 id: pdf?.id
             }}
             elements={elements()}
+            fetching={isFetching}
         />
     );
 }

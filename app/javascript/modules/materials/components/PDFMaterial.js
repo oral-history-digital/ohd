@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 import { useI18n } from 'modules/i18n';
 import PDFAdminButtons from './PDFAdminButtons';
 

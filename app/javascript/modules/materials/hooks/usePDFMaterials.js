@@ -3,10 +3,10 @@ import useSWRImmutable from 'swr/immutable';
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
 
-export default function usePDFMaterials(interviewId) {
+export default function usePDFMaterials(archiveId) {
     const pathBase = usePathBase();
 
-    const path = `${pathBase}/interviews/${interviewId}/pdfs.json`;
+    const path = `${pathBase}/interviews/${archiveId}/pdfs.json`;
 
     const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
 

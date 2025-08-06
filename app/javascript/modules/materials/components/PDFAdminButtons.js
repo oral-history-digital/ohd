@@ -1,25 +1,40 @@
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-
+import { usePDFMaterialApi } from 'modules/api';
 import { getArchiveId } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { deleteData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 
+import useMutatePDFMaterials from '../hooks/useMutatePDFMaterials';
 import PDFForm from './PDFForm';
 
 export default function PDFAdminButtons({ pdf }) {
-    const dispatch = useDispatch();
     const archiveId = useSelector(getArchiveId);
-    const { t, locale } = useI18n();
-    const { projectId, project } = useProject();
+    const { t } = useI18n();
+    const mutatePDFMaterials = useMutatePDFMaterials(archiveId);
+    const { deletePDFMaterial } = usePDFMaterialApi();
 
-    const destroy = () => dispatch(deleteData({ locale, projectId, project }, 'interviews', archiveId, 'pdfs', pdf.id));
+    async function handleDeletePDFMaterial(id, callback) {
+        mutatePDFMaterials(async pdfs => {
+            await deletePDFMaterial(archiveId, id);
+
+            const updatedPDFs = {
+                ...pdfs,
+                data: { ...pdfs.data }
+            };
+            delete updatedPDFs.data[id];
+
+            return updatedPDFs;
+        });
+
+        if (typeof callback === 'function') {
+            callback();
+        }
+    }
 
     return (
         <AuthorizedContent object={pdf} action='update'>
@@ -43,7 +58,7 @@ export default function PDFAdminButtons({ pdf }) {
                 >
                     {closeModal => (
                         <DeleteItemForm
-                            onSubmit={() => { destroy(); closeModal(); }}
+                            onSubmit={() => handleDeletePDFMaterial(pdf.id, closeModal)}
                             onCancel={closeModal}
                         />
                     )}
