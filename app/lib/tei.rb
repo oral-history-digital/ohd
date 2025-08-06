@@ -23,7 +23,9 @@ class Tei
         end
       end.flatten
       
-      parts.each_with_index do |part|
+      index = 0
+      while index < parts.length
+        part = parts[index]
         index_carryover = 1
         case part
         when /^<p\d+>$/
@@ -134,6 +136,14 @@ class Tei
             index: combined_index,
             type: 'kinesic'
           }
+        when /^<n\((.*)\)>$/
+          #<note rend="<n(1989)>">1989</note>
+          ordinary_text << {
+            content: part[/<n\((.*)\)>/,1],
+            index: combined_index,
+            type: 'note',
+            attributes: {rend: part}
+          }
         when /^<sim .+>$/
           # Handle simultaneity tags with content (like <sim Nichts, nichts,>)
           part_ordinary_text, part_index_carryover = parse_simultaneity_tag(part, combined_index)
@@ -144,6 +154,34 @@ class Tei
           part_ordinary_text, part_index_carryover = parse_uncertainty_tag(part, combined_index)
           ordinary_text.concat(part_ordinary_text)
           index_carryover = part_index_carryover
+        when /^<=>$/
+          ordinary_text << {
+            content: parts[index + 1] || '',
+            index: combined_index,
+            type: 'w',
+            attributes: {type: 'latching'}
+          }
+          index += 1 # Skip the next part since it's already included
+        when /^\(.+\)$/
+          ordinary_text << {
+            content: part[/^\(.+\)$/,1],
+            index: combined_index,
+            type: 'w',
+            attributes: {type: 'uncertain'}
+          }
+        when "(???)"
+          ordinary_text << {
+            index: combined_index,
+            type: 'gap',
+            attributes: {rend: '(???)', reason: 'unintelligible'}
+          }
+        when /^<res\s+.*>$/
+          # <gap reason="not published"/>
+          ordinary_text << {
+            index: combined_index,
+            type: 'gap',
+            attributes: {reason: 'not published'}
+          }
         when /^<.*>$/
           comments << {
             content: part,
@@ -171,6 +209,7 @@ class Tei
             type: :w
           }
         end
+        index += 1
         combined_index += index_carryover
       end
       
