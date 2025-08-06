@@ -175,6 +175,10 @@ GEM
     docile (1.4.1)
     doorkeeper (5.8.2)
       railties (>= 5)
+    doorkeeper-openid_connect (1.8.11)
+      doorkeeper (>= 5.5, < 5.9)
+      jwt (>= 2.5)
+      ostruct (>= 0.5)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (5.0.1)
@@ -243,6 +247,8 @@ GEM
       railties (>= 3.2.16)
     json (2.12.2)
     jsonapi-renderer (0.2.2)
+    jwt (3.1.2)
+      base64
     libv8-node (18.19.0.0-x86_64-linux)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -542,7 +548,8 @@ DEPENDENCIES
   database_cleaner
   delayed_job_active_record (~> 4.1.8)
   devise
-  doorkeeper
+  doorkeeper (~> 5.8.2)
+  doorkeeper-openid_connect (~> 1.8.11)
   ed25519
   execjs
   fastercsv
