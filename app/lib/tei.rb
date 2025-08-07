@@ -34,15 +34,16 @@ class Tei
             type: 'pause',
             attributes: {rend: part, dur: "PT#{part[/(\d+)/,1]}.0S"}
           }
-        when "[---]"
+        # the following is misleading: in X-FINAL this is always handled like the next case
+        #when "[---]"
+          #ordinary_text << {
+            #index: combined_index,
+            #type: 'pause',
+            #attributes: {type: 'long'}
+          #}
+        when /\{?\[.*\]\}?/
           ordinary_text << {
-            index: combined_index,
-            type: 'pause',
-            attributes: {type: 'long'}
-          }
-        when /\[\w+\]/
-          ordinary_text << {
-            content: [:desc, part[/\[\(\w+\)\]/,1]],
+            content: [:desc, part[/\{?\[(.*)\]\}?/,1]],
             index: combined_index,
             type: 'incident',
             attributes: {rend: part}
@@ -86,7 +87,7 @@ class Tei
               content: speech_desc,
               index_from: combined_index,
               index_to: combined_index + part_index_carryover - 1,
-              type: 'speech'
+              type: 'sprechweise'
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
@@ -162,18 +163,19 @@ class Tei
             attributes: {type: 'latching'}
           }
           index += 1 # Skip the next part since it's already included
-        when /^\(.+\?\)$/
-          ordinary_text << {
-            content: part[/^\(.+\)$/,1],
-            index: combined_index,
-            type: 'w',
-            attributes: {type: 'uncertain'}
-          }
         when "(???)"
           ordinary_text << {
             index: combined_index,
             type: 'gap',
             attributes: {rend: '(???)', reason: 'unintelligible'}
+          }
+        when /^\(.+\?\)$/
+          # Handle uncertainty tags with a question (like (By now?))
+          ordinary_text << {
+            content: part[/^\((.+)\?\)$/,1],
+            index: combined_index,
+            type: 'w',
+            attributes: {type: 'uncertain'}
           }
         when /^<res\s+.*>$/
           # <gap reason="not published"/>
@@ -196,7 +198,7 @@ class Tei
             index_to: combined_index + 1,
             type: "za"
           }
-        when /^(\?|\.|!|,|:)$/
+        when /^(\?|\.|!|,|:|\-)$/
           ordinary_text << {
             content: part,
             index: combined_index,
@@ -239,7 +241,7 @@ class Tei
       char = text[i]
       
       case char
-      when '<', '{', '['
+      when '<', '{', '[', '('
         if bracket_depth == 0 && !current_part.empty?
           # Save the previous non-tag part
           parts << current_part
@@ -247,7 +249,7 @@ class Tei
         end
         current_part += char
         bracket_depth += 1
-      when '>', '}', ']'
+      when '>', '}', ']', ')'
         current_part += char
         bracket_depth -= 1
         
@@ -271,7 +273,7 @@ class Tei
 
   # Check if a part is a tag (starts with <, {, or [)
   def is_tag?(part)
-    part =~ /^[\{|\[|<]/
+    part =~ /^[\{|\[|<\(]/
   end
 
   # Parse kinesic tags with content, handling nested structures
