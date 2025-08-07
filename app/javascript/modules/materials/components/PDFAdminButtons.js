@@ -18,17 +18,17 @@ export default function PDFAdminButtons({ pdf }) {
     const mutatePDFMaterials = useMutatePDFMaterials(archiveId);
     const { deletePDFMaterial } = usePDFMaterialApi();
 
-    async function handleDeletePDFMaterial(id, callback) {
-        mutatePDFMaterials(async pdfs => {
+    async function deleteMaterial(id, callback) {
+        mutatePDFMaterials(async materials => {
             await deletePDFMaterial(archiveId, id);
 
-            const updatedPDFs = {
-                ...pdfs,
-                data: { ...pdfs.data }
+            const updatedMaterials = {
+                ...materials,
+                data: { ...materials.data }
             };
-            delete updatedPDFs.data[id];
+            delete updatedMaterials.data[id];
 
-            return updatedPDFs;
+            return updatedMaterials;
         });
 
         if (typeof callback === 'function') {
@@ -58,7 +58,7 @@ export default function PDFAdminButtons({ pdf }) {
                 >
                     {closeModal => (
                         <DeleteItemForm
-                            onSubmit={() => handleDeletePDFMaterial(pdf.id, closeModal)}
+                            onSubmit={() => deleteMaterial(pdf.id, closeModal)}
                             onCancel={closeModal}
                         />
                     )}

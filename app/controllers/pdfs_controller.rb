@@ -31,7 +31,12 @@ class PdfsController < ApplicationController
   def update
     @pdf = Pdf.find(params[:id])
     authorize @pdf
-    @pdf.update(pdf_params)
+
+    adapted_params = pdf_params
+    adapted_params[:attachable_id] = adapted_params.delete(:interview_id)
+    adapted_params[:attachable_type] = "Interview"
+
+    @pdf.update(adapted_params)
 
     respond_to do |format|
       format.json do

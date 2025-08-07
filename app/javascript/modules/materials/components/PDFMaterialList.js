@@ -40,7 +40,6 @@ export default function PDFMaterialList() {
                     {
                         closeModal => (
                             <PDFForm
-                                interview={interview}
                                 withUpload
                                 onSubmit={closeModal}
                                 onCancel={closeModal}

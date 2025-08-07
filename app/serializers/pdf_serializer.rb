@@ -13,6 +13,10 @@ class PdfSerializer < ApplicationSerializer
   end
 
   def path
-    Rails.application.routes.url_helpers.rails_blob_path(object.file, only_path: true)
+    if object.file.blob
+      Rails.application.routes.url_helpers.rails_blob_path(object.file, only_path: true)
+    else
+      ""
+    end
   end
 end

@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { submitDataWithFetch } from 'modules/api';
 
-import { submitData } from 'modules/data';
+import { getArchiveId } from 'modules/archive';
+import { getCurrentInterview, submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import useMutatePDFMaterials from '../hooks/useMutatePDFMaterials';
 
 export default function PDFForm({
-    interview,
     pdf,
-    withUpload,
+    withUpload = false,
     onSubmit,
     onCancel,
 }) {
@@ -20,7 +20,9 @@ export default function PDFForm({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const { projectId, project } = useProject();
-    const mutatePDFMaterials = useMutatePDFMaterials();
+    const archiveId = useSelector(getArchiveId);
+    const interview = useSelector(getCurrentInterview);
+    const mutatePDFMaterials = useMutatePDFMaterials(archiveId);
     const [isFetching, setIsFetching] = useState(false);
 
     function elements() {
@@ -57,6 +59,30 @@ export default function PDFForm({
         return elements;
     }
 
+    async function createOrUpdateMaterial(params) {
+        mutatePDFMaterials(async (materials) => {
+            setIsFetching(true);
+            const result = await submitDataWithFetch(pathBase, params);
+            const updatedMaterial = result.data;
+
+            // Other stuff that needs to be done after result is returned.
+            setIsFetching(false);
+
+            const updatedMaterials = {
+                ...materials,
+                data: {
+                    ...materials.data,
+                    [updatedMaterial.id]: updatedMaterial,
+                }
+            };
+            return updatedMaterials;
+        });
+
+        if (typeof onSubmit === 'function') {
+            onSubmit();
+        }
+    }
+
     return (
         <Form
             scope="pdf"
@@ -64,29 +90,7 @@ export default function PDFForm({
             oldOnSubmit={params => {
                 dispatch(submitData({ projectId, project, locale }, params));
             }}
-            onSubmit={async (params) => {
-                mutatePDFMaterials(async materials => {
-                    setIsFetching(true);
-                    const result = await submitDataWithFetch(pathBase, params);
-                    const updatedMaterial = result.data;
-
-                    // Other stuff that needs to be done after result is returned.
-                    setIsFetching(false);
-
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
-                    }
-
-                    const updatedMaterials = {
-                        ...materials,
-                        data: {
-                            ...materials.data,
-                            [updatedMaterial.id]: updatedMaterial,
-                        }
-                    };
-                    return updatedMaterials;
-                });
-            }}
+            onSubmit={createOrUpdateMaterial}
             onCancel={onCancel}
             data={pdf}
             values={{
@@ -100,7 +104,6 @@ export default function PDFForm({
 }
 
 PDFForm.propTypes = {
-    interview: PropTypes.object,
     pdf: PropTypes.object,
     withUpload: PropTypes.bool,
     onSubmit: PropTypes.func,
