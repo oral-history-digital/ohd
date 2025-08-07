@@ -17,7 +17,7 @@ class Tei
         if is_tag?(part)
           part
         else
-          part.split(/(\?|\.|!|,|:)/).map do |subpart|
+          part.split(/(\?|…|\.\.\.|\.|!|,|:)/).map do |subpart|
             subpart.split
           end
         end
@@ -34,7 +34,7 @@ class Tei
             type: 'pause',
             attributes: {rend: part, dur: "PT#{part[/(\d+)/,1]}.0S"}
           }
-        # the following is misleading: in X-FINAL this is always handled like the next case
+          # the following is misleading in the docs and in X-FINAL. In X-FINAL this is always handled like the next case
         #when "[---]"
           #ordinary_text << {
             #index: combined_index,
@@ -183,6 +183,15 @@ class Tei
             index: combined_index,
             type: 'gap',
             attributes: {reason: 'not published'}
+          }
+        when "...", "…"
+          # Handle ellipsis
+          # <pc type='ellipsis'>
+          ordinary_text << {
+            content: '...',
+            index: combined_index,
+            type: 'w',
+            attributes: {type: 'ellipsis'}
           }
         when /^<.*>$/
           comments << {
