@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { submitDataWithFetch } from 'modules/api';
+import { submitFormDataWithFetch } from 'modules/api';
 
 import { getArchiveId } from 'modules/archive';
 import { getCurrentInterview, submitData } from 'modules/data';
@@ -62,7 +62,7 @@ export default function PDFForm({
     async function createOrUpdateMaterial(params) {
         mutatePDFMaterials(async (materials) => {
             setIsFetching(true);
-            const result = await submitDataWithFetch(pathBase, params);
+            const result = await submitFormDataWithFetch(pathBase, params);
             const updatedMaterial = result.data;
 
             // Other stuff that needs to be done after result is returned.
@@ -87,11 +87,11 @@ export default function PDFForm({
         <Form
             scope="pdf"
             helpTextCode="pdf_form"
-            onSubmit={params => {
+            oldOnSubmit={params => {
                 console.log(params);
                 dispatch(submitData({ projectId, project, locale }, params));
             }}
-            newOnSubmit={createOrUpdateMaterial}
+            onSubmit={createOrUpdateMaterial}
             onCancel={onCancel}
             data={pdf}
             values={{
