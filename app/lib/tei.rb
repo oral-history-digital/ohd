@@ -78,7 +78,7 @@ class Tei
             type: 'vocal',
             attributes: {rend: part}
           }
-        when /^<s\s*\(.+\) .+>$/
+        when /^<s\s*\(.+\)\s*.+>$/
           # Handle speech tags with content (like <s(gedehnt) Na ja,>)
           speech_desc, content = parse_speech_tag_with_content(part)
           if speech_desc && content
@@ -106,7 +106,7 @@ class Tei
           ordinary_text << {
             content: [:desc, part[/<s\s*\((.*)\)>/,1]],
             index: combined_index,
-            type: 'speech'
+            type: 'sprechweise'
           }
         when /^<g\s*\(.+\) .+>$/
           # Handle kinesic tags with content (potentially nested) - must come before simpler <g(...)> pattern
@@ -311,7 +311,7 @@ class Tei
   # Output: ["description", "content"]
   def parse_speech_tag_with_content(tag)
     # Match the opening <s( part
-    if tag =~ /^<s\s*\(([^)]+)\)\s+(.+)>$/
+    if tag =~ /^<s\s*\(([^)]+)\)\s*(.+)>$/
       description = $1
       content = $2
       return [description, content]
