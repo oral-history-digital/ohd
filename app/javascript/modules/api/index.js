@@ -2,6 +2,7 @@ export { default as Loader } from './Loader';
 export { default as fetcher } from './fetcher';
 export { default as apiMiddleware, CALL_API } from './middleware';
 export { default as submitDataWithFetch } from './submitDataWithFetch';
+export { default as submitMultipartFormdataWithFetch } from './submitMultipartFormdataWithFetch';
 export { default as useRegistryReferenceApi } from './useRegistryReferenceApi';
 export { default as usePersonApi } from './usePersonApi';
 export { default as usePDFMaterialApi } from './usePDFMaterialApi';

@@ -87,10 +87,11 @@ export default function PDFForm({
         <Form
             scope="pdf"
             helpTextCode="pdf_form"
-            oldOnSubmit={params => {
+            onSubmit={params => {
+                console.log(params);
                 dispatch(submitData({ projectId, project, locale }, params));
             }}
-            onSubmit={createOrUpdateMaterial}
+            newOnSubmit={createOrUpdateMaterial}
             onCancel={onCancel}
             data={pdf}
             values={{
