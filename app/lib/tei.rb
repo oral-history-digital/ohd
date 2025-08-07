@@ -213,12 +213,19 @@ class Tei
             index: combined_index,
             type: :pc
           }
-        when /^(\w+\_)$/
+        when /^(\p{Letter}+\_)$/
           ordinary_text << {
             content: part.chop,
             index: combined_index,
-            type: :wi,
+            type: :w,
             attributes: {type: 'cut-off'}
+          }
+        when /^~\p{Letter}+~$/
+          ordinary_text << {
+            content: part[1..-2], # Remove the surrounding tildes
+            index: combined_index,
+            type: :w,
+            attributes: {type: 'transfer'}
           }
         else
           ordinary_text << {
