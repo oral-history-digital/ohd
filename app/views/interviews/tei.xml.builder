@@ -91,7 +91,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           end
 
           xml.spanGr type: "original", "xml:id": "so#{segment.id}" do
-            xml.text! segment.text(interview.alpha3)
+            xml.text! segment.text("#{interview.alpha3}-public")
           end
 
           # translation
