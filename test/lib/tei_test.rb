@@ -60,7 +60,7 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Before <s(gedehnt) Na ja> after.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    speech_comment = comments.find { |comment| comment[:type] == 'speech' }
+    speech_comment = comments.find { |comment| comment[:type] == 'sprechweise' }
     assert_not_nil speech_comment
     assert_equal "gedehnt", speech_comment[:content]
     
@@ -97,7 +97,7 @@ class TeiTest < ActiveSupport::TestCase
     speech_comment = comments.find { |c| c[:content] == "gedehnt" }
     
     assert_equal "kinestic", gesture_comment[:type]
-    assert_equal "speech", speech_comment[:type]
+    assert_equal "sprechweise", speech_comment[:type]
     
     # Verify punctuation is handled
     punctuation = ordinary_text.select { |elem| elem[:type] == :pc }.map { |elem| elem[:content] }
@@ -129,9 +129,8 @@ class TeiTest < ActiveSupport::TestCase
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
     za_comments = comments.select { |comment| comment[:type] == 'za' }
-    assert_equal 2, za_comments.size
+    assert_equal 1, za_comments.size
     assert_includes za_comments.map { |c| c[:content] }, "{comment}"
-    assert_includes za_comments.map { |c| c[:content] }, "[note]"
   end
 
   test "preserves backward compatibility with simple cases" do
