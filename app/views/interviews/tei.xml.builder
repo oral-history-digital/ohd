@@ -8,6 +8,27 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
   xml.teiHeader do
 
     xml.fileDesc do
+      xml.titleStmt do
+        xml.title interview.oai_title(locale)
+        xml.author interview.oai_publisher(locale)
+      end
+
+      xml.publicationStmt do
+        xml.publisher interview.oai_publisher(locale)
+        xml.date interview.oai_date
+        xml.p "This is a TEI document for the interview with ID: #{interview.archive_id}."
+      end
+
+      xml.sourceDesc do
+        xml.recordingStmt do
+          interview.tapes.each do |tape|
+            xml.recording type: interview.media_type, "xml:id": "#{interview.media_type}_#{tape.number}" do
+              xml.media type: interview.oai_format#, url: tape.media_url(locale)
+              xml.duration tape.duration if tape.duration
+            end
+          end
+        end
+      end
     end
 
     xml.profileDesc do
@@ -35,14 +56,17 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
   end
 
   xml.text "xml:lang": locale do
-    xml.timeline unit: "s" do
-      xml.when "xml:id": "T_START", interval: "0.0", since: "T_START"
-      interview.tapes.each do |tape|
+    interview.tapes.each do |tape|
+      #<timeline unit="s" corresp="video2>
+      xml.timeline unit: "s", corresp: "#{interview.media_type}_#{tape.number}" do
+        xml.when "xml:id": "T#{tape.number}_START", interval: "0.0", since: "T#{tape.number}_START"
+
         tape.segments.each do |segment|
-          xml.when "xml:id": "T#{tape.number}_S#{segment.id}", interval: segment.time, since: "T_START"
+          xml.when "xml:id": "T#{tape.number}_S#{segment.id}", interval: segment.time, since: "T#{tape.number}_START"
         end
+
+        xml.when "xml:id": "T#{tape.number}_END", interval: tape.duration, since: "T#{tape.number}_START"
       end
-      xml.when "xml:id": "T_END", interval: interview.duration, since: "T_START"
     end
 
     interview.tapes.each do |tape|
