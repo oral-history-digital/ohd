@@ -1,8 +1,16 @@
 xml.instruct!
 xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org/ns/1.0" do
 
-  xml.idno type: "RANDOM-ID" do
+  xml.idno type: "Interview-ID" do
     interview.archive_id
+  end
+
+  xml.idno type: "Originalsignatur" do
+    interview.signature_original
+  end
+
+  xml.idno type: "OAI" do
+    interview.oai_identifier
   end
 
   xml.teiHeader do
@@ -10,7 +18,6 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
     xml.fileDesc do
       xml.titleStmt do
         xml.title interview.oai_title(locale)
-        xml.author interview.oai_publisher(locale)
       end
 
       xml.publicationStmt do
@@ -32,12 +39,28 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
     end
 
     xml.profileDesc do
+      xml.langUsage do
+        xml.language "xml:lang": interview.alpha3 do
+          xml.text "This interview is in #{interview.alpha3}."
+        end
+        interview.alpha3s_with_transcript.each do |alpha3|
+          xml.language "xml:lang": alpha3 do
+            xml.text "This interview is available in #{alpha3} with a transcript."
+          end
+        end
+      end
+
+      xml.abstract do
+      end
+
       xml.particDesc do
         interview.contributors.each do |contributor|
           xml.person "xml:id": "p#{contributor.id}", sex: contributor.gender do
-            xml.givenName contributor.first_name(locale)
-            if interview.project.fullname_on_landing_page
-              xml.familyName contributor.last_name(locale)
+            xml.persName do
+              xml.foreName contributor.first_name(locale)
+              if interview.project.fullname_on_landing_page
+                xml.surName contributor.last_name(locale)
+              end
             end
           end
         end
