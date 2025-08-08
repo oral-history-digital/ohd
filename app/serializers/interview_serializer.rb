@@ -27,6 +27,9 @@ class InterviewSerializer < InterviewBaseSerializer
           object.project.fullname_on_landing_page ?
           object.short_title(locale) :
           object.anonymous_title(locale)
+        )&.gsub(
+          'ARCHIVE_TITLE',
+          object.project.name(locale)
         )
         mem
       end

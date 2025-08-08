@@ -114,4 +114,12 @@ class ProjectCreatorTest < ActiveSupport::TestCase
   test 'has all upload-types' do
     assert_equal ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"], @project.upload_types
   end
+
+  test 'creats default landing_page_texts' do
+    assert_equal @project.landing_page_text('de'), 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.'
+    assert_equal @project.landing_page_text('en'), 'The interview with INTERVIEWEE is part of the online archive "ARCHIVE_TITLE". To access the full interviews with transcripts and additional material, you must log in or register at the "Oral-History.Digital" platform and request activation to the "ARCHIVE_TITLE" archive. Please observe the terms of use must, in particular the personal rights of the interviewees.'
+    assert_equal @project.restricted_landing_page_text(:de), 'Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.'
+    assert_equal @project.restricted_landing_page_text(:en), 'For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.'
+  end
+
 end
