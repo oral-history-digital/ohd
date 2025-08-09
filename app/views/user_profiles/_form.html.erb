@@ -168,26 +168,57 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Language data - normally this would come from the server
+  const languageData = {};
+  
+  // Populate language data from select options
+  function populateLanguageData() {
+    const selects = document.querySelectorAll('select[name*="language_id"]');
+    selects.forEach(select => {
+      Array.from(select.options).forEach(option => {
+        if (option.value && option.text) {
+          languageData[option.value] = {
+            name: option.text,
+            code: option.text.substring(0, 3).toLowerCase() // Mock code generation
+          };
+        }
+      });
+    });
+  }
+  
+  populateLanguageData();
+  
   // Update language code fields when language selects change
   const knownLanguageSelect = document.querySelector('select[name="user_profile[known_language_id]"]');
   const unknownLanguageSelect = document.querySelector('select[name="user_profile[unknown_language_id]"]');
   const knownCodeField = document.querySelector('input[name="known_language_code"]');
   const unknownCodeField = document.querySelector('input[name="unknown_language_code"]');
   
+  function updateLanguageCode(selectElement, codeField) {
+    if (!selectElement || !codeField) return;
+    
+    const selectedValue = selectElement.value;
+    if (selectedValue && languageData[selectedValue]) {
+      codeField.value = languageData[selectedValue].code;
+    } else {
+      codeField.value = '';
+    }
+  }
+  
   if (knownLanguageSelect && knownCodeField) {
     knownLanguageSelect.addEventListener('change', function() {
-      const selectedOption = this.options[this.selectedIndex];
-      // This would need AJAX call to get language code, for now just clear
-      knownCodeField.value = this.value ? 'Loading...' : '';
+      updateLanguageCode(this, knownCodeField);
     });
+    // Initialize on page load
+    updateLanguageCode(knownLanguageSelect, knownCodeField);
   }
   
   if (unknownLanguageSelect && unknownCodeField) {
     unknownLanguageSelect.addEventListener('change', function() {
-      const selectedOption = this.options[this.selectedIndex];
-      // This would need AJAX call to get language code, for now just clear
-      unknownCodeField.value = this.value ? 'Loading...' : '';
+      updateLanguageCode(this, unknownCodeField);
     });
+    // Initialize on page load
+    updateLanguageCode(unknownLanguageSelect, unknownCodeField);
   }
 });
 </script>
