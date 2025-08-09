@@ -1,0 +1,30 @@
+<div class="max-w-4xl mx-auto px-8 py-8">
+  <div class="border-b border-gray-200 pb-6 mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4"><%= @topic&.name || 'Topic' %></h1>
+    <% if @topic&.description&.present? %>
+      <p class="text-gray-600 text-lg leading-relaxed"><%= @topic.description %></p>
+    <% end %>
+  </div>
+
+  <div class="prose max-w-none">
+    <% if @topic&.references&.any? %>
+      <h2 class="text-2xl font-semibold text-gray-900 mb-6"><%= t('topics.show.references', default: 'References') %></h2>
+      <div class="grid gap-4">
+        <% @topic.references.each do |reference| %>
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200">
+            <%= link_to reference.title, reference_path(reference), class: "text-lg font-medium text-blue-600 hover:text-blue-800" %>
+            <% if reference.description %>
+              <p class="text-gray-600 mt-2"><%= truncate(reference.description, length: 150) %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 italic"><%= t('topics.show.no_references', default: 'No references found for this topic.') %></p>
+    <% end %>
+  </div>
+
+  <div class="mt-8 pt-6 border-t border-gray-200">
+    <%= link_to t('topics.back_to_index', default: 'Back to Topics'), topics_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" %>
+  </div>
+</div>

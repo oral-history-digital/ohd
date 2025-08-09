@@ -1,0 +1,20 @@
+<div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
+  <h2 class="text-xl font-semibold text-gray-900 mb-3">
+    <%= link_to topic.name, topic_path(topic), class: "hover:text-blue-600 transition-colors duration-200" %>
+  </h2>
+  
+  <% if topic.description.present? %>
+    <p class="text-gray-600 leading-relaxed mb-4"><%= truncate(topic.description, length: 200) %></p>
+  <% end %>
+  
+  <div class="flex gap-4 text-sm text-gray-500">
+    <div class="flex items-center gap-1">
+      <span>📄</span>
+      <span><%= t('topics.references_count', count: topic.references_count || 0, default: "#{topic.references_count || 0} references") %></span>
+    </div>
+    <div class="flex items-center gap-1">
+      <span>🏷️</span>
+      <span><%= t('topics.category', default: topic.category || 'General') %></span>
+    </div>
+  </div>
+</div>

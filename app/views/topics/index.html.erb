@@ -1,0 +1,12 @@
+<div class="max-w-7xl mx-auto px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= t('topics.index.title', default: 'Topics') %></h1>
+    <p class="text-gray-600 text-lg"><%= t('topics.index.subtitle', default: 'Browse all available topics') %></p>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <% @topics&.each do |topic| %>
+      <%= render 'topic', topic: topic %>
+    <% end %>
+  </div>
+</div>

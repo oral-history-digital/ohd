@@ -1,0 +1,12 @@
+<div class="max-w-7xl mx-auto px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= t('words.index.title', default: 'Words') %></h1>
+    <p class="text-gray-600 text-lg"><%= t('words.index.subtitle', default: 'Browse all available words') %></p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @words&.each do |word| %>
+      <%= render 'word', word: word %>
+    <% end %>
+  </div>
+</div>
