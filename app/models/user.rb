@@ -45,6 +45,7 @@ class User < ApplicationRecord
   has_many :user_projects, dependent: :destroy
   has_many :projects,
     through: :user_projects
+  has_one :user_profile, dependent: :destroy
 
   validates_uniqueness_of :email
   validates_presence_of :email

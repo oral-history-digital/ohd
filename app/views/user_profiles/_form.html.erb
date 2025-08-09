@@ -1,0 +1,193 @@
+<%= form_with(model: user_profile, local: true, html: { class: "user-profile-form" }) do |form| %>
+  <% if user_profile.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(user_profile.errors.count, "error") %> prohibited this user profile from being saved:</h4>
+      <ul>
+        <% user_profile.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="language-fields-container">
+    <div class="language-field-row">
+      <div class="language-select-field">
+        <%= form.label :known_language_id, class: "form-label" %>
+        <%= form.select :known_language_id, 
+                        options_from_collection_for_select(@languages, :id, :name, user_profile.known_language_id), 
+                        { prompt: 'Select a known language' }, 
+                        { class: "form-select" } %>
+      </div>
+      
+      <div class="language-code-field">
+        <%= label_tag :known_language_code, "Known Language Code", class: "form-label" %>
+        <%= text_field_tag :known_language_code, 
+                           user_profile.known_language&.code, 
+                           { readonly: true, class: "form-control readonly-field" } %>
+      </div>
+    </div>
+
+    <div class="language-field-row">
+      <div class="language-select-field">
+        <%= form.label :unknown_language_id, class: "form-label" %>
+        <%= form.select :unknown_language_id, 
+                        options_from_collection_for_select(@languages, :id, :name, user_profile.unknown_language_id), 
+                        { prompt: 'Select an unknown language' }, 
+                        { class: "form-select" } %>
+      </div>
+      
+      <div class="language-code-field">
+        <%= label_tag :unknown_language_code, "Unknown Language Code", class: "form-label" %>
+        <%= text_field_tag :unknown_language_code, 
+                           user_profile.unknown_language&.code, 
+                           { readonly: true, class: "form-control readonly-field" } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to 'Cancel', user_profiles_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<style>
+.user-profile-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.language-fields-container {
+  margin: 20px 0;
+}
+
+.language-field-row {
+  display: flex;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.language-select-field,
+.language-code-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  display: block;
+  min-height: 20px;
+}
+
+.form-select,
+.form-control {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  height: 42px;
+  box-sizing: border-box;
+}
+
+.form-select:focus,
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.readonly-field {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* Ensure perfect vertical alignment by making all form elements have consistent heights */
+@media screen and (max-width: 768px) {
+  .language-field-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Update language code fields when language selects change
+  const knownLanguageSelect = document.querySelector('select[name="user_profile[known_language_id]"]');
+  const unknownLanguageSelect = document.querySelector('select[name="user_profile[unknown_language_id]"]');
+  const knownCodeField = document.querySelector('input[name="known_language_code"]');
+  const unknownCodeField = document.querySelector('input[name="unknown_language_code"]');
+  
+  if (knownLanguageSelect && knownCodeField) {
+    knownLanguageSelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      // This would need AJAX call to get language code, for now just clear
+      knownCodeField.value = this.value ? 'Loading...' : '';
+    });
+  }
+  
+  if (unknownLanguageSelect && unknownCodeField) {
+    unknownLanguageSelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      // This would need AJAX call to get language code, for now just clear
+      unknownCodeField.value = this.value ? 'Loading...' : '';
+    });
+  }
+});
+</script>

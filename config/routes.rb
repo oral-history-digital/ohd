@@ -192,6 +192,7 @@ Rails.application.routes.draw do
         get :newsletter_recipients
       end
     end
+    resources :user_profiles
     resources :user_projects, only: [:create, :update]
     resources :user_contents do
       collection do

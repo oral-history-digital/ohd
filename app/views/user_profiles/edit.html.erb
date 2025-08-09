@@ -1,0 +1,44 @@
+<div class="edit-user-profile">
+  <div class="page-header">
+    <h1>Edit User Profile</h1>
+    <p class="page-description">Update your language preferences</p>
+  </div>
+
+  <%= render 'form', user_profile: @user_profile %>
+
+  <div class="form-navigation">
+    <%= link_to 'Show Profile', @user_profile, class: "btn btn-secondary" %>
+    <%= link_to 'Back to Profiles', user_profiles_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<style>
+.edit-user-profile {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.page-description {
+  color: #666;
+  margin: 0;
+}
+
+.form-navigation {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+</style>

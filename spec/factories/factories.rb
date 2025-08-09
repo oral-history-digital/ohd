@@ -1,4 +1,17 @@
 FactoryBot.define do
+  
+  factory :user do
+    sequence(:email) { |n| "user#{n}@example.com" }
+    password { "password123" }
+    first_name { "Test" }
+    last_name { "User" }
+    country { "US" }
+    city { "Test City" }
+    street { "Test Street" }
+    confirmed_at { Time.current }
+    priv_agreement { true }
+    tos_agreement { true }
+  end
 
   factory :usage_report do
     ip { '213.43.9.136' }

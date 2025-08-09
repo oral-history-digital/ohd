@@ -1,0 +1,179 @@
+<div class="user-profiles-index">
+  <div class="page-header">
+    <h1>User Profiles</h1>
+    <p class="page-description">Manage user language preferences and profiles</p>
+  </div>
+
+  <div class="current-user-section">
+    <h2>Your Profile</h2>
+    <% if current_user.user_profile %>
+      <%= render 'user_profile', user_profile: current_user.user_profile %>
+    <% else %>
+      <div class="no-profile-message">
+        <p>You haven't created a profile yet.</p>
+        <%= link_to 'Create Profile', new_user_profile_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if can? :index, UserProfile %>
+    <div class="all-profiles-section">
+      <h2>All User Profiles</h2>
+      
+      <% if @user_profiles.any? %>
+        <div class="profiles-grid">
+          <% @user_profiles.each do |user_profile| %>
+            <%= render 'user_profile', user_profile: user_profile %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <p>No user profiles found.</p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="page-actions">
+    <% unless current_user.user_profile %>
+      <%= link_to 'Create New Profile', new_user_profile_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.user-profiles-index {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 32px;
+}
+
+.page-description {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.current-user-section {
+  margin-bottom: 50px;
+}
+
+.current-user-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #007bff;
+  font-size: 24px;
+}
+
+.all-profiles-section {
+  margin-top: 50px;
+}
+
+.all-profiles-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #28a745;
+  font-size: 24px;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.no-profile-message {
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+}
+
+.no-profile-message p {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 16px;
+}
+
+.empty-state {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.page-actions {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .user-profiles-index {
+    padding: 15px;
+  }
+  
+  .page-header h1 {
+    font-size: 24px;
+  }
+  
+  .profiles-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .current-user-section h2,
+  .all-profiles-section h2 {
+    font-size: 20px;
+  }
+}
+
+/* Ensure consistent alignment between form and display components */
+.user-profiles-index .user-profile-display .language-info-row {
+  /* Inherits perfect alignment from _user_profile.html.erb */
+}
+</style>
