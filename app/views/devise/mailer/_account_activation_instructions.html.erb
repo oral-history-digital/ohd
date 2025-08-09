@@ -20,10 +20,10 @@
   <p>Доброго дня, <%= @resource.display_name %>,</p>
   <p>Ви зареєструвалися на платформі Oral-History.Digital.</p>
   <p>Будь ласка, підтвердьте свою реєстрацію.</p>
-  <p><p><%= link_to 'Підтвердити реєстрацію', @url %></p></p>
+  <p><%= link_to 'Підтвердити реєстрацію', @url %></p>
   <p>Якщо ви не зареєструвалися на платформі Oral-History.Digital, ви можете ігнорувати цей електронний лист. Ваші дані будуть автоматично видалені через 14 днів.</p>
   <p>З найкращими побажаннями</p>
-  <p>Oral-History.Digital"</p>
+  <p>Oral-History.Digital</p>
 <% when :es -%>
   <p>Hola <%= @resource.display_name %>,</p>
   <p>Se ha registrado/a en la plataforma Oral-History.Digital.</p>
@@ -40,6 +40,14 @@
   <p>Στην περίπτωση που δεν θέλατε να  εγγραφείτε στην πλατφόρμα Oral-History.Digital, σας παρακαλούμε να αγνοήσετε αυτό το μήνυμα. Τα στοιχεία σας θα διαγραφούν αυτόματα μετά από 14 ημέρες.</p>
   <p>Με εκτίμηση,</p>
   <p>Η ομάδα του προγράμματος Oral-History.Digital</p>
+<% when :ar -%>
+  <p>مرحباً <%= @resource.display_name %>،</p>
+  <p>لقد قمت بالتسجيل في منصة Oral-History.Digital.</p>
+  <p>يرجى تأكيد تسجيلك.</p>
+  <p><%= link_to 'تأكيد التسجيل', @url %></p>
+  <p>إذا لم تقم بالتسجيل في منصة Oral-History.Digital، يمكنك تجاهل هذا البريد الإلكتروني. سيتم حذف بياناتك تلقائياً بعد 14 يوماً.</p>
+  <p>مع أطيب التحيات</p>
+  <p>Oral-History.Digital</p>
 <% else -%>
   <p>Guten Tag <%= @resource.display_name %>,</p>
   <p>Sie haben sich für die Plattform Oral-History.Digital registriert.</p> 

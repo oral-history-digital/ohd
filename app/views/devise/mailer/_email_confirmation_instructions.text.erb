@@ -50,6 +50,30 @@ Por favor, confirme los cambios haciendo clic en el siguiente enlace:
 Con saludos cordiales,
 
 El equipo del proyecto "<%= @project_name %>"
+<% when :uk -%>
+Шановний(-а) <%= @resource.display_name %>,
+
+Ви змінили адресу електронної пошти для вашого облікового запису в додатку "<%= @project_name %>".
+
+Будь ласка, підтвердьте цю зміну, перейшовши за наступним посиланням:
+
+<%= @url %>
+
+З повагою,
+
+Команда проєкту "<%= @project_name %>"
+<% when :ar -%>
+عزيزي <%= @resource.display_name %>،
+
+لقد غيرت عنوان البريد الإلكتروني لحسابك في التطبيق "<%= @project_name %>".
+
+يرجى تأكيد هذا التغيير بالنقر على الرابط التالي:
+
+<%= @url %>
+
+مع خالص التقدير،
+
+فريق المشروع "<%= @project_name %>"
 <% else -%>
 Sehr geehrte/r <%= @resource.display_name %>,
 

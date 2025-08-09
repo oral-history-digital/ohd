@@ -154,18 +154,18 @@ es:
       login: Iniciar sesión
       signed_in: Usted ha iniciado la sesión.
       signed_out: Usted ha cerrado la sesión.
-      unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
-      unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
+      unauthenticated: Para esta acción es necesario iniciar sesión.
+      unauthenticated_search: Para usar la búsqueda, primero debe iniciar sesión.
       unconfirmed: El correo electrónico %{email} ya está registrado.
         Aún debe confirmar su registro.
         Se le acaba de reenviar un correo electrónico con el enlace necesario.
       blocked: Su cuenta está bloqueada.
-      invalid: Username oder Passwort ist ungültig.
-      invalid_token: Ungültiger Authentifizierungscode.
-      timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
-      inactive: Ihr Zugang ist zur Zeit deaktiviert.
-      remember_me: angemeldet bleiben
-      logout: abmelden
+      invalid: Nombre de usuario o contraseña inválidos.
+      invalid_token: Código de autenticación inválido.
+      timeout: Su sesión expiró, por favor inicie sesión nuevamente.
+      inactive: Su acceso está actualmente desactivado.
+      remember_me: mantener sesión iniciada
+      logout: cerrar sesión
     unlocks:
       link: Zugang reaktivieren
       send_instructions: Recibirá inmediatamente un correo electrónico con
@@ -176,44 +176,39 @@ es:
         reactivar su cuenta.
     user_interface:
       status:
-        not_signed_in: nicht angemeldet
+        not_signed_in: no ha iniciado sesión
     labels:
-      send_now: Jetzt zuschicken
+      send_now: Enviar ahora
     workflow_states:
-      new_registration: Neuanmeldung
-      new_registrations: Neuanmeldungen
-      unchecked: unbeantwortet
-      checked: geprüft
-      registered: registriert
-      deactivated: deaktiviert
-      postponed: zurückgestellt
-      rejected: abgelehnt
-      all: alle
+      new_registration: solicitado
+      new_registrations: solicitado
+      unchecked: no verificado
+      checked: verificado
+      registered: registrado
+      deactivated: desactivado
+      postponed: pospuesto
+      rejected: rechazado
+      all: todos
+      reactivate: reactivar
     workflow_events:
-      register: registrieren
-      register_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
-      reject: ablehnen
-      reject_info: Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).
-      resend_info: Daten erneut senden
-      resend_info_info: Der Link für die Zugangsaktivierung wird dem*der Benutzer*in erneut
-        zugesandt (per E-Mail).
-      deactivate: deaktivieren
-      deactivate_info: Der Zugang des*der Nutzer*in wird deaktiviert (der*die Nutzer*in erhält
-        keine E-Mail und kann sich nicht mehr einloggen).
-      reactivate: wiederaufnehmen
-      reactivate_info: Der*die Nutzer*in erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
-      postpone: zurückstellen
-      postpone_info: Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte
-        separate E-Mail und Anmerkung schreiben).
-      activate: aktivieren
-      activate_info: Der Zugang des*der Nutzer*in wird direkt aktiviert (bitte den*die Nutzer*in
-        separat über seine*ihre Zugangsdaten informieren).
-      expire: verfallen lassen
-      expire_info: Die Anfrage zurückstellen, da der*die Nutzer*in nicht reagiert und seinen*ihren
-        Zugang nicht aktiviert (keine E-Mail).
-      remove: deaktivieren
-      remove_info: Der Zugang des*der Nutzer*in wird deaktiviert (bitte den*die Nutzer*in in einer
-        separaten E-Mail informieren).
+      register: registrar
+      register_info: El usuario recibe un correo electrónico con un enlace para activar la cuenta.
+      reject: rechazar
+      reject_info: La solicitud de registro se rechaza permanentemente (no se envía correo electrónico).
+      resend_info: reenviar información
+      resend_info_info: El enlace para la activación de la cuenta se reenvía al usuario (por correo electrónico).
+      deactivate: desactivar
+      deactivate_info: La cuenta se desactiva (el usuario ya no puede iniciar sesión - no se envía correo electrónico).
+      reactivate: reactivar
+      reactivate_info: El usuario recibe un correo electrónico con un enlace para activar la cuenta.
+      postpone: posponer
+      postpone_info: La solicitud de registro se pospone hasta que se aclaren algunos puntos (por favor envíe un correo electrónico por separado y escriba un comentario).
+      activate: activar
+      activate_info: La cuenta se activa directamente (por favor informe al usuario por separado sobre sus datos de inicio de sesión).
+      expire: expirar
+      expire_info: Expirar esta solicitud, ya que el usuario no reacciona y no activa la cuenta (sin correo electrónico).
+      remove: desactivar
+      remove_info: La cuenta se desactiva (por favor informe al usuario de esto en un correo electrónico por separado).
   activerecord:
     errors:
       models:
@@ -233,7 +228,7 @@ es:
         email: Correo electrónico
         login: Iniciar sesión
         password: Contraseña
-        password_confirmation: Passwort-Wiederholung
+        password_confirmation: Confirmación de contraseña
   errors:
     messages:
       already_confirmed: ya se ha confirmado

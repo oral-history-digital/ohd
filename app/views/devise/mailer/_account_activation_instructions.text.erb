@@ -40,7 +40,7 @@
 
   З найкращими побажаннями
 
-  Oral-History.Digital"
+  Oral-History.Digital
 <% when :es -%>
   Hola <%= @resource.display_name %>,
 
@@ -68,6 +68,20 @@
   Με εκτίμηση,
 
   Η ομάδα του προγράμματος Oral-History.Digital
+<% when :ar -%>
+  مرحباً <%= @resource.display_name %>،
+
+  لقد قمت بالتسجيل في منصة Oral-History.Digital.
+
+  يرجى تأكيد تسجيلك.
+
+  <%= @url %>
+
+  إذا لم تقم بالتسجيل في منصة Oral-History.Digital، يمكنك تجاهل هذا البريد الإلكتروني. سيتم حذف بياناتك تلقائياً بعد 14 يوماً.
+
+  مع أطيب التحيات
+
+  Oral-History.Digital
 <% else -%>
   Guten Tag <%= @resource.display_name %>,
 

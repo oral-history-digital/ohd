@@ -27,6 +27,20 @@
   <p><%= link_to 'Confirmar nuevo correo electrónico', @url %></p>
   <p>Con saludos cordiales,</p>
   <p>El equipo del proyecto "<%= @project_name %>"</p>
+  <% when :uk -%>
+  <p>Шановний(-а) <%= @resource.display_name %>,</p>
+  <p>Ви змінили адресу електронної пошти для вашого облікового запису в додатку "<%= @project_name %>".</p>
+  <p>Будь ласка, підтвердьте цю зміну, натиснувши на наступне посилання:</p>
+  <p><%= link_to 'Підтвердити нову адресу електронної пошти', @url %></p>
+  <p>З повагою,</p>
+  <p>Команда проєкту "<%= @project_name %>"</p>
+  <% when :ar -%>
+  <p>عزيزي <%= @resource.display_name %>،</p>
+  <p>لقد غيرت عنوان البريد الإلكتروني لحسابك في التطبيق "<%= @project_name %>".</p>
+  <p>يرجى تأكيد هذا التغيير بالنقر على الرابط التالي:</p>
+  <p><%= link_to 'تأكيد عنوان البريد الإلكتروني الجديد', @url %></p>
+  <p>مع خالص التقدير،</p>
+  <p>فريق المشروع "<%= @project_name %>"</p>
   <% else -%>
   <p>Sehr geehrte/r <%= @resource.display_name %>,</p>
   <p>Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @project_name %>" geändert.</p>

@@ -189,6 +189,7 @@ ru:
       postponed: отложен
       rejected: отклонён
       all: все
+      reactivate: реактивировать
     workflow_events:
       register: регистрировать
       register_info: Пользователь получает на свой электронный адрес письмо со ссылкой,

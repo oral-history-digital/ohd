@@ -186,6 +186,36 @@ de:
         not_signed_in: nicht angemeldet
     labels:
       send_now: Jetzt zuschicken
+    workflow_states:
+      new_registration: angefragt
+      new_registrations: angefragt
+      unchecked: ungeprüft
+      checked: geprüft
+      registered: registriert
+      deactivated: deaktiviert
+      postponed: zurückgestellt
+      rejected: abgelehnt
+      all: alle
+      reactivate: reaktivieren
+    workflow_events:
+      register: registrieren
+      register_info: Der Benutzer erhält eine E-Mail mit einem Link zur Aktivierung des Kontos.
+      reject: ablehnen
+      reject_info: Der Registrierungsantrag wird dauerhaft abgelehnt (keine E-Mail wird gesendet).
+      resend_info: Info erneut senden
+      resend_info_info: Der Link zur Kontoaktivierung wird dem Benutzer erneut gesendet (per E-Mail).
+      deactivate: deaktivieren
+      deactivate_info: Das Konto wird deaktiviert (der Benutzer kann sich nicht mehr anmelden - keine E-Mail wird gesendet).
+      reactivate: reaktivieren
+      reactivate_info: Der Benutzer erhält eine E-Mail mit einem Link zur Aktivierung des Kontos.
+      postpone: zurückstellen
+      postpone_info: Der Registrierungsantrag wird zurückgestellt, bis einige Punkte geklärt sind (bitte senden Sie eine separate E-Mail und schreiben Sie einen Kommentar).
+      activate: aktivieren
+      activate_info: Das Konto wird direkt aktiviert (bitte informieren Sie den Benutzer separat über seine Anmeldedaten).
+      expire: ablaufen lassen
+      expire_info: Diesen Antrag ablaufen lassen, da der Benutzer nicht reagiert und das Konto nicht aktiviert (keine E-Mail).
+      remove: deaktivieren
+      remove_info: Das Konto wird deaktiviert (bitte informieren Sie den Benutzer darüber in einer separaten E-Mail).
   activerecord:
     errors:
       models:

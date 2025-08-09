@@ -162,17 +162,18 @@ el:
       login: Είσοδος
       signed_in: Σύνδεση με επιτυχία.
       signed_out: Αποσύνδεση με επιτυχία.
-      unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
-      unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
+      unauthenticated: Χρειάζεται να συνδεθείτε πριν από αυτή την ενέργεια.
+      unauthenticated_search: Για να χρησιμοποιήσετε την αναζήτηση, πρέπει πρώτα να συνδεθείτε.
       unconfirmed: Η διεύθυνση ηλεκτρονικού ταχυδρομείου %{email} είναι ήδη καταχωρημένη.
         Πρέπει να επιβεβαιώσετε την εγγραφή σας.
         Ένα e-mail με τον απαραίτητο σύνδεσμο μόλις σας εστάλη.
       blocked: Ο λογαριασμός σας είναι κλειδωμένος.
-      invalid_token: Ungültiger Authentifizierungscode.
-      timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
-      inactive: Ihr Zugang ist zur Zeit deaktiviert.
-      remember_me: angemeldet bleiben
-      logout: abmelden
+      invalid: Μη έγκυρο όνομα χρήστη ή κωδικός πρόσβασης.
+      invalid_token: Μη έγκυρος κωδικός πιστοποίησης.
+      timeout: Η περίοδος σύνδεσής σας έληξε, παρακαλούμε συνδεθείτε ξανά.
+      inactive: Η πρόσβασή σας είναι προσωρινά απενεργοποιημένη.
+      remember_me: να με θυμάσαι
+      logout: αποσύνδεση
       already_signed_out: Αποσύνδεση με επιτυχία.
     unlocks:
       link: Zugang reaktivieren
@@ -182,64 +183,58 @@ el:
         λίγα λεπτά ένα email με οδηγίες ενεργοποίησής του.
     user_interface:
       status:
-        not_signed_in: nicht angemeldet
+        not_signed_in: δεν έχετε συνδεθεί
     labels:
-      send_now: Jetzt zuschicken
+      send_now: Αποστολή τώρα
     workflow_states:
-      new_registration: Neuanmeldung
-      new_registrations: Neuanmeldungen
-      unchecked: unbeantwortet
-      checked: geprüft
-      registered: registriert
-      deactivated: deaktiviert
-      postponed: zurückgestellt
-      rejected: abgelehnt
-      all: alle
+      new_registration: ζητήθηκε
+      new_registrations: ζητήθηκε
+      unchecked: μη ελεγμένο
+      checked: ελεγμένο
+      registered: εγγεγραμμένο
+      deactivated: απενεργοποιημένο
+      postponed: αναβλήθηκε
+      rejected: απορρίφθηκε
+      all: όλα
+      reactivate: επανενεργοποίηση
     workflow_events:
-      register: registrieren
-      register_info: Der*die Nutzer*in erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
-      reject: ablehnen
-      reject_info: Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).
-      resend_info: Daten erneut senden
-      resend_info_info: Der Link für die Zugangsaktivierung wird dem*der Benutzer*in erneut
-        zugesandt (per E-Mail).
-      deactivate: deaktivieren
-      deactivate_info: Der Zugang des*der Nutzer*in wird deaktiviert (der*die Nutzer*in erhält
-        keine E-Mail und kann sich nicht mehr einloggen).
-      reactivate: wiederaufnehmen
-      reactivate_info: Der*die Nutzer*in erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
-      postpone: zurückstellen
-      postpone_info: Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte
-        separate E-Mail und Anmerkung schreiben).
-      activate: aktivieren
-      activate_info: Der Zugang des*der Nutzer*in wird direkt aktiviert (bitte den*die Nutzer*in
-        separat über seine*ihre Zugangsdaten informieren).
-      expire: verfallen lassen
-      expire_info: Die Anfrage zurückstellen, da der*die Nutzer*in nicht reagiert und seinen*ihren
-        Zugang nicht aktiviert (keine E-Mail).
-      remove: deaktivieren
-      remove_info: Der Zugang des*der Nutzer*in wird deaktiviert (bitte den*die Nutzer*in in einer
-        separaten E-Mail informieren).
+      register: εγγραφή
+      register_info: Ο χρήστης λαμβάνει ένα email με σύνδεσμο για την ενεργοποίηση του λογαριασμού.
+      reject: απόρριψη
+      reject_info: Το αίτημα εγγραφής απορρίπτεται οριστικά (δεν αποστέλλεται email).
+      resend_info: επαναποστολή πληροφοριών
+      resend_info_info: Ο σύνδεσμος για την ενεργοποίηση του λογαριασμού αποστέλλεται ξανά στον χρήστη (μέσω email).
+      deactivate: απενεργοποίηση
+      deactivate_info: Ο λογαριασμός απενεργοποιείται (ο χρήστης δεν μπορεί πλέον να συνδεθεί - δεν αποστέλλεται email).
+      reactivate: επανενεργοποίηση
+      reactivate_info: Ο χρήστης λαμβάνει ένα email με σύνδεσμο για την ενεργοποίηση του λογαριασμού.
+      postpone: αναβολή
+      postpone_info: Το αίτημα εγγραφής αναβάλλεται μέχρι να διευκρινιστούν ορισμένα σημεία (παρακαλώ στείλτε ξεχωριστό email και γράψτε ένα σχόλιο).
+      activate: ενεργοποίηση
+      activate_info: Ο λογαριασμός ενεργοποιείται άμεσα (παρακαλώ ενημερώστε τον χρήστη ξεχωριστά για τα στοιχεία σύνδεσής του).
+      expire: λήξη
+      expire_info: Λήξη αυτού του αιτήματος, καθώς ο χρήστης δεν αντιδρά και δεν ενεργοποιεί τον λογαριασμό (χωρίς email).
+      remove: απενεργοποίηση
+      remove_info: Ο λογαριασμός απενεργοποιείται (παρακαλώ ενημερώστε τον χρήστη γι' αυτό σε ξεχωριστό email).
   activerecord:
     errors:
       models:
         user:
           attributes:
             email:
-              taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
-                vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen.
+              taken: είναι ήδη εγγεγραμμένο εδώ. Παρακαλώ επιλέξτε 'ξέχασα κωδικό' στη σελίδα σύνδεσης για να επαναφέρετε τον κωδικό σας.
             password:
-              confirmation: und -wiederholung stimmen nicht überein.
-              too_short: ist zu kurz.
-              too_long: ist zu lang.
+              confirmation: και επιβεβαίωση δεν ταιριάζουν
+              too_short: είναι πολύ σύντομο
+              too_long: είναι πολύ μακρύ
       messages:
-        blank: fehlt
+        blank: λείπει
     attributes:
       user:
-        email: E-Mail
-        login: Login
+        email: Ηλεκτρονικό ταχυδρομείο
+        login: Σύνδεση
         password: Κωδικός πρόσβασης
-        password_confirmation: Passwort-Wiederholung
+        password_confirmation: Επιβεβαίωση κωδικού πρόσβασης
   errors:
     messages:
       already_confirmed: έχει ήδη επιβεβαιωθεί, παρακαλούμε δοκιμάστε να ξανασυνδεθείτε
