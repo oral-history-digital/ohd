@@ -23,6 +23,7 @@ class MetadataExport
           interview.secondary_translation_language&.name(locale),
           interview.collection && interview.collection.name(locale),
           interview.interview_date,
+          interview.publication_date,
           interview.media_type,
           Timecode.new(interview.duration).timecode,
           interview.observations(locale) && interview.observations(locale).gsub(/[\r\n\t]/, ' '),
