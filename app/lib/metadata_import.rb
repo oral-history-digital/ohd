@@ -53,6 +53,7 @@ class MetadataImport
       signature_original: row[:signature_original],
       collection_id: row[:collection_id] && find_or_create_collection(row[:collection_id], project).id,
       interview_date: row[:interview_date],
+      publication_date: row[:publication_date],
       media_type: row[:media_type] && row[:media_type].downcase,
       duration: row[:duration],
       observations: row[:observations],

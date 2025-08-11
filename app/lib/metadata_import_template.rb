@@ -31,6 +31,7 @@ class MetadataImportTemplate
       :secondary_translation_language_id,
       :collection_id,
       :interview_date,
+      :publication_date,
       :media_type,
       :duration,
       :observations,
