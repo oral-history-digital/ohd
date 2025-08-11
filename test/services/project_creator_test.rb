@@ -89,8 +89,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal 14, @project.contribution_types.count
   end
 
-  test 'creates 8 task_types' do
-    assert_equal 8, @project.task_types.count
+  test 'creates 9 task_types' do
+    assert_equal 9, @project.task_types.count
   end
 
   test 'creates 5 roles' do
