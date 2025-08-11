@@ -28,6 +28,7 @@ class MetadataImportTemplate
       :primary_language_id,
       :secondary_language_id,
       :primary_translation_language_id,
+      :secondary_translation_language_id,
       :collection_id,
       :interview_date,
       :media_type,

@@ -20,6 +20,7 @@ class MetadataExport
           interview.primary_language.name(locale),
           interview.secondary_language&.name(locale),
           interview.primary_translation_language&.name(locale),
+          interview.secondary_translation_language&.name(locale),
           interview.collection && interview.collection.name(locale),
           interview.interview_date,
           interview.media_type,

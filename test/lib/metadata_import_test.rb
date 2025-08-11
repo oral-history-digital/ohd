@@ -30,7 +30,10 @@ class MetadataImportTest < ActiveSupport::TestCase
     assert_equal 6, Person.count
 
     interview = Interview.last
-    assert_equal "Deutsch", interview.language.name
+    assert_equal "Deutsch", interview.language.name(:de)
+    assert_equal "Polnisch", interview.secondary_language.name(:de)
+    assert_equal "Englisch", interview.primary_translation_language.name(:de)
+    assert_equal "Französisch", interview.secondary_translation_language.name(:de)
     assert_equal "03/03/20", interview.interview_date
     assert_equal "video", interview.media_type
     assert_equal 9000, interview.duration

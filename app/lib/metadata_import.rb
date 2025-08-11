@@ -65,23 +65,13 @@ class MetadataImport
 
     interview_languages_attributes = []
 
-    primary_language = find_language(row[:primary_language_id])
-    interview_languages_attributes << {
-      language: primary_language,
-      spec: 'primary'
-    } if primary_language && primary_language != interview&.primary_language
-
-    primary_translation_language = find_language(row[:primary_translation_language_id])
-    interview_languages_attributes << {
-      language: primary_translation_language,
-      spec: 'primary_translation'
-    } if primary_translation_language && primary_translation_language != interview&.primary_translation_language
-
-    secondary_language = find_language(row[:secondary_language_id])
-    interview_languages_attributes << {
-      language: secondary_language,
-      spec: 'secondary'
-    } if secondary_language && secondary_language != interview&.secondary_language
+    %w(primary secondary primary_translation secondary_translation).each do |spec|
+      language = find_language(row["#{spec}_language_id".to_sym])
+      interview_languages_attributes << {
+        language: language,
+        spec: spec
+      } if language && language != interview&.send("#{spec}_language")  
+    end
 
     interview_data[:interview_languages_attributes] = interview_languages_attributes
 
