@@ -209,3 +209,15 @@
   - :name: BiographicalEntry destroy
     :klass: BiographicalEntry
     :action_name: destroy
+- :attributes:
+  - key: transcript_download
+    abbreviation: TransDL
+    :translations_attributes:
+      - label: Transkript herunterladen
+        locale: de
+      - label: Download transcript
+        locale: en
+  :permissions:
+  - :name: Interview download
+    :klass: Interview
+    :action_name: download
