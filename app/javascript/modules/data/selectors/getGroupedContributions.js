@@ -6,7 +6,7 @@ import { getCurrentInterview, getContributionTypesForCurrentProject } from './da
 const getGroupedContributions = createSelector(
     [getEditView, getCurrentInterview, getContributionTypesForCurrentProject],
     (editView, currentInterview, contributionTypes) => {
-        if (!currentInterview || !currentInterview.contributions) {
+        if (!currentInterview || !currentInterview.contributions || !contributionTypes) {
             return null;
         }
 

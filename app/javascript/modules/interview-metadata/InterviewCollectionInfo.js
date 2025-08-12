@@ -18,7 +18,7 @@ export default function InterviewCollectionInfo({
     const collections = useSelector(getCollectionsForCurrentProject);
     const { projectAccessGranted } = useProjectAccessStatus(project);
 
-    const collection = collections[interview.collection_id];
+    const collection = collections?.[interview.collection_id];
     const titleText = t('modules.interview_metadata.show_collection_desc');
 
     return (
