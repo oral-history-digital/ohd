@@ -110,8 +110,10 @@ export default function VideoJS({
     return (
         <div data-vjs-player className={className}>
             {type === 'audio' ? (
+                // eslint-disable-next-line jsx-a11y/media-has-caption
                 <audio ref={videoRef} className={mediaElementClassName} />
             ) : (
+                // eslint-disable-next-line jsx-a11y/media-has-caption
                 <video ref={videoRef} className={mediaElementClassName} />
             )}
         </div>
