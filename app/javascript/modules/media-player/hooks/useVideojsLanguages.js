@@ -10,6 +10,7 @@ import langRu from 'video.js/dist/lang/ru.json';
 import {
     VIDEOJS_I18N_KEY_MAP,
     VIDEOJS_PLUGIN_TRANSLATION_MAP,
+    VIDEOJS_SUBTITLE_LANGUAGES,
 } from '../constants';
 const LANGS = [
     { code: 'de', native: langDe },
@@ -47,8 +48,11 @@ function useVideojsLanguages() {
     // Create a stable key based on current language and available translations
     const translationKey = useMemo(() => {
         // Create a stable key from language + available translation keys
-        const availableKeys = Object.keys(translations).filter((key) =>
-            key.startsWith('media_player.')
+        // Include both media_player.* keys and language code keys (for subtitle language names)
+        const availableKeys = Object.keys(translations).filter(
+            (key) =>
+                key.startsWith('media_player.') ||
+                VIDEOJS_SUBTITLE_LANGUAGES.includes(key)
         );
         return `${currentLanguage}-${availableKeys.sort().join(',')}`;
     }, [currentLanguage, translations]);
@@ -66,15 +70,8 @@ function useVideojsLanguages() {
             return null;
         }
 
-        console.log(
-            `📚 Using native base: ${langData.code}`,
-            Object.keys(langData.native).slice(0, 5)
-        );
-
         // Start with native strings and apply custom overrides
         const languageStrings = { ...langData.native };
-
-        let overrideCount = 0;
 
         Object.keys(VIDEOJS_I18N_KEY_MAP).forEach((nativeKey) => {
             const i18nKey = VIDEOJS_I18N_KEY_MAP[nativeKey];
@@ -85,9 +82,7 @@ function useVideojsLanguages() {
                 translations[i18nKey][currentLanguage]
             ) {
                 const translated = translations[i18nKey][currentLanguage];
-                console.log(`🔧 Override: "${nativeKey}" -> "${translated}"`);
                 languageStrings[nativeKey] = translated;
-                overrideCount++;
             }
         });
 
@@ -102,17 +97,8 @@ function useVideojsLanguages() {
             ) {
                 pluginTranslations[pluginKey] =
                     translations[i18nKey][currentLanguage];
-                console.log(
-                    `🔌 Plugin translation: "${pluginKey}" -> "${translations[i18nKey][currentLanguage]}"`
-                );
             }
         });
-
-        console.log(
-            `✅ Built ${currentLanguage} with ${overrideCount} overrides and ${
-                Object.keys(pluginTranslations).length
-            } plugin translations`
-        );
 
         return {
             language: currentLanguage,

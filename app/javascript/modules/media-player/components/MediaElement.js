@@ -223,6 +223,14 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     });
 
+    // Update text track labels when locale changes
+    useEffect(() => {
+        if (playerRef.current && interview.transcript_coupled) {
+            addTextTracks();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [locale, interview.transcript_coupled]);
+
     function addTextTracks() {
         if (!interview.transcript_coupled) return;
 
