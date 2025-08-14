@@ -5,14 +5,6 @@ import videojs from 'video.js';
 // Import the necessary Video.js components
 const Button = videojs.getComponent('Button');
 
-// Helper to get translations from plugin options
-const getTranslation = (translations, key, defaultValue) => {
-    if (translations && translations[key]) {
-        return translations[key];
-    }
-    return defaultValue;
-};
-
 // Create custom forward button class
 class CustomForwardButton extends Button {
     constructor(player, options) {
@@ -20,11 +12,8 @@ class CustomForwardButton extends Button {
         this.addClass('vjs-custom-skip-forward');
 
         const translations = options.translations || {};
-        const stepText = getTranslation(
-            translations,
-            'skipForward',
-            'Forward ' + options.step + ' seconds'
-        );
+        const stepText =
+            translations.skipForward || `Forward ${options.step || 5} seconds`;
         this.controlText(stepText);
     }
 
@@ -56,11 +45,8 @@ class CustomBackwardButton extends Button {
         this.addClass('vjs-custom-skip-backward');
 
         const translations = options.translations || {};
-        const stepText = getTranslation(
-            translations,
-            'skipBack',
-            'Backward ' + options.step + ' seconds'
-        );
+        const stepText =
+            translations.skipBack || `Backward ${options.step || 5} seconds`;
         this.controlText(stepText);
     }
 
@@ -93,6 +79,27 @@ videojs.registerComponent('CustomBackwardButton', CustomBackwardButton);
 function customSkipButtonsPlugin(options = {}) {
     const player = this;
     const translations = options.translations || {};
+
+    // Function to update button translations
+    const updateTranslations = (newTranslations) => {
+        const forwardButton = player.controlBar.getChild('CustomForwardButton');
+        const backwardButton = player.controlBar.getChild(
+            'CustomBackwardButton'
+        );
+
+        if (forwardButton && newTranslations.skipForward) {
+            forwardButton.controlText(newTranslations.skipForward);
+        }
+
+        if (backwardButton && newTranslations.skipBack) {
+            backwardButton.controlText(newTranslations.skipBack);
+        }
+    };
+
+    // Listen for plugin translation updates
+    player.on('pluginTranslationsUpdated', (event, newTranslations) => {
+        updateTranslations(newTranslations);
+    });
 
     // Run on ready to make sure the control bar exists
     player.ready(() => {
