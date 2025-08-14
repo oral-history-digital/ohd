@@ -1,13 +1,16 @@
-import { useI18n } from 'modules/i18n';
+import { getLocale, getTranslations } from 'modules/archive';
 import { useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import videojs from 'video.js';
 import langDe from 'video.js/dist/lang/de.json';
 import langEl from 'video.js/dist/lang/el.json';
 import langEn from 'video.js/dist/lang/en.json';
 import langEs from 'video.js/dist/lang/es.json';
 import langRu from 'video.js/dist/lang/ru.json';
-import { VIDEOJS_I18N_KEY_MAP } from '../constants';
-
+import {
+    VIDEOJS_I18N_KEY_MAP,
+    VIDEOJS_PLUGIN_TRANSLATION_MAP,
+} from '../constants';
 const LANGS = [
     { code: 'de', native: langDe },
     { code: 'el', native: langEl },
@@ -24,78 +27,107 @@ const LANGS = [
  * for Video.js player controls and messages.
  *
  * How it works:
- * 1. Detects the current language from the i18n system
+ * 1. Detects the current language from the Redux store (via getLocale)
  * 2. Loads the corresponding Video.js native language strings as base
  * 3. Checks our i18n system for custom translations using VIDEOJS_I18N_KEY_MAP
  * 4. Overrides Video.js strings with custom translations when available
  * 5. Registers the merged language strings with Video.js
  * 6. Sets the language as active in Video.js
+ * 7. Provides plugin translations for custom components
  *
- * @returns {Object|null} Object with language code and merged strings, or null if not ready
+ * @returns {Object|null} Object with language code, merged strings, and plugin translations, or null if not ready
  * @returns {string} returns.language - Current language code (e.g., 'en', 'de')
  * @returns {Object} returns.strings - Complete Video.js language strings with custom overrides
+ * @returns {Object} returns.pluginTranslations - Translations for custom plugins
  */
 function useVideojsLanguages() {
-    const { t, i18n } = useI18n();
+    const currentLanguage = useSelector(getLocale);
+    const translations = useSelector(getTranslations);
 
-    // Get current language
-    const currentLanguage = useMemo(() => {
-        return (
-            i18n?.language ||
-            i18n?.lng ||
-            document.documentElement.lang ||
-            navigator.language?.substring(0, 2) ||
-            'de'
+    // Create a stable key based on current language and available translations
+    const translationKey = useMemo(() => {
+        // Create a stable key from language + available translation keys
+        const availableKeys = Object.keys(translations).filter((key) =>
+            key.startsWith('media_player.')
         );
-    }, [i18n?.language, i18n?.lng]);
+        return `${currentLanguage}-${availableKeys.sort().join(',')}`;
+    }, [currentLanguage, translations]);
 
     // Create custom language strings with i18n overrides
     const customLanguageStrings = useMemo(() => {
-        if (!t || typeof t !== 'function') {
+        if (!translationKey || !translations) {
             return null;
         }
 
         // Find the native language data
         const langData = LANGS.find((lang) => lang.code === currentLanguage);
         if (!langData) {
+            console.warn(`No language data found for: ${currentLanguage}`);
             return null;
         }
+
+        console.log(
+            `📚 Using native base: ${langData.code}`,
+            Object.keys(langData.native).slice(0, 5)
+        );
 
         // Start with native strings and apply custom overrides
         const languageStrings = { ...langData.native };
 
+        let overrideCount = 0;
+
         Object.keys(VIDEOJS_I18N_KEY_MAP).forEach((nativeKey) => {
             const i18nKey = VIDEOJS_I18N_KEY_MAP[nativeKey];
-            try {
-                const translated = t(i18nKey);
-                if (
-                    translated &&
-                    typeof translated === 'string' &&
-                    translated !== i18nKey
-                ) {
-                    languageStrings[nativeKey] = translated;
-                }
-            } catch (error) {
-                // Silently ignore translation errors
+
+            // Check if we have a translation for this key in our translations object
+            if (
+                translations[i18nKey] &&
+                translations[i18nKey][currentLanguage]
+            ) {
+                const translated = translations[i18nKey][currentLanguage];
+                console.log(`🔧 Override: "${nativeKey}" -> "${translated}"`);
+                languageStrings[nativeKey] = translated;
+                overrideCount++;
             }
         });
 
-        return { language: currentLanguage, strings: languageStrings };
-    }, [t, currentLanguage]);
+        // Create plugin translations object
+        const pluginTranslations = {};
 
-    // Apply the custom language strings to Video.js
+        Object.keys(VIDEOJS_PLUGIN_TRANSLATION_MAP).forEach((pluginKey) => {
+            const i18nKey = VIDEOJS_PLUGIN_TRANSLATION_MAP[pluginKey];
+            if (
+                translations[i18nKey] &&
+                translations[i18nKey][currentLanguage]
+            ) {
+                pluginTranslations[pluginKey] =
+                    translations[i18nKey][currentLanguage];
+                console.log(
+                    `🔌 Plugin translation: "${pluginKey}" -> "${translations[i18nKey][currentLanguage]}"`
+                );
+            }
+        });
+
+        console.log(
+            `✅ Built ${currentLanguage} with ${overrideCount} overrides and ${
+                Object.keys(pluginTranslations).length
+            } plugin translations`
+        );
+
+        return {
+            language: currentLanguage,
+            strings: languageStrings,
+            pluginTranslations,
+        };
+    }, [translationKey, currentLanguage, translations]);
+
+    // Apply the custom language strings to Video.js globally
     useEffect(() => {
-        if (!customLanguageStrings) {
-            return;
+        if (customLanguageStrings) {
+            const { language, strings } = customLanguageStrings;
+            // Only add the language strings to Video.js, don't set as current
+            videojs.addLanguage(language, strings);
         }
-
-        const { language, strings } = customLanguageStrings;
-
-        // Add the language with custom strings
-        videojs.addLanguage(language, strings);
-
-        // Set as current language
-        videojs.options.language = language;
     }, [customLanguageStrings]);
 
     return customLanguageStrings;

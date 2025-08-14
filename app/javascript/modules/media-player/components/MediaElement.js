@@ -314,10 +314,14 @@ export default function MediaElement({
 
         player.configurationMenuPlugin();
         player.toggleSizePlugin({
-            buttonTitle: t('media_player.toggle_size_button'),
+            buttonTitle:
+                player.pluginTranslations?.toggleSize ||
+                t('media_player.toggle_size_button'),
         });
+
+        // Use centralized plugin translations from the hook
         player.customSkipButtonsPlugin({
-            translations: {
+            translations: player.pluginTranslations || {
                 skipBack: t('media_player.skip_backwards'),
                 skipForward: t('media_player.skip_forwards'),
             },
@@ -331,7 +335,7 @@ export default function MediaElement({
         player.configurationMenuPlugin({
             playbackRates: videoJsOptions.playbackRates,
             qualities: qualities,
-            translations: {
+            translations: player.pluginTranslations || {
                 playbackRate: t('media_player.playback_rate'),
                 playbackQuality: t('media_player.playback_quality'),
             },

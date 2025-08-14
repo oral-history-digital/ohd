@@ -54,6 +54,44 @@ export default function VideoJS({
         }
     }, [options, videoRef, onReady, onEnded, customLanguages]);
 
+    // Update player language when customLanguages changes
+    useEffect(() => {
+        const player = playerRef.current;
+
+        if (player && customLanguages) {
+            const { language, strings } = customLanguages;
+            const currentPlayerLanguage = player.language();
+
+            // Only update if the language actually changed
+            if (currentPlayerLanguage !== language) {
+                // Add/update the language strings in Video.js
+                videojs.addLanguage(language, strings);
+
+                // Set the player's language
+                player.language(language);
+
+                // Force refresh the player UI to apply new language strings
+                if (
+                    player.controlBar &&
+                    typeof player.controlBar.update === 'function'
+                ) {
+                    player.controlBar.update();
+                }
+            }
+
+            // Store plugin translations on the player instance so plugins can access them
+            if (customLanguages.pluginTranslations) {
+                player.pluginTranslations = customLanguages.pluginTranslations;
+
+                // Trigger an event so plugins can update their translations
+                player.trigger(
+                    'pluginTranslationsUpdated',
+                    customLanguages.pluginTranslations
+                );
+            }
+        }
+    }, [customLanguages]);
+
     // Dispose the Video.js player when the functional component unmounts
     useEffect(() => {
         const player = playerRef.current;
