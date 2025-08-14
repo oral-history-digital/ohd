@@ -162,3 +162,33 @@ export const VIDEOJS_PLUGIN_TRANSLATION_MAP = {
     playbackRate: 'media_player.playback_rate',
     playbackQuality: 'media_player.playback_quality',
 };
+
+// Language codes (used for subtitle language names)
+export const VIDEOJS_SUBTITLE_LANGUAGES = [
+    'ar',
+    'bg',
+    'bs',
+    'ca',
+    'cs',
+    'de',
+    'el',
+    'en',
+    'es',
+    'fr',
+    'he',
+    'hr',
+    'hu',
+    'it',
+    'lv',
+    'mk',
+    'nl',
+    'no',
+    'pl',
+    'ro',
+    'ru',
+    'sk',
+    'sl',
+    'sr',
+    'tr',
+    'uk',
+];
