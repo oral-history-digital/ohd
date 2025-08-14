@@ -8,17 +8,8 @@ import videoJsQualitySelector from '@silvermine/videojs-quality-selector';
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 videoJsQualitySelector(videojs);
 
-// Languages
-import langDe from 'video.js/dist/lang/de.json';
-import langEl from 'video.js/dist/lang/el.json';
-import langEn from 'video.js/dist/lang/en.json';
-import langEs from 'video.js/dist/lang/es.json';
-import langRu from 'video.js/dist/lang/ru.json';
-videojs.addLanguage('de', langDe);
-videojs.addLanguage('el', langEl);
-videojs.addLanguage('en', langEn);
-videojs.addLanguage('es', langEs);
-videojs.addLanguage('ru', langRu);
+// Custom hook for Video.js translations override
+import useVideojsLanguages from '../hooks/useVideojsLanguages';
 
 export default function VideoJS({
     className,
@@ -30,6 +21,9 @@ export default function VideoJS({
     const videoRef = useRef(null);
     const playerRef = useRef(null);
 
+    // Use the hook to set up custom translations
+    const customLanguages = useVideojsLanguages();
+
     useEffect(() => {
         // make sure Video.js player is only initialized once
         if (!playerRef.current) {
@@ -38,9 +32,13 @@ export default function VideoJS({
                 return;
             }
 
-            const player = playerRef.current = videojs(videoElement, options, () => {
-                onReady && onReady(player);
-            });
+            const player = (playerRef.current = videojs(
+                videoElement,
+                options,
+                () => {
+                    onReady && onReady(player);
+                }
+            ));
         } else {
             // you can update player here [update player through props]
             // const player = playerRef.current;
@@ -54,7 +52,7 @@ export default function VideoJS({
                 player.on('ended', onEnded);
             }
         }
-    }, [options, videoRef, onEnded]);
+    }, [options, videoRef, onReady, onEnded, customLanguages]);
 
     // Dispose the Video.js player when the functional component unmounts
     useEffect(() => {
@@ -68,23 +66,16 @@ export default function VideoJS({
         };
     }, [playerRef]);
 
-    const mediaElementClassName = 'MediaElement-element video-js vjs-default-skin';
+    const mediaElementClassName =
+        'MediaElement-element video-js vjs-default-skin';
 
     return (
         <div data-vjs-player className={className}>
-            {
-                type === 'audio' ? (
-                    <audio
-                        ref={videoRef}
-                        className={mediaElementClassName}
-                    />
-                ) : (
-                    <video
-                        ref={videoRef}
-                        className={mediaElementClassName}
-                    />
-                )
-            }
+            {type === 'audio' ? (
+                <audio ref={videoRef} className={mediaElementClassName} />
+            ) : (
+                <video ref={videoRef} className={mediaElementClassName} />
+            )}
         </div>
     );
 }
@@ -94,5 +85,5 @@ VideoJS.propTypes = {
     type: PropTypes.oneOf(['audio', 'video']).isRequired,
     options: PropTypes.object,
     onReady: PropTypes.func,
-    onEnded: PropTypes.func
+    onEnded: PropTypes.func,
 };
