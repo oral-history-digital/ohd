@@ -4,16 +4,16 @@ import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
-import { usePosterImage } from '../hooks';
+import { usePosterImage } from '../hooks/index.js';
 import {
     getQualityLabel,
     humanTimeToSeconds,
     mediaStreamsToSources,
-} from '../utils';
+} from '../utils/index.js';
 import VideoJS from './VideoJS';
-import './configurationMenuPlugin.js';
-import './customSkipButtonsPlugin.js';
-import './toggleSizeButtonPlugin.js';
+import '../plugins/configurationMenuPlugin.js';
+import '../plugins/customSkipButtonsPlugin.js';
+import '../plugins/toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;

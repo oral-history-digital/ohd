@@ -1,8 +1,8 @@
-import { createRoot } from 'react-dom/client';
-import videojs from 'video.js';
-import { MdOutlineFitScreen } from 'react-icons/md';
-import { SET_PLAYER_SIZE } from '../redux/action-types';
 import { isMobile } from 'modules/user-agent';
+import { createRoot } from 'react-dom/client';
+import { MdOutlineFitScreen } from 'react-icons/md';
+import videojs from 'video.js';
+import { SET_PLAYER_SIZE } from '../redux/action-types';
 
 const VjsButton = videojs.getComponent('Button');
 
