@@ -8,13 +8,13 @@ import { useProject } from 'modules/routes';
 import { setPlayerSize, getPlayerSize } from 'modules/media-player';
 import { isMobile } from 'modules/user-agent';
 import MediaPlayerTitle from './MediaPlayerTitle';
-import MediaControlsContainer from './MediaControlsContainer';
-import MediaElementContainer from './MediaElementContainer';
-import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
-import { setStoreReference } from './toggleSizeButtonPlugin';
+import MediaControlsContainer from '../containers/MediaControlsContainer';
+import MediaElementContainer from '../containers/MediaElementContainer';
+import MediaPlayerButtonsContainer from '../containers/MediaPlayerButtonsContainer';
+import { setStoreReference } from '../plugins/toggleSizeButtonPlugin';
 
 function isSmallScreen() {
-  return window.innerWidth < 1200; // screen-xl: 1200px
+    return window.innerWidth < 1200; // screen-xl: 1200px
 }
 
 export default function MediaPlayer() {
@@ -27,20 +27,22 @@ export default function MediaPlayer() {
 
     useEffect(() => {
         setStoreReference(store);
-        
+
         const shouldForceMedium = isMobile() || isSmallScreen();
-        const defaultSize = shouldForceMedium ? 'medium' : (playerSize || 'medium');
-        
+        const defaultSize = shouldForceMedium
+            ? 'medium'
+            : playerSize || 'medium';
+
         if (!playerSize || (shouldForceMedium && playerSize !== 'medium')) {
             dispatch(setPlayerSize(defaultSize));
         }
-        
+
         const handleResize = () => {
             if (shouldForceMedium && playerSize !== 'medium') {
                 dispatch(setPlayerSize('medium'));
             }
         };
-        
+
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -57,8 +59,10 @@ export default function MediaPlayer() {
 
     function customMediaMissingTextAvailable() {
         const translation = projectTranslation();
-        return (typeof translation?.media_missing_text === 'string')
-            && translation.media_missing_text.trim().length > 0;
+        return (
+            typeof translation?.media_missing_text === 'string' &&
+            translation.media_missing_text.trim().length > 0
+        );
     }
 
     function customMediaMissingText() {
@@ -72,20 +76,18 @@ export default function MediaPlayer() {
     }
 
     return (
-        <div
-            className={classNames('Layout-mediaPlayer', 'MediaPlayer')}
-        >
-            <header className={classNames('MediaHeader', {
-                'MediaHeader--mediaMissing': interview.media_missing,
-            })}>
+        <div className={classNames('Layout-mediaPlayer', 'MediaPlayer')}>
+            <header
+                className={classNames('MediaHeader', {
+                    'MediaHeader--mediaMissing': interview.media_missing,
+                })}
+            >
                 <MediaPlayerTitle className="MediaHeader-title" />
                 <MediaControlsContainer className="MediaHeader-controls" />
             </header>
 
             {interview.media_missing ? (
-                <p className="MediaMissing">
-                    {mediaMissingText()}
-                </p>
+                <p className="MediaMissing">{mediaMissingText()}</p>
             ) : (
                 <MediaElementContainer />
             )}

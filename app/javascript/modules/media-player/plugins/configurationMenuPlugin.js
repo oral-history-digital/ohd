@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import videojs from 'video.js';
-import ConfigurationMenu from './ConfigurationMenu';
+import ConfigurationMenu from '../components/ConfigurationMenu';
 
 const VjsButton = videojs.getComponent('Button');
 

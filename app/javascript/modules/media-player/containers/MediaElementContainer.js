@@ -18,7 +18,7 @@ import {
     getTimeChangeRequest,
     getTimeChangeRequestAvailable,
 } from '../redux/selectors';
-import MediaElement from './MediaElement';
+import MediaElement from '../media/MediaElement';
 
 const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
