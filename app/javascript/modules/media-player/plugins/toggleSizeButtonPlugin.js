@@ -1,8 +1,8 @@
-import { createRoot } from 'react-dom/client';
-import videojs from 'video.js';
-import { MdOutlineFitScreen } from 'react-icons/md';
-import { SET_PLAYER_SIZE } from '../redux/action-types';
 import { isMobile } from 'modules/user-agent';
+import { createRoot } from 'react-dom/client';
+import { MdOutlineFitScreen } from 'react-icons/md';
+import videojs from 'video.js';
+import { SET_PLAYER_SIZE } from '../redux/action-types';
 
 const VjsButton = videojs.getComponent('Button');
 
@@ -57,6 +57,14 @@ class ToggleSizeButton extends VjsButton {
         this.subtitleTrackWasEnabled = false; // Track subtitle state
         this.lastActiveTrackIndex = -1; // Track which track was active
 
+        // Set initial button title from plugin translations or fallback
+        const initialTitle =
+            (player.pluginTranslations &&
+                player.pluginTranslations.toggleSize) ||
+            options.buttonTitle ||
+            'Toggle player size';
+        this.updateButtonTitle(initialTitle);
+
         /* Hide on compact viewports right from the start */
         if (isCompactViewport()) this.hide();
 
@@ -67,6 +75,27 @@ class ToggleSizeButton extends VjsButton {
         /* Handle fullscreen changes */
         this.handleFullscreenChange = this.handleFullscreenChange.bind(this);
         this.player_.on('fullscreenchange', this.handleFullscreenChange);
+
+        /* Listen for plugin translation updates */
+        this.handleTranslationUpdate = this.handleTranslationUpdate.bind(this);
+        this.player_.on(
+            'pluginTranslationsUpdated',
+            this.handleTranslationUpdate
+        );
+    }
+
+    updateButtonTitle(title) {
+        this.controlText(title);
+        // Update the title attribute on the DOM element if it exists
+        if (this.el() && this.el().setAttribute) {
+            this.el().setAttribute('title', title);
+        }
+    }
+
+    handleTranslationUpdate(event, newTranslations) {
+        if (newTranslations && newTranslations.toggleSize) {
+            this.updateButtonTitle(newTranslations.toggleSize);
+        }
     }
 
     /* -------- event handlers ---------------------------------------- */
@@ -194,9 +223,15 @@ class ToggleSizeButton extends VjsButton {
     /* -------- Video.js required overrides --------------------------- */
 
     createEl() {
+        const initialTitle =
+            (this.player_.pluginTranslations &&
+                this.player_.pluginTranslations.toggleSize) ||
+            this.options_.buttonTitle ||
+            'Toggle player size';
+
         const el = super.createEl('button', {
             className: 'vjs-control vjs-button vjs-toggle-size-button',
-            title: this.options_.buttonTitle,
+            title: initialTitle,
         });
 
         /* Render icon with React inside the native Video.js button */
@@ -212,6 +247,10 @@ class ToggleSizeButton extends VjsButton {
     dispose() {
         window.removeEventListener('resize', this.handleResize);
         this.player_.off('fullscreenchange', this.handleFullscreenChange);
+        this.player_.off(
+            'pluginTranslationsUpdated',
+            this.handleTranslationUpdate
+        );
         super.dispose();
     }
 }

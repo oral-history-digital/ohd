@@ -11,3 +11,6 @@ export const DEFAULT_AUDIO_RESOLUTION = '192k';
 export const MEDIA_PLAYER_HEIGHT_SMALL = 12.5 * ONE_REM;
 export const MEDIA_PLAYER_HEIGHT_MEDIUM = 28 * ONE_REM;
 export const MEDIA_PLAYER_HEIGHT_MOBILE = 20 * ONE_REM;
+
+// Re-export translations constants
+export * from './translations';
