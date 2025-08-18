@@ -31,10 +31,12 @@
                 },
                 "[json]": {
                     "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[ruby]": {
+                    "editor.formatOnSave": true
                 }
             },
             "extensions": [
-                "shopify.ruby-lsp",
                 "ms-azuretools.vscode-docker",
                 "dbaeumer.vscode-eslint",
                 "github.copilot",
