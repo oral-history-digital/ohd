@@ -1,0 +1,22 @@
+# Minimal deployment environment
+# Uses host networking for VPN access, no development services
+services:
+    app:
+        build:
+            context: ..
+            dockerfile: .devcontainer/Dockerfile
+        network_mode: host
+        env_file:
+            - ./.env
+        volumes:
+            # Mount SSH key from host
+            - ${SSH_KEY_PATH:-/dev/null}:/root/.ssh/id_deploy:ro
+            # Mount source code
+            - ..:/workspace:cached
+        working_dir: /workspace
+        # Keep container running for deployment tasks
+        command: sleep infinity
+        # Add deployment-specific environment variables
+        environment:
+            - RAILS_ENV=development
+            - DEPLOYMENT_MODE=true

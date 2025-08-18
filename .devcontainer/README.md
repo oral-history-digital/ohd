@@ -1,8 +1,15 @@
 # Oral History Digital Developer Guide
 
-This guide covers how to set up and run the Oral History Digital application in a development environment using VS Code Dev Containers.
+This guide covers how to set up and run the Oral History Digital application using VS Code Dev Containers.
 
-## Getting Started
+## Two Container Environments
+
+This project provides two separate devcontainer environments:
+
+1. **Development Environment** (`.devcontainer/dev/`) - Full development setup with Solr, database, etc.
+2. **Deployment Environment** (`.devcontainer/deploy/`) - Minimal environment for deployment tasks only
+
+## Getting Started (Development)
 
 1. Install [Docker](https://www.docker.com/get-started) on your machine. Ensure you have Docker version 20.10.7 or later.
 2. Install [Visual Studio Code](https://code.visualstudio.com/).
@@ -10,9 +17,56 @@ This guide covers how to set up and run the Oral History Digital application in 
 4. Clone this repository.
 5. Open the repository in Visual Studio Code.
 6. Download the database dump and place it as `dump.sql.gz` in `.devcontainer/db/`.
-7. When prompted, click on "Reopen in Container" to start the development container.
+7. When prompted, choose "OHD Development" from the dropdown to start the development container.
 
-## Setup Process
+## Switching Between Environments
+
+### First Time Setup
+
+1. **Close VS Code completely**
+2. **Reopen your workspace folder**
+3. **VS Code will automatically detect multiple devcontainer configurations**
+4. **Choose:** "OHD Development" or "OHD Deploy" from the dropdown
+
+### Switching Between Environments
+
+1. In your workspace outside the devcontainer, **press `Ctrl+Shift+P`**
+2. **Type:** `Dev Containers: Reopen in Container`
+3. **Choose:** "OHD Development" or "OHD Deploy" from the dropdown
+
+## Development Environment
+
+Use the **Development Environment** for development work.
+
+### What's Included
+- Full Rails application stack
+- MySQL database with sample data
+- Solr search engine
+- Webpack dev server
+- All development dependencies
+
+### Network Mode
+- Bridge mode (Docker services work normally)
+- No VPN access from container
+
+## Deployment Environment
+
+Use the **Deployment Environment** for deployment tasks only. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions.
+
+### What's Included
+- Minimal Ruby environment
+- Deployment tools (Capistrano)
+- SSH configuration
+
+### What's NOT Included
+- Database (cannot run migrations or seed data)
+- Solr (cannot reindex or search)
+- Webpack dev server
+
+### Network Mode
+- Host mode (full VPN access for deployment)
+
+## Setup Process (Development Environment)
 
 The Dev Container setup uses a pre-built base image for faster startup times. The setup process includes:
 
@@ -88,13 +142,28 @@ After starting the application, you can access it at:
 - Admin login: `alice@example.com`
 - Password: `password`
 
-## Container Components
+## Container Components (Development Environment)
 
 The development environment consists of three services:
 
 - `app`: The main Rails application container
 - `db`: MariaDB 10.5 database
 - `solr`: Solr 8 search engine
+
+## Development vs Deployment
+
+| Feature | Development Environment | Deployment Environment |
+|---------|------------------------|------------------------|
+| **Purpose** | Development | Deployment tasks only |
+| **Database** | ✅ Full MySQL setup | ❌ Not available |
+| **Solr** | ✅ Search indexing | ❌ Not available |
+| **VPN Access** | ❌ Not available | ✅ Full access |
+| **Network Mode** | Bridge | Host |
+| **Size** | Large (full stack) | Minimal |
+
+## Deployment
+
+For deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Development Notes
 
