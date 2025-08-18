@@ -1,10 +1,10 @@
 {
     "name": "OHD Deploy",
-    "dockerComposeFile": ["../docker-compose.deploy.yml"],
+    "dockerComposeFile": ["./docker-compose.yml"],
     "service": "app",
     "workspaceFolder": "/workspace",
     "remoteUser": "root",
-    "postCreateCommand": ".devcontainer/scripts/setup-ssh-config.sh",
+    "postCreateCommand": "bash .devcontainer/scripts/setup-ssh-config.sh",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -15,6 +15,3 @@
                 "terminal.integrated.defaultProfile.linux": "bash"
             }
         }
-    },
-    "shutdownAction": "stopCompose"
-}

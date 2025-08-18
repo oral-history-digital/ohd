@@ -10,7 +10,7 @@ This project provides two separate devcontainer environments:
 1. **Copy the example environment file:**
 
     ```bash
-    cp .devcontainer/.env.example .devcontainer/.env
+    cp .devcontainer/deploy/.env.example .devcontainer/.env
     ```
 
 2. **Edit `.devcontainer/.env`** with your actual deployment configuration:

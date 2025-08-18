@@ -51,7 +51,7 @@ Use the **Development Environment** for development work.
 
 ## Deployment Environment
 
-Use the **Deployment Environment** for deployment tasks only. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions.
+See [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md) for detailed setup instructions.
 
 ### What's Included
 - Minimal Ruby environment
@@ -163,7 +163,7 @@ The development environment consists of three services:
 
 ## Deployment
 
-For deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+For deployment instructions, see [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md).
 
 ## Development Notes
 

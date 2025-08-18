@@ -2,7 +2,7 @@
     "name": "Oral History Digital Dev Container",
 
     // Point at your Compose file(s)
-    "dockerComposeFile": ["../docker-compose.yml"],
+    "dockerComposeFile": ["./docker-compose.yml"],
     "service": "app",
     "workspaceFolder": "/workspace",
 
@@ -42,5 +42,6 @@
                 "esbenp.prettier-vscode"
             ]
         }
-    }
+    },
+    "shutdownAction": "stopCompose"
 }
