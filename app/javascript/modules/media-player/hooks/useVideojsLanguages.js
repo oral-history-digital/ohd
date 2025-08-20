@@ -1,4 +1,8 @@
-import { getLocale, getTranslations } from 'modules/archive';
+import {
+    getLocale,
+    getTranslations,
+    getTranslationsView,
+} from 'modules/archive';
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import videojs from 'video.js';
@@ -43,6 +47,7 @@ const LANGS = [
 function useVideojsLanguages() {
     const currentLanguage = useSelector(getLocale);
     const translations = useSelector(getTranslations);
+    const isTranslationsView = useSelector(getTranslationsView);
 
     // Create a stable key from available media_player.* translation keys
     const translationKey = useMemo(() => {
@@ -71,13 +76,18 @@ function useVideojsLanguages() {
         Object.keys(VIDEOJS_I18N_KEY_MAP).forEach((nativeKey) => {
             const i18nKey = VIDEOJS_I18N_KEY_MAP[nativeKey];
 
-            // Check if we have a translation for this key in our translations object
-            if (
-                translations[i18nKey] &&
-                translations[i18nKey][currentLanguage]
-            ) {
-                const translated = translations[i18nKey][currentLanguage];
-                languageStrings[nativeKey] = translated;
+            if (isTranslationsView) {
+                // If translations view is enabled, use the translation key directly
+                languageStrings[nativeKey] = i18nKey;
+            } else {
+                // Check if we have a translation for this key in our translations object
+                if (
+                    translations[i18nKey] &&
+                    translations[i18nKey][currentLanguage]
+                ) {
+                    const translated = translations[i18nKey][currentLanguage];
+                    languageStrings[nativeKey] = translated;
+                }
             }
         });
 
@@ -86,12 +96,18 @@ function useVideojsLanguages() {
 
         Object.keys(VIDEOJS_PLUGIN_TRANSLATION_MAP).forEach((pluginKey) => {
             const i18nKey = VIDEOJS_PLUGIN_TRANSLATION_MAP[pluginKey];
-            if (
-                translations[i18nKey] &&
-                translations[i18nKey][currentLanguage]
-            ) {
-                pluginTranslations[pluginKey] =
-                    translations[i18nKey][currentLanguage];
+
+            if (isTranslationsView) {
+                // If translations view is enabled, use the translation key directly
+                pluginTranslations[pluginKey] = i18nKey;
+            } else {
+                if (
+                    translations[i18nKey] &&
+                    translations[i18nKey][currentLanguage]
+                ) {
+                    pluginTranslations[pluginKey] =
+                        translations[i18nKey][currentLanguage];
+                }
             }
         });
 

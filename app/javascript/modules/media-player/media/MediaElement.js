@@ -1,9 +1,11 @@
 import classNames from 'classnames';
+import { getTranslationsView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { usePosterImage } from '../hooks/index.js';
 import {
     getQualityLabel,
@@ -11,6 +13,7 @@ import {
     mediaStreamsToSources,
 } from '../utils/index.js';
 import VideoJS from './VideoJS';
+
 import '../plugins/configurationMenuPlugin.js';
 import '../plugins/customSkipButtonsPlugin.js';
 import '../plugins/toggleSizeButtonPlugin.js';
@@ -48,6 +51,7 @@ export default function MediaElement({
     const { project } = useProject();
     const playerRef = useRef(null);
     const tapeRef = useRef(tape); // Used for event handler below.
+    const isTranslationsView = useSelector(getTranslationsView);
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
@@ -252,7 +256,7 @@ export default function MediaElement({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
             language: lang, // 3-letter language code
             kind: 'captions',
-            label: t(lang),
+            label: isTranslationsView ? lang : t(lang), // Show translation key if translations view is enabled
         }));
         newTracks.forEach((newTrack) => {
             player.addRemoteTextTrack(newTrack, false);
