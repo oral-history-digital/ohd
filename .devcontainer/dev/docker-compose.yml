@@ -71,12 +71,12 @@ services:
         volumes:
             - solr-data:/var/solr
             - ../../solr/configsets:/var/solr/data/configsets
-            - ../scripts/solr-setup.sh:/usr/local/bin/solr-setup.sh:ro
+            - ../scripts/setup-solr.sh:/usr/local/bin/setup-solr.sh:ro
             - ../../:/workspace:ro
         environment:
             - SOLR_HEAP=512m
         # Use the external script for setup
-        entrypoint: ['/bin/bash', '/usr/local/bin/solr-setup.sh']
+        entrypoint: ['/bin/bash', '/usr/local/bin/setup-solr.sh']
         healthcheck:
             test:
                 [
