@@ -10,7 +10,6 @@ import langRu from 'video.js/dist/lang/ru.json';
 import {
     VIDEOJS_I18N_KEY_MAP,
     VIDEOJS_PLUGIN_TRANSLATION_MAP,
-    VIDEOJS_SUBTITLE_LANGUAGES,
 } from '../constants';
 const LANGS = [
     { code: 'de', native: langDe },
@@ -45,14 +44,10 @@ function useVideojsLanguages() {
     const currentLanguage = useSelector(getLocale);
     const translations = useSelector(getTranslations);
 
-    // Create a stable key based on current language and available translations
+    // Create a stable key from available media_player.* translation keys
     const translationKey = useMemo(() => {
-        // Create a stable key from language + available translation keys
-        // Include both media_player.* keys and language code keys (for subtitle language names)
-        const availableKeys = Object.keys(translations).filter(
-            (key) =>
-                key.startsWith('media_player.') ||
-                VIDEOJS_SUBTITLE_LANGUAGES.includes(key)
+        const availableKeys = Object.keys(translations).filter((key) =>
+            key.startsWith('media_player.')
         );
         return `${currentLanguage}-${availableKeys.sort().join(',')}`;
     }, [currentLanguage, translations]);

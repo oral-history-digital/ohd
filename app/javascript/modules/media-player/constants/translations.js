@@ -143,13 +143,7 @@ export const VIDEOJS_I18N_KEY_MAP = {
 // These keys are used by custom Video.js plugins to get translations
 // from our centralized translation system. When adding new plugins,
 // add their translation keys here.
-//
-// Available keys in the database:
-// - media_player.skip_backwards
-// - media_player.skip_forwards
-// - media_player.toggle_size_button
-// - media_player.playback_rate
-// - media_player.playback_quality
+
 export const VIDEOJS_PLUGIN_TRANSLATION_MAP = {
     // Skip buttons plugin
     skipBack: 'media_player.skip_backwards',
@@ -162,33 +156,3 @@ export const VIDEOJS_PLUGIN_TRANSLATION_MAP = {
     playbackRate: 'media_player.playback_rate',
     playbackQuality: 'media_player.playback_quality',
 };
-
-// Language codes (used for subtitle language names)
-export const VIDEOJS_SUBTITLE_LANGUAGES = [
-    'ar',
-    'bg',
-    'bs',
-    'ca',
-    'cs',
-    'de',
-    'el',
-    'en',
-    'es',
-    'fr',
-    'he',
-    'hr',
-    'hu',
-    'it',
-    'lv',
-    'mk',
-    'nl',
-    'no',
-    'pl',
-    'ro',
-    'ru',
-    'sk',
-    'sl',
-    'sr',
-    'tr',
-    'uk',
-];
