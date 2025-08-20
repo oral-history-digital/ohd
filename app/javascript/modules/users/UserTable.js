@@ -195,6 +195,7 @@ export default function UserTable() {
                     optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
                     handleChange={handleWorkflowStateFilterChange}
                     withEmpty={false}
+                    keepOrder={true}
                 />
                 { project.available_locales.length > 1 && <SelectContainer
                     className="u-mb-small"

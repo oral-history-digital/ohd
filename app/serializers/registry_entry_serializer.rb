@@ -26,12 +26,12 @@ class RegistryEntrySerializer < ApplicationSerializer
 
   def latitude
     # exclude dedalo default location (Valencia)
-    object.latitude == '39.462571' ? nil : object.latitude
+    object.latitude == '39.462571' ? 0 : object.latitude.to_f
   end
 
   def longitude
     # exclude dedalo default location (Valencia)
-    object.longitude == '-0.376295' ? nil : object.longitude
+    object.longitude == '-0.376295' ? 0 : object.longitude.to_f
   end
 
   def parent_registry_hierarchy_ids

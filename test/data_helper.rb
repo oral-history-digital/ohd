@@ -273,6 +273,10 @@ module DataHelper
           InterviewLanguage.new(
             language: Language.create!(code: 'ger', name: 'Deutsch', locale: 'de'),
             spec: 'primary_translation'
+          ),
+          InterviewLanguage.new(
+            language: Language.create!(code: 'eng', name: 'Englisch', locale: 'de'),
+            spec: 'secondary_translation'
           )
         ],
       )

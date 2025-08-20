@@ -7,6 +7,7 @@ class MetadataImportTest < ActiveSupport::TestCase
     Interview.destroy_all
     @language = Language.find_or_create_by(code: "ger", name: "Deutsch")
     Language.find_or_create_by(code: "pol", name: "Polnisch")
+    Language.find_or_create_by(code: "fre", name: "Französisch")
 
     @project = DataHelper.project_with_contribution_types_and_metadata_fields
 
@@ -30,8 +31,12 @@ class MetadataImportTest < ActiveSupport::TestCase
     assert_equal 6, Person.count
 
     interview = Interview.last
-    assert_equal "Deutsch", interview.language.name
+    assert_equal "ger", interview.language.code
+    assert_equal "pol", interview.secondary_language.code
+    assert_equal "eng", interview.primary_translation_language.code
+    assert_equal "fre", interview.secondary_translation_language.code
     assert_equal "03/03/20", interview.interview_date
+    assert_equal "2018", interview.publication_date
     assert_equal "video", interview.media_type
     assert_equal 9000, interview.duration
     assert_equal "am Abend sah man die Wolken", interview.observations
@@ -85,10 +90,13 @@ class MetadataImportTest < ActiveSupport::TestCase
     assert_equal 6, Person.count
 
     interview = Interview.last
-    assert_equal "Deutsch", interview.language.name
-    assert_equal "English", interview.primary_translation_language.name
+    assert_equal "ger", interview.language.code
+    assert_equal "pol", interview.secondary_language.code
+    assert_equal "eng", interview.primary_translation_language.code
+    assert_equal "fre", interview.secondary_translation_language.code
     assert_includes interview.alpha3s, 'pol'
     assert_equal "05/03/20", interview.interview_date
+    assert_equal "2019", interview.publication_date
     assert_equal "audio", interview.media_type
     assert_equal 9600, interview.duration
     assert_equal "am Abend sah man die Schwalben", interview.observations

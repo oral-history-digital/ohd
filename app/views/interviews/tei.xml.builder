@@ -1,22 +1,66 @@
 xml.instruct!
 xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org/ns/1.0" do
 
-  xml.idno type: "RANDOM-ID" do
+  xml.idno type: "Interview-ID" do
     interview.archive_id
+  end
+
+  xml.idno type: "Originalsignatur" do
+    interview.signature_original
+  end
+
+  xml.idno type: "OAI" do
+    interview.oai_identifier
   end
 
   xml.teiHeader do
 
     xml.fileDesc do
+      xml.titleStmt do
+        xml.title interview.oai_title(locale)
+      end
+
+      xml.publicationStmt do
+        xml.publisher interview.oai_publisher(locale)
+        xml.date interview.oai_date
+        xml.p "This is a TEI document for the interview with ID: #{interview.archive_id}."
+      end
+
+      xml.sourceDesc do
+        xml.recordingStmt do
+          interview.tapes.each do |tape|
+            xml.recording type: interview.media_type, "xml:id": "#{interview.media_type}_#{tape.number}" do
+              xml.media type: interview.oai_format#, url: tape.media_url(locale)
+              xml.duration tape.duration if tape.duration
+            end
+          end
+        end
+      end
     end
 
     xml.profileDesc do
+      xml.langUsage do
+        xml.language "xml:lang": interview.alpha3 do
+          xml.text "This interview is in #{interview.alpha3}."
+        end
+        interview.alpha3s_with_transcript.each do |alpha3|
+          xml.language "xml:lang": alpha3 do
+            xml.text "This interview is available in #{alpha3} with a transcript."
+          end
+        end
+      end
+
+      xml.abstract do
+      end
+
       xml.particDesc do
         interview.contributors.each do |contributor|
           xml.person "xml:id": "p#{contributor.id}", sex: contributor.gender do
-            xml.givenName contributor.first_name(locale)
-            if interview.project.fullname_on_landing_page
-              xml.familyName contributor.last_name(locale)
+            xml.persName do
+              xml.foreName contributor.first_name(locale)
+              if interview.project.fullname_on_landing_page
+                xml.surName contributor.last_name(locale)
+              end
             end
           end
         end
@@ -35,47 +79,66 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
   end
 
   xml.text "xml:lang": locale do
-    xml.timeline unit: "s" do
-      xml.when "xml:id": "T_START", interval: "0.0", since: "T_START"
-      interview.tapes.each do |tape|
+    interview.tapes.each do |tape|
+      #<timeline unit="s" corresp="video2>
+      xml.timeline unit: "s", corresp: "#{interview.media_type}_#{tape.number}" do
+        xml.when "xml:id": "T#{tape.number}_START", interval: "0.0", since: "T#{tape.number}_START"
+
         tape.segments.each do |segment|
-          xml.when "xml:id": "T#{tape.number}_S#{segment.id}", interval: segment.time, since: "T_START"
+          xml.when "xml:id": "T#{tape.number}_S#{segment.id}", interval: segment.time, since: "T#{tape.number}_START"
         end
+
+        xml.when "xml:id": "T#{tape.number}_END", interval: tape.duration, since: "T#{tape.number}_START"
       end
-      xml.when "xml:id": "T_END", interval: interview.duration, since: "T_START"
     end
 
     interview.tapes.each do |tape|
       tape.segments.each do |segment|
 
-        ordinary_text_parts, comments = segment.tokenized_text(interview.alpha3)
+        ordinary_text_parts, comments = Tei.new(segment.text(interview.alpha3)).tokenized_text
+        s_start = "T#{tape.number}_S#{segment.id}"
         s_end = segment.next.nil? ? "T_END" : "T#{segment.next.tape.number}_S#{segment.next.id}" 
 
         xml.annotationBlock "xml:id": "ab#{segment.id}",
           who: "p#{segment.speaker_id || segment.speaker}",
-          start: "T#{tape.number}_S#{segment.id}",
+          start: s_start,
           end: s_end do
 
           xml.u "xml:id": "u#{segment.id}" do
-            xml.seg type: "contribution", "xml:id": "s#{segment.id}" do
+            xml.seg type: "contribution", "xml:id": "s#{segment.id}", "xml:lang": interview.alpha3 do
+              xml.anchor "synch": s_start
+
               ordinary_text_parts.each do |part|
-                xml.tag!("tei:#{part[:type]}", "xmlns:tei":"http://www.tei-c.org/ns/1.0", "xml:id": "s#{segment.id}_#{part[:index]}") do
-                  xml.text! part[:content]
+                type = part[:type]
+                attributes = (part[:attributes] || {}).merge("xml:id": "s#{segment.id}_#{part[:index]}")
+
+                if part[:content]&.is_a?(Array)
+                  xml.tag!(type, attributes) do
+                    xml.tag!(part[:content].first, part[:content].last)
+                  end
+                elsif part[:content]
+                  xml.tag!(type, attributes) do
+                    xml.text!(part[:content])
+                  end
+                else
+                  xml.tag!(type, attributes)
                 end
               end
+
+              xml.anchor "synch": s_end
             end
           end
 
           comments.each do |comment|
-            xml.spanGr type: "comment" do
-              xml.span from: "s#{segment.id}_#{comment[:index]-1}", to: "s#{segment.id}_#{comment[:index]+1}", type: comment[:type] do
+            xml.spanGr type: comment[:type] do
+              xml.span from: "s#{segment.id}_#{comment[:index_from]}", to: "s#{segment.id}_#{comment[:index_to]}" do
                 xml.text! comment[:content]
               end
             end
           end
 
           xml.spanGr type: "original", "xml:id": "so#{segment.id}" do
-            xml.text! segment.text(interview.alpha3)
+            xml.text! segment.text("#{interview.alpha3}-public")
           end
 
           # translation
