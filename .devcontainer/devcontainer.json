@@ -34,7 +34,6 @@
                 }
             },
             "extensions": [
-                "shopify.ruby-lsp",
                 "ms-azuretools.vscode-docker",
                 "dbaeumer.vscode-eslint",
                 "github.copilot",
