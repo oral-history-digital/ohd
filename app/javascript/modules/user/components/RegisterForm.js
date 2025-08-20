@@ -47,7 +47,7 @@ export default function RegisterForm({
             {
                 elementType: 'select',
                 attribute: 'appellation',
-                values: ['dr', 'prof'],
+                values: ['not_specified', 'dr', 'prof'],
                 keepOrder: true,
                 withEmpty: true,
             },
@@ -208,7 +208,13 @@ export default function RegisterForm({
             }
             <Form
                 scope='user'
-                onSubmit={function(params){submitRegister(`${pathBase}/users`, params); onSubmit();}}
+                onSubmit={(params) => {
+                    if (!emailCheckResponse.registration_error) {
+                        submitRegister(`${pathBase}/users`, params); onSubmit();
+                    } else {
+                        return null; 
+                    }
+                }}
                 submitText='user.register'
                 elements={formElements()}
                 values={{

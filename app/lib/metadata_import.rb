@@ -53,6 +53,7 @@ class MetadataImport
       signature_original: row[:signature_original],
       collection_id: row[:collection_id] && find_or_create_collection(row[:collection_id], project).id,
       interview_date: row[:interview_date],
+      publication_date: row[:publication_date],
       media_type: row[:media_type] && row[:media_type].downcase,
       duration: row[:duration],
       observations: row[:observations],
@@ -65,23 +66,13 @@ class MetadataImport
 
     interview_languages_attributes = []
 
-    primary_language = find_language(row[:primary_language_id])
-    interview_languages_attributes << {
-      language: primary_language,
-      spec: 'primary'
-    } if primary_language && primary_language != interview&.primary_language
-
-    primary_translation_language = find_language(row[:primary_translation_language_id])
-    interview_languages_attributes << {
-      language: primary_translation_language,
-      spec: 'primary_translation'
-    } if primary_translation_language && primary_translation_language != interview&.primary_translation_language
-
-    secondary_language = find_language(row[:secondary_language_id])
-    interview_languages_attributes << {
-      language: secondary_language,
-      spec: 'secondary'
-    } if secondary_language && secondary_language != interview&.secondary_language
+    %w(primary secondary primary_translation secondary_translation).each do |spec|
+      language = find_language(row["#{spec}_language_id".to_sym])
+      interview_languages_attributes << {
+        language: language,
+        spec: spec
+      } if language && language != interview&.send("#{spec}_language")  
+    end
 
     interview_data[:interview_languages_attributes] = interview_languages_attributes
 

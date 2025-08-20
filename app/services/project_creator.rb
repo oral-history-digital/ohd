@@ -270,8 +270,17 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_landing_page_texts
+    landing_page_texts = {
+      de: 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.',
+      en: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      ru: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      es: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      el: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      uk: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      ar: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'
+    }
     restricted_landing_page_texts = {
-      de: 'Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail',
+      de: 'Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.',
       en: 'For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.',
       ru: 'По юридическим или этическим причинам это интервью доступно только по запросу. Пожалуйста, подайте заявку на расширенный доступ via e-mail.',
       es: 'Por razones legales o éticas, esta entrevista sólo es accesible previa solicitud. Por favor, solicite acceso ampliado via e-mail.',
@@ -281,7 +290,11 @@ class ProjectCreator < ApplicationService
     }
 
     project.available_locales.each do |locale|
-      project.update(restricted_landing_page_text: restricted_landing_page_texts[locale], locale: locale)
+      project.update(
+        landing_page_text: landing_page_texts[locale.to_sym],
+        restricted_landing_page_text: restricted_landing_page_texts[locale.to_sym],
+        locale: locale
+      )
     end
   end
 
