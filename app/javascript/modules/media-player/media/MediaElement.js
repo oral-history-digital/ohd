@@ -245,13 +245,12 @@ export default function MediaElement({
             player.removeRemoteTextTrack(tracks[i]);
         }
 
-        // Use tape number from ref since this function is called from event
-        // handler.
+        // Use tape number from ref since this function is called from event handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
         const newTracks = interview.alpha3s.map((lang) => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
-            language: lang,
+            language: lang, // 3-letter language code
             kind: 'captions',
             label: t(lang),
         }));
