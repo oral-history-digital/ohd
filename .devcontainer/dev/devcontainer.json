@@ -10,7 +10,7 @@
     "remoteUser": "root",
 
     // Lifecycle hooks
-    "postCreateCommand": "bash .devcontainer/scripts/setup.sh",
+    "postCreateCommand": "bash .devcontainer/scripts/setup-dev.sh",
     "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
 
     // Ports to forward
