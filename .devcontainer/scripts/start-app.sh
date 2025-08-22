@@ -19,7 +19,7 @@ wait_for_port() {
 log "Checking Solr is still available..."
 wait_for_port solr 8983
 
-# Quick health check - setup.sh already did comprehensive validation
+# Quick health check - setup-dev.sh already did comprehensive validation
 if ! curl -s "http://solr:8983/solr/admin/cores" > /dev/null; then
   log "⚠️  Solr appears to be down - you may need to restart containers"
 else
