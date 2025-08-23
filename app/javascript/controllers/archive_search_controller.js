@@ -1,7 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["results", "count", "spinner", "list", "pagination", "filters", "resultsHeader"]
+  static get targets() {
+    return ["results", "count", "spinner", "list", "pagination", "filters", "resultsHeader"]
+  }
 
   connect() {
     this.loadInitialResults()
