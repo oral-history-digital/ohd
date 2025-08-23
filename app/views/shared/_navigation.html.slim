@@ -1,0 +1,21 @@
+nav.main-navigation
+  .container
+    .navigation-brand
+      = link_to root_path, class: 'brand-link' do
+        = current_project&.name(I18n.locale.to_s) || 'OHD'
+    
+    .navigation-menu
+      ul.nav-links
+        - if user_signed_in?
+          li= link_to t('search_archive'), search_archive_path, class: 'nav-link'
+          li= link_to t('registry_entries'), registry_entries_path, class: 'nav-link'
+          
+          .user-menu
+            .dropdown data-controller="dropdown"
+              button.dropdown-toggle data-action="click->dropdown#toggle" = current_user.full_name
+              .dropdown-menu data-dropdown-target="menu"
+                = link_to t('account'), users_current_path, class: 'dropdown-item'
+                = link_to t('logout'), destroy_user_session_path, method: :delete, class: 'dropdown-item'
+        - else
+          li= link_to t('login'), new_user_session_path, class: 'nav-link'
+          li= link_to t('register'), new_user_registration_path, class: 'nav-link'
