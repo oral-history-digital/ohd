@@ -1,19 +1,32 @@
-h1 Listing projects
-
-table
-  thead
-    tr
-      th
-      th
-      th
-
-  tbody
-    - @projects.each do |project|
-      tr
-        td = link_to 'Show', project
-        td = link_to 'Edit', edit_project_path(project)
-        td = link_to 'Destroy', project, data: { confirm: 'Are you sure?' }, method: :delete
-
-br
-
-= link_to 'New Project', new_project_path
+.wrapper-content.projects-index
+  .page-header
+    h1 = t('projects')
+    
+  .projects-grid
+    - if @projects.any?
+      - @projects.each do |project|
+        .project-tile
+          .project-header
+            h2 = link_to project.name(I18n.locale), project_path(project)
+            
+          .project-intro
+            - if project.introduction(I18n.locale).present?
+              = truncate(strip_tags(project.introduction(I18n.locale)), length: 200)
+              
+          .project-meta
+            .project-domain
+              - if project.archive_domain
+                = link_to t('visit_archive'), project.archive_domain, class: 'button button-primary', target: '_blank'
+              - else
+                = link_to t('view_project'), "/#{project.shortname}/#{I18n.locale}", class: 'button button-primary'
+                
+            .project-stats
+              - if project.interviews.count > 0
+                span.stat = "#{project.interviews.count} #{t('interviews')}"
+    - else
+      .empty-state
+        p = t('no_projects_found')
+        
+  - if @projects.respond_to?(:total_pages) && @projects.total_pages > 1
+    .pagination-wrapper
+      = will_paginate @projects

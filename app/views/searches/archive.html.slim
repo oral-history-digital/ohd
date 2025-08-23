@@ -1,0 +1,45 @@
+.wrapper-content.search-page
+  .page-header
+    h1 = t('search_archive')
+    
+  .search-container data-controller="archive-search"
+    .search-form
+      = form_with url: "/searches/archive", method: :get, local: true, 
+          data: { 
+            controller: "search-form",
+            action: "submit->search-form#submit turbo:submit-end->archive-search#updateResults"
+          } do |f|
+        .search-input-group
+          = f.text_field :fulltext, 
+              placeholder: t('search_placeholder'), 
+              value: params[:fulltext],
+              class: 'search-input',
+              data: { 
+                search_form_target: 'input',
+                action: 'input->search-form#debounceSubmit'
+              }
+          = f.submit t('search'), class: 'search-button button button-primary'
+          
+        .search-filters
+          // Add facet filters here - can be populated via Stimulus
+          .filters-container data-archive-search-target="filters"
+            
+    .search-results
+      .results-header data-archive-search-target="resultsHeader"
+        .results-count
+          span.count data-archive-search-target="count" 0
+          = t('results_found')
+          
+        .results-controls
+          = link_to t('export_csv'), "/searches/archive.csv?#{@search_params.to_query}", 
+              class: 'button button-secondary'
+              
+      .results-container data-archive-search-target="results"
+        .loading-spinner data-archive-search-target="spinner"
+          = t('searching...')
+          
+        .results-list data-archive-search-target="list"
+          // Results will be populated by Stimulus controller
+          
+      .pagination-container data-archive-search-target="pagination"
+        // Pagination will be populated by Stimulus controller
