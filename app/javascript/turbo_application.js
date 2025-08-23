@@ -13,6 +13,8 @@ import DataTableController from "./controllers/data_table_controller"
 import FeaturedInterviewsController from "./controllers/featured_interviews_controller"
 import ArchiveSearchController from "./controllers/archive_search_controller"
 import SearchFormController from "./controllers/search_form_controller"
+import TabsController from "./controllers/tabs_controller"
+import InterviewPlayerController from "./controllers/interview_player_controller"
 
 application.register("dropdown", DropdownController)
 application.register("modal", ModalController)
@@ -20,6 +22,8 @@ application.register("data-table", DataTableController)
 application.register("featured-interviews", FeaturedInterviewsController)
 application.register("archive-search", ArchiveSearchController)
 application.register("search-form", SearchFormController)
+application.register("tabs", TabsController)
+application.register("interview-player", InterviewPlayerController)
 
 // Import existing stylesheets
 import("stylesheets/main.scss")

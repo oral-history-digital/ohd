@@ -1,7 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["container"]
+  static get targets() {
+    return ["container"]
+  }
 
   connect() {
     this.loadFeaturedInterviews()
