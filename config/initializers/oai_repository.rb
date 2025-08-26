@@ -70,7 +70,7 @@ OaiRepository.setup do |config|
          model: Collection,
          description: 'Sammlungen'
        }
-    ] + (Rails.env.test? ? [] : Project.shared.map do |project|
+    ] + (!ActiveRecord::Base.connected? ? [] : Project.shared.map do |project|
       {
         spec: "archive:#{project.shortname}",
         name: project.name(:de),

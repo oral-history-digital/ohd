@@ -47,7 +47,7 @@ export default function RegisterForm({
             {
                 elementType: 'select',
                 attribute: 'appellation',
-                values: ['dr', 'prof'],
+                values: ['not_specified', 'dr', 'prof'],
                 keepOrder: true,
                 withEmpty: true,
             },
