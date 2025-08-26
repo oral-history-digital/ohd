@@ -6,36 +6,40 @@ import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import EntryReferences from './EntryReferences';
 import useEntryReferences from './useEntryReferences';
+import { useProject } from 'modules/routes';
 
 export default function EntryReferenceGroups({
     registryEntry,
     onSubmit,
 }) {
     const { t } = useI18n();
+    const { project, projectId } = useProject();
     const { isLoading, groupedRefs, referenceCount, error } = useEntryReferences(registryEntry);
+    const projectRefs = groupedRefs?.filter(([shortname]) => shortname === project.shortname);
+    const usedReferenceCount = project.is_ohd ? referenceCount : projectRefs?.[0][1]?.length || 0;
 
     function title() {
-        const refTranslation = referenceCount === 1
+        const refTranslation = usedReferenceCount === 1
             ? t('activerecord.models.registry_reference.one')
             : t('activerecord.models.registry_reference.other');
-        return `${referenceCount} ${refTranslation}`;
+        return `${usedReferenceCount} ${refTranslation}`;
     }
 
     if (isLoading) {
         return <Spinner/>;
     }
 
-    if (groupedRefs?.length === 1) {
+    if (!project.is_ohd) {
         return (
             <>
                 <h4>{title()}</h4>
                 <EntryReferences
-                    references={groupedRefs[0][1]}
+                    references={projectRefs[0][1]}
                     onSubmit={onSubmit}
                 />
             </>
         );
-    } else if (groupedRefs?.length >= 2) {
+    } else {
         return (
             <>
                 <h4>{title()}</h4>

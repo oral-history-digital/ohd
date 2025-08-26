@@ -1,19 +1,19 @@
 {
     "name": "Oral History Digital Dev Container",
 
-    // point at your Compose file(s)
-    "dockerComposeFile": ["docker-compose.yml"],
+    // Point at your Compose file(s)
+    "dockerComposeFile": ["./docker-compose.yml"],
     "service": "app",
     "workspaceFolder": "/workspace",
 
-    // user inside the container
+    // User inside the container
     "remoteUser": "root",
 
-    // lifecycle hooks
-    "postCreateCommand": "bash .devcontainer/scripts/setup.sh",
+    // Lifecycle hooks
+    "postCreateCommand": "bash .devcontainer/scripts/setup-dev.sh",
     "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
 
-    // ports to forward
+    // Ports to forward
     "forwardPorts": [3000, 8983, 3035],
 
     // VS Code client customizations
@@ -31,6 +31,9 @@
                 },
                 "[json]": {
                     "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[ruby]": {
+                    "editor.formatOnSave": true
                 }
             },
             "extensions": [
@@ -41,5 +44,6 @@
                 "esbenp.prettier-vscode"
             ]
         }
-    }
+    },
+    "shutdownAction": "stopCompose"
 }

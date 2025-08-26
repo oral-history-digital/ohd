@@ -82,7 +82,7 @@ export default function Select({
 
         if (rawOpts) {
             let getTextAndValue = selectTextAndValueFunction(rawOpts[0]);
-            if (!!keepOrder) {
+            if (!keepOrder) {
                 rawOpts.
                 sort((a,b) => {
                   let textA = getTextAndValue(a).text;

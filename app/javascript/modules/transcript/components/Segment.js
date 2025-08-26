@@ -7,7 +7,7 @@ import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { memo, useRef } from 'react';
 import BookmarkSegmentButton from './BookmarkSegmentButton';
-import { useAutoScrollToRef } from './hooks/useAutoScrollToRef';
+import { useAutoScrollToRef } from '../hooks';
 import Initials from './Initials';
 import SegmentButtons from './SegmentButtons';
 import SegmentPopup from './SegmentPopup';
@@ -94,6 +94,7 @@ function Segment({
                         'is-active': active,
                     })}
                     lang={contentLocale}
+                    dir="auto"
                     onClick={() => {
                         transcriptCoupled &&
                             sendTimeChangeRequest(data.tape_nbr, data.time);

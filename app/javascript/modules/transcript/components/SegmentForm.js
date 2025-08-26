@@ -5,9 +5,6 @@ import { isRtlLang } from 'rtl-detect';
 import { Form } from 'modules/forms';
 import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
-import { getCurrentInterview } from 'modules/data';
-
-import { useSelector } from 'react-redux';
 
 export default function SegmentForm({
     locale,
@@ -20,7 +17,6 @@ export default function SegmentForm({
     onCancel,
 }) {
     const { data: people, isLoading } = usePeople();
-    const interview = useSelector(getCurrentInterview);
 
     // Use Intl.Locale to extract two-letter language code for rtl-detect
     const langCode = new Intl.Locale(contentLocale).language;
@@ -30,7 +26,7 @@ export default function SegmentForm({
         if (isRtl) {
             const textarea = document.getElementById('segment_text');
             if (textarea) {
-                textarea.setAttribute('dir', 'rtl');
+                textarea.setAttribute('dir', 'auto');
                 textarea.style.direction = 'rtl';
                 textarea.style.textAlign = 'right';
             }

@@ -1,6 +1,6 @@
 h2= t('login')
 
-= form_for(resource, as: resource_name, url: '/de/users/sign_in', html: {class: 'Form default'}) do |f|
+= form_for(resource, as: resource_name, url: "/#{params[:locale]}/users/sign_in", html: {class: 'Form default'}) do |f|
 
   = hidden_field_tag :path, @path
   - if @project
