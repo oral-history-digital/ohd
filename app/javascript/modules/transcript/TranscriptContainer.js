@@ -8,11 +8,11 @@ import {
     getCurrentIntervieweeId,
     getTranscriptFetched,
 } from 'modules/data';
-import { getCurrentTape, getMediaTime, getIsIdle } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
+import { getCurrentTape, getIsIdle, getMediaTime } from 'modules/media-player';
 import Transcript from './Transcript';
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),
@@ -23,8 +23,12 @@ const mapStateToProps = (state, props) => ({
     transcriptFetched: getTranscriptFetched(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transcript);
