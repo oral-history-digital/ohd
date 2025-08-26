@@ -7,9 +7,7 @@ import { useI18n } from 'modules/i18n';
 import { WorkbookItemForm } from 'modules/workbook';
 import { Modal } from 'modules/ui';
 
-export default function BookmarkSegmentButton({
-    segment,
-}) {
+export default function BookmarkSegmentButton({ segment }) {
     const { t } = useI18n();
     const interview = useSelector(getCurrentInterview);
 
@@ -19,15 +17,15 @@ export default function BookmarkSegmentButton({
             trigger={<FaStar className="Icon Icon--unobtrusive" />}
             triggerClassName="Button--hover Segment-hiddenButton"
         >
-            {closeModal => (
+            {(closeModal) => (
                 <WorkbookItemForm
                     interview={interview}
-                    description=''
+                    description=""
                     properties={{
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
                         segmentIndex: segment.id,
-                        interview_archive_id: interview.archive_id
+                        interview_archive_id: interview.archive_id,
                     }}
                     reference_id={segment.id}
                     reference_type="Segment"
