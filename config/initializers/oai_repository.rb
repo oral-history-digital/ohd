@@ -70,7 +70,7 @@ OaiRepository.setup do |config|
          model: Collection,
          description: 'Sammlungen'
        }
-    ] + (!ActiveRecord::Base.connected? ? [] : Project.shared.map do |project|
+    ] + (!(ActiveRecord::Base.connected? && ActiveRecord::Base.connection.table_exists?('projects')) ? [] : Project.shared.map do |project|
       {
         spec: "archive:#{project.shortname}",
         name: project.name(:de),
