@@ -89,8 +89,8 @@ class Segment < ApplicationRecord
     end
   end
 
-  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
-  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
+  #handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  #handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   translates :mainheading, :subheading, :text, touch: true
   accepts_nested_attributes_for :translations, :registry_references
@@ -102,15 +102,15 @@ class Segment < ApplicationRecord
       # run this only after commit of original e.g. 'de' version!
       #if (locale.length == 3 || locale == :'ukr-rus')
       if text_previously_changed? && (locale.length == 3 || locale == :'ukr-rus')
-        segment.write_other_versions(text, locale)
+        segment.write_other_versions(locale)
       end
       segment.translations.where(text: nil).where("char_length(locale) = 2").destroy_all # where do these empty translations come from?
     end
   end
 
-  def write_other_versions(text, locale)
+  def write_other_versions(locale)
     [:public, :subtitle].each do |version|
-      update(text: enciphered_text(version, text, locale), locale: "#{locale}-#{version}")
+      update(text: enciphered_text(version, locale), locale: "#{locale}-#{version}")
       if version == :public
         # do not re-index after each version update
         # push indexing to delayed job
