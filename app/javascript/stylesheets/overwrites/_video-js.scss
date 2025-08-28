@@ -43,4 +43,21 @@
             }
         }
     }
+
+    /* Fix for Video.js text-transform issues */
+    /* Preserve proper capitalization for subtitle/caption menu items */
+    .vjs-texttrack-settings,
+    .vjs-captions-button .vjs-menu-content,
+    .vjs-subtitles-button .vjs-menu-content,
+    .vjs-chapters-button .vjs-menu-content,
+    .vjs-descriptions-button .vjs-menu-content,
+    .vjs-audio-button .vjs-menu-content {
+        text-transform: none !important;
+    }
+
+    /* Specific targeting for menu items that might have lowercase transforms */
+    .vjs-menu-item,
+    .vjs-menu-item-text {
+        text-transform: none !important;
+    }
 }
