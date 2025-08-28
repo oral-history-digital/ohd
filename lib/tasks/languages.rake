@@ -40,4 +40,20 @@ namespace :languages do
       end
     end
   end
+
+  desc 'update names according to wikidata ISO-639-3 list'
+  task :update_names => :environment do
+    csv = Roo::Spreadsheet.open('lib/tasks/iso_639_3_list.csv', { csv_options: { col_sep: ',', quote_char: '"' } })
+    csv.sheet('default').parse({code: 'iso6393', iso6392B: 'iso6392B', locale: 'lang', name: 'name'}).each do |row|
+
+      language = Language.find_by(code: row[:code])
+
+      if language && I18n.available_locales.include?(row[:locale].to_sym)
+        language.update(
+          locale: row[:locale],
+          name: row[:name]
+        )
+      end
+    end
+  end
 end
