@@ -1,19 +1,22 @@
 import classNames from 'classnames';
+import { getTranslationsView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
-import { usePosterImage } from '../hooks';
+import { useSelector } from 'react-redux';
+import { usePosterImage } from '../hooks/index.js';
 import {
     getQualityLabel,
     humanTimeToSeconds,
     mediaStreamsToSources,
-} from '../utils';
+} from '../utils/index.js';
 import VideoJS from './VideoJS';
-import './configurationMenuPlugin.js';
-import './customSkipButtonsPlugin.js';
-import './toggleSizeButtonPlugin.js';
+
+import '../plugins/configurationMenuPlugin.js';
+import '../plugins/customSkipButtonsPlugin.js';
+import '../plugins/toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -48,6 +51,7 @@ export default function MediaElement({
     const { project } = useProject();
     const playerRef = useRef(null);
     const tapeRef = useRef(tape); // Used for event handler below.
+    const isTranslationsView = useSelector(getTranslationsView);
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
@@ -223,6 +227,14 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     });
 
+    // Update text track labels when locale changes
+    useEffect(() => {
+        if (playerRef.current && interview.transcript_coupled) {
+            addTextTracks();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [locale, interview.transcript_coupled]);
+
     function addTextTracks() {
         if (!interview.transcript_coupled) return;
 
@@ -237,15 +249,14 @@ export default function MediaElement({
             player.removeRemoteTextTrack(tracks[i]);
         }
 
-        // Use tape number from ref since this function is called from event
-        // handler.
+        // Use tape number from ref since this function is called from event handler.
         const actualTape = tapeRef.current;
         // Add new text tracks.
         const newTracks = interview.alpha3s.map((lang) => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
-            language: lang,
+            language: lang, // 3-letter language code
             kind: 'captions',
-            label: t(lang),
+            label: isTranslationsView ? lang : t(lang), // Show translation key if translations view is enabled
         }));
         newTracks.forEach((newTrack) => {
             player.addRemoteTextTrack(newTrack, false);
@@ -314,10 +325,14 @@ export default function MediaElement({
 
         player.configurationMenuPlugin();
         player.toggleSizePlugin({
-            buttonTitle: t('media_player.toggle_size_button'),
+            buttonTitle:
+                player.pluginTranslations?.toggleSize ||
+                t('media_player.toggle_size_button'),
         });
+
+        // Use centralized plugin translations from the hook
         player.customSkipButtonsPlugin({
-            translations: {
+            translations: player.pluginTranslations || {
                 skipBack: t('media_player.skip_backwards'),
                 skipForward: t('media_player.skip_forwards'),
             },
@@ -331,7 +346,7 @@ export default function MediaElement({
         player.configurationMenuPlugin({
             playbackRates: videoJsOptions.playbackRates,
             qualities: qualities,
-            translations: {
+            translations: player.pluginTranslations || {
                 playbackRate: t('media_player.playback_rate'),
                 playbackQuality: t('media_player.playback_quality'),
             },
