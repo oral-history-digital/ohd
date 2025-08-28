@@ -6,7 +6,7 @@ class InterviewsController < ApplicationController
   def new
     authorize Interview
     respond_to do |format|
-      format.html { render :show }
+      format.html { render :show, layout: 'turbo_application' }
       format.json { render json: :ok }
     end
   end
@@ -28,7 +28,7 @@ class InterviewsController < ApplicationController
   def edit
     authorize Interview
     respond_to do |format|
-      format.html { render :show }
+      format.html { render :show, layout: 'turbo_application' }
     end
   end
 
@@ -198,7 +198,7 @@ class InterviewsController < ApplicationController
         end
         send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{filename}.csv", type: "text/csv"
       end
-      format.html
+      format.html { render layout: 'turbo_application' }
     end
   end
 
