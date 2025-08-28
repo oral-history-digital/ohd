@@ -3,7 +3,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def perform(opts)
     MetadataImport.new(opts[:file_path], opts[:project], opts[:locale]).process
-    Sunspot.index opts[:project].interviews
+    # reindexing interviews here is too slow
+    #Sunspot.index opts[:project].interviews
     opts[:project].touch
   end
 
