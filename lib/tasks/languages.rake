@@ -56,4 +56,27 @@ namespace :languages do
       end
     end
   end
+
+  desc 'update translation_values according to wikidata ISO-639-3 list'
+  task :update_translation_value_names => :environment do
+    csv = Roo::Spreadsheet.open('lib/tasks/iso_639_3_list.csv', { csv_options: { col_sep: ',', quote_char: '"' } })
+    csv.sheet('default').parse({code: 'iso6393', iso6392B: 'iso6392B', locale: 'lang', name: 'name'}).each do |row|
+
+      language = Language.find_by(code: row[:code])
+
+      if language && I18n.available_locales.include?(row[:locale].to_sym)
+        alpha2 = TranslationValue.find_by(key: ISO_639.find(row[:code])&.alpha2)
+        alpha2.update(
+          locale: row[:locale],
+          value: row[:name]
+        ) if alpha2
+
+        alpha3 = TranslationValue.find_or_create_by(key: row[:code])
+        alpha3.update(
+          locale: row[:locale],
+          value: row[:name]
+        )
+      end
+    end
+  end
 end
