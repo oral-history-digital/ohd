@@ -44,7 +44,7 @@ namespace :languages do
   desc 'update names according to wikidata ISO-639-3 list'
   task :update_names => :environment do
     csv = Roo::Spreadsheet.open('lib/tasks/iso_639_3_list.csv', { csv_options: { col_sep: ',', quote_char: '"' } })
-    csv.sheet('default').parse({code: 'iso6393', iso6392B: 'iso6392B', locale: 'lang', name: 'name'}).each do |row|
+    csv.sheet('default').parse({iso6393: 'iso6393', code: 'iso6392B', locale: 'lang', name: 'name'}).each do |row|
 
       language = Language.find_by(code: row[:code])
 
@@ -60,7 +60,7 @@ namespace :languages do
   desc 'update translation_values according to wikidata ISO-639-3 list'
   task :update_translation_value_names => :environment do
     csv = Roo::Spreadsheet.open('lib/tasks/iso_639_3_list.csv', { csv_options: { col_sep: ',', quote_char: '"' } })
-    csv.sheet('default').parse({code: 'iso6393', iso6392B: 'iso6392B', locale: 'lang', name: 'name'}).each do |row|
+    csv.sheet('default').parse({iso6393: 'iso6393', code: 'iso6392B', locale: 'lang', name: 'name'}).each do |row|
 
       language = Language.find_by(code: row[:code])
 
