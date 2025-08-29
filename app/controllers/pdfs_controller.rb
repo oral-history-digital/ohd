@@ -3,16 +3,15 @@ class PdfsController < ApplicationController
 
   def create
     authorize Pdf
+    @uploaded_file = params[:pdf].delete(:data)
 
-    data = params[:pdf].delete(:data)
-
-    if data.content_type == "application/pdf"
+    if @uploaded_file.content_type == "application/pdf" && uploaded_file_is_pdf?
       adapted_params = pdf_params
       adapted_params[:attachable_id] = adapted_params.delete(:interview_id)
       adapted_params[:attachable_type] = "Interview"
 
       @pdf = Pdf.create(adapted_params)
-      @pdf.file.attach(io: data, filename: data.original_filename)
+      @pdf.file.attach(io: @uploaded_file, filename: @uploaded_file.original_filename)
 
       respond_to do |format|
         format.json do
@@ -81,5 +80,9 @@ class PdfsController < ApplicationController
       :workflow_state,
       translations_attributes: [:locale, :id, :title, :description]
     )
+  end
+
+  def uploaded_file_is_pdf?()
+    `file --mime-type --brief #{@uploaded_file.tempfile.path}`.strip == 'application/pdf'
   end
 end
