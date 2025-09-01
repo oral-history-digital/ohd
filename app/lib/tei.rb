@@ -87,7 +87,7 @@ class Tei
               content: speech_desc,
               index_from: combined_index,
               index_to: combined_index + part_index_carryover - 1,
-              type: 'sprechweise'
+              type: 'vocal'
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
@@ -106,7 +106,7 @@ class Tei
           ordinary_text << {
             content: [:desc, part[/<s\s*\((.*)\)>/,1]],
             index: combined_index,
-            type: 'sprechweise'
+            type: 'vocal'
           }
         when /^<g\s*\(.+\) .+>$/
           # Handle kinesic tags with content (potentially nested) - must come before simpler <g(...)> pattern
@@ -117,7 +117,7 @@ class Tei
               content: gesture_desc,
               index_from: combined_index,
               index_to: combined_index + part_index_carryover - 1,
-              type: 'kinestic'
+              type: 'kinsesic'
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
@@ -209,7 +209,7 @@ class Tei
           }
         when /^(\?|\.|!|,|:|\-)$/
           ordinary_text << {
-            content: part,
+            content: part.strip, # Remove extra spaces
             index: combined_index,
             type: :pc
           }
@@ -229,7 +229,7 @@ class Tei
           }
         else
           ordinary_text << {
-            content: part,
+            content: part.strip, # Remove extra spaces
             index: combined_index,
             type: :w
           }

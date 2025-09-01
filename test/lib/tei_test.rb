@@ -44,7 +44,7 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Before <g(nickt) some text> after.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    kinesic_comment = comments.find { |comment| comment[:type] == 'kinestic' }
+    kinesic_comment = comments.find { |comment| comment[:type] == 'kinsesic' }
     assert_not_nil kinesic_comment
     assert_equal "nickt", kinesic_comment[:content]
     
@@ -60,7 +60,7 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Before <s(gedehnt) Na ja> after.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    speech_comment = comments.find { |comment| comment[:type] == 'sprechweise' }
+    speech_comment = comments.find { |comment| comment[:type] == 'vocal' }
     assert_not_nil speech_comment
     assert_equal "gedehnt", speech_comment[:content]
     
@@ -96,8 +96,8 @@ class TeiTest < ActiveSupport::TestCase
     gesture_comment = comments.find { |c| c[:content] == "Kopfschütteln" }
     speech_comment = comments.find { |c| c[:content] == "gedehnt" }
     
-    assert_equal "kinestic", gesture_comment[:type]
-    assert_equal "sprechweise", speech_comment[:type]
+    assert_equal "kinsesic", gesture_comment[:type]
+    assert_equal "vocal", speech_comment[:type]
     
     # Verify punctuation is handled
     punctuation = ordinary_text.select { |elem| elem[:type] == :pc }.map { |elem| elem[:content] }
