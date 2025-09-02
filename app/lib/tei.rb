@@ -43,10 +43,10 @@ class Tei
           #}
         when /\{?\[.*\]\}?/
           ordinary_text << {
-            content: [:desc, part[/\{?\[(.*)\]\}?/,1]],
+            content: [:desc, part[/\{?\[(.*)\]\}?/,1], {rend: part}],
             index: combined_index,
             type: 'incident',
-            attributes: {rend: part}
+            #attributes: {rend: part}
           }
         when /^<v\s*\(.+\) .+>$/
           # Handle vocal tags with content (like <v(inner) some text>)
@@ -65,18 +65,18 @@ class Tei
           else
             # Fallback to treating as simple vocal tag
             ordinary_text << {
-              content: [:desc, part[/<v\s*\((.*)\)>/,1]],
+              content: [:desc, part[/<v\s*\((.*)\)>/,1], {rend: part}],
               index: combined_index,
               type: 'vocal',
-              attributes: {rend: part}
+              #attributes: {rend: part}
             }
           end
         when /^<v\((.*)\)>$/
           ordinary_text << {
-            content: [:desc, part[/<v\((.*)\)>/,1]],
+            content: [:desc, part[/<v\((.*)\)>/,1], {rend: part}],
             index: combined_index,
             type: 'vocal',
-            attributes: {rend: part}
+            #attributes: {rend: part}
           }
         when /^<s\s*\(.+\)\s*.+>$/
           # Handle speech tags with content (like <s(gedehnt) Na ja,>)
@@ -133,9 +133,9 @@ class Tei
           end
         when /^<g\s*\(.*\)>$/
           ordinary_text << {
-            content: [:desc, part[/<g\s*\((.*)\)>/,1]],
+            content: [:desc, part[/<g\s*\((.*)\)>/,1], {rend: part}],
             index: combined_index,
-            type: 'kinesic'
+            type: 'kinsesic'
           }
         when /^<n\((.*)\)>$/
           #<note rend="<n(1989)>">1989</note>
