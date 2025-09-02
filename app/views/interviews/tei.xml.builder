@@ -114,8 +114,9 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                   attributes = (part[:attributes] || {}).merge("xml:id": "s#{segment.id}_#{part[:index]}")
 
                   if part[:content]&.is_a?(Array)
+                    c_type, c_content, c_attributes = part[:content]
                     xml.tag!(type, attributes) do
-                      xml.tag!(part[:content].first, part[:content].last)
+                      xml.tag!(c_type, c_content, c_attributes || {})
                     end
                   elsif part[:content]
                     xml.tag!(type, attributes) do
