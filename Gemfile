@@ -51,6 +51,8 @@ gem 'sunspot_rails', '~> 2.7.1'
 gem 'sunspot_solr', '~> 2.7.1'
 gem 'progress_bar'
 gem 'shakapacker', '~> 8.0.2'
+gem 'turbo-rails', '~> 2.0'
+gem 'stimulus-rails', '~> 1.3'
 
 
 group :test, :development do

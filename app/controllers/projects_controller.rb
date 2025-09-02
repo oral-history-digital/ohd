@@ -19,7 +19,10 @@ class ProjectsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render 'react/app' }
+      format.html { 
+        @projects = projects
+        render layout: 'turbo_application' 
+      }
       format.json do
         json = Rails.cache.fetch "projects-#{extra_params}-#{Project.count}-#{Project.maximum(:updated_at)}" do
           {
@@ -43,7 +46,7 @@ class ProjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        render :template => "/react/app"
+        render layout: 'turbo_application'
       end
       format.json do
         render json: data_json(@project)
