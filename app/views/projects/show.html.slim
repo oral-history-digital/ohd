@@ -3,7 +3,7 @@
     h1 = @project.display_name(I18n.locale) || @project.name(I18n.locale)
     
     .project-actions
-      - if policy(@project).update?
+      - if false && policy(@project).update?
         = link_to t('edit_project'), edit_project_path(@project), class: 'button button-secondary'
         
   .project-content

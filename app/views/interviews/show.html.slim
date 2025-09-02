@@ -30,18 +30,16 @@
                   = raw @interview.description(I18n.locale)
                   
               .interview-details
-                - if @interview.people.any?
+                - if @interview.contributors.any?
                   .people-list
                     h3 = t('people')
-                    - @interview.people.each do |person|
+                    - @interview.contributors.each do |person|
                       .person-item
                         = link_to person.name(I18n.locale), "/people/#{person.id}"
                         
-                - if @interview.collections.any?
-                  .collections-list
+                - if @interview.collection
                     h3 = t('collections')
-                    - @interview.collections.each do |collection|
-                      .collection-item = collection.name(I18n.locale)
+                    .collection-item = @interview.collection.name(I18n.locale)
                         
             .tab-pane data-tab="transcript"
               .transcript-container data-interview-player-target="transcript"
