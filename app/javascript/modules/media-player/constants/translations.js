@@ -90,6 +90,7 @@ export const VIDEOJS_I18N_KEY_MAP = {
     Depressed: 'media_player.depressed',
     Uniform: 'media_player.uniform',
     'Drop shadow': 'media_player.drop_shadow',
+    Dropshadow: 'media_player.dropshadow', // Exists in some Video.js language files only
     'Font Family': 'media_player.font_family',
     'Proportional Sans-Serif': 'media_player.proportional_sans_serif',
     'Monospace Sans-Serif': 'media_player.monospace_sans_serif',
