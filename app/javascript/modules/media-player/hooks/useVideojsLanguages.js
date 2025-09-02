@@ -1,27 +1,17 @@
+/* global require */
 import {
     getLocale,
     getTranslations,
     getTranslationsView,
 } from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import videojs from 'video.js';
-import langDe from 'video.js/dist/lang/de.json';
-import langEl from 'video.js/dist/lang/el.json';
-import langEn from 'video.js/dist/lang/en.json';
-import langEs from 'video.js/dist/lang/es.json';
-import langRu from 'video.js/dist/lang/ru.json';
 import {
     VIDEOJS_I18N_KEY_MAP,
     VIDEOJS_PLUGIN_TRANSLATION_MAP,
 } from '../constants';
-const LANGS = [
-    { code: 'de', native: langDe },
-    { code: 'el', native: langEl },
-    { code: 'en', native: langEn },
-    { code: 'es', native: langEs },
-    { code: 'ru', native: langRu },
-];
 
 /**
  * Custom React hook for overriding Video.js translations with our i18n system.
@@ -48,6 +38,28 @@ function useVideojsLanguages() {
     const currentLanguage = useSelector(getLocale);
     const translations = useSelector(getTranslations);
     const isTranslationsView = useSelector(getTranslationsView);
+    const project = useSelector(getCurrentProject);
+
+    // Dynamically build LANGS from the project's pseudo_available_locales.
+    // We use synchronous require so bundlers can include only the referenced
+    // JSON files at build time. Missing files are skipped with a warning.
+    const LANGS = useMemo(() => {
+        const codes = project?.pseudo_available_locales || [];
+        return codes
+            .map((code) => {
+                try {
+                    // eslint-disable-next-line global-require
+                    const native = require(`video.js/dist/lang/${code}.json`);
+                    return { code, native };
+                } catch (err) {
+                    console.warn(
+                        `Video.js language file not found for "${code}", skipping.`
+                    );
+                    return null;
+                }
+            })
+            .filter(Boolean);
+    }, [project?.pseudo_available_locales]);
 
     // Create a stable key from available media_player.* translation keys
     const translationKey = useMemo(() => {
@@ -116,7 +128,13 @@ function useVideojsLanguages() {
             strings: languageStrings,
             pluginTranslations,
         };
-    }, [translationKey, currentLanguage, translations]);
+    }, [
+        translationKey,
+        currentLanguage,
+        translations,
+        isTranslationsView,
+        LANGS,
+    ]);
 
     // Apply the custom language strings to Video.js globally
     useEffect(() => {
