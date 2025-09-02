@@ -150,7 +150,7 @@ class Tei
           part_ordinary_text, part_index_carryover = parse_simultaneity_tag(part, combined_index)
           ordinary_text.concat(part_ordinary_text)
           index_carryover = part_index_carryover
-        when /^<\? .+>$/
+        when /^<\?.+>$/
           # Handle transcriber uncertainty tags with content (like <? Da hat es>)
           part_ordinary_text, part_index_carryover = parse_uncertainty_tag(part, combined_index)
           ordinary_text.concat(part_ordinary_text)
@@ -368,12 +368,12 @@ class Tei
   # Output: [ordinary_text_parts, index_carryover]
   def parse_uncertainty_tag(tag, start_index)
     ordinary_text_parts = []
-    index_carryover = 1
+    index_carryover = 0
 
     # Extract content inside <? ...>
-    if tag =~ /^<\?\s+(.+)>$/
+    if tag =~ /^<\?(.+)>$/
       content = $1.strip
-      part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index + 1).tokenized_text
+      part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index).tokenized_text
       ordinary_text_parts = part_ordinary_text.map do |part|
         if part[:attributes].nil?
           part[:attributes] = {type: 'uncertain'}
