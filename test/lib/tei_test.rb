@@ -28,16 +28,16 @@ class TeiTest < ActiveSupport::TestCase
     
     vocal_element = ordinary_text.find { |elem| elem[:type] == 'vocal' }
     assert_not_nil vocal_element
-    assert_equal [:desc, "lacht"], vocal_element[:content]
+    assert_equal [:desc, "lacht", {:rend=>"<v(lacht)>"}], vocal_element[:content]
   end
 
   test "tokenizes simple kinesic tags without content" do
     tei = Tei.new("Text <g(nickt)> more text.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    kinesic_element = ordinary_text.find { |elem| elem[:type] == 'kinesic' }
+    kinesic_element = ordinary_text.find { |elem| elem[:type] == 'kinsesic' }
     assert_not_nil kinesic_element
-    assert_equal [:desc, "nickt"], kinesic_element[:content]
+    assert_equal [:desc, "nickt", {rend: "<g(nickt)>"}], kinesic_element[:content]
   end
 
   test "tokenizes kinesic tags with simple content" do
