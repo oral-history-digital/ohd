@@ -40,11 +40,11 @@ function useVideojsLanguages() {
     const isTranslationsView = useSelector(getTranslationsView);
     const project = useSelector(getCurrentProject);
 
-    // Dynamically build LANGS from the project's pseudo_available_locales.
+    // Dynamically build LANGS from the project's available_locales.
     // We use synchronous require so bundlers can include only the referenced
     // JSON files at build time. Missing files are skipped with a warning.
     const LANGS = useMemo(() => {
-        const codes = project?.pseudo_available_locales || [];
+        const codes = project?.available_locales || [];
         return codes
             .map((code) => {
                 try {
@@ -59,7 +59,7 @@ function useVideojsLanguages() {
                 }
             })
             .filter(Boolean);
-    }, [project?.pseudo_available_locales]);
+    }, [project?.available_locales]);
 
     // Create a stable key from available media_player.* translation keys
     const translationKey = useMemo(() => {
