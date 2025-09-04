@@ -1,6 +1,16 @@
-// See the shakacode/shakapacker README and docs directory for advice on customizing your webpackConfig.
-const { generateWebpackConfig } = require('shakapacker')
+const path = require('path');
+const { generateWebpackConfig } = require('shakapacker');
+const webpack = require('webpack');
 
-const webpackConfig = generateWebpackConfig()
+const pjson = require(path.resolve(__dirname, '../../package.json'));
+const version = pjson && pjson.version ? pjson.version : 'unknown';
 
-module.exports = webpackConfig
+const webpackConfig = generateWebpackConfig(); // get base config
+webpackConfig.plugins = webpackConfig.plugins || [];
+webpackConfig.plugins.push(
+  new webpack.DefinePlugin({
+    VERSION: JSON.stringify(version)
+  })
+);
+
+module.exports = webpackConfig;
