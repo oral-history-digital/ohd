@@ -17,13 +17,102 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
 
     xml.fileDesc do
       xml.titleStmt do
-        xml.title interview.oai_title(locale)
+        [:de, :en].each do |locale|
+          xml.title interview.oai_title(locale)
+        end
+
+        interview.contributions.each do |contribution|
+          xml.respStmt do
+            [:de, :en].each do |locale|
+              xml.resp "xml:lang": locale do
+                xml.text TranslationValue.for("contributions.#{contribution&.contribution_type&.code}", locale)
+              end
+            end
+            xml.persName "xml:id": "p#{contribution&.person_id}" ref: "##{contribution.contributor&.initials}" do
+              xml.forename contribution&.contributor&.first_name(locale)
+              if interview.project.fullname_on_landing_page
+                xml.surname contribution&.contributor&.last_name_used(locale)
+              else
+                xml.surname contribution&.contributor&.last_name_used(locale).strip[0].upcase + "."
+              end
+            end
+          end
+        end
+
+        %w(leader manager cooperation_partner).each do |role|
+          if interview.project.send(role).present?
+            xml.respStmt do
+              [:de, :en].each do |locale|
+                xml.resp "xml:lang": locale do
+                  xml.text! TranslationValue.for("activerecord.attributes.project.#{role}", locale)
+                end
+                xml.orgName do
+                  xml.text! interview.project.send(role)
+                end
+              end
+            end
+          end
+        end
+
+        xml.funders do
+          interview.project.funder_names.each do |funder|
+            xml.funder do
+              xml.text! funder
+            end
+          end
+        end
+      end
+
+      xml.extent do
+        xml.measure unit: "file", quantity: interview.tapes.count
       end
 
       xml.publicationStmt do
-        xml.publisher interview.oai_publisher(locale)
-        xml.date interview.oai_date
-        xml.p "This is a TEI document for the interview with ID: #{interview.archive_id}."
+        xml.publisher do
+          interview.oai_publisher(locale).split(/,\s*/).each do |publisher|
+            xml.orgName publisher
+          end
+        end
+        xml.distributor do
+          xml.orgName "Oral-History.Digital"
+          xml.idno type: "URL" do
+            xml.text! "https://portal.oral-history.digital"
+          end
+          if interview.project.archive_domain.present?
+            xml.orgName interview.project.name if interview.project.name.present?
+            xml.idno type: "URL" do
+              xml.text! interview.project.archive_domain
+            end
+          end
+        end
+        xml.availability status: interview.workflow_status do
+          interview.oai_locales.each do |locale|
+            xml.p "xml:lang": locale do
+              xml.text! "#{TranslationValue.for('conditions', locale)} (#{interview.project.name})"
+              xml.ref target: "#{interview.project.domain_with_optional_identifier}/#{locale}/conditions" do
+                xml.text! TranslationValue.for('link', locale)
+              end
+            end
+            xml.p "xml:lang": locale do
+              xml.text! "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)"
+              xml.ref target: "#{OHD_DOMAIN}/#{locale}/conditions" do
+                xml.text! TranslationValue.for('link', locale)
+              end
+            end
+            xml.p "xml:lang": locale do
+              xml.text! TranslationValue.for('privacy_protection', locale)
+              xml.ref target: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
+                xml.text! TranslationValue.for('link', locale)
+              end
+            end
+          end
+        xml.idno type: "URL" do
+          xml.text! interview.oai_url_identifier(locale)
+        end
+        if interview.oai_publication_date
+          xml.date when: interview.oai_publication_date do
+            xml.text! interview.oai_publication_date
+          end
       end
 
       xml.sourceDesc do
@@ -33,6 +122,16 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
               xml.media type: interview.oai_format#, url: tape.media_url(locale)
               xml.duration tape.duration if tape.duration
             end
+          end
+        end
+      end
+    end
+
+    xml.encodingDesc do
+      interview.oai_locales.each do |locale|
+        xml.projectDesc "xml:lang": locale do
+          xml.p do
+            xml.text! interview.project.introduction(locale)
           end
         end
       end
@@ -67,9 +166,6 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
       end
 
       xml.settingDesc "LATER"
-    end
-
-    xml.encodingDesc do
     end
 
     xml.revisionDesc do
