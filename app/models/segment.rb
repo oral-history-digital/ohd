@@ -76,7 +76,13 @@ class Segment < ApplicationRecord
     Language.all.pluck(:code).each do |code|
       code_short = code.split('-').first
       text :"text_#{code_short}", stored: true do
-        text_translations["#{code_short}-public"] or nil
+        translation = text_translations["#{code_short}-public"] or ""
+        if (translation.is_a?(String))
+          translation.gsub!("<i(", " ")
+          translation.tr("<>()", " ")
+        else
+          translation
+        end
       end
 
       text :"mainheading_#{code_short}", stored: true do
