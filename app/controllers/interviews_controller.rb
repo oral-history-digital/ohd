@@ -129,6 +129,10 @@ class InterviewsController < ApplicationController
         data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
           association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
+      elsif m == 'materials'
+        data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{@interview.materials.maximum(:updated_at)}-#{I18n.locale}") do
+          @interview.materials.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+        end
       else
         data = @interview.localized_hash(m)
       end
@@ -324,6 +328,11 @@ class InterviewsController < ApplicationController
         send_data zip.read, type: "application/zip", filename: "#{params[:id]}_photos_#{!!params[:only_public] ? 'public_' : ''}#{DateTime.now.strftime("%Y_%m_%d")}.zip"
       end
     end
+  end
+
+  def export_materials
+    # Implement
+    interview = Interview.find_by_archive_id(params[:id])
   end
 
   def reindex

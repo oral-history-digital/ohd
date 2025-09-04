@@ -9,6 +9,7 @@ export default function Input({
     scope,
     attribute,
     type,
+    accept,
     value,
     data,
     validate,
@@ -28,7 +29,6 @@ export default function Input({
     placeholder,
     id,
 }) {
-
     const defaultValue = value || data?.[attribute];
     const [changeFile, setChangeFile] = useState(false);
 
@@ -57,6 +57,7 @@ export default function Input({
             className: 'Input',
             type: type,
             name: attribute,
+            accept,
             readOnly,
             placeholder,
             defaultChecked: defaultValue,
