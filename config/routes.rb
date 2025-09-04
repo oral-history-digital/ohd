@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     resources :contributions, only: [:create, :update, :destroy]
     resources :biographical_entries, only: [:create, :show, :update]
     resources :photos, only: [:create, :update, :destroy]
+    resources :materials, only: [:create, :update, :destroy]
     resources :logos, only: [:create, :update, :destroy]
     resources :sponsor_logos, only: [:create, :update, :destroy]
     get "media_streams/:archive_id/:tape/:resolution", to: "media_streams#show"
@@ -111,6 +112,7 @@ Rails.application.routes.draw do
         get :transcript
         get :observations
         get :export_photos
+        get :export_materials
         get :download_datacite
         get :tei
         get :export_all
@@ -125,6 +127,7 @@ Rails.application.routes.draw do
       end
       resources :contributions, only: [:create, :destroy]
       resources :photos, only: [:create, :update, :destroy]
+      resources :materials, only: [:create, :update, :destroy]
       resources :registry_references, only: [:create, :update, :destroy]
       resources :segments, only: [:create, :update, :index, :destroy]
       resources :tapes do
