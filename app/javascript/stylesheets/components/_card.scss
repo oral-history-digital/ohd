@@ -1,0 +1,24 @@
+.Card {
+  line-height: $base-unit;
+}
+
+.Card:nth-of-type(even) {
+  background-color: lightgray;
+}
+
+.Card-title {
+  font-size: 0.875rem;
+  font-weight: normal;
+  line-height: $base-unit !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Card-body {
+  font-size: 0.875rem;
+}
+
+.Card-body p {
+  line-height: $base-unit !important;
+}

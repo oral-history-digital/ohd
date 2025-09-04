@@ -21,6 +21,7 @@ import { SelectedRegistryReferencesContainer } from 'modules/registry-references
 import { Spinner } from 'modules/spinners';
 import { InterviewMap } from 'modules/interview-map';
 import { GalleryContainer } from 'modules/gallery';
+import { MaterialList } from 'modules/materials';
 import { usePathBase } from 'modules/routes';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -56,6 +57,9 @@ export default function InterviewTabPanel({
 
     const hasPhotos = interview.photos && Object.values(interview.photos).length > 0;
     const showGallerySection = hasPhotos || isEditor;
+
+    const hasMaterials = interview.material_count && interview.material_count > 0;
+    const showMaterialSection = hasMaterials || isEditor;
 
     return (
         <ErrorBoundary small>
@@ -168,6 +172,14 @@ export default function InterviewTabPanel({
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('photos')}>
                                     <GalleryContainer/>
+                                </SubTab>
+                            </AuthorizedContent>
+                        )}
+
+                        {showMaterialSection && (
+                            <AuthorizedContent object={interview} action="show" showIfPublic>
+                                <SubTab title={t('materials')}>
+                                    <MaterialList />
                                 </SubTab>
                             </AuthorizedContent>
                         )}
