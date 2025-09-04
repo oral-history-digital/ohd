@@ -49,6 +49,7 @@ class Project < ApplicationRecord
 
   has_one :access_config, dependent: :destroy
   has_many :texts, dependent: :destroy
+  has_many :materials, as: :attachable
 
   translates :name, :display_name, :introduction, :more_text, :landing_page_text, :restricted_landing_page_text,
     :media_missing_text, fallbacks_for_empty_translations: true, touch: true
