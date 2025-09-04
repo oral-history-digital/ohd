@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FaGithub } from 'react-icons/fa';
 
 import { useProject, usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
@@ -13,6 +13,8 @@ function SiteFooter() {
 
     const links = project.external_links || {};
     const sponsorLogos = project.sponsor_logos || [];
+
+    const githubUrl = 'https://github.com/oral-history-digital/ohd/releases';
 
     return (
         <footer>
@@ -82,6 +84,12 @@ function SiteFooter() {
                 }
             </ul>
             <p>{project?.name?.[locale]}</p>
+            <p>
+                <a href={githubUrl} target="_blank" rel="noreferrer">
+                    {`v${VERSION} `}
+                    <FaGithub className="Icon" />
+                </a>
+            </p>
 
             <ProjectFooter project={project} locale={locale}/>
 
