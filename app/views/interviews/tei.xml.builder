@@ -135,30 +135,60 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           end
         end
       end
+      xml.classDecl do
+        xml.taxonomy "xml:id": "ohdTopics" do
+          oai_subject_registry_entry_ids.each do |registry_entry_id|
+            registry_entry = RegistryEntry.find(registry_entry_id)
+            xml.category "xml:id": "re_#{registry_entry_id}" do
+              xml.catDesc do
+                [:de, :en].each do |locale|
+                  xml.gloss "xml:lang": locale do
+                    xml.text! registry_entry.to_s(locale)
+                  end
+                end
+                registry_entry.norm_data.each do |norm_datum|
+                  xml.idno type: norm_datum.norm_data_provider.name.upcase do
+                    xml.text! norm_datum.nid
+                  end
+                end
+                xml.idno type: "OHD-ID" do
+                  xml.text! registry_entry.id
+                end
+              end
+            end
+          end
+        end
+      end
     end
 
     xml.profileDesc do
       xml.langUsage do
-        xml.language "xml:lang": interview.alpha3 do
-          xml.text "This interview is in #{interview.alpha3}."
-        end
-        interview.alpha3s_with_transcript.each do |alpha3|
-          xml.language "xml:lang": alpha3 do
-            xml.text "This interview is available in #{alpha3} with a transcript."
-          end
-        end
+        xml.language ident: interview.alpha3
       end
 
-      xml.abstract do
+      interview.oai_locales.each do |locale|
+        xml.abstract "xml:lang": locale do
+          xml.p interview.description(locale)
+        end
       end
 
       xml.particDesc do
-        interview.contributors.each do |contributor|
-          xml.person "xml:id": "p#{contributor.id}", sex: contributor.gender do
-            xml.persName do
-              xml.foreName contributor.first_name(locale)
-              if interview.project.fullname_on_landing_page
-                xml.surName contributor.last_name(locale)
+        %w(interviewees interviewers).each do |role|
+          interview.send(role).each do |contributor|
+            xml.person "xml:id": "p#{contributor.id}", sex: contributor.gender do
+              xml.idno type: "OHD-ID" do
+                xml.text! contributor.id
+              end
+              xml.persName do
+                xml.foreName contributor.first_name(locale)
+                if interview.project.fullname_on_landing_page
+                  xml.surName contributor.last_name(locale)
+                end
+              end
+              interview.oai_locales.each do |locale|
+                xml.note type: "role", "xml:lang": locale do
+                  xml.text! TranslationValue.for("contributions.#{contributor.contribution_type.code}", locale)
+                end
               end
             end
           end
