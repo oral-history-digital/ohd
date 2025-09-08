@@ -126,6 +126,10 @@ class Person < ApplicationRecord
     birth_location && birth_location.parents.first && birth_location.parents.first.code != 'places' && birth_location.parents.first
   end
 
+  def place_of_birth
+    registry_references.joins(:registry_reference_type).where(registry_reference_types: { code: 'birth_place' }).first&.registry_entry
+  end
+
   def name(last_name_as_inital = false)
     I18n.available_locales.inject({}) do |mem, locale|
       orig_locale = I18n.locale

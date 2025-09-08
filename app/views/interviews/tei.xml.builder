@@ -195,12 +195,69 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                   xml.text! TranslationValue.for("contributions.#{role}", locale)
                 end
               end
+
+              place_of_birth = contribution.person&.place_of_birth
+              date_of_birth = contribution.person&.date_of_birth
+              if date_of_birth || place_of_birth
+                xml.birth do
+                  if place_of_birth
+                    xml.location do
+                      interview.oai_locales.each do |locale|
+                        xml.placeName "xml:lang": locale, ref: "#r_#{place_of_birth.id}" do
+                          xml.text! place_of_birth.descriptor(locale)
+                        end
+                      end
+                    end
+                  end
+                  xml.date when: contribution.person&.date_of_birth do
+                    xml.text! contribution.person&.date_of_birth.to_s
+                  end
+                end
+              end
+              interview.oai_locales.each do |locale|
+                if contribution.person&.has_biography?(locale) && !contribution.person&.biography_public?
+                  xml.note type: TranslationValue.for("biography", locale), "xml:lang": locale do
+                    contribution.person&.biographical_entries.each do |biographical_entry|
+                      xml.text! biographical_entry.text(locale)
+                    end
+                  end
+                end
+              end
+              interview.oai_locales.each do |locale|
+                if contribution.person&.description(:locale)
+                  text = contribution.person&.description(:locale).sub(/(www|http:|https:+[^\s]+[\w])/, '')
+                  link = contribution.person&.description(:locale)[/.*(www|http:|https:+[^\s]+[\w])/, 1]
+                  if text.present? && link.present?
+                    xml.note n: TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale), "xml:lang": locale do
+                      xml.p do
+                        xml.text! text
+                        xml.ref target: link do
+                          xml.text! link
+                        end
+                      end
+                    end
+                  end
+                end
+              end
+              contribution.person&.registry_references.joins(:registry_reference_type).where.not(registry_reference_type: {code: 'birth_place'}).each do |registry_reference|
+                interview.oai_locales.each do |locale|
+                  xml.note type: registry_reference.registry_reference_type&.name(locale), "xml:lang": locale do
+                    xml.text! registry_reference.registry_entry.descriptor(locale)
+                  end
+                end
+              end
             end
           end
         end
       end
 
-      xml.settingDesc "LATER"
+      xml.settingDesc do
+        interview.oai_locales.each do |locale|
+          xml.setting "xml:lang": locale, n: TranslationValue.for('metadata_labels.observations', locale) do
+            xml.text! interview.observations(locale)
+          end
+        end
+      end
     end
 
     xml.revisionDesc do
