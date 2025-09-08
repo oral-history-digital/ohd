@@ -5,8 +5,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
     xml.text interview.archive_id
   end
 
-  xml.idno type: "Originalsignatur" do
-    xml.text interview.signature_original
+  if interview.signature_original.present?
+    xml.idno type: "Originalsignatur" do
+      xml.text interview.signature_original
+    end
   end
 
   xml.idno type: "OAI" do
@@ -18,7 +20,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
     xml.fileDesc do
       xml.titleStmt do
         [:de, :en].each do |locale|
-          xml.title interview.oai_title(locale)
+          xml.title interview.oai_title(locale), "xml:lang": locale
         end
 
         interview.contributions.each do |contribution|
@@ -28,12 +30,12 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                 xml.text TranslationValue.for("contributions.#{contribution&.contribution_type&.code}", locale)
               end
             end
-            xml.persName "xml:id": "p#{contribution&.person_id}" ref: "##{contribution.contributor&.initials}" do
-              xml.forename contribution&.contributor&.first_name(locale)
+            xml.persName "xml:id": "p#{contribution&.person_id}", ref: "##{contribution.person&.initials}" do
+              xml.forename contribution&.person&.first_name(locale)
               if interview.project.fullname_on_landing_page
-                xml.surname contribution&.contributor&.last_name_used(locale)
+                xml.surname contribution&.person&.last_name_used(locale)
               else
-                xml.surname contribution&.contributor&.last_name_used(locale).strip[0].upcase + "."
+                xml.surname contribution&.person&.last_name_used(locale).strip[0].upcase + "."
               end
             end
           end
@@ -46,9 +48,9 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                 xml.resp "xml:lang": locale do
                   xml.text! TranslationValue.for("activerecord.attributes.project.#{role}", locale)
                 end
-                xml.orgName do
-                  xml.text! interview.project.send(role)
-                end
+              end
+              xml.tag! %w(leader manager).include?(role) ? 'persName' : 'orgName' do
+                xml.text! interview.project.send(role)
               end
             end
           end
@@ -69,7 +71,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
 
       xml.publicationStmt do
         xml.publisher do
-          interview.oai_publisher(locale).split(/,\s*/).each do |publisher|
+          interview.oai_contributor(locale).split(/,\s*/).each do |publisher|
             xml.orgName publisher
           end
         end
@@ -85,27 +87,28 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
             end
           end
         end
-        xml.availability status: interview.workflow_status do
+        xml.availability status: interview.workflow_state do
           interview.oai_locales.each do |locale|
             xml.p "xml:lang": locale do
               xml.text! "#{TranslationValue.for('conditions', locale)} (#{interview.project.name})"
               xml.ref target: "#{interview.project.domain_with_optional_identifier}/#{locale}/conditions" do
-                xml.text! TranslationValue.for('link', locale)
+                xml.text! TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale)
               end
             end
             xml.p "xml:lang": locale do
               xml.text! "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)"
               xml.ref target: "#{OHD_DOMAIN}/#{locale}/conditions" do
-                xml.text! TranslationValue.for('link', locale)
+                xml.text! TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale)
               end
             end
             xml.p "xml:lang": locale do
               xml.text! TranslationValue.for('privacy_protection', locale)
               xml.ref target: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
-                xml.text! TranslationValue.for('link', locale)
+                xml.text! TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale)
               end
             end
           end
+        end
         xml.idno type: "URL" do
           xml.text! interview.oai_url_identifier(locale)
         end
@@ -113,14 +116,15 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           xml.date when: interview.oai_publication_date do
             xml.text! interview.oai_publication_date
           end
+        end
       end
 
       xml.sourceDesc do
         xml.recordingStmt do
           interview.tapes.each do |tape|
             xml.recording type: interview.media_type, "xml:id": "#{interview.media_type}_#{tape.number}" do
-              xml.media type: interview.oai_format#, url: tape.media_url(locale)
-              xml.duration tape.duration if tape.duration
+              xml.media mimeType: interview.oai_format#, url: tape.media_url(locale)
+              xml.duration tape.duration ? Timecode.new(tape.duration).timecode : tape.segments.last&.timecode
             end
           end
         end
@@ -137,7 +141,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
       end
       xml.classDecl do
         xml.taxonomy "xml:id": "ohdTopics" do
-          oai_subject_registry_entry_ids.each do |registry_entry_id|
+          interview.oai_subject_registry_entry_ids.each do |registry_entry_id|
             registry_entry = RegistryEntry.find(registry_entry_id)
             xml.category "xml:id": "re_#{registry_entry_id}" do
               xml.catDesc do
@@ -152,7 +156,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                   end
                 end
                 xml.idno type: "OHD-ID" do
-                  xml.text! registry_entry.id
+                  xml.text! registry_entry.id.to_s
                 end
               end
             end
@@ -173,21 +177,22 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
       end
 
       xml.particDesc do
-        %w(interviewees interviewers).each do |role|
-          interview.send(role).each do |contributor|
-            xml.person "xml:id": "p#{contributor.id}", sex: contributor.gender do
+        project_contribution_types = interview.project.contribution_types.index_by(&:code)
+        %w(interviewee interviewer).each do |role|
+          project_contribution_types[role].contributions.where(interview_id: interview.id).each do |contribution|
+            xml.person "xml:id": "p#{contribution.person_id}", sex: contribution.person&.gender do
               xml.idno type: "OHD-ID" do
-                xml.text! contributor.id
+                xml.text! contribution.person_id.to_s
               end
               xml.persName do
-                xml.foreName contributor.first_name(locale)
+                xml.foreName contribution.person&.first_name(locale)
                 if interview.project.fullname_on_landing_page
-                  xml.surName contributor.last_name(locale)
+                  xml.surName contribution.person&.last_name(locale)
                 end
               end
               interview.oai_locales.each do |locale|
                 xml.note type: "role", "xml:lang": locale do
-                  xml.text! TranslationValue.for("contributions.#{contributor.contribution_type.code}", locale)
+                  xml.text! TranslationValue.for("contributions.#{role}", locale)
                 end
               end
             end
