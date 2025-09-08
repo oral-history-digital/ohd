@@ -83,7 +83,13 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def registry_references
-    {}
+    landing_page_registry_reference_type_ids = object.project.metadata_fields.where(
+      display_on_landing_page: true,
+      source: "RegistryReferenceType",
+      ref_object_type: "Interview"
+    ).pluck(:registry_reference_type_id).uniq
+    landing_page_registry_references = object.registry_references.where(registry_reference_type_id: landing_page_registry_reference_type_ids)
+    landing_page_registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
   end
 
   def video
