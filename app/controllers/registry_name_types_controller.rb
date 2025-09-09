@@ -93,6 +93,7 @@ class RegistryNameTypesController < ApplicationController
         :code,
         :name,
         :project_id,
+        :order_priority,
         translations_attributes: [:locale, :id, :name]
       )
     end

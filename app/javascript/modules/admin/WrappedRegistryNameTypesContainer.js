@@ -30,6 +30,10 @@ const mapStateToProps = (state) => {
                 attribute: 'name',
                 multiLocale: true,
             },
+            {
+                attribute: 'order_priority',
+                validate: function(v){return /^\d+$/.test(v)}
+            },
         ],
         joinedData: { },
         helpTextCode: 'registry_name_type_form'
