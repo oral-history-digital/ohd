@@ -1,6 +1,7 @@
 class RegistryNameTypeSerializer < ApplicationSerializer
   attributes :id,
              :code,
-             :name
+             :name,
+             :order_priority
 
 end
