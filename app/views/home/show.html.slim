@@ -1,0 +1,22 @@
+.wrapper-content.home-content
+  - if current_project&.translations_attributes
+    .home-text
+      h1 = current_project.name(I18n.locale.to_s)
+      
+      .introduction-text
+        = raw current_project.introduction(I18n.locale.to_s)
+      
+      - if current_project.more_text(I18n.locale.to_s).present?
+        .more-text
+          = raw current_project.more_text(I18n.locale.to_s)
+          
+      - if current_project.landing_page_text(I18n.locale.to_s).present?
+        .landing-page-text
+          = raw current_project.landing_page_text(I18n.locale.to_s)
+          
+  // Featured interviews section (if applicable)
+  - unless ['mog', 'campscapes'].include?(current_project&.shortname)
+    .featured-interviews data-controller="featured-interviews"
+      h2 = t('featured_interviews')
+      .interviews-container data-featured-interviews-target="container"
+        // This will be populated by Stimulus controller

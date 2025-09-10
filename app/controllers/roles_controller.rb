@@ -7,6 +7,22 @@ class RolesController < ApplicationController
     respond @role
   end
 
+  def new
+    authorize Role
+    @role = Role.new(project_id: current_project.id)
+    respond_to do |format|
+      format.html { render layout: 'turbo_application' }
+    end
+  end
+
+  def edit
+    @role = Role.find params[:id]
+    authorize @role
+    respond_to do |format|
+      format.html { render layout: 'turbo_application' }
+    end
+  end
+
   def update
     @role = Role.find params[:id]
     authorize @role
@@ -15,10 +31,17 @@ class RolesController < ApplicationController
   end
 
   def index
-    policy_scope(Role)
+    @roles = policy_scope(Role).includes(:permissions).joins(:translations).order("name ASC")
+    
+    if params[:for_projects]
+      @roles = @roles
+    else
+      page = params[:page] || 1
+      @roles = @roles.where(search_params).paginate(page: page)
+    end
 
     respond_to do |format|
-      format.html { render :template => '/react/app' }
+      format.html { render layout: 'turbo_application' }
       format.json do
         json = Rails.cache.fetch "#{current_project.shortname}-roles-visible-for-#{current_user.id}-#{cache_key_params}-#{Role.count}-#{Role.maximum(:updated_at)}" do
           if params[:for_projects]
