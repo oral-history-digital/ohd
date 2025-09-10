@@ -36,6 +36,9 @@ export default function Registry({
             <div className='wrapper-content register'>
                 <h1 className='registry-entries-title'>
                     {t('registry')}
+                    <AuthorizedContent object={rootRegistryEntry} action='update'>
+                        <span className="u-ml-tiny">{`(ID: ${rootRegistryEntry.id})`}</span>
+                    </AuthorizedContent>
                 </h1>
 
                 {isEditor && <HelpText code="registry_page" className="u-mb" />}
