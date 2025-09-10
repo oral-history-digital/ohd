@@ -5,8 +5,9 @@ export default function isDate(dateString) {
 
     const trimmedDate = dateString.trim();
 
-    return isFullISO8601Format(trimmedDate)
-        && isValidDate(new Date(trimmedDate));
+    return (
+        isFullISO8601Format(trimmedDate) && isValidDate(new Date(trimmedDate))
+    );
 }
 
 export function isFullISO8601Format(dateString) {

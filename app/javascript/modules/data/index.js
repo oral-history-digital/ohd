@@ -1,48 +1,44 @@
 export { NAME as DATA_NAME } from './constants';
 
-export { clearStateData, deleteData, fetchData, submitData } from './actions';
+export {
+    clearStateData,
+    deleteData,
+    fetchData,
+    submitData,
+} from './redux/actions';
 
-export { default as dataReducer } from './reducer';
+export { default as dataReducer } from './redux/reducer';
 
 export {
-    getData,
     getCollections,
     getCollectionsForCurrentProject,
     getCollectionsForCurrentProjectFetched,
     getCollectionsStatus,
-    getContributionTypesForCurrentProject,
-    getContributionTypesStatus,
     getContributionsStatus,
+    getContributionTypesStatus,
     getContributorsFetched,
-    getCurrentUser,
-    getCurrentInterview,
-    getCurrentInterviewFetched,
     getCurrentIntervieweeId,
-    getCurrentProject,
-    getOHDProject,
+    getCurrentInterviewFetched,
     getCurrentRefTree,
     getCurrentRefTreeStatus,
+    getCurrentUser,
     getFlattenedRefTree,
     getHeadings,
     getHeadingsFetched,
     getHeadingsStatus,
     getInstitutions,
     getInstitutionsStatus,
-    getInterviews,
     getInterviewsStatus,
     getLanguages,
     getLanguagesStatus,
-    getTranslationValues,
-    getTranslationValuesStatus,
     getMarkTextStatus,
     getMediaStreamsForCurrentProject,
     getNormDataProviders,
+    getOHDProject,
     getPermissions,
     getPermissionsStatus,
     getProjectLocales,
-    getProjects,
     getProjectsStatus,
-    getPublicProjects,
     getRefTreeStatus,
     getRegistryEntries,
     getRegistryEntriesStatus,
@@ -60,15 +56,27 @@ export {
     getSpeakerDesignationsStatus,
     getStartpageProjects,
     getStatuses,
+    getTasks,
+    getTasksStatus,
     getTaskTypesForCurrentProject,
     getTaskTypesForCurrentProjectFetched,
     getTaskTypesStatus,
-    getTasks,
-    getTasksStatus,
     getTranscriptFetched,
+    getTranslationValues,
+    getTranslationValuesStatus,
     getUsers,
     getUsersStatus,
-} from './selectors/dataSelectors';
+} from './redux/selectors/dataSelectors';
+
+export {
+    getCurrentInterview,
+    getCurrentProject,
+    getContributionTypesForCurrentProject,
+    getData,
+    getInterviews,
+    getProjects,
+    getPublicProjects,
+} from './redux/selectors/baseSelectors';
 
 export {
     getIsCampscapesProject,
@@ -77,18 +85,18 @@ export {
     getProjectTranslation,
     getShowFeaturedInterviews,
     getShowStartPageVideo,
-} from './selectors/projectSelectors';
+} from './redux/selectors/projectSelectors';
 
-export { default as getGroupedContributions } from './selectors/getGroupedContributions';
+export { default as getGroupedContributions } from './redux/selectors/getGroupedContributions';
 
 export { default as Fetch } from './components/Fetch';
+export { default as InstitutionTile } from './components/InstitutionTile';
 export { default as ProjectShow } from './components/ProjectShow';
 export { default as ProjectTile } from './components/ProjectTile';
-export { default as InstitutionTile } from './components/InstitutionTile';
 export { default as StateCheck } from './components/StateCheck';
 
-export { default as useHumanReadable } from './useHumanReadable';
-export { default as useMutateData } from './useMutateData';
-export { default as useMutateDatum } from './useMutateDatum';
-export { default as useSensitiveData } from './useSensitiveData';
-export { default as useLoadCompleteProject } from './useLoadCompleteProject';
+export { default as useHumanReadable } from './hooks/useHumanReadable';
+export { default as useLoadCompleteProject } from './hooks/useLoadCompleteProject';
+export { default as useMutateData } from './hooks/useMutateData';
+export { default as useMutateDatum } from './hooks/useMutateDatum';
+export { default as useSensitiveData } from './hooks/useSensitiveData';
