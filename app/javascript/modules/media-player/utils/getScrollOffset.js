@@ -1,9 +1,10 @@
-import { CONTENT_TABS_HEIGHT, CSS_BASE_UNIT } from 'modules/constants';
+import { CONTENT_TABS_HEIGHT } from 'modules/constants';
 import {
     DEFAULT_PLAYER_SIZE,
     MEDIA_PLAYER_HEIGHT_MEDIUM,
     MEDIA_PLAYER_HEIGHT_MOBILE,
     MEDIA_PLAYER_HEIGHT_SMALL,
+    SPACE_BEFORE_ACTIVE_ELEMENT,
 } from 'modules/media-player';
 
 /**
@@ -13,8 +14,6 @@ import {
  * @param {('small'|'medium')} playerSize - The current player size (default: DEFAULT_PLAYER_SIZE)
  * @returns {number} The scroll offset in pixels
  */
-
-const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * CSS_BASE_UNIT;
 
 export function getScrollOffset(playerSize = DEFAULT_PLAYER_SIZE) {
     if (playerSize !== 'small' && playerSize !== 'medium') {

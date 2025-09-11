@@ -7,6 +7,7 @@ jest.mock('modules/constants', () => ({
 }));
 jest.mock('modules/media-player', () => ({
     DEFAULT_PLAYER_SIZE: 'medium',
+    SPACE_BEFORE_ACTIVE_ELEMENT: 1.5 * 24, // 36
     MEDIA_PLAYER_HEIGHT_MEDIUM: 448, // 28rem * 16px
     MEDIA_PLAYER_HEIGHT_SMALL: 200, // 12.5rem * 16px
     MEDIA_PLAYER_HEIGHT_MOBILE: 320, // 20rem * 16px
