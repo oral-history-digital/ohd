@@ -31,7 +31,7 @@ export const getShowStartPageVideo = (state) => {
 };
 
 export const getProjectTranslation = createSelector(
-    [getLocale, getCurrentProject],
+    [(state) => getLocale(state), (state) => getCurrentProject(state)],
     (locale, currentProject) => {
         if (!currentProject) {
             return null;
@@ -56,14 +56,14 @@ export const getIsCampscapesProject = (state) => {
 };
 
 export const getIsCatalog = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         return currentProject?.is_catalog === true;
     }
 );
 
 export const getMapSections = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         if (!currentProject || !currentProject.map_sections) {
             return [DEFAULT_MAP_SECTION];

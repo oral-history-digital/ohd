@@ -122,11 +122,12 @@ export const getTasksStatus = (state) => getStatuses(state).tasks;
 
 export const getTaskTypesStatus = (state) => getStatuses(state).task_types;
 
-export const getOHDProject = createSelector([getProjects], (projects) => {
+export const getOHDProject = (state) => {
+    const projects = getProjects(state) || {};
     return Object.values(projects).find(
         (project) => project.shortname === 'ohd'
     );
-});
+};
 
 export const getCurrentInterviewFetched = (state) => {
     const currentInterview = getCurrentInterview(state);
@@ -200,7 +201,11 @@ export const getTranscriptFetched = createSelector(
 );
 
 export const getContributorsFetched = createSelector(
-    [getCurrentInterview, getPeopleStatus, getCurrentProject],
+    [
+        (state) => getCurrentInterview(state),
+        (state) => getPeopleStatus(state),
+        (state) => getCurrentProject(state),
+    ],
     (interview, peopleStatus, currentProject) => {
         const fetched = /^fetched/;
         if (
@@ -218,7 +223,7 @@ export const getContributorsFetched = createSelector(
 );
 
 export const getRootRegistryEntryReload = createSelector(
-    [getRegistryEntriesStatus, getCurrentProject],
+    [getRegistryEntriesStatus, (state) => getCurrentProject(state)],
     (status, currentProject) => {
         const reload = /^reload/;
         return reload.test(status[currentProject.root_registry_entry_id]);
@@ -226,7 +231,7 @@ export const getRootRegistryEntryReload = createSelector(
 );
 
 export const getProjectLocales = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         return currentProject
             ? currentProject.available_locales
@@ -235,7 +240,7 @@ export const getProjectLocales = createSelector(
 );
 
 export const getStartpageProjects = createSelector(
-    [getPublicProjects],
+    [(state) => getPublicProjects(state)],
     (projects) => {
         const projectsWithoutOhd = projects.filter(
             (project) => !project.is_ohd
@@ -245,7 +250,7 @@ export const getStartpageProjects = createSelector(
 );
 
 export const getCollectionsForCurrentProjectFetched = createSelector(
-    [getCollectionsStatus, getCurrentProject],
+    [getCollectionsStatus, (state) => getCurrentProject(state)],
     (collectionsStatus, currentProject) => {
         const fetched = /^fetched/;
         return fetched.test(
@@ -255,14 +260,14 @@ export const getCollectionsForCurrentProjectFetched = createSelector(
 );
 
 export const getCollectionsForCurrentProject = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         return currentProject?.collections;
     }
 );
 
 export const getTaskTypesForCurrentProjectFetched = createSelector(
-    [getTaskTypesStatus, getCurrentProject],
+    [getTaskTypesStatus, (state) => getCurrentProject(state)],
     (taskTypesStatus, currentProject) => {
         const fetched = /^fetched/;
         return fetched.test(
@@ -272,14 +277,14 @@ export const getTaskTypesForCurrentProjectFetched = createSelector(
 );
 
 export const getTaskTypesForCurrentProject = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         return currentProject?.task_types;
     }
 );
 
 export const getRolesForCurrentProjectFetched = createSelector(
-    [getRolesStatus, getCurrentProject],
+    [getRolesStatus, (state) => getCurrentProject(state)],
     (rolesStatus, currentProject) => {
         const fetched = /^fetched/;
         return fetched.test(rolesStatus[`for_projects_${currentProject?.id}`]);
@@ -287,14 +292,14 @@ export const getRolesForCurrentProjectFetched = createSelector(
 );
 
 export const getRolesForCurrentProject = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         return currentProject?.roles;
     }
 );
 
 export const getRegistryReferenceTypesForCurrentProjectFetched = createSelector(
-    [getRegistryReferenceTypesStatus, getCurrentProject],
+    [getRegistryReferenceTypesStatus, (state) => getCurrentProject(state)],
     (registryReferenceTypesStatus, currentProject) => {
         const fetched = /^fetched/;
         return fetched.test(
@@ -304,7 +309,7 @@ export const getRegistryReferenceTypesForCurrentProjectFetched = createSelector(
 );
 
 export const getRegistryReferenceTypesForCurrentProject = createSelector(
-    [getCurrentProject],
+    [(state) => getCurrentProject(state)],
     (currentProject) => {
         return currentProject?.registry_reference_types;
     }
@@ -317,7 +322,7 @@ export const getMediaStreamsForCurrentProject = (state) =>
     getData(state).mediaStreams;
 
 export const getCurrentIntervieweeId = createSelector(
-    getCurrentInterview,
+    [(state) => getCurrentInterview(state)],
     (interview) => {
         if (!interview?.contributions) {
             return undefined;
@@ -336,6 +341,6 @@ export const getCurrentIntervieweeId = createSelector(
 );
 
 export const getHeadings = createSelector(
-    getCurrentInterview,
+    [(state) => getCurrentInterview(state)],
     (interview) => interview?.headings
 );
