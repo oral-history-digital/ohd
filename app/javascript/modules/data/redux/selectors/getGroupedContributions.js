@@ -5,8 +5,12 @@ import {
     getCurrentInterview,
 } from './baseSelectors';
 
-const getGroupedContributions = createSelector(
-    [getEditView, getCurrentInterview, getContributionTypesForCurrentProject],
+export const getGroupedContributions = createSelector(
+    [
+        (state) => getEditView(state),
+        (state) => getCurrentInterview(state),
+        (state) => getContributionTypesForCurrentProject(state),
+    ],
     (editView, currentInterview, contributionTypes) => {
         if (
             !currentInterview ||
