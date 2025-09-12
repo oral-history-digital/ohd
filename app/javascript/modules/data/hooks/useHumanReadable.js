@@ -1,11 +1,10 @@
 import { getTranslations } from 'modules/archive';
 import { SYSTEM_LOCALES } from 'modules/constants';
-import { getCollections, getLanguages } from 'modules/data';
+import { getCollections, getLanguages, humanReadable } from 'modules/data';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
-import originalHumanReadable from '../utils/humanReadable';
 
-export default function useHumanReadable() {
+export function useHumanReadable() {
     const matchWithProject = useMatch('/:projectId/:locale/*');
     const matchWOProject = useMatch('/:locale/*');
 
@@ -34,7 +33,7 @@ export default function useHumanReadable() {
         none,
         optionsScope,
     }) =>
-        originalHumanReadable({
+        humanReadable({
             obj,
             attribute,
             collapsed,
@@ -50,3 +49,5 @@ export default function useHumanReadable() {
         humanReadable: curriedHumanReadable,
     };
 }
+
+export default useHumanReadable;

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function Fetch({
+export function Fetch({
     fetchParams,
     testSelector,
     reloadSelector,
@@ -58,3 +58,5 @@ Fetch.propTypes = {
         PropTypes.node,
     ]),
 };
+
+export default Fetch;

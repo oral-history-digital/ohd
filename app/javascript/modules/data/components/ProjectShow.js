@@ -3,7 +3,7 @@ import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-export default function ProjectShow({ data, hideLogo, children }) {
+export function ProjectShow({ data, hideLogo, children }) {
     const locale = useSelector(getLocale);
 
     const logo =
@@ -35,3 +35,5 @@ ProjectShow.propTypes = {
         PropTypes.node,
     ]),
 };
+
+export default ProjectShow;

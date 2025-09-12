@@ -3,10 +3,7 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchData } from '../redux/actions';
-import {
-    getProjectsStatus,
-    getPublicProjects,
-} from '../redux/selectors/dataSelectors';
+import { getProjectsStatus, getPublicProjects } from '../redux/selectors';
 
 const useLoadCompleteProject = (pId) => {
     const projects = useSelector(getPublicProjects);

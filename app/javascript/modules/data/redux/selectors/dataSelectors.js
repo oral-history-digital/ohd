@@ -11,17 +11,6 @@ import {
     getPublicProjects,
 } from './baseSelectors';
 
-// Re-export selectors from baseSelectors
-export {
-    getContributionTypesForCurrentProject,
-    getCurrentInterview,
-    getCurrentProject,
-    getData,
-    getInterviews,
-    getProjects,
-    getPublicProjects,
-} from './baseSelectors';
-
 export const getLanguages = (state) => getData(state).languages;
 
 export const getTranslationValues = (state) =>

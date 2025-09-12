@@ -1,8 +1,8 @@
 import isNil from 'lodash.isnil';
-import isDate from './isDate';
-import toDateString from './toDateString';
+import { isDate } from './isDate';
+import { toDateString } from './toDateString';
 
-export default function humanReadable({
+export function humanReadable({
     obj,
     attribute,
     collapsed = false,
@@ -70,3 +70,5 @@ export default function humanReadable({
         none
     );
 }
+
+export default humanReadable;
