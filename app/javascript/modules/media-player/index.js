@@ -9,6 +9,7 @@ export {
 } from './redux/selectors';
 
 export {
+    BREAKPOINTS,
     DEFAULT_AUDIO_RESOLUTION,
     DEFAULT_PLAYER_SIZE,
     DEFAULT_VIDEO_RESOLUTION,

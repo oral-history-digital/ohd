@@ -7,66 +7,63 @@
 
 $base-unit: 1.5rem;
 
-
 // Colors
 // --------------------------------------------------
 
-$gray-darkest:   #222 !default;
-$gray-darker:    #333 !default;
-$gray-dark:      #666 !default;
-$gray-medium:    #999 !default;
-$gray-light:     #ccc !default;
-$gray-lighter:   #ddd !default;
-$gray-lightest:  #eee !default;
-$gray-pale:      #f1f1f1 !default;
-$gray-paler:     #f4f4f4 !default;
-$gray-warm:      #8b8b7a !default;
+$gray-darkest: #222 !default;
+$gray-darker: #333 !default;
+$gray-dark: #666 !default;
+$gray-medium: #999 !default;
+$gray-light: #ccc !default;
+$gray-lighter: #ddd !default;
+$gray-lightest: #eee !default;
+$gray-pale: #f1f1f1 !default;
+$gray-paler: #f4f4f4 !default;
+$gray-warm: #8b8b7a !default;
 $gray-warm-dark: #6b6b5e !default;
 
-$danger-color:  red;
+$danger-color: red;
 $attention-color: #0ebd15;
 $warning-color: orange;
 $banner-color: $warning-color;
 
 $flyout-tab-title-text-color: #fff !default;
 $ui-background-color: $gray-warm-dark;
-$sidebar-background-color: rgba(232,232,228, 0.95);
+$sidebar-background-color: rgba(232, 232, 228, 0.95);
 
-$focus-color: var(--secondary-color);// #6eb0f1;
+$focus-color: var(--secondary-color); // #6eb0f1;
 $focus-radius: $base-unit * 0.125;
-
 
 // z-indexes
 
-$z-index-thumbnail-badge:        1;
-$z-index-thumbnail-arrows:       1;
-$z-index-edit-table-header:      1;
-$z-index-content-tabs:           3;
-$z-index-media-player:           3;
-$z-index-color-picker:           3;
-$z-index-map:                    5;
+$z-index-thumbnail-badge: 1;
+$z-index-thumbnail-arrows: 1;
+$z-index-edit-table-header: 1;
+$z-index-content-tabs: 3;
+$z-index-media-player: 3;
+$z-index-color-picker: 3;
+$z-index-map: 5;
 $z-index-search-spinner-overlay: 6;
-$z-index-listbox:                7;
-$z-index-sidebar:                7;  // Keep under 10 because of RichTextarea popup.
-$z-index-banner:                 8;
-$z-index-sidebar-toggle:         8;
-$z-index-back-to-top:            9;
-$lightbox-z-index:            1000;
-$dialog-overlay-z-index:      1002;
+$z-index-listbox: 7;
+$z-index-sidebar: 7; // Keep under 10 because of RichTextarea popup.
+$z-index-banner: 8;
+$z-index-sidebar-toggle: 8;
+$z-index-back-to-top: 9;
+$lightbox-z-index: 1000;
+$dialog-overlay-z-index: 1002;
 $z-index-map-spinner-overlay: 1003;
 
 // Basics
 // --------------------------------------------------
 
-$body-bg-color:    #fff !default;
-$body-text-color:  $gray-darkest !default;
+$body-bg-color: #fff !default;
+$body-text-color: $gray-darkest !default;
 
 //$link-color:       $primary-color !default;
 //$link-hover-color: $primary-color !default;
 
 $text-margin-medium: 9px;
 $text-margin-large: 11px;
-
 
 // Fonts
 // --------------------------------------------------
@@ -76,14 +73,14 @@ $font-family: FiraSans, Arial, Helvetica, sans-serif !default;
 
 $font-size-root: 16px !default;
 
-$font-size-small:    0.75rem !default;
-$font-size-medium:   0.875rem !default;
-$font-size-large:    1rem !default;
-$font-size-larger:   1.125rem !default;
+$font-size-small: 0.75rem !default;
+$font-size-medium: 0.875rem !default;
+$font-size-large: 1rem !default;
+$font-size-larger: 1.125rem !default;
 
-$line-height-small:  1.063rem !default;
+$line-height-small: 1.063rem !default;
 $line-height-medium: 1.313rem !default;
-$line-height-large:  1.5rem !default;
+$line-height-large: 1.5rem !default;
 $line-height-larger: 1.688rem !default;
 
 // Headings
@@ -118,20 +115,18 @@ $line-height-heading-h6-large: 1.25rem !default;
 $font-family-heading-weight: normal !default;
 
 // Icons
-$font-path: "../fonts/" !default;
-
+$font-path: '../fonts/' !default;
 
 // Widths and heights
 
-$line-length:                 32.5rem;
+$line-length: 32.5rem;
 
-$site-header-height-mobile:   5rem;
-$site-header-height-desktop:  6.25rem;
-$media-player-height-mobile:  20rem;
-$media-player-height-small:  12.5rem;
+$site-header-height-mobile: 5rem;
+$site-header-height-desktop: 6.25rem;
+$media-player-height-mobile: 20rem;
+$media-player-height-small: 12.5rem;
 $media-player-height-medium: 28rem;
-$horizontal-tabs-height:      $base-unit * 2;
-
+$horizontal-tabs-height: $base-unit * 2;
 
 // Export as CSS variables
 :root {
@@ -153,7 +148,6 @@ $video-element-margin-l: 0 27%;
 
 $transition-duration: 300ms;
 
-
 // Breakpoints
 // --------------------------------------------------
 
@@ -162,15 +156,15 @@ $screen-xs: 480px !default;
 $screen-xs-min: $screen-xs !default;
 
 // Small screen
-$screen-s:  520px !default;
+$screen-s: 520px !default;
 $screen-s-min: $screen-s !default;
 
 // Medium screen
-$screen-m:  768px !default;
+$screen-m: 768px !default;
 $screen-m-min: $screen-m !default;
 
 // Large screen
-$screen-l:  990px !default;
+$screen-l: 990px !default;
 $screen-l-min: $screen-l !default;
 
 // Extra large screen
@@ -178,9 +172,9 @@ $screen-xl: 1200px !default;
 $screen-xl-min: $screen-xl !default;
 
 $screen-xs-max: ($screen-s-min - 1) !default;
-$screen-s-max:  ($screen-m-min - 1) !default;
-$screen-m-max:  ($screen-l-min - 1) !default;
-$screen-l-max:  ($screen-xl-min - 1) !default;
+$screen-s-max: ($screen-m-min - 1) !default;
+$screen-m-max: ($screen-l-min - 1) !default;
+$screen-l-max: ($screen-xl-min - 1) !default;
 
 // workflow-colors
 $not-started: #8f201c;

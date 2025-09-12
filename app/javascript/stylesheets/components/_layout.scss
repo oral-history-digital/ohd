@@ -1,118 +1,119 @@
 .Layout-page {
-  .fa-eye, .fa-globe {
-    color: var(--primary-color) !important;
-  }
+    .fa-eye,
+    .fa-globe {
+        color: var(--primary-color) !important;
+    }
 }
 
 .Layout-contentTabs {
-  background-color: $gray-lighter;
-  height: $base-unit * 2;
-  overflow: hidden;
-  z-index: $z-index-content-tabs;
+    background-color: $gray-lighter;
+    height: $base-unit * 2;
+    overflow: hidden;
+    z-index: $z-index-content-tabs;
 }
 
 .wrapper-content {
-  padding: ($base-unit * 2) 5% ($base-unit * 2);
+    padding: ($base-unit * 2) 5% ($base-unit * 2);
 }
 
-.Layout.is-sticky {
-  .wrapper-content {
-    // Default margin when sticky (without player size class)
-    margin-top: $media-player-height-mobile + $horizontal-tabs-height;
+// .Layout.is-sticky {
+//     .wrapper-content {
+//         // Default margin when sticky (without player size class)
+//         margin-top: $media-player-height-mobile + $horizontal-tabs-height;
 
-    @include screen-m {
-      margin-top: $media-player-height-medium + $horizontal-tabs-height;
-    }
-  }
-  
-  // Override with specific margins based on player size class
-  &.is-small-player .wrapper-content {
-    margin-top: $media-player-height-small + $horizontal-tabs-height;
-    
-    // Ensure this works across all screen sizes
-    @include screen-m {
-      margin-top: $media-player-height-small + $horizontal-tabs-height;
-    }
-  }
-  
-  &.is-medium-player .wrapper-content {
-    margin-top: $media-player-height-medium + $horizontal-tabs-height;
-    
-    // Ensure this works across all screen sizes
-    @include screen-m {
-      margin-top: $media-player-height-medium + $horizontal-tabs-height;
-    }
-  }
-}
+//         // @include screen-m {
+//         //   margin-top: $media-player-height-medium + $horizontal-tabs-height;
+//         // }
+//     }
+
+//     // Override with specific margins based on player size class
+//     &.is-small-player .wrapper-content {
+//         margin-top: $media-player-height-small + $horizontal-tabs-height;
+
+//         // // Ensure this works across all screen sizes
+//         // @include screen-m {
+//         //   margin-top: $media-player-height-small + $horizontal-tabs-height;
+//         // }
+//     }
+
+//     &.is-medium-player .wrapper-content {
+//         margin-top: $media-player-height-medium + $horizontal-tabs-height;
+
+//         // // Ensure this works across all screen sizes
+//         // @include screen-m {
+//         //   margin-top: $media-player-height-medium + $horizontal-tabs-height;
+//         // }
+//     }
+// }
 
 .Layout-sidebar {
-  bottom: 0;
-  display: none;
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 100%;
-  z-index: $z-index-sidebar;
+    bottom: 0;
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: $z-index-sidebar;
 
-  @include screen-m {
-    width: 44%;
-  }
+    @include screen-m {
+        width: 44%;
+    }
 
-  @include screen-l {
-    width: 40%;
-  }
+    @include screen-l {
+        width: 40%;
+    }
 
-  @include screen-xl {
-    width: 36%;
-  }
+    @include screen-xl {
+        width: 36%;
+    }
 }
 
 .Layout-sidebarToggle {
-  position: fixed;
-  right: $base-unit;
-  top: $base-unit * 0.75;
-  z-index: $z-index-sidebar-toggle;
+    position: fixed;
+    right: $base-unit;
+    top: $base-unit * 0.75;
+    z-index: $z-index-sidebar-toggle;
 }
 
 .Layout.is-sticky {
-  .Layout-contentTabs {
-    position: fixed;
-    left: 0;
-    right: 0;
-  }
-  
-  &.is-small-player {
     .Layout-contentTabs {
-      top: var(--media-player-height-small);
+        position: fixed;
+        left: 0;
+        right: 0;
     }
-  }
-  
-  &.is-medium-player {
-    .Layout-contentTabs {
-      top: var(--media-player-height-medium);
-    }
-  }
 
-  &.is-mobile {
-    .Layout-contentTabs {
-      top: var(--media-player-height-mobile);
+    &.is-small-player {
+        .Layout-contentTabs {
+            top: var(--media-player-height-small);
+        }
     }
-  }
+
+    &.is-medium-player {
+        .Layout-contentTabs {
+            top: var(--media-player-height-medium);
+        }
+    }
+
+    &.is-mobile {
+        .Layout-contentTabs {
+            top: var(--media-player-height-mobile);
+        }
+    }
 }
 
 .Layout.sidebar-is-visible > .Layout-page {
-  @include screen-xl {
-    width: 64%;
-  }
+    @include screen-xl {
+        width: 64%;
+    }
 }
 
 .Layout.sidebar-is-visible > .Layout-sidebar {
-  display: block;
+    display: block;
 }
 
 .Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
 .Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
-  @include screen-xl {
-    right: 36%;
-  }
+    @include screen-xl {
+        right: 36%;
+    }
 }

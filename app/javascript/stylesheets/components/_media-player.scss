@@ -1,64 +1,73 @@
 .MediaPlayer {
-  background: $gray-darker;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  height: $media-player-height-mobile;
-  overflow-y: hidden;
-  padding: $base-unit 5%;
-  position: relative;
-  z-index: $z-index-media-player;
+    background: $gray-darker;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: hidden;
+    padding: $base-unit 5%;
+    position: relative;
+    z-index: $z-index-media-player;
 
-  @include screen-m {
-    height: $media-player-height-medium;
-    padding-bottom: $base-unit * 2;
-    padding-top: $base-unit * 1.5;
-  }
+    // @include screen-m {
+    //     height: $media-player-height-medium;
+    //     padding-bottom: $base-unit * 2;
+    //     padding-top: $base-unit * 1.5;
+    // }
+}
+
+.MediaElement {
+    max-width: 100%;
+}
+
+.Layout.is-small-player .MediaPlayer {
+    max-height: var(--media-player-height-small);
+}
+
+.Layout.is-medium-player .MediaPlayer {
+    max-height: var(--media-player-height-medium);
 }
 
 .MediaPlayer-buttons {
-  bottom: 0.5rem;
-  display: flex;
-  position: absolute;
-  right: 0.5rem;
+    display: flex;
+    margin-top: 1rem;
+    align-self: end;
 }
 
-// Sticky position styles - applied when scrolling below threshold
-.Layout.is-sticky .MediaPlayer {
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-}
+// // Sticky position styles - applied when scrolling below threshold
+// .Layout.is-sticky .MediaPlayer {
+//     left: 0;
+//     position: fixed;
+//     right: 0;
+//     top: 0;
+// }
 
-// Small player size styles - only apply in XL screens
-.Layout.is-small-player .MediaPlayer {
-  @include screen-xl {
-    flex-direction: row-reverse;
-    height: var(--media-player-height-small);
-    justify-content: flex-end;
-    padding: 0;
-  }
-  
-  @media (max-width: $screen-m-max) {
-    height: $media-player-height-mobile;
-    flex-direction: column;
-    justify-content: initial;
-    padding: $base-unit 5%;
-  }
-  
-  @media (min-width: $screen-m) and (max-width: $screen-l-max) {
-    height: $media-player-height-medium;
-    flex-direction: column;
-    padding-bottom: $base-unit * 2;
-    padding-top: $base-unit * 1.5;
-  }
-}
+// // Small player size styles - only apply in XL screens
+// .Layout.is-small-player .MediaPlayer {
+//     flex-direction: row-reverse;
+//     height: var(--media-player-height-small);
+//     justify-content: flex-end;
+//     padding: 0;
 
-// Sidebar adjustments when sticky
-.Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
-.Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
-  @include screen-xl {
-    right: 36%;
-  }
-}
+//     // @media (max-width: $screen-m-max) {
+//     //   height: $media-player-height-mobile;
+//     //   flex-direction: column;
+//     //   justify-content: initial;
+//     //   padding: $base-unit 5%;
+//     // }
+
+//     // @media (min-width: $screen-m) and (max-width: $screen-l-max) {
+//     //   height: $media-player-height-medium;
+//     //   flex-direction: column;
+//     //   padding-bottom: $base-unit * 2;
+//     //   padding-top: $base-unit * 1.5;
+//     // }
+// }
+
+// // Sidebar adjustments when sticky
+// .Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
+// .Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
+//     @include screen-xl {
+//         right: 36%;
+//     }
+// }

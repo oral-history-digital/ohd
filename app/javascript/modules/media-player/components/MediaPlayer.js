@@ -1,21 +1,17 @@
-import { useEffect } from 'react';
 import classNames from 'classnames';
-import { useSelector, useStore, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { getPlayerSize, setPlayerSize } from 'modules/media-player';
+import { getDefaultPlayerSize } from '../utils';
 import { useProject } from 'modules/routes';
-import { setPlayerSize, getPlayerSize } from 'modules/media-player';
-import { isMobile } from 'modules/user-agent';
-import MediaPlayerTitle from './MediaPlayerTitle';
 import MediaControlsContainer from '../containers/MediaControlsContainer';
 import MediaElementContainer from '../containers/MediaElementContainer';
 import MediaPlayerButtonsContainer from '../containers/MediaPlayerButtonsContainer';
 import { setStoreReference } from '../plugins/toggleSizeButtonPlugin';
-
-function isSmallScreen() {
-    return window.innerWidth < 1200; // screen-xl: 1200px
-}
+import MediaPlayerTitle from './MediaPlayerTitle';
 
 export default function MediaPlayer() {
     const { t, locale } = useI18n();
@@ -28,24 +24,23 @@ export default function MediaPlayer() {
     useEffect(() => {
         setStoreReference(store);
 
-        const shouldForceMedium = isMobile() || isSmallScreen();
-        const defaultSize = shouldForceMedium
-            ? 'medium'
-            : playerSize || 'medium';
-
-        if (!playerSize || (shouldForceMedium && playerSize !== 'medium')) {
-            dispatch(setPlayerSize(defaultSize));
-        }
-
-        const handleResize = () => {
-            if (shouldForceMedium && playerSize !== 'medium') {
-                dispatch(setPlayerSize('medium'));
+        const updatePlayerSizeToDefault = () => {
+            const expectedSize = getDefaultPlayerSize();
+            console.log('Player size:', playerSize);
+            console.log('Default size:', expectedSize);
+            if (!playerSize || playerSize !== expectedSize) {
+                dispatch(setPlayerSize(expectedSize));
+                console.log('Updating size to', expectedSize);
             }
         };
 
-        window.addEventListener('resize', handleResize);
+        // Set initial player size
+        updatePlayerSizeToDefault();
+
+        // Update on resize
+        window.addEventListener('resize', updatePlayerSizeToDefault);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', updatePlayerSizeToDefault);
         };
     }, [store, dispatch, playerSize]);
 

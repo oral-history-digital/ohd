@@ -34,7 +34,7 @@ export default function VideoJS({
 
             const player = (playerRef.current = videojs(
                 videoElement,
-                options,
+                { fluid: true, aspectRatio: '16:9', ...options },
                 () => {
                     onReady && onReady(player);
                 }

@@ -34,6 +34,7 @@ import {
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 import { OHD_DOMAINS } from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
+import { getDefaultPlayerSize } from 'modules/media-player';
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -46,10 +47,12 @@ export default function Layout({
     hideBanner,
     fetchData,
 }) {
-    const playerSize = useSelector(getPlayerSize);
+    const playerSize = useSelector(getPlayerSize) || getDefaultPlayerSize();
     const { project } = useProject();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
+
+    console.log('Player size in Layout.js', playerSize);
 
     useCheckLocaleAgainstProject();
 

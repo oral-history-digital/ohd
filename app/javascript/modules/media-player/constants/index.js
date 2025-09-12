@@ -1,10 +1,23 @@
 import { CSS_BASE_UNIT, ONE_REM } from 'modules/constants';
 
 export const NAME = 'media-player';
-export const DEFAULT_PLAYER_SIZE = 'medium';
 
-export const DEFAULT_VIDEO_RESOLUTION = '480p';
-export const DEFAULT_AUDIO_RESOLUTION = '192k';
+// Same as in app/javascript/stylesheets/_variables.scss
+export const BREAKPOINTS = {
+    xs: 480,
+    s: 520,
+    m: 768,
+    l: 990,
+    xl: 1200,
+};
+
+export const DEFAULT_PLAYER_SIZE = {
+    xs: 'medium',
+    s: 'medium',
+    m: 'small',
+    l: 'small',
+    xl: 'medium',
+};
 
 // Important: These values have to be in sync with the values
 // defined in /app/javascript/stylesheets/_variables.scss
