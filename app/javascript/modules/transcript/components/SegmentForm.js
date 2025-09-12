@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { isRtlLang } from 'rtl-detect';
+import { checkTextDir } from '../utils';
 
 import { Form } from 'modules/forms';
 import { usePeople } from 'modules/person';
@@ -18,20 +18,15 @@ export default function SegmentForm({
 }) {
     const { data: people, isLoading } = usePeople();
 
-    // Use Intl.Locale to extract two-letter language code for rtl-detect
-    const langCode = new Intl.Locale(contentLocale).language;
-    const isRtl = isRtlLang(langCode);
+    // Determine text direction for the textarea
+    const textDir = checkTextDir(segment?.text[contentLocale] || '');
 
     useEffect(() => {
-        if (isRtl) {
-            const textarea = document.getElementById('segment_text');
-            if (textarea) {
-                textarea.setAttribute('dir', 'auto');
-                textarea.style.direction = 'rtl';
-                textarea.style.textAlign = 'right';
-            }
-        }
-    }, [isRtl]);
+        const textarea = document.getElementById('segment_text');
+        textarea.setAttribute('dir', textDir);
+        textarea.style.direction = textDir;
+        textarea.style.textAlign = textDir === 'rtl' ? 'right' : 'left';
+    }, [textDir, contentLocale]);
 
     if (isLoading) {
         return <Spinner />;
