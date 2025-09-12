@@ -1,5 +1,5 @@
 import dotProp from 'dot-prop-immutable';
-import getGroupedContributions from './getGroupedContributions';
+import { getGroupedContributions } from './getGroupedContributions';
 
 const interviewee = {
     id: 0,

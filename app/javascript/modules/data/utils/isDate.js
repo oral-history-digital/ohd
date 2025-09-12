@@ -1,4 +1,4 @@
-export default function isDate(dateString) {
+export function isDate(dateString) {
     if (typeof dateString !== 'string') {
         return false;
     }
@@ -18,3 +18,5 @@ export function isFullISO8601Format(dateString) {
 export function isValidDate(date) {
     return date instanceof Date && !isNaN(date);
 }
+
+export default isDate;

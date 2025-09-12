@@ -1,5 +1,5 @@
 import renderer from 'react-test-renderer';
-import StateCheck from './StateCheck';
+import { StateCheck } from './StateCheck';
 
 const mockedState = {
     isTrue: true,

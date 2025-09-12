@@ -2,11 +2,7 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-export default function StateCheck({
-    testSelector,
-    fallback = <Spinner />,
-    children,
-}) {
+export function StateCheck({ testSelector, fallback = <Spinner />, children }) {
     const testResult = useSelector(testSelector);
 
     if (!testResult) {
@@ -24,3 +20,4 @@ StateCheck.propTypes = {
         PropTypes.node,
     ]),
 };
+export default StateCheck;

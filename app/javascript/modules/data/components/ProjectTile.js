@@ -4,7 +4,7 @@ import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-export default function ProjectTile({ data }) {
+export function ProjectTile({ data }) {
     const locale = useSelector(getLocale);
     const institutions = useSelector(getInstitutions);
 
@@ -43,3 +43,5 @@ export default function ProjectTile({ data }) {
 ProjectTile.propTypes = {
     data: PropTypes.object.isRequired,
 };
+
+export default ProjectTile;

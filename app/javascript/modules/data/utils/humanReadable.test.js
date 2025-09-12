@@ -1,4 +1,4 @@
-import humanReadable from './humanReadable';
+import { humanReadable } from './humanReadable';
 
 test('project shortname should not be translated even when translations are available', () => {
     const project = {

@@ -39,7 +39,7 @@ const initialState = {
     },
 };
 
-const data = (state = initialState, action) => {
+export const data = (state = initialState, action) => {
     switch (action.type) {
         case DELETE_STATUS_MSG:
             return Object.assign({}, state, {

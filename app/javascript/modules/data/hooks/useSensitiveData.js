@@ -5,7 +5,7 @@ import { pluralize, underscore } from 'modules/strings';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-export default function useSensitiveData(data, sensitiveAttributes) {
+export function useSensitiveData(data, sensitiveAttributes) {
     const dispatch = useDispatch();
     const { locale } = useI18n();
     const { projectId, project } = useProject();
@@ -25,3 +25,5 @@ export default function useSensitiveData(data, sensitiveAttributes) {
         });
     }, sensitiveAttributes);
 }
+
+export default useSensitiveData;
