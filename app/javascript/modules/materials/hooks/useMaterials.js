@@ -4,6 +4,8 @@ import { fetcher } from 'modules/api';
 import { useIsEditor } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
 
+import Material from '../classes/Material';
+
 export default function useMaterials(archiveId) {
     const pathBase = usePathBase();
     const isEditor = useIsEditor();
@@ -19,10 +21,12 @@ export default function useMaterials(archiveId) {
     return { isLoading, isValidating, data: formattedData, error };
 }
 
-function filteredData(materials, isEditor) {
+function filteredData(dataList, isEditor) {
+    const materials = dataList.map((materialData) => new Material(materialData));
+
     if (isEditor) {
         return materials;
     } else {
-        return materials.filter((material) => material.workflow_state === 'public');
+        return materials.filter((material) => material.isPublic);
     }
 }
