@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchData } from '../redux/actions';
 import { getProjectsStatus, getPublicProjects } from '../redux/selectors';
 
-const useLoadCompleteProject = (pId) => {
+export const useLoadCompleteProject = (pId) => {
     const projects = useSelector(getPublicProjects);
     const projectsStatus = useSelector(getProjectsStatus);
     const ohdDomain = OHD_DOMAINS[railsMode];
