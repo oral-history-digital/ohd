@@ -39,7 +39,7 @@ const initialState = {
     },
 };
 
-export const data = (state = initialState, action) => {
+export const dataReducer = (state = initialState, action) => {
     switch (action.type) {
         case DELETE_STATUS_MSG:
             return Object.assign({}, state, {
@@ -433,4 +433,4 @@ function updateStatus(statuses, dataType, messageObject) {
     }
 }
 
-export default data;
+export default dataReducer;
