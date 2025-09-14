@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
@@ -11,7 +11,7 @@ import queryToTitle from '../queryToTitle';
 import useFacets from '../useFacets';
 
 export default function SearchActions() {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { facets } = useFacets();
     const { allParams } = useSearchParams();
     const interview = useSelector(getCurrentInterview);
@@ -25,15 +25,15 @@ export default function SearchActions() {
     }
 
     function saveSearchForm(closeModal) {
-        const queryTitle = queryToTitle(allParams, facets);
+        const queryTitle = queryToTitle(allParams, facets, { t, locale });
 
         return (
             <WorkbookItemForm
                 interview={interview}
                 title={queryTitle}
-                description=''
+                description=""
                 properties={allParams}
-                type='Search'
+                type="Search"
                 submitLabel={t('save_search')}
                 onSubmit={closeModal}
                 onCancel={closeModal}
@@ -48,7 +48,11 @@ export default function SearchActions() {
     return (
         <Modal
             title={t('save_search')}
-            trigger={<><FaStar className="Icon Icon--text" /> {t('save_search')}</>}
+            trigger={
+                <>
+                    <FaStar className="Icon Icon--text" /> {t('save_search')}
+                </>
+            }
         >
             {saveSearchForm}
         </Modal>
