@@ -20,7 +20,7 @@ function Label({ label, labelKey, mandatory = false, htmlFor, className }) {
 Label.propTypes = {
     label: PropTypes.string,
     labelKey: PropTypes.string,
-    mandatory: PropTypes.bool.isRequired,
+    mandatory: PropTypes.bool,
     htmlFor: PropTypes.string,
     className: PropTypes.string,
 };
