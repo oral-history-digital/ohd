@@ -3,13 +3,7 @@ import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 
-function Label({
-    label,
-    labelKey,
-    mandatory,
-    htmlFor,
-    className,
-}) {
+function Label({ label, labelKey, mandatory = false, htmlFor, className }) {
     const { t } = useI18n();
 
     const l = label ? label : t(labelKey);
@@ -29,10 +23,6 @@ Label.propTypes = {
     mandatory: PropTypes.bool.isRequired,
     htmlFor: PropTypes.string,
     className: PropTypes.string,
-};
-
-Label.defaultProps = {
-    mandatory: false,
 };
 
 export default Label;
