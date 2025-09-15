@@ -1,5 +1,5 @@
-import { pluralize } from  'modules/strings';
-import { pathBase } from  'modules/routes';
+import { pluralize } from 'modules/strings';
+import { pathBase } from 'modules/routes';
 import { Loader } from 'modules/api';
 
 import {
@@ -52,7 +52,7 @@ const receiveData = (json) => ({
 });
 
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
-    let url = `${pathBase(props)}/${dataType}`
+    let url = `${pathBase(props)}/${dataType}`;
     if (id) {
         url += `/${id}`;
     }
@@ -64,70 +64,100 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
         url += `?${extraParams}`;
     }
 
-    return dispatch => {
-        dispatch(requestData(dataType, id, nestedDataType, extraParams?.replace(/[=&]/g, '_')))
+    return (dispatch) => {
+        dispatch(
+            requestData(
+                dataType,
+                id,
+                nestedDataType,
+                extraParams?.replace(/[=&]/g, '_')
+            )
+        );
         Loader.getJson(url, null, dispatch, receiveData);
-    }
+    };
 }
 
-export function submitData(props, params, opts={}, callback) {
+export function submitData(props, params, opts = {}, callback) {
     let dataType = Object.keys(params)[0];
     let pluralizedDataType = pluralize(dataType);
 
-    if(params[dataType].id) {
+    if (params[dataType].id) {
         let id = params[dataType].id;
         delete params[dataType].id;
-        return dispatch => {
+        return (dispatch) => {
             if (opts.updateStateBeforeSubmit)
-                dispatch(updateData(pluralizedDataType, id, Object.values(params)[0]));
-            Loader.put(`${pathBase(props)}/${pluralizedDataType}/${id}`, params,
-                dispatch, receiveData, undefined, callback);
-        }
+                dispatch(
+                    updateData(pluralizedDataType, id, Object.values(params)[0])
+                );
+            Loader.put(
+                `${pathBase(props)}/${pluralizedDataType}/${id}`,
+                params,
+                dispatch,
+                receiveData,
+                undefined,
+                callback
+            );
+        };
     } else {
-        return dispatch => {
+        return (dispatch) => {
             //dispatch(addData(params));
-            Loader.post(`${pathBase(props)}/${pluralizedDataType}`, params,
-                dispatch, receiveData, undefined, callback);
-        }
+            Loader.post(
+                `${pathBase(props)}/${pluralizedDataType}`,
+                params,
+                dispatch,
+                receiveData,
+                undefined,
+                callback
+            );
+        };
     }
 }
 
-export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove=false, onlyRemove=false, callback) {
-    let url = `${pathBase(props)}/${dataType}/${id}`
+export function deleteData(
+    props,
+    dataType,
+    id,
+    nestedDataType,
+    nestedId,
+    skipRemove = false,
+    onlyRemove = false,
+    callback
+) {
+    let url = `${pathBase(props)}/${dataType}/${id}`;
     if (nestedDataType) {
         url += `/${nestedDataType}/${nestedId}`;
     }
 
     if (skipRemove) {
-        return dispatch => {
+        return (dispatch) => {
             Loader.delete(url, dispatch, receiveData, callback);
-        }
+        };
     } else if (onlyRemove) {
-        return dispatch => {
-            dispatch(removeData(id, dataType, nestedDataType, nestedId))
-        }
+        return (dispatch) => {
+            dispatch(removeData(id, dataType, nestedDataType, nestedId));
+        };
     } else {
-        return dispatch => {
-            dispatch(removeData(id, dataType, nestedDataType, nestedId))
+        return (dispatch) => {
+            dispatch(removeData(id, dataType, nestedDataType, nestedId));
             Loader.delete(url, dispatch, receiveData, callback);
-        }
+        };
     }
 }
 
 export function clearStateData(dataType, id, nestedDataType, nestedId) {
-    return dispatch => {
-        dispatch(removeData(id, dataType, nestedDataType, nestedId))
-    }
+    return (dispatch) => {
+        dispatch(removeData(id, dataType, nestedDataType, nestedId));
+    };
 }
 
 export function cleanStatusMsg(dataType, msgOrIndex) {
-    return dispatch => {
-        dispatch(deleteStatusMsg(dataType, msgOrIndex))
-    }
+    return (dispatch) => {
+        dispatch(deleteStatusMsg(dataType, msgOrIndex));
+    };
 }
 
 const deleteStatusMsg = (dataType, msgOrIndex) => ({
     type: DELETE_STATUS_MSG,
     dataType: dataType,
-    msgOrIndex: msgOrIndex
+    msgOrIndex: msgOrIndex,
 });
