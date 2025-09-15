@@ -6,8 +6,9 @@ import { useScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { memo, useRef } from 'react';
-import BookmarkSegmentButton from './BookmarkSegmentButton';
 import { useAutoScrollToRef } from '../hooks';
+import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
+import BookmarkSegmentButton from './BookmarkSegmentButton';
 import Initials from './Initials';
 import SegmentButtons from './SegmentButtons';
 import SegmentPopup from './SegmentPopup';
@@ -48,9 +49,13 @@ function Segment({
         segmentParam,
     ]);
 
-    const text = isAuthorized(data, 'update')
+    let text = isAuthorized(data, 'update')
         ? data.text[contentLocale] || data.text[`${contentLocale}-public`]
         : data.text[`${contentLocale}-public`];
+
+    const textDir = checkTextDir(text);
+    // Enforce RTL wrapping if the text direction is RTL
+    text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
 
     const showSegment = text || editView;
 
@@ -94,7 +99,7 @@ function Segment({
                         'is-active': active,
                     })}
                     lang={contentLocale}
-                    dir="auto"
+                    dir={textDir ? textDir : 'auto'}
                     onClick={() => {
                         transcriptCoupled &&
                             sendTimeChangeRequest(data.tape_nbr, data.time);
