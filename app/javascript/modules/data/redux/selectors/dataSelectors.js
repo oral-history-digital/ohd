@@ -318,8 +318,12 @@ export const getRegistryReferenceTypesForCurrentProject = createSelector(
 export const getRegistryNameTypesForCurrentProject = (state) =>
     getData(state).registry_name_types;
 
-export const getMediaStreamsForCurrentProject = (state) =>
-    getData(state).mediaStreams;
+export const getMediaStreamsForCurrentProject = createSelector(
+    [(state) => getCurrentProject(state)],
+    (currentProject) => {
+        return currentProject?.media_streams ?? null;
+    }
+);
 
 export const getCurrentIntervieweeId = createSelector(
     [(state) => getCurrentInterview(state)],

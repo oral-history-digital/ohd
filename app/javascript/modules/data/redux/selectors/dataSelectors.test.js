@@ -564,6 +564,6 @@ test('getContributorsFetched retrieves if contributors for current interview hav
 
 test('getMediaStreamsForCurrentProject retrieves media streams', () => {
     expect(getMediaStreamsForCurrentProject(state)).toEqual(
-        state.data.mediaStreams
+        state.data.projects[1].media_streams
     );
 });
