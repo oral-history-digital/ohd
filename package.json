@@ -2,7 +2,7 @@
   "name": "ohd",
   "repository": "https://github.com/oral-history-digital/ohd",
   "license": "AGPL-3.0-only",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "engines": {
     "node": ">=18 <=22"
   },
