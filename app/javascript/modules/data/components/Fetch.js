@@ -50,7 +50,7 @@ Fetch.propTypes = {
     testSelector: PropTypes.func,
     reloadSelector: PropTypes.func,
     testDataType: PropTypes.string,
-    testIdOrDesc: PropTypes.string,
+    testIdOrDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     fallback: PropTypes.element,
     alwaysRenderChildren: PropTypes.bool,
     children: PropTypes.oneOfType([
