@@ -9,22 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   fix: correctly apply RTL display of segments (INTARCH-3132)(#22)[https://github.com/oral-history-digital/ohd/pull/22]
+-   fix: correctly apply RTL display of segments (INTARCH-3132) ([#22](https://github.com/oral-history-digital/ohd/pull/22))
 
 ## [1.1.2] - 2025-09-10
 
 ### Added
 
--   improvements to tei-header (see changelog)[https://github.com/oral-history-digital/ohd/compare/v1.1.1...v1.1.2]
+-   improvements to tei-header ([see changelog](https://github.com/oral-history-digital/ohd/compare/v1.1.1...v1.1.2))
 
 ## [1.1.1] - 2025-09-09
 
 ### Added
 
--   new-registration-info mail in project.default_locale (32087d4
-    )[https://github.com/oral-history-digital/ohd/commit/32087d44229eb735aac97d478e6beff8ea6a7aad]
--   add landing_page-registry_references to interview-base-serializer (a22aad4)[https://github.com/oral-history-digital/ohd/commit/a22aad40de6ea9c90e351d515cfeaab573af13a6]
--   add order_priority-input to registry_name-form (76a624a)[https://github.com/oral-history-digital/ohd/commit/76a624ac645068c3eb78c4cf15d625f7cdaee21e]
+-   new-registration-info mail in project.default_locale ([32087d4](https://github.com/oral-history-digital/ohd/commit/32087d44229eb735aac97d478e6beff8ea6a7aad))
+-   add landing_page-registry_references to interview-base-serializer ([a22aad4](https://github.com/oral-history-digital/ohd/commit/a22aad40de6ea9c90e351d515cfeaab573af13a6))
+-   add order_priority-input to registry_name-form ([76a624a](https://github.com/oral-history-digital/ohd/commit/76a624ac645068c3eb78c4cf15d625f7cdaee21e))
 
 ## [1.1.0] - 2025-09-04
 
