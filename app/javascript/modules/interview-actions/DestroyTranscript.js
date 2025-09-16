@@ -21,7 +21,7 @@ export default function DestroyTranscript({
         <>
             { interview?.alpha3s_with_transcript.map( alpha3 => {
                 if (alpha3IsDestroying === alpha3) {
-                    return <span>{alpha3 + ': '}<Spinner /></span>;
+                    return <span>{t('deleting') + ' ' + alpha3 + '... '}<Spinner small /></span>;
                 } else if (alpha3ToDestroy === alpha3) {
                     return <button
                         type="button"
