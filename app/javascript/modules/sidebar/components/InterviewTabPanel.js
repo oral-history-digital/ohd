@@ -139,12 +139,14 @@ export default function InterviewTabPanel({
                     </SubTab>
                 </AuthorizedContent>
 
-                <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
-                    <SubTab title={t('edit.destroy_transcript.title')}>
-                        <HelpText code="interview_destroy_transcript" className="u-mb" />
-                        <DestroyTranscript interview={interview} />
-                    </SubTab>
-                </AuthorizedContent>
+                { interview.alpha3s_with_transcript && interview.alpha3s_with_transcript.length > 0 && (
+                    <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
+                        <SubTab title={t('edit.destroy_transcript.title')}>
+                            <HelpText code="interview_destroy_transcript" className="u-mb" />
+                            <DestroyTranscript interview={interview} />
+                        </SubTab>
+                    </AuthorizedContent>
+                )}
 
                 <AuthorizedContent object={interview} action='update'>
                     <SubTab title={t('edit.upload_edit_table.title')}>
