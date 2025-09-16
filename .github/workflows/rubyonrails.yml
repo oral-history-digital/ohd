@@ -4,79 +4,80 @@
 #
 # This workflow will install a prebuilt Ruby version, install dependencies, and
 # run tests and linters.
-name: "Ruby on Rails CI"
+name: 'Ruby on Rails CI'
 on: [push]
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-      JAVA_HOME: /usr/lib/jvm/temurin-8-jdk-amd64
-    steps:
-      - name: Update packages
-        run: sudo apt-get update
-      - name: Install pdflatex
-        run: sudo apt-get install texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra
-      #- name: List Javas
-      #  run: sudo update-java-alternatives --list
-      - name: Remove Javas
-        run: sudo apt remove temurin-11-jdk temurin-17-jdk temurin-21-jdk
-      #- name: List Javas again
-      #  run: sudo update-java-alternatives --list
-      - name: Use Java 8
-        run: sudo update-java-alternatives --set temurin-8-jdk-amd64
-      #- name: Set env variable
-      #  run: export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
-      - name: Confirm Java version
-        run: java -version
-      - name: Checkout code
-        uses: actions/checkout@v4
-      # Add or replace dependency steps here
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Install foreman
-        run: gem install foreman
-      - name: Install node modules
-        run: yarn
-      - name: Copy datacite.yml file
-        run: cp config/datacite.example.yml config/datacite.yml
-      - name: Copy database.yml file
-        run: cp config/database.example.yml config/database.yml
-      - name: Create database
-        run: mysql -u root -proot -e "create database ohd_archive_test";
-      # Add or replace database setup steps here
-      - name: Set up database schema
-        run: bin/rails db:schema:load
-      # Other setup stuff
-      - name: Add localhost to /etc/hosts
-        run: sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
-      - name: Add test domain to /etc/hosts
-        run: sudo echo "127.0.0.1 test.portal.oral-history.localhost" | sudo tee -a /etc/hosts
-      - name: Start server
-        run: bin/start_app &
-      - name: Start search engine
-        run: bin/start_search &
-      # Add or replace test runners here
-      - name: Run tests
-        run: bin/test
+    test:
+        runs-on: ubuntu-latest
+        env:
+            RAILS_ENV: test
+            JAVA_HOME: /usr/lib/jvm/temurin-8-jdk-amd64
+        steps:
+            - name: Update packages
+              run: sudo apt-get update
+            - name: Install pdflatex
+              run: sudo apt-get install texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra
+            #- name: List Javas
+            #  run: sudo update-java-alternatives --list
+            - name: Remove Javas
+              run: sudo apt remove temurin-11-jdk temurin-17-jdk temurin-21-jdk
+            #- name: List Javas again
+            #  run: sudo update-java-alternatives --list
+            - name: Use Java 8
+              run: sudo update-java-alternatives --set temurin-8-jdk-amd64
+            #- name: Set env variable
+            #  run: export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
+            - name: Confirm Java version
+              run: java -version
+            - name: Checkout code
+              uses: actions/checkout@v4
+            # Add or replace dependency steps here
+            - name: Start MySQL
+              run: sudo /etc/init.d/mysql start
+            - name: Install Ruby and gems
+              uses: ruby/setup-ruby@v1
+              with:
+                  bundler-cache: true
+            - name: Install foreman
+              run: gem install foreman
+            - name: Install node modules
+              run: yarn
+            - name: Copy datacite.yml file
+              run: cp config/datacite.example.yml config/datacite.yml
+            - name: Copy database.yml file
+              run: cp config/database.example.yml config/database.yml
+            - name: Create database
+              run: mysql -u root -proot -e "create database ohd_archive_test";
+            # Add or replace database setup steps here
+            - name: Set up database schema
+              run: bin/rails db:schema:load
+            # Other setup stuff
+            - name: Add localhost to /etc/hosts
+              run: sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
+            - name: Add test domain to /etc/hosts
+              run: sudo echo "127.0.0.1 test.portal.oral-history.localhost" | sudo tee -a /etc/hosts
+            - name: Start server
+              run: bin/start_app &
+            # Search engine not needed for tests as we stub Sunspot/Solr
+            # - name: Start search engine
+            #   run: bin/start_search &
+            # Add or replace test runners here
+            - name: Run tests
+              run: bin/test
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      # Add or replace any other lints here
-      #- name: Security audit dependencies
-      #  run: bin/bundler-audit --update
-      #- name: Security audit application code
-      #  run: bin/brakeman -q -w2
-      #- name: Lint Ruby files
-      #  run: bin/rubocop --parallel
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Install Ruby and gems
+              uses: ruby/setup-ruby@v1
+              with:
+                  bundler-cache: true
+            # Add or replace any other lints here
+            #- name: Security audit dependencies
+            #  run: bin/bundler-audit --update
+            #- name: Security audit application code
+            #  run: bin/brakeman -q -w2
+            #- name: Lint Ruby files
+            #  run: bin/rubocop --parallel

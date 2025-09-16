@@ -15,6 +15,9 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "#{Rails.root}/test/data_helper.rb"
 
+# Disable Solr/Sunspot for tests to avoid connection issues
+Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+
 if ENV['RETRY'] == 'true'
   require 'minitest/retry'
   Minitest::Retry.use!
