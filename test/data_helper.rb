@@ -186,21 +186,21 @@ module DataHelper
       more_text: 'more text?',
       landing_page_text: 'This is the landing page. Register please.',
       workflow_state: 'public',
-      registry_name_types: [
-        RegistryNameType.create(
-          code: 'spelling',
-          name: 'Bezeichner',
-          order_priority: 3
-        ),
-        RegistryNameType.create(
-          code: 'ancient',
-          name: 'Ehemalige Bezeichnung',
-          order_priority: 3
-        )
-      ],
     )
 
     project = Project.create! attribs
+    
+    # Create registry name types after project creation to associate them properly
+    project.registry_name_types.create!(
+      code: 'spelling',
+      name: 'Bezeichner',
+      order_priority: 3
+    )
+    project.registry_name_types.create!(
+      code: 'ancient',
+      name: 'Ehemalige Bezeichnung',
+      order_priority: 3
+    )
     registry = test_registry(project)
     project
   end
@@ -523,7 +523,11 @@ module DataHelper
         RegistryName.new(
           descriptor: "#{project.shortname} registry",
           name_position: 1,
-          registry_name_type: RegistryNameType.new
+          registry_name_type: project.registry_name_types.first || project.registry_name_types.create!(
+            code: 'default',
+            name: 'Default',
+            order_priority: 1
+          )
         )
       ]
     )
