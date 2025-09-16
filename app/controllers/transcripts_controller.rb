@@ -42,6 +42,25 @@ class TranscriptsController < ApplicationController
     end
   end
 
+  def destroy
+    interview = Interview.find_by_archive_id(params[:interview_id])
+    authorize interview, :upload_transcript?
+    locale = params[:id]
+
+    Segment::Translation.where(
+      segment_id: interview.segments.pluck(:id),
+      locale: [locale, "#{locale}-public", "#{locale}-subtitle"]
+    ).destroy_all
+
+    interview.reload.touch
+
+    respond_to do |format|
+      format.json do
+        render json: data_json(interview)
+      end
+    end
+  end
+
   private
 
   def transcript_params
@@ -49,6 +68,7 @@ class TranscriptsController < ApplicationController
       permit(
         :archive_id,
         :transcript_language_id,
+        :transcript_locale,
         :tape_number,
         :tape_durations,
         :time_shifts,
