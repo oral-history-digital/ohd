@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       resources :materials, only: [:create, :update, :destroy]
       resources :registry_references, only: [:create, :update, :destroy]
       resources :segments, only: [:create, :update, :index, :destroy]
+      resources :transcripts, only: [:destroy]
       resources :tapes do
         collection do
           get :playlist
