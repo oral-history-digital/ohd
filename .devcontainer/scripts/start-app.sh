@@ -42,6 +42,15 @@ elif [[ "$solr_doc_count" -lt 100 ]]; then
   log "Full reindex: bin/rails solr:reindex:all"
 fi
 
+log "Starting virtual display for system tests..."
+export DISPLAY=:99
+if ! pgrep -f "Xvfb :99" > /dev/null; then
+  Xvfb :99 -screen 0 1400x1400x24 &> /dev/null &
+  log "✅ Virtual display started on :99"
+else
+  log "✅ Virtual display already running"
+fi
+
 log "Starting Rails server..."
 bin/rails server -b 0.0.0.0 -d
 wait_for_port localhost 3000
