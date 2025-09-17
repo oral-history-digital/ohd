@@ -414,7 +414,7 @@ class Project < ApplicationRecord
             }
           end
           result
-        when 'language_id', 'primary_language_id', 'secondary_language_id', 'primary_translation_language_id'
+        when 'language_id', 'primary_language_id', 'secondary_language_id', 'primary_translation_language_id', 'secondary_translation_language_id'
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
           mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}") do
