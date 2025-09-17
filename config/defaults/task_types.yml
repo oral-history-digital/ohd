@@ -2,7 +2,7 @@
 - :attributes:
   - key: media_import
     abbreviation: Medien
-    :translations_attributes: 
+    :translations_attributes:
     - label: Medienimport (A/V) prüfen
       locale: de
     - label: Check media import (A/V)
@@ -184,6 +184,33 @@
     :action_name: update
   - :name: Photo destroy
     :klass: Photo
+    :action_name: destroy
+- :attributes:
+  - key: materials
+    abbreviation: Materialien
+    :translations_attributes:
+      - label: PDF-Materialien hochladen und Beschreibungen bearbeiten
+        locale: de
+      - label: Upload PDF materials and edit descriptions
+        locale: en
+  :permissions:
+  - :name: Interview show
+    :klass: Interview
+    :action_name: show
+  - :name: Upload create
+    :klass: Upload
+    :action_name: create
+  - :name: Material create
+    :klass: Material
+    :action_name: create
+  - :name: Material show
+    :klass: Material
+    :action_name: show
+  - :name: Material update
+    :klass: Material
+    :action_name: update
+  - :name: Material destroy
+    :klass: Material
     :action_name: destroy
 - :attributes:
   - key: biography
