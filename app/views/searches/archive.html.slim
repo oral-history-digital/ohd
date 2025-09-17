@@ -4,19 +4,19 @@
     
   .search-container data-controller="archive-search"
     .search-form
-      = form_with url: "/searches/archive", method: :get, local: true, 
-          data: { 
-            controller: "search-form",
-            action: "submit->search-form#submit turbo:submit-end->archive-search#updateResults"
+      = form_with url: "/searches/archive", method: :get, local: true, \
+          data: { \
+            controller: "search-form",\
+            action: "submit->search-form#submit turbo:submit-end->archive-search#updateResults"\
           } do |f|
         .search-input-group
           = f.text_field :fulltext, 
               placeholder: t('search_placeholder'), 
               value: params[:fulltext],
               class: 'search-input',
-              data: { 
-                search_form_target: 'input',
-                action: 'input->search-form#debounceSubmit'
+              data: { \
+                search_form_target: 'input',\
+                action: 'input->search-form#debounceSubmit'\
               }
           = f.submit t('search'), class: 'search-button button button-primary'
           
@@ -31,7 +31,7 @@
           = t('results_found')
           
         .results-controls
-          = link_to t('export_csv'), "/searches/archive.csv?#{@search_params.to_query}", 
+          = link_to t('export_csv'), "/searches/archive.csv?#{@search_params}", 
               class: 'button button-secondary'
               
       .results-container data-archive-search-target="results"
