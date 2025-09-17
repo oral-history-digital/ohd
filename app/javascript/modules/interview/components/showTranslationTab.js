@@ -17,5 +17,7 @@ function projectSupportsTranslatedTranscript(project, interview, locale) {
 }
 
 function translationAvailable(interview) {
-    return interview?.alpha3s_with_transcript.includes(interview.translation_alpha3);
+    const translationsWithTranscript = interview?.alpha3s_with_transcript.filter(value => interview?.translation_alpha3s.includes(value));
+    return translationsWithTranscript && translationsWithTranscript.length > 0;
+
 }
