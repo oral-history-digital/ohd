@@ -21,32 +21,36 @@ export default function DestroyTranscript({
         <>
             { interview?.alpha3s_with_transcript.map( alpha3 => {
                 if (alpha3IsDestroying === alpha3) {
-                    return <span>{t('deleting') + ' ' + alpha3 + '... '}<Spinner small /></span>;
+                    return <div><span className="u-mr-small">{t('deleting') + ' ' + alpha3 + '... '}<Spinner small /></span></div>;
                 } else if (alpha3ToDestroy === alpha3) {
-                    return <button
-                        type="button"
-                        className="Button Button--transparent Button--icon"
-                        title={t('really_destroy')}
-                        onClick={() => {
-                            dispatch(deleteData({locale, projectId, project},
-                                'interviews', interview.archive_id, 'transcripts', alpha3,
-                                false, false, setAlpha3IsDestroying(alpha3)
-                            ));
-                        }}
-                    >
-                        <span>{t('destroy.really_destroy_transcript', { alpha3: alpha3 })}</span>
-                        <FaTrash className="Icon Icon--danger" />
-                    </button>
+                    return <div>
+                        <button
+                            type="button"
+                            className="Button Button--transparent Button--icon"
+                            title={t('really_destroy')}
+                            onClick={() => {
+                                dispatch(deleteData({locale, projectId, project},
+                                    'interviews', interview.archive_id, 'transcripts', alpha3,
+                                    false, false, setAlpha3IsDestroying(alpha3)
+                                ));
+                            }}
+                        >
+                            <span className="u-mr-small">{t('destroy.really_destroy_transcript', { alpha3: alpha3 })}</span>
+                            <FaTrash className="Icon Icon--danger" />
+                        </button>
+                    </div>
                 } else {
-                    return <button
-                        type="button"
-                        className="Button Button--transparent Button--icon"
-                        title={t('delete')}
-                        onClick={() => setAlpha3ToDestroy(alpha3)}
-                    >
-                        <span>{t('destroy.delete_transcript', { alpha3: alpha3 })}</span>
-                        <FaTrash className="Icon Icon--editorial" />
-                    </button>
+                    return <div>
+                        <button
+                            type="button"
+                            className="Button Button--transparent Button--icon"
+                            title={t('delete')}
+                            onClick={() => setAlpha3ToDestroy(alpha3)}
+                        >
+                            <span className="u-mr-small">{t('destroy.delete_transcript', { alpha3: alpha3 })}</span>
+                            <FaTrash className="Icon Icon--editorial" />
+                        </button>
+                    </div>
                 }
             })}
         </>
