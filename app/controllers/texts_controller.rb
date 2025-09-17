@@ -6,8 +6,23 @@ class TextsController < ApplicationController
   before_action :set_text, only: [:update]
 
   def show
+    # Handle both resource routes (/texts/:id) and named routes (/conditions, /privacy_protection, etc.)
+    @text_code = params[:id] || params[:code] || action_name
+    
+    # Find the text record for this project and code
+    @text = current_project&.texts&.find_by(code: @text_code)
+    @text_content = @text&.text(I18n.locale) || @text&.text(current_project&.default_locale)
+    
     respond_to do |format|
-      format.html { render "react/app" }
+      format.html { render layout: 'turbo_application' }
+      format.json do
+        # Keep JSON for backward compatibility
+        render json: {
+          text_code: @text_code,
+          content: @text_content,
+          project: current_project
+        }
+      end
     end
   end
 
