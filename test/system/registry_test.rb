@@ -3,6 +3,8 @@ require "application_system_test_case"
 class RegistryTest < ApplicationSystemTestCase
   setup do
     login_as 'alice@example.com'
+    # Wait for the page to load completely before clicking
+    expect(page).to have_link('Editing interface', wait: 10)
     click_on 'Editing interface'
     visit '/en/registry_entries'
   end
@@ -17,13 +19,15 @@ class RegistryTest < ApplicationSystemTestCase
     within '#normdata' do
       click_on 'Search'
     end
-    sleep 1
-    click_on 'Istanbul'
-    sleep 1
+    # Wait for search results to load and click the first Istanbul result
+    within '#normdata' do
+      find('button, a', text: 'Istanbul', match: :first).click
+    end
     within '#overwrite_registry_entry' do
       click_on 'OK'
     end
-    sleep 1
+    # Wait for the form fields to be populated after clicking OK
+    expect(page).to have_field('registry_name_descriptor_en', with: 'Constantinople', wait: 5)
     assert all('#registry_name_descriptor_en')[1].value == 'Constantinople'
     assert all('#registry_entry_notes_en')[0].value == 'city in Turkey located at the Bosporus Strait'
     assert all('#registry_entry_latitude')[0].value =~ /41\./
@@ -32,7 +36,14 @@ class RegistryTest < ApplicationSystemTestCase
     within '#registry_entry' do
       click_on 'Submit'
     end
-    sleep 1
+    # Wait for the form submission to complete - check if we're redirected or see success indication
+    # Use a simple wait with retry for database state
+    Timeout::timeout(5) do
+      loop do
+        break if RegistryEntry.last&.registry_names&.count == 2
+        sleep 0.1
+      end
+    end
     assert RegistryEntry.last.registry_names.count == 2
     assert RegistryEntry.last.registry_names.first.descriptor == 'Istanbul'
     assert RegistryEntry.last.registry_names.last.descriptor == 'Constantinople'
@@ -50,7 +61,8 @@ class RegistryTest < ApplicationSystemTestCase
     within '#registry_entry' do
       click_on 'Submit'
     end
-    sleep 1
+    # Wait for the page to show the created entry
+    expect(page).to have_text('Neukölln', wait: 5)
     assert_text 'Neukölln'
     assert RegistryEntry.last.registry_names.first.descriptor == 'Neukölln'
   end
