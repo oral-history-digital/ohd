@@ -600,7 +600,7 @@ class InterviewsController < ApplicationController
         "attributes": {
           "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
           "event": "publish",
-          "url": "https://www.datacite.org",
+          "url": "#{current_project.domain_with_optional_identifier}/#{locale}/interviews/#{archive_id}",
           "xml": Base64.encode64(xml),
         },
       },
