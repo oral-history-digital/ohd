@@ -35,7 +35,11 @@ export default function MarkTextForm({
                         {
                             elementType: 'select',
                             attribute: 'locale',
-                            values: interview.alpha3s,
+                            values: interview.alpha3s.reduce((acc, alpha3) => {
+                                acc[alpha3] = {name: t(alpha3)};
+                                return acc;
+                            }, {}),
+                            doNotTranslate: true,
                             withEmpty: true,
                             validate: function(v){return v !== ''},
                             individualErrorMsg: 'empty'
