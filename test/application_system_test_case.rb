@@ -18,4 +18,14 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     driven_by :selenium, using: :firefox, screen_size: [1400, 1400]
   end
 
+  # Ensure each system test starts with a clean browser session. Some tests
+  # leave the browser logged in which can make subsequent tests fail when
+  # expecting a Login button. Reset sessions before and after each test.
+  setup do
+    Capybara.reset_sessions!
+  end
+
+  teardown do
+    Capybara.reset_sessions!
+  end
 end
