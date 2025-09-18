@@ -28,6 +28,15 @@ class ActiveSupport::TestCase
 
   # TODO: rebase test data on seed data once seed data is ready
   # load "#{Rails.root}/db/seeds.rb"
+
+  # Use Sunspot's in-memory stub session by default for tests so we don't
+  # require a running Solr instance. If you want to run tests against a
+  # real Solr, set the environment variable REAL_SOLR=true when running the
+  # tests and provide a test Solr instance.  
+  unless ENV['REAL_SOLR'] == 'true'
+    Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+  end
+
   DataHelper.test_data
 
   self.use_transactional_tests = true
@@ -39,14 +48,6 @@ class ActiveSupport::TestCase
     Rails.application.routes.default_url_options[:host] = 'test.portal.oral-history.localhost:47001'
 
     system 'mkdir', '-p', "#{Rails.root}/public/test/"
-
-    # Use Sunspot's in-memory stub session by default for tests so we don't
-    # require a running Solr instance. If you want to run tests against a
-    # real Solr, set the environment variable REAL_SOLR=true when running the
-    # tests and provide a test Solr instance.
-    unless ENV['REAL_SOLR'] == 'true'
-      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
-    end
   end
 
   def teardown
