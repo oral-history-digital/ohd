@@ -133,6 +133,7 @@ module DataHelper
     )
     admin.skip_confirmation_notification!
     admin.save!
+    admin.confirm
     admin.afirm!
 
     jdoe = User.new(
@@ -152,6 +153,7 @@ module DataHelper
     )
     jdoe.skip_confirmation_notification!
     jdoe.save!
+    jdoe.confirm
     jdoe.afirm!
 
     file = "#{Rails.root}/test/translations.sql"
