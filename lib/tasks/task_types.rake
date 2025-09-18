@@ -1,6 +1,6 @@
 namespace :task_types do
 
-  desc 'create default_task_types_and permissions' 
+  desc 'create default_task_types_and permissions'
   task :create_default_task_types_and_permissions, [:project_initials] => :environment do |t, args|
     project = Project.where(initials: args.project_initials).first
     default_task_types.each do |key, (label, abbreviation)|
@@ -31,7 +31,9 @@ namespace :task_types do
       metadata: ['Metadaten', 'Met'],
       translation_metadata: ['Übersetzung/Metadaten', 'Ü/Met'],
       photos: ['Fotos', 'Fot'],
-      translation_photos: ['Übersetzung/ Fotos', 'Ü/Fot'],
+      translation_photos: ['Übersetzung/Fotos', 'Ü/Fot'],
+      materials: ['Materialien', 'Mat'],
+      translation_materials: ['Übersetzung/Materialien', 'Ü/Mat'],
       biography: ['Kurzbiografie', 'Bio'],
       translation_biography: ['Übersetzung/Kurzbiografie', 'Ü/Bio'],
       table_of_contents: ['Inhaltsverzeichnis', 'Inh'],
@@ -86,6 +88,20 @@ namespace :task_types do
         {klass: 'Photo', action_name: 'destroy'},
         {klass: 'Interview', action_name: 'show'}
       ],
+      materials: [
+        {klass: 'Upload', action_name: 'create'},
+        {klass: 'Material', action_name: 'create'},
+        {klass: 'Material', action_name: 'update'},
+        {klass: 'Material', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'show'}
+      ],
+      translation_materials: [
+        {klass: 'Upload', action_name: 'create'},
+        {klass: 'Material', action_name: 'create'},
+        {klass: 'Material', action_name: 'update'},
+        {klass: 'Material', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'show'}
+      ],
       biography: [
         {klass: 'BiographicalEntry', action_name: 'create'},
         {klass: 'BiographicalEntry', action_name: 'update'},
@@ -108,7 +124,7 @@ namespace :task_types do
         {klass: 'Segment', action_name: 'update'},
         {klass: 'Interview', action_name: 'show'}
       ],
-      register: [ 
+      register: [
         {klass: 'RegistryReference', action_name: 'create'},
         {klass: 'RegistryReference', action_name: 'update'},
         {klass: 'RegistryReference', action_name: 'destroy'}
@@ -127,4 +143,3 @@ namespace :task_types do
     }
   end
 end
-

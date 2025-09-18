@@ -19,6 +19,7 @@ yarn-debug.log*
 coverage
 .byebug_history
 .vscode
+.rake_tasks~
 
 # Ignore uploaded files in development.
 /storage/*

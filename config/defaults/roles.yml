@@ -1,6 +1,6 @@
 ---
 - :attributes:
-  - :translations_attributes: 
+  - :translations_attributes:
     - name: Redaktion
       locale: de
     - name: Editor
@@ -10,7 +10,7 @@
     :klass: General
     :action_name: edit
 - :attributes:
-  - :translations_attributes: 
+  - :translations_attributes:
     - name: Erschließung
       locale: de
     - name: Developer
@@ -70,6 +70,18 @@
   - :name: Interview mark_texts
     :klass: Interview
     :action_name: mark_texts
+  - :name: Material create
+    :klass: Material
+    :action_name: create
+  - :name: Material update
+    :klass: Material
+    :action_name: update
+  - :name: Material destroy
+    :klass: Material
+    :action_name: destroy
+  - :name: Material show
+    :klass: Material
+    :action_name: show
   - :name: Person create
     :klass: Person
     :action_name: create
@@ -143,13 +155,13 @@
     :klass: Upload
     :action_name: create
   - :name: Interview upload_transcript
-    :klass: Interview 
+    :klass: Interview
     :action_name: upload_transcript
   - :name: NormDatum destroy
     :klass: NormDatum
     :action_name: destroy
 - :attributes:
-  - :translations_attributes: 
+  - :translations_attributes:
     - name: Qualitätsmanagement
       locale: de
     - name: Quality Control
@@ -221,6 +233,18 @@
   - :name: Interview mark_texts
     :klass: Interview
     :action_name: mark_texts
+  - :name: Material create
+    :klass: Material
+    :action_name: create
+  - :name: Material update
+    :klass: Material
+    :action_name: update
+  - :name: Material destroy
+    :klass: Material
+    :action_name: destroy
+  - :name: Material show
+    :klass: Material
+    :action_name: show
   - :name: MetadataField create
     :klass: MetadataField
     :action_name: create
@@ -315,7 +339,7 @@
     :klass: Upload
     :action_name: create
   - :name: Interview upload_transcript
-    :klass: Interview 
+    :klass: Interview
     :action_name: upload_transcript
   - :name: UserRole create
     :klass: UserRole
@@ -327,7 +351,7 @@
     :klass: NormDatum
     :action_name: destroy
 - :attributes:
-  - :translations_attributes: 
+  - :translations_attributes:
     - name: Archivmanagement
       locale: de
     - name: Archive Manager
@@ -432,6 +456,18 @@
   - :name: Logo destroy
     :klass: Logo
     :action_name: destroy
+  - :name: Material create
+    :klass: Material
+    :action_name: create
+  - :name: Material update
+    :klass: Material
+    :action_name: update
+  - :name: Material destroy
+    :klass: Material
+    :action_name: destroy
+  - :name: Material show
+    :klass: Material
+    :action_name: show
   - :name: MediaStream create
     :klass: MediaStream
     :action_name: create
@@ -601,7 +637,7 @@
     :klass: Upload
     :action_name: create
   - :name: Interview upload_transcript
-    :klass: Interview 
+    :klass: Interview
     :action_name: upload_transcript
   - :name: UploadedFile create
     :klass: UploadedFile
@@ -628,7 +664,7 @@
     :klass: NormDatum
     :action_name: destroy
 - :attributes:
-  - :translations_attributes: 
+  - :translations_attributes:
     - name: Benutzer*innenverwaltung
       locale: de
     - name: User administration
