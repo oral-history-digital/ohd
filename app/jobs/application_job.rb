@@ -32,7 +32,7 @@ class ApplicationJob < ActiveJob::Base
       #archive_id: interview.archive_id
     #)
 
-    File.delete(opts[:file_path]) if File.exist?(opts[:file_path])
+    File.delete(opts[:file_path]) if opts[:file_path] && File.exist?(opts[:file_path])
   end
 
   rescue_from(StandardError) do |error|
