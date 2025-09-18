@@ -24,7 +24,7 @@ es:
       timeout: Su sesión expiró. Por favor, vuelva a iniciar sesión.
       unauthenticated: Tiene que iniciar sesión o registrarse para poder
         continuar.
-      unconfirmed: El correo electrónico %{email} ya está registrado.
+      unconfirmed: El correo electrónico ya está registrado.
         Aún debe confirmar su registro.
         Se le acaba de reenviar un correo electrónico con el enlace necesario.
     mailer:
@@ -156,7 +156,7 @@ es:
       signed_out: Usted ha cerrado la sesión.
       unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
       unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
-      unconfirmed: El correo electrónico %{email} ya está registrado.
+      unconfirmed: El correo electrónico ya está registrado.
         Aún debe confirmar su registro.
         Se le acaba de reenviar un correo electrónico con el enlace necesario.
       blocked: Su cuenta está bloqueada.
