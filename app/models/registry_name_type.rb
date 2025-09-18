@@ -9,7 +9,7 @@ class RegistryNameType < ApplicationRecord
   def touch_registry_entries
     if order_priority_previously_changed?
       RegistryEntry.where(id: registry_names.select(:registry_entry_id).distinct).touch_all
-      project.touch
+      project&.touch
     end
   end
 
