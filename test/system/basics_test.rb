@@ -211,9 +211,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'search in and across archives' do
-    # FIXME: Get this test working with solr
-    skip_unless_solr!
-
     Interview.reindex
     Segment.reindex
     DataHelper.test_media
@@ -255,8 +252,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'download transcript PDF' do
-    # FIXME: Fails because it depends on solr. Find a better way.
-    skip_unless_solr!
     Interview.reindex
     DataHelper.test_media
 
@@ -294,8 +289,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'bookmarking segments' do
-    # FIXME: Fails because it depends on solr. Find a better way.
-    skip_unless_solr!
     Interview.reindex
     DataHelper.test_media
 
@@ -325,8 +318,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'changing metadata' do
-    # FIXME: Fails because it depends on solr. Find a better way.
-    skip_unless_solr!
     Interview.reindex
     DataHelper.test_media
 
@@ -386,8 +377,6 @@ class BasicsTest < ApplicationSystemTestCase
   end
 
   test 'modify segment' do
-    # FIXME: Fails because it depends on solr. Find a better way.
-    skip_unless_solr!
     Interview.reindex
     DataHelper.test_media
 
