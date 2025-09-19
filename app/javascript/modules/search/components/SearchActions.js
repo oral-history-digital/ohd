@@ -7,14 +7,15 @@ import { useSearchParams } from 'modules/query-string';
 import { Modal } from 'modules/ui';
 import { WorkbookItemForm } from 'modules/workbook';
 
-import queryToTitle from '../queryToTitle';
+import useQueryTitle from '../useQueryTitle';
 import useFacets from '../useFacets';
 
 export default function SearchActions() {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { facets } = useFacets();
     const { allParams } = useSearchParams();
     const interview = useSelector(getCurrentInterview);
+    const queryTitle = useQueryTitle(allParams, facets);
 
     function showSaveButton() {
         const filters = { ...allParams };
@@ -25,8 +26,6 @@ export default function SearchActions() {
     }
 
     function saveSearchForm(closeModal) {
-        const queryTitle = queryToTitle(allParams, facets, { t, locale });
-
         return (
             <WorkbookItemForm
                 interview={interview}

@@ -1,4 +1,35 @@
-import queryToTitle from './queryToTitle';
+import PropTypes from 'prop-types';
+import { shallow } from 'enzyme';
+import useQueryTitle from './useQueryTitle';
+
+// Configure Enzyme adapter
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import Enzyme from 'enzyme';
+Enzyme.configure({ adapter: new Adapter() });
+
+// Mock the i18n module
+jest.mock('modules/i18n', () => ({
+    useI18n: jest.fn(),
+}));
+
+import { useI18n } from 'modules/i18n';
+
+// Test component that uses the hook
+function TestComponent({ query, facets }) {
+    const title = useQueryTitle(query, facets);
+    return <div>{title}</div>;
+}
+
+TestComponent.propTypes = {
+    query: PropTypes.object.isRequired,
+    facets: PropTypes.object,
+};
+
+// Helper function to get the hook result
+function getHookResult(query, facets) {
+    const wrapper = shallow(<TestComponent query={query} facets={facets} />);
+    return wrapper.text();
+}
 
 const query = {
     fulltext: 'athen',
@@ -91,64 +122,55 @@ const facets = {
     },
 };
 
-// Mock translation function
-const mockT = jest.fn((key, params) => {
-    const translations = {
-        'modules.workbook.default_titles.search_for_term':
-            'Suche nach "%{searchTerm}"',
-        'modules.workbook.default_titles.search_for_term_and_filters':
-            'Suche nach "%{searchTerm}", %{numFilters} Filter',
-        'modules.workbook.filter': 'Filter',
-        'modules.workbook.default_titles.and_filters_more':
-            'und %{numFilters} weitere',
-    };
-
-    let text = translations[key] || key;
-
-    if (params) {
-        // Replace %{param} in the text with actual values from params
-        Object.entries(params).forEach(([key, value]) => {
-            text = text.replace(new RegExp(`%{${key}}`, 'g'), value);
-        });
-    }
-
-    return text;
-});
-
 beforeEach(() => {
-    mockT.mockClear();
+    useI18n.mockReturnValue({
+        t: jest.fn((key, params) => {
+            const translations = {
+                'modules.workbook.default_titles.search_for_term':
+                    'Suche nach "%{searchTerm}"',
+                'modules.workbook.default_titles.search_for_term_and_filters':
+                    'Suche nach "%{searchTerm}", %{numFilters} Filter',
+                'modules.workbook.filter': 'Filter',
+                'modules.workbook.default_titles.and_filters_more':
+                    'und %{numFilters} weitere',
+            };
+
+            let text = translations[key] || key;
+
+            if (params) {
+                // Replace %{param} in the text with actual values from params
+                Object.entries(params).forEach(([key, value]) => {
+                    text = text.replace(new RegExp(`%{${key}}`, 'g'), value);
+                });
+            }
+
+            return text;
+        }),
+        locale: 'de',
+    });
 });
 
 test('converts queries to readable titles', () => {
-    const actual = queryToTitle(query, facets, {
-        t: mockT,
-        locale: 'de',
-    });
+    const result = getHookResult(query, facets);
     const expected = 'Suche nach "athen", 3 Filter';
 
-    expect(actual).toEqual(expected);
+    expect(result).toEqual(expected);
 });
 
 test('produces title for fulltext only queries', () => {
-    const actual = queryToTitle({ fulltext: 'athen' }, facets, {
-        t: mockT,
-        locale: 'de',
-    });
+    const result = getHookResult({ fulltext: 'athen' }, facets);
     const expected = 'Suche nach "athen"';
 
-    expect(actual).toEqual(expected);
+    expect(result).toEqual(expected);
 });
 
 test('produces title for 3 filters', () => {
     const clonedQuery = { ...query };
     delete clonedQuery.fulltext;
-    const actual = queryToTitle(clonedQuery, facets, {
-        t: mockT,
-        locale: 'de',
-    });
+    const result = getHookResult(clonedQuery, facets);
     const expected = 'Filter weiblich, männlich und 1 weitere';
 
-    expect(actual).toEqual(expected);
+    expect(result).toEqual(expected);
 });
 
 test('produces title for 2 filters', () => {
@@ -156,24 +178,18 @@ test('produces title for 2 filters', () => {
         gender: ['male'],
         typology: ['646776'],
     };
-    const actual = queryToTitle(query, facets, {
-        t: mockT,
-        locale: 'de',
-    });
+    const result = getHookResult(query, facets);
     const expected = 'Filter männlich, Flucht';
 
-    expect(actual).toEqual(expected);
+    expect(result).toEqual(expected);
 });
 
 test('produces title for 1 filter', () => {
     const query = { gender: ['male'] };
-    const actual = queryToTitle(query, facets, {
-        t: mockT,
-        locale: 'de',
-    });
+    const result = getHookResult(query, facets);
     const expected = 'Filter männlich';
 
-    expect(actual).toEqual(expected);
+    expect(result).toEqual(expected);
 });
 
 test('also works without facets being available', () => {
@@ -181,11 +197,8 @@ test('also works without facets being available', () => {
         gender: ['male'],
         typology: ['646776'],
     };
-    const actual = queryToTitle(query, undefined, {
-        t: mockT,
-        locale: 'de',
-    });
+    const result = getHookResult(query, undefined);
     const expected = 'Filter male, 646776';
 
-    expect(actual).toEqual(expected);
+    expect(result).toEqual(expected);
 });
