@@ -1,20 +1,33 @@
-import * as types from './action-types';
-import * as actions from './actions';
+jest.mock('modules/persistence', () => ({ setCookie: jest.fn() }));
+
+import { setCookie } from 'modules/persistence';
+import { SET_COLUMNS, SET_FILTER } from './action-types';
+import { setColumnsWithCookie, setFilter } from './actions';
 
 test('setFilter', () => {
-    const actual = actions.setFilter('all');
+    const actual = setFilter('all');
     const expected = {
-        type: types.SET_FILTER,
+        type: SET_FILTER,
         payload: 'all',
     };
     expect(actual).toEqual(expected);
 });
 
-test('setColumns', () => {
-    const actual = actions.setColumns(['timecode']);
-    const expected = {
-        type: types.SET_COLUMNS,
+test('setColumnsWithCookie thunk dispatches and sets cookie', () => {
+    const thunk = setColumnsWithCookie(['timecode']);
+    expect(typeof thunk).toBe('function');
+
+    const dispatch = jest.fn();
+    thunk(dispatch);
+
+    expect(dispatch).toHaveBeenCalledWith({
+        type: SET_COLUMNS,
         payload: ['timecode'],
-    };
-    expect(actual).toEqual(expected);
+    });
+
+    expect(setCookie).toHaveBeenCalledWith(
+        'editTableColumns',
+        JSON.stringify(['timecode']),
+        3
+    );
 });
