@@ -91,72 +91,37 @@ const facets = {
     },
 };
 
-const translations = {
-    de: {
-        modules: {
-            workbook: {
-                default_titles: {
-                    search_for_term: 'Suche nach "%{searchTerm}"',
-                    search_for_term_and_filters:
-                        'Suche nach "%{searchTerm}", %{numFilters} Filter',
-                    filter: 'Filter',
-                    and_filters_more: 'und %{numFilters} weitere',
-                },
-            },
-        },
-    },
-};
-
-/**
- * makeT - small test helper returning a `t(key, opts)` function compatible
- * with the project's i18n API.
- *
- * @param {string} loc - Locale code to read translations from (e.g. 'de').
- * @returns {(key: string, opts?: Object) => string} A `t` function that looks
- * up keys in the `translations` fixture and performs simple interpolation
- * for placeholders of the form "%{name}".
- *
- * Use this in unit tests to pass a lightweight `t` implementation to pure
- * utilities that expect `{ t, locale }`. This avoids mocking the full
- * i18n module when testing isolated logic.
- */
-function makeT(loc) {
-    return (key, opts) => {
-        const parts = key.split('.');
-        let node = translations[loc];
-        for (let part of parts) {
-            if (!node) break;
-            node = node[part];
-        }
-        if (!node) {
-            const partsForFallback = parts.slice();
-            const last = partsForFallback.pop();
-            let parent = translations[loc];
-            for (let part of partsForFallback) {
-                if (!parent) break;
-                parent = parent[part];
-            }
-            if (
-                parent &&
-                parent['default_titles'] &&
-                parent['default_titles'][last]
-            ) {
-                node = parent['default_titles'][last];
-            }
-        }
-        let value = node || key;
-        if (opts) {
-            Object.keys(opts).forEach((k) => {
-                value = value.replace(new RegExp('%{' + k + '}', 'g'), opts[k]);
-            });
-        }
-        return value;
+// Mock translation function
+const mockT = jest.fn((key, params) => {
+    const translations = {
+        'modules.workbook.default_titles.search_for_term':
+            'Suche nach "%{searchTerm}"',
+        'modules.workbook.default_titles.search_for_term_and_filters':
+            'Suche nach "%{searchTerm}", %{numFilters} Filter',
+        'modules.workbook.filter': 'Filter',
+        'modules.workbook.default_titles.and_filters_more':
+            'und %{numFilters} weitere',
     };
-}
+
+    let text = translations[key] || key;
+
+    if (params) {
+        // Replace %{param} in the text with actual values from params
+        Object.entries(params).forEach(([key, value]) => {
+            text = text.replace(new RegExp(`%{${key}}`, 'g'), value);
+        });
+    }
+
+    return text;
+});
+
+beforeEach(() => {
+    mockT.mockClear();
+});
 
 test('converts queries to readable titles', () => {
     const actual = queryToTitle(query, facets, {
-        t: makeT('de'),
+        t: mockT,
         locale: 'de',
     });
     const expected = 'Suche nach "athen", 3 Filter';
@@ -166,7 +131,7 @@ test('converts queries to readable titles', () => {
 
 test('produces title for fulltext only queries', () => {
     const actual = queryToTitle({ fulltext: 'athen' }, facets, {
-        t: makeT('de'),
+        t: mockT,
         locale: 'de',
     });
     const expected = 'Suche nach "athen"';
@@ -178,7 +143,7 @@ test('produces title for 3 filters', () => {
     const clonedQuery = { ...query };
     delete clonedQuery.fulltext;
     const actual = queryToTitle(clonedQuery, facets, {
-        t: makeT('de'),
+        t: mockT,
         locale: 'de',
     });
     const expected = 'Filter weiblich, männlich und 1 weitere';
@@ -192,7 +157,7 @@ test('produces title for 2 filters', () => {
         typology: ['646776'],
     };
     const actual = queryToTitle(query, facets, {
-        t: makeT('de'),
+        t: mockT,
         locale: 'de',
     });
     const expected = 'Filter männlich, Flucht';
@@ -203,7 +168,7 @@ test('produces title for 2 filters', () => {
 test('produces title for 1 filter', () => {
     const query = { gender: ['male'] };
     const actual = queryToTitle(query, facets, {
-        t: makeT('de'),
+        t: mockT,
         locale: 'de',
     });
     const expected = 'Filter männlich';
@@ -217,7 +182,7 @@ test('also works without facets being available', () => {
         typology: ['646776'],
     };
     const actual = queryToTitle(query, undefined, {
-        t: makeT('de'),
+        t: mockT,
         locale: 'de',
     });
     const expected = 'Filter male, 646776';
