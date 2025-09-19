@@ -1,20 +1,16 @@
+import { useI18n } from 'modules/i18n';
+
 /**
- * Convert a query object into a human-readable title string.
- *
- * This utility must not call React hooks. Callers (components) should
- * pass an `options` object with a translation function `t(key, opts)` and
- * the current `locale`.
+ * Custom hook that converts a query object into a human-readable title string.
  *
  * @param {Object} query - The current search query parameters. Expected to
  * contain `fulltext` and other facet keys.
  * @param {Object|undefined} facetStructure - Optional facet metadata used to
  * translate reference values. Structure: { facetName: { subfacets: { id: { name: { [locale]: '...' } } } } }
- * @param {{ t: function, locale: string }} options - Required options containing
- * a translation function `t` and the active `locale`.
  * @returns {string} Human-readable title describing the search query.
  */
-export default function queryToTitle(query, facetStructure, options) {
-    const { t = (k) => k, locale } = options || {};
+export default function useQueryTitle(query, facetStructure) {
+    const { t, locale } = useI18n();
 
     const searchTerm = query.fulltext;
 
