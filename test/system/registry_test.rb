@@ -3,6 +3,7 @@ require "application_system_test_case"
 class RegistryTest < ApplicationSystemTestCase
   setup do
     login_as 'alice@example.com'
+    sleep 2
     click_on 'Editing interface'
     visit '/en/registry_entries'
   end
