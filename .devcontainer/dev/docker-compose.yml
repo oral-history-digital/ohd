@@ -20,6 +20,7 @@ services:
             - setup-logs:/workspace/.devcontainer/logs
         extra_hosts:
             - 'portal.oral-history.localhost:127.0.0.1'
+            - 'test.portal.oral-history.localhost:127.0.0.1'
         depends_on:
             db:
                 condition: service_healthy

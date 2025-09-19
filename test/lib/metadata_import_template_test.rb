@@ -9,8 +9,8 @@ class MetadataImportTemplateTest < ActiveSupport::TestCase
     @csv = MetadataImportTemplate.new(@project, :de).csv
     expected_headers = [
       "Interview-ID", "Originalsignatur", "Sprache",
-      "Zweite Sprache", "Erste Übersetzungssprache", "Sammlung", 
-      "Interview-Datum", "Medientyp", "Dauer", "Protokoll", 
+      "Zweite Sprache", "Erste Übersetzungssprache", "Zweite Übersetzungssprache", "Sammlung", 
+      "Interview-Datum", "Veröffentlichungsjahr", "Medientyp", "Dauer", "Protokoll", 
       "Beschreibung (Interview)", "Anzahl der Bänder", "Link", 
       "Vorname", "Nachname", "Geburtsname", "Weitere Namen", 
       "Weitere Vornamen", "Pseudonym Vorname", "Pseudonym Nachname", 
@@ -26,8 +26,8 @@ class MetadataImportTemplateTest < ActiveSupport::TestCase
     @csv = MetadataImportTemplate.new(@project, :de).csv
     expected_headers = [
       "Interview-ID", "Originalsignatur", "Sprache",
-      "Zweite Sprache", "Erste Übersetzungssprache", "Sammlung", 
-      "Interview-Datum", "Medientyp", "Dauer", "Protokoll", 
+      "Zweite Sprache", "Erste Übersetzungssprache", "Zweite Übersetzungssprache", "Sammlung", 
+      "Interview-Datum", "Veröffentlichungsjahr", "Medientyp", "Dauer", "Protokoll", 
       "Beschreibung (Interview)", "Anzahl der Bänder", "Link", 
       "Vorname", "Nachname", "Geburtsname", "Weitere Namen", 
       "Weitere Vornamen", "Pseudonym Vorname", "Pseudonym Nachname", 

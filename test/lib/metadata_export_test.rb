@@ -35,7 +35,7 @@ class MetadataExportTest < ActiveSupport::TestCase
   end
 
   test 'should write a csv containing all relevant data' do
-    assert_equal "Interview-ID\tOriginalsignatur\tSprache\tZweite Sprache\tErste Übersetzungssprache\tZweite Übersetzungssprache\tSammlung\tInterview-Datum\tMedientyp\tDauer\tProtokoll\tBeschreibung (Interview)\tAnzahl der Bänder\tLink\tVorname\tNachname\tGeburtsname\tWeitere Namen\tWeitere Vornamen\tPseudonym Vorname\tPseudonym Nachname\tPseudonym benutzen\tPersonenbeschreibung\tGeschlecht\tGeburtsdatum\tBiographie\tBiographie öffentlich\tInterviewführung\tÜbersetzung\tTranskription\tErschließung\tKamera\tGeburtsort\tGeburtsort (direkter Oberbegriff)\tInterviewort\tInterviewort (direkter Oberbegriff)", @rows[0]
+    assert_equal "Interview-ID\tOriginalsignatur\tSprache\tZweite Sprache\tErste Übersetzungssprache\tZweite Übersetzungssprache\tSammlung\tInterview-Datum\tVeröffentlichungsjahr\tMedientyp\tDauer\tProtokoll\tBeschreibung (Interview)\tAnzahl der Bänder\tLink\tVorname\tNachname\tGeburtsname\tWeitere Namen\tWeitere Vornamen\tPseudonym Vorname\tPseudonym Nachname\tPseudonym benutzen\tPersonenbeschreibung\tGeschlecht\tGeburtsdatum\tBiographie\tBiographie öffentlich\tInterviewführung\tÜbersetzung\tTranskription\tErschließung\tKamera\tGeburtsort\tGeburtsort (direkter Oberbegriff)\tInterviewort\tInterviewort (direkter Oberbegriff)", @rows[0]
 
     assert_equal @interview.archive_id, @first_row_entries[0]
     assert_equal @interview.signature_original.to_s, @first_row_entries[1]
