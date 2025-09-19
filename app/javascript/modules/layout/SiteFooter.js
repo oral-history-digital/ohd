@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FaGithub } from 'react-icons/fa';
 
 import { useProject, usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import ProjectFooter from './ProjectFooter';
-import { OHD_DOMAINS } from 'modules/constants';
+import { OHD_DOMAINS, GITHUB_URL } from 'modules/constants';
 
 function SiteFooter() {
     const { project, projectId } = useProject();
@@ -82,6 +82,12 @@ function SiteFooter() {
                 }
             </ul>
             <p>{project?.name?.[locale]}</p>
+            <p>
+                <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+                    {`oh.d v${VERSION} `}
+                    <FaGithub className="Icon" />
+                </a>
+            </p>
 
             <ProjectFooter project={project} locale={locale}/>
 
