@@ -52,6 +52,10 @@ class TranscriptsController < ApplicationController
       locale: [locale, "#{locale}-public", "#{locale}-subtitle"]
     ).destroy_all
 
+    interview.segments.with_headings.each do |segment|
+      segment.update_has_heading
+    end
+
     interview.reload.touch
 
     respond_to do |format|
