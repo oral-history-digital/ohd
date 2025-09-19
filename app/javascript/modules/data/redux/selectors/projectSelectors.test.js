@@ -1,7 +1,6 @@
 import dotProp from 'dot-prop-immutable';
-
-import { DEFAULT_MAP_SECTION } from './projectSelectors'
 import * as selectors from './projectSelectors';
+import { DEFAULT_MAP_SECTION } from './projectSelectors';
 
 const state = {
     archive: {
@@ -14,10 +13,7 @@ const state = {
                 id: 1,
                 type: 'Project',
                 identifier: 'cdoh',
-                translations_attributes: [
-                    { locale: 'de' },
-                    { locale: 'es' },
-                ],
+                translations_attributes: [{ locale: 'de' }, { locale: 'es' }],
                 is_catalog: false,
                 map_sections: {
                     1: {
@@ -87,7 +83,9 @@ describe('getIsCampscapesProject', () => {
 
 describe('getIsCatalog', () => {
     test('returns is_catalog value', () => {
-        expect(selectors.getIsCatalog(state)).toEqual(state.data.projects[1].is_catalog);
+        expect(selectors.getIsCatalog(state)).toEqual(
+            state.data.projects[1].is_catalog
+        );
     });
 
     test('is false otherwise', () => {
@@ -113,7 +111,7 @@ describe('getMapSections', () => {
                 name: 'europe',
                 order: 1,
             },
-        ]
+        ];
         expect(actual).toEqual(expected);
     });
 
@@ -125,7 +123,11 @@ describe('getMapSections', () => {
     });
 
     test('returns default section if map sections is undefined', () => {
-        const _state = dotProp.set(state, 'data.projects.1.map_sections', undefined);
+        const _state = dotProp.set(
+            state,
+            'data.projects.1.map_sections',
+            undefined
+        );
         const actual = selectors.getMapSections(_state);
         const expected = [DEFAULT_MAP_SECTION];
         expect(actual).toEqual(expected);
