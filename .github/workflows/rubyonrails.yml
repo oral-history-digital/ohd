@@ -58,46 +58,35 @@ jobs:
               run: sudo echo "127.0.0.1 test.portal.oral-history.localhost" | sudo tee -a /etc/hosts
             - name: Start server
               run: bin/start_app &
-            - name: Start Solr (local) in background
-              run: |
-                  # ensure logs persist and process survives step boundaries
-                  nohup bash -lc 'bin/start_search' > /tmp/solr.log 2>&1 &
-                  echo "Solr start requested, logging to /tmp/solr.log"
+            - name: Start search engine
+              run: bin/start_search &
             - name: Wait for Solr (localhost) to be ready
               run: |
                   echo "Waiting for Solr at http://localhost:8983/solr/ ..."
                   for i in $(seq 1 120); do
-                    if curl -sS "http://localhost:8983/solr/" >/dev/null; then
+                  if curl -sS "http://localhost:8983/solr/" >/dev/null; then
                       echo "Solr is up"
                       break
-                    fi
-                    echo "Solr not ready yet, retrying... ($i)"
-                    sleep 1
-                  done
-            - name: Create Solr core 'default' if missing (localhost)
-              run: |
-                  if curl -sS "http://localhost:8983/solr/admin/cores?action=STATUS&core=default" | grep -q "missing"; then
-                    echo "Creating core 'default'"
-                    curl -sS "http://localhost:8983/solr/admin/cores?action=CREATE&name=default&instanceDir=server/solr/configsets/_default&configSet=_default"
-                  else
-                    echo "Core 'default' exists or Solr returned a different status"
                   fi
+                  echo "Solr not ready yet, retrying... ($i)"
+                  sleep 1
+                  done
             - name: Run tests
               run: bin/test
 
-    lint:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-            - name: Install Ruby and gems
-              uses: ruby/setup-ruby@v1
-              with:
-                  bundler-cache: true
-            # Add or replace any other lints here
-            #- name: Security audit dependencies
-            #  run: bin/bundler-audit --update
-            #- name: Security audit application code
-            #  run: bin/brakeman -q -w2
-            #- name: Lint Ruby files
-            #  run: bin/rubocop --parallel
+        lint:
+            runs-on: ubuntu-latest
+            steps:
+                - name: Checkout code
+                  uses: actions/checkout@v4
+                - name: Install Ruby and gems
+                  uses: ruby/setup-ruby@v1
+                  with:
+                      bundler-cache: true
+                # Add or replace any other lints here
+                #- name: Security audit dependencies
+                #  run: bin/bundler-audit --update
+                #- name: Security audit application code
+                #  run: bin/brakeman -q -w2
+                #- name: Lint Ruby files
+                #  run: bin/rubocop --parallel

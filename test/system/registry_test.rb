@@ -83,4 +83,3 @@ class RegistryTest < ApplicationSystemTestCase
   #test 'update registry entry without norm-data-api' do
   #end
 end
-
