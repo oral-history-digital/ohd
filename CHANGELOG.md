@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.5] - 2025-09-19
 
+### Added
+
+-   INTARCH-3193: Show oh.d version in site footer.
+
 ### Fixed
 
 -   fix: get frontend tests running ([#23](https://github.com/oral-history-digital/ohd/pull/23))
