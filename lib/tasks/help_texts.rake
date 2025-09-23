@@ -77,7 +77,8 @@ namespace :help_texts do
       ['user_role_form', 'Add role to user form'],
       ['user_search_form', 'User search form on user admin page'],
       ['workflow_management', 'Workflow management table'],
-      ['workflow_tasks', 'Tasks section in workflow management table']
+      ['workflow_tasks', 'Tasks section in workflow management table'],
+      ['interview_destroy_transcript', 'Delete Transcript by language']
     ]
   end
 end

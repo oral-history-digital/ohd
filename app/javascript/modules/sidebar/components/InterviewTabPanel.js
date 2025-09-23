@@ -5,7 +5,8 @@ import {Link} from 'react-router-dom';
 import {
     MarkTextFormContainer,
     UploadTranscriptContainer,
-    UploadEditTableContainer
+    UploadEditTableContainer,
+    DestroyTranscript,
 } from 'modules/interview-actions';
 import {
     InterviewInfoContainer,
@@ -137,6 +138,15 @@ export default function InterviewTabPanel({
                         <UploadTranscriptContainer />
                     </SubTab>
                 </AuthorizedContent>
+
+                { interview.alpha3s_with_transcript && interview.alpha3s_with_transcript.length > 0 && (
+                    <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
+                        <SubTab title={t('edit.destroy_transcript.title')}>
+                            <HelpText code="interview_destroy_transcript" className="u-mb" />
+                            <DestroyTranscript interview={interview} />
+                        </SubTab>
+                    </AuthorizedContent>
+                )}
 
                 <AuthorizedContent object={interview} action='update'>
                     <SubTab title={t('edit.upload_edit_table.title')}>
