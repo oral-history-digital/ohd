@@ -1,12 +1,13 @@
 import isNil from 'lodash.isnil';
-import { isDate } from './isDate';
-import { toDateString } from './toDateString';
 
-export function humanReadable({
+import isDate from './isDate';
+import toDateString from './toDateString';
+
+export default function humanReadable({
     obj,
     attribute,
-    collapsed = false,
-    none = '---',
+    collapsed=false,
+    none='---',
     translations,
     optionsScope,
     collections,
@@ -14,11 +15,9 @@ export function humanReadable({
     locale,
 }) {
     if (obj.translations_attributes) {
-        const translation = Array.isArray(obj.translations_attributes)
-            ? obj.translations_attributes.find((t) => t.locale === locale)
-            : Object.values(obj.translations_attributes).find(
-                  (t) => t.locale === locale
-              );
+        const translation = (Array.isArray(obj.translations_attributes) ?
+            obj.translations_attributes.find(t => t.locale === locale) :
+            Object.values(obj.translations_attributes).find(t => t.locale === locale))
         const v = translation?.[attribute];
         if (v) return v;
     }
@@ -34,7 +33,7 @@ export function humanReadable({
     }
 
     if (attribute === 'duration') {
-        return `${value.split(':')[0]} h ${value.split(':')[1]} min`;
+        return `${value.split(':')[0]} h ${value.split(':')[1]} min`
     }
 
     if (isDate(value)) {
@@ -58,17 +57,12 @@ export function humanReadable({
     }
 
     if (typeof value === 'object' && value !== null) {
-        return collapsed ? value[locale]?.substring(0, 500) : value[locale];
+        return collapsed ? value[locale]?.substring(0,500) : value[locale];
     }
 
     const keyParam = `${optionsScope || attribute}.${value}`;
 
-    return (
-        translations[keyParam]?.[locale] ||
+    return translations[keyParam]?.[locale] ||
         translations[value]?.[locale] ||
-        value ||
-        none
-    );
+        value || none;
 }
-
-export default humanReadable;

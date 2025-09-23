@@ -1,17 +1,21 @@
-import { fetchData } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
-import { pluralize, underscore } from 'modules/strings';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-export function useSensitiveData(data, sensitiveAttributes) {
+import { pluralize, underscore } from 'modules/strings';
+import { fetchData } from 'modules/data';
+import { useProject } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
+
+export default function useSensitiveData(
+    data,
+    sensitiveAttributes,
+) {
     const dispatch = useDispatch();
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
     const { projectId, project } = useProject();
 
     useEffect(() => {
-        sensitiveAttributes.forEach((attr) => {
+        sensitiveAttributes.forEach(attr => {
             if (!data[attr]) {
                 dispatch(
                     fetchData(
@@ -24,6 +28,5 @@ export function useSensitiveData(data, sensitiveAttributes) {
             }
         });
     }, sensitiveAttributes);
-}
 
-export default useSensitiveData;
+}

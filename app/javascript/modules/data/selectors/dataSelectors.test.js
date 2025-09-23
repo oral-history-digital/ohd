@@ -1,48 +1,7 @@
 import dotProp from 'dot-prop-immutable';
+import * as selectors from './dataSelectors';
+
 import { DEFAULT_LOCALES } from 'modules/constants';
-import {
-    getCollectionsForCurrentProject,
-    getCollectionsStatus,
-    getContributionsStatus,
-    getContributorsFetched,
-    getCurrentInterviewFetched,
-    getCurrentRefTree,
-    getCurrentRefTreeStatus,
-    getCurrentUser,
-    getCurrentUserIsAdmin,
-    getFlattenedRefTree,
-    getHeadings,
-    getHeadingsFetched,
-    getHeadingsStatus,
-    getInterviewsStatus,
-    getLanguages,
-    getLanguagesStatus,
-    getMarkTextStatus,
-    getMediaStreamsForCurrentProject,
-    getPeopleStatus,
-    getPermissions,
-    getPermissionsStatus,
-    getProjectLocales,
-    getProjectsStatus,
-    getRandomFeaturedInterviews,
-    getRefTreeStatus,
-    getRegistryEntries,
-    getRegistryEntriesStatus,
-    getRegistryNameTypesForCurrentProject,
-    getRolesForCurrentProject,
-    getRolesStatus,
-    getSegments,
-    getSegmentsStatus,
-    getSpeakerDesignationsStatus,
-    getStatuses,
-    getTasks,
-    getTasksStatus,
-    getTaskTypesForCurrentProject,
-    getTaskTypesStatus,
-    getTranscriptFetched,
-    getUsers,
-    getUsersStatus,
-} from './dataSelectors';
 
 const state = {
     archive: {
@@ -59,7 +18,6 @@ const state = {
         statuses: {
             users: {
                 current: 'fetched',
-                resultPagesCount: 1,
             },
             collections: {
                 for_projects_1: 'fetched',
@@ -113,7 +71,10 @@ const state = {
                 35: 'processed',
             },
             task_types: {
-                for_projects_1: 'fetched',
+                'for_projects_1': 'fetched',
+            },
+            users: {
+                resultPagesCount: 1,
             },
         },
         projects: {
@@ -228,7 +189,7 @@ const state = {
                                             tape_nbr: 1,
                                         },
                                     ],
-                                },
+                                }
                             ],
                         },
                     ],
@@ -239,13 +200,13 @@ const state = {
                             id: 199498,
                             type: 'Segment',
                             text: {
-                                de: 'dummy',
+                                'de': 'dummy',
                                 'de-public': 'dummy',
-                                ru: 'dummy',
+                                'ru': 'dummy',
                                 'ru-public': 'dummy',
                             },
                         },
-                    },
+                    }
                 },
                 headings: {
                     0: {
@@ -292,8 +253,9 @@ const state = {
                 type: 'Task',
             },
         },
+        users: {},
         random_featured_interviews: {
-            cd009: {
+            'cd009': {
                 id: 23,
                 type: 'Interview',
             },
@@ -301,221 +263,224 @@ const state = {
     },
 };
 
+test('getData gets data object', () => {
+    expect(selectors.getData(state)).toEqual(state.data);
+});
+
 test('getLanguages gets languages object', () => {
-    expect(getLanguages(state)).toEqual(state.data.languages);
+    expect(selectors.getLanguages(state)).toEqual(state.data.languages);
 });
 
 test('getCollectionsForCurrentProject gets collections object', () => {
-    expect(getCollectionsForCurrentProject(state)).toEqual(
-        state.data.projects[1].collections
-    );
+    expect(selectors.getCollectionsForCurrentProject(state)).toEqual(state.data.projects[1].collections);
 });
 
 test('getTaskTypesForCurrentProject gets task_types object', () => {
-    expect(getTaskTypesForCurrentProject(state)).toEqual(
-        state.data.projects[1].task_types
-    );
+    expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.projects[1].task_types);
 });
 
 test('getRolesForCurrentProject gets roles object', () => {
-    expect(getRolesForCurrentProject(state)).toEqual(
-        state.data.projects[1].roles
-    );
+    expect(selectors.getRolesForCurrentProject(state)).toEqual(state.data.projects[1].roles);
 });
 
 test('getStatuses gets statuses object', () => {
-    expect(getStatuses(state)).toEqual(state.data.statuses);
+    expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
 test('getUsersStatus gets users status object', () => {
-    expect(getUsersStatus(state)).toEqual(state.data.statuses.users);
+    expect(selectors.getUsersStatus(state)).toEqual(state.data.statuses.users);
 });
 
 test('getCollectionsStatus gets collections status object', () => {
-    expect(getCollectionsStatus(state)).toEqual(
-        state.data.statuses.collections
-    );
+    expect(selectors.getCollectionsStatus(state)).toEqual(state.data.statuses.collections);
 });
 
 test('getContributionsStatus gets contributions status object', () => {
-    expect(getContributionsStatus(state)).toEqual(
-        state.data.statuses.contributions
-    );
+    expect(selectors.getContributionsStatus(state)).toEqual(state.data.statuses.contributions);
 });
 
 test('getHeadingsStatus gets headings status object', () => {
-    expect(getHeadingsStatus(state)).toEqual(state.data.statuses.headings);
+    expect(selectors.getHeadingsStatus(state)).toEqual(state.data.statuses.headings);
 });
 
 test('getHeadingsFetched gets if headings of current interview are fetched', () => {
-    expect(getHeadingsFetched(state)).toBeTruthy();
+    expect(selectors.getHeadingsFetched(state)).toBeTruthy();
 });
 
 test('getHeadings gets headings object of current interview', () => {
-    expect(getHeadings(state)).toEqual(state.data.interviews.cd003.headings);
-});
+    expect(selectors.getHeadings(state)).toEqual(state.data.interviews.cd003.headings);
+})
 
 test('getLanguagesStatus gets languages status object', () => {
-    expect(getLanguagesStatus(state)).toEqual(state.data.statuses.languages);
+    expect(selectors.getLanguagesStatus(state)).toEqual(state.data.statuses.languages);
 });
 
 test('getMarkTextStatus gets mark text status object', () => {
-    expect(getMarkTextStatus(state)).toEqual(state.data.statuses.mark_text);
+    expect(selectors.getMarkTextStatus(state)).toEqual(state.data.statuses.mark_text);
 });
 
 test('getPeopleStatus gets people status object', () => {
-    expect(getPeopleStatus(state)).toEqual(state.data.statuses.people);
+    expect(selectors.getPeopleStatus(state)).toEqual(state.data.statuses.people);
 });
 
 test('getPermissionsStatus gets permissions status object', () => {
-    expect(getPermissionsStatus(state)).toEqual(
-        state.data.statuses.permissions
-    );
+    expect(selectors.getPermissionsStatus(state)).toEqual(state.data.statuses.permissions);
 });
 
 test('getProjectsStatus gets projects status object', () => {
-    expect(getProjectsStatus(state)).toEqual(state.data.statuses.projects);
+    expect(selectors.getProjectsStatus(state)).toEqual(state.data.statuses.projects);
 });
 
 test('getInterviewsStatus gets interviews status object', () => {
-    expect(getInterviewsStatus(state)).toEqual(state.data.statuses.interviews);
+    expect(selectors.getInterviewsStatus(state)).toEqual(state.data.statuses.interviews);
 });
 
 test('getRefTreeStatus gets ref tree status object', () => {
-    expect(getRefTreeStatus(state)).toEqual(state.data.statuses.ref_tree);
+    expect(selectors.getRefTreeStatus(state)).toEqual(state.data.statuses.ref_tree);
 });
 
 describe('getCurrentRefTreeStatus', () => {
     it("is 'fetched' if ref tree has been loaded", () => {
-        expect(getCurrentRefTreeStatus(state)).toBe('fetched');
+        expect(selectors.getCurrentRefTreeStatus(state)).toBe('fetched');
     });
 
     it("is 'fetching' if ref tree is loading", () => {
-        const _state = dotProp.set(
-            state,
-            'data.statuses.ref_tree.for_interviews_cd003',
-            'fetching'
-        );
-        expect(getCurrentRefTreeStatus(_state)).toBe('fetching');
+        const _state = dotProp.set(state, 'data.statuses.ref_tree.for_interviews_cd003', 'fetching');
+        expect(selectors.getCurrentRefTreeStatus(_state)).toBe('fetching');
     });
 
     it("is 'n/a' otherwise", () => {
         const _state = dotProp.set(state, 'archive.archiveId', 'za053');
-        expect(getCurrentRefTreeStatus(_state)).toBe('n/a');
+        expect(selectors.getCurrentRefTreeStatus(_state)).toBe('n/a');
     });
 });
 
 test('getRegistryEntriesStatus gets registry entries status object', () => {
-    expect(getRegistryEntriesStatus(state)).toEqual(
-        state.data.statuses.registry_entries
-    );
+    expect(selectors.getRegistryEntriesStatus(state)).toEqual(state.data.statuses.registry_entries);
 });
 
 test('getRolesStatus gets roles status object', () => {
-    expect(getRolesStatus(state)).toEqual(state.data.statuses.roles);
+    expect(selectors.getRolesStatus(state)).toEqual(state.data.statuses.roles);
 });
 
 test('getSegmentsStatus gets segments status object', () => {
-    expect(getSegmentsStatus(state)).toEqual(state.data.statuses.segments);
+    expect(selectors.getSegmentsStatus(state)).toEqual(state.data.statuses.segments);
 });
 
 test('getSpeakerDesignationsStatus gets speaker designations status object', () => {
-    expect(getSpeakerDesignationsStatus(state)).toEqual(
-        state.data.statuses.speaker_designations
-    );
+    expect(selectors.getSpeakerDesignationsStatus(state)).toEqual(state.data.statuses.speaker_designations);
 });
 
 test('getTasksStatus gets tasks status object', () => {
-    expect(getTasksStatus(state)).toEqual(state.data.statuses.tasks);
+    expect(selectors.getTasksStatus(state)).toEqual(state.data.statuses.tasks);
 });
 
 test('getTaskTypesStatus gets task types status object', () => {
-    expect(getTaskTypesStatus(state)).toEqual(state.data.statuses.task_types);
+    expect(selectors.getTaskTypesStatus(state)).toEqual(state.data.statuses.task_types);
 });
 
 test('getUsersStatus gets user registrations status object', () => {
-    expect(getUsersStatus(state)).toEqual(state.data.statuses.users);
+    expect(selectors.getUsersStatus(state)).toEqual(state.data.statuses.users);
+});
+
+test('getProjects gets projects object', () => {
+    expect(selectors.getProjects(state)).toEqual(state.data.projects);
 });
 
 test('getUsers gets users object', () => {
-    expect(getUsers(state)).toEqual(state.data.users);
+    expect(selectors.getUsers(state)).toEqual(state.data.users);
 });
 
 test('getCurrentUser gets user object of current user', () => {
-    expect(getCurrentUser(state)).toEqual(state.data.users.current);
+    expect(selectors.getCurrentUser(state)).toEqual(state.data.users.current);
 });
 
 test('getPermissions gets permissions object', () => {
-    expect(getPermissions(state)).toEqual(state.data.permissions);
+    expect(selectors.getPermissions(state)).toEqual(state.data.permissions);
 });
 
 test('getRegistryEntries gets registry entries object', () => {
-    expect(getRegistryEntries(state)).toEqual(state.data.registry_entries);
+    expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
 });
 
 test('getRegistryNameTypesForCurrentProject gets registry name types object', () => {
-    expect(getRegistryNameTypesForCurrentProject(state)).toEqual(
-        state.data.registry_name_types
-    );
+    expect(selectors.getRegistryNameTypesForCurrentProject(state)).toEqual(state.data.registry_name_types);
 });
 
 test('getSegments gets segments object', () => {
-    expect(getSegments(state)).toEqual(state.data.segments);
+    expect(selectors.getSegments(state)).toEqual(state.data.segments);
 });
 
 test('getTasks gets tasks object', () => {
-    expect(getTasks(state)).toEqual(state.data.tasks);
+    expect(selectors.getTasks(state)).toEqual(state.data.tasks);
 });
 
 test('getTaskTypesForCurrentProject gets task types object', () => {
-    expect(getTaskTypesForCurrentProject(state)).toEqual(
-        state.data.projects[1].task_types
-    );
+    expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.task_types);
 });
 
 test('getUsers gets user registrations object', () => {
-    expect(getUsers(state)).toEqual(state.data.users);
+    expect(selectors.getUsers(state)).toEqual(state.data.users);
 });
 
 test('getRandomFeaturedInterviews gets featured interviews object', () => {
-    expect(getRandomFeaturedInterviews(state)).toEqual(
-        state.data.random_featured_interviews
-    );
+    expect(selectors.getRandomFeaturedInterviews(state)).toEqual(state.data.random_featured_interviews);
 });
 
 test('getCurrentUserIsAdmin gets admin status of current user', () => {
-    expect(getCurrentUserIsAdmin(state)).toEqual(
-        state.data.users.current.admin
-    );
+    expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.users.current.admin);
+});
+
+describe('getCurrentProject', () => {
+    test('gets currently selected project\'s object', () => {
+        expect(selectors.getCurrentProject(state)).toEqual(state.data.projects[1]);
+    });
+
+    test('returns null if project cannot be found', () => {
+        const state = {
+            archive: {
+                projectId: 'cdoh',
+            },
+            data: {
+                projects: {},
+            },
+        };
+
+        expect(selectors.getCurrentProject(state)).toBeNull();
+    });
 });
 
 describe('getProjectLocales', () => {
     test('gets project locales', () => {
-        expect(getProjectLocales(state)).toEqual(
-            state.data.projects[1].available_locales
-        );
+        expect(selectors.getProjectLocales(state)).toEqual(state.data.projects[1].available_locales);
     });
 
     test('gets default locales if no project is selected', () => {
         const _state = dotProp.set(state, 'archive.projectId', null);
-        expect(getProjectLocales(_state)).toEqual(DEFAULT_LOCALES);
+        expect(selectors.getProjectLocales(_state)).toEqual(DEFAULT_LOCALES);
     });
 });
 
+test('getInterviews retrieves all interviews', () => {
+    expect(selectors.getInterviews(state)).toEqual(state.data.interviews);
+});
+
+test('getCurrentInterview retrieves current interview', () => {
+    expect(selectors.getCurrentInterview(state)).toEqual(state.data.interviews.cd003);
+});
+
 test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
-    expect(getCurrentInterviewFetched(state)).toBe(true);
+    expect(selectors.getCurrentInterviewFetched(state)).toBe(true);
 });
 
 test('getCurrentRefTree retrieves ref tree of current interview', () => {
-    expect(getCurrentRefTree(state)).toEqual(
-        state.data.interviews.cd003.ref_tree
-    );
+    expect(selectors.getCurrentRefTree(state)).toEqual(state.data.interviews.cd003.ref_tree);
 });
 
 test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
-    const actual = getFlattenedRefTree(state);
+    const actual = selectors.getFlattenedRefTree(state);
     const expected = {
-        11310: {
+        '11310': {
             id: 11310,
             type: 'node',
             children: [
@@ -531,7 +496,7 @@ test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
                 },
             ],
         },
-        11786: {
+        '11786': {
             id: 11786,
             type: 'node',
             children: [
@@ -549,21 +514,23 @@ test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
 
 describe('getTranscriptFetched', () => {
     test('returns true if transcript has been fetched', () => {
-        expect(getTranscriptFetched(state)).toBeTruthy();
+        expect(selectors.getTranscriptFetched(state)).toBeTruthy();
     });
 
     test('returns false if transcript has not been fetched', () => {
         const _state = dotProp.set(state, 'archive.archiveId', 'za085');
-        expect(getTranscriptFetched(_state)).toBeFalsy();
+        expect(selectors.getTranscriptFetched(_state)).toBeFalsy();
     });
 });
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
-    expect(getContributorsFetched(state)).toBe(true);
+    expect(selectors.getContributorsFetched(state)).toBe(true);
+});
+
+test('getContributionTypesForCurrentProject retrieves contributionTypes object', () => {
+    expect(selectors.getContributionTypesForCurrentProject(state)).toEqual(state.data.contribution_types);
 });
 
 test('getMediaStreamsForCurrentProject retrieves media streams', () => {
-    expect(getMediaStreamsForCurrentProject(state)).toEqual(
-        state.data.projects[1].media_streams
-    );
+    expect(selectors.getMediaStreamsForCurrentProject(state)).toEqual(state.data.mediaStreams);
 });

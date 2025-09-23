@@ -1,5 +1,6 @@
+import { useState } from 'react';
+
 import { useI18n } from 'modules/i18n';
-import PropTypes from 'prop-types';
 import Element from '../Element';
 
 export default function Select({
@@ -7,7 +8,7 @@ export default function Select({
     attribute,
     value,
     values,
-    keepOrder = false,
+    keepOrder,
     data,
     validate,
     label,
@@ -20,17 +21,17 @@ export default function Select({
     individualErrorMsg,
     hidden,
     className,
-    doNotTranslate = false,
+    doNotTranslate,
     optionsScope,
-    withEmpty = false,
+    withEmpty,
     id,
 }) {
     const defaultValue = value || data?.[attribute];
     const { t, locale } = useI18n();
 
     const onChange = (event) => {
-        const newValue = event.target.value;
-        const name = event.target.name;
+        const newValue =  event.target.value;
+        const name =  event.target.name;
 
         handleChange(name, newValue, data);
 
@@ -42,30 +43,26 @@ export default function Select({
             const valid = validate(newValue);
             handleErrors(name, !valid);
         }
-    };
+    }
 
     const selectTextAndValueFunction = (value) => {
         if (typeof value === 'string') {
             let translationPrefix = optionsScope || `${scope}.${attribute}`;
-            return function (value) {
+            return function(value) {
                 return {
-                    text: doNotTranslate
-                        ? value
-                        : t(`${translationPrefix}.${value}`),
-                    value: value,
-                };
-            };
+                    text: doNotTranslate ? value : t(`${translationPrefix}.${value}`),
+                    value: value
+                }
+            }
         } else {
-            return function (value) {
+            return function(value) {
                 return {
-                    text:
-                        (value.name && value.name[locale]) ||
-                        (typeof value.name === 'string' && value.name),
-                    value: value.value || value.id,
-                };
-            };
+                    text: (value.name && value.name[locale]) || (typeof value.name === 'string') && value.name,
+                    value: value.value || value.id
+                }
+            }
         }
-    };
+    }
 
     const options = () => {
         let opts = [];
@@ -75,9 +72,9 @@ export default function Select({
             if (Array.isArray(values)) {
                 rawOpts = values;
             } else {
-                rawOpts = Object.keys(values).map((id) => {
-                    return { id: id, name: values[id].name };
-                });
+                rawOpts = Object.keys(values).map((id, i) => {
+                    return {id: id, name: values[id].name}
+                })
             }
         } else if (data && attribute === 'workflow_state') {
             rawOpts = data.workflow_states;
@@ -86,37 +83,37 @@ export default function Select({
         if (rawOpts) {
             let getTextAndValue = selectTextAndValueFunction(rawOpts[0]);
             if (!keepOrder) {
-                rawOpts.sort((a, b) => {
-                    let textA = getTextAndValue(a).text;
-                    let textB = getTextAndValue(b).text;
-                    return new Intl.Collator(locale).compare(textA, textB);
-                });
-            }
+                rawOpts.
+                sort((a,b) => {
+                  let textA = getTextAndValue(a).text;
+                  let textB = getTextAndValue(b).text;
+                  return (new Intl.Collator(locale).compare(textA, textB))
+             })
+           }
 
-            opts = rawOpts.map((value, index) => {
-                if (value) {
-                    let textAndValue = getTextAndValue(value);
-                    return (
-                        <option
-                            value={textAndValue.value}
-                            key={`${scope}-${index}`}
-                        >
-                            {textAndValue.text}
-                        </option>
-                    );
+            opts = rawOpts.
+                map((value, index) => {
+                    if (value) {
+                        let textAndValue = getTextAndValue(value);
+                        return (
+                            <option value={textAndValue.value} key={`${scope}-${index}`}>
+                                {textAndValue.text}
+                            </option>
+                        )
+                    }
                 }
-            });
+            )
         }
 
         if (withEmpty) {
             opts.unshift(
-                <option value="" key={`${scope}-choose`}>
+                <option value='' key={`${scope}-choose`}>
                     {t('choose')}
                 </option>
-            );
+            )
         }
         return opts;
-    };
+    }
 
     return (
         <Element
@@ -127,11 +124,9 @@ export default function Select({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={
-                typeof validate === 'function' ? validate(defaultValue) : true
-            }
-            mandatory={typeof validate === 'function'}
-            elementType="select"
+            valid={typeof validate === 'function' ? validate(defaultValue) : true}
+            mandatory={typeof(validate) === 'function'}
+            elementType='select'
             individualErrorMsg={individualErrorMsg}
             help={help}
         >
@@ -141,37 +136,10 @@ export default function Select({
                 className="Input"
                 defaultValue={defaultValue}
                 onChange={onChange}
+                handlechangecallback={handlechangecallback}
             >
                 {options()}
             </select>
         </Element>
     );
 }
-
-Select.propTypes = {
-    scope: PropTypes.string,
-    attribute: PropTypes.string,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.object,
-    ]),
-    values: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    keepOrder: PropTypes.bool,
-    data: PropTypes.object,
-    validate: PropTypes.func,
-    label: PropTypes.string,
-    labelKey: PropTypes.string,
-    showErrors: PropTypes.bool,
-    handleChange: PropTypes.func,
-    handlechangecallback: PropTypes.func,
-    handleErrors: PropTypes.func,
-    help: PropTypes.string,
-    individualErrorMsg: PropTypes.string,
-    hidden: PropTypes.bool,
-    className: PropTypes.string,
-    doNotTranslate: PropTypes.bool,
-    optionsScope: PropTypes.string,
-    withEmpty: PropTypes.bool,
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};

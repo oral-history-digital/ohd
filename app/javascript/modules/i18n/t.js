@@ -1,27 +1,31 @@
 import reactStringReplace from 'react-string-replace';
 
 export default function t(
-    { locale, translations, translationsView },
-    key,
-    params
+    {
+        locale,
+        translations,
+        translationsView,
+    }, key, params
 ) {
     const translation = translations[key]?.[locale];
     const defaultTranslation = translations[defaultKey(key)]?.[locale];
 
     let text = translation || defaultTranslation || productionFallback(key);
 
-    if (params) {
+    if(params) {
         for (let [key, value] of Object.entries(params)) {
-            text = reactStringReplace(text, `%{${key}}`, () => value);
+            text = reactStringReplace(text, `%{${key}}`, (match, i) => (
+                value
+            ));
         }
     }
 
     const usedKey = !translation && defaultTranslation ? defaultKey(key) : key;
 
     if (translationsView) {
-        Array.isArray(text)
-            ? text.push(` (${usedKey})`)
-            : (text += ` (${usedKey})`);
+        Array.isArray(text) ?
+            text.push(` (${usedKey})`) :
+            text += ` (${usedKey})`;
     }
 
     return text;

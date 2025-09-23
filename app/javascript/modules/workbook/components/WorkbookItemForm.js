@@ -1,14 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    useTrackEventFunction,
-    EVENT_CATEGORY_WORKBOOK,
-    SAVE_SEARCH,
-    BOOKMARK_INTERVIEW,
-    BOOKMARK_SEGMENT,
-    EDIT_WORKBOOK_ITEM,
-} from 'modules/analytics';
+import { useTrackEventFunction, EVENT_CATEGORY_WORKBOOK, SAVE_SEARCH,
+    BOOKMARK_INTERVIEW, BOOKMARK_SEGMENT, EDIT_WORKBOOK_ITEM } from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
@@ -62,22 +56,18 @@ export default function WorkbookItemForm({
         const tapeStr = t('tape');
 
         switch (type) {
-            case 'Search':
-                return `${t('modules.workbook.full_text_search')} ${
-                    properties.fulltext
-                }`;
-            case 'UserAnnotation':
-                return `${name}, ${interviewStr} ${archiveId}, ${tapeStr} ${
-                    properties.tape_nbr
-                } – ${formatTimecode(properties.time)}`;
-            case 'InterviewReference':
-            default:
-                return `${name}, ${interviewStr} ${archiveId}`;
+        case 'Search':
+            return `${t('modules.workbook.full_text_search')} ${properties.fulltext}`;
+        case 'UserAnnotation':
+            return `${name}, ${interviewStr} ${archiveId}, ${tapeStr} ${properties.tape_nbr} – ${formatTimecode(properties.time)}`;
+        case 'InterviewReference':
+        default:
+            return `${name}, ${interviewStr} ${archiveId}`;
         }
     }
 
     function getCreateEventAction() {
-        switch (type) {
+        switch(type) {
             case 'Search':
                 return SAVE_SEARCH;
             case 'UserAnnotation':
@@ -108,7 +98,7 @@ export default function WorkbookItemForm({
         event.preventDefault();
 
         if (valid()) {
-            mutateWorkbook(async (workbook) => {
+            mutateWorkbook(async workbook => {
                 const itemData = { ...formState };
                 if (suppliedProject) {
                     itemData.project_id = suppliedProject.id;
@@ -164,13 +154,13 @@ export default function WorkbookItemForm({
 
     return (
         <div>
-            <div className="errors">{formState.errors}</div>
-            <form className="Form default" onSubmit={handleSubmit}>
+            <div className='errors'>{formState.errors}</div>
+            <form
+                className='Form default'
+                onSubmit={handleSubmit}
+            >
                 <div className="form-group">
-                    <label
-                        className="publish-label"
-                        htmlFor="workbook_item_form_title"
-                    >
+                    <label className="publish-label" htmlFor="workbook_item_form_title">
                         {t('title')}
                     </label>
                     <input
@@ -183,10 +173,7 @@ export default function WorkbookItemForm({
                     />
                 </div>
                 <div className="form-group">
-                    <label
-                        className="publish-label"
-                        htmlFor="workbook_item_form_description"
-                    >
+                    <label className="publish-label" htmlFor="workbook_item_form_description">
                         {t('modules.workbook.note')}
                     </label>
                     <textarea

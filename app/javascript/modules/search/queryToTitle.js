@@ -1,17 +1,7 @@
 import { useI18n } from 'modules/i18n';
 
-/**
- * Custom hook that converts a query object into a human-readable title string.
- *
- * @param {Object} query - The current search query parameters. Expected to
- * contain `fulltext` and other facet keys.
- * @param {Object|undefined} facetStructure - Optional facet metadata used to
- * translate reference values. Structure: { facetName: { subfacets: { id: { name: { [locale]: '...' } } } } }
- * @returns {string} Human-readable title describing the search query.
- */
-export default function useQueryTitle(query, facetStructure) {
+export default function queryToTitle(query, facetStructure) {
     const { t, locale } = useI18n();
-
     const searchTerm = query.fulltext;
 
     const facets = { ...query };
@@ -24,14 +14,11 @@ export default function useQueryTitle(query, facetStructure) {
 
     if (searchTerm) {
         if (numFacets === 0) {
-            return t('modules.workbook.default_titles.search_for_term', {
-                searchTerm,
-            });
+            return t('modules.workbook.default_titles.search_for_term',
+                { searchTerm });
         } else {
-            return t(
-                'modules.workbook.default_titles.search_for_term_and_filters',
-                { searchTerm, numFilters: numFacets }
-            );
+            return t('modules.workbook.default_titles.search_for_term_and_filters',
+                { searchTerm, numFilters: numFacets });
         }
     } else {
         let translatedFacetValues = [];
@@ -40,13 +27,10 @@ export default function useQueryTitle(query, facetStructure) {
             if (Array.isArray(facetValue)) {
                 // References
                 facetValue.forEach((value) => {
-                    const valueObject =
-                        facetStructure?.[facetName]?.['subfacets']?.[value];
-                    const translatedValue = valueObject
-                        ? valueObject['name'][locale]
-                        : value;
+                    const valueObject = facetStructure?.[facetName]?.['subfacets']?.[value];
+                    const translatedValue = valueObject ? valueObject['name'][locale] : value;
                     translatedFacetValues.push(translatedValue);
-                });
+                })
             } else {
                 // Date range
                 // TODO: Prefix with translated facet name, e.g.
@@ -64,11 +48,7 @@ export default function useQueryTitle(query, facetStructure) {
             return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]}`;
         } else {
             const moreNum = numFacets - 2;
-            return `${filterStr} ${translatedFacetValues[0]}, ${
-                translatedFacetValues[1]
-            } ${t('modules.workbook.default_titles.and_filters_more', {
-                numFilters: moreNum,
-            })}`;
+            return `${filterStr} ${translatedFacetValues[0]}, ${translatedFacetValues[1]} ${t('modules.workbook.default_titles.and_filters_more', { numFilters: moreNum })}`;
         }
     }
 }

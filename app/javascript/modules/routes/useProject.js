@@ -6,19 +6,19 @@ import isLocaleValid from './isLocaleValid';
 
 export default function useProject() {
     const projects = useSelector(getProjects);
-    const projectArray = Object.values(projects || {});
+    const projectArray = Object.values(projects);
     const matchWithProject = useMatch('/:projectId/:locale/*');
 
     let currentProject;
     if (matchWithProject && isLocaleValid(matchWithProject.params.locale)) {
         // Archive is running on OHD domain.
         currentProject = projectArray.find(
-            (project) => project.shortname === matchWithProject.params.projectId
+            project => project.shortname === matchWithProject.params.projectId
         );
     } else {
         // Archive is running on its own domain.
         currentProject = projectArray.find(
-            (project) => project.archive_domain === window.location.origin
+            project => project.archive_domain === window.location.origin
         );
     }
 

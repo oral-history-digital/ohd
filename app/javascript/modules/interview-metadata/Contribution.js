@@ -13,22 +13,16 @@ export default function Contribution({
     person,
     archiveId,
     contribution,
-    withSpeakerDesignation = false,
+    withSpeakerDesignation,
     deleteData,
-    submitData,
+    submitData
 }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const { isAuthorized } = useAuthorization();
 
     const destroy = () => {
-        deleteData(
-            { locale, projectId, project },
-            'interviews',
-            archiveId,
-            'contributions',
-            contribution.id
-        );
+        deleteData({ locale, projectId, project }, 'interviews', archiveId, 'contributions', contribution.id);
         // TODO: Mutate after getting response.
         //mutatePersonWithAssociations(person.id);
     };
@@ -37,31 +31,24 @@ export default function Contribution({
         return <Spinner small />;
     }
 
-    if (
-        isAuthorized(contribution, 'update') ||
-        contribution.workflow_state === 'public'
-    ) {
+    if (isAuthorized(contribution, 'update') || contribution.workflow_state === 'public' ) {
         return (
             <span className="flyout-content-data">
                 {person.display_name}
 
-                {withSpeakerDesignation ? (
-                    <span>
-                        :{' '}
-                        {contribution.speaker_designation ||
-                            t('edit.update_speaker.no_speaker_designation')}
-                    </span>
-                ) : null}
+                {
+                    withSpeakerDesignation ?
+                        (<span>: {contribution.speaker_designation || t('edit.update_speaker.no_speaker_designation')}</span>) :
+                        null
+                }
 
-                <AuthorizedContent object={contribution} action="update">
+                <AuthorizedContent object={contribution} action='update'>
                     <span className="flyout-sub-tabs-content-ico">
                         <Modal
                             title={t('edit.contribution.edit')}
-                            trigger={
-                                <FaPencilAlt className="Icon Icon--editorial Icon--small" />
-                            }
+                            trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small" />}
                         >
-                            {(close) => (
+                            {close => (
                                 <ContributionFormContainer
                                     data={contribution}
                                     withSpeakerDesignation
@@ -72,20 +59,12 @@ export default function Contribution({
                             )}
                         </Modal>
                         <Modal
-                            title={`${t('delete')} ${t(
-                                'contributions.' +
-                                    contribution.contribution_type
-                            )}`}
-                            trigger={
-                                <FaTrash className="Icon Icon--editorial Icon--small" />
-                            }
+                            title={`${t('delete')} ${t('contributions.' + contribution.contribution_type)}`}
+                            trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                         >
-                            {(close) => (
+                            {close => (
                                 <DeleteItemForm
-                                    onSubmit={() => {
-                                        destroy();
-                                        close();
-                                    }}
+                                    onSubmit={() => { destroy(); close(); }}
                                     onCancel={close}
                                 >
                                     <p>{person.display_name}</p>
@@ -107,5 +86,8 @@ Contribution.propTypes = {
     withSpeakerDesignation: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,
-    submitData: PropTypes.func.isRequired,
+};
+
+Contribution.defaultProps = {
+    withSpeakerDesignation: false,
 };

@@ -8,28 +8,23 @@ import interviewCitation from '../interviewCitation';
 export default function CitationInfo({
     interview,
     project,
-    tape /* optional */,
-    time /* optional */,
+    tape, /* optional */
+    time, /* optional */
     className,
 }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    const citationStr = interviewCitation(
-        interview,
-        project,
-        pathBase,
-        tape,
-        time,
-        { t, locale }
-    );
+    const citationStr = interviewCitation(interview, project, pathBase,
+        tape, time);
 
     return (
         <section className={className}>
             <h4 className="u-line-height u-mt-none u-mb-none">
                 {t('modules.workbook.citation')}
             </h4>
-            {citationStr}{' '}
+            {citationStr}
+            {' '}
             <CopyText
                 iconClassName="Icon--primary"
                 text={citationStr}
@@ -45,4 +40,4 @@ CitationInfo.propTypes = {
     tape: PropTypes.number,
     time: PropTypes.number,
     className: PropTypes.string,
-};
+}

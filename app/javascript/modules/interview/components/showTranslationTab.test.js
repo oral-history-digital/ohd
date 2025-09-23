@@ -3,12 +3,11 @@ import showTranslationTab from './showTranslationTab';
 
 describe('ZWAR', () => {
     test('is false if interview lang is German', () => {
-        const project = { shortname: PROJECT_ZWAR };
+        const project = { identifier: PROJECT_ZWAR };
         const interview = {
-            alpha2: 'de',
+            lang: 'de',
             languages: ['de', 'ru'],
-            alpha3s_with_transcript: ['de', 'ru'],
-            translation_alpha3: 'en',
+            locales_with_transcript: ['de', 'ru'],
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
@@ -16,12 +15,11 @@ describe('ZWAR', () => {
     });
 
     test('is true otherwise', () => {
-        const project = { shortname: PROJECT_ZWAR };
+        const project = { identifier: PROJECT_ZWAR };
         const interview = {
-            alpha2: 'ru',
+            lang: 'ru',
             languages: ['de', 'ru'],
-            alpha3s_with_transcript: ['de', 'ru'],
-            translation_alpha3: 'ru',
+            locales_with_transcript: ['de', 'ru'],
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = true;
@@ -31,12 +29,11 @@ describe('ZWAR', () => {
 
 describe('CDOH', () => {
     test('is false if interview lang is locale', () => {
-        const project = { shortname: PROJECT_CDOH };
+        const project = { identifier: PROJECT_CDOH };
         const interview = {
-            alpha2: 'es',
+            lang: 'es',
             languages: ['de', 'es'],
-            alpha3s_with_transcript: ['de', 'es'],
-            translation_alpha3: 'de',
+            locales_with_transcript: ['de', 'es'],
         };
         const actual = showTranslationTab(project, interview, 'es');
         const expected = false;
@@ -44,12 +41,11 @@ describe('CDOH', () => {
     });
 
     test('is true otherwise', () => {
-        const project = { shortname: PROJECT_CDOH };
+        const project = { identifier: PROJECT_CDOH };
         const interview = {
-            alpha2: 'es',
+            lang: 'es',
             languages: ['de', 'es'],
-            alpha3s_with_transcript: ['de', 'es'],
-            translation_alpha3: 'de',
+            locales_with_transcript: ['de', 'es'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -59,12 +55,11 @@ describe('CDOH', () => {
 
 describe('other projects', () => {
     test('is false if interview lang is locale', () => {
-        const project = { shortname: 'dummy' };
+        const project = { identifier: 'dummy' };
         const interview = {
-            alpha2: 'en',
+            lang: 'en',
             languages: ['en', 'de'],
-            alpha3s_with_transcript: ['en', 'de'],
-            translation_alpha3: 'de',
+            locales_with_transcript: ['en', 'de'],
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
@@ -72,12 +67,11 @@ describe('other projects', () => {
     });
 
     test('is true otherwise', () => {
-        const project = { shortname: 'dummy' };
+        const project = { identifier: 'dummy' };
         const interview = {
-            alpha2: 'en',
+            lang: 'en',
             languages: ['en', 'de'],
-            alpha3s_with_transcript: ['en', 'de'],
-            translation_alpha3: 'de',
+            locales_with_transcript: ['en', 'de'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -87,12 +81,11 @@ describe('other projects', () => {
 
 describe('transcript availability', () => {
     test('is true if translated transcript is available', () => {
-        const project = { shortname: 'dummy' };
+        const project = { identifier: 'dummy' };
         const interview = {
-            alpha2: 'en',
+            lang: 'en',
             languages: ['en', 'de'],
-            alpha3s_with_transcript: ['en', 'de'],
-            translation_alpha3: 'de',
+            locales_with_transcript: ['en', 'de'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -100,12 +93,11 @@ describe('transcript availability', () => {
     });
 
     test('is false if translated transcript is not available', () => {
-        const project = { shortname: 'dummy' };
+        const project = { identifier: 'dummy' };
         const interview = {
-            alpha2: 'en',
+            lang: 'en',
             languages: ['en', 'de'],
-            alpha3s_with_transcript: ['en'],
-            translation_alpha3: 'de',
+            locales_with_transcript: ['en'],
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = false;
