@@ -24,7 +24,7 @@ class Person < ApplicationRecord
     fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations, :events, :biographical_entries
 
-  validates_length_of :description, maximum: 1000
+  validates_length_of :description, maximum: 1500
 
   serialize :properties
 
