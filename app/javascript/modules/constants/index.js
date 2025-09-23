@@ -37,6 +37,9 @@ export const OHD_DOMAINS = {
     test: 'http://test.portal.oral-history.localhost:47001',
 };
 
+export const GITHUB_URL = 'https://github.com/oral-history-digital/ohd';
+
+
 export const ALPHA2_TO_ALPHA3 = {
     de: 'ger',
     en: 'eng',
