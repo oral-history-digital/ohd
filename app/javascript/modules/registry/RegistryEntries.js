@@ -32,7 +32,7 @@ export default function RegistryEntries({
                     ))
                 ) : (<li><PixelLoader /></li>)}
             </ul>
-            <AuthorizedContent object={{ type: 'RegistryEntry' }} action='create'>
+            <AuthorizedContent object={ registryEntryParent } action='create'>
                 <Modal
                     title={t('edit.registry_entry.new')}
                     trigger={t('edit.registry_entry.new')}
