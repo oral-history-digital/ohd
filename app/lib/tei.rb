@@ -91,7 +91,7 @@ class Tei
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
-            index_carryover = part_index_carryover
+            index_carryover = part_index_carryover + 1
           else
             # Fallback to treating as generic tag if parsing fails
             comments << {
@@ -121,7 +121,7 @@ class Tei
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
-            index_carryover = part_index_carryover
+            index_carryover = part_index_carryover + 1
           else
             # Fallback to treating as generic tag if parsing fails
             comments << {
@@ -238,7 +238,7 @@ class Tei
         combined_index += index_carryover
       end
       
-      [ordinary_text, comments, parts.size]
+      [ordinary_text, comments, ordinary_text.size]
     else
       [ordinary_text, comments, 0]
     end
@@ -355,7 +355,7 @@ class Tei
     end
 
     ordinary_text_parts << {
-      index: index_carryover,
+      index: start_index + index_carryover,
       type: :anchor,
       attributes: {type: 'SIM-END'}
     }

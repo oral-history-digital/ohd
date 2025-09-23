@@ -1,4 +1,6 @@
 xml.instruct!
+xml << '<!DOCTYPE TEI SYSTEM "http://www.tei-c.org/release/xml/tei/custom/schema/dtd/tei_all.dtd">'
+
 xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org/ns/1.0" do
 
   xml.idno type: "Interview-ID" do
@@ -28,7 +30,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
             [:de, :en].each do |locale|
               xml.resp TranslationValue.for("contributions.#{contribution&.contribution_type&.code}", locale).strip, "xml:lang": locale
             end
-            xml.persName "xml:id": "p#{contribution&.person_id}", ref: "##{contribution.person&.initials}" do
+            xml.persName ref: "##{contribution.person&.initials}" do
               xml.forename contribution&.person&.first_name(locale)
               if interview.project.fullname_on_landing_page
                 xml.surname contribution&.person&.last_name_used(locale)
