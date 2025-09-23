@@ -2,7 +2,7 @@ class Material < ApplicationRecord
   belongs_to :attachable, polymorphic: true, touch: true
   has_one_attached :file
 
-  translates :title, :description
+  translates :title, :description, touch: true
   accepts_nested_attributes_for :translations
 
   def file_path
