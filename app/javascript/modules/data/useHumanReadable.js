@@ -2,10 +2,11 @@ import { useMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
-import originalT from './t';
-import { getTranslationsView, getTranslations } from 'modules/archive';
+import originalHumanReadable from './humanReadable';
+import { getLanguages, getCollections } from 'modules/data';
+import { getTranslations } from 'modules/archive';
 
-export function useI18n() {
+export default function useHumanReadable() {
     const matchWithProject = useMatch('/:projectId/:locale/*');
     const matchWOProject = useMatch('/:locale/*');
 
@@ -18,16 +19,28 @@ export function useI18n() {
     }
 
     const translations = useSelector(getTranslations);
-    const translationsView = useSelector(getTranslationsView);
+    const languages = useSelector(getLanguages);
+    const collections = useSelector(getCollections);
 
-    const curriedT = (key, params) => originalT({
-        locale,
+    const curriedHumanReadable = ({
+        obj,
+        attribute,
+        collapsed,
+        none,
+        optionsScope,
+    }) => originalHumanReadable({
+        obj,
+        attribute,
+        collapsed,
+        none,
         translations,
-        translationsView,
-    }, key, params);
+        optionsScope,
+        collections,
+        languages,
+        locale,
+    });
 
     return {
-        locale,
-        t: curriedT,
+        humanReadable: curriedHumanReadable,
     };
 }

@@ -1,4 +1,4 @@
-import { NAME } from '../constants';
+import { NAME } from './constants';
 
 export const UPDATE_DATA = `${NAME}/update`;
 export const REMOVE_DATA = `${NAME}/remove`;

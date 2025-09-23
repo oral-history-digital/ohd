@@ -21,7 +21,7 @@ export default function Transcript({
     archiveId,
     transcriptFetched,
     transcriptLocale,
-    originalLocale = false,
+    originalLocale,
     loadSegments,
     mediaTime,
     isIdle,
@@ -208,4 +208,8 @@ Transcript.propTypes = {
     transcriptFetched: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
+};
+
+Transcript.defaultProps = {
+    originalLocale: false,
 };

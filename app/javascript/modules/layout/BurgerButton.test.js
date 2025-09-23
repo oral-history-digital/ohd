@@ -1,12 +1,16 @@
-import { renderToStaticMarkup } from 'react-dom/server';
+import renderer from 'react-test-renderer';
 import BurgerButton from './BurgerButton';
 
 it('renders correctly in closed state', () => {
-    const html = renderToStaticMarkup(<BurgerButton onClick={() => {}} />);
-    expect(html).toMatchSnapshot();
+    const tree = renderer
+        .create(<BurgerButton onClick={() => {}} />)
+        .toJSON();
+    expect(tree).toMatchSnapshot();
 });
 
 it('renders correctly in open state', () => {
-    const html = renderToStaticMarkup(<BurgerButton open onClick={() => {}} />);
-    expect(html).toMatchSnapshot();
+    const tree = renderer
+        .create(<BurgerButton open onClick={() => {}} />)
+        .toJSON();
+    expect(tree).toMatchSnapshot();
 });

@@ -17,10 +17,10 @@ const translations = {
         interview: 'Interview',
         modules: {
             workbook: {
-                position: 'Position',
-            },
-        },
-    },
+                position: 'Position'
+            }
+        }
+    }
 };
 
 beforeAll(() => {
@@ -34,41 +34,15 @@ afterAll(() => {
 });
 
 test('creates citation string for interviews', () => {
-    const t = (k) => {
-        return (
-            translations[locale][k] ||
-            translations[locale]?.modules?.workbook?.position ||
-            k
-        );
-    };
-    const actual = interviewCitation(
-        interview,
-        project,
-        pathBase,
-        undefined,
-        undefined,
-        { t, locale }
-    );
-    const expected =
-        'Alice H., Interview da001, 18.06.2005, Dummy Archive, http://www.example.com:3000/de/interviews/da001, 01.01.2014';
+    const actual = interviewCitation(interview, project, pathBase);
+    const expected = 'Alice H., Interview da001, 18.06.2005, Dummy Archive, http://www.example.com:3000/de/interviews/da001, 01.01.2014';
 
     expect(actual).toEqual(expected);
 });
 
 test('creates citation string for segments', () => {
-    const t = (k) => {
-        return (
-            translations[locale][k] ||
-            translations[locale]?.modules?.workbook?.position ||
-            k
-        );
-    };
-    const actual = interviewCitation(interview, project, pathBase, 1, 3245, {
-        t,
-        locale,
-    });
-    const expected =
-        'Alice H., Interview da001, 18.06.2005, Position: 1 – 0:54:05, Dummy Archive, http://www.example.com:3000/de/interviews/da001?tape=1&time=0h54m05s, 01.01.2014';
+    const actual = interviewCitation(interview, project, pathBase, 1, 3245);
+    const expected = 'Alice H., Interview da001, 18.06.2005, Position: 1 – 0:54:05, Dummy Archive, http://www.example.com:3000/de/interviews/da001?tape=1&time=0h54m05s, 01.01.2014';
 
     expect(actual).toEqual(expected);
 });
@@ -76,25 +50,10 @@ test('creates citation string for segments', () => {
 test('works for projects without archive domain', () => {
     const projectWithoutDomain = {
         ...project,
-        archive_domain: null,
+        archive_domain: null
     };
-    const t = (k) => {
-        return (
-            translations[locale][k] ||
-            translations[locale]?.modules?.workbook?.position ||
-            k
-        );
-    };
-    const actual = interviewCitation(
-        interview,
-        projectWithoutDomain,
-        '/da/de',
-        undefined,
-        undefined,
-        { t, locale }
-    );
-    const expected =
-        'Alice H., Interview da001, 18.06.2005, Dummy Archive, https://portal.oral-history.digital/da/de/interviews/da001, 01.01.2014';
+    const actual = interviewCitation(interview, projectWithoutDomain, '/da/de');
+    const expected = 'Alice H., Interview da001, 18.06.2005, Dummy Archive, https://portal.oral-history.digital/da/de/interviews/da001, 01.01.2014';
 
     expect(actual).toEqual(expected);
 });

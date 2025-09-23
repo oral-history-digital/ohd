@@ -9,7 +9,7 @@ import ContributionFormContainer from './ContributionFormContainer';
 
 export default function InterviewContributors({
     interview,
-    withSpeakerDesignation = false,
+    withSpeakerDesignation,
     submitData,
 }) {
     const { t } = useI18n();
@@ -21,23 +21,17 @@ export default function InterviewContributors({
                 interview={interview}
             />
 
-            <AuthorizedContent
-                object={{ type: 'Contribution', interview_id: interview.id }}
-                action="create"
-            >
+            <AuthorizedContent object={{type: 'Contribution', interview_id: interview.id}} action='create'>
                 <p>
                     <Modal
                         title={t('edit.contribution.new')}
-                        trigger={
-                            <>
-                                <FaPlus className="Icon Icon--editorial Icon--small" />{' '}
-                                {t(
-                                    'modules.interview_metadata.add_contributors'
-                                )}
-                            </>
-                        }
+                        trigger={<>
+                            <FaPlus className="Icon Icon--editorial Icon--small"/>
+                            {' '}
+                            {t('modules.interview_metadata.add_contributors')}
+                        </>}
                     >
-                        {(close) => (
+                        {close => (
                             <ContributionFormContainer
                                 interview={interview}
                                 withSpeakerDesignation={withSpeakerDesignation}
@@ -51,10 +45,15 @@ export default function InterviewContributors({
             </AuthorizedContent>
         </div>
     );
+
 }
 
 InterviewContributors.propTypes = {
     interview: PropTypes.object.isRequired,
     withSpeakerDesignation: PropTypes.bool.isRequired,
     submitData: PropTypes.func.isRequired,
+};
+
+InterviewContributors.defaultProps = {
+    withSpeakerDesignation: false,
 };
