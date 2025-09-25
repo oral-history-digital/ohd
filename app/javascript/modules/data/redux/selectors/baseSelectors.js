@@ -1,63 +1,38 @@
-import { getArchiveId, getProjectId } from 'modules/archive';
-import { createSelector } from 'reselect';
+/**
+ * Base selectors to get data from the redux state
+ * These selectors do not use reselect and are used by other selectors
+ * that do use reselect.
+ */
 
 export const getData = (state) => state.data;
 
-export const getProjects = (state) => getData(state).projects;
+export const getCollections = (state) => getData(state).collections;
 
-export const getPublicProjects = createSelector(
-    [getProjects],
-    (projectObject) => {
-        return Object.values(projectObject).filter(
-            (project) => project.workflow_state === 'public'
-        );
-    }
-);
+export const getInstitutions = (state) => getData(state).institutions;
 
 export const getInterviews = (state) => getData(state).interviews;
 
-export const getContributionTypes = (state) =>
-    getData(state).contribution_types;
+export const getLanguages = (state) => getData(state).languages;
 
-function projectByDomain(projects) {
-    return (
-        projects &&
-        Object.values(projects).find(
-            (project) => project.archive_domain === window.location.origin
-        )
-    );
-}
+export const getNormDataProviders = (state) =>
+    getData(state).norm_data_providers;
 
-export const getCurrentProject = createSelector(
-    [getProjectId, getProjects],
-    (projectId, projects) => {
-        if (!projects) {
-            return null;
-        }
+export const getPermissions = (state) => getData(state).permissions;
 
-        const currentProject =
-            Object.values(projects).find(
-                (project) =>
-                    project.shortname === projectId ||
-                    project.identifier === projectId
-            ) || projectByDomain(projects);
+export const getProjects = (state) => getData(state).projects;
 
-        return currentProject || null;
-    }
-);
+export const getRandomFeaturedInterviews = (state) =>
+    getData(state).random_featured_interviews;
 
-export const getCurrentInterview = createSelector(
-    [getInterviews, getArchiveId],
-    (interviews, archiveId) => {
-        return interviews && interviews[archiveId];
-    }
-);
+export const getRegistryEntries = (state) => getData(state).registry_entries;
 
-export const getContributionTypesForCurrentProject = createSelector(
-    [getCurrentProject, getContributionTypes],
-    (currentProject, globalContributionTypes) => {
-        return (
-            currentProject?.contribution_types || globalContributionTypes || {}
-        );
-    }
-);
+export const getSegments = (state) => getData(state).segments;
+
+export const getStatuses = (state) => getData(state).statuses;
+
+export const getTasks = (state) => getData(state).tasks;
+
+export const getTranslationValues = (state) =>
+    getData(state).translation_values;
+
+export const getUsers = (state) => getData(state).users;
