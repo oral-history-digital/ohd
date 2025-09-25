@@ -1,3 +1,4 @@
+/* global railsMode */
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -17,9 +18,19 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
-import { Banner, bannerHasNotBeenHiddenByUser, doNotShowBannerAgainThisSession } from 'modules/banner';
-import { AfterRegisterPopup, AfterConfirmationPopup, AfterRequestProjectAccessPopup,
-    CorrectUserDataPopup, AfterResetPassword, ConfirmNewZwarTosPopup } from 'modules/user';
+import {
+    Banner,
+    bannerHasNotBeenHiddenByUser,
+    doNotShowBannerAgainThisSession,
+} from 'modules/banner';
+import {
+    AfterRegisterPopup,
+    AfterConfirmationPopup,
+    AfterRequestProjectAccessPopup,
+    CorrectUserDataPopup,
+    AfterResetPassword,
+    ConfirmNewZwarTosPopup,
+} from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 import { OHD_DOMAINS } from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
@@ -43,22 +54,30 @@ export default function Layout({
     useCheckLocaleAgainstProject();
 
     const ohdDomain = OHD_DOMAINS[railsMode];
-    const ohd = {shortname: 'ohd', archive_domain: ohdDomain};
 
     // load current project if not already loaded
     useEffect(() => {
+        const ohd = { shortname: 'ohd', archive_domain: ohdDomain };
+
+        function removeAccessTokenParam() {
+            if (searchParams.has('access_token')) {
+                searchParams.delete('access_token');
+                setSearchParams(searchParams);
+            }
+        }
+
         if (!projectsStatus[project.id]) {
-            fetchData({ locale: 'de', project: ohd}, 'projects', project.id);
+            fetchData({ locale: 'de', project: ohd }, 'projects', project.id);
         }
         removeAccessTokenParam();
-    }, [project]);
-
-    function removeAccessTokenParam() {
-        if (searchParams.has('access_token')) {
-            searchParams.delete('access_token');
-            setSearchParams(searchParams);
-        }
-    }
+    }, [
+        project,
+        projectsStatus,
+        fetchData,
+        ohdDomain,
+        searchParams,
+        setSearchParams,
+    ]);
 
     function handleBannerClose() {
         hideBanner();
@@ -72,13 +91,15 @@ export default function Layout({
 
     return (
         <ResizeWatcherContainer>
-            <div className={classNames('Layout', {
-                'sidebar-is-visible': sidebarVisible,
-                'is-sticky': scrollPositionBelowThreshold,
-                'is-small-player': playerSize === 'small',
-                'is-medium-player': playerSize === 'medium',
-                'is-mobile': isMobile(),
-            })}>
+            <div
+                className={classNames('Layout', {
+                    'sidebar-is-visible': sidebarVisible,
+                    'is-sticky': scrollPositionBelowThreshold,
+                    'is-small-player': playerSize === 'small',
+                    'is-medium-player': playerSize === 'medium',
+                    'is-mobile': isMobile(),
+                })}
+            >
                 <FetchAccountContainer />
                 <AfterRegisterPopup />
                 <AfterConfirmationPopup />
@@ -91,6 +112,11 @@ export default function Layout({
                     titleTemplate={`%s | ${titleBase}`}
                 >
                     <html lang={locale} />
+                    <link
+                        rel="icon"
+                        type="image/x-icon"
+                        href={`/favicon-${project?.shortname || 'ohd'}.ico`}
+                    />
                 </Helmet>
 
                 <div className={classNames('Layout-page', 'Site')}>
@@ -101,9 +127,7 @@ export default function Layout({
                         notifications={[]}
                     />
 
-                    <main className="Site-content">
-                        {children}
-                    </main>
+                    <main className="Site-content">{children}</main>
 
                     <SiteFooter />
                 </div>
@@ -123,7 +147,9 @@ export default function Layout({
                     fullscreen={!sidebarVisible}
                 />
 
-                {bannerActive && bannerHasNotBeenHiddenByUser() && <Banner onClose={handleBannerClose}/>}
+                {bannerActive && bannerHasNotBeenHiddenByUser() && (
+                    <Banner onClose={handleBannerClose} />
+                )}
             </div>
         </ResizeWatcherContainer>
     );
@@ -137,7 +163,7 @@ Layout.propTypes = {
     bannerActive: PropTypes.bool.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
     toggleSidebar: PropTypes.func.isRequired,
     hideBanner: PropTypes.func.isRequired,
