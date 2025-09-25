@@ -1,23 +1,27 @@
 import { PROJECT_ZWAR, PROJECT_CDOH } from 'modules/constants';
 
 export default function showTranslationTab(project, interview, locale) {
-    return projectSupportsTranslatedTranscript(project, interview, locale)
-        && translationAvailable(interview);
+    return (
+        projectSupportsTranslatedTranscript(project, interview, locale) &&
+        translationAvailable(interview)
+    );
 }
 
 function projectSupportsTranslatedTranscript(project, interview, locale) {
     switch (project.shortname) {
-    case PROJECT_CDOH:
-        return interview.alpha2 !== locale;
-    case PROJECT_ZWAR:
-        return interview.alpha2 !== 'de';
-    default:
-        return interview.alpha2 !== locale;
+        case PROJECT_CDOH:
+            return interview.alpha2 !== locale;
+        case PROJECT_ZWAR:
+            return interview.alpha2 !== 'de';
+        default:
+            return interview.alpha2 !== locale;
     }
 }
 
 function translationAvailable(interview) {
-    const translationsWithTranscript = interview?.alpha3s_with_transcript.filter(value => interview?.translation_alpha3s.includes(value));
+    const translationsWithTranscript =
+        interview?.alpha3s_with_transcript.filter((value) =>
+            interview?.translation_alpha3s.includes(value)
+        );
     return translationsWithTranscript && translationsWithTranscript.length > 0;
-
 }

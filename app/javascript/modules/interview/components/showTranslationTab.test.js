@@ -8,7 +8,7 @@ describe('ZWAR', () => {
             alpha2: 'de',
             languages: ['de', 'ru'],
             alpha3s_with_transcript: ['de', 'ru'],
-            translation_alpha3: 'en',
+            translation_alpha3s: 'en',
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
@@ -21,7 +21,7 @@ describe('ZWAR', () => {
             alpha2: 'ru',
             languages: ['de', 'ru'],
             alpha3s_with_transcript: ['de', 'ru'],
-            translation_alpha3: 'ru',
+            translation_alpha3s: 'ru',
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = true;
@@ -36,7 +36,7 @@ describe('CDOH', () => {
             alpha2: 'es',
             languages: ['de', 'es'],
             alpha3s_with_transcript: ['de', 'es'],
-            translation_alpha3: 'de',
+            translation_alpha3s: 'de',
         };
         const actual = showTranslationTab(project, interview, 'es');
         const expected = false;
@@ -49,7 +49,7 @@ describe('CDOH', () => {
             alpha2: 'es',
             languages: ['de', 'es'],
             alpha3s_with_transcript: ['de', 'es'],
-            translation_alpha3: 'de',
+            translation_alpha3s: 'de',
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -64,7 +64,7 @@ describe('other projects', () => {
             alpha2: 'en',
             languages: ['en', 'de'],
             alpha3s_with_transcript: ['en', 'de'],
-            translation_alpha3: 'de',
+            translation_alpha3s: 'de',
         };
         const actual = showTranslationTab(project, interview, 'en');
         const expected = false;
@@ -77,7 +77,7 @@ describe('other projects', () => {
             alpha2: 'en',
             languages: ['en', 'de'],
             alpha3s_with_transcript: ['en', 'de'],
-            translation_alpha3: 'de',
+            translation_alpha3s: 'de',
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -92,7 +92,7 @@ describe('transcript availability', () => {
             alpha2: 'en',
             languages: ['en', 'de'],
             alpha3s_with_transcript: ['en', 'de'],
-            translation_alpha3: 'de',
+            translation_alpha3s: 'de',
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = true;
@@ -105,7 +105,7 @@ describe('transcript availability', () => {
             alpha2: 'en',
             languages: ['en', 'de'],
             alpha3s_with_transcript: ['en'],
-            translation_alpha3: 'de',
+            translation_alpha3s: 'de',
         };
         const actual = showTranslationTab(project, interview, 'de');
         const expected = false;
