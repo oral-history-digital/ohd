@@ -33,38 +33,48 @@ export default function Registry({
             <Helmet>
                 <title>{t('registry')}</title>
             </Helmet>
-            <div className='wrapper-content register'>
-                <h1 className='registry-entries-title'>
+            <div className="wrapper-content register">
+                <h1 className="registry-entries-title">
                     {t('registry')}
-                    <AuthorizedContent object={rootRegistryEntry} action='update'>
+                    <AuthorizedContent
+                        object={rootRegistryEntry}
+                        action="update"
+                    >
                         <span className="u-ml-tiny">{`(ID: ${rootRegistryEntry.id})`}</span>
                     </AuthorizedContent>
                 </h1>
 
                 {isEditor && <HelpText code="registry_page" className="u-mb" />}
 
-                <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                <AuthorizedContent
+                    object={{ type: 'RegistryEntry' }}
+                    action="update"
+                >
                     <MergeRegistryEntriesButtonContainer />
                 </AuthorizedContent>
 
-                {
-                    showRegistryEntriesSearchResults ?
-                        (foundRegistryEntries?.results?.length === 0 && !isRegistryEntrySearching ?
-                            (
-                                <div className="search-result">
-                                    {`0 ${t('registryentry_results')}`}
-                                </div>
-                            ) :
-                            (
-                                <ul className="RegistryEntryList RegistryEntryList--root">
-                                    {
-                                        foundRegistryEntries?.results?.map(result => <RegistrySearchResult key={result.id} result={result} />)
-                                    }
-                                </ul>
-                            )
-                        ) :
-                        <RegistryEntries root registryEntryParent={rootRegistryEntry} />
-                }
+                {showRegistryEntriesSearchResults ? (
+                    foundRegistryEntries?.results?.length === 0 &&
+                    !isRegistryEntrySearching ? (
+                        <div className="search-result">
+                            {`0 ${t('registryentry_results')}`}
+                        </div>
+                    ) : (
+                        <ul className="RegistryEntryList RegistryEntryList--root">
+                            {foundRegistryEntries?.results?.map((result) => (
+                                <RegistrySearchResult
+                                    key={result.id}
+                                    result={result}
+                                />
+                            ))}
+                        </ul>
+                    )
+                ) : (
+                    <RegistryEntries
+                        root
+                        registryEntryParent={rootRegistryEntry}
+                    />
+                )}
             </div>
         </ScrollToTop>
     );
