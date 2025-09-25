@@ -1,12 +1,13 @@
-export default function isDate(dateString) {
+export function isDate(dateString) {
     if (typeof dateString !== 'string') {
         return false;
     }
 
     const trimmedDate = dateString.trim();
 
-    return isFullISO8601Format(trimmedDate)
-        && isValidDate(new Date(trimmedDate));
+    return (
+        isFullISO8601Format(trimmedDate) && isValidDate(new Date(trimmedDate))
+    );
 }
 
 export function isFullISO8601Format(dateString) {
@@ -17,3 +18,5 @@ export function isFullISO8601Format(dateString) {
 export function isValidDate(date) {
     return date instanceof Date && !isNaN(date);
 }
+
+export default isDate;
