@@ -50,7 +50,7 @@ export default function NormDatumForm({
                 {
                     attribute: 'nid',
                     value: data?.nid,
-                    validate: function(v){return /^[a-zA-Z0-9-_/]+$/.test(v)},
+                    //validate: function(v){return /^[a-zA-Z0-9-_/]+$/.test(v)},
                 },
             ]}
         />
