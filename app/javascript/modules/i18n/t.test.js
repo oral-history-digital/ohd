@@ -1,18 +1,18 @@
 import t from './t';
 
+// The project's runtime i18n stores translations keyed by translation key,
+// with per-locale strings: { key: { de: '...', en: '...' } }
 const translations = {
     warning: {
-        value: {
-            de: 'Achtung!',
-            en: 'Beware!'
-        }
+        de: 'Achtung!',
+        en: 'Beware!',
     },
 };
 
 it('translates into one language', () => {
     const props = {
         translations,
-        statuses: {translations: {warning: 'fetched'}},
+        statuses: { translations: { warning: 'fetched' } },
         locale: 'de',
     };
 
@@ -24,7 +24,7 @@ it('translates into one language', () => {
 it('translates into another language', () => {
     const props = {
         translations,
-        statuses: {translations: {warning: 'fetched'}},
+        statuses: { translations: { warning: 'fetched' } },
         locale: 'en',
     };
 
