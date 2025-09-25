@@ -23,7 +23,7 @@ export default function WorkflowResults({
                 />
                 <WorkflowHeader
                     width={10}
-                    tKey="id"
+                    tKey="interview_id"
                 />
                 <WorkflowHeader
                     width={10}
