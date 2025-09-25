@@ -1,48 +1,79 @@
 import shuffle from 'lodash.shuffle';
-import { getArchiveId } from 'modules/archive';
+import {
+    getArchiveId,
+    getEditView,
+    getLocale,
+    getProjectId,
+} from 'modules/archive';
 import { DEFAULT_LOCALES } from 'modules/constants';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { createSelector } from 'reselect';
 import {
-    getCurrentInterview,
-    getCurrentProject,
-    getData,
+    getInterviews,
     getProjects,
-    getPublicProjects,
+    getStatuses,
+    getUsers,
 } from './baseSelectors';
+import { projectByDomain } from './utils';
 
-export const getLanguages = (state) => getData(state).languages;
+/**
+ * Basic Selectors others depend on
+ **/
 
-export const getTranslationValues = (state) =>
-    getData(state).translation_values;
+export const getCurrentProject = createSelector(
+    [getProjectId, getProjects],
+    (projectId, projects) => {
+        const currentProject =
+            Object.values(projects).find(
+                (project) => project.shortname === projectId
+            ) || projectByDomain(projects);
 
-export const getInstitutions = (state) => getData(state).institutions;
+        return currentProject || null;
+    }
+);
 
-export const getCollections = (state) => getData(state).collections;
+export const getCurrentInterview = createSelector(
+    [getInterviews, getArchiveId],
+    (interviews, archiveId) => {
+        return interviews && interviews[archiveId];
+    }
+);
 
-export const getNormDataProviders = (state) =>
-    getData(state).norm_data_providers;
+export const getOHDProject = createSelector([getProjects], (projects) => {
+    return Object.values(projects).find(
+        (project) => project.shortname === 'ohd'
+    );
+});
 
-export const getUsers = (state) => getData(state).users;
+export const getPublicProjects = createSelector(
+    getProjects,
+    (projectObject) => {
+        return Object.values(projectObject).filter(
+            (project) => project.workflow_state === 'public'
+        );
+    }
+);
+
+export const getCurrentInterviewFetched = (state) => {
+    const currentInterview = getCurrentInterview(state);
+
+    return !(
+        Object.is(currentInterview, undefined) ||
+        Object.is(currentInterview, null)
+    );
+};
+
+/**
+ * User Selectors
+ */
 
 export const getCurrentUser = (state) => getUsers(state).current;
 
-export const getPermissions = (state) => getData(state).permissions;
-
-export const getRegistryEntries = (state) => getData(state).registry_entries;
-
-export const getSegments = (state) => getData(state).segments;
-
-export const getTasks = (state) => getData(state).tasks;
-
-export const getRandomFeaturedInterviews = (state) =>
-    getData(state).random_featured_interviews;
-
 export const getCurrentUserIsAdmin = (state) => getCurrentUser(state).admin;
 
-/* Statuses */
-
-export const getStatuses = (state) => getData(state).statuses;
+/**
+ * Status Selectors
+ */
 
 export const getUsersStatus = (state) => getStatuses(state).users;
 
@@ -99,18 +130,6 @@ export const getCurrentRefTreeStatus = createSelector(
     }
 );
 
-export const getRegistryEntriesStatus = (state) =>
-    getStatuses(state).registry_entries;
-
-export const getRegistryReferenceTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
-
-export const getRegistryNameTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
-
-export const getContributionTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
-
 export const getRolesStatus = (state) => getStatuses(state).roles;
 
 export const getSegmentsStatus = (state) => getStatuses(state).segments;
@@ -122,21 +141,41 @@ export const getTasksStatus = (state) => getStatuses(state).tasks;
 
 export const getTaskTypesStatus = (state) => getStatuses(state).task_types;
 
-export const getOHDProject = (state) => {
-    const projects = getProjects(state) || {};
-    return Object.values(projects).find(
-        (project) => project.shortname === 'ohd'
-    );
-};
+/**
+ * Interview Selectors
+ **/
 
-export const getCurrentInterviewFetched = (state) => {
-    const currentInterview = getCurrentInterview(state);
+export const getCurrentIntervieweeId = createSelector(
+    getCurrentInterview,
+    (interview) => {
+        if (!interview?.contributions) {
+            return undefined;
+        }
 
-    return !(
-        Object.is(currentInterview, undefined) ||
-        Object.is(currentInterview, null)
-    );
-};
+        const intervieweeContribution = Object.values(
+            interview.contributions
+        ).find((c) => c.contribution_type === CONTRIBUTION_INTERVIEWEE);
+
+        if (!intervieweeContribution) {
+            return null;
+        }
+
+        return intervieweeContribution.person_id;
+    }
+);
+
+export const getHeadings = createSelector(
+    getCurrentInterview,
+    (interview) => interview?.headings
+);
+
+export const getTranscriptFetched = createSelector(
+    [getSegmentsStatus, getArchiveId],
+    (segmentsStatus, archiveId) => {
+        const isFetched = /^fetched/;
+        return isFetched.test(segmentsStatus[`for_interviews_${archiveId}`]);
+    }
+);
 
 export const getCurrentRefTree = (state) =>
     getCurrentInterview(state)?.ref_tree;
@@ -192,20 +231,225 @@ export const getFlattenedRefTree = createSelector(
     }
 );
 
-export const getTranscriptFetched = createSelector(
-    [getSegmentsStatus, getArchiveId],
-    (segmentsStatus, archiveId) => {
-        const isFetched = /^fetched/;
-        return isFetched.test(segmentsStatus[`for_interviews_${archiveId}`]);
+/**
+ * Project Selectors
+ **/
+
+export const DEFAULT_MAP_SECTION = {
+    id: 0,
+    type: 'MapSection',
+    name: 'default',
+    corner1_lat: 51.50939, // London
+    corner1_lon: -0.11832,
+    corner2_lat: 44.433333, // Bucarest
+    corner2_lon: 26.1,
+};
+
+export const getContributionTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.contribution_types;
     }
 );
 
+export const getShowFeaturedInterviews = (state) => {
+    const projectId = getProjectId(state);
+
+    // TODO: put to project-conf
+    if (projectId === 'mog' || projectId === 'campscapes') {
+        return false;
+    }
+
+    return true;
+};
+
+export const getShowStartPageVideo = (state) => {
+    const projectId = getProjectId(state);
+
+    // TODO: put to project-conf
+    return projectId === 'mog';
+};
+
+export const getProjectTranslation = createSelector(
+    [getLocale, getCurrentProject],
+    (locale, currentProject) => {
+        if (!currentProject) {
+            return null;
+        } else {
+            const translation = currentProject.translations_attributes.find(
+                (t) => t.locale === locale
+            );
+            return (
+                translation ||
+                currentProject.translations_attributes.find(
+                    (t) => t.locale === currentProject.default_locale
+                )
+            );
+        }
+    }
+);
+
+export const getIsCampscapesProject = (state) => {
+    const projectId = getProjectId(state);
+
+    return projectId === 'campscapes';
+};
+
+export const getIsCatalog = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.is_catalog === true;
+    }
+);
+
+export const getMapSections = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        if (!currentProject.map_sections) {
+            return [DEFAULT_MAP_SECTION];
+        }
+
+        const sections = Object.values(currentProject.map_sections);
+
+        if (sections.length === 0) {
+            return [DEFAULT_MAP_SECTION];
+        }
+
+        return sections.sort((a, b) => a.order - b.order);
+    }
+);
+
+export const getProjectLocales = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject
+            ? currentProject.available_locales
+            : DEFAULT_LOCALES;
+    }
+);
+
+export const getStartpageProjects = createSelector(
+    [getPublicProjects],
+    (projects) => {
+        const projectsWithoutOhd = projects.filter(
+            (project) => !project.is_ohd
+        );
+        return shuffle(projectsWithoutOhd);
+    }
+);
+
+export const getCollectionsForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.collections;
+    }
+);
+
+export const getCollectionsForCurrentProjectFetched = createSelector(
+    [getCollectionsStatus, getCurrentProject],
+    (collectionsStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(
+            collectionsStatus[`for_projects_${currentProject?.id}`]
+        );
+    }
+);
+
+export const getTaskTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.task_types;
+    }
+);
+
+export const getTaskTypesForCurrentProjectFetched = createSelector(
+    [getTaskTypesStatus, getCurrentProject],
+    (taskTypesStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(
+            taskTypesStatus[`for_projects_${currentProject?.id}`]
+        );
+    }
+);
+
+export const getRolesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.roles;
+    }
+);
+
+export const getRolesForCurrentProjectFetched = createSelector(
+    [getRolesStatus, getCurrentProject],
+    (rolesStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(rolesStatus[`for_projects_${currentProject?.id}`]);
+    }
+);
+
+export const getMediaStreamsForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.media_streams;
+    }
+);
+
+/**
+ * Registry Selectors
+ **/
+
+export const getRegistryEntriesStatus = (state) =>
+    getStatuses(state).registry_entries;
+
+export const getRegistryReferenceTypesStatus = (state) =>
+    getStatuses(state).registry_reference_types;
+
+// TODO: Is this correct? It gets the same status as getRegistryReferenceTypesStatus
+export const getRegistryNameTypesStatus = (state) =>
+    getStatuses(state).registry_reference_types;
+
+// TODO: Is this correct? It gets the same status as getRegistryReferenceTypesStatus
+export const getContributionTypesStatus = (state) =>
+    getStatuses(state).registry_reference_types;
+
+export const getRootRegistryEntryReload = createSelector(
+    [getRegistryEntriesStatus, getCurrentProject],
+    (status, currentProject) => {
+        const reload = /^reload/;
+        return reload.test(status[currentProject.root_registry_entry_id]);
+    }
+);
+
+export const getRegistryReferenceTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.registry_reference_types;
+    }
+);
+
+export const getRegistryReferenceTypesForCurrentProjectFetched = createSelector(
+    [getRegistryReferenceTypesStatus, getCurrentProject],
+    (registryReferenceTypesStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(
+            registryReferenceTypesStatus[`for_projects_${currentProject?.id}`]
+        );
+    }
+);
+
+export const getRegistryNameTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.registry_name_types;
+    }
+);
+
+/**
+ * More dependent selectors
+ **/
+
 export const getContributorsFetched = createSelector(
-    [
-        (state) => getCurrentInterview(state),
-        (state) => getPeopleStatus(state),
-        (state) => getCurrentProject(state),
-    ],
+    [getCurrentInterview, getPeopleStatus, getCurrentProject],
     (interview, peopleStatus, currentProject) => {
         const fetched = /^fetched/;
         if (
@@ -222,129 +466,54 @@ export const getContributorsFetched = createSelector(
     }
 );
 
-export const getRootRegistryEntryReload = createSelector(
-    [getRegistryEntriesStatus, (state) => getCurrentProject(state)],
-    (status, currentProject) => {
-        const reload = /^reload/;
-        return reload.test(status[currentProject.root_registry_entry_id]);
-    }
-);
-
-export const getProjectLocales = createSelector(
-    [(state) => getCurrentProject(state)],
-    (currentProject) => {
-        return currentProject
-            ? currentProject.available_locales
-            : DEFAULT_LOCALES;
-    }
-);
-
-export const getStartpageProjects = createSelector(
-    [(state) => getPublicProjects(state)],
-    (projects) => {
-        const projectsWithoutOhd = projects.filter(
-            (project) => !project.is_ohd
-        );
-        return shuffle(projectsWithoutOhd);
-    }
-);
-
-export const getCollectionsForCurrentProjectFetched = createSelector(
-    [getCollectionsStatus, (state) => getCurrentProject(state)],
-    (collectionsStatus, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(
-            collectionsStatus[`for_projects_${currentProject?.id}`]
-        );
-    }
-);
-
-export const getCollectionsForCurrentProject = createSelector(
-    [(state) => getCurrentProject(state)],
-    (currentProject) => {
-        return currentProject?.collections;
-    }
-);
-
-export const getTaskTypesForCurrentProjectFetched = createSelector(
-    [getTaskTypesStatus, (state) => getCurrentProject(state)],
-    (taskTypesStatus, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(
-            taskTypesStatus[`for_projects_${currentProject?.id}`]
-        );
-    }
-);
-
-export const getTaskTypesForCurrentProject = createSelector(
-    [(state) => getCurrentProject(state)],
-    (currentProject) => {
-        return currentProject?.task_types;
-    }
-);
-
-export const getRolesForCurrentProjectFetched = createSelector(
-    [getRolesStatus, (state) => getCurrentProject(state)],
-    (rolesStatus, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(rolesStatus[`for_projects_${currentProject?.id}`]);
-    }
-);
-
-export const getRolesForCurrentProject = createSelector(
-    [(state) => getCurrentProject(state)],
-    (currentProject) => {
-        return currentProject?.roles;
-    }
-);
-
-export const getRegistryReferenceTypesForCurrentProjectFetched = createSelector(
-    [getRegistryReferenceTypesStatus, (state) => getCurrentProject(state)],
-    (registryReferenceTypesStatus, currentProject) => {
-        const fetched = /^fetched/;
-        return fetched.test(
-            registryReferenceTypesStatus[`for_projects_${currentProject?.id}`]
-        );
-    }
-);
-
-export const getRegistryReferenceTypesForCurrentProject = createSelector(
-    [(state) => getCurrentProject(state)],
-    (currentProject) => {
-        return currentProject?.registry_reference_types;
-    }
-);
-
-export const getRegistryNameTypesForCurrentProject = (state) =>
-    getData(state).registry_name_types;
-
-export const getMediaStreamsForCurrentProject = createSelector(
-    [(state) => getCurrentProject(state)],
-    (currentProject) => {
-        return currentProject?.media_streams ?? null;
-    }
-);
-
-export const getCurrentIntervieweeId = createSelector(
-    [(state) => getCurrentInterview(state)],
-    (interview) => {
-        if (!interview?.contributions) {
-            return undefined;
-        }
-
-        const intervieweeContribution = Object.values(
-            interview.contributions
-        ).find((c) => c.contribution_type === CONTRIBUTION_INTERVIEWEE);
-
-        if (!intervieweeContribution) {
+export const getGroupedContributions = createSelector(
+    [
+        (state) => getEditView(state),
+        (state) => getCurrentInterview(state),
+        (state) => getContributionTypesForCurrentProject(state),
+    ],
+    (editView, currentInterview, contributionTypes) => {
+        if (
+            !currentInterview ||
+            !currentInterview.contributions ||
+            !contributionTypes
+        ) {
             return null;
         }
 
-        return intervieweeContribution.person_id;
-    }
-);
+        const availableTypes = Object.values(contributionTypes)
+            .filter((ct) => editView || ct.use_in_details_view)
+            .sort((a, b) => a.order - b.order)
+            .map((ct) => ct.code);
 
-export const getHeadings = createSelector(
-    [(state) => getCurrentInterview(state)],
-    (interview) => interview?.headings
+        const groupedContributions = Object.values(
+            currentInterview.contributions
+        )
+            .filter((con) => availableTypes.includes(con.contribution_type))
+            .reduce((acc, contribution) => {
+                const type = contribution.contribution_type;
+
+                if (!acc[type]) {
+                    acc[type] = [contribution];
+                } else {
+                    acc[type].push(contribution);
+                }
+
+                return acc;
+            }, {});
+
+        const groupedAsArray = Object.keys(groupedContributions).map(
+            (type) => ({
+                type,
+                contributions: groupedContributions[type],
+            })
+        );
+
+        groupedAsArray.sort(
+            (a, b) =>
+                availableTypes.indexOf(a.type) - availableTypes.indexOf(b.type)
+        );
+
+        return groupedAsArray;
+    }
 );
