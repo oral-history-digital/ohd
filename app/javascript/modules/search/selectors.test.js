@@ -1,6 +1,24 @@
-import '../../__mocks__/matchMediaMock';
-import { NAME  } from './constants';
+import { NAME } from './constants';
 import * as selectors from './selectors';
+
+// Define a test-time matchMedia mock here rather than importing from
+// __mocks__ (prefer using jest.mock for module mocks). This sets a
+// window.matchMedia stub used by components relying on media queries.
+beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: jest.fn().mockImplementation((query) => ({
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener: jest.fn(), // deprecated
+            removeListener: jest.fn(), // deprecated
+            addEventListener: jest.fn(),
+            removeEventListener: jest.fn(),
+            dispatchEvent: jest.fn(),
+        })),
+    });
+});
 
 const state = {
     archive: {
@@ -24,7 +42,7 @@ const state = {
             cdoh: {
                 showRegistryEntriesTree: true,
                 results: [],
-            }
+            },
         },
         users: {
             query: {
@@ -65,9 +83,7 @@ const state = {
                         page: 1,
                     },
                 },
-                registry_name_types: {
-
-                },
+                registry_name_types: {},
                 collections: {
                     query: {
                         name: 'israel',
@@ -86,16 +102,32 @@ const state = {
     },
 };
 
+// The selectors expect some query objects at the module root; copy them
+// from the project-scoped fixtures so tests can assert against the
+// top-level selectors.
+state[NAME].people = state[NAME].projects[1].people;
+state[NAME].registry_reference_types =
+    state[NAME].projects[1].registry_reference_types;
+state[NAME].collections = state[NAME].projects[1].collections;
+state[NAME].roles = state[NAME].projects[1].roles;
+state[NAME].task_types = state[NAME].projects[1].task_types;
+
 test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
-    expect(selectors.getRegistryEntriesSearch(state)).toEqual(state[NAME].registryEntries.cdoh);
+    expect(selectors.getRegistryEntriesSearch(state)).toEqual(
+        state[NAME].registryEntries.cdoh
+    );
 });
 
 test('getShowRegistryEntriesSearchResults get wether to show search results', () => {
-    expect(selectors.getShowRegistryEntriesSearchResults(state)).toEqual(!!state[NAME].registryEntries.cdoh.showRegistryEntriesSearchResults);
+    expect(selectors.getShowRegistryEntriesSearchResults(state)).toEqual(
+        !!state[NAME].registryEntries.cdoh.showRegistryEntriesSearchResults
+    );
 });
 
 test('getIsRegistryEntrySearching retrieves registry entry search state', () => {
-    expect(selectors.getIsRegistryEntrySearching(state)).toEqual(state[NAME].isRegistryEntrySearching);
+    expect(selectors.getIsRegistryEntrySearching(state)).toEqual(
+        state[NAME].isRegistryEntrySearching
+    );
 });
 
 test('getPeopleQuery retrieves people query params', () => {
@@ -103,15 +135,21 @@ test('getPeopleQuery retrieves people query params', () => {
 });
 
 test('getRegistryReferenceTypesQuery retrieves registry reference types query params', () => {
-    expect(selectors.getRegistryReferenceTypesQuery(state)).toEqual(state[NAME].registry_reference_types.query);
+    expect(selectors.getRegistryReferenceTypesQuery(state)).toEqual(
+        state[NAME].registry_reference_types.query
+    );
 });
 
 test('getCollectionsQuery retrieves collections query params', () => {
-    expect(selectors.getCollectionsQuery(state)).toEqual(state[NAME].collections.query);
+    expect(selectors.getCollectionsQuery(state)).toEqual(
+        state[NAME].collections.query
+    );
 });
 
 test('getLanguagesQuery retrieves languages query params', () => {
-    expect(selectors.getLanguagesQuery(state)).toEqual(state[NAME].languages.query);
+    expect(selectors.getLanguagesQuery(state)).toEqual(
+        state[NAME].languages.query
+    );
 });
 
 test('getRolesQuery retrieves roles query params', () => {
@@ -119,11 +157,15 @@ test('getRolesQuery retrieves roles query params', () => {
 });
 
 test('getPermissionsQuery retrieves permissions query params', () => {
-    expect(selectors.getPermissionsQuery(state)).toEqual(state[NAME].permissions.query);
+    expect(selectors.getPermissionsQuery(state)).toEqual(
+        state[NAME].permissions.query
+    );
 });
 
 test('getTaskTypesQuery retrieves task types query params', () => {
-    expect(selectors.getTaskTypesQuery(state)).toEqual(state[NAME].task_types.query);
+    expect(selectors.getTaskTypesQuery(state)).toEqual(
+        state[NAME].task_types.query
+    );
 });
 
 test('getUsersQuery retrieves user registrations query params', () => {

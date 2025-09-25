@@ -1,9 +1,7 @@
+import { usePathBase } from 'modules/routes';
 import { useSWRConfig } from 'swr';
 
-import { fetcher } from 'modules/api';
-import { usePathBase } from 'modules/routes';
-
-export default function useMutateDatum() {
+export function useMutateDatum() {
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 
@@ -15,5 +13,7 @@ export default function useMutateDatum() {
         } else {
             mutate(path);
         }
-    }
+    };
 }
+
+export default useMutateDatum;

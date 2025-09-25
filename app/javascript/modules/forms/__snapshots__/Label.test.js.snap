@@ -1,26 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
-<div
-  className="form-label label"
->
-  <label
-    className="FormLabel"
-    htmlFor="input"
-  >
-    Name
-  </label>
-</div>
-`;
+exports[`renders correctly 1`] = `"<div class="form-label label"><label class="FormLabel" for="input">Name</label></div>"`;
 
-exports[`renders with translation key 1`] = `
-<div
-  className="form-label"
->
-  <label
-    className="FormLabel"
-  >
-    label.default_name
-  </label>
-</div>
-`;
+exports[`renders with translation key 1`] = `"<div class="form-label"><label class="FormLabel">label.default_name</label></div>"`;
