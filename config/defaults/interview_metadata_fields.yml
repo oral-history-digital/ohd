@@ -55,6 +55,14 @@
   list_columns_order: 2.0
   use_in_details_view: true
   display_on_landing_page: true
+:secondary_translation_language_id:
+  use_as_facet: false
+  facet_order: 3.0
+  use_in_results_table: false
+  use_in_results_list: false
+  list_columns_order: 2.0
+  use_in_details_view: true
+  display_on_landing_page: true
 :observations:
   use_in_details_view: true
 :workflow_state:
