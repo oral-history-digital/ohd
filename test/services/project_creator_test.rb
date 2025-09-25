@@ -53,8 +53,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     end
   end
 
-  test 'creates 18 interview_metadata_fields' do
-    assert_equal 18, @project.metadata_fields.where(source: 'Interview').count
+  test 'creates 19 interview_metadata_fields' do
+    assert_equal 19, @project.metadata_fields.where(source: 'Interview').count
   end
 
   test 'creates an interview_metadata_field with the right attributes (sample)' do
@@ -89,8 +89,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal 14, @project.contribution_types.count
   end
 
-  test 'creates 9 task_types' do
-    assert_equal 9, @project.task_types.count
+  test 'creates 10 task_types' do
+    assert_equal 10, @project.task_types.count
   end
 
   test 'creates 5 roles' do
@@ -108,7 +108,7 @@ class ProjectCreatorTest < ActiveSupport::TestCase
   test 'creates Erschliessung-role' do
     erschliessung_role = @project.roles.where(name: 'Erschließung').first
     assert erschliessung_role.present?
-    assert_equal 44, erschliessung_role.permissions.count
+    assert_equal 48, erschliessung_role.permissions.count
   end
 
   test 'has all upload-types' do
