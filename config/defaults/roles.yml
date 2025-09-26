@@ -468,15 +468,6 @@
   - :name: Material show
     :klass: Material
     :action_name: show
-  - :name: MediaStream create
-    :klass: MediaStream
-    :action_name: create
-  - :name: MediaStream update
-    :klass: MediaStream
-    :action_name: update
-  - :name: MediaStream destroy
-    :klass: MediaStream
-    :action_name: destroy
   - :name: MetadataField create
     :klass: MetadataField
     :action_name: create
