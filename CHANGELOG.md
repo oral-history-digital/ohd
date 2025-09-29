@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.7] - 2025-09-29
+
+### Fixed
+
+-    fix: favicon cache busting ([#29](https://github.com/oral-history-digital/ohd/pull/29))
+- Revert pull request [#23](https://github.com/oral-history-digital/ohd/pull/23) ([7bd8b62](https://github.com/oral-history-digital/ohd/commit/7bd8b62d69a319219389d8a3df3de094cd394d5a))
+- hide 'add registry entry child' button for non-permitted users ([3d04341](https://github.com/oral-history-digital/ohd/commit/3d043413692cdfbb6bd129977edae4124b2bf545))
+- adding default metadatafield for secondary_translation_language ([5c8fc60](https://github.com/oral-history-digital/ohd/commit/5c8fc60f07372af912b2a0edb5d8c834414f4e2b))
+- export photos with empty caption as well ([e930d1f](https://github.com/oral-history-digital/ohd/commit/e930d1f062c271517f6154bd944d111d7a8bdc20))
+- fixing some tests ([8d81826](https://github.com/oral-history-digital/ohd/commit/8d818269513dd1016c2f8bdf90162ec04ae0fc3c))
+- rename translation-key to interview_id to not confuse with 'indonesian' ([2b61a99](https://github.com/oral-history-digital/ohd/commit/2b61a99c9a1ef09b31353cfb3f3e41da67d2691a))
+- comment un-working validation on normdata-id ([76b36a5](https://github.com/oral-history-digital/ohd/commit/76b36a57269b1120dc60cafb5b46b02d44a4c4be))
+- do not create MediaStream permissions per default any more ([e79b2b5](https://github.com/oral-history-digital/ohd/commit/e79b2b5d6376b488eb0e98c0ee41edc2076f7db5))
+
+## [1.1.6] - 2025-09-23
+
+### Added
+
+-   adding possibility to remove transcript by language ([6dfc0a7](https://github.com/oral-history-digital/ohd/commit/6dfc0a7893787caef470aa9399e84b6d11b4ea4e))
+
 ## [1.1.5] - 2025-09-19
 
 ### Added
@@ -69,6 +89,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.1.7]: https://github.com/oral-history-digital/ohd/compare/v1.1.6...v1.1.7
+[1.1.6]: https://github.com/oral-history-digital/ohd/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/oral-history-digital/ohd/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/oral-history-digital/ohd/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/oral-history-digital/ohd/compare/v1.1.2...v1.1.3
