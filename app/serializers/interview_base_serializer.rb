@@ -67,7 +67,9 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def publication_date
-    object.publication_date || object.project.publication_date
+    object.publication_date ||
+      object.collection&.publication_date ||
+      object.project.publication_date
   end
 
   def translations_attributes
