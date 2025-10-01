@@ -5,6 +5,7 @@ config/database.yml
 config/datacite.yml
 config/project.yml
 config/project_config
+config/hls/
 log/
 public/javascripts/translations.js
 tmp/
