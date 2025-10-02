@@ -65,7 +65,6 @@ class EditTableImportTest < ActiveSupport::TestCase
         "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
         "And I would ask you, Konstantin Woitowitsch, please tell your life story",
         nil,
-        nil,
         "жизнь",
         nil,
         "Leben",
