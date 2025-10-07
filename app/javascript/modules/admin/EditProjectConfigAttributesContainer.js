@@ -66,9 +66,6 @@ const mapStateToProps = state => ({
             type: "checkbox"
         },
         {
-            attribute: "doi"
-        },
-        {
             attribute: "archive_id_number_length",
             validate: function(v){return /^\d+$/.test(v)},
             hidden: !getCurrentUser(state).admin,
