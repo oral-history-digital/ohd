@@ -253,7 +253,6 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
 
   xml.text "xml:lang": interview.alpha3 do
     interview.tapes.each do |tape|
-      #<timeline unit="s" corresp="video2>
       xml.timeline unit: "s", corresp: "#{interview.media_type}_#{tape.number}" do
         xml.when "xml:id": "T#{tape.number}_START", interval: "0.0", since: "T#{tape.number}_START"
 
@@ -289,12 +288,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                   if part[:content]&.is_a?(Array)
                     c_type, c_content, c_attributes = part[:content]
                     xml.tag!(type, attributes) do
-                      xml.tag!(c_type, c_content, c_attributes || {})
+                      xml.tag!(c_type, c_attributes || {}, c_content)
                     end
                   elsif part[:content]
-                    xml.tag!(type, attributes) do
-                      xml.text!(part[:content])
-                    end
+                    xml.tag!(type, attributes, part[:content])
                   else
                     xml.tag!(type, attributes)
                   end
@@ -306,26 +303,24 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
 
             comments.each do |comment|
               xml.spanGrp type: comment[:type] do
-                xml.span from: "s#{segment.id}_#{comment[:index_from]}", to: "s#{segment.id}_#{comment[:index_to]}" do
-                  xml.text! comment[:content]
-                end
+                xml.span comment[:content],
+                  from: "s#{segment.id}_#{comment[:index_from]}",
+                  to: "s#{segment.id}_#{comment[:index_to]}"
               end
             end
 
             xml.spanGrp type: "original" do
-              xml.span from: "T#{tape.number}_S#{segment.id}",
-                to: s_end do
-                  xml.text! segment.text("#{interview.alpha3}-public")
-                end
+              xml.span segment.text("#{interview.alpha3}-public"),
+                from: "T#{tape.number}_S#{segment.id}",
+                to: s_end
             end
 
             # translation
             if interview.translation_alpha3
               xml.spanGrp type: interview.translation_alpha3 do
-                xml.span from: "T#{tape.number}_S#{segment.id}",
-                  to: s_end do
-                    xml.text! segment.text(interview.translation_alpha3)
-                  end
+                xml.span segment.text(interview.translation_alpha3),
+                  from: "T#{tape.number}_S#{segment.id}",
+                  to: s_end
               end
             end
 
@@ -333,10 +328,9 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
             if segment.registry_references_count > 0
               xml.spanGrp type: TranslationValue.for('edit_column_header.registry_references', locale) do
                 segment.registry_references.each do |registry_reference|
-                  xml.span from: "T#{tape.number}_S#{segment.id}",
-                    to: s_end, ana: "#r_#{registry_reference.registry_entry_id}" do
-                      xml.text! registry_reference.registry_entry.descriptor(locale)
-                    end
+                  xml.span registry_reference.registry_entry.descriptor(locale),
+                    from: "T#{tape.number}_S#{segment.id}",
+                    to: s_end, ana: "#r_#{registry_reference.registry_entry_id}"
                 end
               end
             end
@@ -347,11 +341,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                 segment.annotations.each do |annotation|
                   annotation.translations.each do |translation|
                     unless translation.text.blank?
-                      xml.span type: translation.locale,
+                      xml.span translation.text,
+                        type: translation.locale,
                         from: "T#{tape.number}_S#{segment.id}",
-                        to: s_end do
-                          xml.text! translation.text
-                        end
+                        to: s_end
                     end
                   end
                 end
