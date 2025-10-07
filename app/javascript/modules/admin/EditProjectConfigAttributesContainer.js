@@ -31,9 +31,6 @@ const mapStateToProps = state => ({
             help: 'activerecord.attributes.project.contact_email_help'
         },
         {
-            attribute: "smtp_server"
-        },
-        {
             elementType: 'input',
             attribute: "has_newsletter",
             type: "checkbox"

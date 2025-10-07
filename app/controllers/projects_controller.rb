@@ -197,7 +197,6 @@ class ProjectsController < ApplicationController
           "manager",
           "hosting_institution",
           "contact_email",
-          "smtp_server",
           "has_newsletter",
           "has_map",
           "is_catalog",
