@@ -133,4 +133,8 @@ class ProjectSerializer < ApplicationSerializer
   def is_ohd
     object.shortname == 'ohd'
   end
+  
+  def doi
+    Rails.configuration.datacite['client_id']
+  end
 end

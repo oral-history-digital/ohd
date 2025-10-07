@@ -12,6 +12,6 @@
   #{@interview.archive_id},
   #{@interview.created_at.strftime("%d.%m.%Y")},
   #{TranslationValue.for('interview_archive', @locale)} #{current_project.name(@locale)}, #{current_project.archive_domain},
-  #{TranslationValue.for('doi.name', @locale)}: #{current_project.doi + @interview.archive_id},
+  #{TranslationValue.for('doi.name', @locale)}: #{Rails.configuration.datacite['client_id'] + @interview.archive_id},
   (#{TranslationValue.for('called', @locale)}: #{Date.today.strftime("%d.%m.%Y")})" %>
 }
