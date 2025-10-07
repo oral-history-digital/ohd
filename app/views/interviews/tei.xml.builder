@@ -138,7 +138,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           interview.archive_registry_entries.each do |registry_entry|
             xml.category "xml:id": "re_#{registry_entry.id}" do
               xml.catDesc do
-                %w(de en).each do |locale|
+                interview.project.available_locales.each do |locale|
                   xml.gloss registry_entry.to_s(locale), "xml:lang": ISO_639.find(locale).alpha3
                 end
                 registry_entry.norm_data.each do |norm_datum|
@@ -191,7 +191,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                       end
                     end
                   end
-                  xml.date contribution.person&.date_of_birth.to_s, when: contribution.person&.date_of_birth
+                  xml.date contribution.person&.date_of_birth.to_s, when: contribution.person&.date_of_birth.strftime("%Y-%m-%d") if contribution.person&.date_of_birth
                 end
               end
               interview.oai_locales.each do |locale|
@@ -234,7 +234,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           end
         end
         xml.setting do
-          xml.date when: interview.interview_date if interview.interview_date.present?
+          xml.date when: interview.interview_date.strftime("%Y-%m-%d") if interview.interview_date.present?
         end
       end
 
