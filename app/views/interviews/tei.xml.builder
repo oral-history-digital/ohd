@@ -1,7 +1,9 @@
 xml.instruct!
 xml << '<!DOCTYPE TEI SYSTEM "http://www.tei-c.org/release/xml/tei/custom/schema/dtd/tei_all.dtd">'
 
-xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org/ns/1.0" do
+xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
+  "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+  "xsi:schemaLocation": "http://www.tei-c.org/ns/1.0 http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd" do
 
   #xml.idno type: "Interview-ID" do
     #xml.text interview.archive_id
@@ -75,7 +77,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
             xml.idno interview.project.archive_domain, type: "URL"
           end
         end
-        xml.availability status: interview.workflow_state do
+        xml.availability status: "restricted" do
           interview.oai_locales.each do |locale|
             xml.p "xml:lang": ISO_639.find(locale).alpha3 do
               xml.ref "#{TranslationValue.for('conditions', locale)} (#{interview.project.name})".strip,
@@ -191,7 +193,8 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
                       end
                     end
                   end
-                  xml.date contribution.person&.date_of_birth.to_s, when: contribution.person&.date_of_birth.strftime("%Y-%m-%d") if contribution.person&.date_of_birth
+                  xml.date contribution.person&.date_of_birth.to_s,
+                    when: Date.parse(contribution.person&.date_of_birth).strftime("%Y-%m-%d") rescue contribution.person&.date_of_birth
                 end
               end
               interview.oai_locales.each do |locale|
@@ -234,7 +237,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0", "xmlns:xsi": "http://www.tei-c.org
           end
         end
         xml.setting do
-          xml.date when: interview.interview_date.strftime("%Y-%m-%d") if interview.interview_date.present?
+          if interview.interview_date.present?
+            xml.date interview.interview_date,
+              when: Date.parse(interview.interview_date).strftime("%Y-%m-%d") rescue interview.interview_date
+          end
         end
       end
 
