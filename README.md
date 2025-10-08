@@ -204,7 +204,7 @@ development but needs to be set up by hand in staging or production.
 Two changes to the original config file have been made so far:
 
 -   charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters
--   GermanLightStemFilter for analyzing German language
+-   GermanMinimalStemFilter for analyzing German language
 
 ## Tests
 
