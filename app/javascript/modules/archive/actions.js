@@ -16,6 +16,8 @@ import {
     UPDATE_SELECTED_ARCHIVE_IDS,
     SET_SELECTED_ARCHIVE_IDS,
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
+    MERGE_TRANSLATIONS,
+    REQUEST_TRANSLATIONS,
 } from './action-types';
 
 export const setLocale = (locale) => ({
@@ -156,5 +158,53 @@ const setSelectedArchiveIds = (archiveIds) => ({
 export function setArchiveIds(archiveIds) {
     return (dispatch) => {
         dispatch(setSelectedArchiveIds(archiveIds));
+    };
+}
+
+const mergeTranslations = (translations) => ({
+    type: MERGE_TRANSLATIONS,
+    translations: translations,
+});
+
+const requestTranslations = () => ({
+    type: REQUEST_TRANSLATIONS,
+});
+
+export function fetchTranslationsForLocale(locale, projectId) {
+    return (dispatch, getState) => {
+        // Check if we already have translations for this locale
+        const currentState = getState();
+        const existingTranslations = currentState.archive.translations || {};
+
+        // Check if we already have some translations for this locale
+        const hasTranslationsForLocale = Object.keys(existingTranslations).some(
+            (key) =>
+                existingTranslations[key] && existingTranslations[key][locale]
+        );
+
+        // If we already have translations for this locale, don't fetch again
+        if (hasTranslationsForLocale) {
+            console.log(
+                `Translations for locale ${locale} already loaded, skipping fetch`
+            );
+            return Promise.resolve();
+        }
+
+        dispatch(requestTranslations());
+
+        // Build the API endpoint
+        const url = projectId
+            ? `/${projectId}/${locale}/api/translations.json`
+            : `/${locale}/api/translations.json`;
+
+        return request
+            .get(url)
+            .then((response) => {
+                dispatch(mergeTranslations(response.body.translations || {}));
+            })
+            .catch((error) => {
+                console.error('Failed to fetch translations:', error);
+                // Don't dispatch anything on error to keep existing translations
+            });
     };
 }

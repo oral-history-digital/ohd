@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     resources :languages
     resources :translation_values, except: [:show, :new, :edit]
     get "translations/:id", to: "translation_values#show"
+    get "api/translations", to: "translation_values#api_translations"
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
     resources :institution_projects
