@@ -26,7 +26,7 @@ en:
       not_found_in_database: Invalid credentials
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: The email address %{email} is already registered.
+      unconfirmed: The email address is already registered.
         You still need to confirm your registration.
         An email with the required link has just been resent to you.
       last_attempt: You have one more attempt before your account is locked.
@@ -161,7 +161,7 @@ en:
       signed_out: Signed out successfully.
       unauthenticated: You need to sign in or sign up before continuing.
       unauthenticated_search: In order to search you are required to sign in first.
-      unconfirmed: The email address %{email} is already registered.
+      unconfirmed: The email address is already registered.
         You still need to confirm your registration.
         An email with the required link has just been resent to you.
       blocked: Your account is blocked.
