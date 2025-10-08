@@ -1,5 +1,6 @@
 class TranslationValuesController < ApplicationController
-  skip_before_action :authenticate_user!, only: :index
+  skip_before_action :authenticate_user!, only: [:index, :api_translations]
+  skip_after_action :verify_authorized, only: [:api_translations]
 
   def create
     authorize TranslationValue
@@ -46,6 +47,15 @@ class TranslationValuesController < ApplicationController
           }
         end
         render json: json
+      end
+    end
+  end
+
+  def api_translations
+    respond_to do |format|
+      format.json do
+        translations = translations_for_locale
+        render json: { translations: translations }
       end
     end
   end
