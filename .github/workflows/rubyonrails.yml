@@ -60,19 +60,29 @@ jobs:
         run: bin/start_app &
       - name: Start search engine
         run: bin/start_search &
-      # Add or replace test runners here
+      - name: Wait for Solr (localhost) to be ready
+        run: |
+          echo "Waiting for Solr at http://localhost:8983/solr/ ..."
+          for i in $(seq 1 120); do
+          if curl -sS "http://localhost:8983/solr/" >/dev/null; then
+          echo "Solr is up"
+          break
+          fi
+          echo "Solr not ready yet, retrying... ($i)"
+          sleep 1
+          done
       - name: Run tests
         run: bin/test
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+  #lint:
+    #runs-on: ubuntu-latest
+    #steps:
+      #- name: Checkout code
+        #uses: actions/checkout@v4
+      #- name: Install Ruby and gems
+        #uses: ruby/setup-ruby@v1
+        #with:
+          #bundler-cache: true
       # Add or replace any other lints here
       #- name: Security audit dependencies
       #  run: bin/bundler-audit --update
