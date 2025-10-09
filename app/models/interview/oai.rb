@@ -36,7 +36,7 @@ module Interview::Oai
       'oai.xml_title',
       locale,
       interviewee: anonymous_title(locale).strip,
-      media_type: media_type,
+      media_type: TranslationValue.for("search_facets.#{media_type}", locale)
       date: interview_date
     )
   end

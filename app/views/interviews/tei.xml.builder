@@ -1,5 +1,5 @@
 xml.instruct!
-xml << '<!DOCTYPE TEI SYSTEM "http://www.tei-c.org/release/xml/tei/custom/schema/dtd/tei_all.dtd">'
+#xml << '<!DOCTYPE TEI SYSTEM "http://www.tei-c.org/release/xml/tei/custom/schema/dtd/tei_all.dtd">'
 
 xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
   "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
@@ -29,10 +29,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
 
         interview.contributions.each do |contribution|
           xml.respStmt do
-            %w(de en).each do |locale|
+            interview.project.available_locales.each do |locale|
               xml.resp TranslationValue.for("contributions.#{contribution&.contribution_type&.code}", locale).strip, "xml:lang": ISO_639.find(locale).alpha3
             end
-            xml.persName ref: "##{contribution.person&.initials}" do
+            xml.persName corresp: "#p#{contribution.person_id}" do
               xml.forename contribution&.person&.first_name(locale)
               if interview.project.fullname_on_landing_page
                 xml.surname contribution&.person&.last_name_used(locale)
@@ -189,7 +189,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                   if place_of_birth
                     xml.location do
                       interview.oai_locales.each do |locale|
-                        xml.placeName place_of_birth.descriptor(locale), "xml:lang": ISO_639.find(locale).alpha3, ref: "#r_#{place_of_birth.id}"
+                        xml.placeName place_of_birth.descriptor(locale), "xml:lang": ISO_639.find(locale).alpha3, corresp: "#r_#{place_of_birth.id}"
                       end
                     end
                   end
@@ -220,7 +220,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
               end
               contribution.person&.registry_references.joins(:registry_reference_type).where.not(registry_reference_type: {code: 'birth_place'}).each do |registry_reference|
                 interview.oai_locales.each do |locale|
-                  xml.note registry_reference.registry_entry.descriptor(locale).strip, type: registry_reference.registry_reference_type&.name(locale), "xml:lang": ISO_639.find(locale).alpha3
+                  xml.note registry_reference.registry_entry.descriptor(locale).strip,
+                    corresp: "#re_#{registry_reference.registry_entry_id}",
+                    type: registry_reference.registry_reference_type&.name(locale),
+                    "xml:lang": ISO_639.find(locale).alpha3
                 end
               end
             end
@@ -336,7 +339,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                 segment.registry_references.each do |registry_reference|
                   xml.span registry_reference.registry_entry.descriptor(locale),
                     from: "T#{tape.number}_S#{segment.id}",
-                    to: s_end, ana: "#r_#{registry_reference.registry_entry_id}"
+                    to: s_end, corresp: "#r_#{registry_reference.registry_entry_id}"
                 end
               end
             end
