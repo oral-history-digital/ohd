@@ -315,3 +315,7 @@ Notes about branches and staging in this project:
         ```
 
     - When creating a production release, update `package.json` on `main` (or use `npm version` on `main`) so the canonical version and git tag are created together.
+
+### Favicons
+
+By default, the project uses `/public/favicon.ico` for the main ohd project. Each archive project will get a favicon from `/public/favicons/favicon-[project-shortname].ico`. The deploy script will link the directory `shared/public/favicons` to `/public/favicons`, so place project favicon files in that directory before deploy.
