@@ -73,6 +73,12 @@ jobs:
           done
       - name: Run tests
         run: bin/test
+      - name: Upload Capybara screenshots
+        if: failure() # only upload if the test job fails
+        uses: actions/upload-artifact@v4
+        with:
+          name: capybara-screenshots
+          path: tmp/screenshots
 
   # TODO: Enable linting again when issues are fixed
   # lint:
