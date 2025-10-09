@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import {
     getIsRegistryEntrySearching,
     getRegistryEntriesSearch,
-    getShowRegistryEntriesSearchResults
+    getShowRegistryEntriesSearchResults,
 } from 'modules/search';
 import Registry from './Registry';
 
 const mapStateToProps = (state) => ({
-    foundRegistryEntries: getRegistryEntriesSearch(state),
-    showRegistryEntriesSearchResults: getShowRegistryEntriesSearchResults(state),
+    foundRegistryEntries: getRegistryEntriesSearch(state) || {}, // default to empty object
+    showRegistryEntriesSearchResults:
+        getShowRegistryEntriesSearchResults(state),
     isRegistryEntrySearching: getIsRegistryEntrySearching(state),
 });
 

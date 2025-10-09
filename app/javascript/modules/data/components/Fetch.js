@@ -1,13 +1,12 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { fetchData, getStatuses } from 'modules/data';
 import { getLocale } from 'modules/archive';
-import { Spinner } from 'modules/spinners';
+import { fetchData, getStatuses } from 'modules/data';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function Fetch({
+export function Fetch({
     fetchParams,
     testSelector,
     reloadSelector,
@@ -17,15 +16,21 @@ export default function Fetch({
     testDataType,
     testIdOrDesc,
 }) {
+    const dispatch = useDispatch();
     const { project, projectId } = useProject();
 
     const locale = useSelector(getLocale);
     const statuses = useSelector(getStatuses);
-    const testResult = (typeof testSelector === 'function') ?
-        useSelector(testSelector) :
-        !!(statuses[testDataType] && /^fetched/.test(statuses[testDataType][testIdOrDesc]));
-    const doReload = reloadSelector && useSelector(reloadSelector);
-    const dispatch = useDispatch();
+    const selectorResult = useSelector(testSelector || (() => null));
+    const doReload = useSelector(reloadSelector || (() => false));
+
+    const testResult =
+        typeof testSelector === 'function'
+            ? selectorResult
+            : !!(
+                  statuses[testDataType] &&
+                  /^fetched/.test(statuses[testDataType][testIdOrDesc])
+              );
 
     useEffect(() => {
         if (!testResult) {
@@ -43,7 +48,9 @@ export default function Fetch({
 Fetch.propTypes = {
     fetchParams: PropTypes.array.isRequired,
     testSelector: PropTypes.func,
+    reloadSelector: PropTypes.func,
     testDataType: PropTypes.string,
+    testIdOrDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     fallback: PropTypes.element,
     alwaysRenderChildren: PropTypes.bool,
     children: PropTypes.oneOfType([
@@ -51,3 +58,5 @@ Fetch.propTypes = {
         PropTypes.node,
     ]),
 };
+
+export default Fetch;
