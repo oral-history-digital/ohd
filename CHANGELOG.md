@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   fix: improve favicon management ([#29](https://github.com/oral-history-digital/ohd/pull/32))
+-   fix: backend tests ([#30](https://github.com/oral-history-digital/ohd/pull/30))
 
 ## [1.1.7] - 2025-09-29
 
