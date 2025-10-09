@@ -74,8 +74,8 @@ jobs:
       - name: Run tests
         run: bin/test
       - name: Upload Capybara screenshots
-        if: failure() # only upload if the test job fails
         uses: actions/upload-artifact@v4
+        if: failure() # only upload if the test job fails
         with:
           name: capybara-screenshots
           path: tmp/screenshots
