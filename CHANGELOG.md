@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.8] - YYYY-MM-DD
+## [1.1.8] - 2025-10-09
 
 ### Fixed
 
+-   improve nested transcription tags ([3a80cc3](https://github.com/oral-history-digital/ohd/commit/3a80cc33f099ca140962eb6e2704759bb5dfceb7))
 -   fix: improve favicon management ([#29](https://github.com/oral-history-digital/ohd/pull/32))
 -   fix: backend tests ([#30](https://github.com/oral-history-digital/ohd/pull/30))
 
