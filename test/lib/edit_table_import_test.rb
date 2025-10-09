@@ -46,7 +46,7 @@ class EditTableImportTest < ActiveSupport::TestCase
         "INT",
         "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
         "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
-        nil,
+        "Well, today is September 10, 2005, and we are visiting Konstantin Woitowitsch Adamez",
         "Вступление",
         nil,
         "Einleitung",
@@ -55,7 +55,7 @@ class EditTableImportTest < ActiveSupport::TestCase
         "Главное местонахождение — Берлин Филиал по добыче",
         '',
         "Hauptsitz Berlin\nFiliale für die Eisenerzgewinnung in Elsass-Lothringen",
-        ''
+        "Headquarters Berlin\nBranch for iron ore mining in Alsace-Lorraine"
       ]
       f << [
         2,
@@ -63,7 +63,7 @@ class EditTableImportTest < ActiveSupport::TestCase
         "AB",
         "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
         "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",
-        nil,
+        "And I would ask you, Konstantin Woitowitsch, please tell your life story",
         nil,
         "жизнь",
         nil,
@@ -72,7 +72,7 @@ class EditTableImportTest < ActiveSupport::TestCase
         "Построенный для размещения восточных рабочих барачный",
         '',
         "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager",
-        ''
+        "Barracks camp built for housing Eastern workers"
       ]
     end
 

@@ -111,10 +111,10 @@ module Interview::OaiDatacite
       xml.language oai_language
 
       xml.subjects do
-        oai_subject_registry_entry_ids.each do |registry_entry_id|
+        oai_subject_registry_entries.each do |registry_entry|
           [:de, :en].each do |locale|
             xml.subject "xml:lang": locale do
-              xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
+              xml.text! registry_entry.to_s(locale)
             end
           end
         end

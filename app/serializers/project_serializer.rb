@@ -32,7 +32,6 @@ class ProjectSerializer < ApplicationSerializer
     :manager,
     :funder_names,
     :pseudo_funder_names,
-    :smtp_server,
     :has_newsletter,
     :logged_out_visible_registry_entry_ids,
     :pseudo_logged_out_visible_registry_entry_ids,
@@ -133,5 +132,9 @@ class ProjectSerializer < ApplicationSerializer
 
   def is_ohd
     object.shortname == 'ohd'
+  end
+  
+  def doi
+    Rails.configuration.datacite['client_id']
   end
 end

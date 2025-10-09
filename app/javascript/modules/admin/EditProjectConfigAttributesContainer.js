@@ -31,9 +31,6 @@ const mapStateToProps = state => ({
             help: 'activerecord.attributes.project.contact_email_help'
         },
         {
-            attribute: "smtp_server"
-        },
-        {
             elementType: 'input',
             attribute: "has_newsletter",
             type: "checkbox"
@@ -67,9 +64,6 @@ const mapStateToProps = state => ({
             elementType: 'input',
             attribute: "show_legend",
             type: "checkbox"
-        },
-        {
-            attribute: "doi"
         },
         {
             attribute: "archive_id_number_length",

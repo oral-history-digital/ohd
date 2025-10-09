@@ -35,7 +35,7 @@ module Interview::Oai
     TranslationValue.for(
       'oai.xml_title',
       locale,
-      interviewee: anonymous_title(locale),
+      interviewee: anonymous_title(locale).strip,
       media_type: media_type,
       date: interview_date
     )
@@ -77,10 +77,17 @@ module Interview::Oai
     language&.code
   end
 
-  def oai_subject_registry_entry_ids
+  def oai_subject_registry_entries
     subjects_registry_entry = RegistryEntry.find 21898673
-    registry_references.where(registry_entry_id: subjects_registry_entry.children.pluck(:id)).
-      pluck(:registry_entry_id).uniq
+    subject_registry_entry_descendants = subjects_registry_entry.all_relatives
+    registry_references.map(&:registry_entry) & subject_registry_entry_descendants
+  end
+
+  def archive_registry_entries
+    (
+      registry_references.includes(:registry_entry).where(registry_entry: {project_id: project_id}) +
+      segment_registry_references.includes(:registry_entry).where(registry_entry: {project_id: project_id})
+    ).map(&:registry_entry).uniq
   end
 
 end

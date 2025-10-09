@@ -17,5 +17,4 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   else
     driven_by :selenium, using: :firefox, screen_size: [1400, 1400]
   end
-
 end
