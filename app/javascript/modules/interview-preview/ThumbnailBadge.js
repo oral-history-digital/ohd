@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaAlignJustify } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
@@ -29,7 +29,7 @@ export default function ThumbnailBadge({
                     <Spinner small />
                 ) : (
                     <>
-                        <FaAlignJustify className="ThumbnailBadge-icon" />
+                        <FaSearch className="ThumbnailBadge-icon" />
                         <span className="ThumbnailBadge-text">
                             {numSearchResults}
                         </span>
