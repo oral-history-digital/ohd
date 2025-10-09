@@ -64,10 +64,11 @@ class ActiveSupport::TestCase
       return devise_login_as user_or_email
     end
 
-    visit '/'
-    within '.SessionButtons' do
-      click_on 'Login'
-    end
+    # Ensure a clean browser session and open the sign-in page directly. This
+    # avoids relying on header UI which can be hidden/changed between states.
+    Capybara.reset_sessions!
+    visit '/en/users/sign_in'
+
     fill_in 'Email', with: user_or_email
     fill_in 'Password', with: password
     click_on 'Login'

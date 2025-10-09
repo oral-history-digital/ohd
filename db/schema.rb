@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_07_082113) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -87,12 +87,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
-  create_table "banners", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "banners", charset: "utf8mb3", force: :cascade do |t|
     t.text "message_en"
     t.text "message_de"
     t.boolean "active", default: false, null: false
-    t.datetime "start_date", default: -> { "current_timestamp(6)" }, null: false
-    t.datetime "end_date", null: false
+    t.datetime "start_date", default: -> { "CURRENT_TIMESTAMP(6)" }, null: false
+    t.datetime "end_date", default: -> { "(now() + interval 10 day)" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "edit_mode_only", default: false, null: false
@@ -115,6 +115,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.string "end_date", limit: 255
     t.index ["biographical_entry_id"], name: "index_biographical_entry_translations_on_biographical_entry_id"
     t.index ["locale"], name: "index_biographical_entry_translations_on_locale", length: 191
+  end
+
+  create_table "chats", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "model_id"
+    t.index ["model_id"], name: "index_chats_on_model_id"
   end
 
   create_table "collection_translations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -328,7 +335,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "interview_permissions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "interview_permissions", charset: "utf8mb3", force: :cascade do |t|
     t.integer "interview_id"
     t.integer "user_id"
     t.string "action_name"
@@ -418,7 +425,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["project_id"], name: "index_map_sections_on_project_id"
   end
 
-  create_table "material_translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "material_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "material_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -429,7 +436,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["material_id"], name: "index_material_translations_on_material_id"
   end
 
-  create_table "materials", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "materials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.string "workflow_state", default: "unshared", null: false
@@ -445,6 +452,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.string "media_type"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "messages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "role", null: false
+    t.text "content"
+    t.integer "input_tokens"
+    t.integer "output_tokens"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "chat_id", null: false
+    t.bigint "model_id"
+    t.bigint "tool_call_id"
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["model_id"], name: "index_messages_on_model_id"
+    t.index ["role"], name: "index_messages_on_role"
+    t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
   end
 
   create_table "metadata_field_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -480,6 +503,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.integer "event_type_id"
     t.string "eventable_type"
     t.index ["ref_object_type", "use_in_map_search"], name: "index_metadata_fields_on_ref_object_type_and_use_in_map_search"
+  end
+
+  create_table "models", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "model_id", null: false
+    t.string "name", null: false
+    t.string "provider", null: false
+    t.string "family"
+    t.datetime "model_created_at"
+    t.integer "context_window"
+    t.integer "max_output_tokens"
+    t.date "knowledge_cutoff"
+    t.json "modalities"
+    t.json "capabilities"
+    t.json "pricing"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family"], name: "index_models_on_family"
+    t.index ["provider", "model_id"], name: "index_models_on_provider_and_model_id", unique: true
+    t.index ["provider"], name: "index_models_on_provider"
   end
 
   create_table "norm_data", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -539,7 +582,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "oauth_openid_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "oauth_openid_requests", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "access_grant_id", null: false
     t.string "nonce", null: false
     t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
@@ -637,7 +680,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.string "manager"
     t.string "funder_names"
     t.string "contact_email"
-    t.string "smtp_server"
     t.boolean "has_newsletter"
     t.boolean "is_catalog"
     t.text "hidden_registry_entry_ids"
@@ -681,7 +723,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
     t.integer "project_id"
-    t.virtual "has_geo_coords", type: :boolean, as: "`latitude` is not null and `latitude` <> '' and `longitude` is not null and `longitude` <> ''", stored: true
+    t.boolean "has_geo_coords"
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
     t.index ["has_geo_coords"], name: "index_registry_entries_on_has_geo_coords"
     t.index ["project_id"], name: "index_registry_entries_on_project_id"
@@ -725,7 +767,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
-  create_table "registry_name_type_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "registry_name_type_translations", charset: "utf8mb3", force: :cascade do |t|
     t.integer "registry_name_type_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -804,7 +846,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
-  create_table "role_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "role_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -969,7 +1011,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "tool_calls", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "tool_call_id", null: false
+    t.string "name", null: false
+    t.json "arguments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "message_id", null: false
+    t.index ["message_id"], name: "index_tool_calls_on_message_id"
+    t.index ["name"], name: "index_tool_calls_on_name"
+    t.index ["tool_call_id"], name: "index_tool_calls_on_tool_call_id", unique: true
+  end
+
+  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -979,7 +1033,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1144,8 +1198,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_091055) do
   add_foreign_key "access_configs", "projects"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "archiving_batches", "projects"
+  add_foreign_key "chats", "models"
   add_foreign_key "event_types", "projects"
   add_foreign_key "map_sections", "projects"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "models"
+  add_foreign_key "messages", "tool_calls"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
+  add_foreign_key "tool_calls", "messages"
 end
