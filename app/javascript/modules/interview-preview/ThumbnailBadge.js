@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaAlignJustify } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
@@ -22,15 +22,15 @@ export default function ThumbnailBadge({
             type="button"
             className={classNames('ThumbnailBadge', className)}
             onClick={onClick}
-            title={`${numSearchResults} ${t('segment_hits')}`}
+            title={t('show_segment_hits')}
         >
             {
                 loading ? (
                     <Spinner small />
                 ) : (
                     <>
-                        <FaAlignJustify className="ThumbnailBadge-icon" />
-                        <span className="ThumbnailBadge-text">
+                        <FaSearch className="ThumbnailBadge-icon" />
+                        <span className="ThumbnailBadge-text" aria-label={`${numSearchResults} ${t('segment_hits')}`}>
                             {numSearchResults}
                         </span>
                     </>
