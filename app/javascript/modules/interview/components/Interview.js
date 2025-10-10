@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { useTrackPageView } from 'modules/analytics';
-import useLoadInterviewData from '../useLoadInterviewData';
 import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
@@ -16,30 +13,13 @@ import MediaPreview from './MediaPreview';
 
 export default function Interview({
     interview,
-    interviewIsFetched,
     interviewEditView,
     isCatalog,
-    setArchiveId,
 }) {
-    const { archiveId } = useParams();
+    const archiveId = interview?.archive_id;
     const { t, locale } = useI18n();
 
     useTrackPageView();
-
-    useEffect(() => {
-        setArchiveId(archiveId);
-    }, []);
-
-    useLoadInterviewData({
-        interview,
-        archiveId,
-    });
-
-    // Do not render InterviewTabs component as long as interview.alpha3 is absent.
-    // (Strangely, it sometimes becomes present only shortly after this component is rendered.)
-    if (!interviewIsFetched || typeof interview?.alpha3 !== 'string') {
-        return <Spinner withPadding />;
-    }
 
     const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
 
@@ -81,8 +61,6 @@ export default function Interview({
 
 Interview.propTypes = {
     interview: PropTypes.object,
-    interviewIsFetched: PropTypes.bool.isRequired,
     isCatalog: PropTypes.bool.isRequired,
     interviewEditView: PropTypes.bool.isRequired,
-    setArchiveId: PropTypes.func.isRequired,
 };

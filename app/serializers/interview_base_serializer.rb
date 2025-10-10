@@ -32,9 +32,11 @@ class InterviewBaseSerializer < ApplicationSerializer
     :startpage_position,
     :properties,
     :description,
+    :observation,
     :links,
     :pseudo_links,
     :material_count,
+    :landing_page_texts,
   ]
 
   def attributes(*args)
@@ -66,6 +68,30 @@ class InterviewBaseSerializer < ApplicationSerializer
     hash
   end
 
+  def landing_page_texts
+    json = Rails.cache.fetch(
+      "#{object.project.shortname}-landing-page-texts-#{object.archive_id}-#{object.workflow_state}-#{object.project.updated_at}"
+    ) do
+      I18n.available_locales.inject({}) do |mem, locale|
+
+        text = object.workflow_state == 'restricted' ?
+          object.project.restricted_landing_page_text(locale) :
+          object.project.landing_page_text(locale)
+
+        mem[locale] = text&.gsub(
+          'INTERVIEWEE',
+          object.project.fullname_on_landing_page ?
+          object.short_title(locale) :
+          object.anonymous_title(locale)
+        )&.gsub(
+          'ARCHIVE_TITLE',
+          object.project.name(locale)
+        )
+        mem
+      end
+    end
+  end
+
   def publication_date
     object.publication_date ||
       object.collection&.publication_date ||
@@ -78,6 +104,10 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def description
     instance_options[:public_description] ? object.localized_hash(:description) : {}
+  end
+
+  def observation
+    object.project.public_observation? ? object.localized_hash(:observation) : {}
   end
 
   def contributions
@@ -146,4 +176,5 @@ class InterviewBaseSerializer < ApplicationSerializer
   def language_id
     object.language&.id
   end
+
 end

@@ -1,6 +1,5 @@
 /* global railsMode */
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -31,7 +30,6 @@ import {
     AfterResetPassword,
     ConfirmNewZwarTosPopup,
 } from 'modules/user';
-import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 import { OHD_DOMAINS } from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
 
@@ -49,35 +47,6 @@ export default function Layout({
     const playerSize = useSelector(getPlayerSize);
     const { project } = useProject();
     const { locale } = useI18n();
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    useCheckLocaleAgainstProject();
-
-    const ohdDomain = OHD_DOMAINS[railsMode];
-
-    // load current project if not already loaded
-    useEffect(() => {
-        const ohd = { shortname: 'ohd', archive_domain: ohdDomain };
-
-        function removeAccessTokenParam() {
-            if (searchParams.has('access_token')) {
-                searchParams.delete('access_token');
-                setSearchParams(searchParams);
-            }
-        }
-
-        if (!projectsStatus[project.id]) {
-            fetchData({ locale: 'de', project: ohd }, 'projects', project.id);
-        }
-        removeAccessTokenParam();
-    }, [
-        project,
-        projectsStatus,
-        fetchData,
-        ohdDomain,
-        searchParams,
-        setSearchParams,
-    ]);
 
     function handleBannerClose() {
         hideBanner();

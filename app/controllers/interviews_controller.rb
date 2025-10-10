@@ -119,37 +119,6 @@ class InterviewsController < ApplicationController
     end
   end
 
-  Interview.non_public_method_names.each do |m|
-    define_method m do
-      @interview = Interview.find_by_archive_id(params[:id])
-      authorize @interview
-
-      if %w(contributions photos registry_references).include?(m)
-        association = @interview.send(m)
-        data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
-          association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
-        end
-      elsif m == 'materials'
-        data = Rails.cache.fetch("#{@interview.updated_at}-interview-#{m}s-#{@interview.id}-#{@interview.materials.maximum(:updated_at)}-#{I18n.locale}") do
-          @interview.materials.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
-        end
-      else
-        data = @interview.localized_hash(m)
-      end
-
-      respond_to do |format|
-        format.json do
-          render json: {
-            id: @interview.archive_id,
-            data_type: "interviews",
-            nested_data_type: m,
-            data: data
-          }, status: :ok
-        end
-      end
-    end
-  end
-
   def reload_translations
     @interview = Interview.find_by_archive_id(params[:id])
     authorize @interview
@@ -512,17 +481,37 @@ class InterviewsController < ApplicationController
   def initial_interview_redux_state
     #Rails.cache.fetch("#{current_project.shortname}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
     if @interview
+      editing_permissions = interview_access = false
+      if current_user
+        editing_permissions = current_user.admin? ||
+          current_user.roles?(current_project, Interview, :update) ||
+          current_user.task_permissions?(current_project, @interview, :update)
+        interview_access = (
+          @interview.workflow_state == 'public' && current_user.accessible_projects.include?(current_project)
+        ) || current_user.interview_permission_ids.include?(@interview.id)
+      end
+
+      segments = policy_scope(@interview.segments.first || Segment.new(interview: @interview))
+
+      cached_interview = if editing_permissions
+                           cache_single(@interview, serializer_name: 'InterviewUpdate', segments: segments, allowed_to_see_all: true)
+                         elsif interview_access
+                           cache_single(@interview)
+                         else
+                           cache_single(@interview, serializer_name: 'InterviewBase')
+                         end
+
       initial_redux_state.update(
         archive: initial_redux_state[:archive].update(
           archiveId: @interview.archive_id,
           interviewEditView: cookies[:interviewEditView]
         ),
-        #data: initial_redux_state[:data].update(
-          #interviews: {"#{@interview.identifier}": cache_single(@interview)},
-          #statuses: initial_redux_state[:data][:statuses].update(
-            #interviews: {"#{@interview.identifier}": 'fetched'},
-          #)
-        #)
+        data: initial_redux_state[:data].update(
+          interviews: {"#{@interview.identifier}": cached_interview},
+          statuses: initial_redux_state[:data][:statuses].update(
+            interviews: {"#{@interview.identifier}": 'fetched'},
+          )
+        )
       )
     else
       initial_redux_state

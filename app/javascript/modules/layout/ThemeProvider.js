@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 
-import { useProject } from 'modules/routes';
+import { getCurrentProject } from 'modules/data';
 
 const DEFAULT_PRIMARY_COLOR =   '#e01217';
 const DEFAULT_SECONDARY_COLOR = '#808080';
@@ -9,7 +10,7 @@ const DEFAULT_ASPECT_X = 4;
 const DEFAULT_ASPECT_Y = 3;
 
 export default function ThemeProvider() {
-    const { project } = useProject();
+    const project = useSelector(getCurrentProject);
 
     const primaryColor = project?.primary_color || DEFAULT_PRIMARY_COLOR;
     const secondaryColor = project?.secondary_color || DEFAULT_SECONDARY_COLOR;

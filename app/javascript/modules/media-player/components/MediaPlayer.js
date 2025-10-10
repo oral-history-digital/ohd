@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import { useSelector, useStore, useDispatch } from 'react-redux';
 
-import { getCurrentInterview } from 'modules/data';
+import { getCurrentInterview, getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
 import { setPlayerSize, getPlayerSize } from 'modules/media-player';
 import { isMobile } from 'modules/user-agent';
 import MediaPlayerTitle from './MediaPlayerTitle';
@@ -19,7 +18,7 @@ function isSmallScreen() {
 
 export default function MediaPlayer() {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const project = useSelector(getCurrentProject);
     const interview = useSelector(getCurrentInterview);
     const store = useStore();
     const dispatch = useDispatch();
@@ -79,14 +78,14 @@ export default function MediaPlayer() {
         <div className={classNames('Layout-mediaPlayer', 'MediaPlayer')}>
             <header
                 className={classNames('MediaHeader', {
-                    'MediaHeader--mediaMissing': interview.media_missing,
+                    'MediaHeader--mediaMissing': interview?.media_missing,
                 })}
             >
                 <MediaPlayerTitle className="MediaHeader-title" />
                 <MediaControlsContainer className="MediaHeader-controls" />
             </header>
 
-            {interview.media_missing ? (
+            {interview?.media_missing ? (
                 <p className="MediaMissing">{mediaMissingText()}</p>
             ) : (
                 <MediaElementContainer />

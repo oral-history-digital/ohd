@@ -6,7 +6,6 @@ import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { isSegmentActive } from 'modules/interview-helpers';
-import { usePeople } from 'modules/person';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import SegmentContainer from './components/SegmentContainer';
@@ -18,7 +17,6 @@ import {
 export default function Transcript({
     interview,
     intervieweeId,
-    archiveId,
     transcriptFetched,
     transcriptLocale,
     originalLocale,
@@ -27,14 +25,14 @@ export default function Transcript({
     isIdle,
     tape,
     autoScroll,
-    fetchData,
 }) {
     const [popupState, setPopupState] = useState({
         popupSegmentId: null,
         popupType: null,
         openReference: null,
     });
-    const { data: people, isLoading: peopleAreLoading } = usePeople();
+    const people = interview.contributors;
+    const archiveId = interview?.archive_id;
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const isEditor = useIsEditor();
@@ -58,17 +56,6 @@ export default function Transcript({
             window.scrollTo(0, 0);
         }
     }, []);
-
-    useEffect(() => {
-        if (loadSegments && !transcriptFetched) {
-            fetchData(
-                { locale, projectId, project },
-                'interviews',
-                archiveId,
-                'segments'
-            );
-        }
-    }, [loadSegments, transcriptFetched, archiveId]);
 
     const openSegmentPopup = useCallback(
         (segmentId, popupType) =>
@@ -103,10 +90,6 @@ export default function Transcript({
     );
 
     const { popupSegmentId, popupType, openReference } = popupState;
-
-    if (!transcriptFetched || peopleAreLoading) {
-        return <Spinner />;
-    }
 
     if (!hasTranscript) {
         return originalLocale
@@ -197,7 +180,6 @@ export default function Transcript({
 
 Transcript.propTypes = {
     originalLocale: PropTypes.bool,
-    loadSegments: PropTypes.bool,
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     isIdle: PropTypes.bool.isRequired,
@@ -205,9 +187,7 @@ Transcript.propTypes = {
     autoScroll: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     intervieweeId: PropTypes.number,
-    transcriptFetched: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
-    fetchData: PropTypes.func.isRequired,
 };
 
 Transcript.defaultProps = {

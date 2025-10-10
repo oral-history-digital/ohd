@@ -240,6 +240,15 @@ class Project < ApplicationRecord
       where(name: 'description').first
   end
 
+  def public_observation?
+    observation_metadata_field&.display_on_landing_page
+  end
+
+  def observation_metadata_field
+    metadata_fields.
+      where(name: 'observation').first
+  end
+
   def search_results_metadata_fields
     metadata_fields.where(use_in_results_list: true).
       includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).

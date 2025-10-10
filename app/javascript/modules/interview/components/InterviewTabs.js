@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaRegFileAlt, FaRegClone, FaList, FaSearch, FaTags } from 'react-icons/fa';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
@@ -24,7 +25,7 @@ export default function InterviewTabs({
     const [tabIndex, setTabIndex] = useState(0);
     const [translationLocale, setTranslationLocale] = useState(interview.translation_alpha3);
 
-    const { fulltext } = useSearchParams();
+    const { fulltext } = useSelector(state => state.search.fulltext);
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
 
     useEffect(() => {

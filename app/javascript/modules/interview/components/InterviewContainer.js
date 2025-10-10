@@ -8,7 +8,7 @@ import Interview from './Interview';
 
 const mapStateToProps = state => ({
     interview: getCurrentInterview(state),
-    interviewIsFetched: getCurrentInterviewFetched(state),
+    //interviewIsFetched: getCurrentInterviewFetched(state),
     isCatalog: getIsCatalog(state),
     interviewEditView: getInterviewEditView(state),
 });

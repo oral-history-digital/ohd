@@ -1,18 +1,12 @@
-import { useMatch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import isLocaleValid from './isLocaleValid';
+import { getCurrentProject } from 'modules/data';
+import pathBase from './pathBase';
 
 export default function usePathBase() {
-    const matchWithProject = useMatch('/:projectId/:locale/*');
-    const matchWOProject = useMatch('/:locale/*');
+    const project = useSelector(getCurrentProject);
+    const locale = useSelector(state => state.archive.locale);
 
-    if (matchWithProject && isLocaleValid(matchWithProject.params.locale)) {
-        return matchWithProject.pathnameBase;
-    }
-    if (matchWOProject && isLocaleValid(matchWOProject.params.locale)) {
-        return matchWOProject.pathnameBase;
-    }
-
-    // Return this as a fallback.
-    return '/de';
+    return pathBase({ project, locale: isLocaleValid(locale) ? locale : 'de' });
 }

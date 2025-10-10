@@ -1,10 +1,10 @@
 import { createElement } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { usePeople } from 'modules/person';
-import { Spinner } from 'modules/spinners';
 import InputContainer from './InputContainer';
+import { getCurrentInterview } from 'modules/data';
 
 export default function SpeakerDesignationInputs({
     attribute,
@@ -12,7 +12,8 @@ export default function SpeakerDesignationInputs({
     handleChange,
 }) {
     const { t } = useI18n();
-    const { data: people, isLoading } = usePeople();
+    const interview = useSelector(getCurrentInterview);
+    const people = interview.contributors;
 
     const onChange = (name, v) => {
         if (v) {
@@ -26,10 +27,6 @@ export default function SpeakerDesignationInputs({
                 })
             );
         }
-    }
-
-    if (isLoading || !people) {
-        return <Spinner />;
     }
 
     return (

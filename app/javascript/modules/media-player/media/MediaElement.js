@@ -1,11 +1,10 @@
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getTranslationsView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
-import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { usePosterImage } from '../hooks/index.js';
 import {
     getQualityLabel,
@@ -47,13 +46,13 @@ export default function MediaElement({
     clearTimeChangeRequest,
 }) {
     const pathBase = usePathBase();
+    const timeParam = useSelector((state) => state['media-player'].mediaTime);
+    const tapeParam = useSelector((state) => state['media-player'].tape);
     const { t, locale } = useI18n();
     const { project } = useProject();
     const playerRef = useRef(null);
     const tapeRef = useRef(tape); // Used for event handler below.
     const isTranslationsView = useSelector(getTranslationsView);
-
-    const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources =

@@ -5,36 +5,16 @@ class InterviewSerializer < InterviewBaseSerializer
     :workflow_state,
     :workflow_states,
     :doi_status,
-    :landing_page_texts,
     :signature_original,
     :task_ids,
     :tasks_user_ids,
     :tasks_supervisor_ids,
+    :photos,
+    :materials,
+    :title,
+    :short_title,
+    :segments,
   ]
-
-  def landing_page_texts
-    json = Rails.cache.fetch(
-      "#{object.project.shortname}-landing-page-texts-#{object.archive_id}-#{object.workflow_state}-#{object.project.updated_at}"
-    ) do
-      I18n.available_locales.inject({}) do |mem, locale|
-
-        text = object.workflow_state == 'restricted' ?
-          object.project.restricted_landing_page_text(locale) :
-          object.project.landing_page_text(locale)
-
-        mem[locale] = text&.gsub(
-          'INTERVIEWEE',
-          object.project.fullname_on_landing_page ?
-          object.short_title(locale) :
-          object.anonymous_title(locale)
-        )&.gsub(
-          'ARCHIVE_TITLE',
-          object.project.name(locale)
-        )
-        mem
-      end
-    end
-  end
 
   def last_segments_ids
     tape_counter = 0
@@ -62,4 +42,19 @@ class InterviewSerializer < InterviewBaseSerializer
     end
   end
 
+  %w(photos registry_references materials).each do |rel|
+    define_method rel do
+      object.send(rel).inject({}) { |mem, c| mem[c.id] = "#{c.class.name}Serializer".constantize.new(c); mem }
+    end
+  end
+
+  %w(title short_title description observations).each do |m|
+    define_method m do
+      object.localized_hash(m)
+    end
+  end
+
+  def segments
+    instance_options[:segments]
+  end
 end

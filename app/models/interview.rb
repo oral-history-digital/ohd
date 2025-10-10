@@ -340,9 +340,9 @@ class Interview < ApplicationRecord
     self[:properties] = self.properties.update(public_attributes: public_atts)
   end
 
-  def self.non_public_method_names
-    %w(title short_title description contributions photos materials registry_references transcript_coupled)
-  end
+  #def self.non_public_method_names
+    #%w(title short_title description contributions photos materials registry_references transcript_coupled)
+  #end
 
   def tasks_user_ids
     tasks.map(&:user_id).compact.uniq

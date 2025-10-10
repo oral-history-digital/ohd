@@ -178,19 +178,19 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          Project.all.includes(
-            :translations,
-            :registry_reference_types,
-            :collections,
-          ).inject({}) do |mem, s|
-            mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-            mem
-          end
-        end,
-        #projects: {
-          #"#{current_project.id}": cache_single(current_project),
-        #},
+        #projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+          #Project.all.includes(
+            #:translations,
+            #:registry_reference_types,
+            #:collections,
+          #).inject({}) do |mem, s|
+            #mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+            #mem
+          #end
+        #end,
+        projects: {
+          "#{current_project.id}": cache_single(current_project),
+        },
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
@@ -207,8 +207,8 @@ class ApplicationController < ActionController::Base
         segments: {},
       },
       'media-player': {
-        tape: 1,
-        mediaTime: 0,
+        tape: params[:tape] || 1,
+        mediaTime: params[:time] || 0,
         isPlaying: false,
         timeChangeRequest: nil,
       },
@@ -228,6 +228,7 @@ class ApplicationController < ActionController::Base
 
   def initial_search_redux_state
     {
+      fulltext: params[:fulltext] || '',
       registryEntries: {},
       users: {
         query: {
