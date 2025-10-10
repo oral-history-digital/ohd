@@ -33,7 +33,8 @@ function Segment({
     const divEl = useRef();
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
-    const { segment: segmentParam } = useTranscriptQueryString();
+    //const { segment: segmentParam } = useTranscriptQueryString();
+    const segmentParam = '123'; // Placeholder value for demonstration
     const scrollOffset = useScrollOffset();
 
     const shouldScroll =
