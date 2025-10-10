@@ -12,6 +12,11 @@ class ApplicationController < ActionController::Base
   before_action :user_by_token
   before_action :check_ohd_session
   before_action :authenticate_user!
+  before_action :gather_javascript_pack
+
+  def gather_javascript_pack
+    @javascript_pack = "#{controller_name}"
+  end
 
   def user_by_token
     if doorkeeper_token && !current_user

@@ -11,7 +11,7 @@ html
       var developmentMode = #{Rails.env == 'development' ? true : false};
       var railsMode = '#{Rails.env}';
 
-    == javascript_pack_tag 'application'
+    == javascript_pack_tag @javascript_pack, defer: true
     == stylesheet_pack_tag 'application'
 
     = action_cable_meta_tag
