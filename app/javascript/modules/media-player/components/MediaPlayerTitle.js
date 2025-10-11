@@ -1,21 +1,15 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { getCurrentIntervieweeId } from 'modules/data';
-import { usePeople } from 'modules/person';
-import { Spinner } from 'modules/spinners';
+import { getCurrentIntervieweeId, getCurrentInterview } from 'modules/data';
 
 export default function MediaPlayerTitle({
     className
 }) {
     const intervieweeId = useSelector(getCurrentIntervieweeId);
-    const { data: peopleData, isLoading, isValidating } = usePeople();
+    const interview = useSelector(getCurrentInterview);
 
-    if (isLoading || isValidating) {
-        return <Spinner small />;
-    }
-
-    const interviewee = peopleData?.[intervieweeId];
+    const interviewee = interview.contributors?.[intervieweeId];
 
     return (
         <h1 className={className}>
