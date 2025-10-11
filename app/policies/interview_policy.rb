@@ -56,10 +56,4 @@ class InterviewPolicy < ApplicationPolicy
     user && (user.accessible_projects.include?(project) || user.admin?)
   end
 
-  Interview.non_public_method_names.each do |m|
-    define_method "#{m}?" do
-      restricted? || (user&.accessible_projects.include?(project) || record.workflow_state == 'public')
-    end
-  end
-
 end
