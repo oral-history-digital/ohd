@@ -136,16 +136,32 @@ function NormDataForDescriptor({
                             { (Array.isArray(items) ? items : [items]).map( result => {
                                 return (
                                     <li>
-                                        <UpdateRegistryEntryAttributesModal
-                                            entry={result.Entry}
-                                            registryEntryAttributes={registryEntryAttributes}
-                                            registryNameTypes={registryNameTypes}
-                                            normDataProviders={normDataProviders}
-                                            setRegistryEntryAttributes={setRegistryEntryAttributes}
-                                            setShowElementsInForm={setShowElementsInForm}
-                                            setResultsFromNormDataSet={setResultsFromNormDataSet}
-                                            replaceNestedFormValues={replaceNestedFormValues}
-                                        />
+                                        <>
+                                            <UpdateRegistryEntryAttributesModal
+                                                entry={result.Entry}
+                                                registryEntryAttributes={registryEntryAttributes}
+                                                registryNameTypes={registryNameTypes}
+                                                normDataProviders={normDataProviders}
+                                                setRegistryEntryAttributes={setRegistryEntryAttributes}
+                                                setShowElementsInForm={setShowElementsInForm}
+                                                setResultsFromNormDataSet={setResultsFromNormDataSet}
+                                                replaceNestedFormValues={replaceNestedFormValues}
+                                            />
+                                            { result.Entry.Identifier.filter(p => !!p.URL).map( p => {
+                                                return (
+                                                    <a
+                                                        key={p.Value}
+                                                        href={p.URL}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="Link flyout-sub-tabs-content-ico-link"
+                                                        title={t('norm_data.link_hover')}
+                                                    >
+                                                        &nbsp;{p.Provider}&nbsp;
+                                                    </a>
+                                                );
+                                            }) }
+                                        </>
                                     </li>
                                 )
                             })}
