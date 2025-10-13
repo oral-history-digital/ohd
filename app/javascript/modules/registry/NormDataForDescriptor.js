@@ -47,6 +47,7 @@ function NormDataForDescriptor({
             ],
             //withEmpty: true,
             optionsScope: 'normdata',
+            keepOrder: true,
             handlechangecallback: (name, value) => setFilter(value),
         }
     ];
