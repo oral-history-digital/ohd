@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { useTrackPageViewFunction } from 'modules/analytics';
@@ -9,10 +8,8 @@ const qsOptions = {
 };
 
 export default function useSearchParams() {
-    const location = useLocation();
-    const navigate = useNavigate();
     const trackPageView = useTrackPageViewFunction();
-    const { search } = location;
+    const search = location.search;
 
     const params = useMemo(
         () => queryString.parse(search, qsOptions), [search]
@@ -182,13 +179,7 @@ export default function useSearchParams() {
 
     function pushToHistory(newParams, replace = false) {
         const qs = queryString.stringify(newParams, qsOptions);
-
-        // Use location object from window instead of useLocation because
-        // the useLocation object does not return the correct pathname.
-        // Maybe upgrade to the new React Router API (createBrowserRouter).
-        const fullPath = `${window.location.pathname}?${qs}`;
-
-        navigate(fullPath, { replace });
+        location = `${window.location.pathname}?${qs}`;
         trackPageView();
     }
 
