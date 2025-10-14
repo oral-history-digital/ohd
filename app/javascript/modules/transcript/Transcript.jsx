@@ -9,6 +9,7 @@ import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
+import EditableSegmentContainer from './components/EditableSegment';
 import SegmentContainer from './components/SegmentContainer';
 import TranscriptSkeleton from './components/TranscriptSkeleton';
 import {
@@ -136,6 +137,7 @@ export default function Transcript({
                 })}
             >
                 {shownSegments.map((segment, index, array) => {
+                    console.log('SegmentContainer segment', segment);
                     segment.speaker_is_interviewee =
                         intervieweeId === segment.speaker_id;
                     if (
@@ -163,33 +165,47 @@ export default function Transcript({
                         });
 
                     return (
-                        <SegmentContainer
-                            key={segment.id}
-                            data={segment}
-                            speakerInitials={
-                                contributorInformation[segment.speaker_id]
-                                    ?.initials
-                            }
-                            speakerName={
-                                contributorInformation[segment.speaker_id]
-                                    ?.fullname
-                            }
-                            contentLocale={transcriptLocale}
-                            popupType={
-                                popupSegmentId === segment.id ? popupType : null
-                            }
-                            openReference={
-                                popupSegmentId === segment.id
-                                    ? openReference
-                                    : null
-                            }
-                            openPopup={openSegmentPopup}
-                            closePopup={closeSegmentPopup}
-                            setOpenReference={setOpenReference}
-                            tabIndex={tabIndex}
-                            active={active}
-                            transcriptCoupled={interview.transcript_coupled}
-                        />
+                        <>
+                            <SegmentContainer
+                                key={segment.id}
+                                data={segment}
+                                speakerInitials={
+                                    contributorInformation[segment.speaker_id]
+                                        ?.initials
+                                }
+                                speakerName={
+                                    contributorInformation[segment.speaker_id]
+                                        ?.fullname
+                                }
+                                contentLocale={transcriptLocale}
+                                popupType={
+                                    popupSegmentId === segment.id
+                                        ? popupType
+                                        : null
+                                }
+                                openReference={
+                                    popupSegmentId === segment.id
+                                        ? openReference
+                                        : null
+                                }
+                                openPopup={openSegmentPopup}
+                                closePopup={closeSegmentPopup}
+                                setOpenReference={setOpenReference}
+                                tabIndex={tabIndex}
+                                active={active}
+                                transcriptCoupled={interview.transcript_coupled}
+                            />
+                            <EditableSegmentContainer
+                                key={`editable-segment-${segment.id}`}
+                                segment={segment}
+                                interview={interview}
+                                contributor={
+                                    contributorInformation[segment.speaker_id]
+                                }
+                                contentLocale={transcriptLocale}
+                                isActive={active}
+                            />
+                        </>
                     );
                 })}
             </div>
