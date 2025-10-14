@@ -269,7 +269,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
           xml.when "xml:id": "T#{tape.number}_S#{segment.id}", interval: segment.time, since: "T#{tape.number}_START"
         end
 
-        xml.when "xml:id": "T#{tape.number}_END", interval: tape.duration, since: "T#{tape.number}_START"
+        xml.when "xml:id": "T#{tape.number}_END", interval: tape.duration || tape.segments.last.time, since: "T#{tape.number}_START"
       end
     end
 
