@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useNavigate, useMatch, useSearchParams } from 'react-router-dom';
+//import { useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { DEFAULT_LOCALES, SYSTEM_LOCALES } from 'modules/constants';
@@ -18,41 +18,42 @@ export default function LocaleButtons({ className }) {
     const { project } = useProject();
     const locales = projectLocales(project);
     const { locale: currentLocale } = useI18n();
-    const navigate = useNavigate();
-    const matchWithProject = useMatch('/:projectId/:locale/*');
-    const matchWOProject = useMatch('/:locale/*');
-    const [searchParams, setSearchParams] = useSearchParams();
+    //const navigate = useNavigate();
+    //const matchWithProject = useMatch('/:projectId/:locale/*');
+    //const matchWOProject = useMatch('/:locale/*');
+    //const [searchParams, setSearchParams] = useSearchParams();
 
     function handleButtonClick(e) {
         const locale = e.target.value;
+        const newPath = location.pathname.replace(`/${currentLocale}`, `/${locale}`);
 
-        let pathBaseStr = '/de';  // Fallback.
-        let newPath;
-        if (matchWithProject && SYSTEM_LOCALES.includes(matchWithProject.params.locale)) {
-            pathBaseStr = `/${matchWithProject.params.projectId}/${locale}`;
-            if (matchWithProject.params['*']) {
-                newPath = pathBaseStr + '/' + matchWithProject.params['*'];
-            } else {
-                newPath = pathBaseStr;
-            }
-        }
-        if (matchWOProject && SYSTEM_LOCALES.includes(matchWOProject.params.locale)) {
-            pathBaseStr = `/${locale}`;
-            if (matchWOProject.params['*']) {
-                newPath = pathBaseStr + '/' + matchWOProject.params['*'];
-            } else {
-                newPath = pathBaseStr;
-            }
-        }
+        //let pathBaseStr = '/de';  // Fallback.
+        //let newPath;
+        //if (matchWithProject && SYSTEM_LOCALES.includes(matchWithProject.params.locale)) {
+            //pathBaseStr = `/${matchWithProject.params.projectId}/${locale}`;
+            //if (matchWithProject.params['*']) {
+                //newPath = pathBaseStr + '/' + matchWithProject.params['*'];
+            //} else {
+                //newPath = pathBaseStr;
+            //}
+        //}
+        //if (matchWOProject && SYSTEM_LOCALES.includes(matchWOProject.params.locale)) {
+            //pathBaseStr = `/${locale}`;
+            //if (matchWOProject.params['*']) {
+                //newPath = pathBaseStr + '/' + matchWOProject.params['*'];
+            //} else {
+                //newPath = pathBaseStr;
+            //}
+        //}
 
-        // Add query params.
-        const queryString = searchParams.toString();
-        if (queryString.length > 0) {
-            newPath += `?${queryString}`;
-        }
+        //// Add query params.
+        ////const queryString = searchParams.toString();
+        ////if (queryString.length > 0) {
+            //newPath += location.search;
+        ////}
 
-        navigate(newPath);
-        dispatch(setLocale(locale));
+        location = newPath;
+        //dispatch(setLocale(locale));
     }
 
     return (

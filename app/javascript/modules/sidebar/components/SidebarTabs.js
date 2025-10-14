@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useNavigate, useLocation } from 'react-router-dom';
+//import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
@@ -18,7 +19,7 @@ import MapTabPanelContainer from './MapTabPanelContainer';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
 import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 import * as indexes from '../constants';
-import tabIndexFromRoute from '../tabIndexFromRoute';
+//import tabIndexFromRoute from '../tabIndexFromRoute';
 
 export default function SidebarTabs({
     selectedArchiveIds,
@@ -26,13 +27,13 @@ export default function SidebarTabs({
     archiveId,
     isLoggedIn,
 }) {
-    const [tabIndex, setTabIndex] = useState(indexes.INDEX_SEARCH);
+    const tabIndex = useSelector(state => state.archive.sidebarTabIndex);
     const { t, locale } = useI18n();
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
+    //const navigate = useNavigate();
+    const pathname = location.pathname;
 
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
@@ -46,28 +47,28 @@ export default function SidebarTabs({
 
         switch (index) {
         case indexes.INDEX_SEARCH:
-            navigate(`${pathBase}/searches/archive`);
+            location = `${pathBase}/searches/archive`;
             break;
         case indexes.INDEX_CATALOG:
-            navigate(`${pathBase}/catalog`);
+            location = `${pathBase}/catalog`;
             break;
         case indexes.INDEX_INTERVIEW:
-            navigate(`${pathBase}/interviews/${archiveId}`);
+            location = `${pathBase}/interviews/${archiveId}`;
             break;
         case indexes.INDEX_REGISTRY_ENTRIES:
-            navigate(`${pathBase}/registry_entries`);
+            location = `${pathBase}/registry_entries`;
             break;
         case indexes.INDEX_MAP:
-            navigate(`${pathBase}/searches/map`);
+            location = `${pathBase}/searches/map`;
             break;
         case indexes.INDEX_PROJECTS:
-            navigate(`/${locale}/projects`);
+            location = `/${locale}/projects`;
             break;
         case indexes.INDEX_INSTITUTIONS:
-            navigate(`/${locale}/institutions`);
+            location = `/${locale}/institutions`;
             break;
         case indexes.INDEX_HELP_TEXTS:
-            navigate(`/${locale}/help_texts`);
+            location = `/${locale}/help_texts`;
             break;
         default:
         }

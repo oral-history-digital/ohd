@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -11,16 +10,14 @@ export default function SubTab({
     url,
     children,
 }) {
-    const location = useLocation();
-    const navigate = useNavigate();
 
-    const open = url ? matchPath(url, location.pathname) : false;
+    const open = /${location.pathname}/.test(url);
     const [isOpen, setIsOpen] = useState(open);
 
     function handleClick() {
         if (url && location.pathname !== url) {
             setIsOpen(true);
-            navigate(url);
+            location = url;
         } else {
             setIsOpen(prev => !prev);
         }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
@@ -23,9 +23,9 @@ export default function SessionButtons({ className }) {
 
     return isLoggedIn ? (
         <div className={classNames('SessionButtons', className)}>
-            <Link to={`${pathBase}/users/current`}>
+            <a href={`${pathBase}/users/current`}>
                 {t('account_page')}
-            </Link>
+            </a>
             <button
                 type="button"
                 className="Button Button--asLink u-ml-small"

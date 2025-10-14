@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 
 import {
     MarkTextFormContainer,
@@ -72,15 +72,9 @@ export default function InterviewTabPanel({
             })}>
                 <AuthorizedContent object={interview} action='update'>
                     <p>
-                        <Link
-                            onClick={() => {
-                                setViewMode('workflow')
-                                hideSidebar();
-                            }}
-                            to={searchPath}
-                        >
+                        <a href={searchPath} >
                             {t('workflow')}
-                        </Link>
+                        </a>
                     </p>
                 </AuthorizedContent>
                 {!isCatalog && (

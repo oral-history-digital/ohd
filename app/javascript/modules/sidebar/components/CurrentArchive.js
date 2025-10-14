@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { useProject, usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
@@ -14,9 +13,9 @@ export default function CurrentArchive({
 
     return (
         <p className={className}>
-            <Link to={pathBase} className="Link" title={t('home')}>
+            <a href={pathBase} className="Link" title={t('home')}>
                 <b>{name}</b>
-            </Link>
+            </a>
         </p>
     );
 }

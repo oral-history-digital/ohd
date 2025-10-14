@@ -119,6 +119,7 @@ class ApplicationController < ActionController::Base
           end
         end,
         countryKeys: country_keys,
+        sidebariTabIndex: get_tab_index,
       },
       user: {
         isLoggingIn: false,
@@ -378,5 +379,46 @@ class ApplicationController < ActionController::Base
 
   def store_user_location!
     store_location_for(:user, request.fullpath)
+  end
+
+  def get_tab_index
+    case params[:controller]
+    when 'searches'
+      if params[:action] == 'map'
+        INDEX_MAP
+      else
+        INDEX_SEARCH
+      end
+    when 'catalog'
+      INDEX_CATALOG
+    when 'interviews'
+      if params[:action] == 'new'
+        INDEX_INDEXING
+      else
+        INDEX_INTERVIEW
+      end
+    when 'registry_entries'
+      INDEX_REGISTRY_ENTRIES
+    when 'users'
+      INDEX_ADMINISTRATION
+    when 'uploads', 'people', 'registry_reference_types', 'registry_name_types', 'contribution_types', 'collections', 'languages'
+      INDEX_INDEXING
+    when 'project'
+      if ['edit_info', 'edit_config', 'edit_display'].include?(params[:action])
+        INDEX_PROJECT_ACCESS
+      else
+        INDEX_NONE
+      end
+    when 'metadata_fields', 'roles', 'permissions', 'task_types', 'event_types', 'translation_values'
+      INDEX_PROJECT_ACCESS
+    when 'projects'
+      INDEX_PROJECTS
+    when 'institutions'
+      INDEX_INSTITUTIONS
+    when 'help_texts'
+      INDEX_HELP_TEXTS
+    else
+      INDEX_NONE
+    end
   end
 end

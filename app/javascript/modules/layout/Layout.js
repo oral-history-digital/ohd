@@ -5,31 +5,31 @@ import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { ResizeWatcherContainer } from 'modules/user-agent';
-import { Sidebar } from 'modules/sidebar';
+//import { ErrorBoundary } from 'modules/react-toolbox';
+//import { ResizeWatcherContainer } from 'modules/user-agent';
+//import { Sidebar } from 'modules/sidebar';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { getPlayerSize } from 'modules/media-player';
 import FetchAccountContainer from './FetchAccountContainer';
-import SiteHeader from './SiteHeader';
-import SiteFooter from './SiteFooter';
-import MessagesContainer from './MessagesContainer';
-import BurgerButton from './BurgerButton';
-import BackToTopButton from './BackToTopButton';
-import {
-    Banner,
-    bannerHasNotBeenHiddenByUser,
-    doNotShowBannerAgainThisSession,
-} from 'modules/banner';
-import {
-    AfterRegisterPopup,
-    AfterConfirmationPopup,
-    AfterRequestProjectAccessPopup,
-    CorrectUserDataPopup,
-    AfterResetPassword,
-    ConfirmNewZwarTosPopup,
-} from 'modules/user';
+//import SiteHeader from './SiteHeader';
+//import SiteFooter from './SiteFooter';
+//import MessagesContainer from './MessagesContainer';
+//import BurgerButton from './BurgerButton';
+//import BackToTopButton from './BackToTopButton';
+//import {
+    //Banner,
+    //bannerHasNotBeenHiddenByUser,
+    //doNotShowBannerAgainThisSession,
+//} from 'modules/banner';
+//import {
+    //AfterRegisterPopup,
+    //AfterConfirmationPopup,
+    //AfterRequestProjectAccessPopup,
+    //CorrectUserDataPopup,
+    //AfterResetPassword,
+    //ConfirmNewZwarTosPopup,
+//} from 'modules/user';
 import { OHD_DOMAINS } from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
 
@@ -48,10 +48,10 @@ export default function Layout({
     const { project } = useProject();
     const { locale } = useI18n();
 
-    function handleBannerClose() {
-        hideBanner();
-        doNotShowBannerAgainThisSession();
-    }
+    //function handleBannerClose() {
+        //hideBanner();
+        //doNotShowBannerAgainThisSession();
+    //}
 
     let titleBase = 'Oral-History.Digital';
     if (project) {
@@ -62,66 +62,69 @@ export default function Layout({
         ? `/favicons/favicon-${project?.shortname}.ico`
         : '/favicon.ico';
 
-    return (
-        <ResizeWatcherContainer>
-            <div
-                className={classNames('Layout', {
-                    'sidebar-is-visible': sidebarVisible,
-                    'is-sticky': scrollPositionBelowThreshold,
-                    'is-small-player': playerSize === 'small',
-                    'is-medium-player': playerSize === 'medium',
-                    'is-mobile': isMobile(),
-                })}
-            >
-                <FetchAccountContainer />
-                <AfterRegisterPopup />
-                <AfterConfirmationPopup />
-                <AfterRequestProjectAccessPopup />
-                <CorrectUserDataPopup />
-                <AfterResetPassword />
-                <ConfirmNewZwarTosPopup />
-                <Helmet
-                    defaultTitle={titleBase}
-                    titleTemplate={`%s | ${titleBase}`}
-                >
-                    <html lang={locale} />
-                    <link rel="icon" type="image/x-icon" href={faviconUrl} />
-                </Helmet>
+    return children;
+    //return (
+        //<ResizeWatcherContainer>
+            //<div
+                //className={classNames('Layout', {
+                    //'sidebar-is-visible': sidebarVisible,
+                    //'is-sticky': scrollPositionBelowThreshold,
+                    //'is-small-player': playerSize === 'small',
+                    //'is-medium-player': playerSize === 'medium',
+                    //'is-mobile': isMobile(),
+                //})}
+            //>
+        //{ false && <>
+                //<FetchAccountContainer />
+                //<AfterRegisterPopup />
+                //<AfterConfirmationPopup />
+                //<AfterRequestProjectAccessPopup />
+                //<CorrectUserDataPopup />
+                //<AfterResetPassword />
+                //<ConfirmNewZwarTosPopup />
+        //</>}
+                //<Helmet
+                    //defaultTitle={titleBase}
+                    //titleTemplate={`%s | ${titleBase}`}
+                //>
+                    //<html lang={locale} />
+                    //<link rel="icon" type="image/x-icon" href={faviconUrl} />
+                //</Helmet>
 
-                <div className={classNames('Layout-page', 'Site')}>
-                    <SiteHeader />
+                //<div className={classNames('Layout-page', 'Site')}>
+        //{ false && <SiteHeader />}
 
-                    <MessagesContainer
-                        loggedInAt={loggedInAt}
-                        notifications={[]}
-                    />
+        //{ false && <MessagesContainer
+                        //loggedInAt={loggedInAt}
+                        //notifications={[]}
+                    ///>}
 
-                    <main className="Site-content">{children}</main>
+                    //<main className="Site-content">{children}</main>
 
-                    <SiteFooter />
-                </div>
+        //{false && <SiteFooter />}
+                //</div>
 
-                <ErrorBoundary>
-                    <Sidebar className="Layout-sidebar" />
-                </ErrorBoundary>
+                //<ErrorBoundary>
+        //{false && <Sidebar className="Layout-sidebar" />}
+                //</ErrorBoundary>
 
-                <BurgerButton
-                    className="Layout-sidebarToggle"
-                    open={sidebarVisible}
-                    onClick={() => toggleSidebar(sidebarVisible)}
-                />
+        //{false && <BurgerButton}
+                    //className="Layout-sidebarToggle"
+                    //open={sidebarVisible}
+                    //onClick={() => toggleSidebar(sidebarVisible)}
+                ///>
 
-                <BackToTopButton
-                    visible={scrollPositionBelowThreshold}
-                    fullscreen={!sidebarVisible}
-                />
+        //{false && <BackToTopButton
+                    //visible={scrollPositionBelowThreshold}
+                    //fullscreen={!sidebarVisible}
+                ///>}
 
-                {bannerActive && bannerHasNotBeenHiddenByUser() && (
-                    <Banner onClose={handleBannerClose} />
-                )}
-            </div>
-        </ResizeWatcherContainer>
-    );
+        //{ false && {bannerActive && bannerHasNotBeenHiddenByUser() && (
+                    //<Banner onClose={handleBannerClose} />
+                //)}}
+            //</div>
+        //</ResizeWatcherContainer>
+    //);
 }
 
 Layout.propTypes = {
