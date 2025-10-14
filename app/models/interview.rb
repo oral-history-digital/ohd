@@ -726,7 +726,7 @@ class Interview < ApplicationRecord
         if interviewee.blank?
           'no interviewee given'
         else
-          interviewee.display_name(anonymous: true)
+          interviewee.display_name(anonymous: true, reversed: true)
         end
       end
     end
