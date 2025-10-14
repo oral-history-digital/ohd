@@ -159,9 +159,11 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
       end
 
       interview.oai_locales.each do |locale|
-        xml.abstract "xml:lang": ISO_639.find(locale).alpha3 do
-          interview.description(locale).split("\n").each do |line|
-            xml.p line.strip unless line.strip.blank?
+        if interview.description(locale)
+          xml.abstract "xml:lang": ISO_639.find(locale).alpha3 do
+            interview.description(locale).split("\n").each do |line|
+              xml.p line.strip unless line.strip.blank?
+            end
           end
         end
       end
