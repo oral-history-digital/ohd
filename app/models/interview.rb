@@ -103,10 +103,12 @@ class Interview < ApplicationRecord
       signature_original
       description
       transcript
+      pseudo_links
       language_id
       primary_language_id
       secondary_language_id
       primary_translation_language_id
+      secondary_translation_language_id
     )
     update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
