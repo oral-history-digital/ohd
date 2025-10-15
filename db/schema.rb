@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_07_082113) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_15_124010) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -176,6 +176,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_082113) do
     t.boolean "use_in_details_view"
     t.integer "order"
     t.boolean "use_in_export", default: false
+    t.boolean "display_on_landing_page", default: false, null: false
   end
 
   create_table "contributions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

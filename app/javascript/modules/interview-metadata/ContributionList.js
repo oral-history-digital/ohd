@@ -7,13 +7,17 @@ import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import ContributionGroup from './ContributionGroup';
 import ContributionContainer from './ContributionContainer';
+import { useProjectAccessStatus } from 'modules/auth';
+import { useProject } from 'modules/routes';
 
 export default function ContributionList({
     withSpeakerDesignation = false,
     interview,
 }) {
+    const { project } = useProject();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
     const { data: people, isLoading } = usePeople();
-    const groupedContributions = useSelector(getGroupedContributions);
+    const groupedContributions = useSelector(getGroupedContributions(projectAccessGranted));
     const { isAuthorized } = useAuthorization();
 
     if (isLoading || typeof people === 'undefined') {

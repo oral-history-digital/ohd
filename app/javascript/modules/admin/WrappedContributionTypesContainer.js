@@ -36,6 +36,11 @@ const mapStateToProps = (state) => {
                 type: 'checkbox',
             },
             {
+                attribute: 'display_on_landing_page',
+                elementType: 'input',
+                type: 'checkbox',
+            },
+            {
                 attribute: 'use_in_export',
                 elementType: 'input',
                 type: 'checkbox',

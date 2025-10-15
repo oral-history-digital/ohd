@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 import { getEditView } from 'modules/archive';
 import { getCurrentInterview, getContributionTypesForCurrentProject } from './dataSelectors';
 
-const getGroupedContributions = createSelector(
+const getGroupedContributions = (state, projectAccessGranted) => createSelector(
     [getEditView, getCurrentInterview, getContributionTypesForCurrentProject],
     (editView, currentInterview, contributionTypes) => {
         if (!currentInterview || !currentInterview.contributions || !contributionTypes) {
@@ -12,7 +12,7 @@ const getGroupedContributions = createSelector(
 
         const availableTypes = Object
             .values(contributionTypes)
-            .filter(ct => editView || ct.use_in_details_view)
+            .filter(ct => editView || (projectAccessGranted && ct.use_in_details_view || ct.display_on_landing_page))
             .sort((a, b) => a.order - b.order)
             .map(ct => ct.code)
 
@@ -42,6 +42,6 @@ const getGroupedContributions = createSelector(
 
         return groupedAsArray;
     }
-);
+)(state);
 
 export default getGroupedContributions;
