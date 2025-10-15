@@ -27,6 +27,7 @@ export default function ContributionForm({
     const { t } = useI18n();
     const [selectedPersonId, setSelectedPersonId] = useState(null);
 
+    // TODO: Use a more lightweight hook that only fetches necessary data for the form
     const { data: peopleData, isLoading } = usePeople();
 
     if (isLoading) {
@@ -37,9 +38,8 @@ export default function ContributionForm({
         setSelectedPersonId(data.person_id);
     }
 
-    const selectedPerson = selectedPersonId !== null ?
-        peopleData?.[selectedPersonId] :
-        null;
+    const selectedPerson =
+        selectedPersonId !== null ? peopleData?.[selectedPersonId] : null;
 
     function handlePersonChange(attribute, value) {
         if (attribute !== 'person_id') {
@@ -64,7 +64,9 @@ export default function ContributionForm({
             values: sortedPeopleData,
             value: data?.person_id,
             withEmpty: true,
-            validate: function(v){return /^\d+$/.test(v)},
+            validate: function (v) {
+                return /^\d+$/.test(v);
+            },
             handlechangecallback: handlePersonChange,
         },
         {
@@ -75,16 +77,18 @@ export default function ContributionForm({
             optionsScope: 'contributions',
             keepOrder: true,
             withEmpty: true,
-            validate: function(v){return /^\d+$/.test(v)},
+            validate: function (v) {
+                return /^\d+$/.test(v);
+            },
         },
         {
             elementType: 'select',
             attribute: 'workflow_state',
-            values: ["unshared", "public"],
+            values: ['unshared', 'public'],
             value: data ? data.workflow_state : 'public',
             optionsScope: 'workflow_states',
-        }
-    ]
+        },
+    ];
     if (withSpeakerDesignation) {
         formElements.push({
             attribute: 'speaker_designation',
@@ -95,16 +99,20 @@ export default function ContributionForm({
     return (
         <>
             <Form
-                scope='contribution'
+                scope="contribution"
                 data={data}
                 nested={nested}
                 values={{
                     interview_id: interview?.id,
-                    workflow_state: data ? data.workflow_state : 'public'
+                    workflow_state: data ? data.workflow_state : 'public',
                 }}
                 onSubmit={(params) => {
                     if (typeof submitData === 'function') {
-                        submitData({ locale, projectId, project }, params, index);
+                        submitData(
+                            { locale, projectId, project },
+                            params,
+                            index
+                        );
                     }
                     if (typeof onSubmit === 'function') {
                         onSubmit();
@@ -115,24 +123,19 @@ export default function ContributionForm({
                 formClasses={formClasses}
                 elements={formElements}
                 helpTextCode="contribution_form"
-            >
-            </Form>
+            ></Form>
             <div className="u-mt">
                 <Modal
                     title={t('edit.person.new')}
-                    trigger={(
+                    trigger={
                         <>
-                            <FaUserPlus className="Icon Icon--editorial" />
-                            {' '}
+                            <FaUserPlus className="Icon Icon--editorial" />{' '}
                             {t('edit.person.new')}
                         </>
-                    )}
+                    }
                 >
-                    {close => (
-                        <PersonForm
-                            onSubmit={close}
-                            onCancel={close}
-                        />
+                    {(close) => (
+                        <PersonForm onSubmit={close} onCancel={close} />
                     )}
                 </Modal>
                 {selectedPerson && (
@@ -141,15 +144,16 @@ export default function ContributionForm({
                         <Modal
                             title={t('edit.person.edit')}
                             hideHeading
-                            trigger={(
+                            trigger={
                                 <>
-                                    <FaUserEdit className="Icon Icon--editorial" />
-                                    {' '}
-                                    {t('edit.default.edit_record', { name: selectedPerson.name[locale]}) }
+                                    <FaUserEdit className="Icon Icon--editorial" />{' '}
+                                    {t('edit.default.edit_record', {
+                                        name: selectedPerson.name[locale],
+                                    })}
                                 </>
-                            )}
+                            }
                         >
-                            {close => (
+                            {(close) => (
                                 <PersonForm
                                     data={selectedPerson}
                                     onSubmit={close}
@@ -175,7 +179,6 @@ ContributionForm.propTypes = {
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
