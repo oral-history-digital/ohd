@@ -32,7 +32,8 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
             interview.project.available_locales.each do |locale|
               xml.resp TranslationValue.for("contributions.#{contribution&.contribution_type&.code}", locale).strip, "xml:lang": ISO_639.find(locale).alpha3
             end
-            xml.persName corresp: "#p#{contribution.person_id}" do
+            attributes = interview.speaking_people.include?(contribution&.person) ? {corresp: "p#{contribution&.person_id}"} : {}
+            xml.persName attributes do
               xml.forename contribution&.person&.first_name(locale)
               if interview.project.fullname_on_landing_page
                 xml.surname contribution&.person&.last_name_used(locale)
@@ -169,64 +170,63 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
       end
 
       xml.particDesc do
-        project_contribution_types = interview.project.contribution_types.index_by(&:code)
-        %w(interviewee interviewer).each do |role|
-          project_contribution_types[role].contributions.where(interview_id: interview.id).each do |contribution|
-            xml.person "xml:id": "p#{contribution.person_id}", sex: contribution.person&.gender do
-              xml.idno contribution.person_id.to_s, type: "OHD-ID"
-              xml.persName do
-                xml.forename contribution.person&.first_name(locale)
-                if interview.project.fullname_on_landing_page
-                  xml.surname contribution.person&.last_name(locale)
-                end
+        project_contribution_types = interview.project.contribution_types.index_by(&:id)
+        interview.speaking_people.each do |person|
+          xml.person "xml:id": "p#{person.id}", sex: person&.gender do
+            xml.idno person.id.to_s, type: "OHD-ID"
+            xml.persName do
+              xml.forename person&.first_name(locale)
+              if interview.project.fullname_on_landing_page
+                xml.surname person&.last_name(locale)
               end
-              interview.oai_locales.each do |locale|
-                xml.note TranslationValue.for("contributions.#{role}", locale), type: "role", "xml:lang": ISO_639.find(locale).alpha3
-              end
+            end
+            role = project_contribution_types[interview.contributions.where(person_id: person.id).first&.contribution_type_id]&.code
+            interview.oai_locales.each do |locale|
+              xml.note TranslationValue.for("contributions.#{role}", locale), type: "role", "xml:lang": ISO_639.find(locale).alpha3
+            end
 
-              place_of_birth = contribution.person&.place_of_birth
-              date_of_birth = contribution.person&.date_of_birth
-              if date_of_birth || place_of_birth
-                xml.birth do
-                  if place_of_birth
-                    xml.location do
-                      interview.oai_locales.each do |locale|
-                        xml.placeName place_of_birth.descriptor(locale), "xml:lang": ISO_639.find(locale).alpha3, corresp: "#r_#{place_of_birth.id}"
-                      end
+            place_of_birth = person&.place_of_birth
+            date_of_birth = person&.date_of_birth
+            if date_of_birth || place_of_birth
+              xml.birth do
+                if place_of_birth
+                  xml.location do
+                    interview.oai_locales.each do |locale|
+                      xml.placeName place_of_birth.descriptor(locale), "xml:lang": ISO_639.find(locale).alpha3, corresp: "#r_#{place_of_birth.id}"
                     end
                   end
-                  xml.date contribution.person&.date_of_birth.to_s,
-                    when: Date.parse(contribution.person&.date_of_birth).strftime("%Y-%m-%d") rescue contribution.person&.date_of_birth
+                end
+                xml.date person&.date_of_birth.to_s,
+                  when: Date.parse(person&.date_of_birth).strftime("%Y-%m-%d") rescue person&.date_of_birth
+              end
+            end
+            interview.oai_locales.each do |locale|
+              if person&.has_biography?(locale) && !person&.biography_public?
+                xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
+                  person&.biographical_entries.each do |biographical_entry|
+                    xml.text! biographical_entry.text(locale)
+                  end
                 end
               end
+            end
+            interview.oai_locales.each do |locale|
+              if person&.description(:locale)
+                text = person&.description(:locale).sub(/(www|http:|https:+[^\s]+[\w])/, "")
+                link = person&.description(:locale)[/.*(www|http:|https:+[^\s]+[\w])/, 1]
+                if text.present? || link.present?
+                  xml.note n: TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale), "xml:lang": ISO_639.find(locale).alpha3 do
+                    xml.p if text.present?
+                    xml.ref link, target: link if link.present?
+                  end
+                end
+              end
+            end
+            person&.registry_references.joins(:registry_reference_type).where.not(registry_reference_type: {code: 'birth_place'}).each do |registry_reference|
               interview.oai_locales.each do |locale|
-                if contribution.person&.has_biography?(locale) && !contribution.person&.biography_public?
-                  xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
-                    contribution.person&.biographical_entries.each do |biographical_entry|
-                      xml.text! biographical_entry.text(locale)
-                    end
-                  end
-                end
-              end
-              interview.oai_locales.each do |locale|
-                if contribution.person&.description(:locale)
-                  text = contribution.person&.description(:locale).sub(/(www|http:|https:+[^\s]+[\w])/, "")
-                  link = contribution.person&.description(:locale)[/.*(www|http:|https:+[^\s]+[\w])/, 1]
-                  if text.present? || link.present?
-                    xml.note n: TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale), "xml:lang": ISO_639.find(locale).alpha3 do
-                      xml.p if text.present?
-                      xml.ref link, target: link if link.present?
-                    end
-                  end
-                end
-              end
-              contribution.person&.registry_references.joins(:registry_reference_type).where.not(registry_reference_type: {code: 'birth_place'}).each do |registry_reference|
-                interview.oai_locales.each do |locale|
-                  xml.note registry_reference.registry_entry.descriptor(locale).strip,
-                    corresp: "#re_#{registry_reference.registry_entry_id}",
-                    type: registry_reference.registry_reference_type&.name(locale),
-                    "xml:lang": ISO_639.find(locale).alpha3
-                end
+                xml.note registry_reference.registry_entry.descriptor(locale).strip,
+                  corresp: "#re_#{registry_reference.registry_entry_id}",
+                  type: registry_reference.registry_reference_type&.name(locale),
+                  "xml:lang": ISO_639.find(locale).alpha3
               end
             end
           end

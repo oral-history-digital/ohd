@@ -974,4 +974,9 @@ class Interview < ApplicationRecord
   def pseudo_links
     read_attribute :links
   end
+
+  def speaking_people
+    Person.where(id: segments.pluck(:speaker_id).uniq).compact
+  end
+
 end
