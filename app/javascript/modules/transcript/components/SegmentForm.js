@@ -23,6 +23,7 @@ export default function SegmentForm({
 
     useEffect(() => {
         const textarea = document.getElementById('segment_text');
+        if (!textarea) return; // guard: element may not be in the DOM yet
         textarea.setAttribute('dir', textDir);
         textarea.style.direction = textDir;
         textarea.style.textAlign = textDir === 'rtl' ? 'right' : 'left';
