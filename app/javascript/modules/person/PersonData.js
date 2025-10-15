@@ -11,7 +11,7 @@ import { Spinner } from 'modules/spinners';
 import Biography from './Biography';
 import NameOrPseudonym from './NameOrPseudonym';
 import getDisplayedMetadataFields from './getDisplayedMetadataFields';
-import usePersonWithAssociations from './hooks';
+import { usePersonWithAssociations } from './hooks';
 
 export default function PersonData({ interview, intervieweeId }) {
     const { t, locale } = useI18n();

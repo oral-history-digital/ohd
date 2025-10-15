@@ -9,7 +9,7 @@ import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import BiographicalEntriesContainer from './BiographicalEntriesContainer';
-import usePersonWithAssociations from './hooks';
+import { usePersonWithAssociations } from './hooks';
 
 export default function Biography() {
     const { t } = useI18n();
