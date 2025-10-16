@@ -170,7 +170,7 @@ const requestTranslations = () => ({
     type: REQUEST_TRANSLATIONS,
 });
 
-export function fetchTranslationsForLocale(locale, projectId) {
+export function fetchTranslationsForLocale(locale, pathBase) {
     return (dispatch, getState) => {
         // Check if we already have translations for this locale
         const currentState = getState();
@@ -189,10 +189,8 @@ export function fetchTranslationsForLocale(locale, projectId) {
 
         dispatch(requestTranslations());
 
-        // Build the API endpoint
-        const url = projectId
-            ? `/${projectId}/${locale}/api/translations.json`
-            : `/${locale}/api/translations.json`;
+        // Build the API endpoint (prefer explicit pathBase when provided)
+        const url = `${pathBase}/translation_strings.json`;
 
         return request
             .get(url)
