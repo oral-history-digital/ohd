@@ -1,42 +1,73 @@
 export function prepareRegistryNameAttributes(
     entry,
     registryNameTypes,
-    project,
-    replaceNestedFormValues,
+    project
 ) {
     let registryNamesAttributes = [];
 
-    const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling');
-    const ancientNameType = Object.values(registryNameTypes).find(r => r.code === 'ancient');
+    const defaultNameType = Object.values(registryNameTypes).find(
+        (r) => r.code === 'spelling'
+    );
+    const ancientNameType = Object.values(registryNameTypes).find(
+        (r) => r.code === 'ancient'
+    );
     const langOrig = entry.Country?.toLowerCase();
 
-    project.available_locales.map( lang => {
+    project.available_locales.map((lang) => {
         if (Array.isArray(entry.AlternativeNames?.AlternativeName)) {
-            const alternateName = entry.AlternativeNames?.AlternativeName.find(n => n.Lang === lang && n.Name)?.Name;
+            const alternateName = entry.AlternativeNames?.AlternativeName.find(
+                (n) => n.Lang === lang && n.Name
+            )?.Name;
             if (alternateName)
-                setDescriptor(alternateName, registryNamesAttributes, defaultNameType.id, lang);
+                setDescriptor(
+                    alternateName,
+                    registryNamesAttributes,
+                    defaultNameType.id,
+                    lang
+                );
         }
         if (Array.isArray(entry.Alias)) {
-            const alias = entry.Alias.find(n => n.Lang === lang && n.Alias)?.Alias;
+            const alias = entry.Alias.find(
+                (n) => n.Lang === lang && n.Alias
+            )?.Alias;
             if (alias)
-                setDescriptor(alias, registryNamesAttributes, ancientNameType.id, lang);
+                setDescriptor(
+                    alias,
+                    registryNamesAttributes,
+                    ancientNameType.id,
+                    lang
+                );
         }
-    })
+    });
 
     let originalName;
     if (Array.isArray(entry.AlternativeNames?.AlternativeName)) {
-        originalName = entry.AlternativeNames?.AlternativeName.find(n => n.Lang === langOrig && n.Name)?.Name;
+        originalName = entry.AlternativeNames?.AlternativeName.find(
+            (n) => n.Lang === langOrig && n.Name
+        )?.Name;
     }
     originalName = originalName || entry.Name;
     if (originalName)
-        setDescriptor(originalName, registryNamesAttributes, defaultNameType.id, 'orig');
+        setDescriptor(
+            originalName,
+            registryNamesAttributes,
+            defaultNameType.id,
+            'orig'
+        );
 
-    const origAlias = Array.isArray(entry.Alias) && entry.Alias.find(n => n.Lang === langOrig && n.Alias)?.Alias;
+    const origAlias =
+        Array.isArray(entry.Alias) &&
+        entry.Alias.find((n) => n.Lang === langOrig && n.Alias)?.Alias;
     if (origAlias)
-        setDescriptor(origAlias, registryNamesAttributes, ancientNameType.id, 'orig');
+        setDescriptor(
+            origAlias,
+            registryNamesAttributes,
+            ancientNameType.id,
+            'orig'
+        );
 
     return registryNamesAttributes;
-};
+}
 
 export function setDescriptor(
     value,
@@ -44,45 +75,51 @@ export function setDescriptor(
     nameTypeId,
     locale
 ) {
-    const name = findOrCreate(registryNamesAttributes, 'registry_name_type_id', nameTypeId);
+    const name = findOrCreate(
+        registryNamesAttributes,
+        'registry_name_type_id',
+        nameTypeId
+    );
     name.name_position ||= 1;
     name.translations_attributes ||= [];
-    const translation = findOrCreate(name.translations_attributes, 'locale', locale);
+    const translation = findOrCreate(
+        name.translations_attributes,
+        'locale',
+        locale
+    );
     translation.descriptor = Array.isArray(value) ? value[0] : value;
-};
-
-export function updateRegistryEntryTranslationsAttributes(
-    entry,
-    project,
-    replaceNestedFormValues
-) {
-    let translationsAttributes = [];
-
-    project.available_locales.map( lang => {
-        const description = Array.isArray(entry.Description) ?
-            entry.Description.find(n => n.Lang === lang && n.Description)?.Description :
-            entry.Description?.Description;
-
-        if (description) {
-            const translation = findOrCreate(translationsAttributes, 'locale', lang);
-            translation.notes = description;
-        }
-    })
-
-    return ({translations_attributes: translationsAttributes});
 }
 
-export function prepareNormDataAttributes(
-    entry,
-    normDataProviders,
-    replaceNestedFormValues
-) {
+export function updateRegistryEntryTranslationsAttributes(entry, project) {
+    let translationsAttributes = [];
+
+    project.available_locales.map((lang) => {
+        const description = Array.isArray(entry.Description)
+            ? entry.Description.find((n) => n.Lang === lang && n.Description)
+                  ?.Description
+            : entry.Description?.Description;
+
+        if (description) {
+            const translation = findOrCreate(
+                translationsAttributes,
+                'locale',
+                lang
+            );
+            translation.notes = description;
+        }
+    });
+
+    return { translations_attributes: translationsAttributes };
+}
+
+export function prepareNormDataAttributes(entry, normDataProviders) {
     let normDataAttributes = [];
 
-    entry.Identifier.map(provider => {
+    entry.Identifier.map((provider) => {
         if (provider.Value) {
-            const normDataProvider = Object.values(normDataProviders).
-                find(p => p.name === provider.Provider);
+            const normDataProvider = Object.values(normDataProviders).find(
+                (p) => p.name === provider.Provider
+            );
             const normDatum = findOrCreate(
                 normDataAttributes,
                 'norm_data_provider_id',
@@ -101,7 +138,7 @@ export function findOrCreate(
     selectedPropertyValue
 ) {
     let isNew = true;
-    const datum = attributes.find(t => {
+    const datum = attributes.find((t) => {
         if (t[selectPropertyName] === selectedPropertyValue) {
             isNew = false;
             return true;
@@ -113,4 +150,4 @@ export function findOrCreate(
 
     datum.creation_date ||= new Date().toISOString();
     return datum;
-};
+}

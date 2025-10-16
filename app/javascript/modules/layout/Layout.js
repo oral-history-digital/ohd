@@ -89,6 +89,10 @@ export default function Layout({
         titleBase = project?.display_name?.[locale] || project?.name?.[locale];
     }
 
+    const faviconUrl = project?.shortname
+        ? `/favicons/favicon-${project?.shortname}.ico`
+        : '/favicon.ico';
+
     return (
         <ResizeWatcherContainer>
             <div
@@ -112,11 +116,7 @@ export default function Layout({
                     titleTemplate={`%s | ${titleBase}`}
                 >
                     <html lang={locale} />
-                    <link
-                        rel="icon"
-                        type="image/x-icon"
-                        href={`/favicon-${project?.shortname || 'ohd'}.ico`}
-                    />
+                    <link rel="icon" type="image/x-icon" href={faviconUrl} />
                 </Helmet>
 
                 <div className={classNames('Layout-page', 'Site')}>

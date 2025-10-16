@@ -18,14 +18,12 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "INT", @first_row_entries[2]
     assert_equal "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца", @first_row_entries[3]
     assert_equal "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez", @first_row_entries[4]
-    assert_equal "", @first_row_entries[5]
     assert_equal "Вступление", @first_row_entries[6]
     assert_equal "", @first_row_entries[7]
     assert_equal "Einleitung", @first_row_entries[8]
     assert_equal "", @first_row_entries[9]
     assert_equal @interview.segments.first.registry_references.first.registry_entry_id.to_i, @first_row_entries[10].to_i
     assert_equal "Главное местонахождение — Берлин Филиал по добыче", @first_row_entries[11]
-    #assert_equal "", @first_row_entries[12]
     assert_equal "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", @first_row_entries[13]
 
     assert_equal "2", @second_row_entries[0]
@@ -33,14 +31,12 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "AB", @second_row_entries[2]
     assert_equal "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни", @second_row_entries[3]
     assert_equal "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte", @second_row_entries[4]
-    assert_equal "", @second_row_entries[5]
     assert_equal "", @second_row_entries[6]
     assert_equal "жизнь", @second_row_entries[7]
     assert_equal "", @second_row_entries[8]
     assert_equal "Leben", @second_row_entries[9]
     assert_equal @interview.segments.first(2).last.registry_references.map(&:registry_entry_id).join('#'), @second_row_entries[10]
     assert_equal "Построенный для размещения восточных рабочих барачный", @second_row_entries[11]
-    #assert_equal "", @second_row_entries[12]
     assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @second_row_entries[13]
   end
 end

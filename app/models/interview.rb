@@ -103,10 +103,12 @@ class Interview < ApplicationRecord
       signature_original
       description
       transcript
+      pseudo_links
       language_id
       primary_language_id
       secondary_language_id
       primary_translation_language_id
+      secondary_translation_language_id
     )
     update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
@@ -724,7 +726,7 @@ class Interview < ApplicationRecord
         if interviewee.blank?
           'no interviewee given'
         else
-          interviewee.display_name(anonymous: true)
+          interviewee.display_name(anonymous: true, reversed: true)
         end
       end
     end
@@ -972,4 +974,9 @@ class Interview < ApplicationRecord
   def pseudo_links
     read_attribute :links
   end
+
+  def speaking_people
+    Person.where(id: segments.pluck(:speaker_id).uniq).compact
+  end
+
 end

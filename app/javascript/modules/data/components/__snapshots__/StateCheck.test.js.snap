@@ -1,21 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders Spinner component if selector returns false 1`] = `
-<img
-  alt=""
-  className="Spinner"
-  src="mock.jpg"
-/>
-`;
+exports[`renders Spinner component if selector returns false 1`] = `"<img src="mock.jpg" class="Spinner" alt=""/>"`;
 
-exports[`renders custom fallback 1`] = `
-<p>
-  Loading...
-</p>
-`;
+exports[`renders custom fallback 1`] = `"<p>Loading...</p>"`;
 
-exports[`renders the children if selector returns true 1`] = `
-<p>
-  Hello!
-</p>
-`;
+exports[`renders the children if selector returns true 1`] = `"<p>Hello!</p>"`;

@@ -132,7 +132,7 @@ export default function EditTableCell({ type, segment, originalLocale }) {
                 </div>
             );
         default:
-            console.log('EditTableCell default', type);
+            console.debug('EditTableCell default', type);
     }
 }
 

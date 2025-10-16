@@ -1,0 +1,19 @@
+import { usePathBase } from 'modules/routes';
+import { useSWRConfig } from 'swr';
+
+export function useMutateData(scope, dataPath) {
+    const pathBase = usePathBase();
+    const { mutate } = useSWRConfig();
+
+    return function mutateData(updateDocument) {
+        const path = dataPath || `${pathBase}/${scope}.json`;
+
+        if (typeof updateDocument === 'function') {
+            mutate(path, updateDocument, { revalidate: false });
+        } else {
+            mutate(path);
+        }
+    };
+}
+
+export default useMutateData;

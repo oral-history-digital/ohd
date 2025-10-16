@@ -72,7 +72,7 @@
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
         <filter class="solr.StemmerOverrideFilterFactory" dictionary="stemdict.txt"/>
-        <filter class="solr.GermanLightStemFilterFactory"/>
+        <filter class="solr.GermanMinimalStemFilterFactory"/>
       </analyzer>
     </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->

@@ -2,11 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaTimes, FaBars } from 'react-icons/fa';
 
-function BurgerButton({
-    className,
-    open,
-    onClick,
-}) {
+function BurgerButton({ className, open = false, onClick }) {
     return (
         <button
             type="button"
@@ -16,11 +12,11 @@ function BurgerButton({
             })}
             onClick={onClick}
         >
-            {
-                open ?
-                    <FaTimes className="BurgerButton-icon" /> :
-                    <FaBars className="BurgerButton-icon" />
-            }
+            {open ? (
+                <FaTimes className="BurgerButton-icon" />
+            ) : (
+                <FaBars className="BurgerButton-icon" />
+            )}
         </button>
     );
 }
@@ -29,10 +25,6 @@ BurgerButton.propTypes = {
     className: PropTypes.string,
     open: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
-};
-
-BurgerButton.defaultProps = {
-    open: false,
 };
 
 export default BurgerButton;

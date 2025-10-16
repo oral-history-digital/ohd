@@ -1,29 +1,17 @@
-import renderer from 'react-test-renderer';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 import Label from './Label';
 
 jest.mock('modules/i18n');
 
 it('renders correctly', () => {
-    const tree = renderer
-        .create(
-            <Label
-                label="Name"
-                className="label"
-                htmlFor="input"
-            />
-        )
-        .toJSON();
-    expect(tree).toMatchSnapshot();
+    const html = renderToStaticMarkup(
+        <Label label="Name" className="label" htmlFor="input" />
+    );
+    expect(html).toMatchSnapshot();
 });
 
 it('renders with translation key', () => {
-    const tree = renderer
-        .create(
-            <Label
-                labelKey="label.default_name"
-            />
-        )
-        .toJSON();
-    expect(tree).toMatchSnapshot();
+    const html = renderToStaticMarkup(<Label labelKey="label.default_name" />);
+    expect(html).toMatchSnapshot();
 });
