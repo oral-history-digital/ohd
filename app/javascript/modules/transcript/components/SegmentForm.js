@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { checkTextDir } from '../utils';
 
 import { Form } from 'modules/forms';
-import { usePeople } from 'modules/person';
+import { useInterviewContributors } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 
 export default function SegmentForm({
@@ -16,13 +16,15 @@ export default function SegmentForm({
     onSubmit,
     onCancel,
 }) {
-    const { data: people, isLoading } = usePeople();
+    const interviewId = segment?.interview_id;
+    const { data: people, isLoading } = useInterviewContributors(interviewId);
 
     // Determine text direction for the textarea
     const textDir = checkTextDir(segment?.text[contentLocale] || '');
 
     useEffect(() => {
         const textarea = document.getElementById('segment_text');
+        if (!textarea) return; // guard: element may not be in the DOM yet
         textarea.setAttribute('dir', textDir);
         textarea.style.direction = textDir;
         textarea.style.textAlign = textDir === 'rtl' ? 'right' : 'left';
