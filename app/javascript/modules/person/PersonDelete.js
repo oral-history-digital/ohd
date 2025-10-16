@@ -2,23 +2,26 @@ import PropTypes from 'prop-types';
 
 import { usePersonApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
-import useMutatePeople from './useMutatePeople';
-import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
-import useMutatePersonLandingPageMetadata from './useMutatePersonLandingPageMetadata';
+import {
+    useMutatePeople,
+    useMutatePersonWithAssociations,
+    useMutatePersonLandingPageMetadata,
+} from './hooks';
 
 export default function PersonDelete({
     data,
-    onSubmit = f => f,
-    onCancel = f => f
+    onSubmit = (f) => f,
+    onCancel = (f) => f,
 }) {
     const { t } = useI18n();
     const { deletePerson } = usePersonApi();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
-    const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
+    const mutatePersonLandingPageMetadata =
+        useMutatePersonLandingPageMetadata();
 
     async function handleDeletePerson(id, callback) {
-        mutatePeople(async people => {
+        mutatePeople(async (people) => {
             await deletePerson(id);
 
             mutatePersonWithAssociations(id);
@@ -26,7 +29,7 @@ export default function PersonDelete({
 
             const updatedPeople = {
                 ...people,
-                data: { ...people.data }
+                data: { ...people.data },
             };
             delete updatedPeople.data[id];
 
@@ -40,13 +43,9 @@ export default function PersonDelete({
 
     return (
         <form className="Form">
-            <h3 className="u-mt-none u-mb">
-                {t('modules.tables.delete')}
-            </h3>
+            <h3 className="u-mt-none u-mb">{t('modules.tables.delete')}</h3>
 
-            <p className="u-mb">
-                {data.display_name}
-            </p>
+            <p className="u-mb">{data.display_name}</p>
 
             <div className="Form-footer">
                 <button
@@ -71,5 +70,5 @@ export default function PersonDelete({
 PersonDelete.propTypes = {
     data: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
 };

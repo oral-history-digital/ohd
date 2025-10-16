@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import useContributionsForPerson from './useContributionsForPerson';
+import { useContributionsForPerson } from './hooks';
 
-export default function PersonContributions({
-    personId
-}) {
+export default function PersonContributions({ personId }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
 
@@ -17,7 +15,10 @@ export default function PersonContributions({
 
     if (error) {
         return (
-            <p>{t('modules.admin.person_details.contributions.error')}: {error.message}</p>
+            <p>
+                {t('modules.admin.person_details.contributions.error')}:{' '}
+                {error.message}
+            </p>
         );
     }
 
@@ -35,22 +36,18 @@ export default function PersonContributions({
                 {t('modules.admin.person_details.contributions.title')}
             </h4>
             <ul className="u-line-height u-mt-none u-mb-none">
-                {
-                    contributions.map(contribution => (
-                        <li
-                            key={contribution.id}
-                            className="u-line-height"
+                {contributions.map((contribution) => (
+                    <li key={contribution.id} className="u-line-height">
+                        {contribution.label}{' '}
+                        {t('modules.admin.person_details.contributions.at')}{' '}
+                        <Link
+                            to={`${pathBase}/interviews/${contribution.interview_id}`}
                         >
-                            {contribution.label} {t('modules.admin.person_details.contributions.at')}
-                            {' '}
-                            <Link
-                                to={`${pathBase}/interviews/${contribution.interview_id}`}
-                            >
-                                {contribution.interview_title} ({contribution.interview_id})
-                            </Link>
-                        </li>
-                    ))
-                }
+                            {contribution.interview_title} (
+                            {contribution.interview_id})
+                        </Link>
+                    </li>
+                ))}
             </ul>
         </div>
     );
