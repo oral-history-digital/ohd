@@ -77,9 +77,6 @@ export default function LocaleButtons({ className }) {
                     'Failed to load translations for locale change:',
                     error
                 );
-                // Still allow locale change even if translations fail
-                navigate(newPath);
-                dispatch(setLocale(locale));
             })
             .finally(() => {
                 setLoadingLocale(null);
