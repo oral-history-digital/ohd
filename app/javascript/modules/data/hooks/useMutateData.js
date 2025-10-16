@@ -1,8 +1,7 @@
+import { usePathBase } from 'modules/routes';
 import { useSWRConfig } from 'swr';
 
-import { usePathBase } from 'modules/routes';
-
-export default function useMutateData(scope, dataPath) {
+export function useMutateData(scope, dataPath) {
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 
@@ -14,5 +13,7 @@ export default function useMutateData(scope, dataPath) {
         } else {
             mutate(path);
         }
-    }
+    };
 }
+
+export default useMutateData;

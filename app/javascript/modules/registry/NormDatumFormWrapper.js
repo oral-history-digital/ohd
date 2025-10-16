@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { FaRegFileAlt, FaRegClone } from 'react-icons/fa';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
+import PropTypes from 'prop-types';
+import { FaRegClone, FaRegFileAlt } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
 import NormDataForDescriptorContainer from './NormDataForDescriptorContainer';
 
 export default function NormDatumFormWrapper({
     onSubmitCallback,
-    onCancel,
+    onCancel, // TODO: use onCancel or remove it
     descriptor,
     registryEntryAttributes,
     setRegistryEntryAttributes,
@@ -17,24 +17,20 @@ export default function NormDatumFormWrapper({
     replaceNestedFormValues,
     children,
 }) {
-
     const { t } = useI18n();
 
     return (
-        <Tabs
-            className="Tabs"
-            keyboardActivation="manual"
-        >
+        <Tabs className="Tabs" keyboardActivation="manual">
             <div className="Layout-contentTabs">
                 <TabList className="Tabs-tabList">
                     <Tab className="Tabs-tab">
-                        <FaRegFileAlt className="Tabs-tabIcon"/>
+                        <FaRegFileAlt className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('search_in_normdata')}
                         </span>
                     </Tab>
                     <Tab className="Tabs-tab">
-                        <FaRegClone className="Tabs-tabIcon"/>
+                        <FaRegClone className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('enter_normdata_manually')}
                         </span>
@@ -45,29 +41,57 @@ export default function NormDatumFormWrapper({
             <div className="u-mt-small">
                 <TabPanels>
                     <TabPanel>
-                        { descriptor ?
+                        {descriptor ? (
                             <>
-                                <p>{t('search_api_for', {descriptor: descriptor})}</p>
+                                <p>
+                                    {t('search_api_for', {
+                                        descriptor: descriptor,
+                                    })}
+                                </p>
                                 <NormDataForDescriptorContainer
                                     descriptor={descriptor}
-                                    setRegistryEntryAttributes={setRegistryEntryAttributes}
-                                    registryEntryAttributes={registryEntryAttributes}
+                                    setRegistryEntryAttributes={
+                                        setRegistryEntryAttributes
+                                    }
+                                    registryEntryAttributes={
+                                        registryEntryAttributes
+                                    }
                                     onSubmitCallback={onSubmitCallback}
-                                    setShowElementsInForm={setShowElementsInForm}
-                                    setResultsFromNormDataSet={setResultsFromNormDataSet}
-                                    replaceNestedFormValues={replaceNestedFormValues}
+                                    setShowElementsInForm={
+                                        setShowElementsInForm
+                                    }
+                                    setResultsFromNormDataSet={
+                                        setResultsFromNormDataSet
+                                    }
+                                    replaceNestedFormValues={
+                                        replaceNestedFormValues
+                                    }
                                 />
-                            </>: <p>{t('enter_descriptor_first')}</p>
-                        }
+                            </>
+                        ) : (
+                            <p>{t('enter_descriptor_first')}</p>
+                        )}
                     </TabPanel>
                     <TabPanel>
                         <span className="Tabs-tabText">
                             {t('extend_normdata_manually')}
                         </span>
-                        { children }
+                        {children}
                     </TabPanel>
                 </TabPanels>
             </div>
         </Tabs>
     );
 }
+
+NormDatumFormWrapper.propTypes = {
+    onSubmitCallback: PropTypes.func,
+    onCancel: PropTypes.func,
+    descriptor: PropTypes.string,
+    registryEntryAttributes: PropTypes.object,
+    setRegistryEntryAttributes: PropTypes.func,
+    setShowElementsInForm: PropTypes.func,
+    setResultsFromNormDataSet: PropTypes.func,
+    replaceNestedFormValues: PropTypes.func,
+    children: PropTypes.node.isRequired,
+};

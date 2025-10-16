@@ -1,4 +1,4 @@
-import isDate from './isDate';
+import { isDate } from './isDate';
 
 test('returns true for full ISO 8601 dates', () => {
     const actual = isDate('2019-02-12');
