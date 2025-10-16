@@ -1,4 +1,4 @@
-export default function toDateString(value, locale) {
+export function toDateString(value, locale) {
     if (!value) {
         return '';
     }
@@ -11,7 +11,7 @@ export default function toDateString(value, locale) {
 }
 
 function localeString(locale) {
-    return locale === 'en'
-        ? 'en-US'
-        : locale;
+    return locale === 'en' ? 'en-US' : locale;
 }
+
+export default toDateString;

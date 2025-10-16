@@ -1,22 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
-<img
-  alt=""
-  className="Spinner my-spinner"
-  src="mock.jpg"
-  style={
-    Object {
-      "margin": "1rem",
-    }
-  }
-/>
-`;
+exports[`renders correctly 1`] = `"<img src="mock.jpg" class="Spinner my-spinner" style="margin:1rem" alt=""/>"`;
 
-exports[`renders padding CSS class 1`] = `
-<img
-  alt=""
-  className="Spinner Spinner--withPadding"
-  src="mock.jpg"
-/>
-`;
+exports[`renders padding CSS class 1`] = `"<img src="mock.jpg" class="Spinner Spinner--withPadding" alt=""/>"`;
