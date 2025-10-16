@@ -78,8 +78,7 @@ class ApplicationController < ActionController::Base
       contribution_types: :translations,
       metadata_fields: :translations,
       external_links: :translations,
-      collections: :translations,
-      #collections: {collection: :translations},
+      # Collections removed - load selectively when needed via CollectionsController
       institution_projects: {institution: :translations},
     ).first
   end
@@ -169,7 +168,7 @@ class ApplicationController < ActionController::Base
           Project.all.includes(
             :translations,
             :registry_reference_types,
-            :collections,
+            # Collections removed - loaded via separate API call when needed
           ).inject({}) do |mem, s|
             mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
             mem
