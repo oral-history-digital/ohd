@@ -184,9 +184,6 @@ export function fetchTranslationsForLocale(locale, projectId) {
 
         // If we already have translations for this locale, don't fetch again
         if (hasTranslationsForLocale) {
-            console.log(
-                `Translations for locale ${locale} already loaded, skipping fetch`
-            );
             return Promise.resolve();
         }
 
