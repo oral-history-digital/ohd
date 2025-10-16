@@ -34,13 +34,15 @@ export default function LocaleButtons({ className }) {
 
         setLoadingLocale(locale);
 
-        let newPath = `/${locale}`; // Default fallback path
+        // Build the pathBase for the new locale
+        let pathBase = `/${locale}`; // Default fallback
+        let newPath = pathBase;
 
         if (
             matchWithProject &&
             SYSTEM_LOCALES.includes(matchWithProject.params.locale)
         ) {
-            const pathBase = `/${matchWithProject.params.projectId}/${locale}`;
+            pathBase = `/${matchWithProject.params.projectId}/${locale}`;
             if (matchWithProject.params['*']) {
                 newPath = pathBase + '/' + matchWithProject.params['*'];
             } else {
@@ -50,7 +52,7 @@ export default function LocaleButtons({ className }) {
             matchWOProject &&
             SYSTEM_LOCALES.includes(matchWOProject.params.locale)
         ) {
-            const pathBase = `/${locale}`;
+            pathBase = `/${locale}`;
             if (matchWOProject.params['*']) {
                 newPath = pathBase + '/' + matchWOProject.params['*'];
             } else {
@@ -65,8 +67,7 @@ export default function LocaleButtons({ className }) {
         }
 
         // First fetch translations for the new locale, then change locale
-        const projectId = project?.shortname;
-        dispatch(fetchTranslationsForLocale(locale, projectId))
+        dispatch(fetchTranslationsForLocale(locale, pathBase))
             .then(() => {
                 // Only navigate and set locale after translations are loaded
                 navigate(newPath);
