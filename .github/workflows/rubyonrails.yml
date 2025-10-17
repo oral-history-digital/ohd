@@ -74,10 +74,12 @@ jobs:
       - name: Run tests
         run: bin/test
       - name: Upload Capybara screenshots
+        if: always() # always run, even if tests failed
         uses: actions/upload-artifact@v4
         with:
           name: capybara-screenshots
           path: tmp/screenshots
+          if-no-files-found: ignore
 
   # TODO: Enable linting again when issues are fixed
   # lint:
