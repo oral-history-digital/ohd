@@ -14,6 +14,11 @@ const analyticsSiteId = metaTagContent ? Number.parseInt(metaTagContent) : null;
 // At the moment, only projects with own domains are tracked.
 export default function AnalyticsProvider({ children }) {
     const instance = useMemo(() => {
+        // Skip Matomo creation in development and test environments
+        if (['development', 'test'].indexOf(railsMode) > -1) {
+            return null;
+        }
+
         const result = createInstance({
             urlBase: ANALYTICS_URL_BASE,
             // If siteId does not exist, nothing is tracked, but we need to provide an id.
@@ -22,7 +27,7 @@ export default function AnalyticsProvider({ children }) {
         return result;
     }, []);
 
-    if (['development', 'test'].indexOf(railsMode) > -1) {
+    if (instance === null) {
         return children;
     }
 
