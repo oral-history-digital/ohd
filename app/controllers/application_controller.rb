@@ -160,9 +160,8 @@ class ApplicationController < ActionController::Base
           tasks: {},
           projects: {
             all: 'fetched',
-            #"#{current_project.id}": 'fetched'
+            "#{current_project.id}": 'fetched'
           },
-          #projects: {"#{current_project.id}": 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
