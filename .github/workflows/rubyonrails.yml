@@ -79,6 +79,23 @@ jobs:
           echo "Checking for compiled webpack assets..."
           ls -lh public/packs-test/
           test -f public/packs-test/manifest.json && echo "manifest.json exists" || echo "ERROR: manifest.json missing!"
+          echo ""
+          echo "Checking JavaScript files..."
+          ls -lh public/packs-test/js/
+          echo ""
+          echo "Manifest.json contents:"
+          cat public/packs-test/manifest.json | head -40
+          echo ""
+          echo "Checking if application.js exists and is not empty..."
+          if [ -f public/packs-test/js/application.js ]; then
+            echo "✓ application.js exists"
+            echo "Size: $(stat -c%s public/packs-test/js/application.js) bytes"
+            echo "First 200 chars:"
+            head -c 200 public/packs-test/js/application.js
+            echo ""
+          else
+            echo "✗ application.js NOT FOUND!"
+          fi
       - name: Install Chrome and Chromedriver
         run: |
           sudo apt-get update
@@ -88,7 +105,14 @@ jobs:
           chromium-browser --version
           which chromium-browser
           which chromedriver
+          echo ""
+          echo "Verifying Chromium can start in headless mode..."
+          chromium-browser --headless --disable-gpu --dump-dom about:blank | head -5
       # Run tests
+      - name: Check Rails can serve assets
+        run: |
+          echo "Testing if Rails can find webpack assets..."
+          bundle exec rails runner "puts Shakapacker.manifest.lookup!('application.js')"
       - name: Run tests
         env:
           HEADLESS: true
