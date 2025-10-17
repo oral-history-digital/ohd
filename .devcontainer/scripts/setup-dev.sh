@@ -174,8 +174,10 @@ else
 fi
 
 # 8) JS install and precompile
-log_message "Precompiling webpack packs…"
+log_message "Precompiling webpack packs for initial setup…"
 bundle exec bin/shakapacker
+log_message "  ℹ️  Note: With webpack-dev-server running, Rails will use port 3035 for HMR"
+log_message "  ℹ️  These precompiled assets are only used as fallback if dev server is down"
 
 # 9) Quick Solr indexing for immediate development use
 log_message "Performing quick Solr indexing for immediate development use…"

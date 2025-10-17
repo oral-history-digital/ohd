@@ -21,6 +21,23 @@
     // Ports to forward
     "forwardPorts": [3000, 8983, 3035],
 
+    // Port attributes for better HMR WebSocket support
+    "portsAttributes": {
+        "3000": {
+            "label": "Rails App",
+            "onAutoForward": "notify"
+        },
+        "3035": {
+            "label": "Webpack Dev Server",
+            "onAutoForward": "silent",
+            "protocol": "http"
+        },
+        "8983": {
+            "label": "Solr",
+            "onAutoForward": "ignore"
+        }
+    },
+
     // VS Code client customizations
     "customizations": {
         "vscode": {

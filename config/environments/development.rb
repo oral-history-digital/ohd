@@ -76,5 +76,7 @@ Rails.application.configure do
     "test1.oral-history.localhost",
     "test2.oral-history.localhost",
     "test3.oral-history.localhost",
+    /.*\.oral-history\.localhost/,  # Allow any subdomain
+    IPAddr.new("0.0.0.0/0")  # Allow webpack-dev-server connections
   ]
 end

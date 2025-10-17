@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Restart webpack dev server
+# Usage: bin/restart_webpack
+
+LOG_DIR="/workspace/.devcontainer/logs"
+mkdir -p "$LOG_DIR"
+
+echo "🔄 Restarting webpack dev server..."
+
+# Kill any existing webpack processes (don't fail if none found)
+# Use shakapacker pattern to avoid killing this script
+if pgrep -f "shakapacker-dev-server" > /dev/null; then
+    echo "  Stopping existing webpack processes..."
+    pkill -f "shakapacker-dev-server" 2>/dev/null || true
+    sleep 2
+fi
+
+# Clean old zombie processes (don't fail if none found)
+if ps aux | grep -E "webpack.*defunct" > /dev/null 2>&1; then
+    echo "  Cleaning up zombie processes..."
+    pkill -9 -f "shakapacker-dev-server" 2>/dev/null || true
+    sleep 1
+fi
+
+# Clear log
+> "$LOG_DIR/webpack-dev-server.log"
+
+# Start webpack dev server in background
+echo "  Starting webpack dev server..."
+cd /workspace
+nohup bin/shakapacker-dev-server < /dev/null >> "$LOG_DIR/webpack-dev-server.log" 2>&1 &
+WEBPACK_PID=$!
+disown $WEBPACK_PID 2>/dev/null || true
+
+echo "  Webpack dev server started (PID: $WEBPACK_PID)"
+echo "  Waiting for compilation (this may take 30-60 seconds)..."
+
+# Wait up to 60 seconds for webpack to be ready
+for i in {1..30}; do
+    if curl -s http://localhost:3035 > /dev/null 2>&1; then
+        echo ""
+        echo "✅ Webpack dev server is ready on http://localhost:3035"
+        echo ""
+        echo "📊 Monitor logs:"
+        echo "  tail -f $LOG_DIR/webpack-dev-server.log"
+        echo ""
+        echo "🔥 Hot reloading is now active!"
+        exit 0
+    fi
+    
+    # Check if process is still running (might be compiling)
+    if ! ps -p $WEBPACK_PID > /dev/null 2>&1; then
+        echo ""
+        echo "❌ Webpack process died during startup"
+        echo ""
+        echo "Last 50 lines of log:"
+        tail -50 "$LOG_DIR/webpack-dev-server.log"
+        exit 1
+    fi
+    
+    sleep 2
+    echo -n "."
+done
+
+echo ""
+echo "⚠️  Webpack dev server is still compiling after 60 seconds"
+echo "This is normal on first start or after major changes"
+echo ""
+echo "Check status with:"
+echo "  tail -f $LOG_DIR/webpack-dev-server.log"
+echo "  ps aux | grep webpack"
+exit 0
