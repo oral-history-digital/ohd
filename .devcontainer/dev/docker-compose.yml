@@ -1,98 +1,100 @@
 services:
-    app:
-        ports:
-            - '3000:3000'
-            - '3035:3035'
-        # Override the base entrypoint and run a long-lived sleep so VS Code can attach
-        entrypoint: ['sleep', 'infinity']
-        platform: linux/amd64
-        build:
-            context: ../..
-            dockerfile: .devcontainer/Dockerfile
-        volumes:
-            - ../..:/workspace:cached
-            # Exclude node_modules from the mount to prevent host/container conflicts
-            - /workspace/node_modules
-            - /workspace/tmp/cache
-            # Use a named volume for bundle to persist gems across container restarts
-            - bundle-data:/workspace/vendor/bundle
-            # Create a volume for logs
-            - setup-logs:/workspace/.devcontainer/logs
-        extra_hosts:
-            - 'portal.oral-history.localhost:127.0.0.1'
-            - 'test.portal.oral-history.localhost:127.0.0.1'
-        depends_on:
-            db:
-                condition: service_healthy
-            solr:
-                condition: service_healthy
-        environment:
-            # Critical environment settings
-            RAILS_ENV: development
-            RACK_ENV: development
-            NODE_ENV: development
-            DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-            # Point to Solr container default core
-            SOLR_URL: http://solr:8983/solr/default
-            SOLR_HOST: solr
-            SOLR_PORT: 8983
-            DISABLE_SPRING: true
+  app:
+    ports:
+      - '3000:3000'
+      - '3035:3035'
+    # Override the base entrypoint and run a long-lived sleep so VS Code can attach
+    entrypoint: ['sleep', 'infinity']
+    platform: linux/amd64
+    build:
+      context: ../..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../..:/workspace:cached
+      # Exclude node_modules from the mount to prevent host/container conflicts
+      - /workspace/node_modules
+      - /workspace/tmp/cache
+      # Use a named volume for bundle to persist gems across container restarts
+      - bundle-data:/workspace/vendor/bundle
+      # Create a volume for logs
+      - setup-logs:/workspace/.devcontainer/logs
+    extra_hosts:
+      - 'portal.oral-history.localhost:127.0.0.1'
+      - 'test.portal.oral-history.localhost:127.0.0.1'
+    depends_on:
+      db:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+    environment:
+      # Critical environment settings
+      RAILS_ENV: development
+      RACK_ENV: development
+      NODE_ENV: development
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      # Point to Solr container default core
+      SOLR_URL: http://solr:8983/solr/default
+      SOLR_HOST: solr
+      SOLR_PORT: 8983
+      DISABLE_SPRING: true
+      # Webpack dev server settings for HMR
+      SHAKAPACKER_DEV_SERVER_HOST: 0.0.0.0
 
-    db:
-        image: mariadb:10.5
-        restart: unless-stopped
-        volumes:
-            - db-data:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: ohd_development
-        ports:
-            - '3306:3306'
-        healthcheck:
-            test:
-                [
-                    'CMD',
-                    'mysql',
-                    '-h',
-                    'db',
-                    '-u',
-                    'root',
-                    '-prootpassword',
-                    '-e',
-                    'SELECT 1',
-                ]
-            interval: 10s
-            timeout: 5s
-            retries: 5
+  db:
+    image: mariadb:10.5
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ohd_development
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysql',
+          '-h',
+          'db',
+          '-u',
+          'root',
+          '-prootpassword',
+          '-e',
+          'SELECT 1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-    solr:
-        image: solr:8
-        ports:
-            - '8983:8983'
-        volumes:
-            - solr-data:/var/solr
-            - ../../solr/configsets:/var/solr/data/configsets
-            - ../scripts/setup-solr.sh:/usr/local/bin/setup-solr.sh:ro
-            - ../../:/workspace:ro
-        environment:
-            - SOLR_HEAP=512m
-        # Use the external script for setup
-        entrypoint: ['/bin/bash', '/usr/local/bin/setup-solr.sh']
-        healthcheck:
-            test:
-                [
-                    'CMD',
-                    'bash',
-                    '-c',
-                    'curl -s "http://localhost:8983/solr/admin/cores?action=STATUS&wt=json" | grep -q "\"default\"" && curl -s "http://localhost:8983/solr/default/admin/ping?wt=json" | grep -q "\"status\":\"OK\""',
-                ]
-            interval: 15s
-            timeout: 10s
-            retries: 12
-            start_period: 90s
+  solr:
+    image: solr:8
+    ports:
+      - '8983:8983'
+    volumes:
+      - solr-data:/var/solr
+      - ../../solr/configsets:/var/solr/data/configsets
+      - ../scripts/setup-solr.sh:/usr/local/bin/setup-solr.sh:ro
+      - ../../:/workspace:ro
+    environment:
+      - SOLR_HEAP=512m
+    # Use the external script for setup
+    entrypoint: ['/bin/bash', '/usr/local/bin/setup-solr.sh']
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'bash',
+          '-c',
+          'curl -s "http://localhost:8983/solr/admin/cores?action=STATUS&wt=json" | grep -q "\"default\"" && curl -s "http://localhost:8983/solr/default/admin/ping?wt=json" | grep -q "\"status\":\"OK\""',
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 12
+      start_period: 90s
 
 volumes:
-    db-data:
-    solr-data:
-    setup-logs:
-    bundle-data:
+  db-data:
+  solr-data:
+  setup-logs:
+  bundle-data:
