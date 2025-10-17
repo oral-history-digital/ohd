@@ -76,7 +76,7 @@ class Segment < ApplicationRecord
     Language.all.pluck(:code).each do |code|
       code_short = code.split('-').first
       text :"text_#{code_short}", stored: true do
-        text_translations["#{code_short}-public"] or nil
+        text_translations["#{code_short}-subtitle"] or text_translations["#{code_short}-public"] or nil
       end
 
       text :"mainheading_#{code_short}", stored: true do
