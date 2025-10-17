@@ -12,6 +12,9 @@ jobs:
     env:
       RAILS_ENV: test
       JAVA_HOME: /usr/lib/jvm/temurin-8-jdk-amd64
+      HEADLESS: true
+      RETRY: true
+      CI: true
     steps:
       - name: Update packages
         run: sudo apt-get update
@@ -42,6 +45,8 @@ jobs:
         run: gem install foreman
       - name: Install node modules
         run: yarn
+      - name: Compile webpack assets for test environment
+        run: RAILS_ENV=test NODE_ENV=test bin/shakapacker
       - name: Copy datacite.yml file
         run: cp config/datacite.example.yml config/datacite.yml
       - name: Copy database.yml file
@@ -71,6 +76,22 @@ jobs:
           echo "Solr not ready yet, retrying... ($i)"
           sleep 1
           done
+      - name: Wait for Rails server to be ready
+        run: |
+          echo "Waiting for Rails server at http://127.0.0.1:3000 ..."
+          for i in $(seq 1 60); do
+            if curl -sS "http://127.0.0.1:3000" >/dev/null 2>&1; then
+              echo "Rails server is up"
+              break
+            fi
+            echo "Rails server not ready yet, retrying... ($i)"
+            sleep 1
+          done
+      - name: Verify webpack assets exist
+        run: |
+          echo "Checking for compiled webpack assets..."
+          ls -lh public/packs-test/
+          test -f public/packs-test/manifest.json && echo "manifest.json exists" || echo "ERROR: manifest.json missing!"
       - name: Run tests
         run: bin/test
       - name: Upload Capybara screenshots
