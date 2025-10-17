@@ -61,8 +61,6 @@ jobs:
         run: sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
       - name: Add test domain to /etc/hosts
         run: sudo echo "127.0.0.1 test.portal.oral-history.localhost" | sudo tee -a /etc/hosts
-      - name: Start server
-        run: bin/start_app &
       - name: Start search engine
         run: bin/start_search &
       - name: Wait for Solr (localhost) to be ready
@@ -75,17 +73,6 @@ jobs:
           fi
           echo "Solr not ready yet, retrying... ($i)"
           sleep 1
-          done
-      - name: Wait for Rails server to be ready
-        run: |
-          echo "Waiting for Rails server at http://127.0.0.1:3000 ..."
-          for i in $(seq 1 60); do
-            if curl -sS "http://127.0.0.1:3000" >/dev/null 2>&1; then
-              echo "Rails server is up"
-              break
-            fi
-            echo "Rails server not ready yet, retrying... ($i)"
-            sleep 1
           done
       - name: Verify webpack assets exist
         run: |
