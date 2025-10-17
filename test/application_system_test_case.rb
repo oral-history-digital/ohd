@@ -17,6 +17,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
       options.add_argument('--disable-dev-shm-usage')
       options.add_argument('--no-sandbox')
       options.add_argument('--disable-gpu')
+      
+      # In CI, use Chromium instead of Chrome
+      if ENV['CI'] == 'true'
+        options.binary = '/usr/bin/chromium-browser'
+      end
     end
   else
     driven_by :selenium, using: :firefox, screen_size: [1400, 1400]
