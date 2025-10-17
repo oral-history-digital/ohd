@@ -12,6 +12,9 @@ jobs:
     env:
       RAILS_ENV: test
       JAVA_HOME: /usr/lib/jvm/temurin-8-jdk-amd64
+      HEADLESS: true
+      RETRY: true
+      CI: true
     steps:
       - name: Update packages
         run: sudo apt-get update
@@ -42,6 +45,8 @@ jobs:
         run: gem install foreman
       - name: Install node modules
         run: yarn
+      - name: Compile webpack assets for test environment
+        run: RAILS_ENV=test NODE_ENV=test bin/shakapacker
       - name: Copy datacite.yml file
         run: cp config/datacite.example.yml config/datacite.yml
       - name: Copy database.yml file
@@ -56,8 +61,6 @@ jobs:
         run: sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
       - name: Add test domain to /etc/hosts
         run: sudo echo "127.0.0.1 test.portal.oral-history.localhost" | sudo tee -a /etc/hosts
-      - name: Start server
-        run: bin/start_app &
       - name: Start search engine
         run: bin/start_search &
       - name: Wait for Solr (localhost) to be ready
@@ -71,8 +74,59 @@ jobs:
           echo "Solr not ready yet, retrying... ($i)"
           sleep 1
           done
+      - name: Verify webpack assets exist
+        run: |
+          echo "Checking for compiled webpack assets..."
+          ls -lh public/packs-test/
+          test -f public/packs-test/manifest.json && echo "manifest.json exists" || echo "ERROR: manifest.json missing!"
+          echo ""
+          echo "Checking JavaScript files..."
+          ls -lh public/packs-test/js/
+          echo ""
+          echo "Manifest.json contents:"
+          cat public/packs-test/manifest.json | head -40
+          echo ""
+          echo "Checking if application.js exists and is not empty..."
+          if [ -f public/packs-test/js/application.js ]; then
+            echo "✓ application.js exists"
+            echo "Size: $(stat -c%s public/packs-test/js/application.js) bytes"
+            echo "First 200 chars:"
+            head -c 200 public/packs-test/js/application.js
+            echo ""
+          else
+            echo "✗ application.js NOT FOUND!"
+          fi
+      - name: Install Chrome and Chromedriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
+      - name: Verify Chrome
+        run: |
+          chromium-browser --version
+          which chromium-browser
+          which chromedriver
+          echo ""
+          echo "Verifying Chromium can start in headless mode..."
+          chromium-browser --headless --disable-gpu --dump-dom about:blank | head -5
+      # Run tests
+      - name: Check Rails can serve assets
+        run: |
+          echo "Testing if Rails can find webpack assets..."
+          bundle exec rails runner "puts Shakapacker.manifest.lookup!('application.js')"
       - name: Run tests
+        env:
+          HEADLESS: true
+          RETRY: true
+          CI: true
+          CHROME_BIN: /usr/bin/chromium-browser
         run: bin/test
+      - name: Upload Capybara screenshots
+        if: always() # always run, even if tests failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: capybara-screenshots
+          path: tmp/screenshots
+          if-no-files-found: ignore
 
   # TODO: Enable linting again when issues are fixed
   # lint:

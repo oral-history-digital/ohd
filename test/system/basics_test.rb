@@ -15,12 +15,20 @@ class BasicsTest < ApplicationSystemTestCase
 
   test "visiting the project 'home' page" do
     visit '/'
+    
+    print_page_debug_info("HOME PAGE") if ENV['CI'] == 'true'
+    
     assert_text 'This is the test archive of the oral history digital project'
   end
 
   test "login as admin" do
     visit '/'
+    
+    print_page_debug_info("BEFORE LOGIN") if ENV['CI'] == 'true'
+    
     login_as 'alice@example.com'
+    
+    print_page_debug_info("AFTER LOGIN") if ENV['CI'] == 'true'
 
     within '.SessionButtons' do
       click_on 'Account'

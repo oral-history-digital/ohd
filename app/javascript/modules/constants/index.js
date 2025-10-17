@@ -39,7 +39,6 @@ export const OHD_DOMAINS = {
 
 export const GITHUB_URL = 'https://github.com/oral-history-digital/ohd';
 
-
 export const ALPHA2_TO_ALPHA3 = {
     de: 'ger',
     en: 'eng',
@@ -90,6 +89,7 @@ export const ALPHA3_TO_ALPHA2 = {
 
 const ANALYTICS_URLS = {
     development: '//localhost:8080/',
+    test: '//localhost:8080/', // Not used in test mode, but prevents undefined errors
     staging: '//metrics.oral-history.digital/',
     production: '//metrics.oral-history.digital/',
 };

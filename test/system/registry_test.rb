@@ -3,7 +3,36 @@ require "application_system_test_case"
 class RegistryTest < ApplicationSystemTestCase
   setup do
     login_as 'alice@example.com'
+    
+    print_page_debug_info("AFTER LOGIN") if ENV['CI'] == 'true'
+    
     sleep 5
+    
+    print_page_debug_info("AFTER 5 SECOND WAIT") if ENV['CI'] == 'true'
+    
+    # Try to find the button with more details
+    if ENV['CI'] == 'true'
+      puts "\n--- Searching for 'Editing interface' button/link ---"
+      all_buttons = page.all('button, a, input[type="button"], input[type="submit"]')
+      puts "Total interactive elements found: #{all_buttons.length}"
+      puts "First 20 buttons/links:"
+      all_buttons.first(20).each_with_index do |elem, i|
+        text = elem.text.strip
+        puts "  #{i+1}. #{elem.tag_name}: '#{text[0..50]}' (visible: #{elem.visible?})"
+      end
+      
+      # Check if we can find it with different selectors
+      if page.has_link?('Editing interface', visible: false)
+        puts "✓ Found 'Editing interface' link (but might be hidden)"
+      elsif page.has_button?('Editing interface', visible: false)
+        puts "✓ Found 'Editing interface' button (but might be hidden)"
+      else
+        puts "✗ Could not find 'Editing interface' at all"
+        puts "\n--- Full page HTML ---"
+        puts page.html
+      end
+    end
+    
     click_on 'Editing interface'
     visit '/en/registry_entries'
   end
