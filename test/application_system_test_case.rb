@@ -30,6 +30,12 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     driven_by :selenium, using: :firefox, screen_size: [1400, 1400]
   end
   
+  # Helper to wait for React to finish loading
+  def wait_for_react
+    # Wait for React DevTools message or a known React-mounted element
+    has_css?('.Layout', wait: 10) # Wait up to 10 seconds for main layout
+  end
+  
   # Helper to print browser console logs
   def print_browser_logs
     if ENV['CI'] == 'true' && page.driver.browser.respond_to?(:logs)
