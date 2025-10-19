@@ -1,0 +1,14 @@
+<%# expects: class (String), current_project (object), current_user (object), locale (String), OHD_DOMAINS (Hash) %>
+<% if current_project&.display_ohd_link %>
+  <% access_token_param = current_user&.access_token ? "access_token=#{current_user.access_token}" : nil %>
+  <% url = "#{OHD_DOMAINS[Rails.env]}\/#{locale}" %>
+  <% url_with_token = access_token_param ? "#{url}?#{access_token_param}" : url %>
+  <%# Use anchor if current_project.archive_domain, else local path %>
+  <% if current_project.archive_domain %>
+    <a title="OHD" href="<%= url_with_token %>" class="<%= ['u-mr'].compact.join(' ') %>">
+      <img class="SiteHeader-logo" src="/ohd-logo-gr.png" alt="" />
+    </a>
+  <% else %>
+    <%= link_to image_tag("/ohd-logo-gr.png", class: "SiteHeader-logo", alt: ""), "/#{locale}", title: "OHD", class: ['u-mr'].compact.join(' ') %>
+  <% end %>
+<% end %>

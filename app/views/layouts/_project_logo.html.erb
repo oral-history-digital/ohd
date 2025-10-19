@@ -1,0 +1,4 @@
+<%# expects: logos (Hash), default_locale (String), class (String), locale (String), path_base (String) %>
+<%= link_to project_path(current_project), class: ["Link"].compact.join(" "), title: t("home") do %>
+  <%= image_tag(current_project&.logo&.file.variant(resize: [200, 200]), class: "SiteHeader-logo", alt: "Collection logo") %>
+<% end %>

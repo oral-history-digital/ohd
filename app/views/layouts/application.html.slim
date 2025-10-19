@@ -19,6 +19,13 @@ html
     title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
 
   body
+    body class="Layout #{'sidebar-is-visible' if @sidebar_visible} #{'is-sticky' if @scroll_position_below_threshold}"
     .layout-indicator style="display: block;"
 
+    = render 'layouts/site_header'
+
+    /= render 'layouts/messages', logged_in_at: @logged_in_at, notifications: []
+
     = yield
+
+    = render 'layouts/site_footer'

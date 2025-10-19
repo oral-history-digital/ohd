@@ -1,0 +1,12 @@
+<header class="SiteHeader">
+  <%# OHDLink equivalent - Make this a partial or helper as needed %>
+  <%= render 'layouts/ohd_link', class: 'SiteHeader-link SiteHeader-link--site' %>
+
+  <% if current_project && Rails.env != 'development' %>
+    <%# ProjectLogo equivalent - Make this a partial or helper as needed %>
+    <%= render 'layouts/project_logo', 
+          class: 'SiteHeader-link SiteHeader-link--collection', 
+          logos: current_project.logos, 
+          default_locale: current_project.default_locale %>
+  <% end %>
+</header>

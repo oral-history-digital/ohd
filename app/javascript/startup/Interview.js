@@ -1,10 +1,13 @@
 import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
-import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
+import { Sidebar } from 'modules/sidebar';
+//import { LayoutContainer} from 'modules/layout';
+                //<LayoutContainer scrollPositionBelowThreshold={false}>
+                //</LayoutContainer>
+//import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
+                //<LayoutContainer scrollPositionBelowThreshold={useScrollBelowThreshold()}>
 
-//import { AnalyticsProvider } from 'modules/analytics';
-            //<AnalyticsProvider project={project}>
-            //</AnalyticsProvider>
+import { AnalyticsProvider } from 'modules/analytics';
 import { fetcher } from 'modules/api';
 import { ThemeProvider } from 'modules/layout';
 import archiveStore from './archiveStore';
@@ -15,9 +18,10 @@ const Interview = (props) => (
     <SWRConfig value={{ fetcher }}>
         <Provider store={archiveStore(props)}>
             <ThemeProvider />
-                <LayoutContainer scrollPositionBelowThreshold={useScrollBelowThreshold()}>
+            <AnalyticsProvider>
                     <InterviewContainer />
-                </LayoutContainer>
+                    <Sidebar className="Layout-sidebar" />
+            </AnalyticsProvider>
         </Provider>
     </SWRConfig>
 );

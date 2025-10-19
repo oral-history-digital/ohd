@@ -1,0 +1,31 @@
+<%# expects: current_project (object), locale (String) %>
+<% identifier = current_project&.shortname %>
+<% if identifier == "zwar" && locale == "de" %>
+  <div>
+    <p>Weitere Angebote:</p>
+    <div style="display: inline-block">
+      <img src="<%= asset_path('zwar-logo-red_de.png') %>" style="padding-right: 10px; border-right: 2px solid #9f403f; float: left; margin-right: 8px; width: 36%;" />
+      <select class="Link" style="color: #9f403f; margin-top: 5px; font-size: 14px;" onchange="window.open(this.value, '_blank')">
+        <option selected>Archiv: Vollständige Interviews</option>
+        <option value="https://zwangsarbeit-archiv.de/">Infos: Geschichte und Projekt</option>
+        <option value="https://lernen-mit-interviews.de/">Bildung: Lernen mit Interviews</option>
+        <option value="https://forum.lernen-mit-interviews.de/">Forum: Für Lehrende</option>
+      </select>
+    </div>
+    <p></p>
+    <p>Eine Kooperation der Stiftung "Erinnerung, Verantwortung und Zukunft" mit der Freien Universität Berlin</p>
+  </div>
+<% elsif identifier == "campscapes" %>
+  <div>
+    <p>
+      Created by Freie Universität Berlin within the HERA-funded current_project Accessing
+      Campscapes. Inclusive Strategies for Using European Conflicted Heritage
+    </p>
+    <p>
+      <a class="Link" href="https://ec.europa.eu/programmes/horizon2020/en">
+        This current_project has received funding from the European Union's Horizon 2020
+        research and innovation programme under grant agreement No 649307
+      </a>
+    </p>
+  </div>
+<% end %>

@@ -1,0 +1,31 @@
+<footer>
+  <ul class='footer-bottom-nav'>
+    <% unless current_project.grant_project_access_instantly || current_project.grant_access_without_login %>
+      <li>
+        <%= link_to "#{t('conditions')} (#{current_project.id})", conditions_path, title: "#{t('conditions')} (#{current_project.id})" %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to "#{t('conditions')} (OHD)", ohd_conditions_url, title: "#{t('conditions')} (OHD)", target: "_blank", rel: "noreferrer" %>
+    </li>
+    <li>
+      <%= link_to t('privacy_protection'), ohd_privacy_protection_url, title: t('privacy_protection'), target: "_blank", rel: "noreferrer" %>
+    </li>
+    <li>
+      <%= link_to t('legal_info'), legal_info_path, class: "u-ml-tiny" %>
+    </li>
+    <li>
+      <%= link_to t('contact'), contact_path, class: "u-ml-tiny" %>
+    </li>
+    <% if current_project.external_links %>
+      <% current_project.external_links.each do |link| %>
+        <li>
+          <%= link_to link.name(I18n.locale), link.url(I18n.locale), class: "Link", target: "_blank", rel: "noreferrer" %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+  <p><%= current_project.name(I18n.locale) if current_project&.name %></p>
+  <%= render 'layouts/project_footer', project: current_project, locale: I18n.locale %>
+  <%= render 'layouts/sponsor_logos', project: current_project, locale: I18n.locale if current_project&.sponsor_logos %>
+</footer>

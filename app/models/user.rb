@@ -150,6 +150,10 @@ class User < ApplicationRecord
     self.default_locale || project&.default_locale || self.projects.last&.default_locale || :de
   end
 
+  def access_token
+    access_tokens.first
+  end
+
   def full_name
     [ self.first_name, self.last_name ].join(' ').strip
   end
@@ -159,14 +163,6 @@ class User < ApplicationRecord
       [TranslationValue.for("user.appellation.#{self.appellation}", I18n.locale), self.full_name].compact.join(' ')
     else
       self.full_name
-    end
-  end
-
-  def preferred_username
-    if respond_to?(:full_name) && full_name.present?
-      full_name.parameterize  # turns "John Doe" into "john-doe"
-    else
-      email.split('@').first.parameterize  # fallback: "j.doe@example.com" → "j-doe"
     end
   end
 

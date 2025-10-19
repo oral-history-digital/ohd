@@ -1,20 +1,17 @@
 /* global railsMode */
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
+//import { useEffect } from 'react';
+//import PropTypes from 'prop-types';
+//import classNames from 'classnames';
+//import { Helmet } from 'react-helmet';
+//import { useSelector } from 'react-redux';
 
 //import { ErrorBoundary } from 'modules/react-toolbox';
 //import { ResizeWatcherContainer } from 'modules/user-agent';
 //import { Sidebar } from 'modules/sidebar';
-import { useProject } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { getPlayerSize } from 'modules/media-player';
-import FetchAccountContainer from './FetchAccountContainer';
-//import SiteHeader from './SiteHeader';
-//import SiteFooter from './SiteFooter';
-//import MessagesContainer from './MessagesContainer';
+//import { useProject } from 'modules/routes';
+//import { useI18n } from 'modules/i18n';
+//import { getPlayerSize } from 'modules/media-player';
+//import FetchAccountContainer from './FetchAccountContainer';
 //import BurgerButton from './BurgerButton';
 //import BackToTopButton from './BackToTopButton';
 //import {
@@ -30,50 +27,52 @@ import FetchAccountContainer from './FetchAccountContainer';
     //AfterResetPassword,
     //ConfirmNewZwarTosPopup,
 //} from 'modules/user';
-import { OHD_DOMAINS } from 'modules/constants';
-import { isMobile } from 'modules/user-agent';
+//import { OHD_DOMAINS } from 'modules/constants';
+//import { isMobile } from 'modules/user-agent';
 
-export default function Layout({
-    scrollPositionBelowThreshold,
-    sidebarVisible,
-    children,
-    toggleSidebar,
-    loggedInAt,
-    projectsStatus,
-    bannerActive,
-    hideBanner,
-    fetchData,
-}) {
-    const playerSize = useSelector(getPlayerSize);
-    const { project } = useProject();
-    const { locale } = useI18n();
+
+export default function Layout({children}) {
+    return children;
+        //<>
+            //{children}
+            //<Sidebar className="Layout-sidebar" />
+        //</>
+    //);
+}
+
+//export default function Layout({
+    //scrollPositionBelowThreshold,
+    //sidebarVisible,
+    //children,
+    //toggleSidebar,
+    //loggedInAt,
+    //projectsStatus,
+    //bannerActive,
+    //hideBanner,
+    //fetchData,
+//}) {
+    //const playerSize = useSelector(getPlayerSize);
+    //const { project } = useProject();
+    //const { locale } = useI18n();
 
     //function handleBannerClose() {
         //hideBanner();
         //doNotShowBannerAgainThisSession();
     //}
 
-    let titleBase = 'Oral-History.Digital';
-    if (project) {
-        titleBase = project?.display_name?.[locale] || project?.name?.[locale];
-    }
+    //let titleBase = 'Oral-History.Digital';
+    //if (project) {
+        //titleBase = project?.display_name?.[locale] || project?.name?.[locale];
+    //}
 
-    const faviconUrl = project?.shortname
-        ? `/favicons/favicon-${project?.shortname}.ico`
-        : '/favicon.ico';
+    //const faviconUrl = project?.shortname
+        //? `/favicons/favicon-${project?.shortname}.ico`
+        //: '/favicon.ico';
 
-    return children;
+    //return children;
     //return (
         //<ResizeWatcherContainer>
-            //<div
-                //className={classNames('Layout', {
-                    //'sidebar-is-visible': sidebarVisible,
-                    //'is-sticky': scrollPositionBelowThreshold,
-                    //'is-small-player': playerSize === 'small',
-                    //'is-medium-player': playerSize === 'medium',
-                    //'is-mobile': isMobile(),
-                //})}
-            //>
+            //<div>
         //{ false && <>
                 //<FetchAccountContainer />
                 //<AfterRegisterPopup />
@@ -108,36 +107,36 @@ export default function Layout({
         //{false && <Sidebar className="Layout-sidebar" />}
                 //</ErrorBoundary>
 
-        //{false && <BurgerButton}
+        //{false && <BurgerButton
                     //className="Layout-sidebarToggle"
                     //open={sidebarVisible}
                     //onClick={() => toggleSidebar(sidebarVisible)}
-                ///>
+                ///>}
 
         //{false && <BackToTopButton
                     //visible={scrollPositionBelowThreshold}
                     //fullscreen={!sidebarVisible}
                 ///>}
 
-        //{ false && {bannerActive && bannerHasNotBeenHiddenByUser() && (
+        //{ false && bannerActive && bannerHasNotBeenHiddenByUser() && (
                     //<Banner onClose={handleBannerClose} />
-                //)}}
+                //)}
             //</div>
         //</ResizeWatcherContainer>
     //);
-}
+//}
 
-Layout.propTypes = {
-    scrollPositionBelowThreshold: PropTypes.bool.isRequired,
-    loggedInAt: PropTypes.number,
-    projectsStatus: PropTypes.object,
-    sidebarVisible: PropTypes.bool,
-    bannerActive: PropTypes.bool.isRequired,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
-    toggleSidebar: PropTypes.func.isRequired,
-    hideBanner: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
-};
+//Layout.propTypes = {
+    //scrollPositionBelowThreshold: PropTypes.bool.isRequired,
+    //loggedInAt: PropTypes.number,
+    //projectsStatus: PropTypes.object,
+    //sidebarVisible: PropTypes.bool,
+    //bannerActive: PropTypes.bool.isRequired,
+    //children: PropTypes.oneOfType([
+        //PropTypes.arrayOf(PropTypes.node),
+        //PropTypes.node,
+    //]),
+    //toggleSidebar: PropTypes.func.isRequired,
+    //hideBanner: PropTypes.func.isRequired,
+    //fetchData: PropTypes.func.isRequired,
+//};

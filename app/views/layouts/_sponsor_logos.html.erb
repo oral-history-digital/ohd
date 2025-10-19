@@ -1,0 +1,16 @@
+<div class='home-content-logos'>
+  <% current_project.sponsor_logos.each do |logo| %>
+    <%= link_to logo.href,
+      class: "Link",
+      target: "_blank",
+      rel: "noreferrer",
+      title: logo.title do
+    %>
+      <% if logo.file.present? %>
+        <%= image_tag(logo.file.variant(resize: [200, 200]),
+                      class: "SponsorLogo", alt: logo[:name]) %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
