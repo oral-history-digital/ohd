@@ -7,7 +7,7 @@ ARG USER_UID=1000
 ARG USER_GID=1000
 RUN groupadd --gid $USER_GID $USERNAME \
   && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-  && apt-get update && apt-get install -y sudo xvfb wget gnupg unzip curl \
+  && apt-get update && apt-get install -y sudo xvfb x11vnc novnc websockify wget gnupg unzip curl \
   && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get update && apt-get install -y google-chrome-stable \
