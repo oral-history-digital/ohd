@@ -142,6 +142,7 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'john@example.com'
 
     assert_text 'The test archive'
+    sleep 1
     click_on 'Request activation for this archive'
 
     # the following fields should not be filled to trigger validation errors:
@@ -150,6 +151,7 @@ class BasicsTest < ApplicationSystemTestCase
     #select 'School project'
     #fill_in 'Specification of research intention', with: 'details details'
     #check 'Terms of Use', visible: :all
+    sleep 1
     click_on 'Submit activation request'
     assert_text 'Institution: Please fill'
     assert_text 'Occupation: Please select'
@@ -264,7 +266,8 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    click_on 'Mario R.'
+    sleep 1
+    click_on 'R., Mario'
     click_on 'About the interview'
     click_on 'eng'
 
@@ -301,7 +304,8 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    click_on 'Mario R.'
+    sleep 1
+    click_on 'R., Mario'
 
     row = find('.Segment', text: /My name is Mario Rossi/)
     button = row.find("button[title='Bookmark segment']", visible: false)
@@ -320,6 +324,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Segments'
     assert_text 'interesting part'
     click_on 'Show segment'
+    sleep 1
     assert_text 'My name is Mario Rossi'
   end
 
@@ -389,7 +394,8 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    click_on 'Mario R.'
+    sleep 1
+    click_on 'R., Mario'
 
     click_on 'Editing interface'
 
