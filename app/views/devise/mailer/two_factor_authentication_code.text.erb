@@ -1,0 +1,59 @@
+<% case @resource.default_locale.to_sym || I18n.locale
+   when :en -%>
+Hello <%= @resource.display_name %>,
+
+You have requested a two factor authentication code for the Oral-History.Digital platform.
+
+<%= @code %>
+
+
+With best regards
+
+Oral-History. Digital
+<% when :ru -%>
+Добрый день, <%= @resource.display_name %>,
+
+<%= @code %>
+
+С уважением,
+
+Oral-History.Digital
+<% when :uk -%>
+Доброго дня, <%= @resource.display_name %>,
+
+<%= @code %>
+
+З найкращими побажаннями
+
+Усна історія. цифровий
+<% when :el -%>
+Καλημέρα <%= @resource.display_name %>,
+
+<%= @code %>
+
+Με εκτίμηση,
+
+Oral-History.Digital
+
+<% when :es -%>
+Hola <%= @resource.display_name %>,
+
+Ha solicitado un codigo 2FA para la plataforma Oral-History.Digital.
+
+<%= @code %>
+
+Saludos cordiales,
+
+Oral-History.Digital
+
+<% else -%>
+Guten Tag <%= @resource.display_name %>,
+
+Sie haben einen zwei Faktor Authentifizierungscode für die Plattform Oral-History.Digital angefordert.
+
+<%= @code %>
+
+Mit freundlichen Grüßen,
+
+Oral-History.Digital 
+<% end -%>

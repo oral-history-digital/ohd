@@ -12,14 +12,7 @@ class PasswordsController < Devise::PasswordsController
 
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
-      if Devise.sign_in_after_reset_password
-        flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
-        set_flash_message!(:notice, flash_message)
-        resource.after_database_authentication
-        sign_in(resource_name, resource)
-      else
-        set_flash_message!(:notice, :updated_not_active)
-      end
+      set_flash_message!(:notice, :updated_not_active)
       render json: {
         success: true,
         redirect_url: after_resetting_password_path_for(resource),
@@ -33,9 +26,7 @@ class PasswordsController < Devise::PasswordsController
 
   protected
     def after_resetting_password_path_for(resource)
-      last_token = resource.access_tokens.last.token
-      url = resource.pre_register_location
-      last_token ? "#{url}#{url.include?('?') ? '&' : '?'}access_token=#{last_token}" : url
+      resource.pre_register_location
     rescue
       "#{current_project.domain_with_optional_identifier}/#{params[:locale]}"
     end

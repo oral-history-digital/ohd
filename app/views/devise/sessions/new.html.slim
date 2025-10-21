@@ -18,6 +18,12 @@ h2= t('login')
     .form-input
       = f.password_field :password, autocomplete: "current-password", class: 'Input'
 
+  .form-group
+    .form-label
+      = f.label :otp_attempt, class: 'FormLabel'
+    .form-input
+      = f.password_field :otp_attempt, class: 'Input'
+
   .Form-footer.u-mt
     = f.submit t(:login), class: 'Button Button--primaryAction'
 

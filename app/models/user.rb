@@ -3,12 +3,27 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable
-  devise :database_authenticatable,
+  devise :two_factor_authenticatable,
          :registerable,
          :confirmable,
          :recoverable,
          :trackable,
          :validatable
+
+  before_save :generate_two_factor_secret_if_needed
+  def generate_two_factor_secret_if_needed
+    if self.otp_required_for_login_changed? &&
+      self.otp_required_for_login && self.otp_secret.blank?
+      self.otp_secret = User.generate_otp_secret
+      self.changed_to_otp_at = Time.now
+    end
+  end
+
+  # OTP via email
+  #has_one_time_password(encrypted: true)
+  #def send_two_factor_authentication_code(code)
+    #CustomDeviseMailer.two_factor_authentication_code(self, code).deliver_later
+  #end
 
   def after_database_authentication
     if !confirmed?

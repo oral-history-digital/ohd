@@ -58,4 +58,7 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :email_changed, opts)
   end
 
+  def two_factor_authentication_code(user, code)
+    devise_mail(user, :two_factor_authentication_code, code: code)
+  end
 end

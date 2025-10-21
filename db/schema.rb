@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_07_082113) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_20_151234) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -176,6 +176,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_082113) do
     t.boolean "use_in_details_view"
     t.integer "order"
     t.boolean "use_in_export", default: false
+    t.boolean "display_on_landing_page", default: false, null: false
   end
 
   create_table "contributions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -1176,6 +1177,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_082113) do
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
     t.boolean "do_not_track", default: false, null: false
+    t.string "otp_secret"
+    t.integer "consumed_timestep"
+    t.boolean "otp_required_for_login"
+    t.datetime "changed_to_otp_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end

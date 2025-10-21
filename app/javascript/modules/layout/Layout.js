@@ -29,6 +29,7 @@ import {
     AfterRequestProjectAccessPopup,
     CorrectUserDataPopup,
     AfterResetPassword,
+    AfterEnable2FAPopup,
     ConfirmNewZwarTosPopup,
 } from 'modules/user';
 import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
@@ -110,6 +111,7 @@ export default function Layout({
                 <AfterRequestProjectAccessPopup />
                 <CorrectUserDataPopup />
                 <AfterResetPassword />
+                <AfterEnable2FAPopup />
                 <ConfirmNewZwarTosPopup />
                 <Helmet
                     defaultTitle={titleBase}

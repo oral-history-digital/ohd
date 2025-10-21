@@ -127,6 +127,11 @@ export default function RegisterForm({
                 type: 'password',
                 validate: function(v){return v && v.length > 6 && v === password},
             },
+            {
+                elementType: 'input',
+                attribute: 'otp_required_for_login',
+                type: 'checkbox',
+            },
         ];
 
         const newsletterElement = [

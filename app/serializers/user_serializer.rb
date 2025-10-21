@@ -3,6 +3,9 @@ class UserSerializer < ApplicationSerializer
     :first_name,
     :last_name,
     :email,
+    :otp_qrcode,
+    :otp_required_for_login,
+    :changed_to_otp_at, 
     :admin,
     :tos_agreement,
     :created_at,
@@ -68,7 +71,29 @@ class UserSerializer < ApplicationSerializer
   end
 
   def access_token
-    object.access_tokens.last&.token
+    instance_options[:is_current_user] ?
+      object.access_tokens.last&.token :
+      nil
+  end
+
+  def otp_qrcode
+    if instance_options[:is_current_user] && object.otp_required_for_login
+      qr = RQRCode::QRCode.new(
+        object.otp_provisioning_uri(
+          object.email,
+          issuer: "OralHistoryDigtal#{Rails.env.production? ? '' : " (#{Rails.env})"}"
+        )
+      )
+      svg = qr.as_svg(
+        offset: 0,
+        color: '000',
+        shape_rendering: 'crispEdges',
+        module_size: 6,
+        standalone: true
+      )
+    else
+      nil
+    end
   end
 
   def receive_newsletter
