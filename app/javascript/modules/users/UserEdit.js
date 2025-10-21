@@ -52,7 +52,7 @@ export default function UserEdit ({
         }
 
         if (detail === 'country') {
-            return value[locale];
+            return value ? t(`countries.${value}`) : '';
         }
 
         return value;
