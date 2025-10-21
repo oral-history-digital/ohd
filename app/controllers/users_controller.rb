@@ -26,9 +26,20 @@ class UsersController < ApplicationController
     user.update(user_params)
 
     if params[:user][:workflow_state] == 'remove'
-      render json: {id: params[:id], data_type: 'users', data: {id: params[:id], workflow_state: 'removed'}}
+      render json: {
+        id: params[:id],
+        data_type: 'users',
+        data: {
+          id: params[:id],
+          workflow_state: 'removed'
+        }
+      }
     else
-      render json: {id: user.id, data_type: 'users', data: ::UserSerializer.new(user, is_current_user: user == current_user)}
+      render json: {
+        id: user == current_user ? 'current' : user.id,
+        data_type: 'users',
+        data: ::UserSerializer.new(user,
+        is_current_user: user == current_user)}
     end
   end
 
