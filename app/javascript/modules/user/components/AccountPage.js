@@ -49,7 +49,7 @@ export default function AccountPage() {
                             </Modal>
                         </div>
                         <div className="edit-account-icon">
-                            { user.otp_required_for_login &&
+                            { user?.otp_required_for_login &&
                                 <TwoFAPopup showDialogInitially={false} />
                             }
                          </div>

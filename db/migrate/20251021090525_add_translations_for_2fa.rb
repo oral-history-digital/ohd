@@ -1,14 +1,14 @@
 class AddTranslationsFor2fa < ActiveRecord::Migration[8.0]
   def up
     TranslationValue.create(
-      key: 'otp_attempt',
+      key: 'activerecord.attributes.user.otp_attempt',
       translations_attributes: [
-        { value: 'Authentifizierungscode', locale: :de },
-        { value: 'Authentication code', locale: :en },
+        { value: 'Authentifizierungscode (nur falls Sie 2FA aktiviert haben)', locale: :de },
+        { value: 'Authentication code (only if You have activated 2FA)', locale: :en },
       ]
     )
     TranslationValue.create(
-      key: 'user.otp_required_for_login',
+      key: 'activerecord.attributes.user.otp_required_for_login',
       translations_attributes: [
         { value: 'Einmal-Passwort erforderlich (2FA)', locale: :de },
         { value: 'Require one time password (2FA)', locale: :en },

@@ -8,21 +8,27 @@ h2= t('login')
 
   .form-group
     .form-label
-      = f.label :email, class: 'FormLabel'
+      = f.label :email,
+        TranslationValue.for('activerecord.attributes.user.email', locale: locale),
+        class: 'FormLabel'
     .form-input
       = f.email_field :email, autofocus: true, autocomplete: "email", class: 'Input'
 
   .form-group
     .form-label
-      = f.label :password, class: 'FormLabel'
+      = f.label :password,
+        TranslationValue.for('activerecord.attributes.user.password', locale: locale),
+        class: 'FormLabel'
     .form-input
       = f.password_field :password, autocomplete: "current-password", class: 'Input'
 
   .form-group
     .form-label
-      = f.label :otp_attempt, class: 'FormLabel'
+      = f.label :otp_attempt,
+        TranslationValue.for('activerecord.attributes.user.otp_attempt', locale: locale),
+        class: 'FormLabel'
     .form-input
-      = f.password_field :otp_attempt, class: 'Input'
+      = f.text_field :otp_attempt, class: 'Input'
 
   .Form-footer.u-mt
     = f.submit t(:login), class: 'Button Button--primaryAction'
