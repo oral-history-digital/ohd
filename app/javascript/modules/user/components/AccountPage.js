@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import UserDetailsContainer from './UserDetailsContainer';
 import UserDetailsFormContainer from './UserDetailsFormContainer';
 import UserProjects from './UserProjects';
+import TwoFAPopup from './TwoFAPopup';
 
 export default function AccountPage() {
     const { t } = useI18n();
@@ -47,6 +48,11 @@ export default function AccountPage() {
                                 )}
                             </Modal>
                         </div>
+                        <div className="edit-account-icon">
+                            { user.otp_required_for_login &&
+                                <TwoFAPopup showDialogInitially={false} />
+                            }
+                         </div>
                     </div>
 
                     <div className="user-registration boxes">
