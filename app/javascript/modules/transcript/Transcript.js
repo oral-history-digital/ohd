@@ -6,7 +6,7 @@ import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { isSegmentActive } from 'modules/interview-helpers';
-import { usePeople } from 'modules/person';
+import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import SegmentContainer from './components/SegmentContainer';
@@ -34,7 +34,8 @@ export default function Transcript({
         popupType: null,
         openReference: null,
     });
-    const { data: people, isLoading: peopleAreLoading } = usePeople();
+    const { data: people, isLoading: peopleAreLoading } =
+        useInterviewContributors(interview.id);
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const isEditor = useIsEditor();
