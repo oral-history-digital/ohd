@@ -7,15 +7,18 @@ ARG USER_UID=1000
 ARG USER_GID=1000
 RUN groupadd --gid $USER_GID $USERNAME \
   && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-  && apt-get update && apt-get install -y sudo xvfb wget gnupg unzip curl \
+  && apt-get update && apt-get install -y sudo xvfb x11vnc novnc websockify wget gnupg unzip curl \
   && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get update && apt-get install -y google-chrome-stable \
-  && wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" \
-  && unzip /tmp/chromedriver.zip -d /tmp \
-  && mv /tmp/chromedriver /usr/local/bin/ \
+  && CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+') \
+  && echo "Detected Chrome version: $CHROME_VERSION" \
+  && wget -q -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" \
+  && unzip -q /tmp/chromedriver.zip -d /tmp \
+  && mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/ \
   && chmod +x /usr/local/bin/chromedriver \
-  && rm /tmp/chromedriver.zip \
+  && rm -rf /tmp/chromedriver* \
+  && chromedriver --version \
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
   && rm -rf /var/lib/apt/lists/*
