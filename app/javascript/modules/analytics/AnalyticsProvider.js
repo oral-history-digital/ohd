@@ -13,6 +13,11 @@ const analyticsSiteId = metaTagContent ? Number.parseInt(metaTagContent) : null;
 
 // At the moment, only projects with own domains are tracked.
 export default function AnalyticsProvider({ children }) {
+
+    if (['development', 'test'].indexOf(railsMode) > -1) {
+        return children;
+    }
+
     const instance = useMemo(() => {
         const result = createInstance({
             urlBase: ANALYTICS_URL_BASE,
@@ -21,10 +26,6 @@ export default function AnalyticsProvider({ children }) {
         });
         return result;
     }, []);
-
-    if (['development', 'test'].indexOf(railsMode) > -1) {
-        return children;
-    }
 
     return <MatomoProvider value={instance}>{children}</MatomoProvider>;
 }

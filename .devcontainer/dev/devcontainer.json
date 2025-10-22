@@ -19,7 +19,7 @@
     "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
 
     // Ports to forward
-    "forwardPorts": [3000, 8983, 3035],
+    "forwardPorts": [3000, 8983, 3035, 6080], // 6080 for noVNC
 
     // VS Code client customizations
     "customizations": {

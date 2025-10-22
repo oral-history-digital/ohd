@@ -232,6 +232,16 @@ and HEADLESS):
 
     bin/test
 
+### Viewing System Tests in Browser
+
+When running system tests in the dev container, you can view the browser in real-time via noVNC:
+
+1. Start VNC services: `bin/vnc start`
+2. Run tests with visible browser: `HEADLESS=false bundle exec rails test test/system`
+3. Open http://localhost:6080/vnc.html in your host browser to watch the tests
+
+Use `bin/vnc status` to check service status, or `bin/vnc stop` to stop the services when done.
+
 ## Development Guidelines
 
 ### Versioning and release candidates
