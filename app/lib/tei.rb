@@ -117,7 +117,7 @@ class Tei
               content: gesture_desc,
               index_from: combined_index,
               index_to: combined_index + part_index_carryover - 1,
-              type: 'kinsesic'
+              type: 'kinesic'
             }
             comments.concat(part_comments)
             ordinary_text.concat(part_ordinary_text)
@@ -135,7 +135,7 @@ class Tei
           ordinary_text << {
             content: [:desc, part[/<g\s*\((.*)\)>/,1], {rend: part}],
             index: combined_index,
-            type: 'kinsesic'
+            type: 'kinesic'
           }
         when /^<n\((.*)\)>$/
           #<note rend="<n(1989)>">1989</note>
@@ -193,6 +193,12 @@ class Tei
             type: 'w',
             attributes: {type: 'ellipsis'}
           }
+        when /^<\w+\(.*\) (.*)>$/
+          content = $1.strip
+          part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index + 1).tokenized_text
+          ordinary_text.concat(part_ordinary_text)
+          comments.concat(part_comments)
+          index_carryover = part_index_carryover + 1
         when /^<.*>$/
           comments << {
             content: part,
