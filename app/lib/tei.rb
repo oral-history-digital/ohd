@@ -193,12 +193,18 @@ class Tei
             type: 'w',
             attributes: {type: 'ellipsis'}
           }
-        when /^<\w+\(.*\) (.*)>$/
-          content = $1.strip
-          part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, start_index + 1).tokenized_text
+        when /^<(\w+)\((.*)\) (.*)>$/
+          content = $3.strip
+          part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, combined_index).tokenized_text
           ordinary_text.concat(part_ordinary_text)
+          comments << {
+            content: $2.strip,
+            index_from: combined_index,
+            index_to: combined_index + part_index_carryover - 1,
+            type: $1.strip
+          }
           comments.concat(part_comments)
-          index_carryover = part_index_carryover + 1
+          index_carryover = part_index_carryover
         when /^<.*>$/
           comments << {
             content: part,
