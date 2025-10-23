@@ -40,9 +40,9 @@ class Tei
             type: 'pause',
             attributes: {rend: part, dur: "PT#{part[/(\d+)/,1]}.0S"}
           }
-        when /\{?\[.*\]\}?/
+        when /\{?\[(.*)\]\}?/, /\{\((.*)\)\}/, /\{(.*)\}/
           ordinary_text << {
-            content: [:desc, part[/\{?\[(.*)\]\}?/,1], {rend: part}],
+            content: [:desc, $1, {rend: part}],
             index: combined_index,
             type: 'incident',
           }
