@@ -122,17 +122,19 @@ class Tei
           comments.concat(part_comments)
           index_carryover = part_index_carryover
         when /^<.*>$/
+          from, to = get_from_to(parts, combined_index, index)
           comments << {
             content: part,
-            index_from: combined_index,
-            index_to: combined_index + 1,
+            index_from: from,
+            index_to: to,
             type: part[/<(\w+).*/,1]
           }
         when /^[\{|\[]{1,2}[^\{\[\]\}]*[\}|\]]{1,2}$/
+          from, to = get_from_to(parts, combined_index, index)
           comments << {
             content: part,
-            index_from: combined_index - 1,
-            index_to: combined_index,
+            index_from: from,
+            index_to: to,
             type: "za"
           }
         when /^(\?|\.|!|,|:|\-)$/
@@ -274,4 +276,15 @@ class Tei
     
     [ordinary_text_parts, index_carryover]
   end
+
+  def get_from_to(parts, combined_index, index)
+    if index == parts.length - 1
+      from = to = combined_index -1
+    else
+      from = combined_index
+      to = combined_index + 1
+    end
+    [from, to]
+  end
+
 end
