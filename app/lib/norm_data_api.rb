@@ -7,7 +7,7 @@ class NormDataApi
     @from = from
     @place_type = place_type
     @geo_filter = geo_filter
-    @api = api.to_sym || :gnd
+    @api = api&.to_sym || :gnd
   end
 
   def process

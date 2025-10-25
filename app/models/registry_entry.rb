@@ -400,6 +400,11 @@ class RegistryEntry < ApplicationRecord
     to_s(locale)
   end
 
+  def api_search_term=(term)
+    binding.pry
+    NormDataApiStatistic.log_search_term(term, self)
+  end
+
   def parent_id=(pid)
     unless parents.map(&:id).include? pid.to_i
       parents << RegistryEntry.find(pid)

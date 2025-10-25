@@ -22,6 +22,7 @@ class RegistryEntriesController < ApplicationController
 
   def create
     authorize RegistryEntry
+    binding.pry
     @registry_entry = RegistryEntry.create(registry_entry_params)
     @registry_entry.project_id = current_project.id
     @registry_entry.save validate: false # there is an ancestor validation from somewhere producing invalid entries
@@ -237,11 +238,12 @@ class RegistryEntriesController < ApplicationController
       :longitude,
       :has_geo_coords,
       :delete_persistent_values,
+      :api_search_term,
       norm_data_attributes: [
         :id,
         :registry_entry_id,
         :norm_data_provider_id,
-        :nid
+        :nid,
       ],
       registry_names_attributes: [
         :id,
