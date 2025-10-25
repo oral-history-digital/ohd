@@ -277,32 +277,25 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def translations_for_locale(locale = nil)
-    target_locale = (locale || I18n.locale).to_s
-    
-    Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}-#{target_locale}") do
-      Rails.logger.info "Fetching translations for locale: #{target_locale}"
-      
-      result = TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
-        # Get translations for the target locale only
-        translations_for_key = translation_value.translations.inject({}) do |locale_mem, translation|
-          # Only include the target locale - convert symbol to string for comparison
-          if translation.locale.to_s == target_locale
-            locale_mem[translation.locale.to_s] = translation.value
-          end
-          locale_mem
-        end
-        
-        # Only add to the result if we found a translation for the target locale
-        if translations_for_key.present?
-          mem[translation_value.key] = translations_for_key
-        end
-        mem
-      end
-      
-      Rails.logger.info "Translation keys found for #{target_locale}: #{result.keys.count}"
-      result
-    end
+   def translations_for_locale(locale = nil)       
+    target_locale = (locale || I18n.locale).to_s    
+            
+    Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}-#{target_locale}") do    
+      Rails.logger.info "Fetching translations for locale: #{target_locale}"    
+          
+      result = TranslationValue.all.includes(:translations).                                                                        
+        where("translation_value_translations.locale": target_locale).                                        
+        inject({}) do |mem, translation_value|    
+        mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|    
+          mem2[translation.locale] = translation.value                 
+          mem2      
+        end       
+        mem      
+      end    
+          
+      Rails.logger.info "Translation keys found for #{target_locale}: #{result.keys.count}"    
+      result    
+    end    
   end
 
   def country_keys
