@@ -401,8 +401,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def api_search_term=(term)
-    binding.pry
-    NormDataApiStatistic.log_search_term(term, self)
+    # dummy setter for accepting api_search_term from forms
   end
 
   def parent_id=(pid)

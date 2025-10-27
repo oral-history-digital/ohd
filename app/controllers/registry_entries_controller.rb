@@ -22,11 +22,12 @@ class RegistryEntriesController < ApplicationController
 
   def create
     authorize RegistryEntry
-    binding.pry
     @registry_entry = RegistryEntry.create(registry_entry_params)
     @registry_entry.project_id = current_project.id
     @registry_entry.save validate: false # there is an ancestor validation from somewhere producing invalid entries
     current_project.touch
+
+    NormdataApiStatistic.new.log_search_term(params[:registry_entry][:api_search_term], @registry_entry)
 
     respond_to do |format|
       format.json do
@@ -63,6 +64,8 @@ class RegistryEntriesController < ApplicationController
     @registry_entry.update registry_entry_params
     @registry_entry.touch
     current_project.touch
+
+    NormdataApiStatistic.new.log_search_term(params[:registry_entry][:api_search_term], @registry_entry)
 
     respond_to do |format|
       format.json do
