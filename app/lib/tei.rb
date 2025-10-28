@@ -14,6 +14,7 @@ class Tei
 
     types_map = {
       'g' => 'kinesic',
+      'm' => 'kinesic',
       's' => 'vocal',
       'v' => 'vocal',
     }
@@ -79,11 +80,11 @@ class Tei
             attributes: {type: 'latching'}
           }
           index += 1 # Skip the next part since it's already included
-        when "(???)"
+        when /^(\(\?\?\?\)|<\?>)$/
           ordinary_text << {
             index: combined_index,
             type: 'gap',
-            attributes: {rend: '(???)', reason: 'unintelligible'}
+            attributes: {rend: $1, reason: 'unintelligible'}
           }
         when /^\(.+\?\)$/
           # Handle uncertainty tags with a question (like (By now?))
@@ -109,7 +110,7 @@ class Tei
             type: 'w',
             attributes: {type: 'ellipsis'}
           }
-        when /^<(\w+)\s*\(([^)]+)\)\s+(.+)>$/
+        when /^<(\w+)\s*\(([^)]+)\)\s*(.+)>$/
           content = $3.strip
           part_ordinary_text, part_comments, part_index_carryover = Tei.new(content, combined_index).tokenized_text
           ordinary_text.concat(part_ordinary_text)
