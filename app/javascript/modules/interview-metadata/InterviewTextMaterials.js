@@ -76,7 +76,7 @@ export default function InterviewTextMaterials({
                         <StatusForm
                             data={interview}
                             scope='interview'
-                            attribute='public_attributes[transcript]'
+                            attribute='public_transcript'
                             value={interview.properties?.public_attributes?.transcript?.toString() === 'true'}
                         />
                     </p>

@@ -535,7 +535,7 @@ class InterviewsController < ApplicationController
 
   def interview_params
     params.require(:interview).
-      permit(
+      permit([
       "project_id",
       "collection_id",
       "archive_id",
@@ -561,6 +561,7 @@ class InterviewsController < ApplicationController
       public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type_id, :speaker_designation],
       translations_attributes: [:locale, :id, :observations, :description]
+      ] + Interview::ATTRIBUTES_WITH_STATUS.map{|att| "public_#{att}" } 
     )
   end
 
