@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.11] - 2025-10-28
+### Fixed
+- fix: updating status on transcript (public/unshared)
+- tests for transcript status update
+
+## [1.1.10] - 2025-10-27
+### Added
+- statistics table for norm data api
+
 ## [1.1.9] - 2025-10-17
 
 -   fix: frontend tests ([#31](https://github.com/oral-history-digital/ohd/pull/31))
