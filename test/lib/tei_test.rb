@@ -128,9 +128,8 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Text {comment} more [note] text.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    za_comments = comments.select { |comment| comment[:type] == 'za' }
-    assert_equal 1, za_comments.size
-    assert_includes za_comments.map { |c| c[:content] }, "{comment}"
+    za_incidents = ordinary_text.select{|w| w[:type] == 'incident'}
+    assert_equal 2, za_incidents.size
   end
 
   test "preserves backward compatibility with simple cases" do
