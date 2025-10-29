@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import { CollectionLink } from 'modules/interview-metadata';
+import { FacetLink } from 'modules/interview-metadata';
 import { useSearchParams } from 'modules/query-string';
 import { Checkbox } from 'modules/ui';
 
@@ -45,7 +45,10 @@ export default function FacetValue({
                     {facetValue.count}
                 </span>
                 {facetName === 'collection_id' && (
-                    <CollectionLink collectionId={id} />
+                    <FacetLink id={id} type="collection"/>
+                )}
+                {facetName === 'project_id' && (
+                    <FacetLink id={id} type="archive"/>
                 )}
             </label>
         </div>
