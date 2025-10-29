@@ -12,8 +12,10 @@ Doorkeeper.configure do
     if current_user
       current_user
     else
+      # store location in Devise's expected key for the :user scope
+      store_location_for(:user, request.fullpath)
+
       redirect_to main_app.new_user_session_path(locale: I18n.locale)
-      # warden.authenticate!(scope: :user)
       nil
     end
   end

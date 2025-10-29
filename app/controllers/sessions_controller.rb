@@ -37,9 +37,17 @@ class SessionsController < Devise::SessionsController
   def create
     self.resource = warden.authenticate!(auth_options)
     set_flash_message!(:notice, :signed_in)
+
+    path = stored_location_for(resource)
+
     sign_in(resource_name, resource)
     yield resource if block_given?
-    respond_with resource, location: url_with_access_token
+
+    if path
+      respond_with resource, location: path
+    else
+      respond_with resource, location: url_with_access_token
+    end
   rescue BCrypt::Errors::InvalidHash
     respond_with(resource, location: url_with_access_token) do |format|
       format.json {
