@@ -250,6 +250,11 @@ class Segment < ApplicationRecord
       text("#{code}-public") # only search in public texts
       # TODO: enable searching over original texts in admin-mode
     end
+    define_method "text_#{code}=" do |value|
+      Globalize.with_locale(code) do
+        self.text = value
+      end
+    end
   end
 
   def text_orig

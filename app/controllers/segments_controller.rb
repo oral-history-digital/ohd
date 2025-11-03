@@ -51,13 +51,17 @@ class SegmentsController < ApplicationController
   private
 
   def segment_params
-    params.require(:segment).permit(
+    required = params.require(:segment)
+    dynamic_keys = required.keys.grep(/^text_/)
+
+    required.permit(
       :text,
       :mainheading,
       :subheading,
       :speaker_id,
       :locale,
-      translations_attributes: [:locale, :text, :id, :mainheading, :subheading]
+      *dynamic_keys,
+      translations_attributes: [:locale, :text, :id, :mainheading, :subheading],
     )
   end
 end

@@ -22,7 +22,7 @@ export default function SegmentForm({
     const textDir = checkTextDir(segment?.text[contentLocale] || '');
 
     useEffect(() => {
-        const textarea = document.getElementById('segment_text');
+        const textarea = document.getElementById(`segment_text_${contentLocale}`);
         textarea.setAttribute('dir', textDir);
         textarea.style.direction = textDir;
         textarea.style.textAlign = textDir === 'rtl' ? 'right' : 'left';
@@ -59,7 +59,8 @@ export default function SegmentForm({
                         value:
                             segment?.text[contentLocale] ||
                             segment?.text[`${contentLocale}-public`],
-                        attribute: 'text',
+                        attribute: `text_${contentLocale}`,
+                        labelKey: 'activerecord.attributes.segment.text',
                     },
                 ]}
             />
