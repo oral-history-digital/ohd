@@ -88,7 +88,6 @@ export default function MaterialForm({
             scope="material"
             helpTextCode="material_form"
             oldOnSubmit={(params) => {
-                console.log(params);
                 dispatch(submitData({ projectId, project, locale }, params));
             }}
             onSubmit={createOrUpdateMaterial}

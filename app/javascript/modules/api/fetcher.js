@@ -1,5 +1,5 @@
 export default async function fetcher(url) {
-    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    const res = await fetch(url, { headers: { Accept: 'application/json' } });
 
     // If the status code is not in the range 200-299,
     // we still try to parse and throw it.
@@ -9,7 +9,7 @@ export default async function fetcher(url) {
         try {
             error.info = await res.json();
         } catch (e) {
-            console.log(`Fetcher error: ${e.message}`);
+            console.error(`Fetcher error: ${e.message}`);
         }
         error.status = res.status;
         throw error;

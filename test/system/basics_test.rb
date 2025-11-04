@@ -134,6 +134,7 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'john@example.com'
 
     assert_text 'The test archive'
+    sleep 1
     click_on 'Request activation for this archive'
 
     # the following fields should not be filled to trigger validation errors:
@@ -142,6 +143,7 @@ class BasicsTest < ApplicationSystemTestCase
     #select 'School project'
     #fill_in 'Specification of research intention', with: 'details details'
     #check 'Terms of Use', visible: :all
+    sleep 1
     click_on 'Submit activation request'
     assert_text 'Institution: Please fill'
     assert_text 'Occupation: Please select'
@@ -256,7 +258,8 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    click_on 'Mario R.'
+    sleep 1
+    click_on 'R., Mario'
     click_on 'About the interview'
     click_on 'eng'
 
@@ -293,7 +296,8 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    click_on 'Mario R.'
+    sleep 1
+    click_on 'R., Mario'
 
     row = find('.Segment', text: /My name is Mario Rossi/)
     button = row.find("button[title='Bookmark segment']", visible: false)
@@ -312,6 +316,7 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Segments'
     assert_text 'interesting part'
     click_on 'Show segment'
+    sleep 1
     assert_text 'My name is Mario Rossi'
   end
 
@@ -381,7 +386,8 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    click_on 'Mario R.'
+    sleep 1
+    click_on 'R., Mario'
 
     click_on 'Editing interface'
 
@@ -403,5 +409,26 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Add annotation'
     find('.public-DraftEditor-content').send_keys('my annotation')
     click_on 'Submit'
+  end
+
+  test 'change transcript status' do
+    Interview.reindex
+    DataHelper.test_media
+
+    interview = Interview.first
+    visit '/'
+    login_as 'alice@example.com'
+    visit "/en/interviews/#{interview.archive_id}"
+    click_on 'Editing interface'
+    click_on 'About the interview'
+    within '#transcript-downloads' do
+      click_on 'Edit'
+    end
+    uncheck 'Public', visible: :all
+    click_on 'Submit'
+
+    sleep 2
+    interview.reload
+    assert interview.properties[:public_attributes]['transcript'] == 'false'
   end
 end
