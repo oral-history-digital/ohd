@@ -77,7 +77,7 @@ class AddUniqueIndexToTranslations < ActiveRecord::Migration[8.0]
       photo
       metadata_field
       registry_reference_type
-      registry_names
+      registry_name
       language
       collection
       contribution_type
