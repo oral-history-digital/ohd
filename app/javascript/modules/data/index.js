@@ -80,6 +80,7 @@ export {
 } from './selectors/projectSelectors';
 
 export { default as getGroupedContributions } from './selectors/getGroupedContributions';
+export { default as getProjectAccessStatus } from './selectors/getProjectAccessStatus';
 
 export { default as Fetch } from './components/Fetch';
 export { default as ProjectShow } from './components/ProjectShow';

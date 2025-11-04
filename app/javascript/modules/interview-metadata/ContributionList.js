@@ -7,7 +7,6 @@ import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import ContributionGroup from './ContributionGroup';
 import ContributionContainer from './ContributionContainer';
-import { useProjectAccessStatus } from 'modules/auth';
 import { useProject } from 'modules/routes';
 
 export default function ContributionList({
@@ -15,9 +14,8 @@ export default function ContributionList({
     interview,
 }) {
     const { project } = useProject();
-    const { projectAccessGranted } = useProjectAccessStatus(project);
     const { data: people, isLoading } = usePeople();
-    const groupedContributions = useSelector(getGroupedContributions(projectAccessGranted));
+    const groupedContributions = useSelector(getGroupedContributions);
     const { isAuthorized } = useAuthorization();
 
     if (isLoading || typeof people === 'undefined') {
