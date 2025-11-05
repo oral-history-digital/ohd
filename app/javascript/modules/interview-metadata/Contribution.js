@@ -43,19 +43,29 @@ export default function Contribution({
         invalidateAllPersonData();
     };
 
-    const wrappedSubmitData = (props, params, opts = {}, callback) => {
+    const wrappedSubmitData = (props, params, optsOrCallback, callback) => {
+        // Handle different call signatures where 3rd param can be opts object or callback function
+        // TODO: Review legacy usage and standardize on one signature
+        let opts = {};
+        let actualCallback = callback;
+
+        if (typeof optsOrCallback === 'function') {
+            actualCallback = optsOrCallback;
+        } else if (optsOrCallback !== undefined) {
+            opts = optsOrCallback;
+        }
+
         // Create a wrapped callback that invalidates cache
         const wrappedCallback = (...args) => {
             invalidateInterviewContributors();
             invalidateAllPersonData();
-            if (typeof callback === 'function') {
-                callback(...args);
+            if (typeof actualCallback === 'function') {
+                actualCallback(...args);
             }
         };
 
         return submitData(props, params, opts, wrappedCallback);
     };
-
     if (!person) {
         return <Spinner small />;
     }
