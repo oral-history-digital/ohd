@@ -4,8 +4,12 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { Spinner } from 'modules/spinners';
+import {
+    useInvalidateInterviewContributors,
+    useInvalidateAllPersonData,
+} from 'modules/person';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { Modal } from 'modules/ui';
 import ContributionFormContainer from './ContributionFormContainer';
 
@@ -13,6 +17,7 @@ export default function Contribution({
     person,
     archiveId,
     contribution,
+    interview,
     withSpeakerDesignation = false,
     deleteData,
     submitData,
@@ -20,6 +25,10 @@ export default function Contribution({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const { isAuthorized } = useAuthorization();
+    const invalidateInterviewContributors = useInvalidateInterviewContributors(
+        interview?.id
+    );
+    const invalidateAllPersonData = useInvalidateAllPersonData();
 
     const destroy = () => {
         deleteData(
@@ -29,8 +38,22 @@ export default function Contribution({
             'contributions',
             contribution.id
         );
-        // TODO: Mutate after getting response.
-        //mutatePersonWithAssociations(person.id);
+        // Invalidate caches after deletion
+        invalidateInterviewContributors();
+        invalidateAllPersonData();
+    };
+
+    const wrappedSubmitData = (props, params, opts = {}, callback) => {
+        // Create a wrapped callback that invalidates cache
+        const wrappedCallback = (...args) => {
+            invalidateInterviewContributors();
+            invalidateAllPersonData();
+            if (typeof callback === 'function') {
+                callback(...args);
+            }
+        };
+
+        return submitData(props, params, opts, wrappedCallback);
     };
 
     if (!person) {
@@ -65,7 +88,7 @@ export default function Contribution({
                                 <ContributionFormContainer
                                     data={contribution}
                                     withSpeakerDesignation
-                                    submitData={submitData}
+                                    submitData={wrappedSubmitData}
                                     onSubmit={close}
                                     onCancel={close}
                                 />
@@ -104,6 +127,7 @@ export default function Contribution({
 Contribution.propTypes = {
     person: PropTypes.object,
     contribution: PropTypes.object.isRequired,
+    interview: PropTypes.object,
     withSpeakerDesignation: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,

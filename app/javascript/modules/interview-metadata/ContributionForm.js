@@ -4,7 +4,12 @@ import { FaUserPlus, FaUserEdit } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePeople, PersonForm } from 'modules/person';
+import {
+    usePeople,
+    PersonForm,
+    useInvalidateInterviewContributors,
+    useInvalidateAllPersonData,
+} from 'modules/person';
 import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 
@@ -26,6 +31,15 @@ export default function ContributionForm({
 }) {
     const { t } = useI18n();
     const [selectedPersonId, setSelectedPersonId] = useState(null);
+    const invalidateInterviewContributors = useInvalidateInterviewContributors(
+        interview?.id
+    );
+    const invalidateAllPersonData = useInvalidateAllPersonData();
+
+    const invalidateContributersCache = () => {
+        invalidateInterviewContributors();
+        invalidateAllPersonData();
+    };
 
     // TODO: Use a more lightweight hook that only fetches necessary data for the form
     const { data: peopleData, isLoading } = usePeople();
@@ -114,6 +128,10 @@ export default function ContributionForm({
                             index
                         );
                     }
+
+                    // Invalidate the interview contributors cache when a new contribution is added
+                    invalidateContributersCache();
+
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -135,7 +153,14 @@ export default function ContributionForm({
                     }
                 >
                     {(close) => (
-                        <PersonForm onSubmit={close} onCancel={close} />
+                        <PersonForm
+                            onSubmit={() => {
+                                // Invalidate contributors cache when a person is created/updated
+                                invalidateContributersCache();
+                                close();
+                            }}
+                            onCancel={close}
+                        />
                     )}
                 </Modal>
                 {selectedPerson && (
@@ -156,7 +181,11 @@ export default function ContributionForm({
                             {(close) => (
                                 <PersonForm
                                     data={selectedPerson}
-                                    onSubmit={close}
+                                    onSubmit={() => {
+                                        // Invalidate contributors cache when a person is updated
+                                        invalidateContributersCache();
+                                        close();
+                                    }}
                                     onCancel={close}
                                 />
                             )}

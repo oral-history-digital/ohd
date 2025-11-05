@@ -41,6 +41,7 @@ export default function ContributionList({
                                 <ContributionContainer
                                     person={people[contribution.person_id]}
                                     contribution={contribution}
+                                    interview={interview}
                                     key={contribution.id}
                                     withSpeakerDesignation={
                                         withSpeakerDesignation
