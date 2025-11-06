@@ -30,7 +30,7 @@ export default function Contribution({
     );
     const invalidateAllPersonData = useInvalidateAllPersonData();
 
-    const destroy = () => {
+    const destroy = async () => {
         deleteData(
             { locale, projectId, project },
             'interviews',
@@ -39,8 +39,8 @@ export default function Contribution({
             contribution.id
         );
         // Invalidate caches after deletion
-        invalidateInterviewContributors();
-        invalidateAllPersonData();
+        await invalidateInterviewContributors();
+        await invalidateAllPersonData();
     };
     if (!person) {
         return <Spinner small />;

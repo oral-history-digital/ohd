@@ -36,9 +36,29 @@ export default function ContributionForm({
     );
     const invalidateAllPersonData = useInvalidateAllPersonData();
 
-    const invalidateContributorsCache = () => {
-        invalidateInterviewContributors();
-        invalidateAllPersonData();
+    const invalidateContributorsCache = async () => {
+        await invalidateInterviewContributors();
+        await invalidateAllPersonData();
+    };
+
+    const handleContributionSubmit = (params) => {
+        if (typeof submitData === 'function') {
+            const callback = async () => {
+                // Invalidate cache AFTER the server has processed the change
+                await invalidateContributorsCache();
+                if (typeof onSubmit === 'function') onSubmit();
+            };
+            // Pass callback to submitData that will be called after the API request completes
+            submitData({ locale, projectId, project }, params, {}, callback);
+        } else {
+            // Fallback if submitData is not provided
+            if (typeof onSubmit === 'function') onSubmit();
+        }
+    };
+
+    const handlePersonSubmitted = async (close) => {
+        await invalidateContributorsCache();
+        close();
     };
 
     // TODO: Use a more lightweight hook that only fetches necessary data for the form
@@ -123,17 +143,7 @@ export default function ContributionForm({
                     interview_id: interview?.id,
                     workflow_state: data ? data.workflow_state : 'public',
                 }}
-                onSubmit={(params) => {
-                    if (typeof submitData === 'function') {
-                        submitData({ locale, projectId, project }, params);
-                    }
-
-                    invalidateContributorsCache();
-
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
-                    }
-                }}
+                onSubmit={handleContributionSubmit}
                 onSubmitCallback={onSubmitCallback}
                 onCancel={onCancel}
                 formClasses={formClasses}
@@ -152,10 +162,7 @@ export default function ContributionForm({
                 >
                     {(close) => (
                         <PersonForm
-                            onSubmit={() => {
-                                invalidateContributorsCache();
-                                close();
-                            }}
+                            onSubmit={() => handlePersonSubmitted(close)}
                             onCancel={close}
                         />
                     )}
@@ -178,11 +185,9 @@ export default function ContributionForm({
                             {(close) => (
                                 <PersonForm
                                     data={selectedPerson}
-                                    onSubmit={() => {
-                                        // Invalidate contributors cache when a person is updated
-                                        invalidateContributorsCache();
-                                        close();
-                                    }}
+                                    onSubmit={() =>
+                                        handlePersonSubmitted(close)
+                                    }
                                     onCancel={close}
                                 />
                             )}
