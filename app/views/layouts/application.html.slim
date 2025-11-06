@@ -19,7 +19,8 @@ html
     title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
 
   body
-    body class="Layout #{'sidebar-is-visible' if @sidebar_visible} #{'is-sticky' if @scroll_position_below_threshold}"
+    body class="Layout sidebar-is-visible"
+    /body class="Layout #{'sidebar-is-visible' if @sidebar_visible} #{'is-sticky' if @scroll_position_below_threshold}"
     .layout-indicator style="display: block;"
 
     = render 'layouts/site_header'

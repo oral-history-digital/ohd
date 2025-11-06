@@ -119,7 +119,7 @@ class ApplicationController < ActionController::Base
           end
         end,
         countryKeys: country_keys,
-        sidebariTabIndex: get_tab_index,
+        sidebarTabIndex: get_tab_index,
       },
       user: {
         isLoggingIn: false,

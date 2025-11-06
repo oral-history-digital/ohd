@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-//import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
@@ -19,7 +18,6 @@ import MapTabPanelContainer from './MapTabPanelContainer';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
 import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 import * as indexes from '../constants';
-//import tabIndexFromRoute from '../tabIndexFromRoute';
 
 export default function SidebarTabs({
     selectedArchiveIds,
@@ -32,19 +30,12 @@ export default function SidebarTabs({
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
-    //const navigate = useNavigate();
     const pathname = location.pathname;
 
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
 
-    useEffect(() => {
-        setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
-    }, [pathname]);
-
     function handleTabClick(index) {
-        setTabIndex(index);
-
         switch (index) {
         case indexes.INDEX_SEARCH:
             location = `${pathBase}/searches/archive`;
