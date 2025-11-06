@@ -400,6 +400,10 @@ class RegistryEntry < ApplicationRecord
     to_s(locale)
   end
 
+  def api_search_term=(term)
+    # dummy setter for accepting api_search_term from forms
+  end
+
   def parent_id=(pid)
     unless parents.map(&:id).include? pid.to_i
       parents << RegistryEntry.find(pid)

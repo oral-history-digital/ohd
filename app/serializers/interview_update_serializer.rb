@@ -12,7 +12,12 @@ class InterviewUpdateSerializer < ApplicationSerializer
   def attributes(*args)
     hash = super
     instance_options[:changes].each do |attribute|
-      unless %w(duration tape_count).include?(attribute)
+      case attribute
+      when /^public_/
+        hash[:properties] = object.properties
+      when /duration|tape_count/
+        # already handled
+      else
         hash[attribute] = object.send(attribute)
       end
     end

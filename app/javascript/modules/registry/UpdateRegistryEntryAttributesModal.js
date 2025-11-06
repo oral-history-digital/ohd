@@ -8,6 +8,7 @@ import { Modal } from 'modules/ui';
 
 function UpdateRegistryEntryAttributesModal({
     entry,
+    apiSearchTerm,
     registryEntryAttributes,
     registryNameTypes,
     normDataProviders,
@@ -46,6 +47,7 @@ function UpdateRegistryEntryAttributesModal({
                             className="Button Button--primaryAction"
                             onClick={() => {
                                 setRegistryEntryAttributes({
+                                    api_search_term: apiSearchTerm,
                                     latitude: entry.Location?.Latitude,
                                     longitude: entry.Location?.Longitude,
                                     has_geo_coords: !!(entry.Location?.Latitude && entry.Location?.Longitude),

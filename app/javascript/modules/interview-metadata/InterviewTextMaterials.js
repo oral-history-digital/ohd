@@ -32,7 +32,7 @@ export default function InterviewTextMaterials({
     return (
         <>
             {showObservations && (
-                <p>
+                <p key='observations-downloads' id='observations-downloads'>
                     <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
                     { interview.observations && Object.keys(interview.observations).map( locale => {
                         if (interview.observations[locale]) {
@@ -60,7 +60,7 @@ export default function InterviewTextMaterials({
             /> }
             {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
-                    <p>
+                    <p key='transcript-downloads' id='transcript-downloads'>
                         <span className='flyout-content-label'>{t('transcript')}:</span>
                         { interview.alpha3s_with_transcript.map((lang) => {
                             return (
@@ -76,7 +76,7 @@ export default function InterviewTextMaterials({
                         <StatusForm
                             data={interview}
                             scope='interview'
-                            attribute='public_attributes[transcript]'
+                            attribute='public_transcript'
                             value={interview.properties?.public_attributes?.transcript?.toString() === 'true'}
                         />
                     </p>
