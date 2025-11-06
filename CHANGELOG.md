@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.13] - 2025-11-06
+### Added
+- Add link to archive catalog page from archive facets in OHD search
+### Fixed
+- Fix number of interviews on welcome page
+- Fix number of interviews in the catalog
+
 ## [1.1.12] - 2025-10-29
 ### Added
 - Improved visibility and styling for 'view search snippets' button in search result cards
@@ -117,6 +124,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.1.13]: https://github.com/oral-history-digital/ohd/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/oral-history-digital/ohd/compare/v1.1.11...v1.1.12
 [1.1.9]: https://github.com/oral-history-digital/ohd/compare/v1.1.8...v1.1.9
 [1.1.8]: https://github.com/oral-history-digital/ohd/compare/v1.1.7...v1.1.8
