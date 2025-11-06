@@ -67,9 +67,12 @@ export default function ContributionForm({
         }
     }
 
-    const sortedPeopleData = Object.values(peopleData).sort((a, b) =>
-        a.name[locale].toLowerCase().localeCompare(b.name[locale].toLowerCase())
-    );
+    const sortedPeopleData = Object.values(peopleData ?? {}).sort((a, b) => {
+        const aName = a?.name?.[locale] ?? '';
+        const bName = b?.name?.[locale] ?? '';
+
+        return aName.toLowerCase().localeCompare(bName.toLowerCase());
+    });
 
     const formElements = [
         {

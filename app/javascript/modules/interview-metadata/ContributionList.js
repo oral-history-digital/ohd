@@ -27,30 +27,40 @@ export default function ContributionList({
 
     return (
         <ul className="ContributionList">
-            {groupedContributions?.map(
-                (group) =>
-                    group.contributions.filter(
-                        (c) => c.workflow_state === 'public' || authorized
-                    ).length > 0 && (
+            {groupedContributions?.map((group) => {
+                const contributions = group?.contributions ?? [];
+
+                const visibleCount = contributions.filter(
+                    (c) => c.workflow_state === 'public' || authorized
+                ).length;
+
+                return (
+                    visibleCount > 0 && (
                         <ContributionGroup
                             key={group.type}
                             className="ContributionList-item"
                             contributionType={group.type}
                         >
-                            {group.contributions.map((contribution) => (
-                                <ContributionContainer
-                                    person={people[contribution.person_id]}
-                                    contribution={contribution}
-                                    interview={interview}
-                                    key={contribution.id}
-                                    withSpeakerDesignation={
-                                        withSpeakerDesignation
-                                    }
-                                />
-                            ))}
+                            {contributions.map((contribution) => {
+                                const person =
+                                    people?.[contribution.person_id] ?? null;
+
+                                return (
+                                    <ContributionContainer
+                                        person={person}
+                                        contribution={contribution}
+                                        interview={interview}
+                                        key={contribution.id}
+                                        withSpeakerDesignation={
+                                            withSpeakerDesignation
+                                        }
+                                    />
+                                );
+                            })}
                         </ContributionGroup>
                     )
-            )}
+                );
+            })}
         </ul>
     );
 }
