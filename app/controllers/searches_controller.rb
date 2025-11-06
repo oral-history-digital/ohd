@@ -200,10 +200,10 @@ class SearchesController < ApplicationController
   end
 
   def archive
+    @search_params = params.except(:controller, :action, :format)
+    
     respond_to do |format|
-      format.html do
-        render :template => "/react/app"
-      end
+      format.html { render layout: 'turbo_application' }
       format.json do
         search = Interview.archive_search(current_user, current_project, locale, params)
         public_description = current_project.is_ohd? ? false : current_project.public_description?

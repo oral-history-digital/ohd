@@ -1,0 +1,33 @@
+doctype html
+
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="x-ua-compatible" content="ie=edge"
+    meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"
+    meta name="analytics_site_id" content="#{current_project.analytics_site_id || 1}"
+
+    javascript:
+      var developmentMode = #{Rails.env == 'development' ? true : false};
+      var railsMode = '#{Rails.env}';
+
+    // Turbo-based JavaScript and CSS
+    /== javascript_pack_tag 'turbo_application'
+    == stylesheet_pack_tag 'application'
+
+    = action_cable_meta_tag
+    == favicon_link_tag "/favicon-#{current_project ? current_project.shortname : 'ohd'}.ico"
+
+    title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
+
+  body data-turbo="true"
+    .layout-indicator style="display: block;"
+
+    // Navigation will be rendered here
+    = render 'shared/navigation' if content_for?(:navigation) || true
+    
+    main.main-content
+      = yield
+
+    // Footer will be rendered here  
+    = render 'shared/footer' if content_for?(:footer) || false
