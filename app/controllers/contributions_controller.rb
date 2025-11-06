@@ -3,7 +3,6 @@ class ContributionsController < ApplicationController
   def create
     authorize Contribution
     @contribution = Contribution.create(contribution_params)
-    clear_contributions_cache(@contribution.interview)
     respond @contribution
   end
 
@@ -11,7 +10,6 @@ class ContributionsController < ApplicationController
     @contribution = Contribution.find(params[:id])
     authorize @contribution
     @contribution.update(contribution_params)
-    clear_contributions_cache(@contribution.interview)
     respond @contribution
   end
 
@@ -21,7 +19,6 @@ class ContributionsController < ApplicationController
     interview = @contribution.interview 
     @contribution.destroy
     interview.touch
-    clear_contributions_cache(interview)
 
     respond_to do |format|
       format.html do
@@ -32,30 +29,6 @@ class ContributionsController < ApplicationController
   end
 
   private
-
-  def clear_contributions_cache(interview)
-    # Clear the contributions collection cache
-    interview.contributions.each do |contribution|
-      # Clear individual contribution serialization cache for all locales
-      I18n.available_locales.each do |locale|
-        cache_key_prefix = current_project ? current_project.shortname : 'ohd'
-        cache_key = "#{cache_key_prefix}-contribution-#{contribution.id}-#{contribution.updated_at}--#{locale}"
-        Rails.cache.delete(cache_key)
-      end
-    end
-    
-    # Clear people cache for this interview's contributors
-    # Build the exact cache key using the same logic as PeopleController#index
-    cache_key_prefix = current_project ? current_project.shortname : 'ohd'
-    
-    # Reconstruct the cache_key_params for contributors_for_interview
-    # The params would be: contributors_for_interview, project_id, locale, format
-    params_string = "contributors_for_interview-#{interview.id}-project_id-#{current_project.shortname}-locale-#{I18n.locale}-format-json-"
-    
-    # Build the full cache key with Person.count and Person.maximum(:updated_at)
-    cache_key = "#{cache_key_prefix}-people-#{params_string}-#{Person.count}-#{Person.maximum(:updated_at)}"
-    Rails.cache.delete(cache_key)
-  end
 
   def respond(contribution)
     contribution.interview.touch
