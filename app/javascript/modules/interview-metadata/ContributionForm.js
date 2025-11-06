@@ -36,7 +36,7 @@ export default function ContributionForm({
     );
     const invalidateAllPersonData = useInvalidateAllPersonData();
 
-    const invalidateContributersCache = () => {
+    const invalidateContributorsCache = () => {
         invalidateInterviewContributors();
         invalidateAllPersonData();
     };
@@ -125,15 +125,10 @@ export default function ContributionForm({
                 }}
                 onSubmit={(params) => {
                     if (typeof submitData === 'function') {
-                        submitData(
-                            { locale, projectId, project },
-                            params,
-                            index
-                        );
+                        submitData({ locale, projectId, project }, params);
                     }
 
-                    // Invalidate the interview contributors cache when a new contribution is added
-                    invalidateContributersCache();
+                    invalidateContributorsCache();
 
                     if (typeof onSubmit === 'function') {
                         onSubmit();
@@ -158,8 +153,7 @@ export default function ContributionForm({
                     {(close) => (
                         <PersonForm
                             onSubmit={() => {
-                                // Invalidate contributors cache when a person is created/updated
-                                invalidateContributersCache();
+                                invalidateContributorsCache();
                                 close();
                             }}
                             onCancel={close}
@@ -186,7 +180,7 @@ export default function ContributionForm({
                                     data={selectedPerson}
                                     onSubmit={() => {
                                         // Invalidate contributors cache when a person is updated
-                                        invalidateContributersCache();
+                                        invalidateContributorsCache();
                                         close();
                                     }}
                                     onCancel={close}
