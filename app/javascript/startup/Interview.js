@@ -14,6 +14,7 @@ const Interview = (props) => (
         <Provider store={archiveStore(props)}>
             <ThemeProvider />
             <AnalyticsProvider>
+                <LayoutContainer scrollPositionBelowThreshold={false} />
                 <InterviewContainer />
             </AnalyticsProvider>
         </Provider>
