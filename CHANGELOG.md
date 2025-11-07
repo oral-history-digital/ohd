@@ -5,28 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.14] - 2025-11-07
+
+### Changed
+
+-   feat: change initials logic [#40](https://github.com/oral-history-digital/ohd/pull/40)
+-   feat: selectively load locales [#38](https://github.com/oral-history-digital/ohd/pull/38)
+
 ## [1.1.13] - 2025-11-06
+
 ### Added
-- Add link to archive catalog page from archive facets in OHD search
+
+-   Add link to archive catalog page from archive facets in OHD search
+
 ### Fixed
-- Fix number of interviews on welcome page
-- Fix number of interviews in the catalog
+
+-   Fix number of interviews on welcome page
+-   Fix number of interviews in the catalog
 
 ## [1.1.12] - 2025-10-29
+
 ### Added
-- Improved visibility and styling for 'view search snippets' button in search result cards
+
+-   Improved visibility and styling for 'view search snippets' button in search result cards
+
 ### Fixed
-- Single sign on for MMT redirect did not work on first try
-- Search result snippets did not display transcription characters correctly
+
+-   Single sign on for MMT redirect did not work on first try
+-   Search result snippets did not display transcription characters correctly
 
 ## [1.1.11] - 2025-10-28
+
 ### Fixed
-- fix: updating status on transcript (public/unshared)
-- tests for transcript status update
+
+-   fix: updating status on transcript (public/unshared)
+-   tests for transcript status update
 
 ## [1.1.10] - 2025-10-27
+
 ### Added
-- statistics table for norm data api
+
+-   statistics table for norm data api
 
 ## [1.1.9] - 2025-10-17
 
@@ -126,6 +145,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 
 [1.1.13]: https://github.com/oral-history-digital/ohd/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/oral-history-digital/ohd/compare/v1.1.11...v1.1.12
+[1.1.11]: https://github.com/oral-history-digital/ohd/compare/v1.1.10...v1.1.11
+[1.1.10]: https://github.com/oral-history-digital/ohd/compare/v1.1.9...v1.1.10
 [1.1.9]: https://github.com/oral-history-digital/ohd/compare/v1.1.8...v1.1.9
 [1.1.8]: https://github.com/oral-history-digital/ohd/compare/v1.1.7...v1.1.8
 [1.1.7]: https://github.com/oral-history-digital/ohd/compare/v1.1.6...v1.1.7
