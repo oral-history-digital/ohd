@@ -14,9 +14,7 @@ const Interview = (props) => (
         <Provider store={archiveStore(props)}>
             <ThemeProvider />
             <AnalyticsProvider>
-                <LayoutContainer scrollPositionBelowThreshold={false}>
-                    <InterviewContainer />
-                </LayoutContainer>
+                <InterviewContainer />
             </AnalyticsProvider>
         </Provider>
     </SWRConfig>

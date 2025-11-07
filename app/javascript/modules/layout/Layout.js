@@ -5,14 +5,9 @@ import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
-import { Sidebar } from 'modules/sidebar';
 import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import { getPlayerSize } from 'modules/media-player';
-import FetchAccountContainer from './FetchAccountContainer';
-//import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
 import {
@@ -28,21 +23,14 @@ import {
     AfterResetPassword,
     ConfirmNewZwarTosPopup,
 } from 'modules/user';
-import { OHD_DOMAINS } from 'modules/constants';
-import { isMobile } from 'modules/user-agent';
 
 export default function Layout({
     scrollPositionBelowThreshold,
     sidebarVisible,
-    children,
     toggleSidebar,
-    loggedInAt,
-    projectsStatus,
     bannerActive,
     hideBanner,
-    fetchData,
 }) {
-    const playerSize = useSelector(getPlayerSize);
     const { project } = useProject();
     const { locale } = useI18n();
 
@@ -63,13 +51,13 @@ export default function Layout({
     return (
         <ResizeWatcherContainer>
             <div>
-                <FetchAccountContainer />
                 <AfterRegisterPopup />
                 <AfterConfirmationPopup />
                 <AfterRequestProjectAccessPopup />
                 <CorrectUserDataPopup />
                 <AfterResetPassword />
                 <ConfirmNewZwarTosPopup />
+
                 <Helmet
                     defaultTitle={titleBase}
                     titleTemplate={`%s | ${titleBase}`}
@@ -77,31 +65,6 @@ export default function Layout({
                     <html lang={locale} />
                     <link rel="icon" type="image/x-icon" href={faviconUrl} />
                 </Helmet>
-
-                <div className={classNames('Layout-page', 'Site')}>
-                    { false &&
-                    <SiteHeader />
-                    }
-
-                    { false &&
-                    <MessagesContainer
-                        loggedInAt={loggedInAt}
-                        notifications={[]}
-                    />
-                    }
-
-                    <main className="Site-content">{children}</main>
-
-                    { false &&
-                    <SiteFooter />
-                    }
-                </div>
-
-                    { false &&
-                <ErrorBoundary>
-                    <Sidebar className="Layout-sidebar" />
-                </ErrorBoundary>
-                    }
 
                 <BurgerButton
                     className="Layout-sidebarToggle"
@@ -124,15 +87,8 @@ export default function Layout({
 
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
-    loggedInAt: PropTypes.number,
-    projectsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
     bannerActive: PropTypes.bool.isRequired,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
     toggleSidebar: PropTypes.func.isRequired,
     hideBanner: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
 };
