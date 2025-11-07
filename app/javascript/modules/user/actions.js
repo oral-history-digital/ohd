@@ -54,7 +54,8 @@ const logout = () => ({
 export function submitLogout(url) {
     return dispatch => {
         dispatch(logout())
-        Loader.delete(url, dispatch, null);
+        // reload the page to clear all state data
+        Loader.delete(url, dispatch, () => { window.location.reload(); });
     }
 }
 

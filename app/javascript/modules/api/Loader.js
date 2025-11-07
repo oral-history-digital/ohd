@@ -39,7 +39,8 @@ const Loader = {
                         console.log("deleting from " + url + " failed: " + error);
                     } else {
                         if (typeof callback === "function") {
-                            dispatch(callback(JSON.parse(res.text)));
+                            //dispatch(callback(JSON.parse(res.text)));
+                            dispatch(callback());
                         }
                         if (typeof cb === 'function') {
                             cb(JSON.parse(res.text));
