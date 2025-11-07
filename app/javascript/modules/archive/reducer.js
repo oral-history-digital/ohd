@@ -11,7 +11,9 @@ import {
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
     SET_SELECTED_ARCHIVE_IDS,
-    UPDATE_SELECTED_REGISTRY_ENTRY_IDS
+    UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
+    MERGE_TRANSLATIONS,
+    REQUEST_TRANSLATIONS,
 } from './action-types';
 
 export const initialState = {
@@ -22,29 +24,30 @@ export const initialState = {
     viewMode: null,
     listColumns: [],
     detailViewFields: [],
-    homeContent: "",
+    homeContent: '',
     externalLinks: {},
     editView: false,
     translationsView: false,
     doiResult: {},
-    selectedArchiveIds: ['dummy']
-}
+    selectedArchiveIds: ['dummy'],
+};
 
 const archive = (state = initialState, action) => {
     switch (action.type) {
         case SET_LOCALE:
-            if (state.projectName) document.title = state.projectName[action.locale]
+            if (state.projectName)
+                document.title = state.projectName[action.locale];
             return Object.assign({}, state, {
-                locale: action.locale
-            })
+                locale: action.locale,
+            });
         case SET_ARCHIVE_ID:
             return Object.assign({}, state, {
-                archiveId: action.archiveId
-            })
+                archiveId: action.archiveId,
+            });
         case SET_PROJECT_ID:
             return Object.assign({}, state, {
-                projectId: action.projectId
-            })
+                projectId: action.projectId,
+            });
         case SET_AVAILABLE_VIEW_MODES:
             return {
                 ...state,
@@ -62,39 +65,95 @@ const archive = (state = initialState, action) => {
                 viewMode: null,
             };
         case SET_SELECTED_ARCHIVE_IDS:
-            return Object.assign({}, state, { selectedArchiveIds: ['dummy'].concat(action.archiveIds) })
+            return Object.assign({}, state, {
+                selectedArchiveIds: ['dummy'].concat(action.archiveIds),
+            });
         case UPDATE_SELECTED_ARCHIVE_IDS:
-            if(action.archiveId === -1) {
-                return Object.assign({}, state, { selectedArchiveIds: ['dummy'] })
-            } else if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {
-                return Object.assign({}, state, { selectedArchiveIds: [...state.selectedArchiveIds, action.archiveId] })
+            if (action.archiveId === -1) {
+                return Object.assign({}, state, {
+                    selectedArchiveIds: ['dummy'],
+                });
+            } else if (
+                state.selectedArchiveIds.indexOf(action.archiveId) === -1
+            ) {
+                return Object.assign({}, state, {
+                    selectedArchiveIds: [
+                        ...state.selectedArchiveIds,
+                        action.archiveId,
+                    ],
+                });
             } else {
-                return Object.assign({}, state, { selectedArchiveIds: state.selectedArchiveIds.filter(archiveId => archiveId !== action.archiveId) })
+                return Object.assign({}, state, {
+                    selectedArchiveIds: state.selectedArchiveIds.filter(
+                        (archiveId) => archiveId !== action.archiveId
+                    ),
+                });
             }
         case UPDATE_SELECTED_REGISTRY_ENTRY_IDS:
-            if(action.rid === -1) {
-                return Object.assign({}, state, { selectedRegistryEntryIds: ['dummy'] })
-            } else if(state.selectedRegistryEntryIds.indexOf(action.rid) === -1) {
-                return Object.assign({}, state, { selectedRegistryEntryIds: [...state.selectedRegistryEntryIds, action.rid] })
+            if (action.rid === -1) {
+                return Object.assign({}, state, {
+                    selectedRegistryEntryIds: ['dummy'],
+                });
+            } else if (
+                state.selectedRegistryEntryIds.indexOf(action.rid) === -1
+            ) {
+                return Object.assign({}, state, {
+                    selectedRegistryEntryIds: [
+                        ...state.selectedRegistryEntryIds,
+                        action.rid,
+                    ],
+                });
             } else {
-                return Object.assign({}, state, { selectedRegistryEntryIds: state.selectedRegistryEntryIds.filter(rid => rid !== action.rid) })
+                return Object.assign({}, state, {
+                    selectedRegistryEntryIds:
+                        state.selectedRegistryEntryIds.filter(
+                            (rid) => rid !== action.rid
+                        ),
+                });
             }
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {
-                editView: action.editView
-            })
+                editView: action.editView,
+            });
         case CHANGE_TO_TRANSLATIONS_VIEW:
             return Object.assign({}, state, {
-                translationsView: action.translationsView
-            })
+                translationsView: action.translationsView,
+            });
         case CHANGE_TO_INTERVIEW_EDIT_VIEW:
             return Object.assign({}, state, {
-                interviewEditView: action.interviewEditView
-            })
+                interviewEditView: action.interviewEditView,
+            });
         case RECEIVE_RESULT:
             return Object.assign({}, state, {
-                doiResult: action.result
-            })
+                doiResult: action.result,
+            });
+        case MERGE_TRANSLATIONS: {
+            // Merge new translations with existing ones
+            const existingTranslations = state.translations || {};
+            const newTranslations = action.translations || {};
+
+            // Deep merge the translation objects
+            const mergedTranslations = { ...existingTranslations };
+            Object.keys(newTranslations).forEach((key) => {
+                if (mergedTranslations[key]) {
+                    // Merge locale-specific translations for this key
+                    mergedTranslations[key] = {
+                        ...mergedTranslations[key],
+                        ...newTranslations[key],
+                    };
+                } else {
+                    // Add new translation key
+                    mergedTranslations[key] = newTranslations[key];
+                }
+            });
+
+            return Object.assign({}, state, {
+                translations: mergedTranslations,
+            });
+        }
+        case REQUEST_TRANSLATIONS:
+            // We could add a loading state here if needed
+            return state;
 
         default:
             return state;
