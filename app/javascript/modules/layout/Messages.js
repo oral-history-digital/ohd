@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 
 function Messages({
     loggedInAt,
-    notifications,
 }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
@@ -17,22 +15,6 @@ function Messages({
                 {t('devise.omniauth_callbacks.success')}
             </p>
         )
-    } else if (notifications.length > 0) {
-        return (
-            <div className='notifications'>
-                {notifications.map((notification, index) => {
-                    return (
-                        <p key={`notification-${index}`}>
-                            {t(notification.title, {file: notification.file, archiveId: notification.archive_id})}
-                            <Link
-                                to={pathBase + '/interviews/' + notification.archive_id}>
-                                {notification.archive_id}
-                            </Link>
-                        </p>
-                    )
-                })}
-            </div>
-        )
     } else {
         return null;
     }
@@ -40,7 +22,6 @@ function Messages({
 
 Messages.propTypes = {
     loggedInAt: PropTypes.number,
-    notifications: PropTypes.array.isRequired,
 };
 
 export default Messages;

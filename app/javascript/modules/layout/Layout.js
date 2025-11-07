@@ -23,9 +23,11 @@ import {
     AfterResetPassword,
     ConfirmNewZwarTosPopup,
 } from 'modules/user';
+import Messages from './Messages';
 
 export default function Layout({
     scrollPositionBelowThreshold,
+    loggedInAt,
     sidebarVisible,
     toggleSidebar,
     bannerActive,
@@ -57,6 +59,7 @@ export default function Layout({
                 <CorrectUserDataPopup />
                 <AfterResetPassword />
                 <ConfirmNewZwarTosPopup />
+                <Messages loggedInAt={loggedInAt} />
 
                 <Helmet
                     defaultTitle={titleBase}
