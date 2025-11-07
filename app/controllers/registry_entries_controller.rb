@@ -77,6 +77,7 @@ class RegistryEntriesController < ApplicationController
   def index
     policy_scope RegistryEntry
     cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at), current_project.updated_at].max.strftime('%s')
+    @component = 'Registry'
 
     respond_to do |format|
       format.html { render "react/app" }
