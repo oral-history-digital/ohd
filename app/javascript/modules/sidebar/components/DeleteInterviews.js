@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-//import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getProjectId } from 'modules/archive';
@@ -19,7 +18,6 @@ export default function DeleteInterviews({
     const project = useSelector(getCurrentProject);
 
     const dispatch = useDispatch();
-    //const navigate = useNavigate();
 
     function deleteInterviews() {
         selectedArchiveIds.forEach(

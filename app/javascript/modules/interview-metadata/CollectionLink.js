@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
@@ -31,13 +30,13 @@ export default function CollectionLink({
             <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
         </a>
     ) : (
-        <Link
-            to={linkPath}
+        <a
+            href={linkPath}
             title={t('modules.interview_metadata.collection_link_title')}
             className="u-ml-tiny"
         >
             <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
-        </Link>
+        </a>
     );
 }
 
