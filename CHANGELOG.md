@@ -143,6 +143,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.1.14]: https://github.com/oral-history-digital/ohd/compare/v1.1.13...v1.1.14
 [1.1.13]: https://github.com/oral-history-digital/ohd/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/oral-history-digital/ohd/compare/v1.1.11...v1.1.12
 [1.1.11]: https://github.com/oral-history-digital/ohd/compare/v1.1.10...v1.1.11
