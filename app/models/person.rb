@@ -201,18 +201,57 @@ class Person < ApplicationRecord
   end
 
   def initials
-    first_part = initials_from_name_part(first_name_used)
-    last_part = initials_from_name_part(last_name_used)
+    first = first_name_used.to_s.strip
+    last  = last_name_used.to_s.strip
 
-    first_part + last_part
-  end
+    return '' if first.blank? && last.blank?
 
-  def initials_from_name_part(part)
-    if part.blank?
-      return ''
+    # If only first name exists
+    return first.chars.first(2).join.upcase if last.blank?
+
+    # Split last name on any whitespace (including Unicode) or dash-like characters
+    raw_parts = last.split(/[\p{Space}\p{Dash_Punctuation}]+/u).reject(&:blank?)
+
+    # Create a normalized version (ASCII transliteration) only for matching/ignoring particles
+    normalized_parts = raw_parts.map { |p| I18n.transliterate(p).upcase }
+
+    # Common particles to ignore
+    ignore_particles = %w[
+      AL BIN DA DE DI DEL DELA DER DES DOS DU EL 
+      LA LAS LE LES UND VAN VON ZU
+    ]
+
+    # Keep only substantive surname parts based on normalized comparison
+    # but preserve the original spelling for the kept parts
+    surname_parts = raw_parts.each_with_index
+      .reject { |p, i| ignore_particles.include?(normalized_parts[i]) }
+      .map(&:first)
+
+    # Fallback if all parts were ignored
+    surname_parts = raw_parts if surname_parts.empty?
+
+    # Only last name exists
+    if first.blank?
+      if surname_parts.length >= 2
+        # Use first character of first two surname parts
+        return surname_parts[0][0].upcase + surname_parts[1][0].upcase
+      else
+        # Use first two characters of last name if only one part exists
+        return last.chars.first(2).join.upcase
+      end
     end
 
-    part.strip[0].upcase
+    # Both first and last name exist
+    f = first[0].upcase
+
+    if surname_parts.length >= 2
+      # Two or more substantive surname parts → 3 letters:
+      # first initial + first letter of first and second surname parts
+      f + surname_parts.first[0].upcase + surname_parts[1][0].upcase
+    else
+      # Single-part surname → 2 letters: first initial + first letter of surname
+      f + surname_parts.first[0].upcase
+    end
   end
 
   def first_name_used(locale = I18n.locale)
