@@ -35,7 +35,7 @@ export default function DataDetails({
                                     {t(`activerecord.attributes.${scope}.${attribute}`) + ': '}
                                 </span>
                                 <span className='content'>
-                                    {humanReadable({obj: data, attribute})}
+                                    {humanReadable({locale: locale, obj: data, attribute})}
                                 </span>
                             </p>
                         )

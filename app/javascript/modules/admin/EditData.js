@@ -52,7 +52,7 @@ export default function EditData({
                                 {t(element.labelKey || `activerecord.attributes.${scope}.${element.attribute}`)}
                             </dt>
                             <dd>
-                                {humanReadable({obj: data, attribute: element.attribute, collapsed: true})}
+                                {humanReadable({locale: locale, obj: data, attribute: element.attribute, collapsed: true})}
                             </dd>
                         </div>
                     ))}

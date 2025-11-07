@@ -75,7 +75,7 @@ export default function PersonData({
                 }
 
                 const label = field.label?.[locale] || t(field.name);
-                const value = humanReadable({obj: person, attribute: field.name});
+                const value = humanReadable({locale: locale, obj: person, attribute: field.name});
 
                 if ((value === null || value === '---') && !isEditor) {
                     return null;

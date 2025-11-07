@@ -41,7 +41,7 @@ export default function PersonDetails({
                             <b>{`${t(`activerecord.attributes.person.${attribute}`)}:`}</b>
                         </dt>
                         <dd className="u-line-height u-ml-none">
-                            {humanReadable({obj: data, attribute})}
+                            {humanReadable({locale: locale, obj: data, attribute})}
                         </dd>
                     </Fragment>
                 ))}

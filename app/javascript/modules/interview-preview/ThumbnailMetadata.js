@@ -63,6 +63,7 @@ export default function ThumbnailMetadata({
 
                     if (obj) {
                         const value = humanReadable({
+                            locale: locale,
                             obj,
                             attribute: field.name,
                             optionsScope: 'search_facets',

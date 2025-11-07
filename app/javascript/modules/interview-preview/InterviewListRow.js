@@ -119,7 +119,7 @@ export default function InterviewListRow({
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {(allowedToSee && obj) ? humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'}) : '---'}
+                            {(allowedToSee && obj) ? humanReadable({locale: locale, obj, attribute: column.name, optionsScope: 'search_facets'}) : '---'}
                         </td>
                     );
                 })
