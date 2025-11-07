@@ -31,6 +31,7 @@ export default function SidebarTabs({
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const pathname = location.pathname;
+    let link;
 
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
@@ -38,30 +39,33 @@ export default function SidebarTabs({
     function handleTabClick(index) {
         switch (index) {
         case indexes.INDEX_SEARCH:
-            location = `${pathBase}/searches/archive`;
+            link = `${pathBase}/searches/archive`;
             break;
         case indexes.INDEX_CATALOG:
-            location = `${pathBase}/catalog`;
+            link = `${pathBase}/catalog`;
             break;
         case indexes.INDEX_INTERVIEW:
-            location = `${pathBase}/interviews/${archiveId}`;
+            link = `${pathBase}/interviews/${archiveId}`;
             break;
         case indexes.INDEX_REGISTRY_ENTRIES:
-            location = `${pathBase}/registry_entries`;
+            link = `${pathBase}/registry_entries`;
             break;
         case indexes.INDEX_MAP:
-            location = `${pathBase}/searches/map`;
+            link = `${pathBase}/searches/map`;
             break;
         case indexes.INDEX_PROJECTS:
-            location = `/${locale}/projects`;
+            link = `/${locale}/projects`;
             break;
         case indexes.INDEX_INSTITUTIONS:
-            location = `/${locale}/institutions`;
+            link = `/${locale}/institutions`;
             break;
         case indexes.INDEX_HELP_TEXTS:
-            location = `/${locale}/help_texts`;
+            link = `/${locale}/help_texts`;
             break;
         default:
+        }
+        if (link !== location.pathname) {
+            location = link;
         }
     }
 
