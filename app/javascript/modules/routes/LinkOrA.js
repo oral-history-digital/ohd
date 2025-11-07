@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/constants';
 import { getLocale, setProjectId, getProjectId } from 'modules/archive';
@@ -37,22 +36,13 @@ function LinkOrA({
     const pathWithParams = paramsWithAccessToken ? `${path}${joiner}${paramsWithAccessToken}` : path;
 
     return (
-        (onOHD && !projectHasOtherDomain) || projectIsCurrentProject ?
-            <Link
-                className={className}
-                style={style}
-                to={pathWithParams}
-                onClick={() => dispatch( setProjectId(project.shortname), onLinkClick(pathBase) )}
-            >
-                { children }
-            </Link> :
-            <a
-                className={className}
-                style={style}
-                href={`${domain}${pathWithParams}`}
-            >
-                { children }
-            </a>
+        <a
+            className={className}
+            style={style}
+            href={`${domain}${pathWithParams}`}
+        >
+            { children }
+        </a>
     );
 }
 
