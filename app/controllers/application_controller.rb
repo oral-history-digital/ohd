@@ -109,8 +109,10 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}") do
-          TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
+        translations: Rails.cache.fetch("translations-#{I18n.locale}-#{TranslationValue.maximum(:updated_at)}") do
+          TranslationValue.all.includes(:translations)
+            .where(translations: {locale: I18n.locale})
+            .inject({}) do |mem, translation_value|
             mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
               mem2[translation.locale] = translation.value
               mem2
@@ -120,6 +122,9 @@ class ApplicationController < ActionController::Base
         end,
         countryKeys: country_keys,
         sidebarTabIndex: get_tab_index,
+      },
+      sidebar: {
+        visible: true,
       },
       user: {
         isLoggingIn: false,

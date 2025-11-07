@@ -10,14 +10,12 @@ import ToggleEditView from './ToggleEditView';
 import SidebarTabsContainer from './SidebarTabsContainer';
 import CurrentArchive from './CurrentArchive';
 
-export default function Sidebar({
-    className,
-}) {
+export default function Sidebar({}) {
     const user = useSelector(getCurrentUser);
     const showToggleEditViewButton = canUseEditView(user);
 
     return (
-        <div className={classNames(className, 'Sidebar', 'wrapper-flyout')}>
+        <div>
             <header className="Sidebar-header">
                 <LocaleButtons />
                 <SessionButtons className="u-ml" />
@@ -36,7 +34,3 @@ export default function Sidebar({
         </div>
     );
 }
-
-Sidebar.propTypes = {
-    className: PropTypes.string,
-};

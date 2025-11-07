@@ -12,8 +12,6 @@ import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { getPlayerSize } from 'modules/media-player';
 import FetchAccountContainer from './FetchAccountContainer';
-//import SiteHeader from './SiteHeader';
-//import SiteFooter from './SiteFooter';
 //import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
@@ -32,16 +30,6 @@ import {
 } from 'modules/user';
 import { OHD_DOMAINS } from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
-
-
-//export default function Layout({children}) {
-    //return (
-        //<>
-            //{children}
-            //<Sidebar className="Layout-sidebar" />
-        //</>
-    //);
-//}
 
 export default function Layout({
     scrollPositionBelowThreshold,
@@ -109,9 +97,11 @@ export default function Layout({
                     }
                 </div>
 
+                    { false &&
                 <ErrorBoundary>
                     <Sidebar className="Layout-sidebar" />
                 </ErrorBoundary>
+                    }
 
                 <BurgerButton
                     className="Layout-sidebarToggle"
