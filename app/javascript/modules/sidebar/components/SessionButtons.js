@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
-//import { Link } from 'react-router-dom';
 
 import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
