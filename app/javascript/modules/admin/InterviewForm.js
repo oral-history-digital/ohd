@@ -1,5 +1,4 @@
 import { createElement, useState } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
@@ -182,10 +181,10 @@ export default function InterviewForm({
                 {t('edit.interview.processing')}
             </p>
             <p>
-                <Link
-                    to={`${pathBase}/interviews/${archiveId}`}>
+                <a
+                    href={`${pathBase}/interviews/${archiveId}`}>
                     {t('edit.interview.edit')}
-                </Link>
+                </a>
             </p>
             <button
                 type="button"

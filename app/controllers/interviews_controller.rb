@@ -5,6 +5,7 @@ class InterviewsController < ApplicationController
 
   def new
     authorize Interview
+    @component = 'EditInterview'
     respond_to do |format|
       format.html { render :show }
       format.json { render json: :ok }
@@ -27,6 +28,7 @@ class InterviewsController < ApplicationController
 
   def edit
     authorize Interview
+    @component = 'EditInterview'
     respond_to do |format|
       format.html { render :show }
     end
@@ -139,6 +141,7 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
+    @component = 'Interview'
 
     unless @interview.present? && current_project.interviews.include?(@interview)
       raise ActiveRecord::RecordNotFound
