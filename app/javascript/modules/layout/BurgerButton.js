@@ -14,7 +14,10 @@ function BurgerButton({
                 'is-open': open,
                 'is-closed': !open,
             })}
-            onClick={onClick}
+            onClick={() => {
+                onClick;
+                document.getElementsByClassName('Layout')[0].classList.toggle('sidebar-is-visible');
+            }}
         >
             {
                 open ?
