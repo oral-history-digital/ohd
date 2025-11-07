@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   before_action :gather_javascript_pack
 
   def gather_javascript_pack
-    @javascript_pack = "#{controller_name}"
+    @javascript_pack = controller_name == 'passwords' ? 'users' : controller_name
   end
 
   def user_by_token

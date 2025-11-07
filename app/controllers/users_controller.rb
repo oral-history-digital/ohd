@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:confirm_new_email, :current, :check_email]
 
   def current
+    @component = 'Account'
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
@@ -92,6 +93,7 @@ class UsersController < ApplicationController
   end
 
   def index
+    @component = 'UsersAdmin'
     order = params[:order] || 'last_name'
     if ['processed_at', 'workflow_state'].include? order
       if current_project.is_ohd?

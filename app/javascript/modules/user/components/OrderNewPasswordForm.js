@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 
 import { InputContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
@@ -12,7 +11,6 @@ export default function OrderNewPasswordForm ({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const location = useLocation();
     const from = location.state?.from;
 
     const [emailCheckResponse, setEmailCheckResponse] = useState({reset_password_error: false, msg: null});

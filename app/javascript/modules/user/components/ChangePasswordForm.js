@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
 import { usePrevious } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
@@ -24,15 +23,14 @@ export default function ChangePasswordForm({
     const { t } = useI18n();
     const pathBase = usePathBase();
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { resetPasswordToken } = useParams();
+    const params = new URLSearchParams(document.location.search);
+    const resetPasswordToken = params.get('reset_password_token');
 
     // Does what? Redirect after login?
     const prevAccount = usePrevious(user);
     if (!prevAccount?.email && user.email) {
         const to = projectId ? `${pathBase}/searches/archive` : `/${locale}`;
-        navigate(to);
+        location = to;
     }
 
     function handleChange(name, value) {
