@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setArchiveId, getLocale, getProjectId } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import { fetchData, getCurrentProject,
     getLanguages, getCollectionsForCurrentProject,
     getUsersStatus, getTasksStatus, getTasks } from 'modules/data';
@@ -18,7 +18,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setArchiveId,
     fetchData,
 }, dispatch);
 

@@ -1,14 +1,11 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { usePathBase } from 'modules/routes';
-import { setArchiveId } from 'modules/archive';
-import { sendTimeChangeRequest } from 'modules/media-player';
 import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
-import { TapeAndTime } from 'modules/interview-helpers';
+import { TapeAndTime, formatTimecode } from 'modules/interview-helpers';
 import useMapReferences from '../map-references/useMapReferences';
 
 export default function SearchMapPopup({
@@ -26,11 +23,6 @@ export default function SearchMapPopup({
     useEffect(() => {
         onUpdate();
     }, [referenceGroups]);
-
-    function handleClick(archiveId, tape, time, transcriptCoupled) {
-        dispatch(setArchiveId(archiveId));
-        transcriptCoupled && dispatch(sendTimeChangeRequest(tape, time));
-    }
 
     if (error) {
         return (
@@ -53,12 +45,12 @@ export default function SearchMapPopup({
                                 {
                                     group.references.map(ref => (
                                         <li key={ref.id}>
-                                            <Link
-                                                to={`${pathBase}/interviews/${ref.archive_id}`}
+                                            <a
+                                                href={`${pathBase}/interviews/${ref.archive_id}`}
                                                 className="MapPopup-link"
                                             >
                                                 {`${ref.display_name} (${ref.archive_id})`}
-                                            </Link>
+                                            </a>
                                         </li>
                                     ))
                                 }
@@ -84,13 +76,12 @@ export default function SearchMapPopup({
                                             {
                                                 refGroup.refs.map(ref => (
                                                     <li key={ref.id}>
-                                                        <Link
+                                                        <a
                                                             className="MapPopup-link MapPopup-link--small"
-                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time, ref.transcript_coupled)}
-                                                            to={`${pathBase}/interviews/${ref.archive_id}`}
+                                                            href={`${pathBase}/interviews/${ref.archive_id}/?tape=${ref.tape_nbr}&time=${formatTimecode(ref.time, true)}`}
                                                         >
                                                             <TapeAndTime tape={ref.tape_nbr} time={ref.time} transcriptCoupled={ref.transcript_coupled} />
-                                                        </Link>
+                                                        </a>
                                                     </li>
                                                 ))
                                             }

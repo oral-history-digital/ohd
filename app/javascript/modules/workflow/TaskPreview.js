@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import {Link} from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
@@ -7,7 +6,6 @@ import { usePathBase } from 'modules/routes';
 
 export default function TaskPreview({
     data,
-    setArchiveId,
     scope,
     user,
 }) {
@@ -36,14 +34,9 @@ export default function TaskPreview({
     return (
         <div className='base-data box'>
             <p>
-                <Link
-                    onClick={() => {
-                        setArchiveId(data.archive_id);
-                    }}
-                    to={pathBase + '/interviews/' + data.archive_id}
-                >
+                <a href={pathBase + '/interviews/' + data.archive_id} >
                     {`${data.archive_id}: ${data.name[locale]}`}
-                </Link>
+                </a>
             </p>
             <p className='created-at'>
                 <span className='title'>{t( `activerecord.attributes.${scope}.${dateAttribute()}`) + ': '}</span>

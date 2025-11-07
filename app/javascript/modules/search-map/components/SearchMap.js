@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { useTrackPageView } from 'modules/analytics';
@@ -49,7 +48,7 @@ export default function SearchMap() {
     }
 
     if (!project.has_map) {
-        return <Navigate to={`${pathBase}/not_found`} replace />;
+        location = `${pathBase}/not_found`;
     }
 
     return (

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import useSWRImmutable from 'swr/immutable';
 
@@ -25,7 +24,6 @@ export default function InterviewWorkflowRow({
     tasks,
     tasksStatus,
     fetchData,
-    setArchiveId,
 }) {
     const [collapsed, setCollapsed] = useState(true);
     const { t, locale, translations } = useI18n();
@@ -85,11 +83,8 @@ export default function InterviewWorkflowRow({
         >
             <div className='search-result-workflow data boxes'>
                 {isLoading ? <Spinner small /> : (
-                    <Link className="Link search-result-link box-10"
-                        onClick={() => {
-                            setArchiveId(interview.archive_id);
-                        }}
-                        to={linkUrl}
+                    <a className="Link search-result-link box-10"
+                        href={linkUrl}
                     >
                         <img
                             className="workflow"
@@ -100,7 +95,7 @@ export default function InterviewWorkflowRow({
                         <span className="workflow">
                             {interview.short_title?.[locale]}
                         </span>
-                    </Link>
+                    </a>
                 )}
 
                 {box(interview?.archive_id, '10')}
@@ -188,6 +183,5 @@ InterviewWorkflowRow.propTypes = {
     projectId: PropTypes.string.isRequired,
     tasks: PropTypes.object,
     tasksStatus: PropTypes.object.isRequired,
-    setArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

@@ -127,6 +127,7 @@ class SearchesController < ApplicationController
   end
 
   def map
+    @component = 'SearchMap'
     respond_to do |format|
       format.html do
         render :template => "/react/app"
@@ -200,6 +201,7 @@ class SearchesController < ApplicationController
   end
 
   def archive
+    @component = 'Search'
     respond_to do |format|
       format.html do
         render :template => "/react/app"

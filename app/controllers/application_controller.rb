@@ -102,8 +102,8 @@ class ApplicationController < ActionController::Base
       archive: {
         locale: I18n.locale,
         projectId: current_project ? current_project.shortname : nil,
-        viewModes: nil,
-        viewMode: nil,
+        viewModes: current_project.view_modes,
+        viewMode: current_project.view_modes.first,
         editView: !!cookies["editView"],
         translationsView: !!cookies["translationsView"],
         doiResult: {},
@@ -171,9 +171,8 @@ class ApplicationController < ActionController::Base
           tasks: {},
           projects: {
             all: 'fetched',
-            #"#{current_project.id}": 'fetched'
+            "#{current_project.id}": 'fetched'
           },
-          #projects: {"#{current_project.id}": 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},

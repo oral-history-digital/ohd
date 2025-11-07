@@ -35,6 +35,7 @@ export default function ArchiveSearchTabs({
         }
     }
 
+    console.log('ArchiveSearchTabs render', { interviews, empty, loading, className, viewModes, currentViewMode });
     return (
         <Tabs
             className={classNames('Tabs', className)}
