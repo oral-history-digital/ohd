@@ -32,6 +32,7 @@ class LanguagesController < ApplicationController
   end
 
   def index
+    @component = 'WrappedLanguagesContainer'
     if params.keys.include?("all")
       languages = policy_scope(Language).all
       extra_params = "all"

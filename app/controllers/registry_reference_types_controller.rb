@@ -39,6 +39,7 @@ class RegistryReferenceTypesController < ApplicationController
 
   def index
     policy_scope RegistryReferenceType
+    @component = 'WrappedRegistryReferenceTypesContainer'
 
     respond_to do |format|
       format.html { render "react/app" }

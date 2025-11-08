@@ -5,9 +5,13 @@ class TextsController < ApplicationController
 
   before_action :set_text, only: [:update]
 
-  def show
-    respond_to do |format|
-      format.html { render "react/app" }
+  %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
+    define_method(page) do
+      @component = 'TextPage'
+      @code = page
+      respond_to do |format|
+        format.html { render :page }
+      end
     end
   end
 

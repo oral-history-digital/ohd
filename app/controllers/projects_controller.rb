@@ -9,6 +9,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
+    @conponent = 'ArchivePage'
+
     if params.keys.include?('all')
       projects = policy_scope(Project).all
       extra_params = 'all'
@@ -102,6 +104,7 @@ class ProjectsController < ApplicationController
   end
 
   %w(edit_info edit_display edit_config edit_access_config).each do |m|
+    @component = 'EditProject' + m.sub('edit_').camelize
     define_method m do
       respond_to do |format|
         format.html do

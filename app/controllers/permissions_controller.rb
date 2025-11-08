@@ -23,6 +23,7 @@ class PermissionsController < ApplicationController
   end
 
   def index
+    @component = 'WrappedPermissionsContainer'
     permissions, extra_params = params[:page] ?
       [
         policy_scope(Permission).where(search_params).order("name ASC").paginate(page: params[:page]),

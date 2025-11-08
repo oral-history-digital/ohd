@@ -74,28 +74,32 @@ export default function ProjectRoutes() {
                 <Route path="users/password/new" element={<OrderNewPasswordContainer />} />
                 <Route path="users/password/edit" element={<ActivateAccount />} />
                 <Route path="users" element={<UsersAdminPage />} />
-                <Route path="uploads/new" element={<UploadsPage />} />
+
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route path="project/edit-config" element={<EditProjectConfig />} />
                 <Route path="project/edit-access-config" element={<EditProjectAccessConfig />} />
                 <Route path="project/edit-display" element={<EditProjectDisplay />} />
+
+                <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
                 <Route path="people" element={<PeopleAdminPage />} />
                 <Route path="event_types" element={<EventTypesAdminPage />} />
+
                 <Route path="registry_reference_types" element={<WrappedRegistryReferenceTypesContainer />} />
                 <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
                 <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />
                 <Route path="languages" element={<WrappedLanguagesContainer />} />
                 <Route path="translation_values" element={<WrappedTranslationValuesContainer />} />
+                <Route path="collections" element={<WrappedCollectionsContainer />} />
+                <Route path="roles" element={<WrappedRolesContainer />} />
+                <Route path="permissions" element={<WrappedPermissionsContainer />} />
+                <Route path="task_types" element={<WrappedTaskTypesContainer />} />
+
                 <Route path="conditions" element={<TextPage code='conditions' />} />
                 <Route path="ohd_conditions" element={<TextPage code='ohd_conditions' />} />
                 <Route path="privacy_protection" element={<TextPage code='privacy_protection' />} />
                 <Route path="contact" element={<TextPage code='contact' />} />
                 <Route path="legal_info" element={<TextPage code='legal_info' />} />
-                <Route path="collections" element={<WrappedCollectionsContainer />} />
-                <Route path="roles" element={<WrappedRolesContainer />} />
-                <Route path="permissions" element={<WrappedPermissionsContainer />} />
-                <Route path="task_types" element={<WrappedTaskTypesContainer />} />
             </Routes>
         </ErrorBoundary>
     );

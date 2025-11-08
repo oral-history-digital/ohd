@@ -18,6 +18,7 @@ class TaskTypesController < ApplicationController
 
   def index
     policy_scope(TaskType)
+    @component = 'WrappedRegistryReferenceTypesContainer'
 
     respond_to do |format|
       format.html { render :template => '/react/app' }

@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     get "restricted_interviews", to: "interviews#restricted"
     resources :texts
     %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
-      get page, to: "texts#show"
+      get page, to: "texts##{page}"
     end
 
     get "project/edit-info", to: "projects#edit_info"
