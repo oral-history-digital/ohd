@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import WrappedTranslationValuesContainer from 'startup/WrappedTranslationValuesContainer.js';
+import TranslationValues from 'startup/TranslationValues.js';
 
 ReactOnRails.register({
     Sidebar,
-    WrappedTranslationValuesContainer,
+    TranslationValues,
 });
 
 

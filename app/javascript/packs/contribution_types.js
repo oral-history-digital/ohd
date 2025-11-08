@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import WrappedContributionTypesContainer from 'startup/WrappedContributionTypesContainer.js';
+import ContributionTypes from 'startup/ContributionTypes.js';
 
 ReactOnRails.register({
     Sidebar,
-    WrappedContributionTypesContainer,
+    ContributionTypes,
 });
 
 

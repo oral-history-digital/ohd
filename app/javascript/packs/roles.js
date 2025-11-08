@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import WrappedRolesContainer from 'startup/WrappedRolesContainer.js';
+import Roles from 'startup/Roles.js';
 
 ReactOnRails.register({
     Sidebar,
-    WrappedRolesContainer,
+    Roles,
 });
 
 

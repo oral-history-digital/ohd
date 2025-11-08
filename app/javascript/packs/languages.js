@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import WrappedLanguagesContainer from 'startup/WrappedLanguagesContainer.js';
+import Languages from 'startup/Languages.js';
 
 ReactOnRails.register({
     Sidebar,
-    WrappedLanguagesContainer,
+    Languages,
 });
 
 

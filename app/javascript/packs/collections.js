@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import WrappedCollectionsContainer from 'startup/WrappedCollectionsContainer.js';
+import Collections from 'startup/Collections.js';
 
 ReactOnRails.register({
     Sidebar,
-    WrappedCollectionsContainer,
+    Collections,
 });
 
 

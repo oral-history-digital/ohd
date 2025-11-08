@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import WrappedRegistryNameTypesContainer from 'startup/WrappedRegistryNameTypesContainer.js';
+import RegistryNameTypes from 'startup/RegistryNameTypes.js';
 
 ReactOnRails.register({
     Sidebar,
-    WrappedRegistryNameTypesContainer,
+    RegistryNameTypes,
 });
 
 
