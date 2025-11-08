@@ -43,6 +43,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
+    @component = @project.ohd? ? 'SiteStartpage' : 'Home'
+
     respond_to do |format|
       format.html do
         render :template => "/react/app"

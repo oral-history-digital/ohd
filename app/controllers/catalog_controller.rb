@@ -4,6 +4,7 @@ class CatalogController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
+    @component = 'MainCatalog'
     respond_to do |format|
       format.html do
         render template: '/react/app'
@@ -30,6 +31,7 @@ class CatalogController < ApplicationController
   end
 
   def institution
+    @component = 'InstitutionCatalogPage'
     respond_to do |format|
       format.html do
         render template: '/react/app'
@@ -38,6 +40,7 @@ class CatalogController < ApplicationController
   end
 
   def archive
+    @component = 'ArchiveCatalogPage'
     respond_to do |format|
       format.html do
         render template: '/react/app'
@@ -46,6 +49,7 @@ class CatalogController < ApplicationController
   end
 
   def collection
+    @component = 'CollectionCatalogPage'
     respond_to do |format|
       format.html do
         render template: '/react/app'
