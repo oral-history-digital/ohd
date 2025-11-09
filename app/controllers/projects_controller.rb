@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
-    @component = @project.ohd? ? 'SiteStartpage' : 'Home'
+    @component = @project.is_ohd? ? 'SiteStartpage' : 'Home'
 
     respond_to do |format|
       format.html do
@@ -106,7 +106,7 @@ class ProjectsController < ApplicationController
   end
 
   %w(edit_info edit_display edit_config edit_access_config).each do |m|
-    @component = 'EditProject' + m.sub('edit_').camelize
+    @component = 'EditProject' + m.sub('edit_', '').camelize
     define_method m do
       respond_to do |format|
         format.html do

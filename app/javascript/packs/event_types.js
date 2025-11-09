@@ -4,11 +4,11 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
-import EventTypesAdminPage from 'startup/EventTypesAdminPage.js';
+import EventTypesAdmin from 'startup/EventTypesAdmin.js';
 
 ReactOnRails.register({
     Sidebar,
-    EventTypesAdminPage,
+    EventTypesAdmin,
 });
 
 

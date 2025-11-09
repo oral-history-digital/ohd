@@ -3,7 +3,7 @@ class EventTypesController < ApplicationController
 
   def index
     policy_scope EventType
-    @component = 'EventTypesAdminPage'
+    @component = 'EventTypesAdmin'
 
     respond_to do |format|
       format.html { render "react/app" }

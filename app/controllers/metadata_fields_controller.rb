@@ -38,7 +38,7 @@ class MetadataFieldsController < ApplicationController
   def index
     @project = Interview.find_by_archive_id(params[:project_id])
     policy_scope(MetadataField)
-    @component = 'MetadataFieldsContainer'
+    @component = 'MetadataFields'
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do

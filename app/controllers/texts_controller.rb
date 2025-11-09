@@ -1,14 +1,13 @@
 class TextsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:show]
-  skip_after_action :verify_authorized, only: [:show]
-  skip_after_action :verify_policy_scoped, only: [:show]
+  skip_before_action :authenticate_user!, only: %w(conditions ohd_conditions privacy_protection contact legal_info)
+  skip_after_action :verify_authorized, only: %w(conditions ohd_conditions privacy_protection contact legal_info)
+  skip_after_action :verify_policy_scoped, only: %w(conditions ohd_conditions privacy_protection contact legal_info)
 
   before_action :set_text, only: [:update]
 
   %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
     define_method(page) do
-      @component = 'TextPage'
-      @code = page
+      @component = 'TextPage' + page.camelize
       respond_to do |format|
         format.html { render :page }
       end

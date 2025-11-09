@@ -93,7 +93,7 @@ class PeopleController < ApplicationController
 
   def index
     policy_scope Person
-    @component = 'PeopleAdminPage'
+    @component = 'PeopleAdmin'
 
     respond_to do |format|
       format.html { render "react/app" }
