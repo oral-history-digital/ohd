@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaSearch, FaList, FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -37,9 +36,9 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
                 <section>
                     <div className="Startpage-headingGroup">
                         <div className="Media">
-                            <Link to={`${pathBase}/searches/archive`} className="Media-img">
+                            <a href={`${pathBase}/searches/archive`} className="Media-img">
                                 <FaSearch className="Startpage-icon" />
-                            </Link>
+                            </a>
                             <div className="Media-body">
                                 <h3 className="Startpage-heading u-mt-none">
                                     {t('modules.site_startpage.search.heading')}
@@ -47,9 +46,9 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
                                 <p>
                                     {t('modules.site_startpage.search.text1')}
                                     {' '}
-                                    <Link to={`${pathBase}/searches/archive`}>
+                                    <a href={`${pathBase}/searches/archive`}>
                                         {t('modules.site_startpage.search.text2')}
-                                    </Link>
+                                    </a>
                                     {' '}
                                     <span dangerouslySetInnerHTML={{__html: t('modules.site_startpage.search.text3')}} />
                                 </p>
@@ -61,9 +60,9 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
                 <section className="u-mt-large">
                     <div className="Startpage-headingGroup">
                         <div className="Media">
-                            <Link to={`${pathBase}/catalog`} className="Media-img">
+                            <a href={`${pathBase}/catalog`} className="Media-img">
                                 <FaList className="Startpage-icon" />
-                            </Link>
+                            </a>
                             <div className="Media-body">
                                 <h3 className="Startpage-heading u-mt-none">
                                     {t('modules.site_startpage.catalog.heading')}
@@ -71,9 +70,9 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
                                 <p>
                                     {t('modules.site_startpage.catalog.text1')}
                                     {' '}
-                                    <Link to={`${pathBase}/catalog`}>
+                                    <a href={`${pathBase}/catalog`}>
                                         {t('modules.site_startpage.catalog.text2')}
-                                    </Link>
+                                    </a>
                                     {' '}
                                     <span dangerouslySetInnerHTML={{__html: t('modules.site_startpage.catalog.text3')}} />
                                 </p>

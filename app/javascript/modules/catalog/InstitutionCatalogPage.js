@@ -1,7 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -14,7 +12,8 @@ import InstitutionCatalog from './InstitutionCatalog';
 export default function InstitutionCatalogPage() {
     const allInstitutions = useSelector(getInstitutions);
     const { t, locale } = useI18n();
-    const id = Number(useParams().id);
+    let params = new URLSearchParams(document.location.search);
+    const id = Number(params.get("id"));
     useTrackPageView();
 
     const institution = allInstitutions[id];
@@ -54,9 +53,9 @@ export default function InstitutionCatalogPage() {
                 >
                 <div className="wrapper-content interviews">
                     <Breadcrumbs className="u-mb">
-                        <Link to={`/${locale}/catalog`}>
+                        <a href={`/${locale}/catalog`}>
                             {t('modules.catalog.title')}
-                        </Link>
+                        </a>
                         {t('activerecord.models.institution.other')}
                         {title}
                     </Breadcrumbs>
@@ -71,9 +70,9 @@ export default function InstitutionCatalogPage() {
                                 {t('modules.catalog.part_of_institution')}
                             </dt>
                             <dd className="DescriptionList-description">
-                                <Link to={`/${locale}/catalog/institutions/${parentInstitution.id}`}>
+                                <a href={`/${locale}/catalog/institutions/${parentInstitution.id}`}>
                                     {parentInstitution.name[locale]}
-                                </Link>
+                                </a>
                             </dd>
                         </>)}
 

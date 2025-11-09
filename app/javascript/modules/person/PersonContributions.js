@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -43,11 +42,11 @@ export default function PersonContributions({
                         >
                             {contribution.label} {t('modules.admin.person_details.contributions.at')}
                             {' '}
-                            <Link
-                                to={`${pathBase}/interviews/${contribution.interview_id}`}
+                            <a
+                                href={`${pathBase}/interviews/${contribution.interview_id}`}
                             >
                                 {contribution.interview_title} ({contribution.interview_id})
-                            </Link>
+                            </a>
                         </li>
                     ))
                 }

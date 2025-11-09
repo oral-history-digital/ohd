@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
 
 import { WorkbookItemForm } from 'modules/workbook';
@@ -91,25 +90,25 @@ export default function InterviewDetailsLeftSide({
             />
             {projectId === 'campscapes' && (
                 <div className="footer-navigation">
-                    <Link
+                    <a
                         className={classNames('search-result-link', {
                             'hidden': !prevArchiveId,
                         })}
-                        to={`${pathBase}/interviews/${prevArchiveId}`}
+                        href={`${pathBase}/interviews/${prevArchiveId}`}
                     >
                         <FaChevronLeft className="Icon Icon--text" />
                         {prevArchiveId}
-                    </Link>
+                    </a>
                     {' '}
-                    <Link
+                    <a
                         className={classNames('search-result-link', {
                             'hidden': !nextArchiveId,
                         })}
-                        to={`${pathBase}/interviews/${nextArchiveId}`}
+                        href={`${pathBase}/interviews/${nextArchiveId}`}
                     >
                         {nextArchiveId}
                         <FaChevronRight className="Icon Icon--text" />
-                    </Link>
+                    </a>
                 </div>
             )}
         </div>

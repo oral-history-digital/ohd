@@ -1,8 +1,6 @@
 import { Helmet } from 'react-helmet';
-import { useParams, Navigate } from 'react-router-dom';
 import { FaChevronRight} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -17,7 +15,8 @@ export default function CollectionCatalogPage() {
     const projects = useSelector(getProjects);
     const collections = useSelector(getCollections);
     const { t, locale } = useI18n();
-    const { id } = useParams();
+    let params = new URLSearchParams(document.location.search);
+    const id = params.get("id");
     const pathBase = usePathBase();
     useTrackPageView();
 
@@ -42,9 +41,9 @@ export default function CollectionCatalogPage() {
                 <ErrorBoundary>
                     <div className="wrapper-content interviews">
                         <Breadcrumbs className="u-mb">
-                            <Link to={`/${locale}/catalog`}>
+                            <a href={`/${locale}/catalog`}>
                                 {t('modules.catalog.title')}
-                            </Link>
+                            </a>
                             {t('activerecord.models.collection.other')}
                             {collection?.name[locale]}
                         </Breadcrumbs>
@@ -72,7 +71,7 @@ export default function CollectionCatalogPage() {
                                 {t('activerecord.models.project.one')}
                             </dt>
                             <dd className="DescriptionList-description">
-                                <Link to={`/${locale}/catalog/archives/${project?.id}`}>{project?.name[locale]}</Link>
+                                <a href={`/${locale}/catalog/archives/${project?.id}`}>{project?.name[locale]}</a>
                             </dd>
 
                             {collection?.notes[locale] && (<>

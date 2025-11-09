@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { usePathBase, LinkOrA } from 'modules/routes';
 import { getProjects } from 'modules/data';
@@ -41,9 +40,9 @@ export default function NameCell({
 
     return (
         <div style={{ paddingLeft: `${row.depth * 2}rem` }}>
-            <Link to={path}>
+            <a href={path}>
                 {row.original.name}
-            </Link>
+            </a>
         </div>
     );
 }

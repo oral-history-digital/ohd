@@ -1,8 +1,6 @@
 import { Helmet } from 'react-helmet';
-import { useParams, Navigate } from 'react-router-dom';
 import { FaChevronRight} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { useTrackPageView } from 'modules/analytics';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -18,14 +16,15 @@ export default function ArchiveCatalogPage() {
     const projects = useSelector(getPublicProjects);
     const allInstitutions = useSelector(getInstitutions);
     const { t, locale } = useI18n();
-    const id = Number(useParams().id);
+    let params = new URLSearchParams(document.location.search);
+    const id = Number(params.get("id"));
     const pathBase = usePathBase();
     const project = useLoadCompleteProject(id);
     useTrackPageView();
 
     //if (!project) {
         //return (
-            //<Navigate to={`${pathBase}/not_found`} replace />
+            //<Navigate href={`${pathBase}/not_found`} replace />
         //);
     //}
 
@@ -42,9 +41,9 @@ export default function ArchiveCatalogPage() {
             <ErrorBoundary>
                 <div className="wrapper-content interviews">
                     <Breadcrumbs className="u-mb">
-                        <Link to={`/${locale}/catalog`}>
+                        <a href={`/${locale}/catalog`}>
                             {t('modules.catalog.title')}
-                        </Link>
+                        </a>
                         {t('activerecord.models.project.other')}
                         {title}
                     </Breadcrumbs>
@@ -54,7 +53,7 @@ export default function ArchiveCatalogPage() {
                     </h1>
 
                     <p className="Paragraph u-mb">
-                        <LinkOrA project={project} to="" className="ProminentLink">
+                        <LinkOrA project={project} href="" className="ProminentLink">
                             <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
                             {t('modules.catalog.go_to_archive')}
                         </LinkOrA>
@@ -71,9 +70,9 @@ export default function ArchiveCatalogPage() {
                             <ul className="UnorderedList">
                                 {Object.values(project.institution_projects || {})?.map(ip => (
                                     <li key={ip.institution_id}>
-                                        <Link to={`/${locale}/catalog/institutions/${ip.institution_id}`}>
+                                        <a href={`/${locale}/catalog/institutions/${ip.institution_id}`}>
                                             {ip.name[locale]}
-                                        </Link>
+                                        </a>
                                     </li>
                                 ))}
                             </ul>

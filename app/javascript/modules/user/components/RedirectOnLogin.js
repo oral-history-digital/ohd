@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 
 import { usePrevious } from 'modules/react-toolbox';
 import { getLocale, getProjectId } from 'modules/archive';
@@ -20,9 +19,8 @@ export default function RedirectOnLogin({
     const to = projectId ? `${pathBase({projectId, locale, project})}${path}` : `/${locale}`;
 
     if (prevIsLoggedIn === false && isLoggedIn === true) {
-        return (
-            <Navigate to={to} />
-        );
+        document.location = to;
+        return null;
     }
 
     return null;

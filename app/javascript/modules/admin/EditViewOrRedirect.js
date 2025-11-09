@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
 
 import { useIsEditor } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
@@ -11,7 +10,8 @@ export default function EditViewOrRedirect({
     const pathBase = usePathBase();
 
     if (!isEditor) {
-        return <Navigate to={pathBase} />;
+        document.location = `${pathBase()}`;
+        return null;
     }
 
     return children;
