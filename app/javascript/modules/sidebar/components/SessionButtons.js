@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
-import { getProjects } from 'modules/data';
+import { clearStateData, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject, usePathBase } from 'modules/routes';
 import { RegisterPopupLink, getIsLoggedIn, submitLogout } from 'modules/user';
@@ -29,6 +29,22 @@ export default function SessionButtons({ className }) {
                 type="button"
                 className="Button Button--asLink u-ml-small"
                 onClick={() => {
+                    // clear non-public data
+                    if (archiveId) {
+                        dispatch(clearStateData('interviews', archiveId, 'title'));
+                        dispatch(clearStateData('interviews', archiveId, 'short_title'));
+                        dispatch(clearStateData('interviews', archiveId, 'description'));
+                        dispatch(clearStateData('interviews', archiveId, 'observations'));
+                        dispatch(clearStateData('interviews', archiveId, 'translations_attributes'));
+                        dispatch(clearStateData('interviews', archiveId, 'photos'));
+                        dispatch(clearStateData('interviews', archiveId, 'segments'));
+                        dispatch(clearStateData('statuses', 'people'));
+                        Object.keys(projects).map(pid => {
+                            dispatch(clearStateData('projects', pid, 'people'));
+                        })
+                    }
+                    dispatch(clearStateData('users'));
+                    dispatch(clearStateData('users'));
                     dispatch(submitLogout(`${pathBase}/users/sign_out`));
                 }}
             >
