@@ -1,23 +1,19 @@
-import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { LayoutContainer } from 'modules/layout';
 
 import { AnalyticsProvider } from 'modules/analytics';
 import { fetcher } from 'modules/api';
 import { ThemeProvider } from 'modules/layout';
-import archiveStore from './archiveStore';
 import 'stylesheets/main.scss';
 import { TextPage } from 'modules/layout';
 
-const TextPageOhdConditions = (props) => (
+const TextPageOhdConditions = () => (
     <SWRConfig value={{ fetcher }}>
-        <Provider store={archiveStore(props)}>
-            <ThemeProvider />
+        <ThemeProvider />
             <AnalyticsProvider>
                 <LayoutContainer scrollPositionBelowThreshold={false} />
                 <TextPage code='ohd_conditions' />
             </AnalyticsProvider>
-        </Provider>
     </SWRConfig>
 );
 

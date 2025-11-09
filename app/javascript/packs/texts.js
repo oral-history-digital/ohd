@@ -9,7 +9,10 @@ import TextPageLegalInfo from 'startup/TextPageLegalInfo.js';
 import TextPageConditions from 'startup/TextPageConditions.js';
 import TextPageOhdConditions from 'startup/TextPageOhdConditions.js';
 import TextPagePrivacyProtection from 'startup/TextPagePrivacyProtection.js';
+import store from 'startup/store.js';
 
+
+ReactOnRails.registerStore({ store });
 ReactOnRails.register({
     Sidebar,
     TextPageContact,

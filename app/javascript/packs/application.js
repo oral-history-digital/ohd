@@ -5,7 +5,10 @@ import 'datalist-polyfill';
 import ReactOnRails from 'react-on-rails';
 
 import App from 'startup/App';
+import store from 'startup/store.js';
 
+
+ReactOnRails.registerStore({ store });
 ReactOnRails.register({
     App,
 });

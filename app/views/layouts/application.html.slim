@@ -11,6 +11,7 @@ html
       var developmentMode = #{Rails.env == 'development' ? true : false};
       var railsMode = '#{Rails.env}';
 
+    == redux_store('store', props: redux_store_state)
     == javascript_pack_tag @javascript_pack, defer: true
     == stylesheet_pack_tag 'application'
 
@@ -33,4 +34,4 @@ html
           = render 'layouts/site_footer'
 
         .Layout-sidebar.Sidebar.wrapper-flyout
-          = react_component('Sidebar', props: initial_redux_state)
+          = react_component('Sidebar', prerender: false)

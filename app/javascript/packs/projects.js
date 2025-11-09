@@ -11,7 +11,10 @@ import EditProjectDisplay from 'startup/EditProjectDisplay.js';
 import ArchivePage from 'startup/ArchivePage.js';
 import SiteStartpage from 'startup/SiteStartpage.js';
 import Home from 'startup/Home.js';
+import store from 'startup/store.js';
 
+
+ReactOnRails.registerStore({ store });
 ReactOnRails.register({
     EditProjectInfo,
     EditProjectConfig,

@@ -1,4 +1,4 @@
 noscript
   = t('noscript')
-= react_component('ActivateAccount', props: initial_redux_state.update(user: {order_new_password_status: @order_new_password_status, active: true}))
+= react_component('ActivateAccount', prerender: false)
 

@@ -257,6 +257,27 @@ class ApplicationController < ActionController::Base
   end
   helper_method :initial_redux_state
 
+  def redux_store_state
+    state = if respond_to?(:initial_interview_redux_state, true) && @interview
+      initial_interview_redux_state
+    elsif respond_to?(:initial_user_redux_state, true) && defined?(@initial_user_redux_state)
+      initial_user_redux_state
+    else
+      initial_redux_state
+    end
+    
+    # Merge in additional state from instance variables
+    if @order_new_password_status
+      state = state.deep_dup
+      state[:user] ||= {}
+      state[:user][:order_new_password_status] = @order_new_password_status
+      state[:user][:active] = true if action_name == 'edit'
+    end
+    
+    state
+  end
+  helper_method :redux_store_state
+
   def cache_key_params
     cache_key = ""
     params.reject{|k,v| k == 'controller' || k == 'action'}.each{|k,v| cache_key << "#{k}-#{v}-"}

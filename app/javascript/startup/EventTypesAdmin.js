@@ -1,23 +1,19 @@
-import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { LayoutContainer } from 'modules/layout';
 
 import { AnalyticsProvider } from 'modules/analytics';
 import { fetcher } from 'modules/api';
 import { ThemeProvider } from 'modules/layout';
-import archiveStore from './archiveStore';
 import 'stylesheets/main.scss';
 import { EventTypesAdminPage } from 'modules/admin';
 
-const EventTypesAdmin = (props) => (
+const EventTypesAdmin = () => (
     <SWRConfig value={{ fetcher }}>
-        <Provider store={archiveStore(props)}>
-            <ThemeProvider />
+        <ThemeProvider />
             <AnalyticsProvider>
                 <LayoutContainer scrollPositionBelowThreshold={false} />
                 <EventTypesAdminPage />
             </AnalyticsProvider>
-        </Provider>
     </SWRConfig>
 );
 
