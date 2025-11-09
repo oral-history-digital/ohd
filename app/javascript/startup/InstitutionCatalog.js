@@ -1,3 +1,4 @@
+import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { LayoutContainer } from 'modules/layout';
 
@@ -6,15 +7,22 @@ import { fetcher } from 'modules/api';
 import { ThemeProvider } from 'modules/layout';
 import 'stylesheets/main.scss';
 import { InstitutionCatalogPage } from 'modules/catalog';
+import ReactOnRails from 'react-on-rails';
 
-const InstitutionCatalog = () => (
-    <SWRConfig value={{ fetcher }}>
-        <ThemeProvider />
-            <AnalyticsProvider>
-                <LayoutContainer scrollPositionBelowThreshold={false} />
-                <InstitutionCatalogPage />
-            </AnalyticsProvider>
-    </SWRConfig>
-);
+const InstitutionCatalog = () => {
+    const store = ReactOnRails.getStore('store');
+    
+    return (
+        <Provider store={store}>
+            <SWRConfig value={{ fetcher }}>
+                <ThemeProvider />
+                <AnalyticsProvider>
+                    <LayoutContainer scrollPositionBelowThreshold={false} />
+                    <InstitutionCatalogPage />
+                </AnalyticsProvider>
+            </SWRConfig>
+        </Provider>
+    );
+};
 
 export default InstitutionCatalog;

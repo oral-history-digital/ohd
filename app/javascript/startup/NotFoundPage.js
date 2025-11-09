@@ -1,3 +1,4 @@
+import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { LayoutContainer } from 'modules/layout';
 
@@ -6,15 +7,22 @@ import { fetcher } from 'modules/api';
 import { ThemeProvider } from 'modules/layout';
 import 'stylesheets/main.scss';
 import { default as NotFoundPageComponent } from 'modules/routes/NotFoundPage.js';
+import ReactOnRails from 'react-on-rails';
 
-const NotFoundPage = () => (
-    <SWRConfig value={{ fetcher }}>
-        <ThemeProvider />
-            <AnalyticsProvider>
-                <LayoutContainer scrollPositionBelowThreshold={false} />
-                <NotFoundPageComponent />
-            </AnalyticsProvider>
-    </SWRConfig>
-);
+const NotFoundPage = () => {
+    const store = ReactOnRails.getStore('store');
+    
+    return (
+        <Provider store={store}>
+            <SWRConfig value={{ fetcher }}>
+                <ThemeProvider />
+                <AnalyticsProvider>
+                    <LayoutContainer scrollPositionBelowThreshold={false} />
+                    <NotFoundPageComponent />
+                </AnalyticsProvider>
+            </SWRConfig>
+        </Provider>
+    );
+};
 
 export default NotFoundPage;

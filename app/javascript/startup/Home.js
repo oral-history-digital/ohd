@@ -1,3 +1,4 @@
+import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { LayoutContainer } from 'modules/layout';
 
@@ -6,15 +7,22 @@ import { fetcher } from 'modules/api';
 import { ThemeProvider } from 'modules/layout';
 import 'stylesheets/main.scss';
 import { HomeContainer } from 'modules/startpage';
+import ReactOnRails from 'react-on-rails';
 
-const Home = () => (
-    <SWRConfig value={{ fetcher }}>
-        <ThemeProvider />
-            <AnalyticsProvider>
-                <LayoutContainer scrollPositionBelowThreshold={false} />
-                <HomeContainer />
-            </AnalyticsProvider>
-    </SWRConfig>
-);
+const Home = () => {
+    const store = ReactOnRails.getStore('store');
+    
+    return (
+        <Provider store={store}>
+            <SWRConfig value={{ fetcher }}>
+                <ThemeProvider />
+                <AnalyticsProvider>
+                    <LayoutContainer scrollPositionBelowThreshold={false} />
+                    <HomeContainer />
+                </AnalyticsProvider>
+            </SWRConfig>
+        </Provider>
+    );
+};
 
 export default Home;
