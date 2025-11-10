@@ -5,11 +5,6 @@ class PasswordsController < Devise::PasswordsController
 
   respond_to :json, :html
 
-  def new
-    @component = 'OrderNewPassword'
-    super
-  end
-
   # PUT /resource/password
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
