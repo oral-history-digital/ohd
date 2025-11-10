@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import { useDispatch } from 'react-redux';
 
 import { LinkOrA } from 'modules/routes';
+import { formatTimecode } from 'modules/interview-helpers';
 import { setArchiveId, setProjectId } from 'modules/archive';
 import SlideShowSearchStats from './SlideShowSearchStats';
 import DumbTranscriptResult from './DumbTranscriptResult';
@@ -47,6 +48,8 @@ export default function SlideShowSearchResults({
                         }
                     }
 
+                    const timeCode = formatTimecode(segment.time, true);
+
                     return (
                         <div key={segment.id}>
                             <div style={{marginBottom: '24px'}}>
@@ -57,7 +60,7 @@ export default function SlideShowSearchResults({
                                         setProjectId(projectId),
                                         setArchiveId(interview.archive_id)
                                     )}
-                                    to={`interviews/${interview.archive_id}`}
+                                    to={`interviews/${interview.archive_id}?tape=${segment.tape_nbr}&time=${timeCode}`}
                                 >
                                     <DumbTranscriptResult
                                         highlightedText={Object.values(segment.text).find(text => text?.length > 0)}
