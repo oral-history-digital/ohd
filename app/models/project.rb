@@ -167,7 +167,7 @@ class Project < ApplicationRecord
   end
 
   def update_interviews_count
-    self.update interviews_count: self.interviews.shared.count
+    self.update interviews_count: self.interviews.where(workflow_state: ['public', 'restricted']).count
   end
 
   def domain_with_optional_identifier

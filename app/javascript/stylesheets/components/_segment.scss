@@ -40,7 +40,6 @@ $segment-icon-width: 1.5 * $base-unit;
 
 .Segment-icon--primary {
   color: var(--primary-color);
-
 }
 
 .Segment-icon--secondary {
@@ -58,6 +57,7 @@ $segment-icon-width: 1.5 * $base-unit;
   max-width: $line-length;
   outline: none;
   padding: 0;
+  padding-left: 0.5rem; /* Make space for larger initials */
   text-align: left;
   transition-property: background-color, box-shadow, color;
   transition-duration: $transition-duration;
@@ -100,7 +100,7 @@ $segment-icon-width: 1.5 * $base-unit;
 .SegmentForm-textarea {
   direction: ltr;
   text-align: left;
-  
+
   &-rtl {
     direction: rtl;
     text-align: right;

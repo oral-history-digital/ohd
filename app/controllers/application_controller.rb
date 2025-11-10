@@ -78,8 +78,7 @@ class ApplicationController < ActionController::Base
       contribution_types: :translations,
       metadata_fields: :translations,
       external_links: :translations,
-      collections: :translations,
-      #collections: {collection: :translations},
+      # Collections removed - load selectively when needed via CollectionsController
       institution_projects: {institution: :translations},
     ).first
   end
@@ -104,15 +103,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}") do
-          TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
-            mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
-              mem2[translation.locale] = translation.value
-              mem2
-            end
-            mem
-          end
-        end,
+        translations: translations_for_locale,
         countryKeys: country_keys,
       },
       user: {
@@ -177,7 +168,7 @@ class ApplicationController < ActionController::Base
           Project.all.includes(
             :translations,
             :registry_reference_types,
-            :collections,
+            # Collections removed - loaded via separate API call when needed
           ).inject({}) do |mem, s|
             mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
             mem
@@ -284,6 +275,27 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+   def translations_for_locale(locale = nil)       
+    target_locale = (locale || I18n.locale).to_s    
+            
+    Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}-#{target_locale}") do    
+      Rails.logger.info "Fetching translations for locale: #{target_locale}"    
+          
+      result = TranslationValue.all.includes(:translations).                                                                        
+        where("translation_value_translations.locale": target_locale).                                        
+        inject({}) do |mem, translation_value|    
+        mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|    
+          mem2[translation.locale] = translation.value                 
+          mem2      
+        end       
+        mem      
+      end    
+          
+      Rails.logger.info "Translation keys found for #{target_locale}: #{result.keys.count}"    
+      result    
+    end    
+  end
 
   def country_keys
     Rails.cache.fetch('country-keys-20240624') do
