@@ -5,12 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.14] - 2025-11-07
+## [1.2.0] - 2025-11-10
 
-### Changed
+### Added
 
--   feat: change initials logic [#40](https://github.com/oral-history-digital/ohd/pull/40)
--   feat: selectively load locales [#38](https://github.com/oral-history-digital/ohd/pull/38)
+-   feat: change initials logic ([#40](https://github.com/oral-history-digital/ohd/pull/40))
+-   feat: selectively load locales ([#38](https://github.com/oral-history-digital/ohd/pull/38))
+
+### Fixed
+
+-   fix: remove collections from translations loading for selective fetching ([f9a281a](https://github.com/oral-history-digital/ohd/commit/ca3c45194d769cc9b335ccf1a3c0266269ca89c4))
 
 ## [1.1.13] - 2025-11-06
 
@@ -27,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Improved visibility and styling for 'view search snippets' button in search result cards
+-   Improved visibility and styling for 'view search snippets' button in search result cards ([#41](https://github.com/oral-history-digital/ohd/pull/41))
 
 ### Fixed
 
@@ -143,7 +147,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
-[1.1.14]: https://github.com/oral-history-digital/ohd/compare/v1.1.13...v1.1.14
+[1.2.0]: https://github.com/oral-history-digital/ohd/compare/v1.1.13...v1.2.0
 [1.1.13]: https://github.com/oral-history-digital/ohd/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/oral-history-digital/ohd/compare/v1.1.11...v1.1.12
 [1.1.11]: https://github.com/oral-history-digital/ohd/compare/v1.1.10...v1.1.11
