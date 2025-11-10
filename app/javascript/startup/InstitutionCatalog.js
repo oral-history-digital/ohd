@@ -10,10 +10,10 @@ import { InstitutionCatalogPage } from 'modules/catalog';
 import ReactOnRails from 'react-on-rails';
 
 const InstitutionCatalog = () => {
-    const store = ReactOnRails.getStore('store');
+    const archiveStore = ReactOnRails.getStore('archiveStore');
     
     return (
-        <Provider store={store}>
+        <Provider store={archiveStore}>
             <SWRConfig value={{ fetcher }}>
                 <ThemeProvider />
                 <AnalyticsProvider>

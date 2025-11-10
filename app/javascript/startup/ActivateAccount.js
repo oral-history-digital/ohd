@@ -10,10 +10,10 @@ import { ActivateAccount as ActivateAccountComponent } from 'modules/user';
 import ReactOnRails from 'react-on-rails';
 
 const ActivateAccount = () => {
-    const store = ReactOnRails.getStore('store');
+    const archiveStore = ReactOnRails.getStore('archiveStore');
     
     return (
-        <Provider store={store}>
+        <Provider store={archiveStore}>
             <SWRConfig value={{ fetcher }}>
                 <ThemeProvider />
                 <AnalyticsProvider>

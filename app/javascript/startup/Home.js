@@ -10,10 +10,10 @@ import { HomeContainer } from 'modules/startpage';
 import ReactOnRails from 'react-on-rails';
 
 const Home = () => {
-    const store = ReactOnRails.getStore('store');
+    const archiveStore = ReactOnRails.getStore('archiveStore');
     
     return (
-        <Provider store={store}>
+        <Provider store={archiveStore}>
             <SWRConfig value={{ fetcher }}>
                 <ThemeProvider />
                 <AnalyticsProvider>

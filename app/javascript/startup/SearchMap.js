@@ -10,10 +10,10 @@ import { SearchMap as SearchMapComponent } from 'modules/search-map';
 import ReactOnRails from 'react-on-rails';
 
 const SearchMap = () => {
-    const store = ReactOnRails.getStore('store');
+    const archiveStore = ReactOnRails.getStore('archiveStore');
     
     return (
-        <Provider store={store}>
+        <Provider store={archiveStore}>
             <SWRConfig value={{ fetcher }}>
                 <ThemeProvider />
                 <AnalyticsProvider>

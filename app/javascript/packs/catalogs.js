@@ -8,10 +8,10 @@ import MainCatalog from 'startup/MainCatalog.js';
 import InstitutionCatalog from 'startup/InstitutionCatalog.js';
 import ArchiveCatalog from 'startup/ArchiveCatalog.js';
 import CollectionCatalog from 'startup/CollectionCatalog.js';
-import store from 'startup/store.js';
+import archiveStore from 'startup/archiveStore.js';
 
 
-ReactOnRails.registerStore({ store });
+ReactOnRails.registerStore({ archiveStore });
 ReactOnRails.register({
     MainCatalog,
     InstitutionCatalog,

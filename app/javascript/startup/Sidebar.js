@@ -8,10 +8,10 @@ import 'stylesheets/main.scss';
 import ReactOnRails from 'react-on-rails';
 
 const Sidebar = () => {
-    const store = ReactOnRails.getStore('store');
+    const archiveStore = ReactOnRails.getStore('archiveStore');
     
     return (
-        <Provider store={store}>
+        <Provider store={archiveStore}>
             <SWRConfig value={{ fetcher }}>
                 <ThemeProvider />
                 <SidebarComponent />

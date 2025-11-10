@@ -6,10 +6,10 @@ import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
 import Search from 'startup/Search.js';
 import SearchMap from 'startup/SearchMap.js';
-import store from 'startup/store.js';
+import archiveStore from 'startup/archiveStore.js';
 
 
-ReactOnRails.registerStore({ store });
+ReactOnRails.registerStore({ archiveStore });
 ReactOnRails.register({
     Sidebar,
     Search,

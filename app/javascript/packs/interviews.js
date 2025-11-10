@@ -6,9 +6,9 @@ import ReactOnRails from 'react-on-rails';
 import Sidebar from 'startup/Sidebar.js';
 import Interview from 'startup/Interview.js';
 import EditInterview from 'startup/EditInterview.js';
-import store from 'startup/store.js';
+import archiveStore from 'startup/archiveStore.js';
 
-ReactOnRails.registerStore({ store });
+ReactOnRails.registerStore({ archiveStore });
 
 ReactOnRails.register({
     Sidebar,

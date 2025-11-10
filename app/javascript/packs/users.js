@@ -8,10 +8,10 @@ import Account from 'startup/Account.js';
 import OrderNewPassword from 'startup/OrderNewPassword.js';
 import ActivateAccount from 'startup/ActivateAccount.js';
 import UsersAdmin from 'startup/UsersAdmin.js';
-import store from 'startup/store.js';
+import archiveStore from 'startup/archiveStore.js';
 
 
-ReactOnRails.registerStore({ store });
+ReactOnRails.registerStore({ archiveStore });
 ReactOnRails.register({
     Sidebar,
     Account,
