@@ -25,7 +25,8 @@ export default function SidebarTabs({
     archiveId,
     isLoggedIn,
 }) {
-    const tabIndex = useSelector(state => state.archive.sidebarTabIndex);
+    const initialTabIndex = useSelector(state => state.archive.sidebarTabIndex);
+    const [tabIndex, setTabIndex] = useState(initialTabIndex || 0);
     const { t, locale } = useI18n();
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
@@ -37,6 +38,8 @@ export default function SidebarTabs({
     const isCampscapesProject = project?.shortname === 'campscapes';
 
     function handleTabClick(index) {
+        setTabIndex(index);
+
         switch (index) {
         case indexes.INDEX_SEARCH:
             link = `${pathBase}/searches/archive`;
@@ -64,7 +67,7 @@ export default function SidebarTabs({
             break;
         default:
         }
-        if (link !== location.pathname) {
+        if (link && link !== location.pathname) {
             location = link;
         }
     }
