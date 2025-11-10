@@ -182,27 +182,16 @@ class UsersController < ApplicationController
     end
   end
 
-  def initial_user_redux_state
-    initial_redux_state.update(
-      user: initial_redux_state[:user].update(
-        login: @login,
-        display_name: @display_name,
-        registration_status: @registration_status,
-        active: @active
-      )
-    )
+  def initial_redux_state
+    state = super.deep_dup
+    state[:user][:login] = @login,
+    state[:user][:display_name] = @display_name,
+    state[:user][:registration_status] = @registration_status,
+    state[:user][:active] = @active
+    state
   end
-  helper_method :initial_user_redux_state
 
   private
-
-  def update_initial_redux_state(users)
-    initial_redux_state.update(
-      data: initial_redux_state[:data].update(
-        users: users
-      )
-    )
-  end
 
   def user_params
     params.require(:user).permit(

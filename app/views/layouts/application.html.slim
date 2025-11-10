@@ -11,7 +11,7 @@ html
       var developmentMode = #{Rails.env == 'development' ? true : false};
       var railsMode = '#{Rails.env}';
 
-    == redux_store('archiveStore', props: redux_store_state)
+    == redux_store('archiveStore', props: initial_redux_state)
     == javascript_pack_tag @javascript_pack, defer: true
     == stylesheet_pack_tag 'application'
 

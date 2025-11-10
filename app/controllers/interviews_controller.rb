@@ -481,7 +481,7 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def initial_interview_redux_state
+  def initial_redux_state
     #Rails.cache.fetch("#{current_project.shortname}-#{current_user ? current_user.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
     if @interview
       editing_permissions = interview_access = false
@@ -499,29 +499,22 @@ class InterviewsController < ApplicationController
       cached_interview = if editing_permissions
                            cache_single(@interview, serializer_name: 'InterviewUpdate', segments: segments, allowed_to_see_all: true)
                          elsif interview_access
-                           cache_single(@interview)
+                           cache_single(@interview, segments: segments, allowed_to_see_all: false)
                          else
                            cache_single(@interview, serializer_name: 'InterviewBase')
                          end
 
-      initial_redux_state.update(
-        archive: initial_redux_state[:archive].update(
-          archiveId: @interview.archive_id,
-          interviewEditView: cookies[:interviewEditView]
-        ),
-        data: initial_redux_state[:data].update(
-          interviews: {"#{@interview.identifier}": cached_interview},
-          statuses: initial_redux_state[:data][:statuses].update(
-            interviews: {"#{@interview.identifier}": 'fetched'},
-          )
-        )
-      )
+      state = default_redux_state.deep_dup
+      state[:archive][:archiveId] = @interview.archive_id
+      state[:archive][:interviewEditView] = cookies[:interviewEditView]
+      state[:data][:interviews][@interview.identifier] = cached_interview
+      state[:data][:statuses][:interviews][@interview.identifier] = 'fetched'
+      state
     else
-      initial_redux_state
+      default_redux_state
     end
     #end
   end
-  helper_method :initial_interview_redux_state
 
   private
 
