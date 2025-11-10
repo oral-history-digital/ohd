@@ -3,12 +3,12 @@ require "open-uri"
 namespace :cache do
 
   # crontab: 0 2 * * * /bin/rails cache:clear_old DIR=/path/to/dir DAYS=7 RAILS_ENV=production
-  desc "Clear old directories from tmp/cache/application older than X days. Use DAYS=14 (default) or DIR=/path/to/dir"
+  desc "Clear old directories from tmp/cache/application older than X days. Use DAYS=28 (default) or DIR=/path/to/dir"
   task :clear_old => :environment do
     require "fileutils"
 
     dir = ENV.fetch("DIR", Rails.root.join("tmp", "cache", "application").to_s)
-    days = ENV.fetch("DAYS", "14").to_i
+    days = ENV.fetch("DAYS", "28").to_i
     max_age = days.days
     now = Time.current
 
