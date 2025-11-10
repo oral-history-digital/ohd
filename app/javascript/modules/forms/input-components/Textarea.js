@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { checkTextDir } from '../../transcript/utils';
 
 import Element from '../Element';
 
@@ -22,6 +23,8 @@ export default function Textarea({
     id,
 }) {
     const defaultValue = value || data?.[attribute];
+    // Determine text direction
+    const textDir = checkTextDir(defaultValue || '');
 
     const onChange = event => {
         const newValue = event.target.value;
@@ -62,6 +65,8 @@ export default function Textarea({
                 defaultValue={defaultValue}
                 onChange={onChange}
                 {...htmlOptions}
+                dir={textDir}
+                style={{ direction: textDir, textAlign: textDir === 'rtl' ? 'right' : 'left'}}
             />
         </Element>
     );

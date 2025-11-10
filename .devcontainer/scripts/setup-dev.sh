@@ -173,6 +173,15 @@ else
   log_message "Skipped database setup - using existing database"
 fi
 
+# 7.5) Update OHD project domain for devcontainer
+log_message "Configuring OHD project domain for devcontainer…"
+if bundle exec rails runner "Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')" 2>/dev/null; then
+  log_message "  ✅ OHD project domain set to http://portal.oral-history.localhost:3000"
+else
+  log_error "  ⚠️  Failed to update OHD project domain - you may need to run manually:"
+  log_error "     bundle exec rails runner \"Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')\""
+fi
+
 # 8) JS install and precompile
 log_message "Precompiling webpack packs for initial setup…"
 bundle exec bin/shakapacker

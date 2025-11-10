@@ -92,25 +92,41 @@ class Interview < ApplicationRecord
   after_save :destroy_permissions
   after_destroy :update_counter_cache
 
+  ATTRIBUTES_WITH_STATUS = %w(
+    archive_id
+    media_type
+    interview_date
+    duration
+    tape_count
+    collection_id
+    signature_original
+    description
+    transcript
+    pseudo_links
+    language_id
+    primary_language_id
+    secondary_language_id
+    primary_translation_language_id
+    secondary_translation_language_id
+  )
+
   def set_public_attributes_to_properties
-    atts = %w(
-      archive_id
-      media_type
-      interview_date
-      duration
-      tape_count
-      collection_id
-      signature_original
-      description
-      transcript
-      pseudo_links
-      language_id
-      primary_language_id
-      secondary_language_id
-      primary_translation_language_id
-      secondary_translation_language_id
+    update properties: (properties || {}).update(
+      public_attributes: ATTRIBUTES_WITH_STATUS.inject({}) do |mem, att|
+        mem[att] = "true"; mem
+      end
     )
-    update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
+  end
+
+  ATTRIBUTES_WITH_STATUS.each do |att|
+    define_method "public_#{att}=" do |value|
+      public_attributes = properties.fetch(:public_attributes, {})
+      self[:properties] = self.properties.update(
+        public_attributes: public_attributes.with_indifferent_access.update(
+          "#{att}": value.to_s == 'true' ? 'true' : 'false'
+        )
+      )
+    end
   end
 
   def create_tasks
@@ -335,11 +351,6 @@ class Interview < ApplicationRecord
         bio.update_attribute :workflow_state, change
       end
     end
-  end
-
-  def public_attributes=(hash)
-    public_atts = self.properties[:public_attributes].with_indifferent_access.update("#{hash.keys.first}": hash.values.first)
-    self[:properties] = self.properties.update(public_attributes: public_atts)
   end
 
   def self.non_public_method_names

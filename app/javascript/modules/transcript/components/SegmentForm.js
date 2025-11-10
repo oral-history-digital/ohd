@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { checkTextDir } from '../utils';
 
 import { Form } from 'modules/forms';
 import { usePeople } from 'modules/person';
@@ -17,16 +16,6 @@ export default function SegmentForm({
     onCancel,
 }) {
     const { data: people, isLoading } = usePeople();
-
-    // Determine text direction for the textarea
-    const textDir = checkTextDir(segment?.text[contentLocale] || '');
-
-    useEffect(() => {
-        const textarea = document.getElementById('segment_text');
-        textarea.setAttribute('dir', textDir);
-        textarea.style.direction = textDir;
-        textarea.style.textAlign = textDir === 'rtl' ? 'right' : 'left';
-    }, [textDir, contentLocale]);
 
     if (isLoading) {
         return <Spinner />;
@@ -59,7 +48,8 @@ export default function SegmentForm({
                         value:
                             segment?.text[contentLocale] ||
                             segment?.text[`${contentLocale}-public`],
-                        attribute: 'text',
+                        attribute: `text_${contentLocale}`,
+                        labelKey: 'activerecord.attributes.segment.text',
                     },
                 ]}
             />

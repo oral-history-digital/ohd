@@ -62,9 +62,27 @@ Once the container is built and configured, the application should start automat
 
 After starting the application, you can access it at:
 
--   URL: [http://portal.oral-history.localhost:3000/za/de](http://portal.oral-history.localhost:3000/za/de)
+-   URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
 -   Admin login: `alice@example.com`
 -   Password: `password`
+
+### Project Domain Configuration
+
+The Dev Container setup automatically configures the OHD project's `archive_domain` to work with the local development environment (`http://portal.oral-history.localhost:3000`). This happens during the initial setup after the database is imported or created.
+
+If you need to manually update the project domain (e.g., after importing a production database dump), you can run:
+
+```ruby
+bundle exec rails runner "Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')"
+```
+
+Or in the Rails console:
+
+```ruby
+Project.ohd.update archive_domain: "http://portal.oral-history.localhost:3000"
+```
+
+Without the correct domain configuration, the application will not route requests properly and the site will not work.
 
 ### Container Components
 

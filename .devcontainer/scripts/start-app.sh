@@ -130,4 +130,4 @@ log "  Quick (10 interviews):           bin/rails solr:reindex:development:quick
 log "  Limited (10 interviews + data):  bin/rails solr:reindex:development:limited[10]"
 log "  Full (all data, slow):           bin/rails solr:reindex:all"
 log ""
-log "🌐 Open in browser: http://portal.oral-history.localhost:3000/za/en/"
+log "🌐 Open in browser: http://portal.oral-history.localhost:3000/"

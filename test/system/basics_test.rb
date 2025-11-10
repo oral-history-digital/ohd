@@ -410,4 +410,25 @@ class BasicsTest < ApplicationSystemTestCase
     find('.public-DraftEditor-content').send_keys('my annotation')
     click_on 'Submit'
   end
+
+  test 'change transcript status' do
+    Interview.reindex
+    DataHelper.test_media
+
+    interview = Interview.first
+    visit '/'
+    login_as 'alice@example.com'
+    visit "/en/interviews/#{interview.archive_id}"
+    click_on 'Editing interface'
+    click_on 'About the interview'
+    within '#transcript-downloads' do
+      click_on 'Edit'
+    end
+    uncheck 'Public', visible: :all
+    click_on 'Submit'
+
+    sleep 2
+    interview.reload
+    assert interview.properties[:public_attributes]['transcript'] == 'false'
+  end
 end

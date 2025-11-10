@@ -69,7 +69,7 @@ export default function SingleValueWithForm ({
 
     const statusCheckbox = {
         elementType: 'input',
-        attribute: `public_attributes][${attribute}`,
+        attribute: `public_${attribute}`,
         value: obj.properties?.public_attributes?.[attribute]?.toString() === 'true',
         labelKey: 'activerecord.attributes.default.publish',
         type: 'checkbox',

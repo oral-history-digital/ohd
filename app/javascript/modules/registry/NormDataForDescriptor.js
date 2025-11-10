@@ -19,7 +19,8 @@ function NormDataForDescriptor({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const [setFilter] = useState(null);
+    const [filter, setFilter] = useState(null);
+    //const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
     const [from, setFrom] = useState(0);
@@ -143,6 +144,7 @@ function NormDataForDescriptor({
                                             <>
                                                 <UpdateRegistryEntryAttributesModal
                                                     entry={result.Entry}
+                                                    apiSearchTerm={descriptor}
                                                     registryEntryAttributes={
                                                         registryEntryAttributes
                                                     }
