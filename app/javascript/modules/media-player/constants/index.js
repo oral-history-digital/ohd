@@ -14,7 +14,7 @@ export const SCREEN_L = 990; // $screen-l
 export const SCREEN_XL = 1200; // $screen-xl
 
 // Video player sizes (must match SCSS variables in app/javascript/stylesheets/_variables.scss)
-export const VIDEO_MAX_WIDTH_SMALL = '30rem'; // $media-player-video-max-width-small
+export const VIDEO_MAX_WIDTH_SMALL = '20rem'; // $media-player-video-max-width-small
 export const VIDEO_MAX_WIDTH_MEDIUM = '50rem'; // $media-player-video-max-width
 
 // Re-export translations constants
