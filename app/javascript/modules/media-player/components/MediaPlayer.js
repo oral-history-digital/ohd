@@ -50,6 +50,12 @@ export default function MediaPlayer() {
     return (
         <div className={classNames('Layout-mediaPlayer', 'MediaPlayer')}>
             <div className="MediaPlayer-inner">
+                {interview.media_missing ? (
+                    <p className="MediaMissing">{mediaMissingText()}</p>
+                ) : (
+                    <MediaElementContainer />
+                )}
+
                 <header
                     className={classNames('MediaHeader', {
                         'MediaHeader--mediaMissing': interview.media_missing,
@@ -57,15 +63,8 @@ export default function MediaPlayer() {
                 >
                     <MediaPlayerTitle className="MediaHeader-title" />
                     <MediaControlsContainer className="MediaHeader-controls" />
+                    <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
                 </header>
-
-                {interview.media_missing ? (
-                    <p className="MediaMissing">{mediaMissingText()}</p>
-                ) : (
-                    <MediaElementContainer />
-                )}
-
-                <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
             </div>
         </div>
     );

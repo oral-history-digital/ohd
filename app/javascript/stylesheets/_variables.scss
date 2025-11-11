@@ -166,29 +166,24 @@ $screen-s-max: ($screen-m-min - 1) !default;
 $screen-m-max: ($screen-l-min - 1) !default;
 $screen-l-max: ($screen-xl-min - 1) !default;
 
-// CSS Custom Properties for responsive media player sizing
-// Must be defined after breakpoints are set
-:root {
-  // Media Player - responsive heights and widths
-  --media-player-height: 20rem; // Mobile baseline
-  --media-player-width: 100%; // Full width on small screens
-  --media-player-max-width: none; // No constraint on small screens
-  --media-player-margin-x: 0; // No horizontal margins on mobile
+// Media Player Configuration
+// --------------------------------------------------
 
+// Width of video element in two-column layout (medium+ screens)
+$media-player-video-width: 66%;
+// Maximum width constraint for video element
+$media-player-video-max-width: 50rem;
+// Padding for header/controls area
+$media-player-header-padding: $base-unit;
+// Padding for mobile layout
+$media-player-mobile-padding-bottom: $base-unit;
+$media-player-mobile-padding-x: calc($base-unit / 2);
+
+// CSS Custom Properties
+// --------------------------------------------------
+:root {
   // Content tabs height (constant across breakpoints)
   --content-tabs-height: #{$horizontal-tabs-height};
-
-  // Medium screens: Add margins, reduce height
-  @media (min-width: $screen-m) {
-    --media-player-height: 12.5rem; // Smaller height for medium screens
-    --media-player-max-width: 60rem; // Constrain width
-    --media-player-margin-x: auto; // Center with auto margins
-  }
-
-  // Large screens: Increase height
-  @media (min-width: $screen-xl) {
-    --media-player-height: 28rem; // Larger height for desktop
-  }
 }
 
 // workflow-colors

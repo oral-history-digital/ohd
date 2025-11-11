@@ -14,10 +14,10 @@ const isCompactViewport = () => isMobile() || window.innerWidth < 1200;
 
 /**
  * Toggle player size by manipulating CSS custom property
- * 'compact' = 12.5rem, 'expanded' = 28rem
+ * 'compact' = 20rem, 'expanded' = 30rem
  */
 const togglePlayerHeight = (isCompact) => {
-    const height = isCompact ? '12.5rem' : '28rem';
+    const height = isCompact ? '20rem' : '30rem';
     document.documentElement.style.setProperty('--media-player-height', height);
 };
 

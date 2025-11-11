@@ -1,34 +1,97 @@
 .MediaPlayer {
-  // Outer container: Full-width dark background
   background: $gray-darker;
   color: #fff;
-  // Height controlled by CSS custom property
-  height: var(--media-player-height);
-  overflow-y: hidden;
   position: relative;
   z-index: $z-index-media-player;
-  // Full width - no constraints on outer container
   width: 100%;
 }
 
 .MediaPlayer-inner {
-  // Inner container: Constrained content with responsive margins
   display: flex;
   flex-direction: column;
-  width: var(--media-player-width);
-  max-width: var(--media-player-max-width);
-  margin-left: var(--media-player-margin-x);
-  margin-right: var(--media-player-margin-x);
-  padding: $base-unit 5%;
-  height: 100%;
+  width: 100%;
+  padding: 0 0 $media-player-mobile-padding-bottom;
+  box-sizing: border-box;
 }
 
 .MediaElement {
-  max-width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 9; // Maintain 16:9 aspect ratio
+  overflow: hidden;
+
+  [data-vjs-player] {
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-js {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+
+    video,
+    .vjs-tech {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
 }
 
-.MediaPlayer-buttons {
+.MediaHeader {
+  align-items: center;
   display: flex;
-  margin-top: 1rem;
-  align-self: end;
+  flex: 0 0 auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: calc($base-unit / 4);
+  max-width: 100%;
+  overflow: hidden;
+  padding: $media-player-mobile-padding-x;
+
+  .MediaControls {
+    margin: 0 0 0 auto;
+  }
+
+  .MediaPlayer-buttons {
+    flex: 0 0 auto;
+    display: flex;
+    align-self: end;
+  }
+}
+
+// Two-column layout for medium+ screens
+@media (min-width: $screen-m) {
+  .MediaPlayer-inner {
+    align-items: stretch; // Stretch children to same height
+    flex-direction: row;
+    padding: 0;
+  }
+
+  .MediaElement {
+    width: $media-player-video-width;
+    max-width: $media-player-video-max-width;
+  }
+
+  .MediaHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    padding: $media-player-header-padding;
+
+    .MediaControls {
+      margin: 0;
+    }
+
+    .MediaPlayer-buttons {
+      margin-top: auto;
+      align-self: flex-end;
+    }
+  }
 }
