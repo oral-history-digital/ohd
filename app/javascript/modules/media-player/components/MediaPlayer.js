@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import { useEffect } from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
@@ -8,18 +7,12 @@ import { useProject } from 'modules/routes';
 import MediaControlsContainer from '../containers/MediaControlsContainer';
 import MediaElementContainer from '../containers/MediaElementContainer';
 import MediaPlayerButtonsContainer from '../containers/MediaPlayerButtonsContainer';
-import { setStoreReference } from '../plugins/toggleSizeButtonPlugin';
 import MediaPlayerTitle from './MediaPlayerTitle';
 
 export default function MediaPlayer() {
     const { t, locale } = useI18n();
     const { project } = useProject();
     const interview = useSelector(getCurrentInterview);
-    const store = useStore();
-
-    useEffect(() => {
-        setStoreReference(store);
-    }, [store]);
 
     function mediaMissingText() {
         if (customMediaMissingTextAvailable()) {

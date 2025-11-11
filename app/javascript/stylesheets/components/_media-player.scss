@@ -75,7 +75,10 @@
 
   .MediaElement {
     width: $media-player-video-width;
-    max-width: $media-player-video-max-width;
+    max-width: var(
+      --media-player-video-max-width,
+      $media-player-video-max-width-small
+    );
   }
 
   .MediaHeader {
@@ -93,5 +96,15 @@
       margin-top: auto;
       align-self: flex-end;
     }
+  }
+}
+
+// Larger screens default to expanded size
+@media (min-width: $screen-xl) {
+  .MediaElement {
+    max-width: var(
+      --media-player-video-max-width,
+      $media-player-video-max-width
+    );
   }
 }
