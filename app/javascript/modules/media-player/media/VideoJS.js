@@ -92,6 +92,56 @@ export default function VideoJS({
         }
     }, [customLanguages]);
 
+    // Handle big play button click when video is playing (to pause) and update title on hover
+    useEffect(() => {
+        const player = playerRef.current;
+        if (!player) return;
+
+        const bigPlayButton = player.bigPlayButton?.el();
+        if (!bigPlayButton) return;
+
+        const handleBigPlayButtonClick = (e) => {
+            // Only handle click if video is playing
+            if (!player.paused()) {
+                e.preventDefault();
+                e.stopPropagation();
+                player.pause();
+            }
+        };
+
+        const updateTitle = () => {
+            const isPaused = player.paused();
+            const playText = player.localize('Play');
+            const pauseText = player.localize('Pause');
+            bigPlayButton.setAttribute(
+                'title',
+                isPaused ? playText : pauseText
+            );
+        };
+
+        const handleMouseEnter = () => {
+            updateTitle();
+        };
+
+        // Update title on play/pause events
+        player.on('play', updateTitle);
+        player.on('pause', updateTitle);
+
+        bigPlayButton.addEventListener('click', handleBigPlayButtonClick, true);
+        bigPlayButton.addEventListener('mouseenter', handleMouseEnter);
+
+        return () => {
+            player.off('play', updateTitle);
+            player.off('pause', updateTitle);
+            bigPlayButton.removeEventListener(
+                'click',
+                handleBigPlayButtonClick,
+                true
+            );
+            bigPlayButton.removeEventListener('mouseenter', handleMouseEnter);
+        };
+    }, []);
+
     // Dispose the Video.js player when the functional component unmounts
     useEffect(() => {
         const player = playerRef.current;
