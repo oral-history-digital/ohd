@@ -106,8 +106,8 @@ class ProjectsController < ApplicationController
   end
 
   %w(edit_info edit_display edit_config edit_access_config).each do |m|
-    @component = 'EditProject' + m.sub('edit_', '').camelize
     define_method m do
+      @component = 'EditProject' + m.sub('edit_', '').camelize
       respond_to do |format|
         format.html do
           render :template => "/react/app"
