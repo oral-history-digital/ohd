@@ -21,10 +21,17 @@
   justify-content: center;
   width: 100%;
   aspect-ratio: var(--aspect-x, 16) / var(--aspect-y, 9); // Use project aspect ratio with 16:9 fallback
-  overflow: hidden;
+  overflow: visible; // Allow resize handle to be visible
+  position: relative;
   [data-vjs-player] {
     width: 100%;
     height: 100%;
+    overflow: hidden; // Clip video content but not resize handle
+  }
+
+  // Hide resize handle on small screens
+  .MediaElement-resizeHandle {
+    display: none;
   }
 
   .video-js {
@@ -76,6 +83,7 @@
     flex: 0 0 auto;
     width: $media-player-video-max-width-small; // Default to small size
     max-width: $media-player-video-width; // Don't exceed 66% of container
+    position: relative;
   }
 
   // Apply CSS custom property override if set by toggle button
@@ -84,6 +92,42 @@
       --media-player-video-max-width,
       $media-player-video-max-width-small
     );
+  }
+
+  // Resize handle on the right border - show on medium+ screens
+  .MediaElement .MediaElement-resizeHandle {
+    display: block !important; // Override the display: none from mobile
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: ew-resize;
+    background: transparent;
+    z-index: 1000;
+    pointer-events: auto !important; // Ensure it receives mouse events
+    transition: background-color 0.2s;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 2px;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      transition: background-color 0.2s, height 0.2s;
+    }
+
+    &:hover,
+    &.is-dragging {
+      &::before {
+        background: rgba(255, 255, 255, 0.6);
+        height: 60px;
+      }
+    }
   }
 
   .MediaHeader {

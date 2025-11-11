@@ -27,6 +27,8 @@ const togglePlayerWidth = (isCompact) => {
         '--media-player-video-max-width',
         maxWidth
     );
+    // Save to sessionStorage
+    sessionStorage.setItem('videoPlayerWidth', maxWidth);
 };
 
 /* ------------------------------------------------------------------ */
@@ -38,9 +40,20 @@ class ToggleSizeButton extends VjsButton {
         super(player, options);
         this.addClass('vjs-toggle-size-button');
 
-        // Set initial size based on screen width: small for <SCREEN_XL, medium for ≥SCREEN_XL
-        this.currentPlayerSize =
-            window.innerWidth < SCREEN_L ? 'small' : 'medium';
+        // Restore saved width or set initial size based on screen width
+        const savedWidth = sessionStorage.getItem('videoPlayerWidth');
+        if (savedWidth) {
+            document.documentElement.style.setProperty(
+                '--media-player-video-max-width',
+                savedWidth
+            );
+            this.currentPlayerSize =
+                savedWidth === VIDEO_MAX_WIDTH_SMALL ? 'small' : 'medium';
+        } else {
+            // Set initial size based on screen width: small for <SCREEN_L, medium for ≥SCREEN_L
+            this.currentPlayerSize =
+                window.innerWidth < SCREEN_L ? 'small' : 'medium';
+        }
         this.subtitleTrackWasEnabled = false; // Track subtitle state
         this.lastActiveTrackIndex = -1; // Track which track was active
 
