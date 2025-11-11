@@ -1,11 +1,9 @@
 import classNames from 'classnames';
 import { useEffect } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { getPlayerSize, setPlayerSize } from 'modules/media-player';
-import { getDefaultPlayerSize } from '../utils';
 import { useProject } from 'modules/routes';
 import MediaControlsContainer from '../containers/MediaControlsContainer';
 import MediaElementContainer from '../containers/MediaElementContainer';
@@ -18,31 +16,10 @@ export default function MediaPlayer() {
     const { project } = useProject();
     const interview = useSelector(getCurrentInterview);
     const store = useStore();
-    const dispatch = useDispatch();
-    const playerSize = useSelector(getPlayerSize);
 
     useEffect(() => {
         setStoreReference(store);
-
-        const updatePlayerSizeToDefault = () => {
-            const expectedSize = getDefaultPlayerSize();
-            console.log('Player size:', playerSize);
-            console.log('Default size:', expectedSize);
-            if (!playerSize || playerSize !== expectedSize) {
-                dispatch(setPlayerSize(expectedSize));
-                console.log('Updating size to', expectedSize);
-            }
-        };
-
-        // Set initial player size
-        updatePlayerSizeToDefault();
-
-        // Update on resize
-        window.addEventListener('resize', updatePlayerSizeToDefault);
-        return () => {
-            window.removeEventListener('resize', updatePlayerSizeToDefault);
-        };
-    }, [store, dispatch, playerSize]);
+    }, [store]);
 
     function mediaMissingText() {
         if (customMediaMissingTextAvailable()) {

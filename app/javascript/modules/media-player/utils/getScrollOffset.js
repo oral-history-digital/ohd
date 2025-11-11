@@ -1,45 +1,23 @@
-import { CONTENT_TABS_HEIGHT } from 'modules/constants';
-import {
-    DEFAULT_PLAYER_SIZE,
-    MEDIA_PLAYER_HEIGHT_MEDIUM,
-    MEDIA_PLAYER_HEIGHT_MOBILE,
-    MEDIA_PLAYER_HEIGHT_SMALL,
-    SPACE_BEFORE_ACTIVE_ELEMENT,
-} from 'modules/media-player';
+import { SPACE_BEFORE_ACTIVE_ELEMENT } from 'modules/media-player';
 
 /**
- * Calculates the scroll offset for smooth scrolling based on the current player size.
+ * Calculates the scroll offset for smooth scrolling by reading actual DOM element heights.
  * This ensures the active element is visible below the media player and content tabs.
  *
- * @param {('small'|'medium')} playerSize - The current player size (default: DEFAULT_PLAYER_SIZE)
+ * The offset is calculated dynamically based on the current rendered heights,
+ * which automatically adapt to different screen sizes via CSS custom properties.
+ *
  * @returns {number} The scroll offset in pixels
  */
 
-export function getScrollOffset(playerSize = DEFAULT_PLAYER_SIZE) {
-    if (playerSize !== 'small' && playerSize !== 'medium') {
-        playerSize = DEFAULT_PLAYER_SIZE; // Fallback to default if invalid size
-    }
+export function getScrollOffset() {
+    // Query DOM elements to get their actual rendered heights
+    const mediaPlayer = document.querySelector('.MediaPlayer');
+    const contentTabs = document.querySelector('.Layout-contentTabs');
 
-    if (
-        !MEDIA_PLAYER_HEIGHT_SMALL ||
-        !MEDIA_PLAYER_HEIGHT_MEDIUM ||
-        !MEDIA_PLAYER_HEIGHT_MOBILE
-    ) {
-        throw new Error(
-            'Media player heights are not defined. Please check your constants.'
-        );
-    }
+    // Get actual heights, fallback to 0 if elements don't exist yet
+    const playerHeight = mediaPlayer?.offsetHeight || 0;
+    const tabsHeight = contentTabs?.offsetHeight || 0;
 
-    let playerHeight;
-    if (window.innerWidth < 768) {
-        // $screen-m = 768px
-        playerHeight = MEDIA_PLAYER_HEIGHT_MOBILE;
-    } else {
-        playerHeight =
-            playerSize === 'small'
-                ? MEDIA_PLAYER_HEIGHT_SMALL
-                : MEDIA_PLAYER_HEIGHT_MEDIUM;
-    }
-
-    return playerHeight + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
+    return playerHeight + tabsHeight + SPACE_BEFORE_ACTIVE_ELEMENT;
 }
