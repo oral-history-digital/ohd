@@ -52,7 +52,7 @@
   line-height: $line-height-large;
   cursor: pointer;
 
-  @include screen-l {
+  @include screen-xl {
     font-size: $font-size-small;
     line-height: $base-unit;
   }
@@ -60,7 +60,7 @@
   span {
     display: none;
 
-    @include screen-l {
+    @include screen-xl {
       display: inline-block;
     }
   }
