@@ -27,56 +27,8 @@
   max-width: 100%;
 }
 
-// Deprecated size classes - will be removed later
-// Kept temporarily for backwards compatibility
-.Layout.is-small-player .MediaPlayer {
-  height: var(--media-player-height);
-}
-
-.Layout.is-medium-player .MediaPlayer {
-  height: var(--media-player-height);
-}
-
 .MediaPlayer-buttons {
   display: flex;
   margin-top: 1rem;
   align-self: end;
 }
-
-// // Sticky position styles - applied when scrolling below threshold
-// .Layout.is-sticky .MediaPlayer {
-//     left: 0;
-//     position: fixed;
-//     right: 0;
-//     top: 0;
-// }
-
-// // Small player size styles - only apply in XL screens
-// .Layout.is-small-player .MediaPlayer {
-//     flex-direction: row-reverse;
-//     height: var(--media-player-height-small);
-//     justify-content: flex-end;
-//     padding: 0;
-
-//     // @media (max-width: $screen-m-max) {
-//     //   height: $media-player-height-mobile;
-//     //   flex-direction: column;
-//     //   justify-content: initial;
-//     //   padding: $base-unit 5%;
-//     // }
-
-//     // @media (min-width: $screen-m) and (max-width: $screen-l-max) {
-//     //   height: $media-player-height-medium;
-//     //   flex-direction: column;
-//     //   padding-bottom: $base-unit * 2;
-//     //   padding-top: $base-unit * 1.5;
-//     // }
-// }
-
-// // Sidebar adjustments when sticky
-// .Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
-// .Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
-//     @include screen-xl {
-//         right: 36%;
-//     }
-// }

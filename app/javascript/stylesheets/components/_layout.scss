@@ -83,28 +83,7 @@
     // Position tabs directly below the media player
     top: var(--media-player-height);
   }
-
-  // Deprecated size-specific classes - will be removed in Step 2
-  // All sizes now use the same responsive CSS custom property
-  &.is-small-player {
-    .Layout-contentTabs {
-      top: var(--media-player-height);
-    }
-  }
-
-  &.is-medium-player {
-    .Layout-contentTabs {
-      top: var(--media-player-height);
-    }
-  }
-
-  &.is-mobile {
-    .Layout-contentTabs {
-      top: var(--media-player-height);
-    }
-  }
 }
-
 .Layout.sidebar-is-visible > .Layout-page {
   @include screen-xl {
     width: 64%;

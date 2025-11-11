@@ -2,7 +2,6 @@ import { isMobile } from 'modules/user-agent';
 import { createRoot } from 'react-dom/client';
 import { MdOutlineFitScreen } from 'react-icons/md';
 import videojs from 'video.js';
-import { SET_PLAYER_SIZE } from '../redux/action-types';
 
 const VjsButton = videojs.getComponent('Button');
 
@@ -13,35 +12,23 @@ const VjsButton = videojs.getComponent('Button');
 /** Mobile OR <1200px ⇒ we treat the viewport as "compact" */
 const isCompactViewport = () => isMobile() || window.innerWidth < 1200;
 
-/** Redux action creator */
-const setPlayerSize = (size) => ({
-    type: SET_PLAYER_SIZE,
-    payload: { size },
-});
-
-/** Apply CSS height + layout classes in one spot */
-const applyLayoutSize = (size) => {
-    const mediaPlayer = document.querySelector('.MediaPlayer');
-    const layout = document.querySelector('.Layout');
-    if (!mediaPlayer || !layout) return;
-
-    mediaPlayer.style.height =
-        size === 'small'
-            ? 'var(--media-player-height-small)'
-            : 'var(--media-player-height-medium)';
-
-    layout.classList.toggle('is-small-player', size === 'small');
-    layout.classList.toggle('is-medium-player', size === 'medium');
+/**
+ * Toggle player size by manipulating CSS custom property
+ * 'compact' = 12.5rem, 'expanded' = 28rem
+ */
+const togglePlayerHeight = (isCompact) => {
+    const height = isCompact ? '12.5rem' : '28rem';
+    document.documentElement.style.setProperty('--media-player-height', height);
 };
 
 /* ------------------------------------------------------------------ */
-/*  Redux store reference (singleton‑style)                           */
+/*  Redux store reference (kept for compatibility)                    */
 /* ------------------------------------------------------------------ */
 
-let storeInstance = null; // Will be filled by setStoreReference()
-
+// Deprecated: No longer uses Redux, but keeping export for compatibility
+// eslint-disable-next-line no-unused-vars
 export const setStoreReference = (store) => {
-    storeInstance = store;
+    // No-op: Store reference no longer needed
 };
 
 /* ------------------------------------------------------------------ */
@@ -52,8 +39,7 @@ class ToggleSizeButton extends VjsButton {
     constructor(player, options) {
         super(player, options);
         this.addClass('vjs-toggle-size-button');
-        this.currentPlayerSize = 'medium';
-        this.store = storeInstance || options.store; // fall‑back if passed via plugin
+        this.currentPlayerSize = 'medium'; // Track current size state
         this.subtitleTrackWasEnabled = false; // Track subtitle state
         this.lastActiveTrackIndex = -1; // Track which track was active
 
@@ -176,15 +162,14 @@ class ToggleSizeButton extends VjsButton {
 
     handleClick() {
         if (isCompactViewport()) return; // No toggle on small screens
-        if (!this.store) {
-            console.error('ToggleSizeButton: Redux store not available');
-            return;
-        }
 
-        const { mediaPlayer = {} } = this.store.getState();
-        const currentSize = mediaPlayer.playerSize || this.currentPlayerSize;
-        const newSize = currentSize === 'small' ? 'medium' : 'small';
+        // Toggle between compact and expanded
+        const isCurrentlyCompact = this.currentPlayerSize === 'small';
+        const newSize = isCurrentlyCompact ? 'medium' : 'small';
         this.currentPlayerSize = newSize;
+
+        // Apply CSS custom property change
+        togglePlayerHeight(newSize === 'small');
 
         // Manage subtitle button and track state when changing sizes
         const subsCapsButton =
@@ -215,9 +200,6 @@ class ToggleSizeButton extends VjsButton {
                 this.restoreActiveSubtitleTrack();
             }
         }
-
-        this.store.dispatch(setPlayerSize(newSize));
-        applyLayoutSize(newSize);
     }
 
     /* -------- Video.js required overrides --------------------------- */
@@ -264,9 +246,6 @@ videojs.registerComponent('ToggleSizeButton', ToggleSizeButton);
 function toggleSizePlugin(options = {}) {
     if (this.toggleSizePluginInitialized) return;
     this.toggleSizePluginInitialized = true;
-
-    /* Allow passing the Redux store via options when initializing */
-    if (options.store) setStoreReference(options.store);
 
     /* Add the control only on non‑compact viewports (desktop) */
     if (!isCompactViewport()) {

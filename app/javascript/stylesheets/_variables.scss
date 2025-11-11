@@ -125,12 +125,6 @@ $site-header-height-mobile: 5rem;
 $site-header-height-desktop: 6.25rem;
 $horizontal-tabs-height: $base-unit * 2;
 
-// Deprecated SCSS variables - kept temporarily for backwards compatibility
-// TODO: Remove once all references are migrated to CSS custom properties
-$media-player-height-mobile: 20rem;
-$media-player-height-small: 12.5rem;
-$media-player-height-medium: 28rem;
-
 // Miscellaneous
 // --------------------------------------------------
 
