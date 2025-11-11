@@ -123,17 +123,13 @@ $line-length: 32.5rem;
 
 $site-header-height-mobile: 5rem;
 $site-header-height-desktop: 6.25rem;
+$horizontal-tabs-height: $base-unit * 2;
+
+// Deprecated SCSS variables - kept temporarily for backwards compatibility
+// TODO: Remove once all references are migrated to CSS custom properties
 $media-player-height-mobile: 20rem;
 $media-player-height-small: 12.5rem;
 $media-player-height-medium: 28rem;
-$horizontal-tabs-height: $base-unit * 2;
-
-// Export as CSS variables
-:root {
-    --media-player-height-medium: #{$media-player-height-medium};
-    --media-player-height-small: #{$media-player-height-small};
-    --media-player-height-mobile: #{$media-player-height-mobile};
-}
 
 // Miscellaneous
 // --------------------------------------------------
@@ -175,6 +171,31 @@ $screen-xs-max: ($screen-s-min - 1) !default;
 $screen-s-max: ($screen-m-min - 1) !default;
 $screen-m-max: ($screen-l-min - 1) !default;
 $screen-l-max: ($screen-xl-min - 1) !default;
+
+// CSS Custom Properties for responsive media player sizing
+// Must be defined after breakpoints are set
+:root {
+  // Media Player - responsive heights and widths
+  --media-player-height: 20rem; // Mobile baseline
+  --media-player-width: 100%; // Full width on small screens
+  --media-player-max-width: none; // No constraint on small screens
+  --media-player-margin-x: 0; // No horizontal margins on mobile
+
+  // Content tabs height (constant across breakpoints)
+  --content-tabs-height: #{$horizontal-tabs-height};
+
+  // Medium screens: Add margins, reduce height
+  @media (min-width: $screen-m) {
+    --media-player-height: 12.5rem; // Smaller height for medium screens
+    --media-player-max-width: 60rem; // Constrain width
+    --media-player-margin-x: auto; // Center with auto margins
+  }
+
+  // Large screens: Increase height
+  @media (min-width: $screen-xl) {
+    --media-player-height: 28rem; // Larger height for desktop
+  }
+}
 
 // workflow-colors
 $not-started: #8f201c;

@@ -72,22 +72,24 @@ export default function MediaPlayer() {
 
     return (
         <div className={classNames('Layout-mediaPlayer', 'MediaPlayer')}>
-            <header
-                className={classNames('MediaHeader', {
-                    'MediaHeader--mediaMissing': interview.media_missing,
-                })}
-            >
-                <MediaPlayerTitle className="MediaHeader-title" />
-                <MediaControlsContainer className="MediaHeader-controls" />
-            </header>
+            <div className="MediaPlayer-inner">
+                <header
+                    className={classNames('MediaHeader', {
+                        'MediaHeader--mediaMissing': interview.media_missing,
+                    })}
+                >
+                    <MediaPlayerTitle className="MediaHeader-title" />
+                    <MediaControlsContainer className="MediaHeader-controls" />
+                </header>
 
-            {interview.media_missing ? (
-                <p className="MediaMissing">{mediaMissingText()}</p>
-            ) : (
-                <MediaElementContainer />
-            )}
+                {interview.media_missing ? (
+                    <p className="MediaMissing">{mediaMissingText()}</p>
+                ) : (
+                    <MediaElementContainer />
+                )}
 
-            <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
+                <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
+            </div>
         </div>
     );
 }

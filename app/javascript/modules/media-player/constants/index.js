@@ -11,6 +11,9 @@ export const BREAKPOINTS = {
     xl: 1200,
 };
 
+// DEPRECATED: Will be removed later
+// Media player sizes are now controlled by CSS custom properties
+// that respond automatically to breakpoints
 export const DEFAULT_PLAYER_SIZE = {
     xs: 'medium',
     s: 'medium',
@@ -19,8 +22,10 @@ export const DEFAULT_PLAYER_SIZE = {
     xl: 'medium',
 };
 
-// Important: These values have to be in sync with the values
-// defined in /app/javascript/stylesheets/_variables.scss
+// DEPRECATED: Will be removed later
+// These constants are kept temporarily for backwards compatibility
+// Heights are now defined as CSS custom properties in _variables.scss
+// and should be read dynamically via getComputedStyle() instead
 export const MEDIA_PLAYER_HEIGHT_SMALL = 12.5 * ONE_REM;
 export const MEDIA_PLAYER_HEIGHT_MEDIUM = 28 * ONE_REM;
 export const MEDIA_PLAYER_HEIGHT_MOBILE = 20 * ONE_REM;
