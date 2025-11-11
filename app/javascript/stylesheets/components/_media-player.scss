@@ -20,9 +20,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  aspect-ratio: 16 / 9; // Maintain 16:9 aspect ratio
+  aspect-ratio: var(--aspect-x, 16) / var(--aspect-y, 9); // Use project aspect ratio with 16:9 fallback
   overflow: hidden;
-
   [data-vjs-player] {
     width: 100%;
     height: 100%;

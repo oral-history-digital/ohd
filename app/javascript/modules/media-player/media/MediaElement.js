@@ -74,7 +74,7 @@ export default function MediaElement({
         controls: true,
         responsive: false,
         fluid: false,
-        //aspectRatio,
+        aspectRatio,
         language: locale,
         sources: initialSources,
         poster: posterUrl,
