@@ -82,9 +82,17 @@
   display: block;
 }
 
-.Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
-.Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
+.Layout.is-sticky.sidebar-is-visible {
   @include screen-xl {
-    right: 36%;
+    .Layout-page {
+      width: 64%;
+    }
+
+    .Layout-mediaPlayer,
+    .Layout-contentTabs {
+      right: 36%;
+      width: 64%;
+      left: auto;
+    }
   }
 }

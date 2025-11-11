@@ -73,8 +73,14 @@
   }
 
   .MediaElement {
-    width: $media-player-video-width;
-    max-width: var(
+    flex: 0 0 auto;
+    width: $media-player-video-max-width-small; // Default to small size
+    max-width: $media-player-video-width; // Don't exceed 66% of container
+  }
+
+  // Apply CSS custom property override if set by toggle button
+  .MediaElement {
+    width: var(
       --media-player-video-max-width,
       $media-player-video-max-width-small
     );
@@ -83,12 +89,15 @@
   .MediaHeader {
     align-items: flex-start;
     flex-direction: column;
-    flex-grow: 1;
+    flex: 1 1 0;
+    min-width: 0; // Allow flexbox to shrink below content size
     justify-content: space-between;
     padding: $media-player-header-padding;
 
     .MediaControls {
       margin: 0;
+      max-width: 100%; // Prevent overflow
+      overflow: hidden; // Hide any overflow
     }
 
     .MediaPlayer-buttons {
@@ -101,9 +110,11 @@
 // Larger screens default to expanded size
 @media (min-width: $screen-xl) {
   .MediaElement {
-    max-width: var(
-      --media-player-video-max-width,
-      $media-player-video-max-width
-    );
+    width: $media-player-video-max-width; // Default to medium/large size
+  }
+
+  // Apply CSS custom property override if set by toggle button
+  .MediaElement {
+    width: var(--media-player-video-max-width, $media-player-video-max-width);
   }
 }
