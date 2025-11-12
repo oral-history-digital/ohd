@@ -51,8 +51,6 @@ jobs:
       # Add or replace database setup steps here
       - name: Set up database schema
         run: bin/rails db:schema:load
-      - name: Run database migrations
-        run: bin/rails db:migrate
       # Other setup stuff
       - name: Add localhost to /etc/hosts
         run: sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
