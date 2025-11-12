@@ -53,7 +53,7 @@ export default function PersonData({
                     const events = person.events?.filter(event =>
                         event.event_type_id === field.event_type_id);
 
-                    if (events.length === 0) {
+                    if (!events || events.length === 0) {
                         return null;
                     }
 
