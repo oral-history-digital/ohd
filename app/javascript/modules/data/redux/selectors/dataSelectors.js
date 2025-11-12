@@ -466,13 +466,34 @@ export const getContributorsFetched = createSelector(
     }
 );
 
+export const getProjectAccessStatus = createSelector(
+    [getCurrentUser, getCurrentProject],
+    (user, project) => {
+        const projectRegistration = user && project &&
+            Object.values(user.user_projects).find(urp => urp.project_id === project.id);
+
+        const projectAccessStatus = userHasAccessWithoutRegistration()
+            ? 'project_access_granted'
+            : projectRegistration?.workflow_state;
+
+        function userHasAccessWithoutRegistration() {
+            return project.grant_access_without_login
+                || (user && project.grant_project_access_instantly)
+                || user?.admin === true;
+        }
+
+        return projectAccessStatus;
+    }
+);
+
 export const getGroupedContributions = createSelector(
     [
         (state) => getEditView(state),
         (state) => getCurrentInterview(state),
         (state) => getContributionTypesForCurrentProject(state),
+        (state) => getProjectAccessStatus(state),
     ],
-    (editView, currentInterview, contributionTypes) => {
+    (editView, currentInterview, contributionTypes, projectAccessStatus) => {
         if (
             !currentInterview ||
             !currentInterview.contributions ||
@@ -482,7 +503,10 @@ export const getGroupedContributions = createSelector(
         }
 
         const availableTypes = Object.values(contributionTypes)
-            .filter((ct) => editView || ct.use_in_details_view)
+            .filter(ct => editView ||
+                (projectAccessStatus === 'project_access_granted' && ct.use_in_details_view) ||
+                ct.display_on_landing_page
+            )
             .sort((a, b) => a.order - b.order)
             .map((ct) => ct.code);
 

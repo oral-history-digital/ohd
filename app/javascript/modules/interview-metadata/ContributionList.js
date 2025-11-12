@@ -7,11 +7,13 @@ import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import ContributionGroup from './ContributionGroup';
 import ContributionContainer from './ContributionContainer';
+import { useProject } from 'modules/routes';
 
 export default function ContributionList({
     withSpeakerDesignation = false,
     interview,
 }) {
+    const { project } = useProject();
     const { data: people, isLoading } = usePeople();
     const groupedContributions = useSelector(getGroupedContributions);
     const { isAuthorized } = useAuthorization();
