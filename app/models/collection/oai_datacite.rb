@@ -28,6 +28,9 @@ module Collection::OaiDatacite
         xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
           xml.text! "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}"
         end
+        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
+          xml.text! "#{OHD_DOMAIN}/de/oai_repository?verb=GetRecord&metadataPrefix=oai_datacite&identifier=oai:oral-history.digital:#{project.shortname}"
+        end
         if project.domain
           xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
             xml.text! project.domain
@@ -52,7 +55,7 @@ module Collection::OaiDatacite
         end
       end
 
-      xml.publisher oai_publisher(:de)
+      xml.publisher oai_publisher(:en), "xml:lang": "en"
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -60,14 +63,10 @@ module Collection::OaiDatacite
 
       xml.contributors do
         xml.contributor contributorType: "DataManager" do
-          xml.contributorName project.manager
+          xml.contributorName project.manager, "xml:lang": "en"
         end
         xml.contributor contributorType: "HostingInstitution" do
-          oai_locales.each do |locale|
-            xml.contributorName("xml:lang": locale) do
-              xml.contributorName oai_contributor(locale)
-            end
-          end
+          xml.contributorName oai_contributor(:en), "xml:lang": "en"
         end
       end
 
@@ -83,6 +82,15 @@ module Collection::OaiDatacite
 
       xml.sizes do
         xml.size oai_size
+      end
+
+      #<dates>
+      #<date dateType="Coverage">2005</date>
+      #<date dateType="Other" dateInformation="years of birth">1922-1933</date>
+      #</dates>
+      xml.dates do
+        xml.date oai_coverage, dateType: "Coverage"
+        xml.date oai_birth_years, dateType: "Other", dateInformation: "years of birth"
       end
 
       xml.language oai_languages

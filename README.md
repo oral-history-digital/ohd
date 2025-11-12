@@ -207,6 +207,22 @@ To activate caching in development (which is recommended at the moment), run:
 touch tmp/caching-dev.txt
 ```
 
+This Application is configured to use file-cache. If not cleaned up regularly,
+the cache folder can grow very large or the maximum number of inodes can be reached.
+Either way writing to disk would be impossible and the Application unresponsive.
+To clear all the cache, simply delete the files in `tmp/cache/`.
+To delete only old cache files, you can use the following command:
+
+```bash
+find tmp/cache/ -type f -atime +7 -delete
+```
+or use the provided rake task:
+
+```bash
+bin/rake cache:clear_old DAYS=7
+```
+
+
 For reindexing the search index, run:
 
 ```bash

@@ -54,7 +54,7 @@ module Project::OaiDatacite
         end
       end
 
-      xml.publisher oai_publisher(:de)
+      xml.publisher oai_publisher(:en), "xml:lang": "en"
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -64,16 +64,16 @@ module Project::OaiDatacite
       xml.contributors do
         oai_leaders.each do |leader_name|
           xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName leader_name.strip
+            xml.contributorName leader_name.strip, "xml:lang": "en"
           end
         end
         oai_managers.each do |manager_name|
           xml.contributor contributorType: "ContactPerson" do
-            xml.contributorName manager_name.strip
+            xml.contributorName manager_name.strip, "xml:lang": "en"
           end
         end
         xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor(:de)
+          xml.contributorName oai_contributor(:en), "xml:lang": "en"
         end
       end
 
