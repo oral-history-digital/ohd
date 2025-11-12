@@ -39,7 +39,7 @@ class ContributionTypesController < ApplicationController
 
   def index
     policy_scope ContributionType
-    @component = 'WrappedContributionTypesContainer'
+    @component = 'ContributionTypes'
 
     respond_to do |format|
       format.html { render "react/app" }

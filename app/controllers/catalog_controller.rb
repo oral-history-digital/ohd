@@ -31,7 +31,7 @@ class CatalogController < ApplicationController
   end
 
   def institution
-    @component = 'InstitutionCatalogPage'
+    @component = 'InstitutionCatalog'
     respond_to do |format|
       format.html do
         render template: '/react/app'
@@ -40,7 +40,7 @@ class CatalogController < ApplicationController
   end
 
   def archive
-    @component = 'ArchiveCatalogPage'
+    @component = 'ArchiveCatalog'
     respond_to do |format|
       format.html do
         render template: '/react/app'
@@ -49,7 +49,7 @@ class CatalogController < ApplicationController
   end
 
   def collection
-    @component = 'CollectionCatalogPage'
+    @component = 'CollectionCatalog'
     respond_to do |format|
       format.html do
         render template: '/react/app'

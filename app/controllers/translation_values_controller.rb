@@ -24,7 +24,7 @@ class TranslationValuesController < ApplicationController
   end
 
   def index
-    @component = 'WrappedTranslationValuesContainer'
+    @component = 'TranslationValues'
     if params.keys.include?("all")
       translation_values = policy_scope(TranslationValue).all
       extra_params = "all"

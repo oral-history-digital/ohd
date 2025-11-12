@@ -38,7 +38,7 @@ class CollectionsController < ApplicationController
   end
 
   def index
-    @component = 'WrappedCollectionsContainer'
+    @component = 'Collections'
     id = nil
     nested_data_type = nil
 

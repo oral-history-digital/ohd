@@ -39,7 +39,7 @@ class RegistryNameTypesController < ApplicationController
 
   def index
     policy_scope RegistryNameType
-    @component = 'WrappedRegistryNameTypesContainer'
+    @component = 'RegistryNameTypes'
 
     respond_to do |format|
       format.html { render "react/app" }

@@ -16,7 +16,7 @@ class RolesController < ApplicationController
 
   def index
     policy_scope(Role)
-    @component = 'WrappedRolesContainer'
+    @component = 'Roles'
 
     respond_to do |format|
       format.html { render :template => '/react/app' }

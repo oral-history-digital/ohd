@@ -4,7 +4,7 @@ class UploadsController < ApplicationController
   skip_after_action :verify_authorized, only: [:metadata_import_template]
 
   def new
-    @component = 'UploadsPage'
+    @component = 'Uploads'
     authorize :upload, :new?
     respond_to do |format|
       format.html { render 'react/app' }
