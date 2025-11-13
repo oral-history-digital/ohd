@@ -495,7 +495,10 @@ MediaElement.propTypes = {
     archiveId: PropTypes.string.isRequired,
     className: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    mediaStreams: PropTypes.object.isRequired,
+    // mediaStreams can be undefined while data is being fetched from the store,
+    // make it optional to avoid React prop-type warnings. Component already
+    // guards against missing streams and returns null until streams are present.
+    mediaStreams: PropTypes.object,
     tape: PropTypes.number,
     timeChangeRequestAvailable: PropTypes.bool,
     timeChangeRequest: PropTypes.number,

@@ -198,7 +198,9 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        send_data interview.observations_pdf(params[:locale], params[:lang]), filename: "#{interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
+        send_data interview.observations_pdf(params[:locale], params[:lang]),
+          filename: "#{interview.archive_id}_protocol_#{params[:lang]}.pdf",
+          type: "application/pdf"
       end
       format.json do
         render json: {
@@ -520,7 +522,7 @@ class InterviewsController < ApplicationController
 
   def interview_params
     params.require(:interview).
-      permit(
+      permit([
       "project_id",
       "collection_id",
       "archive_id",
@@ -546,6 +548,7 @@ class InterviewsController < ApplicationController
       public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type_id, :speaker_designation],
       translations_attributes: [:locale, :id, :observations, :description]
+      ] + Interview::ATTRIBUTES_WITH_STATUS.map{|att| "public_#{att}" } 
     )
   end
 

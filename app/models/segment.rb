@@ -89,14 +89,15 @@ class Segment < ApplicationRecord
     end
   end
 
-  #handle_asynchronously :solr_index, queue: 'indexing', priority: 50
-  #handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index, queue: 'indexing', priority: 50
+  handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   translates :mainheading, :subheading, :text, touch: true
   accepts_nested_attributes_for :translations, :registry_references
 
   class Translation
     belongs_to :segment
+    validates :locale, uniqueness: { scope: :segment_id }
 
     after_save do
       # run this only after commit of original e.g. 'de' version!
@@ -245,10 +246,14 @@ class Segment < ApplicationRecord
   end
 
   Language.all.pluck(:code).each do |code|
-    code_short = code.split('-').first
-    define_method "text_#{code_short}" do
-      text("#{code_short}-public") # only search in public texts
+    define_method "text_#{code}" do
+      text("#{code}-public") # only search in public texts
       # TODO: enable searching over original texts in admin-mode
+    end
+    define_method "text_#{code}=" do |value|
+      Globalize.with_locale(code) do
+        self.text = value
+      end
     end
   end
 

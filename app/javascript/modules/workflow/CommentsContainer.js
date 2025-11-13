@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, deleteData, submitData } from 'modules/data';
 import { DataList } from 'modules/admin';
-console.log('DataList import value:', DataList);
 
 const mapStateToProps = (state) => {
     return {

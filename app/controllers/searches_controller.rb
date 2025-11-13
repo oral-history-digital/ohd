@@ -282,9 +282,13 @@ class SearchesController < ApplicationController
   def highlighted_text(interview, hit, field_name = 'text')
     (interview.alpha3s | I18n.available_locales).inject({}) do |mem, locale|
       mem[locale] = hit.highlights("#{field_name}_#{locale}").inject([]) do |m, highlight|
-        highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
-        m << highlighted.sub(/:/, "").strip()
-        m
+        highlighted = highlight.format { |word| "<mark>#{word}</mark>" }
+        # Escape transcription characters, then unescape the <mark> tags again.
+        escaped = ERB::Util.html_escape_once(highlighted).to_s
+          .sub(/:/, "").strip()
+          .gsub("&lt;mark&gt;", "<mark>")
+          .gsub("&lt;/mark&gt;", "</mark>")
+        m << escaped
       end.join(" ").gsub("&nbsp;", " ").strip
       mem
     end

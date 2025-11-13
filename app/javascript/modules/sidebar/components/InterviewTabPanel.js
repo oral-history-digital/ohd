@@ -98,6 +98,7 @@ export default function InterviewTabPanel({
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <SubTab title={t('interview_info')} open={!isLoggedIn}>
                                     <InterviewInfoContainer/>
+                                    <InterviewContributorsContainer/>
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>

@@ -1,7 +1,7 @@
 \definecolor{primaryColor}{HTML}{<%= "#{(interview.project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
 
 <%
-  interviewee_name = "#{interview.interviewee.first_name(header_locale)} #{interview.interviewee.last_name(header_locale)}"
+  interviewee_name = "#{interview.interviewee.first_name_used(header_locale)} #{interview.interviewee.last_name_used(header_locale)}"
   title = "#{TranslationValue.for('biographical_entries_title', header_locale, interviewee_name: interviewee_name, archive_id: interview.archive_id)}"
   header_text = "#{TranslationValue.for('biographical_entries_header', header_locale, interviewee_name: interviewee_name, archive_id: interview.archive_id)}"
 %>

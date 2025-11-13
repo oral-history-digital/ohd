@@ -19,7 +19,7 @@ export default function Transcript({
     intervieweeId,
     transcriptFetched,
     transcriptLocale,
-    originalLocale,
+    originalLocale = false,
     loadSegments,
     mediaTime,
     isIdle,
@@ -188,8 +188,4 @@ Transcript.propTypes = {
     interview: PropTypes.object.isRequired,
     intervieweeId: PropTypes.number,
     transcriptLocale: PropTypes.string,
-};
-
-Transcript.defaultProps = {
-    originalLocale: false,
 };

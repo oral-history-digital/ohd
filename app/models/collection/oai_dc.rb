@@ -27,8 +27,11 @@ module Collection::OaiDc
       end
 
       oai_locales.each do |locale|
-        xml.tag!('dc:creator', "xml:lang": locale) do
-          xml.text! oai_creator(locale)
+        creator = oai_creator(locale)
+        unless creator.blank?
+          xml.tag!('dc:creator', "xml:lang": locale) do
+            xml.text! creator
+          end
         end
       end
 
@@ -39,10 +42,8 @@ module Collection::OaiDc
       end
 
       xml.tag!('dc:contributor', project.manager)
-      oai_locales.each do |locale|
-        xml.tag!('dc:contributor', "xml:lang": locale) do
-          xml.text! oai_contributor(locale)
-        end
+      xml.tag!('dc:contributor') do
+        xml.text! oai_contributor(:de)
       end
 
       if oai_publication_date

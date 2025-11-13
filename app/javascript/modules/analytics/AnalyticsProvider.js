@@ -1,16 +1,19 @@
-import { useMemo } from 'react';
-import PropTypes from 'prop-types';
+/* global railsMode */
 import { MatomoProvider, createInstance } from '@jonkoops/matomo-tracker-react';
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
 
 import { ANALYTICS_URL_BASE } from 'modules/constants';
 
-const metaTagContent = document.head.querySelector("meta[name~=analytics_site_id][content]").content;
-const analyticsSiteId = Number.parseInt(metaTagContent);
+const metaTag = document.head.querySelector(
+    'meta[name~=analytics_site_id][content]'
+);
+const metaTagContent = metaTag?.content;
+const analyticsSiteId = metaTagContent ? Number.parseInt(metaTagContent) : null;
 
 // At the moment, only projects with own domains are tracked.
-export default function AnalyticsProvider({
-    children,
-}) {
+export default function AnalyticsProvider({ children }) {
+
     if (['development', 'test'].indexOf(railsMode) > -1) {
         return children;
     }
@@ -24,16 +27,12 @@ export default function AnalyticsProvider({
         return result;
     }, []);
 
-    return (
-        <MatomoProvider value={instance}>
-            {children}
-        </MatomoProvider>
-    );
+    return <MatomoProvider value={instance}>{children}</MatomoProvider>;
 }
 
 AnalyticsProvider.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
 };

@@ -97,6 +97,7 @@ class ContributionTypesController < ApplicationController
         :code,
         #:use_as_speaker,
         :use_in_details_view,
+        :display_on_landing_page,
         :use_in_export,
         :order,
         :project_id,

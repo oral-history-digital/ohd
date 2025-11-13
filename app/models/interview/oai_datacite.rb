@@ -59,7 +59,7 @@ module Interview::OaiDatacite
         end
       end
 
-      xml.publisher oai_publisher(:de)
+      xml.publisher oai_publisher(:en), "xml:lang": "en"
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -68,17 +68,17 @@ module Interview::OaiDatacite
       xml.contributors do
         if !project.cooperation_partner.blank?
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{project.cooperation_partner} (Kooperationspartner)"
+            xml.contributorName "#{project.cooperation_partner} (Kooperationspartner)", "xml:lang": "en"
           end
         end
         xml.contributor contributorType: "ProjectLeader" do
-          xml.contributorName project.leader
+          xml.contributorName project.leader, "xml:lang": "en"
         end
         xml.contributor contributorType: "ProjectManager" do
-          xml.contributorName project.manager
+          xml.contributorName project.manager, "xml:lang": "en"
         end
         xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor(:de)
+          xml.contributorName oai_contributor(:en), "xml:lang": "en"
         end
       end
 

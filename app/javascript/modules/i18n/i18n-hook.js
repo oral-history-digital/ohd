@@ -1,8 +1,7 @@
 import { useSelector } from 'react-redux';
 
-import { SYSTEM_LOCALES, OHD_DOMAINS } from 'modules/constants';
+import { getTranslations, getTranslationsView } from 'modules/archive';
 import originalT from './t';
-import { getTranslationsView, getTranslations } from 'modules/archive';
 
 export function useI18n() {
     const locale = useSelector(state => state.archive.locale);
@@ -10,11 +9,16 @@ export function useI18n() {
     const translations = useSelector(getTranslations);
     const translationsView = useSelector(getTranslationsView);
 
-    const curriedT = (key, params) => originalT({
-        locale,
-        translations,
-        translationsView,
-    }, key, params);
+    const curriedT = (key, params) =>
+        originalT(
+            {
+                locale,
+                translations,
+                translationsView,
+            },
+            key,
+            params
+        );
 
     return {
         locale,

@@ -27,6 +27,8 @@ class RegistryEntriesController < ApplicationController
     @registry_entry.save validate: false # there is an ancestor validation from somewhere producing invalid entries
     current_project.touch
 
+    NormdataApiStatistic.new.log_search_term(params[:registry_entry][:api_search_term], @registry_entry)
+
     respond_to do |format|
       format.json do
         render json: {
@@ -62,6 +64,8 @@ class RegistryEntriesController < ApplicationController
     @registry_entry.update registry_entry_params
     @registry_entry.touch
     current_project.touch
+
+    NormdataApiStatistic.new.log_search_term(params[:registry_entry][:api_search_term], @registry_entry)
 
     respond_to do |format|
       format.json do
@@ -238,11 +242,12 @@ class RegistryEntriesController < ApplicationController
       :longitude,
       :has_geo_coords,
       :delete_persistent_values,
+      :api_search_term,
       norm_data_attributes: [
         :id,
         :registry_entry_id,
         :norm_data_provider_id,
-        :nid
+        :nid,
       ],
       registry_names_attributes: [
         :id,

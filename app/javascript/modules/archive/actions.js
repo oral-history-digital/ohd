@@ -16,6 +16,8 @@ import {
     UPDATE_SELECTED_ARCHIVE_IDS,
     SET_SELECTED_ARCHIVE_IDS,
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
+    MERGE_TRANSLATIONS,
+    REQUEST_TRANSLATIONS,
 } from './action-types';
 
 export const setLocale = (locale) => ({
@@ -33,12 +35,12 @@ export const setProjectId = (projectId) => ({
     projectId: projectId,
 });
 
-export const setAvailableViewModes = viewModes => ({
+export const setAvailableViewModes = (viewModes) => ({
     type: SET_AVAILABLE_VIEW_MODES,
     payload: viewModes,
 });
 
-export const setViewMode = viewMode => ({
+export const setViewMode = (viewMode) => ({
     type: SET_VIEW_MODE,
     payload: viewMode,
 });
@@ -49,56 +51,64 @@ export const clearViewModes = () => ({
 
 const editView = (bool) => ({
     type: CHANGE_TO_EDIT_VIEW,
-    editView: bool
+    editView: bool,
 });
 
 export function changeToEditView(bool) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(editView(bool));
         // remove cookie through negative expiration time:
         let expireDays = bool ? 3 : -1;
         setCookie('editView', bool, expireDays);
-    }
+    };
 }
 
 const translationsView = (bool) => ({
     type: CHANGE_TO_TRANSLATIONS_VIEW,
-    translationsView: bool
+    translationsView: bool,
 });
 
 export function changeToTranslationsView(bool) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(translationsView(bool));
         // remove cookie through negative expiration time:
         let expireDays = bool ? 3 : -1;
         setCookie('translationsView', bool, expireDays);
-    }
+    };
 }
 
 const interviewEditView = (bool) => ({
     type: CHANGE_TO_INTERVIEW_EDIT_VIEW,
-    interviewEditView: bool
+    interviewEditView: bool,
 });
 
 export function changeToInterviewEditView(bool) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(interviewEditView(bool));
         // remove cookie through negative expiration time:
         let expireDays = bool ? 3 : -1;
         setCookie('interviewEditView', bool, expireDays);
-    }
+    };
 }
 
 const receiveResult = (result) => ({
     type: RECEIVE_RESULT,
-    result: result
+    result: result,
 });
 
-export function submitSelectedArchiveIds(archiveIds, action, pathBase, filename, format) {
-    return dispatch => {
+export function submitSelectedArchiveIds(
+    archiveIds,
+    action,
+    pathBase,
+    filename,
+    format
+) {
+    return (dispatch) => {
         if (filename) {
             const link = document.createElement('a');
-            const params = archiveIds.map((aid) => `archive_ids[]=${aid}`).join('&');
+            const params = archiveIds
+                .map((aid) => `archive_ids[]=${aid}`)
+                .join('&');
             link.href = `${pathBase}/interviews/${action}.${format}?${params}`;
             link.setAttribute('download', filename);
             document.body.appendChild(link);
@@ -109,44 +119,87 @@ export function submitSelectedArchiveIds(archiveIds, action, pathBase, filename,
                 .post(`${pathBase}/interviews/${action}`)
                 .send({ archive_ids: archiveIds })
                 .set('Accept', 'application/json')
-                .then(res => {
+                .then((res) => {
                     if (res) {
                         dispatch(receiveResult(JSON.parse(res.text)));
                     }
                 });
         }
-    }
+    };
 }
 
 const updateSelectedArchiveIds = (archiveId) => ({
     type: UPDATE_SELECTED_ARCHIVE_IDS,
-    archiveId: archiveId
+    archiveId: archiveId,
 });
 
 export function addRemoveArchiveId(archiveId) {
-    return dispatch => {
-        dispatch(updateSelectedArchiveIds(archiveId))
-    }
+    return (dispatch) => {
+        dispatch(updateSelectedArchiveIds(archiveId));
+    };
 }
 
 const updateSelectedRegistryEntryIds = (rid) => ({
     type: UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
-    rid: rid
+    rid: rid,
 });
 
 export function addRemoveRegistryEntryId(rid) {
-    return dispatch => {
-        dispatch(updateSelectedRegistryEntryIds(rid))
-    }
+    return (dispatch) => {
+        dispatch(updateSelectedRegistryEntryIds(rid));
+    };
 }
 
 const setSelectedArchiveIds = (archiveIds) => ({
     type: SET_SELECTED_ARCHIVE_IDS,
-    archiveIds: archiveIds
-})
+    archiveIds: archiveIds,
+});
 
 export function setArchiveIds(archiveIds) {
-    return dispatch => {
-        dispatch(setSelectedArchiveIds(archiveIds))
-    }
+    return (dispatch) => {
+        dispatch(setSelectedArchiveIds(archiveIds));
+    };
+}
+
+const mergeTranslations = (translations) => ({
+    type: MERGE_TRANSLATIONS,
+    translations: translations,
+});
+
+const requestTranslations = () => ({
+    type: REQUEST_TRANSLATIONS,
+});
+
+export function fetchTranslationsForLocale(locale, pathBase) {
+    return (dispatch, getState) => {
+        // Check if we already have translations for this locale
+        const currentState = getState();
+        const existingTranslations = currentState.archive.translations || {};
+
+        // Check if we already have some translations for this locale
+        const hasTranslationsForLocale = Object.keys(existingTranslations).some(
+            (key) =>
+                existingTranslations[key] && existingTranslations[key][locale]
+        );
+
+        // If we already have translations for this locale, don't fetch again
+        if (hasTranslationsForLocale) {
+            return Promise.resolve();
+        }
+
+        dispatch(requestTranslations());
+
+        // Build the API endpoint (prefer explicit pathBase when provided)
+        const url = `${pathBase}/translation_strings.json`;
+
+        return request
+            .get(url)
+            .then((response) => {
+                dispatch(mergeTranslations(response.body.translations || {}));
+            })
+            .catch((error) => {
+                console.error('Failed to fetch translations:', error);
+                // Don't dispatch anything on error to keep existing translations
+            });
+    };
 }

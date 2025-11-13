@@ -26,7 +26,6 @@ html
         .layout-indicator style="display: block;"
         .Layout-page.Site
           = render 'layouts/site_header'
-          /= render 'layouts/messages', logged_in_at: @logged_in_at, notifications: []
 
           .Site-content
             = yield

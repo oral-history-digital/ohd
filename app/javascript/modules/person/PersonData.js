@@ -50,10 +50,10 @@ export default function PersonData({
             />
             {displayedMetadataFields.map(field => {
                 if (field.source === 'EventType') {
-                    const events = person.events.filter(event =>
+                    const events = person.events?.filter(event =>
                         event.event_type_id === field.event_type_id);
 
-                    if (events.length === 0) {
+                    if (!events || events.length === 0) {
                         return null;
                     }
 

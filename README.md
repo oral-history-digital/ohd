@@ -62,9 +62,27 @@ Once the container is built and configured, the application should start automat
 
 After starting the application, you can access it at:
 
--   URL: [http://portal.oral-history.localhost:3000/za/de](http://portal.oral-history.localhost:3000/za/de)
+-   URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
 -   Admin login: `alice@example.com`
 -   Password: `password`
+
+### Project Domain Configuration
+
+The Dev Container setup automatically configures the OHD project's `archive_domain` to work with the local development environment (`http://portal.oral-history.localhost:3000`). This happens during the initial setup after the database is imported or created.
+
+If you need to manually update the project domain (e.g., after importing a production database dump), you can run:
+
+```ruby
+bundle exec rails runner "Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')"
+```
+
+Or in the Rails console:
+
+```ruby
+Project.ohd.update archive_domain: "http://portal.oral-history.localhost:3000"
+```
+
+Without the correct domain configuration, the application will not route requests properly and the site will not work.
 
 ### Container Components
 
@@ -189,6 +207,22 @@ To activate caching in development (which is recommended at the moment), run:
 touch tmp/caching-dev.txt
 ```
 
+This Application is configured to use file-cache. If not cleaned up regularly,
+the cache folder can grow very large or the maximum number of inodes can be reached.
+Either way writing to disk would be impossible and the Application unresponsive.
+To clear all the cache, simply delete the files in `tmp/cache/`.
+To delete only old cache files, you can use the following command:
+
+```bash
+find tmp/cache/ -type f -atime +7 -delete
+```
+or use the provided rake task:
+
+```bash
+bin/rake cache:clear_old DAYS=7
+```
+
+
 For reindexing the search index, run:
 
 ```bash
@@ -231,6 +265,16 @@ There is also a script to run all tests in an unattended fashion (with RETRY
 and HEADLESS):
 
     bin/test
+
+### Viewing System Tests in Browser
+
+When running system tests in the dev container, you can view the browser in real-time via noVNC:
+
+1. Start VNC services: `bin/vnc start`
+2. Run tests with visible browser: `HEADLESS=false bundle exec rails test test/system`
+3. Open http://localhost:6080/vnc.html in your host browser to watch the tests
+
+Use `bin/vnc status` to check service status, or `bin/vnc stop` to stop the services when done.
 
 ## Development Guidelines
 

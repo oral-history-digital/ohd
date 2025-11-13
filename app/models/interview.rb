@@ -92,23 +92,41 @@ class Interview < ApplicationRecord
   after_save :destroy_permissions
   after_destroy :update_counter_cache
 
+  ATTRIBUTES_WITH_STATUS = %w(
+    archive_id
+    media_type
+    interview_date
+    duration
+    tape_count
+    collection_id
+    signature_original
+    description
+    transcript
+    pseudo_links
+    language_id
+    primary_language_id
+    secondary_language_id
+    primary_translation_language_id
+    secondary_translation_language_id
+  )
+
   def set_public_attributes_to_properties
-    atts = %w(
-      archive_id
-      media_type
-      interview_date
-      duration
-      tape_count
-      collection_id
-      signature_original
-      description
-      transcript
-      language_id
-      primary_language_id
-      secondary_language_id
-      primary_translation_language_id
+    update properties: (properties || {}).update(
+      public_attributes: ATTRIBUTES_WITH_STATUS.inject({}) do |mem, att|
+        mem[att] = "true"; mem
+      end
     )
-    update properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
+  end
+
+  ATTRIBUTES_WITH_STATUS.each do |att|
+    define_method "public_#{att}=" do |value|
+      public_attributes = properties.fetch(:public_attributes, {})
+      self[:properties] = self.properties.update(
+        public_attributes: public_attributes.with_indifferent_access.update(
+          "#{att}": value.to_s == 'true' ? 'true' : 'false'
+        )
+      )
+    end
   end
 
   def create_tasks
@@ -724,7 +742,7 @@ class Interview < ApplicationRecord
         if interviewee.blank?
           'no interviewee given'
         else
-          interviewee.display_name(anonymous: true)
+          interviewee.display_name(anonymous: true, reversed: true)
         end
       end
     end
@@ -972,4 +990,9 @@ class Interview < ApplicationRecord
   def pseudo_links
     read_attribute :links
   end
+
+  def speaking_people
+    Person.where(id: segments.pluck(:speaker_id).uniq).compact
+  end
+
 end
