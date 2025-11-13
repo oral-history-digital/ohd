@@ -12,10 +12,10 @@ class ApplicationController < ActionController::Base
   before_action :user_by_token
   before_action :check_ohd_session
   before_action :authenticate_user!
-  before_action :gather_javascript_pack
+  before_action :gather_pack_name
 
-  def gather_javascript_pack
-    @javascript_pack = controller_name == 'passwords' ? 'users' : controller_name
+  def gather_pack_name
+    @pack_name = controller_name == 'passwords' ? 'users' : controller_name
   end
 
   def user_by_token

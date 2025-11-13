@@ -12,8 +12,8 @@ html
       var railsMode = '#{Rails.env}';
 
     == redux_store('archiveStore', props: initial_redux_state)
-    == javascript_pack_tag @javascript_pack, defer: true
-    == stylesheet_pack_tag 'application'
+    == javascript_pack_tag @pack_name, defer: true
+    == stylesheet_pack_tag @pack_name
 
     = action_cable_meta_tag
 
