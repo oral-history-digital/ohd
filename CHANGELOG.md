@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- contribution types are configurable to be shown on landing page
+-   contribution types are configurable to be shown on landing page ([e2e511c](https://github.com/oral-history-digital/ohd/commit/e2e511c10b3fbb26083dbcf38c4a3c679c31ccad))
 
 ## [1.2.0] - 2025-11-10
 
@@ -153,6 +153,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.2.1]: https://github.com/oral-history-digital/ohd/compare/v1.2.1...v1.2.1
 [1.2.0]: https://github.com/oral-history-digital/ohd/compare/v1.1.13...v1.2.0
 [1.1.13]: https://github.com/oral-history-digital/ohd/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/oral-history-digital/ohd/compare/v1.1.11...v1.1.12
