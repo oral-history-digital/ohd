@@ -11,11 +11,13 @@ import EditProjectDisplay from 'startup/EditProjectDisplay.js';
 import ArchivePage from 'startup/ArchivePage.js';
 import SiteStartpage from 'startup/SiteStartpage.js';
 import Home from 'startup/Home.js';
+import Sidebar from 'startup/Sidebar.js';
 import archiveStore from 'startup/archiveStore.js';
 
 
 ReactOnRails.registerStore({ archiveStore });
 ReactOnRails.register({
+    Sidebar,
     EditProjectInfo,
     EditProjectConfig,
     EditProjectAccessConfig,

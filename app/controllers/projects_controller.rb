@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    @conponent = 'ArchivePage'
+    @component = 'ArchivePage'
 
     if params.keys.include?('all')
       projects = policy_scope(Project).all

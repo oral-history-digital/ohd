@@ -275,7 +275,7 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     scope "/:locale" do
-      get "/", to: "projects#index"
+      get "/", to: "projects#show"
       concerns :all_project_routes
       resources :institutions
       resources :help_texts, only: [:index, :update]

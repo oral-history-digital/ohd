@@ -18,7 +18,7 @@ class TaskTypesController < ApplicationController
 
   def index
     policy_scope(TaskType)
-    @component = 'RegistryReferenceTypes'
+    @component = 'TaskTypes'
 
     respond_to do |format|
       format.html { render :template => '/react/app' }
