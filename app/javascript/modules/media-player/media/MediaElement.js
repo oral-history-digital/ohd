@@ -493,6 +493,10 @@ export default function MediaElement({
             />
             <div
                 ref={resizeHandleRef}
+                title={t('media_player.resize_handle_tooltip')}
+                aria-label={t('media_player.resize_handle_tooltip')}
+                data-tooltip={t('media_player.resize_handle_tooltip')}
+                role="separator"
                 className={classNames('MediaElement-resizeHandle', {
                     'is-dragging': isDragging,
                 })}

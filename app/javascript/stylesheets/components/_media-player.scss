@@ -102,11 +102,12 @@
     right: 0;
     bottom: 0;
     width: 8px;
+    margin-right: -4px; // Center the handle on the edge
     cursor: ew-resize;
     background: transparent;
     z-index: 1000;
     pointer-events: auto !important; // Ensure it receives mouse events
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, width 0.2s, margin-right 0.2s;
 
     &::before {
       content: '';
@@ -118,7 +119,8 @@
       height: 40px;
       background: rgba(255, 255, 255, 0.3);
       border-radius: 2px;
-      transition: background-color 0.2s, height 0.2s;
+      transition: background-color 0.2s, height 0.2s, width 0.2s, right 0.2s,
+        box-shadow 0.2s;
     }
 
     &:hover,
@@ -127,6 +129,20 @@
         background: rgba(255, 255, 255, 0.6);
         height: 60px;
       }
+    }
+  }
+
+  // Make the handle more visible when hovering anywhere over the media element
+  .MediaElement:hover .MediaElement-resizeHandle {
+    width: 12px;
+    margin-right: -6px; // Center the handle on the edge
+
+    &::before {
+      right: 4px;
+      width: 6px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
     }
   }
 
