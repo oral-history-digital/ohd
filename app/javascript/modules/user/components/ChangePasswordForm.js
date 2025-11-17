@@ -7,6 +7,7 @@ import { usePrevious } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { InputContainer } from 'modules/forms';
+import { PASSWORD_REGEX } from 'modules/constants';
 
 export default function ChangePasswordForm({
     user,
@@ -91,7 +92,7 @@ export default function ChangePasswordForm({
                     attribute='password'
                     type='password'
                     showErrors={showErrors}
-                    validate={v => v?.length > 6}
+                    validate={v => PASSWORD_REGEX.test(v)}
                     handleChange={handleChange}
                     handleErrors={handleErrors}
                 />
@@ -100,7 +101,7 @@ export default function ChangePasswordForm({
                     attribute='password_confirmation'
                     type='password'
                     showErrors={showErrors}
-                    validate={v => v?.length > 6 && v === values.password}
+                    validate={v => PASSWORD_REGEX.test(v) && v === values.password}
                     handleChange={handleChange}
                     handleErrors={handleErrors}
                 />

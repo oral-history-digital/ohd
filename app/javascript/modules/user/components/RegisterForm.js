@@ -6,6 +6,7 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { NON_ZIP_COUNTRIES } from '../constants';
 import { OHD_DOMAINS } from 'modules/constants';
+import { EMAIL_REGEX, PASSWORD_REGEX } from 'modules/constants';
 
 export default function RegisterForm({
     project,
@@ -23,12 +24,10 @@ export default function RegisterForm({
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
     const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
 
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
     const [emailCheckResponse, setEmailCheckResponse] = useState({registration_error: false, msg: null});
 
     const handleEmailChange = async(name, value) => {
-        if (emailRegex.test(value)) {
+        if (EMAIL_REGEX.test(value)) {
             fetch(`${pathBase}/users/check_email?email=${value}`)
                 .then(res => res.json())
                 .then(json => setEmailCheckResponse(json));
@@ -107,7 +106,7 @@ export default function RegisterForm({
                 attribute: 'email',
                 type: 'email',
                 handlechangecallback: handleEmailChange,
-                validate: function(v){return emailRegex.test(v)},
+                validate: function(v){return EMAIL_REGEX.test(v)},
                 help: emailCheckResponse.registration_error && (
                     <p className='notifications'>
                         {emailCheckResponse.msg}
@@ -118,14 +117,14 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'password',
                 type: 'password',
-                validate: function(v){return v && v.length > 6},
+                validate: function(v){ return PASSWORD_REGEX.test(v) },
                 handlechangecallback: handlePasswordChange,
             },
             {
                 elementType: 'input',
                 attribute: 'password_confirmation',
                 type: 'password',
-                validate: function(v){return v && v.length > 6 && v === password},
+                validate: function(v){return PASSWORD_REGEX.test(v) && v === password},
             },
         ];
 

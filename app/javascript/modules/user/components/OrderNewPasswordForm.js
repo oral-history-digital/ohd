@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { InputContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { EMAIL_REGEX } from 'modules/constants';
 
 export default function OrderNewPasswordForm ({
     user,
@@ -17,13 +18,11 @@ export default function OrderNewPasswordForm ({
 
     const [emailCheckResponse, setEmailCheckResponse] = useState({reset_password_error: false, msg: null});
 
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-    const [email, setEmail] =  useState(user && emailRegex.test(user.email) ? user.email : null);
-    const [error, setError] =  useState(!(user && emailRegex.test(user.email)));
+    const [email, setEmail] =  useState(user && EMAIL_REGEX.test(user.email) ? user.email : null);
+    const [error, setError] =  useState(!(user && EMAIL_REGEX.test(user.email)));
 
     const handleChange = (name, value) => {
-        if (emailRegex.test(value)) {
+        if (EMAIL_REGEX.test(value)) {
             fetch(`${pathBase}/users/check_email?email=${value}`)
                 .then(res => res.json())
                 .then(json => setEmailCheckResponse(json));
@@ -49,7 +48,7 @@ export default function OrderNewPasswordForm ({
             <InputContainer
                 scope='user'
                 attribute='email'
-                value={user && emailRegex.test(user.email) ? user.email : ''}
+                value={user && EMAIL_REGEX.test(user.email) ? user.email : ''}
                 type='text'
                 showErrors={error || emailCheckResponse.reset_password_error}
                 help={emailCheckResponse.reset_password_error && (
@@ -57,7 +56,7 @@ export default function OrderNewPasswordForm ({
                         {emailCheckResponse.msg}
                     </p>
                 )}
-                validate={function(v, t){return (emailRegex.test(v) && !t)}}
+                validate={function(v, t){return (EMAIL_REGEX.test(v) && !t)}}
                 handleChange={handleChange}
                 handleErrors={handleErrors}
             />
