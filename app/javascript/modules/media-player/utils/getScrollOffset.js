@@ -1,4 +1,4 @@
-import { SPACE_BEFORE_ACTIVE_ELEMENT } from 'modules/media-player';
+import { SPACE_BEFORE_ACTIVE_SEGMENT } from 'modules/constants';
 
 /**
  * Calculates the scroll offset for smooth scrolling by reading actual DOM element heights.
@@ -19,5 +19,5 @@ export function getScrollOffset() {
     const playerHeight = mediaPlayer?.offsetHeight || 0;
     const tabsHeight = contentTabs?.offsetHeight || 0;
 
-    return playerHeight + tabsHeight + SPACE_BEFORE_ACTIVE_ELEMENT;
+    return playerHeight + tabsHeight + SPACE_BEFORE_ACTIVE_SEGMENT;
 }

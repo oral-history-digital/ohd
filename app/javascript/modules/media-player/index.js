@@ -11,7 +11,6 @@ export {
     DEFAULT_AUDIO_RESOLUTION,
     DEFAULT_VIDEO_RESOLUTION,
     NAME as MEDIA_PLAYER_NAME,
-    SPACE_BEFORE_ACTIVE_ELEMENT,
 } from './constants';
 
 export * from './hooks';

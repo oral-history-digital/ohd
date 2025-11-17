@@ -1,12 +1,12 @@
 import { getScrollOffset } from './getScrollOffset';
 
 // Mock constants used in the function
-jest.mock('modules/media-player', () => ({
-    SPACE_BEFORE_ACTIVE_ELEMENT: 36, // 1.5 * 24
+jest.mock('modules/constants', () => ({
+    SPACE_BEFORE_ACTIVE_SEGMENT: 36, // 1.5 * 24
 }));
 
 describe('getScrollOffset', () => {
-    const SPACE_BEFORE_ACTIVE_ELEMENT = 36;
+    const SPACE_BEFORE_ACTIVE_SEGMENT = 36;
 
     beforeEach(() => {
         // Clear the DOM before each test
@@ -32,7 +32,7 @@ describe('getScrollOffset', () => {
         document.body.appendChild(mediaPlayer);
         document.body.appendChild(contentTabs);
 
-        expect(getScrollOffset()).toBe(400 + 48 + SPACE_BEFORE_ACTIVE_ELEMENT);
+        expect(getScrollOffset()).toBe(400 + 48 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
     it('returns correct offset with different heights', () => {
@@ -54,12 +54,12 @@ describe('getScrollOffset', () => {
         document.body.appendChild(mediaPlayer);
         document.body.appendChild(contentTabs);
 
-        expect(getScrollOffset()).toBe(320 + 48 + SPACE_BEFORE_ACTIVE_ELEMENT);
+        expect(getScrollOffset()).toBe(320 + 48 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
-    it('returns SPACE_BEFORE_ACTIVE_ELEMENT when elements do not exist', () => {
+    it('returns SPACE_BEFORE_ACTIVE_SEGMENT when elements do not exist', () => {
         // No elements in DOM
-        expect(getScrollOffset()).toBe(SPACE_BEFORE_ACTIVE_ELEMENT);
+        expect(getScrollOffset()).toBe(SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
     it('handles missing MediaPlayer element', () => {
@@ -73,7 +73,7 @@ describe('getScrollOffset', () => {
 
         document.body.appendChild(contentTabs);
 
-        expect(getScrollOffset()).toBe(48 + SPACE_BEFORE_ACTIVE_ELEMENT);
+        expect(getScrollOffset()).toBe(48 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
     it('handles missing contentTabs element', () => {
@@ -87,7 +87,7 @@ describe('getScrollOffset', () => {
 
         document.body.appendChild(mediaPlayer);
 
-        expect(getScrollOffset()).toBe(400 + SPACE_BEFORE_ACTIVE_ELEMENT);
+        expect(getScrollOffset()).toBe(400 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
     it('returns correct offset when elements have zero height', () => {
@@ -109,6 +109,6 @@ describe('getScrollOffset', () => {
         document.body.appendChild(mediaPlayer);
         document.body.appendChild(contentTabs);
 
-        expect(getScrollOffset()).toBe(SPACE_BEFORE_ACTIVE_ELEMENT);
+        expect(getScrollOffset()).toBe(SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 });

@@ -1,4 +1,6 @@
+import { ONE_REM, SCREEN_MD } from 'modules/constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { VIDEO_RESIZE_MAX_WIDTH, VIDEO_RESIZE_MIN_WIDTH } from '../constants';
 
 /**
  * Hook to handle manual resizing of the media player via drag handle
@@ -9,7 +11,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * @param {number} options.maxWidth - Maximum width in rem
  * @returns {Object} - { resizeHandleRef, isDragging }
  */
-export function useMediaPlayerResize({ minWidth = 20, maxWidth = 60 } = {}) {
+export function useMediaPlayerResize({
+    minWidth = VIDEO_RESIZE_MIN_WIDTH,
+    maxWidth = VIDEO_RESIZE_MAX_WIDTH,
+} = {}) {
     const [isDragging, setIsDragging] = useState(false);
     const handleElementRef = useRef(null);
     const listenersAttachedRef = useRef(false);
@@ -48,7 +53,7 @@ export function useMediaPlayerResize({ minWidth = 20, maxWidth = 60 } = {}) {
             if (!handle) return;
 
             // Only enable resize on medium+ screens (768px)
-            const isCompactScreen = () => window.innerWidth < 768;
+            const isCompactScreen = () => window.innerWidth < SCREEN_MD;
             if (isCompactScreen()) {
                 return;
             }
@@ -61,11 +66,12 @@ export function useMediaPlayerResize({ minWidth = 20, maxWidth = 60 } = {}) {
                 if (!currentMediaElement) return;
                 e.preventDefault();
 
+                // Calculate new width using mouse delta
                 const deltaX = e.clientX - startX;
                 const newWidthPx = startWidth + deltaX;
 
-                // Convert to rem (assuming 16px = 1rem)
-                const newWidthRem = newWidthPx / 16;
+                // Convert to rem
+                const newWidthRem = newWidthPx / ONE_REM;
 
                 // Constrain to min/max
                 const constrainedWidthRem = Math.max(

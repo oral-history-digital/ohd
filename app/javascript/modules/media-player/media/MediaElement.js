@@ -6,7 +6,6 @@ import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { VIDEO_RESIZE_MIN_WIDTH, VIDEO_RESIZE_MAX_WIDTH } from '../constants';
 import { useMediaPlayerResize, usePosterImage } from '../hooks';
 import {
     getQualityLabel,
@@ -57,10 +56,7 @@ export default function MediaElement({
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     // Hook for manual resize via drag handle
-    const { resizeHandleRef, isDragging } = useMediaPlayerResize({
-        minWidth: VIDEO_RESIZE_MIN_WIDTH,
-        maxWidth: VIDEO_RESIZE_MAX_WIDTH,
-    });
+    const { resizeHandleRef, isDragging } = useMediaPlayerResize();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources =

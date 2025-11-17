@@ -11,6 +11,14 @@ export const SITE_HEADER_HEIGHT_MOBILE = 5 * ONE_REM;
 export const SITE_HEADER_HEIGHT_DESKTOP = 6.25 * ONE_REM;
 export const CONTENT_TABS_HEIGHT = 3 * ONE_REM;
 
+// Breakpoints (must match SCSS variables in app/javascript/stylesheets/_variables.scss)
+export const SCREEN_M = 768; // $screen-m
+export const SCREEN_L = 990; // $screen-l
+export const SCREEN_XL = 1200; // $screen-xl
+
+// Buffer space between top of active segment and Video/Menu
+export const SPACE_BEFORE_ACTIVE_SEGMENT = 8 * CSS_BASE_UNIT;
+
 export const PROJECT_CDOH = 'cdoh';
 export const PROJECT_DG = 'dg';
 export const PROJECT_MOG = 'mog';
@@ -38,7 +46,6 @@ export const OHD_DOMAINS = {
 };
 
 export const GITHUB_URL = 'https://github.com/oral-history-digital/ohd';
-
 
 export const ALPHA2_TO_ALPHA3 = {
     de: 'ger',
