@@ -6,7 +6,11 @@ import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { useEventTypes, EventTypeForm, useMutateEventTypes } from 'modules/event-types';
+import {
+    useEventTypes,
+    EventTypeForm,
+    useMutateEventTypes,
+} from 'modules/event-types';
 import { useInvalidateAllPersonData } from 'modules/person';
 import DataContainer from './DataContainer';
 import AddButton from './AddButton';
@@ -21,11 +25,10 @@ export default function EventTypesAdminPage() {
     const invalidateAllPersonData = useInvalidateAllPersonData();
 
     const scope = 'event_type';
-    const hideAdd = false, hideEdit = false, hideDelete = false;
-    const detailsAttributes = [
-        'code',
-        'name',
-    ];
+    const hideAdd = false,
+        hideEdit = false,
+        hideDelete = false;
+    const detailsAttributes = ['code', 'name'];
     const outerScope = 'project';
     const outerScopeId = project.id;
     const joinedData = {};
@@ -33,7 +36,7 @@ export default function EventTypesAdminPage() {
 
     if (isLoading) {
         return (
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Spinner />
             </div>
         );
@@ -50,12 +53,12 @@ export default function EventTypesAdminPage() {
     }
 
     async function handleDeleteEventType(id, callback) {
-        mutateEventTypes(async eventTypes => {
+        mutateEventTypes(async (eventTypes) => {
             await deleteEventType(id);
 
-            invalidateAllPersonData();
+            await invalidateAllPersonData();
 
-            const updatedEventTypes = eventTypes.filter(et => et.id !== id);
+            const updatedEventTypes = eventTypes.filter((et) => et.id !== id);
             return updatedEventTypes;
         });
 
@@ -64,20 +67,17 @@ export default function EventTypesAdminPage() {
         }
     }
 
-    const sortedData = Object.values(data)
-        .sort((a, b) => {
-            const aName = a.name;
-            const bName = b.name;
-            return aName.localeCompare(bName, locale);
-        });
+    const sortedData = Object.values(data).sort((a, b) => {
+        const aName = a.name;
+        const bName = b.name;
+        return aName.localeCompare(bName, locale);
+    });
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
-                    <title>
-                        {t(`activerecord.models.${scope}.other`)}
-                    </title>
+                    <title>{t(`activerecord.models.${scope}.other`)}</title>
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
@@ -85,18 +85,26 @@ export default function EventTypesAdminPage() {
                         {t(`activerecord.models.${scope}.other`)}
                     </h1>
 
-                    <div className={classNames('LoadingOverlay', {
-                        'is-loading': isValidating
-                    })}>
+                    <div
+                        className={classNames('LoadingOverlay', {
+                            'is-loading': isValidating,
+                        })}
+                    >
                         {!hideAdd && (
                             <AddButton
                                 scope={scope}
-                                onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
+                                onClose={(closeModal) =>
+                                    renderForm(
+                                        undefined,
+                                        closeModal,
+                                        closeModal
+                                    )
+                                }
                                 disabled={isValidating}
                             />
                         )}
 
-                        {sortedData.map(data => (
+                        {sortedData.map((data) => (
                             <DataContainer
                                 data={data}
                                 scope={scope}
@@ -117,12 +125,17 @@ export default function EventTypesAdminPage() {
                         {!hideAdd && (
                             <AddButton
                                 scope={scope}
-                                onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
+                                onClose={(closeModal) =>
+                                    renderForm(
+                                        undefined,
+                                        closeModal,
+                                        closeModal
+                                    )
+                                }
                                 disabled={isValidating}
                             />
                         )}
                     </div>
-
                 </AuthShowContainer>
 
                 <AuthShowContainer ifLoggedOut ifNoProject>
