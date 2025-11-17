@@ -4,7 +4,7 @@ import { useEventTypes } from 'modules/event-types';
 import {
     useMutatePeople,
     useMutatePersonWithAssociations,
-    useMutatePersonLandingPageMetadata
+    useMutatePersonLandingPageMetadata,
 } from 'modules/person';
 import { Form, validateDate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -24,7 +24,8 @@ export default function EventForm({
     const { project, projectId } = useProject();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
-    const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
+    const mutatePersonLandingPageMetadata =
+        useMutatePersonLandingPageMetadata();
 
     const { t, locale } = useI18n();
 
@@ -34,6 +35,40 @@ export default function EventForm({
         return <Spinner />;
     }
 
+    const handleEventUpdate = (updatedEvent) => {
+        const eventHolderId = updatedEvent.eventable_id;
+
+        mutatePeople(async (people) => {
+            const eventHolder = people.data[eventHolderId];
+            const events = eventHolder.events;
+            const updatedEventIndex = events.findIndex(
+                (event) => event.id === updatedEvent.id
+            );
+
+            const updatedPeople = {
+                ...people,
+                data: {
+                    ...people.data,
+                    [eventHolderId]: {
+                        ...eventHolder,
+                        events: [
+                            ...events.slice(0, updatedEventIndex),
+                            updatedEvent,
+                            ...events.slice(updatedEventIndex + 1),
+                        ],
+                    },
+                },
+            };
+
+            return updatedPeople;
+        });
+
+        if (eventHolderId) {
+            mutatePersonWithAssociations(eventHolderId);
+            mutatePersonLandingPageMetadata(eventHolderId);
+        }
+    };
+
     const formElements = [
         {
             elementType: 'select',
@@ -41,7 +76,7 @@ export default function EventForm({
             values: eventTypes,
             value: event?.event_type_id,
             withEmpty: true,
-            validate: v => v !== '',
+            validate: (v) => v !== '',
             individualErrorMsg: 'empty',
         },
         {
@@ -64,7 +99,7 @@ export default function EventForm({
             multiLocale: true,
             placeholder: t('modules.events.display_date_placeholder'),
             value: event?.display_date,
-            help: 'help_texts.events.display_date'
+            help: 'help_texts.events.display_date',
         },
     ];
 
@@ -76,40 +111,14 @@ export default function EventForm({
             values={{
                 eventable_id: personId,
             }}
-            onSubmit={params => {
+            onSubmit={(params) => {
                 if (typeof submitData === 'function') {
-                    submitData({ locale, projectId, project }, params, index, (updatedEvent) => {
-                        const eventHolderId = updatedEvent.eventable_id;
-
-                        mutatePeople(async people => {
-                            const eventHolder = people.data[eventHolderId];
-                            const events = eventHolder.events;
-                            const updatedEventIndex = events.findIndex(event =>
-                                event.id === updatedEvent.id);
-
-                            const updatedPeople = {
-                                ...people,
-                                data: {
-                                    ...people.data,
-                                    [eventHolderId]: {
-                                        ...eventHolder,
-                                        events: [
-                                            ...events.splice(0, updatedEventIndex),
-                                            updatedEvent,
-                                            ...events.splice(updatedEventIndex + 1)
-                                        ]
-                                    }
-                                }
-                            };
-
-                            return updatedPeople;
-                        });
-
-                        if (eventHolderId) {
-                            mutatePersonWithAssociations(eventHolderId);
-                            mutatePersonLandingPageMetadata(eventHolderId);
-                        }
-                    });
+                    submitData(
+                        { locale, projectId, project },
+                        params,
+                        {},
+                        handleEventUpdate
+                    );
                 }
                 if (typeof onSubmit === 'function') {
                     onSubmit();

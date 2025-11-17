@@ -16,9 +16,9 @@ export default function SingleTextInputForm({
 
     return (
         <Form
-            scope='text'
-            onSubmit={params => {
-                submitData({projectId, project, locale}, params, index);
+            scope="text"
+            onSubmit={(params) => {
+                submitData({ projectId, project, locale }, params);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
@@ -26,8 +26,8 @@ export default function SingleTextInputForm({
             nested={nested}
             formClasses={formClasses}
             elements={[
-                {attribute: 'text_to_mark'},
-                {attribute: 'replacement'}
+                { attribute: 'text_to_mark' },
+                { attribute: 'replacement' },
             ]}
         />
     );

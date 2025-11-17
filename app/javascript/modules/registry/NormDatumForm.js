@@ -13,19 +13,15 @@ export default function NormDatumForm({
     registryEntryId,
     normDataProviders,
 }) {
-
-    const { t, locale } = useI18n();
+    const { locale } = useI18n();
     const { project, projectId } = useProject();
 
     return (
         <Form
-            scope='norm_datum'
+            scope="norm_datum"
             helpTextCode="norm_datum_form"
-            onSubmit={params => {
-                submitData({projectId, locale, project}, params, index);
-                if (typeof onSubmit === 'function') {
-                    onSubmit();
-                }
+            onSubmit={(params) => {
+                submitData({ projectId, locale, project }, params);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
@@ -33,18 +29,20 @@ export default function NormDatumForm({
             data={data}
             nested={nested}
             values={{
-                registry_entry_id: (data?.registry_entry_id) || registryEntryId,
+                registry_entry_id: data?.registry_entry_id || registryEntryId,
                 value: data?.norm_data_provider_id,
                 value: data?.nid,
             }}
-            submitText='submit'
+            submitText="submit"
             elements={[
                 {
                     attribute: 'norm_data_provider_id',
                     elementType: 'select',
                     value: data?.norm_data_provider_id,
                     values: normDataProviders,
-                    validate: function(v){return /^\d+$/.test(v)},
+                    validate: function (v) {
+                        return /^\d+$/.test(v);
+                    },
                     withEmpty: true,
                 },
                 {
