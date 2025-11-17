@@ -20,14 +20,6 @@ export default function UserDetailsForm({
             submitText='submit'
             elements={[
                 {
-                    attribute: 'first_name',
-                    validate: function(v){return v?.length > 1}
-                },
-                {
-                    attribute: 'last_name',
-                    validate: function(v){return v?.length > 1}
-                },
-                {
                     attribute: 'email',
                     elementType: 'input',
                     type: 'email',
