@@ -1,4 +1,4 @@
-import { ONE_REM, SCREEN_MD } from 'modules/constants';
+import { ONE_REM, SCREEN_M } from 'modules/constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     VIDEO_COMPACT_MODE_THRESHOLD,
@@ -78,7 +78,7 @@ export function useMediaPlayerResize({
             if (!handle) return;
 
             // Only enable resize on medium+ screens (768px)
-            const isCompactScreen = () => window.innerWidth < SCREEN_MD;
+            const isCompactScreen = () => window.innerWidth < SCREEN_M;
             if (isCompactScreen()) {
                 return;
             }
