@@ -112,17 +112,13 @@
 
   .MediaElement {
     flex: 0 0 auto;
-    width: $media-player-video-max-width-small; // Default to small size
-    max-width: $media-player-video-width; // Don't exceed 66% of container
-    position: relative;
-  }
-
-  // Apply CSS custom property override if set by toggle button
-  .MediaElement {
+    align-self: flex-start; // Don't stretch vertically - let aspect-ratio determine height
     width: var(
       --media-player-video-max-width,
       $media-player-video-max-width-small
     );
+    max-width: $media-player-video-width; // Don't exceed 66% of container
+    position: relative;
   }
 
   // Resize handle on the right border - show on medium+ screens
@@ -182,8 +178,15 @@
     flex-direction: column;
     flex: 1 1 0;
     min-width: 0; // Allow flexbox to shrink below content size
-    justify-content: space-between;
+    justify-content: space-between; // Distribute space - pushes buttons to bottom
     padding: $media-player-header-padding;
+    display: flex;
+
+    .MediaHeader-title {
+      // Title stays on its own row
+      width: 100%;
+      margin-bottom: calc($base-unit / 2);
+    }
 
     .MediaControls {
       margin: 0;
@@ -192,8 +195,45 @@
     }
 
     .MediaPlayer-buttons {
-      margin-top: auto;
+      margin-top: auto; // Push to bottom in column layout
+      margin-right: $base-unit;
       align-self: flex-end;
+    }
+  }
+
+  // In compact mode, prevent stretching and align to top
+  .MediaHeader.MediaHeader--compact {
+    align-self: flex-start; // Only apply flex-start in compact mode
+  }
+
+  // When video is very small (compact mode), put controls and buttons in one row
+  .MediaHeader.MediaHeader--compact {
+    flex-wrap: wrap;
+    flex-direction: row; // Switch to row layout
+    padding-bottom: calc($base-unit / 2);
+    padding-top: calc($base-unit / 2);
+
+    .MediaHeader-title {
+      flex: 0 0 100%; // Title takes full width on first row
+      order: 1;
+      margin-bottom: calc($base-unit / 2);
+    }
+
+    .MediaHeader-controls {
+      flex: 0 1 auto; // Shrink to content, don't take full width
+      order: 2;
+      align-self: center;
+      width: auto; // Override any width: 100%
+    }
+
+    .MediaPlayer-buttons {
+      flex: 0 0 auto; // Don't grow, keep to content width
+      order: 3;
+      margin-top: 0;
+      margin-left: auto; // Push to right
+      margin-right: 0; // Remove right margin in compact mode (header padding provides spacing)
+      align-self: center;
+      width: auto; // Override any width settings
     }
   }
 }
@@ -210,11 +250,6 @@
 
 // Larger screens default to expanded size
 @media (min-width: $screen-xl) {
-  .MediaElement {
-    width: $media-player-video-max-width; // Default to medium/large size
-  }
-
-  // Apply CSS custom property override if set by toggle button
   .MediaElement {
     width: var(--media-player-video-max-width, $media-player-video-max-width);
   }

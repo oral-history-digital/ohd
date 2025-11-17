@@ -1,6 +1,25 @@
 import { ONE_REM, SCREEN_MD } from 'modules/constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { VIDEO_RESIZE_MAX_WIDTH, VIDEO_RESIZE_MIN_WIDTH } from '../constants';
+import {
+    VIDEO_COMPACT_MODE_THRESHOLD,
+    VIDEO_RESIZE_MAX_WIDTH,
+    VIDEO_RESIZE_MIN_WIDTH,
+} from '../constants';
+
+/**
+ * Toggle compact mode for MediaHeader based on video width
+ * @param {number} widthInRem - Video width in rem units
+ */
+function toggleCompactMode(widthInRem) {
+    const mediaHeader = document.querySelector('.MediaHeader');
+    if (!mediaHeader) return;
+
+    if (widthInRem < VIDEO_COMPACT_MODE_THRESHOLD) {
+        mediaHeader.classList.add('MediaHeader--compact');
+    } else {
+        mediaHeader.classList.remove('MediaHeader--compact');
+    }
+}
 
 /**
  * Hook to handle manual resizing of the media player via drag handle
@@ -27,6 +46,12 @@ export function useMediaPlayerResize({
                 '--media-player-video-max-width',
                 savedWidth
             );
+
+            // Check if we need to apply compact mode
+            const widthValue = parseFloat(savedWidth);
+            if (!isNaN(widthValue)) {
+                toggleCompactMode(widthValue);
+            }
         }
     }, []);
 
@@ -90,6 +115,9 @@ export function useMediaPlayerResize({
                     'videoPlayerWidth',
                     `${constrainedWidthRem}rem`
                 );
+
+                // Toggle compact mode for MediaHeader based on video width
+                toggleCompactMode(constrainedWidthRem);
             };
 
             const handleMouseUp = () => {
