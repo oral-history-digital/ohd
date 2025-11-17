@@ -1,0 +1,8 @@
+div class="segment_#{segment.id} Segment Segment--withSpeaker is-active" data-tape=tape_number data-time=segment.timecode
+  span.Segment-icon.Segment-icon--secondary title=segment.speaking_person.full_name(I18n.locale) aria-label=segment.speaking_person.full_name(I18n.locale)
+    = segment.speaking_person.initials
+  button.Segment-text.is-active type="button" lang="eng" dir="ltr"
+    = segment.text(locale)
+  button.Modal-trigger.Button--hover.Segment-hiddenButton type="button" title="Segment merken"
+    = fa_icon 'star', class: 'Icon Icon--unobtrusive'
+
