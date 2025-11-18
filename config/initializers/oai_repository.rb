@@ -75,14 +75,14 @@ OaiRepository.setup do |config|
         spec: "archive:#{project.shortname}",
         name: project.name(:de),
         model: Project,
-        description: project.oai_abstract_description(:de)
+        #description: project.oai_abstract_description(:de)
       } 
     end + Collection.all.map do |collection|
       {
         spec: "collection:#{collection.id}",
         name: collection.name(:de),
         model: Collection,
-        description: collection.oai_abstract_description(:de)
+        #description: collection.oai_abstract_description(:de)
       }
     end)
 

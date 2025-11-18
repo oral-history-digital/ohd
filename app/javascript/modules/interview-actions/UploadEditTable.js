@@ -6,15 +6,7 @@ import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 
-const CONTRIBUTION_TYPES_SPEAKING = [
-    'interviewee',
-    'interviewer',
-    'cinematographer',
-    'sound',
-    'producer',
-    'other_attender',
-    'interpreter',
-];
+import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
 
 export default function UploadEditTable({
     projectId,

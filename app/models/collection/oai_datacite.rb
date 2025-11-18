@@ -63,7 +63,7 @@ module Collection::OaiDatacite
 
       xml.contributors do
         xml.contributor contributorType: "DataManager" do
-          xml.contributorName project.manager, "xml:lang": "en"
+          xml.contributorName project.leader, "xml:lang": "en"
         end
         xml.contributor contributorType: "HostingInstitution" do
           xml.contributorName oai_contributor(:en), "xml:lang": "en"

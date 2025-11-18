@@ -103,3 +103,17 @@ const ANALYTICS_URLS = {
 export const ANALYTICS_URL_BASE = ANALYTICS_URLS[railsMode];
 
 export const SHOW_SYSTEM_WARNING = false;
+
+export const CONTRIBUTION_TYPES_SPEAKING = [
+    'interviewee',
+    'further_interviewee',
+    'interviewer',
+    'cinematographer',
+    'sound',
+    'producer',
+    'other_attender',
+    'interpreter',
+];
+
+export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+export const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/

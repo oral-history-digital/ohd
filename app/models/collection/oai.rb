@@ -61,10 +61,14 @@ module Collection::Oai
   end
 
   def oai_formats
-    [
-      "video/mp4",
-      "audio/mp3"
-    ]
+    interviews.pluck(:media_type).uniq.map do |mt|
+      case mt
+      when 'video'
+        "video/mp4"
+      when 'audio'
+        "audio/mp3"
+      end
+    end.compact
   end
 
   def oai_size
