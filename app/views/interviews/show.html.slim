@@ -4,9 +4,24 @@ noscript
 
 .Tabs
   .Layout-contentTabs
-    .Tabs-tabList role="tablist" aria-orientation="horizontal" data-reach-tab-list=""
+    .Tabs-tabList {
+      role="tablist"
+      aria-orientation="horizontal"
+      data-reach-tab-list=""
+    }
 
-      .Tabs-tab aria-controls="tabs--panel--0" aria-selected="true" role="tab" tabindex="0" class="Tabs-tab" data-reach-tab="" data-orientation="horizontal" id="tabs--tab--0" type="button"
+      .Tabs-tab {
+        aria-controls="tabs--panel--0"
+        aria-selected="true"
+        role="tab"i
+        tabindex="0"
+        class="Tabs-tab"
+        data-reach-tab=""
+        data-orientation="horizontal"
+        id="tabs--tab--0"
+        type="button"
+      }
+
         = fa_icon 'file-alt', class: 'Tabs-tabIcon'
         span.Tabs-tabText
           = "#{tv('transcript')} (#{@interview.alpha3})"
@@ -14,12 +29,4 @@ noscript
   
   .wrapper-content
     .Transcript
-      = cache [@interview, @interview.segments.maximum(:updated_at)] do
-        - alpha3 = @interview.alpha3
-        - @interview.tapes.each do |tape|
-          - tape_number = tape.number
-          - tape.segments.includes(:translations, speaking_person: [:translations]).each do |segment|
-            = cache [segment, alpha3] do
-              = render partial: 'segments/segment', locals: { segment: segment, locale: alpha3, tape_number: tape_number }
-
-
+      = render partial: 'transcript', locals: { interview: @interview, alpha3: @interview.alpha3 }
