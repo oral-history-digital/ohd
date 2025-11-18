@@ -29,4 +29,7 @@ noscript
   
   .wrapper-content
     .Transcript
-      = render partial: 'transcript', locals: { interview: @interview, alpha3: @interview.alpha3 }
+      = render partial: 'transcript', locals: {\
+        interview: @interview,\
+        alpha3: @interview.alpha3\
+      }
