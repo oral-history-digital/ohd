@@ -1,4 +1,4 @@
-import { SCREEN_L, SCREEN_M } from 'modules/constants';
+import { SCREEN_M, SCREEN_XL } from 'modules/constants';
 import { isMobile } from 'modules/user-agent';
 import { createRoot } from 'react-dom/client';
 import { MdOutlineFitScreen } from 'react-icons/md';
@@ -46,9 +46,9 @@ class ToggleSizeButton extends VjsButton {
             this.currentPlayerSize =
                 savedWidth === VIDEO_MAX_WIDTH_SMALL ? 'small' : 'medium';
         } else {
-            // Set initial size based on screen width: small for <SCREEN_L, medium for ≥SCREEN_L
+            // Set initial size based on screen width: small for <SCREEN_XL, medium for ≥SCREEN_XL
             this.currentPlayerSize =
-                window.innerWidth < SCREEN_L ? 'small' : 'medium';
+                window.innerWidth < SCREEN_XL ? 'small' : 'medium';
         }
         this.subtitleTrackWasEnabled = false; // Track subtitle state
         this.lastActiveTrackIndex = -1; // Track which track was active
