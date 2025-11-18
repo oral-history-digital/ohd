@@ -49,7 +49,7 @@ export default function PersonData({ interview, intervieweeId }) {
             />
             {displayedMetadataFields.map((field, index) => {
                 if (field.source === 'EventType') {
-                    const events = person.events.filter(
+                    const events = person.events?.filter(
                         (event) => event.event_type_id === field.event_type_id
                     );
 
