@@ -64,6 +64,12 @@ export function useScrollBelowThreshold() {
         }, 100);
         window.addEventListener('resize', handleResize);
 
+        // Update when media player is manually resized via drag handle
+        const handleMediaPlayerResize = () => {
+            updateMediaPlayerHeight();
+        };
+        window.addEventListener('mediaPlayerResized', handleMediaPlayerResize);
+
         // Initial check in case page is loaded already scrolled
         handleScroll({
             target: { scrollingElement: document.documentElement },
@@ -72,6 +78,10 @@ export function useScrollBelowThreshold() {
         const cleanup = () => {
             window.removeEventListener('scroll', throttledHandleScroll);
             window.removeEventListener('resize', handleResize);
+            window.removeEventListener(
+                'mediaPlayerResized',
+                handleMediaPlayerResize
+            );
         };
 
         return cleanup;

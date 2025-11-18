@@ -22,6 +22,23 @@ function toggleCompactMode(widthInRem) {
 }
 
 /**
+ * Throttle helper - limits function calls to once per delay period
+ * @param {Function} func - Function to throttle
+ * @param {number} delay - Delay in milliseconds
+ * @returns {Function} - Throttled function
+ */
+function throttle(func, delay) {
+    let lastCall = 0;
+    return function (...args) {
+        const now = Date.now();
+        if (now - lastCall >= delay) {
+            lastCall = now;
+            func(...args);
+        }
+    };
+}
+
+/**
  * Hook to handle manual resizing of the media player via drag handle
  * Maintains aspect ratio while resizing
  *
@@ -87,6 +104,11 @@ export function useMediaPlayerResize({
             let startWidth = 0;
             let currentMediaElement = null;
 
+            // Throttle layout update event to once every 50ms for performance
+            const dispatchLayoutUpdate = throttle(() => {
+                window.dispatchEvent(new CustomEvent('mediaPlayerResized'));
+            }, 50);
+
             const handleMouseMove = (e) => {
                 if (!currentMediaElement) return;
                 e.preventDefault();
@@ -118,6 +140,11 @@ export function useMediaPlayerResize({
 
                 // Toggle compact mode for MediaHeader based on video width
                 toggleCompactMode(constrainedWidthRem);
+
+                // Dispatch custom event to notify layout that player size changed
+                // This allows the sticky layout to recalculate positions in real-time
+                // Throttled to avoid excessive updates during drag
+                dispatchLayoutUpdate();
             };
 
             const handleMouseUp = () => {
