@@ -14,10 +14,12 @@ noscript
   
   .wrapper-content
     .Transcript
-      - alpha3 = @interview.alpha3
-      - @interview.tapes.each do |tape|
-        - tape_number = tape.number
+      = cache [@interview, @interview.segments.maximum(:updated_at)] do
+        - alpha3 = @interview.alpha3
+        - @interview.tapes.each do |tape|
+          - tape_number = tape.number
           - tape.segments.includes(:translations, speaking_person: [:translations]).each do |segment|
-            = render partial: 'segments/segment', locals: { segment: segment, locale: alpha3, tape_number: tape_number }
+            = cache [segment, alpha3] do
+              = render partial: 'segments/segment', locals: { segment: segment, locale: alpha3, tape_number: tape_number }
 
 
