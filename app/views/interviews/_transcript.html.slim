@@ -1,6 +1,8 @@
 = cache [interview, interview.segments.maximum(:updated_at)] do
 
   - alpha3 = interview.alpha3
+  - rtl = is_rtl_language?(alpha3)
+
   - interview.tapes.each do |tape|
     - tape_number = tape.number
 
@@ -8,7 +10,12 @@
       :translations,\
       speaking_person: [:translations]\
       ).each do |segment|
-        = cache [segment, alpha3] do
+        = cache [segment, alpha3, is_editor?] do
           = render partial: 'segments/segment',\
-            locals: { segment: segment, alpha3: alpha3, tape_number: tape_number }
+            locals: {\
+              segment: segment,\
+              alpha3: alpha3,\
+              tape_number: tape_number,\
+              rtl: rtl\
+            }
 

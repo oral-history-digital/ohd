@@ -15,6 +15,7 @@ $slick-loader-path: '~slick-carousel/slick/';
 $slick-font-path: '~slick-carousel/slick/fonts/';
 @import '~slick-carousel/slick/slick.scss';
 @import '~slick-carousel/slick/slick-theme.scss';
+@import "@fortawesome/fontawesome-free/css/all.css";
 
 // Reach-ui
 [data-reach-dialog-overlay],

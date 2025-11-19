@@ -16,6 +16,7 @@
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.7",
     "@babel/runtime": "^7.25.0",
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@reach/checkbox": "^0.18.0",
     "@reach/dialog": "^0.18.0",

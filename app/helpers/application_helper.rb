@@ -27,4 +27,9 @@ module ApplicationHelper
   def is_ohd?
     current_project && current_project.shortname == 'ohd'
   end
+
+  def is_editor?
+    true #current_user# && current_user.has_role?(:editor, current_project)
+    # TODO
+  end
 end

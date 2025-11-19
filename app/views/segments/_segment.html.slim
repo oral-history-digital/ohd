@@ -15,7 +15,7 @@ div {
     class="Segment-text"
     type="button"
     lang=alpha3
-    dir="ltr"
+    dir="#{rtl ? 'rtl' : 'ltr'}"
   }
     = segment.text(alpha3)
 
@@ -27,3 +27,4 @@ div {
 
     = fa_icon 'star', class: 'Icon Icon--unobtrusive'
 
+  = render partial: 'segments/segment_actions', locals: { segment: segment, alpha3: alpha3 }

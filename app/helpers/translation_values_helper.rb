@@ -1,5 +1,5 @@
 module TranslationValuesHelper
-  def tv(key)
-    TranslationValue.for(key, I18n.locale)
+  def tv(key, locale=I18n.locale)
+    TranslationValue.for(key, locale)
   end
 end
