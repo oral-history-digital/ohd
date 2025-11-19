@@ -73,6 +73,7 @@
     "react-intersection-observer": "^8.22.5",
     "react-leaflet": "^4.2.1",
     "react-loader-spinner": "^8.0.0",
+    "react-loading-skeleton": "^3.5.0",
     "react-on-rails": "14.0.4",
     "react-redux": "^7.2.2",
     "react-resize-aware": "3.1.1",
