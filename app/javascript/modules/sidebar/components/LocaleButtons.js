@@ -104,7 +104,7 @@ export default function LocaleButtons({ className }) {
                         }}
                     >
                         {ALPHA2_TO_ALPHA3[locale]}
-                        {loadingLocale === locale && <Spinner small />}
+                        {loadingLocale === locale && <Spinner size="small" />}
                     </span>
                 </button>
             ))}

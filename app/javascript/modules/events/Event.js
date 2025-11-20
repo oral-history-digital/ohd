@@ -7,30 +7,32 @@ import { useEventTypes } from 'modules/event-types';
 import { Spinner } from 'modules/spinners';
 import localeToLocaleObject from './localeToLocaleObject';
 
-export default function Event({
-    event,
-    className,
-}) {
+export default function Event({ event, className }) {
     const { locale } = useI18n();
     const { data: eventTypes, isLoading } = useEventTypes();
 
     if (isLoading) {
-        return <Spinner small />;
+        return <Spinner size="small" />;
     }
 
-    const eventType = eventTypes.find(et => et.id === Number(event.event_type_id));
+    const eventType = eventTypes.find(
+        (et) => et.id === Number(event.event_type_id)
+    );
 
     const isInterval = event.start_date !== event.end_date;
 
     const startDate = new Date(event.start_date);
     const endDate = new Date(event.end_date);
 
-    const distance = formatDistance(endDate, startDate,
-        { locale: localeToLocaleObject[locale] });
+    const distance = formatDistance(endDate, startDate, {
+        locale: localeToLocaleObject[locale],
+    });
 
     let dateStr = startDate.toLocaleDateString(locale, { dateStyle: 'medium' });
     if (isInterval) {
-        dateStr += `–${endDate.toLocaleDateString(locale, { dateStyle: 'medium' })}`;
+        dateStr += `–${endDate.toLocaleDateString(locale, {
+            dateStyle: 'medium',
+        })}`;
     }
 
     let title;
@@ -44,17 +46,15 @@ export default function Event({
 
     return (
         <div className={classNames('Event', className)}>
-            <div className="Event-category">
-                {eventType.name}
-            </div>
+            <div className="Event-category">{eventType.name}</div>
             {showDisplayDate && (
-                <div className="Event-text">
-                    {event.display_date}
-                </div>
+                <div className="Event-text">{event.display_date}</div>
             )}
-            <div className={classNames('Event-text', {
-                'Event-text--slight': showDisplayDate
-            })}>
+            <div
+                className={classNames('Event-text', {
+                    'Event-text--slight': showDisplayDate,
+                })}
+            >
                 <time
                     dateTime={startDate.toISOString().split('T')[0]}
                     title={title}
