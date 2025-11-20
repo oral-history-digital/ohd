@@ -5,11 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-11-20
+
+### Added
+
+-   feat: make media player responsive ([#43](https://github.com/oral-history-digital/ohd/pull/43))
+
+### Fixed
+
+-   fix: ignore parentetheses in initials calculation ([#45](https://github.com/oral-history-digital/ohd/pull/45))
+-   fix: handle empty values in facets ([#46](https://github.com/oral-history-digital/ohd/pull/46))
+
 ## [1.3.0] - 2025-11-17
 
 ### Changed
 
--  feat: improve people loading for performance improvement ([#37](https://github.com/oral-history-digital/ohd/pull/37))
+-   feat: improve people loading for performance improvement ([#37](https://github.com/oral-history-digital/ohd/pull/37))
 
 ## [1.2.1] - 2025-11-12
 
@@ -159,6 +170,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.4.0]: https://github.com/oral-history-digital/ohd/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/oral-history-digital/ohd/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/oral-history-digital/ohd/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/oral-history-digital/ohd/compare/v1.1.13...v1.2.0
