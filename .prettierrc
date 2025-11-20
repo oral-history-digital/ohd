@@ -2,30 +2,14 @@
     "tabWidth": 4,
     "singleQuote": true,
     "trailingComma": "es5",
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": ["^react$", "<THIRD_PARTY_MODULES>", "^@/.*", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
     "overrides": [
-        {
-            "files": "*.css",
-            "options": {
-                "tabWidth": 2
-            }
-        },
-        {
-            "files": "*.scss",
-            "options": {
-                "tabWidth": 2
-            }
-        },
-        {
-            "files": "*.yml",
-            "options": {
-                "tabWidth": 2
-            }
-        },
-        {
-            "files": "*.yaml",
-            "options": {
-                "tabWidth": 2
-            }
-        }
+        { "files": "*.css", "options": { "tabWidth": 2 } },
+        { "files": "*.scss", "options": { "tabWidth": 2 } },
+        { "files": "*.yml", "options": { "tabWidth": 2 } },
+        { "files": "*.yaml", "options": { "tabWidth": 2 } }
     ]
 }
