@@ -206,43 +206,63 @@ class Person < ApplicationRecord
 
     return '' if first.blank? && last.blank?
 
-    # If only first name exists
-    return first.chars.first(2).join.upcase if last.blank?
+    # Remove any text within parentheses, brackets, or braces (including the delimiters)
+    first = first.gsub(/[(\[{][^\])}]*[)\]}]/, '').strip
+    last = last.gsub(/[(\[{][^\])}]*[)\]}]/, '').strip
 
-    # Split last name on any whitespace (including Unicode) or dash-like characters
-    raw_parts = last.split(/[\p{Space}\p{Dash_Punctuation}]+/u).reject(&:blank?)
+    # Replace special characters (dot, comma, semicolon, slash, backslash, underscore, at symbol, hash, dollar, numbers) by space
+    first = first.gsub(/[.,;\/\\@#\$_\d]/, ' ').strip
+    last = last.gsub(/[.,;\/\\@#\$_\d]/, ' ').strip
 
-    # Create a normalized version (ASCII transliteration) only for matching/ignoring particles
-    normalized_parts = raw_parts.map { |p| I18n.transliterate(p).upcase }
+    # Remove extra spaces
+    first = first.split(/\s+/).join(' ')
+    last = last.split(/\s+/).join(' ')
 
-    # Common particles to ignore
+    return '' if first.blank? && last.blank?
+
+    # Common particles and titles to ignore
     ignore_particles = %w[
       AL BIN DA DE DI DEL DELA DER DES DOS DU EL 
-      LA LAS LE LES UND VAN VON ZU
+      LA LAS LE LES UND VAN VON ZU DR DRA JR SR PROF
     ]
 
-    # Keep only substantive surname parts based on normalized comparison
-    # but preserve the original spelling for the kept parts
-    surname_parts = raw_parts.each_with_index
-      .reject { |p, i| ignore_particles.include?(normalized_parts[i]) }
-      .map(&:first)
+    # Helper to filter out particles from a name
+    filter_particles = lambda do |name|
+      # Split name on any whitespace (including Unicode) or dash-like characters
+      parts = name.split(/[\p{Space}\p{Dash_Punctuation}]+/u).reject(&:blank?)
+      normalized = parts.map { |p| I18n.transliterate(p).upcase }
+      filtered = parts.each_with_index
+        .reject { |p, i| ignore_particles.include?(normalized[i]) }
+        .map(&:first)
+      filtered = parts if filtered.empty?
+      filtered.join(' ')
+    end
 
-    # Fallback if all parts were ignored
-    surname_parts = raw_parts if surname_parts.empty?
+    first_clean = filter_particles.call(first)
+    last_clean = filter_particles.call(last)
+
+    # If only first name exists
+    return first_clean.chars.first(2).join.upcase if last_clean.blank?
+
+    # Split last name on any whitespace (including Unicode) or dash-like characters
+    raw_parts = last_clean.split(/[\p{Space}\p{Dash_Punctuation}]+/u).reject(&:blank?)
+
+    # Keep only substantive surname parts
+    surname_parts = raw_parts
 
     # Only last name exists
-    if first.blank?
+    if first_clean.blank?
       if surname_parts.length >= 2
         # Use first character of first two surname parts
         return surname_parts[0][0].upcase + surname_parts[1][0].upcase
       else
         # Use first two characters of last name if only one part exists
-        return last.chars.first(2).join.upcase
+        return last_clean.chars.first(2).join.upcase
       end
     end
 
     # Both first and last name exist
-    f = first[0].upcase
+    f = first_clean[0].upcase
 
     if surname_parts.length >= 2
       # Two or more substantive surname parts → 3 letters:
