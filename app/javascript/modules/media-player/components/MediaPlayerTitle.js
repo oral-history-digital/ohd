@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { getCurrentIntervieweeId, getCurrentInterview } from 'modules/data';
+import { getCurrentInterview, getCurrentIntervieweeId } from 'modules/data';
 import { useInterviewContributors } from 'modules/person';
-import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
+import { useSelector } from 'react-redux';
 
 export default function MediaPlayerTitle({ className }) {
     const interview = useSelector(getCurrentInterview);
@@ -14,17 +13,16 @@ export default function MediaPlayerTitle({ className }) {
         isValidating,
     } = useInterviewContributors(interview.id);
 
-    if (isLoading || isValidating) {
-        return <Spinner size="small" />;
+    // Default to a skeleton while loading
+    let displayTitle = (
+        <Skeleton baseColor="#373737" highlightColor="#4f4f4f" />
+    );
+
+    if (!isLoading && !isValidating && peopleData) {
+        displayTitle = peopleData?.[intervieweeId]?.display_name;
     }
 
-    const interviewee = peopleData?.[intervieweeId];
-
-    return (
-        <h1 className={className}>
-            {interviewee?.display_name || <Skeleton />}
-        </h1>
-    );
+    return <h1 className={className}>{displayTitle}</h1>;
 }
 
 MediaPlayerTitle.propTypes = {
