@@ -140,6 +140,16 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'WH', person.initials
   end
 
+  test 'ignores "Prof." title (Prof. Schmidt)' do
+    person = Person.new(first_name: 'Anna', last_name: 'Prof. Schmidt')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'ignores "Dr." title (Dr. Anna Schmidt)' do
+    person = Person.new(first_name: 'Dr. Anna', last_name: 'Schmidt')
+    assert_equal 'AS', person.initials
+  end
+
   # Diacritics handling
 
   test 'handles names with umlauts (Günter Müller)' do
@@ -298,6 +308,100 @@ class PersonTest < ActiveSupport::TestCase
   test 'handles parentheses in multi-part surname with only substantive parts remaining' do
     person = Person.new(first_name: 'Jean', last_name: 'de (la) Martin Dubois')
     assert_equal 'JMD', person.initials
+  end
+
+  # Brackets and braces handling
+
+  test 'excludes square brackets from first name' do
+    person = Person.new(first_name: 'Anna [Annie]', last_name: 'Schmidt')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'excludes square brackets from last name' do
+    person = Person.new(first_name: 'Peter', last_name: 'Smith [formerly Jones]')
+    assert_equal 'PS', person.initials
+  end
+
+  test 'excludes curly braces from names' do
+    person = Person.new(first_name: 'Maria {Mary}', last_name: 'Rodriguez')
+    assert_equal 'MR', person.initials
+  end
+
+  test 'excludes mixed parentheses, brackets, and braces' do
+    person = Person.new(first_name: 'John (Jack) [Johnny]', last_name: 'Williams {Bill}')
+    assert_equal 'JW', person.initials
+  end
+
+  # Special characters handling
+
+  test 'excludes commas from names' do
+    person = Person.new(first_name: 'Anna,', last_name: 'Schmidt, Jr.')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'excludes periods from names' do
+    person = Person.new(first_name: 'Dr. Anna', last_name: 'Schmidt M.D.')
+    assert_equal 'ASM', person.initials
+  end
+
+  test 'excludes forward slashes from names' do
+    person = Person.new(first_name: 'Anna/Annie', last_name: 'Schmidt')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'excludes underscores from names' do
+    person = Person.new(first_name: 'Anna_Marie', last_name: 'Schmidt')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'excludes numbers from names' do
+    person = Person.new(first_name: 'Anna2', last_name: 'Schmidt3')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'excludes at symbols and other special chars' do
+    person = Person.new(first_name: 'Anna@Email', last_name: 'Schmidt#123')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'preserves apostrophes in names like O\'Connor' do
+    person = Person.new(first_name: 'Chloé', last_name: "O'Connor")
+    assert_equal 'CO', person.initials
+  end
+
+  test 'handles names with only special characters after removal' do
+    person = Person.new(first_name: '123', last_name: '...')
+    assert_equal '', person.initials
+  end
+
+  test 'handles mixed special characters with valid letters' do
+    person = Person.new(first_name: 'A.n.n.a', last_name: 'S-c-h-m-i-d-t')
+    assert_equal 'ASC', person.initials
+  end
+
+  test 'excludes special characters but keeps multi-part surnames' do
+    person = Person.new(first_name: 'Carlos', last_name: 'Garcia, Lopez')
+    assert_equal 'CGL', person.initials
+  end
+
+  test 'handles combination of brackets and special characters' do
+    person = Person.new(first_name: 'Anna [A.] (Annie)', last_name: 'Schmidt, M.D.')
+    assert_equal 'ASM', person.initials
+  end
+
+  test 'excludes all special characters while preserving Unicode letters' do
+    person = Person.new(first_name: 'Günter123', last_name: 'Müller@#$')
+    assert_equal 'GM', person.initials
+  end
+
+  test 'handles empty result after special character removal' do
+    person = Person.new(first_name: '[...]', last_name: '(...)')
+    assert_equal '', person.initials
+  end
+
+  test 'preserves hyphens in compound names' do
+    person = Person.new(first_name: 'Jean-Paul', last_name: 'Müller-Schmidt')
+    assert_equal 'JMS', person.initials
   end
 
 end
