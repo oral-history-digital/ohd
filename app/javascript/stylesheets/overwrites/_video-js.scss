@@ -122,4 +122,15 @@
   &.vjs-has-started:hover .vjs-big-play-button {
     top: calc(50% - 1em); /* Center between top and control bar */
   }
+
+  /* Show control bar on hover even before video has started */
+  &:hover .vjs-control-bar {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .vjs-control-bar {
+    transition: opacity 0.3s, visibility 0.3s;
+  }
 }
