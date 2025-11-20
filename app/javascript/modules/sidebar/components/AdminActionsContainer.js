@@ -1,13 +1,13 @@
+import {
+    addRemoveArchiveId,
+    getDoiResult,
+    setArchiveIds,
+} from 'modules/archive';
+import { getInterviewsStatus } from 'modules/data';
+import { getIsLoggedIn } from 'modules/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getIsLoggedIn } from 'modules/user';
-import {
-    addRemoveArchiveId,
-    setArchiveIds,
-    getDoiResult,
-} from 'modules/archive';
-import { getInterviewsStatus } from 'modules/data';
 import AdminActions from './AdminActions';
 
 const mapStateToProps = (state) => ({

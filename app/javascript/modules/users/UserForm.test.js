@@ -1,14 +1,14 @@
+// Configure Enzyme adapter
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { render } from 'enzyme';
+import Enzyme from 'enzyme';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 
-// Configure Enzyme adapter
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme from 'enzyme';
-Enzyme.configure({ adapter: new Adapter() });
-
 import UserForm from './UserForm';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 // Mock the i18n module so the component can call useI18n() and original t
 // without needing the full translations fixture. This mock returns a

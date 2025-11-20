@@ -1,6 +1,4 @@
 import { createElement, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { Form } from 'modules/forms';
@@ -9,6 +7,9 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { useProject } from 'modules/routes';
 import { camelCase, pluralize } from 'modules/strings';
 import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+
 import DataContainer from './DataContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
 

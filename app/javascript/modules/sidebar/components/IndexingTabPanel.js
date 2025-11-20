@@ -1,14 +1,15 @@
 import {
     CollectionsSearchFormContainer,
+    ContributionTypesSearchFormContainer,
     LanguagesSearchFormContainer,
     RegistryNameTypesSearchFormContainer,
-    ContributionTypesSearchFormContainer,
     RegistryReferenceTypesSearchFormContainer,
 } from 'modules/admin';
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { usePathBase, useProject } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { usePathBase, useProject } from 'modules/routes';
+
 import AdminSubTab from './AdminSubTab';
 
 export default function IndexingTabPanel() {

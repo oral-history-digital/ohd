@@ -1,8 +1,8 @@
 import dotProp from 'dot-prop-immutable';
-
 import { VIEWMODE_GRID } from 'modules/constants';
-import * as selectors from './selectors';
+
 import { NAME } from './constants';
+import * as selectors from './selectors';
 
 const state = {
     [NAME]: {

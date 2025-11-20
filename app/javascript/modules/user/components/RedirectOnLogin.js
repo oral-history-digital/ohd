@@ -1,11 +1,11 @@
+import { getLocale, getProjectId } from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
+import { usePrevious } from 'modules/react-toolbox';
+import { pathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { usePrevious } from 'modules/react-toolbox';
-import { getLocale, getProjectId } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
-import { pathBase } from 'modules/routes';
 import { getIsLoggedIn } from '../selectors';
 
 export default function RedirectOnLogin({ path }) {

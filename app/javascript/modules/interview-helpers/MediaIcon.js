@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaVideo, FaVolumeUp, FaFileAlt } from 'react-icons/fa';
+import { FaFileAlt, FaVideo, FaVolumeUp } from 'react-icons/fa';
 
 export default function MediaIcon({ interview, className }) {
     switch (interview.media_type) {

@@ -1,15 +1,15 @@
+import {
+    deleteData,
+    fetchData,
+    getContributionTypesForCurrentProject,
+    getContributionTypesStatus,
+    getCurrentProject,
+    submitData,
+} from 'modules/data';
+import { getContributionTypesQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getContributionTypesQuery } from 'modules/search';
-import {
-    fetchData,
-    deleteData,
-    submitData,
-    getCurrentProject,
-    getContributionTypesForCurrentProject,
-    getContributionTypesStatus,
-} from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {

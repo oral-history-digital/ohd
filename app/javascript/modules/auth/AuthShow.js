@@ -1,6 +1,6 @@
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
-import { useProject } from 'modules/routes';
 import { useAuthorization } from './authorization-hook';
 
 export default function AuthShow({

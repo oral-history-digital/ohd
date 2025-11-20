@@ -1,16 +1,16 @@
-import { useSelector } from 'react-redux';
-import flow from 'lodash.flow';
 import curry from 'lodash.curry';
-
+import flow from 'lodash.flow';
 import {
-    useMapReferenceTypes,
     referenceTypesToColorMap,
     transformIntoMarkers,
+    useMapReferenceTypes,
 } from 'modules/map';
+import { useSelector } from 'react-redux';
+
 import { getMapFilter } from '../selectors';
 import useMapLocations from '../useMapLocations';
-import filterReferenceTypes from './filterReferenceTypes';
 import filterLocations from './filterLocations';
+import filterReferenceTypes from './filterReferenceTypes';
 import sortMarkers from './sortMarkers';
 
 export default function useSearchMap() {

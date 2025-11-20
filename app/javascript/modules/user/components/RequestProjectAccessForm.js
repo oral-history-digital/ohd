@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
 import useProjectAccessConfig from '../useProjectAccessConfig';
 
 export default function RequestProjectAccessForm({

@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
 import { createElement, useState } from 'react';
-import { FaPencilAlt } from 'react-icons/fa';
 
 import { Checkbox } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPencilAlt } from 'react-icons/fa';
+
 import Element from '../Element';
 
 export default function Input({

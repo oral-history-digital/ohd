@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default function BiographyResult({ data }) {
     const { locale } = useI18n();

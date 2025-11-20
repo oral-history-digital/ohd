@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 
+import classNames from 'classnames';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
-import { getIsLoggedIn } from 'modules/user';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { Modal, Checkbox } from 'modules/ui';
-import RegistryEntryShow from './RegistryEntryShow';
-import RegistryEntries from './RegistryEntries';
-import OpenStreetMapLink from './OpenStreetMapLink';
-import RegistryEntryEditButtons from './RegistryEntryEditButtons';
+import { Checkbox, Modal } from 'modules/ui';
+import { getIsLoggedIn } from 'modules/user';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import NormDataLinks from './NormDataLinks';
-import RegistryEntryToggleChildren from './RegistryEntryToggleChildren';
+import OpenStreetMapLink from './OpenStreetMapLink';
+import RegistryEntries from './RegistryEntries';
+import RegistryEntryEditButtons from './RegistryEntryEditButtons';
 import RegistryEntryLabel from './RegistryEntryLabel';
+import RegistryEntryShow from './RegistryEntryShow';
+import RegistryEntryToggleChildren from './RegistryEntryToggleChildren';
 
 export default function RegistryEntry({
     addRemoveRegistryEntryId,

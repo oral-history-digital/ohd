@@ -1,29 +1,30 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import {
-    FaRegFileAlt,
-    FaRegClone,
-    FaList,
-    FaSearch,
-    FaTags,
-} from 'react-icons/fa';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
-import '@reach/tabs/styles.css';
+import { useEffect, useState } from 'react';
 
-import { TableOfContentsContainer } from 'modules/toc';
-import { TranscriptContainer } from 'modules/transcript';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
+import '@reach/tabs/styles.css';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import { useI18n } from 'modules/i18n';
+import { RefTreeContainer } from 'modules/interview-references';
 import {
     InterviewSearchContainer,
     useInterviewSearch,
 } from 'modules/interview-search';
-import { RefTreeContainer } from 'modules/interview-references';
 import { useSearchParams } from 'modules/query-string';
-import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import showTranslationTab from './showTranslationTab';
-import showTocTab from './showTocTab';
+import { TableOfContentsContainer } from 'modules/toc';
+import { TranscriptContainer } from 'modules/transcript';
+import PropTypes from 'prop-types';
+import {
+    FaList,
+    FaRegClone,
+    FaRegFileAlt,
+    FaSearch,
+    FaTags,
+} from 'react-icons/fa';
+
 import LocaleSwitch from './LocaleSwitch';
-import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import showTocTab from './showTocTab';
+import showTranslationTab from './showTranslationTab';
 
 export default function InterviewTabs({ interview }) {
     const { t, locale } = useI18n();

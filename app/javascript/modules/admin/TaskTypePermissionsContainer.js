@@ -1,14 +1,14 @@
+import { getEditView } from 'modules/archive';
+import {
+    deleteData,
+    fetchData,
+    getPermissions,
+    getPermissionsStatus,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    fetchData,
-    deleteData,
-    submitData,
-    getPermissions,
-    getPermissionsStatus,
-} from 'modules/data';
-import { getEditView } from 'modules/archive';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => ({

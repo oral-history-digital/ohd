@@ -1,12 +1,12 @@
 import { createElement, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { usePeople } from 'modules/person';
 import { usePathBase, useProject } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function InterviewForm({
     collections,

@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
 
 export default function MergeRegistryEntriesButton({
     selectedRegistryEntryIds,

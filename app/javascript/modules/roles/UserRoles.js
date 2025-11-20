@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import UserRoleFormContainer from './UserRoleFormContainer';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+
 import UserRoleContainer from './UserRoleContainer';
+import UserRoleFormContainer from './UserRoleFormContainer';
 
 export default function UserRoles({
     userRoles,

@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import request from 'superagent';
 
-import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { NON_ZIP_COUNTRIES } from '../constants';
 import { OHD_DOMAINS } from 'modules/constants';
 import { EMAIL_REGEX, PASSWORD_REGEX } from 'modules/constants';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import request from 'superagent';
+
+import { NON_ZIP_COUNTRIES } from '../constants';
 
 export default function RegisterForm({
     project,

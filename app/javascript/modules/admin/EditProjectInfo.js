@@ -1,11 +1,11 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import EditProjectInfoAttributesContainer from './EditProjectInfoAttributesContainer';
-import ExternalLinksContainer from './ExternalLinksContainer';
-import InstitutionProjectsContainer from './InstitutionProjectsContainer';
+import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
-import { useI18n } from 'modules/i18n';
+import EditProjectInfoAttributesContainer from './EditProjectInfoAttributesContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
+import ExternalLinksContainer from './ExternalLinksContainer';
+import InstitutionProjectsContainer from './InstitutionProjectsContainer';
 
 export default function EditProjectInfo() {
     const { t } = useI18n();

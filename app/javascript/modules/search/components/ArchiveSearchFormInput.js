@@ -1,7 +1,7 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 
-import { useI18n } from 'modules/i18n';
 import useSearchSuggestions from '../useSearchSuggestions';
 
 export default function ArchiveSearchFormInput({ value, projectId, onChange }) {

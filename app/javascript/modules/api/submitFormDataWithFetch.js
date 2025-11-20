@@ -1,4 +1,5 @@
 import { pluralize } from 'modules/strings';
+
 import buildFormData from './buildFormData';
 
 const headerOptions = { Accept: 'application/json' };

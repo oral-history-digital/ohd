@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-
 import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
+import PropTypes from 'prop-types';
+
 import WorkflowHeader from './WorkflowHeader';
 
 export default function WorkflowResults({ interviews, project }) {

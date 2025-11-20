@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useIsEditor } from 'modules/archive';
-import { ScrollToTop } from 'modules/user-agent';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { ScrollToTop } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+
 import InterviewSearchForm from './InterviewSearchForm';
 import InterviewSearchResultsContainer from './InterviewSearchResultsContainer';
 

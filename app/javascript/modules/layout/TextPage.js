@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
-import { FaPencilAlt } from 'react-icons/fa';
 
-import { ScrollToTop } from 'modules/user-agent';
 import { AuthorizedContent } from 'modules/auth';
-import { Form } from 'modules/forms';
-import { useProject } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
 import { submitData } from 'modules/data';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { ScrollToTop } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+import { FaPencilAlt } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 
 export default function TextPage({ code }) {
     const [editing, setEditing] = useState(false);

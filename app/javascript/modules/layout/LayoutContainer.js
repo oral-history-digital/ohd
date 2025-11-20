@@ -1,7 +1,3 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { toggleSidebar, getSidebarVisible } from 'modules/sidebar';
 import { getBannerActive, hideBanner } from 'modules/banner';
 import {
     fetchData,
@@ -9,7 +5,11 @@ import {
     getLanguagesStatus,
     getProjectsStatus,
 } from 'modules/data';
+import { getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import { getLoggedInAt } from 'modules/user';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Layout from './Layout';
 
 const mapStateToProps = (state) => ({

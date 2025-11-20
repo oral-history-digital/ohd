@@ -1,20 +1,21 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import queryString from 'query-string';
-import keyBy from 'lodash.keyby';
-import { FaStar, FaRegStar } from 'react-icons/fa';
 
-import { LinkOrA } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { Modal, Checkbox } from 'modules/ui';
-import { WorkbookItemForm, useWorkbook } from 'modules/workbook';
-import { SlideShowSearchResults } from 'modules/interview-search';
+import classNames from 'classnames';
+import keyBy from 'lodash.keyby';
 import { AuthorizedContent } from 'modules/auth';
-import { useArchiveSearch } from 'modules/search';
+import { useI18n } from 'modules/i18n';
+import { SlideShowSearchResults } from 'modules/interview-search';
 import { useInterviewSearch } from 'modules/interview-search';
-import ThumbnailBadge from './ThumbnailBadge';
+import { LinkOrA } from 'modules/routes';
+import { useArchiveSearch } from 'modules/search';
+import { Checkbox, Modal } from 'modules/ui';
+import { WorkbookItemForm, useWorkbook } from 'modules/workbook';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import { FaRegStar, FaStar } from 'react-icons/fa';
+
 import InterviewPreviewInner from './InterviewPreviewInner';
+import ThumbnailBadge from './ThumbnailBadge';
 
 export default function InterviewPreview({
     statuses,

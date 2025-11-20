@@ -1,17 +1,18 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
+
 import {
-    useReactTable,
     getCoreRowModel,
     getExpandedRowModel,
-    getFilteredRowModel,
     getFacetedRowModel,
     getFacetedUniqueValues,
+    getFilteredRowModel,
     getSortedRowModel,
+    useReactTable,
 } from '@tanstack/react-table';
-
 import { useI18n } from 'modules/i18n';
-import NameCell from './NameCell';
+
 import HeaderExpander from './HeaderExpander';
+import NameCell from './NameCell';
 import RowExpander from './RowExpander';
 
 function expandInstitutions(state, data, currentPrefix = '') {

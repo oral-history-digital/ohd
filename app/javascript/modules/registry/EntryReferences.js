@@ -1,11 +1,11 @@
+import { setArchiveId } from 'modules/archive';
+import { getProjects } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { LinkOrA } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setArchiveId } from 'modules/archive';
-import { getProjects } from 'modules/data';
-import { getIsLoggedIn } from 'modules/user';
-import { useI18n } from 'modules/i18n';
-import { LinkOrA } from 'modules/routes';
 import SegmentReference from './SegmentReference';
 
 export default function EntryReferences({ references, onSubmit }) {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
+import classNames from 'classnames';
 import { ErrorBoundary } from 'modules/react-toolbox';
+import PropTypes from 'prop-types';
+import { FaMinus, FaPlus } from 'react-icons/fa';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 
 export default function SubTab({ title, url, children }) {
     const location = useLocation();

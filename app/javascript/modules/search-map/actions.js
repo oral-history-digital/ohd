@@ -1,7 +1,7 @@
 import {
     INITIALIZE_MAP_FILTER,
-    TOGGLE_MAP_FILTER,
     SET_MAP_VIEW,
+    TOGGLE_MAP_FILTER,
 } from './action-types';
 
 export const initializeMapFilter = (referenceTypeIds) => ({

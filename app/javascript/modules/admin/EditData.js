@@ -1,11 +1,11 @@
 import { useState } from 'react';
+
+import { useHumanReadable, useSensitiveData } from 'modules/data';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
-
-import { Form } from 'modules/forms';
-import { useHumanReadable, useSensitiveData } from 'modules/data';
-import { useProject } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
 
 export default function EditData({
     data,

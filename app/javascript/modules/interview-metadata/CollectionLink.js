@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-
 import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function CollectionLink({ collectionId }) {
     const { t, locale } = useI18n();

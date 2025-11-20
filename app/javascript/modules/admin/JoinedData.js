@@ -1,9 +1,9 @@
 import { createElement } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
-import { pluralize, camelCase } from 'modules/strings';
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { camelCase, pluralize } from 'modules/strings';
+import PropTypes from 'prop-types';
 
 export default function JoinedData({ joinedData, data, scope }) {
     const { t } = useI18n();

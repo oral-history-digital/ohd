@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { Form } from 'modules/forms';
-import { usePeople } from 'modules/person';
 import { useI18n } from 'modules/i18n';
-import { Spinner } from 'modules/spinners';
 import { ContributionFormContainer } from 'modules/interview-metadata';
+import { usePeople } from 'modules/person';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
 
 export default function AssignSpeakersForm({
     archiveId,

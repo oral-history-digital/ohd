@@ -1,7 +1,6 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useWorkbook() {
     const pathBase = usePathBase();

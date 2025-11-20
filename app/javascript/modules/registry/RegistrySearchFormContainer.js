@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     changeRegistryEntriesViewMode,
     searchRegistryEntry,
 } from 'modules/search';
 import { hideSidebar } from 'modules/sidebar';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RegistrySearchForm from './RegistrySearchForm';
 
 const mapStateToProps = (state) => ({

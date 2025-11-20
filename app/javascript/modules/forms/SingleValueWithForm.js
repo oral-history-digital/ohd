@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTimes, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
+import { AuthorizedContent, admin } from 'modules/auth';
+import { useProjectAccessStatus } from 'modules/auth';
 import { Form } from 'modules/forms';
-import { underscore } from 'modules/strings';
-import { admin, AuthorizedContent } from 'modules/auth';
-import ContentField from './ContentField';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { useProjectAccessStatus } from 'modules/auth';
+import { underscore } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTimes } from 'react-icons/fa';
+
+import ContentField from './ContentField';
 
 export default function SingleValueWithForm({
     readOnly,

@@ -1,6 +1,6 @@
+import { VIEWMODE_GRID } from 'modules/constants';
 import { createSelector } from 'reselect';
 
-import { VIEWMODE_GRID } from 'modules/constants';
 import { NAME } from './constants';
 
 const getState = (state) => state[NAME];

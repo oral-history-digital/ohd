@@ -1,23 +1,24 @@
 import { createElement, useState } from 'react';
-import PropTypes from 'prop-types';
-import RichTextEditor from 'react-rte-18support';
-import { FaCheckCircle, FaTimes } from 'react-icons/fa';
-import classNames from 'classnames';
 
+import classNames from 'classnames';
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { RegistryTreeSelect } from 'modules/registry-tree-select';
-import { HelpText } from 'modules/help-text';
 import { pluralize } from 'modules/strings';
-import InputContainer from './input-components/InputContainer';
-import Textarea from './input-components/Textarea';
-import SelectContainer from './input-components/SelectContainer';
+import PropTypes from 'prop-types';
+import { FaCheckCircle, FaTimes } from 'react-icons/fa';
+import RichTextEditor from 'react-rte-18support';
+
+import ErrorMessages from './ErrorMessages';
+import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
+import NestedScope from './NestedScope';
 import ColorPicker from './input-components/ColorPicker';
 import Extra from './input-components/Extra';
+import InputContainer from './input-components/InputContainer';
 import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
+import SelectContainer from './input-components/SelectContainer';
 import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
-import NestedScope from './NestedScope';
-import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
-import ErrorMessages from './ErrorMessages';
+import Textarea from './input-components/Textarea';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,

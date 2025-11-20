@@ -1,10 +1,9 @@
-import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { getEditView, changeToEditView } from 'modules/archive';
+import { changeToEditView, getEditView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaToggleOff, FaToggleOn } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ToggleEditView({ className }) {
     const { t } = useI18n();

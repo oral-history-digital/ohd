@@ -1,8 +1,8 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import EditProjectConfigAttributesContainer from './EditProjectConfigAttributesContainer';
+import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
-import { useI18n } from 'modules/i18n';
+import EditProjectConfigAttributesContainer from './EditProjectConfigAttributesContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function EditProjectConfig() {

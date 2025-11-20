@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import TranscriptResultList from './TranscriptResultList';
 import RefTreeEntryList from './RefTreeEntryList';
+import TranscriptResultList from './TranscriptResultList';
 
 export default function RefTreeChildren({ entries }) {
     const refTreeEntries = entries.filter((entry) => entry.type === 'node');

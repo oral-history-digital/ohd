@@ -1,11 +1,11 @@
+import {
+    getContributionsStatus,
+    getCurrentInterview,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    getCurrentInterview,
-    submitData,
-    getContributionsStatus,
-} from 'modules/data';
 import InterviewContributors from './InterviewContributors';
 
 const mapStateToProps = (state) => ({

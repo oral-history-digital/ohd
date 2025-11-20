@@ -1,8 +1,7 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { fetcher } from 'modules/api';
 import { useIsEditor } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useMaterials(archiveId) {
     const pathBase = usePathBase();

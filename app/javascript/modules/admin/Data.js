@@ -1,17 +1,17 @@
+import { AuthorizedContent } from 'modules/auth';
+import { useSensitiveData } from 'modules/data';
+import { DeleteItemForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { PersonDetails } from 'modules/person';
+import { useProject } from 'modules/routes';
+import { pluralize } from 'modules/strings';
+import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-import { AuthorizedContent } from 'modules/auth';
-import { pluralize } from 'modules/strings';
-import { useI18n } from 'modules/i18n';
-import { AdminMenu } from 'modules/ui';
-import { useProject } from 'modules/routes';
-import { DeleteItemForm } from 'modules/forms';
-import { PersonDetails } from 'modules/person';
 import BaseData from './BaseData';
-import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
+import JoinedData from './JoinedData';
 import getDataDisplayName from './getDataDisplayName';
-import { useSensitiveData } from 'modules/data';
 
 const Item = AdminMenu.Item;
 

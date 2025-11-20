@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import curry from 'lodash.curry';
 
-import { getInstitutions, getProjects, getCollections } from 'modules/data';
+import curry from 'lodash.curry';
+import { getCollections, getInstitutions, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import addChildProjects from './tree-builders/addChildProjects';
-import addChildCollections from './tree-builders/addChildCollections';
-import buildInstitutionTree from './tree-builders/buildInstitutionTree';
+import { useSelector } from 'react-redux';
+
 import mapInstitution from './mappers/mapInstitution';
+import addChildCollections from './tree-builders/addChildCollections';
+import addChildProjects from './tree-builders/addChildProjects';
+import buildInstitutionTree from './tree-builders/buildInstitutionTree';
 
 export default function useInstitutionData(institutionId) {
     const institutions = Object.values(useSelector(getInstitutions));

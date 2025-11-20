@@ -1,8 +1,8 @@
+import { DataList } from 'modules/admin';
+import { deleteData, fetchData, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { DataList } from 'modules/admin';
-import { fetchData, deleteData, submitData } from 'modules/data';
 import CommentsContainer from './CommentsContainer';
 import TaskPreviewContainer from './TaskPreviewContainer';
 

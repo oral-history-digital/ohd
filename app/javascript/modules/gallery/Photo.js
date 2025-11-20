@@ -1,8 +1,8 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
-import PhotoCaption from './PhotoCaption';
 import PhotoAdminButtonsContainer from './PhotoAdminButtonsContainer';
+import PhotoCaption from './PhotoCaption';
 
 export default function Photo({ photo }) {
     const { locale } = useI18n();

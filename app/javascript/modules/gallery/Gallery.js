@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import { FaPlus, FaExpandAlt } from 'react-icons/fa';
-
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal, PhotoModal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaExpandAlt, FaPlus } from 'react-icons/fa';
+
 import CarouselContainer from './CarouselContainer';
 import PhotoFormContainer from './PhotoFormContainer';
 import photoComparator from './photoComparator';

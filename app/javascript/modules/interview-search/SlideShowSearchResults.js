@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import Slider from 'react-slick';
-import { useDispatch } from 'react-redux';
-
-import { LinkOrA } from 'modules/routes';
 import { setArchiveId, setProjectId } from 'modules/archive';
-import SlideShowSearchStats from './SlideShowSearchStats';
+import { LinkOrA } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import Slider from 'react-slick';
+
 import DumbTranscriptResult from './DumbTranscriptResult';
+import SlideShowSearchStats from './SlideShowSearchStats';
 
 export default function SlideShowSearchResults({
     interview,

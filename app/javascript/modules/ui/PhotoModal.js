@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaTimes } from 'react-icons/fa';
-import classNames from 'classnames';
+
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 
 export default function PhotoModal({
     title,

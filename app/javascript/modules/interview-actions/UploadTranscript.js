@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
-
-import { Form, validateTapeNumber } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
 
 import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
+import { Form, validateTapeNumber } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 export default function UploadTranscript({
     locale,

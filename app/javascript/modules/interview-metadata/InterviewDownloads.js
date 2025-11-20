@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
-import { FaDownload } from 'react-icons/fa';
-
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { FaDownload } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 export default function InterviewDownloads({
     lang,

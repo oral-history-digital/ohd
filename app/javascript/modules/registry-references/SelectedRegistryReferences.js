@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 
-import { underscore } from 'modules/strings';
+import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
+import { getCurrentInterview, getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
+import { underscore } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import RegistryReferencesContainer from './RegistryReferencesContainer';
-import { getCurrentUser, getCurrentInterview } from 'modules/data';
 
 export default function SelectedRegistryReferences({
     editView,

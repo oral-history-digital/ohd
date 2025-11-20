@@ -1,11 +1,10 @@
-import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { getTranslationsView, changeToTranslationsView } from 'modules/archive';
+import { changeToTranslationsView, getTranslationsView } from 'modules/archive';
 import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaToggleOff, FaToggleOn } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ToggleTranslationsView({ className }) {
     const { t } = useI18n();

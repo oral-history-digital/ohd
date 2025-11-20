@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function RegistryHierarchyForm({
     registryHierarchy,

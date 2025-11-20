@@ -1,8 +1,8 @@
+import { getEditView } from 'modules/archive';
+import { getCurrentUser, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentUser } from 'modules/data';
-import { getEditView } from 'modules/archive';
 import Task from './Task';
 
 const mapStateToProps = (state) => {

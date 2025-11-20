@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
+import classNames from 'classnames';
 import { useProjectAccessStatus } from 'modules/auth';
 import { MediaIcon } from 'modules/interview-helpers';
+import PropTypes from 'prop-types';
 
 export default function InterviewImage({ interview, project }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);

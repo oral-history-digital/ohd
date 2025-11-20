@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import { getProjectLocales } from 'modules/data';
 import {
     changeRegistryEntriesViewMode,
     getShowRegistryEntriesSearchResults,
 } from 'modules/search';
-import { getProjectLocales } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 
 const mapStateToProps = (state) => ({

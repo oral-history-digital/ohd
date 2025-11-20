@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
-
 import { useIsEditor } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { Navigate } from 'react-router-dom';
 
 export default function EditViewOrRedirect({ children }) {
     const isEditor = useIsEditor();

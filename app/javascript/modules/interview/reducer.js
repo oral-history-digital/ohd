@@ -1,4 +1,4 @@
-import { ENABLE_AUTO_SCROLL, DISABLE_AUTO_SCROLL } from './action-types';
+import { DISABLE_AUTO_SCROLL, ENABLE_AUTO_SCROLL } from './action-types';
 
 export const initialState = {
     autoScroll: true,

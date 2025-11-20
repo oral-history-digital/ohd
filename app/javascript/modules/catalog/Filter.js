@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-import { FaTimes } from 'react-icons/fa';
-
 import { useI18n } from 'modules/i18n';
 import { DebouncedInput } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 
 export default function Filter({ column }) {
     const { t } = useI18n();

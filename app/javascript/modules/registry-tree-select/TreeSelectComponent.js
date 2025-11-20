@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import DropdownTreeSelect from 'react-dropdown-tree-select';
-import { useDispatch } from 'react-redux';
-
 import { fetchData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+import DropdownTreeSelect from 'react-dropdown-tree-select';
+import { useDispatch } from 'react-redux';
 
 export default function TreeSelectComponent({ isLoading, tree, handleChange }) {
     const dispatch = useDispatch();

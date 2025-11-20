@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import TableHead from './TableHead';
-import TableBody from './TableBody';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
+import TableBody from './TableBody';
+import TableHead from './TableHead';
 
 export default function Table({ table, isLoading = false, className }) {
     if (isLoading) return <Spinner />;

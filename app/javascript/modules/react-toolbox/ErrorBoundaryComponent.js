@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default class ErrorBoundaryComponent extends Component {
     constructor(props) {

@@ -1,13 +1,12 @@
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-
-import { useProjectAccessStatus, PROJECT_ACCESS_REQUESTED } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { getInstitutions } from 'modules/data';
-import { LinkOrA } from 'modules/routes';
 import lockRegular from 'assets/images/lock-regular.svg';
 import lockSolid from 'assets/images/lock-solid.svg';
+import classNames from 'classnames';
+import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
+import { getInstitutions } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { LinkOrA } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function ArchiveTile({ archive }) {
     const { t, locale } = useI18n();

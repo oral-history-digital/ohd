@@ -1,7 +1,3 @@
-import { Helmet } from 'react-helmet';
-import { FaChevronRight } from 'react-icons/fa';
-import { Link, useParams } from 'react-router-dom';
-
 import { useTrackPageView } from 'modules/analytics';
 import { useLoadCompleteProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
@@ -9,6 +5,10 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
 import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
+import { Helmet } from 'react-helmet';
+import { FaChevronRight } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
+
 import ArchiveCatalog from './ArchiveCatalog';
 
 export default function ArchiveCatalogPage() {

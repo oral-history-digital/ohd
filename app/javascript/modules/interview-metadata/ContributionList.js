@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-
 import { useAuthorization } from 'modules/auth';
 import { getGroupedContributions } from 'modules/data';
 import { useInterviewContributors } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import ContributionContainer from './ContributionContainer';
 import ContributionGroup from './ContributionGroup';
 

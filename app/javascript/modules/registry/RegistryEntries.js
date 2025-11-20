@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { PixelLoader } from 'modules/spinners';
 import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import useRegistryEntries from './useRegistryEntries';

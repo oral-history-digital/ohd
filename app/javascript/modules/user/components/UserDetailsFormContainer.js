@@ -1,9 +1,9 @@
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
+import { getLocale, getProjectId } from 'modules/archive';
 import { submitData } from 'modules/data';
 import { getCurrentProject, getCurrentUser } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import UserDetailsForm from './UserDetailsForm';
 
 const mapStateToProps = (state) => ({

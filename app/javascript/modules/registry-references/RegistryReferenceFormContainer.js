@@ -1,15 +1,15 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
-    submitData,
     fetchData,
+    getOHDProject,
     getRegistryEntries,
     getRegistryEntriesStatus,
     getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus,
-    getOHDProject,
+    submitData,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RegistryReferenceForm from './RegistryReferenceForm';
 
 const mapStateToProps = (state) => ({

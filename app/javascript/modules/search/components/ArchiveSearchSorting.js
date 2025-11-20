@@ -1,21 +1,22 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import Select from 'react-select';
-import '@reach/listbox/styles.css';
-import flow from 'lodash.flow';
-import curry from 'lodash.curry';
 
-import { useI18n } from 'modules/i18n';
-import { getCurrentProject } from 'modules/data';
+import '@reach/listbox/styles.css';
+import classNames from 'classnames';
+import curry from 'lodash.curry';
+import flow from 'lodash.flow';
 import { getEditView } from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import Select from 'react-select';
+
 import addObligatoryOptions from '../addObligatoryOptions';
+import defaultSortOptions from '../defaultSortOptions';
 import filterByPossibleOptions from '../filterByPossibleOptions';
 import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
 import sortByFacetOrder from '../sortByFacetOrder';
-import defaultSortOptions from '../defaultSortOptions';
 import SortOrderButton from './SortOrderButton';
 
 export default function ArchiveSearchSorting({ className }) {

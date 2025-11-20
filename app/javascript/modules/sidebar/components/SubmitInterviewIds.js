@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import { getLocale, submitSelectedArchiveIds } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SubmitInterviewIds({
     action,

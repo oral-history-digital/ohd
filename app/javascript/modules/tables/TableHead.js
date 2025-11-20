@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { flexRender } from '@tanstack/react-table';
+import PropTypes from 'prop-types';
 
 import SortButton from './SortButton';
 

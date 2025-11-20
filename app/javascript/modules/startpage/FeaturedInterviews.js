@@ -1,5 +1,6 @@
-import { Spinner } from 'modules/spinners';
 import { InterviewPreviewContainer } from 'modules/interview-preview';
+import { Spinner } from 'modules/spinners';
+
 import useFeaturedInterviews from './useFeaturedInterviews';
 
 export default function FeaturedInterviews() {

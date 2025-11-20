@@ -2,12 +2,13 @@ import React from 'react';
 
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Modal } from 'modules/ui';
+
 import {
-    prepareRegistryNameAttributes,
     prepareNormDataAttributes,
+    prepareRegistryNameAttributes,
     updateRegistryEntryTranslationsAttributes,
 } from './updateRegistryEntryAttributes';
-import { Modal } from 'modules/ui';
 
 function UpdateRegistryEntryAttributesModal({
     entry,

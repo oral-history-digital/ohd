@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import { getArchiveId } from 'modules/archive';
 import {
     fetchData,
     getCurrentRefTree,
     getCurrentRefTreeStatus,
 } from 'modules/data';
-import { getArchiveId } from 'modules/archive';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RefTree from './RefTree';
 
 const mapStateToProps = (state) => ({

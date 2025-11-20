@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
-
 import {
+    getContributionsStatus,
     getCurrentInterview,
     getLanguages,
-    getContributionsStatus,
 } from 'modules/data';
+import { connect } from 'react-redux';
+
 import InterviewInfo from './InterviewInfo';
 
 const mapStateToProps = (state) => ({

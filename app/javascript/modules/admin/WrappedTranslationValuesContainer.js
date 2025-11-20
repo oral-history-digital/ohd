@@ -1,14 +1,14 @@
+import {
+    deleteData,
+    fetchData,
+    getTranslationValues,
+    getTranslationValuesStatus,
+    submitData,
+} from 'modules/data';
+import { getTranslationValuesQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getTranslationValuesQuery } from 'modules/search';
-import {
-    fetchData,
-    deleteData,
-    submitData,
-    getTranslationValues,
-    getTranslationValuesStatus,
-} from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => ({

@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
-
 import { getArchiveId, getSelectedArchiveIds } from 'modules/archive';
 import { getCurrentInterview } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
+import { connect } from 'react-redux';
+
 import SidebarTabs from './SidebarTabs';
 
 const mapStateToProps = (state) => ({

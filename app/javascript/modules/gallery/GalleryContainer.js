@@ -1,6 +1,6 @@
+import { getCurrentInterview } from 'modules/data';
 import { connect } from 'react-redux';
 
-import { getCurrentInterview } from 'modules/data';
 import Gallery from './Gallery';
 
 const mapStateToProps = (state) => ({

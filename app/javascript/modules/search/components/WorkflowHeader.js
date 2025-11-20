@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
-
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
 /**
  * width is in percent - points in decimal numbers are replaced by '-'

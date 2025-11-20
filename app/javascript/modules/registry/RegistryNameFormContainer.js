@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     getNormDataProviders,
     getRegistryNameTypesForCurrentProject,
 } from 'modules/data';
-import RegistryNameForm from './RegistryNameForm';
 import { getRegistryEntriesSearch, searchRegistryEntry } from 'modules/search';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import RegistryNameForm from './RegistryNameForm';
 
 const mapStateToProps = (state) => ({
     registryNameTypes: getRegistryNameTypesForCurrentProject(state),

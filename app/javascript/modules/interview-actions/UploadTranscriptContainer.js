@@ -1,13 +1,13 @@
+import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
+import { submitData } from 'modules/data';
+import {
+    getCurrentInterview,
+    getCurrentProject,
+    getLanguages,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData } from 'modules/data';
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import {
-    getCurrentInterview,
-    getLanguages,
-    getCurrentProject,
-} from 'modules/data';
 import UploadTranscript from './UploadTranscript';
 
 const mapStateToProps = (state) => ({

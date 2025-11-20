@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import { getLocale, getProjectId } from 'modules/archive';
-import { submitData, getCurrentProject } from 'modules/data';
+import { getCurrentProject, submitData } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function UpdateInterviews({
     params,

@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 
 export default function HeaderExpander({ table }) {
     return (

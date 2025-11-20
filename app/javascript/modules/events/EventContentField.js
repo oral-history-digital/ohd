@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-
+import { useEventTypes } from 'modules/event-types';
 import { ContentField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useEventTypes } from 'modules/event-types';
+import PropTypes from 'prop-types';
+
 import formatEventShort from './formatEventShort';
 
 export default function EventContentField({ label, events, className }) {

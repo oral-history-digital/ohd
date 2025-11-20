@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import EditTableCell from './EditTableCell';
 import useColumns from './useColumns';

@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
 import {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
 } from '@reach/disclosure';
-import { FaInfo } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
+import { useProjectAccessStatus } from 'modules/auth';
+import { getCollectionsForCurrentProject } from 'modules/data';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { getCollectionsForCurrentProject } from 'modules/data';
-import { useProjectAccessStatus } from 'modules/auth';
+import PropTypes from 'prop-types';
+import { FaInfo } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+
 import CollectionLink from './CollectionLink';
 
 export default function InterviewCollectionInfo({ interview }) {

@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
+import { formatTimecode } from 'modules/interview-helpers';
 import { usePathBase } from 'modules/routes';
 import { CopyText } from 'modules/ui';
-import { formatTimecode } from 'modules/interview-helpers';
+import PropTypes from 'prop-types';
 
 import interviewUrl from './interviewUrl';
 

@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import useColumns from './useColumns';
+import PropTypes from 'prop-types';
+
 import tableHeader from '../tableHeader';
+import useColumns from './useColumns';
 
 export default function SelectColumnsForm({
     interview,

@@ -1,6 +1,6 @@
+import { getLocale } from 'modules/archive';
 import { connect } from 'react-redux';
 
-import { getLocale } from 'modules/archive';
 import Input from './Input';
 
 const mapStateToProps = (state) => {

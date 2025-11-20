@@ -1,12 +1,11 @@
-import { Link } from 'react-router-dom';
+import { setArchiveId } from 'modules/archive';
+import { TapeAndTime, formatTimecode } from 'modules/interview-helpers';
+import { sendTimeChangeRequest } from 'modules/media-player';
+import { LinkOrA } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-
-import { LinkOrA } from 'modules/routes';
-import { formatTimecode, TapeAndTime } from 'modules/interview-helpers';
-import { usePathBase } from 'modules/routes';
-import { setArchiveId } from 'modules/archive';
-import { sendTimeChangeRequest } from 'modules/media-player';
+import { Link } from 'react-router-dom';
 
 export default function SegmentReference({ project, segmentRef, onSubmit }) {
     const dispatch = useDispatch();

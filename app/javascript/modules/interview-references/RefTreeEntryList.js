@@ -1,6 +1,6 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
 import RefTreeEntry from './RefTreeEntry';
 
 export default function RefTreeEntryList({ entries }) {

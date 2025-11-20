@@ -1,24 +1,24 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
-
-import { WorkbookItemForm } from 'modules/workbook';
-import { Modal } from 'modules/ui';
+import { ContentField } from 'modules/forms';
+import { SingleValueWithFormContainer } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import {
-    InterviewInfoContainer,
     InterviewContributorsContainer,
+    InterviewInfoContainer,
     InterviewTextMaterialsContainer,
 } from 'modules/interview-metadata';
-import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import { ContentField } from 'modules/forms';
-import { Spinner } from 'modules/spinners';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
 import { useSearchSuggestions } from 'modules/search';
+import { Spinner } from 'modules/spinners';
+import { Modal } from 'modules/ui';
+import { WorkbookItemForm } from 'modules/workbook';
+import PropTypes from 'prop-types';
+import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
 import { getNextInterview, getPreviousInterview } from '../getInterviews';
-import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default function InterviewDetailsLeftSide({
     archiveId,

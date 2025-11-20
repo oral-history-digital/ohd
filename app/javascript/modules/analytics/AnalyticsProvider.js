@@ -1,9 +1,9 @@
 /* global railsMode */
-import { MatomoProvider, createInstance } from '@jonkoops/matomo-tracker-react';
-import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
+import { MatomoProvider, createInstance } from '@jonkoops/matomo-tracker-react';
 import { ANALYTICS_URL_BASE } from 'modules/constants';
+import PropTypes from 'prop-types';
 
 const metaTag = document.head.querySelector(
     'meta[name~=analytics_site_id][content]'

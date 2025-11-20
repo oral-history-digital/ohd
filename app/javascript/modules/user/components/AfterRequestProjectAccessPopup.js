@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
+import { useSelector } from 'react-redux';
 
 export default function AfterRequestProjectAccessPopup({}) {
     const user = useSelector(getCurrentUser);

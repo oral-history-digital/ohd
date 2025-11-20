@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
-import { useSelector } from 'react-redux';
-
+import classNames from 'classnames';
 import { getMapSections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function MapSectionsSelect({ className, section, onChange }) {
     const mapSections = useSelector(getMapSections);

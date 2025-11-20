@@ -8,6 +8,7 @@ import {
 import { DEFAULT_LOCALES } from 'modules/constants';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { createSelector } from 'reselect';
+
 import {
     getInterviews,
     getProjects,

@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     getCollectionsForCurrentProject,
     getContributionTypesForCurrentProject,
     getLanguages,
     submitData,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import InterviewForm from './InterviewForm';
 
 const mapStateToProps = (state) => ({

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import AsyncSelect from 'react-select/async';
-import request from 'superagent';
 
 import { Element } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import AsyncSelect from 'react-select/async';
+import request from 'superagent';
 
 function NormDataSelect({
     setRegistryEntryAttributes,

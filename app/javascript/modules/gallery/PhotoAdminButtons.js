@@ -1,10 +1,10 @@
+import { AuthorizedContent } from 'modules/auth';
+import { DeleteItemForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { AuthorizedContent } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
-import { DeleteItemForm } from 'modules/forms';
 import PhotoFormContainer from './PhotoFormContainer';
 
 export default function PhotoAdminButtons({

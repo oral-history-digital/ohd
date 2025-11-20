@@ -1,4 +1,5 @@
 import { createElement } from 'react';
+
 import PropTypes from 'prop-types';
 
 export default function BaseData({ name, data, scope, showComponent }) {

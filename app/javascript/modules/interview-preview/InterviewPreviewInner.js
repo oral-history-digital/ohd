@@ -1,15 +1,14 @@
-import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
+import { getCurrentUser } from 'modules/data';
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
-import classNames from 'classnames';
-
-import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
-import { useProject } from 'modules/routes';
-import { getCurrentUser } from 'modules/data';
-import ThumbnailMetadata from './ThumbnailMetadata';
-import InterviewImage from './InterviewImage';
 import InterviewArchiveDisplay from './InterviewArchiveDisplay';
+import InterviewImage from './InterviewImage';
+import ThumbnailMetadata from './ThumbnailMetadata';
 
 export default function InterviewPreviewInner({
     interview,

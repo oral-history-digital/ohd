@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux';
-
 import { getChangePasswordStatus } from 'modules/user';
+import { useSelector } from 'react-redux';
 
 export default function AfterResetPassword({}) {
     const changePasswordStatus = useSelector(getChangePasswordStatus);

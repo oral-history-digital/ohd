@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
-import { DEFAULT_LOCALES } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
+import { DEFAULT_LOCALES } from 'modules/constants';
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import { useDispatch } from 'react-redux';
 
 export default function UploadsForm() {
     const dispatch = useDispatch();

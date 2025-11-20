@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
+
+import { AuthShowContainer } from 'modules/auth';
+import { HelpTextTable } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import { hideSidebar } from 'modules/sidebar';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 
-import { AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { HelpTextTable } from 'modules/help-text';
-import { hideSidebar } from 'modules/sidebar';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function HelpTextAdminPage() {

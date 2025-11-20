@@ -1,14 +1,14 @@
+import { useTrackPageView } from 'modules/analytics';
+import { Fetch, getInstitutions } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { Breadcrumbs } from 'modules/ui';
+import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import { useTrackPageView } from 'modules/analytics';
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { ScrollToTop } from 'modules/user-agent';
-import { getInstitutions, Fetch } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { Breadcrumbs } from 'modules/ui';
 import InstitutionCatalog from './InstitutionCatalog';
 
 export default function InstitutionCatalogPage() {

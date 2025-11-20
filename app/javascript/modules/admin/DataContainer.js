@@ -1,7 +1,7 @@
+import { deleteData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { deleteData } from 'modules/data';
 import Data from './Data';
 
 const mapDispatchToProps = (dispatch) =>

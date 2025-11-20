@@ -1,7 +1,7 @@
+import { useAuthorization } from 'modules/auth';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 
-import { useAuthorization } from 'modules/auth';
 import Photo from './Photo';
 import photoComparator from './photoComparator';
 

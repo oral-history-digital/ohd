@@ -1,9 +1,8 @@
-import useSWRImmutable from 'swr/immutable';
-import { useSelector } from 'react-redux';
-
 import { fetcher } from 'modules/api';
 import { getRegistryReferenceTypesForCurrentProject } from 'modules/data';
 import { usePathBase, useProject } from 'modules/routes';
+import { useSelector } from 'react-redux';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useCombinedRegistryReferenceTypes() {
     const { isOhd } = useProject();

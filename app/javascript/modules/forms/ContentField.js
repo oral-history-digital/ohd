@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isNil from 'lodash.isnil';
+import PropTypes from 'prop-types';
 
 import ContentValueWithLinks from './ContentValueWithLinks';
 

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { FaTimes, FaEllipsisH } from 'react-icons/fa';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react';
+
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { FaEllipsisH, FaTimes } from 'react-icons/fa';
 
 export default function Modal({
     title,

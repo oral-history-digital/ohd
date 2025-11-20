@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { HelpText } from 'modules/help-text';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setFilter } from '../actions';
 import {
     EDIT_TABLE_FILTER_ALL,
-    EDIT_TABLE_FILTER_SOME,
+    EDIT_TABLE_FILTER_ANNOTATIONS,
     EDIT_TABLE_FILTER_HEADINGS,
     EDIT_TABLE_FILTER_REFERENCES,
-    EDIT_TABLE_FILTER_ANNOTATIONS,
+    EDIT_TABLE_FILTER_SOME,
 } from '../constants';
-import { setFilter } from '../actions';
 import { getFilter } from '../selectors';
 import SelectColumnsFormContainer from './SelectColumnsFormContainer';
 

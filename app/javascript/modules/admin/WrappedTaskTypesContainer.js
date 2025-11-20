@@ -1,15 +1,15 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { setQueryParams, getTaskTypesQuery } from 'modules/search';
 import {
-    fetchData,
     deleteData,
-    submitData,
+    fetchData,
     getCurrentProject,
     getTaskTypesForCurrentProject,
     getTaskTypesStatus,
+    submitData,
 } from 'modules/data';
+import { getTaskTypesQuery, setQueryParams } from 'modules/search';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
 

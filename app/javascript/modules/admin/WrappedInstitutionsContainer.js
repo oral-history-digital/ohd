@@ -1,19 +1,19 @@
+import {
+    InstitutionTile,
+    deleteData,
+    fetchData,
+    getInstitutions,
+    getInstitutionsStatus,
+    getStatuses,
+    submitData,
+} from 'modules/data';
+import { getCookie } from 'modules/persistence';
+import { getInstitutionsQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getInstitutionsQuery } from 'modules/search';
-import {
-    fetchData,
-    deleteData,
-    submitData,
-    getInstitutions,
-    getStatuses,
-    getInstitutionsStatus,
-    InstitutionTile,
-} from 'modules/data';
-import { getCookie } from 'modules/persistence';
-import WrappedDataList from './WrappedDataList';
 import LogosContainer from './LogosContainer';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => ({
     editView: getCookie('editView') === 'true',

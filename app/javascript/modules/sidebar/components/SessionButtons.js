@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-
 import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
 import { clearStateData, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject, usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { RegisterPopupLink, getIsLoggedIn, submitLogout } from 'modules/user';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 export default function SessionButtons({ className }) {
     const { t, locale } = useI18n();

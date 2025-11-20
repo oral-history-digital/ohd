@@ -1,8 +1,8 @@
-import { useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
-
-import { ErrorBoundary } from 'modules/react-toolbox';
 import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
+
 import { getRegistrationStatus } from '../selectors';
 import ChangePasswordFormContainer from './ChangePasswordFormContainer';
 

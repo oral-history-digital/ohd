@@ -1,8 +1,7 @@
+import { DataList } from 'modules/admin';
+import { deleteData, fetchData, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import { fetchData, deleteData, submitData } from 'modules/data';
-import { DataList } from 'modules/admin';
 
 const mapStateToProps = (state) => {
     return {

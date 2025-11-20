@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-
 import { getCurrentProject } from 'modules/data';
 import { UserRoles } from 'modules/roles';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function RolesCell({ row, getValue }) {
     const dataPath = getValue();

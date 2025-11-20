@@ -1,6 +1,6 @@
+import { useSearchParams } from 'modules/query-string';
 import PropTypes from 'prop-types';
 
-import { useSearchParams } from 'modules/query-string';
 import FacetValue from './FacetValue';
 
 export default function FacetValues({ data, facet, filter, locale }) {

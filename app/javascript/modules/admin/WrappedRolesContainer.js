@@ -1,17 +1,17 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { setQueryParams, getRolesQuery } from 'modules/search';
 import {
-    fetchData,
     deleteData,
-    submitData,
+    fetchData,
     getCurrentProject,
     getRolesForCurrentProject,
     getRolesStatus,
+    submitData,
 } from 'modules/data';
-import WrappedDataList from './WrappedDataList';
+import { getRolesQuery, setQueryParams } from 'modules/search';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RolePermissionsContainer from './RolePermissionsContainer';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);

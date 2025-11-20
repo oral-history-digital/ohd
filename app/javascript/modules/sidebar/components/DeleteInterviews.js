@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { getProjectId } from 'modules/archive';
-import { deleteData, getCurrentProject } from 'modules/data';
-import { Modal } from 'modules/ui';
-import { DeleteItemForm } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
 import { AuthorizedContent } from 'modules/auth';
+import { deleteData, getCurrentProject } from 'modules/data';
+import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function DeleteInterviews({ selectedArchiveIds }) {
     const { t, locale } = useI18n();

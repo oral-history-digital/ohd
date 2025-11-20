@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
 import FacetFilterInput from './FacetFilterInput';
 import FacetValues from './FacetValues';
 

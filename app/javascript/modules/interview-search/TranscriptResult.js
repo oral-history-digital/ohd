@@ -1,8 +1,8 @@
+import { getCurrentInterview } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { getCurrentInterview } from 'modules/data';
 import DumbTranscriptResult from './DumbTranscriptResult';
 
 export default function TranscriptResult({ data, locale }) {

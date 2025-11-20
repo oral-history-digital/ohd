@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { useProjectAccessStatus } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { MediaIcon } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
+import { useSelector } from 'react-redux';
 
 export default function MediaPreview() {
     const { t, locale } = useI18n();

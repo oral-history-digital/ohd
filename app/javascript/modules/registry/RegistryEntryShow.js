@@ -1,8 +1,8 @@
+import { getRegistryEntries } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { getRegistryEntries } from 'modules/data';
 import EntryReferenceGroups from './EntryReferenceGroups';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryBreadcrumbs from './RegistryEntryBreadcrumbs';

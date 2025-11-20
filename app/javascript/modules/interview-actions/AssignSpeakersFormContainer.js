@@ -1,14 +1,14 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import { getArchiveId, getProjectId } from 'modules/archive';
 import {
     fetchData,
     getContributionTypesForCurrentProject,
+    getCurrentProject,
     getSpeakerDesignationsStatus,
     submitData,
-    getCurrentProject,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import AssignSpeakersForm from './AssignSpeakersForm';
 
 const mapStateToProps = (state) => ({

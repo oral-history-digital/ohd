@@ -1,16 +1,16 @@
+import { useTrackPageView } from 'modules/analytics';
+import { Fetch, getCollections, getProjects } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { LinkOrA, usePathBase } from 'modules/routes';
+import { Breadcrumbs } from 'modules/ui';
+import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
-import { useParams, Navigate } from 'react-router-dom';
 import { FaChevronRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import { Navigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import { useTrackPageView } from 'modules/analytics';
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { ScrollToTop } from 'modules/user-agent';
-import { getCollections, getProjects, Fetch } from 'modules/data';
-import { usePathBase, LinkOrA } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { Breadcrumbs } from 'modules/ui';
 import CollectionData from './CollectionData';
 
 export default function CollectionCatalogPage() {

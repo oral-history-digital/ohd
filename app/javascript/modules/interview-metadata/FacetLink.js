@@ -1,9 +1,8 @@
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-
-import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 
 export default function FacetLink({ id, type }) {
     const { t } = useI18n();

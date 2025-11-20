@@ -1,7 +1,7 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
+
 import createRegistryTree from './createRegistryTree';
 
 export default function useRegistryTree(loadOhdTree, selectedRegistryEntryId) {

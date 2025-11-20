@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
-
+import { getArchiveId } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
-import { getArchiveId } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
+import { useSelector } from 'react-redux';
+
 import useInterviewMap from '../useInterviewMap';
 import InterviewMapPopup from './InterviewMapPopup';
 

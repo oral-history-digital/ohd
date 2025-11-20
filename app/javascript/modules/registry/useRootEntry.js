@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import {
+    fetchData,
     getRegistryEntries,
     getRegistryEntriesStatus,
-    fetchData,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function useRootEntry() {
     const { project, projectId } = useProject();

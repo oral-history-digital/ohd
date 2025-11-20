@@ -1,9 +1,9 @@
+import { getLocale, getProjectId } from 'modules/archive';
+import { deleteData, getCurrentProject, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import NestedScopeElement from './NestedScopeElement';
-import { submitData, deleteData, getCurrentProject } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
 
 const mapStateToProps = (state) => {
     return {

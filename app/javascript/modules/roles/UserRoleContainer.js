@@ -1,8 +1,8 @@
+import { getProjectId } from 'modules/archive';
+import { deleteData, getCurrentProject, getProjects } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getProjectId } from 'modules/archive';
-import { deleteData, getCurrentProject, getProjects } from 'modules/data';
 import UserRole from './UserRole';
 
 const mapStateToProps = (state) => ({

@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 const ERROR_MESSAGE_TYPE_DEFAULT = 'default';
 

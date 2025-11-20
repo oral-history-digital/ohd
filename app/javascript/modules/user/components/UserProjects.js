@@ -1,7 +1,7 @@
 import groupBy from 'lodash.groupby';
+import { getCurrentProject, getCurrentUser } from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import { getCurrentProject, getCurrentUser } from 'modules/data';
 import UserProject from './UserProject';
 
 function UserProjects() {

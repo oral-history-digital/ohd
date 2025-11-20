@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
-import { FaGithub } from 'react-icons/fa';
-
-import { useProject, usePathBase } from 'modules/routes';
+import { GITHUB_URL, OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
+import { FaGithub } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
 import ProjectFooter from './ProjectFooter';
-import { OHD_DOMAINS, GITHUB_URL } from 'modules/constants';
 
 function SiteFooter() {
     const { project, projectId } = useProject();

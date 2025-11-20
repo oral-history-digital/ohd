@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
+
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-
 import { MARKER_COLOR_MULTIPLE_TYPES, useMapReferenceTypes } from 'modules/map';
 import { Checkbox } from 'modules/ui';
-import useMapFilter from '../map-filter/useMapFilter';
+import PropTypes from 'prop-types';
+
 import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
+import useMapFilter from '../map-filter/useMapFilter';
 
 export default function MapFilter({
     className,

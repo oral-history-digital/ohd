@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import PropTypes from 'prop-types';
 import useResizeAware from 'react-resize-aware';
 
 import {
-    SCREEN_WIDTH_BELOW_M,
     SCREEN_WIDTH_ABOVE_XL,
+    SCREEN_WIDTH_BELOW_M,
     currentScreenWidth,
 } from './media-queries';
 

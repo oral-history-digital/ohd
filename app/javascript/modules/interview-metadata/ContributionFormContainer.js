@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import { getLocale, getProjectId } from 'modules/archive';
 import {
     getContributionTypesForCurrentProject,
     getCurrentProject,
 } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import ContributionForm from './ContributionForm';
 
 const mapStateToProps = (state) => ({

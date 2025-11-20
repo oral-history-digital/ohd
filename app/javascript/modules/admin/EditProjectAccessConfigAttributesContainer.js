@@ -1,7 +1,7 @@
+import { getCurrentProject, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentProject } from 'modules/data';
 import EditData from './EditData';
 
 const mapStateToProps = (state) => {

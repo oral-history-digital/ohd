@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import request from 'superagent';
 
 import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import useProjectAccessConfig from '../useProjectAccessConfig';
+import { usePathBase } from 'modules/routes';
+import request from 'superagent';
+
 import { NON_ZIP_COUNTRIES } from '../constants';
+import useProjectAccessConfig from '../useProjectAccessConfig';
 
 export default function CorrectUserDataForm({
     project,

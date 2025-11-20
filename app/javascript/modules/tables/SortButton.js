@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaSortUp, FaSortDown } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import { FaSortDown, FaSortUp } from 'react-icons/fa';
 
 export default function SortButton({
     direction,

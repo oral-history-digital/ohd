@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default function RegistryEntryLabel({ registryEntry }) {
     const { t, locale } = useI18n();

@@ -1,7 +1,7 @@
 import curry from 'lodash.curry';
 
-import mapProject from './mapProject';
 import rowComparator from '../rowComparator';
+import mapProject from './mapProject';
 
 export default function mapInstitution(locale, institution) {
     const curriedMapInstitution = curry(mapInstitution)(locale);

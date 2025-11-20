@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Dialog } from '@reach/dialog';
 
-import { useI18n } from 'modules/i18n';
-import { t as originalT } from 'modules/i18n';
-import { Form } from 'modules/forms';
+import { Dialog } from '@reach/dialog';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { t as originalT } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function UserForm({
     data,

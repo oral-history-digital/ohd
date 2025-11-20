@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useProjectAccessStatus } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus } from 'modules/auth';
-import { useProject } from 'modules/routes';
 import { getIsLoggedIn } from '../selectors';
 
 export default function ActivationFlow({ className }) {

@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-
 import { submitData } from 'modules/data';
+import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { Form } from 'modules/forms';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 export default function SegmentHeadingForm({ segment, onSubmit, onCancel }) {
     const { locale } = useI18n();

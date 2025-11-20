@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { getCurrentInterview } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { CopyText, Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import { getCurrentInterview } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { Modal, CopyText } from 'modules/ui';
-import { usePathBase } from 'modules/routes';
-import WorkbookItemForm from './WorkbookItemForm';
 import WorkbookItemDelete from './WorkbookItemDelete';
+import WorkbookItemForm from './WorkbookItemForm';
 
 export default function WorkbookActions({ item, itemPath, className }) {
     const { t } = useI18n();

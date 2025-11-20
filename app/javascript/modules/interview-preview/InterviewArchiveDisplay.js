@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-
-import { useProjectAccessStatus, PROJECT_ACCESS_REQUESTED } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
 import lockRegular from 'assets/images/lock-regular.svg';
 import lockSolid from 'assets/images/lock-solid.svg';
+import classNames from 'classnames';
+import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default function InterviewArchiveDisplay({ project, className }) {
     const { t, locale } = useI18n();

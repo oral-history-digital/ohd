@@ -1,8 +1,8 @@
-import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
-
-import { ErrorBoundary } from 'modules/react-toolbox';
 import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+
 import OrderNewPasswordFormContainer from './OrderNewPasswordFormContainer';
 
 export default function OrderNewPassword({ orderNewPasswordStatus, error }) {

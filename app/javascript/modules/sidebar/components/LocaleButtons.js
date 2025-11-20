@@ -1,9 +1,6 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 
+import classNames from 'classnames';
 import { fetchTranslationsForLocale, setLocale } from 'modules/archive';
 import {
     ALPHA2_TO_ALPHA3,
@@ -13,6 +10,9 @@ import {
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 
 const projectLocales = (project) =>
     project ? project.available_locales : DEFAULT_LOCALES;

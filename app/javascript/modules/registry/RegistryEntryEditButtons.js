@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-
 import { deleteData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { AdminMenu } from 'modules/ui';
-import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
+import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 
 const Item = AdminMenu.Item;
 

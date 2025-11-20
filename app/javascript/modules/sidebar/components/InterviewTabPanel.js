@@ -1,37 +1,37 @@
 import classNames from 'classnames';
+import { useIsEditor } from 'modules/archive';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { PROJECT_CAMPSCAPES } from 'modules/constants';
+import { SingleValueWithFormContainer } from 'modules/forms';
+import { GalleryContainer } from 'modules/gallery';
+import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import {
+    DestroyTranscript,
+    MarkTextFormContainer,
+    UploadEditTableContainer,
+    UploadTranscriptContainer,
+} from 'modules/interview-actions';
+import { InterviewMap } from 'modules/interview-map';
+import {
+    CitationInfoContainer,
+    InterviewContributorsContainer,
+    InterviewInfoContainer,
+    InterviewTextMaterialsContainer,
+} from 'modules/interview-metadata';
+import { MaterialList } from 'modules/materials';
+import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
+import { usePathBase } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import {
-    MarkTextFormContainer,
-    UploadTranscriptContainer,
-    UploadEditTableContainer,
-    DestroyTranscript,
-} from 'modules/interview-actions';
-import {
-    InterviewInfoContainer,
-    InterviewContributorsContainer,
-    InterviewTextMaterialsContainer,
-    CitationInfoContainer,
-} from 'modules/interview-metadata';
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { useIsEditor } from 'modules/archive';
-import { HelpText } from 'modules/help-text';
-import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
-import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import { Spinner } from 'modules/spinners';
-import { InterviewMap } from 'modules/interview-map';
-import { GalleryContainer } from 'modules/gallery';
-import { MaterialList } from 'modules/materials';
-import { usePathBase } from 'modules/routes';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { PROJECT_CAMPSCAPES } from 'modules/constants';
-import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
 import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import SubTab from './SubTab';
 
 export default function InterviewTabPanel({
     archiveId,

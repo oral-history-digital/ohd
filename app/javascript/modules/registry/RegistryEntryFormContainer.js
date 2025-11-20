@@ -1,11 +1,11 @@
+import {
+    getNormDataProviders,
+    getRegistryEntries,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    submitData,
-    getRegistryEntries,
-    getNormDataProviders,
-} from 'modules/data';
 import RegistryEntryForm from './RegistryEntryForm';
 
 const mapStateToProps = (state) => ({

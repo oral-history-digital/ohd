@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 import {
     FaSortAlphaDown,
     FaSortAlphaUp,
@@ -8,8 +9,6 @@ import {
     FaSortNumericDown,
     FaSortNumericUp,
 } from 'react-icons/fa';
-
-import { useI18n } from 'modules/i18n';
 
 export default function SortOrderButton({ className, type, value, onChange }) {
     const { t } = useI18n();

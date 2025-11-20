@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 
+import { AuthorizedContent } from 'modules/auth';
+import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { submitData } from 'modules/data';
-import { AuthorizedContent } from 'modules/auth';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 
 export default function StatusForm({ data, scope, attribute, value }) {
     const { project, projectId } = useProject();

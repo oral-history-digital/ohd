@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { Disclosure } from 'modules/ui';
+import PropTypes from 'prop-types';
 
 export default function ResultList({
     heading,

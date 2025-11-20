@@ -1,8 +1,8 @@
+import { getLocale, getProjectId } from 'modules/archive';
+import { getCurrentProject, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentProject } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
 import PhotoForm from './PhotoForm';
 
 const mapStateToProps = (state) => ({

@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 
 import { useI18n } from 'modules/i18n';
-import { TableWithPagination, DateCell } from 'modules/tables';
-import useHelpTexts from './useHelpTexts';
+import { DateCell, TableWithPagination } from 'modules/tables';
+
 import HelpTextRowActions from './HelpTextRowActions';
+import useHelpTexts from './useHelpTexts';
 
 export default function HelpTextTable() {
     const { t, locale } = useI18n();

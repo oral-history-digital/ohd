@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     getNormDataProviders,
     getRegistryNameTypesForCurrentProject,
 } from 'modules/data';
 import { searchRegistryEntry } from 'modules/search';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import NormDataSelect from './NormDataSelect';
 
 const mapStateToProps = (state) => ({

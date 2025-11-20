@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 
 const FACET_FILTER_MIN_ITEMS = 10;

@@ -1,8 +1,8 @@
+import { getEditView } from 'modules/archive';
+import { getCurrentUser } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 
-import { useProject } from 'modules/routes';
-import { getCurrentUser } from 'modules/data';
-import { getEditView } from 'modules/archive';
 import originalAdmin from './admin';
 
 export function useAuthorization() {

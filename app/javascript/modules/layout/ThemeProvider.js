@@ -1,6 +1,5 @@
-import { Helmet } from 'react-helmet';
-
 import { useProject } from 'modules/routes';
+import { Helmet } from 'react-helmet';
 
 const DEFAULT_PRIMARY_COLOR = '#e01217';
 const DEFAULT_SECONDARY_COLOR = '#808080';

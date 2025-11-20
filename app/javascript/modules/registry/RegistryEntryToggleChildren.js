@@ -1,7 +1,6 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-
-import { useI18n } from 'modules/i18n';
 
 export default function RegistryEntryToggleChildren({
     count,

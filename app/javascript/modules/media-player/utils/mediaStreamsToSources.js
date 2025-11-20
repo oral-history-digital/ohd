@@ -1,8 +1,8 @@
-import { buildMediaUrl } from './buildMediaUrl';
 import {
-    DEFAULT_VIDEO_RESOLUTION,
     DEFAULT_AUDIO_RESOLUTION,
+    DEFAULT_VIDEO_RESOLUTION,
 } from '../constants';
+import { buildMediaUrl } from './buildMediaUrl';
 
 /**
  * Converts an array of media stream objects into a list of source objects for VideoJS.

@@ -1,8 +1,7 @@
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaEye, FaPen, FaTrash } from 'react-icons/fa';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 
 export default function RowActions({
     row,

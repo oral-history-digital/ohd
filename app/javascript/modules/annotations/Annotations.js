@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import AnnotationFormContainer from './AnnotationFormContainer';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+
 import AnnotationContainer from './AnnotationContainer';
+import AnnotationFormContainer from './AnnotationFormContainer';
 
 export default function Annotations({ segment, contentLocale }) {
     const { t } = useI18n();

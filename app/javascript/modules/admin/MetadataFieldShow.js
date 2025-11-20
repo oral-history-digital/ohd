@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
-
 import { getLocale, getTranslations } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { useSelector } from 'react-redux';
 
 function MetadataFieldShow({ data }) {
     const locale = useSelector(getLocale);

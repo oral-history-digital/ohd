@@ -1,9 +1,10 @@
 import { createElement } from 'react';
-import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import InputContainer from './InputContainer';
 
 export default function SpeakerDesignationInputs({

@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-
-import { getCurrentIntervieweeId, getCurrentInterview } from 'modules/data';
+import { getCurrentInterview, getCurrentIntervieweeId } from 'modules/data';
 import { useInterviewContributors } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function MediaPlayerTitle({ className }) {
     const interview = useSelector(getCurrentInterview);

@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function ProjectLogo({ logos, defaultLocale, className }) {
     const { t, locale } = useI18n();

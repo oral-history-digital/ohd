@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-
+import { AuthorizedContent } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { MapFacets } from 'modules/search';
-import { useI18n } from 'modules/i18n';
-import SubTab from './SubTab';
+import PropTypes from 'prop-types';
+
 import AdminActionsContainer from './AdminActionsContainer';
-import { AuthorizedContent } from 'modules/auth';
+import SubTab from './SubTab';
 
 function MapTabPanel({ selectedArchiveIds }) {
     const { t } = useI18n();

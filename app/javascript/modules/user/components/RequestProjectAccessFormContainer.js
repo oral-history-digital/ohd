@@ -1,8 +1,8 @@
+import { getLocale, getProjectId } from 'modules/archive';
+import { getCurrentProject, getCurrentUser, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentProject, getCurrentUser } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
 import RequestProjectAccessForm from './RequestProjectAccessForm';
 
 const mapStateToProps = (state) => {

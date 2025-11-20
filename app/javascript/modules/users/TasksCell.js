@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-
 import { getCurrentProject } from 'modules/data';
 import { TasksContainer } from 'modules/workflow';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function TasksCell({ row }) {
     const project = useSelector(getCurrentProject);

@@ -1,20 +1,21 @@
 import { createElement, useEffect } from 'react';
-import Observer from 'react-intersection-observer';
-import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
-import { Spinner } from 'modules/spinners';
-import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import parametrizedQuery from './parametrizedQuery';
-import statifiedQuery from './statifiedQuery';
-import DataContainer from './DataContainer';
+import { Spinner } from 'modules/spinners';
+import { pluralize } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+import Observer from 'react-intersection-observer';
+
 import AddButton from './AddButton';
-import sortData from './sortData';
+import DataContainer from './DataContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
+import parametrizedQuery from './parametrizedQuery';
+import sortData from './sortData';
+import statifiedQuery from './statifiedQuery';
 
 export default function WrappedDataList({
     form,

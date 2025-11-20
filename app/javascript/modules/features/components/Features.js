@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Checkbox } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
+import { Checkbox } from 'modules/ui';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { disable, enable } from '../actions';
 import { getFeatures } from '../selectors';
-import { enable, disable } from '../actions';
 
 export default function Features() {
     const features = useSelector(getFeatures);

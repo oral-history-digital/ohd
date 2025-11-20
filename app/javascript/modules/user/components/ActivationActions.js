@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-
 import { useProjectAccessStatus } from 'modules/auth';
 import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
-import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
-import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import { getIsLoggedIn } from '../selectors';
+import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
+import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
 export default function ActivationFlow({ className }) {
     const { t } = useI18n();

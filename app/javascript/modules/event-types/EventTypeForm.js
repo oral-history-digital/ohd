@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { submitDataWithFetch } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import useMutateEventTypes from './useMutateEventTypes';
 
 const formElements = [

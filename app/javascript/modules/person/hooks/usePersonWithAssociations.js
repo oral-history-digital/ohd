@@ -1,8 +1,7 @@
-import useSWRImmutable from 'swr/immutable';
-
-import { useProjectAccessStatus } from 'modules/auth';
 import { fetcher } from 'modules/api';
+import { useProjectAccessStatus } from 'modules/auth';
 import { usePathBase, useProject } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function usePersonWithAssociations(id) {
     const { project } = useProject();

@@ -1,9 +1,9 @@
-import { loadState } from 'modules/persistence';
 import {
+    AVAILABLE_FEATURES,
     FEATURES_NAME,
     filterLoadedFeatures,
-    AVAILABLE_FEATURES,
 } from 'modules/features';
+import { loadState } from 'modules/persistence';
 
 const persistedState = {
     [FEATURES_NAME]: filterLoadedFeatures(

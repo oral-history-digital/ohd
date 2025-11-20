@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import { createElement, useState } from 'react';
-import classNames from 'classnames';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { pluralize } from 'modules/strings';
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { pluralize } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 export default function NestedScopeElement({
     element,

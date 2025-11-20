@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
+
+import { AuthShowContainer } from 'modules/auth';
+import { useEventTypes } from 'modules/event-types';
+import { useI18n } from 'modules/i18n';
+import { PersonForm, PersonTable, usePeople } from 'modules/person';
+import { hideSidebar } from 'modules/sidebar';
+import { Spinner } from 'modules/spinners';
+import { ErrorMessage } from 'modules/ui';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 
-import { AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { Spinner } from 'modules/spinners';
-import { useEventTypes } from 'modules/event-types';
-import { hideSidebar } from 'modules/sidebar';
-import { ErrorMessage } from 'modules/ui';
-import { usePeople, PersonTable, PersonForm } from 'modules/person';
-import EditViewOrRedirect from './EditViewOrRedirect';
 import AddButton from './AddButton';
+import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function PeopleAdminPage() {
     const { t } = useI18n();

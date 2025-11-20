@@ -1,9 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-
+import { getLocale, getProjectId, setProjectId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
-import { getLocale, setProjectId, getProjectId } from 'modules/archive';
 import { getCurrentUser } from 'modules/data';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function LinkOrA({
     to = '',

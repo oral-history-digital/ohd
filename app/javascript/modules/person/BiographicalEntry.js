@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+
 import {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
 } from '@reach/disclosure';
-import { FaPencilAlt, FaTrash, FaAngleUp, FaAngleDown } from 'react-icons/fa';
-
+import classNames from 'classnames';
+import { AuthorizedContent } from 'modules/auth';
+import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
-import { AuthorizedContent } from 'modules/auth';
-import { DeleteItemForm } from 'modules/forms';
+import PropTypes from 'prop-types';
+import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTrash } from 'react-icons/fa';
+
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 
 export default function BiographicalEntry({ data, deleteData }) {

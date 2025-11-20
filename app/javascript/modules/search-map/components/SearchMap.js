@@ -1,26 +1,27 @@
 import { useState } from 'react';
-import 'leaflet/dist/leaflet.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
+import 'leaflet/dist/leaflet.css';
 import { useTrackPageView } from 'modules/analytics';
 import { useIsEditor } from 'modules/archive';
 import { getMapSections } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
-import { useProject, usePathBase } from 'modules/routes';
-import { ScrollToTop } from 'modules/user-agent';
+import { usePathBase, useProject } from 'modules/routes';
 import { MapSpinnerOverlay } from 'modules/spinners';
-import useSearchMap from '../search-map/useSearchMap';
-import SearchMapPopup from './SearchMapPopup';
-import MapFilterContainer from './MapFilterContainer';
-import MapSectionsSelect from './MapSectionsSelect';
-import MapNewBoundsSetter from './MapNewBoundsSetter';
-import useMapLocations from '../useMapLocations';
+import { ScrollToTop } from 'modules/user-agent';
+import { Helmet } from 'react-helmet';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+
 import { setMapView } from '../actions';
+import useSearchMap from '../search-map/useSearchMap';
 import { getMapView } from '../selectors';
+import useMapLocations from '../useMapLocations';
+import MapFilterContainer from './MapFilterContainer';
+import MapNewBoundsSetter from './MapNewBoundsSetter';
+import MapSectionsSelect from './MapSectionsSelect';
+import SearchMapPopup from './SearchMapPopup';
 
 export default function SearchMap() {
     const mapSections = useSelector(getMapSections);

@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
+import { OHD_LOCATION } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
-import { OHD_LOCATION } from 'modules/constants';
+import PropTypes from 'prop-types';
 
 export default function CitationInfo({
     interview,

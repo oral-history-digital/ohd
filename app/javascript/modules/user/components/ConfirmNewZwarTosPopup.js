@@ -1,12 +1,11 @@
+import { OHD_DOMAINS } from 'modules/constants';
+import { submitData } from 'modules/data';
+import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
-import { Form } from 'modules/forms';
-import { submitData } from 'modules/data';
-import { getCurrentUser, getCurrentProject } from 'modules/data';
-import { OHD_DOMAINS } from 'modules/constants';
 
 export default function ConfirmNewZwarTosPopup({}) {
     const { t, locale } = useI18n();

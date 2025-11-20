@@ -1,11 +1,11 @@
 import { Loader } from 'modules/api';
 
 import {
-    SET_QUERY_PARAMS,
-    RESET_QUERY,
-    REQUEST_REGISTRY_ENTRY_SEARCH,
-    RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
+    RECEIVE_REGISTRY_ENTRY_SEARCH,
+    REQUEST_REGISTRY_ENTRY_SEARCH,
+    RESET_QUERY,
+    SET_QUERY_PARAMS,
 } from './action-types';
 
 export function setQueryParams(scope, params) {

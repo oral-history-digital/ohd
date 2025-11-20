@@ -1,6 +1,5 @@
-import { useSWRConfig } from 'swr';
-
 import { usePathBase, useProject } from 'modules/routes';
+import { useSWRConfig } from 'swr';
 
 export default function useMutatePeople() {
     const { project } = useProject();

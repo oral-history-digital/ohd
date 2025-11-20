@@ -1,8 +1,7 @@
-import useSWRImmutable from 'swr/immutable';
-
-import { useI18n } from 'modules/i18n';
 import { fetcher } from 'modules/api';
+import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useCollectionData(id) {
     const { locale } = useI18n();

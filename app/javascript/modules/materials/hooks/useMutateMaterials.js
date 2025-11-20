@@ -1,6 +1,5 @@
-import { useSWRConfig } from 'swr';
-
 import { usePathBase } from 'modules/routes';
+import { useSWRConfig } from 'swr';
 
 export default function useMutateMaterials(archiveId) {
     const pathBase = usePathBase();

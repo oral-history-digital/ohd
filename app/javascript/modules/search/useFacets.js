@@ -1,10 +1,9 @@
-import useSWRImmutable from 'swr/immutable';
-import queryString from 'query-string';
 import range from 'lodash.range';
-
 import { fetcher } from 'modules/api';
-import { usePathBase } from 'modules/routes';
 import { useSearchParams } from 'modules/query-string';
+import { usePathBase } from 'modules/routes';
+import queryString from 'query-string';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useFacets() {
     const { fulltext, facets, yearOfBirthMin, yearOfBirthMax } =

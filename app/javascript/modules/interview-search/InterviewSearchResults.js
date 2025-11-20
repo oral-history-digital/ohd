@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
 import { showTranslationTab } from 'modules/interview';
 import { useSearchParams } from 'modules/query-string';
-import { Spinner } from 'modules/spinners';
 import { useProject } from 'modules/routes';
-import ResultList from './ResultList';
-import TranscriptResult from './TranscriptResult';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import AnnotationResult from './AnnotationResult';
-import RegistryResult from './RegistryResult';
 import PhotoResult from './PhotoResult';
+import RegistryResult from './RegistryResult';
+import ResultList from './ResultList';
 import TocResult from './TocResult';
+import TranscriptResult from './TranscriptResult';
 import useInterviewSearch from './useInterviewSearch';
 
 export default function InterviewSearchResults({ archiveId, interview }) {

@@ -1,16 +1,16 @@
 import { Loader } from 'modules/api';
 
 import {
-    LOGIN,
-    LOGGED_IN,
     AUTH_ERROR,
+    CHANGED_PASSWORD,
+    CHANGE_PASSWORD,
+    LOGGED_IN,
+    LOGIN,
     LOGOUT,
+    ORDERED_NEW_PASSWORD,
+    ORDER_NEW_PASSWORD,
     REGISTER,
     REGISTERED,
-    CHANGE_PASSWORD,
-    CHANGED_PASSWORD,
-    ORDER_NEW_PASSWORD,
-    ORDERED_NEW_PASSWORD,
 } from './action-types';
 
 const login = () => ({

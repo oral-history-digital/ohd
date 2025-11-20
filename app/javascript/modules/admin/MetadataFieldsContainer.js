@@ -1,16 +1,16 @@
+import {
+    deleteData,
+    fetchData,
+    getCurrentProject,
+    getRegistryReferenceTypesStatus,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    getCurrentProject,
-    fetchData,
-    deleteData,
-    submitData,
-    getRegistryReferenceTypesStatus,
-} from 'modules/data';
-import WrappedDataList from './WrappedDataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
 import MetadataFieldShow from './MetadataFieldShow';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);

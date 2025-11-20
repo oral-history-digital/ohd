@@ -1,5 +1,6 @@
 import { saveState } from 'modules/persistence';
-import { ENABLE, DISABLE } from './action-types';
+
+import { DISABLE, ENABLE } from './action-types';
 import { NAME } from './constants';
 
 export const initialState = {};

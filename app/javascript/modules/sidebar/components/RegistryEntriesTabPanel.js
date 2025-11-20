@@ -1,11 +1,11 @@
+import { AuthorizedContent } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { RegistrySearchFormContainer } from 'modules/registry';
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { AuthorizedContent } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { RegistrySearchFormContainer } from 'modules/registry';
-import { useProject } from 'modules/routes';
 import DownloadRegistryEntries from './DownloadRegistryEntries';
 
 function RegistryEntriesTabPanel({

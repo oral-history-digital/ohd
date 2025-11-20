@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
+
+import { useRegistryReferenceApi } from 'modules/api';
+import { useAuthorization } from 'modules/auth';
+import { DeleteItemForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import {
+    useMutatePersonLandingPageMetadata,
+    useMutatePersonWithAssociations,
+} from 'modules/person';
+import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { Modal } from 'modules/ui';
-import { useAuthorization } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import {
-    useMutatePersonWithAssociations,
-    useMutatePersonLandingPageMetadata,
-} from 'modules/person';
-import { DeleteItemForm } from 'modules/forms';
-import { useRegistryReferenceApi } from 'modules/api';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
 export default function RegistryReference({

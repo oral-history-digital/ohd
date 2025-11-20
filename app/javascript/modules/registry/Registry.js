@@ -1,16 +1,16 @@
+import { useTrackPageView } from 'modules/analytics';
+import { useIsEditor } from 'modules/archive';
+import { AuthorizedContent } from 'modules/auth';
+import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { useTrackPageView } from 'modules/analytics';
-import { AuthorizedContent } from 'modules/auth';
-import { useIsEditor } from 'modules/archive';
-import { useI18n } from 'modules/i18n';
-import { HelpText } from 'modules/help-text';
-import { ScrollToTop } from 'modules/user-agent';
-import { Spinner } from 'modules/spinners';
-import RegistrySearchResult from './RegistrySearchResult';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntries from './RegistryEntries';
+import RegistrySearchResult from './RegistrySearchResult';
 import useRootEntry from './useRootEntry';
 
 export default function Registry({

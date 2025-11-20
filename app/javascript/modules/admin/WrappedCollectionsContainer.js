@@ -1,15 +1,15 @@
+import {
+    deleteData,
+    fetchData,
+    getCollectionsForCurrentProject,
+    getCollectionsStatus,
+    getCurrentProject,
+    submitData,
+} from 'modules/data';
+import { getCollectionsQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getCollectionsQuery } from 'modules/search';
-import {
-    fetchData,
-    deleteData,
-    submitData,
-    getCurrentProject,
-    getCollectionsForCurrentProject,
-    getCollectionsStatus,
-} from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {

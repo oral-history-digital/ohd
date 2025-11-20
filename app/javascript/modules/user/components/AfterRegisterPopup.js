@@ -1,7 +1,7 @@
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import { getIsRegistered } from '../selectors';
 
 export default function AfterRegisterPopup({}) {

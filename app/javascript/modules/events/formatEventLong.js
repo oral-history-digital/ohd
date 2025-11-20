@@ -1,4 +1,5 @@
 import { formatDistance } from 'date-fns';
+
 import localeToLocaleObject from './localeToLocaleObject';
 
 export default function formatEventLong(event, locale) {

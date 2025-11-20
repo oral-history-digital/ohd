@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { submitDataWithFetch } from 'modules/api';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+
 import useMutateHelpTexts from './useMutateHelpTexts';
 
 const formElements = [

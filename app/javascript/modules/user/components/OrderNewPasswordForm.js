@@ -1,11 +1,11 @@
 import { useState } from 'react';
+
+import { EMAIL_REGEX } from 'modules/constants';
+import { InputContainer } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
-
-import { InputContainer } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { EMAIL_REGEX } from 'modules/constants';
 
 export default function OrderNewPasswordForm({ user, submitOrderNewPassword }) {
     const { t } = useI18n();

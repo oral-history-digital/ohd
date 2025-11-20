@@ -1,7 +1,4 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
+import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
 import {
     fetchData,
     getCurrentInterview,
@@ -9,6 +6,9 @@ import {
     getSegmentsStatus,
 } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { getFilter } from '../selectors';
 import EditTable from './EditTable';
 

@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import PropTypes from 'prop-types';
 
 // A debounced input react component

@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-
-import { useHumanReadable, getCurrentUser } from 'modules/data';
 import { useAuthorization } from 'modules/auth';
-import { usePersonWithAssociations } from 'modules/person';
-import { Spinner } from 'modules/spinners';
+import { getCurrentUser, useHumanReadable } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
+import { usePersonWithAssociations } from 'modules/person';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import {
     METADATA_SOURCE_EVENT_TYPE,
     METADATA_SOURCE_INTERVIEW,

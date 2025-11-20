@@ -1,4 +1,4 @@
-import { SHOW_SIDEBAR, HIDE_SIDEBAR, TOGGLE_SIDEBAR } from './action-types';
+import { HIDE_SIDEBAR, SHOW_SIDEBAR, TOGGLE_SIDEBAR } from './action-types';
 import { INDEX_NONE } from './constants';
 
 export const initialState = {

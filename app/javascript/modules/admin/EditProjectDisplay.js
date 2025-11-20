@@ -1,14 +1,14 @@
-import { useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
-
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
 import { getCurrentProject, getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import LogosContainer from './LogosContainer';
+import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
+
 import EditProjectDisplayAttributesContainer from './EditProjectDisplayAttributesContainer';
-import SponsorLogosContainer from './SponsorLogosContainer';
-import MediaStreamsContainer from './MediaStreamsContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
+import LogosContainer from './LogosContainer';
+import MediaStreamsContainer from './MediaStreamsContainer';
+import SponsorLogosContainer from './SponsorLogosContainer';
 
 export default function EditProjectDisplay() {
     const { t } = useI18n();

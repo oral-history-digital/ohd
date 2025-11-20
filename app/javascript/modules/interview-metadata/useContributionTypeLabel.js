@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
-
-import { useI18n } from 'modules/i18n';
 import { getContributionTypesForCurrentProject } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { useSelector } from 'react-redux';
 
 export default function useContributionTypeLabel(contributionType) {
     const { t, locale } = useI18n();

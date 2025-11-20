@@ -1,11 +1,12 @@
 import { createElement } from 'react';
+
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
-import RichTextareaContainer from './input-components/RichTextareaContainer';
 import InputContainer from './input-components/InputContainer';
+import RichTextareaContainer from './input-components/RichTextareaContainer';
 import Textarea from './input-components/Textarea';
-import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
 export default function MultiLocaleWrapper(props) {
     const { t, locale } = useI18n();

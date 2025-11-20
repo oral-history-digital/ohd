@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
-
 import { useAuthorization } from 'modules/auth';
-import { getSelectedColumns } from '../selectors';
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 import { useProject } from 'modules/routes';
+import { useSelector } from 'react-redux';
+
+import { getSelectedColumns } from '../selectors';
 
 export default function useColumns(interview) {
     const { isAuthorized } = useAuthorization();

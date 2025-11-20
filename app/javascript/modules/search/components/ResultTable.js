@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-
-import { useI18n } from 'modules/i18n';
 import { useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { InterviewListRowContainer } from 'modules/interview-preview';
-import { useProject } from 'modules/routes';
 import { useSearchParams } from 'modules/query-string';
+import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function ResultTable({ interviews }) {
     const { t, locale } = useI18n();

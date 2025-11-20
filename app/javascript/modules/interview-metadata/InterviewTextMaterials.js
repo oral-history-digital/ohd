@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-
-import { useI18n } from 'modules/i18n';
 import {
     AuthShowContainer,
     AuthorizedContent,
     useAuthorization,
 } from 'modules/auth';
 import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+
 import InterviewDownloads from './InterviewDownloads';
 
 export default function InterviewTextMaterials({

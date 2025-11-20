@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
 import { HelpText } from 'modules/help-text';
@@ -7,8 +6,10 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { pluralize } from 'modules/strings';
 import { isMobile } from 'modules/user-agent';
-import parametrizedQuery from './parametrizedQuery';
+import PropTypes from 'prop-types';
+
 import DataSearchFormElement from './DataSearchFormElement';
+import parametrizedQuery from './parametrizedQuery';
 
 export default function DataSearchForm({
     scope,

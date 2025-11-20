@@ -1,12 +1,12 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FaEye, FaTrash } from 'react-icons/fa';
 
+import { useDataApi } from 'modules/api';
 import { useAuthorization } from 'modules/auth';
+import { useMutateData, useMutateDatum } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { useMutateData, useMutateDatum } from 'modules/data';
-import { useDataApi } from 'modules/api';
+import PropTypes from 'prop-types';
+import { FaEye, FaTrash } from 'react-icons/fa';
 
 export default function UserRole({
     userRole,

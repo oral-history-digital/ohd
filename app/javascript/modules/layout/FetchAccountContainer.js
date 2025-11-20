@@ -1,13 +1,13 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
-    fetchData,
     deleteData,
+    fetchData,
     getCurrentUser,
     getUsersStatus,
 } from 'modules/data';
 import { getIsLoggedIn, getIsLoggedOut } from 'modules/user';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import FetchAccount from './FetchAccount';
 
 const mapStateToProps = (state) => ({

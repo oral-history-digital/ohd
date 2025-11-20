@@ -1,4 +1,4 @@
-import { PROJECT_ZWAR, PROJECT_CDOH } from 'modules/constants';
+import { PROJECT_CDOH, PROJECT_ZWAR } from 'modules/constants';
 
 export default function showTranslationTab(project, interview, locale) {
     return (

@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
-
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 function DownloadRegistryEntries(props) {
     const { format, specificLocale } = props;

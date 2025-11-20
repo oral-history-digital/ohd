@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum } from 'modules/data';
+import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function UserRoleForm({
     dataPath,

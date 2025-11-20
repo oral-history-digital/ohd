@@ -1,6 +1,6 @@
+import { RowActions } from 'modules/tables';
 import PropTypes from 'prop-types';
 
-import { RowActions } from 'modules/tables';
 import UserEdit from './UserEdit';
 
 export default function UserRowActions({ row, getValue }) {

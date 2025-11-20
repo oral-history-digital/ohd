@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import queryString from 'query-string';
 
+import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import { TapeAndTime, formatTimecode } from 'modules/interview-helpers';
 import { LinkOrA, useProject } from 'modules/routes';
 import { convertLegacyQuery, useFacets } from 'modules/search';
-import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
-import { formatTimecode, TapeAndTime } from 'modules/interview-helpers';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+
 import queryToFacets from '../queryToFacets';
 import WorkbookActions from './WorkbookActions';
 

@@ -1,6 +1,5 @@
-import { useState, useMemo } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
+
 import {
     getCoreRowModel,
     getFilteredRowModel,
@@ -8,8 +7,10 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table';
+import classNames from 'classnames';
+import { PAGINATION_DEFAULT_PAGE_SIZE, Pagination } from 'modules/ui';
+import PropTypes from 'prop-types';
 
-import { Pagination, PAGINATION_DEFAULT_PAGE_SIZE } from 'modules/ui';
 import Filter from './Filter';
 import Table from './Table';
 

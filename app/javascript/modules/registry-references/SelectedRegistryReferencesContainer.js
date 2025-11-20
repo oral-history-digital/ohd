@@ -1,12 +1,12 @@
+import { getEditView, getLocale, getProjectId } from 'modules/archive';
+import {
+    fetchData,
+    getCurrentProject,
+    getRegistryEntriesStatus,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    getCurrentProject,
-    fetchData,
-    getRegistryEntriesStatus,
-} from 'modules/data';
-import { getProjectId, getLocale, getEditView } from 'modules/archive';
 import SelectedRegistryReferences from './SelectedRegistryReferences';
 
 const mapStateToProps = (state) => ({

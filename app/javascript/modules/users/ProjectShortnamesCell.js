@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-
 import { getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function ProjectShortnamesCell({ row }) {
     const { t } = useI18n();

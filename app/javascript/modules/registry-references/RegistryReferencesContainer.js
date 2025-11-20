@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
-
 import {
     getCurrentInterview,
     getRegistryEntries,
     getRegistryEntriesStatus,
 } from 'modules/data';
+import { connect } from 'react-redux';
+
 import RegistryReferences from './RegistryReferences';
 
 const mapStateToProps = (state) => ({

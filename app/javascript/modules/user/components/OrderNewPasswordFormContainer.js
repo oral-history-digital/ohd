@@ -1,7 +1,7 @@
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
 import { getCurrentUser } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { submitOrderNewPassword } from '../actions';
 import OrderNewPasswordForm from './OrderNewPasswordForm';
 

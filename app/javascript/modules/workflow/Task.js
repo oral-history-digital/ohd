@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+
 import CommentsContainer from './CommentsContainer';
 
 export default function Task({ task, interview, users, scope, submitData }) {

@@ -1,21 +1,20 @@
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FaEyeSlash, FaKey } from 'react-icons/fa';
-import queryString from 'query-string';
-
-import { Checkbox } from 'modules/ui';
-import { useProject, LinkOrA } from 'modules/routes';
-import { useHumanReadable, getCurrentUser } from 'modules/data';
-import { formatEventShort } from 'modules/events';
-import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
-import { useInterviewSearch } from 'modules/interview-search';
-import { useArchiveSearch } from 'modules/search';
-import { usePersonWithAssociations } from 'modules/person';
+import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
 import {
     METADATA_SOURCE_EVENT_TYPE,
     METADATA_SOURCE_INTERVIEW,
 } from 'modules/constants';
+import { getCurrentUser, useHumanReadable } from 'modules/data';
+import { formatEventShort } from 'modules/events';
+import { useI18n } from 'modules/i18n';
+import { useInterviewSearch } from 'modules/interview-search';
+import { usePersonWithAssociations } from 'modules/person';
+import { LinkOrA, useProject } from 'modules/routes';
+import { useArchiveSearch } from 'modules/search';
+import { Checkbox } from 'modules/ui';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import { FaEyeSlash, FaKey } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 export default function InterviewListRow({
     interview,

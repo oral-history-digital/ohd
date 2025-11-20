@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { useTrackSiteSearch } from 'modules/analytics';
+import { AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { useSearchParams } from 'modules/query-string';
+import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { FaUndo } from 'react-icons/fa';
 
-import { useTrackSiteSearch } from 'modules/analytics';
-import { useI18n } from 'modules/i18n';
-import { AuthShowContainer } from 'modules/auth';
-import { isMobile } from 'modules/user-agent';
-import { useSearchParams } from 'modules/query-string';
 import defaultSortOptions from '../defaultSortOptions';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';

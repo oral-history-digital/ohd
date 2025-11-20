@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
-import { useI18n } from 'modules/i18n';
-import getPageRange from './getPageRange';
 import { PAGE_SIZES } from './constants';
+import getPageRange from './getPageRange';
 
 const WINDOW_SIZE = 5;
 

@@ -1,7 +1,7 @@
-import { useDispatch } from 'react-redux';
-
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import { useDispatch } from 'react-redux';
+
 import { submitLogin } from '../actions';
 
 export default function LoginForm() {

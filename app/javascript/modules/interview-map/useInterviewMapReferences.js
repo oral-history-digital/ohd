@@ -1,10 +1,9 @@
-import useSWRImmutable from 'swr/immutable';
-import flow from 'lodash.flow';
 import curry from 'lodash.curry';
-
-import { usePathBase } from 'modules/routes';
+import flow from 'lodash.flow';
 import { fetcher } from 'modules/api';
-import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
+import { sortByReferenceTypeOrder, useMapReferenceTypes } from 'modules/map';
+import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useInterviewMapReferences(archiveId, registryEntryId) {
     const pathBase = usePathBase();

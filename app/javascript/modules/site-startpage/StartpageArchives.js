@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { getStartpageProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import ArchiveTile from './ArchiveTile';
 
 const INITIALLY_SHOWN_ARCHIVES = 6;

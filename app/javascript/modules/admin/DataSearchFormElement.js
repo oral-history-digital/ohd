@@ -1,9 +1,9 @@
 import { createElement } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
-import { pluralize } from 'modules/strings';
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { pluralize } from 'modules/strings';
+import PropTypes from 'prop-types';
 
 export default function DataSearchFormElement({
     scope,

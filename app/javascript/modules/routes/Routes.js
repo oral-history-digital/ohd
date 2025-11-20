@@ -1,16 +1,17 @@
 import { memo } from 'react';
-import { Routes, Route } from 'react-router-dom';
 
 import {
-    WrappedInstitutionsContainer,
     ArchivePage,
     HelpTextAdminPage,
+    WrappedInstitutionsContainer,
 } from 'modules/admin';
 import { SiteStartpage } from 'modules/site-startpage';
 import { HomeContainer } from 'modules/startpage';
-import ProjectRoutes from './ProjectRoutes';
+import { Route, Routes } from 'react-router-dom';
+
 import CatalogRoutes from './CatalogRoutes';
 import NotFoundPage from './NotFoundPage';
+import ProjectRoutes from './ProjectRoutes';
 
 const RoutesWithoutProjectId = ({ project }) => (
     <Routes>

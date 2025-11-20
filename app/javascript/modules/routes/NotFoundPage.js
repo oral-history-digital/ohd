@@ -1,7 +1,7 @@
+import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
-import { useI18n } from 'modules/i18n';
 import usePathBase from './usePathBase';
 
 export default function NotFoundPage() {

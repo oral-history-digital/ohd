@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import HeadingContainer from './HeadingContainer';
 import { getPreparedHeadings } from './getPreparedHeadings';
 

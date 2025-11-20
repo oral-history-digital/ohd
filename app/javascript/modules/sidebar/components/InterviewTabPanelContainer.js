@@ -1,16 +1,16 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import { getArchiveId, getProjectId, setViewMode } from 'modules/archive';
 import {
     getCurrentInterview,
     getCurrentIntervieweeId,
     getCurrentProject,
     getIsCatalog,
 } from 'modules/data';
-import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/user';
-import InterviewTabPanel from './InterviewTabPanel';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { hideSidebar } from '../actions';
+import InterviewTabPanel from './InterviewTabPanel';
 
 const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),

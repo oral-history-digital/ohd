@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 import Label from './Label';
-import { useI18n } from 'modules/i18n';
 
 export default function Element({
     label,

@@ -1,9 +1,9 @@
+import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
-import { Modal } from 'modules/ui';
 import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
-import { getCurrentUser, getCurrentProject } from 'modules/data';
-import { useI18n } from 'modules/i18n';
 
 export default function CorrectUserDataPopup({}) {
     const { t } = useI18n();

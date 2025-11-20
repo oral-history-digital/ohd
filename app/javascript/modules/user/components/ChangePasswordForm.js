@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import queryString from 'query-string';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
+import { PASSWORD_REGEX } from 'modules/constants';
+import { InputContainer } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import { usePrevious } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { InputContainer } from 'modules/forms';
-import { PASSWORD_REGEX } from 'modules/constants';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export default function ChangePasswordForm({
     user,

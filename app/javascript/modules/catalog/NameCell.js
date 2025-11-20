@@ -1,9 +1,8 @@
+import { getProjects } from 'modules/data';
+import { LinkOrA, usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import { usePathBase, LinkOrA } from 'modules/routes';
-import { getProjects } from 'modules/data';
 
 export default function NameCell({ row }) {
     const pathBase = usePathBase();

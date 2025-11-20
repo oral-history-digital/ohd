@@ -1,6 +1,6 @@
 import { setCookie } from 'modules/persistence';
 
-import { SET_FILTER, SET_COLUMNS } from './action-types';
+import { SET_COLUMNS, SET_FILTER } from './action-types';
 
 export const setFilter = (filter) => ({
     type: SET_FILTER,

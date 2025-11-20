@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import { useDispatch } from 'react-redux';
 
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { UserTable } from 'modules/users';
 import { hideSidebar } from 'modules/sidebar';
+import { UserTable } from 'modules/users';
+import { Helmet } from 'react-helmet';
+import { useDispatch } from 'react-redux';
 
 export default function UsersAdminPage() {
     const { t } = useI18n();

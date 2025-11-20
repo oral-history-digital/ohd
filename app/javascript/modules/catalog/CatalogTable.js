@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-key */
+import { flexRender } from '@tanstack/react-table';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { flexRender } from '@tanstack/react-table';
 
-import SortButton from './SortButton';
 import Filter from './Filter';
+import SortButton from './SortButton';
 
 export default function CatalogTable({ instance, className }) {
     return (

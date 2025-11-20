@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
-
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function DOIText({ selectedArchiveIds }) {
     const { t } = useI18n();

@@ -1,14 +1,14 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import { getEditView } from 'modules/archive';
 import {
-    submitData,
     getCurrentProject,
     getCurrentUser,
     getLanguages,
+    submitData,
 } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import SingleValueWithForm from './SingleValueWithForm';
 
 const mapStateToProps = (state) => {

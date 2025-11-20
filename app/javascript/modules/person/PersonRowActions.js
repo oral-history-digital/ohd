@@ -1,9 +1,9 @@
+import { RowActions } from 'modules/tables';
 import PropTypes from 'prop-types';
 
-import { RowActions } from 'modules/tables';
+import PersonDelete from './PersonDelete';
 import PersonDetails from './PersonDetails';
 import PersonForm from './PersonForm';
-import PersonDelete from './PersonDelete';
 
 export default function PersonRowActions({ row }) {
     return (

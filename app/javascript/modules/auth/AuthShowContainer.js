@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-
 import {
+    getCurrentInterview,
     getCurrentUser,
     getIsCatalog,
-    getCurrentInterview,
 } from 'modules/data';
 import { getIsLoggedIn, getIsLoggedOut } from 'modules/user';
+import { connect } from 'react-redux';
+
 import AuthShow from './AuthShow';
 
 const mapStateToProps = (state) => ({

@@ -1,8 +1,6 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
+import classNames from 'classnames';
 import { Annotations } from 'modules/annotations';
 import { Fetch } from 'modules/data';
 import { SubmitOnBlurForm } from 'modules/forms';
@@ -10,6 +8,9 @@ import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
 import fieldHasData from './fieldHasData';
 
 export default function EditTableCell({ type, segment, originalLocale }) {

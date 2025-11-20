@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
 
+import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
 import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-
-import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
+import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 export default function UploadEditTable({
     projectId,

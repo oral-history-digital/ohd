@@ -1,13 +1,13 @@
-import useSWRInfinite from 'swr/infinite';
-import queryString from 'query-string';
-import { useSelector } from 'react-redux';
 import range from 'lodash.range';
-
-import { getIsLoggedIn } from 'modules/user';
 import { fetcher } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
-import { usePathBase } from 'modules/routes';
 import { useSearchParams } from 'modules/query-string';
+import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
+import queryString from 'query-string';
+import { useSelector } from 'react-redux';
+import useSWRInfinite from 'swr/infinite';
+
 import defaultSortOptions from './defaultSortOptions';
 
 function transformData(data) {

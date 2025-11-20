@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
+
 import {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
 } from '@reach/disclosure';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { HexColorInput, HexColorPicker } from 'react-colorful';
 
 import Element from '../Element';
 

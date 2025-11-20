@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-
-import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import PropTypes from 'prop-types';
+
 import SubTab from './SubTab';
 
 export default function AdminSubTab({ title, children, url, obj, action }) {

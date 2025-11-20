@@ -1,8 +1,8 @@
+import { useI18n } from 'modules/i18n';
+import { RowActions } from 'modules/tables';
 import PropTypes from 'prop-types';
 
-import { RowActions } from 'modules/tables';
 import InterviewPermissionForm from './InterviewPermissionForm';
-import { useI18n } from 'modules/i18n';
 import useRestrictedInterviews from './useRestrictedInterviews';
 
 export default function UserRowActions({ row, getValue }) {

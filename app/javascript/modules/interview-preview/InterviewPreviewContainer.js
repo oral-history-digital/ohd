@@ -1,13 +1,13 @@
+import {
+    addRemoveArchiveId,
+    getSelectedArchiveIds,
+    setArchiveId,
+} from 'modules/archive';
+import { getInterviewsStatus, getProjects } from 'modules/data';
+import { getIsLoggedIn } from 'modules/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    setArchiveId,
-    addRemoveArchiveId,
-    getSelectedArchiveIds,
-} from 'modules/archive';
-import { getProjects, getInterviewsStatus } from 'modules/data';
-import { getIsLoggedIn } from 'modules/user';
 import InterviewPreview from './InterviewPreview';
 
 const mapStateToProps = (state) => ({

@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
 import { camelCase } from 'modules/strings';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 export default function AddButton({
     className,

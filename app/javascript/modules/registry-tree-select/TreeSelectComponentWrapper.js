@@ -1,6 +1,7 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import isEqual from 'lodash.isequal';
+import PropTypes from 'prop-types';
 
 import TreeSelectComponent from './TreeSelectComponent';
 

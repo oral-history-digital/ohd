@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 
 export default function RowExpander({ row }) {
     return row.getCanExpand() ? (

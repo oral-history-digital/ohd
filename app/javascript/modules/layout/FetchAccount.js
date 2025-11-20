@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
 export default function FetchAccount({
     user,

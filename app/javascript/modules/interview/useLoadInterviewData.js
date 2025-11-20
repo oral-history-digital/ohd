@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
+import { getEditView } from 'modules/archive';
 import {
     AuthShowContainer,
     AuthorizedContent,
-    useProjectAccessStatus,
     useAuthorization,
+    useProjectAccessStatus,
 } from 'modules/auth';
-import { getEditView } from 'modules/archive';
+import { fetchData, getInterviewsStatus, getStatuses } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { fetchData, getStatuses, getInterviewsStatus } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function useLoadInterviewData({ interview, archiveId }) {
     const { t, locale } = useI18n();

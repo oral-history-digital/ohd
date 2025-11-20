@@ -1,8 +1,8 @@
-import { useSelector } from 'react-redux';
-import flow from 'lodash.flow';
 import curry from 'lodash.curry';
-
+import flow from 'lodash.flow';
 import { useMapReferenceTypes } from 'modules/map';
+import { useSelector } from 'react-redux';
+
 import { getMapFilter } from '../selectors';
 import useMapLocations from '../useMapLocations';
 import addFilterInformation from './addFilterInformation';

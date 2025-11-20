@@ -1,12 +1,11 @@
-import useSWRImmutable from 'swr/immutable';
+import groupBy from 'lodash.groupby';
+import { fetcher } from 'modules/api';
+import { getEditView } from 'modules/archive';
+import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
-import groupBy from 'lodash.groupby';
-
-import { fetcher } from 'modules/api';
-import { usePathBase } from 'modules/routes';
-import { getEditView } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/user';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useEntryReferences(registryEntry) {
     const pathBase = usePathBase();

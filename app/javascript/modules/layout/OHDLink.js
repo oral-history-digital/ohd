@@ -1,13 +1,13 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 
-import { getCurrentUser } from 'modules/data';
+import classNames from 'classnames';
 import { setProjectId } from 'modules/archive';
+import { OHD_DOMAINS } from 'modules/constants';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { OHD_DOMAINS } from 'modules/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function OHDLink({ className }) {
     const { locale } = useI18n();

@@ -1,14 +1,14 @@
+import {
+    deleteData,
+    fetchData,
+    getPermissions,
+    getPermissionsStatus,
+    submitData,
+} from 'modules/data';
+import { getPermissionsQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getPermissionsQuery } from 'modules/search';
-import {
-    fetchData,
-    deleteData,
-    submitData,
-    getPermissions,
-    getPermissionsStatus,
-} from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => ({

@@ -1,8 +1,8 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
-
 import { apiMiddleware } from 'modules/api';
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
+import thunkMiddleware from 'redux-thunk';
+
 import combinedReducers from './combinedReducers';
 import persistedState from './persistedState';
 

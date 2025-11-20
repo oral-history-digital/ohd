@@ -1,25 +1,9 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 
 import {
-    setProjectId,
-    getProjectId,
-    setArchiveId,
-    setAvailableViewModes,
-    setViewMode,
-    clearViewModes,
-} from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { InterviewContainer } from 'modules/interview';
-import { SearchPage } from 'modules/search';
-import { SearchMap } from 'modules/search-map';
-import { RegistryContainer } from 'modules/registry';
-import {
     EditInterview,
-    EditProjectConfig,
     EditProjectAccessConfig,
+    EditProjectConfig,
     EditProjectDisplay,
     EditProjectInfo,
     EventTypesAdminPage,
@@ -29,20 +13,36 @@ import {
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
     WrappedLanguagesContainer,
-    WrappedTranslationValuesContainer,
     WrappedPermissionsContainer,
     WrappedRegistryNameTypesContainer,
     WrappedRegistryReferenceTypesContainer,
     WrappedRolesContainer,
     WrappedTaskTypesContainer,
+    WrappedTranslationValuesContainer,
 } from 'modules/admin';
+import { UsersAdminPage } from 'modules/admin';
+import {
+    clearViewModes,
+    getProjectId,
+    setArchiveId,
+    setAvailableViewModes,
+    setProjectId,
+    setViewMode,
+} from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
+import { InterviewContainer } from 'modules/interview';
+import { TextPage } from 'modules/layout';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { RegistryContainer } from 'modules/registry';
+import { SearchPage } from 'modules/search';
+import { SearchMap } from 'modules/search-map';
 import {
     AccountPage,
-    OrderNewPasswordContainer,
     ActivateAccount,
+    OrderNewPasswordContainer,
 } from 'modules/user';
-import { UsersAdminPage } from 'modules/admin';
-import { TextPage } from 'modules/layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
 
 export default function ProjectRoutes() {
     const projectId = useSelector(getProjectId);

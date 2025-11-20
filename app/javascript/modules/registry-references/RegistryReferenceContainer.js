@@ -1,13 +1,13 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     deleteData,
     fetchData,
+    getCurrentProject,
     getRegistryEntries,
     getRegistryEntriesStatus,
-    getCurrentProject,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RegistryReference from './RegistryReference';
 
 const mapStateToProps = (state) => ({

@@ -1,10 +1,10 @@
-import { Helmet } from 'react-helmet';
-
 import { useTrackPageView } from 'modules/analytics';
+import { Fetch } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
-import { useI18n } from 'modules/i18n';
-import { Fetch } from 'modules/data';
+import { Helmet } from 'react-helmet';
+
 import MainCatalog from './MainCatalog';
 
 export default function MainCatalogPage() {

@@ -1,11 +1,11 @@
+import {
+    getCurrentTape,
+    getMediaTime,
+    sendTimeChangeRequest,
+} from 'modules/media-player';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    sendTimeChangeRequest,
-    getCurrentTape,
-    getMediaTime,
-} from 'modules/media-player';
 import Heading from './Heading';
 import isHeadingActive from './isHeadingActive';
 

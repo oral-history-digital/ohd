@@ -1,12 +1,11 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
-    setArchiveId,
     addRemoveArchiveId,
     getSelectedArchiveIds,
+    setArchiveId,
 } from 'modules/archive';
-import { getLanguages, getCollections, getProjects } from 'modules/data';
+import { getCollections, getLanguages, getProjects } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import InterviewListRow from './InterviewListRow';
 

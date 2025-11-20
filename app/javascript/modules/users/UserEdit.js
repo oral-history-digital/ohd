@@ -1,9 +1,9 @@
+import { getCurrentProject } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { useSelector } from 'react-redux';
 
-import UserFormContainer from './UserFormContainer';
-import { useI18n } from 'modules/i18n';
-import { getCurrentProject } from 'modules/data';
 import ProjectsOverview from './ProjectsOverview';
+import UserFormContainer from './UserFormContainer';
 
 export default function UserEdit({ data, dataPath, onSubmit }) {
     const { t, locale } = useI18n();

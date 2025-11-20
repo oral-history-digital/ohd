@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
 import { FacetLink } from 'modules/interview-metadata';
 import { useSearchParams } from 'modules/query-string';
 import { Checkbox } from 'modules/ui';
+import PropTypes from 'prop-types';
 
 export default function FacetValue({ id, facetName, facetValue, checked }) {
     const { locale } = useI18n();

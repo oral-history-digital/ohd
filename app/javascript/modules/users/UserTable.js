@@ -1,24 +1,24 @@
-import { useMemo, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
 
-import { useI18n } from 'modules/i18n';
 import {
+    Fetch,
     getCurrentProject,
     getProjects,
-    Fetch,
-    getRolesForCurrentProjectFetched,
     getRolesForCurrentProject,
+    getRolesForCurrentProjectFetched,
 } from 'modules/data';
+import { SelectContainer } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { DateCell, TableWithPagination } from 'modules/tables';
+import { useSelector } from 'react-redux';
 
-import { TableWithPagination, DateCell } from 'modules/tables';
-import useUsers from './useUsers';
-import UserRowActions from './UserRowActions';
-import UserRowInterviewPermissions from './UserRowInterviewPermissions';
 import ArchiveManagementInCell from './ArchiveManagementInCell';
 import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 import RolesCell from './RolesCell';
 import TasksCell from './TasksCell';
-import { SelectContainer } from 'modules/forms';
+import UserRowActions from './UserRowActions';
+import UserRowInterviewPermissions from './UserRowInterviewPermissions';
+import useUsers from './useUsers';
 
 export default function UserTable() {
     const { t, locale } = useI18n();

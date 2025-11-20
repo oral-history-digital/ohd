@@ -1,8 +1,8 @@
+import { getProjectId } from 'modules/archive';
+import { getCurrentProject, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentProject } from 'modules/data';
-import { getProjectId } from 'modules/archive';
 import SubmitOnBlurFormComponent from './SubmitOnBlurFormComponent';
 
 const mapStateToProps = (state) => ({

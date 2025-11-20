@@ -1,10 +1,10 @@
 import { memo } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { FaArrowUp } from 'react-icons/fa';
 
-import { scrollSmoothlyTo } from 'modules/user-agent';
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { scrollSmoothlyTo } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { FaArrowUp } from 'react-icons/fa';
 
 function BackToTopButton({ visible = false, fullscreen = false }) {
     const { t } = useI18n();

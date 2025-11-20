@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { FaCopy } from 'react-icons/fa';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import { useI18n } from 'modules/i18n';
 import { useCopyState } from 'modules/react-toolbox';
+import PropTypes from 'prop-types';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { FaCopy } from 'react-icons/fa';
 
 export default function CopyText({
     className,

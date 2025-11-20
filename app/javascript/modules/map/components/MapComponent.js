@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet';
-
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { CircleMarker, MapContainer, TileLayer } from 'react-leaflet';
+
 import MapPopup from './MapPopup';
-import MapTooltip from './MapTooltip';
 import MapResizeHandler from './MapResizeHandler';
+import MapTooltip from './MapTooltip';
 
 export default function MapComponent({
     className,

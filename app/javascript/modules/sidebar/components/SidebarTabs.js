@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
-import '@reach/tabs/styles.css';
+import { useEffect, useState } from 'react';
 
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
+import '@reach/tabs/styles.css';
 import { useAuthorization } from 'modules/auth';
-import { Spinner } from 'modules/spinners';
-import { usePathBase, useProject } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
-import ArchiveSearchTabPanel from './ArchiveSearchTabPanel';
-import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
-import WorkbookTabPanel from './WorkbookTabPanel';
-import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
-import IndexingTabPanel from './IndexingTabPanel';
-import MapTabPanelContainer from './MapTabPanelContainer';
-import InterviewTabPanelContainer from './InterviewTabPanelContainer';
-import ProjectConfigTabPanel from './ProjectConfigTabPanel';
+import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import * as indexes from '../constants';
 import tabIndexFromRoute from '../tabIndexFromRoute';
+import ArchiveSearchTabPanel from './ArchiveSearchTabPanel';
+import IndexingTabPanel from './IndexingTabPanel';
+import InterviewTabPanelContainer from './InterviewTabPanelContainer';
+import MapTabPanelContainer from './MapTabPanelContainer';
+import ProjectConfigTabPanel from './ProjectConfigTabPanel';
+import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
+import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
+import WorkbookTabPanel from './WorkbookTabPanel';
 
 export default function SidebarTabs({
     selectedArchiveIds,

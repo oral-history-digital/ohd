@@ -1,9 +1,9 @@
+import { useIsEditor } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { useIsEditor } from 'modules/archive';
 import { getBanner } from './selectors';
 
 export default function Banner({ onClose }) {

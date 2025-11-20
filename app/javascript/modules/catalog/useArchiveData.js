@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import curry from 'lodash.curry';
 
-import { getPublicProjects, getCollections } from 'modules/data';
+import curry from 'lodash.curry';
+import { getCollections, getPublicProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import addChildCollections from './tree-builders/addChildCollections';
+import { useSelector } from 'react-redux';
+
 import mapCollection from './mappers/mapCollection';
 import rowComparator from './rowComparator';
+import addChildCollections from './tree-builders/addChildCollections';
 
 export default function useArchiveData(projectId) {
     const projects = useSelector(getPublicProjects);

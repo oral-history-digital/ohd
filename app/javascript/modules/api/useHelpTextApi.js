@@ -1,4 +1,5 @@
 import { usePathBase } from 'modules/routes';
+
 import fetchHeaders from './fetchHeaders';
 
 export default function useHelpTextApi() {

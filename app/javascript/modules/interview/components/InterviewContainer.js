@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { setArchiveId, getInterviewEditView } from 'modules/archive';
+import { getInterviewEditView, setArchiveId } from 'modules/archive';
 import {
     getCurrentInterview,
     getCurrentInterviewFetched,
     getIsCatalog,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Interview from './Interview';
 
 const mapStateToProps = (state) => ({

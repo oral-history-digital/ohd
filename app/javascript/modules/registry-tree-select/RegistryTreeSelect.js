@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
+import PropTypes from 'prop-types';
 
-import useRegistryTree from './useRegistryTree';
 import TreeSelectComponentWrapper from './TreeSelectComponentWrapper';
+import useRegistryTree from './useRegistryTree';
 
 export default function TreeSelect(props) {
     const { isLoading, data: tree } = useRegistryTree(

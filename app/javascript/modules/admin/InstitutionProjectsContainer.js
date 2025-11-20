@@ -1,13 +1,13 @@
+import {
+    deleteData,
+    fetchData,
+    getCurrentProject,
+    getInstitutions,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    getCurrentProject,
-    getInstitutions,
-    fetchData,
-    deleteData,
-    submitData,
-} from 'modules/data';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => {

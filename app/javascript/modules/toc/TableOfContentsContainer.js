@@ -1,9 +1,9 @@
+import { getArchiveId } from 'modules/archive';
+import { fetchData, getHeadings, getHeadingsFetched } from 'modules/data';
+import { getIsIdle } from 'modules/media-player';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, getHeadingsFetched, getHeadings } from 'modules/data';
-import { getArchiveId } from 'modules/archive';
-import { getIsIdle } from 'modules/media-player';
 import TableOfContents from './TableOfContents';
 
 const mapStateToProps = (state) => ({

@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
+
+import { isSegmentActive } from 'modules/interview-helpers';
+import { Spinner } from 'modules/spinners';
+import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
+import { ScrollToTop } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Virtuoso } from 'react-virtuoso';
 
-import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
-import { Spinner } from 'modules/spinners';
-import { ScrollToTop } from 'modules/user-agent';
-import { isSegmentActive } from 'modules/interview-helpers';
 import {
     EDIT_TABLE_FILTER_ALL,
-    EDIT_TABLE_FILTER_SOME,
+    EDIT_TABLE_FILTER_ANNOTATIONS,
     EDIT_TABLE_FILTER_HEADINGS,
     EDIT_TABLE_FILTER_REFERENCES,
-    EDIT_TABLE_FILTER_ANNOTATIONS,
+    EDIT_TABLE_FILTER_SOME,
 } from '../constants';
-import EditTableRowContainer from './EditTableRowContainer';
 import EditTableHeaderContainer from './EditTableHeaderContainer';
+import EditTableRowContainer from './EditTableRowContainer';
 
 export default function EditTable({
     interview,

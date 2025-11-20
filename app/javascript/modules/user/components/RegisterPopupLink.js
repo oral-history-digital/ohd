@@ -1,9 +1,9 @@
+import { getCurrentProject } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import RegisterFormContainer from './RegisterFormContainer';
-import { getCurrentProject } from 'modules/data';
 
 export default function RegisterPopupLink({}) {
     const { t } = useI18n();

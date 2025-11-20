@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 //import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
 
 import { Disclosure } from 'modules/ui';
-import { Spinner } from 'modules/spinners';
-import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
 import EntryReferences from './EntryReferences';
 import useEntryReferences from './useEntryReferences';
-import { useProject } from 'modules/routes';
 
 export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
     const { t } = useI18n();

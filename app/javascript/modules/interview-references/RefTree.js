@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { useIsEditor } from 'modules/archive';
-import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+
 import RefTreeChildren from './RefTreeChildren';
 
 export default function RefTree({

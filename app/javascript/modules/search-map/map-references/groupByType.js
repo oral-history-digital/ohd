@@ -1,5 +1,5 @@
-import keyBy from 'lodash.keyby';
 import groupBy from 'lodash.groupby';
+import keyBy from 'lodash.keyby';
 
 export default function groupByType(referenceTypes, references) {
     if (!Array.isArray(referenceTypes)) {

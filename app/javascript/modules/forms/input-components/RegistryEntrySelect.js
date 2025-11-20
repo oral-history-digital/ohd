@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { FaArrowUp } from 'react-icons/fa';
 
 import Select from './SelectContainer';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
 
 export default function RegistryEntrySelect({
     data,

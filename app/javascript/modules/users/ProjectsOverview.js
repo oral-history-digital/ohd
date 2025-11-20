@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import { getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function ProjectsOverview({ user }) {
     const { t, locale } = useI18n();

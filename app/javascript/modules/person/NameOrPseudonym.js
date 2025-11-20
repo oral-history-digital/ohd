@@ -1,10 +1,10 @@
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { ContentField } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
-import { ContentField } from 'modules/forms';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import PersonForm from './PersonForm';
 
 export default function NameOrPseudonym({

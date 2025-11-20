@@ -1,15 +1,15 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { setQueryParams, getRegistryReferenceTypesQuery } from 'modules/search';
 import {
-    fetchData,
     deleteData,
-    submitData,
+    fetchData,
     getCurrentProject,
     getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus,
+    submitData,
 } from 'modules/data';
+import { getRegistryReferenceTypesQuery, setQueryParams } from 'modules/search';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {

@@ -1,4 +1,5 @@
 import { PROJECT_DG, PROJECT_ZWAR } from 'modules/constants';
+
 import showTocTab from './showTocTab';
 
 test('is false if project is DG', () => {

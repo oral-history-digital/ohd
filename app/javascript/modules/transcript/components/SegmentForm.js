@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
 import { useInterviewContributors } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
 
 export default function SegmentForm({
     locale,

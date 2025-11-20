@@ -1,9 +1,9 @@
 import { Component } from 'react';
-import { Link } from 'react-router-dom';
 
-import { pathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 import { usePathBase } from 'modules/routes';
+import { Link } from 'react-router-dom';
 
 export default function TaskPreview({ data, setArchiveId, scope, user }) {
     const { t, locale } = useI18n();

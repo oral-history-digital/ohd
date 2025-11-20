@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
-import { Form } from 'modules/forms';
+import {
+    METADATA_SOURCE_EVENT_TYPE,
+    METADATA_SOURCE_INTERVIEW,
+    METADATA_SOURCE_PERSON,
+    METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
+} from 'modules/constants';
 import {
     Fetch,
     getRegistryReferenceTypesForCurrentProjectFetched,
 } from 'modules/data';
+import { useEventTypes } from 'modules/event-types';
+import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { useEventTypes } from 'modules/event-types';
-import {
-    METADATA_SOURCE_INTERVIEW,
-    METADATA_SOURCE_PERSON,
-    METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
-    METADATA_SOURCE_EVENT_TYPE,
-} from 'modules/constants';
+import PropTypes from 'prop-types';
+
 import useCombinedRegistryReferenceTypes from './useCombinedRegistryReferenceTypes';
 
 const NAME_VALUES = {

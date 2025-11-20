@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
-import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+
 import RegistryReferenceContainer from './RegistryReferenceContainer';
+import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
 export default function RegistryReferences({
     registryEntriesStatus,

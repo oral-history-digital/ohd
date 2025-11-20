@@ -1,11 +1,11 @@
+import { getEditView } from 'modules/archive';
+import { deleteData, fetchData, getProjects, submitData } from 'modules/data';
+import { ProjectTile, getProjectsStatus, getStatuses } from 'modules/data';
+import { setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getEditView } from 'modules/archive';
-import { setQueryParams } from 'modules/search';
-import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
-import { getProjectsStatus, getStatuses, ProjectTile } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {

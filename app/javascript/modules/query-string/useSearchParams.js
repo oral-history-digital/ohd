@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import queryString from 'query-string';
 
 import { useTrackPageViewFunction } from 'modules/analytics';
+import queryString from 'query-string';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const qsOptions = {
     arrayFormat: 'bracket',

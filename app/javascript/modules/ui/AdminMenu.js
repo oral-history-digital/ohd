@@ -1,14 +1,14 @@
 import { cloneElement, useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { FaTimes, FaEllipsisH } from 'react-icons/fa';
-import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
-import '@reach/menu-button/styles.css';
+
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
+import '@reach/menu-button/styles.css';
 import { VisuallyHidden } from '@reach/visually-hidden';
-
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaEllipsisH, FaTimes } from 'react-icons/fa';
 
 /**
  * Usage:

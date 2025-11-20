@@ -1,8 +1,8 @@
+import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
+import { deleteData, getCurrentProject } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { deleteData, getCurrentProject } from 'modules/data';
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import PhotoAdminButtons from './PhotoAdminButtons';
 
 const mapStateToProps = (state) => ({

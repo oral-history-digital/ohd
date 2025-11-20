@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-
 import { getEditView } from 'modules/archive';
 import {
-    getCurrentUser,
     getCurrentInterview,
+    getCurrentUser,
     getIsCatalog,
 } from 'modules/data';
+import { connect } from 'react-redux';
+
 import InterviewTextMaterials from './InterviewTextMaterials';
 
 const mapStateToProps = (state) => {

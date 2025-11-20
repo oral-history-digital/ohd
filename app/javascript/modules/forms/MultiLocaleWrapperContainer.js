@@ -1,6 +1,6 @@
+import { getProjectLocales } from 'modules/data';
 import { connect } from 'react-redux';
 
-import { getProjectLocales } from 'modules/data';
 import MultiLocaleWrapper from './MultiLocaleWrapper';
 
 const mapStateToProps = (state) => ({

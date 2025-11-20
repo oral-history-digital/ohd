@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
-
-import { useI18n } from 'modules/i18n';
 import { useHumanReadable } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default function DataDetails({
     detailsAttributes,

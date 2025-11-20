@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { FaSearch, FaTimesCircle } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { FaSearch, FaTimesCircle } from 'react-icons/fa';
+
 import useInterviewSearch from './useInterviewSearch';
 
 export default function InterviewSearchForm({ archiveId }) {

@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
-
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+
 import LinksForTapes from './LinksForTapes';
 
 export default function DownloadLinks({ archiveId, numTapes, interview }) {

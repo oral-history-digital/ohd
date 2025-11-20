@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
-
 import {
-    useTrackEventFunction,
     EVENT_CATEGORY_WORKBOOK,
     REMOVE_WORKBOOK_ITEM,
+    useTrackEventFunction,
 } from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 import useMutateWorkbook from '../useMutateWorkbook';
 

@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
-import useSWR from 'swr';
-
-import { getIsLoggedIn } from 'modules/user';
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
+import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 export default function useRestrictedInterviews() {
     const isLoggedIn = useSelector(getIsLoggedIn);

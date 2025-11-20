@@ -1,13 +1,13 @@
+import { fetchData } from 'modules/data';
+import {
+    getRegistryNameTypesQuery,
+    resetQuery,
+    setQueryParams,
+} from 'modules/search';
+import { hideSidebar } from 'modules/sidebar';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    resetQuery,
-    setQueryParams,
-    getRegistryNameTypesQuery,
-} from 'modules/search';
-import { fetchData } from 'modules/data';
-import { hideSidebar } from 'modules/sidebar';
 import DataSearchForm from './DataSearchForm';
 
 const mapStateToProps = (state) => ({

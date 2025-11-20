@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
+import PropTypes from 'prop-types';
 
 export default function PhotoForm({
     interview,

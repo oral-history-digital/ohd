@@ -1,8 +1,7 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { fetcher } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 function compareContributions(a, b) {
     const idResult = a.interview_id.localeCompare(b.interview_id);

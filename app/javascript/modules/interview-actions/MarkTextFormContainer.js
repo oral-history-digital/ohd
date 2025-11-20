@@ -1,12 +1,12 @@
+import { getArchiveId } from 'modules/archive';
+import {
+    getCurrentInterview,
+    getMarkTextStatus,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    submitData,
-    getCurrentInterview,
-    getMarkTextStatus,
-} from 'modules/data';
-import { getArchiveId } from 'modules/archive';
 import MarkTextForm from './MarkTextForm';
 
 const mapStateToProps = (state) => {

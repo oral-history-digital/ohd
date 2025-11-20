@@ -1,8 +1,8 @@
+import { setArchiveId } from 'modules/archive';
+import { getCurrentUser } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setArchiveId } from 'modules/archive';
-import { getCurrentUser } from 'modules/data';
 import TaskPreview from './TaskPreview';
 
 const mapStateToProps = (state) => {

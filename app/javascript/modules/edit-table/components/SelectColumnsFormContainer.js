@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import { getEditView } from 'modules/archive';
 import {
     getCurrentInterview,
-    getCurrentUser,
     getCurrentProject,
+    getCurrentUser,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { setColumnsWithCookie } from '../actions';
 import { getSelectedColumns } from '../selectors';
 import SelectColumnsForm from './SelectColumnsForm';

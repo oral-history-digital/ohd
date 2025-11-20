@@ -1,9 +1,9 @@
+import { getCurrentInterview } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { DumbTranscriptResult } from 'modules/interview-search';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { getCurrentInterview } from 'modules/data';
-import { DumbTranscriptResult } from 'modules/interview-search';
 import getTextAndLang from './getTextAndLang';
 
 export default function TranscriptResultList({ transcriptResults }) {

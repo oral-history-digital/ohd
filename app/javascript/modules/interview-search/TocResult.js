@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { useI18n } from 'modules/i18n';
-import { sendTimeChangeRequest } from 'modules/media-player';
-import { TapeAndTime } from 'modules/interview-helpers';
-import { getCurrentInterview } from 'modules/data';
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import { getCurrentInterview } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { TapeAndTime } from 'modules/interview-helpers';
+import { sendTimeChangeRequest } from 'modules/media-player';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function TocResult({ data }) {
     const dispatch = useDispatch();

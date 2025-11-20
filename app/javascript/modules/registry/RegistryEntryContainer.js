@@ -1,15 +1,15 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import {
+    addRemoveRegistryEntryId,
+    getSelectedRegistryEntryIds,
+} from 'modules/archive';
 import {
     fetchData,
     getRegistryEntries,
     getRegistryEntriesStatus,
 } from 'modules/data';
-import {
-    addRemoveRegistryEntryId,
-    getSelectedRegistryEntryIds,
-} from 'modules/archive';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import RegistryEntry from './RegistryEntry';
 
 const mapStateToProps = (state) => ({

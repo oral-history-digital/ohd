@@ -1,12 +1,12 @@
-import useSWRImmutable from 'swr/immutable';
-
-import { usePathBase } from 'modules/routes';
 import { fetcher } from 'modules/api';
 import {
-    useMapReferenceTypes,
     referenceTypesToColorMap,
     transformIntoMarkers,
+    useMapReferenceTypes,
 } from 'modules/map';
+import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
+
 import getBounds from './getBounds';
 
 export default function useInterviewMap(archiveId) {

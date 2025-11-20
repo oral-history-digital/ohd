@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux';
-
 import { getCurrentUser } from 'modules/data';
+import { useSelector } from 'react-redux';
 
 export function useProjectAccessStatus(project) {
     const user = useSelector(getCurrentUser);

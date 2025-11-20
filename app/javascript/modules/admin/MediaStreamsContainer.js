@@ -1,13 +1,13 @@
+import {
+    deleteData,
+    fetchData,
+    getCurrentProject,
+    getMediaStreamsForCurrentProject,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {
-    getCurrentProject,
-    fetchData,
-    deleteData,
-    submitData,
-    getMediaStreamsForCurrentProject,
-} from 'modules/data';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => {

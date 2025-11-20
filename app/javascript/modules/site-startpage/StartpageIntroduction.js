@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaSearch, FaList, FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { FaList, FaSearch, FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
 import useCatalogStats from './useCatalogStats';
 
 export default function StartpageIntroduction({ className }) {
