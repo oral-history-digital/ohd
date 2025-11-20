@@ -43,7 +43,7 @@ export default function Contribution({
         await invalidateAllPersonData();
     };
     if (!person) {
-        return <Spinner small />;
+        return <Spinner size="small" />;
     }
 
     if (
