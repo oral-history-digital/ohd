@@ -1,5 +1,5 @@
 import { createElement, useEffect } from 'react';
-import Observer from 'react-intersection-observer'
+import Observer from 'react-intersection-observer';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
@@ -52,7 +52,11 @@ export default function WrappedDataList({
     useEffect(() => {
         if (
             query &&
-            !(dataStatus?.[`for_projects_${project?.id}`] || dataStatus?.all || dataStatus?.[statifiedQuery(query)])
+            !(
+                dataStatus?.[`for_projects_${project?.id}`] ||
+                dataStatus?.all ||
+                dataStatus?.[statifiedQuery(query)]
+            )
         ) {
             fetchData(
                 { locale, project, projectId },
@@ -65,15 +69,23 @@ export default function WrappedDataList({
         if (otherDataToLoad.length) {
             otherDataToLoad.forEach((d) => {
                 if (!statuses?.[d]?.all) {
-                    fetchData({ locale, project, projectId }, pluralize(d), null, null, 'all');
+                    fetchData(
+                        { locale, project, projectId },
+                        pluralize(d),
+                        null,
+                        null,
+                        'all'
+                    );
                 }
             });
         }
     }, []);
 
     function handleScroll(inView) {
-        if(inView){
-            setQueryParams(pluralize(nestedScope || scope), {page: query.page + 1});
+        if (inView) {
+            setQueryParams(pluralize(nestedScope || scope), {
+                page: query.page + 1,
+            });
             fetchData(
                 { locale, project, projectId },
                 pluralize(scope),
@@ -113,21 +125,27 @@ export default function WrappedDataList({
         }
     }
 
-    const sortedData = sortData(data, sortAttribute, sortAttributeTranslated,
-        locale);
+    const sortedData = sortData(
+        data,
+        sortAttribute,
+        sortAttributeTranslated,
+        locale
+    );
 
-    const notFetched = !(/^fetched/.test(dataStatus?.[`for_projects_${project?.id}`])
-        || /^fetched/.test(dataStatus?.all));
-    const fetching = dataStatus?.[statifiedQuery(query)]?.split('-')[0] === 'fetching';
-    const hasMorePages = !resultPagesCount || resultPagesCount > parseInt(query.page);
+    const notFetched = !(
+        /^fetched/.test(dataStatus?.[`for_projects_${project?.id}`]) ||
+        /^fetched/.test(dataStatus?.all)
+    );
+    const fetching =
+        dataStatus?.[statifiedQuery(query)]?.split('-')[0] === 'fetching';
+    const hasMorePages =
+        !resultPagesCount || resultPagesCount > parseInt(query.page);
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
-                    <title>
-                        {t(`activerecord.models.${scope}.other`)}
-                    </title>
+                    <title>{t(`activerecord.models.${scope}.other`)}</title>
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn={true}>
@@ -140,11 +158,13 @@ export default function WrappedDataList({
                             scope={scope}
                             interview={interview}
                             task={task}
-                            onClose={closeModal => createForm(undefined, closeModal, closeModal)}
+                            onClose={(closeModal) =>
+                                createForm(undefined, closeModal, closeModal)
+                            }
                         />
                     )}
 
-                    {sortedData.map(data => (
+                    {sortedData.map((data) => (
                         <DataContainer
                             data={data}
                             scope={scope}
@@ -165,19 +185,23 @@ export default function WrappedDataList({
                             scope={scope}
                             interview={interview}
                             task={task}
-                            onClose={closeModal => createForm(undefined, closeModal, closeModal)}
+                            onClose={(closeModal) =>
+                                createForm(undefined, closeModal, closeModal)
+                            }
                         />
                     )}
 
-                    {query && notFetched && (
-                        fetching ?
-                            (<Spinner />) :
-                            (hasMorePages && (
+                    {query &&
+                        notFetched &&
+                        (fetching ? (
+                            <Spinner />
+                        ) : (
+                            hasMorePages && (
                                 <Observer
-                                    onChange={inView => handleScroll(inView)}
+                                    onChange={(inView) => handleScroll(inView)}
                                 />
-                            ))
-                    )}
+                            )
+                        ))}
                 </AuthShowContainer>
 
                 <AuthShowContainer ifLoggedOut ifNoProject>

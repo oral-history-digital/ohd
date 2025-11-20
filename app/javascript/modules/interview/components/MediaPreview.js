@@ -16,9 +16,11 @@ export default function MediaPreview() {
     const [loadingError, setLoadingError] = useState(false);
 
     function imageAvailable() {
-        return (project.show_preview_img || projectAccessGranted)
-            && interview.still_url
-            && !loadingError;
+        return (
+            (project.show_preview_img || projectAccessGranted) &&
+            interview.still_url &&
+            !loadingError
+        );
     }
 
     return (
@@ -31,11 +33,14 @@ export default function MediaPreview() {
                     <img
                         className="MediaPreview-image"
                         src={interview.still_url}
-                        alt={interview.media_type === 'video'
-                            ? t('modules.interview.video_preview')
-                            : t('modules.interview.audio_preview')}
+                        alt={
+                            interview.media_type === 'video'
+                                ? t('modules.interview.video_preview')
+                                : t('modules.interview.audio_preview')
+                        }
                         onError={() => setLoadingError(true)}
-                    />) : (
+                    />
+                ) : (
                     <MediaIcon
                         interview={interview}
                         className="MediaPreview-icon"
@@ -44,7 +49,9 @@ export default function MediaPreview() {
             </div>
             <div
                 className="u-mt"
-                dangerouslySetInnerHTML={{__html: interview.landing_page_texts[locale]}}
+                dangerouslySetInnerHTML={{
+                    __html: interview.landing_page_texts[locale],
+                }}
             />
         </div>
     );

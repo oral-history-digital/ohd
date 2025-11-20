@@ -36,8 +36,11 @@ export default function InterviewPreview({
     const paramStr = queryString.stringify(params, { skipNull: true });
     const linkPath = `interviews/${interview.archive_id}?${paramStr}`;
 
-    const { isLoading, numResults, data: searchResults } =
-        useInterviewSearch(interview.archive_id, fulltext, project);
+    const {
+        isLoading,
+        numResults,
+        data: searchResults,
+    } = useInterviewSearch(interview.archive_id, fulltext, project);
 
     const doSetArchiveId = () => setArchiveId(interview.archive_id);
 
@@ -46,34 +49,43 @@ export default function InterviewPreview({
     }
 
     const itemsByInterview = keyBy(savedInterviews, 'media_id');
-    const isInWorkbook = itemsByInterview && interview.archive_id in itemsByInterview;
+    const isInWorkbook =
+        itemsByInterview && interview.archive_id in itemsByInterview;
 
     return (
-        <div className={classNames('InterviewCard', { 'is-expanded': isExpanded })}>
+        <div
+            className={classNames('InterviewCard', {
+                'is-expanded': isExpanded,
+            })}
+        >
             <ThumbnailBadge
                 loading={isLoading}
                 numSearchResults={numResults}
-                onClick={() => setIsExpanded(prev => !prev)}
+                onClick={() => setIsExpanded((prev) => !prev)}
             />
             {isLoggedIn && (
                 <Modal
-                    title={isInWorkbook ? '' : t('save_interview_reference_tooltip')}
+                    title={
+                        isInWorkbook
+                            ? ''
+                            : t('save_interview_reference_tooltip')
+                    }
                     trigger={isInWorkbook ? <FaStar /> : <FaRegStar />}
                     triggerClassName={classNames('InterviewCard-star', {
                         'is-active': isInWorkbook,
                     })}
                     disabled={isInWorkbook}
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <WorkbookItemForm
                             project={project}
                             interview={interview}
                             description=""
-                            properties={{title: interview.title}}
+                            properties={{ title: interview.title }}
                             reference_id={interview.id}
-                            reference_type='Interview'
+                            reference_type="Interview"
                             media_id={interview.archive_id}
-                            type='InterviewReference'
+                            type="InterviewReference"
                             submitLabel={t('modules.workbook.bookmark')}
                             onSubmit={closeModal}
                             onCancel={closeModal}
@@ -108,12 +120,16 @@ export default function InterviewPreview({
                 </div>
             )}
 
-            <AuthorizedContent object={interview} action='update'>
+            <AuthorizedContent object={interview} action="update">
                 <div>
                     <Checkbox
-                        className='export-checkbox'
-                        checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
-                        onChange={() => {addRemoveArchiveId(interview.archive_id)}}
+                        className="export-checkbox"
+                        checked={
+                            selectedArchiveIds.indexOf(interview.archive_id) > 0
+                        }
+                        onChange={() => {
+                            addRemoveArchiveId(interview.archive_id);
+                        }}
                     />
                 </div>
             </AuthorizedContent>

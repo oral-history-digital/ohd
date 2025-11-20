@@ -8,9 +8,7 @@ import { Spinner } from 'modules/spinners';
 import { getTextAndLang } from 'modules/interview-references';
 import DumbTranscriptResult from './DumbTranscriptResult';
 
-export default function RegistryResult({
-    data,
-}) {
+export default function RegistryResult({ data }) {
     const { locale } = useI18n();
     const flattenedRefTree = useSelector(getFlattenedRefTree);
     const interview = useSelector(getCurrentInterview);
@@ -19,38 +17,40 @@ export default function RegistryResult({
         return <Spinner small />;
     }
 
-    const title = (<>
-        <h3
-            className="SearchResult-heading"
-            dangerouslySetInnerHTML={{__html: data.text[locale]}}
-        />
-        {data.notes[locale] && (
-            <p className="SearchResult-meta">
-                {data.notes[locale]}
-            </p>
-        )}
-    </>);
+    const title = (
+        <>
+            <h3
+                className="SearchResult-heading"
+                dangerouslySetInnerHTML={{ __html: data.text[locale] }}
+            />
+            {data.notes[locale] && (
+                <p className="SearchResult-meta">{data.notes[locale]}</p>
+            )}
+        </>
+    );
 
     return (
         <div className="SearchResult">
             <Disclosure title={title}>
                 <div className="u-mt-small">
-                    {
-                        flattenedRefTree[data.id]?.children.map((entry, index) => {
-                            const [text, lang] = getTextAndLang(entry.text, locale, interview.alpha3);
+                    {flattenedRefTree[data.id]?.children.map((entry, index) => {
+                        const [text, lang] = getTextAndLang(
+                            entry.text,
+                            locale,
+                            interview.alpha3
+                        );
 
-                            return (
-                                <DumbTranscriptResult
-                                    key={index}
-                                    highlightedText={text}
-                                    tapeNumber={entry.tape_nbr}
-                                    time={entry.time}
-                                    lang={lang}
-                                    transcriptCoupled={interview.transcript_coupled}
-                                />
-                            );
-                        })
-                    }
+                        return (
+                            <DumbTranscriptResult
+                                key={index}
+                                highlightedText={text}
+                                tapeNumber={entry.tape_nbr}
+                                time={entry.time}
+                                lang={lang}
+                                transcriptCoupled={interview.transcript_coupled}
+                            />
+                        );
+                    })}
                 </div>
             </Disclosure>
         </div>

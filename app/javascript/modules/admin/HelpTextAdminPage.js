@@ -18,11 +18,9 @@ export default function HelpTextAdminPage() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
-                    <title>
-                        {t('activerecord.models.help_text.other')}
-                    </title>
+                    <title>{t('activerecord.models.help_text.other')}</title>
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
@@ -31,7 +29,6 @@ export default function HelpTextAdminPage() {
                     </h1>
 
                     <HelpTextTable />
-
                 </AuthShowContainer>
 
                 <AuthShowContainer ifLoggedOut ifNoProject>

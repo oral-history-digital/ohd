@@ -10,12 +10,14 @@ export default function EditProjectConfig() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
                     <title>{t(`edit.project.access_config`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>{t(`edit.project.access_config`)}</h1>
+                    <h1 className="registry-entries-title">
+                        {t(`edit.project.access_config`)}
+                    </h1>
                     <EditProjectAccessConfigAttributesContainer />
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
@@ -25,4 +27,3 @@ export default function EditProjectConfig() {
         </EditViewOrRedirect>
     );
 }
-

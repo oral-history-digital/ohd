@@ -15,7 +15,8 @@ export default function RegistryEntryShow({
     const { locale } = useI18n();
     const registryEntries = useSelector(getRegistryEntries);
     const registryEntry = registryEntries[registryEntryId];
-    const showOpenStreetMapLink = registryEntry.latitude + registryEntry.longitude !== 0;
+    const showOpenStreetMapLink =
+        registryEntry.latitude + registryEntry.longitude !== 0;
 
     return (
         <div>
@@ -33,12 +34,8 @@ export default function RegistryEntryShow({
                     </small>
                 )}
             </h3>
-            <div className='small-right'>
-                {normDataLinks}
-            </div>
-            <p>
-                {registryEntry.notes[locale]}
-            </p>
+            <div className="small-right">{normDataLinks}</div>
+            <p>{registryEntry.notes[locale]}</p>
             <EntryReferenceGroups
                 registryEntry={registryEntry}
                 onSubmit={onSubmit}

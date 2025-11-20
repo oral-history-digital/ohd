@@ -10,13 +10,16 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         project: getCurrentProject(state),
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(NestedScopeElement);
-

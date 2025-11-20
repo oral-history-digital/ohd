@@ -12,11 +12,18 @@ const mapStateToProps = (state) => {
         currentUser: getCurrentUser(state),
         projectId: getProjectId(state),
         countryKeys: getCountryKeys(state),
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
-export default connect(mapStateToProps, mapDispatchToProps)(CorrectUserDataForm);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CorrectUserDataForm);

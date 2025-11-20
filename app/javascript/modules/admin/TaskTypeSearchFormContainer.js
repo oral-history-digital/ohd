@@ -9,16 +9,18 @@ import DataSearchForm from './DataSearchForm';
 const mapStateToProps = (state) => ({
     query: getTaskTypesQuery(state),
     scope: 'task_type',
-    searchableAttributes: [
-        {attributeName: 'label'},
-    ],
+    searchableAttributes: [{ attributeName: 'label' }],
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    setQueryParams,
-    resetQuery,
-    hideSidebar,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            setQueryParams,
+            resetQuery,
+            hideSidebar,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSearchForm);

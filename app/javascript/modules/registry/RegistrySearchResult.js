@@ -15,7 +15,7 @@ export default function RegistrySearchResult({
             hideCheckbox={hideCheckbox}
             hideEditButtons={hideEditButtons}
         >
-            <RegistryEntryBreadcrumbs registryEntry={result}/>
+            <RegistryEntryBreadcrumbs registryEntry={result} />
         </RegistryEntryContainer>
     );
 }

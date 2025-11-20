@@ -9,14 +9,18 @@ import {
 } from 'modules/data';
 import InterviewForm from './InterviewForm';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     collections: getCollectionsForCurrentProject(state),
     contributionTypes: getContributionTypesForCurrentProject(state),
     languages: getLanguages(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewForm);

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { submitData, getCurrentProject } from 'modules/data';
 import EditData from './EditData';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const project = getCurrentProject(state);
     const formElements = [];
     const DEFAULT_FORM_ELEMENTS = {
@@ -39,7 +39,7 @@ const mapStateToProps = state => {
         },
         specification: {},
         tos_agreement: {},
-    }
+    };
 
     if (project) {
         Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute, value]) => {
@@ -52,27 +52,37 @@ const mapStateToProps = state => {
                 elementType: 'input',
                 attribute: `[${attribute}_setter]display`,
                 labelKey: 'edit.default.display',
-                value: String(project.access_config[attribute].display).toLowerCase() === 'true',
-                type: "checkbox"
+                value:
+                    String(
+                        project.access_config[attribute].display
+                    ).toLowerCase() === 'true',
+                type: 'checkbox',
             });
             formElements.push({
                 elementType: 'input',
                 attribute: `[${attribute}_setter]obligatory`,
                 labelKey: 'edit.default.obligatory',
-                value: String(project.access_config[attribute].obligatory).toLowerCase() === 'true',
-                type: "checkbox"
+                value:
+                    String(
+                        project.access_config[attribute].obligatory
+                    ).toLowerCase() === 'true',
+                type: 'checkbox',
             });
             if (DEFAULT_FORM_ELEMENTS[attribute].values) {
-                DEFAULT_FORM_ELEMENTS[attribute].values.map(value => {
-                formElements.push({
-                    elementType: 'input',
-                    attribute: `[${attribute}_setter][values]${value}`,
-                    labelKey: `user_project.${attribute}.${value}`,
-                    className: 'is-option',
-                    value: String(project.access_config[attribute].values[value]).toLowerCase() === 'true',
-                    type: "checkbox"
+                DEFAULT_FORM_ELEMENTS[attribute].values.map((value) => {
+                    formElements.push({
+                        elementType: 'input',
+                        attribute: `[${attribute}_setter][values]${value}`,
+                        labelKey: `user_project.${attribute}.${value}`,
+                        className: 'is-option',
+                        value:
+                            String(
+                                project.access_config[attribute].values[value]
+                            ).toLowerCase() === 'true',
+                        type: 'checkbox',
+                    });
                 });
-            })};
+            }
         });
     }
 
@@ -81,12 +91,15 @@ const mapStateToProps = state => {
         scope: 'access_config',
         helpTextCode: 'access_config_form',
         formElements: formElements,
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditData);
-

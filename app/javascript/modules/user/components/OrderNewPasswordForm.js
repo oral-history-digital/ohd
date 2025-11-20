@@ -7,56 +7,62 @@ import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { EMAIL_REGEX } from 'modules/constants';
 
-export default function OrderNewPasswordForm ({
-    user,
-    submitOrderNewPassword,
-}) {
+export default function OrderNewPasswordForm({ user, submitOrderNewPassword }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const location = useLocation();
     const from = location.state?.from;
 
-    const [emailCheckResponse, setEmailCheckResponse] = useState({reset_password_error: false, msg: null});
+    const [emailCheckResponse, setEmailCheckResponse] = useState({
+        reset_password_error: false,
+        msg: null,
+    });
 
-    const [email, setEmail] =  useState(user && EMAIL_REGEX.test(user.email) ? user.email : null);
-    const [error, setError] =  useState(!(user && EMAIL_REGEX.test(user.email)));
+    const [email, setEmail] = useState(
+        user && EMAIL_REGEX.test(user.email) ? user.email : null
+    );
+    const [error, setError] = useState(!(user && EMAIL_REGEX.test(user.email)));
 
     const handleChange = (name, value) => {
         if (EMAIL_REGEX.test(value)) {
             fetch(`${pathBase}/users/check_email?email=${value}`)
-                .then(res => res.json())
-                .then(json => setEmailCheckResponse(json));
+                .then((res) => res.json())
+                .then((json) => setEmailCheckResponse(json));
         }
         setEmail(value);
-    }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(!error && !emailCheckResponse.reset_password_error) {
+        if (!error && !emailCheckResponse.reset_password_error) {
             submitOrderNewPassword(`${pathBase}/users/password`, {
                 user: { email, from },
             });
         }
-    }
+    };
 
     const handleErrors = (name, bool) => {
         setError(bool);
-    }
+    };
 
     return (
-        <form className='default' onSubmit={handleSubmit}>
+        <form className="default" onSubmit={handleSubmit}>
             <InputContainer
-                scope='user'
-                attribute='email'
+                scope="user"
+                attribute="email"
                 value={user && EMAIL_REGEX.test(user.email) ? user.email : ''}
-                type='text'
+                type="text"
                 showErrors={error || emailCheckResponse.reset_password_error}
-                help={emailCheckResponse.reset_password_error && (
-                    <p className='notifications'>
-                        {emailCheckResponse.msg}
-                    </p>
-                )}
-                validate={function(v, t){return (EMAIL_REGEX.test(v) && !t)}}
+                help={
+                    emailCheckResponse.reset_password_error && (
+                        <p className="notifications">
+                            {emailCheckResponse.msg}
+                        </p>
+                    )
+                }
+                validate={function (v, t) {
+                    return EMAIL_REGEX.test(v) && !t;
+                }}
                 handleChange={handleChange}
                 handleErrors={handleErrors}
             />

@@ -5,7 +5,7 @@ import {
     getCurrentInterview,
     getCurrentIntervieweeId,
     getCurrentProject,
-    getIsCatalog
+    getIsCatalog,
 } from 'modules/data';
 import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/user';
@@ -22,9 +22,13 @@ const mapStateToProps = (state) => ({
     isLoggedIn: getIsLoggedIn(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    hideSidebar,
-    setViewMode,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            hideSidebar,
+            setViewMode,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewTabPanel);

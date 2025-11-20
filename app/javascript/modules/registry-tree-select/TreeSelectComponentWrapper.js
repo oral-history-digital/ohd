@@ -13,9 +13,9 @@ export default class TreeSelectComponentWrapper extends Component {
     }
 
     render() {
-        return (<TreeSelectComponent {...this.props} />);
+        return <TreeSelectComponent {...this.props} />;
     }
-};
+}
 
 TreeSelectComponentWrapper.propTypes = {
     isLoading: PropTypes.bool.isRequired,

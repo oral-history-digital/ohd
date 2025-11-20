@@ -11,7 +11,8 @@ import addLocationCount from './addLocationCount';
 export default function useSearchMap() {
     const filter = useSelector(getMapFilter);
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
     const { locations, error: locationsError } = useMapLocations();
 
     let locationTypes = [];
@@ -23,5 +24,9 @@ export default function useSearchMap() {
         locationTypes = transformData(referenceTypes);
     }
 
-    return { isLoading: !(referenceTypes && locations), locationTypes, locationsError };
+    return {
+        isLoading: !(referenceTypes && locations),
+        locationTypes,
+        locationsError,
+    };
 }

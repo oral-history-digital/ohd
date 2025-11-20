@@ -35,17 +35,21 @@ export default function SearchMap() {
     const { isLoading: locationsLoading } = useMapLocations();
     useTrackPageView();
 
-    const defaultSection = mapSections.find(section => section.name === currentSection);
+    const defaultSection = mapSections.find(
+        (section) => section.name === currentSection
+    );
     const bounds = [
         [defaultSection.corner1_lat, defaultSection.corner1_lon],
-        [defaultSection.corner2_lat, defaultSection.corner2_lon]
+        [defaultSection.corner2_lat, defaultSection.corner2_lon],
     ];
 
     function handleViewChange({ center, zoom }) {
-        dispatch(setMapView({
-            center,
-            zoom,
-        }));
+        dispatch(
+            setMapView({
+                center,
+                zoom,
+            })
+        );
     }
 
     if (!project.has_map) {
@@ -61,27 +65,27 @@ export default function SearchMap() {
             <div className="wrapper-content map SearchMap">
                 {isEditor && <HelpText code="search_map" className="u-mb" />}
 
-                {
-                    error ?
-                        (<div>
-                            {t('modules.search_map.error')}: {error.message}
-                        </div>) :
-                        (<MapComponent
-                            className="Map--search"
-                            loading={isLoading}
-                            markers={markers || []}
-                            popupComponent={SearchMapPopup}
-                        >
-                            <>
-                                {locationsLoading && <MapSpinnerOverlay />}
-                                <MapNewBoundsSetter
-                                    bounds={bounds}
-                                    view={mapView}
-                                    onViewChange={handleViewChange}
-                                />
-                            </>
-                        </MapComponent>)
-                }
+                {error ? (
+                    <div>
+                        {t('modules.search_map.error')}: {error.message}
+                    </div>
+                ) : (
+                    <MapComponent
+                        className="Map--search"
+                        loading={isLoading}
+                        markers={markers || []}
+                        popupComponent={SearchMapPopup}
+                    >
+                        <>
+                            {locationsLoading && <MapSpinnerOverlay />}
+                            <MapNewBoundsSetter
+                                bounds={bounds}
+                                view={mapView}
+                                onViewChange={handleViewChange}
+                            />
+                        </>
+                    </MapComponent>
+                )}
 
                 <div className="SearchMap-controls">
                     <MapFilterContainer />

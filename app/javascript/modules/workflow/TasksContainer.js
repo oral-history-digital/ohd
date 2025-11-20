@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, submitData, getTaskTypesForCurrentProject } from 'modules/data';
+import {
+    fetchData,
+    deleteData,
+    submitData,
+    getTaskTypesForCurrentProject,
+} from 'modules/data';
 import { DataList } from 'modules/admin';
 import TaskPreviewContainer from './TaskPreviewContainer';
 
@@ -26,7 +31,7 @@ const mapStateToProps = (state) => {
             'finished_at',
             'cleared_at',
             'restarted_at',
-            'workflow_state'
+            'workflow_state',
         ],
         formElements: [
             {
@@ -34,11 +39,15 @@ const mapStateToProps = (state) => {
                 elementType: 'select',
                 values: getTaskTypesForCurrentProject(state),
                 withEmpty: true,
-                validate: function(v){return /\d+/.test(v)}
+                validate: function (v) {
+                    return /\d+/.test(v);
+                },
             },
             {
                 attribute: 'archive_id',
-                validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
+                validate: function (v) {
+                    return /^[A-z]{2,3}\d{3,4}$/.test(v);
+                },
             },
             {
                 attribute: 'workflow_state',
@@ -48,13 +57,17 @@ const mapStateToProps = (state) => {
             },
         ],
         showComponent: TaskPreviewContainer,
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

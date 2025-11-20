@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaTrash } from 'react-icons/fa';
@@ -8,9 +8,7 @@ import { deleteData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
-export default function DestroyTranscript({
-    interview,
-}) {
+export default function DestroyTranscript({ interview }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const dispatch = useDispatch();
@@ -19,38 +17,65 @@ export default function DestroyTranscript({
 
     return (
         <>
-            { interview?.alpha3s_with_transcript.map( alpha3 => {
+            {interview?.alpha3s_with_transcript.map((alpha3) => {
                 if (alpha3IsDestroying === alpha3) {
-                    return <div><span className="u-mr-small">{t('deleting') + ' ' + alpha3 + '... '}<Spinner small /></span></div>;
+                    return (
+                        <div>
+                            <span className="u-mr-small">
+                                {t('deleting') + ' ' + alpha3 + '... '}
+                                <Spinner small />
+                            </span>
+                        </div>
+                    );
                 } else if (alpha3ToDestroy === alpha3) {
-                    return <div>
-                        <button
-                            type="button"
-                            className="Button Button--transparent Button--icon"
-                            title={t('really_destroy')}
-                            onClick={() => {
-                                dispatch(deleteData({locale, projectId, project},
-                                    'interviews', interview.archive_id, 'transcripts', alpha3,
-                                    false, false, setAlpha3IsDestroying(alpha3)
-                                ));
-                            }}
-                        >
-                            <span className="u-mr-small">{t('destroy.really_destroy_transcript', { alpha3: alpha3 })}</span>
-                            <FaTrash className="Icon Icon--danger" />
-                        </button>
-                    </div>
+                    return (
+                        <div>
+                            <button
+                                type="button"
+                                className="Button Button--transparent Button--icon"
+                                title={t('really_destroy')}
+                                onClick={() => {
+                                    dispatch(
+                                        deleteData(
+                                            { locale, projectId, project },
+                                            'interviews',
+                                            interview.archive_id,
+                                            'transcripts',
+                                            alpha3,
+                                            false,
+                                            false,
+                                            setAlpha3IsDestroying(alpha3)
+                                        )
+                                    );
+                                }}
+                            >
+                                <span className="u-mr-small">
+                                    {t('destroy.really_destroy_transcript', {
+                                        alpha3: alpha3,
+                                    })}
+                                </span>
+                                <FaTrash className="Icon Icon--danger" />
+                            </button>
+                        </div>
+                    );
                 } else {
-                    return <div>
-                        <button
-                            type="button"
-                            className="Button Button--transparent Button--icon"
-                            title={t('delete')}
-                            onClick={() => setAlpha3ToDestroy(alpha3)}
-                        >
-                            <span className="u-mr-small">{t('destroy.delete_transcript', { alpha3: alpha3 })}</span>
-                            <FaTrash className="Icon Icon--editorial" />
-                        </button>
-                    </div>
+                    return (
+                        <div>
+                            <button
+                                type="button"
+                                className="Button Button--transparent Button--icon"
+                                title={t('delete')}
+                                onClick={() => setAlpha3ToDestroy(alpha3)}
+                            >
+                                <span className="u-mr-small">
+                                    {t('destroy.delete_transcript', {
+                                        alpha3: alpha3,
+                                    })}
+                                </span>
+                                <FaTrash className="Icon Icon--editorial" />
+                            </button>
+                        </div>
+                    );
                 }
             })}
         </>
@@ -60,4 +85,3 @@ export default function DestroyTranscript({
 DestroyTranscript.propTypes = {
     interview: PropTypes.object.isRequired,
 };
-

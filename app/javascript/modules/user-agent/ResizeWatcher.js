@@ -5,14 +5,10 @@ import useResizeAware from 'react-resize-aware';
 import {
     SCREEN_WIDTH_BELOW_M,
     SCREEN_WIDTH_ABOVE_XL,
-    currentScreenWidth
+    currentScreenWidth,
 } from './media-queries';
 
-export default function ResizeWatcher({
-    children,
-    hideSidebar,
-    showSidebar,
-}) {
+export default function ResizeWatcher({ children, hideSidebar, showSidebar }) {
     const [screenWidth, setScreenWidth] = useState(null);
     const [resizeListener, sizes] = useResizeAware();
 
@@ -43,7 +39,7 @@ export default function ResizeWatcher({
             {resizeListener}
             {children}
         </div>
-    )
+    );
 }
 
 ResizeWatcher.propTypes = {

@@ -68,15 +68,25 @@ export default function FormComponent({
 
     function hasError(element) {
         let error = false;
-        if (typeof(element.validate) === 'function') {
+        if (typeof element.validate === 'function') {
             const elementValues = (
-                (data?.translations_attributes && Object.values(data.translations_attributes) || []).concat(
-                (values?.translations_attributes && Object.values(values.translations_attributes) || []))
-                    .map(t => t[element.attribute])
-            );
-            const elementValue = element.value || values?.[element.attribute] || data?.[element.attribute];
-            error = element.multiLocale ? !(elementValues?.some( value => element.validate(value))) :
-                !(elementValue && element.validate(elementValue))
+                (data?.translations_attributes &&
+                    Object.values(data.translations_attributes)) ||
+                []
+            )
+                .concat(
+                    (values?.translations_attributes &&
+                        Object.values(values.translations_attributes)) ||
+                        []
+                )
+                .map((t) => t[element.attribute]);
+            const elementValue =
+                element.value ||
+                values?.[element.attribute] ||
+                data?.[element.attribute];
+            error = element.multiLocale
+                ? !elementValues?.some((value) => element.validate(value))
+                : !(elementValue && element.validate(elementValue));
         }
         return error;
     }
@@ -86,15 +96,15 @@ export default function FormComponent({
         elements.map((element) => {
             const error = hasError(element);
             if (element.attribute) errors[element.attribute] = error;
-        })
+        });
         return errors;
     }
 
     function handleErrors(name, hasError) {
         if (name !== 'undefined') {
-            setErrors(prevErrors => ({
+            setErrors((prevErrors) => ({
                 ...prevErrors,
-                [name]: hasError
+                [name]: hasError,
             }));
         }
     }
@@ -103,9 +113,9 @@ export default function FormComponent({
         if (params && !name && !value) {
             writeNestedObjectToStateValues(params, identifier);
         } else {
-            setValues(prevValues => ({
+            setValues((prevValues) => ({
                 ...prevValues,
-                [name]: value
+                [name]: value,
             }));
         }
     }
@@ -113,9 +123,11 @@ export default function FormComponent({
     function valid() {
         let hasErrors = false;
 
-        Object.keys(errors).forEach(name => {
+        Object.keys(errors).forEach((name) => {
             if (name !== 'undefined') {
-                const element = elements.find(element => element.attribute === name);
+                const element = elements.find(
+                    (element) => element.attribute === name
+                );
 
                 const isHidden = element?.hidden;
                 const isOptional = element?.optional;
@@ -124,7 +136,7 @@ export default function FormComponent({
 
                 hasErrors = hasErrors || (!isHidden && !isOptional && error);
             }
-        })
+        });
 
         return !hasErrors;
     }
@@ -132,9 +144,9 @@ export default function FormComponent({
     function handleSubmit(event) {
         event.preventDefault();
 
-        if(valid()) {
-            onSubmit({[scope || submitScope]: values}, index);
-            if (typeof onSubmitCallback === "function") {
+        if (valid()) {
+            onSubmit({ [scope || submitScope]: values }, index);
+            if (typeof onSubmitCallback === 'function') {
                 onSubmitCallback();
             }
         } else {
@@ -145,9 +157,11 @@ export default function FormComponent({
     function deleteNestedObject(index, scope) {
         let nestedObjects = values[nestedRailsScopeName(scope)];
 
-        setValues(prevValues => ({
+        setValues((prevValues) => ({
             ...prevValues,
-            [nestedRailsScopeName(scope)]: nestedObjects.slice(0, index).concat(nestedObjects.slice(index + 1))
+            [nestedRailsScopeName(scope)]: nestedObjects
+                .slice(0, index)
+                .concat(nestedObjects.slice(index + 1)),
         }));
     }
 
@@ -156,9 +170,9 @@ export default function FormComponent({
     }
 
     function replaceNestedFormValues(nestedScopeName, nestedScopeValues) {
-        setValues(prevValues => ({
+        setValues((prevValues) => ({
             ...prevValues,
-            [nestedScopeName]: nestedScopeValues
+            [nestedScopeName]: nestedScopeValues,
         }));
     }
 
@@ -169,13 +183,18 @@ export default function FormComponent({
         let nestedObject = params[nestedScope];
         let nestedObjects = values[nestedRailsScopeName(nestedScope)] || [];
         if (index === undefined)
-            index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
+            index = nestedObjects.findIndex(
+                (t) =>
+                    nestedObject[identifier] &&
+                    t[identifier] === nestedObject[identifier]
+            );
         index = index === -1 ? nestedObjects.length : index;
-        setValues( prevValues => ({
+        setValues((prevValues) => ({
             ...prevValues,
-            [nestedRailsScopeName(nestedScope)]: nestedObjects.slice(0, index).concat(
-                [Object.assign({}, nestedObjects[index], nestedObject)]
-            ).concat(nestedObjects.slice(index + 1))
+            [nestedRailsScopeName(nestedScope)]: nestedObjects
+                .slice(0, index)
+                .concat([Object.assign({}, nestedObjects[index], nestedObject)])
+                .concat(nestedObjects.slice(index + 1)),
         }));
     }
 
@@ -185,26 +204,29 @@ export default function FormComponent({
     }
 
     function nestedScopes() {
-        return nestedScopeProps?.map(props => (
-            <NestedScope key={props.scope} {...props}
+        return nestedScopeProps?.map((props) => (
+            <NestedScope
+                key={props.scope}
+                {...props}
                 onSubmit={handleNestedFormSubmit}
                 onDelete={deleteNestedObject}
                 getNewElements={() => values[nestedRailsScopeName(props.scope)]}
                 replaceNestedFormValues={replaceNestedFormValues}
             />
-        ))
+        ));
     }
 
     function elementComponent(props) {
-        const preparedProps = {...props};
+        const preparedProps = { ...props };
         preparedProps.scope = props.scope || scope;
         preparedProps.showErrors = errors[props.attribute];
         preparedProps.handleChange = handleChange;
         preparedProps.handleErrors = handleErrors;
         preparedProps.key = props.attribute;
-        preparedProps.value = values[props.attribute] !== undefined ?
-            values[props.attribute] :
-            props.value;
+        preparedProps.value =
+            values[props.attribute] !== undefined
+                ? values[props.attribute]
+                : props.value;
         preparedProps.data = data;
         preparedProps.accept = props.accept;
 
@@ -217,14 +239,19 @@ export default function FormComponent({
         if (preparedProps.multiLocale) {
             return createElement(MultiLocaleWrapperContainer, preparedProps);
         } else {
-            return createElement(elementTypeToComponent[preparedProps.elementType], preparedProps);
+            return createElement(
+                elementTypeToComponent[preparedProps.elementType],
+                preparedProps
+            );
         }
     }
 
     return (
-        <div className={classNames(className, 'LoadingOverlay', {
-            'is-loading': fetching
-        })}>
+        <div
+            className={classNames(className, 'LoadingOverlay', {
+                'is-loading': fetching,
+            })}
+        >
             {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
 
             {nestedScopes()}
@@ -237,42 +264,51 @@ export default function FormComponent({
             >
                 {children}
 
-                {elements.map(props => {
-                    if (props.condition === undefined || props.condition === true) {
+                {elements.map((props) => {
+                    if (
+                        props.condition === undefined ||
+                        props.condition === true
+                    ) {
                         return elementComponent(props);
                     }
                 })}
 
-                { submitted && <ErrorMessages errors={errors} elements={elements} scope={scope} />}
+                {submitted && (
+                    <ErrorMessages
+                        errors={errors}
+                        elements={elements}
+                        scope={scope}
+                    />
+                )}
 
                 <div className="Form-footer u-mt">
-                    { nested ?
+                    {nested ? (
                         <button
                             type="submit"
                             className="Button Button--nested Button--editorialColor Button--icon"
                         >
-                            <FaCheckCircle className="Icon Icon--editorial" />
-                            {' '}
+                            <FaCheckCircle className="Icon Icon--editorial" />{' '}
                             {t(submitText || 'apply')}
-                        </button> :
+                        </button>
+                    ) : (
                         <input
                             type="submit"
                             className="Button Button--primaryAction"
                             disabled={fetching}
                             value={t(submitText || 'submit')}
                         />
-                    }
-                    {typeof onCancel === 'function' && (
-                        nested ?
+                    )}
+                    {typeof onCancel === 'function' &&
+                        (nested ? (
                             <button
                                 type="reset"
                                 className="Button Button--nested Button--editorialColor Button--icon"
                                 onClick={onCancel}
                             >
-                                <FaTimes className="Icon Icon--editorial" />
-                                {' '}
+                                <FaTimes className="Icon Icon--editorial" />{' '}
                                 {t('discard')}
-                            </button> :
+                            </button>
+                        ) : (
                             <input
                                 type="button"
                                 className="Button Button--secondaryAction"
@@ -280,7 +316,7 @@ export default function FormComponent({
                                 value={t('cancel')}
                                 onClick={onCancel}
                             />
-                    )}
+                        ))}
                 </div>
             </form>
         </div>
@@ -290,7 +326,7 @@ export default function FormComponent({
 FormComponent.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
     className: PropTypes.string,
     data: PropTypes.object,

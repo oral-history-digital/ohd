@@ -1,4 +1,4 @@
-import { useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getSelectedArchiveIds } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
@@ -19,15 +19,19 @@ export default function ArchiveSearchTabPanel() {
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title u-flex">
                 {t(isOhd ? 'modules.sidebar.search' : 'archive_search')}
-                {isOhd && <HelpText code="search_page" small className="u-ml-tiny" />}
+                {isOhd && (
+                    <HelpText code="search_page" small className="u-ml-tiny" />
+                )}
             </h3>
 
-            <ArchiveSearchFormContainer/>
+            <ArchiveSearchFormContainer />
 
             <div className="flyout-sub-tabs-container flyout-video">
-                <AuthorizedContent object={{type: 'General'}} action="edit">
-                    <SubTab title={t('admin_actions')} >
-                        <AdminActionsContainer archiveIds={selectedArchiveIds} />
+                <AuthorizedContent object={{ type: 'General' }} action="edit">
+                    <SubTab title={t('admin_actions')}>
+                        <AdminActionsContainer
+                            archiveIds={selectedArchiveIds}
+                        />
                     </SubTab>
                 </AuthorizedContent>
             </div>

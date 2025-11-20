@@ -26,10 +26,12 @@ export default function Element({
     const key = labelKey || `activerecord.attributes.${scope}.${attribute}`;
 
     return (
-        <div className={classNames('form-group', className, {
-            'hidden': hidden,
-            'has-error': !valid && showErrors,
-        })}>
+        <div
+            className={classNames('form-group', className, {
+                hidden: hidden,
+                'has-error': !valid && showErrors,
+            })}
+        >
             <Label
                 label={label}
                 labelKey={key}
@@ -37,26 +39,24 @@ export default function Element({
                 htmlFor={htmlFor}
             />
 
-            <div className='form-input'>
+            <div className="form-input">
                 {children}
                 {help && (
-                    <p className='help-block'>
+                    <p className="help-block">
                         {typeof help === 'string' ? t(help) : help}
                     </p>
                 )}
             </div>
 
-            {
-                !valid && showErrors && (
-                    <div className="help-block">
-                        {
-                            individualErrorMsg ?
-                                t(`activerecord.errors.models.${scope}.attributes.${attribute}.${individualErrorMsg}`) :
-                                t(`activerecord.errors.default.${elementType}`)
-                        }
-                    </div>
-                )
-            }
+            {!valid && showErrors && (
+                <div className="help-block">
+                    {individualErrorMsg
+                        ? t(
+                              `activerecord.errors.models.${scope}.attributes.${attribute}.${individualErrorMsg}`
+                          )
+                        : t(`activerecord.errors.default.${elementType}`)}
+                </div>
+            )}
         </div>
     );
 }
@@ -69,10 +69,7 @@ Element.propTypes = {
     attribute: PropTypes.string,
     className: PropTypes.string,
     elementType: PropTypes.string,
-    help: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-    ]),
+    help: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     individualErrorMsg: PropTypes.string,
     valid: PropTypes.bool,
     showErrors: PropTypes.bool,

@@ -2,11 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 
-export default function DeleteItemForm({
-    children,
-    onSubmit,
-    onCancel,
-}) {
+export default function DeleteItemForm({ children, onSubmit, onCancel }) {
     const { t } = useI18n();
 
     return (

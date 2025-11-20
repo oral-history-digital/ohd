@@ -11,8 +11,12 @@ const mapStateToProps = (state) => ({
     project: getCurrentProject(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhotoForm);

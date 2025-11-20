@@ -22,15 +22,16 @@ export default function InterviewDownloads({
                 className="flyout-content-data"
                 key={`${type}-${lang}`}
             >
-                <FaDownload className="Icon Icon--small" title={t('download')} />
-                {' '}
+                <FaDownload
+                    className="Icon Icon--small"
+                    title={t('download')}
+                />{' '}
                 {t(lang)}
             </a>
-        )
+        );
     } else if (showEmpty) {
         return '---';
     } else {
         return null;
     }
-
 }

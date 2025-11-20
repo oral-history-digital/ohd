@@ -24,9 +24,16 @@ export default function AssignSpeakersForm({
     useEffect(() => {
         if (
             !speakerDesignationsStatus[`for_interviews_${archiveId}`] ||
-            speakerDesignationsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'reload'
+            speakerDesignationsStatus[`for_interviews_${archiveId}`].split(
+                '-'
+            )[0] === 'reload'
         ) {
-            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'speaker_designations');
+            fetchData(
+                { locale, projectId, project },
+                'interviews',
+                archiveId,
+                'speaker_designations'
+            );
         }
     });
 
@@ -35,15 +42,15 @@ export default function AssignSpeakersForm({
 
         return (
             <span>
+                <span>{`${contributor?.display_name}, `}</span>
                 <span>
-                    {`${contributor?.display_name}, `}
-                </span>
-                <span>
-                    {contributionTypes[value.contribution_type_id].label[locale] + ', '}
+                    {contributionTypes[value.contribution_type_id].label[
+                        locale
+                    ] + ', '}
                 </span>
                 <span>{value.speaker_designation}</span>
             </span>
-        )
+        );
     }
 
     function formElements() {
@@ -67,7 +74,8 @@ export default function AssignSpeakersForm({
         return Object.keys(interview.speaker_designations).length < 1;
     }
 
-    const speakerDesignationsLoaded = speakerDesignationsStatus[`for_interviews_${archiveId}`] &&
+    const speakerDesignationsLoaded =
+        speakerDesignationsStatus[`for_interviews_${archiveId}`] &&
         speakerDesignationsStatus[`for_interviews_${archiveId}`] != 'fetching';
 
     if (!speakerDesignationsLoaded || peopleAreLoading) {
@@ -78,26 +86,38 @@ export default function AssignSpeakersForm({
         <div>
             <div>
                 <p>
-                    {t('edit.update_speaker.' + speakerDesignationsStatus[`for_interviews_${archiveId}`])}
+                    {t(
+                        'edit.update_speaker.' +
+                            speakerDesignationsStatus[
+                                `for_interviews_${archiveId}`
+                            ]
+                    )}
                 </p>
             </div>
             {showForm && (
                 <Form
-                    scope='update_speaker'
-                    onSubmit={params => {
+                    scope="update_speaker"
+                    onSubmit={(params) => {
                         submitData({ locale, projectId, project }, params);
                         setShowForm(false);
                     }}
                     helpTextCode="assign_speakers_form"
                     values={{ id: interview.archive_id }}
                     elements={formElements()}
-                    nestedScopeProps={[{
-                        formComponent: allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer,
-                        formProps: {withSpeakerDesignation: true, interview: interview},
-                        parent: interview,
-                        scope: 'contribution',
-                        elementRepresentation: showContribution,
-                    }]}
+                    nestedScopeProps={[
+                        {
+                            formComponent:
+                                allHiddenSpeakerDesignationsAssigned() &&
+                                ContributionFormContainer,
+                            formProps: {
+                                withSpeakerDesignation: true,
+                                interview: interview,
+                            },
+                            parent: interview,
+                            scope: 'contribution',
+                            elementRepresentation: showContribution,
+                        },
+                    ]}
                 />
             )}
         </div>

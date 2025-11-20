@@ -7,33 +7,38 @@ import { Modal } from 'modules/ui';
 import AnnotationFormContainer from './AnnotationFormContainer';
 import AnnotationContainer from './AnnotationContainer';
 
-export default function Annotations({
-    segment,
-    contentLocale,
-}) {
+export default function Annotations({ segment, contentLocale }) {
     const { t } = useI18n();
 
     return (
         <div>
+            {Object.values(segment.annotations)
+                .filter((annotation) =>
+                    annotation.text.hasOwnProperty(contentLocale)
+                )
+                .map((annotation) => (
+                    <AnnotationContainer
+                        annotation={annotation}
+                        segment={segment}
+                        key={annotation.id}
+                        contentLocale={contentLocale}
+                    />
+                ))}
             {
-                Object.values(segment.annotations)
-                    .filter(annotation => annotation.text.hasOwnProperty(contentLocale))
-                    .map(annotation => (
-                        <AnnotationContainer
-                            annotation={annotation}
-                            segment={segment}
-                            key={annotation.id}
-                            contentLocale={contentLocale}
-                        />
-                    ))
-            }
-            {
-                <AuthorizedContent object={{type: 'Annotation', interview_id: segment.interview_id}} action='create'>
+                <AuthorizedContent
+                    object={{
+                        type: 'Annotation',
+                        interview_id: segment.interview_id,
+                    }}
+                    action="create"
+                >
                     <Modal
                         title={t('edit.annotation.new')}
-                        trigger={<FaPlus className="Icon Icon--editorial Icon--small"/>}
+                        trigger={
+                            <FaPlus className="Icon Icon--editorial Icon--small" />
+                        }
                     >
-                        {closeModal => (
+                        {(closeModal) => (
                             <AnnotationFormContainer
                                 segment={segment}
                                 contentLocale={contentLocale}

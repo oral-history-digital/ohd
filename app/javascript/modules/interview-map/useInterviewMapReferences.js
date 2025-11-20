@@ -9,7 +9,8 @@ import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
 export default function useInterviewMapReferences(archiveId, registryEntryId) {
     const pathBase = usePathBase();
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
 
     const path = `${pathBase}/location_references?archive_id=${archiveId}&registry_entry_id=${registryEntryId}`;
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
@@ -20,7 +21,10 @@ export default function useInterviewMapReferences(archiveId, registryEntryId) {
     let sortedPersonReferences = [];
     if (referenceTypes && personReferences) {
         const transformData = flow(
-            curry(sortByReferenceTypeOrder)(referenceTypes, 'registry_reference_type_id')
+            curry(sortByReferenceTypeOrder)(
+                referenceTypes,
+                'registry_reference_type_id'
+            )
         );
         sortedPersonReferences = transformData(personReferences);
     }

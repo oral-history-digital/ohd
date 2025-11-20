@@ -37,14 +37,14 @@ export default function ChangePasswordForm({
     }
 
     function handleChange(name, value) {
-        setValues(prev => ({
+        setValues((prev) => ({
             ...prev,
             [name]: value,
         }));
     }
 
     function handleErrors(name, bool) {
-        setErrors(prev => ({
+        setErrors((prev) => ({
             ...prev,
             [name]: bool,
         }));
@@ -59,7 +59,7 @@ export default function ChangePasswordForm({
 
     function handleSubmit(event) {
         event.preventDefault();
-        if(valid()) {
+        if (valid()) {
             let resetToken = resetPasswordToken;
             if (!resetToken) {
                 let query = queryString.parse(location.search);
@@ -70,43 +70,42 @@ export default function ChangePasswordForm({
             const url = `${pathBase}/users/password`;
             params.reset_password_token = resetToken;
 
-            submitChangePassword(url, 'put', {user: params});
+            submitChangePassword(url, 'put', { user: params });
         }
     }
 
     return (
         <div>
-            <h1>
-                {t('devise.passwords.change')}
-            </h1>
+            <h1>{t('devise.passwords.change')}</h1>
 
-            {user.error && (
-                <p className="error">
-                    {t(user.error)}
-                </p>
-            )}
+            {user.error && <p className="error">{t(user.error)}</p>}
 
-            <form className='default' onSubmit={handleSubmit}>
+            <form className="default" onSubmit={handleSubmit}>
                 <InputContainer
                     label={t('devise.passwords.password')}
-                    attribute='password'
-                    type='password'
+                    attribute="password"
+                    type="password"
                     showErrors={showErrors}
-                    validate={v => PASSWORD_REGEX.test(v)}
+                    validate={(v) => PASSWORD_REGEX.test(v)}
                     handleChange={handleChange}
                     handleErrors={handleErrors}
                 />
                 <InputContainer
                     label={t('devise.passwords.password_confirmation')}
-                    attribute='password_confirmation'
-                    type='password'
+                    attribute="password_confirmation"
+                    type="password"
                     showErrors={showErrors}
-                    validate={v => PASSWORD_REGEX.test(v) && v === values.password}
+                    validate={(v) =>
+                        PASSWORD_REGEX.test(v) && v === values.password
+                    }
                     handleChange={handleChange}
                     handleErrors={handleErrors}
                 />
 
-                <input type="submit" value={t('devise.registrations.activate_submit')}/>
+                <input
+                    type="submit"
+                    value={t('devise.registrations.activate_submit')}
+                />
             </form>
         </div>
     );

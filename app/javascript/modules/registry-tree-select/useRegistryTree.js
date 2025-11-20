@@ -7,7 +7,10 @@ import createRegistryTree from './createRegistryTree';
 export default function useRegistryTree(loadOhdTree, selectedRegistryEntryId) {
     const pathBase = usePathBase();
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path(), fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path(),
+        fetcher
+    );
 
     const registryTree = createRegistryTree(data, selectedRegistryEntryId);
 

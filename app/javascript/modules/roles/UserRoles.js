@@ -7,7 +7,7 @@ import { Modal } from 'modules/ui';
 import UserRoleFormContainer from './UserRoleFormContainer';
 import UserRoleContainer from './UserRoleContainer';
 
-export default function UserRoles ({
+export default function UserRoles({
     userRoles,
     userId,
     dataPath,
@@ -18,7 +18,7 @@ export default function UserRoles ({
     return (
         <>
             <ul className="DetailList">
-                { Object.keys(userRoles).map((id) => {
+                {Object.keys(userRoles).map((id) => {
                     return (
                         <li
                             key={`user-role-li-${id}`}
@@ -32,17 +32,17 @@ export default function UserRoles ({
                                 dataPath={dataPath}
                             />
                         </li>
-                    )
+                    );
                 })}
             </ul>
-            <AuthorizedContent object={{type: 'UserRole'}} action="create">
-                { !hideAdd &&
+            <AuthorizedContent object={{ type: 'UserRole' }} action="create">
+                {!hideAdd && (
                     <Modal
                         key={`add-userRole-${userId}`}
                         title={t('edit.user_role.new')}
                         trigger={<FaPlus className="Icon Icon--editorial" />}
                     >
-                        { closeModal => (
+                        {(closeModal) => (
                             <UserRoleFormContainer
                                 userId={userId}
                                 onSubmit={closeModal}
@@ -50,7 +50,7 @@ export default function UserRoles ({
                             />
                         )}
                     </Modal>
-                }
+                )}
             </AuthorizedContent>
         </>
     );

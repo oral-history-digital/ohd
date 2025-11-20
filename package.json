@@ -107,6 +107,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "babel-jest": "^29.7.0",
     "dot-prop-immutable": "^2.1.0",

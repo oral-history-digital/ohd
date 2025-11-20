@@ -1,12 +1,10 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import useInstitutionData from './useInstitutionData';
 import useInstance from './useInstance';
 import CatalogTable from './CatalogTable';
 
-export default function InstitutionCatalog({
-    id,
-}) {
+export default function InstitutionCatalog({ id }) {
     const data = useInstitutionData(id);
     const { instance } = useInstance(data, 'institution');
 

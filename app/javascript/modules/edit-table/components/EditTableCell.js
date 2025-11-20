@@ -25,21 +25,17 @@ export default function EditTableCell({ type, segment, originalLocale }) {
                     'has-data': segment.annotations_count !== 0,
                 })}
             >
-                <Annotations
-                    segment={segment}
-                    contentLocale={alpha3Locale}
-                />
+                <Annotations segment={segment} contentLocale={alpha3Locale} />
             </div>
         );
     } else if (/transcript|translation|heading/.test(type)) {
-        alpha3Locale = type === 'transcript' ? originalLocale : type.split('_').pop();
+        alpha3Locale =
+            type === 'transcript' ? originalLocale : type.split('_').pop();
         attribute = /heading/.test(type) ? type.split('_').shift() : 'text';
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': fieldHasData(
-                        segment[attribute][alpha3Locale]
-                    ),
+                    'has-data': fieldHasData(segment[attribute][alpha3Locale]),
                 })}
             >
                 <SubmitOnBlurForm

@@ -4,9 +4,7 @@ import { useI18n } from 'modules/i18n';
 import PhotoCaption from './PhotoCaption';
 import PhotoAdminButtonsContainer from './PhotoAdminButtonsContainer';
 
-export default function Photo({
-    photo,
-}) {
+export default function Photo({ photo }) {
     const { locale } = useI18n();
 
     function handleContextMenu(event) {

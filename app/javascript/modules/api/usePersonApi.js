@@ -8,10 +8,10 @@ export default function usePersonApi() {
         const path = `${pathBase}/people/${id}.json`;
         const options = {
             method: 'DELETE',
-            headers: fetchHeaders
+            headers: fetchHeaders,
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     return {

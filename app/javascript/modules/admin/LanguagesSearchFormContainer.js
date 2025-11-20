@@ -10,16 +10,20 @@ const mapStateToProps = (state) => ({
     query: getLanguagesQuery(state),
     scope: 'language',
     searchableAttributes: [
-        {attributeName: 'name'},
-        {attributeName: 'code'},
+        { attributeName: 'name' },
+        { attributeName: 'code' },
     ],
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    setQueryParams,
-    resetQuery,
-    hideSidebar,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            setQueryParams,
+            resetQuery,
+            hideSidebar,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSearchForm);

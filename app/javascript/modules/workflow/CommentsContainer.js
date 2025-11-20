@@ -14,14 +14,18 @@ const mapStateToProps = (state) => {
                 attribute: 'text',
                 elementType: 'textarea',
             },
-        ]
-    }
-}
+        ],
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

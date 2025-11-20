@@ -7,24 +7,19 @@ import { TapeAndTime } from 'modules/interview-helpers';
 import { getCurrentInterview } from 'modules/data';
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 
-export default function TocResult({
-    data,
-}) {
+export default function TocResult({ data }) {
     const dispatch = useDispatch();
     const interview = useSelector(getCurrentInterview);
     const { locale } = useI18n();
     const alpha3 = ALPHA2_TO_ALPHA3[locale];
 
     function handleClick() {
-        interview.transcript_coupled && dispatch(sendTimeChangeRequest(data.tape_nbr, data.time));
+        interview.transcript_coupled &&
+            dispatch(sendTimeChangeRequest(data.tape_nbr, data.time));
     }
 
     return (
-        <button
-            type="button"
-            className="SearchResult"
-            onClick={handleClick}
-        >
+        <button type="button" className="SearchResult" onClick={handleClick}>
             <p className="SearchResult-meta">
                 {data.last_heading?.[alpha3] && (
                     <span>
@@ -32,11 +27,15 @@ export default function TocResult({
                         &nbsp;|&nbsp;
                     </span>
                 )}
-                <TapeAndTime tape={data.tape_nbr} time={data.time} transcriptCoupled={interview.transcript_coupled} />
+                <TapeAndTime
+                    tape={data.tape_nbr}
+                    time={data.time}
+                    transcriptCoupled={interview.transcript_coupled}
+                />
             </p>
             <p
                 className="SearchResult-text"
-                dangerouslySetInnerHTML={{__html: data.text[alpha3]}}
+                dangerouslySetInnerHTML={{ __html: data.text[alpha3] }}
             />
         </button>
     );

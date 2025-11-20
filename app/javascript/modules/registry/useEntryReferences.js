@@ -20,17 +20,29 @@ export default function useEntryReferences(registryEntry) {
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
 
     const path = `${pathBase}/registry_references/for_reg_entry/${registryEntry.id}?${paramStr}`;
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
-    let interviewReferences, groupedRefs, segmentReferences, referenceCount = 0;
+    let interviewReferences,
+        groupedRefs,
+        segmentReferences,
+        referenceCount = 0;
 
     if (data) {
         interviewReferences = data.interview_references;
         segmentReferences = data.segment_references;
 
-        createMissingInterviewReferences(interviewReferences, segmentReferences);
+        createMissingInterviewReferences(
+            interviewReferences,
+            segmentReferences
+        );
         addEmptySegmentRefArrays(interviewReferences);
-        addSegmentReferencesToInterviewReferences(interviewReferences, segmentReferences);
+        addSegmentReferencesToInterviewReferences(
+            interviewReferences,
+            segmentReferences
+        );
         sortInterviewReferences(interviewReferences);
         groupedRefs = groupByArchiveShortname(interviewReferences);
 
@@ -46,10 +58,17 @@ export default function useEntryReferences(registryEntry) {
     };
 }
 
-function createMissingInterviewReferences(interviewReferences, segmentReferences) {
+function createMissingInterviewReferences(
+    interviewReferences,
+    segmentReferences
+) {
     segmentReferences.forEach((segmentRef) => {
-        if (!interviewReferences.find((interviewRef) =>
-            interviewRef.archive_id === segmentRef.archive_id)) {
+        if (
+            !interviewReferences.find(
+                (interviewRef) =>
+                    interviewRef.archive_id === segmentRef.archive_id
+            )
+        ) {
             interviewReferences.push({
                 archive_id: segmentRef.archive_id,
                 display_name: segmentRef.display_name,
@@ -67,12 +86,16 @@ function addEmptySegmentRefArrays(interviewReferences) {
     });
 }
 
-function addSegmentReferencesToInterviewReferences(interviewReferences, segmentReferences) {
+function addSegmentReferencesToInterviewReferences(
+    interviewReferences,
+    segmentReferences
+) {
     segmentReferences.forEach((segmentRef) => {
         const archiveId = segmentRef.archive_id;
 
-        const interviewReference = interviewReferences.find((interviewRef) =>
-            interviewRef.archive_id === archiveId);
+        const interviewReference = interviewReferences.find(
+            (interviewRef) => interviewRef.archive_id === archiveId
+        );
 
         if (!interviewReference) {
             return;
@@ -83,13 +106,12 @@ function addSegmentReferencesToInterviewReferences(interviewReferences, segmentR
 }
 
 function sortInterviewReferences(interviewReferences) {
-    interviewReferences.sort((a, b) =>
-        a.last_name.localeCompare(b.last_name));
+    interviewReferences.sort((a, b) => a.last_name.localeCompare(b.last_name));
 }
 
 function groupByArchiveShortname(interviewReferences) {
     let result = groupBy(interviewReferences, 'shortname');
     result = Object.entries(result);
-    result.sort(([a, ], [b, ]) => a.localeCompare(b));
+    result.sort(([a], [b]) => a.localeCompare(b));
     return result;
 }

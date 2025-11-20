@@ -1,4 +1,4 @@
-import { useEffect  } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,7 +8,7 @@ import {
     setArchiveId,
     setAvailableViewModes,
     setViewMode,
-    clearViewModes
+    clearViewModes,
 } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -34,7 +34,7 @@ import {
     WrappedRegistryNameTypesContainer,
     WrappedRegistryReferenceTypesContainer,
     WrappedRolesContainer,
-    WrappedTaskTypesContainer
+    WrappedTaskTypesContainer,
 } from 'modules/admin';
 import {
     AccountPage,
@@ -65,37 +65,101 @@ export default function ProjectRoutes() {
     return (
         <ErrorBoundary>
             <Routes>
-                <Route exact path="interviews/new" element={<EditInterview />} />
-                <Route path="interviews/:archiveId" element={<InterviewContainer />} />
+                <Route
+                    exact
+                    path="interviews/new"
+                    element={<EditInterview />}
+                />
+                <Route
+                    path="interviews/:archiveId"
+                    element={<InterviewContainer />}
+                />
                 <Route path="searches/archive" element={<SearchPage />} />
                 <Route path="searches/map" element={<SearchMap />} />
-                <Route path="registry_entries" element={<RegistryContainer />} />
+                <Route
+                    path="registry_entries"
+                    element={<RegistryContainer />}
+                />
                 <Route path="users/current" element={<AccountPage />} />
-                <Route path="users/password/new" element={<OrderNewPasswordContainer />} />
-                <Route path="users/password/edit" element={<ActivateAccount />} />
+                <Route
+                    path="users/password/new"
+                    element={<OrderNewPasswordContainer />}
+                />
+                <Route
+                    path="users/password/edit"
+                    element={<ActivateAccount />}
+                />
                 <Route path="users" element={<UsersAdminPage />} />
                 <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
-                <Route path="project/edit-config" element={<EditProjectConfig />} />
-                <Route path="project/edit-access-config" element={<EditProjectAccessConfig />} />
-                <Route path="project/edit-display" element={<EditProjectDisplay />} />
-                <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
+                <Route
+                    path="project/edit-config"
+                    element={<EditProjectConfig />}
+                />
+                <Route
+                    path="project/edit-access-config"
+                    element={<EditProjectAccessConfig />}
+                />
+                <Route
+                    path="project/edit-display"
+                    element={<EditProjectDisplay />}
+                />
+                <Route
+                    path="metadata_fields"
+                    element={<MetadataFieldsContainer />}
+                />
                 <Route path="people" element={<PeopleAdminPage />} />
                 <Route path="event_types" element={<EventTypesAdminPage />} />
-                <Route path="registry_reference_types" element={<WrappedRegistryReferenceTypesContainer />} />
-                <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
-                <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />
-                <Route path="languages" element={<WrappedLanguagesContainer />} />
-                <Route path="translation_values" element={<WrappedTranslationValuesContainer />} />
-                <Route path="conditions" element={<TextPage code='conditions' />} />
-                <Route path="ohd_conditions" element={<TextPage code='ohd_conditions' />} />
-                <Route path="privacy_protection" element={<TextPage code='privacy_protection' />} />
-                <Route path="contact" element={<TextPage code='contact' />} />
-                <Route path="legal_info" element={<TextPage code='legal_info' />} />
-                <Route path="collections" element={<WrappedCollectionsContainer />} />
+                <Route
+                    path="registry_reference_types"
+                    element={<WrappedRegistryReferenceTypesContainer />}
+                />
+                <Route
+                    path="registry_name_types"
+                    element={<WrappedRegistryNameTypesContainer />}
+                />
+                <Route
+                    path="contribution_types"
+                    element={<WrappedContributionTypesContainer />}
+                />
+                <Route
+                    path="languages"
+                    element={<WrappedLanguagesContainer />}
+                />
+                <Route
+                    path="translation_values"
+                    element={<WrappedTranslationValuesContainer />}
+                />
+                <Route
+                    path="conditions"
+                    element={<TextPage code="conditions" />}
+                />
+                <Route
+                    path="ohd_conditions"
+                    element={<TextPage code="ohd_conditions" />}
+                />
+                <Route
+                    path="privacy_protection"
+                    element={<TextPage code="privacy_protection" />}
+                />
+                <Route path="contact" element={<TextPage code="contact" />} />
+                <Route
+                    path="legal_info"
+                    element={<TextPage code="legal_info" />}
+                />
+                <Route
+                    path="collections"
+                    element={<WrappedCollectionsContainer />}
+                />
                 <Route path="roles" element={<WrappedRolesContainer />} />
-                <Route path="permissions" element={<WrappedPermissionsContainer />} />
-                <Route path="task_types" element={<WrappedTaskTypesContainer />} />
+                <Route
+                    path="permissions"
+                    element={<WrappedPermissionsContainer />}
+                />
+                <Route
+                    path="task_types"
+                    element={<WrappedTaskTypesContainer />}
+                />
             </Routes>
         </ErrorBoundary>
     );

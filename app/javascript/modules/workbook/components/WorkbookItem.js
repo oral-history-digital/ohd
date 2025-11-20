@@ -33,8 +33,13 @@ export default function WorkbookItem({
     const fetchingInterview = !!statuses['interviews'][data.media_id];
 
     useEffect(() => {
-        if ( project && !fetchingInterview ) {
-            fetchData({ projectId, locale, project }, 'interviews', data.media_id, 'transcript_coupled');
+        if (project && !fetchingInterview) {
+            fetchData(
+                { projectId, locale, project },
+                'interviews',
+                data.media_id,
+                'transcript_coupled'
+            );
         }
     }, [interview, project]);
 
@@ -49,32 +54,45 @@ export default function WorkbookItem({
             setArchiveId(data.media_id);
         } else if (data.type === 'UserAnnotation') {
             setArchiveId(data.properties.interview_archive_id);
-            interview?.transcript_coupled && sendTimeChangeRequest(data.properties.tape_nbr, data.properties.time);
+            interview?.transcript_coupled &&
+                sendTimeChangeRequest(
+                    data.properties.tape_nbr,
+                    data.properties.time
+                );
         }
 
         hideSidebarIfMobile();
     }
 
-    const callKey = "call" + data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+    const callKey =
+        'call' +
+        data.type.replace(/([A-Z])/g, function ($1) {
+            return '_' + $1.toLowerCase();
+        });
     let itemPath;
     if (project) {
         switch (data.type) {
-        case 'InterviewReference':
-            itemPath = `interviews/${data.media_id}`;
-            break;
-        case 'Search':
-            itemPath = `searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`;
-            break;
-        case 'UserAnnotation':
-            itemPath = `interviews/${data.properties.interview_archive_id}?tape=${data.properties.tape_nbr}&time=${formatTimecode(data.properties.time, true)}`;
-            break;
-        default:
+            case 'InterviewReference':
+                itemPath = `interviews/${data.media_id}`;
+                break;
+            case 'Search':
+                itemPath = `searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`;
+                break;
+            case 'UserAnnotation':
+                itemPath = `interviews/${data.properties.interview_archive_id}?tape=${data.properties.tape_nbr}&time=${formatTimecode(data.properties.time, true)}`;
+                break;
+            default:
         }
     }
 
-    const facetValues = queryToFacets(convertLegacyQuery(data.properties),
-        facets, locale);
-    const date = (new Date(data.created_at)).toLocaleDateString(locale, { dateStyle: 'medium' });
+    const facetValues = queryToFacets(
+        convertLegacyQuery(data.properties),
+        facets,
+        locale
+    );
+    const date = new Date(data.created_at).toLocaleDateString(locale, {
+        dateStyle: 'medium',
+    });
 
     return (
         <div className={classNames('WorkbookEntry', className)}>
@@ -87,36 +105,32 @@ export default function WorkbookItem({
                         <dd>{data.description}</dd>
                     </div>
                 )}
-                {
-                    data.type === 'Search' && data.properties.fulltext && (
-                        <div className="WorkbookEntry-listItem">
-                            <dt>{t('modules.workbook.full_text_search')}</dt>
-                            <dd>{data.properties.fulltext}</dd>
-                        </div>
-                    )
-                }
-                {
-                    data.type === 'Search' && facetValues.length > 0 && (
-                        <div className="WorkbookEntry-listItem">
-                            <dt>{t('modules.workbook.filter')}</dt>
-                            <dd>{facetValues}</dd>
-                        </div>
-                    )
-                }
-                {
-                    data.type === 'UserAnnotation' && (
-                        <div className="WorkbookEntry-listItem">
-                            <dt>{t('modules.workbook.segment')}</dt>
-                            <dd>
-                                <TapeAndTime
-                                    tape={data.properties.tape_nbr}
-                                    time={data.properties.time}
-                                    transcriptCoupled={interview?.transcript_coupled}
-                                />
-                            </dd>
-                        </div>
-                    )
-                }
+                {data.type === 'Search' && data.properties.fulltext && (
+                    <div className="WorkbookEntry-listItem">
+                        <dt>{t('modules.workbook.full_text_search')}</dt>
+                        <dd>{data.properties.fulltext}</dd>
+                    </div>
+                )}
+                {data.type === 'Search' && facetValues.length > 0 && (
+                    <div className="WorkbookEntry-listItem">
+                        <dt>{t('modules.workbook.filter')}</dt>
+                        <dd>{facetValues}</dd>
+                    </div>
+                )}
+                {data.type === 'UserAnnotation' && (
+                    <div className="WorkbookEntry-listItem">
+                        <dt>{t('modules.workbook.segment')}</dt>
+                        <dd>
+                            <TapeAndTime
+                                tape={data.properties.tape_nbr}
+                                time={data.properties.time}
+                                transcriptCoupled={
+                                    interview?.transcript_coupled
+                                }
+                            />
+                        </dd>
+                    </div>
+                )}
                 <div className="WorkbookEntry-listItem">
                     <dt>{t('modules.workbook.from')}</dt>
                     <dd>{date}</dd>
@@ -132,7 +146,9 @@ export default function WorkbookItem({
                     >
                         {t(callKey)}
                     </LinkOrA>
-                ) : t('modules.workbook.project_unavailable')}
+                ) : (
+                    t('modules.workbook.project_unavailable')
+                )}
             </p>
 
             {!isOhd && (

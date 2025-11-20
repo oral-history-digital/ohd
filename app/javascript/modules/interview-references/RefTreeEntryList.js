@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import RefTreeEntry from './RefTreeEntry';
 
-export default function RefTreeEntryList({
-    entries,
-}) {
+export default function RefTreeEntryList({ entries }) {
     const { locale } = useI18n();
 
     function sortedEntries() {
@@ -21,11 +19,7 @@ export default function RefTreeEntryList({
     }
 
     return sortedEntries().map((entry, index) => (
-        <RefTreeEntry
-            key={entry.id}
-            entry={entry}
-            index={index}
-        />
+        <RefTreeEntry key={entry.id} entry={entry} index={index} />
     ));
 }
 

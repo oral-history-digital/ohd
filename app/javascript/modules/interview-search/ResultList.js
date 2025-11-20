@@ -16,7 +16,9 @@ export default function ResultList({
         <div className={classNames('ResultList', className)}>
             <Disclosure title={title}>
                 <div className="ResultList-list">
-                    {searchResults.map(data => <Component key={data.id} data={data} locale={locale} />)}
+                    {searchResults.map((data) => (
+                        <Component key={data.id} data={data} locale={locale} />
+                    ))}
                 </div>
             </Disclosure>
         </div>

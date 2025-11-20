@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import { flexRender } from '@tanstack/react-table';
 
-export default function TableBody({
-    table,
-}) {
+export default function TableBody({ table }) {
     return (
         <tbody className="Table-body">
-            {table.getRowModel().rows.map(row => (
+            {table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="Table-row">
-                    {row.getVisibleCells().map(cell => (
+                    {row.getVisibleCells().map((cell) => (
                         <td key={cell.id} className="Table-cell">
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                            )}
                         </td>
                     ))}
                 </tr>

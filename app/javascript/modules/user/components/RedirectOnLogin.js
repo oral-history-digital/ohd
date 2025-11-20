@@ -8,21 +8,19 @@ import { getCurrentProject } from 'modules/data';
 import { pathBase } from 'modules/routes';
 import { getIsLoggedIn } from '../selectors';
 
-export default function RedirectOnLogin({
-    path,
-}) {
+export default function RedirectOnLogin({ path }) {
     const locale = useSelector(getLocale);
     const projectId = useSelector(getProjectId);
     const project = useSelector(getCurrentProject);
     const isLoggedIn = useSelector(getIsLoggedIn);
 
     const prevIsLoggedIn = usePrevious(isLoggedIn);
-    const to = projectId ? `${pathBase({projectId, locale, project})}${path}` : `/${locale}`;
+    const to = projectId
+        ? `${pathBase({ projectId, locale, project })}${path}`
+        : `/${locale}`;
 
     if (prevIsLoggedIn === false && isLoggedIn === true) {
-        return (
-            <Navigate to={to} />
-        );
+        return <Navigate to={to} />;
     }
 
     return null;

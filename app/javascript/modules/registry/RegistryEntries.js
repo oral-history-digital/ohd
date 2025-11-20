@@ -15,13 +15,16 @@ export default function RegistryEntries({
     root = false,
 }) {
     const { t } = useI18n();
-    const { dataLoaded, registryEntries } = useRegistryEntries(registryEntryParent);
+    const { dataLoaded, registryEntries } =
+        useRegistryEntries(registryEntryParent);
 
     return (
         <div className={className}>
-            <ul className={classNames('RegistryEntryList', {
-                'RegistryEntryList--root': root,
-            })}>
+            <ul
+                className={classNames('RegistryEntryList', {
+                    'RegistryEntryList--root': root,
+                })}
+            >
                 {dataLoaded ? (
                     registryEntries.map((registryEntry) => (
                         <RegistryEntryContainer
@@ -30,15 +33,19 @@ export default function RegistryEntries({
                             registryEntryParent={registryEntryParent}
                         />
                     ))
-                ) : (<li><PixelLoader /></li>)}
+                ) : (
+                    <li>
+                        <PixelLoader />
+                    </li>
+                )}
             </ul>
-            <AuthorizedContent object={ registryEntryParent } action='create'>
+            <AuthorizedContent object={registryEntryParent} action="create">
                 <Modal
                     title={t('edit.registry_entry.new')}
                     trigger={t('edit.registry_entry.new')}
                     triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
-                    {close => (
+                    {(close) => (
                         <RegistryEntryFormContainer
                             registryEntryParent={registryEntryParent}
                             onSubmit={close}

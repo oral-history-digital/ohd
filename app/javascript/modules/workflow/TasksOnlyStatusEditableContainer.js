@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
             'finished_at',
             'cleared_at',
             'restarted_at',
-            'workflow_state'
+            'workflow_state',
         ],
         formElements: [
             {
@@ -41,13 +41,17 @@ const mapStateToProps = (state) => {
         joinedData: {
             comment: CommentsContainer,
         },
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

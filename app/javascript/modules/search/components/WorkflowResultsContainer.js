@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getCurrentProject } from 'modules/data';
 import WorkflowResults from './WorkflowResults';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     project: getCurrentProject(state),
 });
 

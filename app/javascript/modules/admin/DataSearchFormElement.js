@@ -22,13 +22,16 @@ export default function DataSearchFormElement({
 
     if (element.type === 'select') {
         const selectOptions = element.values.map((value, index) => (
-            <option value={value} key={`${element.attributeName}-option-${index}`}>
+            <option
+                value={value}
+                key={`${element.attributeName}-option-${index}`}
+            >
                 {t(`${pluralize(element.attributeName)}.${value}`)}
             </option>
         ));
 
         selectOptions.unshift(
-            <option value='' key={`${scope}-choose`}>
+            <option value="" key={`${scope}-choose`}>
                 {t('choose')}
             </option>
         );

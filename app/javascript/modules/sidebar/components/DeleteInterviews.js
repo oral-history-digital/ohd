@@ -10,9 +10,7 @@ import { usePathBase } from 'modules/routes';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 
-export default function DeleteInterviews({
-    selectedArchiveIds,
-}) {
+export default function DeleteInterviews({ selectedArchiveIds }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const projectId = useSelector(getProjectId);
@@ -23,8 +21,14 @@ export default function DeleteInterviews({
     const navigate = useNavigate();
 
     function deleteInterviews() {
-        selectedArchiveIds.forEach(
-            archiveId => dispatch(deleteData({ locale, projectId, project }, 'interviews', archiveId))
+        selectedArchiveIds.forEach((archiveId) =>
+            dispatch(
+                deleteData(
+                    { locale, projectId, project },
+                    'interviews',
+                    archiveId
+                )
+            )
         );
 
         const isDetailPage = new RegExp(`^${pathBase}/interviews`);
@@ -35,13 +39,13 @@ export default function DeleteInterviews({
     }
 
     return (
-        <AuthorizedContent object={{ type: 'Interview' }} action='destroy'>
+        <AuthorizedContent object={{ type: 'Interview' }} action="destroy">
             <Modal
                 title={t('edit.interviews.delete.title')}
                 trigger={t('edit.interviews.delete.title')}
                 triggerClassName="flyout-sub-tabs-content-ico-link"
             >
-                {close => (
+                {(close) => (
                     <DeleteItemForm
                         onSubmit={() => {
                             deleteInterviews();
@@ -49,7 +53,9 @@ export default function DeleteInterviews({
                         }}
                         onCancel={close}
                     >
-                        {t('edit.interviews.delete.confirm_text', {archive_ids: selectedArchiveIds.join(', ')})}
+                        {t('edit.interviews.delete.confirm_text', {
+                            archive_ids: selectedArchiveIds.join(', '),
+                        })}
                     </DeleteItemForm>
                 )}
             </Modal>

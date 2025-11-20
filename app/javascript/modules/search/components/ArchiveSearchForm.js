@@ -11,22 +11,19 @@ import defaultSortOptions from '../defaultSortOptions';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
-export default function ArchiveSearchForm({
-    projectId,
-    project,
-    hideSidebar,
-}) {
+export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
     const { t } = useI18n();
     const formEl = useRef(null);
     const trackSiteSearch = useTrackSiteSearch();
 
-    const { fulltext, setFulltextAndSort, resetSearchParams } = useSearchParams();
+    const { fulltext, setFulltextAndSort, resetSearchParams } =
+        useSearchParams();
 
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
     useEffect(() => {
         setFulltextInput(fulltext || '');
-    }, [fulltext])
+    }, [fulltext]);
 
     function handleReset() {
         resetSearchParams();
@@ -41,7 +38,7 @@ export default function ArchiveSearchForm({
 
         const searchTerm = fulltextInput?.trim();
 
-        if (searchTerm?.length > 0)  {
+        if (searchTerm?.length > 0) {
             setFulltextAndSort(searchTerm, 'score', 'desc');
 
             trackSiteSearch(searchTerm);
@@ -74,7 +71,7 @@ export default function ArchiveSearchForm({
                     />
                 ) : (
                     <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
-                       <ArchiveSearchFormInput
+                        <ArchiveSearchFormInput
                             value={fulltextInput}
                             projectId={projectId}
                             onChange={setFulltextInput}

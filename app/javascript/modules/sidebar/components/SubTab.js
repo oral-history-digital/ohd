@@ -6,11 +6,7 @@ import classNames from 'classnames';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 
-export default function SubTab({
-    title,
-    url,
-    children,
-}) {
+export default function SubTab({ title, url, children }) {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -22,15 +18,17 @@ export default function SubTab({
             setIsOpen(true);
             navigate(url);
         } else {
-            setIsOpen(prev => !prev);
+            setIsOpen((prev) => !prev);
         }
     }
 
     let buttonIcon;
     if (typeof children !== 'undefined') {
-        buttonIcon = isOpen ?
-            <FaMinus className="Icon Icon--primary" /> :
-            <FaPlus className="Icon Icon--primary" />;
+        buttonIcon = isOpen ? (
+            <FaMinus className="Icon Icon--primary" />
+        ) : (
+            <FaPlus className="Icon Icon--primary" />
+        );
     }
 
     return (
@@ -38,7 +36,7 @@ export default function SubTab({
             <button
                 type="button"
                 className={classNames('Button', 'accordion', {
-                    'active': isOpen,
+                    active: isOpen,
                     'only-link': typeof children === 'undefined',
                 })}
                 onClick={handleClick}
@@ -46,15 +44,11 @@ export default function SubTab({
                 {title}
                 {buttonIcon}
             </button>
-            {
-                children && (
-                    <div className={classNames('panel', { 'open': isOpen })}>
-                        <ErrorBoundary small>
-                            {isOpen && children}
-                        </ErrorBoundary>
-                    </div>
-                )
-            }
+            {children && (
+                <div className={classNames('panel', { open: isOpen })}>
+                    <ErrorBoundary small>{isOpen && children}</ErrorBoundary>
+                </div>
+            )}
         </div>
     );
 }

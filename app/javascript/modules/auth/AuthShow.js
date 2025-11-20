@@ -17,21 +17,27 @@ export default function AuthShow({
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const isRestricted = interview?.workflow_state === 'restricted';
-    const hasPermission = isAuthorized(interview, 'show') ||
-        user?.interview_permissions?.some(perm => perm.interview_id === interview?.id);
+    const hasPermission =
+        isAuthorized(interview, 'show') ||
+        user?.interview_permissions?.some(
+            (perm) => perm.interview_id === interview?.id
+        );
 
     if (
         // logged in and registered for the current project
         //(isLoggedIn && ifLoggedIn) ||
-        (
-            ((isRestricted && hasPermission) || !isRestricted) &&
-            isLoggedIn && ifLoggedIn && user && (
-                user.admin ||
+        (((isRestricted && hasPermission) || !isRestricted) &&
+            isLoggedIn &&
+            ifLoggedIn &&
+            user &&
+            (user.admin ||
                 project.grant_access_without_login ||
                 project?.grant_project_access_instantly ||
-                Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
-            )
-        ) ||
+                Object.values(user.user_projects).find(
+                    (urp) =>
+                        urp.project_id === project?.id &&
+                        urp.workflow_state === 'project_access_granted'
+                ))) ||
         // catalog-project
         (ifCatalog && isCatalog)
     ) {
@@ -40,15 +46,18 @@ export default function AuthShow({
         // logged out
         (!isLoggedIn && ifLoggedOut) ||
         // logged in and NOT registered for the current project
-        (
-            isLoggedIn && ifNoProject && user && !user.admin &&
+        (isLoggedIn &&
+            ifNoProject &&
+            user &&
+            !user.admin &&
             !project?.grant_project_access_instantly &&
             !project.grant_access_without_login &&
-            !Object.values(user.user_projects).find(urp => urp.project_id === project?.id && urp.workflow_state === 'project_access_granted')
-        ) ||
-        (
-            isLoggedIn && ifLoggedOut && isRestricted && !hasPermission
-        )
+            !Object.values(user.user_projects).find(
+                (urp) =>
+                    urp.project_id === project?.id &&
+                    urp.workflow_state === 'project_access_granted'
+            )) ||
+        (isLoggedIn && ifLoggedOut && isRestricted && !hasPermission)
     ) {
         // logged out or still not registered for a project
         return children;

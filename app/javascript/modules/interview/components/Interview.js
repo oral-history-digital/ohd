@@ -44,7 +44,10 @@ export default function Interview({
     const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
 
     if (isCatalog) {
-        if (interview?.contributions && Object.keys(interview.contributions).length > 0) {
+        if (
+            interview?.contributions &&
+            Object.keys(interview.contributions).length > 0
+        ) {
             return <InterviewDetailsLeftSideContainer />;
         } else {
             return <Spinner withPadding />;
@@ -58,17 +61,16 @@ export default function Interview({
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent
                         object={interview}
-                        action='show'
+                        action="show"
                         unauthorizedContent={<MediaPreview />}
                         showIfPublic
                     >
                         <MediaPlayer />
-                        {
-                            interviewEditView ?
-                                <EditTableLoader /> :
-                                <InterviewTabsContainer />
-
-                        }
+                        {interviewEditView ? (
+                            <EditTableLoader />
+                        ) : (
+                            <InterviewTabsContainer />
+                        )}
                     </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut ifNoProject>

@@ -6,14 +6,16 @@ import { getCurrentInterview } from 'modules/data';
 import { DumbTranscriptResult } from 'modules/interview-search';
 import getTextAndLang from './getTextAndLang';
 
-export default function TranscriptResultList({
-    transcriptResults,
-}) {
+export default function TranscriptResultList({ transcriptResults }) {
     const interview = useSelector(getCurrentInterview);
     const { locale } = useI18n();
 
     return transcriptResults.map((entry, index) => {
-        const [text, lang] = getTextAndLang(entry.text, locale, interview.alpha3);
+        const [text, lang] = getTextAndLang(
+            entry.text,
+            locale,
+            interview.alpha3
+        );
 
         return (
             <DumbTranscriptResult
@@ -25,7 +27,7 @@ export default function TranscriptResultList({
                 className="heading"
                 transcriptCoupled={interview.transcript_coupled}
             />
-        )
+        );
     });
 }
 

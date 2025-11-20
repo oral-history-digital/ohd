@@ -7,14 +7,15 @@ export default function useMutateWorkbook() {
     const { mutate } = useSWRConfig();
 
     return function mutateWorkbook(updateDocument, id) {
-        const path = typeof id === 'undefined' ?
-            `${pathBase}/user_contents` :
-            `${pathBase}/user_contents/${id}`;
+        const path =
+            typeof id === 'undefined'
+                ? `${pathBase}/user_contents`
+                : `${pathBase}/user_contents/${id}`;
 
         if (typeof updateDocument === 'function') {
             mutate(path, updateDocument, { revalidate: false });
         } else {
             mutate(path);
         }
-    }
+    };
 }

@@ -5,22 +5,13 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import SubTab from './SubTab';
 
-export default function AdminSubTab({
-    title,
-    children,
-    url,
-    obj,
-    action,
-}) {
+export default function AdminSubTab({ title, children, url, obj, action }) {
     const { t } = useI18n();
 
     return (
         <ErrorBoundary small>
             <AuthorizedContent object={obj} action={action}>
-                <SubTab
-                    title={t(title)}
-                    url={url}
-                >
+                <SubTab title={t(title)} url={url}>
                     {children}
                 </SubTab>
             </AuthorizedContent>
@@ -35,6 +26,6 @@ AdminSubTab.propTypes = {
     action: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
 };

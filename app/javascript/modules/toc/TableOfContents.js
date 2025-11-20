@@ -31,8 +31,13 @@ export default function TableOfContents({
             return;
         }
 
-        fetchData({ locale, projectId, project }, 'interviews', archiveId, 'headings');
-    }, [headingsFetched])
+        fetchData(
+            { locale, projectId, project },
+            'interviews',
+            archiveId,
+            'headings'
+        );
+    }, [headingsFetched]);
 
     if (!headingsFetched) {
         return <Spinner />;

@@ -6,13 +6,17 @@ import { getCurrentProject } from 'modules/data';
 import { hideSidebar } from 'modules/sidebar';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     project: getCurrentProject(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    hideSidebar,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            hideSidebar,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearchForm);

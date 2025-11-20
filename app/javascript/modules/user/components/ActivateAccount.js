@@ -11,16 +11,16 @@ export default function ActivateAccount() {
     const { t } = useI18n();
 
     return (
-        <div className='wrapper-content register'>
+        <div className="wrapper-content register">
             <Helmet>
                 <title>{t('devise.passwords.forgot')}</title>
             </Helmet>
             <ErrorBoundary>
-                {
-                    registrationStatus ?
-                        <div className='errors'>{registrationStatus}</div> :
-                        <ChangePasswordFormContainer />
-                }
+                {registrationStatus ? (
+                    <div className="errors">{registrationStatus}</div>
+                ) : (
+                    <ChangePasswordFormContainer />
+                )}
             </ErrorBoundary>
         </div>
     );

@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getNormDataProviders, getRegistryNameTypesForCurrentProject } from 'modules/data';
+import {
+    getNormDataProviders,
+    getRegistryNameTypesForCurrentProject,
+} from 'modules/data';
 import RegistryNameForm from './RegistryNameForm';
 import { getRegistryEntriesSearch, searchRegistryEntry } from 'modules/search';
 
@@ -11,8 +14,12 @@ const mapStateToProps = (state) => ({
     foundRegistryEntries: getRegistryEntriesSearch(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    searchRegistryEntry,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            searchRegistryEntry,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryNameForm);

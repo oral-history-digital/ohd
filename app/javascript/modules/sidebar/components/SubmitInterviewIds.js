@@ -11,7 +11,7 @@ export default function SubmitInterviewIds({
     selectedArchiveIds,
     confirmText,
     filename,
-    format
+    format,
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -24,15 +24,26 @@ export default function SubmitInterviewIds({
             trigger={t(`edit.interviews.${action}.title`)}
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
-            {close => (
+            {(close) => (
                 <div>
-                    {confirmText || t(`edit.interviews.${action}.confirm_text`, {archive_ids: selectedArchiveIds.join(', ')})}
+                    {confirmText ||
+                        t(`edit.interviews.${action}.confirm_text`, {
+                            archive_ids: selectedArchiveIds.join(', '),
+                        })}
 
                     <button
                         type="button"
                         className="Button any-button"
                         onClick={() => {
-                            dispatch(submitSelectedArchiveIds(selectedArchiveIds, action, pathBase, filename, format));
+                            dispatch(
+                                submitSelectedArchiveIds(
+                                    selectedArchiveIds,
+                                    action,
+                                    pathBase,
+                                    filename,
+                                    format
+                                )
+                            );
                             close();
                         }}
                     >

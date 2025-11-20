@@ -8,7 +8,10 @@ export default function usePersonEvents(personId) {
 
     const path = `${pathBase}/people/${personId}/events.json`;
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     return { isLoading, isValidating, data, error };
 }

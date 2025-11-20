@@ -24,7 +24,8 @@ export default function ErrorMessages({ elements, errors, scope }) {
                         return (
                             <li key={element.attribute}>
                                 <b>
-                                    {element.label ? element.label : t(key)}:{' '}
+                                    {element.label ? element.label : t(key)}
+                                    :{' '}
                                 </b>
                                 {element.individualErrorMsg
                                     ? t(

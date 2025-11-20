@@ -1,17 +1,22 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, submitData, getProjectLocales } from 'modules/data';
+import {
+    fetchData,
+    deleteData,
+    submitData,
+    getProjectLocales,
+} from 'modules/data';
 import DataList from './DataList';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         editView: true,
         scope: 'logo',
         detailsAttributes: ['src', 'locale'],
         formElements: [
             {
-                attribute: "locale",
+                attribute: 'locale',
                 elementType: 'select',
                 values: getProjectLocales(state),
                 withEmpty: true,
@@ -22,14 +27,18 @@ const mapStateToProps = state => {
                 type: 'file',
             },
         ],
-        helpTextCode: 'logo_form'
-    }
-}
+        helpTextCode: 'logo_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

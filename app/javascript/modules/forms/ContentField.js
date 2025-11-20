@@ -26,23 +26,27 @@ function ContentField({
     }
 
     return (
-        <div className={classNames('ContentField', 'LoadingOverlay', className, {
-            'is-loading': fetching,
-        })}>
-            {
-                noLabel ?
-                    null :
-                    <span className="flyout-content-label">{label}: </span>
-            }
-            {valueArray.map(value => {
+        <div
+            className={classNames('ContentField', 'LoadingOverlay', className, {
+                'is-loading': fetching,
+            })}
+        >
+            {noLabel ? null : (
+                <span className="flyout-content-label">{label}: </span>
+            )}
+            {valueArray.map((value) => {
                 return (
                     <span
                         key={value}
                         className={classNames('flyout-content-data', className)}
                     >
                         {linkUrls ? (
-                            <ContentValueWithLinks>{value}</ContentValueWithLinks>
-                        ) : value}
+                            <ContentValueWithLinks>
+                                {value}
+                            </ContentValueWithLinks>
+                        ) : (
+                            value
+                        )}
                     </span>
                 );
             })}

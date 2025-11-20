@@ -7,14 +7,13 @@ import { useI18n } from 'modules/i18n';
 import { getInstitutions } from 'modules/data';
 import { LinkOrA } from 'modules/routes';
 import lockRegular from 'assets/images/lock-regular.svg';
-import lockSolid  from 'assets/images/lock-solid.svg';
+import lockSolid from 'assets/images/lock-solid.svg';
 
-export default function ArchiveTile({
-    archive,
-}) {
+export default function ArchiveTile({ archive }) {
     const { t, locale } = useI18n();
     const institutions = useSelector(getInstitutions);
-    const { projectAccessGranted, projectAccessStatus } = useProjectAccessStatus(archive);
+    const { projectAccessGranted, projectAccessStatus } =
+        useProjectAccessStatus(archive);
 
     const name = archive.display_name[locale] || archive.name[locale];
     const backgroundColor = archive.primary_color || '#333333';
@@ -29,12 +28,14 @@ export default function ArchiveTile({
 
     const logoSrc = Object.values(archive.logos)[0]?.src;
     const showLock = !projectAccessGranted;
-    const lockIconSrc = projectAccessStatus === PROJECT_ACCESS_REQUESTED
-        ? lockRegular
-        : lockSolid;
-    const lockLabel = projectAccessStatus === PROJECT_ACCESS_REQUESTED
-        ? t('modules.site_startpage.access_requested')
-        : t('modules.site_startpage.no_access');
+    const lockIconSrc =
+        projectAccessStatus === PROJECT_ACCESS_REQUESTED
+            ? lockRegular
+            : lockSolid;
+    const lockLabel =
+        projectAccessStatus === PROJECT_ACCESS_REQUESTED
+            ? t('modules.site_startpage.access_requested')
+            : t('modules.site_startpage.no_access');
 
     return (
         <LinkOrA
@@ -60,13 +61,13 @@ export default function ArchiveTile({
 
                 <div
                     className="ArchiveTile-image"
-                    style={{ backgroundImage: logoSrc ? `url(${logoSrc})` : null }}
+                    style={{
+                        backgroundImage: logoSrc ? `url(${logoSrc})` : null,
+                    }}
                 />
 
                 <div className="ArchiveTile-body">
-                    <h4 className="ArchiveTile-title">
-                        {name}
-                    </h4>
+                    <h4 className="ArchiveTile-title">{name}</h4>
                     <p className="ArchiveTile-text ArchiveTile-text--ellipsis">
                         {institutionName}
                     </p>

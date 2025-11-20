@@ -1,17 +1,11 @@
 import { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 
-export default function TaskPreview({
-    data,
-    setArchiveId,
-    scope,
-    user,
-}) {
-
+export default function TaskPreview({ data, setArchiveId, scope, user }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
@@ -31,10 +25,10 @@ export default function TaskPreview({
                 return 'assigned_to_supervisor_at';
             }
         }
-    }
+    };
 
     return (
-        <div className='base-data box'>
+        <div className="base-data box">
             <p>
                 <Link
                     onClick={() => {
@@ -45,11 +39,13 @@ export default function TaskPreview({
                     {`${data.archive_id}: ${data.name[locale]}`}
                 </Link>
             </p>
-            <p className='created-at'>
-                <span className='title'>{t( `activerecord.attributes.${scope}.${dateAttribute()}`) + ': '}</span>
-                <span className='content'>{data[dateAttribute()]}</span>
+            <p className="created-at">
+                <span className="title">
+                    {t(`activerecord.attributes.${scope}.${dateAttribute()}`) +
+                        ': '}
+                </span>
+                <span className="content">{data[dateAttribute()]}</span>
             </p>
         </div>
-    )
-
+    );
 }

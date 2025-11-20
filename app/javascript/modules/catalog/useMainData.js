@@ -18,23 +18,33 @@ export default function useData() {
 
     const data = useMemo(() => {
         const curriedMapInstitution = curry(mapInstitution)(locale);
-        const curriedAddChildCollections = curry(addChildCollections)(collections);
+        const curriedAddChildCollections =
+            curry(addChildCollections)(collections);
         const projectsWithChildren = projects.map(curriedAddChildCollections);
 
-        const curriedAddChildProjects = curry(addChildProjects)(projectsWithChildren);
-        const institutionsWithChildren = institutions.map(curriedAddChildProjects);
-        const rootInstitutions = institutionsWithChildren.filter(i => i.parent_id === null);
-        const institutionsAsTree = buildInstitutionTree(rootInstitutions, institutionsWithChildren);
+        const curriedAddChildProjects =
+            curry(addChildProjects)(projectsWithChildren);
+        const institutionsWithChildren = institutions.map(
+            curriedAddChildProjects
+        );
+        const rootInstitutions = institutionsWithChildren.filter(
+            (i) => i.parent_id === null
+        );
+        const institutionsAsTree = buildInstitutionTree(
+            rootInstitutions,
+            institutionsWithChildren
+        );
 
         const institutionRows = institutionsAsTree
             .map(curriedMapInstitution)
             .sort(rowComparator);
 
         return institutionRows;
-    }, [JSON.stringify(institutions),
+    }, [
+        JSON.stringify(institutions),
         JSON.stringify(projects),
         JSON.stringify(collections),
-        locale
+        locale,
     ]);
 
     return data;

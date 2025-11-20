@@ -1,5 +1,5 @@
 import { SET_FILTER, SET_COLUMNS } from './action-types';
-import { EDIT_TABLE_FILTER_ALL } from './constants'
+import { EDIT_TABLE_FILTER_ALL } from './constants';
 
 export const initialState = {
     filter: EDIT_TABLE_FILTER_ALL,

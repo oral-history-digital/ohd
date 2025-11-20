@@ -8,11 +8,15 @@ import TaskPreview from './TaskPreview';
 const mapStateToProps = (state) => {
     return {
         user: getCurrentUser(state),
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    setArchiveId,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            setArchiveId,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskPreview);

@@ -20,7 +20,12 @@ export default function InterviewSearch({
 
     useEffect(() => {
         if (refTreeStatus === 'n/a') {
-            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'ref_tree');
+            fetchData(
+                { locale, projectId, project },
+                'interviews',
+                archiveId,
+                'ref_tree'
+            );
         }
     });
 

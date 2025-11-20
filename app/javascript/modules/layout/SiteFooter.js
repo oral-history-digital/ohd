@@ -16,19 +16,18 @@ function SiteFooter() {
 
     return (
         <footer>
-            <ul className='footer-bottom-nav'>
-                {
-                    !project.grant_project_access_instantly &&
-                    !project.grant_access_without_login &&
-                    <li>
-                        <Link
-                            to={`${pathBase}/conditions`}
-                            title={`${t('conditions')} (${projectId})`}
-                        >
-                            {`${t('conditions')} (${projectId})`}
-                        </Link>
-                    </li>
-                }
+            <ul className="footer-bottom-nav">
+                {!project.grant_project_access_instantly &&
+                    !project.grant_access_without_login && (
+                        <li>
+                            <Link
+                                to={`${pathBase}/conditions`}
+                                title={`${t('conditions')} (${projectId})`}
+                            >
+                                {`${t('conditions')} (${projectId})`}
+                            </Link>
+                        </li>
+                    )}
                 {
                     <li>
                         <a
@@ -53,33 +52,29 @@ function SiteFooter() {
                         </a>
                     </li>
                 }
-                {
-                    ['legal_info', 'contact'].map(key => (
-                        <li key={'external-link-' + key}>
-                            <Link
-                                to={`${pathBase}/${key}`}
-                                title={t(key)}
-                                className="u-ml-tiny"
-                            >
-                                {t(key)}
-                            </Link>
-                        </li>
-                    ))
-                }
-                {
-                    Object.keys(links).map(key => (
-                        <li key={'external-link-' + key}>
-                            <a
-                                className="Link"
-                                href={links[key].url[locale]}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {links[key].name[locale]}
-                            </a>
-                        </li>
-                    ))
-                }
+                {['legal_info', 'contact'].map((key) => (
+                    <li key={'external-link-' + key}>
+                        <Link
+                            to={`${pathBase}/${key}`}
+                            title={t(key)}
+                            className="u-ml-tiny"
+                        >
+                            {t(key)}
+                        </Link>
+                    </li>
+                ))}
+                {Object.keys(links).map((key) => (
+                    <li key={'external-link-' + key}>
+                        <a
+                            className="Link"
+                            href={links[key].url[locale]}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            {links[key].name[locale]}
+                        </a>
+                    </li>
+                ))}
             </ul>
             <p>{project?.name?.[locale]}</p>
             <p>
@@ -89,32 +84,29 @@ function SiteFooter() {
                 </a>
             </p>
 
-            <ProjectFooter project={project} locale={locale}/>
+            <ProjectFooter project={project} locale={locale} />
 
-            {
-                sponsorLogos ?
-                (
-                    <div className='home-content-logos'>
-                        {Object.keys(sponsorLogos).map(k => {
-                            let logo = sponsorLogos[k];
-                            if (logo.locale === locale) {
-                                return (
-                                    <a
-                                        className="Link"
-                                        href={logo.href}
-                                        target='_blank'
-                                        rel='noreferrer'
-                                        title={logo.title}
-                                        key={`sponsor-logo-${k}`}
-                                    >
-                                        <img src={ logo.src } alt="" />
-                                    </a>
-                                );
-                            }
-                        })}
-                    </div>
-                ) : null
-            }
+            {sponsorLogos ? (
+                <div className="home-content-logos">
+                    {Object.keys(sponsorLogos).map((k) => {
+                        let logo = sponsorLogos[k];
+                        if (logo.locale === locale) {
+                            return (
+                                <a
+                                    className="Link"
+                                    href={logo.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    title={logo.title}
+                                    key={`sponsor-logo-${k}`}
+                                >
+                                    <img src={logo.src} alt="" />
+                                </a>
+                            );
+                        }
+                    })}
+                </div>
+            ) : null}
         </footer>
     );
 }

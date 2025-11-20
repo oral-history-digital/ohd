@@ -1,6 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import { MainCatalogPage, InstitutionCatalogPage, ArchiveCatalogPage,
-    CollectionCatalogPage } from 'modules/catalog';
+import {
+    MainCatalogPage,
+    InstitutionCatalogPage,
+    ArchiveCatalogPage,
+    CollectionCatalogPage,
+} from 'modules/catalog';
 
 const CatalogRoutes = () => (
     <Routes>

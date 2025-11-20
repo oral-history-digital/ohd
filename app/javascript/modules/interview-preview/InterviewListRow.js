@@ -14,7 +14,7 @@ import { useArchiveSearch } from 'modules/search';
 import { usePersonWithAssociations } from 'modules/person';
 import {
     METADATA_SOURCE_EVENT_TYPE,
-    METADATA_SOURCE_INTERVIEW
+    METADATA_SOURCE_INTERVIEW,
 } from 'modules/constants';
 
 export default function InterviewListRow({
@@ -31,10 +31,18 @@ export default function InterviewListRow({
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(projectOfInterview);
     const { fulltext } = useArchiveSearch();
-    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, projectOfInterview);
-    const { data: interviewee } = usePersonWithAssociations(interview.interviewee_id);
+    const { numResults } = useInterviewSearch(
+        interview.archive_id,
+        fulltext,
+        projectOfInterview
+    );
+    const { data: interviewee } = usePersonWithAssociations(
+        interview.interviewee_id
+    );
     const currentUser = useSelector(getCurrentUser);
-    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
+    const permitted = currentUser?.interview_permissions.some(
+        (p) => p.interview_id === interview.id
+    );
     const isRestricted = interview.workflow_state === 'restricted';
 
     function linkPath() {
@@ -44,23 +52,27 @@ export default function InterviewListRow({
     }
 
     function showCheckboxes() {
-        return isAuthorized(interview, 'show') &&
-            isAuthorized({ type: 'General' }, 'edit');
+        return (
+            isAuthorized(interview, 'show') &&
+            isAuthorized({ type: 'General' }, 'edit')
+        );
     }
 
     return (
         <tr className="Table-row">
-            {
-                showCheckboxes() && (
-                    <td className="Table-cell">
-                        <Checkbox
-                            className="export-checkbox"
-                            checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
-                            onChange={() => addRemoveArchiveId(interview.archive_id)}
-                        />
-                    </td>
-                )
-            }
+            {showCheckboxes() && (
+                <td className="Table-cell">
+                    <Checkbox
+                        className="export-checkbox"
+                        checked={
+                            selectedArchiveIds.indexOf(interview.archive_id) > 0
+                        }
+                        onChange={() =>
+                            addRemoveArchiveId(interview.archive_id)
+                        }
+                    />
+                </td>
+            )}
             <td className="Table-cell">
                 <LinkOrA
                     project={projectOfInterview}
@@ -68,76 +80,87 @@ export default function InterviewListRow({
                     onLinkClick={() => setArchiveId(interview.archive_id)}
                     className="search-result-link"
                 >
-                    {projectAccessGranted && (
-                        interview.workflow_state === 'public' ||
-                        (interview.workflow_state === 'restricted' && permitted) ||
-                        isAuthorized(interview, 'update')
-                    ) ?
-                        interview.short_title?.[locale] :
-                        interview.anonymous_title[locale]
-                    }
-                    {interview.workflow_state === 'unshared' &&
+                    {projectAccessGranted &&
+                    (interview.workflow_state === 'public' ||
+                        (interview.workflow_state === 'restricted' &&
+                            permitted) ||
+                        isAuthorized(interview, 'update'))
+                        ? interview.short_title?.[locale]
+                        : interview.anonymous_title[locale]}
+                    {interview.workflow_state === 'unshared' && (
                         <FaEyeSlash className="u-ml-tiny" />
-                    }
-                    {interview.workflow_state === 'restricted' &&
-                        <FaKey className="u-ml-tiny" style={{ filter: permitted ? 'opacity(40%)' : 'opacity(90%)' }} />
-                    }
+                    )}
+                    {interview.workflow_state === 'restricted' && (
+                        <FaKey
+                            className="u-ml-tiny"
+                            style={{
+                                filter: permitted
+                                    ? 'opacity(40%)'
+                                    : 'opacity(90%)',
+                            }}
+                        />
+                    )}
                 </LinkOrA>
             </td>
-            {
-                project.is_ohd && (
-                    <td className="Table-cell">
-                        {projectOfInterview.display_name[locale] || projectOfInterview.name[locale]}
-                    </td>
-                )
-            }
-            {
-                project.list_columns?.map(column => {
-                    const allowedToSee = !isRestricted ||
-                        (isRestricted && column.display_on_landing_page) ||
-                        (isRestricted && permitted) ||
-                        isAuthorized(interview, 'update');
+            {project.is_ohd && (
+                <td className="Table-cell">
+                    {projectOfInterview.display_name[locale] ||
+                        projectOfInterview.name[locale]}
+                </td>
+            )}
+            {project.list_columns?.map((column) => {
+                const allowedToSee =
+                    !isRestricted ||
+                    (isRestricted && column.display_on_landing_page) ||
+                    (isRestricted && permitted) ||
+                    isAuthorized(interview, 'update');
 
-                    const obj = (column.ref_object_type === 'Interview' || column.source === METADATA_SOURCE_INTERVIEW) ?
-                        interview :
-                        interviewee;
+                const obj =
+                    column.ref_object_type === 'Interview' ||
+                    column.source === METADATA_SOURCE_INTERVIEW
+                        ? interview
+                        : interviewee;
 
-                    if (column.source === METADATA_SOURCE_EVENT_TYPE) {
-                        const events = interviewee?.events?.filter(e =>
-                            e.event_type_id === column.event_type_id);
+                if (column.source === METADATA_SOURCE_EVENT_TYPE) {
+                    const events = interviewee?.events?.filter(
+                        (e) => e.event_type_id === column.event_type_id
+                    );
 
-                        const formattedEvents = events
-                            ?.map(e => formatEventShort(e, locale))
-                            ?.join(', ');
-
-                        return (
-                            <td key={column.name} className="Table-cell">
-                                {allowedToSee ? formattedEvents : '---'}
-                            </td>
-                        );
-                    }
+                    const formattedEvents = events
+                        ?.map((e) => formatEventShort(e, locale))
+                        ?.join(', ');
 
                     return (
                         <td key={column.name} className="Table-cell">
-                            {(allowedToSee && obj) ? humanReadable({obj, attribute: column.name, optionsScope: 'search_facets'}) : '---'}
+                            {allowedToSee ? formattedEvents : '---'}
                         </td>
                     );
-                })
-            }
-            {
-                fulltext && numResults > 0 && (
-                    <td className="Table-cell">
-                        <LinkOrA
-                            project={projectOfInterview}
-                            to={linkPath()}
-                            onLinkClick={() => setArchiveId(interview.archive_id)}
-                            className="search-result-link"
-                        >
-                            {numResults}
-                        </LinkOrA>
+                }
+
+                return (
+                    <td key={column.name} className="Table-cell">
+                        {allowedToSee && obj
+                            ? humanReadable({
+                                  obj,
+                                  attribute: column.name,
+                                  optionsScope: 'search_facets',
+                              })
+                            : '---'}
                     </td>
-                )
-            }
+                );
+            })}
+            {fulltext && numResults > 0 && (
+                <td className="Table-cell">
+                    <LinkOrA
+                        project={projectOfInterview}
+                        to={linkPath()}
+                        onLinkClick={() => setArchiveId(interview.archive_id)}
+                        className="search-result-link"
+                    >
+                        {numResults}
+                    </LinkOrA>
+                </td>
+            )}
         </tr>
     );
 }

@@ -18,7 +18,7 @@ export default function SpeakerDesignationInputs({
         if (v) {
             handleChange(
                 attribute,
-                contributions.map(c => {
+                contributions.map((c) => {
                     if (c.id.toString() === name) {
                         return { ...c, speaker_designation: v };
                     }
@@ -26,7 +26,7 @@ export default function SpeakerDesignationInputs({
                 })
             );
         }
-    }
+    };
 
     if (isLoading || !people) {
         return <Spinner />;
@@ -35,20 +35,18 @@ export default function SpeakerDesignationInputs({
     return (
         <div className="speaker-designation-input">
             <h4>{t('speaker_designations')}</h4>
-            {
-                contributions.map(contribution => {
-                    const contributor = people[contribution.person_id];
-                    const label = contributor?.display_name;
-                    return createElement(InputContainer, {
-                        key: contribution.id,
-                        scope: attribute,
-                        attribute: contribution.id,
-                        label,
-                        value: contribution.speaker_designation,
-                        handleChange: onChange,
-                    });
-                })
-            }
+            {contributions.map((contribution) => {
+                const contributor = people[contribution.person_id];
+                const label = contributor?.display_name;
+                return createElement(InputContainer, {
+                    key: contribution.id,
+                    scope: attribute,
+                    attribute: contribution.id,
+                    label,
+                    value: contribution.speaker_designation,
+                    handleChange: onChange,
+                });
+            })}
         </div>
     );
 }

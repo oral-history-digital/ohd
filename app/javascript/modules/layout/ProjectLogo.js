@@ -5,11 +5,7 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 
-export default function ProjectLogo({
-    logos,
-    defaultLocale,
-    className,
-}) {
+export default function ProjectLogo({ logos, defaultLocale, className }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
@@ -17,8 +13,10 @@ export default function ProjectLogo({
     if (logos) {
         const logoArray = Object.values(logos);
 
-        const logoForLocale = logoArray.find(logo => logo.locale === locale);
-        const logoForDefaultLocale = logoArray.find(logo => logo.locale === defaultLocale);
+        const logoForLocale = logoArray.find((logo) => logo.locale === locale);
+        const logoForDefaultLocale = logoArray.find(
+            (logo) => logo.locale === defaultLocale
+        );
 
         src = logoForLocale?.src || logoForDefaultLocale?.src || null;
     }
@@ -29,11 +27,7 @@ export default function ProjectLogo({
             className={classNames('Link', className)}
             title={t('home')}
         >
-            <img
-                className="SiteHeader-logo"
-                src={src}
-                alt="Collection logo"
-            />
+            <img className="SiteHeader-logo" src={src} alt="Collection logo" />
         </Link>
     );
 }

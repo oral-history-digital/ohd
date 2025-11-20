@@ -23,7 +23,7 @@ export default function useMapReferenceTypes() {
             id: 'segment',
             name: t('modules.map.mentions'),
             color: project.secondary_color || MARKER_COLOR_SEGMENT_TYPE,
-        })
+        });
     }
 
     return { isValidating, referenceTypes: combinedTypes, error };

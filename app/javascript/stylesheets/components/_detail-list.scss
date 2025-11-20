@@ -17,7 +17,6 @@
 }
 
 .DetailList-item {
-
 }
 
 .DetailList-item--one-line {
@@ -28,8 +27,8 @@
 
 .DetailList-item--shortened {
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;  /* 1 */
+  -webkit-line-clamp: 3; /* 1 */
   display: -webkit-box;
-  max-height: $base-unit * 3;  /* 2 */
+  max-height: $base-unit * 3; /* 2 */
   overflow: hidden;
 }

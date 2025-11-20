@@ -12,16 +12,22 @@ export default function EditProjectInfo() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
                     <title>{t(`edit.project.info`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>{t(`edit.project.info`)}</h1>
+                    <h1 className="registry-entries-title">
+                        {t(`edit.project.info`)}
+                    </h1>
                     <EditProjectInfoAttributesContainer />
-                    <h2 className='registry-entries-title'>{t(`edit.external_link.admin`)}</h2>
+                    <h2 className="registry-entries-title">
+                        {t(`edit.external_link.admin`)}
+                    </h2>
                     <ExternalLinksContainer />
-                    <h2 className='registry-entries-title'>{t(`edit.institution_project.admin`)}</h2>
+                    <h2 className="registry-entries-title">
+                        {t(`edit.institution_project.admin`)}
+                    </h2>
                     <InstitutionProjectsContainer />
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>

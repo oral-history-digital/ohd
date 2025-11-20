@@ -7,12 +7,7 @@ import { formatTimecode } from 'modules/interview-helpers';
 
 import interviewUrl from './interviewUrl';
 
-export default function SegmentLink({
-    interviewId,
-    tape,
-    time,
-    className,
-}) {
+export default function SegmentLink({ interviewId, tape, time, className }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const timecode = formatTimecode(time, true);
@@ -24,9 +19,7 @@ export default function SegmentLink({
             <h4 className="u-line-height u-mt-none u-mb-none">
                 {t('modules.workbook.segment_link')}
             </h4>
-            {url}
-            {' '}
-            <CopyText className="Icon--primary" text={url} />
+            {url} <CopyText className="Icon--primary" text={url} />
         </section>
     );
 }
@@ -36,4 +29,4 @@ SegmentLink.propTypes = {
     tape: PropTypes.number.isRequired,
     time: PropTypes.number.isRequired,
     className: PropTypes.string,
-}
+};

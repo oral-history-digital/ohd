@@ -31,17 +31,16 @@ export default function Material({ material }) {
 
                 <div className="Card-body">
                     {material.description && (
-                        <p className="u-mb-none">
-                            {material.description}
-                        </p>
+                        <p className="u-mb-none">{material.description}</p>
                     )}
 
                     <AuthorizedContent object={material} action="update">
                         <p className="u-mb-none">
-                            {isPublic
-                                ? <FaEye className="Icon Icon--small" />
-                                : <FaEyeSlash className="Icon Icon--small" />
-                            }
+                            {isPublic ? (
+                                <FaEye className="Icon Icon--small" />
+                            ) : (
+                                <FaEyeSlash className="Icon Icon--small" />
+                            )}
                             {` ${fileInfo}`}
                         </p>
                         <MaterialAdminButtons material={material} />

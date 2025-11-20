@@ -45,48 +45,51 @@ export default function SidebarTabs({
         setTabIndex(index);
 
         switch (index) {
-        case indexes.INDEX_SEARCH:
-            navigate(`${pathBase}/searches/archive`);
-            break;
-        case indexes.INDEX_CATALOG:
-            navigate(`${pathBase}/catalog`);
-            break;
-        case indexes.INDEX_INTERVIEW:
-            navigate(`${pathBase}/interviews/${archiveId}`);
-            break;
-        case indexes.INDEX_REGISTRY_ENTRIES:
-            navigate(`${pathBase}/registry_entries`);
-            break;
-        case indexes.INDEX_MAP:
-            navigate(`${pathBase}/searches/map`);
-            break;
-        case indexes.INDEX_PROJECTS:
-            navigate(`/${locale}/projects`);
-            break;
-        case indexes.INDEX_INSTITUTIONS:
-            navigate(`/${locale}/institutions`);
-            break;
-        case indexes.INDEX_HELP_TEXTS:
-            navigate(`/${locale}/help_texts`);
-            break;
-        default:
+            case indexes.INDEX_SEARCH:
+                navigate(`${pathBase}/searches/archive`);
+                break;
+            case indexes.INDEX_CATALOG:
+                navigate(`${pathBase}/catalog`);
+                break;
+            case indexes.INDEX_INTERVIEW:
+                navigate(`${pathBase}/interviews/${archiveId}`);
+                break;
+            case indexes.INDEX_REGISTRY_ENTRIES:
+                navigate(`${pathBase}/registry_entries`);
+                break;
+            case indexes.INDEX_MAP:
+                navigate(`${pathBase}/searches/map`);
+                break;
+            case indexes.INDEX_PROJECTS:
+                navigate(`/${locale}/projects`);
+                break;
+            case indexes.INDEX_INSTITUTIONS:
+                navigate(`/${locale}/institutions`);
+                break;
+            case indexes.INDEX_HELP_TEXTS:
+                navigate(`/${locale}/help_texts`);
+                break;
+            default:
         }
     }
 
     const showCatalogTab = project.is_ohd;
     const showInterviewTab = !!interview;
-    const showRegistryTab = (
-        (!isLoggedIn && project.logged_out_visible_registry_entry_ids?.length > 0) ||
-        isLoggedIn
-    )
+    const showRegistryTab =
+        (!isLoggedIn &&
+            project.logged_out_visible_registry_entry_ids?.length > 0) ||
+        isLoggedIn;
     const showMapTab = hasMap && !project.is_ohd;
     const showWorkbookTab = isLoggedIn;
-    const showIndexingTab = isAuthorized({type: 'General'}, 'edit');
-    const showAdministrationTab = isAuthorized({type: 'General'}, 'edit');
-    const showProjectAdminTab = isAuthorized({type: 'Project'}, 'update');
-    const showProjectsTab = project.is_ohd && isAuthorized({type: 'Project'}, 'create');
-    const showInstitutionsTab = project.is_ohd && isAuthorized({type: 'Institution'}, 'create');
-    const showHelpTextsTab = project.is_ohd && isAuthorized({type: 'HelpText'}, 'update');
+    const showIndexingTab = isAuthorized({ type: 'General' }, 'edit');
+    const showAdministrationTab = isAuthorized({ type: 'General' }, 'edit');
+    const showProjectAdminTab = isAuthorized({ type: 'Project' }, 'update');
+    const showProjectsTab =
+        project.is_ohd && isAuthorized({ type: 'Project' }, 'create');
+    const showInstitutionsTab =
+        project.is_ohd && isAuthorized({ type: 'Institution' }, 'create');
+    const showHelpTextsTab =
+        project.is_ohd && isAuthorized({ type: 'HelpText' }, 'update');
 
     return (
         <Tabs
@@ -97,13 +100,14 @@ export default function SidebarTabs({
             onChange={handleTabClick}
         >
             <TabList>
-                <Tab
-                    key="1"
-                    className="SidebarTabs-tab"
-                >
-                    {t((isCampscapesProject && !archiveId) ?
-                        ('user.notes_on_tos_agreement', {project: project.name[locale]}) :
-                        (project.is_ohd ? 'modules.sidebar.search' : 'archive_search')
+                <Tab key="1" className="SidebarTabs-tab">
+                    {t(
+                        isCampscapesProject && !archiveId
+                            ? ('user.notes_on_tos_agreement',
+                              { project: project.name[locale] })
+                            : project.is_ohd
+                              ? 'modules.sidebar.search'
+                              : 'archive_search'
                     )}
                 </Tab>
 
@@ -131,11 +135,7 @@ export default function SidebarTabs({
                     {t('registry')}
                 </Tab>
 
-                <Tab
-                    key="5"
-                    className="SidebarTabs-tab"
-                    disabled={!showMapTab}
-                >
+                <Tab key="5" className="SidebarTabs-tab" disabled={!showMapTab}>
                     {t('map')}
                 </Tab>
 
@@ -199,27 +199,31 @@ export default function SidebarTabs({
             <TabPanels>
                 <TabPanel key="1">
                     {tabIndex === indexes.INDEX_SEARCH && (
-                        <ArchiveSearchTabPanel selectedArchiveIds={selectedArchiveIds} />
+                        <ArchiveSearchTabPanel
+                            selectedArchiveIds={selectedArchiveIds}
+                        />
                     )}
                 </TabPanel>
 
                 <TabPanel key="2" />
 
                 <TabPanel key="3">
-                    {showInterviewTab && tabIndex === indexes.INDEX_INTERVIEW && (
-                        <StateCheck
-                            testSelector={getCurrentInterviewFetched}
-                            fallback={<Spinner withPadding />}
-                        >
-                            <InterviewTabPanelContainer />
-                        </StateCheck>
-                    )}
+                    {showInterviewTab &&
+                        tabIndex === indexes.INDEX_INTERVIEW && (
+                            <StateCheck
+                                testSelector={getCurrentInterviewFetched}
+                                fallback={<Spinner withPadding />}
+                            >
+                                <InterviewTabPanelContainer />
+                            </StateCheck>
+                        )}
                 </TabPanel>
 
                 <TabPanel key="4">
-                    {showRegistryTab && tabIndex === indexes.INDEX_REGISTRY_ENTRIES && (
-                        <RegistryEntriesTabPanelContainer />
-                    )}
+                    {showRegistryTab &&
+                        tabIndex === indexes.INDEX_REGISTRY_ENTRIES && (
+                            <RegistryEntriesTabPanelContainer />
+                        )}
                 </TabPanel>
 
                 <TabPanel key="5">
@@ -241,15 +245,17 @@ export default function SidebarTabs({
                 </TabPanel>
 
                 <TabPanel key="8">
-                    {showAdministrationTab && tabIndex === indexes.INDEX_ADMINISTRATION && (
-                        <UsersAdminTabPanelContainer />
-                    )}
+                    {showAdministrationTab &&
+                        tabIndex === indexes.INDEX_ADMINISTRATION && (
+                            <UsersAdminTabPanelContainer />
+                        )}
                 </TabPanel>
 
                 <TabPanel key="9">
-                    {showProjectAdminTab && tabIndex === indexes.INDEX_PROJECT_ACCESS && (
-                        <ProjectConfigTabPanel />
-                    )}
+                    {showProjectAdminTab &&
+                        tabIndex === indexes.INDEX_PROJECT_ACCESS && (
+                            <ProjectConfigTabPanel />
+                        )}
                 </TabPanel>
 
                 <TabPanel key="10" />

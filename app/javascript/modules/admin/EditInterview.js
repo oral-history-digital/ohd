@@ -12,12 +12,12 @@ export default function EditInterview() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
                     <title>{t('edit.interview.new')}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className='registry-entries-title'>
+                    <h1 className="registry-entries-title">
                         {t('edit.interview.new')}
                     </h1>
                     {showForm ? (
@@ -28,12 +28,10 @@ export default function EditInterview() {
                         />
                     ) : (
                         <div>
-                            <p>
-                                {t('edit.interview.processed')}
-                            </p>
+                            <p>{t('edit.interview.processed')}</p>
                             <button
                                 type="button"
-                                className='Button return-to-upload'
+                                className="Button return-to-upload"
                                 onClick={() => setShowForm(true)}
                             >
                                 {t('edit.interview.return')}

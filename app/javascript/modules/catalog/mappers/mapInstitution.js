@@ -8,10 +8,11 @@ export default function mapInstitution(locale, institution) {
     const curriedMapProject = curry(mapProject)(locale);
 
     // Subrows = subinstitutions + archives.
-    const subRows = institution.children
-        ?.map(curriedMapInstitution)
-        ?.sort(rowComparator) || [];
-    const projectRows = institution.projects?.map(curriedMapProject)
+    const subRows =
+        institution.children?.map(curriedMapInstitution)?.sort(rowComparator) ||
+        [];
+    const projectRows = institution.projects
+        ?.map(curriedMapProject)
         .sort(rowComparator);
     const subRowsWithProjects = subRows.concat(projectRows);
 

@@ -10,12 +10,12 @@ export default function LoginForm() {
 
     return (
         <Form
-            scope='user'
+            scope="user"
             onSubmit={(params) => {
                 const url = `${pathBase}/users/sign_in`;
                 dispatch(submitLogin(url, params));
             }}
-            submitText='login'
+            submitText="login"
             elements={[
                 {
                     attribute: 'email',

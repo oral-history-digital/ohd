@@ -2,9 +2,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getRegistryReferenceTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject,
+import {
+    fetchData,
+    deleteData,
+    submitData,
+    getCurrentProject,
     getRegistryReferenceTypesForCurrentProject,
-    getRegistryReferenceTypesStatus } from 'modules/data';
+    getRegistryReferenceTypesStatus,
+} from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -12,7 +17,8 @@ const mapStateToProps = (state) => {
     return {
         data: getRegistryReferenceTypesForCurrentProject(state),
         dataStatus: getRegistryReferenceTypesStatus(state),
-        resultPagesCount: getRegistryReferenceTypesStatus(state).resultPagesCount,
+        resultPagesCount:
+            getRegistryReferenceTypesStatus(state).resultPagesCount,
         query: getRegistryReferenceTypesQuery(state),
         outerScope: 'project',
         outerScopeId: project.id,
@@ -20,14 +26,19 @@ const mapStateToProps = (state) => {
         sortAttribute: 'name',
         sortAttributeTranslated: true,
         detailsAttributes: ['name'],
-        initialFormValues: {project_id: project.id},
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
                 elementType: 'registryEntrySelect',
                 attribute: 'registry_entry_id',
                 goDeeper: true,
                 help: 'help_texts.registry_reference_types.registry_entry_id',
-                validate: function(v){return /^\d+$/.test(v) && v !== parseInt(project?.root_registry_entry_id)},
+                validate: function (v) {
+                    return (
+                        /^\d+$/.test(v) &&
+                        v !== parseInt(project?.root_registry_entry_id)
+                    );
+                },
             },
             {
                 attribute: 'use_in_transcript',
@@ -41,19 +52,25 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'code',
                 help: 'help_texts.registry_reference_types.code',
-                validate: function(v){return /^\w+$/.test(v)}
+                validate: function (v) {
+                    return /^\w+$/.test(v);
+                },
             },
         ],
-        joinedData: { },
-        helpTextCode: 'registry_reference_type_form'
-    }
-}
+        joinedData: {},
+        helpTextCode: 'registry_reference_type_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-    setQueryParams,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+            setQueryParams,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

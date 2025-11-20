@@ -8,11 +8,7 @@ import { Spinner } from 'modules/spinners';
 import { useEventTypes } from 'modules/event-types';
 import { hideSidebar } from 'modules/sidebar';
 import { ErrorMessage } from 'modules/ui';
-import {
-    usePeople,
-    PersonTable,
-    PersonForm
-} from 'modules/person';
+import { usePeople, PersonTable, PersonForm } from 'modules/person';
 import EditViewOrRedirect from './EditViewOrRedirect';
 import AddButton from './AddButton';
 
@@ -32,25 +28,20 @@ export default function PeopleAdminPage() {
 
     function renderForm(data, onSubmit, onCancel) {
         return (
-            <PersonForm
-                data={data}
-                onSubmit={onSubmit}
-                onCancel={onCancel}
-            />
+            <PersonForm data={data} onSubmit={onSubmit} onCancel={onCancel} />
         );
     }
 
-    const peopleCount = typeof people === 'undefined' ?
-        undefined :
-        Object.values(people).length;
+    const peopleCount =
+        typeof people === 'undefined'
+            ? undefined
+            : Object.values(people).length;
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
-                    <title>
-                        {t('activerecord.models.person.other')}
-                    </title>
+                    <title>{t('activerecord.models.person.other')}</title>
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
@@ -58,21 +49,27 @@ export default function PeopleAdminPage() {
                         {peopleCount} {t('activerecord.models.person.other')}
                     </h1>
 
-                    {peopleAreLoading ?
-                        <Spinner /> : (
-                        error ?
-                            <ErrorMessage>{error.message}</ErrorMessage> : (
-                            <>
-                                <AddButton
-                                    className="u-mb"
-                                    scope="person"
-                                    interview={undefined}
-                                    onClose={closeModal => renderForm(undefined, closeModal, closeModal)}
-                                    disabled={peopleAreLoading}
-                                />
-                                <PersonTable />
+                    {peopleAreLoading ? (
+                        <Spinner />
+                    ) : error ? (
+                        <ErrorMessage>{error.message}</ErrorMessage>
+                    ) : (
+                        <>
+                            <AddButton
+                                className="u-mb"
+                                scope="person"
+                                interview={undefined}
+                                onClose={(closeModal) =>
+                                    renderForm(
+                                        undefined,
+                                        closeModal,
+                                        closeModal
+                                    )
+                                }
+                                disabled={peopleAreLoading}
+                            />
+                            <PersonTable />
                         </>
-                        )
                     )}
                 </AuthShowContainer>
 

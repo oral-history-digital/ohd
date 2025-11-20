@@ -37,7 +37,6 @@ export default function PhotoModal({
                 isOpen={showDialog}
                 aria-label={title || 'n/a'}
                 onDismiss={close}
-
                 onMouseDown={handleClick}
                 onMouseUp={handleClick}
                 onMouseMove={handleClick}

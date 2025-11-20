@@ -5,10 +5,7 @@ import { Link } from 'react-router-dom';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 
-export default function FacetLink({
-    id,
-    type,
-}) {
+export default function FacetLink({ id, type }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const linkPath = `${pathBase}/catalog/${type}s/${id}`;

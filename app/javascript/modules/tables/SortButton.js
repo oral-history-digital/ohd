@@ -11,17 +11,22 @@ export default function SortButton({
     return (
         <button
             type="button"
-            className={classNames('Button', 'Button--transparent',
-                'Button--icon', 'Button--withoutPadding', className)}
+            className={classNames(
+                'Button',
+                'Button--transparent',
+                'Button--icon',
+                'Button--withoutPadding',
+                className
+            )}
             onClick={onClick}
         >
-            {children}
-            {' '}
-            {direction && (
-                direction === 'asc' ?
-                    <FaSortUp className="Icon" /> :
+            {children}{' '}
+            {direction &&
+                (direction === 'asc' ? (
+                    <FaSortUp className="Icon" />
+                ) : (
                     <FaSortDown className="Icon" />
-            )}
+                ))}
         </button>
     );
 }

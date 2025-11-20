@@ -15,5 +15,5 @@ export default function useMutatePeople() {
         } else {
             mutate(path);
         }
-    }
+    };
 }

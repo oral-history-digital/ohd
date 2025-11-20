@@ -20,17 +20,15 @@ export default function TableRow({
             })}
             style={{ gridTemplateColumns }}
         >
-            {
-                columns.map(column => (
-                    <EditTableCell
-                        key={column}
-                        type={column}
-                        segment={segment}
-                        originalLocale={originalLocale}
-                        translationLocale={translationLocale}
-                    />
-                ))
-            }
+            {columns.map((column) => (
+                <EditTableCell
+                    key={column}
+                    type={column}
+                    segment={segment}
+                    originalLocale={originalLocale}
+                    translationLocale={translationLocale}
+                />
+            ))}
         </div>
     );
 }

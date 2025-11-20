@@ -17,13 +17,15 @@ export default function useInterviewSearch(archiveId, fulltext, project) {
     const paramStr = queryString.stringify(params);
     const path = `${pathBase}/searches/interview?${paramStr}`;
 
-    const shouldFetch = (fulltext?.length > 0)
-        && projectAccessGranted;
+    const shouldFetch = fulltext?.length > 0 && projectAccessGranted;
 
     const { isValidating, isLoading, data, error } = useSWRImmutable(
-        shouldFetch ? path : null, fetcher, {
-        keepPreviousData: false,
-    });
+        shouldFetch ? path : null,
+        fetcher,
+        {
+            keepPreviousData: false,
+        }
+    );
 
     return {
         data,

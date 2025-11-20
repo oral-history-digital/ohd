@@ -15,7 +15,8 @@ export default function useSearchParams() {
     const { search } = location;
 
     const params = useMemo(
-        () => queryString.parse(search, qsOptions), [search]
+        () => queryString.parse(search, qsOptions),
+        [search]
     );
 
     const sortBy = params.sort;
@@ -45,8 +46,8 @@ export default function useSearchParams() {
     function setSort(sort, order) {
         const newParams = {
             ...params,
-           sort,
-           order,
+            sort,
+            order,
         };
         pushToHistory(newParams);
     }
@@ -54,8 +55,8 @@ export default function useSearchParams() {
     function setDefaultSortOptions(sort, order) {
         const newParams = {
             ...params,
-           sort,
-           order,
+            sort,
+            order,
         };
         pushToHistory(newParams, true);
     }
@@ -67,9 +68,9 @@ export default function useSearchParams() {
     function setFulltextAndSort(fulltext, sort, order) {
         const newParams = {
             ...params,
-           fulltext,
-           sort,
-           order,
+            fulltext,
+            sort,
+            order,
         };
         pushToHistory(newParams);
     }
@@ -145,8 +146,7 @@ export default function useSearchParams() {
             return undefined;
         }
 
-        const range = value.split('-')
-            .map(year => Number(year));
+        const range = value.split('-').map((year) => Number(year));
         return range;
     }
 
@@ -158,7 +158,7 @@ export default function useSearchParams() {
     function setParam(name, value) {
         const newParams = {
             ...params,
-           [name]: value,
+            [name]: value,
         };
         pushToHistory(newParams);
     }

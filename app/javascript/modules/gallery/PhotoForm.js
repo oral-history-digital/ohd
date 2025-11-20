@@ -38,7 +38,7 @@ export default function PhotoForm({
                 attribute: 'license',
                 multiLocale: true,
             },
-        ]
+        ];
 
         if (photo?.id) {
             elements.push({
@@ -47,7 +47,7 @@ export default function PhotoForm({
                 values: Object.values(photo.workflow_states),
                 value: photo.workflow_state || 'unshared',
                 optionsScope: 'workflow_states',
-            })
+            });
         }
 
         if (withUpload) {
@@ -55,8 +55,10 @@ export default function PhotoForm({
                 attribute: 'data',
                 elementType: 'input',
                 type: 'file',
-                validate: function(v){return v instanceof File},
-            })
+                validate: function (v) {
+                    return v instanceof File;
+                },
+            });
         }
 
         return elements;
@@ -64,9 +66,9 @@ export default function PhotoForm({
 
     return (
         <Form
-            scope='photo'
+            scope="photo"
             helpTextCode="photo_form"
-            onSubmit={params => {
+            onSubmit={(params) => {
                 submitData({ projectId, project, locale }, params);
                 if (onSubmit) {
                     onSubmit();
@@ -76,7 +78,7 @@ export default function PhotoForm({
             data={photo}
             values={{
                 interview_id: interview?.id,
-                id: photo?.id
+                id: photo?.id,
             }}
             elements={elements()}
         />

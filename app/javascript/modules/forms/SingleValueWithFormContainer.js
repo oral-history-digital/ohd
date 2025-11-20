@@ -2,8 +2,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getEditView } from 'modules/archive';
-import { submitData, getCurrentProject, getCurrentUser,
-    getLanguages } from 'modules/data';
+import {
+    submitData,
+    getCurrentProject,
+    getCurrentUser,
+    getLanguages,
+} from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
 import SingleValueWithForm from './SingleValueWithForm';
 
@@ -13,11 +17,18 @@ const mapStateToProps = (state) => {
         editView: getEditView(state),
         isLoggedIn: getIsLoggedIn(state),
         languages: getLanguages(state),
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleValueWithForm);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SingleValueWithForm);

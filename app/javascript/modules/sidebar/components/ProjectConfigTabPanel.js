@@ -2,7 +2,7 @@ import {
     PermissionSearchFormContainer,
     TranslationValuesSearchFormContainer,
     RoleSearchFormContainer,
-    TaskTypeSearchFormContainer
+    TaskTypeSearchFormContainer,
 } from 'modules/admin';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
@@ -22,78 +22,76 @@ export default function ProjectConfigTabPanel() {
 
     return (
         <ErrorBoundary small>
-            <h3 className='SidebarTabs-title'>
-                { t('edit.project.admin') }
-            </h3>
-            <div className='flyout-sub-tabs-container flyout-video'>
+            <h3 className="SidebarTabs-title">{t('edit.project.admin')}</h3>
+            <div className="flyout-sub-tabs-container flyout-video">
                 <AdminSubTab
-                    title='edit.project.info'
+                    title="edit.project.info"
                     url={`${pathBase}/project/edit-info`}
-                    obj={{type: 'Project'}}
-                    action='update'
+                    obj={{ type: 'Project' }}
+                    action="update"
                 />
                 <AdminSubTab
-                    title='edit.project.config'
+                    title="edit.project.config"
                     url={`${pathBase}/project/edit-config`}
-                    obj={{type: 'Project'}}
-                    action='update'
+                    obj={{ type: 'Project' }}
+                    action="update"
                 />
                 <AdminSubTab
-                    title='edit.project.access_config'
+                    title="edit.project.access_config"
                     url={`${pathBase}/project/edit-access-config`}
-                    obj={{type: 'Project'}}
-                    action='update'
+                    obj={{ type: 'Project' }}
+                    action="update"
                 />
                 <AdminSubTab
-                    title='edit.project.display'
+                    title="edit.project.display"
                     url={`${pathBase}/project/edit-display`}
-                    obj={{type: 'Project'}}
-                    action='update'
+                    obj={{ type: 'Project' }}
+                    action="update"
                 />
                 <AdminSubTab
-                    title='edit.metadata_field.admin'
+                    title="edit.metadata_field.admin"
                     url={`${pathBase}/metadata_fields`}
-                    obj={{type: 'Project'}}
-                    action='update'
+                    obj={{ type: 'Project' }}
+                    action="update"
                 />
                 <AdminSubTab
-                    title='edit.role.admin'
+                    title="edit.role.admin"
                     url={`${pathBase}/roles`}
-                    obj={{type: 'Role'}}
-                    action='update'
+                    obj={{ type: 'Role' }}
+                    action="update"
                 >
-                    <RoleSearchFormContainer/>
+                    <RoleSearchFormContainer />
                 </AdminSubTab>
                 <AdminSubTab
-                    title='edit.permission.admin'
+                    title="edit.permission.admin"
                     url={`${pathBase}/permissions`}
-                    obj={{type: 'Permission'}}
-                    action='update'
+                    obj={{ type: 'Permission' }}
+                    action="update"
                 >
-                    <PermissionSearchFormContainer/>
+                    <PermissionSearchFormContainer />
                 </AdminSubTab>
                 <AdminSubTab
-                    title='edit.translation_value.admin'
+                    title="edit.translation_value.admin"
                     url={`${pathBase}/translation_values`}
-                    obj={{type: 'TranslationValue'}}
-                    action='update'
+                    obj={{ type: 'TranslationValue' }}
+                    action="update"
                 >
-                    <ToggleTranslationsView/>
-                    <TranslationValuesSearchFormContainer/>
+                    <ToggleTranslationsView />
+                    <TranslationValuesSearchFormContainer />
                 </AdminSubTab>
                 <AdminSubTab
-                    title='edit.task_type.admin'
+                    title="edit.task_type.admin"
                     url={`${pathBase}/task_types`}
-                    obj={{type: 'TaskType'}}
-                    action='update'
+                    obj={{ type: 'TaskType' }}
+                    action="update"
                 >
-                    <TaskTypeSearchFormContainer/>
+                    <TaskTypeSearchFormContainer />
                 </AdminSubTab>
                 <AdminSubTab
-                    title='edit.event_type.admin'
+                    title="edit.event_type.admin"
                     url={`${pathBase}/event_types`}
-                    obj={{type: 'EventType'}}
-                    action='update'
+                    obj={{ type: 'EventType' }}
+                    action="update"
                 />
             </div>
         </ErrorBoundary>

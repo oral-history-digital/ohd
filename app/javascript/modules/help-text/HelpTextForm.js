@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { submitDataWithFetch } from 'modules/api';
@@ -26,11 +26,7 @@ const formElements = [
     },
 ];
 
-export default function HelpTextForm({
-    data,
-    onSubmit,
-    onCancel
-}) {
+export default function HelpTextForm({ data, onSubmit, onCancel }) {
     const [isFetching, setIsFetching] = useState(false);
     const mutateHelpTexts = useMutateHelpTexts();
     const pathBase = usePathBase();

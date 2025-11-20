@@ -47,15 +47,11 @@ export default function ArchiveSearchForm() {
                     <FaUndo className="Icon" />
                 </button>
 
-                {
-                    facets ? (
-                        <ArchiveFacets
-                            map
-                            handleSubmit={handleSubmit}
-                        />
-                    ) :
+                {facets ? (
+                    <ArchiveFacets map handleSubmit={handleSubmit} />
+                ) : (
                     <Spinner withPadding />
-                }
+                )}
             </form>
         </div>
     );

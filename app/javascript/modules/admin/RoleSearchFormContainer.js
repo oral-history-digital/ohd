@@ -10,16 +10,20 @@ const mapStateToProps = (state) => ({
     query: getRolesQuery(state),
     scope: 'role',
     searchableAttributes: [
-        {attributeName: 'name'},
-        {attributeName: 'desc'},
+        { attributeName: 'name' },
+        { attributeName: 'desc' },
     ],
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    setQueryParams,
-    resetQuery,
-    hideSidebar,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            setQueryParams,
+            resetQuery,
+            hideSidebar,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSearchForm);

@@ -20,7 +20,11 @@ function expandInstitutions(state, data, currentPrefix = '') {
             state[`${currentPrefix}${index}`] = true;
         }
         if (elem.subRows) {
-            expandInstitutions(state, elem.subRows, `${currentPrefix}${index}.`);
+            expandInstitutions(
+                state,
+                elem.subRows,
+                `${currentPrefix}${index}.`
+            );
         }
     });
 }
@@ -36,48 +40,56 @@ export default function useInstance(data, type) {
 
     let usedColumns;
     switch (type) {
-    case 'collection':
-        usedColumns = ['name', 'shortname'];
-        break;
-    case 'main':
-    case 'institution':
-    case 'archive':
-    default:
-        usedColumns = ['expander', 'name', 'shortname', 'num_interviews'];
+        case 'collection':
+            usedColumns = ['name', 'shortname'];
+            break;
+        case 'main':
+        case 'institution':
+        case 'archive':
+        default:
+            usedColumns = ['expander', 'name', 'shortname', 'num_interviews'];
     }
 
     const columns = useMemo(() => {
-        return usedColumns.map(id => {
+        return usedColumns.map((id) => {
             switch (id) {
-            case 'expander':
-                return {
-                    accessorKey: 'expander',
-                    header: HeaderExpander,
-                    cell: RowExpander,
-                    enableColumnFilter: false,
-                    enableSorting: false,
-                };
-            case 'shortname':
-                return {
-                    accessorKey: 'shortname',
-                    header: t('modules.catalog.table.shortname'),
-                    enableColumnFilter: false,
-                };
-            case 'name':
-                return {
-                    accessorKey: 'name',
-                    header: <span dangerouslySetInnerHTML={{__html: t(`modules.catalog.table.name_header.${type}`)}} />,
-                    cell: NameCell,
-                    enableColumnFilter: true,
-                };
-            case 'num_interviews':
-                return {
-                    accessorKey: 'num_interviews',
-                    header: t('modules.catalog.table.num_interviews'),
-                    enableColumnFilter: false,
-                };
-            default:
-                throw new TypeError(`Column id '${id}' unknown`);
+                case 'expander':
+                    return {
+                        accessorKey: 'expander',
+                        header: HeaderExpander,
+                        cell: RowExpander,
+                        enableColumnFilter: false,
+                        enableSorting: false,
+                    };
+                case 'shortname':
+                    return {
+                        accessorKey: 'shortname',
+                        header: t('modules.catalog.table.shortname'),
+                        enableColumnFilter: false,
+                    };
+                case 'name':
+                    return {
+                        accessorKey: 'name',
+                        header: (
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: t(
+                                        `modules.catalog.table.name_header.${type}`
+                                    ),
+                                }}
+                            />
+                        ),
+                        cell: NameCell,
+                        enableColumnFilter: true,
+                    };
+                case 'num_interviews':
+                    return {
+                        accessorKey: 'num_interviews',
+                        header: t('modules.catalog.table.num_interviews'),
+                        enableColumnFilter: false,
+                    };
+                default:
+                    throw new TypeError(`Column id '${id}' unknown`);
             }
         });
     }, [locale]);
@@ -100,7 +112,7 @@ export default function useInstance(data, type) {
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
         getSortedRowModel: getSortedRowModel(),
-        getSubRows: row => row.subRows,
+        getSubRows: (row) => row.subRows,
     });
 
     return { instance };

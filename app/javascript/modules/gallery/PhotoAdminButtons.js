@@ -17,17 +17,24 @@ export default function PhotoAdminButtons({
 }) {
     const { t } = useI18n();
 
-    const destroy = () => deleteData({ locale, projectId, project }, 'interviews', archiveId, 'photos', photo.id);
+    const destroy = () =>
+        deleteData(
+            { locale, projectId, project },
+            'interviews',
+            archiveId,
+            'photos',
+            photo.id
+        );
 
     return (
-        <AuthorizedContent object={photo} action='update'>
+        <AuthorizedContent object={photo} action="update">
             <div className="PhotoAdminButtons">
                 <Modal
                     title={t('edit.photo.edit')}
                     trigger={<FaPencilAlt />}
                     triggerClassName="PhotoAdminButtons-edit"
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <PhotoFormContainer
                             photo={photo}
                             onSubmit={closeModal}
@@ -35,13 +42,13 @@ export default function PhotoAdminButtons({
                         />
                     )}
                 </Modal>
-                <Modal
-                    title={t('edit.photo.delete')}
-                    trigger={<FaTrash />}
-                >
-                    {closeModal => (
+                <Modal title={t('edit.photo.delete')} trigger={<FaTrash />}>
+                    {(closeModal) => (
                         <DeleteItemForm
-                            onSubmit={() => { destroy(); closeModal(); }}
+                            onSubmit={() => {
+                                destroy();
+                                closeModal();
+                            }}
                             onCancel={closeModal}
                         />
                     )}

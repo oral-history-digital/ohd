@@ -5,10 +5,7 @@ import { useI18n } from 'modules/i18n';
 import FacetFilterInput from './FacetFilterInput';
 import FacetValues from './FacetValues';
 
-export default function Facet({
-    data,
-    facet,
-}) {
+export default function Facet({ data, facet }) {
     const { locale } = useI18n();
 
     const [filter, setFilter] = useState('');

@@ -20,22 +20,24 @@ export default function CopyText({
     const IconComponent = iconComponent;
 
     return (
-        <CopyToClipboard
-            text={text}
-            onCopy={setToCopied}
-        >
+        <CopyToClipboard text={text} onCopy={setToCopied}>
             <button
-                className={classNames('Button', 'Button--transparent',
-                    'Button--icon', className)}
+                className={classNames(
+                    'Button',
+                    'Button--transparent',
+                    'Button--icon',
+                    className
+                )}
                 type="button"
                 aria-label={t('modules.ui.copy_link')}
                 title={title || t('modules.ui.copy_link')}
             >
                 <IconComponent
-                    className={classNames('Icon', copied ?
-                        'Icon--attention' : iconClassName)}
-                />
-                {' '}
+                    className={classNames(
+                        'Icon',
+                        copied ? 'Icon--attention' : iconClassName
+                    )}
+                />{' '}
                 {children}
             </button>
         </CopyToClipboard>

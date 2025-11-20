@@ -6,9 +6,7 @@ export default function useTimeQueryString() {
     const { search } = useLocation();
     const navigate = useNavigate();
 
-    const params = useMemo(
-        () => queryString.parse(search), [search]
-    );
+    const params = useMemo(() => queryString.parse(search), [search]);
 
     const tape = Number.parseInt(params.tape);
     const time = params.time;
@@ -24,7 +22,7 @@ export default function useTimeQueryString() {
     function setParam(name, value) {
         const newParams = {
             ...params,
-           [name]: value,
+            [name]: value,
         };
         pushToHistory(newParams);
     }

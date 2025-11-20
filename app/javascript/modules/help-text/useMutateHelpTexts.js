@@ -9,5 +9,5 @@ export default function useMutateHelpTexts() {
     return function mutateHelpTexts() {
         const path = `${pathBase}/help_texts.json`;
         mutate(path);
-    }
+    };
 }

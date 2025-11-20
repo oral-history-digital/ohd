@@ -5,7 +5,8 @@ import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
 
 import { WorkbookItemForm } from 'modules/workbook';
 import { Modal } from 'modules/ui';
-import { InterviewInfoContainer,
+import {
+    InterviewInfoContainer,
     InterviewContributorsContainer,
     InterviewTextMaterialsContainer,
 } from 'modules/interview-metadata';
@@ -42,20 +43,23 @@ export default function InterviewDetailsLeftSide({
             <div className="u-align-right">
                 <Modal
                     title={t('save_interview_reference_tooltip')}
-                    trigger={(<>
-                        <FaStar className="Icon Icon--text" /> <span>{t('save_interview_reference')}</span>
-                    </>)}
+                    trigger={
+                        <>
+                            <FaStar className="Icon Icon--text" />{' '}
+                            <span>{t('save_interview_reference')}</span>
+                        </>
+                    }
                     triggerClassName="Button Button--transparent"
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <WorkbookItemForm
                             interview={interview}
                             description=""
-                            properties={{title: interview.title}}
+                            properties={{ title: interview.title }}
                             reference_id={interview.id}
-                            reference_type='Interview'
+                            reference_type="Interview"
                             media_id={interview.archive_id}
-                            type='InterviewReference'
+                            type="InterviewReference"
                             submitLabel={t('modules.workbook.bookmark')}
                             onSubmit={closeModal}
                             onCancel={closeModal}
@@ -67,21 +71,24 @@ export default function InterviewDetailsLeftSide({
             <h3>{t('person_info')}</h3>
             <div>
                 <PersonDataContainer />
-                {!interviewee || intervieweeIsLoading ?
-                    <Spinner /> :
-                    <SelectedRegistryReferencesContainer refObject={interviewee} />
-                }
+                {!interviewee || intervieweeIsLoading ? (
+                    <Spinner />
+                ) : (
+                    <SelectedRegistryReferencesContainer
+                        refObject={interviewee}
+                    />
+                )}
             </div>
             <h3>{t('interview_info')}</h3>
             <InterviewInfoContainer />
-            <InterviewContributorsContainer/>
-            <InterviewTextMaterialsContainer/>
-            { interview?.properties?.subcollection &&
+            <InterviewContributorsContainer />
+            <InterviewTextMaterialsContainer />
+            {interview?.properties?.subcollection && (
                 <ContentField
                     label={t('subcollection')}
                     value={interview.properties.subcollection}
                 />
-            }
+            )}
             <SingleValueWithFormContainer
                 obj={interview}
                 value={interview?.links}
@@ -93,17 +100,16 @@ export default function InterviewDetailsLeftSide({
                 <div className="footer-navigation">
                     <Link
                         className={classNames('search-result-link', {
-                            'hidden': !prevArchiveId,
+                            hidden: !prevArchiveId,
                         })}
                         to={`${pathBase}/interviews/${prevArchiveId}`}
                     >
                         <FaChevronLeft className="Icon Icon--text" />
                         {prevArchiveId}
-                    </Link>
-                    {' '}
+                    </Link>{' '}
                     <Link
                         className={classNames('search-result-link', {
-                            'hidden': !nextArchiveId,
+                            hidden: !nextArchiveId,
                         })}
                         to={`${pathBase}/interviews/${nextArchiveId}`}
                     >

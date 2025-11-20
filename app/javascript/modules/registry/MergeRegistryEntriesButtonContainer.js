@@ -9,8 +9,15 @@ const mapStateToProps = (state) => ({
     selectedRegistryEntryIds: getSelectedRegistryEntryIds(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MergeRegistryEntriesButton);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MergeRegistryEntriesButton);

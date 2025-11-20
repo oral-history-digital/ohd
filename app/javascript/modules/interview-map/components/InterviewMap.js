@@ -17,24 +17,20 @@ export default function InterviewMap() {
             <div className="explanation">
                 {t('modules.interview_map.description')}
             </div>
-            {
-                isLoading ? (
-                    <Spinner />
-                ) : (
-                    error ? (
-                        <div className="explanation">
-                            {t('modules.interview_map.error')}: {error.message}
-                        </div>
-                    ) : (
-                        <MapComponent
-                            className="Map--interview"
-                            markers={markers}
-                            bounds={bounds}
-                            popupComponent={InterviewMapPopup}
-                        />
-                    )
-                )
-            }
+            {isLoading ? (
+                <Spinner />
+            ) : error ? (
+                <div className="explanation">
+                    {t('modules.interview_map.error')}: {error.message}
+                </div>
+            ) : (
+                <MapComponent
+                    className="Map--interview"
+                    markers={markers}
+                    bounds={bounds}
+                    popupComponent={InterviewMapPopup}
+                />
+            )}
         </>
     );
 }

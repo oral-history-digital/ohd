@@ -12,6 +12,6 @@ export default function ScrollToTop({ children }) {
 ScrollToTop.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
 };

@@ -6,7 +6,7 @@ import Input from './Input';
 const mapStateToProps = (state) => {
     return {
         locale: getLocale(state),
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps)(Input);

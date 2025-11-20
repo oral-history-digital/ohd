@@ -35,12 +35,10 @@ export default function UploadTranscript({
     if (!showForm) {
         return (
             <>
-                <p>
-                    {t('edit.upload.processing')}
-                </p>
+                <p>{t('edit.upload.processing')}</p>
                 <button
                     type="button"
-                    className='Button return-to-upload'
+                    className="Button return-to-upload"
                     onClick={() => setShowForm(true)}
                 >
                     {t('edit.upload.return')}
@@ -51,8 +49,10 @@ export default function UploadTranscript({
 
     // Create a copy in order to not mutate state in the form.
     const contributions = Object.values(interview.contributions)
-        .filter(contribution => CONTRIBUTION_TYPES_SPEAKING.includes(contribution.contribution_type))
-        .map(contribution => ({
+        .filter((contribution) =>
+            CONTRIBUTION_TYPES_SPEAKING.includes(contribution.contribution_type)
+        )
+        .map((contribution) => ({
             id: contribution.id,
             contribution_type: contribution.contribution_type,
             person_id: contribution.person_id,
@@ -61,27 +61,27 @@ export default function UploadTranscript({
 
     return (
         <>
-            <p className='explanation'>
-                {t('upload.explanation.transcript')}
-            </p>
+            <p className="explanation">{t('upload.explanation.transcript')}</p>
 
             <p>
                 <a href="/transcript-import-template.csv" download>
                     <span className="flyout-sub-tabs-content-ico-link">
-                        <FaDownload className="Icon Icon--small" title={t('download')} />
-                        {' '}
+                        <FaDownload
+                            className="Icon Icon--small"
+                            title={t('download')}
+                        />{' '}
                         {t('transcript_template')}
                     </span>
                 </a>
             </p>
 
             <Form
-                scope='transcript'
+                scope="transcript"
                 onSubmit={(params) => {
                     submitData({ locale, projectId, project }, params);
                     setShowForm(false);
                 }}
-                submitText='edit.upload_transcript.title'
+                submitText="edit.upload_transcript.title"
                 values={{
                     archive_id: archiveId,
                     contributions_attributes: contributions,
@@ -91,7 +91,9 @@ export default function UploadTranscript({
                         attribute: 'data',
                         elementType: 'input',
                         type: 'file',
-                        validate: function(v){return v instanceof File},
+                        validate: function (v) {
+                            return v instanceof File;
+                        },
                         handlechangecallback: handleFileChange,
                     },
                     {
@@ -99,7 +101,9 @@ export default function UploadTranscript({
                         attribute: 'transcript_language_id',
                         values: languages,
                         withEmpty: true,
-                        validate: function(v){return v !== ''}
+                        validate: function (v) {
+                            return v !== '';
+                        },
                     },
                     {
                         attribute: 'tape_number',
@@ -109,25 +113,29 @@ export default function UploadTranscript({
                         elementType: 'input',
                         help: 'activerecord.attributes.transcript.delete_existing_explanation',
                         attribute: 'delete_existing',
-                        type: 'checkbox'
+                        type: 'checkbox',
                     },
                     {
                         elementType: 'input',
                         help: 'activerecord.attributes.transcript.update_only_speakers_explanation',
                         attribute: 'update_only_speakers',
-                        type: 'checkbox'
+                        type: 'checkbox',
                     },
                     {
                         attribute: 'tape_durations',
                         help: 'activerecord.attributes.transcript.tape_durations_explanation',
                         hidden: !isOdt,
-                        validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
+                        validate: function (v) {
+                            return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v);
+                        },
                     },
                     {
                         attribute: 'time_shifts',
                         help: 'activerecord.attributes.transcript.time_shifts_explanation',
                         hidden: !isOdt,
-                        validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
+                        validate: function (v) {
+                            return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v);
+                        },
                     },
                     {
                         elementType: 'speakerDesignationInputs',

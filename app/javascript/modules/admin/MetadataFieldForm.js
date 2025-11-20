@@ -2,7 +2,10 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { Fetch, getRegistryReferenceTypesForCurrentProjectFetched } from 'modules/data';
+import {
+    Fetch,
+    getRegistryReferenceTypesForCurrentProjectFetched,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
@@ -11,24 +14,48 @@ import {
     METADATA_SOURCE_INTERVIEW,
     METADATA_SOURCE_PERSON,
     METADATA_SOURCE_REGISTRY_REFERENCE_TYPE,
-    METADATA_SOURCE_EVENT_TYPE
+    METADATA_SOURCE_EVENT_TYPE,
 } from 'modules/constants';
 import useCombinedRegistryReferenceTypes from './useCombinedRegistryReferenceTypes';
 
 const NAME_VALUES = {
     Interview: [
-        "media_type", "media_missing", "archive_id", "interview_date", "duration", "tape_count",
-        "language_id", "primary_language_id", "secondary_language_id", "primary_translation_language_id",
-        "secondary_translation_language_id", "observations", "workflow_state", "tasks_user_ids",
-        "tasks_supervisor_ids", "description", "collection_id",
-        "signature_original", "startpage_position", "project_id",
-        "project_access", "transcript_coupled", "pseudo_links", "publication_date"
+        'media_type',
+        'media_missing',
+        'archive_id',
+        'interview_date',
+        'duration',
+        'tape_count',
+        'language_id',
+        'primary_language_id',
+        'secondary_language_id',
+        'primary_translation_language_id',
+        'secondary_translation_language_id',
+        'observations',
+        'workflow_state',
+        'tasks_user_ids',
+        'tasks_supervisor_ids',
+        'description',
+        'collection_id',
+        'signature_original',
+        'startpage_position',
+        'project_id',
+        'project_access',
+        'transcript_coupled',
+        'pseudo_links',
+        'publication_date',
     ],
     Person: [
-        "date_of_birth", "year_of_birth", "gender", "description_interviewee",
-        "birth_name", "other_first_names", "alias_names", "pseudonym_or_name"
+        'date_of_birth',
+        'year_of_birth',
+        'gender',
+        'description_interviewee',
+        'birth_name',
+        'other_first_names',
+        'alias_names',
+        'pseudonym_or_name',
     ],
-}
+};
 
 export default function MetadataFieldForm({
     data,
@@ -39,12 +66,14 @@ export default function MetadataFieldForm({
     const { locale } = useI18n();
     const { project, projectId } = useProject();
     const [source, setSource] = useState(data?.source);
-    const [registryReferenceTypeId, setRegistryReferenceTypeId] =
-        useState(data?.registry_reference_type_id);
+    const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(
+        data?.registry_reference_type_id
+    );
     const [eventTypeId, setEventTypeId] = useState(data?.event_type_id);
 
     const { isLoading: eventTypesLoading, data: eventTypes } = useEventTypes();
-    const { isLoading: registryReferenceTypesLoading, registryReferenceTypes } = useCombinedRegistryReferenceTypes();
+    const { isLoading: registryReferenceTypesLoading, registryReferenceTypes } =
+        useCombinedRegistryReferenceTypes();
 
     const handleSourceChange = (name, value) => {
         setSource(value);
@@ -67,9 +96,12 @@ export default function MetadataFieldForm({
 
     const nameValuesForSource = () => {
         if (source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE) {
-            return registryReferenceTypes && registryReferenceTypes[registryReferenceTypeId]?.code;
+            return (
+                registryReferenceTypes &&
+                registryReferenceTypes[registryReferenceTypeId]?.code
+            );
         } else if (isEventSource) {
-            return eventTypes.find(et => et.id === eventTypeId)?.code;
+            return eventTypes.find((et) => et.id === eventTypeId)?.code;
         } else {
             return NAME_VALUES[source];
         }
@@ -77,12 +109,17 @@ export default function MetadataFieldForm({
 
     return (
         <Fetch
-            fetchParams={['registry_reference_types', null, null, `for_projects=${project?.id}`]}
+            fetchParams={[
+                'registry_reference_types',
+                null,
+                null,
+                `for_projects=${project?.id}`,
+            ]}
             testSelector={getRegistryReferenceTypesForCurrentProjectFetched}
             alwaysRenderChildren
         >
             <Form
-                scope='metadata_field'
+                scope="metadata_field"
                 onSubmit={(params) => {
                     submitData({ locale, projectId, project }, params);
                     if (typeof onSubmit === 'function') {
@@ -112,10 +149,13 @@ export default function MetadataFieldForm({
                         attribute: 'registry_reference_type_id',
                         values: registryReferenceTypes,
                         withEmpty: true,
-                        handlechangecallback: handleRegistryReferenceTypeIdChange,
+                        handlechangecallback:
+                            handleRegistryReferenceTypeIdChange,
                         hidden: !isRegistrySource,
                         help: 'help_texts.metadata_fields.registry_reference_type_id',
-                        validate: function(v){return /\d+/.test(v)}
+                        validate: function (v) {
+                            return /\d+/.test(v);
+                        },
                     },
                     {
                         elementType: 'select',
@@ -125,7 +165,9 @@ export default function MetadataFieldForm({
                         withEmpty: true,
                         hidden: !isRegistrySource,
                         help: 'help_texts.metadata_fields.ref_object_type',
-                        validate: function(v){return /\w+/.test(v)}
+                        validate: function (v) {
+                            return /\w+/.test(v);
+                        },
                     },
                     {
                         elementType: 'select',
@@ -135,7 +177,7 @@ export default function MetadataFieldForm({
                         handlechangecallback: handleEventTypeIdChange,
                         hidden: !isEventSource,
                         help: 'help_texts.metadata_fields.event_type_id',
-                        validate: v => /\d+/.test(v)
+                        validate: (v) => /\d+/.test(v),
                     },
                     {
                         elementType: 'select',
@@ -145,7 +187,7 @@ export default function MetadataFieldForm({
                         withEmpty: true,
                         hidden: !isEventSource,
                         help: 'help_texts.metadata_fields.eventable_type',
-                        validate: v => /\w+/.test(v)
+                        validate: (v) => /\w+/.test(v),
                     },
                     {
                         elementType: 'select',
@@ -154,7 +196,9 @@ export default function MetadataFieldForm({
                         optionsScope: 'search_facets',
                         withEmpty: true,
                         hidden: isRegistrySource || isEventSource,
-                        validate: function(v){return /\w+/.test(v)}
+                        validate: function (v) {
+                            return /\w+/.test(v);
+                        },
                     },
                     {
                         attribute: 'label',

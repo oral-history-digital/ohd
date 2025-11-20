@@ -9,11 +9,14 @@ export default function groupByType(referenceTypes, references) {
         throw new TypeError('references must be Array');
     }
 
-    const typesById = keyBy(referenceTypes, type => type.id);
+    const typesById = keyBy(referenceTypes, (type) => type.id);
 
-    const groupedReferences = groupBy(references, ref => ref.registry_reference_type_id);
+    const groupedReferences = groupBy(
+        references,
+        (ref) => ref.registry_reference_type_id
+    );
 
-    const groupArray = Object.keys(groupedReferences).map(typeId => ({
+    const groupArray = Object.keys(groupedReferences).map((typeId) => ({
         id: Number.parseInt(typeId),
         name: typesById[typeId].name,
         references: groupedReferences[typeId],

@@ -22,8 +22,11 @@ export default function useMapLocations() {
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
 
     const path = `${pathBase}/searches/map?${paramStr}`;
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path,
-        fetcher, { keepPreviousData: true });
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher,
+        { keepPreviousData: true }
+    );
 
     return { isLoading, isValidating, locations: data, error };
 }

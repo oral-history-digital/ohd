@@ -19,7 +19,10 @@ export default function useContributionsForPerson(id) {
     const pathBase = usePathBase();
 
     const path = `${pathBase}/people/${id}/contributions?locale=${locale}`;
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     let contributions = [];
 
@@ -32,6 +35,6 @@ export default function useContributionsForPerson(id) {
         isLoading,
         isValidating,
         contributions,
-        error
+        error,
     };
 }

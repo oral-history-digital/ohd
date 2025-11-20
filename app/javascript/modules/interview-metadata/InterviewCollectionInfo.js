@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
+import {
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+} from '@reach/disclosure';
 import { FaInfo } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
@@ -10,9 +14,7 @@ import { getCollectionsForCurrentProject } from 'modules/data';
 import { useProjectAccessStatus } from 'modules/auth';
 import CollectionLink from './CollectionLink';
 
-export default function InterviewCollectionInfo({
-    interview,
-}) {
+export default function InterviewCollectionInfo({ interview }) {
     const { locale, t } = useI18n();
     const { project } = useProject();
     const collections = useSelector(getCollectionsForCurrentProject);
@@ -34,20 +36,21 @@ export default function InterviewCollectionInfo({
             projectAccessGranted={projectAccessGranted}
             hideEmpty
         >
-        {collection && (
-            <Disclosure>
-                <DisclosureButton className="Button">
-                    <FaInfo
-                        title={titleText}
-                        aria-label={titleText}
-                    />
-                </DisclosureButton>
-                <CollectionLink collectionId={collection.id} />
-                <DisclosurePanel>
-                    <span dangerouslySetInnerHTML={{__html: collection.notes[locale]}} />
-                </DisclosurePanel>
-            </Disclosure>
-        )}
+            {collection && (
+                <Disclosure>
+                    <DisclosureButton className="Button">
+                        <FaInfo title={titleText} aria-label={titleText} />
+                    </DisclosureButton>
+                    <CollectionLink collectionId={collection.id} />
+                    <DisclosurePanel>
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: collection.notes[locale],
+                            }}
+                        />
+                    </DisclosurePanel>
+                </Disclosure>
+            )}
         </SingleValueWithFormContainer>
     );
 }

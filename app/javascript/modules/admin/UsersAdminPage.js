@@ -13,19 +13,17 @@ export default function UsersAdminPage() {
 
     // INTARCH-2924: do not hide sidebar
     //useEffect(() => {
-        //dispatch(hideSidebar());
+    //dispatch(hideSidebar());
     //}, []);
 
     return (
-        <div className='wrapper-content register'>
+        <div className="wrapper-content register">
             <Helmet>
-                <title>
-                    {t('activerecord.models.user.other')}
-                </title>
+                <title>{t('activerecord.models.user.other')}</title>
             </Helmet>
 
             <AuthShowContainer ifLoggedIn>
-                <AuthorizedContent object={{ type: 'User' }} action='update' >
+                <AuthorizedContent object={{ type: 'User' }} action="update">
                     <UserTable />
                 </AuthorizedContent>
             </AuthShowContainer>

@@ -9,5 +9,5 @@ export default function useMutatePersonLandingPageMetadata() {
     return function mutatePersonLandingPageMetadata(id) {
         const path = `${pathBase}/people/${id}/landing_page_metadata.json`;
         mutate(path);
-    }
+    };
 }

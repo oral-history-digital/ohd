@@ -2,8 +2,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentProject,
-    getSegmentsStatus } from 'modules/data';
+import {
+    fetchData,
+    getCurrentInterview,
+    getCurrentProject,
+    getSegmentsStatus,
+} from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { getFilter } from '../selectors';
 import EditTable from './EditTable';
@@ -21,8 +25,12 @@ const mapStateToProps = (state) => ({
     project: getCurrentProject(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditTable);

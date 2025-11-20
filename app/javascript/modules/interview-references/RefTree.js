@@ -21,7 +21,12 @@ export default function RefTree({
 
     useEffect(() => {
         if (refTreeStatus === 'n/a') {
-            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'ref_tree');
+            fetchData(
+                { locale, projectId, project },
+                'interviews',
+                archiveId,
+                'ref_tree'
+            );
         }
     });
 
@@ -30,32 +35,34 @@ export default function RefTree({
     }
 
     function hasProjectReferences() {
-      return Array.isArray(refTree?.project?.children);
+        return Array.isArray(refTree?.project?.children);
     }
 
     function hasOHDReferences() {
-      return Array.isArray(refTree?.ohd?.children);
+        return Array.isArray(refTree?.ohd?.children);
     }
 
     function hasAnyReferences() {
-      return hasProjectReferences() || hasOHDReferences();
+        return hasProjectReferences() || hasOHDReferences();
     }
 
     return (
         <ScrollToTop>
-            {isEditor && <HelpText code="interview_registry" className="u-mb" />}
+            {isEditor && (
+                <HelpText code="interview_registry" className="u-mb" />
+            )}
 
             {hasAnyReferences() ? (
-              <div className="content-index content-ref-tree">
-                {hasProjectReferences() && (
-                    <RefTreeChildren entries={refTree.project.children}/>
-                )}
-                {hasOHDReferences() && (
-                    <RefTreeChildren entries={refTree.ohd.children}/>
-                )}
-              </div>
+                <div className="content-index content-ref-tree">
+                    {hasProjectReferences() && (
+                        <RefTreeChildren entries={refTree.project.children} />
+                    )}
+                    {hasOHDReferences() && (
+                        <RefTreeChildren entries={refTree.ohd.children} />
+                    )}
+                </div>
             ) : (
-              t('without_ref_tree')
+                t('without_ref_tree')
             )}
         </ScrollToTop>
     );

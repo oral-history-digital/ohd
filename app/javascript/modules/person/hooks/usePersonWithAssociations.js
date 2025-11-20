@@ -9,12 +9,13 @@ export default function usePersonWithAssociations(id) {
     const pathBase = usePathBase();
     const { projectAccessGranted } = useProjectAccessStatus(project);
 
-    const path = projectAccessGranted ?
-        `${pathBase}/people/${id}.json?with_associations=true` :
-        `${pathBase}/people/${id}/landing_page_metadata.json`;
+    const path = projectAccessGranted
+        ? `${pathBase}/people/${id}.json?with_associations=true`
+        : `${pathBase}/people/${id}/landing_page_metadata.json`;
 
     const { isLoading, isValidating, data, error } = useSWRImmutable(
-        typeof id === 'number' ? path : null, fetcher
+        typeof id === 'number' ? path : null,
+        fetcher
     );
 
     return { isLoading, isValidating, data: data?.data, error };

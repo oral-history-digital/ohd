@@ -13,11 +13,15 @@ const mapStateToProps = (state) => {
         ohdProject: getOHDProject(state),
         countryKeys: getCountryKeys(state),
         registrationStatus: getRegistrationStatus(state),
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitRegister,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitRegister,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

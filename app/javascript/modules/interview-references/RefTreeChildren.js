@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import TranscriptResultList from './TranscriptResultList';
 import RefTreeEntryList from './RefTreeEntryList';
 
-export default function RefTreeChildren({
-    entries,
-}) {
+export default function RefTreeChildren({ entries }) {
     const refTreeEntries = entries.filter((entry) => entry.type === 'node');
     const transcriptResults = entries.filter((entry) => entry.type === 'leafe');
 
@@ -14,7 +12,7 @@ export default function RefTreeChildren({
             <RefTreeEntryList entries={refTreeEntries} />
             <TranscriptResultList transcriptResults={transcriptResults} />
         </>
-    )
+    );
 }
 
 RefTreeChildren.propTypes = {

@@ -22,56 +22,57 @@ export default function SlideShowSearchResults({
     }
 
     if (segments.length === 0) {
-        return <SlideShowSearchStats searchResults={searchResults}/>;
+        return <SlideShowSearchStats searchResults={searchResults} />;
     }
 
     return (
-        <Slider
-            className="Slider Slider--thumbnail"
-            dots={false}
-        >
+        <Slider className="Slider Slider--thumbnail" dots={false}>
             <div>
                 <SlideShowSearchStats searchResults={searchResults} />
             </div>
-            {
-                segments.map(segment => {
-                    let lang;
-                    for (const [key, value] of Object.entries(segment.text)) {
-                        if (value?.length > 0) {
-                            if (key === 'orig') {
-                                lang = interview.alpha3;
-                            } else {
-                                lang = key;
-                            }
-                            break;
+            {segments.map((segment) => {
+                let lang;
+                for (const [key, value] of Object.entries(segment.text)) {
+                    if (value?.length > 0) {
+                        if (key === 'orig') {
+                            lang = interview.alpha3;
+                        } else {
+                            lang = key;
                         }
+                        break;
                     }
+                }
 
-                    return (
-                        <div key={segment.id}>
-                            <div style={{marginBottom: '24px'}}>
-                                <LinkOrA
-                                    key={segment.id}
-                                    project={project}
-                                    onLinkClick={() => dispatch(
+                return (
+                    <div key={segment.id}>
+                        <div style={{ marginBottom: '24px' }}>
+                            <LinkOrA
+                                key={segment.id}
+                                project={project}
+                                onLinkClick={() =>
+                                    dispatch(
                                         setProjectId(projectId),
                                         setArchiveId(interview.archive_id)
-                                    )}
-                                    to={`interviews/${interview.archive_id}`}
-                                >
-                                    <DumbTranscriptResult
-                                        highlightedText={Object.values(segment.text).find(text => text?.length > 0)}
-                                        tapeNumber={segment.tape_nbr}
-                                        time={segment.time}
-                                        lang={lang}
-                                        transcriptCoupled={interview.transcript_coupled}
-                                    />
-                                </LinkOrA>
-                            </div>
+                                    )
+                                }
+                                to={`interviews/${interview.archive_id}`}
+                            >
+                                <DumbTranscriptResult
+                                    highlightedText={Object.values(
+                                        segment.text
+                                    ).find((text) => text?.length > 0)}
+                                    tapeNumber={segment.tape_nbr}
+                                    time={segment.time}
+                                    lang={lang}
+                                    transcriptCoupled={
+                                        interview.transcript_coupled
+                                    }
+                                />
+                            </LinkOrA>
                         </div>
-                    );
-                })
-            }
+                    </div>
+                );
+            })}
         </Slider>
     );
 }

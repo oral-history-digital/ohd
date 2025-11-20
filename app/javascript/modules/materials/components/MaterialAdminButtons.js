@@ -56,7 +56,9 @@ export default function MaterialAdminButtons({ material }) {
             >
                 {(closeModal) => (
                     <DeleteItemForm
-                        onSubmit={() => handleDeleteClick(material.id, closeModal)}
+                        onSubmit={() =>
+                            handleDeleteClick(material.id, closeModal)
+                        }
                         onCancel={closeModal}
                     />
                 )}

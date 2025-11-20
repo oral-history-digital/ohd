@@ -32,20 +32,22 @@ export default function DataSearchForm({
     function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-        setQueryParams(
-            pluralize(scope),
-            {
-                [name]: value,
-                page: 1,
-            }
-        );
+        setQueryParams(pluralize(scope), {
+            [name]: value,
+            page: 1,
+        });
     }
 
     function handleReset() {
         formEl.current?.reset();
         resetQuery(pluralize(scope));
-        fetchData({ projectId, locale, project }, pluralize(scope),
-            null, null, null);
+        fetchData(
+            { projectId, locale, project },
+            pluralize(scope),
+            null,
+            null,
+            null
+        );
     }
 
     function handleSubmit(event) {
@@ -53,8 +55,13 @@ export default function DataSearchForm({
         if (isMobile()) {
             hideSidebar();
         }
-        fetchData({ projectId, locale, project }, pluralize(scope),
-            null, null, parametrizedQuery(query));
+        fetchData(
+            { projectId, locale, project },
+            pluralize(scope),
+            null,
+            null,
+            parametrizedQuery(query)
+        );
     }
 
     return (
@@ -70,7 +77,9 @@ export default function DataSearchForm({
                 return (
                     <FormElement
                         key={element.attributeName}
-                        label={t(`activerecord.attributes.${scope}.${element.attributeName}`)}
+                        label={t(
+                            `activerecord.attributes.${scope}.${element.attributeName}`
+                        )}
                     >
                         <DataSearchFormElement
                             element={element}
@@ -79,7 +88,7 @@ export default function DataSearchForm({
                             onChange={handleChange}
                         />
                     </FormElement>
-                )
+                );
             })}
             <input
                 className="lonely-search-button"

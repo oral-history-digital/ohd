@@ -9,7 +9,7 @@ export default function ThumbnailBadge({
     loading,
     numSearchResults,
     className,
-    onClick = f => f,
+    onClick = (f) => f,
 }) {
     const { t } = useI18n();
 
@@ -24,18 +24,19 @@ export default function ThumbnailBadge({
             onClick={onClick}
             title={t('show_segment_hits')}
         >
-            {
-                loading ? (
-                    <Spinner small />
-                ) : (
-                    <>
-                        <FaSearch className="ThumbnailBadge-icon" />
-                        <span className="ThumbnailBadge-text" aria-label={`${numSearchResults} ${t('segment_hits')}`}>
-                            {numSearchResults}
-                        </span>
-                    </>
-                )
-            }
+            {loading ? (
+                <Spinner small />
+            ) : (
+                <>
+                    <FaSearch className="ThumbnailBadge-icon" />
+                    <span
+                        className="ThumbnailBadge-text"
+                        aria-label={`${numSearchResults} ${t('segment_hits')}`}
+                    >
+                        {numSearchResults}
+                    </span>
+                </>
+            )}
         </button>
     );
 }

@@ -8,16 +8,16 @@ import { submitData } from 'modules/data';
 import { getCurrentUser, getCurrentProject } from 'modules/data';
 import { OHD_DOMAINS } from 'modules/constants';
 
-export default function ConfirmNewZwarTosPopup ({
-}) {
+export default function ConfirmNewZwarTosPopup({}) {
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
     const project = useSelector(getCurrentProject);
 
     const projectId = 'za';
     const currentUser = useSelector(getCurrentUser);
-    const currentProjectAccess = currentUser?.user_projects &&
-        Object.values(currentUser.user_projects).find( up => {
+    const currentProjectAccess =
+        currentUser?.user_projects &&
+        Object.values(currentUser.user_projects).find((up) => {
             return up.project_id === project?.id;
         });
 
@@ -27,7 +27,9 @@ export default function ConfirmNewZwarTosPopup ({
     if (!currentProjectAccess) return null;
     if (location.pathname.match(/\/conditions$/)) return null;
 
-    const newProjectAccess = new Date(currentProjectAccess.created_at).getTime() > new Date('2023-12-11T00:00:00Z').getTime();
+    const newProjectAccess =
+        new Date(currentProjectAccess.created_at).getTime() >
+        new Date('2023-12-11T00:00:00Z').getTime();
     if (newProjectAccess) return null;
 
     const confirmedNewTos = currentProjectAccess.tos_agreement;
@@ -39,22 +41,31 @@ export default function ConfirmNewZwarTosPopup ({
 
     return (
         <Modal
-            key='confirm-new-zwar-tos-popup'
+            key="confirm-new-zwar-tos-popup"
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
             showDialogInitially={true}
             hideButton={true}
             hideCloseButton={true}
         >
-            { close => (
+            {(close) => (
                 <>
                     <h2>{t('update.zwar.tos.title')}</h2>
-                    <p>{t('update.zwar.tos.content_one', {archive_name: project.name[locale]})}</p>
+                    <p>
+                        {t('update.zwar.tos.content_one', {
+                            archive_name: project.name[locale],
+                        })}
+                    </p>
                     <p>{t('update.zwar.tos.content_two')}</p>
                     <p>{t('update.zwar.tos.content_three')}</p>
                     <Form
-                        scope='user_project'
+                        scope="user_project"
                         onSubmit={(params) => {
-                            dispatch(submitData({ locale, projectId, project }, params));
+                            dispatch(
+                                submitData(
+                                    { locale, projectId, project },
+                                    params
+                                )
+                            );
                             close();
                         }}
                         data={currentProjectAccess}
@@ -64,62 +75,74 @@ export default function ConfirmNewZwarTosPopup ({
                                 attribute: 'tos_agreement_ohd',
                                 label: t('user.tos_agreement') + ' (OHD)',
                                 type: 'checkbox',
-                                validate: function(v){return v && v !== '0'},
+                                validate: function (v) {
+                                    return v && v !== '0';
+                                },
                                 help: t('update.zwar.tos.tos_agreement_ohd', {
-                                    tos_link: <a
-                                        className="Link"
-                                        href={conditionsLink}
-                                        target="_blank"
-                                        title="Externer Link"
-                                        rel="noreferrer"
-                                    >
-                                        {t('user.tos_agreement')}
-                                    </a>
-                                })
+                                    tos_link: (
+                                        <a
+                                            className="Link"
+                                            href={conditionsLink}
+                                            target="_blank"
+                                            title="Externer Link"
+                                            rel="noreferrer"
+                                        >
+                                            {t('user.tos_agreement')}
+                                        </a>
+                                    ),
+                                }),
                             },
                             {
                                 elementType: 'input',
                                 attribute: 'tos_agreement',
-                                label: t('user.tos_agreement') + ` (${project.shortname === 'za' ? 'ZWAR' : 'MOG'})`,
+                                label:
+                                    t('user.tos_agreement') +
+                                    ` (${project.shortname === 'za' ? 'ZWAR' : 'MOG'})`,
                                 type: 'checkbox',
-                                validate: function(v){return v && v !== '0'},
+                                validate: function (v) {
+                                    return v && v !== '0';
+                                },
                                 help: t('update.zwar.tos.tos_agreement_zwar', {
                                     project: project.name[locale],
-                                    tos_link: <a
-                                        className="Link"
-                                        href={conditionsLinkZWAR}
-                                        target="_blank"
-                                        title="Externer Link"
-                                        rel="noreferrer"
-                                    >
-                                        {t('user.tos_agreement')}
-                                    </a>
-                                })
+                                    tos_link: (
+                                        <a
+                                            className="Link"
+                                            href={conditionsLinkZWAR}
+                                            target="_blank"
+                                            title="Externer Link"
+                                            rel="noreferrer"
+                                        >
+                                            {t('user.tos_agreement')}
+                                        </a>
+                                    ),
+                                }),
                             },
                             {
                                 elementType: 'input',
-                                attribute: 'priv_agreement' ,
+                                attribute: 'priv_agreement',
                                 labelKey: 'user.priv_agreement',
                                 type: 'checkbox',
-                                validate: function(v){return v && v !== '0'},
+                                validate: function (v) {
+                                    return v && v !== '0';
+                                },
                                 help: t('update.zwar.tos.priv_agreement', {
-                                    priv_link: <a
-                                        className="Link"
-                                        href={privacyLink}
-                                        target="_blank"
-                                        title="Externer Link"
-                                        rel="noreferrer"
-                                    >
-                                        {t('user.priv_agreement')}
-                                    </a>
-                                })
+                                    priv_link: (
+                                        <a
+                                            className="Link"
+                                            href={privacyLink}
+                                            target="_blank"
+                                            title="Externer Link"
+                                            rel="noreferrer"
+                                        >
+                                            {t('user.priv_agreement')}
+                                        </a>
+                                    ),
+                                }),
                             },
                         ]}
                     />
                 </>
             )}
         </Modal>
-    )
+    );
 }
-
-

@@ -14,5 +14,5 @@ export default function useMutatePersonWithAssociations() {
         } else {
             mutate(path);
         }
-    }
+    };
 }

@@ -14,5 +14,5 @@ export default function useMutateEventTypes() {
         } else {
             mutate(path);
         }
-    }
+    };
 }

@@ -20,23 +20,26 @@ export default function Features() {
 
             <form>
                 <ul className="Features">
-                    {
-                        features.map(([name, isEnabled]) => (
-                            <li key={name}>
-                                <label className="Features-label">
-                                    <Checkbox
-                                        name={name}
-                                        checked={isEnabled}
-                                        onChange={() =>
-                                            dispatch(isEnabled ? disable(name) : enable(name))
-                                        }
-                                    />
-                                    {' '}
-                                    {t(`modules.features.${name.replace(/-/g, '_')}`)}
-                                </label>
-                            </li>
-                        ))
-                    }
+                    {features.map(([name, isEnabled]) => (
+                        <li key={name}>
+                            <label className="Features-label">
+                                <Checkbox
+                                    name={name}
+                                    checked={isEnabled}
+                                    onChange={() =>
+                                        dispatch(
+                                            isEnabled
+                                                ? disable(name)
+                                                : enable(name)
+                                        )
+                                    }
+                                />{' '}
+                                {t(
+                                    `modules.features.${name.replace(/-/g, '_')}`
+                                )}
+                            </label>
+                        </li>
+                    ))}
                 </ul>
             </form>
         </section>

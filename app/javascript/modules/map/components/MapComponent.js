@@ -43,32 +43,30 @@ export default function MapComponent({
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
 
-                {
-                    markers.map(marker => {
-                        const markerName = getMarkerName(marker);
-                        return (
-                            <CircleMarker
-                                key={marker.id}
-                                center={[marker.lat, marker.long]}
-                                radius={marker.radius}
-                                fillColor={marker.color}
-                                fillOpacity={0.5}
-                                stroke={0}
-                            >
-                                <MapTooltip
-                                    placeName={markerName}
-                                    numInterviewRefs={marker.numMetadataReferences}
-                                    numSegmentRefs={marker.numSegmentReferences}
-                                />
-                                <MapPopup
-                                    title={markerName}
-                                    registryEntryId={marker.id}
-                                    popupComponent={popupComponent}
-                                />
-                            </CircleMarker>
-                        );
-                    })
-                }
+                {markers.map((marker) => {
+                    const markerName = getMarkerName(marker);
+                    return (
+                        <CircleMarker
+                            key={marker.id}
+                            center={[marker.lat, marker.long]}
+                            radius={marker.radius}
+                            fillColor={marker.color}
+                            fillOpacity={0.5}
+                            stroke={0}
+                        >
+                            <MapTooltip
+                                placeName={markerName}
+                                numInterviewRefs={marker.numMetadataReferences}
+                                numSegmentRefs={marker.numSegmentReferences}
+                            />
+                            <MapPopup
+                                title={markerName}
+                                registryEntryId={marker.id}
+                                popupComponent={popupComponent}
+                            />
+                        </CircleMarker>
+                    );
+                })}
                 {children}
             </MapContainer>
         </div>
@@ -78,15 +76,17 @@ export default function MapComponent({
 MapComponent.propTypes = {
     loading: PropTypes.bool,
     className: PropTypes.string,
-    markers: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        lat: PropTypes.number.isRequired,
-        long: PropTypes.number.isRequired,
-        labels: PropTypes.object.isRequired,
-        numReferences: PropTypes.number.isRequired,
-        radius: PropTypes.number.isRequired,
-        color: PropTypes.string.isRequired,
-    })),
+    markers: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            lat: PropTypes.number.isRequired,
+            long: PropTypes.number.isRequired,
+            labels: PropTypes.object.isRequired,
+            numReferences: PropTypes.number.isRequired,
+            radius: PropTypes.number.isRequired,
+            color: PropTypes.string.isRequired,
+        })
+    ),
     bounds: PropTypes.arrayOf(PropTypes.array),
     popupComponent: PropTypes.elementType.isRequired,
     children: PropTypes.oneOfType([

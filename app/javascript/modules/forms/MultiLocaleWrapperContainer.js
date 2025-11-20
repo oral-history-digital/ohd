@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getProjectLocales } from 'modules/data';
 import MultiLocaleWrapper from './MultiLocaleWrapper';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     locales: getProjectLocales(state),
 });
 

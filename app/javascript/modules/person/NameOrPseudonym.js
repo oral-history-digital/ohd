@@ -34,11 +34,7 @@ export default function NameOrPseudonym({
 
         return (
             <AuthShowContainer ifLoggedIn>
-                <ContentField
-                    label={label}
-                    value={value}
-                    fetching={fetching}
-                />
+                <ContentField label={label} value={value} fetching={fetching} />
             </AuthShowContainer>
         );
     }
@@ -48,43 +44,42 @@ export default function NameOrPseudonym({
         : t('interviewee_name');
     value = person.display_name;
 
-    return (<>
-        <AuthShowContainer ifLoggedIn>
-            <ContentField
-                label={label}
-                value={value}
-                fetching={fetching}
-            >
-                <AuthorizedContent object={person} action='update'>
-                    <Modal
-                        hideHeading
-                        title={t('edit.contribution.edit')}
-                        trigger={(<>
-                            <FaPencilAlt className="Icon Icon--editorial Icon--small" />
-                            {' '}
-                            {t('edit.contribution.edit')}
-                        </>)}
-                    >
-                        {close => (
-                            <PersonForm
-                                data={person}
-                                onSubmit={close}
-                                onCancel={close}
-                            />
-                        )}
-                    </Modal>
-                </AuthorizedContent>
-            </ContentField>
-        </AuthShowContainer>
+    return (
+        <>
+            <AuthShowContainer ifLoggedIn>
+                <ContentField label={label} value={value} fetching={fetching}>
+                    <AuthorizedContent object={person} action="update">
+                        <Modal
+                            hideHeading
+                            title={t('edit.contribution.edit')}
+                            trigger={
+                                <>
+                                    <FaPencilAlt className="Icon Icon--editorial Icon--small" />{' '}
+                                    {t('edit.contribution.edit')}
+                                </>
+                            }
+                        >
+                            {(close) => (
+                                <PersonForm
+                                    data={person}
+                                    onSubmit={close}
+                                    onCancel={close}
+                                />
+                            )}
+                        </Modal>
+                    </AuthorizedContent>
+                </ContentField>
+            </AuthShowContainer>
 
-        <AuthShowContainer ifLoggedOut ifNoProject>
-            <ContentField
-                label={label}
-                value={interview?.anonymous_title?.[locale]}
-                fetching={fetching}
-            />
-        </AuthShowContainer>
-    </>);
+            <AuthShowContainer ifLoggedOut ifNoProject>
+                <ContentField
+                    label={label}
+                    value={interview?.anonymous_title?.[locale]}
+                    fetching={fetching}
+                />
+            </AuthShowContainer>
+        </>
+    );
 }
 
 NameOrPseudonym.propTypes = {

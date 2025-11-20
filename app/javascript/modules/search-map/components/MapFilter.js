@@ -20,7 +20,7 @@ export default function MapFilter({
     useEffect(() => {
         if (referenceTypes) {
             const initialFilter = referenceTypes
-                .map(type => type.id.toString())
+                .map((type) => type.id.toString())
                 .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES);
             initializeMapFilter(initialFilter);
         }
@@ -33,51 +33,58 @@ export default function MapFilter({
     return (
         <div className={classNames('MapFilter', className)}>
             <form className="MapFilter-form">
-                {
-                    locationTypes.map(type => {
-                        return (
-                            <label
-                                key={type.id}
-                                className={classNames('MapFilter-label', { 'is-active': type.filterIsSet })}
+                {locationTypes.map((type) => {
+                    return (
+                        <label
+                            key={type.id}
+                            className={classNames('MapFilter-label', {
+                                'is-active': type.filterIsSet,
+                            })}
+                        >
+                            <Checkbox
+                                name={type.name}
+                                checked={type.filterIsSet}
+                                onChange={() =>
+                                    toggleMapFilter(type.id.toString())
+                                }
+                            />
+                            <span className="u-ml-tiny">{type.name}</span>
+                            <svg
+                                className="MapFilter-icon u-ml-tiny"
+                                viewBox="0 0 100 100"
+                                xmlns="http://www.w3.org/2000/svg"
                             >
-                                <Checkbox
-                                    name={type.name}
-                                    checked={type.filterIsSet}
-                                    onChange={() => toggleMapFilter(type.id.toString())}
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="40"
+                                    stroke="none"
+                                    fill={type.color}
                                 />
-                                <span className="u-ml-tiny">{type.name}</span>
-                                <svg
-                                    className="MapFilter-icon u-ml-tiny"
-                                    viewBox="0 0 100 100"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <circle
-                                        cx="50"
-                                        cy="50"
-                                        r="40"
-                                        stroke="none"
-                                        fill={type.color}
-                                    />
-                                </svg>
-                                <span className="u-ml-tiny">
-                                    ({type.locationCount})
-                                </span>
-                            </label>
-                        );
-                    })
-                }
+                            </svg>
+                            <span className="u-ml-tiny">
+                                ({type.locationCount})
+                            </span>
+                        </label>
+                    );
+                })}
             </form>
             {locationTypes.length > 2 && (
                 <div>
                     <p>
-                        {t('modules.search_map.multiple_types')}
-                        {' '}
+                        {t('modules.search_map.multiple_types')}{' '}
                         <svg
                             className="MapFilter-icon"
                             viewBox="0 0 100 100"
                             xmlns="http://www.w3.org/2000/svg"
                         >
-                            <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_MULTIPLE_TYPES} />
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                stroke="none"
+                                fill={MARKER_COLOR_MULTIPLE_TYPES}
+                            />
                         </svg>
                     </p>
                 </div>

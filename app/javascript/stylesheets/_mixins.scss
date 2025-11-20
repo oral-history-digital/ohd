@@ -79,7 +79,7 @@
 @mixin clearfix() {
   &:before,
   &:after {
-    content: " "; // 1
+    content: ' '; // 1
     display: table; // 2
   }
   &:after {
@@ -92,12 +92,11 @@
 @mixin pie-clearfix {
   *zoom: 1;
   &:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }
 }
-
 
 // Box-sizing
 // --------------------------------------------------

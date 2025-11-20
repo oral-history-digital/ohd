@@ -6,7 +6,7 @@ import { apiMiddleware } from 'modules/api';
 import combinedReducers from './combinedReducers';
 import persistedState from './persistedState';
 
-const archiveStore = (railsProps) => (
+const archiveStore = (railsProps) =>
     createStore(
         combinedReducers,
         {
@@ -14,7 +14,6 @@ const archiveStore = (railsProps) => (
             ...persistedState,
         },
         composeWithDevTools(applyMiddleware(thunkMiddleware, apiMiddleware))
-    )
-);
+    );
 
 export default archiveStore;

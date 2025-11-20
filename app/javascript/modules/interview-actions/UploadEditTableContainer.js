@@ -3,10 +3,14 @@ import { bindActionCreators } from 'redux';
 
 import { submitData } from 'modules/data';
 import { getProjectId, getArchiveId } from 'modules/archive';
-import { getCurrentInterview, getLanguages, getCurrentProject } from 'modules/data';
+import {
+    getCurrentInterview,
+    getLanguages,
+    getCurrentProject,
+} from 'modules/data';
 import UploadEditTable from './UploadEditTable';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     project: getCurrentProject(state),
     interview: getCurrentInterview(state),
@@ -14,8 +18,12 @@ const mapStateToProps = state => ({
     languages: getLanguages(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadEditTable);

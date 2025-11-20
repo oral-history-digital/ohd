@@ -10,7 +10,8 @@ export function useAuthorization() {
     const editView = useSelector(getEditView);
     const { project } = useProject();
 
-    const curriedAdmin = (obj, action) => originalAdmin({ user, project, editView }, obj, action);
+    const curriedAdmin = (obj, action) =>
+        originalAdmin({ user, project, editView }, obj, action);
 
     return { isAuthorized: curriedAdmin };
 }

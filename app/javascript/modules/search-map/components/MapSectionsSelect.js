@@ -7,11 +7,7 @@ import { useSelector } from 'react-redux';
 import { getMapSections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 
-export default function MapSectionsSelect({
-    className,
-    section,
-    onChange,
-}) {
+export default function MapSectionsSelect({ className, section, onChange }) {
     const mapSections = useSelector(getMapSections);
     const { t, locale } = useI18n();
 
@@ -29,17 +25,15 @@ export default function MapSectionsSelect({
                 value={section}
                 onChange={onChange}
             >
-                {
-                    mapSections.map(section => (
-                        <ListboxOption
-                            key={section.name}
-                            value={section.name}
-                            label={section.label[locale]}
-                        >
-                            {section.label[locale]}
-                        </ListboxOption>
-                    ))
-                }
+                {mapSections.map((section) => (
+                    <ListboxOption
+                        key={section.name}
+                        value={section.name}
+                        label={section.label[locale]}
+                    >
+                        {section.label[locale]}
+                    </ListboxOption>
+                ))}
             </Listbox>
         </div>
     );

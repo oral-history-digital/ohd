@@ -14,34 +14,31 @@ export default function DataDetails({
 
     return (
         <div className="details">
-            {
-                detailsAttributes.map(attribute => {
-                    if (attribute === 'src') {
-                        return (
-                            <img
-                                key={attribute}
-                                src={data.src}
-                                style={{ maxWidth: '100%' }}
-                                alt=""
-                            />
-                        );
-                    } else {
-                        return (
-                            <p
-                                key={attribute}
-                                className="detail"
-                            >
-                                <span className='name'>
-                                    {t(`activerecord.attributes.${scope}.${attribute}`) + ': '}
-                                </span>
-                                <span className='content'>
-                                    {humanReadable({obj: data, attribute})}
-                                </span>
-                            </p>
-                        )
-                    }
-                })
-            }
+            {detailsAttributes.map((attribute) => {
+                if (attribute === 'src') {
+                    return (
+                        <img
+                            key={attribute}
+                            src={data.src}
+                            style={{ maxWidth: '100%' }}
+                            alt=""
+                        />
+                    );
+                } else {
+                    return (
+                        <p key={attribute} className="detail">
+                            <span className="name">
+                                {t(
+                                    `activerecord.attributes.${scope}.${attribute}`
+                                ) + ': '}
+                            </span>
+                            <span className="content">
+                                {humanReadable({ obj: data, attribute })}
+                            </span>
+                        </p>
+                    );
+                }
+            })}
         </div>
     );
 }

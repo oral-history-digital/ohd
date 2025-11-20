@@ -18,13 +18,21 @@ export default function AddButton({
 
     return (
         <AuthorizedContent
-            object={[{type: camelCase(scope), interview_id: interview?.id}, task]}
+            object={[
+                { type: camelCase(scope), interview_id: interview?.id },
+                task,
+            ]}
             action="create"
         >
             <Modal
                 triggerClassName={className}
                 title={t(`edit.${scope}.new`)}
-                trigger={<><FaPlus className="Icon Icon--editorial" /> {t(`edit.${scope}.new`)}</>}
+                trigger={
+                    <>
+                        <FaPlus className="Icon Icon--editorial" />{' '}
+                        {t(`edit.${scope}.new`)}
+                    </>
+                }
                 disabled={disabled}
             >
                 {onClose}

@@ -21,15 +21,19 @@ export default function Annotation({
         <div>
             <p
                 className=""
-                dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}}
+                dangerouslySetInnerHTML={{
+                    __html: annotation.text[contentLocale],
+                }}
             />
-            <AuthorizedContent object={annotation} action='update'>
+            <AuthorizedContent object={annotation} action="update">
                 <span className="flyout-sub-tabs-content-ico">
                     <Modal
                         title={t('edit.annotation.edit')}
-                        trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
+                        trigger={
+                            <FaPencilAlt className="Icon Icon--editorial Icon--small" />
+                        }
                     >
-                        {closeModal => (
+                        {(closeModal) => (
                             <AnnotationFormContainer
                                 annotation={annotation}
                                 segment={segment}
@@ -43,17 +47,30 @@ export default function Annotation({
                     </Modal>
                     <Modal
                         title={t('edit.annotation.delete')}
-                        trigger={<FaTrash className="Icon Icon--editorial Icon--small"/>}
+                        trigger={
+                            <FaTrash className="Icon Icon--editorial Icon--small" />
+                        }
                     >
-                        {closeModal => (
+                        {(closeModal) => (
                             <DeleteItemForm
                                 onSubmit={() => {
-                                    deleteData({ locale, projectId, project }, 'annotations', annotation.id, null, null, true);
+                                    deleteData(
+                                        { locale, projectId, project },
+                                        'annotations',
+                                        annotation.id,
+                                        null,
+                                        null,
+                                        true
+                                    );
                                     closeModal();
                                 }}
                                 onCancel={closeModal}
                             >
-                                <p dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}} />
+                                <p
+                                    dangerouslySetInnerHTML={{
+                                        __html: annotation.text[contentLocale],
+                                    }}
+                                />
                             </DeleteItemForm>
                         )}
                     </Modal>

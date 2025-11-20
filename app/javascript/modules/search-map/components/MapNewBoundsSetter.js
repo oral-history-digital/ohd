@@ -2,11 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useMapEvents } from 'react-leaflet';
 
-export default function MapNewBoundsSetter({
-    bounds,
-    view,
-    onViewChange,
-}) {
+export default function MapNewBoundsSetter({ bounds, view, onViewChange }) {
     const map = useMapEvents({
         zoomend: handleEvents,
         moveend: handleEvents,

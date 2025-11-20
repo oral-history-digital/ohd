@@ -10,13 +10,20 @@ function DownloadRegistryEntries(props) {
 
     return (
         <p>
-            <a href={`${usePathBase()}/registry_entries.${format}?lang=${specificLocale}`}>
+            <a
+                href={`${usePathBase()}/registry_entries.${format}?lang=${specificLocale}`}
+            >
                 <FaDownload
                     className="Icon Icon--primary"
-                    title={t('download_registry_entries', { format: format, locale: specificLocale })}
-                />
-                {' '}
-                {t('download_registry_entries', { format: format, locale: specificLocale })}
+                    title={t('download_registry_entries', {
+                        format: format,
+                        locale: specificLocale,
+                    })}
+                />{' '}
+                {t('download_registry_entries', {
+                    format: format,
+                    locale: specificLocale,
+                })}
             </a>
         </p>
     );

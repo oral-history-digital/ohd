@@ -1,9 +1,13 @@
 import { connect } from 'react-redux';
 
-import { getCurrentInterview, getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
+import {
+    getCurrentInterview,
+    getRegistryEntries,
+    getRegistryEntriesStatus,
+} from 'modules/data';
 import RegistryReferences from './RegistryReferences';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),
     registryEntries: getRegistryEntries(state),
     registryEntriesStatus: getRegistryEntriesStatus(state),

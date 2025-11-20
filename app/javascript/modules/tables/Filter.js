@@ -3,11 +3,7 @@ import { FaTimes } from 'react-icons/fa';
 import { useI18n } from 'modules/i18n';
 import { DebouncedInput } from 'modules/ui';
 
-export default function Filter({
-    className,
-    onChange,
-    value,
-}) {
+export default function Filter({ className, onChange, value }) {
     const { t } = useI18n();
 
     function handleKeyDown(event) {

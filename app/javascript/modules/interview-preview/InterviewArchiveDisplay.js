@@ -4,22 +4,22 @@ import classNames from 'classnames';
 import { useProjectAccessStatus, PROJECT_ACCESS_REQUESTED } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import lockRegular from 'assets/images/lock-regular.svg';
-import lockSolid  from 'assets/images/lock-solid.svg';
+import lockSolid from 'assets/images/lock-solid.svg';
 
-export default function InterviewArchiveDisplay({
-    project,
-    className,
-}) {
+export default function InterviewArchiveDisplay({ project, className }) {
     const { t, locale } = useI18n();
-    const { projectAccessGranted, projectAccessStatus } = useProjectAccessStatus(project);
+    const { projectAccessGranted, projectAccessStatus } =
+        useProjectAccessStatus(project);
 
     const showLock = !projectAccessGranted;
-    const lockIconSrc = projectAccessStatus === PROJECT_ACCESS_REQUESTED
-        ? lockRegular
-        : lockSolid;
-    const lockLabel = projectAccessStatus === PROJECT_ACCESS_REQUESTED
-        ? t('modules.interview_preview.access_requested')
-        : t('modules.interview_preview.no_access');
+    const lockIconSrc =
+        projectAccessStatus === PROJECT_ACCESS_REQUESTED
+            ? lockRegular
+            : lockSolid;
+    const lockLabel =
+        projectAccessStatus === PROJECT_ACCESS_REQUESTED
+            ? t('modules.interview_preview.access_requested')
+            : t('modules.interview_preview.no_access');
 
     const archiveName = project.display_name[locale] || project.name[locale];
 

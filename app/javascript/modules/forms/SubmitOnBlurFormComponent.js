@@ -12,10 +12,15 @@ const SubmitOnBlurForm = ({
     project,
     submitData,
 }) => {
-    const translation = data.translations_attributes.find(t => t.locale === locale);
-    const translationPublic = data.translations_attributes.find(t => t.locale === `${locale}-public`);
-    const initialValue = translation?.[attribute] || translationPublic?.[attribute] || '';
-    
+    const translation = data.translations_attributes.find(
+        (t) => t.locale === locale
+    );
+    const translationPublic = data.translations_attributes.find(
+        (t) => t.locale === `${locale}-public`
+    );
+    const initialValue =
+        translation?.[attribute] || translationPublic?.[attribute] || '';
+
     const [value, setValue] = useState(initialValue);
     const [valid, setValid] = useState(validate === undefined);
 
@@ -33,14 +38,18 @@ const SubmitOnBlurForm = ({
         if (valid) {
             submitData(
                 { locale: 'de', project, projectId },
-                { [scope]: {
-                    id: data.id,
-                    translations_attributes: [{
-                        id: translation?.id || translationPublic?.id,
-                        locale,
-                        [attribute]: value,
-                    }]
-                }}
+                {
+                    [scope]: {
+                        id: data.id,
+                        translations_attributes: [
+                            {
+                                id: translation?.id || translationPublic?.id,
+                                locale,
+                                [attribute]: value,
+                            },
+                        ],
+                    },
+                }
             );
         }
     };

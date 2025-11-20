@@ -14,14 +14,12 @@ export default function TapeAndTime({
     const { t } = useI18n();
 
     return (
-        <span
-            className={className}
-            style={style}
-        >
-            {t('tape')} {tape}{transcriptCoupled ? separator : ''}
+        <span className={className} style={style}>
+            {t('tape')} {tape}
+            {transcriptCoupled ? separator : ''}
             {transcriptCoupled ? formatTimecode(time) : ''}
         </span>
-    )
+    );
 }
 
 TapeAndTime.propTypes = {

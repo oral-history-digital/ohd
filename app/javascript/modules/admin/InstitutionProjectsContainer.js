@@ -1,10 +1,16 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, getInstitutions, fetchData, deleteData, submitData } from 'modules/data';
+import {
+    getCurrentProject,
+    getInstitutions,
+    fetchData,
+    deleteData,
+    submitData,
+} from 'modules/data';
 import DataList from './DataList';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         editView: true,
@@ -13,7 +19,7 @@ const mapStateToProps = state => {
         outerScopeId: project.id,
         scope: 'institution_project',
         detailsAttributes: ['name', 'shortname'],
-        initialFormValues: {project_id: project.id},
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
                 attribute: 'institution_id',
@@ -22,13 +28,17 @@ const mapStateToProps = state => {
                 withEmpty: true,
             },
         ],
-    }
-}
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

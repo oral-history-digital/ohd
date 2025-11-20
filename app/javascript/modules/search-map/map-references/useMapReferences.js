@@ -26,7 +26,8 @@ export default function useMapReferences(registryEntryId) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const { facets, yearOfBirthMin, yearOfBirthMax } = useSearchParams();
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
 
     const params = {
         ...facets,
@@ -41,7 +42,9 @@ export default function useMapReferences(registryEntryId) {
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 
     const interviewReferences = data?.interview_references;
-    const segmentReferences = filter.includes('segment') ? data?.segment_references : [];
+    const segmentReferences = filter.includes('segment')
+        ? data?.segment_references
+        : [];
     const numSegmentRefs = segmentReferences?.length;
 
     let referenceGroups = [];
@@ -50,7 +53,7 @@ export default function useMapReferences(registryEntryId) {
             curry(filterReferences)(filter),
             curry(groupByType)(referenceTypes),
             curry(sortByReferenceTypeOrder)(referenceTypes, 'id'),
-            sortInterviewRefs,
+            sortInterviewRefs
         );
         referenceGroups = transformData(interviewReferences);
     }
@@ -60,7 +63,7 @@ export default function useMapReferences(registryEntryId) {
         const transformData = flow(
             groupSegmentRefs,
             sortSegmentRefs,
-            sortSegmentRefGroups,
+            sortSegmentRefGroups
         );
         segmentRefGroups = transformData(segmentReferences);
     }

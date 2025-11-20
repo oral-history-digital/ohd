@@ -8,7 +8,10 @@ export default function useEventTypes() {
 
     const path = `${pathBase}/event_types.json`;
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     return { isLoading, isValidating, data, error };
 }

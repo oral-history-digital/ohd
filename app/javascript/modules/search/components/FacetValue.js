@@ -6,12 +6,7 @@ import { FacetLink } from 'modules/interview-metadata';
 import { useSearchParams } from 'modules/query-string';
 import { Checkbox } from 'modules/ui';
 
-export default function FacetValue({
-    id,
-    facetName,
-    facetValue,
-    checked,
-}) {
+export default function FacetValue({ id, facetName, facetValue, checked }) {
     const { locale } = useI18n();
     const { addFacetParam, deleteFacetParam } = useSearchParams();
 
@@ -30,8 +25,14 @@ export default function FacetValue({
         <div className={classNames('Facet-value', { 'is-checked': checked })}>
             <label className="Facet-label">
                 <Checkbox
-                    className={classNames('Input', 'with-font', facetName, 'checkbox',
-                        'Facet-checkbox', 'u-mr-tiny')}
+                    className={classNames(
+                        'Input',
+                        'with-font',
+                        facetName,
+                        'checkbox',
+                        'Facet-checkbox',
+                        'u-mr-tiny'
+                    )}
                     id={`${facetName}_${id}`}
                     name={facetName}
                     checked={checked}
@@ -41,14 +42,12 @@ export default function FacetValue({
                 <span className="Facet-value-name">
                     {facetValue.name[locale]}
                 </span>
-                <span className="Facet-count">
-                    {facetValue.count}
-                </span>
+                <span className="Facet-count">{facetValue.count}</span>
                 {facetName === 'collection_id' && (
-                    <FacetLink id={id} type="collection"/>
+                    <FacetLink id={id} type="collection" />
                 )}
                 {facetName === 'project_id' && (
-                    <FacetLink id={id} type="archive"/>
+                    <FacetLink id={id} type="archive" />
                 )}
             </label>
         </div>

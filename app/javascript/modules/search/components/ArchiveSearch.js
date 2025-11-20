@@ -14,8 +14,16 @@ const PAGE_SIZE = 12;
 function ArchiveSearch() {
     const { t, locale } = useI18n();
 
-    const { interviews, total, data, error, isValidating, isLoading, size,
-        setSize } = useArchiveSearch();
+    const {
+        interviews,
+        total,
+        data,
+        error,
+        isValidating,
+        isLoading,
+        size,
+        setSize,
+    } = useArchiveSearch();
 
     function handleScroll(inView) {
         if (inView) {
@@ -24,11 +32,13 @@ function ArchiveSearch() {
     }
 
     const isLoadingInitialData = !data && !error;
-    const isLoadingMore = isLoadingInitialData ||
+    const isLoadingMore =
+        isLoadingInitialData ||
         (size > 0 && data && typeof data[size - 1] === 'undefined');
     const isEmpty = data?.[0]?.interviews?.length === 0;
     const isReachingEnd =
-        isEmpty || (data && data[data.length - 1]?.interviews?.length < PAGE_SIZE);
+        isEmpty ||
+        (data && data[data.length - 1]?.interviews?.length < PAGE_SIZE);
     const isRefreshing = isValidating && data && data.length === size;
 
     return (

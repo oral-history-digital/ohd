@@ -10,8 +10,12 @@ const mapStateToProps = (state) => ({
     refTreeStatus: getCurrentRefTreeStatus(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewSearch);

@@ -1,10 +1,16 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, fetchData, deleteData, submitData, getMediaStreamsForCurrentProject } from 'modules/data';
+import {
+    getCurrentProject,
+    fetchData,
+    deleteData,
+    submitData,
+    getMediaStreamsForCurrentProject,
+} from 'modules/data';
 import DataList from './DataList';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         editView: true,
@@ -13,7 +19,7 @@ const mapStateToProps = state => {
         outerScopeId: project.id,
         scope: 'media_stream',
         detailsAttributes: ['path', 'media_type'],
-        initialFormValues: {project_id: project.id},
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
                 attribute: 'media_type',
@@ -24,21 +30,25 @@ const mapStateToProps = state => {
             {
                 attribute: 'path',
                 elementType: 'input',
-                help: 'help_texts.media_streams.path'
+                help: 'help_texts.media_streams.path',
             },
             {
                 attribute: 'resolution',
                 elementType: 'input',
             },
         ],
-        helpTextCode: 'mediapath_form'
-    }
-}
+        helpTextCode: 'mediapath_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

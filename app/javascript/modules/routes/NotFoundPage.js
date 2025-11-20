@@ -9,13 +9,11 @@ export default function NotFoundPage() {
     const pathBase = usePathBase();
 
     return (
-        <div className='wrapper-content register'>
+        <div className="wrapper-content register">
             <Helmet>
                 <title>{t('modules.routes.not_found.title')}</title>
             </Helmet>
-            <h1>
-                {t('modules.routes.not_found.title')}
-            </h1>
+            <h1>{t('modules.routes.not_found.title')}</h1>
             <p className="Paragraph">
                 {t('modules.routes.not_found.description')}
             </p>

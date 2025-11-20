@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import { useSearchParams } from 'modules/query-string';
 import YearRange from './YearRange';
 
-export default function RangeFacet({
-    name,
-    sliderMin,
-    sliderMax,
-}) {
+export default function RangeFacet({ name, sliderMin, sliderMax }) {
     const { getRangeParam, setRangeParam } = useSearchParams();
 
     const range = getRangeParam(name);

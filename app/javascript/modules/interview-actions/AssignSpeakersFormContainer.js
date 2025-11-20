@@ -11,7 +11,7 @@ import {
 } from 'modules/data';
 import AssignSpeakersForm from './AssignSpeakersForm';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     contributionTypes: getContributionTypesForCurrentProject(state),
     projectId: getProjectId(state),
@@ -19,9 +19,13 @@ const mapStateToProps = state => ({
     speakerDesignationsStatus: getSpeakerDesignationsStatus(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignSpeakersForm);

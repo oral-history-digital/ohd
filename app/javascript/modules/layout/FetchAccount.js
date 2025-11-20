@@ -23,10 +23,17 @@ export default function FetchAccount({
         }
     }, [usersStatus.current, isLoggedIn]);
 
-
     useEffect(() => {
         if (isLoggedOut && user) {
-            deleteData({ projectId, locale, project }, 'users', 'current', null, null, false, true);
+            deleteData(
+                { projectId, locale, project },
+                'users',
+                'current',
+                null,
+                null,
+                false,
+                true
+            );
         }
     }, [isLoggedOut]);
 

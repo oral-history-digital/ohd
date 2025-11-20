@@ -3,5 +3,5 @@ export default function StartpageFooter() {
         <div>
             <h3>Footer</h3>
         </div>
-    )
+    );
 }

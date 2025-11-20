@@ -2,9 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setArchiveId, getLocale, getProjectId } from 'modules/archive';
-import { fetchData, getCurrentProject,
-    getLanguages, getCollectionsForCurrentProject,
-    getUsersStatus, getTasksStatus, getTasks } from 'modules/data';
+import {
+    fetchData,
+    getCurrentProject,
+    getLanguages,
+    getCollectionsForCurrentProject,
+    getUsersStatus,
+    getTasksStatus,
+    getTasks,
+} from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
 const mapStateToProps = (state) => ({
@@ -17,9 +23,16 @@ const mapStateToProps = (state) => ({
     usersStatus: getUsersStatus(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    setArchiveId,
-    fetchData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            setArchiveId,
+            fetchData,
+        },
+        dispatch
+    );
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewWorkflowRow);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(InterviewWorkflowRow);

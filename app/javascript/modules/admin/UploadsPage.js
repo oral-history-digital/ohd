@@ -10,7 +10,7 @@ export default function UploadsPage() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
                     <title>{t(`edit.upload.upload`)}</title>
                 </Helmet>

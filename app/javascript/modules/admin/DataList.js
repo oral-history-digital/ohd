@@ -48,19 +48,35 @@ export default function DataList({
         if (otherDataToLoad.length) {
             otherDataToLoad.forEach((d) => {
                 if (!statuses?.[d]?.all) {
-                    fetchData({ locale, project, projectId }, pluralize(d), null, null, 'all');
+                    fetchData(
+                        { locale, project, projectId },
+                        pluralize(d),
+                        null,
+                        null,
+                        'all'
+                    );
                 }
             });
         }
     }, []);
 
     function loadJoinData() {
-        if (joinDataStatus
-            && !(joinDataStatus[`for_projects_${project?.id}`] || joinDataStatus.all)
+        if (
+            joinDataStatus &&
+            !(
+                joinDataStatus[`for_projects_${project?.id}`] ||
+                joinDataStatus.all
+            )
         ) {
-            fetchData({ locale, project, projectId }, joinDataScope, null, null, null);
+            fetchData(
+                { locale, project, projectId },
+                joinDataScope,
+                null,
+                null,
+                null
+            );
         }
-     }
+    }
 
     function createForm(data, onSubmit, onCancel) {
         if (form) {
@@ -83,7 +99,7 @@ export default function DataList({
                         }
                     }}
                     onCancel={onCancel}
-                    submitText='submit'
+                    submitText="submit"
                     elements={formElements}
                 />
             );
@@ -94,36 +110,48 @@ export default function DataList({
         <EditViewOrRedirect>
             <div>
                 <ErrorBoundary>
-                    {data && Object.keys(data).map((c) => (
-                        <DataContainer
-                            key={c}
-                            data={data[c]}
-                            scope={scope}
-                            sensitiveAttributes={sensitiveAttributes}
-                            outerScope={outerScope}
-                            outerScopeId={outerScopeId}
-                            optionsScope={optionsScope}
-                            detailsAttributes={detailsAttributes}
-                            joinedData={joinedData}
-                            form={createForm}
-                            showComponent={showComponent}
-                            hideShow={hideShow}
-                            hideEdit={hideEdit}
-                            hideDelete={hideDelete}
-                            editView={editView}
-                            task={task}
-                        />
-                    ))}
+                    {data &&
+                        Object.keys(data).map((c) => (
+                            <DataContainer
+                                key={c}
+                                data={data[c]}
+                                scope={scope}
+                                sensitiveAttributes={sensitiveAttributes}
+                                outerScope={outerScope}
+                                outerScopeId={outerScopeId}
+                                optionsScope={optionsScope}
+                                detailsAttributes={detailsAttributes}
+                                joinedData={joinedData}
+                                form={createForm}
+                                showComponent={showComponent}
+                                hideShow={hideShow}
+                                hideEdit={hideEdit}
+                                hideDelete={hideDelete}
+                                editView={editView}
+                                task={task}
+                            />
+                        ))}
                     {!hideAdd && (
                         <AuthorizedContent
-                            object={[{type: camelCase(scope), interview_id: interview?.id}, task]}
-                            action='create'
+                            object={[
+                                {
+                                    type: camelCase(scope),
+                                    interview_id: interview?.id,
+                                },
+                                task,
+                            ]}
+                            action="create"
                         >
                             <Modal
                                 title={t(`edit.${scope}.new`)}
-                                trigger={<><FaPlus className="Icon Icon--editorial"/> {t(`edit.${scope}.new`)}</>}
+                                trigger={
+                                    <>
+                                        <FaPlus className="Icon Icon--editorial" />{' '}
+                                        {t(`edit.${scope}.new`)}
+                                    </>
+                                }
                             >
-                                {close => createForm(undefined, close, close)}
+                                {(close) => createForm(undefined, close, close)}
                             </Modal>
                         </AuthorizedContent>
                     )}

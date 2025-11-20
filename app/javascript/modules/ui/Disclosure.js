@@ -18,17 +18,22 @@ export default function Disclosure({
             <button
                 type="button"
                 className="Disclosure-toggle"
-                onClick={() => setIsOpen(prevState => !prevState)}
+                onClick={() => setIsOpen((prevState) => !prevState)}
             >
-                {isOpen ?
-                    <FaMinus className="Disclosure-icon" /> :
+                {isOpen ? (
+                    <FaMinus className="Disclosure-icon" />
+                ) : (
                     <FaPlus className="Disclosure-icon" />
-                }
+                )}
                 <div className={classNames('Disclosure-title', titleClassName)}>
                     {title}
                 </div>
             </button>
-            <div className={classNames('Disclosure-content', contentClassName, { 'is-expanded': isOpen })}>
+            <div
+                className={classNames('Disclosure-content', contentClassName, {
+                    'is-expanded': isOpen,
+                })}
+            >
                 {children}
             </div>
         </div>
@@ -40,10 +45,7 @@ Disclosure.propTypes = {
     className: PropTypes.string,
     titleClassName: PropTypes.string,
     contentClassName: PropTypes.string,
-    title: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-    ]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

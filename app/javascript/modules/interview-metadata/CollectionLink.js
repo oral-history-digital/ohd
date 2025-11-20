@@ -6,17 +6,16 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
-export default function CollectionLink({
-    collectionId,
-}) {
+export default function CollectionLink({ collectionId }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
 
     const linkLocale = locale === 'de' ? 'de' : 'en';
     const linkPath = `/${linkLocale}/catalog/collections/${collectionId}`;
-    const hasOwnDomain = typeof project.archive_domain === 'string'
-        && project.archive_domain !== ''
-        && !project.is_ohd;
+    const hasOwnDomain =
+        typeof project.archive_domain === 'string' &&
+        project.archive_domain !== '' &&
+        !project.is_ohd;
 
     const ohdDomain = OHD_DOMAINS[railsMode];
 

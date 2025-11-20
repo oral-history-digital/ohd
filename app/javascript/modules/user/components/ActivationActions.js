@@ -11,18 +11,18 @@ import RequestProjectAccessFormContainer from './RequestProjectAccessFormContain
 import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
 import { getIsLoggedIn } from '../selectors';
 
-export default function ActivationFlow({
-    className,
-}) {
+export default function ActivationFlow({ className }) {
     const { t } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const user = useSelector(getCurrentUser);
     const { project, isOhd } = useProject();
-    const { projectAccessGranted, projectAccessStatus } = useProjectAccessStatus(project);
+    const { projectAccessGranted, projectAccessStatus } =
+        useProjectAccessStatus(project);
 
-    const currentUserProject = user?.user_projects &&
-        Object.values(user.user_projects).find( up => {
-            return up.project_id === project?.id
+    const currentUserProject =
+        user?.user_projects &&
+        Object.values(user.user_projects).find((up) => {
+            return up.project_id === project?.id;
         });
 
     if (!user) {
@@ -33,7 +33,10 @@ export default function ActivationFlow({
         return null;
     } else if (isOhd) {
         return null;
-    } else if (projectAccessStatus === 'project_access_requested' || projectAccessStatus === 'project_access_data_corrected') {
+    } else if (
+        projectAccessStatus === 'project_access_requested' ||
+        projectAccessStatus === 'project_access_data_corrected'
+    ) {
         return null;
     } else if (projectAccessGranted) {
         return null;
@@ -45,20 +48,23 @@ export default function ActivationFlow({
                 </p>
                 <Modal
                     title={t('modules.project_access.rejected_button_text')}
-                    triggerClassName='Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small'
+                    triggerClassName="Button Button--fullWidth Button--secondaryAction u-mt-small u-mb-small"
                     trigger={t('modules.project_access.rejected_button_text')}
-                    >
-                    { close => (
+                >
+                    {(close) => (
                         <CorrectUserDataFormContainer
-                        onSubmit={close}
-                        onCancel={close}
-                        userProject={currentUserProject}
+                            onSubmit={close}
+                            onCancel={close}
+                            userProject={currentUserProject}
                         />
                     )}
                 </Modal>
             </div>
         );
-    } else if (user.workflow_state === 'blocked' || currentUserProject?.workflow_state === 'project_access_blocked') {
+    } else if (
+        user.workflow_state === 'blocked' ||
+        currentUserProject?.workflow_state === 'project_access_blocked'
+    ) {
         return (
             <div className={classNames(className, 'error')}>
                 {`${t('modules.project_access.blocked_text')}`}
@@ -72,7 +78,7 @@ export default function ActivationFlow({
                     triggerClassName="Button Button--secondaryAction"
                     trigger={t('modules.project_access.request_access_link')}
                 >
-                    {close => (
+                    {(close) => (
                         <RequestProjectAccessFormContainer
                             project={project}
                             onSubmit={close}

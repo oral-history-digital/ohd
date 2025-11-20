@@ -39,18 +39,16 @@ export default function InterviewForm({
 
         return (
             <span>
-                <span>
-                    {contributor?.display_name}
-                </span>
+                <span>{contributor?.display_name}</span>
                 {', '}
                 <span>
                     {contributionTypes[value.contribution_type_id].name[locale]}
                 </span>
             </span>
-        )
+        );
     }
 
-    function handleSubmit(params){
+    function handleSubmit(params) {
         setShowForm(false);
 
         submitData({ locale, projectId, project }, params);
@@ -62,8 +60,10 @@ export default function InterviewForm({
                 attribute: 'archive_id',
                 value: interview?.archive_id,
                 handlechangecallback: handleArchiveIdChange,
-                validate: v => {
-                    let regexp = new RegExp(`^${project.shortname}\\d{${project.archive_id_number_length}}$`);
+                validate: (v) => {
+                    let regexp = new RegExp(
+                        `^${project.shortname}\\d{${project.archive_id_number_length}}$`
+                    );
                     return regexp.test(v);
                 },
             },
@@ -75,8 +75,10 @@ export default function InterviewForm({
             {
                 attribute: 'publication_date',
                 value: interview?.publication_date,
-                validate: function(v){return /^\d{4}$/.test(v)},
-                help: 'YYYY'
+                validate: function (v) {
+                    return /^\d{4}$/.test(v);
+                },
+                help: 'YYYY',
             },
             {
                 attribute: 'description',
@@ -91,7 +93,9 @@ export default function InterviewForm({
                 elementType: 'select',
                 withEmpty: true,
                 values: ['video', 'audio'],
-                validate: function(v){return v && /^\w+$/.test(v)},
+                validate: function (v) {
+                    return v && /^\w+$/.test(v);
+                },
             },
             {
                 attribute: 'media_missing',
@@ -105,7 +109,9 @@ export default function InterviewForm({
                 values: languages,
                 value: interview?.primary_language_id,
                 withEmpty: true,
-                validate: function(v){return /^\d+$/.test(v)},
+                validate: function (v) {
+                    return /^\d+$/.test(v);
+                },
             },
             {
                 elementType: 'select',
@@ -127,26 +133,26 @@ export default function InterviewForm({
                 values: collections,
                 value: interview?.collection_id,
                 withEmpty: true,
-                individualErrorMsg: 'empty'
+                individualErrorMsg: 'empty',
             },
             {
                 // tape_count is important to calculate the video-path
                 attribute: 'tape_count',
                 value: interview?.tape_count,
-                validate: function(v){return /^\d+$/.test(v)},
-            }
+                validate: function (v) {
+                    return /^\d+$/.test(v);
+                },
+            },
         ];
 
         if (interview) {
-            elements.push(
-                {
-                    elementType: 'select',
-                    attribute: 'workflow_state',
-                    values: interview && Object.values(interview.workflow_states),
-                    value: interview.workflow_state,
-                    optionsScope: 'workflow_states',
-                }
-            )
+            elements.push({
+                elementType: 'select',
+                attribute: 'workflow_state',
+                values: interview && Object.values(interview.workflow_states),
+                value: interview.workflow_state,
+                optionsScope: 'workflow_states',
+            });
         }
 
         let props = {
@@ -157,16 +163,18 @@ export default function InterviewForm({
             submitText,
             elements,
             helpTextCode: 'interview_form',
-        }
+        };
 
         if (withContributions) {
-            props['nestedScopeProps'] = [{
-                formComponent: ContributionFormContainer,
-                formProps: {withSpeakerDesignation: true},
-                parent: interview,
-                scope: 'contribution',
-                elementRepresentation: showContribution,
-            }]
+            props['nestedScopeProps'] = [
+                {
+                    formComponent: ContributionFormContainer,
+                    formProps: { withSpeakerDesignation: true },
+                    parent: interview,
+                    scope: 'contribution',
+                    elementRepresentation: showContribution,
+                },
+            ];
         }
 
         return createElement(Form, props);
@@ -178,18 +186,15 @@ export default function InterviewForm({
 
     return (
         <div>
+            <p>{t('edit.interview.processing')}</p>
             <p>
-                {t('edit.interview.processing')}
-            </p>
-            <p>
-                <Link
-                    to={`${pathBase}/interviews/${archiveId}`}>
+                <Link to={`${pathBase}/interviews/${archiveId}`}>
                     {t('edit.interview.edit')}
                 </Link>
             </p>
             <button
                 type="button"
-                className='Button return-to-form'
+                className="Button return-to-form"
                 onClick={returnToForm}
             >
                 {t('edit.interview.return')}

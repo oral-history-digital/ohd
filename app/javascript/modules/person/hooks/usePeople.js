@@ -9,7 +9,10 @@ export default function usePeople() {
 
     const path = `${pathBase}/people.json?for_projects=${project.id}`;
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     return { isLoading, isValidating, data: data?.data, error };
 }

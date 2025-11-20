@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 
-import { useTrackEventFunction, EVENT_CATEGORY_WORKBOOK, REMOVE_WORKBOOK_ITEM } from 'modules/analytics';
+import {
+    useTrackEventFunction,
+    EVENT_CATEGORY_WORKBOOK,
+    REMOVE_WORKBOOK_ITEM,
+} from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 
@@ -19,12 +23,12 @@ export default function WorkbookItemDelete({
     const trackEvent = useTrackEventFunction();
 
     const destroy = () => {
-        mutateWorkbook(async workbook => {
+        mutateWorkbook(async (workbook) => {
             await deleteWorkbookItem(id);
 
             const updatedWorkbook = {
                 ...workbook,
-                data: { ...workbook.data }
+                data: { ...workbook.data },
             };
             delete updatedWorkbook.data[id];
 
@@ -38,10 +42,12 @@ export default function WorkbookItemDelete({
 
     return (
         <form className="Form">
-            <p>{t('title') + ': '}
+            <p>
+                {t('title') + ': '}
                 <span>{title}</span>
             </p>
-            <p>{t('description') + ': '}
+            <p>
+                {t('description') + ': '}
                 <span>{description}</span>
             </p>
 

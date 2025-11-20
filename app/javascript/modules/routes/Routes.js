@@ -1,25 +1,43 @@
 import { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { WrappedInstitutionsContainer, ArchivePage, HelpTextAdminPage } from 'modules/admin';
+import {
+    WrappedInstitutionsContainer,
+    ArchivePage,
+    HelpTextAdminPage,
+} from 'modules/admin';
 import { SiteStartpage } from 'modules/site-startpage';
 import { HomeContainer } from 'modules/startpage';
 import ProjectRoutes from './ProjectRoutes';
 import CatalogRoutes from './CatalogRoutes';
 import NotFoundPage from './NotFoundPage';
 
-const RoutesWithoutProjectId = ({project}) => (
+const RoutesWithoutProjectId = ({ project }) => (
     <Routes>
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
-        { project.is_ohd ?
+        {project.is_ohd ? (
             <>
                 <Route exact path="/:locale" element={<SiteStartpage />} />
-                <Route exact path="/:locale/projects" element={<ArchivePage />} />
-                <Route exact path="/:locale/institutions" element={<WrappedInstitutionsContainer />} />
-                <Route exact path="/:locale/help_texts" element={<HelpTextAdminPage />} />
+                <Route
+                    exact
+                    path="/:locale/projects"
+                    element={<ArchivePage />}
+                />
+                <Route
+                    exact
+                    path="/:locale/institutions"
+                    element={<WrappedInstitutionsContainer />}
+                />
+                <Route
+                    exact
+                    path="/:locale/help_texts"
+                    element={<HelpTextAdminPage />}
+                />
                 <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
-            </> : <Route exact path="/:locale" element={<HomeContainer />} />
-        }
+            </>
+        ) : (
+            <Route exact path="/:locale" element={<HomeContainer />} />
+        )}
         <Route path="/:locale/*" element={<ProjectRoutes />} />
     </Routes>
 );

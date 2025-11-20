@@ -7,23 +7,21 @@ import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
 import { AuthorizedContent } from 'modules/auth';
 
-function MapTabPanel({
-    selectedArchiveIds,
-}) {
+function MapTabPanel({ selectedArchiveIds }) {
     const { t } = useI18n();
 
     return (
         <ErrorBoundary small>
-            <h3 className='SidebarTabs-title'>
-                { t('map') }
-            </h3>
+            <h3 className="SidebarTabs-title">{t('map')}</h3>
 
             <MapFacets />
 
-            <div className='flyout-sub-tabs-container flyout-video'>
-                <AuthorizedContent object={{type: 'General'}} action='edit'>
-                    <SubTab title={t('admin_actions')} >
-                        <AdminActionsContainer archiveIds={selectedArchiveIds} />
+            <div className="flyout-sub-tabs-container flyout-video">
+                <AuthorizedContent object={{ type: 'General' }} action="edit">
+                    <SubTab title={t('admin_actions')}>
+                        <AdminActionsContainer
+                            archiveIds={selectedArchiveIds}
+                        />
                     </SubTab>
                 </AuthorizedContent>
             </div>

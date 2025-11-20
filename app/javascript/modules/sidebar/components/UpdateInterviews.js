@@ -18,12 +18,17 @@ export default function UpdateInterviews({
     const project = useSelector(getCurrentProject);
 
     function updateInterviews(params) {
-        selectedArchiveIds.forEach(archiveId => {
+        selectedArchiveIds.forEach((archiveId) => {
             const updatedParams = {
                 ...params,
                 id: archiveId,
             };
-            dispatch(submitData({ locale, projectId, project }, {interview: updatedParams}));
+            dispatch(
+                submitData(
+                    { locale, projectId, project },
+                    { interview: updatedParams }
+                )
+            );
         });
     }
 
@@ -33,9 +38,11 @@ export default function UpdateInterviews({
             trigger={t(`edit.interviews.${action}.title`)}
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
-            {close => (
+            {(close) => (
                 <form className="Form">
-                    {t(`edit.interviews.${action}.confirm_text`, {archive_ids: selectedArchiveIds.join(', ')})}
+                    {t(`edit.interviews.${action}.confirm_text`, {
+                        archive_ids: selectedArchiveIds.join(', '),
+                    })}
 
                     <div className="Form-footer u-mt">
                         <button

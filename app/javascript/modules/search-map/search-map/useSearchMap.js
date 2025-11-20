@@ -2,7 +2,11 @@ import { useSelector } from 'react-redux';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
-import { useMapReferenceTypes, referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
+import {
+    useMapReferenceTypes,
+    referenceTypesToColorMap,
+    transformIntoMarkers,
+} from 'modules/map';
 import { getMapFilter } from '../selectors';
 import useMapLocations from '../useMapLocations';
 import filterReferenceTypes from './filterReferenceTypes';
@@ -12,7 +16,8 @@ import sortMarkers from './sortMarkers';
 export default function useSearchMap() {
     const filter = useSelector(getMapFilter);
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
     const { locations, error: locationsError } = useMapLocations();
 
     let markers = [];
@@ -28,5 +33,9 @@ export default function useSearchMap() {
         markers = transformData(locations);
     }
 
-    return { isLoading: !(referenceTypes && locations), markers, error: locationsError };
+    return {
+        isLoading: !(referenceTypes && locations),
+        markers,
+        error: locationsError,
+    };
 }

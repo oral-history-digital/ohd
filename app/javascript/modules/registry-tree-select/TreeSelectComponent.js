@@ -6,11 +6,7 @@ import { fetchData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
-export default function TreeSelectComponent({
-    isLoading,
-    tree,
-    handleChange,
-}) {
+export default function TreeSelectComponent({ isLoading, tree, handleChange }) {
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
@@ -19,12 +15,19 @@ export default function TreeSelectComponent({
         const registryEntryId = selectedNodes[0]?.value;
         fetchSelectedRegistryEntryData(registryEntryId);
         handleChange('registry_entry_id', registryEntryId);
-    }
+    };
 
     function fetchSelectedRegistryEntryData(registryEntryId) {
         if (typeof registryEntryId !== 'undefined') {
-            dispatch(fetchData({ locale, projectId, project }, 'registry_entries',
-                registryEntryId, null, 'with_associations=true'));
+            dispatch(
+                fetchData(
+                    { locale, projectId, project },
+                    'registry_entries',
+                    registryEntryId,
+                    null,
+                    'with_associations=true'
+                )
+            );
         }
     }
 
@@ -32,11 +35,11 @@ export default function TreeSelectComponent({
         return isLoading
             ? { placeholder: t('modules.tree_select.loading') }
             : {
-            placeholder: t('modules.tree_select.enter_or_choose'),
-            noMatches: t('modules.tree_select.no_matches'),
-            label: '#tree-select-label',
-            labelRemove: t('modules.tree_select.remove_entry'),
-        };
+                  placeholder: t('modules.tree_select.enter_or_choose'),
+                  noMatches: t('modules.tree_select.no_matches'),
+                  label: '#tree-select-label',
+                  labelRemove: t('modules.tree_select.remove_entry'),
+              };
     }
 
     return (
@@ -60,9 +63,7 @@ export default function TreeSelectComponent({
                 texts={selectTexts()}
                 disabled={isLoading}
             />
-            <p className="help-block">
-                {t('modules.tree_select.help_text')}
-            </p>
+            <p className="help-block">{t('modules.tree_select.help_text')}</p>
         </div>
     );
 }

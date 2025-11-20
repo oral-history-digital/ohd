@@ -17,12 +17,21 @@ export default function useInstitutionData(institutionId) {
 
     const data = useMemo(() => {
         const curriedMapInstitution = curry(mapInstitution)(locale);
-        const curriedAddChildCollections = curry(addChildCollections)(collections);
+        const curriedAddChildCollections =
+            curry(addChildCollections)(collections);
         const projectsWithChildren = projects.map(curriedAddChildCollections);
-        const curriedAddChildProjects = curry(addChildProjects)(projectsWithChildren);
-        const institutionsWithChildren = institutions.map(curriedAddChildProjects);
-        const rootInstitution = institutionsWithChildren.find(i => i.id === institutionId);
-        const institutionAsTree = buildInstitutionTree([rootInstitution], institutionsWithChildren);
+        const curriedAddChildProjects =
+            curry(addChildProjects)(projectsWithChildren);
+        const institutionsWithChildren = institutions.map(
+            curriedAddChildProjects
+        );
+        const rootInstitution = institutionsWithChildren.find(
+            (i) => i.id === institutionId
+        );
+        const institutionAsTree = buildInstitutionTree(
+            [rootInstitution],
+            institutionsWithChildren
+        );
         const institutionRows = institutionAsTree.map(curriedMapInstitution);
 
         return institutionRows[0].subRows;

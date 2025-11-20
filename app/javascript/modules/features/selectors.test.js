@@ -8,7 +8,5 @@ const state = {
 };
 
 test('getFeatures retrieves all features at once', () => {
-    expect(selectors.getFeatures(state)).toEqual([
-        ['dummy-feature', true],
-    ]);
+    expect(selectors.getFeatures(state)).toEqual([['dummy-feature', true]]);
 });

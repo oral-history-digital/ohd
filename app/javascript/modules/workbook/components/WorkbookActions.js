@@ -10,11 +10,7 @@ import { usePathBase } from 'modules/routes';
 import WorkbookItemForm from './WorkbookItemForm';
 import WorkbookItemDelete from './WorkbookItemDelete';
 
-export default function WorkbookActions({
-    item,
-    itemPath,
-    className,
-}) {
+export default function WorkbookActions({ item, itemPath, className }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const interview = useSelector(getCurrentInterview);
@@ -26,7 +22,7 @@ export default function WorkbookActions({
                 title={t('modules.workbook.edit')}
                 trigger={<FaPencilAlt className="Icon Icon--primary" />}
             >
-                {closeModal => (
+                {(closeModal) => (
                     <WorkbookItemForm
                         interview={interview}
                         id={item.id}
@@ -48,7 +44,7 @@ export default function WorkbookActions({
                 title={t('modules.workbook.delete')}
                 trigger={<FaTrash className="Icon Icon--primary" />}
             >
-                {closeModal => (
+                {(closeModal) => (
                     <WorkbookItemDelete
                         id={item.id}
                         title={item.title}
@@ -59,9 +55,9 @@ export default function WorkbookActions({
                 )}
             </Modal>
 
-            {itemUrl &&
+            {itemUrl && (
                 <CopyText iconClassName="Icon--primary" text={itemUrl} />
-            }
+            )}
         </div>
     );
 }

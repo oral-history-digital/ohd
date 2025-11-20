@@ -11,14 +11,12 @@ export default function FeaturedInterviews() {
 
     return (
         <div className="Grid">
-            {
-                interviews.map(interview => (
-                    <InterviewPreviewContainer
-                        key={interview.id}
-                        interview={interview}
-                    />
-                ))
-            }
+            {interviews.map((interview) => (
+                <InterviewPreviewContainer
+                    key={interview.id}
+                    interview={interview}
+                />
+            ))}
         </div>
     );
 }

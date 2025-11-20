@@ -2,10 +2,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getEditView } from 'modules/archive';
-import { fetchData, deleteData, submitData, getPermissions, getPermissionsStatus } from 'modules/data';
+import {
+    fetchData,
+    deleteData,
+    submitData,
+    getPermissions,
+    getPermissionsStatus,
+} from 'modules/data';
 import DataList from './DataList';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     editView: getEditView(state),
     joinDataStatus: getPermissionsStatus(state),
     joinDataScope: 'permissions',
@@ -17,16 +23,22 @@ const mapStateToProps = state => ({
             attribute: 'permission_id',
             values: getPermissions(state),
             withEmpty: true,
-            validate: function(v){return v?.length > 0}
-        }
+            validate: function (v) {
+                return v?.length > 0;
+            },
+        },
     ],
     hideEdit: true,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

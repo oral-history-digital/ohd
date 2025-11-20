@@ -45,7 +45,11 @@ export default function RegistryEntry({
             (!registryEntries[data.id] && !registryEntriesStatus[data.id]) ||
             /^reload/.test(registryEntriesStatus[data.id])
         ) {
-            fetchData({ project, projectId, locale }, 'registry_entries', data.id);
+            fetchData(
+                { project, projectId, locale },
+                'registry_entries',
+                data.id
+            );
         }
     }
 
@@ -69,9 +73,12 @@ export default function RegistryEntry({
         >
             <div className="RegistryEntry-content">
                 {!hideCheckbox && (
-                    <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                    <AuthorizedContent
+                        object={{ type: 'RegistryEntry' }}
+                        action="update"
+                    >
                         <Checkbox
-                            className='RegistryEntry-checkbox select-checkbox'
+                            className="RegistryEntry-checkbox select-checkbox"
                             checked={selectedRegistryEntryIds.includes(data.id)}
                             onChange={() => addRemoveRegistryEntryId(data.id)}
                         />
@@ -89,21 +96,28 @@ export default function RegistryEntry({
                 <>
                     {isLoggedIn && hasReferences() ? (
                         <Modal
-                            title={t('activerecord.models.registry_entry.actions.show')}
+                            title={t(
+                                'activerecord.models.registry_entry.actions.show'
+                            )}
                             triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
-                            trigger={<RegistryEntryLabel registryEntry={data} />}
+                            trigger={
+                                <RegistryEntryLabel registryEntry={data} />
+                            }
                         >
-                            {close => (
+                            {(close) => (
                                 <RegistryEntryShow
                                     registryEntryId={data.id}
                                     onSubmit={close}
-                                    normDataLinks={<NormDataLinks registryEntry={data} />}
+                                    normDataLinks={
+                                        <NormDataLinks registryEntry={data} />
+                                    }
                                 />
                             )}
                         </Modal>
-                    ) : <RegistryEntryLabel registryEntry={data} />
-                    }
-                    <AuthorizedContent object={data} action='update'>
+                    ) : (
+                        <RegistryEntryLabel registryEntry={data} />
+                    )}
+                    <AuthorizedContent object={data} action="update">
                         <span className="u-ml-tiny">{`(ID: ${data.id})`}</span>
                     </AuthorizedContent>
                 </>

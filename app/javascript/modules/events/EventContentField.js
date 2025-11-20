@@ -5,11 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { useEventTypes } from 'modules/event-types';
 import formatEventShort from './formatEventShort';
 
-export default function EventContentField({
-    label,
-    events,
-    className,
-}) {
+export default function EventContentField({ label, events, className }) {
     const { locale } = useI18n();
     const { data: eventTypes } = useEventTypes();
 
@@ -17,8 +13,12 @@ export default function EventContentField({
         return null;
     }
 
-    const eventType = eventTypes.find(et => et.id === events[0].event_type_id);
-    const formattedEvents = events.map(event => formatEventShort(event, locale));
+    const eventType = eventTypes.find(
+        (et) => et.id === events[0].event_type_id
+    );
+    const formattedEvents = events.map((event) =>
+        formatEventShort(event, locale)
+    );
 
     return (
         <ContentField

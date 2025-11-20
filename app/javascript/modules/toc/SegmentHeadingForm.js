@@ -6,11 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Form } from 'modules/forms';
 
-export default function SegmentHeadingForm({
-    segment,
-    onSubmit,
-    onCancel,
-}) {
+export default function SegmentHeadingForm({ segment, onSubmit, onCancel }) {
     const { locale } = useI18n();
     const { project, projectId } = useProject();
     const dispatch = useDispatch();
@@ -18,9 +14,11 @@ export default function SegmentHeadingForm({
     return (
         <div>
             <Form
-                scope='segment'
+                scope="segment"
                 onSubmit={(params) => {
-                    dispatch(submitData({ locale, projectId, project }, params));
+                    dispatch(
+                        submitData({ locale, projectId, project }, params)
+                    );
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -28,7 +26,7 @@ export default function SegmentHeadingForm({
                 onCancel={onCancel}
                 data={segment}
                 helpTextCode="language_form"
-                submitText='submit'
+                submitText="submit"
                 elements={[
                     {
                         attribute: 'mainheading',

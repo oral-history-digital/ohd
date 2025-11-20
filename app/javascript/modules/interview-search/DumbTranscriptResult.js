@@ -46,7 +46,7 @@ export default function DumbTranscriptResult({
             <p
                 className="SearchResult-text"
                 lang={lang}
-                dangerouslySetInnerHTML={{__html: highlightedText}}
+                dangerouslySetInnerHTML={{ __html: highlightedText }}
             />
         </button>
     );

@@ -4,9 +4,7 @@ import { RowActions } from 'modules/tables';
 import HelpTextForm from './HelpTextForm';
 import HelpTextDisplay from './HelpTextDisplay';
 
-export default function HelpTextRowActions({
-    row,
-}) {
+export default function HelpTextRowActions({ row }) {
     return (
         <RowActions
             row={row}

@@ -2,9 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 
-export default function NormDataLinks({
-    registryEntry,
-}) {
+export default function NormDataLinks({ registryEntry }) {
     const { t } = useI18n();
 
     return registryEntry.norm_data.map((normDatum) => (

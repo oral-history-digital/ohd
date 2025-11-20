@@ -26,8 +26,8 @@ export default function RegistryHierarchyForm({
             )}
 
             <Form
-                scope='registry_hierarchy'
-                onSubmit={params => {
+                scope="registry_hierarchy"
+                onSubmit={(params) => {
                     submitData({ locale, projectId, project }, params);
                     if (typeof onSubmit === 'function') {
                         onSubmit();

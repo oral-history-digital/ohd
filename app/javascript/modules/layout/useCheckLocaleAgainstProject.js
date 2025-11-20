@@ -6,7 +6,8 @@ import { setLocale } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { pathBase, useProject } from 'modules/routes';
 
-const MATCH_PATH_BASE_PART = /^(?:\/[\-a-z0-9]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
+const MATCH_PATH_BASE_PART =
+    /^(?:\/[\-a-z0-9]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
 
 export default function useCheckLocaleAgainstProject() {
     const dispatch = useDispatch();
@@ -32,9 +33,17 @@ export default function useCheckLocaleAgainstProject() {
         const password = location.pathname.match(/\/password\//);
         const confirmation = location.pathname.match(/\/confirmation\?/);
         const conditions = location.pathname.match(/\/conditions$/);
-        const privacy_protection = location.pathname.match(/\/privacy_protection$/);
+        const privacy_protection = location.pathname.match(
+            /\/privacy_protection$/
+        );
 
-        if (projectHasLocale(localeFromPath) || password || conditions || privacy_protection || confirmation) {
+        if (
+            projectHasLocale(localeFromPath) ||
+            password ||
+            conditions ||
+            privacy_protection ||
+            confirmation
+        ) {
             setStateLocaleIfNecessary(localeFromPath);
         } else {
             redirectToDefaultLocale();
@@ -52,8 +61,13 @@ export default function useCheckLocaleAgainstProject() {
     }
 
     function redirectToDefaultLocale() {
-        const newPathBase = pathBase({projectId, locale: project.default_locale, project}) + '/';
-        const newPath = location.pathname.replace(MATCH_PATH_BASE_PART, newPathBase);
+        const newPathBase =
+            pathBase({ projectId, locale: project.default_locale, project }) +
+            '/';
+        const newPath = location.pathname.replace(
+            MATCH_PATH_BASE_PART,
+            newPathBase
+        );
         navigate(newPath, { replace: true });
         dispatch(setLocale(locale));
     }

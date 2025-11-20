@@ -9,7 +9,7 @@ export default function RowActions({
     dataPath,
     displayComponent: DisplayComponent,
     editComponent: EditComponent,
-    deleteComponent: DeleteComponent
+    deleteComponent: DeleteComponent,
 }) {
     const { t } = useI18n();
 
@@ -21,7 +21,9 @@ export default function RowActions({
                 <Modal
                     title={t('modules.tables.show')}
                     hideHeading
-                    trigger={<FaEye className="Icon Icon--small Icon--primary" />}
+                    trigger={
+                        <FaEye className="Icon Icon--small Icon--primary" />
+                    }
                 >
                     <DisplayComponent data={data} />
                 </Modal>
@@ -30,9 +32,11 @@ export default function RowActions({
                 <Modal
                     title={t('modules.tables.edit')}
                     hideHeading
-                    trigger={<FaPen className="Icon Icon--small Icon--primary" />}
+                    trigger={
+                        <FaPen className="Icon Icon--small Icon--primary" />
+                    }
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <EditComponent
                             data={data}
                             dataPath={dataPath}
@@ -46,9 +50,11 @@ export default function RowActions({
                 <Modal
                     title={t('modules.tables.delete')}
                     hideHeading
-                    trigger={<FaTrash className="Icon Icon--small Icon--primary" />}
+                    trigger={
+                        <FaTrash className="Icon Icon--small Icon--primary" />
+                    }
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <DeleteComponent
                             data={data}
                             onSubmit={closeModal}
@@ -65,5 +71,5 @@ RowActions.propTypes = {
     row: PropTypes.object.isRequired,
     displayComponent: PropTypes.node,
     editComponent: PropTypes.node,
-    deleteComponent: PropTypes.node
+    deleteComponent: PropTypes.node,
 };

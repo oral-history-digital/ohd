@@ -3,8 +3,12 @@ import { bindActionCreators } from 'redux';
 
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
 import {
-    fetchData, deleteData, submitData, getCurrentProject,
-    getCollectionsForCurrentProject, getCollectionsStatus
+    fetchData,
+    deleteData,
+    submitData,
+    getCurrentProject,
+    getCollectionsForCurrentProject,
+    getCollectionsStatus,
 } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
@@ -32,7 +36,9 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'publication_date',
-                validate: function(v){return /^\d{4}$/.test(v)},
+                validate: function (v) {
+                    return /^\d{4}$/.test(v);
+                },
             },
             {
                 attribute: 'homepage',
@@ -42,24 +48,28 @@ const mapStateToProps = (state) => {
                 attribute: 'responsibles',
                 multiLocale: true,
                 elementType: 'textarea',
-                htmlOptions: { maxLength: 255 }
+                htmlOptions: { maxLength: 255 },
             },
             {
                 attribute: 'notes',
                 multiLocale: true,
                 elementType: 'richTextEditor',
-            }
+            },
         ],
         joinedData: {},
-        helpTextCode: 'collection_form'
-    }
-}
+        helpTextCode: 'collection_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-    setQueryParams,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+            setQueryParams,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

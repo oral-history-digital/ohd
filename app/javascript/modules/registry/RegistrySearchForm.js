@@ -37,10 +37,7 @@ export default function RegistrySearchForm({
 
     return (
         <div className="content-search">
-            <form
-                className="content-search-form"
-                onSubmit={handleSubmit}
-            >
+            <form className="content-search-form" onSubmit={handleSubmit}>
                 <input
                     type="search"
                     className="search-input"
@@ -57,7 +54,7 @@ export default function RegistrySearchForm({
                 </button>
             </form>
 
-            {isRegistryEntrySearching && <PixelLoader/>}
+            {isRegistryEntrySearching && <PixelLoader />}
         </div>
     );
 }

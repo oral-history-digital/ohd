@@ -14,5 +14,5 @@ export default function useMutateMaterials(archiveId) {
         } else {
             mutate(path);
         }
-    }
+    };
 }

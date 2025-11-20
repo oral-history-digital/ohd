@@ -23,10 +23,7 @@ export default class ErrorBoundaryComponent extends Component {
 
             return (
                 <div className="wrapper-content">
-                    {small ?
-                        <p>{message}</p> :
-                        <h1>{message}</h1>
-                    }
+                    {small ? <p>{message}</p> : <h1>{message}</h1>}
                     <p></p>
                 </div>
             );

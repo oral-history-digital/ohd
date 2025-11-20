@@ -8,7 +8,10 @@ export default function useCollectionData(id) {
     const { locale } = useI18n();
     const pathBase = usePathBase();
     const path = `${pathBase}/catalog/collections/${id}?lang=${locale}`;
-    const { isValidating, isLoading, data, error } = useSWRImmutable(path, fetcher);
+    const { isValidating, isLoading, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     return {
         collectionData: data,
