@@ -5,7 +5,7 @@ class Project < ApplicationRecord
   include OaiDc
   include OaiDatacite
 
-  enum :default_search_order, [:title, :random]
+  enum :default_search_order, title: 0, random: 1, archive_id: 2
 
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
