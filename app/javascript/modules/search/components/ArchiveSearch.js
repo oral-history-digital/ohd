@@ -14,16 +14,8 @@ const PAGE_SIZE = 12;
 function ArchiveSearch() {
     const { t, locale } = useI18n();
 
-    const {
-        interviews,
-        total,
-        data,
-        error,
-        isValidating,
-        isLoading,
-        size,
-        setSize,
-    } = useArchiveSearch();
+    const { interviews, total, data, error, isLoading, size, setSize } =
+        useArchiveSearch();
 
     function handleScroll(inView) {
         if (inView) {
@@ -39,7 +31,6 @@ function ArchiveSearch() {
     const isReachingEnd =
         isEmpty ||
         (data && data[data.length - 1]?.interviews?.length < PAGE_SIZE);
-    const isRefreshing = isValidating && data && data.length === size;
 
     return (
         <>
