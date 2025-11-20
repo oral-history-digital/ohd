@@ -1,63 +1,136 @@
 .video-js {
-    position: relative; // Ensures that positioned elements are relative to the container
-    overflow: hidden; // Prevents elements outside the container from generating scroll
+  position: relative; // Ensures that positioned elements are relative to the container
+  overflow: hidden; // Prevents elements outside the container from generating scroll
 
-    .vjs-time-control {
-        display: block;
+  .vjs-time-control {
+    display: block;
+  }
+
+  .vjs-remaining-time {
+    display: none;
+  }
+
+  .vjs-poster img {
+    object-fit: cover;
+  }
+
+  /* Progress bar */
+  .vjs-progress-control {
+    position: absolute; // Takes the progress bar out of the normal flow
+    top: -10px; // Adjusts the position to be above the control area
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 10px;
+    padding: 0;
+    margin: 0;
+
+    .vjs-slider-horizontal {
+      margin: 0;
     }
 
-    .vjs-remaining-time {
+    .vjs-progress-holder {
+      height: 10px;
+      transition: height 0.3s ease;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+
+      /* Hide the scrubber (circle) while maintaining the progress bar */
+      .vjs-play-progress .vjs-slider-bar::before,
+      .vjs-play-progress:before {
         display: none;
+      }
+    }
+  }
+
+  /* Fix for Video.js text-transform issues */
+  /* Preserve proper capitalization for subtitle/caption menu items */
+  .vjs-texttrack-settings,
+  .vjs-captions-button .vjs-menu-content,
+  .vjs-subtitles-button .vjs-menu-content,
+  .vjs-chapters-button .vjs-menu-content,
+  .vjs-descriptions-button .vjs-menu-content,
+  .vjs-audio-button .vjs-menu-content {
+    text-transform: none !important;
+  }
+
+  /* Specific targeting for menu items that might have lowercase transforms */
+  .vjs-menu-item,
+  .vjs-menu-item-text {
+    text-transform: none !important;
+  }
+
+  /* Hide big play button when playing (unless hovering) */
+  &.vjs-playing .vjs-big-play-button {
+    display: none;
+  }
+
+  /* Show big play button when paused */
+  &.vjs-paused .vjs-big-play-button {
+    display: flex;
+  }
+
+  /* Show big play button when hovering over playing video */
+  &.vjs-playing:hover .vjs-big-play-button {
+    display: flex;
+    opacity: 0.8;
+    pointer-events: auto; /* Make button clickable */
+  }
+
+  /* Show pause icon instead of play when hovering over playing video */
+  &.vjs-playing:hover .vjs-big-play-button .vjs-icon-placeholder:before {
+    content: '\f103'; /* VideoJS pause icon */
+  }
+
+  /* Style the big play button */
+  .vjs-big-play-button {
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 2.5em;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: top 0.3s ease;
+
+    .vjs-icon-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding-top: 7px;
+      padding-left: 2px;
+
+      &:before {
+        font-size: 2em;
+        line-height: 1;
+        position: static;
+      }
     }
 
-    .vjs-poster img {
-        object-fit: cover;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.85);
     }
+  }
 
-    /* Progress bar */
-    .vjs-progress-control {
-        position: absolute; // Takes the progress bar out of the normal flow
-        top: -10px; // Adjusts the position to be above the control area
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 10px;
-        padding: 0;
-        margin: 0;
+  /* Move big play button up when control bar is visible (but not on initial load with poster) */
+  &.vjs-has-started.vjs-user-active .vjs-big-play-button,
+  &.vjs-has-started.vjs-paused .vjs-big-play-button,
+  &.vjs-has-started:hover .vjs-big-play-button {
+    top: calc(50% - 1em); /* Center between top and control bar */
+  }
 
-        .vjs-slider-horizontal {
-            margin: 0;
-        }
+  /* Show control bar on hover even before video has started */
+  &:hover .vjs-control-bar {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 
-        .vjs-progress-holder {
-            height: 10px;
-            transition: height 0.3s ease;
-            margin: 0;
-            padding: 0;
-            border-radius: 0;
-
-            /* Hide the scrubber (circle) while maintaining the progress bar */
-            .vjs-play-progress .vjs-slider-bar::before,
-            .vjs-play-progress:before {
-                display: none;
-            }
-        }
-    }
-
-    /* Fix for Video.js text-transform issues */
-    /* Preserve proper capitalization for subtitle/caption menu items */
-    .vjs-texttrack-settings,
-    .vjs-captions-button .vjs-menu-content,
-    .vjs-subtitles-button .vjs-menu-content,
-    .vjs-chapters-button .vjs-menu-content,
-    .vjs-descriptions-button .vjs-menu-content,
-    .vjs-audio-button .vjs-menu-content {
-        text-transform: none !important;
-    }
-
-    /* Specific targeting for menu items that might have lowercase transforms */
-    .vjs-menu-item,
-    .vjs-menu-item-text {
-        text-transform: none !important;
-    }
+  .vjs-control-bar {
+    transition: opacity 0.3s, visibility 0.3s;
+  }
 }
