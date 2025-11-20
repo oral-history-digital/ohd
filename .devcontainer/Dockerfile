@@ -26,6 +26,14 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 WORKDIR /workspace
 
+# Install Node.js (NodeSource) and Yarn v1 to satisfy dev tooling
+# Use NODE_VERSION build arg to choose major Node version (default 20)
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+  && apt-get update \
+  && apt-get install -y nodejs \
+  && npm install -g yarn@1.22.19 \
+  && rm -rf /var/lib/apt/lists/* || true
+
 # Copy dependency files first for better layer caching
 COPY Gemfile Gemfile.lock* package.json yarn.lock ./
 
@@ -37,12 +45,3 @@ COPY . .
 
 # Optionally: Check versions for sanity
 RUN java -version && node -v && yarn -v
-
-# Install Node.js (NodeSource) and Yarn v1 to satisfy dev tooling
-# Use NODE_VERSION build arg to choose major Node version (default 20)
-ARG NODE_VERSION
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-  && apt-get update \
-  && apt-get install -y nodejs \
-  && npm install -g yarn@1.22.19 \
-  && rm -rf /var/lib/apt/lists/* || true

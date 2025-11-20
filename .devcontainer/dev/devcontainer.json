@@ -4,11 +4,8 @@
     // Point at your Compose file(s)
     "dockerComposeFile": ["./docker-compose.yml"],
     "service": "app",
-    "build": {
-        "args": {
-            "NODE_VERSION": "20"
-        }
-    },
+
+    // Build args moved to docker-compose.yml's build section
     "workspaceFolder": "/workspace",
 
     // User inside the container
