@@ -17,7 +17,7 @@ export default function BiographicalEntries({ interview, intervieweeId }) {
         usePersonWithAssociations(intervieweeId);
 
     if (isLoading) {
-        return <Spinner small />;
+        return <Spinner size="small" />;
     }
 
     if (!interviewee) {

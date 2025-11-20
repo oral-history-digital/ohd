@@ -8,8 +8,8 @@ import { useI18n } from 'modules/i18n';
 import { isSegmentActive } from 'modules/interview-helpers';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
-import { Spinner } from 'modules/spinners';
 import SegmentContainer from './components/SegmentContainer';
+import TranscriptSkeleton from './components/TranscriptSkeleton';
 import {
     getContributorInformation,
     sortedSegmentsWithActiveIndex,
@@ -106,7 +106,7 @@ export default function Transcript({
     const { popupSegmentId, popupType, openReference } = popupState;
 
     if (!transcriptFetched || peopleAreLoading) {
-        return <Spinner />;
+        return <TranscriptSkeleton count={5} />;
     }
 
     if (!hasTranscript) {
