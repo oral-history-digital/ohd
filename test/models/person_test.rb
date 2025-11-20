@@ -218,4 +218,86 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'SA', person.initials
   end
 
+  # Parentheses handling
+
+  test 'excludes parentheses from first name' do
+    person = Person.new(first_name: 'Anna (Annie)', last_name: 'Schmidt')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'excludes parentheses from last name' do
+    person = Person.new(first_name: 'Peter', last_name: 'Smith (formerly Jones)')
+    assert_equal 'PS', person.initials
+  end
+
+  test 'excludes parentheses from both first and last name' do
+    person = Person.new(first_name: 'Maria (Mary)', last_name: 'Rodriguez (Garcia)')
+    assert_equal 'MR', person.initials
+  end
+
+  test 'excludes multiple parentheses from name' do
+    person = Person.new(first_name: 'John (Jack) (Johnny)', last_name: 'Williams')
+    assert_equal 'JW', person.initials
+  end
+
+  test 'handles parentheses with multi-part last name' do
+    person = Person.new(first_name: 'Carlos', last_name: 'Garcia (Martinez) Lopez')
+    assert_equal 'CGL', person.initials
+  end
+
+  test 'excludes parentheses with name particles' do
+    person = Person.new(first_name: 'Ana', last_name: 'de Souza (Silva)')
+    assert_equal 'AS', person.initials
+  end
+
+  test 'handles empty parentheses' do
+    person = Person.new(first_name: 'Lisa ()', last_name: 'Brown')
+    assert_equal 'LB', person.initials
+  end
+
+  test 'handles parentheses with Unicode characters inside' do
+    person = Person.new(first_name: 'Günter (Günther)', last_name: 'Müller')
+    assert_equal 'GM', person.initials
+  end
+
+  test 'handles parentheses in hyphenated surnames' do
+    person = Person.new(first_name: 'Emma', last_name: 'Müller-Schmidt (Johnson)')
+    assert_equal 'EMS', person.initials
+  end
+
+  test 'returns empty string when only parentheses content exists' do
+    person = Person.new(first_name: '(Nickname)', last_name: '(Alias)')
+    assert_equal '', person.initials
+  end
+
+  test 'handles first name with only parenthetical content' do
+    person = Person.new(first_name: '(Nickname)', last_name: 'Anderson')
+    assert_equal 'AN', person.initials
+  end
+
+  test 'handles last name with only parenthetical content' do
+    person = Person.new(first_name: 'Robert', last_name: '(Unknown)')
+    assert_equal 'RO', person.initials
+  end
+
+  test 'handles nested parentheses gracefully' do
+    person = Person.new(first_name: 'Tom (Thomas (Tommy))', last_name: 'Davis')
+    assert_equal 'TD', person.initials
+  end
+
+  test 'handles parentheses with special characters inside' do
+    person = Person.new(first_name: 'Alex (a.k.a. Sandy)', last_name: 'Brown')
+    assert_equal 'AB', person.initials
+  end
+
+  test 'excludes parentheses but keeps particles correctly' do
+    person = Person.new(first_name: 'Wilhelm', last_name: 'von (Freiherr) Humboldt')
+    assert_equal 'WH', person.initials
+  end
+
+  test 'handles parentheses in multi-part surname with only substantive parts remaining' do
+    person = Person.new(first_name: 'Jean', last_name: 'de (la) Martin Dubois')
+    assert_equal 'JMD', person.initials
+  end
+
 end

@@ -206,6 +206,12 @@ class Person < ApplicationRecord
 
     return '' if first.blank? && last.blank?
 
+    # Remove any text within parentheses (including the parentheses)
+    first = first.gsub(/\([^)]*\)/, '').strip
+    last = last.gsub(/\([^)]*\)/, '').strip
+
+    return '' if first.blank? && last.blank?
+
     # If only first name exists
     return first.chars.first(2).join.upcase if last.blank?
 
