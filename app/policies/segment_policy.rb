@@ -1,4 +1,18 @@
 class SegmentPolicy < ApplicationPolicy
+
+  def show?
+    user_project = user.user_projects.where(project_id: project.id)
+    user && (user.admin? || user_project&.project_access_granted?)
+  end
+
+  def annotations?
+    show?
+  end
+
+  def registry_references?
+    show?
+  end
+
   class Scope < Scope
     attr_reader :user, :segment, :project
 
@@ -9,7 +23,8 @@ class SegmentPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user && (user.admin? || user.project_ids.include?(project.id))
+      user_project = user.user_projects.where(project_id: project.id)
+      if user && (user.admin? || user_project&.project_access_granted?)
         interview = segment.interview
         transcript_coupled = interview.transcript_coupled
         max_updated_at = interview.segments.maximum(:updated_at)

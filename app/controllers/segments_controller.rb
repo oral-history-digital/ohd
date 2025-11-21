@@ -1,7 +1,7 @@
 class SegmentsController < ApplicationController
+  before_action :set_segment, only: [:show, :update, :annotations, :registry_references]
+
   def update
-    @segment = Segment.find params[:id]
-    authorize @segment
     @segment.update(segment_params)
     @segment.update_has_heading
     @segment.reload
@@ -39,8 +39,6 @@ class SegmentsController < ApplicationController
   end
 
   def show
-    @segment = Segment.find(params[:id])
-    authorize @segment
     respond_to do |format|
       format.json do
         render json: data_json(@segment)
@@ -48,7 +46,28 @@ class SegmentsController < ApplicationController
     end
   end
 
+  def annotations
+    @alpha3 = params[:alpha3]
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+  end
+
+  def registry_references
+    @locale = ISO_639.find(params[:alpha3]).alpha2
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+  end
+
   private
+
+  def set_segment
+    @segment = Segment.find(params[:id] || params[:segment_id])
+    authorize @segment
+  end
 
   def segment_params
     required = params.require(:segment)

@@ -1,0 +1,10 @@
+= turbo_frame_tag "segment_#{@segment.id}_registry_references"
+  .SegmentPopup
+    .SegmentPopup-inner
+      .SegmentPopup-references.RegistryReferences
+        ul.RegistryReferences-list
+          - @segment.registry_references.each do |reference|
+            li.RegistryReference.registry-reference
+              span.RegistryReference-name id="reference-#{reference.id}"= reference.registry_entry.descriptor(@locale)
+              span.RegistryReference-buttons.flyout-sub-tabs-content-ico
+

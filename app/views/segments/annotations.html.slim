@@ -1,0 +1,6 @@
+= turbo_frame_tag "segment_#{@segment.id}_annotations"
+  .SegmentPopup
+    .SegmentPopup-inner
+      .SegmentPopup-annotations
+        - @segment.annotations.each do |annotation|
+          p= annotation.text(@alpha3)

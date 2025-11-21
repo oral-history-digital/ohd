@@ -59,7 +59,12 @@ Rails.application.routes.draw do
     resources :sponsor_logos, only: [:create, :update, :destroy]
     get "media_streams/:archive_id/:tape/:resolution", to: "media_streams#show"
     resources :media_streams, only: [:create, :update, :destroy]
-    resources :segments, only: [:create, :update, :index, :destroy, :show]
+    resources :segments, only: [:create, :update, :index, :destroy, :show] do
+      member do
+        get :registry_references
+        get :annotations
+      end
+    end
     resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
     resources :registry_hierarchies, only: [:create, :destroy]
     resources :registry_names, only: [:create, :update, :destroy]
