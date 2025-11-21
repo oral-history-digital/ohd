@@ -1,15 +1,2 @@
-- has_annotations = segment.annotations_count > 0
-- if has_annotations || is_editor?
-  = link_to annotations_segment_path(segment, alpha3: alpha3),
-    class: "Button Button--transparent Button--icon",
-    data: { turbo_frame: "segment_#{segment.id}_annotations" },
-    title: has_annotations ? tv('edit.segment.annotations.edit') : tv('edit.segment.annotations.new') do
-      = fa_icon 'sticky-note', class: "Icon #{has_annotations ? 'Icon--primary' : 'Icon--editorial'}"
-
-- has_registry_references = segment.registry_references_count > 0
-- if has_registry_references || is_editor?
-  = link_to registry_references_segment_path(segment, alpha3: alpha3),
-    class: "Button Button--transparent Button--icon",
-    data: { turbo_frame: "segment_#{segment.id}_registry_references" },
-    title: has_registry_references ? tv('edit.segment.references.edit') : tv('edit.segment.references.new')
-      = fa_icon 'tag', class: "Icon #{has_registry_references ? 'Icon--primary' : 'Icon--editorial'}"
+= segment_popup_link(segment, 'annotations', alpha3)
+= segment_popup_link(segment, 'registry_references', alpha3)
