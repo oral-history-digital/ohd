@@ -29,5 +29,5 @@ div {
 
   = render partial: 'segments/segment_actions', locals: { segment: segment, alpha3: alpha3 }
 
-= turbo_frame_tag "segment_#{segment.id}_annotations"
-= turbo_frame_tag "segment_#{segment.id}_registry_references"
+= turbo_frame_tag "segment_#{segment.id}_annotations", class: "SegmentPopupFrame"
+= turbo_frame_tag "segment_#{segment.id}_registry_references", class: "SegmentPopupFrame"

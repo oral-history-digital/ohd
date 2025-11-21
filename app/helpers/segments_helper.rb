@@ -16,7 +16,9 @@ module SegmentsHelper
         send("#{association}_segment_path", segment, alpha3: alpha3),
         class: "Button Button--transparent Button--icon",
         data: {
-          turbo_frame: "segment_#{segment.id}_#{association}"
+          turbo_frame: "segment_#{segment.id}_#{association}",
+          controller: "segment-popup",
+          action: "click->segment-popup#togglePopup"
         },
         title: title
       ) do
