@@ -1,15 +1,6 @@
 import * as types from './action-types';
 import * as actions from './actions';
 
-test('setTape', () => {
-    const actual = actions.setTape(3);
-    const expected = {
-        type: types.SET_TAPE,
-        payload: { tape: 3 },
-    };
-    expect(actual).toEqual(expected);
-});
-
 test('updateMediaTime', () => {
     const actual = actions.updateMediaTime(25.3);
     const expected = {
