@@ -63,9 +63,7 @@ function Segment({
                 'is-active': isActive,
             })}
         >
-            {segment.speakerIdChanged && (
-                <Initials contributor={contributor} segment={segment} />
-            )}
+            <Initials contributor={contributor} segment={segment} />
             <button
                 type="button"
                 className={classNames('Segment-text', {
