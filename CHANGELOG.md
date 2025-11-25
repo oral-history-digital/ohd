@@ -5,11 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-11-20
+
+### Added
+
+-   feat: make media player responsive ([#43](https://github.com/oral-history-digital/ohd/pull/43))
+-   more restrictive password validation ([877839a](https://github.com/oral-history-digital/ohd/commit/877839a1c36b9d54e5a9e59781b4a8e6d90918fd))
+
+### Changed
+
+-   oai: no description on sets ([06a04a5](https://github.com/oral-history-digital/ohd/commit/06a04a54d3fc0ca8447c6c7aea473ccf8f5ccfc4))
+-   oai: exclude unshared interviews ([1d54b61](https://github.com/oral-history-digital/ohd/commit/1d54b6101a8e797f36fb9a542da2e62a8e112272))
+-   oai collections project.leader instead of project.manager in field DataManager ([5547c6b](https://github.com/oral-history-digital/ohd/commit/5547c6b65eb7fcbb48d9357255ca9fef04ecf8a0))
+-   oai: display only existing media formats ([dd526ce](https://github.com/oral-history-digital/ohd/commit/dd526ce3834c9fae2fbfed974e0e9bc0235f33c9))
+-   disable changing of names in user account ([29ec37c](https://github.com/oral-history-digital/ohd/commit/29ec37c48cb18c5323c5fda48a3e77545dfb38e0))
+
+### Fixed
+
+-   fix: ignore parentetheses in initials calculation ([#45](https://github.com/oral-history-digital/ohd/pull/45))
+-   fix: handle empty values in facets ([#46](https://github.com/oral-history-digital/ohd/pull/46))
+
 ## [1.3.0] - 2025-11-17
 
 ### Changed
 
--  feat: improve people loading for performance improvement ([#37](https://github.com/oral-history-digital/ohd/pull/37))
+-   feat: improve people loading for performance improvement ([#37](https://github.com/oral-history-digital/ohd/pull/37))
 
 ## [1.2.1] - 2025-11-12
 
@@ -159,6 +179,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 -   Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 -   Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.4.0]: https://github.com/oral-history-digital/ohd/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/oral-history-digital/ohd/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/oral-history-digital/ohd/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/oral-history-digital/ohd/compare/v1.1.13...v1.2.0

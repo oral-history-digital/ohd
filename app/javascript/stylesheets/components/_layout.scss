@@ -1,48 +1,19 @@
 .Layout-page {
-  .fa-eye, .fa-globe {
+  .fa-eye,
+  .fa-globe {
     color: var(--primary-color) !important;
   }
 }
 
 .Layout-contentTabs {
   background-color: $gray-lighter;
-  height: $base-unit * 2;
+  height: var(--content-tabs-height);
   overflow: hidden;
   z-index: $z-index-content-tabs;
 }
 
 .wrapper-content {
   padding: ($base-unit * 2) 5% ($base-unit * 2);
-}
-
-.Layout.is-sticky {
-  .wrapper-content {
-    // Default margin when sticky (without player size class)
-    margin-top: $media-player-height-mobile + $horizontal-tabs-height;
-
-    @include screen-m {
-      margin-top: $media-player-height-medium + $horizontal-tabs-height;
-    }
-  }
-  
-  // Override with specific margins based on player size class
-  &.is-small-player .wrapper-content {
-    margin-top: $media-player-height-small + $horizontal-tabs-height;
-    
-    // Ensure this works across all screen sizes
-    @include screen-m {
-      margin-top: $media-player-height-small + $horizontal-tabs-height;
-    }
-  }
-  
-  &.is-medium-player .wrapper-content {
-    margin-top: $media-player-height-medium + $horizontal-tabs-height;
-    
-    // Ensure this works across all screen sizes
-    @include screen-m {
-      margin-top: $media-player-height-medium + $horizontal-tabs-height;
-    }
-  }
 }
 
 .Layout-sidebar {
@@ -75,28 +46,29 @@
 }
 
 .Layout.is-sticky {
+  .Layout-mediaPlayer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: $z-index-media-player;
+  }
+
   .Layout-contentTabs {
     position: fixed;
     left: 0;
     right: 0;
-  }
-  
-  &.is-small-player {
-    .Layout-contentTabs {
-      top: var(--media-player-height-small);
-    }
-  }
-  
-  &.is-medium-player {
-    .Layout-contentTabs {
-      top: var(--media-player-height-medium);
-    }
+    // Position will be set dynamically via JS based on MediaPlayer's actual height
+    top: var(--media-player-actual-height, 30rem);
   }
 
-  &.is-mobile {
-    .Layout-contentTabs {
-      top: var(--media-player-height-mobile);
-    }
+  .wrapper-content {
+    // Add top margin to prevent content from hiding under fixed player + tabs
+    // Will be set dynamically via JS based on MediaPlayer's actual height
+    margin-top: var(
+      --sticky-content-offset,
+      calc(30rem + var(--content-tabs-height))
+    );
   }
 }
 
@@ -110,9 +82,17 @@
   display: block;
 }
 
-.Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
-.Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
+.Layout.is-sticky.sidebar-is-visible {
   @include screen-xl {
-    right: 36%;
+    .Layout-page {
+      width: 64%;
+    }
+
+    .Layout-mediaPlayer,
+    .Layout-contentTabs {
+      right: 36%;
+      width: 64%;
+      left: auto;
+    }
   }
 }
