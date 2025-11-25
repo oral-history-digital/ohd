@@ -52,6 +52,12 @@ function Segment({
     // Enforce RTL wrapping if the text direction is RTL
     text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
 
+    const handleSegmentClick = () => {
+        if (transcriptCoupled) {
+            sendTimeChangeRequest(segment.tape_nbr, segment.time);
+        }
+    };
+
     return (
         <div
             id={`segment_${segment.id}`}
@@ -71,10 +77,7 @@ function Segment({
                 })}
                 lang={contentLocale}
                 dir={textDir ? textDir : 'auto'}
-                onClick={() => {
-                    transcriptCoupled &&
-                        sendTimeChangeRequest(segment.tape_nbr, segment.time);
-                }}
+                onClick={handleSegmentClick}
             >
                 {unescapeHtmlEntities(text) || (
                     <i>{t('modules.transcript.no_text')}</i>
