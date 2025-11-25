@@ -17,6 +17,8 @@ class Tei
       'm' => 'kinesic',
       's' => 'vocal',
       'v' => 'vocal',
+      'ml' => 'incident',
+      'i' => 'incident',
     }
 
     unless original_text.blank?
