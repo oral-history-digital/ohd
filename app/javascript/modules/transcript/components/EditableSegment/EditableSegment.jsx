@@ -1,18 +1,12 @@
 import classNames from 'classnames';
-import { useAuthorization } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { useScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { memo, useRef } from 'react';
 import { useAutoScrollToRef } from '../../hooks';
-import {
-    checkTextDir,
-    enforceRtlOnTranscriptTokens,
-    unescapeHtmlEntities,
-} from '../../utils';
 import Initials from './Initials';
+import SegmentText from './SegmentText';
 
 function Segment({
     segment,
@@ -24,11 +18,7 @@ function Segment({
     sendTimeChangeRequest,
 }) {
     const divEl = useRef();
-    const { isAuthorized } = useAuthorization();
-    const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
-    const transcriptCoupled = interview?.transcriptCoupled;
-
     const scrollOffset = useScrollOffset();
 
     const shouldScroll =
@@ -44,16 +34,8 @@ function Segment({
         segmentParam,
     ]);
 
-    let text = isAuthorized(segment, 'update')
-        ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
-        : segment.text[`${contentLocale}-public`];
-
-    const textDir = checkTextDir(text);
-    // Enforce RTL wrapping if the text direction is RTL
-    text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
-
     const handleSegmentClick = () => {
-        if (transcriptCoupled) {
+        if (interview?.transcriptCoupled) {
             sendTimeChangeRequest(segment.tape_nbr, segment.time);
         }
     };
@@ -70,19 +52,12 @@ function Segment({
             })}
         >
             <Initials contributor={contributor} segment={segment} />
-            <button
-                type="button"
-                className={classNames('Segment-text', {
-                    'is-active': isActive,
-                })}
-                lang={contentLocale}
-                dir={textDir ? textDir : 'auto'}
-                onClick={handleSegmentClick}
-            >
-                {unescapeHtmlEntities(text) || (
-                    <i>{t('modules.transcript.no_text')}</i>
-                )}
-            </button>
+            <SegmentText
+                segment={segment}
+                locale={contentLocale}
+                isActive={isActive}
+                handleClick={handleSegmentClick}
+            />
         </div>
     );
 }
