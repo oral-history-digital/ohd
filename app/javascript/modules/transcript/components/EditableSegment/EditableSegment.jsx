@@ -7,7 +7,11 @@ import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { memo, useRef } from 'react';
 import { useAutoScrollToRef } from '../../hooks';
-import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
+import {
+    checkTextDir,
+    enforceRtlOnTranscriptTokens,
+    unescapeHtmlEntities,
+} from '../../utils';
 import Initials from './Initials';
 
 function Segment({
@@ -74,7 +78,7 @@ function Segment({
                         sendTimeChangeRequest(segment.tape_nbr, segment.time);
                 }}
             >
-                {text?.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || (
+                {unescapeHtmlEntities(text) || (
                     <i>{t('modules.transcript.no_text')}</i>
                 )}
             </button>
