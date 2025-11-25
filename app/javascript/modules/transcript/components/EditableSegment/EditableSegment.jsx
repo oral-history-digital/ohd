@@ -51,8 +51,8 @@ function Segment({
     return (
         <div
             id={`segment_${segment.id}`}
-            segment-tape={segment.tape_nbr}
-            segment-time={formatTimecode(segment.time, true)}
+            data-tape={segment.tape_nbr}
+            data-time={formatTimecode(segment.time, true)}
             ref={divEl}
             className={classNames('Segment', {
                 'Segment--withSpeaker': segment.speakerIdChanged,
@@ -60,16 +60,7 @@ function Segment({
             })}
         >
             {segment.speakerIdChanged && (
-                <Initials
-                    initials={contributor?.initials || segment.speaker}
-                    className={classNames(
-                        'Segment-icon',
-                        segment.speaker_is_interviewee
-                            ? 'Segment-icon--primary'
-                            : 'Segment-icon--secondary'
-                    )}
-                    title={contributor?.fullname || segment.speaker}
-                />
+                <Initials contributor={contributor} segment={segment} />
             )}
             <button
                 type="button"
