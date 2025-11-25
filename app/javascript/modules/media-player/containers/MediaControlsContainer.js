@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview } from 'modules/data';
-import { setTape } from '../redux/actions';
+import { sendTimeChangeRequest } from '../redux/actions';
 import { getCurrentTape, getMediaTime } from '../redux/selectors';
 import MediaControls from '../components/MediaControls';
 
@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
-            setTape,
+            sendTimeChangeRequest,
         },
         dispatch
     );
