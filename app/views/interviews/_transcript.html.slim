@@ -1,7 +1,6 @@
-= cache [interview, interview.segments.maximum(:updated_at), I18n.locale] do
+= cache [interview, interview.segments.maximum(:updated_at), I18n.locale, alpha3, 'transcript'] do
   .Transcript data-controller="segment-popup"
 
-    - alpha3 = interview.alpha3
     - rtl = is_rtl_language?(alpha3)
 
     - interview.tapes.each do |tape|
@@ -19,4 +18,3 @@
                 tape_number: tape_number,\
                 rtl: rtl\
               }
-

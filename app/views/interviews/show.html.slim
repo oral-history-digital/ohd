@@ -2,7 +2,10 @@ noscript
   = t('noscript')
 = react_component('MediaComponent', prerender: false)
 
-.Tabs
+.Tabs {
+  data-reach-tabs=""
+  data-orientation="horizontal"
+}
   .Layout-contentTabs
     .Tabs-tabList {
       role="tablist"
@@ -10,24 +13,30 @@ noscript
       data-reach-tab-list=""
     }
 
-      = link_to "#{tv('transcript')} (#{@interview.alpha3})",
-        transcript_path(@interview.id, locale: I18n.locale, alpha3: @interview.alpha3),
+      = link_to transcript_path(@interview.id, locale: I18n.locale, alpha3: @interview.alpha3),
         data: {turbo_frame: 'interview_tab_content'},
-        class: 'Tabs-tabLink'
+        class: 'Tabs-tab',
+        type: 'button' do
+          = fa_icon 'reg-file-alt', class: 'Tabs-tabIcon'
+          span.Tabs-tabText
+            = "#{tv('transcript')} (#{@interview.alpha3})"
 
-      = link_to "#{tv('translation')} (#{@interview.translation_alpha3})",
-        transcript_path(@interview.id, locale: I18n.locale, alpha3: @interview.translation_alpha3),
+      = link_to transcript_path(@interview.id, locale: I18n.locale, alpha3: @interview.translation_alpha3),
         data: {turbo_frame: 'interview_tab_content'},
-        class: 'Tabs-tabLink'
+        class: 'Tabs-tab',
+        type: 'button' do
+          = fa_icon 'reg-clone', class: 'Tabs-tabIcon'
+          span.Tabs-tabText
+            = "#{tv('translation')} (#{@interview.translation_alpha3})"
 
       /.Tabs-tab {
         /aria-controls="tabs--panel--0"
         /aria-selected="true"
         /role="tab"i
         /tabindex="0"
-        /class="Tabs-tab"
         /data-reach-tab=""
         /data-orientation="horizontal"
+        /data-selected=""
         /id="tabs--tab--0"
         /type="button"
       /}
@@ -38,4 +47,5 @@ noscript
 
   
   .wrapper-content
-    = turbo_frame_tag 'interview_tab_content'
+    = turbo_frame_tag 'interview_tab_content' do
+      = render partial: 'transcript', locals: { interview: @interview, alpha3: @interview.alpha3 }
