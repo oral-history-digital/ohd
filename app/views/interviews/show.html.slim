@@ -10,17 +10,27 @@ noscript
       data-reach-tab-list=""
     }
 
-      .Tabs-tab {
-        aria-controls="tabs--panel--0"
-        aria-selected="true"
-        role="tab"i
-        tabindex="0"
-        class="Tabs-tab"
-        data-reach-tab=""
-        data-orientation="horizontal"
-        id="tabs--tab--0"
-        type="button"
-      }
+      = link_to "#{tv('transcript')} (#{@interview.alpha3})",
+        transcript_path(@interview.id, locale: I18n.locale, alpha3: @interview.alpha3),
+        data: {turbo_frame: 'interview_tab_content'},
+        class: 'Tabs-tabLink'
+
+      = link_to "#{tv('translation')} (#{@interview.translation_alpha3})",
+        transcript_path(@interview.id, locale: I18n.locale, alpha3: @interview.translation_alpha3),
+        data: {turbo_frame: 'interview_tab_content'},
+        class: 'Tabs-tabLink'
+
+      /.Tabs-tab {
+        /aria-controls="tabs--panel--0"
+        /aria-selected="true"
+        /role="tab"i
+        /tabindex="0"
+        /class="Tabs-tab"
+        /data-reach-tab=""
+        /data-orientation="horizontal"
+        /id="tabs--tab--0"
+        /type="button"
+      /}
 
         = fa_icon 'file-alt', class: 'Tabs-tabIcon'
         span.Tabs-tabText
@@ -28,8 +38,4 @@ noscript
 
   
   .wrapper-content
-    .Transcript data-controller="segment-popup"
-      = render partial: 'transcript', locals: {\
-        interview: @interview,\
-        alpha3: @interview.alpha3,\
-      }
+    = turbo_frame_tag 'interview_tab_content'

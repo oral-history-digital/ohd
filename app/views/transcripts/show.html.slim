@@ -1,0 +1,23 @@
+= turbo_frame_tag 'interview_tab_content' do
+  = cache [@interview, @interview.segments.maximum(:updated_at), I18n.locale, @alpha3, 'transcript'] do
+    .Transcript data-controller="segment-popup"
+
+      - rtl = is_rtl_language?(@alpha3)
+
+      - @interview.tapes.each do |tape|
+        - tape_number = tape.number
+
+        - tape.segments.includes(\
+          :translations,\
+          speaking_person: [:translations]\
+          ).each do |segment|
+            = cache [segment, @alpha3, is_editor?] do
+              = render partial: 'segments/segment',\
+                locals: {\
+                  segment: segment,\
+                  alpha3: @alpha3,\
+                  tape_number: tape_number,\
+                  rtl: rtl\
+                }
+
+

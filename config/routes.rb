@@ -96,7 +96,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :transcripts, only: [:new, :create]
+    resources :transcripts, only: [:new, :create, :show]
     resources :uploads, only: [:new, :create] do
     end
 

@@ -1,4 +1,11 @@
 class TranscriptsController < ApplicationController
+
+  def show
+    @interview = Interview.find(params[:id])
+    @alpha3 = params[:alpha3]
+    authorize @interview, :show?
+  end
+
   def new
     authorize :upload, :new?
     respond_to do |format|
