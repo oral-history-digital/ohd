@@ -6,7 +6,6 @@
 // Importing Turbo, Stimulus and registering SegmentPopupController
 import "@hotwired/turbo-rails"
 import { Application } from "@hotwired/stimulus";
-import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 import SegmentPopupController from "controllers/segment_popup_controller";
 const application = Application.start();
 application.register("segment-popup", SegmentPopupController);
