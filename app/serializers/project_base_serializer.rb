@@ -23,7 +23,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :show_preview_img,
     :has_map,
     :subjects,
-    :levels_of_indexing
+    :levels_of_indexing,
+    :default_search_order
 
   def display_name
     object.localized_hash(:display_name)
