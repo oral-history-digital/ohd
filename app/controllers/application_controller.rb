@@ -149,11 +149,9 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {
-            all: 'fetched',
-            #"#{current_project.id}": 'fetched'
-          },
-          #projects: {"#{current_project.id}": 'fetched'},
+          projects: current_project ? {
+            current_project.id => 'fetched'
+          } : {},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -164,19 +162,12 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          Project.all.includes(
-            :translations,
-            :registry_reference_types,
-            # Collections removed - loaded via separate API call when needed
-          ).inject({}) do |mem, s|
-            mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-            mem
-          end
-        end,
-        #projects: {
-          #"#{current_project.id}": cache_single(current_project),
-        #},
+        # Only load current project in initial state
+        # Other projects will be lazy-loaded via API when needed
+        # This reduces initial page load significantly when many projects exist
+        projects: current_project ? {
+          current_project.id => cache_single(current_project, serializer_name: 'Project')
+        } : {},
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
@@ -336,12 +327,8 @@ class ApplicationController < ActionController::Base
       "-#{opts[:cache_key_suffix]}-#{I18n.locale}"
     Rails.cache.fetch(cache_key) do
       raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
-      # compile raw-json to string first (making all db-requests!!) using to_json
-      # without to_json the lazy serializers wouldn`t do the work to really request the db
-      #
-      # then parse it back to json
-      #
-      JSON.parse(raw.to_json)
+      # Use as_json instead of JSON.parse(to_json) to avoid unnecessary string conversion
+      raw.as_json
     end
   end
 
