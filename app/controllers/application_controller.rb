@@ -177,17 +177,17 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        #projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          #Project.all.includes(
-            #:translations,
-            #:registry_reference_types,
-            #:collections,
-          #).inject({}) do |mem, s|
-            #mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-            #mem
-          #end
-        #end,
-        projects: {
+        projects: current_project.is_ohd? ?
+          Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+            Project.all.includes(
+              :translations,
+              :registry_reference_types,
+              :collections,
+            ).inject({}) do |mem, s|
+              mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+              mem
+            end
+          end : {
           "#{current_project.id}": cache_single(current_project),
         },
         institutions: {},
