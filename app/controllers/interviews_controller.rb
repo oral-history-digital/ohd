@@ -7,7 +7,7 @@ class InterviewsController < ApplicationController
     authorize Interview
     @component = 'EditInterview'
     respond_to do |format|
-      format.html { render :show }
+      format.html
       format.json { render json: :ok }
     end
   end
