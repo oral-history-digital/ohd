@@ -4,12 +4,13 @@ div {
   data-time=segment.timecode
 }
 
-  span {
-    class="Segment-icon Segment-icon--secondary"
-    title=segment.speaking_person.full_name(I18n.locale)
-    aria-label=segment.speaking_person.full_name(I18n.locale)
-  }
-    = segment.speaking_person.initials
+  - if segment.speaking_person.present?
+    span {
+      class="Segment-icon Segment-icon--secondary"
+      title=segment.speaking_person.full_name(I18n.locale)
+      aria-label=segment.speaking_person.full_name(I18n.locale)
+    }
+      = segment.speaking_person.initials
 
   button {
     class="Segment-text"
