@@ -8,7 +8,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { getCollectionsForCurrentProject } from 'modules/data';
 import { useProjectAccessStatus } from 'modules/auth';
-import CollectionLink from './CollectionLink';
+import CatalogLink from './CatalogLink';
 
 export default function InterviewCollectionInfo({
     interview,
@@ -42,7 +42,7 @@ export default function InterviewCollectionInfo({
                         aria-label={titleText}
                     />
                 </DisclosureButton>
-                <CollectionLink collectionId={collection.id} />
+                <CatalogLink type="collection" id={collection.id} />
                 <DisclosurePanel>
                     <span dangerouslySetInnerHTML={{__html: collection.notes[locale]}} />
                 </DisclosurePanel>

@@ -6,41 +6,46 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
-export default function CollectionLink({
-    collectionId,
+export default function CatalogLink({
+    id,
+    type,
 }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
 
     const linkLocale = locale === 'de' ? 'de' : 'en';
-    const linkPath = `/${linkLocale}/catalog/collections/${collectionId}`;
+    const linkPath = `/${linkLocale}/catalog/${type}s/${id}`;
     const hasOwnDomain = typeof project.archive_domain === 'string'
         && project.archive_domain !== ''
         && !project.is_ohd;
 
     const ohdDomain = OHD_DOMAINS[railsMode];
+    const title = t(`modules.interview_metadata.${type}_link_title`);
+    const className = 'u-ml-tiny';
+    const icon = <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />;
 
     return hasOwnDomain ? (
         <a
             href={`${ohdDomain}${linkPath}`}
-            title={t('modules.interview_metadata.collection_link_title')}
+            title={title}
             target="_blank"
             rel="noreferrer"
-            className="u-ml-tiny"
+            className={className}
         >
-            <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
+            {icon}
         </a>
     ) : (
         <Link
             to={linkPath}
-            title={t('modules.interview_metadata.collection_link_title')}
-            className="u-ml-tiny"
+            title={title}
+            className={className}
         >
-            <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
+            {icon}
         </Link>
     );
 }
 
-CollectionLink.propTypes = {
+CatalogLink.propTypes = {
     collectionId: PropTypes.number.isRequired,
+    type: PropTypes.oneOf(['archive', 'collection']),
 };
