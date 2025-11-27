@@ -153,8 +153,6 @@ GEM
     countries (8.0.2)
       unaccent (~> 0.3)
     crass (1.0.6)
-    cssbundling-rails (1.4.3)
-      railties (>= 6.0.0)
     csv (3.2.9)
     cyrillizer (0.3.2)
     daemons (1.4.1)
@@ -595,7 +593,6 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.0)
   capybara
   countries
-  cssbundling-rails
   csv (~> 3.2.0)
   cyrillizer
   daemons
