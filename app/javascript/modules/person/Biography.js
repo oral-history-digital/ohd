@@ -21,7 +21,7 @@ export default function Biography() {
         usePersonWithAssociations(intervieweeId);
 
     if (isLoading) {
-        return <Spinner small />;
+        return <Spinner size="small" />;
     }
 
     if (!interviewee.biographical_entries) {
