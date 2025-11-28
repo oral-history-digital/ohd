@@ -1,12 +1,10 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
+import CatalogTable from './CatalogTable';
 import useArchiveData from './useArchiveData';
 import useInstance from './useInstance';
-import CatalogTable from './CatalogTable';
 
-export default function ArchiveCatalog({
-    id,
-}) {
+export default function ArchiveCatalog({ id }) {
     const data = useArchiveData(id);
     const { instance } = useInstance(data, 'archive');
 

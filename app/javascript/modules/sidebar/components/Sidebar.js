@@ -1,18 +1,20 @@
 import classNames from 'classnames';
+import { getCurrentUser } from 'modules/data';
+import {
+    ActivationActions,
+    ActivationFlow,
+    canUseEditView,
+} from 'modules/user';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { getCurrentUser } from 'modules/data';
-import { ActivationFlow, ActivationActions, canUseEditView } from 'modules/user';
+import CurrentArchive from './CurrentArchive';
 import LocaleButtons from './LocaleButtons';
 import SessionButtons from './SessionButtons';
-import ToggleEditView from './ToggleEditView';
 import SidebarTabsContainer from './SidebarTabsContainer';
-import CurrentArchive from './CurrentArchive';
+import ToggleEditView from './ToggleEditView';
 
-export default function Sidebar({
-    className,
-}) {
+export default function Sidebar({ className }) {
     const user = useSelector(getCurrentUser);
     const showToggleEditViewButton = canUseEditView(user);
 

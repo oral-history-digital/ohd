@@ -1,8 +1,8 @@
+import { getTranslations, getTranslationsView } from 'modules/archive';
+import { SYSTEM_LOCALES } from 'modules/constants';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
-import { getTranslations, getTranslationsView } from 'modules/archive';
-import { SYSTEM_LOCALES } from 'modules/constants';
 import originalT from './t';
 
 export function useI18n() {

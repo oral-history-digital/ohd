@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
-
 import {
     getIsRegistryEntrySearching,
     getRegistryEntriesSearch,
     getShowRegistryEntriesSearchResults,
 } from 'modules/search';
+import { connect } from 'react-redux';
+
 import Registry from './Registry';
 
 const mapStateToProps = (state) => ({

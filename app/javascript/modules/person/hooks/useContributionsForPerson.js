@@ -1,8 +1,7 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { fetcher } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 function compareContributions(a, b) {
     const idResult = a.interview_id.localeCompare(b.interview_id);
@@ -19,7 +18,10 @@ export default function useContributionsForPerson(id) {
     const pathBase = usePathBase();
 
     const path = `${pathBase}/people/${id}/contributions?locale=${locale}`;
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     let contributions = [];
 
@@ -32,6 +34,6 @@ export default function useContributionsForPerson(id) {
         isLoading,
         isValidating,
         contributions,
-        error
+        error,
     };
 }

@@ -1,17 +1,25 @@
+import { fetcher } from 'modules/api';
+import {
+    referenceTypesToColorMap,
+    transformIntoMarkers,
+    useMapReferenceTypes,
+} from 'modules/map';
+import { usePathBase } from 'modules/routes';
 import useSWRImmutable from 'swr/immutable';
 
-import { usePathBase } from 'modules/routes';
-import { fetcher } from 'modules/api';
-import { useMapReferenceTypes, referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
 import getBounds from './getBounds';
 
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
 
     const path = `${pathBase}/locations?archive_id=${archiveId}`;
-    const { data: locations, error: locationsError } = useSWRImmutable(path, fetcher);
+    const { data: locations, error: locationsError } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     let markers = [];
     let bounds = null;

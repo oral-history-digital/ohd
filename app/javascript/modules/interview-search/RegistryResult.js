@@ -1,11 +1,11 @@
+import { getCurrentInterview, getFlattenedRefTree } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { getTextAndLang } from 'modules/interview-references';
+import { Spinner } from 'modules/spinners';
+import { Disclosure } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { getFlattenedRefTree, getCurrentInterview } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { Disclosure } from 'modules/ui';
-import { Spinner } from 'modules/spinners';
-import { getTextAndLang } from 'modules/interview-references';
 import DumbTranscriptResult from './DumbTranscriptResult';
 
 export default function RegistryResult({ data }) {

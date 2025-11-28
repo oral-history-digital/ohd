@@ -1,6 +1,5 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useHelpTexts() {
     const pathBase = usePathBase();

@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import ContributionList from './ContributionList';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+
 import ContributionFormContainer from './ContributionFormContainer';
+import ContributionList from './ContributionList';
 
 export default function InterviewContributors({
     interview,

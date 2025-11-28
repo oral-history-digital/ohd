@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
 export default function FetchAccount({
     user,
@@ -23,10 +23,17 @@ export default function FetchAccount({
         }
     }, [usersStatus.current, isLoggedIn]);
 
-
     useEffect(() => {
         if (isLoggedOut && user) {
-            deleteData({ projectId, locale, project }, 'users', 'current', null, null, false, true);
+            deleteData(
+                { projectId, locale, project },
+                'users',
+                'current',
+                null,
+                null,
+                false,
+                true
+            );
         }
     }, [isLoggedOut]);
 

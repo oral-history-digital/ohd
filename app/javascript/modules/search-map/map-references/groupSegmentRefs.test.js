@@ -61,9 +61,9 @@ test('groups segment refs by interview id', () => {
                     last_name: 'Henderson',
                     first_name: 'Bob',
                     display_name: 'Bob Henderson',
-                }
-            ]
-        }
+                },
+            ],
+        },
     ];
 
     expect(actual).toEqual(expected);

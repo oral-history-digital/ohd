@@ -1,17 +1,18 @@
 import curry from 'lodash.curry';
 
-import mapProject from './mapProject';
 import rowComparator from '../rowComparator';
+import mapProject from './mapProject';
 
 export default function mapInstitution(locale, institution) {
     const curriedMapInstitution = curry(mapInstitution)(locale);
     const curriedMapProject = curry(mapProject)(locale);
 
     // Subrows = subinstitutions + archives.
-    const subRows = institution.children
-        ?.map(curriedMapInstitution)
-        ?.sort(rowComparator) || [];
-    const projectRows = institution.projects?.map(curriedMapProject)
+    const subRows =
+        institution.children?.map(curriedMapInstitution)?.sort(rowComparator) ||
+        [];
+    const projectRows = institution.projects
+        ?.map(curriedMapProject)
         .sort(rowComparator);
     const subRowsWithProjects = subRows.concat(projectRows);
 

@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import { useIsEditor } from 'modules/archive';
 import { useProjectAccessStatus } from 'modules/auth';
 import { useHumanReadable } from 'modules/data';
@@ -8,6 +6,8 @@ import { ContentField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import Biography from './Biography';
 import NameOrPseudonym from './NameOrPseudonym';
 import getDisplayedMetadataFields from './getDisplayedMetadataFields';

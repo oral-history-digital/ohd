@@ -1,13 +1,11 @@
+import { RowActions } from 'modules/tables';
 import PropTypes from 'prop-types';
 
-import { RowActions } from 'modules/tables';
-import PersonDetails from './PersonDetails'
-import PersonForm from './PersonForm';
 import PersonDelete from './PersonDelete';
+import PersonDetails from './PersonDetails';
+import PersonForm from './PersonForm';
 
-export default function PersonRowActions({
-    row,
-}) {
+export default function PersonRowActions({ row }) {
     return (
         <RowActions
             row={row}

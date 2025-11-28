@@ -1,7 +1,10 @@
 import React from 'react';
+
+import App from 'bundles/archive/startup/App';
 import { shallow } from 'enzyme';
-import App from 'bundles/archive/startup/App';describe('First React component test with Enzyme', () => {
-   it('renders without crashing', () => {
-      shallow(<App />);
+
+describe('First React component test with Enzyme', () => {
+    it('renders without crashing', () => {
+        shallow(<App />);
     });
 });

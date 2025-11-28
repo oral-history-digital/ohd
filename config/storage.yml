@@ -1,16 +1,16 @@
 dev:
   service: Disk
   root: <%= Rails.root.join("storage") %>
- 
+
 fu_server:
   service: Disk
   root: /mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage
- 
+
 test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
- 
+
 amazon:
   service: S3
-  access_key_id: ""
-  secret_access_key: ""
+  access_key_id: ''
+  secret_access_key: ''

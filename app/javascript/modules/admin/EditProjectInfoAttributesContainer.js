@@ -1,10 +1,10 @@
+import { getCurrentProject, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getCurrentProject } from 'modules/data';
 import EditData from './EditData';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     data: getCurrentProject(state),
     scope: 'project',
     helpTextCode: 'archive_info_form',
@@ -27,25 +27,25 @@ const mapStateToProps = state => ({
             attribute: 'landing_page_text',
             elementType: 'richTextEditor',
             multiLocale: true,
-            help: 'activerecord.attributes.project.landing_page_edit_help'
+            help: 'activerecord.attributes.project.landing_page_edit_help',
         },
         {
             attribute: 'restricted_landing_page_text',
             elementType: 'richTextEditor',
             multiLocale: true,
-            help: 'activerecord.attributes.project.restricted_landing_page_edit_help'
+            help: 'activerecord.attributes.project.restricted_landing_page_edit_help',
         },
         {
-            attribute: "cooperation_partner"
+            attribute: 'cooperation_partner',
         },
         {
-            attribute: "leader"
+            attribute: 'leader',
         },
         {
-            attribute: "manager"
+            attribute: 'manager',
         },
         {
-            attribute: "pseudo_funder_names"
+            attribute: 'pseudo_funder_names',
         },
         {
             attribute: 'media_missing_text',
@@ -54,8 +54,12 @@ const mapStateToProps = state => ({
     ],
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditData);

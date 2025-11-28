@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
 import FacetFilterInput from './FacetFilterInput';
 import FacetValues from './FacetValues';
 
-export default function Facet({
-    data,
-    facet,
-}) {
+export default function Facet({ data, facet }) {
     const { locale } = useI18n();
 
     const [filter, setFilter] = useState('');

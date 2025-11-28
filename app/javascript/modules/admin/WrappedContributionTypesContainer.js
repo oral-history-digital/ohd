@@ -1,9 +1,15 @@
+import {
+    deleteData,
+    fetchData,
+    getContributionTypesForCurrentProject,
+    getContributionTypesStatus,
+    getCurrentProject,
+    submitData,
+} from 'modules/data';
+import { getContributionTypesQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getContributionTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject,
-    getContributionTypesForCurrentProject, getContributionTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -19,7 +25,7 @@ const mapStateToProps = (state) => {
         sortAttribute: 'name',
         sortAttributeTranslated: true,
         detailsAttributes: ['code'],
-        initialFormValues: {project_id: project.id},
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
                 attribute: 'label',
@@ -28,7 +34,9 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'code',
                 help: 'help_texts.contribution_types.code',
-                validate: function(v){return /^\w+$/.test(v)}
+                validate: function (v) {
+                    return /^\w+$/.test(v);
+                },
             },
             {
                 attribute: 'use_in_details_view',
@@ -49,16 +57,20 @@ const mapStateToProps = (state) => {
                 attribute: 'order',
             },
         ],
-        joinedData: { },
-        helpTextCode: 'contribution_type_form'
-    }
-}
+        joinedData: {},
+        helpTextCode: 'contribution_type_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-    setQueryParams,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+            setQueryParams,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

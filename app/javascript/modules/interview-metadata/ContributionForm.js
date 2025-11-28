@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaUserPlus, FaUserEdit } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import {
-    usePeople,
     PersonForm,
-    useInvalidateInterviewContributors,
     useInvalidateAllPersonData,
+    useInvalidateInterviewContributors,
+    usePeople,
 } from 'modules/person';
-import { Modal } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaUserEdit, FaUserPlus } from 'react-icons/fa';
 
 export default function ContributionForm({
     withSpeakerDesignation,

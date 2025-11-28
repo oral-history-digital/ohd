@@ -7,7 +7,7 @@ describe('interviewUrl', () => {
         delete window.location;
         window.location = {
             protocol: 'https:',
-            host: 'www.example.com'
+            host: 'www.example.com',
         };
     });
 

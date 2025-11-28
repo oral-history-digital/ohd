@@ -1,11 +1,13 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import '@reach/menu-button/styles.css';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsGearFill } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
 import { LuSettings2 } from 'react-icons/lu';
 import { MdSlowMotionVideo } from 'react-icons/md';
+
 import {
     getPlayerSources,
     getQualityLabel,

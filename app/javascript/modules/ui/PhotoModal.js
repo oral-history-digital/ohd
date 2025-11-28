@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaTimes } from 'react-icons/fa';
-import classNames from 'classnames';
+
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 
 export default function PhotoModal({
     title,
@@ -37,7 +38,6 @@ export default function PhotoModal({
                 isOpen={showDialog}
                 aria-label={title || 'n/a'}
                 onDismiss={close}
-
                 onMouseDown={handleClick}
                 onMouseUp={handleClick}
                 onMouseMove={handleClick}

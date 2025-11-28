@@ -1,20 +1,17 @@
 {
-    "name": "OHD Deploy",
-    "dockerComposeFile": ["./docker-compose.yml"],
-    "service": "app",
-    "workspaceFolder": "/workspace",
-    "remoteUser": "root",
-    "postCreateCommand": "bash .devcontainer/scripts/setup-deploy.sh",
-    "postStartCommand": "bash .devcontainer/scripts/setup-ssh-config.sh",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-vscode.vscode-ruby",
-                "rebornix.ruby"
-            ],
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
-            }
-        }
+  "name": "OHD Deploy",
+  "dockerComposeFile": ["./docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "root",
+  "postCreateCommand": "bash .devcontainer/scripts/setup-deploy.sh",
+  "postStartCommand": "bash .devcontainer/scripts/setup-ssh-config.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-vscode.vscode-ruby", "rebornix.ruby"],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
     }
+  }
 }

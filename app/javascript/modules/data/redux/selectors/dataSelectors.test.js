@@ -1,11 +1,12 @@
 import dotProp from 'dot-prop-immutable';
 import { DEFAULT_LOCALES } from 'modules/constants';
+
 import {
     DEFAULT_MAP_SECTION,
     getCollectionsForCurrentProject,
     getCollectionsStatus,
-    getContributionsStatus,
     getContributionTypesForCurrentProject,
+    getContributionsStatus,
     getContributorsFetched,
     getCurrentInterview,
     getCurrentInterviewFetched,
@@ -29,8 +30,8 @@ import {
     getPeopleStatus,
     getPermissionsStatus,
     getProjectLocales,
-    getProjectsStatus,
     getProjectTranslation,
+    getProjectsStatus,
     getRefTreeStatus,
     getRegistryEntriesStatus,
     getRegistryNameTypesForCurrentProject,
@@ -40,9 +41,9 @@ import {
     getShowFeaturedInterviews,
     getShowStartPageVideo,
     getSpeakerDesignationsStatus,
-    getTasksStatus,
     getTaskTypesForCurrentProject,
     getTaskTypesStatus,
+    getTasksStatus,
     getTranscriptFetched,
     getUsersStatus,
 } from './dataSelectors';

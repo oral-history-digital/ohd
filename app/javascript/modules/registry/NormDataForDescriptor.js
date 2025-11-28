@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+
 import UpdateRegistryEntryAttributesModal from './UpdateRegistryEntryAttributesModal';
 
 function NormDataForDescriptor({

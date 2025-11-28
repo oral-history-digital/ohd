@@ -1,11 +1,10 @@
-import { FaPlus } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
 import { AuthorizedContent } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { Modal } from 'modules/ui';
+import { FaPlus } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 import useMaterials from '../hooks/useMaterials';
 import Material from './Material';

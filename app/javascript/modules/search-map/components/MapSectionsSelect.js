@@ -1,17 +1,12 @@
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
-import { useSelector } from 'react-redux';
-
+import classNames from 'classnames';
 import { getMapSections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export default function MapSectionsSelect({
-    className,
-    section,
-    onChange,
-}) {
+export default function MapSectionsSelect({ className, section, onChange }) {
     const mapSections = useSelector(getMapSections);
     const { t, locale } = useI18n();
 
@@ -29,17 +24,15 @@ export default function MapSectionsSelect({
                 value={section}
                 onChange={onChange}
             >
-                {
-                    mapSections.map(section => (
-                        <ListboxOption
-                            key={section.name}
-                            value={section.name}
-                            label={section.label[locale]}
-                        >
-                            {section.label[locale]}
-                        </ListboxOption>
-                    ))
-                }
+                {mapSections.map((section) => (
+                    <ListboxOption
+                        key={section.name}
+                        value={section.name}
+                        label={section.label[locale]}
+                    >
+                        {section.label[locale]}
+                    </ListboxOption>
+                ))}
             </Listbox>
         </div>
     );

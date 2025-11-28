@@ -1,31 +1,45 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { FaRegFileAlt, FaRegClone, FaList, FaSearch, FaTags } from 'react-icons/fa';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
-import '@reach/tabs/styles.css';
+import { useEffect, useState } from 'react';
 
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
+import '@reach/tabs/styles.css';
+import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import { useI18n } from 'modules/i18n';
+import { RefTreeContainer } from 'modules/interview-references';
+import {
+    InterviewSearchContainer,
+    useInterviewSearch,
+} from 'modules/interview-search';
+import { useSearchParams } from 'modules/query-string';
+import { useProject } from 'modules/routes';
 import { TableOfContentsContainer } from 'modules/toc';
 import { TranscriptContainer } from 'modules/transcript';
-import { InterviewSearchContainer, useInterviewSearch } from 'modules/interview-search';
-import { RefTreeContainer } from 'modules/interview-references';
-import { useSearchParams } from 'modules/query-string';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
-import showTranslationTab from './showTranslationTab';
-import showTocTab from './showTocTab';
-import LocaleSwitch from './LocaleSwitch';
-import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import PropTypes from 'prop-types';
+import {
+    FaList,
+    FaRegClone,
+    FaRegFileAlt,
+    FaSearch,
+    FaTags,
+} from 'react-icons/fa';
 
-export default function InterviewTabs({
-    interview,
-}) {
+import LocaleSwitch from './LocaleSwitch';
+import showTocTab from './showTocTab';
+import showTranslationTab from './showTranslationTab';
+
+export default function InterviewTabs({ interview }) {
     const { t, locale } = useI18n();
     const { project } = useProject();
     const [tabIndex, setTabIndex] = useState(0);
-    const [translationLocale, setTranslationLocale] = useState(interview.translation_alpha3);
+    const [translationLocale, setTranslationLocale] = useState(
+        interview.translation_alpha3
+    );
 
     const { fulltext } = useSearchParams();
-    const { numResults } = useInterviewSearch(interview.archive_id, fulltext, project);
+    const { numResults } = useInterviewSearch(
+        interview.archive_id,
+        fulltext,
+        project
+    );
 
     useEffect(() => {
         selectTabOnInit();
@@ -50,8 +64,10 @@ export default function InterviewTabs({
     }
 
     function translatedTranscriptIsMoreSuitable() {
-        return locale !== interview.alpha2
-            && showTranslationTab(project, interview, locale);
+        return (
+            locale !== interview.alpha2 &&
+            showTranslationTab(project, interview, locale)
+        );
     }
 
     function checkSelectedTabAfterLocaleChange() {
@@ -63,8 +79,11 @@ export default function InterviewTabs({
     }
 
     function selectedTabNotAvailable() {
-        return tabIndex === 1 && !showTranslationTab(project, interview, locale)
-            || tabIndex === 2 && !showTocTab(project, interview, locale);
+        return (
+            (tabIndex === 1 &&
+                !showTranslationTab(project, interview, locale)) ||
+            (tabIndex === 2 && !showTocTab(project, interview, locale))
+        );
     }
 
     return (
@@ -77,16 +96,18 @@ export default function InterviewTabs({
             <div className="Layout-contentTabs">
                 <TabList className="Tabs-tabList">
                     <Tab className="Tabs-tab">
-                        <FaRegFileAlt className="Tabs-tabIcon"/>
+                        <FaRegFileAlt className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {`${t('transcript')} (${interview.alpha3})`}
                         </span>
                     </Tab>
                     <Tab
                         className="Tabs-tab"
-                        disabled={!showTranslationTab(project, interview, locale)}
+                        disabled={
+                            !showTranslationTab(project, interview, locale)
+                        }
                     >
-                        <FaRegClone className="Tabs-tabIcon"/>
+                        <FaRegClone className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('translation')}
                             <LocaleSwitch
@@ -100,62 +121,56 @@ export default function InterviewTabs({
                         className="Tabs-tab"
                         disabled={!showTocTab(project, interview, locale)}
                     >
-                        <FaList className="Tabs-tabIcon"/>
+                        <FaList className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('table_of_contents')}
                         </span>
                     </Tab>
                     <Tab className="Tabs-tab">
-                        <FaSearch className="Tabs-tabIcon"/>
+                        <FaSearch className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('interview_search')}
                         </span>
                     </Tab>
                     <Tab className="Tabs-tab">
-                        <FaTags className="Tabs-tabIcon"/>
-                        <span className="Tabs-tabText">
-                            {t('keywords')}
-                        </span>
+                        <FaTags className="Tabs-tabIcon" />
+                        <span className="Tabs-tabText">{t('keywords')}</span>
                     </Tab>
                 </TabList>
             </div>
 
-            <div className='wrapper-content'>
+            <div className="wrapper-content">
                 <TabPanels>
                     {/* The conditional renderings are needed to prevent
                         various useEffect-related problems. */}
                     <TabPanel>
-                        {tabIndex === 0 &&
+                        {tabIndex === 0 && (
                             <TranscriptContainer
                                 transcriptLocale={interview.alpha3}
                                 originalLocale
                                 loadSegments
                             />
-                        }
+                        )}
                     </TabPanel>
                     <TabPanel>
-                        {tabIndex === 1 &&
+                        {tabIndex === 1 && (
                             <TranscriptContainer
                                 transcriptLocale={translationLocale}
                             />
-                        }
+                        )}
                     </TabPanel>
                     <TabPanel>
-                        {tabIndex === 2 &&
+                        {tabIndex === 2 && (
                             <TableOfContentsContainer
                                 alpha3={ALPHA2_TO_ALPHA3[locale]}
                             />
-                        }
+                        )}
                     </TabPanel>
                     <TabPanel>
-                        {tabIndex === 3 &&
-                            <InterviewSearchContainer/>
-                        }
+                        {tabIndex === 3 && <InterviewSearchContainer />}
                     </TabPanel>
                     <TabPanel>
-                        {tabIndex === 4 &&
-                            <RefTreeContainer/>
-                        }
+                        {tabIndex === 4 && <RefTreeContainer />}
                     </TabPanel>
                 </TabPanels>
             </div>
