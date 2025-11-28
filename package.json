@@ -137,7 +137,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "app/javascript/**/*.{js,jsx,ts,tsx,css,scss}": [
+    "app/javascript/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}": [
       "prettier --write"
     ]
   }
