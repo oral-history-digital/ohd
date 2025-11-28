@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_19_162812) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -57,6 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.text "text", size: :long
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.index ["annotation_id", "locale"], name: "index_annotation_translations_on_ass_id_and_locale", unique: true
     t.index ["annotation_id"], name: "index_annotation_translations_on_annotation_id"
   end
 
@@ -87,12 +88,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
-  create_table "banners", charset: "utf8mb3", force: :cascade do |t|
+  create_table "banners", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.text "message_en"
     t.text "message_de"
     t.boolean "active", default: false, null: false
-    t.datetime "start_date", default: -> { "CURRENT_TIMESTAMP(6)" }, null: false
-    t.datetime "end_date", default: -> { "(now() + interval 10 day)" }, null: false
+    t.datetime "start_date", default: -> { "current_timestamp(6)" }, null: false
+    t.datetime "end_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "edit_mode_only", default: false, null: false
@@ -113,6 +114,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.text "text", size: :long
     t.string "start_date", limit: 255
     t.string "end_date", limit: 255
+    t.index ["biographical_entry_id", "locale"], name: "index_biographical_entry_translations_on_ass_id_and_locale", unique: true
     t.index ["biographical_entry_id"], name: "index_biographical_entry_translations_on_biographical_entry_id"
     t.index ["locale"], name: "index_biographical_entry_translations_on_locale", length: 191
   end
@@ -128,6 +130,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "homepage"
+    t.index ["collection_id", "locale"], name: "index_collection_translations_on_ass_id_and_locale", unique: true
     t.index ["collection_id"], name: "index_collection_translations_on_collection_id"
   end
 
@@ -157,6 +160,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "label"
+    t.index ["contribution_type_id", "locale"], name: "index_contribution_type_translations_on_ass_id_and_locale", unique: true
     t.index ["contribution_type_id"], name: "index_contribution_type_translations_on_contribution_type_id"
     t.index ["locale"], name: "index_contribution_type_translations_on_locale"
   end
@@ -204,6 +208,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "display_date"
+    t.index ["event_id", "locale"], name: "index_event_translations_on_ass_id_and_locale", unique: true
     t.index ["event_id"], name: "index_event_translations_on_event_id"
     t.index ["locale"], name: "index_event_translations_on_locale"
   end
@@ -214,6 +219,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.index ["event_type_id", "locale"], name: "index_event_type_translations_on_ass_id_and_locale", unique: true
     t.index ["event_type_id"], name: "index_event_type_translations_on_event_type_id"
     t.index ["locale"], name: "index_event_type_translations_on_locale"
   end
@@ -245,6 +251,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "url"
     t.string "name"
+    t.index ["external_link_id", "locale"], name: "index_external_link_translations_on_ass_id_and_locale", unique: true
     t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
     t.index ["locale"], name: "index_external_link_translations_on_locale"
   end
@@ -264,6 +271,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.text "text"
     t.string "url"
+    t.index ["help_text_id", "locale"], name: "index_help_text_translations_on_ass_id_and_locale", unique: true
     t.index ["help_text_id"], name: "index_help_text_translations_on_help_text_id"
     t.index ["locale"], name: "index_help_text_translations_on_locale"
   end
@@ -299,6 +307,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.text "description"
+    t.index ["institution_id", "locale"], name: "index_institution_translations_on_ass_id_and_locale", unique: true
     t.index ["institution_id"], name: "index_institution_translations_on_institution_id"
     t.index ["locale"], name: "index_institution_translations_on_locale"
   end
@@ -329,7 +338,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "interview_permissions", charset: "utf8mb3", force: :cascade do |t|
+  create_table "interview_permissions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "interview_id"
     t.integer "user_id"
     t.string "action_name"
@@ -390,6 +399,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.string "name", limit: 255
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.index ["language_id", "locale"], name: "index_language_translations_on_ass_id_and_locale", unique: true
     t.index ["language_id"], name: "index_language_translations_on_language_id"
   end
 
@@ -405,6 +415,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "label"
     t.index ["locale"], name: "index_map_section_translations_on_locale"
+    t.index ["map_section_id", "locale"], name: "index_map_section_translations_on_ass_id_and_locale", unique: true
     t.index ["map_section_id"], name: "index_map_section_translations_on_map_section_id"
   end
 
@@ -419,7 +430,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.index ["project_id"], name: "index_map_sections_on_project_id"
   end
 
-  create_table "material_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "material_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "material_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -427,10 +438,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.string "title"
     t.text "description"
     t.index ["locale"], name: "index_material_translations_on_locale"
+    t.index ["material_id", "locale"], name: "index_material_translations_on_ass_id_and_locale", unique: true
     t.index ["material_id"], name: "index_material_translations_on_material_id"
   end
 
-  create_table "materials", charset: "utf8mb3", force: :cascade do |t|
+  create_table "materials", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.string "workflow_state", default: "unshared", null: false
@@ -455,6 +467,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "label"
     t.index ["locale"], name: "index_metadata_field_translations_on_locale"
+    t.index ["metadata_field_id", "locale"], name: "index_metadata_field_translations_on_ass_id_and_locale", unique: true
     t.index ["metadata_field_id"], name: "index_metadata_field_translations_on_metadata_field_id"
   end
 
@@ -499,7 +512,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "normdata_api_statistics", charset: "utf8mb3", force: :cascade do |t|
+  create_table "normdata_api_statistics", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "search_term"
     t.string "saved_entry"
     t.integer "registry_entry_id"
@@ -548,7 +561,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "oauth_openid_requests", charset: "utf8mb3", force: :cascade do |t|
+  create_table "oauth_openid_requests", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "access_grant_id", null: false
     t.string "nonce", null: false
     t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
@@ -590,6 +603,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.string "pseudonym_first_name", default: "", null: false
     t.string "pseudonym_last_name", default: "", null: false
     t.index ["locale"], name: "index_person_translations_on_locale", length: 191
+    t.index ["person_id", "locale"], name: "index_person_translations_on_ass_id_and_locale", unique: true
     t.index ["person_id"], name: "index_person_translations_on_person_id"
   end
 
@@ -603,6 +617,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.string "place"
     t.string "photographer"
     t.string "license"
+    t.index ["photo_id", "locale"], name: "index_photo_translations_on_ass_id_and_locale", unique: true
     t.index ["photo_id"], name: "index_photo_translations_on_photo_id"
   end
 
@@ -629,6 +644,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.text "media_missing_text"
     t.text "restricted_landing_page_text"
     t.index ["locale"], name: "index_project_translations_on_locale"
+    t.index ["project_id", "locale"], name: "index_project_translations_on_ass_id_and_locale", unique: true
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
 
@@ -689,7 +705,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
     t.integer "project_id"
-    t.boolean "has_geo_coords"
+    t.virtual "has_geo_coords", type: :boolean, as: "`latitude` is not null and `latitude` <> '' and `longitude` is not null and `longitude` <> ''", stored: true
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
     t.index ["has_geo_coords"], name: "index_registry_entries_on_has_geo_coords"
     t.index ["project_id"], name: "index_registry_entries_on_project_id"
@@ -709,6 +725,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.text "notes"
     t.index ["locale"], name: "index_registry_entry_translations_on_locale"
+    t.index ["registry_entry_id", "locale"], name: "index_registry_entry_translations_on_ass_id_and_locale", unique: true
     t.index ["registry_entry_id"], name: "index_registry_entry_translations_on_registry_entry_id"
   end
 
@@ -729,17 +746,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: 191
+    t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_ass_id_and_locale", unique: true
     t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true, length: { locale: 191 }
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
-  create_table "registry_name_type_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "registry_name_type_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "registry_name_type_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
     t.index ["locale"], name: "index_registry_name_type_translations_on_locale"
+    t.index ["registry_name_type_id", "locale"], name: "index_registry_name_type_translations_on_ass_id_and_locale", unique: true
     t.index ["registry_name_type_id"], name: "index_registry_name_type_translations_on_registry_name_type_id"
   end
 
@@ -768,6 +787,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.string "name", limit: 255
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.index ["registry_reference_type_id", "locale"], name: "index_registry_reference_type_translations_on_ass_id_and_locale", unique: true
     t.index ["registry_reference_type_id"], name: "index_959822146554d9dfd5d5530d45b5cafb8c7d4067"
   end
 
@@ -812,13 +832,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
-  create_table "role_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "role_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
     t.index ["locale"], name: "index_role_translations_on_locale"
+    t.index ["role_id", "locale"], name: "index_role_translations_on_ass_id_and_locale", unique: true
     t.index ["role_id"], name: "index_role_translations_on_role_id"
   end
 
@@ -837,6 +858,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.text "text", size: :medium
+    t.index ["segment_id", "locale"], name: "index_segment_translations_on_ass_id_and_locale", unique: true
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id"
   end
 
@@ -918,6 +940,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "label"
     t.index ["locale"], name: "index_task_type_translations_on_locale"
+    t.index ["task_type_id", "locale"], name: "index_task_type_translations_on_ass_id_and_locale", unique: true
     t.index ["task_type_id"], name: "index_task_type_translations_on_task_type_id"
   end
 
@@ -967,6 +990,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
     t.text "text", size: :medium
     t.index ["locale"], name: "index_text_translations_on_locale"
+    t.index ["text_id", "locale"], name: "index_text_translations_on_ass_id_and_locale", unique: true
     t.index ["text_id"], name: "index_text_translations_on_text_id"
   end
 
@@ -977,17 +1001,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_17_135143) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "value"
     t.index ["locale"], name: "index_translation_value_translations_on_locale"
+    t.index ["translation_value_id", "locale"], name: "index_translation_value_translations_on_ass_id_and_locale", unique: true
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
