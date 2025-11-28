@@ -7,7 +7,7 @@ import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { HelpText } from 'modules/help-text';
 import { ScrollToTop } from 'modules/user-agent';
-import { Spinner } from 'modules/spinners';
+import RegistrySkeleton from './RegistrySkeleton';
 import RegistrySearchResult from './RegistrySearchResult';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntries from './RegistryEntries';
@@ -25,7 +25,7 @@ export default function Registry({
     const { isLoading, data: rootRegistryEntry } = useRootEntry();
 
     if (isLoading) {
-        return <Spinner />;
+        return <RegistrySkeleton />;
     }
 
     return (

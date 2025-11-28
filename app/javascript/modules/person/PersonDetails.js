@@ -19,41 +19,41 @@ const attributes = [
     'pseudonym_last_name',
     'use_pseudonym',
     'date_of_birth',
-    'description'
+    'description',
 ];
 
-export default function PersonDetails({
-    data
-}) {
-    const { t, locale } = useI18n();
+export default function PersonDetails({ data }) {
+    const { t } = useI18n();
     const { humanReadable } = useHumanReadable();
-    const { data: events, isLoading: eventsAreLoading } = usePersonEvents(data.id);
+    const { data: events, isLoading: eventsAreLoading } = usePersonEvents(
+        data.id
+    );
 
     return (
         <div>
-            <h3 className="u-mt-none u-mb">
-                {data.display_name}
-            </h3>
+            <h3 className="u-mt-none u-mb">{data.display_name}</h3>
             <dl>
-                {attributes.map(attribute => (
+                {attributes.map((attribute) => (
                     <Fragment key={attribute}>
                         <dt className="u-line-height">
-                            <b>{`${t(`activerecord.attributes.person.${attribute}`)}:`}</b>
+                            <b>{`${t(
+                                `activerecord.attributes.person.${attribute}`
+                            )}:`}</b>
                         </dt>
                         <dd className="u-line-height u-ml-none">
-                            {humanReadable({obj: data, attribute})}
+                            {humanReadable({ obj: data, attribute })}
                         </dd>
                     </Fragment>
                 ))}
             </dl>
 
             {eventsAreLoading ? (
-                <Spinner small />
+                <Spinner size="small" />
             ) : (
                 <article>
                     <h4>{t('activerecord.models.event.other')}</h4>
                     <ul className="UnorderedList UnorderedList--plain u-flex">
-                        {events?.map(event => (
+                        {events?.map((event) => (
                             <Event
                                 className="u-mr-small"
                                 key={event.id}

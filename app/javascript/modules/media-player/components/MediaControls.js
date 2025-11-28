@@ -13,7 +13,7 @@ export default function MediaControls({
     tape: currentTape,
     mediaTime,
     interview,
-    setTape,
+    sendTimeChangeRequest,
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
@@ -23,7 +23,7 @@ export default function MediaControls({
     );
 
     function handleTapeChange(e) {
-        setTape(Number(e.target.value));
+        sendTimeChangeRequest(Number(e.target.value), 0);
     }
 
     function positionUrl() {
@@ -102,5 +102,5 @@ MediaControls.propTypes = {
     interview: PropTypes.object.isRequired,
     tape: PropTypes.number.isRequired,
     mediaTime: PropTypes.number.isRequired,
-    setTape: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
 };
