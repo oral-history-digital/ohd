@@ -27,7 +27,6 @@ export default function SidebarTabs({
     archiveId,
     isLoggedIn,
 }) {
-    const [tabIndex, setTabIndex] = useState(indexes.INDEX_SEARCH);
     const { t, locale } = useI18n();
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
@@ -37,6 +36,10 @@ export default function SidebarTabs({
 
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
+
+    const [tabIndex, setTabIndex] = useState(() =>
+        tabIndexFromRoute(pathBase, pathname, isCampscapesProject)
+    );
 
     useEffect(() => {
         setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
