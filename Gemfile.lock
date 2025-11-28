@@ -193,6 +193,7 @@ GEM
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     fastercsv (1.5.5)
+    ffi (1.17.2)
     ffi (1.17.2-x86_64-linux-gnu)
     font-awesome-rails (4.7.0.9)
       railties (>= 3.2, < 9.0)
@@ -249,6 +250,7 @@ GEM
     jsonapi-renderer (0.2.2)
     jwt (3.1.2)
       base64
+    libv8-node (18.19.0.0)
     libv8-node (18.19.0.0-x86_64-linux)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -277,6 +279,7 @@ GEM
       benchmark
       logger
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     mini_racer (0.16.0)
       libv8-node (~> 18.19.0.0)
     minitest (5.25.5)
@@ -301,6 +304,9 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
+    nokogiri (1.18.8)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     notiffany (0.1.3)
@@ -524,6 +530,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES

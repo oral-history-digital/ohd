@@ -11,7 +11,8 @@
 
     // Environment variables
     "containerEnv": {
-        "DISPLAY": ":99"
+        "DISPLAY": ":99",
+        "SUNSPOT_HOST": "solr"
     },
 
     // Lifecycle hooks

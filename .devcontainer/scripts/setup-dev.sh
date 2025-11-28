@@ -60,11 +60,6 @@ if [ ! -f config/datacite.yml ]; then
   echo "Created config/datacite.yml"
 fi
 
-log_message "Configuring sunspot.yml for devcontainer…"
-# Always overwrite in devcontainer to ensure correct settings
-cp .devcontainer/config/sunspot.yml config/sunspot.yml
-log_message "  ✓ config/sunspot.yml updated for devcontainer"
-log_message "  ✓ Sunspot config now points to: $(grep 'path:' config/sunspot.yml | head -1 | sed 's/.*path: //')"
 
 # 5) Fix bundle paths and install only missing gems (git repos mainly)
 log_message "Checking if bundle install is needed…"
