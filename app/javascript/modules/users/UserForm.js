@@ -4,6 +4,7 @@ import { Dialog } from '@reach/dialog';
 
 import { useI18n } from 'modules/i18n';
 import { t as originalT } from 'modules/i18n';
+import { underscore } from 'modules/strings';
 import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
@@ -124,9 +125,9 @@ export default function UserForm({
                 onSubmit={async (params) => {
                     mutateData(async (users) => {
                         const result = await submitDataWithFetch(pathBase, {
-                            user_project: {
+                            [underscore(data.type)]: {
                                 mail_text: mailText,
-                                ...params.user_project,
+                                ...params[underscore(data.type)],
                             },
                         });
                         const updatedDatum = result.data;
