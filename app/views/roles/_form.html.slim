@@ -1,0 +1,36 @@
+turbo-frame#modal
+  .modal.modal-overlay
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h2 = @role.persisted? ? t('edit_role') : t('new_role')
+          button.modal-close data-action="click->modal#close" ×
+          
+        = form_with model: @role, local: true, data: { turbo_frame: '_top' } do |f|
+          .modal-body
+            - if @role.errors.any?
+              .alert.alert-danger
+                ul
+                  - @role.errors.full_messages.each do |message|
+                    li = message
+            
+            .form-group
+              = f.label :name, t('name'), class: 'form-label'
+              = f.text_field :name, class: 'form-input', required: true
+              
+            .form-group
+              = f.label :desc, t('description'), class: 'form-label'  
+              = f.text_area :desc, class: 'form-textarea', rows: 3
+              
+            // Multilingual name fields
+            - I18n.available_locales.each do |locale|
+              .form-group
+                = f.label "translations_attributes_#{locale}_name", t("name_#{locale}"), class: 'form-label'
+                = f.fields_for :translations_attributes do |tf|
+                  - if tf.object.locale == locale.to_s
+                    = tf.hidden_field :locale, value: locale
+                    = tf.text_field :name, class: 'form-input'
+          
+          .modal-footer
+            = f.submit @role.persisted? ? t('update') : t('create'), class: 'button button-primary'
+            button.button.button-secondary data-action="click->modal#close" = t('cancel')

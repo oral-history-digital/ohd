@@ -1,0 +1,12 @@
+.wrapper-content.text-page
+  .page-header
+    h1 = t(@text_code.to_s)
+  
+  .text-content
+    - if @text_content.present?
+      = raw @text_content
+    - else
+      .empty-state
+        p = t('no_content_available')
+        - if policy(current_project, :update?)
+          = link_to t('add_content'), edit_text_path(@text_code), class: 'button button-primary'

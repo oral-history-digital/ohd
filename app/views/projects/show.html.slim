@@ -1,6 +1,48 @@
-p#notice = notice
-
-
-=> link_to 'Edit', edit_project_path(@project)
-'|
-=< link_to 'Back', projects_path
+.wrapper-content.project-show
+  .project-header
+    h1 = @project.display_name(I18n.locale) || @project.name(I18n.locale)
+    
+    .project-actions
+      - if false && policy(@project).update?
+        = link_to t('edit_project'), edit_project_path(@project), class: 'button button-secondary'
+        
+  .project-content
+    - if @project.introduction(I18n.locale).present?
+      .project-introduction
+        = raw @project.introduction(I18n.locale)
+        
+    - if @project.more_text(I18n.locale).present?
+      .project-more-text
+        = raw @project.more_text(I18n.locale)
+        
+    .project-stats
+      .stats-grid
+        .stat-item
+          .stat-label = t('interviews')
+          .stat-value = @project.interviews.count
+          
+        .stat-item
+          .stat-label = t('people')
+          .stat-value = @project.people.count
+          
+        .stat-item
+          .stat-label = t('collections')
+          .stat-value = @project.collections.count
+          
+    .project-navigation
+      .nav-grid
+        = link_to "/searches/archive", class: 'nav-tile' do
+          .nav-icon
+            i.icon-search
+          .nav-label = t('search_archive')
+          
+        = link_to registry_entries_path, class: 'nav-tile' do
+          .nav-icon
+            i.icon-index
+          .nav-label = t('registry_entries')
+          
+        - if policy(Interview).create?
+          = link_to "/interviews/new", class: 'nav-tile' do
+            .nav-icon
+              i.icon-add
+            .nav-label = t('add_interview')

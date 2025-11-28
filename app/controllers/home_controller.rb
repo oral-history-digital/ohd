@@ -11,7 +11,18 @@ class HomeController < ApplicationController
   def overview
     @projects = Project.all
     respond_to do |format|
-      format.html
+      format.html { render layout: 'turbo_application' }
+    end
+  end
+  
+  # Individual project home page  
+  def show
+    respond_to do |format|
+      format.html { render layout: 'turbo_application' }
+      format.json do
+        # Keep JSON API for any remaining JavaScript needs
+        render json: { project: current_project }
+      end
     end
   end
 

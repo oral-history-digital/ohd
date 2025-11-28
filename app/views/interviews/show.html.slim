@@ -1,4 +1,93 @@
-noscript
-  = t('noscript')
-= react_component('App', props: initial_interview_redux_state)
+.wrapper-content.interview-page
+  - if @interview
+    .interview-header
+      .interview-title
+        h1 = @interview.title(I18n.locale) || @interview.archive_id
+        .interview-meta
+          span.interview-id = @interview.archive_id
+          - if @interview.interview_date
+            span.interview-date = @interview.interview_date
+            
+      .interview-actions
+        - if policy(@interview).update?
+          = link_to t('edit'), edit_interview_path(@interview.archive_id), class: 'button button-secondary'
+          
+    .interview-content data-controller="interview-player"
+      .sidebar
+        .sidebar-tabs data-controller="tabs"
+          ul.tab-nav
+            li.tab-item
+              button.tab-link.active data-action="click->tabs#switch" data-tab="about" = t('about_interview')
+            li.tab-item  
+              button.tab-link data-action="click->tabs#switch" data-tab="transcript" = t('transcript')
+            li.tab-item
+              button.tab-link data-action="click->tabs#switch" data-tab="index" = t('index')
+              
+          .tab-content
+            .tab-pane.active data-tab="about"
+              .interview-description
+                - if @interview.description(I18n.locale).present?
+                  = raw @interview.description(I18n.locale)
+                  
+              .interview-details
+                - if @interview.contributors.any?
+                  .people-list
+                    h3 = t('people')
+                    - @interview.contributors.each do |person|
+                      .person-item
+                        = link_to person.name(I18n.locale), "/people/#{person.id}"
+                        
+                - if @interview.collection
+                    h3 = t('collections')
+                    .collection-item = @interview.collection.name(I18n.locale)
+                        
+            .tab-pane data-tab="transcript"
+              .transcript-container data-interview-player-target="transcript"
+                // Transcript will be loaded here
+                p = t('loading_transcript')
+                
+            .tab-pane data-tab="index"
+              .index-container data-interview-player-target="index"
+                // Index entries will be loaded here
+                p = t('loading_index')
+                
+      .main-content
+        - if @interview&.media_type == 'video'
+          .video-player data-interview-player-target="video"
+            // Video player will be initialized here
+            video controls="" width="100%" height="400"
+              source src="/media_streams/#{@interview.archive_id}/1/high.m3u8" type="application/x-mpegURL"
+              = t('video_not_supported')
+              
+        - elsif @interview&.media_type == 'audio'
+          .audio-player data-interview-player-target="audio"
+            // Audio player will be initialized here
+            audio controls="" class="audio-player-element"
+              source src="/media_streams/#{@interview.archive_id}/1/high.m3u8" type="application/x-mpegURL"
+              = t('audio_not_supported')
+              
+        .media-controls data-interview-player-target="controls"
+          .playback-controls
+            button.play-button data-action="click->interview-player#togglePlay" = t('play')
+            .time-display data-interview-player-target="time" 00:00
+            
+  - else
+    .new-interview-form
+      h1 = t('create_new_interview')
+      
+      = form_with model: Interview.new, url: interviews_path, local: true do |f|
+        .form-group
+          = f.label :archive_id, t('interview_id'), class: 'form-label'
+          = f.text_field :archive_id, class: 'form-input', required: true
+          
+        .form-group
+          = f.label :media_type, t('media_type'), class: 'form-label'
+          = f.select :media_type, [['Audio', 'audio'], ['Video', 'video']], {}, class: 'form-select'
+          
+        .form-group
+          = f.label :tape_count, t('number_of_tapes'), class: 'form-label'
+          = f.number_field :tape_count, value: 1, min: 1, class: 'form-input'
+          
+        .form-actions
+          = f.submit t('create_interview'), class: 'button button-primary'
 
