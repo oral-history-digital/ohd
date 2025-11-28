@@ -7,7 +7,7 @@ class InterviewsController < ApplicationController
     authorize Interview
     @component = 'EditInterview'
     respond_to do |format|
-      format.html
+      format.html { render 'react/app' }
       format.json { render json: :ok }
     end
   end
@@ -174,7 +174,13 @@ class InterviewsController < ApplicationController
         end
         send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{filename}.csv", type: "text/csv"
       end
-      format.html
+      format.html do
+        if %w(adg za).include?(current_project.shortname)
+          render :show
+        else
+          render 'react/app'
+        end
+      end
     end
   end
 
