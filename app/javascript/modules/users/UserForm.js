@@ -4,9 +4,9 @@ import { Dialog } from '@reach/dialog';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { t as originalT } from 'modules/i18n';
+import { t as originalT, useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { underscore } from 'modules/strings';
 import PropTypes from 'prop-types';
 
 export default function UserForm({
@@ -124,9 +124,9 @@ export default function UserForm({
                 onSubmit={async (params) => {
                     mutateData(async (users) => {
                         const result = await submitDataWithFetch(pathBase, {
-                            user_project: {
+                            [underscore(data.type)]: {
                                 mail_text: mailText,
-                                ...params.user_project,
+                                ...params[underscore(data.type)],
                             },
                         });
                         const updatedDatum = result.data;
@@ -180,6 +180,7 @@ UserForm.propTypes = {
         pre_access_location: PropTypes.string,
         first_name: PropTypes.string,
         last_name: PropTypes.string,
+        type: PropTypes.string,
     }),
     dataPath: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
