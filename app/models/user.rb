@@ -107,7 +107,7 @@ class User < ApplicationRecord
   def remove
     subject = TranslationValue.for('devise.mailer.remove.subject', self.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
-    RemoveUserJob.set(wait: 10.seconds).perform_later(self.id)
+    RemoveUserJob.set(wait: 10.seconds).perform_later(user_id: self.id)
   end
 
   def projects
