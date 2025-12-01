@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Dialog } from '@reach/dialog';
 
@@ -9,6 +10,7 @@ import { Form } from 'modules/forms';
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
 import { usePathBase } from 'modules/routes';
+import { fetchTranslationsForLocale } from 'modules/archive';
 
 export default function UserForm({
     data,
@@ -23,6 +25,7 @@ export default function UserForm({
     const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
+    const dispatch = useDispatch();
     const { t } = useI18n();
 
     useSensitiveData(project, ['contact_email']);
@@ -33,6 +36,7 @@ export default function UserForm({
         project.available_locales.indexOf(data.default_locale) > -1
             ? data.default_locale
             : project.default_locale;
+    dispatch(fetchTranslationsForLocale(responseLocale, `/${responseLocale}`));
     const conditionsLink = `${project.domain_with_optional_identifier}/${responseLocale}/conditions`;
     const conditionsLinkTitle = originalT(
         { translations, translationsView, locale: responseLocale },
