@@ -6,12 +6,21 @@ class SearchesController < ApplicationController
   def facets
     # Cache key includes project state, interview state, and search params
     # This ensures cache is invalidated when data changes
+    # Use cached MAX queries to avoid expensive computation on every request
+    interview_max = Rails.cache.fetch("interview_max_#{current_project&.id}", expires_in: 5.minutes) do
+      Interview.where(project_id: current_project&.id).maximum(:updated_at)
+    end
+    
+    person_max = Rails.cache.fetch("person_max_#{current_project&.id}", expires_in: 5.minutes) do
+      Person.where(project_id: current_project&.id).maximum(:updated_at)
+    end
+    
     cache_key = [
       'facets-v2',
       current_project&.id,
       current_project&.updated_at,
-      Interview.where(project_id: current_project&.id).maximum(:updated_at),
-      Person.where(project_id: current_project&.id).maximum(:updated_at),
+      interview_max,
+      person_max,
       locale,
       params[:fulltext].presence,
       params[:workflow_state].presence,
