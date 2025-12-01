@@ -4,10 +4,36 @@ class SearchesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def facets
-    search = Interview.archive_search(current_user, current_project, locale, params)
-    facets = current_project ?
-      current_project.updated_search_facets(search) :
-      {}
+    # Cache key includes project state, interview state, and search params
+    # This ensures cache is invalidated when data changes
+    # Use cached MAX queries to avoid expensive computation on every request
+    interview_max = Rails.cache.fetch("interview_max_#{current_project&.id}", expires_in: 5.minutes) do
+      Interview.where(project_id: current_project&.id).maximum(:updated_at)
+    end
+    
+    person_max = Rails.cache.fetch("person_max_#{current_project&.id}", expires_in: 5.minutes) do
+      Person.where(project_id: current_project&.id).maximum(:updated_at)
+    end
+    
+    cache_key = [
+      'facets',
+      current_project&.id,
+      current_project&.updated_at,
+      interview_max,
+      person_max,
+      locale,
+      params[:fulltext].presence,
+      params[:workflow_state].presence,
+      # Add other search params that affect facets
+      params.permit(:collection_id, :gender, :year_of_birth).to_h.sort.to_h
+    ].compact.join('/')
+
+    facets_data = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      search = Interview.archive_search(current_user, current_project, locale, params)
+      current_project ?
+        current_project.updated_search_facets(search) :
+        {}
+    end
 
     respond_to do |format|
       format.json do
