@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
@@ -151,20 +151,144 @@ export default function Transcript({
     // Calculate only the active segment ID - this changes with mediaTime
     // but we only pass the ID to children, not recalculate for all
     const transcriptCoupled = interview.transcript_coupled;
-    const activeSegmentId = useMemo(() => {
-        if (!transcriptCoupled) return null;
+    const activeSegmentIndex = useMemo(() => {
+        if (!transcriptCoupled) return -1;
 
-        for (const { segment, nextSegment } of segmentsWithSpeakerInfo) {
+        for (let i = 0; i < segmentsWithSpeakerInfo.length; i++) {
+            const { segment, nextSegment } = segmentsWithSpeakerInfo[i];
             if (segment.tape_nbr !== tape) continue;
 
             const nextTime =
                 nextSegment?.tape_nbr === tape ? nextSegment.time : Infinity;
             if (mediaTime >= segment.time && mediaTime < nextTime) {
-                return segment.id;
+                return i;
             }
         }
-        return null;
+        return -1;
     }, [segmentsWithSpeakerInfo, mediaTime, tape, transcriptCoupled]);
+
+    const activeSegmentId =
+        activeSegmentIndex >= 0
+            ? segmentsWithSpeakerInfo[activeSegmentIndex]?.segment.id
+            : null;
+
+    // Virtualization: render a window of segments that expands as user scrolls
+    // Start with initial chunk, expand when user scrolls near edges
+    const INITIAL_RENDER = 200;
+    const LOAD_MORE_COUNT = 100;
+
+    const [renderRange, setRenderRange] = useState({
+        start: 0,
+        end: INITIAL_RENDER,
+    });
+    const topSentinelRef = useRef(null);
+    const bottomSentinelRef = useRef(null);
+    const prevTapeRef = useRef(tape);
+
+    // Find the first segment index for the current tape
+    const firstSegmentIndexForTape = useMemo(() => {
+        for (let i = 0; i < segmentsWithSpeakerInfo.length; i++) {
+            if (segmentsWithSpeakerInfo[i].segment.tape_nbr === tape) {
+                return i;
+            }
+        }
+        return 0;
+    }, [segmentsWithSpeakerInfo, tape]);
+
+    // Handle tape changes and active segment tracking
+    useEffect(() => {
+        const tapeChanged = prevTapeRef.current !== tape;
+        prevTapeRef.current = tape;
+
+        if (tapeChanged) {
+            // Tape changed - immediately set range to include first segment of new tape
+            const start = Math.max(0, firstSegmentIndexForTape - 10);
+            const end = Math.min(
+                segmentsWithSpeakerInfo.length,
+                firstSegmentIndexForTape + INITIAL_RENDER
+            );
+            setRenderRange({ start, end });
+            return;
+        }
+
+        // Normal playback - expand range if active segment is near edges
+        if (activeSegmentIndex < 0) return;
+
+        setRenderRange((prev) => {
+            const buffer = 50;
+            let { start, end } = prev;
+
+            if (activeSegmentIndex > end - buffer) {
+                end = Math.min(
+                    segmentsWithSpeakerInfo.length,
+                    activeSegmentIndex + INITIAL_RENDER
+                );
+            }
+            if (activeSegmentIndex < start + buffer) {
+                start = Math.max(0, activeSegmentIndex - INITIAL_RENDER);
+            }
+
+            if (start !== prev.start || end !== prev.end) {
+                return { start, end };
+            }
+            return prev;
+        });
+    }, [
+        tape,
+        activeSegmentIndex,
+        firstSegmentIndexForTape,
+        segmentsWithSpeakerInfo.length,
+    ]);
+
+    // IntersectionObserver to load more when scrolling to edges
+    useEffect(() => {
+        const options = { root: null, rootMargin: '200px', threshold: 0 };
+
+        const handleIntersect = (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+
+                setRenderRange((prev) => {
+                    const total = segmentsWithSpeakerInfo.length;
+                    let { start, end } = prev;
+
+                    if (
+                        entry.target === bottomSentinelRef.current &&
+                        end < total
+                    ) {
+                        // Scrolling down - load more at bottom
+                        end = Math.min(total, end + LOAD_MORE_COUNT);
+                    } else if (
+                        entry.target === topSentinelRef.current &&
+                        start > 0
+                    ) {
+                        // Scrolling up - load more at top
+                        start = Math.max(0, start - LOAD_MORE_COUNT);
+                    }
+
+                    if (start !== prev.start || end !== prev.end) {
+                        return { start, end };
+                    }
+                    return prev;
+                });
+            });
+        };
+
+        const observer = new IntersectionObserver(handleIntersect, options);
+
+        if (topSentinelRef.current) observer.observe(topSentinelRef.current);
+        if (bottomSentinelRef.current)
+            observer.observe(bottomSentinelRef.current);
+
+        return () => observer.disconnect();
+    }, [segmentsWithSpeakerInfo.length]);
+
+    const visibleSegments = useMemo(() => {
+        return segmentsWithSpeakerInfo.slice(
+            renderRange.start,
+            renderRange.end
+        );
+    }, [segmentsWithSpeakerInfo, renderRange.start, renderRange.end]);
 
     if (!transcriptFetched || peopleAreLoading) {
         return <TranscriptSkeleton count={5} />;
@@ -188,7 +312,12 @@ export default function Transcript({
                     'Transcript--rtl': isRtlLanguage(transcriptLocale),
                 })}
             >
-                {segmentsWithSpeakerInfo.map(
+                {/* Sentinel for loading more segments when scrolling up */}
+                {renderRange.start > 0 && (
+                    <div ref={topSentinelRef} style={{ height: 1 }} />
+                )}
+
+                {visibleSegments.map(
                     ({ segment, speakerIdChanged, speakerIsInterviewee }) => {
                         const isActive = segment.id === activeSegmentId;
                         const hasPopup = popupSegmentId === segment.id;
@@ -219,6 +348,11 @@ export default function Transcript({
                             />
                         );
                     }
+                )}
+
+                {/* Sentinel for loading more segments when scrolling down */}
+                {renderRange.end < segmentsWithSpeakerInfo.length && (
+                    <div ref={bottomSentinelRef} style={{ height: 1 }} />
                 )}
             </div>
         </>
