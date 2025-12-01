@@ -15,6 +15,8 @@ import SegmentPopup from './SegmentPopup';
 
 function Segment({
     data,
+    speakerIdChanged,
+    speakerIsInterviewee,
     speakerInitials,
     speakerName,
     autoScroll,
@@ -65,6 +67,10 @@ function Segment({
         data.annotations_count + data.user_annotation_ids.length > 0 ||
         data.registry_references_count > 0;
 
+    // Use props instead of mutated data properties
+    const showSpeaker = speakerIdChanged;
+    const isPrimaryInterviewee = speakerIsInterviewee;
+
     if (!showSegment) {
         return null;
     }
@@ -77,16 +83,16 @@ function Segment({
                 data-time={formatTimecode(data.time, true)}
                 ref={divEl}
                 className={classNames('Segment', {
-                    'Segment--withSpeaker': data.speakerIdChanged,
+                    'Segment--withSpeaker': showSpeaker,
                     'is-active': active,
                 })}
             >
-                {data.speakerIdChanged && (
+                {showSpeaker && (
                     <Initials
                         initials={speakerInitials || data.speaker}
                         className={classNames(
                             'Segment-icon',
-                            data.speaker_is_interviewee
+                            isPrimaryInterviewee
                                 ? 'Segment-icon--primary'
                                 : 'Segment-icon--secondary'
                         )}
@@ -141,6 +147,8 @@ function Segment({
 
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
+    speakerIdChanged: PropTypes.bool,
+    speakerIsInterviewee: PropTypes.bool,
     speakerInitials: PropTypes.string,
     speakerName: PropTypes.string,
     autoScroll: PropTypes.bool.isRequired,
@@ -157,6 +165,41 @@ Segment.propTypes = {
     transcriptCoupled: PropTypes.bool.isRequired,
 };
 
-const MemoizedSegment = memo(Segment);
+// Custom comparison function for memo - only re-render when these props actually change
+function arePropsEqual(prevProps, nextProps) {
+    // Always re-render if active state changes
+    if (prevProps.active !== nextProps.active) return false;
+
+    // Always re-render if popup state changes
+    if (prevProps.popupType !== nextProps.popupType) return false;
+    if (prevProps.openReference !== nextProps.openReference) return false;
+
+    // Re-render if autoScroll changes (affects scroll behavior)
+    if (prevProps.autoScroll !== nextProps.autoScroll) return false;
+
+    // Re-render if editView changes
+    if (prevProps.editView !== nextProps.editView) return false;
+
+    // Re-render if content locale changes
+    if (prevProps.contentLocale !== nextProps.contentLocale) return false;
+
+    // Check segment data by ID (stable reference)
+    if (prevProps.data.id !== nextProps.data.id) return false;
+
+    // These rarely change, but check them
+    if (prevProps.speakerIdChanged !== nextProps.speakerIdChanged) return false;
+    if (prevProps.speakerIsInterviewee !== nextProps.speakerIsInterviewee)
+        return false;
+    if (prevProps.speakerInitials !== nextProps.speakerInitials) return false;
+    if (prevProps.speakerName !== nextProps.speakerName) return false;
+    if (prevProps.transcriptCoupled !== nextProps.transcriptCoupled)
+        return false;
+    if (prevProps.tabIndex !== nextProps.tabIndex) return false;
+
+    // Props are equal, skip re-render
+    return true;
+}
+
+const MemoizedSegment = memo(Segment, arePropsEqual);
 
 export default MemoizedSegment;

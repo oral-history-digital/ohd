@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
-import { isSegmentActive } from 'modules/interview-helpers';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import SegmentContainer from './components/SegmentContainer';
@@ -47,10 +46,10 @@ export default function Transcript({
         [interview.contributions, people]
     );
 
-    const isRtlLanguage = (locale) => {
+    const isRtlLanguage = useCallback((loc) => {
         const rtlLanguages = ['ara', 'heb'];
-        return rtlLanguages.includes(locale);
-    };
+        return rtlLanguages.includes(loc);
+    }, []);
 
     useEffect(() => {
         // Only scroll to top if media has not started yet and auto scroll is off.
@@ -105,6 +104,68 @@ export default function Transcript({
 
     const { popupSegmentId, popupType, openReference } = popupState;
 
+    // Memoize sorted segments with speaker info to avoid recalculating on every render
+    // Depend on interview.segments reference, not the whole interview object
+    const interviewSegments = interview?.segments;
+    const firstSegmentIds = interview?.first_segments_ids;
+    const tapeCount = interview?.tape_count;
+
+    const segmentsWithSpeakerInfo = useMemo(() => {
+        if (!interviewSegments) return [];
+
+        const [, shownSegments] = sortedSegmentsWithActiveIndex(0, {
+            interview: {
+                segments: interviewSegments,
+                first_segments_ids: firstSegmentIds,
+                tape_count: tapeCount,
+            },
+            tape,
+        });
+
+        let currentSpeakerName = '';
+        let currentSpeakerId = null;
+
+        return shownSegments.map((segment, index, array) => {
+            // Create a new object with computed properties instead of mutating
+            const speakerIdChanged =
+                (currentSpeakerId !== segment.speaker_id &&
+                    segment.speaker_id !== null) ||
+                (currentSpeakerName !== segment.speaker &&
+                    segment.speaker !== null &&
+                    segment.speaker_id === null);
+
+            if (speakerIdChanged) {
+                currentSpeakerId = segment.speaker_id;
+                currentSpeakerName = segment.speaker;
+            }
+
+            return {
+                segment,
+                speakerIdChanged,
+                speakerIsInterviewee: intervieweeId === segment.speaker_id,
+                nextSegment: array[index + 1] || null,
+            };
+        });
+    }, [interviewSegments, firstSegmentIds, tapeCount, tape, intervieweeId]);
+
+    // Calculate only the active segment ID - this changes with mediaTime
+    // but we only pass the ID to children, not recalculate for all
+    const transcriptCoupled = interview.transcript_coupled;
+    const activeSegmentId = useMemo(() => {
+        if (!transcriptCoupled) return null;
+
+        for (const { segment, nextSegment } of segmentsWithSpeakerInfo) {
+            if (segment.tape_nbr !== tape) continue;
+
+            const nextTime =
+                nextSegment?.tape_nbr === tape ? nextSegment.time : Infinity;
+            if (mediaTime >= segment.time && mediaTime < nextTime) {
+                return segment.id;
+            }
+        }
+        return null;
+    }, [segmentsWithSpeakerInfo, mediaTime, tape, transcriptCoupled]);
+
     if (!transcriptFetched || peopleAreLoading) {
         return <TranscriptSkeleton count={5} />;
     }
@@ -115,14 +176,7 @@ export default function Transcript({
             : t('without_translation');
     }
 
-    let tabIndex = originalLocale ? 0 : 1;
-    let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, {
-        interview,
-        tape,
-    });
-    let shownSegments = sortedWithIndex[1];
-    let currentSpeakerName = '',
-        currentSpeakerId = null;
+    const tabIndex = originalLocale ? 0 : 1;
 
     return (
         <>
@@ -134,63 +188,38 @@ export default function Transcript({
                     'Transcript--rtl': isRtlLanguage(transcriptLocale),
                 })}
             >
-                {shownSegments.map((segment, index, array) => {
-                    segment.speaker_is_interviewee =
-                        intervieweeId === segment.speaker_id;
-                    if (
-                        (currentSpeakerId !== segment.speaker_id &&
-                            segment.speaker_id !== null) ||
-                        (currentSpeakerName !== segment.speaker &&
-                            segment.speaker !== null &&
-                            segment.speaker_id === null)
-                    ) {
-                        segment.speakerIdChanged = true;
-                        currentSpeakerId = segment.speaker_id;
-                        currentSpeakerName = segment.speaker;
+                {segmentsWithSpeakerInfo.map(
+                    ({ segment, speakerIdChanged, speakerIsInterviewee }) => {
+                        const isActive = segment.id === activeSegmentId;
+                        const hasPopup = popupSegmentId === segment.id;
+
+                        return (
+                            <SegmentContainer
+                                key={segment.id}
+                                data={segment}
+                                speakerIdChanged={speakerIdChanged}
+                                speakerIsInterviewee={speakerIsInterviewee}
+                                speakerInitials={
+                                    contributorInformation[segment.speaker_id]
+                                        ?.initials
+                                }
+                                speakerName={
+                                    contributorInformation[segment.speaker_id]
+                                        ?.fullname
+                                }
+                                contentLocale={transcriptLocale}
+                                popupType={hasPopup ? popupType : null}
+                                openReference={hasPopup ? openReference : null}
+                                openPopup={openSegmentPopup}
+                                closePopup={closeSegmentPopup}
+                                setOpenReference={setOpenReference}
+                                tabIndex={tabIndex}
+                                active={isActive}
+                                transcriptCoupled={transcriptCoupled}
+                            />
+                        );
                     }
-
-                    const nextSegment = array[index + 1];
-                    const active =
-                        interview.transcript_coupled &&
-                        isSegmentActive({
-                            thisSegmentTape: segment.tape_nbr,
-                            thisSegmentTime: segment.time,
-                            nextSegmentTape: nextSegment?.tape_nbr,
-                            nextSegmentTime: nextSegment?.time,
-                            currentTape: tape,
-                            currentTime: mediaTime,
-                        });
-
-                    return (
-                        <SegmentContainer
-                            key={segment.id}
-                            data={segment}
-                            speakerInitials={
-                                contributorInformation[segment.speaker_id]
-                                    ?.initials
-                            }
-                            speakerName={
-                                contributorInformation[segment.speaker_id]
-                                    ?.fullname
-                            }
-                            contentLocale={transcriptLocale}
-                            popupType={
-                                popupSegmentId === segment.id ? popupType : null
-                            }
-                            openReference={
-                                popupSegmentId === segment.id
-                                    ? openReference
-                                    : null
-                            }
-                            openPopup={openSegmentPopup}
-                            closePopup={closeSegmentPopup}
-                            setOpenReference={setOpenReference}
-                            tabIndex={tabIndex}
-                            active={active}
-                            transcriptCoupled={interview.transcript_coupled}
-                        />
-                    );
-                })}
+                )}
             </div>
         </>
     );
