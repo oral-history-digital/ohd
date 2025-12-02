@@ -263,11 +263,15 @@ class Segment < ApplicationRecord
 
 
   def transcripts(allowed_to_see_all=false)
-    (
-      allowed_to_see_all ?
-      translations :
-      translations.where("locale like '%-public'")
-    ).inject({}) do |mem, translation|
+    # FIX: Use select on preloaded translations instead of where() to avoid N+1
+    # where() triggers a new query even when translations are preloaded
+    filtered_translations = if allowed_to_see_all
+      translations.to_a
+    else
+      translations.to_a.select { |t| t.locale.to_s.end_with?('-public') }
+    end
+    
+    filtered_translations.inject({}) do |mem, translation|
       mem[translation.locale.to_s] = translation.text
       mem
     end
