@@ -149,7 +149,9 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: current_project ? {
+          projects: (current_project && current_project.is_ohd?) ? {
+            all: 'fetched'
+          } : current_project ? {
             current_project.id => 'fetched'
           } : {},
           collections: {},
@@ -165,9 +167,20 @@ class ApplicationController < ActionController::Base
         # Only load current project in initial state
         # Other projects will be lazy-loaded via API when needed
         # This reduces initial page load significantly when many projects exist
-        projects: current_project ? {
-          current_project.id => cache_single(current_project, serializer_name: 'Project')
-        } : {},
+        # Exception: On OHD portal, load all projects for the startpage
+        projects: current_project.is_ohd? ?
+          Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+            Project.all.includes(
+              :translations,
+              :registry_reference_types,
+              :collections,
+            ).inject({}) do |mem, s|
+              mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+              mem
+            end
+          end : {
+          "#{current_project.id}": cache_single(current_project),
+        },
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
