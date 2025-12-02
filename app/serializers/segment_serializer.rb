@@ -34,22 +34,26 @@ class SegmentSerializer < ApplicationSerializer
   end
 
   def annotations
-    object.annotations.inject({}){|mem, c| mem[c.id] = ::AnnotationSerializer.new(c); mem}
+    # Use to_a to ensure preloaded associations are used
+    object.annotations.to_a.inject({}){|mem, c| mem[c.id] = ::AnnotationSerializer.new(c); mem}
   end
 
   def registry_references
-    object.registry_references.inject({}){|mem, c| mem[c.id] = ::RegistryReferenceSerializer.new(c); mem}
+    # Use to_a to ensure preloaded associations are used
+    object.registry_references.to_a.inject({}){|mem, c| mem[c.id] = ::RegistryReferenceSerializer.new(c); mem}
   end
 
   def mainheading
-    object.translations.inject({}) do |mem, translation|
+    # Use to_a to ensure preloaded translations are used (avoid N+1)
+    object.translations.to_a.inject({}) do |mem, translation|
       mem[translation.locale] = translation.mainheading
       mem
     end
   end
 
   def subheading
-    object.translations.inject({}) do |mem, translation|
+    # Use to_a to ensure preloaded translations are used (avoid N+1)
+    object.translations.to_a.inject({}) do |mem, translation|
       mem[translation.locale] = translation.subheading
       mem
     end
