@@ -5,8 +5,11 @@ import Enzyme from 'enzyme';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import UserForm from './UserForm';
+
+const middlewares = [thunk];
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -33,7 +36,7 @@ describe('<UserForm />', () => {
             locale: 'en',
         },
     };
-    const mockStore = configureStore();
+    const mockStore = configureStore(middlewares);
 
     const data = {
         access_token: null,

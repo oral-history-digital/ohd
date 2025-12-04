@@ -13,38 +13,22 @@ module Collection::OaiDc
     ) do
 
       [:de, :en].each do |locale|
-        xml.tag!('dc:identifier', "xml:lang": locale) do
-          xml.text! oai_catalog_identifier(locale)
-        end
+        xml.tag!('dc:identifier', oai_catalog_identifier(locale), "xml:lang": locale)
       end
 
       xml.tag!('dc:source', oai_identifier)
 
       oai_locales.each do |locale|
-        xml.tag!('dc:title', "xml:lang": locale) do
-          xml.text! oai_title(locale)
-        end
-      end
-
-      oai_locales.each do |locale|
+        xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
         creator = oai_creator(locale)
         unless creator.blank?
-          xml.tag!('dc:creator', "xml:lang": locale) do
-            xml.text! creator
-          end
+          xml.tag!('dc:creator', creator, "xml:lang": locale)
         end
-      end
-
-      oai_locales.each do |locale|
-        xml.tag!('dc:publisher', "xml:lang": locale) do
-          xml.text! oai_publisher(locale)
-        end
+        xml.tag!('dc:publisher', oai_publisher(locale), "xml:lang": locale)
       end
 
       xml.tag!('dc:contributor', project.manager)
-      xml.tag!('dc:contributor') do
-        xml.text! oai_contributor(:de)
-      end
+      xml.tag!('dc:contributor', oai_contributor(:de))
 
       if oai_publication_date
         xml.tag!('dc:date', oai_publication_date)
@@ -60,9 +44,7 @@ module Collection::OaiDc
 
       oai_subject_registry_entry_ids.each do |registry_entry_id|
         [:de, :en].each do |locale|
-          xml.tag!('dc:subject', "xml:lang": locale) do
-            xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
-          end
+          xml.tag!('dc:subject', RegistryEntry.find(registry_entry_id).to_s(locale), "xml:lang": locale)
         end
       end
 
@@ -75,36 +57,15 @@ module Collection::OaiDc
 
       xml.tag!('dc:description', oai_size)
       oai_locales.each do |locale|
-        xml.tag!('dc:description', "xml:lang": locale) do
-          xml.text! oai_abstract_description(locale)
-        end
-        xml.tag!('dc:description', "xml:lang": locale) do
-          xml.text! oai_media_files_description(locale)
-        end
-        xml.tag!('dc:description', "xml:lang": locale) do
-          xml.text! oai_transcript_description(locale)
-        end
-      end
-
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "#{project.domain_with_optional_identifier}/#{locale}/conditions"
-        end
-      end
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "#{OHD_DOMAIN}/#{locale}/conditions"
-        end
-      end
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
-        end
+        xml.tag!('dc:description', oai_abstract_description(locale), "xml:lang": locale)
+        xml.tag!('dc:description', oai_media_files_description(locale), "xml:lang": locale)
+        xml.tag!('dc:description', oai_transcript_description(locale), "xml:lang": locale)
+        xml.tag!('dc:rights', "#{project.domain_with_optional_identifier}/#{locale}/conditions", "xml:lang": locale)
+        xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/conditions", "xml:lang": locale)
+        xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/privacy_protection", "xml:lang": locale)
       end
       [:de, :en].each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
-        end
+        xml.tag!('dc:rights', "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}", "xml:lang": locale)
       end
 
       xml.target!

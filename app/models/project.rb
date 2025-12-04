@@ -103,6 +103,7 @@ class Project < ApplicationRecord
     message: "%{value} is not a valid upload type" }
 
   scope :shared, -> { where(workflow_state: 'public' )}
+  scope :unshared, -> {where(workflow_state: 'unshared')}
 
   before_save :touch_interviews
   def touch_interviews

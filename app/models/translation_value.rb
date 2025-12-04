@@ -9,6 +9,23 @@ class TranslationValue < ApplicationRecord
     #key.parameterize
   #end
 
+  scope :all_for_locale, ->(locale) {
+    includes(:translations).
+    where(translations: { locale: locale })
+  }
+
+  def self.all_for_locale_json(locale=I18n.locale)
+    Rails.cache.fetch("translations-#{maximum(:updated_at)}-#{locale}") do    
+      all_for_locale(locale).inject({}) do |mem, tv|    
+        mem[tv.key] = tv.translations.inject({}) do |mem2, translation|    
+          mem2[translation.locale] = translation.value                 
+          mem2      
+        end       
+        mem      
+      end
+    end
+  end
+
   def self.create_from_hash(locale, translations_hash, old_key=nil)
     translations_hash.each do |key, value|
       if value.is_a?(Hash)

@@ -30,7 +30,7 @@ class TranslationValuesController < ApplicationController
       extra_params = "all"
     else
       page = params[:page] || 1
-      translation_values = policy_scope(TranslationValue).includes(:translations).where(search_params).order(:key).paginate page: page
+      translation_values = policy_scope(TranslationValue).where(search_params).order(:key).paginate page: page
       extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
     end
 
@@ -54,7 +54,7 @@ class TranslationValuesController < ApplicationController
   def translations_by_locale
     respond_to do |format|
       format.json do
-        translations = translations_for_locale
+        translations = TranslationValue.all_for_locale_json(params[:only] || I18n.locale)
         render json: { translations: translations }
       end
     end
