@@ -1,15 +1,14 @@
-import PropTypes from 'prop-types';
-import { FaSearch } from 'react-icons/fa';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa';
 
 export default function ThumbnailBadge({
     loading,
     numSearchResults,
     className,
-    onClick = f => f,
+    onClick = (f) => f,
 }) {
     const { t } = useI18n();
 
@@ -24,18 +23,19 @@ export default function ThumbnailBadge({
             onClick={onClick}
             title={t('show_segment_hits')}
         >
-            {
-                loading ? (
-                    <Spinner small />
-                ) : (
-                    <>
-                        <FaSearch className="ThumbnailBadge-icon" />
-                        <span className="ThumbnailBadge-text" aria-label={`${numSearchResults} ${t('segment_hits')}`}>
-                            {numSearchResults}
-                        </span>
-                    </>
-                )
-            }
+            {loading ? (
+                <Spinner size="small" />
+            ) : (
+                <>
+                    <FaSearch className="ThumbnailBadge-icon" />
+                    <span
+                        className="ThumbnailBadge-text"
+                        aria-label={`${numSearchResults} ${t('segment_hits')}`}
+                    >
+                        {numSearchResults}
+                    </span>
+                </>
+            )}
         </button>
     );
 }

@@ -61,14 +61,28 @@ module Collection::Oai
   end
 
   def oai_formats
-    [
-      "video/mp4",
-      "audio/mp3"
-    ]
+    interviews.pluck(:media_type).uniq.map do |mt|
+      case mt
+      when 'video'
+        "video/mp4"
+      when 'audio'
+        "audio/mp3"
+      end
+    end.compact
   end
 
   def oai_size
     "#{interviews.count} Interviews"
+  end
+
+  def oai_coverage
+    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
+    "#{dates.min}-#{dates.max}" rescue nil
+  end
+
+  def oai_birth_years
+    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
+    "#{birthyears.min}-#{birthyears.max}" rescue nil
   end
 
   def oai_languages

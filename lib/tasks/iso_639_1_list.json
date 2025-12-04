@@ -1,917 +1,197 @@
 [
-  [
-    "aar",
-    "Afar",
-    "Afar"
-  ],
-  [
-    "abk",
-    "Abkhazian",
-    "Abchasisch"
-  ],
-  [
-    "afr",
-    "Afrikaans",
-    "Afrikaans"
-  ],
-  [
-    "aka",
-    "Akan",
-    "Akan"
-  ],
-  [
-    "sqi",
-    "Albanian",
-    "Albanisch"
-  ],
-  [
-    "amh",
-    "Amharic",
-    "Amharisch"
-  ],
-  [
-    "ara",
-    "Arabic",
-    "Arabisch"
-  ],
-  [
-    "arg",
-    "Aragonese",
-    "Aragonesisch"
-  ],
-  [
-    "hye",
-    "Armenian",
-    "Armenisch"
-  ],
-  [
-    "asm",
-    "Assamese",
-    "Assamesisch"
-  ],
-  [
-    "ava",
-    "Avaric",
-    "Avarisch"
-  ],
-  [
-    "ave",
-    "Avestan",
-    "Avestisch"
-  ],
-  [
-    "aym",
-    "Aymara",
-    "Aymara"
-  ],
-  [
-    "aze",
-    "Azerbaijani",
-    "Aserbaidschanisch"
-  ],
-  [
-    "bak",
-    "Bashkir",
-    "Baschkirisch"
-  ],
-  [
-    "bam",
-    "Bambara",
-    "Bambara"
-  ],
-  [
-    "eus",
-    "Basque",
-    "Baskisch"
-  ],
-  [
-    "bel",
-    "Belarusian",
-    "Belarussisch"
-  ],
-  [
-    "ben",
-    "Bengali",
-    "Bengalisch"
-  ],
-  [
-    "bis",
-    "Bislama",
-    "Bislama"
-  ],
-  [
-    "bos",
-    "Bosnian",
-    "Bosnisch"
-  ],
-  [
-    "bre",
-    "Breton",
-    "Bretonisch"
-  ],
-  [
-    "bul",
-    "Bulgarian",
-    "Bulgarisch"
-  ],
-  [
-    "mya",
-    "Burmese",
-    "Birmanisch"
-  ],
-  [
-    "cat",
-    "Catalan; Valencian",
-    "Katalanisch, Valencianisch"
-  ],
-  [
-    "cha",
-    "Chamorro",
-    "Chamorro"
-  ],
-  [
-    "che",
-    "Chechen",
-    "Tschetschenisch"
-  ],
-  [
-    "zho",
-    "Chinese",
-    "Chinesisch"
-  ],
+  ["aar", "Afar", "Afar"],
+  ["abk", "Abkhazian", "Abchasisch"],
+  ["afr", "Afrikaans", "Afrikaans"],
+  ["aka", "Akan", "Akan"],
+  ["sqi", "Albanian", "Albanisch"],
+  ["amh", "Amharic", "Amharisch"],
+  ["ara", "Arabic", "Arabisch"],
+  ["arg", "Aragonese", "Aragonesisch"],
+  ["hye", "Armenian", "Armenisch"],
+  ["asm", "Assamese", "Assamesisch"],
+  ["ava", "Avaric", "Avarisch"],
+  ["ave", "Avestan", "Avestisch"],
+  ["aym", "Aymara", "Aymara"],
+  ["aze", "Azerbaijani", "Aserbaidschanisch"],
+  ["bak", "Bashkir", "Baschkirisch"],
+  ["bam", "Bambara", "Bambara"],
+  ["eus", "Basque", "Baskisch"],
+  ["bel", "Belarusian", "Belarussisch"],
+  ["ben", "Bengali", "Bengalisch"],
+  ["bis", "Bislama", "Bislama"],
+  ["bos", "Bosnian", "Bosnisch"],
+  ["bre", "Breton", "Bretonisch"],
+  ["bul", "Bulgarian", "Bulgarisch"],
+  ["mya", "Burmese", "Birmanisch"],
+  ["cat", "Catalan; Valencian", "Katalanisch, Valencianisch"],
+  ["cha", "Chamorro", "Chamorro"],
+  ["che", "Chechen", "Tschetschenisch"],
+  ["zho", "Chinese", "Chinesisch"],
   [
     "chu",
     "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic",
     "Kirchenslawisch, Altkirchenslawisch"
   ],
-  [
-    "chv",
-    "Chuvash",
-    "Tschuwaschisch"
-  ],
-  [
-    "cor",
-    "Cornish",
-    "Kornisch"
-  ],
-  [
-    "cos",
-    "Corsican",
-    "Korsisch"
-  ],
-  [
-    "cre",
-    "Cree",
-    "Cree"
-  ],
-  [
-    "ces",
-    "Czech",
-    "Tschechisch"
-  ],
-  [
-    "dan",
-    "Danish",
-    "Dänisch"
-  ],
-  [
-    "div",
-    "Divehi; Dhivehi; Maldivian",
-    "Dhivehi"
-  ],
-  [
-    "nld",
-    "Dutch; Flemish",
-    "Niederländisch, Belgisches Niederländisch"
-  ],
-  [
-    "dzo",
-    "Dzongkha",
-    "Dzongkha"
-  ],
-  [
-    "eng",
-    "English",
-    "Englisch"
-  ],
-  [
-    "epo",
-    "Esperanto",
-    "Esperanto"
-  ],
-  [
-    "est",
-    "Estonian",
-    "Estnisch"
-  ],
-  [
-    "ewe",
-    "Ewe",
-    "Ewe"
-  ],
-  [
-    "fao",
-    "Faroese",
-    "Färöisch"
-  ],
-  [
-    "fij",
-    "Fijian",
-    "Fidschi"
-  ],
-  [
-    "fin",
-    "Finnish",
-    "Finnisch"
-  ],
-  [
-    "fra",
-    "French",
-    "Französisch"
-  ],
-  [
-    "fry",
-    "Western Frisian",
-    "Westfriesisch"
-  ],
-  [
-    "ful",
-    "Fulah",
-    "Fulfulde"
-  ],
-  [
-    "kat",
-    "Georgian",
-    "Georgisch"
-  ],
-  [
-    "deu",
-    "German",
-    "Deutsch"
-  ],
-  [
-    "gla",
-    "Gaelic; Scottish Gaelic",
-    "Schottisch-gälisch"
-  ],
-  [
-    "gle",
-    "Irish",
-    "Irisch"
-  ],
-  [
-    "glg",
-    "Galician",
-    "Galicisch, Galegisch"
-  ],
-  [
-    "glv",
-    "Manx",
-    "Manx, Manx-Gälisch"
-  ],
-  [
-    "ell",
-    "Greek, Modern (1453-)",
-    "Griechisch"
-  ],
-  [
-    "grn",
-    "Guarani",
-    "Guaraní"
-  ],
-  [
-    "guj",
-    "Gujarati",
-    "Gujarati"
-  ],
-  [
-    "hat",
-    "Haitian; Haitian Creole",
-    "Haitianisch"
-  ],
-  [
-    "hau",
-    "Hausa",
-    "Hausa"
-  ],
-  [
-    "heb",
-    "Hebrew",
-    "Hebräisch"
-  ],
-  [
-    "her",
-    "Herero",
-    "Otjiherero"
-  ],
-  [
-    "hin",
-    "Hindi",
-    "Hindi"
-  ],
-  [
-    "hmo",
-    "Hiri Motu",
-    "Hiri Motu"
-  ],
-  [
-    "hrv",
-    "Croatian",
-    "Kroatisch"
-  ],
-  [
-    "hun",
-    "Hungarian",
-    "Ungarisch"
-  ],
-  [
-    "ibo",
-    "Igbo",
-    "Igbo"
-  ],
-  [
-    "isl",
-    "Icelandic",
-    "Isländisch"
-  ],
-  [
-    "ido",
-    "Ido",
-    "Ido"
-  ],
-  [
-    "iii",
-    "Sichuan Yi; Nuosu",
-    "Yi"
-  ],
-  [
-    "iku",
-    "Inuktitut",
-    "Inuktitut"
-  ],
-  [
-    "ile",
-    "Interlingue; Occidental",
-    "Interlingue"
-  ],
+  ["chv", "Chuvash", "Tschuwaschisch"],
+  ["cor", "Cornish", "Kornisch"],
+  ["cos", "Corsican", "Korsisch"],
+  ["cre", "Cree", "Cree"],
+  ["ces", "Czech", "Tschechisch"],
+  ["dan", "Danish", "Dänisch"],
+  ["div", "Divehi; Dhivehi; Maldivian", "Dhivehi"],
+  ["nld", "Dutch; Flemish", "Niederländisch, Belgisches Niederländisch"],
+  ["dzo", "Dzongkha", "Dzongkha"],
+  ["eng", "English", "Englisch"],
+  ["epo", "Esperanto", "Esperanto"],
+  ["est", "Estonian", "Estnisch"],
+  ["ewe", "Ewe", "Ewe"],
+  ["fao", "Faroese", "Färöisch"],
+  ["fij", "Fijian", "Fidschi"],
+  ["fin", "Finnish", "Finnisch"],
+  ["fra", "French", "Französisch"],
+  ["fry", "Western Frisian", "Westfriesisch"],
+  ["ful", "Fulah", "Fulfulde"],
+  ["kat", "Georgian", "Georgisch"],
+  ["deu", "German", "Deutsch"],
+  ["gla", "Gaelic; Scottish Gaelic", "Schottisch-gälisch"],
+  ["gle", "Irish", "Irisch"],
+  ["glg", "Galician", "Galicisch, Galegisch"],
+  ["glv", "Manx", "Manx, Manx-Gälisch"],
+  ["ell", "Greek, Modern (1453-)", "Griechisch"],
+  ["grn", "Guarani", "Guaraní"],
+  ["guj", "Gujarati", "Gujarati"],
+  ["hat", "Haitian; Haitian Creole", "Haitianisch"],
+  ["hau", "Hausa", "Hausa"],
+  ["heb", "Hebrew", "Hebräisch"],
+  ["her", "Herero", "Otjiherero"],
+  ["hin", "Hindi", "Hindi"],
+  ["hmo", "Hiri Motu", "Hiri Motu"],
+  ["hrv", "Croatian", "Kroatisch"],
+  ["hun", "Hungarian", "Ungarisch"],
+  ["ibo", "Igbo", "Igbo"],
+  ["isl", "Icelandic", "Isländisch"],
+  ["ido", "Ido", "Ido"],
+  ["iii", "Sichuan Yi; Nuosu", "Yi"],
+  ["iku", "Inuktitut", "Inuktitut"],
+  ["ile", "Interlingue; Occidental", "Interlingue"],
   [
     "ina",
     "Interlingua (International Auxiliary Language Association)",
     "Interlingua"
   ],
-  [
-    "ind",
-    "Indonesian",
-    "Indonesisch"
-  ],
-  [
-    "ipk",
-    "Inupiaq",
-    "Inupiaq"
-  ],
-  [
-    "ita",
-    "Italian",
-    "Italienisch"
-  ],
-  [
-    "jav",
-    "Javanese",
-    "Javanisch"
-  ],
-  [
-    "jpn",
-    "Japanese",
-    "Japanisch"
-  ],
-  [
-    "kal",
-    "Kalaallisut; Greenlandic",
-    "Grönländisch, Kalaallisut"
-  ],
-  [
-    "kan",
-    "Kannada",
-    "Kannada"
-  ],
-  [
-    "kas",
-    "Kashmiri",
-    "Kashmiri"
-  ],
-  [
-    "kau",
-    "Kanuri",
-    "Kanuri"
-  ],
-  [
-    "kaz",
-    "Kazakh",
-    "Kasachisch"
-  ],
-  [
-    "khm",
-    "Central Khmer",
-    ""
-  ],
-  [
-    "kik",
-    "Kikuyu; Gikuyu",
-    "Khmer"
-  ],
-  [
-    "kin",
-    "Kinyarwanda",
-    "Kinyarwanda, Ruandisch"
-  ],
-  [
-    "kir",
-    "Kirghiz; Kyrgyz",
-    "Kirgisisch"
-  ],
-  [
-    "kom",
-    "Komi",
-    "Komi"
-  ],
-  [
-    "kon",
-    "Kongo",
-    "Kikongo"
-  ],
-  [
-    "kor",
-    "Korean",
-    "Koreanisch"
-  ],
-  [
-    "kua",
-    "Kuanyama; Kwanyama",
-    "oshiKwanyama"
-  ],
-  [
-    "kur",
-    "Kurdish",
-    "Kurdisch"
-  ],
-  [
-    "lao",
-    "Lao",
-    "Laotisch"
-  ],
-  [
-    "lat",
-    "Latin",
-    "Latein"
-  ],
-  [
-    "lav",
-    "Latvian",
-    "Lettisch"
-  ],
+  ["ind", "Indonesian", "Indonesisch"],
+  ["ipk", "Inupiaq", "Inupiaq"],
+  ["ita", "Italian", "Italienisch"],
+  ["jav", "Javanese", "Javanisch"],
+  ["jpn", "Japanese", "Japanisch"],
+  ["kal", "Kalaallisut; Greenlandic", "Grönländisch, Kalaallisut"],
+  ["kan", "Kannada", "Kannada"],
+  ["kas", "Kashmiri", "Kashmiri"],
+  ["kau", "Kanuri", "Kanuri"],
+  ["kaz", "Kazakh", "Kasachisch"],
+  ["khm", "Central Khmer", ""],
+  ["kik", "Kikuyu; Gikuyu", "Khmer"],
+  ["kin", "Kinyarwanda", "Kinyarwanda, Ruandisch"],
+  ["kir", "Kirghiz; Kyrgyz", "Kirgisisch"],
+  ["kom", "Komi", "Komi"],
+  ["kon", "Kongo", "Kikongo"],
+  ["kor", "Korean", "Koreanisch"],
+  ["kua", "Kuanyama; Kwanyama", "oshiKwanyama"],
+  ["kur", "Kurdish", "Kurdisch"],
+  ["lao", "Lao", "Laotisch"],
+  ["lat", "Latin", "Latein"],
+  ["lav", "Latvian", "Lettisch"],
   [
     "lim",
     "Limburgan; Limburger; Limburgish",
     "Limburgisch, Südniederfränkisch"
   ],
-  [
-    "lin",
-    "Lingala",
-    "Lingála"
-  ],
-  [
-    "lit",
-    "Lithuanian",
-    "Litauisch"
-  ],
-  [
-    "ltz",
-    "Luxembourgish; Letzeburgesch",
-    "Luxemburgisch"
-  ],
-  [
-    "lub",
-    "Luba-Katanga",
-    "Kiluba"
-  ],
-  [
-    "lug",
-    "Ganda",
-    "Luganda"
-  ],
-  [
-    "mkd",
-    "Macedonian",
-    "Mazedonisch"
-  ],
-  [
-    "mah",
-    "Marshallese",
-    "Marshallesisch"
-  ],
-  [
-    "mal",
-    "Malayalam",
-    "Malayalam"
-  ],
-  [
-    "mri",
-    "Maori",
-    "Maori"
-  ],
-  [
-    "mar",
-    "Marathi",
-    "Marathi"
-  ],
-  [
-    "msa",
-    "Malay",
-    "Malaiisch"
-  ],
-  [
-    "mlg",
-    "Malagasy",
-    "Malagasy, Malagassi"
-  ],
-  [
-    "mlt",
-    "Maltese",
-    "Maltesisch"
-  ],
-  [
-    "mon",
-    "Mongolian",
-    "Mongolisch"
-  ],
-  [
-    "nau",
-    "Nauru",
-    "Nauruisch"
-  ],
-  [
-    "nav",
-    "Navajo; Navaho",
-    "Navajo"
-  ],
-  [
-    "nbl",
-    "Ndebele, South; South Ndebele",
-    "Süd-Ndebele"
-  ],
-  [
-    "nde",
-    "Ndebele, North; North Ndebele",
-    "Nord-Ndebele"
-  ],
-  [
-    "ndo",
-    "Ndonga",
-    "Ndonga"
-  ],
-  [
-    "nep",
-    "Nepali",
-    "Nepali"
-  ],
-  [
-    "nno",
-    "Norwegian Nynorsk; Nynorsk, Norwegian",
-    "Nynorsk"
-  ],
-  [
-    "nob",
-    "Bokmål, Norwegian; Norwegian Bokmål",
-    "Bokmål"
-  ],
-  [
-    "nor",
-    "Norwegian",
-    "Norwegisch"
-  ],
-  [
-    "nya",
-    "Chichewa; Chewa; Nyanja",
-    "Chichewa"
-  ],
-  [
-    "oci",
-    "Occitan (post 1500); Provençal",
-    "Okzitanisch"
-  ],
-  [
-    "oji",
-    "Ojibwa",
-    "Ojibwe"
-  ],
-  [
-    "ori",
-    "Oriya",
-    "Oriya"
-  ],
-  [
-    "orm",
-    "Oromo",
-    "Oromo"
-  ],
-  [
-    "oss",
-    "Ossetian; Ossetic",
-    "Ossetisch"
-  ],
-  [
-    "pan",
-    "Panjabi; Punjabi",
-    "Panjabi, Pandschabi"
-  ],
-  [
-    "fas",
-    "Persian",
-    "Persisch"
-  ],
-  [
-    "pli",
-    "Pali",
-    "Pali"
-  ],
-  [
-    "pol",
-    "Polish",
-    "Polnisch"
-  ],
-  [
-    "por",
-    "Portuguese",
-    "Portugiesisch"
-  ],
-  [
-    "pus",
-    "Pushto; Pashto",
-    "Paschtunisch"
-  ],
-  [
-    "que",
-    "Quechua",
-    "Quechua"
-  ],
-  [
-    "roh",
-    "Romansh",
-    "Bündnerromanisch, Romanisch"
-  ],
-  [
-    "ron",
-    "Romanian; Moldavian; Moldovan",
-    "Rumänisch"
-  ],
-  [
-    "run",
-    "Rundi",
-    "Kirundi"
-  ],
-  [
-    "rus",
-    "Russian",
-    "Russisch"
-  ],
-  [
-    "sag",
-    "Sango",
-    "Sango"
-  ],
-  [
-    "san",
-    "Sanskrit",
-    "Sanskrit"
-  ],
-  [
-    "sin",
-    "Sinhala; Sinhalese",
-    "Singhalesisch"
-  ],
-  [
-    "slk",
-    "Slovak",
-    "Slowakisch"
-  ],
-  [
-    "slv",
-    "Slovenian",
-    "Slowenisch"
-  ],
-  [
-    "sme",
-    "Northern Sami",
-    "Nordsamisch"
-  ],
-  [
-    "smo",
-    "Samoan",
-    "Samoanisch"
-  ],
-  [
-    "sna",
-    "Shona",
-    "Shona"
-  ],
-  [
-    "snd",
-    "Sindhi",
-    "Sindhi"
-  ],
-  [
-    "som",
-    "Somali",
-    "Somali"
-  ],
-  [
-    "sot",
-    "Sotho, Southern",
-    "Sesotho, Süd-Sotho"
-  ],
-  [
-    "spa",
-    "Spanish; Castilian",
-    "Spanisch, Kastilisch"
-  ],
-  [
-    "srd",
-    "Sardinian",
-    "Sardisch"
-  ],
-  [
-    "srp",
-    "Serbian",
-    "Serbisch"
-  ],
-  [
-    "ssw",
-    "Swati",
-    "Siswati"
-  ],
-  [
-    "sun",
-    "Sundanese",
-    "Sundanesisch"
-  ],
-  [
-    "swa",
-    "Swahili",
-    "Swahili"
-  ],
-  [
-    "swe",
-    "Swedish",
-    "Schwedisch"
-  ],
-  [
-    "tah",
-    "Tahitian",
-    "Tahitianisch, Tahitisch"
-  ],
-  [
-    "tam",
-    "Tamil",
-    "Tamil"
-  ],
-  [
-    "tat",
-    "Tatar",
-    "Tatarisch"
-  ],
-  [
-    "tel",
-    "Telugu",
-    "Telugu"
-  ],
-  [
-    "tgk",
-    "Tajik",
-    "Tadschikisch"
-  ],
-  [
-    "tgl",
-    "Tagalog",
-    "Tagalog"
-  ],
-  [
-    "tha",
-    "Thai",
-    "Thai"
-  ],
-  [
-    "bod",
-    "Tibetan",
-    "Tibetisch"
-  ],
-  [
-    "tir",
-    "Tigrinya",
-    "Tigrinya"
-  ],
-  [
-    "ton",
-    "Tonga (Tonga Islands)",
-    "Tongaisch"
-  ],
-  [
-    "tsn",
-    "Tswana",
-    "Setswana"
-  ],
-  [
-    "tso",
-    "Tsonga",
-    "Xitsonga"
-  ],
-  [
-    "tuk",
-    "Turkmen",
-    "Turkmenisch"
-  ],
-  [
-    "tur",
-    "Turkish",
-    "Türkisch"
-  ],
-  [
-    "twi",
-    "Twi",
-    "Twi"
-  ],
-  [
-    "uig",
-    "Uighur; Uyghur",
-    "Uigurisch"
-  ],
-  [
-    "ukr",
-    "Ukrainian",
-    "Ukrainisch"
-  ],
-  [
-    "urd",
-    "Urdu",
-    "Urdu"
-  ],
-  [
-    "uzb",
-    "Uzbek",
-    "Usbekisch"
-  ],
-  [
-    "ven",
-    "Venda",
-    "Tshivenda"
-  ],
-  [
-    "vie",
-    "Vietnamese",
-    "Vietnamesisch"
-  ],
-  [
-    "vol",
-    "Volapük",
-    "Volapük"
-  ],
-  [
-    "cym",
-    "Welsh",
-    "Walisisch"
-  ],
-  [
-    "wln",
-    "Walloon",
-    "Wallonisch"
-  ],
-  [
-    "wol",
-    "Wolof",
-    "Wolof"
-  ],
-  [
-    "xho",
-    "Xhosa",
-    "isiXhosa"
-  ],
-  [
-    "yid",
-    "Yiddish",
-    "Jiddisch"
-  ],
-  [
-    "yor",
-    "Yoruba",
-    "Yoruba"
-  ],
-  [
-    "zha",
-    "Zhuang; Chuang",
-    "Zhuang"
-  ],
-  [
-    "zul",
-    "Zulu",
-    "isiZulu"
-  ]
+  ["lin", "Lingala", "Lingála"],
+  ["lit", "Lithuanian", "Litauisch"],
+  ["ltz", "Luxembourgish; Letzeburgesch", "Luxemburgisch"],
+  ["lub", "Luba-Katanga", "Kiluba"],
+  ["lug", "Ganda", "Luganda"],
+  ["mkd", "Macedonian", "Mazedonisch"],
+  ["mah", "Marshallese", "Marshallesisch"],
+  ["mal", "Malayalam", "Malayalam"],
+  ["mri", "Maori", "Maori"],
+  ["mar", "Marathi", "Marathi"],
+  ["msa", "Malay", "Malaiisch"],
+  ["mlg", "Malagasy", "Malagasy, Malagassi"],
+  ["mlt", "Maltese", "Maltesisch"],
+  ["mon", "Mongolian", "Mongolisch"],
+  ["nau", "Nauru", "Nauruisch"],
+  ["nav", "Navajo; Navaho", "Navajo"],
+  ["nbl", "Ndebele, South; South Ndebele", "Süd-Ndebele"],
+  ["nde", "Ndebele, North; North Ndebele", "Nord-Ndebele"],
+  ["ndo", "Ndonga", "Ndonga"],
+  ["nep", "Nepali", "Nepali"],
+  ["nno", "Norwegian Nynorsk; Nynorsk, Norwegian", "Nynorsk"],
+  ["nob", "Bokmål, Norwegian; Norwegian Bokmål", "Bokmål"],
+  ["nor", "Norwegian", "Norwegisch"],
+  ["nya", "Chichewa; Chewa; Nyanja", "Chichewa"],
+  ["oci", "Occitan (post 1500); Provençal", "Okzitanisch"],
+  ["oji", "Ojibwa", "Ojibwe"],
+  ["ori", "Oriya", "Oriya"],
+  ["orm", "Oromo", "Oromo"],
+  ["oss", "Ossetian; Ossetic", "Ossetisch"],
+  ["pan", "Panjabi; Punjabi", "Panjabi, Pandschabi"],
+  ["fas", "Persian", "Persisch"],
+  ["pli", "Pali", "Pali"],
+  ["pol", "Polish", "Polnisch"],
+  ["por", "Portuguese", "Portugiesisch"],
+  ["pus", "Pushto; Pashto", "Paschtunisch"],
+  ["que", "Quechua", "Quechua"],
+  ["roh", "Romansh", "Bündnerromanisch, Romanisch"],
+  ["ron", "Romanian; Moldavian; Moldovan", "Rumänisch"],
+  ["run", "Rundi", "Kirundi"],
+  ["rus", "Russian", "Russisch"],
+  ["sag", "Sango", "Sango"],
+  ["san", "Sanskrit", "Sanskrit"],
+  ["sin", "Sinhala; Sinhalese", "Singhalesisch"],
+  ["slk", "Slovak", "Slowakisch"],
+  ["slv", "Slovenian", "Slowenisch"],
+  ["sme", "Northern Sami", "Nordsamisch"],
+  ["smo", "Samoan", "Samoanisch"],
+  ["sna", "Shona", "Shona"],
+  ["snd", "Sindhi", "Sindhi"],
+  ["som", "Somali", "Somali"],
+  ["sot", "Sotho, Southern", "Sesotho, Süd-Sotho"],
+  ["spa", "Spanish; Castilian", "Spanisch, Kastilisch"],
+  ["srd", "Sardinian", "Sardisch"],
+  ["srp", "Serbian", "Serbisch"],
+  ["ssw", "Swati", "Siswati"],
+  ["sun", "Sundanese", "Sundanesisch"],
+  ["swa", "Swahili", "Swahili"],
+  ["swe", "Swedish", "Schwedisch"],
+  ["tah", "Tahitian", "Tahitianisch, Tahitisch"],
+  ["tam", "Tamil", "Tamil"],
+  ["tat", "Tatar", "Tatarisch"],
+  ["tel", "Telugu", "Telugu"],
+  ["tgk", "Tajik", "Tadschikisch"],
+  ["tgl", "Tagalog", "Tagalog"],
+  ["tha", "Thai", "Thai"],
+  ["bod", "Tibetan", "Tibetisch"],
+  ["tir", "Tigrinya", "Tigrinya"],
+  ["ton", "Tonga (Tonga Islands)", "Tongaisch"],
+  ["tsn", "Tswana", "Setswana"],
+  ["tso", "Tsonga", "Xitsonga"],
+  ["tuk", "Turkmen", "Turkmenisch"],
+  ["tur", "Turkish", "Türkisch"],
+  ["twi", "Twi", "Twi"],
+  ["uig", "Uighur; Uyghur", "Uigurisch"],
+  ["ukr", "Ukrainian", "Ukrainisch"],
+  ["urd", "Urdu", "Urdu"],
+  ["uzb", "Uzbek", "Usbekisch"],
+  ["ven", "Venda", "Tshivenda"],
+  ["vie", "Vietnamese", "Vietnamesisch"],
+  ["vol", "Volapük", "Volapük"],
+  ["cym", "Welsh", "Walisisch"],
+  ["wln", "Walloon", "Wallonisch"],
+  ["wol", "Wolof", "Wolof"],
+  ["xho", "Xhosa", "isiXhosa"],
+  ["yid", "Yiddish", "Jiddisch"],
+  ["yor", "Yoruba", "Yoruba"],
+  ["zha", "Zhuang; Chuang", "Zhuang"],
+  ["zul", "Zulu", "isiZulu"]
 ]

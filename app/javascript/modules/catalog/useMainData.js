@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import curry from 'lodash.curry';
 
-import { getInstitutions, getProjects, getCollections } from 'modules/data';
+import curry from 'lodash.curry';
+import { getCollections, getInstitutions, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import addChildProjects from './tree-builders/addChildProjects';
-import addChildCollections from './tree-builders/addChildCollections';
-import buildInstitutionTree from './tree-builders/buildInstitutionTree';
+import { useSelector } from 'react-redux';
+
 import mapInstitution from './mappers/mapInstitution';
 import rowComparator from './rowComparator';
+import addChildCollections from './tree-builders/addChildCollections';
+import addChildProjects from './tree-builders/addChildProjects';
+import buildInstitutionTree from './tree-builders/buildInstitutionTree';
 
 export default function useData() {
     const institutions = Object.values(useSelector(getInstitutions));
@@ -18,23 +19,33 @@ export default function useData() {
 
     const data = useMemo(() => {
         const curriedMapInstitution = curry(mapInstitution)(locale);
-        const curriedAddChildCollections = curry(addChildCollections)(collections);
+        const curriedAddChildCollections =
+            curry(addChildCollections)(collections);
         const projectsWithChildren = projects.map(curriedAddChildCollections);
 
-        const curriedAddChildProjects = curry(addChildProjects)(projectsWithChildren);
-        const institutionsWithChildren = institutions.map(curriedAddChildProjects);
-        const rootInstitutions = institutionsWithChildren.filter(i => i.parent_id === null);
-        const institutionsAsTree = buildInstitutionTree(rootInstitutions, institutionsWithChildren);
+        const curriedAddChildProjects =
+            curry(addChildProjects)(projectsWithChildren);
+        const institutionsWithChildren = institutions.map(
+            curriedAddChildProjects
+        );
+        const rootInstitutions = institutionsWithChildren.filter(
+            (i) => i.parent_id === null
+        );
+        const institutionsAsTree = buildInstitutionTree(
+            rootInstitutions,
+            institutionsWithChildren
+        );
 
         const institutionRows = institutionsAsTree
             .map(curriedMapInstitution)
             .sort(rowComparator);
 
         return institutionRows;
-    }, [JSON.stringify(institutions),
+    }, [
+        JSON.stringify(institutions),
         JSON.stringify(projects),
         JSON.stringify(collections),
-        locale
+        locale,
     ]);
 
     return data;

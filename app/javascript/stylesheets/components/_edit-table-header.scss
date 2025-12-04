@@ -28,26 +28,8 @@
 
 .Layout.is-sticky .EditTableHeader {
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-
-  @media (max-width: $screen-m-max) {
-    top: $media-player-height-mobile;
-  }
-
-  @media (min-width: $screen-m) and (max-width: $screen-l-max) {
-    top: $media-player-height-medium;
-  }
-
-  .Layout.is-small-player & {
-    @include screen-xl {
-      top: $media-player-height-small;
-    }
-  }
-
-  .Layout.is-medium-player & {
-    @include screen-xl {
-      top: $media-player-height-medium;
-    }
-  }
+  // Position below media player using responsive CSS custom property
+  top: var(--media-player-height);
 }
 
 .EditTableHeader-cell {

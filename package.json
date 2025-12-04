@@ -2,7 +2,7 @@
   "name": "ohd",
   "repository": "https://github.com/oral-history-digital/ohd",
   "license": "AGPL-3.0-only",
-  "version": "1.2.0",
+  "version": "1.4.3",
   "engines": {
     "node": ">=18 <=22"
   },
@@ -72,6 +72,8 @@
     "react-icons": "^4.2.0",
     "react-intersection-observer": "^8.22.5",
     "react-leaflet": "^4.2.1",
+    "react-loader-spinner": "^8.0.0",
+    "react-loading-skeleton": "^3.5.0",
     "react-on-rails": "14.0.4",
     "react-redux": "^7.2.2",
     "react-resize-aware": "3.1.1",
@@ -108,6 +110,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "babel-jest": "^29.7.0",
     "dot-prop-immutable": "^2.1.0",
@@ -117,11 +120,14 @@
     "eslint-plugin-jsx-a11y": "^6.9.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-enzyme": "^7.1.2",
     "jsdoc": "^4.0.4",
     "react-refresh": "^0.18.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.6.2",
     "react-test-renderer": "^18.3.1",
     "timekeeper": "^2.2.0",
     "webpack-dev-server": "^5.0.4"
@@ -129,6 +135,12 @@
   "scripts": {
     "lint": "eslint app/javascript",
     "test": "jest --verbose true",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "app/javascript/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}": [
+      "prettier --write"
+    ]
   }
 }

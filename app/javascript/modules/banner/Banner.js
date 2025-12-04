@@ -1,14 +1,12 @@
+import { useIsEditor } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { useIsEditor } from 'modules/archive';
 import { getBanner } from './selectors';
 
-export default function Banner({
-    onClose,
-}) {
+export default function Banner({ onClose }) {
     const { locale } = useI18n();
     const banner = useSelector(getBanner);
     const isEditor = useIsEditor();
@@ -17,11 +15,15 @@ export default function Banner({
         return null;
     }
 
-    const bannerMessage = locale == 'de' ? banner.message_de : banner.message_en;
+    const bannerMessage =
+        locale == 'de' ? banner.message_de : banner.message_en;
 
     return (
         <div className="Banner">
-            <div className="Banner-inner" dangerouslySetInnerHTML={{__html: bannerMessage}} />
+            <div
+                className="Banner-inner"
+                dangerouslySetInnerHTML={{ __html: bannerMessage }}
+            />
             <button
                 onClick={onClose}
                 className="Banner-close Button Button--icon"

@@ -1,10 +1,12 @@
-import { getProjects, ProjectShow } from 'modules/data';
+import { useState } from 'react';
+
+import { ProjectShow, getProjects } from 'modules/data';
 import { ContentField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+
 import UserProjectInterviewPermissions from './UserProjectInterviewPermissions';
 import UserProjectRoles from './UserProjectRoles';
 import UserTasks from './UserTasks';

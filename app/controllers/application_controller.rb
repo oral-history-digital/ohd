@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: translations_for_locale,
+        translations: TranslationValue.all_for_locale_json(I18n.locale),
         countryKeys: country_keys,
       },
       user: {
@@ -275,27 +275,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-   def translations_for_locale(locale = nil)       
-    target_locale = (locale || I18n.locale).to_s    
-            
-    Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}-#{target_locale}") do    
-      Rails.logger.info "Fetching translations for locale: #{target_locale}"    
-          
-      result = TranslationValue.all.includes(:translations).                                                                        
-        where("translation_value_translations.locale": target_locale).                                        
-        inject({}) do |mem, translation_value|    
-        mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|    
-          mem2[translation.locale] = translation.value                 
-          mem2      
-        end       
-        mem      
-      end    
-          
-      Rails.logger.info "Translation keys found for #{target_locale}: #{result.keys.count}"    
-      result    
-    end    
-  end
 
   def country_keys
     Rails.cache.fetch('country-keys-20240624') do

@@ -12,7 +12,7 @@ export default function convertLegacyQuery(oldQuery) {
 
         // Handle year_of_birth.
         if (key === 'year_of_birth[]') {
-            const years = value.map(year => Number.parseInt(year));
+            const years = value.map((year) => Number.parseInt(year));
 
             query.year_of_birth_min = Math.min(...years);
             query.year_of_birth_max = Math.max(...years);

@@ -7,7 +7,7 @@ test('returns array with text and url parts respectively', () => {
     const expected = [
         'Click on this url: ',
         'http://www.example.com',
-        ' and read the text.'
+        ' and read the text.',
     ];
     expect(actual).toEqual(expected);
 });
@@ -35,7 +35,8 @@ test('does not crash when text is null', () => {
 });
 
 test('works with multiple urls', () => {
-    const text = 'https://www.fu-berlin.de/dummy Click on this url: http://www.example.com and read the text. http://www.google.com';
+    const text =
+        'https://www.fu-berlin.de/dummy Click on this url: http://www.example.com and read the text. http://www.google.com';
 
     const actual = parseTextWithUrls(text);
     const expected = [
@@ -43,7 +44,7 @@ test('works with multiple urls', () => {
         ' Click on this url: ',
         'http://www.example.com',
         ' and read the text. ',
-        'http://www.google.com'
+        'http://www.google.com',
     ];
     expect(actual).toEqual(expected);
 });

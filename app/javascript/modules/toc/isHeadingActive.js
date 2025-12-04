@@ -10,15 +10,16 @@ export default function isHeadingActive({
     let isBeforeNextHeading = false;
 
     if (
-        currentTape === thisHeadingTape && currentTime >= thisHeadingTime ||
+        (currentTape === thisHeadingTape && currentTime >= thisHeadingTime) ||
         currentTape > thisHeadingTape
     ) {
         isBehindThisHeading = true;
     }
 
     if (
-        typeof nextHeadingTape === 'undefined' && typeof nextHeadingTime === 'undefined' ||
-        currentTape === nextHeadingTape && currentTime < nextHeadingTime ||
+        (typeof nextHeadingTape === 'undefined' &&
+            typeof nextHeadingTime === 'undefined') ||
+        (currentTape === nextHeadingTape && currentTime < nextHeadingTime) ||
         currentTape < nextHeadingTape
     ) {
         isBeforeNextHeading = true;

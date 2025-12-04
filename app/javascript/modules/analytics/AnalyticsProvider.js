@@ -1,9 +1,9 @@
 /* global railsMode */
-import { MatomoProvider, createInstance } from '@jonkoops/matomo-tracker-react';
-import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
+import { MatomoProvider, createInstance } from '@jonkoops/matomo-tracker-react';
 import { ANALYTICS_URL_BASE } from 'modules/constants';
+import PropTypes from 'prop-types';
 
 const metaTag = document.head.querySelector(
     'meta[name~=analytics_site_id][content]'
@@ -13,7 +13,6 @@ const analyticsSiteId = metaTagContent ? Number.parseInt(metaTagContent) : null;
 
 // At the moment, only projects with own domains are tracked.
 export default function AnalyticsProvider({ children }) {
-
     if (['development', 'test'].indexOf(railsMode) > -1) {
         return children;
     }

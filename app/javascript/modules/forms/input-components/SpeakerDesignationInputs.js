@@ -1,9 +1,10 @@
 import { createElement } from 'react';
-import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import InputContainer from './InputContainer';
 
 export default function SpeakerDesignationInputs({
@@ -18,7 +19,7 @@ export default function SpeakerDesignationInputs({
         if (v) {
             handleChange(
                 attribute,
-                contributions.map(c => {
+                contributions.map((c) => {
                     if (c.id.toString() === name) {
                         return { ...c, speaker_designation: v };
                     }
@@ -26,7 +27,7 @@ export default function SpeakerDesignationInputs({
                 })
             );
         }
-    }
+    };
 
     if (isLoading || !people) {
         return <Spinner />;
@@ -35,20 +36,18 @@ export default function SpeakerDesignationInputs({
     return (
         <div className="speaker-designation-input">
             <h4>{t('speaker_designations')}</h4>
-            {
-                contributions.map(contribution => {
-                    const contributor = people[contribution.person_id];
-                    const label = contributor?.display_name;
-                    return createElement(InputContainer, {
-                        key: contribution.id,
-                        scope: attribute,
-                        attribute: contribution.id,
-                        label,
-                        value: contribution.speaker_designation,
-                        handleChange: onChange,
-                    });
-                })
-            }
+            {contributions.map((contribution) => {
+                const contributor = people[contribution.person_id];
+                const label = contributor?.display_name;
+                return createElement(InputContainer, {
+                    key: contribution.id,
+                    scope: attribute,
+                    attribute: contribution.id,
+                    label,
+                    value: contribution.speaker_designation,
+                    handleChange: onChange,
+                });
+            })}
         </div>
     );
 }

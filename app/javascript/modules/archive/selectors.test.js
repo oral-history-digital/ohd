@@ -1,8 +1,8 @@
 import dotProp from 'dot-prop-immutable';
-
 import { VIEWMODE_GRID } from 'modules/constants';
-import * as selectors from './selectors';
+
 import { NAME } from './constants';
+import * as selectors from './selectors';
 
 const state = {
     [NAME]: {
@@ -45,7 +45,7 @@ describe('getViewModes', () => {
     test('gets default view modes if no project is selected (for OHD)', () => {
         const _state = dotProp.set(state, `${NAME}.projectId`, null);
         expect(selectors.getViewModes(_state)).toEqual([VIEWMODE_GRID]);
-    })
+    });
 });
 
 describe('getViewMode', () => {
@@ -73,7 +73,9 @@ test('getArchiveId retrieves archive id', () => {
 
 describe('getInterviewEditView', () => {
     test('retrieves interviewEditView status', () => {
-        expect(selectors.getInterviewEditView(state)).toEqual(state[NAME].interviewEditView);
+        expect(selectors.getInterviewEditView(state)).toEqual(
+            state[NAME].interviewEditView
+        );
     });
 
     test('converts a dirty interviewEditView status', () => {
@@ -84,11 +86,15 @@ describe('getInterviewEditView', () => {
 });
 
 test('getSkipEmptyRows retrieves skipEmptyRows status', () => {
-    expect(selectors.getSkipEmptyRows(state)).toEqual(state[NAME].skipEmptyRows);
+    expect(selectors.getSkipEmptyRows(state)).toEqual(
+        state[NAME].skipEmptyRows
+    );
 });
 
 test('getSelectedInterviewEditViewColumns retrieves selected interview table columns', () => {
-    expect(selectors.getSelectedInterviewEditViewColumns(state)).toEqual(state[NAME].selectedInterviewEditViewColumns);
+    expect(selectors.getSelectedInterviewEditViewColumns(state)).toEqual(
+        state[NAME].selectedInterviewEditViewColumns
+    );
 });
 
 test('getCountryKeys retrieves country keys array', () => {
@@ -96,7 +102,9 @@ test('getCountryKeys retrieves country keys array', () => {
 });
 
 test('getSelectedArchiveIds retrieves selected archive ids', () => {
-    expect(selectors.getSelectedArchiveIds(state)).toEqual(state[NAME].selectedArchiveIds);
+    expect(selectors.getSelectedArchiveIds(state)).toEqual(
+        state[NAME].selectedArchiveIds
+    );
 });
 
 test('getSelectedRegistryEntryIds retrieves selected registry entry ids', () => {

@@ -4,6 +4,11 @@ export default function defaultSortOptions(defaultSearchOrder) {
             sort: 'random',
             order: undefined,
         };
+    } else if (defaultSearchOrder === 'archive_id') {
+        return {
+            sort: 'archive_id',
+            order: 'asc',
+        };
     } else {
         return {
             sort: 'title',

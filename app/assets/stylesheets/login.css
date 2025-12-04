@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: FiraSans,Arial,Helvetica,sans-serif;
+  font-family: FiraSans, Arial, Helvetica, sans-serif;
   color: #222;
   background: #fff;
   font-size: 1rem;
@@ -63,11 +63,14 @@ p {
   margin: 0 0 11px;
 }
 
-form.default .form-input, form.default .form-label label {
+form.default .form-input,
+form.default .form-label label {
   width: 100%;
 }
 
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
 }
 
@@ -75,8 +78,9 @@ form.default .form-group::after {
   clear: both;
 }
 
-form.default .form-group::after, form.default .form-group::before {
-  content: " ";
+form.default .form-group::after,
+form.default .form-group::before {
+  content: ' ';
   display: table;
 }
 
@@ -103,28 +107,29 @@ form.default label {
 form.default input {
   width: 100%;
   border: 1px solid #999;
-    border-top-color: rgb(153, 153, 153);
-    border-right-color: rgb(153, 153, 153);
-    border-bottom-color: rgb(153, 153, 153);
-    border-left-color: rgb(153, 153, 153);
+  border-top-color: rgb(153, 153, 153);
+  border-right-color: rgb(153, 153, 153);
+  border-bottom-color: rgb(153, 153, 153);
+  border-left-color: rgb(153, 153, 153);
   padding: 5px 10px;
 }
 
 .Input {
-  font-family: FiraSans,Arial,Helvetica,sans-serif;
+  font-family: FiraSans, Arial, Helvetica, sans-serif;
   line-height: 1.5rem;
   outline: none;
 }
 
-button, input {
+button,
+input {
   overflow: visible;
 }
 
-form.default input[type="submit"] {
+form.default input[type='submit'] {
   margin-left: 0;
   width: 100%;
   background-color: #6b6b5e;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
   color: #fff;
   padding: 10px;
   border: none;
@@ -142,42 +147,48 @@ footer > input {
 .Button--primaryAction {
   background-color: #e01217 !important;
   color: #fff;
-  border: .125rem solid #e01217 !important;
-  padding: .625rem 1.375rem;
-  transition: filter .3s !important;
+  border: 0.125rem solid #e01217 !important;
+  padding: 0.625rem 1.375rem;
+  transition: filter 0.3s !important;
   width: auto;
 }
 
 .Button {
   cursor: pointer;
-  font-family: FiraSans,Arial,Helvetica,sans-serif;
+  font-family: FiraSans, Arial, Helvetica, sans-serif;
   line-height: 1.5rem;
   outline: none;
 }
 
-[type="reset"], [type="submit"], button, html [type="button"] {
+[type='reset'],
+[type='submit'],
+button,
+html [type='button'] {
   -webkit-appearance: button;
 }
 
-button, input {
+button,
+input {
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
   margin: 0;
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   color: #e01217;
   background-color: transparent;
   text-decoration: none;
 }
 
-p.notice, p.alert {
+p.notice,
+p.alert {
   color: #e01217 !important;
   background-color: #fff;
-  border: .125rem solid #e01217 !important;
-  padding: .625rem 1.375rem;
+  border: 0.125rem solid #e01217 !important;
+  padding: 0.625rem 1.375rem;
 }
 
 .u-line-length {

@@ -1,9 +1,13 @@
+import {
+    AuthShowContainer,
+    AuthorizedContent,
+    useAuthorization,
+} from 'modules/auth';
+import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
-import { AuthShowContainer, AuthorizedContent, useAuthorization } from 'modules/auth';
-import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
-import { useProject } from 'modules/routes';
 import InterviewDownloads from './InterviewDownloads';
 
 export default function InterviewTextMaterials({
@@ -15,15 +19,16 @@ export default function InterviewTextMaterials({
     const { project } = useProject();
 
     const { isAuthorized } = useAuthorization();
-    const showObservations = isAuthorized(interview, 'update') || (
-        interview.properties?.public_attributes?.observations?.toString() === 'true' &&
-        interview.observations?.[locale]
-    );
-    const showTranscriptPDF = !project.is_catalog && (
+    const showObservations =
         isAuthorized(interview, 'update') ||
-        interview.properties?.public_attributes?.transcript?.toString() === 'true'
-    );
-        
+        (interview.properties?.public_attributes?.observations?.toString() ===
+            'true' &&
+            interview.observations?.[locale]);
+    const showTranscriptPDF =
+        !project.is_catalog &&
+        (isAuthorized(interview, 'update') ||
+            interview.properties?.public_attributes?.transcript?.toString() ===
+                'true');
 
     if (!interview.language_id) {
         return null;
@@ -32,52 +37,62 @@ export default function InterviewTextMaterials({
     return (
         <>
             {showObservations && (
-                <p key='observations-downloads' id='observations-downloads'>
-                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                    { interview.observations && Object.keys(interview.observations).map( locale => {
-                        if (interview.observations[locale]) {
-                            return (
-                                <InterviewDownloads
-                                    key={locale}
-                                    lang={locale}
-                                    type='observations'
-                                    condition={showObservations}
-                                    showEmpty={true}
-                                />
-                            )
-                        }
-                    })}
+                <p key="observations-downloads" id="observations-downloads">
+                    <span className="flyout-content-label">
+                        {t('activerecord.attributes.interview.observations')}:
+                    </span>
+                    {interview.observations &&
+                        Object.keys(interview.observations).map((locale) => {
+                            if (interview.observations[locale]) {
+                                return (
+                                    <InterviewDownloads
+                                        key={locale}
+                                        lang={locale}
+                                        type="observations"
+                                        condition={showObservations}
+                                        showEmpty={true}
+                                    />
+                                );
+                            }
+                        })}
                 </p>
             )}
-            { editView && <SingleValueWithFormContainer
-                obj={interview}
-                collapse
-                elementType="textarea"
-                multiLocale
-                attribute="observations"
-                value={interview.observations?.[locale]}
-                noLabel
-            /> }
+            {editView && (
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    collapse
+                    elementType="textarea"
+                    multiLocale
+                    attribute="observations"
+                    value={interview.observations?.[locale]}
+                    noLabel
+                />
+            )}
             {!isCatalog && showTranscriptPDF && (
                 <AuthShowContainer ifLoggedIn>
-                    <p key='transcript-downloads' id='transcript-downloads'>
-                        <span className='flyout-content-label'>{t('transcript')}:</span>
-                        { interview.alpha3s_with_transcript.map((lang) => {
+                    <p key="transcript-downloads" id="transcript-downloads">
+                        <span className="flyout-content-label">
+                            {t('transcript')}:
+                        </span>
+                        {interview.alpha3s_with_transcript.map((lang) => {
                             return (
                                 <InterviewDownloads
                                     key={lang}
                                     lang={lang}
-                                    type='transcript'
+                                    type="transcript"
                                     condition={showTranscriptPDF}
                                     showEmpty={true}
                                 />
-                            )
+                            );
                         })}
                         <StatusForm
                             data={interview}
-                            scope='interview'
-                            attribute='public_transcript'
-                            value={interview.properties?.public_attributes?.transcript?.toString() === 'true'}
+                            scope="interview"
+                            attribute="public_transcript"
+                            value={
+                                interview.properties?.public_attributes?.transcript?.toString() ===
+                                'true'
+                            }
                         />
                     </p>
                 </AuthShowContainer>

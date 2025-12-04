@@ -1,4 +1,5 @@
 import { usePathBase } from 'modules/routes';
+
 import fetchHeaders from './fetchHeaders';
 
 export default function useMaterialApi() {
@@ -8,10 +9,10 @@ export default function useMaterialApi() {
         const path = `${pathBase}/interviews/${archiveId}/materials/${id}.json`;
         const options = {
             method: 'DELETE',
-            headers: fetchHeaders
+            headers: fetchHeaders,
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     return { deleteMaterial };

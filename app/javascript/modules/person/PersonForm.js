@@ -1,24 +1,27 @@
-import { useState} from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
-import { Form } from 'modules/forms';
 import { useEventTypes } from 'modules/event-types';
-import { EventForm, Event } from 'modules/events';
+import { Event, EventForm } from 'modules/events';
+import { Form } from 'modules/forms';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import {
-    PERSON_GENDER_MALE,
-    PERSON_GENDER_FEMALE,
     PERSON_GENDER_DIVERSE,
+    PERSON_GENDER_FEMALE,
+    PERSON_GENDER_MALE,
     PERSON_GENDER_NOT_SPECIFIED,
     PERSON_TITLE_DOCTOR,
     PERSON_TITLE_PROFESSOR,
     PERSON_TITLE_PROFESSOR_WITH_PROMOTION,
 } from './constants';
-import useMutatePeople from './useMutatePeople';
-import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
-import useMutatePersonLandingPageMetadata from './useMutatePersonLandingPageMetadata';
+import {
+    useMutatePeople,
+    useMutatePersonLandingPageMetadata,
+    useMutatePersonWithAssociations,
+} from './hooks';
 
 const formElements = [
     {
@@ -28,7 +31,7 @@ const formElements = [
             PERSON_GENDER_MALE,
             PERSON_GENDER_FEMALE,
             PERSON_GENDER_DIVERSE,
-            PERSON_GENDER_NOT_SPECIFIED
+            PERSON_GENDER_NOT_SPECIFIED,
         ],
         optionsScope: 'gender',
         withEmpty: true,
@@ -39,7 +42,7 @@ const formElements = [
         values: [
             PERSON_TITLE_DOCTOR,
             PERSON_TITLE_PROFESSOR,
-            PERSON_TITLE_PROFESSOR_WITH_PROMOTION
+            PERSON_TITLE_PROFESSOR_WITH_PROMOTION,
         ],
         optionsScope: 'title',
         withEmpty: true,
@@ -87,16 +90,14 @@ const formElements = [
     },
 ];
 
-export default function PersonForm({
-    data: person,
-    onSubmit,
-    onCancel
-}) {
+export default function PersonForm({ data: person, onSubmit, onCancel }) {
     const [isFetching, setIsFetching] = useState(false);
-    const { data: eventTypes, isLoading: eventTypesAreLoading } = useEventTypes();
+    const { data: eventTypes, isLoading: eventTypesAreLoading } =
+        useEventTypes();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
-    const mutatePersonLandingPageMetadata = useMutatePersonLandingPageMetadata();
+    const mutatePersonLandingPageMetadata =
+        useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
     const { project } = useProject();
 
@@ -108,51 +109,54 @@ export default function PersonForm({
         return <Spinner />;
     }
 
-    const nestedScopeProps = (eventTypes?.length > 0) ?
-        [{
-            formComponent: EventForm,
-            formProps: { personId: person?.id },
-            parent: person,
-            scope: 'event',
-            elementRepresentation: showEvent,
-            onDeleteCallback: (id) => {
-                // In case of server error.
-                if (typeof id !== 'number') {
-                    return;
-                }
+    const nestedScopeProps =
+        eventTypes?.length > 0
+            ? [
+                  {
+                      formComponent: EventForm,
+                      formProps: { personId: person?.id },
+                      parent: person,
+                      scope: 'event',
+                      elementRepresentation: showEvent,
+                      onDeleteCallback: (id) => {
+                          // In case of server error.
+                          if (typeof id !== 'number') {
+                              return;
+                          }
 
-                mutatePeople(async people => {
-                    const eventHolder = people.data[person.id];
+                          mutatePeople(async (people) => {
+                              const eventHolder = people.data[person.id];
 
-                    const updatedPeople = {
-                        ...people,
-                        data: {
-                            ...people.data,
-                            [person.id]: {
-                                ...eventHolder,
-                                events: eventHolder.events.filter(event => event.id !== id)
-                            }
-                        }
-                    };
-                    delete updatedPeople.data[id];
+                              const updatedPeople = {
+                                  ...people,
+                                  data: {
+                                      ...people.data,
+                                      [person.id]: {
+                                          ...eventHolder,
+                                          events: eventHolder.events.filter(
+                                              (event) => event.id !== id
+                                          ),
+                                      },
+                                  },
+                              };
+                              delete updatedPeople.data[id];
 
-                    return updatedPeople;
-                });
+                              return updatedPeople;
+                          });
 
-                if (person.id) {
-                    mutatePersonWithAssociations(person.id);
-                    mutatePersonLandingPageMetadata(person.id);
-                }
-            }
-        }] :
-        undefined;
+                          if (person.id) {
+                              mutatePersonWithAssociations(person.id);
+                              mutatePersonLandingPageMetadata(person.id);
+                          }
+                      },
+                  },
+              ]
+            : undefined;
 
     return (
         <div>
             {person && (
-                <h3 className="u-mt-none u-mb">
-                    {person.display_name}
-                </h3>
+                <h3 className="u-mt-none u-mb">{person.display_name}</h3>
             )}
 
             <Form
@@ -162,10 +166,13 @@ export default function PersonForm({
                 nestedScopeProps={nestedScopeProps}
                 helpTextCode="person_form"
                 onSubmit={async (params) => {
-                    mutatePeople(async people => {
+                    mutatePeople(async (people) => {
                         const id = params.person.id;
                         setIsFetching(true);
-                        const result = await submitDataWithFetch(pathBase, params);
+                        const result = await submitDataWithFetch(
+                            pathBase,
+                            params
+                        );
                         const updatedPerson = result.data;
 
                         // Other stuff that needs to be done after result is returned.
@@ -183,8 +190,8 @@ export default function PersonForm({
                             ...people,
                             data: {
                                 ...people.data,
-                                [updatedPerson.id]: updatedPerson
-                            }
+                                [updatedPerson.id]: updatedPerson,
+                            },
                         };
                         return updatedPeople;
                     });

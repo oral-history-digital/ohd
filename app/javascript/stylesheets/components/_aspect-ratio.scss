@@ -9,9 +9,9 @@
 
 .aspect-ratio::before {
   display: block;
-  content: "";
+  content: '';
   width: 100%;
-  padding-top: 75%;  /* Fallback aspect ratio of 4:3 */
+  padding-top: 75%; /* Fallback aspect ratio of 4:3 */
   padding-top: calc(var(--aspect-y) / var(--aspect-x) * 100%);
 }
 

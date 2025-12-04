@@ -17,6 +17,8 @@ class Tei
       'm' => 'kinesic',
       's' => 'vocal',
       'v' => 'vocal',
+      'ml' => 'incident',
+      'i' => 'incident',
     }
 
     unless original_text.blank?
@@ -40,6 +42,12 @@ class Tei
             index: combined_index,
             type: 'pause',
             attributes: {rend: part, dur: "PT#{part[/(\d+)/,1]}.0S"}
+          }
+        when "(-)"
+          ordinary_text << {
+            index: combined_index,
+            type: 'pause',
+            attributes: {rend: part, type: 'short'}
           }
         when /\{?\[(.*)\]\}?/, /\{\((.*)\)\}/, /\{(.*)\}/
           ordinary_text << {
@@ -107,7 +115,7 @@ class Tei
           ordinary_text << {
             content: '...',
             index: combined_index,
-            type: 'w',
+            type: 'pc',
             attributes: {type: 'ellipsis'}
           }
         when /^<(\w+)\s*\(([^)]+)\)\s*(.+)>$/
@@ -138,7 +146,7 @@ class Tei
             index_to: to,
             type: "za"
           }
-        when /^(\?|\.|!|,|:|\-)$/
+        when /^(\?|\.|!|,|;|:|\-|–|—|"|“|»)$/
           ordinary_text << {
             content: part.strip, # Remove extra spaces
             index: combined_index,

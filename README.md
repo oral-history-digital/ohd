@@ -22,9 +22,9 @@ This project includes a fully configured Dev Container setup for easy developmen
 
 ### Prerequisites
 
--   [Docker](https://www.docker.com/get-started) (version 20.10.7 or later)
--   [Visual Studio Code](https://code.visualstudio.com/)
--   [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code
+- [Docker](https://www.docker.com/get-started) (version 20.10.7 or later)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code
 
 ### Setup Process
 
@@ -35,12 +35,12 @@ This project includes a fully configured Dev Container setup for easy developmen
 
 The Dev Container setup will automatically:
 
--   Pull the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
--   Build the development image with application-specific dependencies
--   Set up the MySQL database and Solr search server
--   Install application dependencies via Bundler and Yarn
--   Configure the database and other required services
--   Import the database dump
+- Pull the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
+- Build the development image with application-specific dependencies
+- Set up the MySQL database and Solr search server
+- Install application dependencies via Bundler and Yarn
+- Configure the database and other required services
+- Import the database dump
 
 ### Docker Architecture
 
@@ -62,9 +62,9 @@ Once the container is built and configured, the application should start automat
 
 After starting the application, you can access it at:
 
--   URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
--   Admin login: `alice@example.com`
--   Password: `password`
+- URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
+- Admin login: `alice@example.com`
+- Password: `password`
 
 ### Project Domain Configuration
 
@@ -88,9 +88,9 @@ Without the correct domain configuration, the application will not route request
 
 The development environment consists of three services:
 
--   `app`: The main Rails application container
--   `db`: MariaDB 10.5 database
--   `solr`: Solr 8 search engine
+- `app`: The main Rails application container
+- `db`: MariaDB 10.5 database
+- `solr`: Solr 8 search engine
 
 For more detailed information about the Dev Container setup, see [.devcontainer/README.md](.devcontainer/README.md).
 
@@ -98,12 +98,12 @@ For more detailed information about the Dev Container setup, see [.devcontainer/
 
 ### Prerequisites
 
--   Ruby 3.0.7
--   MySQL/MariaDB
--   Node.js >=18
--   yarn
--   Java Runtime Environment (Version 8)
--   optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
+- Ruby 3.0.7
+- MySQL/MariaDB
+- Node.js >=18
+- yarn
+- Java Runtime Environment (Version 8)
+- optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
 
 ### Application Setup
 
@@ -207,6 +207,22 @@ To activate caching in development (which is recommended at the moment), run:
 touch tmp/caching-dev.txt
 ```
 
+This Application is configured to use file-cache. If not cleaned up regularly,
+the cache folder can grow very large or the maximum number of inodes can be reached.
+Either way writing to disk would be impossible and the Application unresponsive.
+To clear all the cache, simply delete the files in `tmp/cache/`.
+To delete only old cache files, you can use the following command:
+
+```bash
+find tmp/cache/ -type f -atime +7 -delete
+```
+
+or use the provided rake task:
+
+```bash
+bin/rake cache:clear_old DAYS=7
+```
+
 For reindexing the search index, run:
 
 ```bash
@@ -221,16 +237,16 @@ development but needs to be set up by hand in staging or production.
 
 Two changes to the original config file have been made so far:
 
--   charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters
--   GermanMinimalStemFilter for analyzing German language
+- charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters
+- GermanMinimalStemFilter for analyzing German language
 
 ## Tests
 
 See above for basic dependencies, then prepare the environment for
 testing:
 
--   `npm install --legacy-peer-deps`
--   foreman start
+- `npm install --legacy-peer-deps`
+- foreman start
 
 Foreman also starts the development servers as they can be shared with the test
 environment. With that out of the way, run all tests:
@@ -241,9 +257,9 @@ environment. With that out of the way, run all tests:
 Additional features of the test suite can be controlled with environment
 variables:
 
--   set COVERAGE=true to generate a coverage report to `tmp/coverage/index.html`
--   set RETRY=true to rerun failed tests up to 3 times
--   set HEADLESS=true to run the e2e tests in a headless browser
+- set COVERAGE=true to generate a coverage report to `tmp/coverage/index.html`
+- set RETRY=true to rerun failed tests up to 3 times
+- set HEADLESS=true to run the e2e tests in a headless browser
 
 There is also a script to run all tests in an unattended fashion (with RETRY
 and HEADLESS):
@@ -266,18 +282,17 @@ Use `bin/vnc status` to check service status, or `bin/vnc stop` to stop the serv
 
 This repo is a Rails application with a React frontend. For simplicity and traceability we treat the version in `package.json` as the canonical project version (frontend + backend) for releases. Use standard [Semantic Versioning](https://semver.org/spec/v2.0.0.html) (X.Y.Z) for production releases and optional pre-release RC tags when needed.
 
--   Production releases: create a clean SemVer git tag on `main` (for example `v1.2.3`). The release process should update `package.json` so the file reflects the canonical release version.
--   Release candidates (optional): you may use pre-release tags such as `v1.2.3-rc.1`, `v1.2.3-rc.2` to mark candidates, but these are optional and not required for staging deployments.
+- Production releases: create a clean SemVer git tag on `main` (for example `v1.2.3`). The release process should update `package.json` so the file reflects the canonical release version.
+- Release candidates (optional): you may use pre-release tags such as `v1.2.3-rc.1`, `v1.2.3-rc.2` to mark candidates, but these are optional and not required for staging deployments.
 
 Notes about branches and staging in this project:
 
--   This repository does not rely on a dedicated `staging` branch. See `.devcontainer/deploy/DEPLOYMENT.md` for deployment setup and requirements.
--   The staging stage is configured in `config/deploy/ohd_archive_staging.rb` (stage name: `ohd_archive_staging`). The Capistrano deploy respects the `BRANCH` environment variable (see `config/deploy.rb` and the stage file), so you can deploy any branch to the staging host for testing.
+- This repository does not rely on a dedicated `staging` branch. See `.devcontainer/deploy/DEPLOYMENT.md` for deployment setup and requirements.
+- The staging stage is configured in `config/deploy/ohd_archive_staging.rb` (stage name: `ohd_archive_staging`). The Capistrano deploy respects the `BRANCH` environment variable (see `config/deploy.rb` and the stage file), so you can deploy any branch to the staging host for testing.
 
 ### Typical workflows and examples
 
 1. Deploy a feature branch to staging (recommended)
-
     - Work on your feature branch, add tests and push the branch to origin.
     - Deploy that branch directly to the staging host (configured in `config/deploy/ohd_archive_staging.rb`) from the repository root:
 
@@ -298,7 +313,6 @@ Notes about branches and staging in this project:
     - For full deployment setup and troubleshooting (SSH keys, VPN, devcontainer), see `.devcontainer/deploy/DEPLOYMENT.md`.
 
 2. Producing a production release
-
     - Merge the final changes into `main` (via PR) and update the `CHANGELOG.md`.
     - Create a production tag on `main` (this is the canonical release):
 
@@ -318,11 +332,9 @@ Notes about branches and staging in this project:
     - A clean SemVer tag (e.g. `v1.2.3`) on `main` is the canonical release marker for production. Use pre-release `-rc.N` tags only if you want to record an explicit candidate — they are optional.
 
 3. Create a GitHub release (recommended)
-
     - After pushing the tag to origin, create a Release on GitHub and use the project's `CHANGELOG.md` entry for that version as the release notes.
 
     - Web UI:
-
         - Go to the repository on GitHub → Releases → Draft a new release.
         - Select the tag you pushed (e.g. `v1.2.3`) or enter it manually.
         - Set the release title (for example `v1.2.3`) and paste the corresponding section from `CHANGELOG.md` into the release notes area.
@@ -331,7 +343,6 @@ Notes about branches and staging in this project:
     - Tip: copy only the specific changelog subsection for the released version into the release notes for clarity, or point to the full `CHANGELOG.md` if you prefer.
 
 4. Bumping the next development version (optional)
-
     - To prepare the project for the next development cycle, bump the version in `package.json` on your development branch without creating a git tag. This keeps `package.json` ahead for ongoing work while reserving release tags for production on `main`:
 
         ```bash

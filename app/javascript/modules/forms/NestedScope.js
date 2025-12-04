@@ -1,12 +1,13 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { cloneElement, createElement, useState } from 'react';
-import { FaPlus } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 
+import classNames from 'classnames';
 import { getData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { pluralize, underscore } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+
 import NestedScopeElementContainer from './NestedScopeElementContainer';
 
 export default function NestedScope({

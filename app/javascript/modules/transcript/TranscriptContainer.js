@@ -1,6 +1,3 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import { getArchiveId } from 'modules/archive';
 import {
     fetchData,
@@ -10,6 +7,9 @@ import {
 } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
 import { getCurrentTape, getIsIdle, getMediaTime } from 'modules/media-player';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Transcript from './Transcript';
 
 const mapStateToProps = (state) => ({

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_19_162812) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -88,7 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
-  create_table "banners", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "banners", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.text "message_en"
     t.text "message_de"
     t.boolean "active", default: false, null: false
@@ -338,7 +338,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "interview_permissions", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "interview_permissions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "interview_id"
     t.integer "user_id"
     t.string "action_name"
@@ -430,7 +430,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["project_id"], name: "index_map_sections_on_project_id"
   end
 
-  create_table "material_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "material_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "material_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -442,7 +442,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["material_id"], name: "index_material_translations_on_material_id"
   end
 
-  create_table "materials", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "materials", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.string "workflow_state", default: "unshared", null: false
@@ -512,7 +512,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "normdata_api_statistics", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "normdata_api_statistics", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "search_term"
     t.string "saved_entry"
     t.integer "registry_entry_id"
@@ -561,7 +561,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "oauth_openid_requests", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "oauth_openid_requests", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "access_grant_id", null: false
     t.string "nonce", null: false
     t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
@@ -751,7 +751,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
-  create_table "registry_name_type_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "registry_name_type_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.integer "registry_name_type_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -832,7 +832,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
-  create_table "role_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "role_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1001,7 +1001,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1012,7 +1012,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1155,10 +1155,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_110840) do
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
     t.boolean "do_not_track", default: false, null: false
-    t.string "otp_secret"
-    t.integer "consumed_timestep"
-    t.boolean "otp_required_for_login"
-    t.datetime "changed_to_otp_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end

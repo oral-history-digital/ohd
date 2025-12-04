@@ -41,8 +41,8 @@ class BasicsTest < ApplicationSystemTestCase
     fill_in 'Street', with: 'Am Dornbusch 13'
     fill_in 'City', with: 'Frankfurt am Main'
     fill_in 'Email', with: 'mrossi@example.com'
-    fill_in 'Password', name: 'password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
+    fill_in 'Password', name: 'password', with: 'Password123!'
+    fill_in 'Password confirmation', with: 'Password123!'
     check 'Terms of Use', visible: :all
     check 'Privacy Policy', visible: :all
     assert_text 'I agree to the Terms of Use of the Oral-History.Digital platform.'
@@ -204,7 +204,7 @@ class BasicsTest < ApplicationSystemTestCase
       click_on 'Login'
     end
     fill_in 'Email', with: 'john@example.com'
-    fill_in 'Password', with: 'password'
+    fill_in 'Password', with: 'Password123!'
     click_on 'Login'
 
     assert_text 'My Project'
@@ -282,8 +282,8 @@ class BasicsTest < ApplicationSystemTestCase
     assert_match /Oral-History.Digital. Steps to recover your password./, mail.subject
     link = links_from_email(mail)[0]
     visit link
-    fill_in 'password', with: 'newpassword'
-    fill_in 'password_confirmation', with: 'newpassword'
+    fill_in 'password', with: 'Password123!'
+    fill_in 'password_confirmation', with: 'Password123!'
     click_on 'Submit'
     assert_text 'This is the test archive of the oral history digital project'
 

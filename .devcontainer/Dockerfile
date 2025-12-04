@@ -1,5 +1,6 @@
 # Use pre-built Rails base image with Java and Node.js
 FROM ghcr.io/yotkadata/rails-base:latest
+ARG NODE_VERSION=20
 
 # Create the 'vscode' user matching devcontainer.json remoteUser
 ARG USERNAME=vscode
@@ -24,6 +25,14 @@ RUN groupadd --gid $USER_GID $USERNAME \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
+
+# Install Node.js (NodeSource) and Yarn v1 to satisfy dev tooling
+# Use NODE_VERSION build arg to choose major Node version (default 20)
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+  && apt-get update \
+  && apt-get install -y nodejs \
+  && npm install -g yarn@1.22.19 \
+  && rm -rf /var/lib/apt/lists/* || true
 
 # Copy dependency files first for better layer caching
 COPY Gemfile Gemfile.lock* package.json yarn.lock ./

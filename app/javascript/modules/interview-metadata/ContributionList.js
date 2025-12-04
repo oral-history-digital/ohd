@@ -1,55 +1,71 @@
+import { useAuthorization } from 'modules/auth';
+import { getGroupedContributions } from 'modules/data';
+import { useInterviewContributors } from 'modules/person';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { getGroupedContributions } from 'modules/data';
-import { useAuthorization } from 'modules/auth';
-import { usePeople } from 'modules/person';
-import { Spinner } from 'modules/spinners';
-import ContributionGroup from './ContributionGroup';
 import ContributionContainer from './ContributionContainer';
+import ContributionGroup from './ContributionGroup';
 
 export default function ContributionList({
     withSpeakerDesignation = false,
     interview,
 }) {
-    const { data: people, isLoading } = usePeople();
+    const { data: people, isLoading } = useInterviewContributors(interview.id);
     const groupedContributions = useSelector(getGroupedContributions);
     const { isAuthorized } = useAuthorization();
 
     if (isLoading || typeof people === 'undefined') {
-        return (<Spinner />);
+        return <Spinner />;
     }
 
-    const authorized = isAuthorized({type: 'Contribution', interview_id: interview.id}, 'update');
+    const authorized = isAuthorized(
+        { type: 'Contribution', interview_id: interview.id },
+        'update'
+    );
 
     return (
         <ul className="ContributionList">
-            {
-                groupedContributions?.map(group => (
-                    group.contributions.filter(c => c.workflow_state === 'public' || authorized).length > 0 && (
+            {groupedContributions?.map((group) => {
+                const contributions = group?.contributions ?? [];
+
+                const visibleCount = contributions.filter(
+                    (c) => c.workflow_state === 'public' || authorized
+                ).length;
+
+                return (
+                    visibleCount > 0 && (
                         <ContributionGroup
                             key={group.type}
                             className="ContributionList-item"
                             contributionType={group.type}
                         >
-                            {
-                                group.contributions.map(contribution => (
+                            {contributions.map((contribution) => {
+                                const person =
+                                    people?.[contribution.person_id] ?? null;
+
+                                return (
                                     <ContributionContainer
-                                        person={people[contribution.person_id]}
+                                        person={person}
                                         contribution={contribution}
+                                        interview={interview}
                                         key={contribution.id}
-                                        withSpeakerDesignation={withSpeakerDesignation}
+                                        withSpeakerDesignation={
+                                            withSpeakerDesignation
+                                        }
                                     />
-                                ))
-                            }
+                                );
+                            })}
                         </ContributionGroup>
                     )
-                ))
-            }
+                );
+            })}
         </ul>
     );
 }
 
 ContributionList.propTypes = {
     withSpeakerDesignation: PropTypes.bool,
+    interview: PropTypes.object.isRequired,
 };

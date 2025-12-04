@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
 import { useTrackPageView } from 'modules/analytics';
-import useLoadInterviewData from '../useLoadInterviewData';
-import { EditTableLoader } from 'modules/edit-table';
-import { MediaPlayer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { Spinner } from 'modules/spinners';
+import { EditTableLoader } from 'modules/edit-table';
 import { useI18n } from 'modules/i18n';
+import { MediaPlayer } from 'modules/media-player';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
+
+import useLoadInterviewData from '../useLoadInterviewData';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
 import MediaPreview from './MediaPreview';
@@ -22,7 +23,7 @@ export default function Interview({
     setArchiveId,
 }) {
     const { archiveId } = useParams();
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
 
     useTrackPageView();
 
@@ -38,13 +39,22 @@ export default function Interview({
     // Do not render InterviewTabs component as long as interview.alpha3 is absent.
     // (Strangely, it sometimes becomes present only shortly after this component is rendered.)
     if (!interviewIsFetched || typeof interview?.alpha3 !== 'string') {
-        return <Spinner withPadding />;
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <Spinner size={200} color="#f8f8f8" withPadding />
+            </div>
+        );
     }
 
-    const documentTitle = `${t('activerecord.models.interview.one')} ${interview?.archive_id}`;
+    const documentTitle = `${t('activerecord.models.interview.one')} ${
+        interview?.archive_id
+    }`;
 
     if (isCatalog) {
-        if (interview?.contributions && Object.keys(interview.contributions).length > 0) {
+        if (
+            interview?.contributions &&
+            Object.keys(interview.contributions).length > 0
+        ) {
             return <InterviewDetailsLeftSideContainer />;
         } else {
             return <Spinner withPadding />;
@@ -58,17 +68,16 @@ export default function Interview({
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent
                         object={interview}
-                        action='show'
+                        action="show"
                         unauthorizedContent={<MediaPreview />}
                         showIfPublic
                     >
                         <MediaPlayer />
-                        {
-                            interviewEditView ?
-                                <EditTableLoader /> :
-                                <InterviewTabsContainer />
-
-                        }
+                        {interviewEditView ? (
+                            <EditTableLoader />
+                        ) : (
+                            <InterviewTabsContainer />
+                        )}
                     </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut ifNoProject>

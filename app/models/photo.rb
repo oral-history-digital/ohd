@@ -60,7 +60,7 @@ class Photo < ApplicationRecord
   def name
     n = photo_file_name || photo.blob[:filename]
     unless %w(jpg jpeg png gif tiff pdf psd eps ai indd raw).include?(n.split('.').last.downcase)
-      n += ".#{photo.blob.content_type.split('/').last}"
+      n += ".#{photo.blob.content_type.split('/').last}" if photo.blob
     end
     n
   end

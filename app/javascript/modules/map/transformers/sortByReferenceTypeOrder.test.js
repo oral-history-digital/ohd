@@ -25,7 +25,11 @@ test('sort references according to order of reference types', () => {
         },
     ];
 
-    const actual = sortByReferenceTypeOrder(referenceTypes, 'registry_reference_type_id', references);
+    const actual = sortByReferenceTypeOrder(
+        referenceTypes,
+        'registry_reference_type_id',
+        references
+    );
     const expected = [
         {
             id: 2,

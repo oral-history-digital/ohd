@@ -1,14 +1,21 @@
+import {
+    InstitutionTile,
+    deleteData,
+    fetchData,
+    getInstitutions,
+    getInstitutionsStatus,
+    getStatuses,
+    submitData,
+} from 'modules/data';
+import { getCookie } from 'modules/persistence';
+import { getInstitutionsQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getInstitutionsQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getInstitutions,
-    getStatuses, getInstitutionsStatus, InstitutionTile } from 'modules/data';
-import { getCookie } from 'modules/persistence';
-import WrappedDataList from './WrappedDataList';
 import LogosContainer from './LogosContainer';
+import WrappedDataList from './WrappedDataList';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     editView: getCookie('editView') === 'true',
     data: getInstitutions(state),
     dataStatus: getInstitutionsStatus(state),
@@ -67,14 +74,18 @@ const mapStateToProps = state => ({
     ],
     joinedData: { logo: LogosContainer },
     showComponent: InstitutionTile,
-    helpTextCode: 'institution_form'
+    helpTextCode: 'institution_form',
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-    setQueryParams,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+            setQueryParams,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

@@ -1,4 +1,4 @@
-import { de, es, ru, el } from 'date-fns/locale';
+import { de, el, es, ru } from 'date-fns/locale';
 
 export default {
     de,

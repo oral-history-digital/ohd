@@ -1,7 +1,8 @@
-import { pluralize } from  'modules/strings';
+import { pluralize } from 'modules/strings';
+
 import buildFormData from './buildFormData';
 
-const headerOptions = { 'Accept': 'application/json' };
+const headerOptions = { Accept: 'application/json' };
 
 export default function submitFormDataWithFetch(pathBase, params) {
     const dataType = Object.keys(params)[0];
@@ -27,5 +28,5 @@ export default function submitFormDataWithFetch(pathBase, params) {
         body: formData,
     };
 
-    return fetch(path, options).then(res => res.json());
+    return fetch(path, options).then((res) => res.json());
 }

@@ -1,9 +1,9 @@
+import { getCurrentInterview } from 'modules/data';
 import { connect } from 'react-redux';
 
-import { getCurrentInterview } from 'modules/data';
 import InterviewSearchResults from './InterviewSearchResults';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),
 });
 

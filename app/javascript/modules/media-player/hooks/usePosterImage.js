@@ -1,5 +1,6 @@
-import speakerImage from 'assets/images/speaker.png';
 import { useEffect, useRef, useState } from 'react';
+
+import speakerImage from 'assets/images/speaker.png';
 
 export function usePosterImage(interview) {
     const [posterUrl, setPosterUrl] = useState(null);

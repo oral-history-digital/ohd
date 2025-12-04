@@ -40,16 +40,16 @@ Use the **Development Environment** for development work.
 
 ### What's Included
 
--   Full Rails application stack
--   MySQL database with sample data
--   Solr search engine
--   Webpack dev server
--   All development dependencies
+- Full Rails application stack
+- MySQL database with sample data
+- Solr search engine
+- Webpack dev server
+- All development dependencies
 
 ### Network Mode
 
--   Bridge mode (Docker services work normally)
--   No VPN access from container
+- Bridge mode (Docker services work normally)
+- No VPN access from container
 
 ## Deployment Environment
 
@@ -57,30 +57,30 @@ See [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md) for detailed setup instructions
 
 ### What's Included
 
--   Minimal Ruby environment
--   Deployment tools (Capistrano)
--   SSH configuration
+- Minimal Ruby environment
+- Deployment tools (Capistrano)
+- SSH configuration
 
 ### What's NOT Included
 
--   Database (cannot run migrations or seed data)
--   Solr (cannot reindex or search)
--   Webpack dev server
+- Database (cannot run migrations or seed data)
+- Solr (cannot reindex or search)
+- Webpack dev server
 
 ### Network Mode
 
--   Host mode (full VPN access for deployment)
+- Host mode (full VPN access for deployment)
 
 ## Setup Process (Development Environment)
 
 The Dev Container setup uses a pre-built base image for faster startup times. The setup process includes:
 
--   Pulling the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
--   Building the development image with application-specific dependencies
--   Setting up the MySQL database and Solr search server
--   Installing application dependencies via Bundler and Yarn
--   Configuring the database and other required services
--   Importing the database dump
+- Pulling the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
+- Building the development image with application-specific dependencies
+- Setting up the MySQL database and Solr search server
+- Installing application dependencies via Bundler and Yarn
+- Configuring the database and other required services
+- Importing the database dump
 
 ## Docker Architecture
 
@@ -94,9 +94,9 @@ The development environment uses a two-stage Docker setup:
 
 The setup automatically configures several important files:
 
--   `database.yml` - Configuration for MySQL connection
--   `datacite.yml` - Settings for DataCite integration
--   `sunspot.yml` - Solr search engine configuration
+- `database.yml` - Configuration for MySQL connection
+- `datacite.yml` - Settings for DataCite integration
+- `sunspot.yml` - Solr search engine configuration
 
 Database permissions are also automatically configured for proper access from the application.
 
@@ -110,11 +110,11 @@ Once the container is built and configured, the application should start automat
 
 This script will:
 
--   Add the necessary host entry for portal.oral-history.localhost
--   Stop any existing application processes
--   Start Solr and reindex content
--   Start the webpack dev server
--   Start the Rails server
+- Add the necessary host entry for portal.oral-history.localhost
+- Stop any existing application processes
+- Start Solr and reindex content
+- Start the webpack dev server
+- Start the Rails server
 
 ## Troubleshooting
 
@@ -146,17 +146,17 @@ If you encounter database connection issues:
 
 After starting the application, you can access it at:
 
--   URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
--   Admin login: `alice@example.com`
--   Password: `password`
+- URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
+- Admin login: `alice@example.com`
+- Password: `password`
 
 ## Container Components (Development Environment)
 
 The development environment consists of three services:
 
--   `app`: The main Rails application container
--   `db`: MariaDB 10.5 database
--   `solr`: Solr 8 search engine
+- `app`: The main Rails application container
+- `db`: MariaDB 10.5 database
+- `solr`: Solr 8 search engine
 
 ## Development vs Deployment
 
@@ -175,10 +175,10 @@ For deployment instructions, see [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md).
 
 ## Development Notes
 
--   The application database is set up with sample data and a development admin user by default
--   Source code changes are reflected immediately due to the volume mount
--   Node modules are excluded from the bind mount to avoid performance issues
--   The container forwards ports 3000 (Rails), 8983 (Solr), and 3035 (webpack-dev-server)
+- The application database is set up with sample data and a development admin user by default
+- Source code changes are reflected immediately due to the volume mount
+- Node modules are excluded from the bind mount to avoid performance issues
+- The container forwards ports 3000 (Rails), 8983 (Solr), and 3035 (webpack-dev-server)
 
 ## Rebuilding the Container
 

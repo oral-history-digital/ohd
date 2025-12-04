@@ -1,17 +1,16 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import { getLocale, submitSelectedArchiveIds } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SubmitInterviewIds({
     action,
     selectedArchiveIds,
     confirmText,
     filename,
-    format
+    format,
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -24,15 +23,26 @@ export default function SubmitInterviewIds({
             trigger={t(`edit.interviews.${action}.title`)}
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
-            {close => (
+            {(close) => (
                 <div>
-                    {confirmText || t(`edit.interviews.${action}.confirm_text`, {archive_ids: selectedArchiveIds.join(', ')})}
+                    {confirmText ||
+                        t(`edit.interviews.${action}.confirm_text`, {
+                            archive_ids: selectedArchiveIds.join(', '),
+                        })}
 
                     <button
                         type="button"
                         className="Button any-button"
                         onClick={() => {
-                            dispatch(submitSelectedArchiveIds(selectedArchiveIds, action, pathBase, filename, format));
+                            dispatch(
+                                submitSelectedArchiveIds(
+                                    selectedArchiveIds,
+                                    action,
+                                    pathBase,
+                                    filename,
+                                    format
+                                )
+                            );
                             close();
                         }}
                     >

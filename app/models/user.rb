@@ -50,6 +50,7 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
+  validate :password_complexity
   validates :first_name, presence: true, length: { minimum: 2 }, allow_blank: false
   validates :last_name, presence: true, length: { minimum: 2 }, allow_blank: false
   validates :country, presence: true, length: { minimum: 2 }, allow_blank: false
@@ -57,6 +58,13 @@ class User < ApplicationRecord
   validates :city, presence: true, length: { minimum: 2 }, allow_blank: false
   validates :priv_agreement, acceptance: { accept: true }
   validates :tos_agreement, acceptance: { accept: true }
+
+  def password_complexity
+    # Regexp extracted from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+    return if password.blank? || password =~ /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+=]).{8,}$/
+
+    errors.add :password, 'activerecord.errors.default.password_input'
+  end
 
   workflow do
     state :created do
@@ -99,7 +107,7 @@ class User < ApplicationRecord
   def remove
     subject = TranslationValue.for('devise.mailer.remove.subject', self.locale_with_project_fallback)
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
-    RemoveUserJob.set(wait: 10.seconds).perform_later(self.id)
+    RemoveUserJob.set(wait: 10.seconds).perform_later(user_id: self.id)
   end
 
   def projects

@@ -1,16 +1,14 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Spinner } from 'modules/spinners';
+import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
-import { getCurrentInterview } from 'modules/data';
 import { sendTimeChangeRequest } from 'modules/media-player';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
 import getSegmentById from './getSegmentById';
 
-export default function AnnotationResult({
-    data,
-}) {
+export default function AnnotationResult({ data }) {
     const { t, locale } = useI18n();
     const interview = useSelector(getCurrentInterview);
     const dispatch = useDispatch();
@@ -30,22 +28,22 @@ export default function AnnotationResult({
     }
 
     return (
-        <button
-            type="button"
-            className="SearchResult"
-            onClick={handleClick}
-        >
+        <button type="button" className="SearchResult" onClick={handleClick}>
             <div className="SearchResult-meta">
-                {t('modules.interview_search.annotation_for')}
-                {' '}
-                {segment ?
-                    <TapeAndTime tape={segment.tape_nbr} time={segment.time} transcriptCoupled={interview.transcript_coupled} /> :
-                    <Spinner small />
-                }
+                {t('modules.interview_search.annotation_for')}{' '}
+                {segment ? (
+                    <TapeAndTime
+                        tape={segment.tape_nbr}
+                        time={segment.time}
+                        transcriptCoupled={interview.transcript_coupled}
+                    />
+                ) : (
+                    <Spinner size="small" />
+                )}
             </div>
             <div
                 className="SearchResult-text"
-                dangerouslySetInnerHTML={{__html: annotationText}}
+                dangerouslySetInnerHTML={{ __html: annotationText }}
             />
         </button>
     );

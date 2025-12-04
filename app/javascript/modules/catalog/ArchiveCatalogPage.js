@@ -1,7 +1,3 @@
-import { Helmet } from 'react-helmet';
-import { FaChevronRight } from 'react-icons/fa';
-import { Link, useParams } from 'react-router-dom';
-
 import { useTrackPageView } from 'modules/analytics';
 import { useLoadCompleteProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
@@ -9,6 +5,10 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
 import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
+import { Helmet } from 'react-helmet';
+import { FaChevronRight } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
+
 import ArchiveCatalog from './ArchiveCatalog';
 
 export default function ArchiveCatalogPage() {
@@ -188,37 +188,51 @@ export default function ArchiveCatalogPage() {
                             : t('activerecord.models.interview.other')}
                     </dd>
 
-                    <dt className="DescriptionList-term">
-                        {t('modules.catalog.publication_date')}
-                    </dt>
-                    <dd className="DescriptionList-description">
-                        {project.publication_date}
-                    </dd>
+                    {project.publication_date && (
+                        <>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.publication_date')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {project.publication_date}
+                            </dd>
+                        </>
+                    )}
 
-                    <dt className="DescriptionList-term">
-                        {t('modules.catalog.subjects')}
-                    </dt>
-                    <dd className="DescriptionList-description">
-                        {project?.subjects.map((s, i) => (
-                            <span key={`subject-${i}`}>
-                                {s.descriptor[locale]}
-                                {i < project?.subjects.length - 1 && ', '}
-                            </span>
-                        ))}
-                    </dd>
+                    {project?.subjects.length > 0 && (
+                        <>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.subjects')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {project?.subjects.map((s, i) => (
+                                    <span key={`subject-${i}`}>
+                                        {s.descriptor[locale]}
+                                        {i < project?.subjects.length - 1 &&
+                                            ', '}
+                                    </span>
+                                ))}
+                            </dd>
+                        </>
+                    )}
 
-                    <dt className="DescriptionList-term">
-                        {t('modules.catalog.level_of_indexing')}
-                    </dt>
-                    <dd className="DescriptionList-description">
-                        {project?.levels_of_indexing.map((s, i) => (
-                            <span key={`loi-${i}`}>
-                                {`${s.count} ${s.descriptor[locale]}`}
-                                {i < project?.levels_of_indexing.length - 1 &&
-                                    ', '}
-                            </span>
-                        ))}
-                    </dd>
+                    {project?.levels_of_indexing.length > 0 && (
+                        <>
+                            <dt className="DescriptionList-term">
+                                {t('modules.catalog.level_of_indexing')}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                {project?.levels_of_indexing.map((s, i) => (
+                                    <span key={`loi-${i}`}>
+                                        {`${s.count} ${s.descriptor[locale]}`}
+                                        {i <
+                                            project?.levels_of_indexing.length -
+                                                1 && ', '}
+                                    </span>
+                                ))}
+                            </dd>
+                        </>
+                    )}
 
                     <ArchiveCatalog id={Number.parseInt(id)} />
                 </div>

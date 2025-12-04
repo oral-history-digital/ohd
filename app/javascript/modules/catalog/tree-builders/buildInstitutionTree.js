@@ -1,6 +1,9 @@
-export default function buildInstitutionTree(rootInstitutions, allInstitutions) {
-    const clonedInstitutions = allInstitutions.map(i => ({...i}));
-    const clonedRootInstitutions = rootInstitutions.map(i => ({...i}));
+export default function buildInstitutionTree(
+    rootInstitutions,
+    allInstitutions
+) {
+    const clonedInstitutions = allInstitutions.map((i) => ({ ...i }));
+    const clonedRootInstitutions = rootInstitutions.map((i) => ({ ...i }));
 
     const institutionsByParentId = clonedInstitutions.reduce((acc, inst) => {
         if (inst.parent_id === null) {
@@ -15,7 +18,7 @@ export default function buildInstitutionTree(rootInstitutions, allInstitutions) 
         return acc;
     }, {});
 
-    clonedRootInstitutions.forEach(inst => {
+    clonedRootInstitutions.forEach((inst) => {
         gatherChildren(inst, institutionsByParentId);
     });
 
@@ -26,7 +29,7 @@ function gatherChildren(inst, institutionsByParentId) {
     inst.children = institutionsByParentId[inst.id] || [];
     delete inst.parent_id;
 
-    inst.children.forEach(childInst => {
+    inst.children.forEach((childInst) => {
         gatherChildren(childInst, institutionsByParentId);
     });
 }

@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
 import { camelCase } from 'modules/strings';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 export default function AddButton({
     className,
@@ -18,13 +17,21 @@ export default function AddButton({
 
     return (
         <AuthorizedContent
-            object={[{type: camelCase(scope), interview_id: interview?.id}, task]}
+            object={[
+                { type: camelCase(scope), interview_id: interview?.id },
+                task,
+            ]}
             action="create"
         >
             <Modal
                 triggerClassName={className}
                 title={t(`edit.${scope}.new`)}
-                trigger={<><FaPlus className="Icon Icon--editorial" /> {t(`edit.${scope}.new`)}</>}
+                trigger={
+                    <>
+                        <FaPlus className="Icon Icon--editorial" />{' '}
+                        {t(`edit.${scope}.new`)}
+                    </>
+                }
                 disabled={disabled}
             >
                 {onClose}

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { NAME } from '../constants';
 
 const getState = (state) => state[NAME];
@@ -21,5 +22,3 @@ export const getTimeChangeRequest = (state) =>
 
 export const getTimeChangeRequestAvailable = (state) =>
     getTimeChangeRequest(state) !== null;
-
-export const getPlayerSize = (state) => getState(state).playerSize;

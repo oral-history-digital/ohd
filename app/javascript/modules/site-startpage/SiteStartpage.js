@@ -1,6 +1,7 @@
 import { useTrackPageView } from 'modules/analytics';
-import StartpageIntroduction from './StartpageIntroduction';
+
 import StartpageArchives from './StartpageArchives';
+import StartpageIntroduction from './StartpageIntroduction';
 
 export default function SiteStartpage() {
     useTrackPageView();
