@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2025-12-04
+
+### Changed
+
+- feat: add pre-commit hook for formatting with prettier ([#53](https://github.com/oral-history-digital/ohd/pull/53))
+
 ## [1.4.2] - 2025-12-04
 
 ### Fixed
@@ -13,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix removing users ([d02f15668](https://github.com/oral-history-digital/ohd/commit/d02f1566811fdfff6234e91eb9634480ccc33f3d))
 - load translations in UserForm to respond correctly to user ([f0c2621b9](https://github.com/oral-history-digital/ohd/commit/f0c2621b9c3af43a58435c7a0518f408f542e6f2))
 
-### Changes
+### Changed
 
 - extend password regex ([b80ab0cd5](https://github.com/oral-history-digital/ohd/commit/b80ab0cd51454e1aca5209e426d421ba9b183944))
 - adding thunk to userform-test ([b00ca1571](https://github.com/oral-history-digital/ohd/commit/b00ca15718b9afa4b137b961c0dc97808763bb3f))
@@ -209,6 +215,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.4.3]: https://github.com/oral-history-digital/ohd/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/oral-history-digital/ohd/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/oral-history-digital/ohd/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/oral-history-digital/ohd/compare/v1.3.0...v1.4.0
