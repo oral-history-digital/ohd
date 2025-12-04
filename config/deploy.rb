@@ -56,7 +56,7 @@ namespace :yarn do
   task :install do
     on roles(:app) do
       within release_path do
-        execute :yarn, 'install', '--production', '--frozen-lockfile', '--network-timeout', '600000'
+        execute :yarn, 'install', '--production', '--frozen-lockfile', '--ignore-engines', '--network-timeout', '600000'
       end
     end
   end
