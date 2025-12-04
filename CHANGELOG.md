@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2025-12-04
+
+### Fixed
+
+- fix deletion of users ([04c4c0055](https://github.com/oral-history-digital/ohd/commit/04c4c00553b8171988cf6a9830b79319a05351dd))
+- fix removing users ([d02f15668](https://github.com/oral-history-digital/ohd/commit/d02f1566811fdfff6234e91eb9634480ccc33f3d))
+- load translations in UserForm to respond correctly to user ([f0c2621b9](https://github.com/oral-history-digital/ohd/commit/f0c2621b9c3af43a58435c7a0518f408f542e6f2))
+
+### Changes
+
+- extend password regex ([b80ab0cd5](https://github.com/oral-history-digital/ohd/commit/b80ab0cd51454e1aca5209e426d421ba9b183944))
+- adding thunk to userform-test ([b00ca1571](https://github.com/oral-history-digital/ohd/commit/b00ca15718b9afa4b137b961c0dc97808763bb3f))
+- mv getting translation_values for locale method to model, include translations in policy ([da29d0665](https://github.com/oral-history-digital/ohd/commit/da29d06657d2f1fed5351e31b8923890f199f5ea))
+- oai: rm whitespace ([86320fc87](https://github.com/oral-history-digital/ohd/commit/86320fc8756e7713785293592ea59cbd046fd9bb))
+- OOH-89: Add translations for Doorkeeper OpenID Connect ([5c3aa8dc3](https://github.com/oral-history-digital/ohd/commit/5c3aa8dc3e4c0862b358b423ebdbfd328129a720))
+
 ## [1.4.1] - 2025-11-28
 
 ### Added
@@ -193,6 +209,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.4.2]: https://github.com/oral-history-digital/ohd/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/oral-history-digital/ohd/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/oral-history-digital/ohd/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/oral-history-digital/ohd/compare/v1.2.1...v1.3.0
