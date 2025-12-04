@@ -25,6 +25,7 @@ const NAME_VALUES = {
         'media_missing',
         'archive_id',
         'interview_date',
+        'interview_year',
         'duration',
         'tape_count',
         'language_id',
