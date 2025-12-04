@@ -289,6 +289,15 @@ class Project < ApplicationRecord
     end
   end
 
+  def min_to_max_interview_year_range
+    cache_key_date = [interviews.maximum(:updated_at), DateTime.now].compact.max.strftime("%d.%m-%H:%M")
+    Rails.cache.fetch("#{shortname}-#{cache_key_date}-#{interviews.count}") do
+      first = (interviews.map { |i| i.interview_year.first } - [nil]).min || 1900
+      last = (interviews.map { |i| i.interview_year.last } - [nil]).max || DateTime.now.year
+      (first..last)
+    end
+  end
+
   def featured_interviews
     interviews
       .where(workflow_state: 'public')
@@ -317,8 +326,6 @@ class Project < ApplicationRecord
   end
 
   def search_facets_hash
-    # TODO: there is potential to make the following (uncached) faster
-    #
     search_facets.inject({}) do |mem, facet|
       case facet["source"]
       when "RegistryReferenceType"
@@ -363,6 +370,22 @@ class Project < ApplicationRecord
                 }
                 subfacets
               end
+            }
+          rescue
+          end
+        when "interview_year"
+          begin
+            mem[facet.name.to_sym] = {
+              name: name,
+              subfacets: min_to_max_interview_year_range.inject({}) do |subfacets, key|
+                h = {}
+                I18n.available_locales.map { |l| h[l] = key }
+                subfacets[key.to_s] = {
+                  name: h,
+                  count: 0,
+                }
+                subfacets
+              end,
             }
           rescue
           end

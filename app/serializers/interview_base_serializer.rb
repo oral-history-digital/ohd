@@ -11,6 +11,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :media_type,
     :duration,
     :interview_date,
+    :interview_year,
     :publication_date,
     :language_id,
     :primary_language_id,
@@ -64,6 +65,10 @@ class InterviewBaseSerializer < ApplicationSerializer
       end
     end
     hash
+  end
+
+  def interview_year
+    object.interview_year.join(", ")
   end
 
   def publication_date
