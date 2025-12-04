@@ -289,6 +289,15 @@ class Project < ApplicationRecord
     end
   end
 
+  def min_to_max_interview_year_range
+    cache_key_date = [interviews.maximum(:updated_at), DateTime.now].compact.max.strftime("%d.%m-%H:%M")
+    Rails.cache.fetch("#{shortname}-#{cache_key_date}-#{interviews.count}") do
+      first = (interviews.map { |i| i.interview_years.first } - [nil]).min || 1900
+      last = (interviews.map { |i| i.interview_years.last } - [nil]).max || DateTime.now.year
+      (first..last)
+    end
+  end
+
   def featured_interviews
     interviews
       .where(workflow_state: 'public')
@@ -351,18 +360,15 @@ class Project < ApplicationRecord
           begin
             mem[facet.name.to_sym] = {
               name: name,
-              subfacets: facet.source.classify.constantize.group(facet.name).count.keys.compact.inject({}) do |subfacets, key|
-                localized_hash = I18n.available_locales.inject({}) do |acc, locale|
-                  acc[locale] = key
-                  acc
-                end
-
+              subfacets: min_to_max_interview_year_range.inject({}) do |subfacets, key|
+                h = {}
+                I18n.available_locales.map { |l| h[l] = key }
                 subfacets[key.to_s] = {
-                  name: localized_hash,
+                  name: h,
                   count: 0,
                 }
                 subfacets
-              end
+              end,
             }
           rescue
           end
