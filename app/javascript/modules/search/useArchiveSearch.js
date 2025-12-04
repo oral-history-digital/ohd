@@ -32,6 +32,8 @@ export default function useArchiveSearch() {
         facets,
         yearOfBirthMin,
         yearOfBirthMax,
+        interviewYearMin,
+        interviewYearMax,
     } = useSearchParams();
     const pathBase = usePathBase();
 
@@ -40,6 +42,7 @@ export default function useArchiveSearch() {
             fulltext,
             ...facets,
             year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
+            interview_year: range(interviewYearMin, interviewYearMax + 1),
             sort: sortBy,
             order: sortOrder,
             page: pageIndex + 1,
