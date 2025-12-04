@@ -37,7 +37,7 @@ class SearchesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: { facets: facets }
+        render json: { facets: facets_data }
       end
     end
   end
