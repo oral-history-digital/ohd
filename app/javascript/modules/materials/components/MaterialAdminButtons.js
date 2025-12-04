@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-
 import { useMaterialApi } from 'modules/api';
 import { getArchiveId } from 'modules/archive';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 import useMutateMaterials from '../hooks/useMutateMaterials';
 import MaterialForm from './MaterialForm';
@@ -56,7 +55,9 @@ export default function MaterialAdminButtons({ material }) {
             >
                 {(closeModal) => (
                     <DeleteItemForm
-                        onSubmit={() => handleDeleteClick(material.id, closeModal)}
+                        onSubmit={() =>
+                            handleDeleteClick(material.id, closeModal)
+                        }
                         onCancel={closeModal}
                     />
                 )}

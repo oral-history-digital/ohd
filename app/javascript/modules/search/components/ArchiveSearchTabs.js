@@ -1,20 +1,20 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
-
+import classNames from 'classnames';
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import {
     VIEWMODE_GRID,
     VIEWMODE_LIST,
     VIEWMODE_WORKFLOW,
 } from 'modules/constants';
-import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+
+import ResultGrid from './ResultGrid';
 import ResultTable from './ResultTable';
 import WorkflowResultsContainer from './WorkflowResultsContainer';
-import ResultGrid from './ResultGrid';
 
 export default function ArchiveSearchTabs({
     interviews,

@@ -3,8 +3,13 @@ export { NAME as USER_NAME } from './constants';
 export { LOGOUT } from './action-types';
 export { submitLogout } from './actions';
 export { default as userReducer } from './reducer';
-export { getIsLoggedIn, getIsLoggedOut, getLoggedInAt,
-    getIsRegistered, getChangePasswordStatus } from './selectors';
+export {
+    getIsLoggedIn,
+    getIsLoggedOut,
+    getLoggedInAt,
+    getIsRegistered,
+    getChangePasswordStatus,
+} from './selectors';
 export { default as AccountPage } from './components/AccountPage';
 export { default as OrderNewPasswordContainer } from './components/OrderNewPasswordContainer';
 export { default as ActivateAccount } from './components/ActivateAccount';

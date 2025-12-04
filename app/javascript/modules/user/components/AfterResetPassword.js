@@ -1,9 +1,7 @@
+import { getChangePasswordStatus } from 'modules/user';
 import { useSelector } from 'react-redux';
 
-import { getChangePasswordStatus } from 'modules/user';
-
-export default function AfterResetPassword ({
-}) {
+export default function AfterResetPassword({}) {
     const changePasswordStatus = useSelector(getChangePasswordStatus);
 
     if (
@@ -15,5 +13,3 @@ export default function AfterResetPassword ({
 
     return null;
 }
-
-

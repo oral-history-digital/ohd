@@ -1,37 +1,38 @@
 /* global railsMode */
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { Helmet } from 'react-helmet';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { ResizeWatcherContainer } from 'modules/user-agent';
-import { Sidebar } from 'modules/sidebar';
-import { useProject } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import FetchAccountContainer from './FetchAccountContainer';
-import SiteHeader from './SiteHeader';
-import SiteFooter from './SiteFooter';
-import MessagesContainer from './MessagesContainer';
-import BurgerButton from './BurgerButton';
-import BackToTopButton from './BackToTopButton';
+import classNames from 'classnames';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
     doNotShowBannerAgainThisSession,
 } from 'modules/banner';
+import { OHD_DOMAINS } from 'modules/constants';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { useProject } from 'modules/routes';
+import { Sidebar } from 'modules/sidebar';
 import {
-    AfterRegisterPopup,
     AfterConfirmationPopup,
+    AfterRegisterPopup,
     AfterRequestProjectAccessPopup,
-    CorrectUserDataPopup,
     AfterResetPassword,
     ConfirmNewZwarTosPopup,
+    CorrectUserDataPopup,
 } from 'modules/user';
-import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
-import { OHD_DOMAINS } from 'modules/constants';
+import { ResizeWatcherContainer } from 'modules/user-agent';
 import { isMobile } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+import { useSearchParams } from 'react-router-dom';
+
+import BackToTopButton from './BackToTopButton';
+import BurgerButton from './BurgerButton';
+import FetchAccountContainer from './FetchAccountContainer';
+import MessagesContainer from './MessagesContainer';
+import SiteFooter from './SiteFooter';
+import SiteHeader from './SiteHeader';
+import useCheckLocaleAgainstProject from './useCheckLocaleAgainstProject';
 
 export default function Layout({
     scrollPositionBelowThreshold,

@@ -4,7 +4,7 @@ export default function referenceTypesToColorMap(referenceTypes) {
     }
 
     const colorMap = new Map();
-    referenceTypes.forEach(type => {
+    referenceTypes.forEach((type) => {
         colorMap.set(type.id.toString(), type.color);
     });
 

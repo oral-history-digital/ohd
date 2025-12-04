@@ -1,6 +1,5 @@
-import { useState, useMemo } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
+
 import {
     getCoreRowModel,
     getFilteredRowModel,
@@ -8,8 +7,10 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table';
+import classNames from 'classnames';
+import { PAGINATION_DEFAULT_PAGE_SIZE, Pagination } from 'modules/ui';
+import PropTypes from 'prop-types';
 
-import { Pagination, PAGINATION_DEFAULT_PAGE_SIZE } from 'modules/ui';
 import Filter from './Filter';
 import Table from './Table';
 
@@ -46,14 +47,14 @@ export default function TableWithPagination({
         [pageIndex, pageSize]
     );
 
-    const sortFunc = m => {
+    const sortFunc = (m) => {
         if (manualSorting) {
             manualSortFunc(m);
             setSorting(m);
         } else {
             setSorting(m);
         }
-    }
+    };
 
     const table = useReactTable({
         data: data || [],
@@ -82,10 +83,11 @@ export default function TableWithPagination({
             <Filter
                 className="u-mb-small"
                 value={globalFilter}
-                onChange={value => {
+                onChange={(value) => {
                     setGlobalFilter(value);
-                    if (typeof manualFilterFunc === 'function') manualFilterFunc(value);
-                    if (typeof(setPage) === 'function') setPage(1);
+                    if (typeof manualFilterFunc === 'function')
+                        manualFilterFunc(value);
+                    if (typeof setPage === 'function') setPage(1);
                 }}
             />
             {children}
@@ -94,7 +96,10 @@ export default function TableWithPagination({
                 page={table.getState().pagination.pageIndex + 1}
                 pageCount={table.getPageCount()}
                 pageSize={table.getState().pagination.pageSize}
-                onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
+                onPageChange={(page) => {
+                    table.setPageIndex(page - 1);
+                    if (typeof setPage === 'function') setPage(page);
+                }}
                 onPageSizeChange={table.setPageSize}
                 changePageSize={changePageSize}
             />
@@ -104,7 +109,10 @@ export default function TableWithPagination({
                 page={table.getState().pagination.pageIndex + 1}
                 pageCount={table.getPageCount()}
                 pageSize={table.getState().pagination.pageSize}
-                onPageChange={page => {table.setPageIndex(page - 1); if (typeof(setPage) === 'function') setPage(page);}}
+                onPageChange={(page) => {
+                    table.setPageIndex(page - 1);
+                    if (typeof setPage === 'function') setPage(page);
+                }}
                 onPageSizeChange={table.setPageSize}
                 changePageSize={changePageSize}
             />

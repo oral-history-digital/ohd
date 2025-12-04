@@ -14,7 +14,6 @@ This project provides two separate devcontainer environments:
     ```
 
 2. **Edit `.devcontainer/.env`** with your actual deployment configuration:
-
     - **Required:** Set FQDN hostnames and SSH key path
     - **Optional:** Set IP addresses (only if you need to override DNS resolution)
     - **Optional:** Set VPN DNS servers (only if your VPN requires specific DNS)
@@ -55,8 +54,10 @@ This project provides two separate devcontainer environments:
 
 1. **Open your workspace folder** in VS Code (without the active Devcontainer)
 2. Do one of the following:
-  - **Choose:** "Reopen in Container" in the popup that should appear on the lower right
-  - Hit **Shift+Ctrl+P** and write/select "Dev Containers: Reopen in Container"
+
+- **Choose:** "Reopen in Container" in the popup that should appear on the lower right
+- Hit **Shift+Ctrl+P** and write/select "Dev Containers: Reopen in Container"
+
 3. **Choose:** "OHD Development" or "OHD Deploy" from the dropdown
 
 ## Two Environment Approach
@@ -79,7 +80,6 @@ This project provides two separate devcontainer environments:
 1. **Connect to VPN** on your host machine (if required)
 
 2. **Switch to deployment environment:**
-
     - Press `Ctrl+Shift+P`
     - Select "Dev Containers: Reopen in Container"
     - Choose "OHD Deploy" from the list

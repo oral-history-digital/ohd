@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { submitDataWithFetch } from 'modules/api';
-import { usePathBase } from 'modules/routes';
-import { useMutatePeople, useMutatePersonWithAssociations } from './hooks';
-
 import { Form } from 'modules/forms';
+import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+
+import { useMutatePeople, useMutatePersonWithAssociations } from './hooks';
 
 export default function BiographicalEntryForm({
     biographicalEntry,

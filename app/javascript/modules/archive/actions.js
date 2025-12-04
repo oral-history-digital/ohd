@@ -1,23 +1,22 @@
+import { setCookie } from 'modules/persistence';
 import request from 'superagent';
 
-import { setCookie } from 'modules/persistence';
-
 import {
-    SET_LOCALE,
-    SET_ARCHIVE_ID,
-    SET_PROJECT_ID,
-    SET_AVAILABLE_VIEW_MODES,
-    SET_VIEW_MODE,
-    CLEAR_VIEW_MODES,
     CHANGE_TO_EDIT_VIEW,
-    CHANGE_TO_TRANSLATIONS_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
-    RECEIVE_RESULT,
-    UPDATE_SELECTED_ARCHIVE_IDS,
-    SET_SELECTED_ARCHIVE_IDS,
-    UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
+    CHANGE_TO_TRANSLATIONS_VIEW,
+    CLEAR_VIEW_MODES,
     MERGE_TRANSLATIONS,
+    RECEIVE_RESULT,
     REQUEST_TRANSLATIONS,
+    SET_ARCHIVE_ID,
+    SET_AVAILABLE_VIEW_MODES,
+    SET_LOCALE,
+    SET_PROJECT_ID,
+    SET_SELECTED_ARCHIVE_IDS,
+    SET_VIEW_MODE,
+    UPDATE_SELECTED_ARCHIVE_IDS,
+    UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
 } from './action-types';
 
 export const setLocale = (locale) => ({

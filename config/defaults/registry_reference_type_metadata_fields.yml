@@ -6,7 +6,7 @@
   use_in_details_view: true
   use_in_metadata_import: true
   use_in_map_search: true
-  map_color: "#1c2d8f"
+  map_color: '#1c2d8f'
 :home_location:
   ref_object_type: Person
   use_as_facet: true
@@ -14,14 +14,14 @@
   use_in_details_view: true
   use_in_metadata_import: true
   use_in_map_search: true
-  map_color: "#91911d"
+  map_color: '#91911d'
 :interview_location:
   ref_object_type: Interview
   use_in_details_view: true
   display_on_landing_page: true
   use_in_metadata_import: true
   use_in_map_search: true
-  map_color: "#911d91"
+  map_color: '#911d91'
 :subjects:
   ref_object_type: Interview
   use_in_details_view: true

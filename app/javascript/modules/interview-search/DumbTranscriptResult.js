@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
-
 import { useI18n } from 'modules/i18n';
-import { sendTimeChangeRequest } from 'modules/media-player';
 import { TapeAndTime } from 'modules/interview-helpers';
+import { sendTimeChangeRequest } from 'modules/media-player';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 export default function DumbTranscriptResult({
     highlightedText,
@@ -46,7 +45,7 @@ export default function DumbTranscriptResult({
             <p
                 className="SearchResult-text"
                 lang={lang}
-                dangerouslySetInnerHTML={{__html: highlightedText}}
+                dangerouslySetInnerHTML={{ __html: highlightedText }}
             />
         </button>
     );

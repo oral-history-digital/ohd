@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import Select from 'react-select';
-import { FaDownload } from 'react-icons/fa';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { usePathBase } from 'modules/routes';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
+import Select from 'react-select';
+
 import AdminSubTab from './AdminSubTab';
 
-export default function UsersAdminTabPanel({
-    countryKeys,
-    project,
-}) {
+export default function UsersAdminTabPanel({ countryKeys, project }) {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
@@ -20,24 +18,24 @@ export default function UsersAdminTabPanel({
     const [selectedCountries, setSelectedCountries] = useState([]);
 
     function countryKeyOptions() {
-        return countryKeys[locale].map(x => ({
+        return countryKeys[locale].map((x) => ({
             label: t(`countries.${x}`),
-            value: x
+            value: x,
         }));
     }
 
     function userStatisticsPath() {
         let path = `${pathBase}/admin/user_statistics.csv`;
         if (selectedCountries.length > 0) {
-            path = path + "?countries[]="
-            path = path + selectedCountries.join("&countries[]=")
+            path = path + '?countries[]=';
+            path = path + selectedCountries.join('&countries[]=');
         }
         return path;
     }
 
     function onCountrySelectorChange(value) {
         let array = [];
-        for(var o in value) {
+        for (var o in value) {
             array.push(value[o]['value']);
         }
         setSelectedCountries(array);
@@ -49,15 +47,13 @@ export default function UsersAdminTabPanel({
 
     return (
         <ErrorBoundary small>
-            <h3 className='SidebarTabs-title'>
-                { t('edit.administration') }
-            </h3>
-            <div className='flyout-sub-tabs-container flyout-video'>
+            <h3 className="SidebarTabs-title">{t('edit.administration')}</h3>
+            <div className="flyout-sub-tabs-container flyout-video">
                 <AdminSubTab
-                    title='edit.users.admin'
+                    title="edit.users.admin"
                     url={`${pathBase}/users`}
-                    obj={{type: 'User'}}
-                    action='update'
+                    obj={{ type: 'User' }}
+                    action="update"
                 >
                     <div>
                         <div>
@@ -65,8 +61,7 @@ export default function UsersAdminTabPanel({
                                 <FaDownload
                                     className="Icon Icon--primary"
                                     title={t('download_user_statistics')}
-                                />
-                                {' '}
+                                />{' '}
                                 {t('download_user_statistics')}
                             </a>
                         </div>
@@ -76,23 +71,32 @@ export default function UsersAdminTabPanel({
                             isMulti
                             onChange={onCountrySelectorChange}
                             styles={{
-                                placeholder: provided => ({...provided, cursor: 'text'}),
-                                menu: provided => ({...provided, position: 'relative'}),
+                                placeholder: (provided) => ({
+                                    ...provided,
+                                    cursor: 'text',
+                                }),
+                                menu: (provided) => ({
+                                    ...provided,
+                                    position: 'relative',
+                                }),
                             }}
                             placeholder={t('filter_by_countries')}
                         />
-                        { project.has_newsletter &&
+                        {project.has_newsletter && (
                             <div>
-                                <a href={`${pathBase}/users/newsletter_recipients.csv`}>
+                                <a
+                                    href={`${pathBase}/users/newsletter_recipients.csv`}
+                                >
                                     <FaDownload
                                         className="Icon Icon--primary"
-                                        title={t('download_newsletter_recipients')}
-                                    />
-                                    {' '}
+                                        title={t(
+                                            'download_newsletter_recipients'
+                                        )}
+                                    />{' '}
                                     {t('download_newsletter_recipients')}
                                 </a>
                             </div>
-                        }
+                        )}
                     </div>
                 </AdminSubTab>
             </div>
@@ -102,4 +106,4 @@ export default function UsersAdminTabPanel({
 
 UsersAdminTabPanel.propTypes = {
     countryKeys: PropTypes.object.isRequired,
-}
+};

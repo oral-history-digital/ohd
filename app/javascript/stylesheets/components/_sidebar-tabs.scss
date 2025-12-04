@@ -10,7 +10,7 @@
   background-color: $ui-background-color;
   border-left: ($base-unit * 0.25) solid $ui-background-color;
   border-bottom: 0 !important;
-  box-shadow: 0 -1px 1px $sidebar-background-color;  /* 1 */
+  box-shadow: 0 -1px 1px $sidebar-background-color; /* 1 */
   color: white;
   font-size: 1.2rem;
   line-height: $base-unit * 1.5;
@@ -22,33 +22,33 @@
 }
 
 .SidebarTabs-tab--admin {
-    background-color: var(--editorial-color);
-    border-left-color: var(--editorial-color);
+  background-color: var(--editorial-color);
+  border-left-color: var(--editorial-color);
 }
 
 .SidebarTabs-tab:disabled {
-    display: none;
+  display: none;
 }
 
 .SidebarTabs-tab[data-selected] {
-    background-color: var(--primary-color);
-    border-left-color: var(--primary-color);
+  background-color: var(--primary-color);
+  border-left-color: var(--primary-color);
 }
 
 .SidebarTabs-tab:focus {
-    border-left-color: $focus-color;
+  border-left-color: $focus-color;
 }
 
 .SidebarTabs-tab:active {
-    background-color: $ui-background-color;
+  background-color: $ui-background-color;
 }
 
 .SidebarTabs-tab--admin:active {
-    background-color: var(--editorial-color);
+  background-color: var(--editorial-color);
 }
 
 .SidebarTabs-tab[data-selected]:active {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 .SidebarTabs-title {

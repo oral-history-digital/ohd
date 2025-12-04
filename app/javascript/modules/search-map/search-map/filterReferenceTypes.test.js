@@ -6,13 +6,13 @@ test('filters ref_types property of each location according to filters set', () 
         {
             id: 1,
             ref_types: {
-              1: 3,
-              segment: 3,
+                1: 3,
+                segment: 3,
             },
         },
         {
             id: 2,
-            ref_types: {1: 3},
+            ref_types: { 1: 3 },
         },
     ];
 
@@ -20,7 +20,7 @@ test('filters ref_types property of each location according to filters set', () 
     const expected = [
         {
             id: 1,
-            ref_types: {segment: 3},
+            ref_types: { segment: 3 },
         },
         {
             id: 2,

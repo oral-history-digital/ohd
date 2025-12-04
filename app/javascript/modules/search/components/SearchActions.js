@@ -1,14 +1,13 @@
-import { FaStar } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
 import { Modal } from 'modules/ui';
 import { WorkbookItemForm } from 'modules/workbook';
+import { FaStar } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
-import useQueryTitle from '../useQueryTitle';
 import useFacets from '../useFacets';
+import useQueryTitle from '../useQueryTitle';
 
 export default function SearchActions() {
     const { t } = useI18n();

@@ -19,7 +19,7 @@ interview:
   still-file-name: 'still_image_file_name'
   still-file-size: 'still_image_file_size'
   translated: 'translated'
-  video:  'video'
+  video: 'video'
   original-citation: 'original_citation'
   translated-citation: 'translated_citation'
   citation-timecode: 'citation_timecode'

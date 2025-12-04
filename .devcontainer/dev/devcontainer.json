@@ -1,54 +1,54 @@
 {
-    "name": "Oral History Digital Dev Container",
+  "name": "Oral History Digital Dev Container",
 
-    // Point at your Compose file(s)
-    "dockerComposeFile": ["./docker-compose.yml"],
-    "service": "app",
-    "workspaceFolder": "/workspace",
+  // Point at your Compose file(s)
+  "dockerComposeFile": ["./docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace",
 
-    // User inside the container
-    "remoteUser": "root",
+  // User inside the container
+  "remoteUser": "root",
 
-    // Environment variables
-    "containerEnv": {
-        "DISPLAY": ":99"
-    },
+  // Environment variables
+  "containerEnv": {
+    "DISPLAY": ":99"
+  },
 
-    // Lifecycle hooks
-    "postCreateCommand": "bash .devcontainer/scripts/setup-dev.sh",
-    "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
+  // Lifecycle hooks
+  "postCreateCommand": "bash .devcontainer/scripts/setup-dev.sh",
+  "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
 
-    // Ports to forward
-    "forwardPorts": [3000, 8983, 3035, 6080], // 6080 for noVNC
+  // Ports to forward
+  "forwardPorts": [3000, 8983, 3035, 6080], // 6080 for noVNC
 
-    // VS Code client customizations
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash",
-                "editor.defaultFormatter": "esbenp.prettier-vscode",
-                "editor.formatOnSave": true,
-                "[javascript]": {
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[typescript]": {
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[json]": {
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[ruby]": {
-                    "editor.formatOnSave": true
-                }
-            },
-            "extensions": [
-                "ms-azuretools.vscode-docker",
-                "dbaeumer.vscode-eslint",
-                "github.copilot",
-                "eamodio.gitlens",
-                "esbenp.prettier-vscode"
-            ]
+  // VS Code client customizations
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[ruby]": {
+          "editor.formatOnSave": true
         }
-    },
-    "shutdownAction": "stopCompose"
+      },
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint",
+        "github.copilot",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "shutdownAction": "stopCompose"
 }

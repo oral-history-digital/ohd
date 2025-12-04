@@ -1,10 +1,11 @@
 import { Fragment } from 'react';
+
+import { useHumanReadable } from 'modules/data';
+import { Event, usePersonEvents } from 'modules/events';
+import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
-import { useHumanReadable } from 'modules/data';
-import { usePersonEvents, Event } from 'modules/events';
-import { Spinner } from 'modules/spinners';
 import PersonContributions from './PersonContributions';
 
 const attributes = [

@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { CopyText } from 'modules/ui';
+import PropTypes from 'prop-types';
+
 import interviewCitation from '../interviewCitation';
 
 export default function CitationInfo({

@@ -16,7 +16,8 @@
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
   cursor: pointer;
-  transition: background-color $transition-duration,
+  transition:
+    background-color $transition-duration,
     border-color $transition-duration;
 
   // Custom arrow

@@ -8,8 +8,9 @@ export default function tableHeader({
         translation_locale: interview.translation_alpha3,
     };
 
-    const header = /heading|translation|annotation/.test(column) ?
-        (t(`edit_column_header.${column.split('_')[0]}`) + ` (${column.split('_')[1]})`) :
-        t(`edit_column_header.${column}`, translationParams).join('');
+    const header = /heading|translation|annotation/.test(column)
+        ? t(`edit_column_header.${column.split('_')[0]}`) +
+          ` (${column.split('_')[1]})`
+        : t(`edit_column_header.${column}`, translationParams).join('');
     return header;
 }

@@ -1,7 +1,8 @@
+import { useState } from 'react';
+
 import { useI18n } from 'modules/i18n';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
 function UserTasks({ tasks, supervisedTasks }) {

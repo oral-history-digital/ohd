@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+
 import queryString from 'query-string';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function useTranscriptQueryString() {
     const { search } = useLocation();
     const navigate = useNavigate();
 
-    const params = useMemo(
-        () => queryString.parse(search), [search]
-    );
+    const params = useMemo(() => queryString.parse(search), [search]);
 
     const segment = Number.parseInt(params.segment);
 
@@ -19,7 +18,7 @@ export default function useTranscriptQueryString() {
     function setParam(name, value) {
         const newParams = {
             ...params,
-           [name]: value,
+            [name]: value,
         };
         pushToHistory(newParams);
     }

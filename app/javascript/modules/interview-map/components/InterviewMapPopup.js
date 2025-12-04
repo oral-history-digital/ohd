@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { getArchiveId } from 'modules/archive';
-import { sendTimeChangeRequest } from 'modules/media-player';
-import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
+import { sendTimeChangeRequest } from 'modules/media-player';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
 import useInterviewMapReferences from '../useInterviewMapReferences';
 
 export default function InterviewMapPopup({

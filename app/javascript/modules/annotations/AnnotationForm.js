@@ -1,4 +1,5 @@
 import { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
@@ -11,10 +12,15 @@ export default class AnnotationForm extends Component {
                 locale: this.props.contentLocale,
                 segment_id: props.segment.id,
                 interview_id: props.segment.interview_id,
-                text: props.annotation && props.annotation.text[props.contentLocale] ?
-                    RichTextEditor.createValueFromString(props.annotation.text[props.contentLocale], 'html') :
-                    RichTextEditor.createEmptyValue()
-            }
+                text:
+                    props.annotation &&
+                    props.annotation.text[props.contentLocale]
+                        ? RichTextEditor.createValueFromString(
+                              props.annotation.text[props.contentLocale],
+                              'html'
+                          )
+                        : RichTextEditor.createEmptyValue(),
+            },
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -23,27 +29,23 @@ export default class AnnotationForm extends Component {
 
     handleChange(value) {
         this.setState({
-            values: Object.assign({}, this.state.values, {text: value})
-        })
+            values: Object.assign({}, this.state.values, { text: value }),
+        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
         let preparedValues = this.state.values;
         preparedValues.text = this.state.values.text.toString('html');
-        this.props.submitData(this.props, {annotation: preparedValues});
+        this.props.submitData(this.props, { annotation: preparedValues });
         this.props.onSubmit();
     }
 
-    render () {
+    render() {
         const { onCancel, submitLabel, cancelLabel } = this.props;
 
         return (
-            <form
-                id='annotation'
-                className='Form'
-                onSubmit={this.handleSubmit}
-            >
+            <form id="annotation" className="Form" onSubmit={this.handleSubmit}>
                 <RichTextEditor
                     value={this.state.values.text}
                     toolbarConfig={{
@@ -69,7 +71,6 @@ export default class AnnotationForm extends Component {
             </form>
         );
     }
-
 }
 
 AnnotationForm.propTypes = {

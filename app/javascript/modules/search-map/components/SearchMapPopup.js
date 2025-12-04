@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
-import { usePathBase } from 'modules/routes';
 import { setArchiveId } from 'modules/archive';
-import { sendTimeChangeRequest } from 'modules/media-player';
-import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
+import { sendTimeChangeRequest } from 'modules/media-player';
+import { usePathBase } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import useMapReferences from '../map-references/useMapReferences';
 
 export default function SearchMapPopup({

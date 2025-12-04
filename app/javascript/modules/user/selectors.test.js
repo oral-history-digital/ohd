@@ -3,17 +3,17 @@ import * as selectors from './selectors';
 
 const state = {
     [NAME]: {
-       isLoggedIn: true,
-       isLoggedOut: false,
-       isLoggingIn: false,
-       firstName: 'Alice',
-       lastName: 'Henderson',
-       email: 'alice@example.com',
-       admin: true,
-       loggedInAt: 1607584846364,
-       error: null,
-       registrationStatus: 'registered',
-       orderNewPasswordStatus: 'ordered_new_password',
+        isLoggedIn: true,
+        isLoggedOut: false,
+        isLoggingIn: false,
+        firstName: 'Alice',
+        lastName: 'Henderson',
+        email: 'alice@example.com',
+        admin: true,
+        loggedInAt: 1607584846364,
+        error: null,
+        registrationStatus: 'registered',
+        orderNewPasswordStatus: 'ordered_new_password',
     },
 };
 
@@ -58,9 +58,13 @@ test('getLoginError retrieves login error', () => {
 });
 
 test('getRegistrationStatus retrieves registration status text', () => {
-    expect(selectors.getRegistrationStatus(state)).toEqual(state[NAME].registrationStatus);
+    expect(selectors.getRegistrationStatus(state)).toEqual(
+        state[NAME].registrationStatus
+    );
 });
 
 test('getOrderNewPasswordStatus retrieves status for new password', () => {
-    expect(selectors.getOrderNewPasswordStatus(state)).toEqual(state[NAME].orderNewPasswordStatus);
+    expect(selectors.getOrderNewPasswordStatus(state)).toEqual(
+        state[NAME].orderNewPasswordStatus
+    );
 });

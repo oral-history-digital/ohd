@@ -1,12 +1,8 @@
 import { createElement } from 'react';
+
 import PropTypes from 'prop-types';
 
-export default function BaseData({
-    name,
-    data,
-    scope,
-    showComponent,
-}) {
+export default function BaseData({ name, data, scope, showComponent }) {
     if (showComponent) {
         return createElement(showComponent, { data, scope });
     } else {
@@ -14,7 +10,7 @@ export default function BaseData({
             <div className="base-data box">
                 <p className="name">{name}</p>
             </div>
-        )
+        );
     }
 }
 

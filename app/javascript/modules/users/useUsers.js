@@ -1,6 +1,5 @@
-import useSWR from 'swr';
-
 import { usePathBase } from 'modules/routes';
+import useSWR from 'swr';
 
 export default function useUsers(
     page,

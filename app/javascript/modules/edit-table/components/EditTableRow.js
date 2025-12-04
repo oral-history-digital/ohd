@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import EditTableCell from './EditTableCell';
 import useColumns from './useColumns';
@@ -20,17 +20,15 @@ export default function TableRow({
             })}
             style={{ gridTemplateColumns }}
         >
-            {
-                columns.map(column => (
-                    <EditTableCell
-                        key={column}
-                        type={column}
-                        segment={segment}
-                        originalLocale={originalLocale}
-                        translationLocale={translationLocale}
-                    />
-                ))
-            }
+            {columns.map((column) => (
+                <EditTableCell
+                    key={column}
+                    type={column}
+                    segment={segment}
+                    originalLocale={originalLocale}
+                    translationLocale={translationLocale}
+                />
+            ))}
         </div>
     );
 }

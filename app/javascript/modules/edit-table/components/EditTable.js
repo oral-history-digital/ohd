@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
+
+import { isSegmentActive } from 'modules/interview-helpers';
+import { Spinner } from 'modules/spinners';
+import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
+import { ScrollToTop } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Virtuoso } from 'react-virtuoso';
 
-import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
-import { Spinner } from 'modules/spinners';
-import { ScrollToTop } from 'modules/user-agent';
-import { isSegmentActive } from 'modules/interview-helpers';
 import {
     EDIT_TABLE_FILTER_ALL,
-    EDIT_TABLE_FILTER_SOME,
+    EDIT_TABLE_FILTER_ANNOTATIONS,
     EDIT_TABLE_FILTER_HEADINGS,
     EDIT_TABLE_FILTER_REFERENCES,
-    EDIT_TABLE_FILTER_ANNOTATIONS
+    EDIT_TABLE_FILTER_SOME,
 } from '../constants';
-import EditTableRowContainer from './EditTableRowContainer';
 import EditTableHeaderContainer from './EditTableHeaderContainer';
+import EditTableRowContainer from './EditTableRowContainer';
 
 export default function EditTable({
     interview,
@@ -30,37 +31,56 @@ export default function EditTable({
 }) {
     useEffect(() => {
         if (!segmentsStatus[`for_interviews_${archiveId}`]) {
-            fetchData({ locale, projectId, project }, 'interviews', archiveId, 'segments');
+            fetchData(
+                { locale, projectId, project },
+                'interviews',
+                archiveId,
+                'segments'
+            );
         }
     }, []);
 
-    if (!segmentsStatus[`for_interviews_${archiveId}`] || segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] !== 'fetched') {
+    if (
+        !segmentsStatus[`for_interviews_${archiveId}`] ||
+        segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] !==
+            'fetched'
+    ) {
         return <Spinner />;
     }
 
-    const allSegments = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[1];
+    const allSegments = sortedSegmentsWithActiveIndex(mediaTime, {
+        interview,
+        tape,
+    })[1];
 
     let segments;
     switch (filter) {
-    case EDIT_TABLE_FILTER_SOME:
-        segments = allSegments.filter(s => s.has_heading || s.annotations_count > 0 || s.registry_references_count > 0);
-        break;
-    case EDIT_TABLE_FILTER_HEADINGS:
-        segments = allSegments.filter(s => s.has_heading);
-        break;
-    case EDIT_TABLE_FILTER_REFERENCES:
-        segments = allSegments.filter(s => s.registry_references_count > 0);
-        break;
-    case EDIT_TABLE_FILTER_ANNOTATIONS:
-        segments = allSegments.filter(s => s.annotations_count > 0);
-        break;
-    case EDIT_TABLE_FILTER_ALL:
-    default:
-        segments = allSegments;
-        break;
+        case EDIT_TABLE_FILTER_SOME:
+            segments = allSegments.filter(
+                (s) =>
+                    s.has_heading ||
+                    s.annotations_count > 0 ||
+                    s.registry_references_count > 0
+            );
+            break;
+        case EDIT_TABLE_FILTER_HEADINGS:
+            segments = allSegments.filter((s) => s.has_heading);
+            break;
+        case EDIT_TABLE_FILTER_REFERENCES:
+            segments = allSegments.filter(
+                (s) => s.registry_references_count > 0
+            );
+            break;
+        case EDIT_TABLE_FILTER_ANNOTATIONS:
+            segments = allSegments.filter((s) => s.annotations_count > 0);
+            break;
+        case EDIT_TABLE_FILTER_ALL:
+        default:
+            segments = allSegments;
+            break;
     }
 
-    const content = index => {
+    const content = (index) => {
         const segment = segments[index];
         const nextSegment = segments[index + 1];
 
@@ -82,7 +102,7 @@ export default function EditTable({
                 active={active}
             />
         );
-    }
+    };
 
     return (
         <ScrollToTop>

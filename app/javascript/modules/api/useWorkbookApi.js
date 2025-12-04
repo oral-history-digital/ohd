@@ -1,4 +1,5 @@
 import { usePathBase } from 'modules/routes';
+
 import fetchHeaders from './fetchHeaders';
 
 export default function useWorkbookApi() {
@@ -9,10 +10,10 @@ export default function useWorkbookApi() {
         const options = {
             method: 'POST',
             headers: fetchHeaders,
-            body: JSON.stringify({ user_content: data })
+            body: JSON.stringify({ user_content: data }),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     function updateWorkbookItem(id, data) {
@@ -20,20 +21,20 @@ export default function useWorkbookApi() {
         const options = {
             method: 'PUT',
             headers: fetchHeaders,
-            body: JSON.stringify({ user_content: data })
+            body: JSON.stringify({ user_content: data }),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     function deleteWorkbookItem(id) {
         const path = `${pathBase}/user_contents/${id}.json`;
         const options = {
             method: 'DELETE',
-            headers: fetchHeaders
+            headers: fetchHeaders,
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     return {

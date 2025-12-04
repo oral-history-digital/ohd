@@ -1,4 +1,4 @@
-import { ENABLE, DISABLE } from './action-types';
+import { DISABLE, ENABLE } from './action-types';
 
 export const enable = (name) => ({
     type: ENABLE,

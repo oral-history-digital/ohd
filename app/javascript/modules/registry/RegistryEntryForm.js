@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import RegistryNameFormContainer from './RegistryNameFormContainer';
+import PropTypes from 'prop-types';
+
 import NormDatumFormContainer from './NormDatumFormContainer';
 import NormDatumFormWrapper from './NormDatumFormWrapper';
+import RegistryNameFormContainer from './RegistryNameFormContainer';
 
 export default function RegistryEntryForm({
     normDataProviders,

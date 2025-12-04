@@ -1,22 +1,19 @@
 /* eslint-disable react/jsx-key */
+import { flexRender } from '@tanstack/react-table';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { flexRender } from '@tanstack/react-table';
 
-import SortButton from './SortButton';
 import Filter from './Filter';
+import SortButton from './SortButton';
 
-export default function CatalogTable({
-    instance,
-    className,
-}) {
+export default function CatalogTable({ instance, className }) {
     return (
         <div className={classNames('CatalogTable', className)}>
             <table className="CatalogTable-table">
                 <thead>
-                    {instance.getHeaderGroups().map(headerGroup => (
+                    {instance.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
+                            {headerGroup.headers.map((header) => (
                                 <th
                                     key={header.id}
                                     colSpan={header.colSpan}
@@ -27,19 +24,30 @@ export default function CatalogTable({
                                         onClick={header.column.getToggleSortingHandler()}
                                     >
                                         {header.column.getCanSort() ? (
-                                            <SortButton direction={header.column.getIsSorted()}>
-                                                {header.isPlaceholder ?
-                                                    null :
-                                                    flexRender(header.column.columnDef.header, header.getContext())
-                                                }
+                                            <SortButton
+                                                direction={header.column.getIsSorted()}
+                                            >
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(
+                                                          header.column
+                                                              .columnDef.header,
+                                                          header.getContext()
+                                                      )}
                                             </SortButton>
-                                        ) : (
-                                            header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())
+                                        ) : header.isPlaceholder ? null : (
+                                            flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )
                                         )}
                                     </button>
                                     {header.column.getCanFilter() ? (
                                         <div>
-                                            <Filter column={header.column} table={instance} />
+                                            <Filter
+                                                column={header.column}
+                                                table={instance}
+                                            />
                                         </div>
                                     ) : null}
                                 </th>
@@ -48,25 +56,37 @@ export default function CatalogTable({
                     ))}
                 </thead>
                 <tbody className="CatalogTable-body">
-                    {instance.getRowModel().rows.map(row => {
+                    {instance.getRowModel().rows.map((row) => {
                         return (
                             <tr
                                 className={classNames('CatalogTable-row', {
-                                    'CatalogTable-row--institution': row.original.type === 'institution',
-                                    'CatalogTable-row--archive': row.original.type === 'project',
-                                    'CatalogTable-row--collection': row.original.type === 'collection',
-                                    'CatalogTable-row--interview': row.original.type === 'interview',
+                                    'CatalogTable-row--institution':
+                                        row.original.type === 'institution',
+                                    'CatalogTable-row--archive':
+                                        row.original.type === 'project',
+                                    'CatalogTable-row--collection':
+                                        row.original.type === 'collection',
+                                    'CatalogTable-row--interview':
+                                        row.original.type === 'interview',
                                 })}
                                 key={row.id}
                             >
-                                {row.getVisibleCells().map(cell => (
+                                {row.getVisibleCells().map((cell) => (
                                     <td
                                         key={cell.id}
-                                        className={classNames('CatalogTable-cell', {
-                                            'CatalogTable-cell--number': cell.column.id === 'num_interviews'
-                                        })}
+                                        className={classNames(
+                                            'CatalogTable-cell',
+                                            {
+                                                'CatalogTable-cell--number':
+                                                    cell.column.id ===
+                                                    'num_interviews',
+                                            }
+                                        )}
                                     >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
                                     </td>
                                 ))}
                             </tr>

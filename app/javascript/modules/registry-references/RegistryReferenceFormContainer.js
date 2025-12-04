@@ -1,13 +1,18 @@
+import {
+    fetchData,
+    getOHDProject,
+    getRegistryEntries,
+    getRegistryEntriesStatus,
+    getRegistryReferenceTypesForCurrentProject,
+    getRegistryReferenceTypesStatus,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, fetchData, getRegistryEntries, getRegistryEntriesStatus,
-    getRegistryReferenceTypesForCurrentProject, getRegistryReferenceTypesStatus,
-    getOHDProject,
-} from 'modules/data';
 import RegistryReferenceForm from './RegistryReferenceForm';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     ohdProject: getOHDProject(state),
     registryEntries: getRegistryEntries(state),
     registryReferenceTypes: getRegistryReferenceTypesForCurrentProject(state),
@@ -16,9 +21,16 @@ const mapStateToProps = state => ({
     lastModifiedRegistryEntries: getRegistryEntriesStatus(state).lastModified,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            submitData,
+        },
+        dispatch
+    );
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryReferenceForm);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RegistryReferenceForm);
