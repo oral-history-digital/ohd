@@ -1,11 +1,11 @@
+import { AuthorizedContent } from 'modules/auth';
+import { DeleteItemForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { AuthorizedContent } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
-import { DeleteItemForm } from 'modules/forms';
-import { useProject } from 'modules/routes';
 import AnnotationFormContainer from './AnnotationFormContainer';
 
 export default function Annotation({
@@ -21,15 +21,19 @@ export default function Annotation({
         <div>
             <p
                 className=""
-                dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}}
+                dangerouslySetInnerHTML={{
+                    __html: annotation.text[contentLocale],
+                }}
             />
-            <AuthorizedContent object={annotation} action='update'>
+            <AuthorizedContent object={annotation} action="update">
                 <span className="flyout-sub-tabs-content-ico">
                     <Modal
                         title={t('edit.annotation.edit')}
-                        trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
+                        trigger={
+                            <FaPencilAlt className="Icon Icon--editorial Icon--small" />
+                        }
                     >
-                        {closeModal => (
+                        {(closeModal) => (
                             <AnnotationFormContainer
                                 annotation={annotation}
                                 segment={segment}
@@ -43,17 +47,30 @@ export default function Annotation({
                     </Modal>
                     <Modal
                         title={t('edit.annotation.delete')}
-                        trigger={<FaTrash className="Icon Icon--editorial Icon--small"/>}
+                        trigger={
+                            <FaTrash className="Icon Icon--editorial Icon--small" />
+                        }
                     >
-                        {closeModal => (
+                        {(closeModal) => (
                             <DeleteItemForm
                                 onSubmit={() => {
-                                    deleteData({ locale, projectId, project }, 'annotations', annotation.id, null, null, true);
+                                    deleteData(
+                                        { locale, projectId, project },
+                                        'annotations',
+                                        annotation.id,
+                                        null,
+                                        null,
+                                        true
+                                    );
                                     closeModal();
                                 }}
                                 onCancel={closeModal}
                             >
-                                <p dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}} />
+                                <p
+                                    dangerouslySetInnerHTML={{
+                                        __html: annotation.text[contentLocale],
+                                    }}
+                                />
                             </DeleteItemForm>
                         )}
                     </Modal>

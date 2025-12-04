@@ -1,14 +1,11 @@
-import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { getEditView, changeToEditView } from 'modules/archive';
+import { changeToEditView, getEditView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaToggleOff, FaToggleOn } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function ToggleEditView({
-    className,
-}) {
+export default function ToggleEditView({ className }) {
     const { t } = useI18n();
     const editView = useSelector(getEditView);
     const dispatch = useDispatch();
@@ -23,16 +20,15 @@ export default function ToggleEditView({
                 aria-label="Switch edit view"
             >
                 {editView ? (
-                    <FaToggleOn
-                        className="Icon Icon--large u-vertical-align-bottom u-color-editorial"
-                    />
+                    <FaToggleOn className="Icon Icon--large u-vertical-align-bottom u-color-editorial" />
                 ) : (
-                    <FaToggleOff
-                        className="Icon Icon--large u-vertical-align-bottom u-color-text"
-                    />
-                )}
-                {' '}
-                <span className={classNames(editView ? 'u-color-editorial' : 'u-color-text')}>
+                    <FaToggleOff className="Icon Icon--large u-vertical-align-bottom u-color-text" />
+                )}{' '}
+                <span
+                    className={classNames(
+                        editView ? 'u-color-editorial' : 'u-color-text'
+                    )}
+                >
                     {t('admin.change_to_edit_view')}
                 </span>
             </button>

@@ -1,5 +1,5 @@
-import { formatTimecode } from 'modules/interview-helpers';
 import { OHD_LOCATION } from 'modules/constants';
+import { formatTimecode } from 'modules/interview-helpers';
 
 /**
  * Build a human-readable citation string for an interview.

@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
 import { useTrackPageView } from 'modules/analytics';
-import useLoadInterviewData from '../useLoadInterviewData';
-import { EditTableLoader } from 'modules/edit-table';
-import { MediaPlayer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { Spinner } from 'modules/spinners';
+import { EditTableLoader } from 'modules/edit-table';
 import { useI18n } from 'modules/i18n';
+import { MediaPlayer } from 'modules/media-player';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
+
+import useLoadInterviewData from '../useLoadInterviewData';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
 import MediaPreview from './MediaPreview';

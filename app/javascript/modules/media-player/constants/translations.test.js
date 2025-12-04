@@ -1,4 +1,3 @@
-import { VIDEOJS_I18N_KEY_MAP } from './translations';
 import langAr from 'video.js/dist/lang/ar.json';
 import langDe from 'video.js/dist/lang/de.json';
 import langEl from 'video.js/dist/lang/el.json';
@@ -6,6 +5,8 @@ import langEn from 'video.js/dist/lang/en.json';
 import langEs from 'video.js/dist/lang/es.json';
 import langRu from 'video.js/dist/lang/ru.json';
 import langUk from 'video.js/dist/lang/uk.json';
+
+import { VIDEOJS_I18N_KEY_MAP } from './translations';
 
 // Test multiple language files to ensure our mapping covers all scenarios
 const LANGUAGE_FILES = [

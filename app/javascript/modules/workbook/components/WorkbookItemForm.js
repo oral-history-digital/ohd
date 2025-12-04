@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import {
-    useTrackEventFunction,
-    EVENT_CATEGORY_WORKBOOK,
-    SAVE_SEARCH,
     BOOKMARK_INTERVIEW,
     BOOKMARK_SEGMENT,
     EDIT_WORKBOOK_ITEM,
+    EVENT_CATEGORY_WORKBOOK,
+    SAVE_SEARCH,
+    useTrackEventFunction,
 } from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+
 import useMutateWorkbook from '../useMutateWorkbook';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';

@@ -1,7 +1,6 @@
-import useSWR from 'swr';
-
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import useSWR from 'swr';
 
 export default function useInterviewContributors(interviewId) {
     const pathBase = usePathBase();

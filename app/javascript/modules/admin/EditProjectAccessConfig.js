@@ -1,8 +1,8 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import EditProjectAccessConfigAttributesContainer from './EditProjectAccessConfigAttributesContainer';
+import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
-import { useI18n } from 'modules/i18n';
+import EditProjectAccessConfigAttributesContainer from './EditProjectAccessConfigAttributesContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function EditProjectConfig() {
@@ -10,12 +10,14 @@ export default function EditProjectConfig() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
                     <title>{t(`edit.project.access_config`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>{t(`edit.project.access_config`)}</h1>
+                    <h1 className="registry-entries-title">
+                        {t(`edit.project.access_config`)}
+                    </h1>
                     <EditProjectAccessConfigAttributesContainer />
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
@@ -25,4 +27,3 @@ export default function EditProjectConfig() {
         </EditViewOrRedirect>
     );
 }
-

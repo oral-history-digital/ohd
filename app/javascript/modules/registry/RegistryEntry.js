@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 
+import classNames from 'classnames';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
-import { getIsLoggedIn } from 'modules/user';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { Modal, Checkbox } from 'modules/ui';
-import RegistryEntryShow from './RegistryEntryShow';
-import RegistryEntries from './RegistryEntries';
-import OpenStreetMapLink from './OpenStreetMapLink';
-import RegistryEntryEditButtons from './RegistryEntryEditButtons';
+import { Checkbox, Modal } from 'modules/ui';
+import { getIsLoggedIn } from 'modules/user';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import NormDataLinks from './NormDataLinks';
-import RegistryEntryToggleChildren from './RegistryEntryToggleChildren';
+import OpenStreetMapLink from './OpenStreetMapLink';
+import RegistryEntries from './RegistryEntries';
+import RegistryEntryEditButtons from './RegistryEntryEditButtons';
 import RegistryEntryLabel from './RegistryEntryLabel';
+import RegistryEntryShow from './RegistryEntryShow';
+import RegistryEntryToggleChildren from './RegistryEntryToggleChildren';
 
 export default function RegistryEntry({
     addRemoveRegistryEntryId,
@@ -45,7 +46,11 @@ export default function RegistryEntry({
             (!registryEntries[data.id] && !registryEntriesStatus[data.id]) ||
             /^reload/.test(registryEntriesStatus[data.id])
         ) {
-            fetchData({ project, projectId, locale }, 'registry_entries', data.id);
+            fetchData(
+                { project, projectId, locale },
+                'registry_entries',
+                data.id
+            );
         }
     }
 
@@ -69,9 +74,12 @@ export default function RegistryEntry({
         >
             <div className="RegistryEntry-content">
                 {!hideCheckbox && (
-                    <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                    <AuthorizedContent
+                        object={{ type: 'RegistryEntry' }}
+                        action="update"
+                    >
                         <Checkbox
-                            className='RegistryEntry-checkbox select-checkbox'
+                            className="RegistryEntry-checkbox select-checkbox"
                             checked={selectedRegistryEntryIds.includes(data.id)}
                             onChange={() => addRemoveRegistryEntryId(data.id)}
                         />
@@ -89,21 +97,28 @@ export default function RegistryEntry({
                 <>
                     {isLoggedIn && hasReferences() ? (
                         <Modal
-                            title={t('activerecord.models.registry_entry.actions.show')}
+                            title={t(
+                                'activerecord.models.registry_entry.actions.show'
+                            )}
                             triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
-                            trigger={<RegistryEntryLabel registryEntry={data} />}
+                            trigger={
+                                <RegistryEntryLabel registryEntry={data} />
+                            }
                         >
-                            {close => (
+                            {(close) => (
                                 <RegistryEntryShow
                                     registryEntryId={data.id}
                                     onSubmit={close}
-                                    normDataLinks={<NormDataLinks registryEntry={data} />}
+                                    normDataLinks={
+                                        <NormDataLinks registryEntry={data} />
+                                    }
                                 />
                             )}
                         </Modal>
-                    ) : <RegistryEntryLabel registryEntry={data} />
-                    }
-                    <AuthorizedContent object={data} action='update'>
+                    ) : (
+                        <RegistryEntryLabel registryEntry={data} />
+                    )}
+                    <AuthorizedContent object={data} action="update">
                         <span className="u-ml-tiny">{`(ID: ${data.id})`}</span>
                     </AuthorizedContent>
                 </>

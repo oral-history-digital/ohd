@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
+
+import { AuthShowContainer } from 'modules/auth';
+import { HelpTextTable } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import { hideSidebar } from 'modules/sidebar';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 
-import { AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { HelpTextTable } from 'modules/help-text';
-import { hideSidebar } from 'modules/sidebar';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function HelpTextAdminPage() {
@@ -18,11 +19,9 @@ export default function HelpTextAdminPage() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
-                    <title>
-                        {t('activerecord.models.help_text.other')}
-                    </title>
+                    <title>{t('activerecord.models.help_text.other')}</title>
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
@@ -31,7 +30,6 @@ export default function HelpTextAdminPage() {
                     </h1>
 
                     <HelpTextTable />
-
                 </AuthShowContainer>
 
                 <AuthShowContainer ifLoggedOut ifNoProject>

@@ -5,18 +5,18 @@ test('adds projects for each institution', () => {
         1: {
             id: 1,
             shortname: 'zwar',
-            workflow_state: 'public'
+            workflow_state: 'public',
         },
         2: {
             id: 2,
             shortname: 'cdoh',
-            workflow_state: 'public'
+            workflow_state: 'public',
         },
         3: {
             id: 3,
             shortname: 'test',
-            workflow_state: 'unshared'
-        }
+            workflow_state: 'unshared',
+        },
     };
 
     const institution = {
@@ -52,11 +52,13 @@ test('adds projects for each institution', () => {
                 project_id: 3,
             },
         },
-        projects: [{
-            id: 1,
-            shortname: 'zwar',
-            workflow_state: 'public'
-        }],
+        projects: [
+            {
+                id: 1,
+                shortname: 'zwar',
+                workflow_state: 'public',
+            },
+        ],
     };
 
     expect(actual).toEqual(expected);

@@ -1,4 +1,4 @@
-import { setDescriptor, findOrCreate } from './updateRegistryEntryAttributes';
+import { findOrCreate, setDescriptor } from './updateRegistryEntryAttributes';
 
 test('finds an existing datum in attributes', () => {
     const attributes = [{ a: 1, b: 2 }, { a: 3 }];

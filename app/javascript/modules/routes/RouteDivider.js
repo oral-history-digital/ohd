@@ -1,9 +1,10 @@
-import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
-import {
-    MemoizedRoutesWithoutProjectId,
-    MemoizedRoutesWithProjectId,
-} from './Routes';
 import { AnalyticsProvider } from 'modules/analytics';
+import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
+
+import {
+    MemoizedRoutesWithProjectId,
+    MemoizedRoutesWithoutProjectId,
+} from './Routes';
 import useProject from './useProject';
 
 function RouteDivider() {

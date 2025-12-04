@@ -1,11 +1,18 @@
 export default function createRegistryTree(data, selectedRegistryEntryId) {
-    console.assert(data !== undefined && data !== null, 'data cannot be null or undefined:', data);
+    console.assert(
+        data !== undefined && data !== null,
+        'data cannot be null or undefined:',
+        data
+    );
 
     if (!data) {
         return null;
     }
 
-    const preparedData = prepareEntriesForComponent(data, selectedRegistryEntryId);
+    const preparedData = prepareEntriesForComponent(
+        data,
+        selectedRegistryEntryId
+    );
     const filteredData = filterEntriesWithOutLabels(preparedData);
     const root = buildTree(filteredData);
     sortCategories(root);
@@ -24,7 +31,7 @@ function prepareEntriesForComponent(data, selectedRegistryEntryId) {
 }
 
 function filterEntriesWithOutLabels(entries) {
-    return entries.filter(entry => entry.label?.length > 0);
+    return entries.filter((entry) => entry.label?.length > 0);
 }
 
 export function buildTree(entries) {
@@ -47,8 +54,10 @@ function enrichEntriesWithChildren(entries, rootEntry) {
 
     function addEntryToChildrenOfItsParents(entry) {
         const parentEntry = entries[indexById[entry.parent]];
-        console.assert(parentEntry || entry === rootEntry,
-            `Parent ${entry.parent} of registry entry ${entry.value} (${entry.label}) does not exist.`)
+        console.assert(
+            parentEntry || entry === rootEntry,
+            `Parent ${entry.parent} of registry entry ${entry.value} (${entry.label}) does not exist.`
+        );
         if (parentEntry) {
             parentEntry.children = [...(parentEntry.children || []), entry];
         }
@@ -69,13 +78,11 @@ function sortCategories(root) {
 }
 
 function sortChildrenRecursively(children) {
-    children
-        .sort(childrenComparator)
-        .forEach(child => {
-            if (child.children) {
-                sortChildrenRecursively(child.children);
-            }
-        });
+    children.sort(childrenComparator).forEach((child) => {
+        if (child.children) {
+            sortChildrenRecursively(child.children);
+        }
+    });
 }
 
 function childrenComparator(a, b) {
@@ -85,7 +92,7 @@ function childrenComparator(a, b) {
 }
 
 function disableTopCategories(root) {
-    root.children?.forEach(child => {
+    root.children?.forEach((child) => {
         child.disabled = true;
     });
 }

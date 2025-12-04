@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { NAME } from '../constants';
 
 const getState = (state) => state[NAME];

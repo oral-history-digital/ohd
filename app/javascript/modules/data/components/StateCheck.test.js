@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
+
 import { StateCheck } from './StateCheck';
 
 const mockedState = {

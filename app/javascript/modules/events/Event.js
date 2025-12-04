@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { formatDistance } from 'date-fns';
-
-import { useI18n } from 'modules/i18n';
 import { useEventTypes } from 'modules/event-types';
+import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import localeToLocaleObject from './localeToLocaleObject';
 
 export default function Event({ event, className }) {

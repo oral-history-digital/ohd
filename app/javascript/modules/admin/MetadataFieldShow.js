@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
-
 import { getLocale, getTranslations } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { useSelector } from 'react-redux';
 
-function MetadataFieldShow({data}) {
+function MetadataFieldShow({ data }) {
     const locale = useSelector(getLocale);
     const translations = useSelector(getTranslations);
     const { t } = useI18n();
@@ -16,10 +15,8 @@ function MetadataFieldShow({data}) {
     }
 
     return (
-        <div className='base-data box'>
-            <p className='name'>
-                {name}
-            </p>
+        <div className="base-data box">
+            <p className="name">{name}</p>
         </div>
     );
 }

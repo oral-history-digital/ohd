@@ -1,16 +1,15 @@
+import { ARCHIVE_NAME, archiveReducer } from 'modules/archive';
+import { BANNER_NAME, bannerReducer } from 'modules/banner';
+import { DATA_NAME, dataReducer } from 'modules/data';
+import { EDIT_TABLE_NAME, editTableReducer } from 'modules/edit-table';
+import { FEATURES_NAME, featuresReducer } from 'modules/features';
+import { INTERVIEW_NAME, interviewReducer } from 'modules/interview';
+import { MEDIA_PLAYER_NAME, mediaPlayerReducer } from 'modules/media-player';
+import { SEARCH_NAME, searchReducer } from 'modules/search';
+import { SEARCH_MAP_NAME, searchMapReducer } from 'modules/search-map';
+import { SIDEBAR_NAME, sidebarReducer } from 'modules/sidebar';
+import { USER_NAME, userReducer } from 'modules/user';
 import { combineReducers } from 'redux';
-
-import { userReducer, USER_NAME } from 'modules/user';
-import { archiveReducer, ARCHIVE_NAME } from 'modules/archive';
-import { dataReducer, DATA_NAME } from 'modules/data';
-import { editTableReducer, EDIT_TABLE_NAME } from 'modules/edit-table';
-import { featuresReducer, FEATURES_NAME } from 'modules/features';
-import { interviewReducer, INTERVIEW_NAME } from 'modules/interview';
-import { mediaPlayerReducer, MEDIA_PLAYER_NAME } from 'modules/media-player';
-import { searchMapReducer, SEARCH_MAP_NAME } from 'modules/search-map';
-import { searchReducer, SEARCH_NAME } from 'modules/search';
-import { sidebarReducer, SIDEBAR_NAME } from 'modules/sidebar';
-import { bannerReducer, BANNER_NAME } from 'modules/banner';
 
 const combinedReducer = combineReducers({
     [USER_NAME]: userReducer,

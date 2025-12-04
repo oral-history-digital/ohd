@@ -1,9 +1,9 @@
-import { Helmet } from 'react-helmet';
-
 import { useTrackPageView } from 'modules/analytics';
+import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
-import { useI18n } from 'modules/i18n';
+import { Helmet } from 'react-helmet';
+
 import ArchiveSearch from './ArchiveSearch';
 
 export default function SearchPage() {

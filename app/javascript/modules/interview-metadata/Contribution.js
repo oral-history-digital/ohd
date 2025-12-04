@@ -1,16 +1,16 @@
-import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import {
-    useInvalidateInterviewContributors,
     useInvalidateAllPersonData,
+    useInvalidateInterviewContributors,
 } from 'modules/person';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+
 import ContributionFormContainer from './ContributionFormContainer';
 
 export default function Contribution({

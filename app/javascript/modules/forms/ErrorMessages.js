@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default function ErrorMessages({ elements, errors, scope }) {
     const { t } = useI18n();
@@ -24,7 +24,8 @@ export default function ErrorMessages({ elements, errors, scope }) {
                         return (
                             <li key={element.attribute}>
                                 <b>
-                                    {element.label ? element.label : t(key)}:{' '}
+                                    {element.label ? element.label : t(key)}
+                                    :{' '}
                                 </b>
                                 {element.individualErrorMsg
                                     ? t(

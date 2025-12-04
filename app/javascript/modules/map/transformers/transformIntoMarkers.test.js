@@ -15,7 +15,7 @@ test('transforms registry location data into markers for map component', () => {
                 de: 'Deutschland',
                 en: 'Germany',
             },
-            ref_types: {4: 5},
+            ref_types: { 4: 5 },
         },
         {
             id: 18221,
@@ -26,8 +26,8 @@ test('transforms registry location data into markers for map component', () => {
                 en: 'Germany',
             },
             ref_types: {
-              4: 5,
-              segment: 2,
+                4: 5,
+                segment: 2,
             },
         },
         {
@@ -39,9 +39,9 @@ test('transforms registry location data into markers for map component', () => {
                 en: 'Berlin',
             },
             ref_types: {
-              4: 1,
-              14: 1,
-              segment: 3,
+                4: 1,
+                14: 1,
+                segment: 3,
             },
         },
     ];
@@ -104,7 +104,7 @@ test('works when locations contains only segment refs', () => {
                 de: 'Deutschland',
                 en: 'Germany',
             },
-            ref_types: {segment: 5},
+            ref_types: { segment: 5 },
         },
     ];
 
@@ -139,9 +139,9 @@ test('throws when lat lon data is empty', () => {
                 en: 'Berlin',
             },
             ref_types: {
-              4: 1,
-              14: 1,
-              segment: 3,
+                4: 1,
+                14: 1,
+                segment: 3,
             },
         },
     ];

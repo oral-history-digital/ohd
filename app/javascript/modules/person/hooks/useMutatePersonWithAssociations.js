@@ -1,6 +1,5 @@
-import { useSWRConfig } from 'swr';
-
 import { usePathBase } from 'modules/routes';
+import { useSWRConfig } from 'swr';
 
 export default function useMutatePersonWithAssociations() {
     const pathBase = usePathBase();
@@ -14,5 +13,5 @@ export default function useMutatePersonWithAssociations() {
         } else {
             mutate(path);
         }
-    }
+    };
 }

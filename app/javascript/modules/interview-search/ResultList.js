@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { Disclosure } from 'modules/ui';
+import PropTypes from 'prop-types';
 
 export default function ResultList({
     heading,
@@ -16,7 +15,9 @@ export default function ResultList({
         <div className={classNames('ResultList', className)}>
             <Disclosure title={title}>
                 <div className="ResultList-list">
-                    {searchResults.map(data => <Component key={data.id} data={data} locale={locale} />)}
+                    {searchResults.map((data) => (
+                        <Component key={data.id} data={data} locale={locale} />
+                    ))}
                 </div>
             </Disclosure>
         </div>

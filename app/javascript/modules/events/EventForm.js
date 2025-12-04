@@ -1,15 +1,14 @@
-import PropTypes from 'prop-types';
-
 import { useEventTypes } from 'modules/event-types';
-import {
-    useMutatePeople,
-    useMutatePersonWithAssociations,
-    useMutatePersonLandingPageMetadata,
-} from 'modules/person';
 import { Form, validateDate } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import {
+    useMutatePeople,
+    useMutatePersonLandingPageMetadata,
+    useMutatePersonWithAssociations,
+} from 'modules/person';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
 
 export default function EventForm({
     data: event,

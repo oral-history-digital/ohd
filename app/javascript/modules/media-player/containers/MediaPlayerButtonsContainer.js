@@ -1,17 +1,17 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     changeToInterviewEditView,
     getInterviewEditView,
 } from 'modules/archive';
+import { getCurrentInterview } from 'modules/data';
 import {
-    enableAutoScroll,
     disableAutoScroll,
+    enableAutoScroll,
     getAutoScroll,
 } from 'modules/interview';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import MediaPlayerButtons from '../components/MediaPlayerButtons';
-import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = (state) => ({
     autoScroll: getAutoScroll(state),

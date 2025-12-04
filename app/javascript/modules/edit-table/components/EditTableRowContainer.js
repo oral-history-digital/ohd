@@ -1,7 +1,12 @@
+import { getEditView } from 'modules/archive';
+import {
+    getCurrentInterview,
+    getCurrentProject,
+    getCurrentUser,
+    getSegmentsStatus,
+} from 'modules/data';
 import { connect } from 'react-redux';
 
-import { getEditView } from 'modules/archive';
-import { getCurrentInterview, getCurrentProject, getCurrentUser, getSegmentsStatus } from 'modules/data';
 import { getSelectedColumns } from '../selectors';
 import EditTableRow from './EditTableRow';
 

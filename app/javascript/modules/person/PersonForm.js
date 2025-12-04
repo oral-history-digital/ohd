@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
@@ -7,6 +6,8 @@ import { Event, EventForm } from 'modules/events';
 import { Form } from 'modules/forms';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import {
     PERSON_GENDER_DIVERSE,
     PERSON_GENDER_FEMALE,

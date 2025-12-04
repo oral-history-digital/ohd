@@ -1,22 +1,26 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import {
     getCollectionsForCurrentProject,
     getContributionTypesForCurrentProject,
     getLanguages,
     submitData,
 } from 'modules/data';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import InterviewForm from './InterviewForm';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     collections: getCollectionsForCurrentProject(state),
     contributionTypes: getContributionTypesForCurrentProject(state),
     languages: getLanguages(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewForm);

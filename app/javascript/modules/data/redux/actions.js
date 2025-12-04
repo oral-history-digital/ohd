@@ -1,13 +1,13 @@
-import { pluralize } from 'modules/strings';
-import { pathBase } from 'modules/routes';
 import { Loader } from 'modules/api';
+import { pathBase } from 'modules/routes';
+import { pluralize } from 'modules/strings';
 
 import {
-    REQUEST_DATA,
-    RECEIVE_DATA,
-    UPDATE_DATA,
-    REMOVE_DATA,
     DELETE_STATUS_MSG,
+    RECEIVE_DATA,
+    REMOVE_DATA,
+    REQUEST_DATA,
+    UPDATE_DATA,
 } from './action-types';
 
 const updateData = (dataType, id, data, nestedDataType, nestedId) => ({

@@ -1,10 +1,12 @@
+import { useState } from 'react';
+
 import { submitDataWithFetch } from 'modules/api';
 import { useMutateData, useMutateDatum } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+
 import useRestrictedInterviews from './useRestrictedInterviews';
 
 export default function InterviewPermissionForm({ data, dataPath, onSubmit }) {

@@ -1,18 +1,20 @@
-import PropTypes from 'prop-types';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
-import { FaInfo } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
+import {
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+} from '@reach/disclosure';
+import { useProjectAccessStatus } from 'modules/auth';
+import { getCollectionsForCurrentProject } from 'modules/data';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { getCollectionsForCurrentProject } from 'modules/data';
-import { useProjectAccessStatus } from 'modules/auth';
+import PropTypes from 'prop-types';
+import { FaInfo } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+
 import CatalogLink from './CatalogLink';
 
-export default function InterviewCollectionInfo({
-    interview,
-}) {
+export default function InterviewCollectionInfo({ interview }) {
     const { locale, t } = useI18n();
     const { project } = useProject();
     const collections = useSelector(getCollectionsForCurrentProject);
@@ -34,20 +36,21 @@ export default function InterviewCollectionInfo({
             projectAccessGranted={projectAccessGranted}
             hideEmpty
         >
-        {collection && (
-            <Disclosure>
-                <DisclosureButton className="Button">
-                    <FaInfo
-                        title={titleText}
-                        aria-label={titleText}
-                    />
-                </DisclosureButton>
-                <CatalogLink type="collection" id={collection.id} />
-                <DisclosurePanel>
-                    <span dangerouslySetInnerHTML={{__html: collection.notes[locale]}} />
-                </DisclosurePanel>
-            </Disclosure>
-        )}
+            {collection && (
+                <Disclosure>
+                    <DisclosureButton className="Button">
+                        <FaInfo title={titleText} aria-label={titleText} />
+                    </DisclosureButton>
+                    <CatalogLink type="collection" id={collection.id} />
+                    <DisclosurePanel>
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: collection.notes[locale],
+                            }}
+                        />
+                    </DisclosurePanel>
+                </Disclosure>
+            )}
         </SingleValueWithFormContainer>
     );
 }

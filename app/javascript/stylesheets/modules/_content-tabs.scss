@@ -9,7 +9,6 @@
   display: block;
 }
 
-
 // Tab Content: Index // Inhaltsverzeichnis
 
 .content-index {
@@ -30,7 +29,7 @@
         color: var(--primary-color) !important;
       }
       &.active {
-        background-color: rgba(255,250,129,0.5);
+        background-color: rgba(255, 250, 129, 0.5);
         color: $gray-darkest;
       }
     }
@@ -44,11 +43,11 @@
         color: var(--primary-color);
       }
       &.active {
-        background-color: rgba(255,250,129,0.5);
+        background-color: rgba(255, 250, 129, 0.5);
         color: $gray-darkest;
       }
     }
-    .chapter-number{
+    .chapter-number {
       vertical-align: top;
       display: inline-block;
       width: 15%;
@@ -58,7 +57,7 @@
         width: 6%;
       }
     }
-    .chapter-text{
+    .chapter-text {
       width: 85%;
       display: inline-block;
       @include screen-m {
@@ -88,7 +87,7 @@
   }
   .content-tags-segment-timecode {
     font-size: $font-size-medium;
-    line-height: $line-height-medium ;
+    line-height: $line-height-medium;
     margin-bottom: 0;
   }
   .content-tags-segment-text {
@@ -112,7 +111,6 @@ div.mainheading + div {
   margin-bottom: 20px;
   font-size: $font-size-medium;
 }
-
 
 .content-search {
   font-size: $font-size-larger;
@@ -165,7 +163,6 @@ div.mainheading + div {
     cursor: pointer;
   }
 }
-
 
 // Old classes tidying up later
 

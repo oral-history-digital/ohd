@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import useColumns from './useColumns';
+import PropTypes from 'prop-types';
+
 import tableHeader from '../tableHeader';
+import useColumns from './useColumns';
 
 export default function SelectColumnsForm({
     interview,
@@ -17,15 +17,15 @@ export default function SelectColumnsForm({
 
     const handleSelect = (params) => {
         let values = [];
-        Object.keys(params.select_interview_edit_columns).map( column => {
+        Object.keys(params.select_interview_edit_columns).map((column) => {
             if (params.select_interview_edit_columns[column])
                 values.push(column);
-        })
+        });
         setColumnsWithCookie(values);
         onSubmit();
     };
 
-    const formElements = permittedColumns.map(column => ({
+    const formElements = permittedColumns.map((column) => ({
         elementType: 'input',
         type: 'checkbox',
         attribute: column,
@@ -33,7 +33,7 @@ export default function SelectColumnsForm({
     }));
 
     const selectedValues = {};
-    permittedColumns.forEach(column => {
+    permittedColumns.forEach((column) => {
         selectedValues[column] = selectedColumns.includes(column);
     });
 

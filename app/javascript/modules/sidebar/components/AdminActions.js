@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { useArchiveSearch } from 'modules/search';
-import DeleteInterviews from './DeleteInterviews';
-import UpdateInterviews from './UpdateInterviews';
-import SubmitInterviewIds from './SubmitInterviewIds';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import DOIText from './DOIText';
+import DeleteInterviews from './DeleteInterviews';
+import SubmitInterviewIds from './SubmitInterviewIds';
+import UpdateInterviews from './UpdateInterviews';
 
 export default function AdminActions({
     archiveIds,

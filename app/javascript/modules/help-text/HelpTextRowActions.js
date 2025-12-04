@@ -1,12 +1,10 @@
+import { RowActions } from 'modules/tables';
 import PropTypes from 'prop-types';
 
-import { RowActions } from 'modules/tables';
-import HelpTextForm from './HelpTextForm';
 import HelpTextDisplay from './HelpTextDisplay';
+import HelpTextForm from './HelpTextForm';
 
-export default function HelpTextRowActions({
-    row,
-}) {
+export default function HelpTextRowActions({ row }) {
     return (
         <RowActions
             row={row}

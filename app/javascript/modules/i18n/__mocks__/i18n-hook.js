@@ -10,6 +10,6 @@ export function useI18n() {
             de: {},
             en: {},
         },
-        t: key => key,
+        t: (key) => key,
     };
 }

@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
 
+import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
 import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-
-import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
+import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 export default function UploadEditTable({
     projectId,
@@ -27,12 +26,10 @@ export default function UploadEditTable({
     if (!showForm) {
         return (
             <>
-                <p>
-                    {t('edit.upload.processing')}
-                </p>
+                <p>{t('edit.upload.processing')}</p>
                 <button
                     type="button"
-                    className='Button return-to-upload'
+                    className="Button return-to-upload"
                     onClick={() => setShowForm(true)}
                 >
                     {t('edit.upload.return')}
@@ -43,8 +40,10 @@ export default function UploadEditTable({
 
     // Create a copy in order to not mutate state in the form.
     const contributions = Object.values(interview.contributions)
-        .filter(contribution => CONTRIBUTION_TYPES_SPEAKING.includes(contribution.contribution_type))
-        .map(contribution => ({
+        .filter((contribution) =>
+            CONTRIBUTION_TYPES_SPEAKING.includes(contribution.contribution_type)
+        )
+        .map((contribution) => ({
             id: contribution.id,
             contribution_type: contribution.contribution_type,
             person_id: contribution.person_id,
@@ -54,22 +53,27 @@ export default function UploadEditTable({
     return (
         <>
             <p>
-                <a href={`${pathBase}/edit-table-import-template.csv?id=${archiveId}&locale=${locale}`} download>
+                <a
+                    href={`${pathBase}/edit-table-import-template.csv?id=${archiveId}&locale=${locale}`}
+                    download
+                >
                     <span className="flyout-sub-tabs-content-ico-link">
-                        <FaDownload className="Icon Icon--small" title={t('download')} />
-                        {' '}
+                        <FaDownload
+                            className="Icon Icon--small"
+                            title={t('download')}
+                        />{' '}
                         {t('edit.upload_edit_table.template')}
                     </span>
                 </a>
             </p>
 
             <Form
-                scope='edit_table'
+                scope="edit_table"
                 onSubmit={(params) => {
                     submitData({ locale, projectId, project }, params);
                     setShowForm(false);
                 }}
-                submitText='edit.upload_edit_table.title'
+                submitText="edit.upload_edit_table.title"
                 values={{
                     archive_id: archiveId,
                 }}
@@ -78,13 +82,15 @@ export default function UploadEditTable({
                         attribute: 'data',
                         elementType: 'input',
                         type: 'file',
-                        validate: function(v){return v instanceof File},
+                        validate: function (v) {
+                            return v instanceof File;
+                        },
                     },
                     {
                         elementType: 'input',
                         help: 'import_edit_table.only_references',
                         attribute: 'only_references',
-                        type: 'checkbox'
+                        type: 'checkbox',
                     },
                     {
                         elementType: 'speakerDesignationInputs',

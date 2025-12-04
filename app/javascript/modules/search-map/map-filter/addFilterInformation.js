@@ -6,7 +6,7 @@ export default function addFilterInformation(filter, referenceTypes) {
         throw new TypeError('referenceTypes must be Array');
     }
 
-    const transformedTypes = referenceTypes.map(type => ({
+    const transformedTypes = referenceTypes.map((type) => ({
         ...type,
         filterIsSet: filter.includes(type.id.toString()),
     }));

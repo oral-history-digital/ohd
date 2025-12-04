@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+
 import useCollectionData from './useCollectionData';
 
 function getMinMaxYear(dates) {
     const filteredDates = dates
-        .map(d => Date.parse(d))
-        .filter(d => !Number.isNaN(d));
+        .map((d) => Date.parse(d))
+        .filter((d) => !Number.isNaN(d));
 
     if (filteredDates.length === 0) {
         return null;
@@ -27,10 +27,7 @@ function formatYearRange(year1, year2) {
     }
 }
 
-export default function CollectionData({
-    id,
-    className
-}) {
+export default function CollectionData({ id, className }) {
     const { t, locale } = useI18n();
     const { collectionData, error, isLoading } = useCollectionData(id);
 
@@ -39,7 +36,11 @@ export default function CollectionData({
     }
 
     if (error) {
-        return <p className={className}>{t('error')}: {error.message}</p>;
+        return (
+            <p className={className}>
+                {t('error')}: {error.message}
+            </p>
+        );
     }
 
     if (!collectionData || collectionData.num_interviews === 0) {
@@ -61,39 +62,45 @@ export default function CollectionData({
     ];
 
     const mediaTypesStr = mediaTypes
-      .filter(mt => mt.num > 0)
-      .sort((a, b) => b.num - a.num)
-      .map(mt => `${mt.num} ${t('modules.catalog.' + mt.type)}`)
-      .join(', ');
+        .filter((mt) => mt.num > 0)
+        .sort((a, b) => b.num - a.num)
+        .map((mt) => `${mt.num} ${t('modules.catalog.' + mt.type)}`)
+        .join(', ');
 
     return (
         <>
-            {mediaTypesStr && (<>
-                <dt className="DescriptionList-term">
-                    {t('modules.catalog.media_type')}
-                </dt>
-                <dd className="DescriptionList-description">
-                    {mediaTypesStr}
-                </dd>
-            </>)}
+            {mediaTypesStr && (
+                <>
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.media_type')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {mediaTypesStr}
+                    </dd>
+                </>
+            )}
 
-            {interviewYears && (<>
-                <dt className="DescriptionList-term">
-                    {t('modules.catalog.period')}
-                </dt>
-                <dd className="DescriptionList-description">
-                    {formatYearRange(...interviewYears)}
-                </dd>
-            </>)}
+            {interviewYears && (
+                <>
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.period')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {formatYearRange(...interviewYears)}
+                    </dd>
+                </>
+            )}
 
-            {birthYears && (<>
-                <dt className="DescriptionList-term">
-                    {t('modules.catalog.birthyears')}
-                </dt>
-                <dd className="DescriptionList-description">
-                    {formatYearRange(...birthYears)}
-                </dd>
-            </>)}
+            {birthYears && (
+                <>
+                    <dt className="DescriptionList-term">
+                        {t('modules.catalog.birthyears')}
+                    </dt>
+                    <dd className="DescriptionList-description">
+                        {formatYearRange(...birthYears)}
+                    </dd>
+                </>
+            )}
 
             <dt className="DescriptionList-term">
                 {t('modules.catalog.languages')}

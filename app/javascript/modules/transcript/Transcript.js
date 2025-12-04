@@ -1,13 +1,14 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import classNames from 'classnames';
 import { useIsEditor } from 'modules/archive';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { isSegmentActive } from 'modules/interview-helpers';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+
 import SegmentContainer from './components/SegmentContainer';
 import TranscriptSkeleton from './components/TranscriptSkeleton';
 import {

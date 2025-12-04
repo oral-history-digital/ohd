@@ -35,33 +35,33 @@ bin/rails solr:reindex:all
 
 ### Quick Reindex (`quick`)
 
--   First 10 interviews only
--   No related data (people, segments, photos)
--   Clears existing index first
--   Best for: Testing search interface, basic functionality
+- First 10 interviews only
+- No related data (people, segments, photos)
+- Clears existing index first
+- Best for: Testing search interface, basic functionality
 
 ### Limited Reindex (`limited`)
 
--   Configurable number of interviews (default: 10)
--   Related people from those interviews
--   All segments from those interviews
--   All photos from those interviews
--   Uses incremental indexing (no clearing)
--   Best for: Feature development, testing relationships
+- Configurable number of interviews (default: 10)
+- Related people from those interviews
+- All segments from those interviews
+- All photos from those interviews
+- Uses incremental indexing (no clearing)
+- Best for: Feature development, testing relationships
 
 ### Full Reindex (`all`)
 
--   Everything in the database
--   Production-ready index
--   Best for: Final testing, production deployment
+- Everything in the database
+- Production-ready index
+- Best for: Final testing, production deployment
 
 ## Performance Tips
 
--   Use `quick` for UI/frontend development and basic testing
--   Use `limited[10]` (default) for development with related data
--   Use `limited[50]` for more comprehensive testing
--   Use `limited[100]` for extensive development work
--   Only use `all` when you need the complete dataset
+- Use `quick` for UI/frontend development and basic testing
+- Use `limited[10]` (default) for development with related data
+- Use `limited[50]` for more comprehensive testing
+- Use `limited[100]` for extensive development work
+- Only use `all` when you need the complete dataset
 
 ## Environment Variables
 
@@ -106,10 +106,10 @@ bin/rails solr:reindex:all
 
 The devcontainer setup ensures:
 
--   Solr starts automatically with correct schema
--   Core is created and ready for indexing
--   No manual Solr configuration needed
--   Health checks verify everything is working
+- Solr starts automatically with correct schema
+- Core is created and ready for indexing
+- No manual Solr configuration needed
+- Health checks verify everything is working
 
 If Solr issues persist, check:
 

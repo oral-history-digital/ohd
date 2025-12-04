@@ -1,8 +1,8 @@
+import { getLocale, getProjectId } from 'modules/archive';
+import { getCurrentProject, submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId } from 'modules/archive';
-import { getCurrentProject, submitData } from 'modules/data';
 import SegmentForm from './SegmentForm';
 
 const mapStateToProps = (state) => ({

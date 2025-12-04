@@ -1,18 +1,18 @@
-import PropTypes from 'prop-types';
-import { shallow } from 'enzyme';
-import useQueryTitle from './useQueryTitle';
-
 // Configure Enzyme adapter
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { shallow } from 'enzyme';
 import Enzyme from 'enzyme';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
+import useQueryTitle from './useQueryTitle';
+
 Enzyme.configure({ adapter: new Adapter() });
 
 // Mock the i18n module
 jest.mock('modules/i18n', () => ({
     useI18n: jest.fn(),
 }));
-
-import { useI18n } from 'modules/i18n';
 
 // Test component that uses the hook
 function TestComponent({ query, facets }) {

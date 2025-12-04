@@ -1,14 +1,14 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-
 import { useAuthorization } from 'modules/auth';
 import { getCurrentUser, useHumanReadable } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { usePersonWithAssociations } from 'modules/person';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
+import { useSelector } from 'react-redux';
+
 import {
     METADATA_SOURCE_EVENT_TYPE,
     METADATA_SOURCE_INTERVIEW,

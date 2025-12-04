@@ -1,15 +1,10 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 
 const FACET_FILTER_MIN_ITEMS = 10;
 
-export default function FacetFilterInput({
-    data,
-    facet,
-    filter,
-    onChange,
-}) {
+export default function FacetFilterInput({ data, facet, filter, onChange }) {
     if (Object.keys(data.subfacets).length < FACET_FILTER_MIN_ITEMS) {
         return null;
     }
@@ -21,7 +16,7 @@ export default function FacetFilterInput({
         }
     }
 
-    return(
+    return (
         <div className="facet-filter">
             <FaSearch className="Icon Icon--primary Icon--small" />
             <input
@@ -30,7 +25,7 @@ export default function FacetFilterInput({
                 value={filter}
                 onChange={onChange}
                 onKeyDown={handleKeyDown}
-                style={{borderBottom: '1px solid ', marginBottom: '0.7rem'}}
+                style={{ borderBottom: '1px solid ', marginBottom: '0.7rem' }}
             />
         </div>
     );

@@ -1,23 +1,19 @@
-import PropTypes from 'prop-types';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
-export default function RegistryEntryLabel({
-    registryEntry,
-}) {
+export default function RegistryEntryLabel({ registryEntry }) {
     const { t, locale } = useI18n();
 
     const localizedName = registryEntry.name[locale];
-    const name = localizedName?.length > 0
-        ? localizedName
-        : (<i>{t('modules.registry.name_missing')}</i>);
+    const name =
+        localizedName?.length > 0 ? (
+            localizedName
+        ) : (
+            <i>{t('modules.registry.name_missing')}</i>
+        );
 
-    return (
-        <span className="RegistryEntry-label">
-            {name}
-        </span>
-    );
+    return <span className="RegistryEntry-label">{name}</span>;
 }
 
 RegistryEntryLabel.propTypes = {

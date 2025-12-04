@@ -1,12 +1,11 @@
+import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import { formatTimecode } from 'modules/interview-helpers';
+import { usePathBase } from 'modules/routes';
+import { CopyText, Modal } from 'modules/ui';
+import { WorkbookItemForm } from 'modules/workbook';
 import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
-import classNames from 'classnames';
-
-import { WorkbookItemForm } from 'modules/workbook';
-import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
-import { Modal, CopyText } from 'modules/ui';
-import { formatTimecode } from 'modules/interview-helpers';
 
 export default function MediaControls({
     className,

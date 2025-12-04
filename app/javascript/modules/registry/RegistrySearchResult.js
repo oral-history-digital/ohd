@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryBreadcrumbs from './RegistryEntryBreadcrumbs';
+import RegistryEntryContainer from './RegistryEntryContainer';
 
 export default function RegistrySearchResult({
     result,
@@ -15,7 +15,7 @@ export default function RegistrySearchResult({
             hideCheckbox={hideCheckbox}
             hideEditButtons={hideEditButtons}
         >
-            <RegistryEntryBreadcrumbs registryEntry={result}/>
+            <RegistryEntryBreadcrumbs registryEntry={result} />
         </RegistryEntryContainer>
     );
 }

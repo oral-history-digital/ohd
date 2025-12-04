@@ -8,5 +8,5 @@ const possibleOptions = [
 ];
 
 export default function filterByPossibleOptions(options) {
-    return options.filter(option => possibleOptions.includes(option));
+    return options.filter((option) => possibleOptions.includes(option));
 }

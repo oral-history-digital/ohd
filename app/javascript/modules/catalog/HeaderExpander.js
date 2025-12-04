@@ -1,22 +1,25 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 
-export default function HeaderExpander({
-    table,
-}) {
+export default function HeaderExpander({ table }) {
     return (
         <button
             type="button"
-            className={classNames('Button', 'Button--transparent',
-                'Button--icon', 'Button--withoutPadding',
-                'Button--primaryAction')}
+            className={classNames(
+                'Button',
+                'Button--transparent',
+                'Button--icon',
+                'Button--withoutPadding',
+                'Button--primaryAction'
+            )}
             onClick={table.getToggleAllRowsExpandedHandler()}
         >
-            {table.getIsAllRowsExpanded() ?
-                <FaMinus className="Icon" /> :
+            {table.getIsAllRowsExpanded() ? (
+                <FaMinus className="Icon" />
+            ) : (
                 <FaPlus className="Icon" />
-            }
+            )}
         </button>
     );
 }

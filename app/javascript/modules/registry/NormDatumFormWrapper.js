@@ -1,9 +1,9 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaRegClone, FaRegFileAlt } from 'react-icons/fa';
 
-import { useI18n } from 'modules/i18n';
 import NormDataForDescriptorContainer from './NormDataForDescriptorContainer';
 
 export default function NormDatumFormWrapper({

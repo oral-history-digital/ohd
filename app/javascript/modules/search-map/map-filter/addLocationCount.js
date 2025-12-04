@@ -6,7 +6,7 @@ export default function addLocationCount(locations, referenceTypes) {
         throw new TypeError('referenceTypes must be Array');
     }
 
-    const transformedTypes = referenceTypes.map(type => {
+    const transformedTypes = referenceTypes.map((type) => {
         return {
             ...type,
             locationCount: locationCountFor(locations, type.id),
@@ -19,7 +19,7 @@ export default function addLocationCount(locations, referenceTypes) {
 function locationCountFor(locations, referenceTypeId) {
     let numLocations = 0;
 
-    locations.forEach(location => {
+    locations.forEach((location) => {
         if (Object.hasOwn(location.ref_types, referenceTypeId)) {
             numLocations += 1;
         }

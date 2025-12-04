@@ -1,7 +1,7 @@
 export default function sortInterviewRefs(refGroups) {
-    refGroups.forEach(group => {
+    refGroups.forEach((group) => {
         group.references.sort(compareFunction);
-    })
+    });
 
     return refGroups;
 }

@@ -1,9 +1,15 @@
+import {
+    deleteData,
+    fetchData,
+    getCurrentProject,
+    getTaskTypesForCurrentProject,
+    getTaskTypesStatus,
+    submitData,
+} from 'modules/data';
+import { getTaskTypesQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams, getTaskTypesQuery } from 'modules/search';
-import { fetchData, deleteData, submitData, getCurrentProject,
-    getTaskTypesForCurrentProject, getTaskTypesStatus } from 'modules/data';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
 
@@ -18,7 +24,7 @@ const mapStateToProps = (state) => {
         outerScopeId: project.id,
         scope: 'task_type',
         detailsAttributes: ['name', 'desc'],
-        initialFormValues: {project_id: project.id},
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
                 attribute: 'label',
@@ -29,7 +35,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'abbreviation',
-                validate: v => v?.length > 1,
+                validate: (v) => v?.length > 1,
             },
             {
                 elementType: 'input',
@@ -37,16 +43,20 @@ const mapStateToProps = (state) => {
                 type: 'checkbox',
             },
         ],
-        joinedData: {task_type_permission: TaskTypePermissionsContainer},
-        helpTextCode: 'task_type_form'
-    }
-}
+        joinedData: { task_type_permission: TaskTypePermissionsContainer },
+        helpTextCode: 'task_type_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-    setQueryParams,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+            setQueryParams,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

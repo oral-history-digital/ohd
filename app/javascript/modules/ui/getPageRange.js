@@ -14,5 +14,5 @@ export default function getPageRange(pageCount, currentPage, windowSize) {
         start = end - actualWindowSize + 1;
     }
 
-    return range (start, end + 1);
+    return range(start, end + 1);
 }

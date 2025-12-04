@@ -6,7 +6,7 @@ export default function filterReferences(filter, references) {
         throw new TypeError('references must be Array');
     }
 
-    const filteredReferences = references.filter(reference =>
+    const filteredReferences = references.filter((reference) =>
         filter.includes(reference.registry_reference_type_id.toString())
     );
 

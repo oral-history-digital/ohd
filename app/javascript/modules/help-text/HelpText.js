@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaRegQuestionCircle } from 'react-icons/fa';
-import useSWRImmutable from 'swr/immutable';
-
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+import useSWRImmutable from 'swr/immutable';
 
 export default function HelpText({ className, style, code, small = false }) {
     const { t } = useI18n();

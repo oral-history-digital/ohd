@@ -1,5 +1,5 @@
-import reducer, { initialState } from './reducer';
 import * as types from './action-types';
+import reducer, { initialState } from './reducer';
 
 const state = {
     autoScroll: true,

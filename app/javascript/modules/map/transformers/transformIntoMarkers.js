@@ -5,13 +5,18 @@ export default function transformIntoMarkers(colorMap, locations) {
         throw new TypeError('locations must be Array');
     }
 
-    const markers = locations.map(location => {
+    const markers = locations.map((location) => {
         if (isEmpty(location.lat) || isEmpty(location.lon)) {
-            throw new ReferenceError(`Lat/Lon values are empty for id ${location.id}`);
+            throw new ReferenceError(
+                `Lat/Lon values are empty for id ${location.id}`
+            );
         }
 
         const aggregatedRefCounts = Object.values(location.ref_types);
-        const totalRefCount = aggregatedRefCounts.reduce((acc, cur) => acc + cur, 0);
+        const totalRefCount = aggregatedRefCounts.reduce(
+            (acc, cur) => acc + cur,
+            0
+        );
         const segmentRefCount = location.ref_types.segment || 0;
         const metadataRefCount = totalRefCount - segmentRefCount;
 
@@ -32,7 +37,11 @@ export default function transformIntoMarkers(colorMap, locations) {
 }
 
 function isEmpty(geoCoordinate) {
-    return (typeof geoCoordinate === 'undefined' || geoCoordinate === null || Number.isNaN(geoCoordinate));
+    return (
+        typeof geoCoordinate === 'undefined' ||
+        geoCoordinate === null ||
+        Number.isNaN(geoCoordinate)
+    );
 }
 
 function markerRadius(numMetadataReferences) {
@@ -40,7 +49,7 @@ function markerRadius(numMetadataReferences) {
 }
 
 function color(colorMap, location) {
-    const refTypesClone = {...location.ref_types};
+    const refTypesClone = { ...location.ref_types };
     delete refTypesClone.segment;
     const refTypesWithoutSegment = Object.keys(refTypesClone);
 

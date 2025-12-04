@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 export default class ErrorBoundaryComponent extends Component {
     constructor(props) {
@@ -23,10 +23,7 @@ export default class ErrorBoundaryComponent extends Component {
 
             return (
                 <div className="wrapper-content">
-                    {small ?
-                        <p>{message}</p> :
-                        <h1>{message}</h1>
-                    }
+                    {small ? <p>{message}</p> : <h1>{message}</h1>}
                     <p></p>
                 </div>
             );

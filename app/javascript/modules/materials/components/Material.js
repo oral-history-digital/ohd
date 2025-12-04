@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import { FaEye, FaEyeSlash, FaDownload } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaDownload, FaEye, FaEyeSlash } from 'react-icons/fa';
+
 import MaterialAdminButtons from './MaterialAdminButtons';
 
 export default function Material({ material }) {
@@ -31,17 +31,16 @@ export default function Material({ material }) {
 
                 <div className="Card-body">
                     {material.description && (
-                        <p className="u-mb-none">
-                            {material.description}
-                        </p>
+                        <p className="u-mb-none">{material.description}</p>
                     )}
 
                     <AuthorizedContent object={material} action="update">
                         <p className="u-mb-none">
-                            {isPublic
-                                ? <FaEye className="Icon Icon--small" />
-                                : <FaEyeSlash className="Icon Icon--small" />
-                            }
+                            {isPublic ? (
+                                <FaEye className="Icon Icon--small" />
+                            ) : (
+                                <FaEyeSlash className="Icon Icon--small" />
+                            )}
                             {` ${fileInfo}`}
                         </p>
                         <MaterialAdminButtons material={material} />

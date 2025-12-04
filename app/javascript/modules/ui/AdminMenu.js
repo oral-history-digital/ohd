@@ -1,14 +1,14 @@
 import { cloneElement, useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { FaTimes, FaEllipsisH } from 'react-icons/fa';
-import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
-import '@reach/menu-button/styles.css';
+
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
+import '@reach/menu-button/styles.css';
 import { VisuallyHidden } from '@reach/visually-hidden';
-
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaEllipsisH, FaTimes } from 'react-icons/fa';
 
 /**
  * Usage:
@@ -22,11 +22,7 @@ import { useI18n } from 'modules/i18n';
  * AdminMenu can only have AdminMenu.Item components as children.
  */
 
-export default function AdminMenu({
-    className,
-    disabled = false,
-    children,
-}) {
+export default function AdminMenu({ className, disabled = false, children }) {
     const { t } = useI18n();
     const [openDialog, setOpenDialog] = useState(null);
     const closeDialog = () => setOpenDialog(null);
@@ -36,7 +32,7 @@ export default function AdminMenu({
     }
 
     const childrenArray = Array.isArray(children) ? children : [children];
-    const cleanedChildrenArray = childrenArray.filter(c => c && c.props);
+    const cleanedChildrenArray = childrenArray.filter((c) => c && c.props);
 
     return (
         <>
@@ -51,27 +47,25 @@ export default function AdminMenu({
                     <FaEllipsisH className="Icon Icon--small Icon--editorial" />
                 </MenuButton>
                 <MenuList>
-                    {
-                        cleanedChildrenArray.map(child => (
-                            <MenuItem
-                                key={child.props.name}
-                                className="ReachMenuItem"
-                                onSelect={() => setOpenDialog(child.props.name)}
-                            >
-                                {child.props.label}
-                            </MenuItem>
-                        ))
-                    }
+                    {cleanedChildrenArray.map((child) => (
+                        <MenuItem
+                            key={child.props.name}
+                            className="ReachMenuItem"
+                            onSelect={() => setOpenDialog(child.props.name)}
+                        >
+                            {child.props.label}
+                        </MenuItem>
+                    ))}
                 </MenuList>
             </Menu>
 
-            {
-                cleanedChildrenArray.map(child => cloneElement(child, {
+            {cleanedChildrenArray.map((child) =>
+                cloneElement(child, {
                     open: child.props.name === openDialog,
                     onClose: closeDialog,
                     key: child.props.name,
-                }))
-            }
+                })
+            )}
         </>
     );
 }
@@ -85,33 +79,14 @@ AdminMenu.propTypes = {
     ]),
 };
 
-function AdminMenuItem({
-    label,
-    dialogTitle,
-    open,
-    children,
-    onClose,
-}) {
+function AdminMenuItem({ label, dialogTitle, open, children, onClose }) {
     return (
-        <Dialog
-            isOpen={open}
-            onDismiss={onClose}
-            className="Modal-dialog"
-        >
-            <h3 className="Modal-heading">
-                {dialogTitle || label}
-            </h3>
+        <Dialog isOpen={open} onDismiss={onClose} className="Modal-dialog">
+            <h3 className="Modal-heading">{dialogTitle || label}</h3>
 
-            {typeof children === 'function' ?
-                children(onClose) :
-                children
-            }
+            {typeof children === 'function' ? children(onClose) : children}
 
-            <button
-                type="button"
-                className="Modal-close"
-                onClick={onClose}
-            >
+            <button type="button" className="Modal-close" onClick={onClose}>
                 <VisuallyHidden>Close</VisuallyHidden>
                 <FaTimes className="Modal-icon" />
             </button>

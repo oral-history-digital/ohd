@@ -1,0 +1,10 @@
+# Ignore locale YAML files which contain duplicate keys and break Prettier
+config/locales/**
+config/cucumber.yml
+
+# Node modules and build artifacts
+node_modules/
+public/packs/
+public/packs-test/
+tmp/
+coverage/

@@ -1,4 +1,5 @@
 import { usePathBase } from 'modules/routes';
+
 import fetchHeaders from './fetchHeaders';
 
 export default function useEventTypeApi() {
@@ -9,10 +10,10 @@ export default function useEventTypeApi() {
         const options = {
             method: 'POST',
             headers: fetchHeaders,
-            body: JSON.stringify({ event_type: data })
+            body: JSON.stringify({ event_type: data }),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     function updateEventType(id, data) {
@@ -20,25 +21,25 @@ export default function useEventTypeApi() {
         const options = {
             method: 'PUT',
             headers: fetchHeaders,
-            body: JSON.stringify({ event_type: data })
+            body: JSON.stringify({ event_type: data }),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     function deleteEventType(id) {
         const path = `${pathBase}/event_types/${id}.json`;
         const options = {
             method: 'DELETE',
-            headers: fetchHeaders
+            headers: fetchHeaders,
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     return {
         createEventType,
         updateEventType,
-        deleteEventType
+        deleteEventType,
     };
 }

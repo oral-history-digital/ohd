@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import { useContributionsForPerson } from './hooks';
 
 export default function PersonContributions({ personId }) {

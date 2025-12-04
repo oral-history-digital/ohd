@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { FaStar } from 'react-icons/fa';
-
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { WorkbookItemForm } from 'modules/workbook';
 import { Modal } from 'modules/ui';
+import { WorkbookItemForm } from 'modules/workbook';
+import PropTypes from 'prop-types';
+import { FaStar } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 export default function BookmarkSegmentButton({ segment }) {
     const { t } = useI18n();

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FaSearch } from 'react-icons/fa';
 
-import { usePathBase, useProject } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
 import { PixelLoader } from 'modules/spinners';
 import { isMobile } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa';
 
 export default function RegistrySearchForm({
     fulltext,
@@ -37,10 +37,7 @@ export default function RegistrySearchForm({
 
     return (
         <div className="content-search">
-            <form
-                className="content-search-form"
-                onSubmit={handleSubmit}
-            >
+            <form className="content-search-form" onSubmit={handleSubmit}>
                 <input
                     type="search"
                     className="search-input"
@@ -57,7 +54,7 @@ export default function RegistrySearchForm({
                 </button>
             </form>
 
-            {isRegistryEntrySearching && <PixelLoader/>}
+            {isRegistryEntrySearching && <PixelLoader />}
         </div>
     );
 }

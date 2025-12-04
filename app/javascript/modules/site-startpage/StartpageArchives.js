@@ -1,23 +1,22 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { getStartpageProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import ArchiveTile from './ArchiveTile';
 
 const INITIALLY_SHOWN_ARCHIVES = 6;
 
-export default function StartpageArchives({
-    className
-}) {
+export default function StartpageArchives({ className }) {
     const archives = useSelector(getStartpageProjects);
     const [showMore, setShowMore] = useState(false);
     const { t } = useI18n();
 
-    const shownArchives = showMore ?
-        archives :
-        archives.slice(0, INITIALLY_SHOWN_ARCHIVES);
+    const shownArchives = showMore
+        ? archives
+        : archives.slice(0, INITIALLY_SHOWN_ARCHIVES);
 
     const displayShowMoreButton = archives.length > INITIALLY_SHOWN_ARCHIVES;
 
@@ -28,11 +27,8 @@ export default function StartpageArchives({
             </h3>
 
             <div className="Grid u-mt">
-                {shownArchives.map(archive => (
-                    <ArchiveTile
-                        key={archive.id}
-                        archive={archive}
-                    />
+                {shownArchives.map((archive) => (
+                    <ArchiveTile key={archive.id} archive={archive} />
                 ))}
             </div>
 
@@ -48,7 +44,7 @@ export default function StartpageArchives({
                 </div>
             )}
         </article>
-    )
+    );
 }
 
 StartpageArchives.propTypes = {

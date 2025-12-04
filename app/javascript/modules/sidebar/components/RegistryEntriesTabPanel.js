@@ -1,11 +1,11 @@
+import { AuthorizedContent } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { RegistrySearchFormContainer } from 'modules/registry';
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { AuthorizedContent } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { RegistrySearchFormContainer } from 'modules/registry';
-import { useProject } from 'modules/routes';
 import DownloadRegistryEntries from './DownloadRegistryEntries';
 
 function RegistryEntriesTabPanel({
@@ -18,25 +18,43 @@ function RegistryEntriesTabPanel({
 
     return (
         <ErrorBoundary small>
-            <h3 className='SidebarTabs-title'>
-                {t('registry')}
-            </h3>
-            <div className='flyout-sub-tabs-container'>
+            <h3 className="SidebarTabs-title">{t('registry')}</h3>
+            <div className="flyout-sub-tabs-container">
                 <RegistrySearchFormContainer />
                 <p>
                     <button
                         type="button"
                         className="Button"
-                        onClick={() => changeRegistryEntriesViewMode(!showRegistryEntriesSearchResults, projectId)}
+                        onClick={() =>
+                            changeRegistryEntriesViewMode(
+                                !showRegistryEntriesSearchResults,
+                                projectId
+                            )
+                        }
                     >
-                        {t('activerecord.models.registry_entry.actions.' + (showRegistryEntriesSearchResults ? 'show_tree' : 'show_search_results'))}
+                        {t(
+                            'activerecord.models.registry_entry.actions.' +
+                                (showRegistryEntriesSearchResults
+                                    ? 'show_tree'
+                                    : 'show_search_results')
+                        )}
                     </button>
                 </p>
-                { locales.map((locale) => (
-                    <AuthorizedContent key={locale} object={{type: 'General'}} action='edit'>
+                {locales.map((locale) => (
+                    <AuthorizedContent
+                        key={locale}
+                        object={{ type: 'General' }}
+                        action="edit"
+                    >
                         <div key={locale}>
-                            <DownloadRegistryEntries format="pdf" specificLocale={locale} />
-                            <DownloadRegistryEntries format="csv" specificLocale={locale} />
+                            <DownloadRegistryEntries
+                                format="pdf"
+                                specificLocale={locale}
+                            />
+                            <DownloadRegistryEntries
+                                format="csv"
+                                specificLocale={locale}
+                            />
                         </div>
                     </AuthorizedContent>
                 ))}

@@ -1,10 +1,10 @@
-import { Helmet } from 'react-helmet';
-
 import { useTrackPageView } from 'modules/analytics';
+import { Fetch } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
-import { useI18n } from 'modules/i18n';
-import { Fetch } from 'modules/data';
+import { Helmet } from 'react-helmet';
+
 import MainCatalog from './MainCatalog';
 
 export default function MainCatalogPage() {
@@ -18,23 +18,23 @@ export default function MainCatalogPage() {
             </Helmet>
             <ErrorBoundary>
                 <div className="wrapper-content interviews">
-                    <h1 className='search-results-title'>
+                    <h1 className="search-results-title">
                         {t('modules.catalog.title')}
                     </h1>
                     <Fetch
                         fetchParams={['institutions', null, null, 'all']}
-                        testDataType='institutions'
-                        testIdOrDesc='all'
+                        testDataType="institutions"
+                        testIdOrDesc="all"
                     >
                         <Fetch
                             fetchParams={['projects', null, null, 'all']}
-                            testDataType='projects'
-                            testIdOrDesc='all'
+                            testDataType="projects"
+                            testIdOrDesc="all"
                         >
                             <Fetch
                                 fetchParams={['collections', null, null, 'all']}
-                                testDataType='collections'
-                                testIdOrDesc='all'
+                                testDataType="collections"
+                                testIdOrDesc="all"
                             >
                                 <MainCatalog />
                             </Fetch>

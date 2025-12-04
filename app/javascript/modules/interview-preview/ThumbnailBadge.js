@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
-import { FaSearch } from 'react-icons/fa';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa';
 
 export default function ThumbnailBadge({
     loading,

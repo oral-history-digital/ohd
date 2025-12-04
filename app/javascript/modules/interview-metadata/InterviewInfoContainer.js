@@ -1,9 +1,13 @@
+import {
+    getContributionsStatus,
+    getCurrentInterview,
+    getLanguages,
+} from 'modules/data';
 import { connect } from 'react-redux';
 
-import { getCurrentInterview, getLanguages, getContributionsStatus } from 'modules/data';
 import InterviewInfo from './InterviewInfo';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),
     languages: getLanguages(state),
     // the following is just a trick to force rerender after deletion

@@ -1,22 +1,25 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 const ERROR_MESSAGE_TYPE_DEFAULT = 'default';
 
 export default function ErrorMessage({
     type = ERROR_MESSAGE_TYPE_DEFAULT,
     children,
-    className
+    className,
 }) {
     const { t } = useI18n();
 
     return (
-        <div className={classNames('ErrorMessage', `ErrorMessage--${type}`, className)}>
-            <b>{t('modules.ui.error_message.error')}:</b>
-            {' '}
-            {children}
+        <div
+            className={classNames(
+                'ErrorMessage',
+                `ErrorMessage--${type}`,
+                className
+            )}
+        >
+            <b>{t('modules.ui.error_message.error')}:</b> {children}
         </div>
     );
 }
@@ -27,5 +30,5 @@ ErrorMessage.propTypes = {
         PropTypes.node,
     ]),
     type: PropTypes.string,
-    className: PropTypes.string
+    className: PropTypes.string,
 };

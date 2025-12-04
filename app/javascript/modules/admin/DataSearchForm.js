@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
 import { HelpText } from 'modules/help-text';
@@ -7,8 +6,10 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { pluralize } from 'modules/strings';
 import { isMobile } from 'modules/user-agent';
-import parametrizedQuery from './parametrizedQuery';
+import PropTypes from 'prop-types';
+
 import DataSearchFormElement from './DataSearchFormElement';
+import parametrizedQuery from './parametrizedQuery';
 
 export default function DataSearchForm({
     scope,
@@ -32,20 +33,22 @@ export default function DataSearchForm({
     function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-        setQueryParams(
-            pluralize(scope),
-            {
-                [name]: value,
-                page: 1,
-            }
-        );
+        setQueryParams(pluralize(scope), {
+            [name]: value,
+            page: 1,
+        });
     }
 
     function handleReset() {
         formEl.current?.reset();
         resetQuery(pluralize(scope));
-        fetchData({ projectId, locale, project }, pluralize(scope),
-            null, null, null);
+        fetchData(
+            { projectId, locale, project },
+            pluralize(scope),
+            null,
+            null,
+            null
+        );
     }
 
     function handleSubmit(event) {
@@ -53,8 +56,13 @@ export default function DataSearchForm({
         if (isMobile()) {
             hideSidebar();
         }
-        fetchData({ projectId, locale, project }, pluralize(scope),
-            null, null, parametrizedQuery(query));
+        fetchData(
+            { projectId, locale, project },
+            pluralize(scope),
+            null,
+            null,
+            parametrizedQuery(query)
+        );
     }
 
     return (
@@ -70,7 +78,9 @@ export default function DataSearchForm({
                 return (
                     <FormElement
                         key={element.attributeName}
-                        label={t(`activerecord.attributes.${scope}.${element.attributeName}`)}
+                        label={t(
+                            `activerecord.attributes.${scope}.${element.attributeName}`
+                        )}
                     >
                         <DataSearchFormElement
                             element={element}
@@ -79,7 +89,7 @@ export default function DataSearchForm({
                             onChange={handleChange}
                         />
                     </FormElement>
-                )
+                );
             })}
             <input
                 className="lonely-search-button"

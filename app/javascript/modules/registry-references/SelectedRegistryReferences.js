@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 
-import { underscore } from 'modules/strings';
+import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
+import { getCurrentInterview, getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
+import { underscore } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import RegistryReferencesContainer from './RegistryReferencesContainer';
-import { getCurrentUser, getCurrentInterview } from 'modules/data';
 
 export default function SelectedRegistryReferences({
     editView,
@@ -26,57 +27,87 @@ export default function SelectedRegistryReferences({
     useEffect(() => {
         loadRegistryEntries();
         loadRootRegistryEntry();
-    })
+    });
 
     function loadRegistryEntries() {
-        if (!registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`]) {
-            fetchData({ projectId, locale, project }, 'registry_entries', null, null, `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`);
+        if (
+            !registryEntriesStatus[
+                `ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`
+            ]
+        ) {
+            fetchData(
+                { projectId, locale, project },
+                'registry_entries',
+                null,
+                null,
+                `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`
+            );
         }
     }
 
     function loadRootRegistryEntry() {
         if (
             !registryEntriesStatus[project.root_registry_entry_id] ||
-            registryEntriesStatus[project.root_registry_entry_id].split('-')[0] === 'reload'
+            registryEntriesStatus[project.root_registry_entry_id].split(
+                '-'
+            )[0] === 'reload'
         ) {
-            fetchData({ projectId, locale, project }, 'registry_entries', project.root_registry_entry_id);
+            fetchData(
+                { projectId, locale, project },
+                'registry_entries',
+                project.root_registry_entry_id
+            );
         }
     }
 
-    const hasInterviewPermission = interview.workflow_state === 'public' ||
-        isAuthorized(interview, 'show') || (
-            interview.workflow_state === 'restricted' &&
-            user?.interview_permissions?.some(perm => perm.interview_id === interview.id)
-    );
+    const hasInterviewPermission =
+        interview.workflow_state === 'public' ||
+        isAuthorized(interview, 'show') ||
+        (interview.workflow_state === 'restricted' &&
+            user?.interview_permissions?.some(
+                (perm) => perm.interview_id === interview.id
+            ));
 
     const fields = Object.values(project.metadata_fields)
-        .filter(field => field.registry_entry_id)
-        .filter(field => field.ref_object_type === refObject.type)
-        .filter(field => (
-            field.display_on_landing_page && (!projectAccessGranted || !hasInterviewPermission)
-        ) ||
-        (
-            field.use_in_details_view && projectAccessGranted && hasInterviewPermission
-        ));
+        .filter((field) => field.registry_entry_id)
+        .filter((field) => field.ref_object_type === refObject.type)
+        .filter(
+            (field) =>
+                (field.display_on_landing_page &&
+                    (!projectAccessGranted || !hasInterviewPermission)) ||
+                (field.use_in_details_view &&
+                    projectAccessGranted &&
+                    hasInterviewPermission)
+        );
 
-    return fields.map(field => {
+    return fields.map((field) => {
         if (
-            editView || refObject.registry_references && Object.values(refObject.registry_references).
-            find(r => r.registry_reference_type_id === field.registry_reference_type_id)
+            editView ||
+            (refObject.registry_references &&
+                Object.values(refObject.registry_references).find(
+                    (r) =>
+                        r.registry_reference_type_id ===
+                        field.registry_reference_type_id
+                ))
         ) {
             return (
-                <div
-                    key={field.id}
-                    className="RegistryReferences u-mb-small"
-                >
+                <div key={field.id} className="RegistryReferences u-mb-small">
                     <span className="RegistryReferences-label flyout-content-label">
-                        {field.label[locale] || t(`activerecord.attributes.${underscore(refObject.type)}.${field.name}`)}
+                        {field.label[locale] ||
+                            t(
+                                `activerecord.attributes.${underscore(refObject.type)}.${field.name}`
+                            )}
                         :
                     </span>
                     <RegistryReferencesContainer
                         refObject={refObject}
-                        lowestAllowedRegistryEntryId={(field.registry_entry_id) || project.root_registry_entry_id}
-                        registryReferenceTypeId={field.registry_reference_type_id}
+                        lowestAllowedRegistryEntryId={
+                            field.registry_entry_id ||
+                            project.root_registry_entry_id
+                        }
+                        registryReferenceTypeId={
+                            field.registry_reference_type_id
+                        }
                         locale={locale}
                     />
                 </div>

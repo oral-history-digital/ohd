@@ -1,13 +1,13 @@
+import { AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
+import { ErrorMessage } from 'modules/ui';
 import Observer from 'react-intersection-observer';
 
-import { AuthShowContainer } from 'modules/auth';
-import { Spinner } from 'modules/spinners';
-import { useI18n } from 'modules/i18n';
-import { ErrorMessage } from 'modules/ui';
 import useArchiveSearch from '../useArchiveSearch';
-import SearchActions from './SearchActions';
-import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
+import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
+import SearchActions from './SearchActions';
 
 const PAGE_SIZE = 12;
 

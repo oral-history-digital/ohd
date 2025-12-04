@@ -1,8 +1,7 @@
 export default function groupSegmentRefs(refs) {
-    const groupObject = {
-    };
+    const groupObject = {};
 
-    refs.forEach(ref => {
+    refs.forEach((ref) => {
         if (!(ref.archive_id in groupObject)) {
             groupObject[ref.archive_id] = {
                 archive_id: ref.archive_id,

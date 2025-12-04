@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { FaEdit, FaSortAmountDown, FaSlash } from 'react-icons/fa';
-import classNames from 'classnames';
 
+import classNames from 'classnames';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+import { FaEdit, FaSlash, FaSortAmountDown } from 'react-icons/fa';
 
 export default function MediaPlayerButtons({
     autoScroll,

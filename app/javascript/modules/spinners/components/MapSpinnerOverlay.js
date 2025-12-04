@@ -3,7 +3,7 @@ export default function MapSpinnerOverlay() {
         <div className="MapSpinnerOverlay">
             <div className="MapSpinnerOverlay-inner">
                 <div className="MapSpinnerOverlay-content">
-                    <span className="MapSpinnerOverlay-spinner"/>
+                    <span className="MapSpinnerOverlay-spinner" />
                 </div>
             </div>
         </div>

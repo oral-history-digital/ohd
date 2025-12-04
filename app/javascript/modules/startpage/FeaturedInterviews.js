@@ -1,5 +1,6 @@
 import { InterviewPreviewContainer } from 'modules/interview-preview';
 import Skeleton from 'react-loading-skeleton';
+
 import useFeaturedInterviews from './useFeaturedInterviews';
 
 // Skeleton placeholder that mimics InterviewCard structure

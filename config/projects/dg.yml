@@ -1,5 +1,4 @@
 default: &default
-
   media_streams:
     defaults:
       audio: 480p

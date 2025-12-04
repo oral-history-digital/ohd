@@ -1,8 +1,15 @@
+import {
+    addRemoveRegistryEntryId,
+    getSelectedRegistryEntryIds,
+} from 'modules/archive';
+import {
+    fetchData,
+    getRegistryEntries,
+    getRegistryEntriesStatus,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
-import { addRemoveRegistryEntryId, getSelectedRegistryEntryIds } from 'modules/archive';
 import RegistryEntry from './RegistryEntry';
 
 const mapStateToProps = (state) => ({
@@ -11,9 +18,13 @@ const mapStateToProps = (state) => ({
     selectedRegistryEntryIds: getSelectedRegistryEntryIds(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    addRemoveRegistryEntryId,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            addRemoveRegistryEntryId,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntry);

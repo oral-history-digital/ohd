@@ -33,7 +33,6 @@ $button-border-width: $base-unit * 0.083333;
   text-decoration: underline;
 }
 
-
 .Button--fullWidth {
   width: 100% !important;
 }
@@ -65,7 +64,8 @@ $button-border-width: $base-unit * 0.083333;
 .Button--primaryAction,
 .Button--secondaryAction {
   border: $button-border-width solid var(--primary-color) !important;
-  padding: ($base-unit * 0.5 - $button-border-width) ($base-unit - $button-border-width);
+  padding: ($base-unit * 0.5 - $button-border-width)
+    ($base-unit - $button-border-width);
   transition: filter $transition-duration !important;
   width: initial;
 }

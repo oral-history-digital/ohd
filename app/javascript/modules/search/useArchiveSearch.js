@@ -1,20 +1,22 @@
-import useSWRInfinite from 'swr/infinite';
-import queryString from 'query-string';
-import { useSelector } from 'react-redux';
 import range from 'lodash.range';
-
-import { getIsLoggedIn } from 'modules/user';
 import { fetcher } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
-import { usePathBase } from 'modules/routes';
 import { useSearchParams } from 'modules/query-string';
+import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
+import queryString from 'query-string';
+import { useSelector } from 'react-redux';
+import useSWRInfinite from 'swr/infinite';
+
 import defaultSortOptions from './defaultSortOptions';
 
 function transformData(data) {
     const combinedResults = [];
 
-    data.forEach(datum => {
-        datum.interviews.forEach(interview => combinedResults.push(interview));
+    data.forEach((datum) => {
+        datum.interviews.forEach((interview) =>
+            combinedResults.push(interview)
+        );
     });
 
     return combinedResults;
@@ -23,8 +25,14 @@ function transformData(data) {
 export default function useArchiveSearch() {
     const project = useSelector(getCurrentProject);
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const { sortBy, sortOrder, fulltext, facets, yearOfBirthMin,
-        yearOfBirthMax } = useSearchParams();
+    const {
+        sortBy,
+        sortOrder,
+        fulltext,
+        facets,
+        yearOfBirthMin,
+        yearOfBirthMax,
+    } = useSearchParams();
     const pathBase = usePathBase();
 
     function getKey(pageIndex) {
@@ -45,7 +53,9 @@ export default function useArchiveSearch() {
             params.order = defaults.order;
         }
 
-        const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
+        const paramStr = queryString.stringify(params, {
+            arrayFormat: 'bracket',
+        });
         return `${pathBase}/searches/archive?${paramStr}`;
     }
 

@@ -24,7 +24,7 @@ body {
   line-height: $line-height-large;
 }
 
-.active_map_popup_text{
+.active_map_popup_text {
   color: var(--primary-color);
   cursor: pointer;
 }
@@ -146,7 +146,8 @@ ul.search-results-pagination {
     }
     &.active {
       background-color: #ddd;
-      .fa, span {
+      .fa,
+      span {
         color: $gray-dark;
       }
     }
@@ -171,7 +172,9 @@ a.small {
   font-size: 0.9rem;
 }
 
-.search-result, .search-result-workflow, .search-result-workflow-detail {
+.search-result,
+.search-result-workflow,
+.search-result-workflow-detail {
   position: relative;
   width: 100%;
   margin: 0 0 30px;
@@ -255,7 +258,8 @@ a.small {
     &.created {
       background-color: $not-started;
     }
-    &.started, &.restarted {
+    &.started,
+    &.restarted {
       background-color: $started;
     }
     &.finished {
@@ -276,7 +280,7 @@ a.small {
   &.tasks {
     height: 300px;
     overflow-y: scroll;
-    input[type=submit] {
+    input[type='submit'] {
       float: right;
       margin-right: 7px;
     }
@@ -292,7 +296,7 @@ a.small {
 }
 
 .wrapper-content.home-content {
-  padding:0;
+  padding: 0;
 
   .home-text {
     padding: 15px 5% 30px 5%;
@@ -305,7 +309,7 @@ a.small {
 }
 
 .home-content-logos {
-  padding:40px 5%;
+  padding: 40px 5%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -351,38 +355,58 @@ a.small {
   padding: 20px;
   border: 1px solid var(--secondary-color);
   background: #fff;
-  box-shadow: 0 3px 14px rgba(0,0,0,.4);
-  -webkit-box-shadow: 0 3px 14px rgba(0,0,0,.4);
-  -moz-box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   width: 260px;
   z-index: 1000;
 }
 
-@-webkit-keyframes fade-out { from { opacity:1; } to { opacity:0; } }
-@-moz-keyframes fade-out { from { opacity:1; } to { opacity:0; } }
-@keyframes fade-out { from { opacity:1; } to { opacity:0; } }
-
+@-webkit-keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-moz-keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 .messages {
-  opacity:1;  /* make things invisible upon start */
-  -webkit-animation:fade-out ease-out 1;  /* use animattion ease-out and repeat it only 1 time */
-  -moz-animation:fade-out ease-out 1;
-  animation:fade-out ease-out 1;
+  opacity: 1; /* make things invisible upon start */
+  -webkit-animation: fade-out ease-out 1; /* use animattion ease-out and repeat it only 1 time */
+  -moz-animation: fade-out ease-out 1;
+  animation: fade-out ease-out 1;
 
-  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-  -moz-animation-fill-mode:forwards;
-  animation-fill-mode:forwards;
+  -webkit-animation-fill-mode: forwards; /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
 
-  -webkit-animation-duration:1s;
-  -moz-animation-duration:1s;
-  animation-duration:1s;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
 
   -webkit-animation-delay: 5.6s;
   -moz-animation-delay: 5.6s;
   animation-delay: 5.6s;
 }
 
-.notifications{
+.notifications {
   border: 1px solid red;
   margin: 10px;
   padding: 5px 5px 0 5px;
@@ -392,14 +416,13 @@ a.small {
 }
 
 .footer-navigation {
-  padding: 5%
-  a {
-    margin-right: 10%
+  padding: 5% a {
+    margin-right: 10%;
   }
   .fa.fa-chevron-right {
-    margin-left: 10px
+    margin-left: 10px;
   }
 }
-.fa-eye-slash{
+.fa-eye-slash {
   color: var(--editorial-color) !important;
 }

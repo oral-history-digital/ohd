@@ -1,23 +1,21 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { HelpText } from 'modules/help-text';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setFilter } from '../actions';
 import {
     EDIT_TABLE_FILTER_ALL,
-    EDIT_TABLE_FILTER_SOME,
+    EDIT_TABLE_FILTER_ANNOTATIONS,
     EDIT_TABLE_FILTER_HEADINGS,
     EDIT_TABLE_FILTER_REFERENCES,
-    EDIT_TABLE_FILTER_ANNOTATIONS
+    EDIT_TABLE_FILTER_SOME,
 } from '../constants';
-import { setFilter } from '../actions';
 import { getFilter } from '../selectors';
 import SelectColumnsFormContainer from './SelectColumnsFormContainer';
 
-export default function EditTableHeaderOptions({
-    numElements,
-}) {
+export default function EditTableHeaderOptions({ numElements }) {
     const { t } = useI18n();
     const filter = useSelector(getFilter);
     const dispatch = useDispatch();
@@ -34,7 +32,7 @@ export default function EditTableHeaderOptions({
                     trigger={t('edit_column_header.select_columns')}
                     triggerClassName="StateButton EditTableHeader-button"
                 >
-                    {closeModal => (
+                    {(closeModal) => (
                         <SelectColumnsFormContainer
                             onSubmit={closeModal}
                             onCancel={closeModal}
@@ -44,8 +42,7 @@ export default function EditTableHeaderOptions({
             </span>
             <span>
                 <label>
-                    {t('modules.edit_table.filter.label')}:
-                    {' '}
+                    {t('modules.edit_table.filter.label')}:{' '}
                     <select
                         className="EditTableHeader-select"
                         value={filter}

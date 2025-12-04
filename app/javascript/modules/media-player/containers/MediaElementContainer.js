@@ -1,24 +1,24 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import { getArchiveId } from 'modules/archive';
 import {
     getCurrentInterview,
     getMediaStreamsForCurrentProject,
 } from 'modules/data';
-import { getArchiveId } from 'modules/archive';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import MediaElement from '../media/MediaElement';
 import {
-    updateMediaTime,
-    updateIsPlaying,
+    clearTimeChangeRequest,
     resetMedia,
     sendTimeChangeRequest,
-    clearTimeChangeRequest,
+    updateIsPlaying,
+    updateMediaTime,
 } from '../redux/actions';
 import {
     getCurrentTape,
     getTimeChangeRequest,
     getTimeChangeRequestAvailable,
 } from '../redux/selectors';
-import MediaElement from '../media/MediaElement';
 
 const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),

@@ -20,7 +20,9 @@ $back-to-top-margin: $base-unit;
   pointer-events: none;
   position: fixed;
   right: $back-to-top-margin;
-  transition: filter $transition-duration, opacity $transition-duration;
+  transition:
+    filter $transition-duration,
+    opacity $transition-duration;
   z-index: $z-index-back-to-top;
 
   @include screen-m {
@@ -55,5 +57,5 @@ $back-to-top-margin: $base-unit;
 }
 
 .BackToTop-icon {
-  vertical-align: bottom;  /* 2 */
+  vertical-align: bottom; /* 2 */
 }

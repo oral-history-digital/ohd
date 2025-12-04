@@ -1,4 +1,5 @@
 import { usePathBase } from 'modules/routes';
+
 import fetchHeaders from './fetchHeaders';
 
 export default function useHelpTextApi() {
@@ -9,10 +10,10 @@ export default function useHelpTextApi() {
         const options = {
             method: 'PUT',
             headers: fetchHeaders,
-            body: JSON.stringify({ help_text: data })
+            body: JSON.stringify({ help_text: data }),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     return {

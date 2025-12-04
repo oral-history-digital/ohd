@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-
 import { usePersonApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
 import {
     useMutatePeople,
-    useMutatePersonWithAssociations,
     useMutatePersonLandingPageMetadata,
+    useMutatePersonWithAssociations,
 } from './hooks';
 
 export default function PersonDelete({

@@ -1,6 +1,6 @@
 export const CALL_API = 'CALL_API';
 
-const apiMiddleware = store => next => async action => {
+const apiMiddleware = (store) => (next) => async (action) => {
     const callApi = action[CALL_API];
 
     if (typeof callApi === 'undefined') {
@@ -17,17 +17,17 @@ const apiMiddleware = store => next => async action => {
         const responseBody = await fetch(callApi.endpoint, {
             method,
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body: requestBody,
-        }).then(res => res.json());
+        }).then((res) => res.json());
 
         next({
             type: successType,
             payload: responseBody,
         });
-    } catch(err) {
+    } catch (err) {
         next({
             type: failureType,
             error: err.message,

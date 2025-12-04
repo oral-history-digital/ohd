@@ -51,11 +51,13 @@ test('builds tree from flat institution array', () => {
                 {
                     id: 2,
                     shortname: 'FU library',
-                    children: [{
-                        id: 4,
-                        shortname: 'Digital Interview Collections',
-                        children: [],
-                    }],
+                    children: [
+                        {
+                            id: 4,
+                            shortname: 'Digital Interview Collections',
+                            children: [],
+                        },
+                    ],
                 },
                 {
                     id: 3,

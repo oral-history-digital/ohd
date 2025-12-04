@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { FaCopy } from 'react-icons/fa';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import { useI18n } from 'modules/i18n';
 import { useCopyState } from 'modules/react-toolbox';
+import PropTypes from 'prop-types';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { FaCopy } from 'react-icons/fa';
 
 export default function CopyText({
     className,
@@ -20,22 +19,24 @@ export default function CopyText({
     const IconComponent = iconComponent;
 
     return (
-        <CopyToClipboard
-            text={text}
-            onCopy={setToCopied}
-        >
+        <CopyToClipboard text={text} onCopy={setToCopied}>
             <button
-                className={classNames('Button', 'Button--transparent',
-                    'Button--icon', className)}
+                className={classNames(
+                    'Button',
+                    'Button--transparent',
+                    'Button--icon',
+                    className
+                )}
                 type="button"
                 aria-label={t('modules.ui.copy_link')}
                 title={title || t('modules.ui.copy_link')}
             >
                 <IconComponent
-                    className={classNames('Icon', copied ?
-                        'Icon--attention' : iconClassName)}
-                />
-                {' '}
+                    className={classNames(
+                        'Icon',
+                        copied ? 'Icon--attention' : iconClassName
+                    )}
+                />{' '}
                 {children}
             </button>
         </CopyToClipboard>

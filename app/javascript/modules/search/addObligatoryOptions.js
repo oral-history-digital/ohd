@@ -1,11 +1,6 @@
-const prependWithoutScore = [
-    'title',
-];
+const prependWithoutScore = ['title'];
 
-const prependWithScore = [
-    'score',
-    'title',
-];
+const prependWithScore = ['score', 'title'];
 
 export default function addObligatoryOptions(includeScore, options) {
     let combinedOptions;

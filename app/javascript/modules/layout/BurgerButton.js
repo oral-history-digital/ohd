@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaTimes, FaBars } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 function BurgerButton({ className, open = false, onClick }) {
     return (

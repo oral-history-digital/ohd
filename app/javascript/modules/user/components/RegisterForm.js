@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import request from 'superagent';
 
-import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
-import { NON_ZIP_COUNTRIES } from '../constants';
 import { OHD_DOMAINS } from 'modules/constants';
 import { EMAIL_REGEX, PASSWORD_REGEX } from 'modules/constants';
+import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import request from 'superagent';
+
+import { NON_ZIP_COUNTRIES } from '../constants';
 
 export default function RegisterForm({
     project,
@@ -17,20 +18,22 @@ export default function RegisterForm({
     onCancel,
     registrationStatus,
 }) {
-
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
     const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
 
-    const [emailCheckResponse, setEmailCheckResponse] = useState({registration_error: false, msg: null});
+    const [emailCheckResponse, setEmailCheckResponse] = useState({
+        registration_error: false,
+        msg: null,
+    });
 
-    const handleEmailChange = async(name, value) => {
+    const handleEmailChange = async (name, value) => {
         if (EMAIL_REGEX.test(value)) {
             fetch(`${pathBase}/users/check_email?email=${value}`)
-                .then(res => res.json())
-                .then(json => setEmailCheckResponse(json));
+                .then((res) => res.json())
+                .then((json) => setEmailCheckResponse(json));
         }
     };
 
@@ -54,13 +57,17 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'first_name',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
             },
             {
                 elementType: 'input',
                 attribute: 'last_name',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
             },
         ];
 
@@ -71,7 +78,9 @@ export default function RegisterForm({
                 optionsScope: 'countries',
                 values: countryKeys && countryKeys[locale],
                 withEmpty: true,
-                validate: function(v){return v && v.length > 1},
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
                 handlechangecallback: (name, value) => {
                     setHideZip(NON_ZIP_COUNTRIES.indexOf(value) > -1);
                 },
@@ -83,7 +92,9 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
             },
             {
                 elementType: 'input',
@@ -96,8 +107,10 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
-            }
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
+            },
         ];
 
         const emailPasswordElements = [
@@ -106,25 +119,29 @@ export default function RegisterForm({
                 attribute: 'email',
                 type: 'email',
                 handlechangecallback: handleEmailChange,
-                validate: function(v){return EMAIL_REGEX.test(v)},
+                validate: function (v) {
+                    return EMAIL_REGEX.test(v);
+                },
                 help: emailCheckResponse.registration_error && (
-                    <p className='notifications'>
-                        {emailCheckResponse.msg}
-                    </p>
+                    <p className="notifications">{emailCheckResponse.msg}</p>
                 ),
             },
             {
                 elementType: 'input',
                 attribute: 'password',
                 type: 'password',
-                validate: function(v){ return PASSWORD_REGEX.test(v) },
+                validate: function (v) {
+                    return PASSWORD_REGEX.test(v);
+                },
                 handlechangecallback: handlePasswordChange,
             },
             {
                 elementType: 'input',
                 attribute: 'password_confirmation',
                 type: 'password',
-                validate: function(v){return PASSWORD_REGEX.test(v) && v === password},
+                validate: function (v) {
+                    return PASSWORD_REGEX.test(v) && v === password;
+                },
             },
         ];
 
@@ -133,7 +150,7 @@ export default function RegisterForm({
                 elementType: 'input',
                 attribute: 'receive_newsletter',
                 type: 'checkbox',
-                help: 'user.notes_on_receive_newsletter'
+                help: 'user.notes_on_receive_newsletter',
             },
         ];
 
@@ -143,78 +160,100 @@ export default function RegisterForm({
                 attribute: 'tos_agreement',
                 labelKey: 'user.tos_agreement',
                 type: 'checkbox',
-                validate: function(v){return v && v !== '0'},
+                validate: function (v) {
+                    return v && v !== '0';
+                },
                 help: t('user.notes_on_tos_agreement_ohd', {
-                    tos_link: <a
-                        className="Link"
-                        href={conditionsLink}
-                        target="_blank"
-                        title="Externer Link"
-                        rel="noreferrer"
-                    >
-                        {t('user.tos_agreement')}
-                    </a>
-                })
+                    tos_link: (
+                        <a
+                            className="Link"
+                            href={conditionsLink}
+                            target="_blank"
+                            title="Externer Link"
+                            rel="noreferrer"
+                        >
+                            {t('user.tos_agreement')}
+                        </a>
+                    ),
+                }),
             },
             {
                 elementType: 'input',
-                attribute: 'priv_agreement' ,
+                attribute: 'priv_agreement',
                 labelKey: 'user.priv_agreement',
                 type: 'checkbox',
-                validate: function(v){return v && v !== '0'},
+                validate: function (v) {
+                    return v && v !== '0';
+                },
                 help: t('user.notes_on_priv_agreement', {
-                    priv_link: <a
-                        className="Link"
-                        href={privacyLink}
-                        target="_blank"
-                        title="Externer Link"
-                        rel="noreferrer"
-                    >
-                        {t('user.priv_agreement')}
-                    </a>
-                })
+                    priv_link: (
+                        <a
+                            className="Link"
+                            href={privacyLink}
+                            target="_blank"
+                            title="Externer Link"
+                            rel="noreferrer"
+                        >
+                            {t('user.priv_agreement')}
+                        </a>
+                    ),
+                }),
             },
         ];
 
-        return nameElements.concat(countrySelect).concat(addressElements).concat(emailPasswordElements).concat(tosPrivacyElements);
-    }
+        return nameElements
+            .concat(countrySelect)
+            .concat(addressElements)
+            .concat(emailPasswordElements)
+            .concat(tosPrivacyElements);
+    };
 
     return (
         <>
-            {
-                registrationStatus ? (
-                    <p className='error'>
-                        className='status'
-                        dangerouslySetInnerHTML={{__html: registrationStatus}}
-                    >
+            {registrationStatus ? (
+                <p className="error">
+                    className='status' dangerouslySetInnerHTML=
+                    {{ __html: registrationStatus }}>
+                </p>
+            ) : (
+                <div>
+                    <p>
+                        {project.is_ohd
+                            ? t('user.registration_text_one_ohd')
+                            : t('user.registration_text_one')}
+                        <a
+                            href={conditionsLink}
+                            target="_blank"
+                            title=""
+                            rel="noreferrer"
+                        >
+                            {t('user.tos_agreement')}
+                        </a>
+                        {t('user.registration_text_two')}
+                        <a
+                            href={privacyLink}
+                            target="_blank"
+                            title=""
+                            rel="noreferrer"
+                        >
+                            {t('user.priv_agreement_alias')}
+                        </a>
+                        {t('user.registration_text_three')}
+                        {project.is_ohd ? t('user.registration_text_four') : ''}
                     </p>
-                ) : (
-                    <div>
-                        <p>
-                            { project.is_ohd ? t('user.registration_text_one_ohd') : t('user.registration_text_one')}
-                            <a href={conditionsLink} target="_blank" title="" rel="noreferrer">
-                                {t('user.tos_agreement')}
-                            </a>
-                            {t('user.registration_text_two')}
-                            <a href={privacyLink} target="_blank" title="" rel="noreferrer">
-                                {t('user.priv_agreement_alias')}
-                            </a>
-                            {t('user.registration_text_three')}
-                            { project.is_ohd ? t('user.registration_text_four') : ''}
-                        </p>
-                    </div>
-                )
-            }
+                </div>
+            )}
             <Form
-                scope='user'
+                scope="user"
                 onSubmit={(params) => {
                     if (!emailCheckResponse.registration_error) {
-                        submitRegister(`${pathBase}/users`, params); onSubmit();
+                        submitRegister(`${pathBase}/users`, params);
+                        onSubmit();
                     } else {
-                        return null; 
+                        return null;
                     }
                 }}
-                submitText='user.register'
+                submitText="user.register"
                 elements={formElements()}
                 values={{
                     default_locale: locale,

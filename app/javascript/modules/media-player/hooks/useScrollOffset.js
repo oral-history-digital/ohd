@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { getScrollOffset } from 'modules/media-player';
 
 /**

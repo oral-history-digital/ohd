@@ -1,5 +1,7 @@
 import React from 'react';
-import { TextEncoder, TextDecoder } from 'util';
+
+import { TextDecoder, TextEncoder } from 'util';
+
 React.useLayoutEffect = React.useEffect;
 
 window.matchMedia =

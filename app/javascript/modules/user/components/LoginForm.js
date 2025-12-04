@@ -1,7 +1,7 @@
-import { useDispatch } from 'react-redux';
-
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import { useDispatch } from 'react-redux';
+
 import { submitLogin } from '../actions';
 
 export default function LoginForm() {
@@ -10,12 +10,12 @@ export default function LoginForm() {
 
     return (
         <Form
-            scope='user'
+            scope="user"
             onSubmit={(params) => {
                 const url = `${pathBase}/users/sign_in`;
                 dispatch(submitLogin(url, params));
             }}
-            submitText='login'
+            submitText="login"
             elements={[
                 {
                     attribute: 'email',

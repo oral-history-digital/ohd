@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
+
 import BurgerButton from './BurgerButton';
 
 it('renders correctly in closed state', () => {
