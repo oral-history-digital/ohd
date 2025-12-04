@@ -39,6 +39,8 @@ services:
       SOLR_HOST: solr
       SOLR_PORT: 8983
       DISABLE_SPRING: true
+      # Webpack dev server settings for HMR
+      SHAKAPACKER_DEV_SERVER_HOST: 0.0.0.0
 
   db:
     image: mariadb:10.5
