@@ -130,13 +130,30 @@ class RegistryEntriesController < ApplicationController
           type: "application/pdf"
       end
       format.csv do
-        if current_user && (current_user.admin? || current_user.roles?(current_project, 'RegistryEntry', 'show'))
-          root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
-          header_keys = %w(parent_name parent_id name id description latitude longitude gnd_id osm_id linked_interviews status)
-          csv = Rails.cache.fetch "#{current_project.shortname}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
+        if current_user && (
+            current_user.admin? ||
+            current_user.roles?(current_project, 'RegistryEntry', 'show')
+        )
+          root = params[:root_id] ?
+            RegistryEntry.find(params[:root_id]) :
+            current_project.root_registry_entry
+          header_keys = %w(parent_name parent_id name id description
+            latitude longitude gnd_id osm_id linked_interviews status)
+          used_entry_ids = []
+
+          csv = Rails.cache.fetch([
+              current_project.shortname, 
+              'registry-entries-csv',
+              root.id,
+              params[:lang],
+              cache_key_date
+          ].join('-')) do
             CSV.generate(**CSV_OPTIONS) do |row|
-              row << header_keys.map{|k| TranslationValue.for("activerecord.attributes.registry_entry.#{k}", params[:lang])}
+              row << header_keys.map do |k|
+                TranslationValue.for("activerecord.attributes.registry_entry.#{k}", params[:lang])
+              end
               root.on_all_descendants do |entry|
+                next if used_entry_ids.include?(entry.id)
                 entry.parents.each do |parent|
                   row << [
                     parent && parent.descriptor(params[:lang]),
@@ -152,10 +169,16 @@ class RegistryEntriesController < ApplicationController
                     entry.workflow_state,
                   ]
                 end
+                used_entry_ids << entry.id
               end
             end
           end
-          send_data csv, filename: "registry_entries_#{current_project.shortname}_#{params[:lang]}_#{Date.today.strftime('%Y_%m_%d')}.csv"
+          send_data csv, filename: [
+            'registry_entries',
+            current_project.shortname,
+            params[:lang],
+            Date.today.strftime('%Y_%m_%d')
+          ].join('_') + '.csv'
         else
           redirect_to user_url('current')
         end
