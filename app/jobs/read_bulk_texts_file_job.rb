@@ -37,7 +37,10 @@ class ReadBulkTextsFileJob < ApplicationJob
           # split text and remove header/footer if present
           # than join the text again
           #
-          text_parts = text.split(/\n+/)
+          text_parts = text.split(/\n+/).map do |part|
+            part.force_encoding("UTF-8").
+            encode("UTF-8", invalid: :replace, undef: :replace)
+          end
           text = ""
           while !text_parts.empty? && (
               !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/) &&
