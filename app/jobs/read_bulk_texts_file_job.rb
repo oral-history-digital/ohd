@@ -79,9 +79,8 @@ class ReadBulkTextsFileJob < ApplicationJob
           jobs_logger.info "*** DON'T KNOW WHAT TO DO WITH #{File.basename(text_file_name)}!!!"
         end
       end
+      File.delete(text_file_name) if File.exist?(text_file_name)
     end
-
-    File.delete(text_file_name) if File.exist?(text_file_name)
   end
 
 end
