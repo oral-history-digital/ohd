@@ -18,8 +18,28 @@
   "postCreateCommand": "bash .devcontainer/scripts/setup-dev.sh",
   "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
 
+  // Additional services that should be running
+  "runServices": ["app", "db", "solr", "webpack"],
+
   // Ports to forward
   "forwardPorts": [3000, 8983, 3035, 6080], // 6080 for noVNC
+
+  // Port attributes for better HMR WebSocket support
+  "portsAttributes": {
+    "3000": {
+      "label": "Rails App",
+      "onAutoForward": "notify"
+    },
+    "3035": {
+      "label": "Webpack Dev Server",
+      "onAutoForward": "silent",
+      "protocol": "http"
+    },
+    "8983": {
+      "label": "Solr",
+      "onAutoForward": "ignore"
+    }
+  },
 
   // VS Code client customizations
   "customizations": {
