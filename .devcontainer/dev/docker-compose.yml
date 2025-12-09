@@ -2,7 +2,6 @@ services:
   app:
     ports:
       - '3000:3000'
-      - '3035:3035'
     # Override the base entrypoint and run a long-lived sleep so VS Code can attach
     entrypoint: ['sleep', 'infinity']
     platform: linux/amd64
@@ -41,6 +40,11 @@ services:
       DISABLE_SPRING: true
       # Use precompiled platform-specific gems instead of compiling from source
       BUNDLE_FORCE_RUBY_PLATFORM: false
+      # Webpack dev server settings for HMR
+      # Rails app connects to webpack container internally
+      SHAKAPACKER_DEV_SERVER_HOST: webpack
+      # Browser connects from host, so use localhost:3035
+      SHAKAPACKER_DEV_SERVER_PUBLIC: 'localhost:3035'
 
   db:
     image: mariadb:10.5
@@ -94,6 +98,38 @@ services:
       timeout: 10s
       retries: 12
       start_period: 90s
+
+  webpack:
+    build:
+      context: ../..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        NODE_VERSION: '20'
+    command: bin/shakapacker-dev-server
+    ports:
+      - '3035:3035'
+    volumes:
+      - ../..:/workspace:cached
+      - /workspace/node_modules
+      - /workspace/tmp/cache
+      - bundle-data:/workspace/vendor/bundle
+    working_dir: /workspace
+    depends_on:
+      db:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      RAILS_ENV: development
+      RACK_ENV: development
+      SHAKAPACKER_DEV_SERVER_HOST: 0.0.0.0
+      SOLR_URL: http://solr:8983/solr/default
+      SOLR_HOST: solr
+      SOLR_PORT: 8983
+      # Database connection for Rails environment initialization
+      DATABASE_URL: mysql2://root:rootpassword@db:3306/ohd_development
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
 
 volumes:
   db-data:
