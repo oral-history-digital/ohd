@@ -42,11 +42,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def ohd_subject_registry_entries
     if respond_to?(:interviews)
-      ohd_subject_registry_entry_ids.map do |id|
-        {
-          descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
-        }
-      end
+      RegistryEntry.where(id: ohd_subject_registry_entry_ids)
     else
       []
     end
