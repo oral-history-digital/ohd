@@ -225,10 +225,12 @@ fi
 
 log_message ""
 log_message "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log_message "📦 Precompiling webpack assets..."
+log_message "📦 Precompiling webpack packs for initial setup ..."
 
 bundle exec bin/shakapacker
 log_message "  ✅ Webpack precompilation completed"
+log_message "  ℹ️  Note: With webpack-dev-server running, Rails will use port 3035 for HMR"
+log_message "  ℹ️  These precompiled assets are only used as fallback if dev server is down"
 
 log_message ""
 log_message "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
