@@ -1,11 +1,12 @@
-import { useState} from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import useMutateEventTypes from './useMutateEventTypes';
 
 const formElements = [
@@ -19,11 +20,7 @@ const formElements = [
     },
 ];
 
-export default function EventTypeForm({
-    data,
-    onSubmit,
-    onCancel
-}) {
+export default function EventTypeForm({ data, onSubmit, onCancel }) {
     const [isFetching, setIsFetching] = useState(false);
     const pathBase = usePathBase();
     const project = useSelector(getCurrentProject);
@@ -35,10 +32,13 @@ export default function EventTypeForm({
             values={{ project_id: project.id }}
             scope="event_type"
             onSubmit={async (params) => {
-                mutateEventTypes(async eventTypes => {
+                mutateEventTypes(async (eventTypes) => {
                     const id = params.event_type.id;
                     setIsFetching(true);
-                    const updatedEventType = await submitDataWithFetch(pathBase, params);
+                    const updatedEventType = await submitDataWithFetch(
+                        pathBase,
+                        params
+                    );
 
                     // Other stuff that needs to be done after result is returned.
                     setIsFetching(false);
@@ -49,7 +49,7 @@ export default function EventTypeForm({
 
                     let updatedEventTypes;
                     if (id) {
-                        updatedEventTypes = eventTypes.map(et => {
+                        updatedEventTypes = eventTypes.map((et) => {
                             if (et.id === id) {
                                 return updatedEventType;
                             } else {

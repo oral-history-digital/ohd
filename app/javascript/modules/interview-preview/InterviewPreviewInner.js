@@ -1,47 +1,62 @@
-import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
+import { getCurrentUser } from 'modules/data';
+import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
+import Skeleton from 'react-loading-skeleton';
+import { useSelector } from 'react-redux';
 
-import classNames from 'classnames';
-
-import { useProjectAccessStatus, useAuthorization } from 'modules/auth';
-import { useProject } from 'modules/routes';
-import { getCurrentUser } from 'modules/data';
-import ThumbnailMetadata from './ThumbnailMetadata';
-import InterviewImage from './InterviewImage';
 import InterviewArchiveDisplay from './InterviewArchiveDisplay';
+import InterviewImage from './InterviewImage';
+import ThumbnailMetadata from './ThumbnailMetadata';
 
 export default function InterviewPreviewInner({
     interview,
     project,
     locale,
-    isExpanded
+    isExpanded,
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const { isAuthorized } = useAuthorization();
     const { project: currentProject } = useProject();
     const currentUser = useSelector(getCurrentUser);
-    const permitted = currentUser?.interview_permissions.some(p => p.interview_id === interview.id);
+    const permitted = currentUser?.interview_permissions.some(
+        (p) => p.interview_id === interview.id
+    );
 
     return (
         <>
             <InterviewImage interview={interview} project={project} />
 
-            <div className={classNames('InterviewCard-title', isExpanded ? 'u-mt' : 'u-mt-small')}>
-                {interview.workflow_state === 'unshared' &&
+            <div
+                className={classNames(
+                    'InterviewCard-title',
+                    isExpanded ? 'u-mt' : 'u-mt-small'
+                )}
+            >
+                {interview.workflow_state === 'unshared' && (
                     <FaEyeSlash className="u-mr-tiny" />
-                }
-                {interview.workflow_state === 'restricted' &&
-                    <FaKey className="u-mr-tiny" style={{ filter: permitted ? 'opacity(40%)' : 'opacity(90%)' }} />
-                }
-                {projectAccessGranted && (
-                    interview.workflow_state === 'public' ||
-                    (interview.workflow_state === 'restricted' && permitted) ||
-                    isAuthorized(interview, 'update')
-                ) ?
-                    interview.short_title?.[locale] :
+                )}
+                {interview.workflow_state === 'restricted' && (
+                    <FaKey
+                        className="u-mr-tiny"
+                        style={{
+                            filter: permitted ? 'opacity(40%)' : 'opacity(90%)',
+                        }}
+                    />
+                )}
+                {!interview.short_title && !interview.anonymous_title ? (
+                    <Skeleton />
+                ) : projectAccessGranted &&
+                  (interview.workflow_state === 'public' ||
+                      (interview.workflow_state === 'restricted' &&
+                          permitted) ||
+                      isAuthorized(interview, 'update')) ? (
+                    interview.short_title?.[locale]
+                ) : (
                     interview.anonymous_title[locale]
-                }
+                )}
             </div>
 
             {currentProject.is_ohd && (
@@ -51,7 +66,7 @@ export default function InterviewPreviewInner({
             {!isExpanded && <ThumbnailMetadata interview={interview} />}
         </>
     );
-};
+}
 
 InterviewPreviewInner.propTypes = {
     interview: PropTypes.object.isRequired,

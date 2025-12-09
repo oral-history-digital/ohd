@@ -65,8 +65,10 @@ LoadedCheerio {
         >
           <textarea
             class="Input"
+            dir="ltr"
             id="scope_mail_text"
             name="mail_text"
+            style="direction:ltr;text-align:left"
           />
         </div>
         <div

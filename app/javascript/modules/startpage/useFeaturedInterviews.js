@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
-import useSWRImmutable from 'swr/immutable';
-
-import { getIsLoggedIn } from 'modules/user';
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
+import { useSelector } from 'react-redux';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useFeaturedInterviews() {
     const isLoggedIn = useSelector(getIsLoggedIn);

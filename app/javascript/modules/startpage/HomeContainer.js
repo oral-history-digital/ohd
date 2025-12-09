@@ -1,9 +1,9 @@
+import { getInstitutions } from 'modules/data';
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import { getInstitutions } from 'modules/data';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     institutions: getInstitutions(state),
 });
 

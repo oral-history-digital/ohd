@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { checkTextDir } from '../../transcript/utils';
 import Element from '../Element';
 
 export default function Textarea({
@@ -22,8 +23,10 @@ export default function Textarea({
     id,
 }) {
     const defaultValue = value || data?.[attribute];
+    // Determine text direction
+    const textDir = checkTextDir(defaultValue || '');
 
-    const onChange = event => {
+    const onChange = (event) => {
         const newValue = event.target.value;
         const name = event.target.name;
 
@@ -48,9 +51,11 @@ export default function Textarea({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(defaultValue) : true}
+            valid={
+                typeof validate === 'function' ? validate(defaultValue) : true
+            }
             mandatory={typeof validate === 'function'}
-            elementType='textarea'
+            elementType="textarea"
             individualErrorMsg={individualErrorMsg}
             help={help}
             htmlFor={`${scope}_${attribute}`}
@@ -62,6 +67,11 @@ export default function Textarea({
                 defaultValue={defaultValue}
                 onChange={onChange}
                 {...htmlOptions}
+                dir={textDir}
+                style={{
+                    direction: textDir,
+                    textAlign: textDir === 'rtl' ? 'right' : 'left',
+                }}
             />
         </Element>
     );

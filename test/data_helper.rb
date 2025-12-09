@@ -118,8 +118,8 @@ module DataHelper
     admin = User.new(
       login: 'alice@example.com',
       email: 'alice@example.com',
-      password: 'password',
-      password_confirmation: 'password',
+      password: 'Password123!',
+      password_confirmation: 'Password123!',
       first_name: 'Alice',
       last_name: 'Henderson',
       admin: true,
@@ -139,8 +139,8 @@ module DataHelper
     jdoe = User.new(
       login: 'john@example.com',
       email: 'john@example.com',
-      password: 'password',
-      password_confirmation: 'password',
+      password: 'Password123!',
+      password_confirmation: 'Password123!',
       first_name: 'John',
       last_name: 'Doe',
       tos_agreement: true,

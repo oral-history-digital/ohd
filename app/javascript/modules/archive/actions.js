@@ -1,20 +1,21 @@
+import { setCookie } from 'modules/persistence';
 import request from 'superagent';
 
-import { setCookie } from 'modules/persistence';
-
 import {
-    SET_LOCALE,
-    SET_ARCHIVE_ID,
-    SET_PROJECT_ID,
-    SET_AVAILABLE_VIEW_MODES,
-    SET_VIEW_MODE,
-    CLEAR_VIEW_MODES,
     CHANGE_TO_EDIT_VIEW,
-    CHANGE_TO_TRANSLATIONS_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
+    CHANGE_TO_TRANSLATIONS_VIEW,
+    CLEAR_VIEW_MODES,
+    MERGE_TRANSLATIONS,
     RECEIVE_RESULT,
-    UPDATE_SELECTED_ARCHIVE_IDS,
+    REQUEST_TRANSLATIONS,
+    SET_ARCHIVE_ID,
+    SET_AVAILABLE_VIEW_MODES,
+    SET_LOCALE,
+    SET_PROJECT_ID,
     SET_SELECTED_ARCHIVE_IDS,
+    SET_VIEW_MODE,
+    UPDATE_SELECTED_ARCHIVE_IDS,
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
 } from './action-types';
 
@@ -156,5 +157,48 @@ const setSelectedArchiveIds = (archiveIds) => ({
 export function setArchiveIds(archiveIds) {
     return (dispatch) => {
         dispatch(setSelectedArchiveIds(archiveIds));
+    };
+}
+
+const mergeTranslations = (translations) => ({
+    type: MERGE_TRANSLATIONS,
+    translations: translations,
+});
+
+const requestTranslations = () => ({
+    type: REQUEST_TRANSLATIONS,
+});
+
+export function fetchTranslationsForLocale(locale, pathBase) {
+    return (dispatch, getState) => {
+        // Check if we already have translations for this locale
+        const currentState = getState();
+        const existingTranslations = currentState.archive.translations || {};
+
+        // Check if we already have some translations for this locale
+        const hasTranslationsForLocale = Object.keys(existingTranslations).some(
+            (key) =>
+                existingTranslations[key] && existingTranslations[key][locale]
+        );
+
+        // If we already have translations for this locale, don't fetch again
+        if (hasTranslationsForLocale) {
+            return Promise.resolve();
+        }
+
+        dispatch(requestTranslations());
+
+        // Build the API endpoint (prefer explicit pathBase when provided)
+        const url = `${pathBase}/translation_strings.json`;
+
+        return request
+            .get(url)
+            .then((response) => {
+                dispatch(mergeTranslations(response.body.translations || {}));
+            })
+            .catch((error) => {
+                console.error('Failed to fetch translations:', error);
+                // Don't dispatch anything on error to keep existing translations
+            });
     };
 }

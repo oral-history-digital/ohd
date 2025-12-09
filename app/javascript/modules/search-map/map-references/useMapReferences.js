@@ -1,21 +1,21 @@
+import curry from 'lodash.curry';
+import flow from 'lodash.flow';
+import range from 'lodash.range';
+import { fetcher } from 'modules/api';
+import { getEditView } from 'modules/archive';
+import { sortByReferenceTypeOrder, useMapReferenceTypes } from 'modules/map';
+import { useSearchParams } from 'modules/query-string';
+import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn } from 'modules/user';
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
 import useSWRImmutable from 'swr/immutable';
-import flow from 'lodash.flow';
-import curry from 'lodash.curry';
-import range from 'lodash.range';
 
-import { fetcher } from 'modules/api';
-import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
-import { usePathBase } from 'modules/routes';
-import { getEditView } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/user';
-import { useSearchParams } from 'modules/query-string';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
 import groupByType from './groupByType';
-import sortInterviewRefs from './sortInterviewRefs';
 import groupSegmentRefs from './groupSegmentRefs';
+import sortInterviewRefs from './sortInterviewRefs';
 import sortSegmentRefGroups from './sortSegmentRefGroups';
 import sortSegmentRefs from './sortSegmentRefs';
 
@@ -26,7 +26,8 @@ export default function useMapReferences(registryEntryId) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const { facets, yearOfBirthMin, yearOfBirthMax } = useSearchParams();
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
 
     const params = {
         ...facets,
@@ -41,7 +42,9 @@ export default function useMapReferences(registryEntryId) {
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 
     const interviewReferences = data?.interview_references;
-    const segmentReferences = filter.includes('segment') ? data?.segment_references : [];
+    const segmentReferences = filter.includes('segment')
+        ? data?.segment_references
+        : [];
     const numSegmentRefs = segmentReferences?.length;
 
     let referenceGroups = [];
@@ -50,7 +53,7 @@ export default function useMapReferences(registryEntryId) {
             curry(filterReferences)(filter),
             curry(groupByType)(referenceTypes),
             curry(sortByReferenceTypeOrder)(referenceTypes, 'id'),
-            sortInterviewRefs,
+            sortInterviewRefs
         );
         referenceGroups = transformData(interviewReferences);
     }
@@ -60,7 +63,7 @@ export default function useMapReferences(registryEntryId) {
         const transformData = flow(
             groupSegmentRefs,
             sortSegmentRefs,
-            sortSegmentRefGroups,
+            sortSegmentRefGroups
         );
         segmentRefGroups = transformData(segmentReferences);
     }

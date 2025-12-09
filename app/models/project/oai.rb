@@ -63,10 +63,14 @@ module Project::Oai
   end
 
   def oai_formats
-    [
-      "video/mp4",
-      "audio/mp3"
-    ]
+    interviews.pluck(:media_type).uniq.map do |mt|
+      case mt
+      when 'video'
+        "video/mp4"
+      when 'audio'
+        "audio/mp3"
+      end
+    end.compact
   end
 
   def oai_size
@@ -79,6 +83,10 @@ module Project::Oai
 
   def oai_subject_registry_entry_ids
     ohd_subject_registry_entry_ids
+  end
+
+  def oai_subject_registry_entries
+    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
   end
 
   def oai_abstract_description(locale)

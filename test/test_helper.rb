@@ -59,7 +59,7 @@ class ActiveSupport::TestCase
   end
 
   alias_method :devise_login_as, :login_as
-  def login_as(user_or_email, password = 'password')
+  def login_as(user_or_email, password = 'Password123!')
     unless system_test?
       return devise_login_as user_or_email
     end

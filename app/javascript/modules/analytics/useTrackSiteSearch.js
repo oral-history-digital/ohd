@@ -1,7 +1,6 @@
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
-import { useSelector } from 'react-redux';
-
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { getCurrentUser } from 'modules/data';
+import { useSelector } from 'react-redux';
 
 export default function useTrackSiteSearch() {
     const currentUser = useSelector(getCurrentUser);
@@ -9,7 +8,7 @@ export default function useTrackSiteSearch() {
 
     function searchFunction(searchTerm) {
         if (shouldTrack()) {
-            trackSiteSearch({ keyword: searchTerm })
+            trackSiteSearch({ keyword: searchTerm });
         }
     }
 

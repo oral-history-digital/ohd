@@ -1,6 +1,5 @@
-import { renderToStaticMarkup } from 'react-dom/server';
-
 import { Spinner } from 'modules/spinners';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 it('renders correctly', () => {
     const html = renderToStaticMarkup(

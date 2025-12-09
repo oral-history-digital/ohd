@@ -35,7 +35,7 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Text <g(nickt)> more text.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    kinesic_element = ordinary_text.find { |elem| elem[:type] == 'kinsesic' }
+    kinesic_element = ordinary_text.find { |elem| elem[:type] == 'kinesic' }
     assert_not_nil kinesic_element
     assert_equal [:desc, "nickt", {rend: "<g(nickt)>"}], kinesic_element[:content]
   end
@@ -44,7 +44,7 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Before <g(nickt) some text> after.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    kinesic_comment = comments.find { |comment| comment[:type] == 'kinsesic' }
+    kinesic_comment = comments.find { |comment| comment[:type] == 'kinesic' }
     assert_not_nil kinesic_comment
     assert_equal "nickt", kinesic_comment[:content]
     
@@ -96,7 +96,7 @@ class TeiTest < ActiveSupport::TestCase
     gesture_comment = comments.find { |c| c[:content] == "Kopfschütteln" }
     speech_comment = comments.find { |c| c[:content] == "gedehnt" }
     
-    assert_equal "kinsesic", gesture_comment[:type]
+    assert_equal "kinesic", gesture_comment[:type]
     assert_equal "vocal", speech_comment[:type]
     
     # Verify punctuation is handled
@@ -128,9 +128,8 @@ class TeiTest < ActiveSupport::TestCase
     tei = Tei.new("Text {comment} more [note] text.")
     ordinary_text, comments, index_carryover = tei.tokenized_text
     
-    za_comments = comments.select { |comment| comment[:type] == 'za' }
-    assert_equal 1, za_comments.size
-    assert_includes za_comments.map { |c| c[:content] }, "{comment}"
+    za_incidents = ordinary_text.select{|w| w[:type] == 'incident'}
+    assert_equal 2, za_incidents.size
   end
 
   test "preserves backward compatibility with simple cases" do

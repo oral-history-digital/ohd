@@ -1,22 +1,24 @@
+import { useEffect, useRef } from 'react';
+
 import classNames from 'classnames';
 import { getTranslationsView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { usePosterImage } from '../hooks/index.js';
+
+import { useMediaPlayerResize, usePosterImage } from '../hooks';
+import '../plugins/configurationMenuPlugin.js';
+import '../plugins/customSkipButtonsPlugin.js';
+import '../plugins/toggleSizeButtonPlugin.js';
 import {
     getQualityLabel,
     humanTimeToSeconds,
     mediaStreamsToSources,
-} from '../utils/index.js';
+} from '../utils';
 import VideoJS from './VideoJS';
-
-import '../plugins/configurationMenuPlugin.js';
-import '../plugins/customSkipButtonsPlugin.js';
-import '../plugins/toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;
@@ -55,6 +57,9 @@ export default function MediaElement({
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
+    // Hook for manual resize via drag handle
+    const { resizeHandleRef, isDragging } = useMediaPlayerResize();
+
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources =
         mediaStreams &&
@@ -74,7 +79,7 @@ export default function MediaElement({
         controls: true,
         responsive: false,
         fluid: false,
-        //aspectRatio,
+        aspectRatio,
         language: locale,
         sources: initialSources,
         poster: posterUrl,
@@ -466,9 +471,7 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     }
 
-    if (!mediaStreams) {
-        return null;
-    }
+    const isReady = Boolean(mediaStreams);
 
     return (
         <div
@@ -479,14 +482,32 @@ export default function MediaElement({
                 {
                     'MediaElement--video': interview.media_type === 'video',
                     'MediaElement--audio': interview.media_type === 'audio',
+                    'MediaElement--loading': !isReady,
                 }
             )}
         >
-            <VideoJS
-                type={interview.media_type}
-                options={videoJsOptions}
-                onReady={handlePlayerReady}
-                onEnded={handleEndedEvent}
+            {isReady ? (
+                <VideoJS
+                    type={interview.media_type}
+                    options={videoJsOptions}
+                    onReady={handlePlayerReady}
+                    onEnded={handleEndedEvent}
+                />
+            ) : (
+                <div className="MediaElement-placeholder" aria-hidden="true">
+                    {/* Reserve the same aspect ratio and minimum width while media is loading */}
+                    <Spinner />
+                </div>
+            )}
+            <div
+                ref={resizeHandleRef}
+                title={t('media_player.resize_handle_tooltip')}
+                aria-label={t('media_player.resize_handle_tooltip')}
+                data-tooltip={t('media_player.resize_handle_tooltip')}
+                role="separator"
+                className={classNames('MediaElement-resizeHandle', {
+                    'is-dragging': isDragging,
+                })}
             />
         </div>
     );

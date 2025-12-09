@@ -1,11 +1,9 @@
 import {
-    UPDATE_MEDIA_TIME,
-    UPDATE_IS_PLAYING,
-    SET_TAPE,
+    CLEAR_TIME_CHANGE_REQUEST,
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
-    CLEAR_TIME_CHANGE_REQUEST,
-    SET_PLAYER_SIZE,
+    UPDATE_IS_PLAYING,
+    UPDATE_MEDIA_TIME,
 } from './action-types';
 
 export const initialState = {
@@ -13,7 +11,6 @@ export const initialState = {
     mediaTime: 0,
     isPlaying: false,
     timeChangeRequest: null,
-    playerSize: 'medium',
 };
 
 const mediaPlayer = (state = initialState, action) => {
@@ -28,11 +25,6 @@ const mediaPlayer = (state = initialState, action) => {
                 ...state,
                 isPlaying: action.payload.isPlaying,
             };
-        case SET_TAPE:
-            return {
-                ...state,
-                tape: action.payload.tape,
-            };
         case RESET_MEDIA:
             return initialState;
         case SEND_TIME_CHANGE_REQUEST:
@@ -45,11 +37,6 @@ const mediaPlayer = (state = initialState, action) => {
             return {
                 ...state,
                 timeChangeRequest: null,
-            };
-        case SET_PLAYER_SIZE:
-            return {
-                ...state,
-                playerSize: action.payload.size,
             };
         default:
             return state;

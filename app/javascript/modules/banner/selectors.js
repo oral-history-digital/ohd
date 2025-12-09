@@ -4,4 +4,4 @@ export const getBanner = (state) => {
     return state[NAME];
 };
 
-export const getBannerActive = state => getBanner(state).active;
+export const getBannerActive = (state) => getBanner(state).active;

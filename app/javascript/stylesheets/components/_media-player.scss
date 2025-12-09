@@ -1,64 +1,263 @@
 .MediaPlayer {
   background: $gray-darker;
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  height: $media-player-height-mobile;
-  overflow-y: hidden;
-  padding: $base-unit 5%;
   position: relative;
   z-index: $z-index-media-player;
+  width: 100%;
+}
 
-  @include screen-m {
-    height: $media-player-height-medium;
-    padding-bottom: $base-unit * 2;
-    padding-top: $base-unit * 1.5;
+.MediaPlayer-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 0 $media-player-mobile-padding-bottom;
+  box-sizing: border-box;
+}
+
+.MediaElement {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: var(--aspect-x, 16) / var(--aspect-y, 9); // Use project aspect ratio with 16:9 fallback
+  overflow: visible; // Allow resize handle to be visible
+  position: relative;
+  [data-vjs-player] {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; // Clip video content but not resize handle
+  }
+
+  // Hide resize handle on small screens
+  .MediaElement-resizeHandle {
+    display: none;
+  }
+
+  // Loading state: reserve space and hide interactive handles while the
+  // underlying video is not yet available.
+  &.MediaElement--loading {
+    // Ensure the element still respects the configured width so layout
+    // doesn't shift when media is attached.
+    min-width: $media-player-video-max-width-small;
+
+    .MediaElement-resizeHandle {
+      display: none !important;
+    }
+
+    .MediaElement-placeholder {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.01)
+      );
+      border-radius: 4px;
+      /* provide a subtle loader center */
+      position: relative;
+
+      /* Center the spinner*/
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .video-js {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+
+    video,
+    .vjs-tech {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
   }
 }
 
-.MediaPlayer-buttons {
-  bottom: 0.5rem;
+.MediaHeader {
+  align-items: center;
   display: flex;
-  position: absolute;
-  right: 0.5rem;
+  flex: 0 0 auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: calc($base-unit / 4);
+  max-width: 100%;
+  overflow: hidden;
+  padding: $media-player-mobile-padding-x;
+
+  .MediaControls {
+    margin: 0 0 0 auto;
+  }
+
+  .MediaPlayer-buttons {
+    flex: 0 0 auto;
+    display: flex;
+    align-self: end;
+  }
 }
 
-// Sticky position styles - applied when scrolling below threshold
-.Layout.is-sticky .MediaPlayer {
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-}
-
-// Small player size styles - only apply in XL screens
-.Layout.is-small-player .MediaPlayer {
-  @include screen-xl {
-    flex-direction: row-reverse;
-    height: var(--media-player-height-small);
-    justify-content: flex-end;
+// Two-column layout for medium+ screens
+@media (min-width: $screen-m) {
+  .MediaPlayer-inner {
+    align-items: stretch; // Stretch children to same height
+    flex-direction: row;
     padding: 0;
   }
-  
-  @media (max-width: $screen-m-max) {
-    height: $media-player-height-mobile;
-    flex-direction: column;
-    justify-content: initial;
-    padding: $base-unit 5%;
+
+  .MediaElement {
+    flex: 0 0 auto;
+    align-self: flex-start; // Don't stretch vertically - let aspect-ratio determine height
+    width: var(
+      --media-player-video-max-width,
+      $media-player-video-max-width-small
+    );
+    max-width: $media-player-video-width; // Don't exceed 66% of container
+    position: relative;
   }
-  
-  @media (min-width: $screen-m) and (max-width: $screen-l-max) {
-    height: $media-player-height-medium;
+
+  // Resize handle on the right border - show on medium+ screens
+  .MediaElement .MediaElement-resizeHandle {
+    display: block !important; // Override the display: none from mobile
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    margin-right: -4px; // Center the handle on the edge
+    cursor: ew-resize;
+    background: transparent;
+    z-index: 1000;
+    pointer-events: auto !important; // Ensure it receives mouse events
+    transition:
+      background-color 0.2s,
+      width 0.2s,
+      margin-right 0.2s;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 2px;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      transition:
+        background-color 0.2s,
+        height 0.2s,
+        width 0.2s,
+        right 0.2s,
+        box-shadow 0.2s;
+    }
+
+    &:hover,
+    &.is-dragging {
+      &::before {
+        background: rgba(255, 255, 255, 0.6);
+        height: 60px;
+      }
+    }
+  }
+
+  // Make the handle more visible when hovering anywhere over the media element
+  .MediaElement:hover .MediaElement-resizeHandle {
+    width: 12px;
+    margin-right: -6px; // Center the handle on the edge
+
+    &::before {
+      right: 4px;
+      width: 6px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  .MediaHeader {
+    align-items: flex-start;
     flex-direction: column;
-    padding-bottom: $base-unit * 2;
-    padding-top: $base-unit * 1.5;
+    flex: 1 1 0;
+    min-width: 0; // Allow flexbox to shrink below content size
+    justify-content: space-between; // Distribute space - pushes buttons to bottom
+    padding: $media-player-header-padding;
+    display: flex;
+
+    .MediaHeader-title {
+      // Title stays on its own row
+      width: 100%;
+      margin-bottom: calc($base-unit / 2);
+    }
+
+    .MediaControls {
+      margin: 0;
+      max-width: 100%; // Prevent overflow
+      overflow: hidden; // Hide any overflow
+    }
+
+    .MediaPlayer-buttons {
+      margin-top: auto; // Push to bottom in column layout
+      margin-right: $base-unit;
+      align-self: flex-end;
+    }
+  }
+
+  // In compact mode, prevent stretching and align to top
+  .MediaHeader.MediaHeader--compact {
+    align-self: flex-start; // Only apply flex-start in compact mode
+  }
+
+  // When video is very small (compact mode), put controls and buttons in one row
+  .MediaHeader.MediaHeader--compact {
+    flex-wrap: wrap;
+    flex-direction: row; // Switch to row layout
+    padding-bottom: calc($base-unit / 2);
+    padding-top: calc($base-unit / 2);
+
+    .MediaHeader-title {
+      flex: 0 0 100%; // Title takes full width on first row
+      order: 1;
+      margin-bottom: calc($base-unit / 2);
+    }
+
+    .MediaHeader-controls {
+      flex: 0 1 auto; // Shrink to content, don't take full width
+      order: 2;
+      align-self: center;
+      width: auto; // Override any width: 100%
+    }
+
+    .MediaPlayer-buttons {
+      flex: 0 0 auto; // Don't grow, keep to content width
+      order: 3;
+      margin-top: 0;
+      margin-left: auto; // Push to right
+      margin-right: 0; // Remove right margin in compact mode (header padding provides spacing)
+      align-self: center;
+      width: auto; // Override any width settings
+    }
   }
 }
 
-// Sidebar adjustments when sticky
-.Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
-.Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
-  @include screen-xl {
-    right: 36%;
+/* Spinner keyframes used for the placeholder loader */
+@keyframes media-spinner-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Larger screens default to expanded size
+@media (min-width: $screen-xl) {
+  .MediaElement {
+    width: var(--media-player-video-max-width, $media-player-video-max-width);
   }
 }

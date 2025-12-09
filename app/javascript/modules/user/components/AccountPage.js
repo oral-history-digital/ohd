@@ -10,6 +10,7 @@ import { Modal } from 'modules/ui';
 import { Helmet } from 'react-helmet';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+
 import UserDetailsContainer from './UserDetailsContainer';
 import UserDetailsFormContainer from './UserDetailsFormContainer';
 import UserProjects from './UserProjects';

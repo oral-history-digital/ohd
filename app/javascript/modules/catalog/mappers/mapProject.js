@@ -1,7 +1,7 @@
 import curry from 'lodash.curry';
 
-import mapCollection from './mapCollection';
 import rowComparator from '../rowComparator';
+import mapCollection from './mapCollection';
 
 export default function mapProject(locale, project) {
     const curriedMapCollection = curry(mapCollection)(locale);

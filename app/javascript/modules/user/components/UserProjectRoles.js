@@ -1,8 +1,9 @@
+import { useState } from 'react';
+
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { UserRoles } from 'modules/roles';
-import { getCurrentUser } from 'modules/data';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 

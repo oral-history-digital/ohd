@@ -1,0 +1,121 @@
+#!/bin/bash
+# Helper script to manage VNC services for viewing system tests in browser
+
+set -e
+
+log() { echo "[VNC] $*"; }
+error() { echo "[VNC ERROR] $*" >&2; exit 1; }
+
+start_vnc() {
+  export DISPLAY=:99
+  
+  log "Starting Xvfb virtual display..."
+  if pgrep -f "Xvfb :99" > /dev/null; then
+    log "✅ Xvfb already running"
+  else
+    Xvfb :99 -screen 0 1400x1400x24 &> /dev/null &
+    sleep 1
+    log "✅ Xvfb started on display :99"
+  fi
+  
+  log "Starting x11vnc server..."
+  if pgrep -f "x11vnc.*:99" > /dev/null; then
+    log "✅ x11vnc already running"
+  else
+    x11vnc -display :99 -forever -nopw -listen 0.0.0.0 -xkb -rfbport 5900 -bg -o /tmp/x11vnc.log
+    sleep 1
+    log "✅ x11vnc started on port 5900"
+  fi
+  
+  log "Starting noVNC web interface..."
+  if pgrep -f "websockify.*6080" > /dev/null; then
+    log "✅ noVNC already running"
+  else
+    websockify -D --web=/usr/share/novnc/ 6080 localhost:5900 &> /dev/null
+    sleep 1
+    log "✅ noVNC started on port 6080"
+  fi
+  
+  log ""
+  log "🌐 View browser at: http://localhost:6080/vnc.html"
+  log "   (or vnc_auto.html for automatic connection)"
+  log ""
+  log "To see tests running, use: HEADLESS=false bundle exec rails test test/system"
+}
+
+stop_vnc() {
+  log "Stopping VNC services..."
+  
+  pkill -f "websockify.*6080" 2>/dev/null && log "✅ Stopped noVNC" || log "  noVNC not running"
+  pkill -f "x11vnc.*:99" 2>/dev/null && log "✅ Stopped x11vnc" || log "  x11vnc not running"
+  pkill -f "Xvfb :99" 2>/dev/null && log "✅ Stopped Xvfb" || log "  Xvfb not running"
+  
+  log "VNC services stopped"
+}
+
+status_vnc() {
+  log "VNC services status:"
+  echo ""
+  
+  if pgrep -f "Xvfb :99" > /dev/null; then
+    echo "  ✅ Xvfb (display :99): RUNNING"
+  else
+    echo "  ❌ Xvfb (display :99): NOT RUNNING"
+  fi
+  
+  if pgrep -f "x11vnc.*:99" > /dev/null; then
+    echo "  ✅ x11vnc (port 5900): RUNNING"
+  else
+    echo "  ❌ x11vnc (port 5900): NOT RUNNING"
+  fi
+  
+  if pgrep -f "websockify.*6080" > /dev/null; then
+    echo "  ✅ noVNC (port 6080): RUNNING"
+    echo ""
+    echo "  🌐 Browser URL: http://localhost:6080/vnc.html"
+  else
+    echo "  ❌ noVNC (port 6080): NOT RUNNING"
+  fi
+  echo ""
+}
+
+restart_vnc() {
+  stop_vnc
+  sleep 2
+  start_vnc
+}
+
+case "${1:-}" in
+  start)
+    start_vnc
+    ;;
+  stop)
+    stop_vnc
+    ;;
+  restart)
+    restart_vnc
+    ;;
+  status)
+    status_vnc
+    ;;
+  *)
+    cat << EOF
+Usage: bin/vnc {start|stop|restart|status}
+
+Manage VNC services for viewing system tests in browser.
+
+Commands:
+  start    - Start Xvfb, x11vnc, and noVNC services
+  stop     - Stop all VNC services
+  restart  - Restart all VNC services
+  status   - Show status of VNC services
+
+Once started, view the browser at: http://localhost:6080/vnc.html
+
+To run system tests with visible browser:
+  HEADLESS=false bundle exec rails test test/system
+
+EOF
+    exit 1
+    ;;
+esac

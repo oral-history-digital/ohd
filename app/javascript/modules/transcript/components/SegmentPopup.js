@@ -1,6 +1,3 @@
-import PropTypes from 'prop-types';
-import { FaTimes } from 'react-icons/fa';
-
 import { Annotations } from 'modules/annotations';
 import { useAuthorization } from 'modules/auth';
 import { Fetch } from 'modules/data';
@@ -8,6 +5,8 @@ import { useI18n } from 'modules/i18n';
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { useProject } from 'modules/routes';
 import { useWorkbook } from 'modules/workbook';
+import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 
 export default function SegmentPopup({
     contentLocale,

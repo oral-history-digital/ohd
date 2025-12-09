@@ -15,16 +15,15 @@ export default function YearRange({
 }) {
     const alignRangeStyles = {
         paddingLeft: '7px',
-        paddingRight: '7px'
+        paddingRight: '7px',
     };
 
     return (
         <div className="flyout-radio-container">
             <div className="u-mb">
-                {currentValue ?
-                    `${currentValue[0]}–${currentValue[1]}` :
-                    `${sliderMin}–${sliderMax}`
-                }
+                {currentValue
+                    ? `${currentValue[0]}–${currentValue[1]}`
+                    : `${sliderMin}–${sliderMax}`}
             </div>
             <div style={alignRangeStyles}>
                 <Range
@@ -34,7 +33,7 @@ export default function YearRange({
                     onAfterChange={onAfterChange}
                     marks={getRangeMarks(sliderMin, sliderMax)}
                     step={1}
-                    tipProps={{placement: 'top'}}
+                    tipProps={{ placement: 'top' }}
                     value={currentValue || [sliderMin, sliderMax]}
                 />
             </div>

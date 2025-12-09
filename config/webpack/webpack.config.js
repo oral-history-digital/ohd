@@ -8,9 +8,9 @@ const version = pjson && pjson.version ? pjson.version : 'unknown';
 const webpackConfig = generateWebpackConfig(); // get base config
 webpackConfig.plugins = webpackConfig.plugins || [];
 webpackConfig.plugins.push(
-  new webpack.DefinePlugin({
-    VERSION: JSON.stringify(version)
-  })
+    new webpack.DefinePlugin({
+        VERSION: JSON.stringify(version),
+    })
 );
 
 module.exports = webpackConfig;

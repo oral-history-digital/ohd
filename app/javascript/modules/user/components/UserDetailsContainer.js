@@ -1,9 +1,9 @@
+import { getCurrentUser } from 'modules/data';
 import { connect } from 'react-redux';
 
-import { getCurrentUser } from 'modules/data';
 import UserDetails from './UserDetails';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     user: getCurrentUser(state),
 });
 

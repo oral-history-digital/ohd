@@ -1,21 +1,21 @@
+import { AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
+import { ErrorMessage } from 'modules/ui';
 import Observer from 'react-intersection-observer';
 
-import { AuthShowContainer } from 'modules/auth';
-import { Spinner } from 'modules/spinners';
-import { useI18n } from 'modules/i18n';
-import { ErrorMessage } from 'modules/ui';
 import useArchiveSearch from '../useArchiveSearch';
-import SearchActions from './SearchActions';
-import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
+import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
+import SearchActions from './SearchActions';
 
 const PAGE_SIZE = 12;
 
 function ArchiveSearch() {
     const { t, locale } = useI18n();
 
-    const { interviews, total, data, error, isValidating, isLoading, size,
-        setSize } = useArchiveSearch();
+    const { interviews, total, data, error, isLoading, size, setSize } =
+        useArchiveSearch();
 
     function handleScroll(inView) {
         if (inView) {
@@ -24,12 +24,13 @@ function ArchiveSearch() {
     }
 
     const isLoadingInitialData = !data && !error;
-    const isLoadingMore = isLoadingInitialData ||
+    const isLoadingMore =
+        isLoadingInitialData ||
         (size > 0 && data && typeof data[size - 1] === 'undefined');
     const isEmpty = data?.[0]?.interviews?.length === 0;
     const isReachingEnd =
-        isEmpty || (data && data[data.length - 1]?.interviews?.length < PAGE_SIZE);
-    const isRefreshing = isValidating && data && data.length === size;
+        isEmpty ||
+        (data && data[data.length - 1]?.interviews?.length < PAGE_SIZE);
 
     return (
         <>

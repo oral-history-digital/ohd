@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import request from 'superagent';
 
 import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import useProjectAccessConfig from '../useProjectAccessConfig';
+import { usePathBase } from 'modules/routes';
+import request from 'superagent';
+
 import { NON_ZIP_COUNTRIES } from '../constants';
+import useProjectAccessConfig from '../useProjectAccessConfig';
 
 export default function CorrectUserDataForm({
     project,
@@ -17,7 +18,6 @@ export default function CorrectUserDataForm({
     onSubmit,
     onCancel,
 }) {
-
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
@@ -38,14 +38,18 @@ export default function CorrectUserDataForm({
                 attribute: 'first_name',
                 label: t('activerecord.attributes.user.first_name'),
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
             },
             {
                 elementType: 'input',
                 attribute: 'last_name',
                 label: t('activerecord.attributes.user.last_name'),
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
             },
         ];
 
@@ -54,7 +58,9 @@ export default function CorrectUserDataForm({
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
             },
             {
                 elementType: 'input',
@@ -68,8 +74,10 @@ export default function CorrectUserDataForm({
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
-            }
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
+            },
         ];
 
         const countrySelect = [
@@ -79,22 +87,34 @@ export default function CorrectUserDataForm({
                 optionsScope: 'countries',
                 values: countryKeys && countryKeys[locale],
                 withEmpty: true,
-                validate: function(v){return v && v.length > 1},
+                validate: function (v) {
+                    return v && v.length > 1;
+                },
                 handlechangecallback: (name, value) => {
                     setHideZip(NON_ZIP_COUNTRIES.indexOf(value) > -1);
                 },
             },
         ];
 
-        const projectAccessElements = useProjectAccessConfig(project, userProject, currentUser);
+        const projectAccessElements = useProjectAccessConfig(
+            project,
+            userProject,
+            currentUser
+        );
 
-        return nameElements.concat(addressElements).concat(countrySelect).concat(projectAccessElements);
-    }
+        return nameElements
+            .concat(addressElements)
+            .concat(countrySelect)
+            .concat(projectAccessElements);
+    };
 
     return (
         <Form
-            scope='user_project'
-            onSubmit={(params) => { submitData({ locale, projectId, project }, params); onSubmit(); }}
+            scope="user_project"
+            onSubmit={(params) => {
+                submitData({ locale, projectId, project }, params);
+                onSubmit();
+            }}
             elements={formElements()}
             values={{
                 workflow_state: 'correct_project_access_data',

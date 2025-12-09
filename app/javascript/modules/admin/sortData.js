@@ -1,4 +1,9 @@
-export default function sortData(data, sortAttribute, sortAttributeTranslated, locale) {
+export default function sortData(
+    data,
+    sortAttribute,
+    sortAttributeTranslated,
+    locale
+) {
     let sorted = [];
     if (data) {
         if (sortAttribute) {
@@ -7,20 +12,24 @@ export default function sortData(data, sortAttribute, sortAttributeTranslated, l
                     return 0;
                 }
 
-                let aa = sortAttributeTranslated ? a[sortAttribute][locale] : a[sortAttribute]
-                let bb = sortAttributeTranslated ? b[sortAttribute][locale] : b[sortAttribute]
+                let aa = sortAttributeTranslated
+                    ? a[sortAttribute][locale]
+                    : a[sortAttribute];
+                let bb = sortAttributeTranslated
+                    ? b[sortAttribute][locale]
+                    : b[sortAttribute];
                 if (aa < bb) {
                     return -1;
                 }
-                if ( aa > bb) {
+                if (aa > bb) {
                     return 1;
                 }
                 return 0;
-            })
+            });
         } else {
-            sorted = Object.values(data)
+            sorted = Object.values(data);
         }
     }
 
-    return sorted.filter(s => s);
+    return sorted.filter((s) => s);
 }

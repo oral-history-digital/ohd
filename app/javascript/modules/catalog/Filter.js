@@ -1,12 +1,9 @@
+import { useI18n } from 'modules/i18n';
+import { DebouncedInput } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 
-import { useI18n } from 'modules/i18n';
-import { DebouncedInput } from 'modules/ui';
-
-export default function Filter({
-    column,
-}) {
+export default function Filter({ column }) {
     const { t } = useI18n();
     const columnFilterValue = column.getFilterValue();
 
@@ -21,7 +18,7 @@ export default function Filter({
             <DebouncedInput
                 type="text"
                 className="Input"
-                value={(columnFilterValue ?? '')}
+                value={columnFilterValue ?? ''}
                 onChange={column.setFilterValue}
                 onKeyDown={handleKeyDown}
                 placeholder={t('modules.catalog.table.search')}

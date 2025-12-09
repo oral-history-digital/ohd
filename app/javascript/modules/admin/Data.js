@@ -1,17 +1,17 @@
+import { AuthorizedContent } from 'modules/auth';
+import { useSensitiveData } from 'modules/data';
+import { DeleteItemForm } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { PersonDetails } from 'modules/person';
+import { useProject } from 'modules/routes';
+import { pluralize } from 'modules/strings';
+import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-import { AuthorizedContent } from 'modules/auth';
-import { pluralize } from 'modules/strings';
-import { useI18n } from 'modules/i18n';
-import { AdminMenu } from 'modules/ui';
-import { useProject } from 'modules/routes';
-import { DeleteItemForm } from 'modules/forms';
-import { PersonDetails } from 'modules/person';
 import BaseData from './BaseData';
-import JoinedData from './JoinedData';
 import DataDetails from './DataDetails';
+import JoinedData from './JoinedData';
 import getDataDisplayName from './getDataDisplayName';
-import { useSensitiveData } from 'modules/data';
 
 const Item = AdminMenu.Item;
 
@@ -47,8 +47,14 @@ export default function Data({
         }
 
         // skip remove from state, only remove server-side
-        deleteData({ locale, projectId, project }, pluralize(scope), data.id,
-            null, null, true);
+        deleteData(
+            { locale, projectId, project },
+            pluralize(scope),
+            data.id,
+            null,
+            null,
+            true
+        );
         // only remove from state
         deleteData(
             { locale, projectId, project },
@@ -77,7 +83,7 @@ export default function Data({
                 showComponent={showComponent}
             />
 
-            <AuthorizedContent object={[data, task]} action='update'>
+            <AuthorizedContent object={[data, task]} action="update">
                 <AdminMenu disabled={disabled}>
                     {!hideShow && (
                         <Item
@@ -85,15 +91,16 @@ export default function Data({
                             label={t('edit.default.show')}
                             dialogTitle={displayName}
                         >
-                            {scope === 'person' ?
-                                <PersonDetails data={data} /> :
+                            {scope === 'person' ? (
+                                <PersonDetails data={data} />
+                            ) : (
                                 <DataDetails
                                     detailsAttributes={detailsAttributes}
                                     data={data}
                                     scope={scope}
                                     optionsScope={optionsScope}
                                 />
-                            }
+                            )}
                         </Item>
                     )}
                     {!hideEdit && (
@@ -102,11 +109,13 @@ export default function Data({
                             label={t('edit.default.edit')}
                             dialogTitle={`${displayName} ${t(`edit.${scope}.edit`)}`}
                         >
-                            {close => (
+                            {(close) => (
                                 <>
                                     {hideShow && (
                                         <DataDetails
-                                            detailsAttributes={detailsAttributes}
+                                            detailsAttributes={
+                                                detailsAttributes
+                                            }
                                             data={data}
                                             scope={scope}
                                             optionsScope={optionsScope}
@@ -119,7 +128,7 @@ export default function Data({
                     )}
                     {!hideDelete && (
                         <Item name="delete" label={t('delete')}>
-                            {close => (
+                            {(close) => (
                                 <DeleteItemForm
                                     onSubmit={() => destroy(close)}
                                     onCancel={close}
@@ -133,11 +142,7 @@ export default function Data({
             </AuthorizedContent>
 
             {joinedData && (
-                <JoinedData
-                    joinedData={joinedData}
-                    data={data}
-                    scope={scope}
-                />
+                <JoinedData joinedData={joinedData} data={data} scope={scope} />
             )}
         </div>
     );
@@ -150,10 +155,7 @@ Data.propTypes = {
     form: PropTypes.func.isRequired,
     scope: PropTypes.string.isRequired,
     outerScope: PropTypes.string,
-    outerScopeId: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string
-    ]),
+    outerScopeId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     showComponent: PropTypes.element,
     hideShow: PropTypes.bool,
     hideEdit: PropTypes.bool,

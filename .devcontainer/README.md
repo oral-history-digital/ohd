@@ -39,6 +39,7 @@ This project provides two separate devcontainer environments:
 Use the **Development Environment** for development work.
 
 ### What's Included
+
 - Full Rails application stack
 - MySQL database with sample data
 - Solr search engine
@@ -46,6 +47,7 @@ Use the **Development Environment** for development work.
 - All development dependencies
 
 ### Network Mode
+
 - Bridge mode (Docker services work normally)
 - No VPN access from container
 
@@ -54,16 +56,19 @@ Use the **Development Environment** for development work.
 See [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md) for detailed setup instructions.
 
 ### What's Included
+
 - Minimal Ruby environment
 - Deployment tools (Capistrano)
 - SSH configuration
 
 ### What's NOT Included
+
 - Database (cannot run migrations or seed data)
 - Solr (cannot reindex or search)
 - Webpack dev server
 
 ### Network Mode
+
 - Host mode (full VPN access for deployment)
 
 ## Setup Process (Development Environment)
@@ -116,29 +121,32 @@ This script will:
 If you encounter database connection issues:
 
 1. Verify MySQL is running properly:
-   ```sh
-   mysql -h db -u root -prootpassword -e "SHOW DATABASES;"
-   ```
+
+    ```sh
+    mysql -h db -u root -prootpassword -e "SHOW DATABASES;"
+    ```
 
 2. Check database user permissions:
-   ```sh
-   mysql -h db -u root -prootpassword -e "SELECT User, Host FROM mysql.user;"
-   ```
+
+    ```sh
+    mysql -h db -u root -prootpassword -e "SELECT User, Host FROM mysql.user;"
+    ```
 
 3. Ensure proper grants are in place:
-   ```sh
-   mysql -h db -u root -prootpassword -e "GRANT ALL PRIVILEGES ON ohd_development.* TO 'root'@'%'; FLUSH PRIVILEGES;"
-   ```
+
+    ```sh
+    mysql -h db -u root -prootpassword -e "GRANT ALL PRIVILEGES ON ohd_development.* TO 'root'@'%'; FLUSH PRIVILEGES;"
+    ```
 
 4. If all else fails, rebuild the container:
-   - Open the VS Code command palette (Ctrl+Shift+P)
-   - Select "Dev Containers: Rebuild Container"
+    - Open the VS Code command palette (Ctrl+Shift+P)
+    - Select "Dev Containers: Rebuild Container"
 
 ## Accessing the Application
 
 After starting the application, you can access it at:
 
-- URL: [http://portal.oral-history.localhost:3000/za/de](http://portal.oral-history.localhost:3000/za/de)
+- URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
 - Admin login: `alice@example.com`
 - Password: `password`
 
@@ -152,14 +160,14 @@ The development environment consists of three services:
 
 ## Development vs Deployment
 
-| Feature | Development Environment | Deployment Environment |
-|---------|------------------------|------------------------|
-| **Purpose** | Development | Deployment tasks only |
-| **Database** | ✅ Full MySQL setup | ❌ Not available |
-| **Solr** | ✅ Search indexing | ❌ Not available |
-| **VPN Access** | ❌ Not available | ✅ Full access |
-| **Network Mode** | Bridge | Host |
-| **Size** | Large (full stack) | Minimal |
+| Feature          | Development Environment | Deployment Environment |
+| ---------------- | ----------------------- | ---------------------- |
+| **Purpose**      | Development             | Deployment tasks only  |
+| **Database**     | ✅ Full MySQL setup     | ❌ Not available       |
+| **Solr**         | ✅ Search indexing      | ❌ Not available       |
+| **VPN Access**   | ❌ Not available        | ✅ Full access         |
+| **Network Mode** | Bridge                  | Host                   |
+| **Size**         | Large (full stack)      | Minimal                |
 
 ## Deployment
 

@@ -2,73 +2,113 @@ import { getScrollOffset } from './getScrollOffset';
 
 // Mock constants used in the function
 jest.mock('modules/constants', () => ({
-    CONTENT_TABS_HEIGHT: 48, // e.g. 3rem * 16px
-    CSS_BASE_UNIT: 24,
-}));
-jest.mock('modules/media-player', () => ({
-    DEFAULT_PLAYER_SIZE: 'medium',
-    MEDIA_PLAYER_HEIGHT_MEDIUM: 448, // 28rem * 16px
-    MEDIA_PLAYER_HEIGHT_SMALL: 200, // 12.5rem * 16px
-    MEDIA_PLAYER_HEIGHT_MOBILE: 320, // 20rem * 16px
+    SPACE_BEFORE_ACTIVE_SEGMENT: 36, // 1.5 * 24
 }));
 
 describe('getScrollOffset', () => {
-    const SPACE_BEFORE_ACTIVE_ELEMENT = 1.5 * 24; // 36
-    const CONTENT_TABS_HEIGHT = 48;
-    const HEIGHTS = {
-        medium: 448,
-        small: 200,
-        mobile: 320,
-    };
+    const SPACE_BEFORE_ACTIVE_SEGMENT = 36;
 
     beforeEach(() => {
-        // Reset window.innerWidth before each test
-        window.innerWidth = 1024;
+        // Clear the DOM before each test
+        document.body.innerHTML = '';
     });
 
-    it('returns correct offset for medium size on desktop', () => {
-        window.innerWidth = 1024;
-        expect(getScrollOffset('medium')).toBe(
-            HEIGHTS.medium + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT
-        );
+    it('returns correct offset when both elements exist', () => {
+        // Create mock DOM elements
+        const mediaPlayer = document.createElement('div');
+        mediaPlayer.className = 'MediaPlayer';
+        Object.defineProperty(mediaPlayer, 'offsetHeight', {
+            configurable: true,
+            value: 400,
+        });
+
+        const contentTabs = document.createElement('div');
+        contentTabs.className = 'Layout-contentTabs';
+        Object.defineProperty(contentTabs, 'offsetHeight', {
+            configurable: true,
+            value: 48,
+        });
+
+        document.body.appendChild(mediaPlayer);
+        document.body.appendChild(contentTabs);
+
+        expect(getScrollOffset()).toBe(400 + 48 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
-    it('returns correct offset for small size on desktop', () => {
-        window.innerWidth = 1024;
-        expect(getScrollOffset('small')).toBe(
-            HEIGHTS.small + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT
-        );
+    it('returns correct offset with different heights', () => {
+        // Create mock DOM elements with different heights
+        const mediaPlayer = document.createElement('div');
+        mediaPlayer.className = 'MediaPlayer';
+        Object.defineProperty(mediaPlayer, 'offsetHeight', {
+            configurable: true,
+            value: 320,
+        });
+
+        const contentTabs = document.createElement('div');
+        contentTabs.className = 'Layout-contentTabs';
+        Object.defineProperty(contentTabs, 'offsetHeight', {
+            configurable: true,
+            value: 48,
+        });
+
+        document.body.appendChild(mediaPlayer);
+        document.body.appendChild(contentTabs);
+
+        expect(getScrollOffset()).toBe(320 + 48 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
-    it('returns correct offset for mobile size on small screens', () => {
-        window.innerWidth = 500;
-        expect(getScrollOffset('medium')).toBe(
-            HEIGHTS.mobile + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT
-        );
-        expect(getScrollOffset('small')).toBe(
-            HEIGHTS.mobile + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT
-        );
+    it('returns SPACE_BEFORE_ACTIVE_SEGMENT when elements do not exist', () => {
+        // No elements in DOM
+        expect(getScrollOffset()).toBe(SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
-    it('falls back to default size if invalid size is passed', () => {
-        window.innerWidth = 1024;
-        expect(getScrollOffset('invalid')).toBe(
-            HEIGHTS.medium + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT
-        );
+    it('handles missing MediaPlayer element', () => {
+        // Only contentTabs exists
+        const contentTabs = document.createElement('div');
+        contentTabs.className = 'Layout-contentTabs';
+        Object.defineProperty(contentTabs, 'offsetHeight', {
+            configurable: true,
+            value: 48,
+        });
+
+        document.body.appendChild(contentTabs);
+
+        expect(getScrollOffset()).toBe(48 + SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 
-    it('throws if any height constant is missing', () => {
-        jest.resetModules();
-        jest.doMock('modules/media-player', () => ({
-            DEFAULT_PLAYER_SIZE: 'medium',
-            MEDIA_PLAYER_HEIGHT_MEDIUM: undefined,
-            MEDIA_PLAYER_HEIGHT_SMALL: undefined,
-            MEDIA_PLAYER_HEIGHT_MOBILE: undefined,
-        }));
-        return import('./getScrollOffset').then(
-            ({ getScrollOffset: brokenGetScrollOffset }) => {
-                expect(() => brokenGetScrollOffset('medium')).toThrow();
-            }
-        );
+    it('handles missing contentTabs element', () => {
+        // Only MediaPlayer exists
+        const mediaPlayer = document.createElement('div');
+        mediaPlayer.className = 'MediaPlayer';
+        Object.defineProperty(mediaPlayer, 'offsetHeight', {
+            configurable: true,
+            value: 400,
+        });
+
+        document.body.appendChild(mediaPlayer);
+
+        expect(getScrollOffset()).toBe(400 + SPACE_BEFORE_ACTIVE_SEGMENT);
+    });
+
+    it('returns correct offset when elements have zero height', () => {
+        // Create mock DOM elements with zero height
+        const mediaPlayer = document.createElement('div');
+        mediaPlayer.className = 'MediaPlayer';
+        Object.defineProperty(mediaPlayer, 'offsetHeight', {
+            configurable: true,
+            value: 0,
+        });
+
+        const contentTabs = document.createElement('div');
+        contentTabs.className = 'Layout-contentTabs';
+        Object.defineProperty(contentTabs, 'offsetHeight', {
+            configurable: true,
+            value: 0,
+        });
+
+        document.body.appendChild(mediaPlayer);
+        document.body.appendChild(contentTabs);
+
+        expect(getScrollOffset()).toBe(SPACE_BEFORE_ACTIVE_SEGMENT);
     });
 });

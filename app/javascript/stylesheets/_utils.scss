@@ -1,7 +1,9 @@
 // Utils
 // ------------------------------------------
 
-.skip, .hideme, .hide {
+.skip,
+.hideme,
+.hide {
   position: absolute;
   left: -1000em; // ltr
   top: -1000em;
@@ -26,14 +28,12 @@
   }
 }
 
-
 // Floats
 // -------------------------
 
 .clearfix {
   @include clearfix();
 }
-
 
 // Hide from screenreaders and browsers
 //

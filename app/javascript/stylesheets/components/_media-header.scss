@@ -1,56 +1,12 @@
-.MediaHeader {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: $base-unit;
-}
-
 .MediaHeader-title {
   color: #fff;
   font-size: $font-size-heading-h1;
   line-height: $line-height-heading-h1;
   margin: 0 $base-unit 0 0;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 
   @include screen-m {
     font-size: $font-size-heading-h1-large;
     line-height: $line-height-heading-h1-large;
-  }
-}
-
-.MediaHeader-controls {
-  margin-left: auto;
-}
-
-// Small player mode header styles
-.Layout.is-small-player {
-  
-  .MediaHeader {
-  align-items: flex-start;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  margin: $base-unit 0 0 ($base-unit * 0.5);
-  margin-top: $base-unit;
-
-  @include screen-m {
-    margin-left: $base-unit;
-  }
-}
-
-  .MediaHeader-title {
-    font-size: $font-size-larger;
-    line-height: $base-unit;
-    margin-right: 0;
-  }
-
-  .MediaHeader-controls {
-    margin-left: 0;
-  }
-
-  .MediaHeader--mediaMissing {
-    flex-shrink: 0;
   }
 }

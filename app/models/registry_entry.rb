@@ -400,13 +400,17 @@ class RegistryEntry < ApplicationRecord
     to_s(locale)
   end
 
+  def api_search_term=(term)
+    # dummy setter for accepting api_search_term from forms
+  end
+
   def parent_id=(pid)
     unless parents.map(&:id).include? pid.to_i
       parents << RegistryEntry.find(pid)
     end
   end
 
-  def to_s(locale = I18n.default_locale)
+  def to_s(locale = I18n.default_locale, fallback=true)
     registry_names.
       includes(:translations, :registry_name_type).
       #where("registry_name_translations.locale": locale).
@@ -414,7 +418,10 @@ class RegistryEntry < ApplicationRecord
       group_by{|rn| rn.registry_name_type_id}.
       map do |tid, rns|
         birth_name = rns.first.registry_name_type && rns.first.registry_name_type.code == 'birth_name'
-        names = rns.map{|rn| rn.descriptor(locale)}.join(" ")
+        names = rns.map do |rn|
+          fallback ? rn.descriptor(locale) :
+            rn.descriptor_without_fallback(locale)
+        end.join(" ")
         birth_name ? "#{TranslationValue.for('search_facets.born', locale)} #{names}" : names
       end.
       join(", ")

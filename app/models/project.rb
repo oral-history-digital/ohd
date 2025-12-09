@@ -5,7 +5,7 @@ class Project < ApplicationRecord
   include OaiDc
   include OaiDatacite
 
-  enum :default_search_order, [:title, :random]
+  enum :default_search_order, title: 0, random: 1, archive_id: 2
 
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
@@ -103,6 +103,7 @@ class Project < ApplicationRecord
     message: "%{value} is not a valid upload type" }
 
   scope :shared, -> { where(workflow_state: 'public' )}
+  scope :unshared, -> {where(workflow_state: 'unshared')}
 
   before_save :touch_interviews
   def touch_interviews
@@ -162,12 +163,16 @@ class Project < ApplicationRecord
     identifier == 'ohd'
   end
 
+  def interviewer_on_landing_page?
+    contribution_types.where(display_on_landing_page: true, code: 'interviewer').exists?
+  end
+
   def num_interviews
     interviews_count
   end
 
   def update_interviews_count
-    self.update interviews_count: self.interviews.shared.count
+    self.update interviews_count: self.interviews.where(workflow_state: ['public', 'restricted']).count
   end
 
   def domain_with_optional_identifier

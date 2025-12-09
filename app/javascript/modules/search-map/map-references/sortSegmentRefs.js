@@ -1,5 +1,5 @@
 export default function sortSegmentRefs(refGroups) {
-    refGroups.forEach(group => {
+    refGroups.forEach((group) => {
         group.refs.sort(compareFunction);
     });
 

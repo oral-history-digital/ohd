@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
-import { useAuthorization } from './authorization-hook';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
+
+import { useAuthorization } from './authorization-hook';
 
 function AuthorizedContent({
     object,
@@ -8,28 +9,28 @@ function AuthorizedContent({
     children,
     unauthorizedContent,
     showUnauthorizedMsg,
-    showIfPublic
+    showIfPublic,
 }) {
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
     if (
-        Array.isArray(object) ? 
-        object.find(obj => (showIfPublic && obj.workflow_state !== 'unshared') || isAuthorized(obj, action)) : 
-        (showIfPublic && object.workflow_state !== 'unshared') || isAuthorized(object, action)
-    )
-    {
+        Array.isArray(object)
+            ? object.find(
+                  (obj) =>
+                      (showIfPublic && obj.workflow_state !== 'unshared') ||
+                      isAuthorized(obj, action)
+              )
+            : (showIfPublic && object.workflow_state !== 'unshared') ||
+              isAuthorized(object, action)
+    ) {
         return children || null;
     }
 
     if (unauthorizedContent) {
         return unauthorizedContent;
     } else if (showUnauthorizedMsg) {
-        return (
-            <p>
-                {t('unauthorized')}
-            </p>
-        );
+        return <p>{t('unauthorized')}</p>;
     } else {
         return null;
     }
@@ -38,11 +39,11 @@ function AuthorizedContent({
 AuthorizedContent.propTypes = {
     object: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.object),
-        PropTypes.object
+        PropTypes.object,
     ]).isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
 };
 

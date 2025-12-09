@@ -1,9 +1,9 @@
-import { NAME  } from './constants';
+import { NAME } from './constants';
 import * as selectors from './selectors';
 
 const state = {
     [NAME]: {
-        filter: [1,2,3],
+        filter: [1, 2, 3],
         mapView: [
             [51.50939, -0.11832],
             [44.433333, 26.1],

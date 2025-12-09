@@ -5,7 +5,7 @@
 project1 = Project.first
 
 admin_email = 'alice@example.com'
-admin_password = 'password'
+admin_password = 'Password123!'
 
 admin_user_account = UserAccount.new(
   login: admin_email,
@@ -36,7 +36,7 @@ admin_urp.save
 
 
 visitor_email = 'bob@example.com'
-visitor_password = 'password'
+visitor_password = 'Password123!'
 
 visitor_user_account = UserAccount.new(
   login: visitor_email,
@@ -67,7 +67,7 @@ visitor_urp.save
 
 
 editor_email = 'eve@example.com'
-editor_password = 'password'
+editor_password = 'Password123!'
 
 editor_user_account = UserAccount.new(
   login: editor_email,

@@ -1,15 +1,15 @@
-import useSWRImmutable from 'swr/immutable';
-import flow from 'lodash.flow';
 import curry from 'lodash.curry';
-
-import { usePathBase } from 'modules/routes';
+import flow from 'lodash.flow';
 import { fetcher } from 'modules/api';
-import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
+import { sortByReferenceTypeOrder, useMapReferenceTypes } from 'modules/map';
+import { usePathBase } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useInterviewMapReferences(archiveId, registryEntryId) {
     const pathBase = usePathBase();
 
-    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { referenceTypes, error: referenceTypesError } =
+        useMapReferenceTypes();
 
     const path = `${pathBase}/location_references?archive_id=${archiveId}&registry_entry_id=${registryEntryId}`;
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
@@ -20,7 +20,10 @@ export default function useInterviewMapReferences(archiveId, registryEntryId) {
     let sortedPersonReferences = [];
     if (referenceTypes && personReferences) {
         const transformData = flow(
-            curry(sortByReferenceTypeOrder)(referenceTypes, 'registry_reference_type_id')
+            curry(sortByReferenceTypeOrder)(
+                referenceTypes,
+                'registry_reference_type_id'
+            )
         );
         sortedPersonReferences = transformData(personReferences);
     }

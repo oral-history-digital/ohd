@@ -1,6 +1,7 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import isEqual from 'lodash.isequal';
+import PropTypes from 'prop-types';
 
 import TreeSelectComponent from './TreeSelectComponent';
 
@@ -13,9 +14,9 @@ export default class TreeSelectComponentWrapper extends Component {
     }
 
     render() {
-        return (<TreeSelectComponent {...this.props} />);
+        return <TreeSelectComponent {...this.props} />;
     }
-};
+}
 
 TreeSelectComponentWrapper.propTypes = {
     isLoading: PropTypes.bool.isRequired,

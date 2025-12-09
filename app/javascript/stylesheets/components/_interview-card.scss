@@ -27,7 +27,6 @@
 }
 
 .InterviewCard.is-expanded {
-
 }
 
 .InterviewCard-link {
@@ -50,7 +49,7 @@
   width: 100%;
   transition: transform $transition-duration;
   transform: scale(1.05);
-};
+}
 
 .InterviewCard-archive {
   align-items: center;
@@ -80,7 +79,6 @@
 
 .InterviewCard-link:hover img,
 .InterviewCard-link:focus img {
-  transform: scale(1.15);
 }
 
 .InterviewCard-title {
@@ -114,5 +112,4 @@
 
 .InterviewCard-link:hover .InterviewCard-icon,
 .InterviewCard-link:focus .InterviewCard-icon {
-  transform: scale(1.15);
 }

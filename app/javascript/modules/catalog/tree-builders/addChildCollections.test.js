@@ -48,13 +48,9 @@ test('throws if collection_ids is undefined', () => {
         shortname: 'zwar',
     };
 
-    const collections = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-    ];
+    const collections = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
     expect(() => {
-        addChildCollections(collections, project)
+        addChildCollections(collections, project);
     }).toThrow(ReferenceError);
 });

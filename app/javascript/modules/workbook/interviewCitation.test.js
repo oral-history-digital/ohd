@@ -1,5 +1,6 @@
-import interviewCitation from './interviewCitation';
 import timekeeper from 'timekeeper';
+
+import interviewCitation from './interviewCitation';
 
 const interview = {
     anonymous_title: { de: 'Alice H.' },

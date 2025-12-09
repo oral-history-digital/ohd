@@ -1,0 +1,6 @@
+de:
+  doorkeeper:
+    scopes:
+      openid: "Ihre Identität einsehen"
+      profile: "Ihr Profil einsehen"
+      email: "Ihre E-Mail-Adresse einsehen"

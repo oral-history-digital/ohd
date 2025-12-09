@@ -13,3 +13,5 @@ export const RECEIVE_RESULT = `${NAME}/receiveResult`;
 export const UPDATE_SELECTED_ARCHIVE_IDS = `${NAME}/updateSelectedArchiveIds`;
 export const SET_SELECTED_ARCHIVE_IDS = `${NAME}/setSelectedArchiveIds`;
 export const UPDATE_SELECTED_REGISTRY_ENTRY_IDS = `${NAME}/updateSelectedRegistryEntryIds`;
+export const MERGE_TRANSLATIONS = `${NAME}/mergeTranslations`;
+export const REQUEST_TRANSLATIONS = `${NAME}/requestTranslations`;

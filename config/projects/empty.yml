@@ -1,5 +1,4 @@
 default: &default
-
   contribution_types:
     interviewee: 'interviewee'
     interviewer: 'interviewer'

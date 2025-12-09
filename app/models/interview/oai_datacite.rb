@@ -10,41 +10,32 @@ module Interview::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier identifierType: "URL" do
-        xml.text! oai_url_identifier(:de)
-      end
+      xml.identifier oai_url_identifier(:de), identifierType: "URL"
 
       xml.alternateIdentifiers do
-        xml.alternateIdentifier alternateIdentifierType: "URL" do
-          xml.text! oai_url_identifier(:en)
+        alternate_oai_locales.each do |locale|
+          xml.alternateIdentifier oai_url_identifier(locale),
+            alternateIdentifierType: "URL"
         end
+        #xml.alternateIdentifier alternateIdentifierType: "DOI" do
+          #xml.text! oai_doi_identifier
+        #end
       end
 
-      #xml.alternateIdentifiers do
-        #oai_locales.each do |locale|
-          #xml.alternateIdentifier alternateIdentifierType: "URL" do
-            #xml.text! oai_url_identifier(locale)
-          #end
-        #end
-        ##xml.alternateIdentifier alternateIdentifierType: "DOI" do
-          ##xml.text! oai_doi_identifier
-        ##end
-      #end
-
       xml.relatedIdentifiers do
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}"
-        end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "#{OHD_DOMAIN}/de/catalog/collections/#{collection_id}"
+        xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}",
+          relatedIdentifierType: "URL",
+          relationType: "IsPartOf"
+        if collection_id
+          xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/collections/#{collection_id}",
+            relatedIdentifierType: "URL",
+            relationType: "IsPartOf"
         end
       end
 
       xml.titles do
         [:de, :en].each do |locale|
-          xml.title "xml:lang": locale do
-            xml.text! oai_title(locale)
-          end
+          xml.title oai_title(locale), "xml:lang": locale
         end
       end
 
@@ -59,7 +50,7 @@ module Interview::OaiDatacite
         end
       end
 
-      xml.publisher oai_publisher(:de)
+      xml.publisher oai_publisher(:en), "xml:lang": "en"
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -68,37 +59,59 @@ module Interview::OaiDatacite
       xml.contributors do
         if !project.cooperation_partner.blank?
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{project.cooperation_partner} (Kooperationspartner)"
+            xml.contributorName "#{project.cooperation_partner.gsub("'", "")} (Kooperationspartner)",
+              "xml:lang": "en",
+              nameType: "Organizational"
           end
         end
-        xml.contributor contributorType: "ProjectLeader" do
-          xml.contributorName project.leader
+        if project.interviewer_on_landing_page?
+          xml.contributor contributorType: "DataCollector" do
+            xml.contributorName interviewers.map(&:full_name).join(", "),
+              "xml:lang": "en",
+              nameType: "Personal"
+          end
         end
-        xml.contributor contributorType: "ProjectManager" do
-          xml.contributorName project.manager
+        if !project.leader.blank?
+          xml.contributor contributorType: "ProjectLeader" do
+            xml.contributorName project.leader,
+              "xml:lang": "en",
+              nameType: "Personal"
+          end
         end
-        xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor(:de)
+        if !project.manager.blank?
+          xml.contributor contributorType: "ProjectManager" do
+            xml.contributorName project.manager,
+              "xml:lang": "en",
+              nameType: "Personal"
+          end
+        end
+        if !oai_contributor(:en).blank?
+          xml.contributor contributorType: "HostingInstitution" do
+            xml.contributorName oai_contributor(:en),
+              "xml:lang": "en",
+              nameType: "Organizational"
+          end
         end
       end
 
       xml.fundingReferences do
         project.funder_names.each do |funder|
           xml.fundingReference do
-            xml.funderName funder
+            xml.funderName funder.gsub("'", "")
           end
         end
       end
         
       xml.dates do
-        xml.date dateType: "Created" do
-          xml.text! oai_date
-        end
+        xml.date oai_date,
+          dateType: "Created",
+          dateInformation: "Interview date"
+        xml.date oai_publication_date,
+          dateType: "Issued",
+          dateInformation: "published via Oral-History.Digital"
       end
 
-      xml.resourceType resourceTypeGeneral: "Audiovisual" do
-        xml.text! oai_type
-      end
+      xml.resourceType oai_type, resourceTypeGeneral: "Audiovisual"
 
       xml.formats do
         xml.format oai_format
@@ -111,43 +124,28 @@ module Interview::OaiDatacite
       xml.language oai_language
 
       xml.subjects do
-        oai_subject_registry_entries.each do |registry_entry|
-          [:de, :en].each do |locale|
-            xml.subject "xml:lang": locale do
-              xml.text! registry_entry.to_s(locale)
-            end
-          end
-        end
+        oai_base_subject_tags(xml, :datacite)
+        oai_subject_tags(xml, :datacite)
       end
 
       xml.rightsList do
         oai_locales.each do |locale|
-          xml.rights(
+          xml.rights "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})",
             "xml:lang": locale,
-            rightsURI: "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions"
-          ) do
-            xml.text! "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})"
-          end
-        end
-        oai_locales.each do |locale|
-          xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions" do
-            xml.text! "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)"
-          end
-        end
-        oai_locales.each do |locale|
-          xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
-            xml.text! TranslationValue.for('privacy_protection', locale)
-          end
-        end
-        [:de, :en].each do |locale|
-          xml.rights(
+            rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
+          xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
-            rightsIdentifier: "CC-BY-4.0",
-            rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-          ) do
-            xml.text! "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International"
-          end
+            rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
+          xml.rights TranslationValue.for('privacy_protection', locale),
+            "xml:lang": locale,
+            rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
+        #[:de, :en].each do |locale|
+          #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
+            #"xml:lang": locale,
+            #rightsIdentifier: "CC-BY-4.0",
+            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+        #end
       end
 
     end

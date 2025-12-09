@@ -41,8 +41,8 @@ class BasicsTest < ApplicationSystemTestCase
     fill_in 'Street', with: 'Am Dornbusch 13'
     fill_in 'City', with: 'Frankfurt am Main'
     fill_in 'Email', with: 'mrossi@example.com'
-    fill_in 'Password', name: 'password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
+    fill_in 'Password', name: 'password', with: 'Password123!'
+    fill_in 'Password confirmation', with: 'Password123!'
     check 'Terms of Use', visible: :all
     check 'Privacy Policy', visible: :all
     assert_text 'I agree to the Terms of Use of the Oral-History.Digital platform.'
@@ -204,7 +204,7 @@ class BasicsTest < ApplicationSystemTestCase
       click_on 'Login'
     end
     fill_in 'Email', with: 'john@example.com'
-    fill_in 'Password', with: 'password'
+    fill_in 'Password', with: 'Password123!'
     click_on 'Login'
 
     assert_text 'My Project'
@@ -282,8 +282,8 @@ class BasicsTest < ApplicationSystemTestCase
     assert_match /Oral-History.Digital. Steps to recover your password./, mail.subject
     link = links_from_email(mail)[0]
     visit link
-    fill_in 'password', with: 'newpassword'
-    fill_in 'password_confirmation', with: 'newpassword'
+    fill_in 'password', with: 'Password123!'
+    fill_in 'password_confirmation', with: 'Password123!'
     click_on 'Submit'
     assert_text 'This is the test archive of the oral history digital project'
 
@@ -409,5 +409,26 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Add annotation'
     find('.public-DraftEditor-content').send_keys('my annotation')
     click_on 'Submit'
+  end
+
+  test 'change transcript status' do
+    Interview.reindex
+    DataHelper.test_media
+
+    interview = Interview.first
+    visit '/'
+    login_as 'alice@example.com'
+    visit "/en/interviews/#{interview.archive_id}"
+    click_on 'Editing interface'
+    click_on 'About the interview'
+    within '#transcript-downloads' do
+      click_on 'Edit'
+    end
+    uncheck 'Public', visible: :all
+    click_on 'Submit'
+
+    sleep 2
+    interview.reload
+    assert interview.properties[:public_attributes]['transcript'] == 'false'
   end
 end

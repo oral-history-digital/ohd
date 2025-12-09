@@ -24,7 +24,7 @@ class Person < ApplicationRecord
     fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations, :events, :biographical_entries
 
-  validates_length_of :description, maximum: 1500
+  validates_length_of :description, maximum: 2000
 
   serialize :properties
 
@@ -201,18 +201,77 @@ class Person < ApplicationRecord
   end
 
   def initials
-    first_part = initials_from_name_part(first_name_used)
-    last_part = initials_from_name_part(last_name_used)
+    first = first_name_used.to_s.strip
+    last  = last_name_used.to_s.strip
 
-    first_part + last_part
-  end
+    return '' if first.blank? && last.blank?
 
-  def initials_from_name_part(part)
-    if part.blank?
-      return ''
+    # Remove any text within parentheses, brackets, or braces (including the delimiters)
+    first = first.gsub(/[(\[{][^\])}]*[)\]}]/, '').strip
+    last = last.gsub(/[(\[{][^\])}]*[)\]}]/, '').strip
+
+    # Replace special characters (dot, comma, semicolon, slash, backslash, underscore, at symbol, hash, dollar, numbers) by space
+    first = first.gsub(/[.,;\/\\@#\$_\d]/, ' ').strip
+    last = last.gsub(/[.,;\/\\@#\$_\d]/, ' ').strip
+
+    # Remove extra spaces
+    first = first.split(/\s+/).join(' ')
+    last = last.split(/\s+/).join(' ')
+
+    return '' if first.blank? && last.blank?
+
+    # Common particles and titles to ignore
+    ignore_particles = %w[
+      AL BIN DA DE DI DEL DELA DER DES DOS DU EL 
+      LA LAS LE LES UND VAN VON ZU DR DRA JR SR PROF
+    ]
+
+    # Helper to filter out particles from a name
+    filter_particles = lambda do |name|
+      # Split name on any whitespace (including Unicode) or dash-like characters
+      parts = name.split(/[\p{Space}\p{Dash_Punctuation}]+/u).reject(&:blank?)
+      normalized = parts.map { |p| I18n.transliterate(p).upcase }
+      filtered = parts.each_with_index
+        .reject { |p, i| ignore_particles.include?(normalized[i]) }
+        .map(&:first)
+      filtered = parts if filtered.empty?
+      filtered.join(' ')
     end
 
-    part.strip[0].upcase
+    first_clean = filter_particles.call(first)
+    last_clean = filter_particles.call(last)
+
+    # If only first name exists
+    return first_clean.chars.first(2).join.upcase if last_clean.blank?
+
+    # Split last name on any whitespace (including Unicode) or dash-like characters
+    raw_parts = last_clean.split(/[\p{Space}\p{Dash_Punctuation}]+/u).reject(&:blank?)
+
+    # Keep only substantive surname parts
+    surname_parts = raw_parts
+
+    # Only last name exists
+    if first_clean.blank?
+      if surname_parts.length >= 2
+        # Use first character of first two surname parts
+        return surname_parts[0][0].upcase + surname_parts[1][0].upcase
+      else
+        # Use first two characters of last name if only one part exists
+        return last_clean.chars.first(2).join.upcase
+      end
+    end
+
+    # Both first and last name exist
+    f = first_clean[0].upcase
+
+    if surname_parts.length >= 2
+      # Two or more substantive surname parts → 3 letters:
+      # first initial + first letter of first and second surname parts
+      f + surname_parts.first[0].upcase + surname_parts[1][0].upcase
+    else
+      # Single-part surname → 2 letters: first initial + first letter of surname
+      f + surname_parts.first[0].upcase
+    end
   end
 
   def first_name_used(locale = I18n.locale)

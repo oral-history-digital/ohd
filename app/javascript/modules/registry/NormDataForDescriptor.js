@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+
 import UpdateRegistryEntryAttributesModal from './UpdateRegistryEntryAttributesModal';
 
 function NormDataForDescriptor({
@@ -19,7 +20,8 @@ function NormDataForDescriptor({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const [setFilter] = useState(null);
+    const [filter, setFilter] = useState(null);
+    //const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
     const [from, setFrom] = useState(0);
@@ -143,6 +145,7 @@ function NormDataForDescriptor({
                                             <>
                                                 <UpdateRegistryEntryAttributesModal
                                                     entry={result.Entry}
+                                                    apiSearchTerm={descriptor}
                                                     registryEntryAttributes={
                                                         registryEntryAttributes
                                                     }

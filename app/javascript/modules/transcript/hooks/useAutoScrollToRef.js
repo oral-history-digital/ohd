@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { scrollSmoothlyTo } from 'modules/user-agent';
 
 /**

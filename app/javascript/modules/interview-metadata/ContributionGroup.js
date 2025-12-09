@@ -5,15 +5,13 @@ import useContributionTypeLabel from './useContributionTypeLabel';
 export default function ContributionGroup({
     contributionType,
     className,
-    children
+    children,
 }) {
     const label = useContributionTypeLabel(contributionType);
 
     return (
         <li className={className}>
-            <span className="flyout-content-label">
-                {label}:
-            </span>
+            <span className="flyout-content-label">{label}:</span>
             {children}
         </li>
     );
@@ -24,6 +22,6 @@ ContributionGroup.propTypes = {
     className: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
 };

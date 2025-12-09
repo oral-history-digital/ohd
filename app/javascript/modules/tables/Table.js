@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import TableHead from './TableHead';
-import TableBody from './TableBody';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
 
-export default function Table({
-    table,
-    isLoading = false,
-    className
-}) {
+import TableBody from './TableBody';
+import TableHead from './TableHead';
+
+export default function Table({ table, isLoading = false, className }) {
     if (isLoading) return <Spinner />;
 
     return (
-        <table className={classNames('Table', className, { 'is-loading': isLoading })}>
+        <table
+            className={classNames('Table', className, {
+                'is-loading': isLoading,
+            })}
+        >
             <TableHead table={table} />
             <TableBody table={table} />
         </table>
@@ -23,5 +23,5 @@ export default function Table({
 Table.propTypes = {
     table: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
-    className: PropTypes.string
+    className: PropTypes.string,
 };

@@ -10,14 +10,10 @@
   color: $gray-dark;
   font-size: $font-size-medium;
   hyphens: auto;
-  line-height: $base-unit;
+  line-height: 1.25rem;
   list-style-type: none;
   margin: 0;
   padding-left: 0;
-}
-
-.DetailList-item {
-
 }
 
 .DetailList-item--one-line {
@@ -28,8 +24,9 @@
 
 .DetailList-item--shortened {
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;  /* 1 */
+  line-clamp: 3;
+  -webkit-line-clamp: 3; /* 1 */
   display: -webkit-box;
-  max-height: $base-unit * 3;  /* 2 */
+  max-height: $base-unit * 3; /* 2 */
   overflow: hidden;
 }

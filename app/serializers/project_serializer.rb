@@ -133,7 +133,7 @@ class ProjectSerializer < ApplicationSerializer
   def is_ohd
     object.shortname == 'ohd'
   end
-  
+
   def doi
     if Rails.env.test?
       '123'

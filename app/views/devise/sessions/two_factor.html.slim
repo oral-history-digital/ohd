@@ -1,0 +1,19 @@
+h2= t('2FA')
+
+= form_for(resource, as: resource_name, url: two_factor_authentication_path(resource_name, locale: locale), html: {class: 'Form default'}) do |f|
+
+  = hidden_field_tag :path, @path
+  - if @project
+    = hidden_field_tag :project, @project.shortname
+
+  .form-group
+    .form-label
+      = f.label :otp_attempt,
+        TranslationValue.for('activerecord.attributes.user.otp_attempt', locale: locale),
+        class: 'FormLabel'
+    .form-input
+      = f.text_field :otp_attempt, class: 'Input'
+
+  .Form-footer.u-mt
+    = f.submit t(:login), class: 'Button Button--primaryAction'
+

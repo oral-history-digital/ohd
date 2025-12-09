@@ -22,4 +22,8 @@ class RegistryName < ApplicationRecord
     self[:name_position] = val.to_i
   end
 
+  def descriptor_without_fallback(locale)
+    translation = translations.find_by(locale: locale.to_s)
+    translation ? translation.descriptor : nil
+  end
 end

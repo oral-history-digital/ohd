@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+
+import {
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+} from '@reach/disclosure';
 import classNames from 'classnames';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
+import PropTypes from 'prop-types';
+import { HexColorInput, HexColorPicker } from 'react-colorful';
 
 import Element from '../Element';
 
@@ -21,10 +26,10 @@ export default function ColorPicker({
     const [open, setOpen] = useState(false);
 
     const color = value || data?.[attribute] || '';
-    const onChange = color => handleChange(attribute, color);
-    const onKeyDown = event => {
+    const onChange = (color) => handleChange(attribute, color);
+    const onKeyDown = (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault();  // Prevent form from being submitted.
+            event.preventDefault(); // Prevent form from being submitted.
             setOpen(false);
         }
     };
@@ -39,20 +44,14 @@ export default function ColorPicker({
             showErrors={showErrors}
             hidden={hidden}
         >
-            <Disclosure
-                open={open}
-                onChange={() => setOpen(!open)}
-            >
+            <Disclosure open={open} onChange={() => setOpen(!open)}>
                 <div className="ColorPicker">
                     <DisclosureButton
                         className="ColorPicker-swatch"
                         style={{ backgroundColor: color }}
                     />
                     <DisclosurePanel className="ColorPicker-picker">
-                        <HexColorPicker
-                            color={color}
-                            onChange={onChange}
-                        />
+                        <HexColorPicker color={color} onChange={onChange} />
                         <HexColorInput
                             color={color}
                             onChange={onChange}

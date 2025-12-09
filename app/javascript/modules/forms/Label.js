@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 
 function Label({ label, labelKey, mandatory = false, htmlFor, className }) {
     const { t } = useI18n();

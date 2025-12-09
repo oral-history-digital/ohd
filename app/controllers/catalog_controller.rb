@@ -17,7 +17,7 @@ class CatalogController < ApplicationController
         num_institutions = Institution.count
         num_projects = Project.shared.count
         num_collections = Collection.count
-        num_interviews = Interview.shared.count
+        num_interviews = Interview.where(workflow_state: ['public', 'restricted']).count
 
         render json: {
           num_institutions: num_institutions,

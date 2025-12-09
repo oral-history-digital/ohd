@@ -10,7 +10,7 @@
 
 .Flow-item {
   align-items: center;
-  background-color: oklch(80% 0.0 0.0);
+  background-color: oklch(80% 0 0);
   counter-increment: item;
   display: flex;
 }

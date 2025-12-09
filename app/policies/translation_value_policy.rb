@@ -9,7 +9,7 @@ class TranslationValuePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
-        scope.all
+        scope.all.includes(:translations)
       else
         scope.none
       end

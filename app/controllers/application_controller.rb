@@ -78,8 +78,7 @@ class ApplicationController < ActionController::Base
       contribution_types: :translations,
       metadata_fields: :translations,
       external_links: :translations,
-      collections: :translations,
-      #collections: {collection: :translations},
+      # Collections removed - load selectively when needed via CollectionsController
       institution_projects: {institution: :translations},
     ).first
   end
@@ -104,15 +103,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        translations: Rails.cache.fetch("translations-#{TranslationValue.maximum(:updated_at)}") do
-          TranslationValue.all.includes(:translations).inject({}) do |mem, translation_value|
-            mem[translation_value.key] = translation_value.translations.inject({}) do |mem2, translation|
-              mem2[translation.locale] = translation.value
-              mem2
-            end
-            mem
-          end
-        end,
+        translations: TranslationValue.all_for_locale_json(I18n.locale),
         countryKeys: country_keys,
       },
       user: {
@@ -177,7 +168,7 @@ class ApplicationController < ActionController::Base
           Project.all.includes(
             :translations,
             :registry_reference_types,
-            :collections,
+            # Collections removed - loaded via separate API call when needed
           ).inject({}) do |mem, s|
             mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
             mem

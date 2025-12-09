@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
+import { OHD_LOCATION } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
-import { OHD_LOCATION } from 'modules/constants';
+import PropTypes from 'prop-types';
 
 export default function CitationInfo({
     interview,
@@ -28,33 +27,29 @@ export default function CitationInfo({
         collectionName = 'Teilsammlung "Deutsche Seelen", ';
     }
 
-    const currentDateStr = (new Date()).toLocaleDateString(undefined, { dateStyle: 'medium' });
+    const currentDateStr = new Date().toLocaleDateString(undefined, {
+        dateStyle: 'medium',
+    });
 
     return (
         <div>
             <p>
-                <span className="flyout-content-label">
-                    {t('citation')}:
-                </span>
+                <span className="flyout-content-label">{t('citation')}:</span>
                 <span className="flyout-content-data">
-                    {interview.anonymous_title && `${interview.anonymous_title?.[locale]}, `}
-                    {t('interview')}
-                    {' '}
-                    {`${interview.archive_id}, `}
+                    {interview.anonymous_title &&
+                        `${interview.anonymous_title?.[locale]}, `}
+                    {t('interview')} {`${interview.archive_id}, `}
                     {`${interview.interview_date}, `}
                     {projectName && `${projectName[locale]}, `}
                     {collectionName}
                     {selfLink && <a href={selfLink}>{selfLink}</a>}
-                    {
-                        doiLink && (<>
+                    {doiLink && (
+                        <>
                             {', '}
-                            {t('doi.name')}:
-                            {' '}
-                            <a href={doiLink}>{doiLink}</a>
-                            {' '}
+                            {t('doi.name')}: <a href={doiLink}>{doiLink}</a>{' '}
                             {`(${t('called')}: ${currentDateStr})`}
-                        </>)
-                    }
+                        </>
+                    )}
                 </span>
             </p>
         </div>

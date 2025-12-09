@@ -1,37 +1,37 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-
-import {
-    MarkTextFormContainer,
-    UploadTranscriptContainer,
-    UploadEditTableContainer,
-    DestroyTranscript,
-} from 'modules/interview-actions';
-import {
-    InterviewInfoContainer,
-    InterviewContributorsContainer,
-    InterviewTextMaterialsContainer,
-    CitationInfoContainer
-} from 'modules/interview-metadata';
-import { ErrorBoundary } from 'modules/react-toolbox';
 import { useIsEditor } from 'modules/archive';
-import { HelpText } from 'modules/help-text';
-import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
-import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import { Spinner } from 'modules/spinners';
-import { InterviewMap } from 'modules/interview-map';
-import { GalleryContainer } from 'modules/gallery';
-import { MaterialList } from 'modules/materials';
-import { usePathBase } from 'modules/routes';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { PROJECT_CAMPSCAPES } from 'modules/constants';
-import SubTab from './SubTab';
+import { SingleValueWithFormContainer } from 'modules/forms';
+import { GalleryContainer } from 'modules/gallery';
+import { HelpText } from 'modules/help-text';
+import { useI18n } from 'modules/i18n';
+import {
+    DestroyTranscript,
+    MarkTextFormContainer,
+    UploadEditTableContainer,
+    UploadTranscriptContainer,
+} from 'modules/interview-actions';
+import { InterviewMap } from 'modules/interview-map';
+import {
+    CitationInfoContainer,
+    InterviewContributorsContainer,
+    InterviewInfoContainer,
+    InterviewTextMaterialsContainer,
+} from 'modules/interview-metadata';
+import { MaterialList } from 'modules/materials';
+import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
+import { usePathBase } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import AdminActionsContainer from './AdminActionsContainer';
 import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import SubTab from './SubTab';
 
 export default function InterviewTabPanel({
     archiveId,
@@ -56,25 +56,31 @@ export default function InterviewTabPanel({
         return null;
     }
 
-    const hasPhotos = interview.photos && Object.values(interview.photos).length > 0;
+    const hasPhotos =
+        interview.photos && Object.values(interview.photos).length > 0;
     const showGallerySection = hasPhotos || isEditor;
 
-    const hasMaterials = interview.material_count && interview.material_count > 0;
+    const hasMaterials =
+        interview.material_count && interview.material_count > 0;
     const showMaterialSection = hasMaterials || isEditor;
 
     return (
         <ErrorBoundary small>
-            <h3 className='SidebarTabs-title'>
-                {t('interview')}
-            </h3>
-            <div className={classNames('flyout-sub-tabs-container', 'flyout-video', {
-                'hidden': projectId === PROJECT_CAMPSCAPES,
-            })}>
-                <AuthorizedContent object={interview} action='update'>
+            <h3 className="SidebarTabs-title">{t('interview')}</h3>
+            <div
+                className={classNames(
+                    'flyout-sub-tabs-container',
+                    'flyout-video',
+                    {
+                        hidden: projectId === PROJECT_CAMPSCAPES,
+                    }
+                )}
+            >
+                <AuthorizedContent object={interview} action="update">
                     <p>
                         <Link
                             onClick={() => {
-                                setViewMode('workflow')
+                                setViewMode('workflow');
                                 hideSidebar();
                             }}
                             to={searchPath}
@@ -85,41 +91,61 @@ export default function InterviewTabPanel({
                 </AuthorizedContent>
                 {!isCatalog && (
                     <>
-                        <AuthorizedContent object={interview} action='show' showIfPublic>
+                        <AuthorizedContent
+                            object={interview}
+                            action="show"
+                            showIfPublic
+                        >
                             <SubTab title={t('person_info')} open={!isLoggedIn}>
-                                {isEditor &&
+                                {isEditor && (
                                     <HelpText
                                         code="interview_person_data"
                                         small
                                     />
-                                }
-                                <PersonDataContainer/>
-                                {intervieweeIsLoading ?
-                                    <Spinner /> : (
-                                        interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
+                                )}
+                                <PersonDataContainer />
+                                {intervieweeIsLoading ? (
+                                    <Spinner />
+                                ) : (
+                                    interviewee && (
+                                        <SelectedRegistryReferencesContainer
+                                            refObject={interviewee}
+                                        />
                                     )
-                                }
+                                )}
                             </SubTab>
                         </AuthorizedContent>
                         <AuthShowContainer ifLoggedOut ifNoProject>
-                            <AuthorizedContent object={interview} action='show' showIfPublic>
-                                <SubTab title={t('interview_info')} open={!isLoggedIn}>
-                                    <InterviewInfoContainer/>
+                            <AuthorizedContent
+                                object={interview}
+                                action="show"
+                                showIfPublic
+                            >
+                                <SubTab
+                                    title={t('interview_info')}
+                                    open={!isLoggedIn}
+                                >
+                                    <InterviewInfoContainer />
+                                    <InterviewContributorsContainer />
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedIn>
-                            <AuthorizedContent object={interview} action='show' showIfPublic>
+                            <AuthorizedContent
+                                object={interview}
+                                action="show"
+                                showIfPublic
+                            >
                                 <SubTab title={t('interview_info')}>
-                                    {isEditor &&
+                                    {isEditor && (
                                         <HelpText
                                             code="interview_interview_data"
                                             small
                                         />
-                                    }
-                                    <InterviewInfoContainer/>
-                                    <InterviewContributorsContainer/>
-                                    <InterviewTextMaterialsContainer/>
+                                    )}
+                                    <InterviewInfoContainer />
+                                    <InterviewContributorsContainer />
+                                    <InterviewTextMaterialsContainer />
                                     <SingleValueWithFormContainer
                                         obj={interview}
                                         value={interview?.links}
@@ -132,23 +158,39 @@ export default function InterviewTabPanel({
                         </AuthShowContainer>
                     </>
                 )}
-                <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
+                <AuthorizedContent
+                    object={{ type: 'Segment', interview_id: interview.id }}
+                    action="update"
+                >
                     <SubTab title={t('edit.upload_transcript.title')}>
-                        <HelpText code="interview_upload_transcript" className="u-mb" />
+                        <HelpText
+                            code="interview_upload_transcript"
+                            className="u-mb"
+                        />
                         <UploadTranscriptContainer />
                     </SubTab>
                 </AuthorizedContent>
 
-                { interview.alpha3s_with_transcript && interview.alpha3s_with_transcript.length > 0 && (
-                    <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
-                        <SubTab title={t('edit.destroy_transcript.title')}>
-                            <HelpText code="interview_destroy_transcript" className="u-mb" />
-                            <DestroyTranscript interview={interview} />
-                        </SubTab>
-                    </AuthorizedContent>
-                )}
+                {interview.alpha3s_with_transcript &&
+                    interview.alpha3s_with_transcript.length > 0 && (
+                        <AuthorizedContent
+                            object={{
+                                type: 'Segment',
+                                interview_id: interview.id,
+                            }}
+                            action="update"
+                        >
+                            <SubTab title={t('edit.destroy_transcript.title')}>
+                                <HelpText
+                                    code="interview_destroy_transcript"
+                                    className="u-mb"
+                                />
+                                <DestroyTranscript interview={interview} />
+                            </SubTab>
+                        </AuthorizedContent>
+                    )}
 
-                <AuthorizedContent object={interview} action='update'>
+                <AuthorizedContent object={interview} action="update">
                     <SubTab title={t('edit.upload_edit_table.title')}>
                         <UploadEditTableContainer />
                     </SubTab>
@@ -161,7 +203,7 @@ export default function InterviewTabPanel({
                     </SubTab>
                 </AuthorizedContent>*/}
 
-                <AuthorizedContent object={interview} action='mark_texts'>
+                <AuthorizedContent object={interview} action="mark_texts">
                     <SubTab title={t('mark_texts')}>
                         <MarkTextFormContainer interview={interview} />
                     </SubTab>
@@ -170,39 +212,62 @@ export default function InterviewTabPanel({
                 {projectId !== PROJECT_CAMPSCAPES && (
                     <AuthShowContainer ifLoggedIn>
                         <AuthShowContainer ifLoggedIn={hasMap}>
-                            <AuthorizedContent object={interview} action='show' showIfPublic>
+                            <AuthorizedContent
+                                object={interview}
+                                action="show"
+                                showIfPublic
+                            >
                                 <SubTab title={t('map')}>
-                                    {isEditor && <HelpText code="interview_map" className="u-mb" />}
-                                    <InterviewMap/>
+                                    {isEditor && (
+                                        <HelpText
+                                            code="interview_map"
+                                            className="u-mb"
+                                        />
+                                    )}
+                                    <InterviewMap />
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
 
                         {showGallerySection && (
-                            <AuthorizedContent object={interview} action='show' showIfPublic>
+                            <AuthorizedContent
+                                object={interview}
+                                action="show"
+                                showIfPublic
+                            >
                                 <SubTab title={t('photos')}>
-                                    <GalleryContainer/>
+                                    <GalleryContainer />
                                 </SubTab>
                             </AuthorizedContent>
                         )}
 
                         {showMaterialSection && (
-                            <AuthorizedContent object={interview} action="show" showIfPublic>
+                            <AuthorizedContent
+                                object={interview}
+                                action="show"
+                                showIfPublic
+                            >
                                 <SubTab title={t('materials')}>
                                     <MaterialList />
                                 </SubTab>
                             </AuthorizedContent>
                         )}
 
-                        <AuthorizedContent object={interview} action='show' showIfPublic>
+                        <AuthorizedContent
+                            object={interview}
+                            action="show"
+                            showIfPublic
+                        >
                             <SubTab title={t('citation')}>
-                                <CitationInfoContainer/>
+                                <CitationInfoContainer />
                             </SubTab>
                         </AuthorizedContent>
 
-                        <AuthorizedContent object={interview} action='update'>
-                            <SubTab title={t('admin_actions')} >
-                                <AdminActionsContainer archiveIds={[archiveId]} />
+                        <AuthorizedContent object={interview} action="update">
+                            <SubTab title={t('admin_actions')}>
+                                <AdminActionsContainer
+                                    archiveIds={[archiveId]}
+                                />
                             </SubTab>
                         </AuthorizedContent>
                     </AuthShowContainer>
@@ -210,9 +275,9 @@ export default function InterviewTabPanel({
             </div>
             <div className="flyout-sub-tabs-container flyout-video">
                 <AdminSubTab
-                    title='edit.downloads.title'
+                    title="edit.downloads.title"
                     obj={interview}
-                    action='download'
+                    action="download"
                 >
                     <DownloadLinks
                         archiveId={archiveId}

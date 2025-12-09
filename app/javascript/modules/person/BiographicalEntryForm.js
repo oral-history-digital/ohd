@@ -1,12 +1,11 @@
-import { useState} from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
-import { usePathBase } from 'modules/routes';
-import useMutatePeople from './useMutatePeople';
-import useMutatePersonWithAssociations from './useMutatePersonWithAssociations';
-
 import { Form } from 'modules/forms';
+import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
+
+import { useMutatePeople, useMutatePersonWithAssociations } from './hooks';
 
 export default function BiographicalEntryForm({
     biographicalEntry,
@@ -25,9 +24,9 @@ export default function BiographicalEntryForm({
 
     return (
         <Form
-            scope='biographical_entry'
+            scope="biographical_entry"
             onSubmit={async (params) => {
-                mutatePeople(async people => {
+                mutatePeople(async (people) => {
                     const id = person?.id || biographicalEntry?.person_id;
                     setIsFetching(true);
                     const result = await submitDataWithFetch(pathBase, params);
@@ -46,8 +45,8 @@ export default function BiographicalEntryForm({
                         ...people,
                         data: {
                             ...people.data,
-                            [updatedPerson.id]: updatedPerson
-                        }
+                            [updatedPerson.id]: updatedPerson,
+                        },
                     };
                     return updatedPeople;
                 });
@@ -56,14 +55,16 @@ export default function BiographicalEntryForm({
             data={biographicalEntry}
             helpTextCode="biographical_entry_form"
             values={{
-                person_id: (person?.id) || (biographicalEntry?.person_id)
+                person_id: person?.id || biographicalEntry?.person_id,
             }}
             elements={[
                 {
                     elementType: 'textarea',
                     attribute: 'text',
                     value: biographicalEntry?.text[locale],
-                    validate: function(v){return v?.length > 1},
+                    validate: function (v) {
+                        return v?.length > 1;
+                    },
                     multiLocale: true,
                 },
                 {

@@ -20,6 +20,16 @@ test('returns title and asc if project default is title', () => {
     expect(actual).toEqual(expected);
 });
 
+test('returns archive_id and asc if project default is archive_id', () => {
+    const actual = defaultSortOptions('archive_id');
+    const expected = {
+        sort: 'archive_id',
+        order: 'asc',
+    };
+
+    expect(actual).toEqual(expected);
+});
+
 test('returns title and asc if there is no project default', () => {
     const actual = defaultSortOptions(undefined);
     const expected = {

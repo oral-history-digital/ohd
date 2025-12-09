@@ -17,9 +17,8 @@
   color: $gray-dark;
 }
 
-
 /* Checkboxes */
-.flyout-radio-container-facet-count{
+.flyout-radio-container-facet-count {
   margin-left: 5px;
 }
 
@@ -29,18 +28,18 @@
   font-size: $font-size-medium;
   color: var(--primary-color);
 
-  input[type=checkbox].with-font {
+  input[type='checkbox'].with-font {
   }
 
-  input[type=checkbox].with-font:checked {
+  input[type='checkbox'].with-font:checked {
   }
 
-  input[type=checkbox].with-font ~ label {
+  input[type='checkbox'].with-font ~ label {
     color: var(--primary-color);
     user-select: none;
   }
 
-  input[type=checkbox].with-font:checked ~ label {
+  input[type='checkbox'].with-font:checked ~ label {
     color: $gray-darker;
     margin-right: 0;
   }
@@ -80,7 +79,6 @@
     margin-left: auto;
   }
 }
-
 
 /* Slider */
 

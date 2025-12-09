@@ -19,7 +19,7 @@ $slick-font-path: '~slick-carousel/slick/fonts/';
 // Reach-ui
 [data-reach-dialog-overlay],
 [data-reach-menu-popover] {
-    z-index: $dialog-overlay-z-index;
+  z-index: $dialog-overlay-z-index;
 }
 
 @import 'react-dropdown-tree-select/dist/styles.css';
@@ -89,7 +89,6 @@ $slick-font-path: '~slick-carousel/slick/fonts/';
 @import 'components/map-spinner-overlay';
 @import 'components/map';
 @import 'components/media-controls';
-@import 'components/media-element';
 @import 'components/media-header';
 @import 'components/media-missing';
 @import 'components/media-object';

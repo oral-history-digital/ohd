@@ -1,7 +1,7 @@
 const matchYearRange = /^\d{4}-\d{4}$/;
 
 export default function queryToFacets(query, facets, locale) {
-    const clonedQuery = {...query};
+    const clonedQuery = { ...query };
     delete clonedQuery.sort;
     delete clonedQuery.order;
     delete clonedQuery.fulltext;
@@ -10,7 +10,7 @@ export default function queryToFacets(query, facets, locale) {
 
     for (let [key, value] of Object.entries(clonedQuery)) {
         if (Array.isArray(value)) {
-            value.forEach(element => {
+            value.forEach((element) => {
                 const el = facets?.[key]?.['subfacets'][element];
                 const val = el ? el['name'][locale] : element;
                 facetValues.push(val);

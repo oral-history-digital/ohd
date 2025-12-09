@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { fetchData, getInterviews } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
 import { LinkOrA, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 

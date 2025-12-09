@@ -1,10 +1,15 @@
+import {
+    deleteData,
+    fetchData,
+    getCurrentProject,
+    submitData,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, fetchData, deleteData, submitData } from 'modules/data';
 import DataList from './DataList';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         editView: true,
@@ -13,10 +18,10 @@ const mapStateToProps = state => {
         outerScopeId: project.id,
         scope: 'external_link',
         detailsAttributes: ['name', 'url'],
-        initialFormValues: {project_id: project.id},
+        initialFormValues: { project_id: project.id },
         formElements: [
             {
-                attribute: "internal_name"
+                attribute: 'internal_name',
             },
             {
                 attribute: 'name',
@@ -27,14 +32,18 @@ const mapStateToProps = state => {
                 multiLocale: true,
             },
         ],
-        helpTextCode: 'external_link_form'
-    }
-}
+        helpTextCode: 'external_link_form',
+    };
+};
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchData,
-    deleteData,
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            fetchData,
+            deleteData,
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

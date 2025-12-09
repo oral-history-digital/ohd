@@ -1,4 +1,5 @@
 import { usePathBase } from 'modules/routes';
+
 import fetchHeaders from './fetchHeaders';
 
 export default function useDataApi() {
@@ -8,10 +9,10 @@ export default function useDataApi() {
         const path = `${pathBase}/${scope}/${id}.json`;
         const options = {
             method: 'DELETE',
-            headers: fetchHeaders
+            headers: fetchHeaders,
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 
     return {

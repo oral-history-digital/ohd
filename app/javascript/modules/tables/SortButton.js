@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaSortUp, FaSortDown } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import { FaSortDown, FaSortUp } from 'react-icons/fa';
 
 export default function SortButton({
     direction,
@@ -11,17 +11,22 @@ export default function SortButton({
     return (
         <button
             type="button"
-            className={classNames('Button', 'Button--transparent',
-                'Button--icon', 'Button--withoutPadding', className)}
+            className={classNames(
+                'Button',
+                'Button--transparent',
+                'Button--icon',
+                'Button--withoutPadding',
+                className
+            )}
             onClick={onClick}
         >
-            {children}
-            {' '}
-            {direction && (
-                direction === 'asc' ?
-                    <FaSortUp className="Icon" /> :
+            {children}{' '}
+            {direction &&
+                (direction === 'asc' ? (
+                    <FaSortUp className="Icon" />
+                ) : (
                     <FaSortDown className="Icon" />
-            )}
+                ))}
         </button>
     );
 }

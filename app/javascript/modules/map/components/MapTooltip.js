@@ -18,8 +18,7 @@ export default function MapTooltip({
     } else {
         numRefs = (
             <>
-                (
-                {numInterviewRefs}
+                ({numInterviewRefs}
                 {' + '}
                 <span style={{ color: 'var(--secondary-color)' }}>
                     {numSegmentRefs})
@@ -30,9 +29,7 @@ export default function MapTooltip({
 
     return (
         <Tooltip>
-            {placeName}
-            {' '}
-            {numRefs}
+            {placeName} {numRefs}
         </Tooltip>
     );
 }

@@ -1,7 +1,7 @@
-import { pluralize } from  'modules/strings';
+import { pluralize } from 'modules/strings';
 
 const headerOptions = {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
 };
 
@@ -20,7 +20,7 @@ export default function submitDataWithFetch(pathBase, params) {
             body: JSON.stringify(params),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     } else {
         const path = `${pathBase}/${pluralizedDataType}`;
         const options = {
@@ -29,6 +29,6 @@ export default function submitDataWithFetch(pathBase, params) {
             body: JSON.stringify(params),
         };
 
-        return fetch(path, options).then(res => res.json());
+        return fetch(path, options).then((res) => res.json());
     }
 }

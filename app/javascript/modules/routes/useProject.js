@@ -1,7 +1,7 @@
-import { useMatch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
 import { getProjects } from 'modules/data';
+import { useSelector } from 'react-redux';
+import { useMatch } from 'react-router-dom';
+
 import isLocaleValid from './isLocaleValid';
 
 export default function useProject() {

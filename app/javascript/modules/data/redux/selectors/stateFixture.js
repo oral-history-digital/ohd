@@ -288,9 +288,17 @@ export const qualityManager = {
 export const contributionState = {
     archive: {
         archiveId: 'cd003',
+        projectId: 'cdoh',
         editView: false,
     },
     data: {
+        users: {
+            current: {
+                id: 45,
+                admin: true,
+                user_projects: {},
+            },
+        },
         interviews: {
             cd003: {
                 id: 22,
@@ -308,10 +316,13 @@ export const contributionState = {
             1: {
                 id: 1,
                 type: 'Project',
+                shortname: 'cdoh',
                 identifier: 'cdoh',
                 available_locales: ['de', 'en', 'ru'],
                 has_map: true,
                 root_registry_entry_id: 1,
+                grant_access_without_login: false,
+                grant_project_access_instantly: false,
                 contribution_types: {
                     1: {
                         id: 1,

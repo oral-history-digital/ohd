@@ -12,15 +12,6 @@ test('returns the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
 });
 
-test('handles the setTape action', () => {
-    const action = actions.setTape(3);
-    const expectedState = {
-        ...state,
-        tape: 3,
-    };
-    expect(reducer(state, action)).toEqual(expectedState);
-});
-
 test('handles the updateMediaTime action', () => {
     const action = actions.updateMediaTime(12.3);
     const expectedState = {

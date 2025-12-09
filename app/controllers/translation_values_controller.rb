@@ -1,5 +1,6 @@
 class TranslationValuesController < ApplicationController
-  skip_before_action :authenticate_user!, only: :index
+  skip_before_action :authenticate_user!, only: [:index, :translations_by_locale]
+  skip_after_action :verify_authorized, only: [:translations_by_locale]
 
   def create
     authorize TranslationValue
@@ -29,7 +30,7 @@ class TranslationValuesController < ApplicationController
       extra_params = "all"
     else
       page = params[:page] || 1
-      translation_values = policy_scope(TranslationValue).includes(:translations).where(search_params).order(:key).paginate page: page
+      translation_values = policy_scope(TranslationValue).where(search_params).order(:key).paginate page: page
       extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
     end
 
@@ -46,6 +47,15 @@ class TranslationValuesController < ApplicationController
           }
         end
         render json: json
+      end
+    end
+  end
+
+  def translations_by_locale
+    respond_to do |format|
+      format.json do
+        translations = TranslationValue.all_for_locale_json(params[:only] || I18n.locale)
+        render json: { translations: translations }
       end
     end
   end

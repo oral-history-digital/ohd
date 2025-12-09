@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
-
+import { getArchiveId } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
-import { getArchiveId } from 'modules/archive';
 import { Spinner } from 'modules/spinners';
+import { useSelector } from 'react-redux';
+
 import useInterviewMap from '../useInterviewMap';
 import InterviewMapPopup from './InterviewMapPopup';
 
@@ -17,24 +17,20 @@ export default function InterviewMap() {
             <div className="explanation">
                 {t('modules.interview_map.description')}
             </div>
-            {
-                isLoading ? (
-                    <Spinner />
-                ) : (
-                    error ? (
-                        <div className="explanation">
-                            {t('modules.interview_map.error')}: {error.message}
-                        </div>
-                    ) : (
-                        <MapComponent
-                            className="Map--interview"
-                            markers={markers}
-                            bounds={bounds}
-                            popupComponent={InterviewMapPopup}
-                        />
-                    )
-                )
-            }
+            {isLoading ? (
+                <Spinner />
+            ) : error ? (
+                <div className="explanation">
+                    {t('modules.interview_map.error')}: {error.message}
+                </div>
+            ) : (
+                <MapComponent
+                    className="Map--interview"
+                    markers={markers}
+                    bounds={bounds}
+                    popupComponent={InterviewMapPopup}
+                />
+            )}
         </>
     );
 }
