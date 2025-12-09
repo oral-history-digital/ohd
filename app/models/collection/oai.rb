@@ -93,6 +93,10 @@ module Collection::Oai
     ohd_subject_registry_entry_ids
   end
 
+  def oai_subject_registry_entries
+    ohd_subject_registry_entries
+  end
+
   def oai_abstract_description(locale)
     notes(locale) ? ActionView::Base.full_sanitizer.sanitize(notes(locale)) : ''
   end

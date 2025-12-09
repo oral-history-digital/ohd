@@ -163,6 +163,10 @@ class Project < ApplicationRecord
     identifier == 'ohd'
   end
 
+  def interviewer_on_landing_page?
+    contribution_types.where(display_on_landing_page: true, code: 'interviewer').exists?
+  end
+
   def num_interviews
     interviews_count
   end

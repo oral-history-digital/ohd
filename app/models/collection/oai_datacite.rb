@@ -20,21 +20,26 @@ module Collection::OaiDatacite
       xml.relatedIdentifiers do
         xml.relatedIdentifier OHD_DOMAIN,
           relatedIdentifierType: "URL",
-          relationType: "IsPartOf"
+          relationType: "IsPartOf",
+          resourceTypeGeneral: "Collection"
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}",
           relatedIdentifierType: "URL",
-          relationType: "IsPartOf"
+          relationType: "IsPartOf",
+          resourceTypeGeneral: "Collection"
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/oai_repository?verb=GetRecord&metadataPrefix=oai_datacite&identifier=oai:oral-history.digital:#{project.shortname}",
           relatedIdentifierType: "URL",
-          relationType: "IsPartOf"
+          relationType: "IsPartOf",
+          resourceTypeGeneral: "Collection"
         if project.domain
           xml.relatedIdentifier project.domain,
             relatedIdentifierType: "URL",
-            relationType: "IsSupplementTo"
+            relationType: "IsSupplementTo",
+            resourceTypeGeneral: "Collection"
         end
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=collection:#{id}",
           relatedIdentifierType: "URL",
-          relationType: "HasPart"
+          relationType: "HasPart",
+          resourceTypeGeneral: "Collection"
       end
 
       xml.titles do
@@ -57,10 +62,14 @@ module Collection::OaiDatacite
 
       xml.contributors do
         xml.contributor contributorType: "DataManager" do
-          xml.contributorName project.leader, "xml:lang": "en"
+          xml.contributorName project.leader,
+            "xml:lang": "en",
+            nameType: "Personal"
         end
         xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor(:en), "xml:lang": "en"
+          xml.contributorName oai_contributor(:en),
+            "xml:lang": "en",
+            nameType: "Organizational"
         end
       end
 
@@ -88,18 +97,15 @@ module Collection::OaiDatacite
       xml.language oai_languages
 
       xml.subjects do
-        oai_subject_registry_entry_ids.each do |registry_entry_id|
-          [:de, :en].each do |locale|
-            xml.subject RegistryEntry.find(registry_entry_id).to_s(locale), "xml:lang": locale
-          end
-        end
+        oai_base_subject_tags(xml, :datacite)
+        oai_subject_tags(xml, :datacite)
       end
 
       xml.rightsList do
         oai_locales.each do |locale|
           xml.rights "#{TranslationValue.for('conditions', locale)} (#{name(locale)})",
             "xml:lang": locale,
-            rightsURI: "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions"
+            rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
           xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
@@ -110,12 +116,12 @@ module Collection::OaiDatacite
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
-        [:de, :en].each do |locale|
-          xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
-            "xml:lang": locale,
-            rightsIdentifier: "CC-BY-4.0",
-            rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-        end
+        #[:de, :en].each do |locale|
+          #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
+            #"xml:lang": locale,
+            #rightsIdentifier: "CC-BY-4.0",
+            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+        #end
       end
 
       xml.descriptions do

@@ -42,11 +42,8 @@ module Collection::OaiDc
 
       xml.tag!('dc:language', oai_languages)
 
-      oai_subject_registry_entry_ids.each do |registry_entry_id|
-        [:de, :en].each do |locale|
-          xml.tag!('dc:subject', RegistryEntry.find(registry_entry_id).to_s(locale), "xml:lang": locale)
-        end
-      end
+      oai_base_subject_tags(xml, :dc)
+      oai_subject_tags(xml, :dc)
 
       xml.tag!('dc:relation', OHD_DOMAIN)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}")
@@ -64,9 +61,9 @@ module Collection::OaiDc
         xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/conditions", "xml:lang": locale)
         xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/privacy_protection", "xml:lang": locale)
       end
-      [:de, :en].each do |locale|
-        xml.tag!('dc:rights', "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}", "xml:lang": locale)
-      end
+      #[:de, :en].each do |locale|
+        #xml.tag!('dc:rights', "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}", "xml:lang": locale)
+      #end
 
       xml.target!
     end

@@ -12,7 +12,7 @@ module Interview::OaiDc
           http://www.openarchives.org/OAI/2.0/oai_dc.xsd}
     ) do
 
-      [:de, :en].each do |locale|
+      oai_locales.each do |locale|
         xml.tag!('dc:identifier', oai_url_identifier(locale), "xml:lang": locale)
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
       end
@@ -36,20 +36,17 @@ module Interview::OaiDc
 
       xml.tag!('dc:language', oai_language)
 
-      oai_subject_registry_entries.each do |registry_entry|
-        [:de, :en].each do |locale|
-          xml.tag!('dc:subject', registry_entry.to_s(locale), "xml:lang": locale)
-        end
-      end
+      oai_base_subject_tags(xml, :dc)
+      oai_subject_tags(xml, :dc)
 
       oai_locales.each do |locale|
-        xml.tag!('dc:rights', "#{project.domain_with_optional_identifier}/#{project.default_locale}/conditions", "xml:lang": locale)
+        xml.tag!('dc:rights', "#{project.domain_with_optional_identifier}/#{locale}/conditions", "xml:lang": locale)
         xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/conditions", "xml:lang": locale)
         xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/privacy_protection", "xml:lang": locale)
       end
-      [:de, :en].each do |locale|
-        xml.tag!('dc:rights', "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}", "xml:lang": locale)
-      end
+      #[:de, :en].each do |locale|
+        #xml.tag!('dc:rights', "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}", "xml:lang": locale)
+      #end
 
       xml.target!
     end
