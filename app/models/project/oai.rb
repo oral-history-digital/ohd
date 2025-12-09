@@ -86,7 +86,7 @@ module Project::Oai
   end
 
   def oai_subject_registry_entries
-    ohd_subject_registry_entries
+    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
   end
 
   def oai_abstract_description(locale)
