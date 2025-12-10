@@ -1,11 +1,11 @@
-import buildFormData from "./buildFormData";
+import buildFormData from './buildFormData';
 
 test('builds simple params correctly', () => {
     const formData = new FormData();
     const params = { id: 1 };
     buildFormData(formData, params);
 
-    expect(formData.get("id")).toEqual("1");
+    expect(formData.get('id')).toEqual('1');
 });
 
 test('builds more complex params correctly', () => {
@@ -18,8 +18,8 @@ test('builds more complex params correctly', () => {
     };
     buildFormData(formData, params);
 
-    expect(formData.get("material[id]")).toEqual("1");
-    expect(formData.get("material[public]")).toEqual("false");
+    expect(formData.get('material[id]')).toEqual('1');
+    expect(formData.get('material[public]')).toEqual('false');
 });
 
 test('copes with arrays', () => {
@@ -30,15 +30,19 @@ test('copes with arrays', () => {
             interview_id: 8,
             translation_attributes: [
                 {
-                    locale: "de",
-                    title: "dish washer",
+                    locale: 'de',
+                    title: 'dish washer',
                 },
             ],
         },
     };
     buildFormData(formData, params);
 
-    expect(formData.get("material[interview_id]")).toEqual("8");
-    expect(formData.get("material[translation_attributes][0][locale]")).toEqual("de");
-    expect(formData.get("material[translation_attributes][0][title]")).toEqual("dish washer");
+    expect(formData.get('material[interview_id]')).toEqual('8');
+    expect(formData.get('material[translation_attributes][0][locale]')).toEqual(
+        'de'
+    );
+    expect(formData.get('material[translation_attributes][0][title]')).toEqual(
+        'dish washer'
+    );
 });

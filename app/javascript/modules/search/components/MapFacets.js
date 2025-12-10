@@ -1,13 +1,13 @@
+import { useI18n } from 'modules/i18n';
+import { useSearchParams } from 'modules/query-string';
+import { hideSidebar } from 'modules/sidebar';
+import { Spinner } from 'modules/spinners';
+import { isMobile } from 'modules/user-agent';
 import { FaUndo } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
-import { useI18n } from 'modules/i18n';
-import { isMobile } from 'modules/user-agent';
-import { Spinner } from 'modules/spinners';
-import { hideSidebar } from 'modules/sidebar';
-import { useSearchParams } from 'modules/query-string';
-import ArchiveFacets from './ArchiveFacets';
 import useFacets from '../useFacets';
+import ArchiveFacets from './ArchiveFacets';
 
 export default function ArchiveSearchForm() {
     const { t } = useI18n();
@@ -47,15 +47,11 @@ export default function ArchiveSearchForm() {
                     <FaUndo className="Icon" />
                 </button>
 
-                {
-                    facets ? (
-                        <ArchiveFacets
-                            map
-                            handleSubmit={handleSubmit}
-                        />
-                    ) :
+                {facets ? (
+                    <ArchiveFacets map handleSubmit={handleSubmit} />
+                ) : (
                     <Spinner withPadding />
-                }
+                )}
             </form>
         </div>
     );

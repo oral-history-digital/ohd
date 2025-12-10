@@ -1,14 +1,15 @@
-import PropTypes from 'prop-types';
-
 import { useTrackPageView } from 'modules/analytics';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
+import PropTypes from 'prop-types';
+import Skeleton from 'react-loading-skeleton';
+
 import FeaturedInterviews from './FeaturedInterviews';
 import StartPageVideo from './StartPageVideo';
-import Skeleton from 'react-loading-skeleton';
+
 export default function Home({ institutions }) {
     const { project, projectId } = useProject();
     const { locale } = useI18n();

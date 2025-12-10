@@ -1,6 +1,6 @@
 import {
-    getData,
     getCollections,
+    getData,
     getInterviews,
     getLanguages,
     getNormDataProviders,

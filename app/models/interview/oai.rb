@@ -1,8 +1,7 @@
 module Interview::Oai
 
   def sets
-    #oai_sets = []
-    if workflow_state == 'public'
+    if workflow_state == 'public' && project.workflow_state == 'public'
       oai_sets = [ OAI::Set.new({name: 'Interview-Archiv', spec: "archive:#{project.shortname}"}) ]
       unless collection.nil?
         oai_sets << OAI::Set.new({name: 'Interview-Sammlung', spec: "collection:#{collection_id}"})
@@ -15,6 +14,10 @@ module Interview::Oai
   def oai_locales
     #%w(de en)
     project.available_locales
+  end
+
+  def alternate_oai_locales
+    project.available_locales - [project.default_locale]
   end
 
   def oai_identifier
@@ -49,7 +52,8 @@ module Interview::Oai
   end
 
   def oai_publisher(locale)
-    project.root_institutions_names(locale)
+    #project.root_institutions_names(locale)
+    project.institutions_with_ancestors_names(locale)
   end
 
   def oai_date
@@ -61,7 +65,7 @@ module Interview::Oai
   end
 
   def oai_type
-    media_type
+    'Interview'
   end
 
   def type

@@ -1,9 +1,9 @@
 import {
+    extractBirthYearRange,
     extractYearRange,
     extractYearRangeFromValues,
-    extractBirthYearRange,
-    isFacetDataValid,
     findEventTypeByCode,
+    isFacetDataValid,
 } from './facetUtils';
 
 describe('extractYearRange', () => {

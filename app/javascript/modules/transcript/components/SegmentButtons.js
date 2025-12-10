@@ -8,6 +8,7 @@ import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useWorkbook } from 'modules/workbook';
 import PropTypes from 'prop-types';
 import { FaHeading, FaPencilAlt, FaStickyNote, FaTag } from 'react-icons/fa';
+
 import SegmentFormContainer from './SegmentFormContainer';
 
 export default function SegmentButtons({

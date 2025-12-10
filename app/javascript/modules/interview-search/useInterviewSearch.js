@@ -1,10 +1,9 @@
-import useSWRImmutable from 'swr/immutable';
-import queryString from 'query-string';
-
 import { fetcher } from 'modules/api';
 import { useProjectAccessStatus } from 'modules/auth';
-import { usePathBase } from 'modules/routes';
 import { searchResultCount } from 'modules/interview-preview';
+import { usePathBase } from 'modules/routes';
+import queryString from 'query-string';
+import useSWRImmutable from 'swr/immutable';
 
 export default function useInterviewSearch(archiveId, fulltext, project) {
     const pathBase = usePathBase();
@@ -17,13 +16,15 @@ export default function useInterviewSearch(archiveId, fulltext, project) {
     const paramStr = queryString.stringify(params);
     const path = `${pathBase}/searches/interview?${paramStr}`;
 
-    const shouldFetch = (fulltext?.length > 0)
-        && projectAccessGranted;
+    const shouldFetch = fulltext?.length > 0 && projectAccessGranted;
 
     const { isValidating, isLoading, data, error } = useSWRImmutable(
-        shouldFetch ? path : null, fetcher, {
-        keepPreviousData: false,
-    });
+        shouldFetch ? path : null,
+        fetcher,
+        {
+            keepPreviousData: false,
+        }
+    );
 
     return {
         data,

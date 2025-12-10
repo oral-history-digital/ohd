@@ -1,6 +1,6 @@
+import { getProjectId } from 'modules/archive';
 import { createSelector } from 'reselect';
 
-import { getProjectId } from 'modules/archive';
 import { NAME } from './constants';
 
 const getState = (state) => state[NAME];

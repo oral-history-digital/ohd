@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Form } from 'modules/forms';
 
+import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+
 import RegistrySearchResult from './RegistrySearchResult';
 
 export default function RegistryNameForm({

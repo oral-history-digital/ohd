@@ -1,7 +1,6 @@
+import { InterviewPreviewContainer } from 'modules/interview-preview';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
-
-import { InterviewPreviewContainer } from 'modules/interview-preview';
 
 // Skeleton placeholder that mimics InterviewCard structure
 function InterviewCardSkeleton() {

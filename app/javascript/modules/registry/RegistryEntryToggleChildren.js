@@ -1,7 +1,6 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-
-import { useI18n } from 'modules/i18n';
 
 export default function RegistryEntryToggleChildren({
     count,
@@ -17,17 +16,15 @@ export default function RegistryEntryToggleChildren({
                 title={`${count} ${t('edit.registry_entry.show_children')}`}
                 onClick={onToggle}
             >
-                {
-                    isOpen ?
-                        <FaMinus className="Icon Icon--primary" /> :
-                        <FaPlus className="Icon Icon--primary" />
-                }
+                {isOpen ? (
+                    <FaMinus className="Icon Icon--primary" />
+                ) : (
+                    <FaPlus className="Icon Icon--primary" />
+                )}
             </button>
         );
     } else {
-        return (
-            <div className="RegistryEntry-toggleChildren" />
-        );
+        return <div className="RegistryEntry-toggleChildren" />;
     }
 }
 

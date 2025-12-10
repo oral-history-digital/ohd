@@ -6,7 +6,7 @@
 
 span.breadcrumb {
   color: grey;
-  &+span:before {
+  & + span:before {
     content: ' > ';
   }
 }

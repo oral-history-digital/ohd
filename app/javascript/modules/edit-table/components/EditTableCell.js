@@ -1,8 +1,6 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
+import classNames from 'classnames';
 import { Annotations } from 'modules/annotations';
 import { Fetch } from 'modules/data';
 import { SubmitOnBlurForm } from 'modules/forms';
@@ -10,6 +8,9 @@ import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
 import fieldHasData from './fieldHasData';
 
 export default function EditTableCell({ type, segment, originalLocale }) {
@@ -25,21 +26,17 @@ export default function EditTableCell({ type, segment, originalLocale }) {
                     'has-data': segment.annotations_count !== 0,
                 })}
             >
-                <Annotations
-                    segment={segment}
-                    contentLocale={alpha3Locale}
-                />
+                <Annotations segment={segment} contentLocale={alpha3Locale} />
             </div>
         );
     } else if (/transcript|translation|heading/.test(type)) {
-        alpha3Locale = type === 'transcript' ? originalLocale : type.split('_').pop();
+        alpha3Locale =
+            type === 'transcript' ? originalLocale : type.split('_').pop();
         attribute = /heading/.test(type) ? type.split('_').shift() : 'text';
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': fieldHasData(
-                        segment[attribute][alpha3Locale]
-                    ),
+                    'has-data': fieldHasData(segment[attribute][alpha3Locale]),
                 })}
             >
                 <SubmitOnBlurForm

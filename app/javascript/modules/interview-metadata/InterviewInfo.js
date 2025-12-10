@@ -1,9 +1,9 @@
+import { AuthorizedContent } from 'modules/auth';
+import { SingleValueWithFormContainer } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import PropTypes from 'prop-types';
 
-import { SingleValueWithFormContainer } from 'modules/forms';
-import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import { AuthorizedContent } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
 import InterviewCollectionInfo from './InterviewCollectionInfo';
 
 export default function InterviewInfo({ interview, languages }) {

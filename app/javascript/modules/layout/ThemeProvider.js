@@ -1,6 +1,7 @@
+import { createContext, useContext, useMemo } from 'react';
+
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { createContext, useContext, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 
 const DEFAULT_PRIMARY_COLOR = '#e01217';

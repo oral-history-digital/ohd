@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { useSearchParams } from 'modules/query-string';
+import PropTypes from 'prop-types';
+
 import YearRange from './YearRange';
 
-export default function BirthYearFacet({
-    sliderMin,
-    sliderMax,
-}) {
-    const { yearOfBirthMin, yearOfBirthMax, setYearOfBirthRange } = useSearchParams();
-    const [currentValue, setCurrentValue] = useState([yearOfBirthMin,
-        yearOfBirthMax]);
+export default function BirthYearFacet({ sliderMin, sliderMax }) {
+    const { yearOfBirthMin, yearOfBirthMax, setYearOfBirthRange } =
+        useSearchParams();
+    const [currentValue, setCurrentValue] = useState([
+        yearOfBirthMin,
+        yearOfBirthMax,
+    ]);
 
     useEffect(() => {
         if (Number.isNaN(yearOfBirthMin) && Number.isNaN(yearOfBirthMax)) {
@@ -18,7 +19,6 @@ export default function BirthYearFacet({
         } else {
             setCurrentValue([yearOfBirthMin, yearOfBirthMax]);
         }
-
     }, [yearOfBirthMin, yearOfBirthMax]);
 
     function handleCompleteChange() {

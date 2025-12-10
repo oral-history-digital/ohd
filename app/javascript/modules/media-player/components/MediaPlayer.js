@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { useSelector } from 'react-redux';
+
 import MediaControlsContainer from '../containers/MediaControlsContainer';
 import MediaElementContainer from '../containers/MediaElementContainer';
 import MediaPlayerButtonsContainer from '../containers/MediaPlayerButtonsContainer';

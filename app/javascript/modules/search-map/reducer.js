@@ -1,12 +1,15 @@
 import xor from 'lodash.xor';
 
-import { INITIALIZE_MAP_FILTER, TOGGLE_MAP_FILTER,
-    SET_MAP_VIEW } from './action-types';
+import {
+    INITIALIZE_MAP_FILTER,
+    SET_MAP_VIEW,
+    TOGGLE_MAP_FILTER,
+} from './action-types';
 
 export const initialState = {
     filter: null,
     mapView: null,
-}
+};
 
 const search = (state = initialState, action) => {
     switch (action.type) {

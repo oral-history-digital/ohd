@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { submitFormDataWithFetch } from 'modules/api';
 
+import { submitFormDataWithFetch } from 'modules/api';
 import { getArchiveId } from 'modules/archive';
 import { getCurrentInterview, submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
 import useMutateMaterials from '../hooks/useMutateMaterials';
 
 export default function MaterialForm({

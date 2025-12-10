@@ -1,5 +1,5 @@
+import { INDEX_NONE, INDEX_SEARCH } from './constants';
 import tabIndexFromRoute from './tabIndexFromRoute';
-import { INDEX_SEARCH, INDEX_NONE } from './constants';
 
 test('returns tab index for a route', () => {
     const actual = tabIndexFromRoute('/de', '/de/searches/archive');

@@ -7,14 +7,17 @@ import keyBy from 'lodash.keyby';
 
 export default function addChildCollections(collections, project) {
     if (!('collection_ids' in project)) {
-        throw new ReferenceError('Project must contain collection_ids property');
+        throw new ReferenceError(
+            'Project must contain collection_ids property'
+        );
     }
 
     const collectionsById = keyBy(collections, 'id');
 
     const clonedProject = {
         ...project,
-        collections: project.collection_ids.map(id => collectionsById[id])
+        collections: project.collection_ids
+            .map((id) => collectionsById[id])
             .filter((collection) => typeof collection !== 'undefined')
             .filter((collection) => collection.num_interviews > 0),
     };

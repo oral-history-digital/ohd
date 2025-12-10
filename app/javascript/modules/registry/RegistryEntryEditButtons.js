@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-
 import { deleteData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { AdminMenu } from 'modules/ui';
-import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
+import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 
 const Item = AdminMenu.Item;
 
@@ -20,26 +20,41 @@ export default function RegistryEntryEditButtons({
     const { project, projectId } = useProject();
 
     function destroy() {
-        dispatch(deleteData({ project, projectId, locale }, 'registry_entries',
-            registryEntry.id, null, null, true));
+        dispatch(
+            deleteData(
+                { project, projectId, locale },
+                'registry_entries',
+                registryEntry.id,
+                null,
+                null,
+                true
+            )
+        );
     }
 
     function rmParent() {
-        dispatch(deleteData({ project, projectId, locale }, 'registry_hierarchies',
-            parentRegistryHierarchyId(), null, null, true));
+        dispatch(
+            deleteData(
+                { project, projectId, locale },
+                'registry_hierarchies',
+                parentRegistryHierarchyId(),
+                null,
+                null,
+                true
+            )
+        );
     }
 
     function parentRegistryHierarchyId() {
-        return registryEntry.parent_registry_hierarchy_ids[parentRegistryEntry.id];
+        return registryEntry.parent_registry_hierarchy_ids[
+            parentRegistryEntry.id
+        ];
     }
 
     return (
         <AdminMenu>
-            <Item
-                name="edit"
-                label={t('edit.registry_entry.edit')}
-            >
-                {close => (
+            <Item name="edit" label={t('edit.registry_entry.edit')}>
+                {(close) => (
                     <RegistryEntryFormContainer
                         registryEntryId={registryEntry.id}
                         registryEntryParent={parentRegistryEntry}
@@ -48,11 +63,8 @@ export default function RegistryEntryEditButtons({
                     />
                 )}
             </Item>
-            <Item
-                name="delete"
-                label={t('delete')}
-            >
-                {close => (
+            <Item name="delete" label={t('delete')}>
+                {(close) => (
                     <DeleteItemForm
                         onSubmit={() => {
                             destroy();
@@ -64,11 +76,8 @@ export default function RegistryEntryEditButtons({
                     </DeleteItemForm>
                 )}
             </Item>
-            <Item
-                name="new_child"
-                label={t(`edit.registry_entry.new`)}
-            >
-                {close => (
+            <Item name="new_child" label={t(`edit.registry_entry.new`)}>
+                {(close) => (
                     <RegistryEntryFormContainer
                         registryEntryParent={registryEntry}
                         onSubmit={close}
@@ -76,25 +85,21 @@ export default function RegistryEntryEditButtons({
                     />
                 )}
             </Item>
-            <Item
-                name="add_parent"
-                label={t('edit.registry_entry.add_parent')}
-            >
-                {close => (
+            <Item name="add_parent" label={t('edit.registry_entry.add_parent')}>
+                {(close) => (
                     <RegistryHierarchyFormContainer
                         descendantRegistryEntry={registryEntry}
                         onSubmit={close}
                         onCancel={close}
                     />
                 )}
-
             </Item>
             {parentRegistryEntry && (
                 <Item
                     name="delete_parent"
                     label={t('edit.registry_entry.delete_parent')}
                 >
-                    {close => (
+                    {(close) => (
                         <DeleteItemForm
                             onSubmit={() => {
                                 rmParent();

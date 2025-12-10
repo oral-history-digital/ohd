@@ -13,29 +13,13 @@ module Project::OaiDc
     ) do
 
       [:de, :en].each do |locale|
-        xml.tag!('dc:identifier', "xml:lang": locale) do
-          xml.text! oai_catalog_identifier(locale)
-        end
-      end
-
-      #xml.tag!('dc:source', oai_identifier)
-
-      oai_locales.each do |locale|
-        xml.tag!('dc:title', "xml:lang": locale) do
-          xml.text! oai_title(locale)
-        end
+        xml.tag!(oai_catalog_identifier(locale), 'dc:identifier', "xml:lang": locale)
       end
 
       oai_locales.each do |locale|
-        xml.tag!('dc:creator', "xml:lang": locale) do
-          xml.text! oai_creator(locale)
-        end
-      end
-
-      oai_locales.each do |locale|
-        xml.tag!('dc:publisher', "xml:lang": locale) do
-          xml.text! oai_publisher(locale)
-        end
+        xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
+        xml.tag!('dc:creator', oai_creator(locale), "xml:lang": locale)
+        xml.tag!('dc:publisher', oai_publisher(locale), "xml:lang": locale)
       end
 
       oai_leaders.each do |leader_name|
@@ -45,9 +29,7 @@ module Project::OaiDc
         xml.tag!('dc:contributor', manager_name.strip)
       end
       oai_locales.each do |locale|
-        xml.tag!('dc:contributor', "xml:lang": locale) do
-          xml.text! oai_contributor(locale)
-        end
+        xml.tag!('dc:contributor', oai_contributor(locale), "xml:lang": locale)
       end
 
       if oai_publication_date
@@ -62,13 +44,8 @@ module Project::OaiDc
 
       xml.tag!('dc:language', oai_languages)
 
-      oai_subject_registry_entry_ids.each do |registry_entry_id|
-        %w(de en).each do |locale|
-          xml.tag!('dc:subject', "xml:lang": locale) do
-            xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
-          end
-        end
-      end
+      oai_base_subject_tags(xml, :dc)
+      oai_subject_tags(xml, :dc)
 
       xml.tag!('dc:relation', domain_with_optional_identifier)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}")
@@ -77,39 +54,21 @@ module Project::OaiDc
 
       xml.tag!('dc:description', oai_size)
       oai_locales.each do |locale|
-        xml.tag!('dc:description', "xml:lang": locale) do
-          xml.text! oai_abstract_description(locale)
-        end
+        xml.tag!('dc:description', oai_abstract_description(locale), "xml:lang": locale)
       end
       %w(de en).each do |locale|
-        xml.tag!('dc:description', "xml:lang": locale) do
-          xml.text! oai_media_files_description(locale)
-        end
-        xml.tag!('dc:description', "xml:lang": locale) do
-          xml.text! oai_transcript_description(locale)
-        end
+        xml.tag!('dc:description', oai_media_files_description(locale), "xml:lang": locale)
+        xml.tag!('dc:description', oai_transcript_description(locale), "xml:lang": locale)
       end
 
       oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "#{domain_with_optional_identifier}/#{locale}/conditions"
-        end
+        xml.tag!('dc:rights', "#{domain_with_optional_identifier}/#{locale}/conditions", "xml:lang": locale)
+        xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/conditions", "xml:lang": locale)
+        xml.tag!('dc:rights', "#{OHD_DOMAIN}/#{locale}/privacy_protection", "xml:lang": locale)
       end
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "#{OHD_DOMAIN}/#{locale}/conditions"
-        end
-      end
-      oai_locales.each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "#{OHD_DOMAIN}/#{locale}/privacy_protection"
-        end
-      end
-      [:de, :en].each do |locale|
-        xml.tag!('dc:rights', "xml:lang": locale) do
-          xml.text! "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}"
-        end
-      end
+      #[:de, :en].each do |locale|
+        #xml.tag!('dc:rights', "CC-BY-4.0 #{TranslationValue.for('metadata_licence', locale)}", "xml:lang": locale)
+      #end
 
       xml.target!
     end

@@ -28,12 +28,16 @@
   font-weight: bold;
   line-height: $base-unit;
   margin: 0;
-  transition: background-color $transition-duration, color $transition-duration;
+  transition:
+    background-color $transition-duration,
+    color $transition-duration;
 }
 
 .SearchResult-text {
   font-size: 1rem !important;
-  transition: background-color $transition-duration, color $transition-duration;
+  transition:
+    background-color $transition-duration,
+    color $transition-duration;
 }
 
 .SearchResult-meta,
@@ -50,12 +54,12 @@
 
 .SearchResult mark {
   padding: 0 4px;
-  background-color: rgba(255,250,129,0.6);
+  background-color: rgba(255, 250, 129, 0.6);
   color: $gray-darkest;
 }
 
 .SearchResult.is-highlighted .SearchResult-text {
-  background-color: rgba(255,250,129,0.5);
+  background-color: rgba(255, 250, 129, 0.5);
   color: $gray-darkest;
 }
 

@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
-
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
-import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
+import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
+
 import RegistryReferenceContainer from './RegistryReferenceContainer';
+import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
 export default function RegistryReferences({
     registryEntriesStatus,
@@ -22,12 +22,23 @@ export default function RegistryReferences({
     const { t, locale } = useI18n();
     const { project } = useProject();
 
-    if (!registryEntriesStatus[project.root_registry_entry_id] || registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !== 'fetched') {
+    if (
+        !registryEntriesStatus[project.root_registry_entry_id] ||
+        registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !==
+            'fetched'
+    ) {
         return null;
     }
 
-    if (!refObject || !registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`] ||
-        registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`].split('-')[0] !== 'fetched') {
+    if (
+        !refObject ||
+        !registryEntriesStatus[
+            `ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`
+        ] ||
+        registryEntriesStatus[
+            `ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`
+        ].split('-')[0] !== 'fetched'
+    ) {
         return null;
     }
 
@@ -36,41 +47,64 @@ export default function RegistryReferences({
     }
 
     const refs = Object.values(refObject.registry_references)
-        .filter(ref => (typeof registryEntries[ref.registry_entry_id]?.name[locale] === 'string'))
-        .filter(ref => (registryReferenceTypeId && registryReferenceTypeId === ref.registry_reference_type_id) || !registryReferenceTypeId)
-        .filter(ref => ref.interview_id === interview.id);
+        .filter(
+            (ref) =>
+                typeof registryEntries[ref.registry_entry_id]?.name[locale] ===
+                'string'
+        )
+        .filter(
+            (ref) =>
+                (registryReferenceTypeId &&
+                    registryReferenceTypeId ===
+                        ref.registry_reference_type_id) ||
+                !registryReferenceTypeId
+        )
+        .filter((ref) => ref.interview_id === interview.id);
 
     return (
         <>
-            {
-                refs.length > 0 && (
-                    <ul className="RegistryReferences-list">
-                        {refs.map(ref => (
-                            <RegistryReferenceContainer
-                                key={ref.id}
-                                registryEntry={registryEntries[ref.registry_entry_id]}
-                                registryReference={ref}
-                                registryReferenceTypeId={registryReferenceTypeId}
-                                refObject={refObject}
-                                lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId || project?.root_registry_entry_id}
-                                inTranscript={inTranscript}
-                                contentLocale={contentLocale}
-                                setOpenReference={setOpenReference}
-                            />
-                        ))}
-                    </ul>
-                )
-            }
-            <AuthorizedContent object={{type: 'RegistryReference', interview_id: interview.id}} action='create'>
+            {refs.length > 0 && (
+                <ul className="RegistryReferences-list">
+                    {refs.map((ref) => (
+                        <RegistryReferenceContainer
+                            key={ref.id}
+                            registryEntry={
+                                registryEntries[ref.registry_entry_id]
+                            }
+                            registryReference={ref}
+                            registryReferenceTypeId={registryReferenceTypeId}
+                            refObject={refObject}
+                            lowestAllowedRegistryEntryId={
+                                lowestAllowedRegistryEntryId ||
+                                project?.root_registry_entry_id
+                            }
+                            inTranscript={inTranscript}
+                            contentLocale={contentLocale}
+                            setOpenReference={setOpenReference}
+                        />
+                    ))}
+                </ul>
+            )}
+            <AuthorizedContent
+                object={{
+                    type: 'RegistryReference',
+                    interview_id: interview.id,
+                }}
+                action="create"
+            >
                 <Modal
                     title={t('edit.registry_reference.new')}
-                    trigger={<FaPlus className="Icon Icon--editorial Icon--small"/>}
+                    trigger={
+                        <FaPlus className="Icon Icon--editorial Icon--small" />
+                    }
                 >
-                    {close => (
+                    {(close) => (
                         <RegistryReferenceFormContainer
                             refObject={refObject}
                             interview={interview}
-                            lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId}
+                            lowestAllowedRegistryEntryId={
+                                lowestAllowedRegistryEntryId
+                            }
                             inTranscript={inTranscript}
                             registryReferenceTypeId={registryReferenceTypeId}
                             locale={locale}

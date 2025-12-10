@@ -3,6 +3,7 @@ import { isMobile } from 'modules/user-agent';
 import { createRoot } from 'react-dom/client';
 import { MdOutlineFitScreen } from 'react-icons/md';
 import videojs from 'video.js';
+
 import { VIDEO_MAX_WIDTH_MEDIUM, VIDEO_MAX_WIDTH_SMALL } from '../constants';
 
 const VjsButton = videojs.getComponent('Button');

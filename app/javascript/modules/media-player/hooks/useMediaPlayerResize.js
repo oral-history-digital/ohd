@@ -1,5 +1,7 @@
-import { ONE_REM, SCREEN_M } from 'modules/constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { ONE_REM, SCREEN_M } from 'modules/constants';
+
 import {
     VIDEO_COMPACT_MODE_THRESHOLD,
     VIDEO_RESIZE_MAX_WIDTH,

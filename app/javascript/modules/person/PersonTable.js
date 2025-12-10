@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import { BooleanCell, DateCell, TableWithPagination } from 'modules/tables';
+
 import PersonRowActions from './PersonRowActions';
 import { usePeople } from './hooks';
 

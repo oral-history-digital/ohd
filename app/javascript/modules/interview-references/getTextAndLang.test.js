@@ -13,8 +13,8 @@ test('gets text and lang if locale is found', () => {
 
 test('gets text and lang if locale is not found', () => {
     const texts = {
-        'ru': 'И потоманцы',
-        'de': 'Und dann',
+        ru: 'И потоманцы',
+        de: 'Und dann',
     };
 
     const actual = getTextAndLang(texts, 'en', 'ru');
@@ -24,8 +24,8 @@ test('gets text and lang if locale is not found', () => {
 
 test('gets first text as fallback', () => {
     const texts = {
-        'ru': 'И потоманцы',
-        'de': 'Und dann',
+        ru: 'И потоманцы',
+        de: 'Und dann',
     };
 
     const actual = getTextAndLang(texts, 'en', 'pl');

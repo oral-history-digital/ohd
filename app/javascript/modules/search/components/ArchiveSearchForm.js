@@ -1,32 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { useTrackSiteSearch } from 'modules/analytics';
+import { AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { useSearchParams } from 'modules/query-string';
+import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { FaUndo } from 'react-icons/fa';
 
-import { useTrackSiteSearch } from 'modules/analytics';
-import { useI18n } from 'modules/i18n';
-import { AuthShowContainer } from 'modules/auth';
-import { isMobile } from 'modules/user-agent';
-import { useSearchParams } from 'modules/query-string';
 import defaultSortOptions from '../defaultSortOptions';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
-export default function ArchiveSearchForm({
-    projectId,
-    project,
-    hideSidebar,
-}) {
+export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
     const { t } = useI18n();
     const formEl = useRef(null);
     const trackSiteSearch = useTrackSiteSearch();
 
-    const { fulltext, setFulltextAndSort, resetSearchParams } = useSearchParams();
+    const { fulltext, setFulltextAndSort, resetSearchParams } =
+        useSearchParams();
 
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
     useEffect(() => {
         setFulltextInput(fulltext || '');
-    }, [fulltext])
+    }, [fulltext]);
 
     function handleReset() {
         resetSearchParams();
@@ -41,7 +39,7 @@ export default function ArchiveSearchForm({
 
         const searchTerm = fulltextInput?.trim();
 
-        if (searchTerm?.length > 0)  {
+        if (searchTerm?.length > 0) {
             setFulltextAndSort(searchTerm, 'score', 'desc');
 
             trackSiteSearch(searchTerm);
@@ -74,7 +72,7 @@ export default function ArchiveSearchForm({
                     />
                 ) : (
                     <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
-                       <ArchiveSearchFormInput
+                        <ArchiveSearchFormInput
                             value={fulltextInput}
                             projectId={projectId}
                             onChange={setFulltextInput}

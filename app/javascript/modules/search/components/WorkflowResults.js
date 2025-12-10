@@ -1,30 +1,26 @@
-import PropTypes from 'prop-types';
-
 import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
+import PropTypes from 'prop-types';
+
 import WorkflowHeader from './WorkflowHeader';
 
-export default function WorkflowResults({
-    interviews,
-    project,
-}) {
+export default function WorkflowResults({ interviews, project }) {
     return (
         <Fetch
-            fetchParams={['task_types', null, null, `for_projects=${project?.id}`]}
+            fetchParams={[
+                'task_types',
+                null,
+                null,
+                `for_projects=${project?.id}`,
+            ]}
             testSelector={getTaskTypesForCurrentProjectFetched}
         >
             <HelpText code="workflow_management" className="u-mb" />
 
             <div className="data boxes workflow-header">
-                <WorkflowHeader
-                    width={10}
-                    tKey="interview"
-                />
-                <WorkflowHeader
-                    width={10}
-                    tKey="interview_id"
-                />
+                <WorkflowHeader width={10} tKey="interview" />
+                <WorkflowHeader width={10} tKey="interview_id" />
                 <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.media_type"
@@ -50,14 +46,12 @@ export default function WorkflowResults({
                     tKey="activerecord.attributes.interview.workflow_state"
                 />
             </div>
-            {
-                interviews?.map(interview => (
-                    <InterviewWorkflowRowContainer
-                        key={interview.id}
-                        interview={interview}
-                    />
-                ))
-            }
+            {interviews?.map((interview) => (
+                <InterviewWorkflowRowContainer
+                    key={interview.id}
+                    interview={interview}
+                />
+            ))}
         </Fetch>
     );
 }

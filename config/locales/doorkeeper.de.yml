@@ -1,0 +1,10 @@
+de:
+  doorkeeper:
+    authorizations:
+      buttons:
+        authorize: "Autorisieren"
+        deny: "Ablehnen"
+      new:
+        title: "Autorisierung erforderlich"
+        prompt: "%{client_name} möchte auf Ihr Konto zugreifen"
+        able_to: "Diese Anwendung kann"

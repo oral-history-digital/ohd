@@ -1,13 +1,13 @@
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { getCurrentUser } from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import { getCurrentUser } from 'modules/data';
-import userIsEditor from './userIsEditor';
 import {
+    CUSTOM_DIMENSION_USER_TYPE_EDITOR,
     CUSTOM_DIMENSION_USER_TYPE_ID,
     CUSTOM_DIMENSION_USER_TYPE_USER,
-    CUSTOM_DIMENSION_USER_TYPE_EDITOR,
 } from './constants';
+import userIsEditor from './userIsEditor';
 
 /**
  * Returns trackEvent function that can be called by the client.
@@ -20,10 +20,9 @@ export default function useTrackEventFunction() {
         customDimensions: [
             {
                 id: CUSTOM_DIMENSION_USER_TYPE_ID,
-                value: (userIsEditor(currentUser) ?
-                    CUSTOM_DIMENSION_USER_TYPE_EDITOR :
-                    CUSTOM_DIMENSION_USER_TYPE_USER
-                ),
+                value: userIsEditor(currentUser)
+                    ? CUSTOM_DIMENSION_USER_TYPE_EDITOR
+                    : CUSTOM_DIMENSION_USER_TYPE_USER,
             },
         ],
     };

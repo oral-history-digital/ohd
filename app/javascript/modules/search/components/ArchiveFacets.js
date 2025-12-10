@@ -2,6 +2,7 @@ import { useAuthorization } from 'modules/auth';
 import { useEventTypes } from 'modules/event-types';
 import { useI18n } from 'modules/i18n';
 import { SearchSpinnerOverlay, Spinner } from 'modules/spinners';
+
 import {
     extractBirthYearRange,
     extractYearRangeFromValues,

@@ -1,4 +1,8 @@
-export default function sortByReferenceTypeOrder(referenceTypes, property, references) {
+export default function sortByReferenceTypeOrder(
+    referenceTypes,
+    property,
+    references
+) {
     if (!Array.isArray(referenceTypes)) {
         throw new TypeError('referenceTypes must be Array');
     }
@@ -11,10 +15,13 @@ export default function sortByReferenceTypeOrder(referenceTypes, property, refer
         throw new TypeError('references must be Array');
     }
 
-    const referenceTypeIds = referenceTypes.map(type => type.id);
+    const referenceTypeIds = referenceTypes.map((type) => type.id);
 
     function compareFunction(a, b) {
-        return referenceTypeIds.indexOf(a[property]) - referenceTypeIds.indexOf(b[property]);
+        return (
+            referenceTypeIds.indexOf(a[property]) -
+            referenceTypeIds.indexOf(b[property])
+        );
     }
 
     const sortedReferences = [...references].sort(compareFunction);

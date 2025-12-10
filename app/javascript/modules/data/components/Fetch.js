@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
+
 import { getLocale } from 'modules/archive';
 import { fetchData, getStatuses } from 'modules/data';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export function Fetch({

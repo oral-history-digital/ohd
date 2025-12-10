@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
-import queryString from 'query-string';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import useSWRImmutable from 'swr/immutable';
 
+import missingStill from 'assets/images/missing_still.png';
+import classNames from 'classnames';
 import { SingleValueWithFormContainer } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
+import { usePathBase } from 'modules/routes';
 import { useArchiveSearch } from 'modules/search';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import useSWRImmutable from 'swr/immutable';
+
 import TaskContainer from './TaskContainer';
-import missingStill from 'assets/images/missing_still.png';
 
 export default function InterviewWorkflowRow({
     interview,

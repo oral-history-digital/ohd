@@ -1,13 +1,13 @@
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
+import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
-import { AuthorizedContent, useAuthorization } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { usePersonWithAssociations } from './hooks';
-import { Modal } from 'modules/ui';
-import { Spinner } from 'modules/spinners';
-import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 import BiographicalEntryContainer from './BiographicalEntryContainer';
+import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
+import { usePersonWithAssociations } from './hooks';
 
 export default function BiographicalEntries({ interview, intervieweeId }) {
     const { t } = useI18n();

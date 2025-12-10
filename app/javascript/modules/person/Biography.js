@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import { FaDownload } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
 import { getArchiveId } from 'modules/archive';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { getCurrentInterview, getCurrentIntervieweeId } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { FaDownload } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+
 import BiographicalEntriesContainer from './BiographicalEntriesContainer';
 import { usePersonWithAssociations } from './hooks';
 

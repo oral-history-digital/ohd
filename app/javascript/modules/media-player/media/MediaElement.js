@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import classNames from 'classnames';
 import { getTranslationsView } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
@@ -5,19 +7,18 @@ import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+
 import { useMediaPlayerResize, usePosterImage } from '../hooks';
+import '../plugins/configurationMenuPlugin.js';
+import '../plugins/customSkipButtonsPlugin.js';
+import '../plugins/toggleSizeButtonPlugin.js';
 import {
     getQualityLabel,
     humanTimeToSeconds,
     mediaStreamsToSources,
 } from '../utils';
 import VideoJS from './VideoJS';
-
-import '../plugins/configurationMenuPlugin.js';
-import '../plugins/customSkipButtonsPlugin.js';
-import '../plugins/toggleSizeButtonPlugin.js';
 
 const KEYCODE_F = 70;
 const KEYCODE_M = 77;

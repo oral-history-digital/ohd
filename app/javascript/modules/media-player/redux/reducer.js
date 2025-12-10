@@ -1,9 +1,9 @@
 import {
-    UPDATE_MEDIA_TIME,
-    UPDATE_IS_PLAYING,
+    CLEAR_TIME_CHANGE_REQUEST,
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
-    CLEAR_TIME_CHANGE_REQUEST,
+    UPDATE_IS_PLAYING,
+    UPDATE_MEDIA_TIME,
 } from './action-types';
 
 export const initialState = {

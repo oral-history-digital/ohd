@@ -1,7 +1,7 @@
 import { NAME } from './constants';
 
-const getState = state => state[NAME];
+const getState = (state) => state[NAME];
 
-export const getFilter = state => getState(state).filter;
+export const getFilter = (state) => getState(state).filter;
 
-export const getSelectedColumns = state => getState(state).columns;
+export const getSelectedColumns = (state) => getState(state).columns;

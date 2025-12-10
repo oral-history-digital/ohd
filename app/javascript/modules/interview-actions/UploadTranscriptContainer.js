@@ -1,12 +1,16 @@
+import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
+import { submitData } from 'modules/data';
+import {
+    getCurrentInterview,
+    getCurrentProject,
+    getLanguages,
+} from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData } from 'modules/data';
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import { getCurrentInterview, getLanguages, getCurrentProject } from 'modules/data';
 import UploadTranscript from './UploadTranscript';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     project: getCurrentProject(state),
@@ -15,8 +19,12 @@ const mapStateToProps = state => ({
     languages: getLanguages(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    submitData,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            submitData,
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadTranscript);

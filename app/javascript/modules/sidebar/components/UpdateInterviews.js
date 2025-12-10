@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Modal } from 'modules/ui';
-import { useI18n } from 'modules/i18n';
 import { getLocale, getProjectId } from 'modules/archive';
-import { submitData, getCurrentProject } from 'modules/data';
+import { getCurrentProject, submitData } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function UpdateInterviews({
     params,
@@ -18,12 +17,17 @@ export default function UpdateInterviews({
     const project = useSelector(getCurrentProject);
 
     function updateInterviews(params) {
-        selectedArchiveIds.forEach(archiveId => {
+        selectedArchiveIds.forEach((archiveId) => {
             const updatedParams = {
                 ...params,
                 id: archiveId,
             };
-            dispatch(submitData({ locale, projectId, project }, {interview: updatedParams}));
+            dispatch(
+                submitData(
+                    { locale, projectId, project },
+                    { interview: updatedParams }
+                )
+            );
         });
     }
 
@@ -33,9 +37,11 @@ export default function UpdateInterviews({
             trigger={t(`edit.interviews.${action}.title`)}
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
-            {close => (
+            {(close) => (
                 <form className="Form">
-                    {t(`edit.interviews.${action}.confirm_text`, {archive_ids: selectedArchiveIds.join(', ')})}
+                    {t(`edit.interviews.${action}.confirm_text`, {
+                        archive_ids: selectedArchiveIds.join(', '),
+                    })}
 
                     <div className="Form-footer u-mt">
                         <button

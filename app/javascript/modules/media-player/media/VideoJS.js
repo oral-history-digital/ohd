@@ -1,15 +1,16 @@
 import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
 
 // Plugins
 import videoJsQualitySelector from '@silvermine/videojs-quality-selector';
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
-videoJsQualitySelector(videojs);
+import PropTypes from 'prop-types';
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 
 // Custom hook for Video.js translations override
 import useVideojsLanguages from '../hooks/useVideojsLanguages';
+
+videoJsQualitySelector(videojs);
 
 export default function VideoJS({
     className,

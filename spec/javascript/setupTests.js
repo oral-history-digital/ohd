@@ -1,14 +1,14 @@
-import Enzyme from 'enzyme';
 import EnzymeAdapter from '@wojtekmaj/enzyme-adapter-react-17';
+import Enzyme from 'enzyme';
 
-Enzyme.configure({ adapter: new EnzymeAdapter() })
+Enzyme.configure({ adapter: new EnzymeAdapter() });
 
 window.matchMedia =
     window.matchMedia ||
-    function() {
+    function () {
         return {
             matches: false,
-            addListener: function() {},
-            removeListener: function() {}
+            addListener: function () {},
+            removeListener: function () {},
         };
     };

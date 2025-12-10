@@ -1,10 +1,10 @@
+import {
+    getCollectionsForCurrentProject,
+    getCurrentInterview,
+    getCurrentProject,
+} from 'modules/data';
 import { connect } from 'react-redux';
 
-import {
-    getCurrentProject,
-    getCurrentInterview,
-    getCollectionsForCurrentProject,
-} from 'modules/data';
 import CitationInfo from './CitationInfo';
 
 const mapStateToProps = (state) => {

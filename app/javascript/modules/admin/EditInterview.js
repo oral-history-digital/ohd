@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { Helmet } from 'react-helmet';
+
 import EditViewOrRedirect from './EditViewOrRedirect';
 import InterviewFormContainer from './InterviewFormContainer';
 
@@ -12,12 +13,12 @@ export default function EditInterview() {
 
     return (
         <EditViewOrRedirect>
-            <div className='wrapper-content register'>
+            <div className="wrapper-content register">
                 <Helmet>
                     <title>{t('edit.interview.new')}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className='registry-entries-title'>
+                    <h1 className="registry-entries-title">
                         {t('edit.interview.new')}
                     </h1>
                     {showForm ? (
@@ -28,12 +29,10 @@ export default function EditInterview() {
                         />
                     ) : (
                         <div>
-                            <p>
-                                {t('edit.interview.processed')}
-                            </p>
+                            <p>{t('edit.interview.processed')}</p>
                             <button
                                 type="button"
-                                className='Button return-to-upload'
+                                className="Button return-to-upload"
                                 onClick={() => setShowForm(true)}
                             >
                                 {t('edit.interview.return')}

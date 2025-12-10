@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function RegistryHierarchyForm({
     registryHierarchy,
@@ -26,8 +25,8 @@ export default function RegistryHierarchyForm({
             )}
 
             <Form
-                scope='registry_hierarchy'
-                onSubmit={params => {
+                scope="registry_hierarchy"
+                onSubmit={(params) => {
                     submitData({ locale, projectId, project }, params);
                     if (typeof onSubmit === 'function') {
                         onSubmit();

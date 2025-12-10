@@ -29,11 +29,11 @@ $spacing-properties: (
 ) !default;
 
 $spacing-sizes: (
-  '-none':  0,
+  '-none': 0,
   '-small': 0.5 * $base-unit,
   '-tiny': 0.25 * $base-unit,
-  null:       1 * $base-unit,
-  '-large':   2 * $base-unit,
+  null: 1 * $base-unit,
+  '-large': 2 * $base-unit,
 ) !default;
 
 @each $property, $property-namespace in $spacing-properties {

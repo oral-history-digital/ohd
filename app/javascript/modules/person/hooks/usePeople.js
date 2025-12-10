@@ -1,7 +1,6 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { fetcher } from 'modules/api';
 import { usePathBase, useProject } from 'modules/routes';
+import useSWRImmutable from 'swr/immutable';
 
 export default function usePeople() {
     const { project } = useProject();
@@ -9,7 +8,10 @@ export default function usePeople() {
 
     const path = `${pathBase}/people.json?for_projects=${project.id}`;
 
-    const { isLoading, isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isLoading, isValidating, data, error } = useSWRImmutable(
+        path,
+        fetcher
+    );
 
     return { isLoading, isValidating, data: data?.data, error };
 }

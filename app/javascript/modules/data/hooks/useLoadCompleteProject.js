@@ -1,7 +1,9 @@
 /* global railsMode */
-import { OHD_DOMAINS } from 'modules/constants';
 import { useEffect } from 'react';
+
+import { OHD_DOMAINS } from 'modules/constants';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchData } from '../redux/actions';
 import { getProjectsStatus, getPublicProjects } from '../redux/selectors';
 

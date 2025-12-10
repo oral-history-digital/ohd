@@ -1,8 +1,8 @@
 import {
-    validateTapeNumber,
     validateColor,
+    validateDate,
     validateGeoCoordinate,
-    validateDate
+    validateTapeNumber,
 } from './validators';
 
 describe('validateTapeNumber', () => {

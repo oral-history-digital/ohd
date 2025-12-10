@@ -1,8 +1,9 @@
-jest.mock('modules/persistence', () => ({ setCookie: jest.fn() }));
-
 import { setCookie } from 'modules/persistence';
+
 import { SET_COLUMNS, SET_FILTER } from './action-types';
 import { setColumnsWithCookie, setFilter } from './actions';
+
+jest.mock('modules/persistence', () => ({ setCookie: jest.fn() }));
 
 test('setFilter', () => {
     const actual = setFilter('all');

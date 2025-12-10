@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
-import { DEFAULT_LOCALES } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
+import { DEFAULT_LOCALES } from 'modules/constants';
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import { useDispatch } from 'react-redux';
 
 export default function UploadsForm() {
     const dispatch = useDispatch();
@@ -35,11 +35,20 @@ export default function UploadsForm() {
     function getLinkData(explanation) {
         switch (explanation) {
             case 'bulk_metadata':
-                return [`${pathBase}/metadata-import-template.csv`, 'metadata-import-template.csv'];
+                return [
+                    `${pathBase}/metadata-import-template.csv`,
+                    'metadata-import-template.csv',
+                ];
             case 'bulk_registry_entries':
-                return [`/registry-entries-import-template.csv`, 'registry-entries-import-template.csv'];
+                return [
+                    `/registry-entries-import-template.csv`,
+                    'registry-entries-import-template.csv',
+                ];
             case 'bulk_photos':
-                return [`/photos-import-template.csv`, 'photos-import-template.csv'];
+                return [
+                    `/photos-import-template.csv`,
+                    'photos-import-template.csv',
+                ];
             default:
                 return null;
         }
@@ -66,12 +75,14 @@ export default function UploadsForm() {
                 )}
             </div>
             <Form
-                scope='upload'
+                scope="upload"
                 onSubmit={(params) => {
-                    dispatch(submitData({ locale, projectId, project }, params));
+                    dispatch(
+                        submitData({ locale, projectId, project }, params)
+                    );
                     setShowForm(false);
                 }}
-                submitText='edit.upload.upload'
+                submitText="edit.upload.upload"
                 helpTextCode="import_form"
                 elements={[
                     {
@@ -81,7 +92,7 @@ export default function UploadsForm() {
                         handlechangecallback: handleUploadTypeChange,
                         withEmpty: true,
                         validate: (v) => v !== '',
-                        individualErrorMsg: 'empty'
+                        individualErrorMsg: 'empty',
                     },
                     {
                         elementType: 'select',
@@ -101,12 +112,10 @@ export default function UploadsForm() {
         </div>
     ) : (
         <div>
-            <p>
-                {t('edit.upload.processing')}
-            </p>
+            <p>{t('edit.upload.processing')}</p>
             <button
                 type="button"
-                className='Button return-to-upload'
+                className="Button return-to-upload"
                 onClick={returnToForm}
             >
                 {t('edit.upload.return')}

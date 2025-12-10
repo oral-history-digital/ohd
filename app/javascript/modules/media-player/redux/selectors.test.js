@@ -1,4 +1,5 @@
 import dotProp from 'dot-prop-immutable';
+
 import { NAME } from '../constants';
 import * as selectors from './selectors';
 

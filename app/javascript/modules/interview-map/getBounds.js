@@ -7,26 +7,17 @@ export default function getBounds(locations) {
         return null;
     }
 
-    const locs = locations.map(location => [
+    const locs = locations.map((location) => [
         Number.parseFloat(location.lat),
         Number.parseFloat(location.lon),
     ]);
 
     const northWestCorner = locs.reduce((acc, location) => {
-        return [
-            Math.max(acc[0], location[0]),
-            Math.min(acc[1], location[1]),
-        ];
+        return [Math.max(acc[0], location[0]), Math.min(acc[1], location[1])];
     }, locs[0]);
     const southEastCorner = locs.reduce((acc, location) => {
-        return [
-            Math.min(acc[0], location[0]),
-            Math.max(acc[1], location[1]),
-        ];
+        return [Math.min(acc[0], location[0]), Math.max(acc[1], location[1])];
     }, locs[0]);
 
-    return [
-        northWestCorner,
-        southEastCorner,
-    ];
+    return [northWestCorner, southEastCorner];
 }

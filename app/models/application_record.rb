@@ -52,6 +52,63 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
+  def oai_base_subject_tags(xml, format=:dc)
+    subjects = [
+      {
+        lang: :de,
+        scheme: "Gemeinsame Normdatei (GND)",
+        schemURI: "http://dnb.de/gnd/",
+        valueURI: "https://d-nb.info/gnd/4115456-3",
+        descriptor: "Oral History",
+      },
+      {
+        lang: :en,
+        scheme: "Gemeinsame Normdatei (GND)",
+        schemURI: "http://dnb.de/gnd/",
+        valueURI: "https://d-nb.info/gnd/4115456-3",
+        descriptor: "Oral History",
+      },
+      {
+        lang: :de,
+        scheme: "Fields of Science and Technology (FOS)",
+        schemURI: "https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf",
+        classificationCode: "6.1",
+        descriptor: "FOS: History and archaeology",
+      }
+    ]
+    subjects.each do |subject|
+      opts = {
+        subjectScheme: subject[:scheme],
+        schemeURI: subject[:schemURI],
+      }
+      if subject[:valueURI]
+        opts[:valueURI] = subject[:valueURI]
+      end
+      if subject[:classificationCode]
+        opts[:classificationCode] = subject[:classificationCode]
+      end
+      xml.tag! "#{format == :dc ? 'dc:' : ''}subject", subject[:descriptor], opts.merge({ "xml:lang": subject[:lang] })
+    end
+  end
+
+  def oai_subject_tags(xml, format=:dc)
+    oai_subject_registry_entries.each do |registry_entry|
+      opts = {}
+      if registry_entry.norm_data.gnd.any?
+        opts[:schemeURI] = "http://dnb.de/gnd/"
+        opts[:valueURI] = "https://d-nb.info/gnd/#{registry_entry.norm_data.gnd.first.nid}"
+        opts[:subjectScheme] = "Gemeinsame Normdatei (GND)"
+      end
+      [:de, :en].each do |locale|
+        entry_name = registry_entry.to_s(locale, fallback: false)
+        if !entry_name.blank?
+          opts = opts.merge({ "xml:lang": locale })
+          xml.tag! "#{format == :dc ? 'dc:' : ''}subject", entry_name, opts
+        end
+      end
+    end
+  end
+
   def ohd_level_of_indexing_registry_entry_groups
     if respond_to?(:interviews) && RegistryEntry.ohd_level_of_indexing
       RegistryReference.where(

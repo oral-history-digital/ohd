@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Spinner } from 'modules/spinners';
+import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
-import { getCurrentInterview } from 'modules/data';
 import { sendTimeChangeRequest } from 'modules/media-player';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
 import getSegmentById from './getSegmentById';
 
 export default function AnnotationResult({ data }) {

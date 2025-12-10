@@ -4,9 +4,7 @@ test('normalizes old style queries', () => {
     const query = {
         page: 1,
         fulltext: 'athen',
-        'gender[]': [
-            'female',
-        ],
+        'gender[]': ['female'],
         'workflow_state[]': [],
         'year_of_birth[]': [
             '1922',
@@ -23,9 +21,7 @@ test('normalizes old style queries', () => {
             1933,
             1934,
         ],
-        'typology[]': [
-            '646776',
-        ],
+        'typology[]': ['646776'],
         'period[]': [],
         'tasks_user_ids[]': [],
         'tasks_supervisor_ids[]': null,
@@ -34,14 +30,10 @@ test('normalizes old style queries', () => {
     const actual = convertLegacyQuery(query);
     const expected = {
         fulltext: 'athen',
-        gender: [
-            'female',
-        ],
+        gender: ['female'],
         year_of_birth_min: 1922,
         year_of_birth_max: 1934,
-        typology: [
-            '646776',
-        ],
+        typology: ['646776'],
     };
     expect(actual).toEqual(expected);
 });

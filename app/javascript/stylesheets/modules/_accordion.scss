@@ -41,7 +41,8 @@
       max-height: 100%;
     }
   }
-  p, form {
+  p,
+  form {
     font-size: $font-size-medium;
     line-height: $line-height-medium;
     color: $gray-darkest;
@@ -141,12 +142,13 @@ a.flyout-download-link-lang {
   margin-top: -3px;
 }
 .fa-stack-second-custom {
-    text-align: right;
-    margin-left: -15px;
-    font-size: 10px !important;
+  text-align: right;
+  margin-left: -15px;
+  font-size: 10px !important;
 }
 
-span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-child) {
+span.registry-reference:not(:last-child),
+span.flyout-content-data:not(:last-child) {
   margin-right: 15px;
   padding-right: 10px;
   border-right: 1px solid $gray-light;
@@ -163,11 +165,13 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
   &:last-child {
     margin-right: 0;
   }
-  .fa, svg {
-      color: var(--editorial-color);
-      margin-left: 1px;
+  .fa,
+  svg {
+    color: var(--editorial-color);
+    margin-left: 1px;
   }
-  .fa.exists, .archive-view {
+  .fa.exists,
+  .archive-view {
     color: var(--primary-color);
   }
   &.active {
@@ -224,7 +228,9 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
   .panel {
     max-height: 1000px;
     overflow: visible;
-    .facet-filter, .year-range-state, .rc-slider {
+    .facet-filter,
+    .year-range-state,
+    .rc-slider {
       display: none;
     }
     .year-range-state.filtered {
@@ -244,7 +250,10 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
       }
     }
     &.open {
-      .subfacet-entry, .facet-filter, .year-range-state, .rc-slider {
+      .subfacet-entry,
+      .facet-filter,
+      .year-range-state,
+      .rc-slider {
         display: block;
       }
       .year-range-state.filtered {
@@ -252,5 +261,4 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
       }
     }
   }
-
 }

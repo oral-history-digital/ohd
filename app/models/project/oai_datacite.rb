@@ -11,40 +11,38 @@ module Project::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier identifierType: "URL" do
-        xml.text! oai_catalog_identifier(:de)
-      end
+      xml.identifier oai_catalog_identifier(:de), identifierType: "URL"
 
       xml.alternateIdentifiers do
-        xml.alternateIdentifier alternateIdentifierType: "URL" do
-          xml.text! oai_catalog_identifier(:en)
-        end
+        xml.alternateIdentifier oai_catalog_identifier(:en), alternateIdentifierType: "URL"
       end
 
       xml.relatedIdentifiers do
         oai_locales.each do |locale|
-          xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "Describes" do
-            xml.text! domain_with_optional_identifier + '/' + locale
-          end
+          xml.relatedIdentifier domain_with_optional_identifier + '/' + locale,
+            relatedIdentifierType: "URL",
+            relationType: "Describes",
+            resourceTypeGeneral: "Dataset"
         end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsPartOf" do
-          xml.text! "#{OHD_DOMAIN}"
-        end
+        xml.relatedIdentifier "#{OHD_DOMAIN}",
+          relatedIdentifierType: "URL",
+          relationType: "IsPartOf",
+          resourceTypeGeneral: "Dataset"
         if domain
-          xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "IsSupplementTo" do
-            xml.text! domain
-          end
+          xml.relatedIdentifier domain,
+            relatedIdentifierType: "URL",
+            relationType: "IsSupplementTo",
+            resourceTypeGeneral: "Dataset"
         end
-        xml.relatedIdentifier relatedIdentifierType: "URL", relationType: "HasPart" do
-          xml.text! "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}"
-        end
+        xml.relatedIdentifier "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}",
+          relatedIdentifierType: "URL",
+          relationType: "HasPart",
+          resourceTypeGeneral: "Dataset"
       end
 
       xml.titles do
         oai_locales.each do |locale|
-          xml.title "xml:lang": locale do
-            xml.text! oai_title(locale)
-          end
+          xml.title oai_title(locale), "xml:lang": locale
         end
       end
 
@@ -64,16 +62,22 @@ module Project::OaiDatacite
       xml.contributors do
         oai_leaders.each do |leader_name|
           xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName leader_name.strip, "xml:lang": "en"
+            xml.contributorName leader_name.strip,
+              "xml:lang": "en",
+              nameType: "Personal"
           end
         end
         oai_managers.each do |manager_name|
           xml.contributor contributorType: "ContactPerson" do
-            xml.contributorName manager_name.strip, "xml:lang": "en"
+            xml.contributorName manager_name.strip,
+              "xml:lang": "en",
+              nameType: "Personal"
           end
         end
         xml.contributor contributorType: "HostingInstitution" do
-          xml.contributorName oai_contributor(:en), "xml:lang": "en"
+          xml.contributorName oai_contributor(:en),
+            "xml:lang": "en",
+            nameType: "Organizational"
         end
       end
 
@@ -85,9 +89,7 @@ module Project::OaiDatacite
         end
       end
         
-      xml.resourceType resourceTypeGeneral: "Audiovisual" do 
-        xml.text! "audio/video"
-      end
+      xml.resourceType "audio/video", resourceTypeGeneral: "Audiovisual"
 
       xml.formats do
         oai_formats.each do |format|
@@ -102,58 +104,41 @@ module Project::OaiDatacite
       xml.language oai_languages
 
       xml.subjects do
-        oai_subject_registry_entry_ids.each do |registry_entry_id|
-          %w(de en).each do |locale|
-            xml.subject "xml:lang": locale do
-              xml.text! RegistryEntry.find(registry_entry_id).to_s(locale)
-            end
-          end
-        end
+        oai_base_subject_tags(xml, :datacite)
+        oai_subject_tags(xml, :datacite)
       end
 
       xml.rightsList do
         oai_locales.each do |locale|
-          xml.rights(
+          xml.rights "#{TranslationValue.for('conditions', locale)} (#{name(locale)})",
             "xml:lang": locale,
-            rightsURI: "#{domain_with_optional_identifier}/#{default_locale}/conditions"
-          ) do
-            xml.text! "#{TranslationValue.for('conditions', locale)} (#{name(locale)})"
-          end
-        end
-        oai_locales.each do |locale|
-          xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions" do
-            xml.text! "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)"
-          end
-        end
-        oai_locales.each do |locale|
-          xml.rights "xml:lang": locale, rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection" do
-            xml.text! TranslationValue.for('privacy_protection', locale)
-          end
-        end
-        [:de, :en].each do |locale|
-          xml.rights(
+            rightsURI: "#{domain_with_optional_identifier}/#{locale}/conditions"
+          xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
-            rightsIdentifier: "CC-BY-4.0",
-            rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-          ) do
-            xml.text! "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International"
-          end
+            rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
+          xml.rights TranslationValue.for('privacy_protection', locale),
+            "xml:lang": locale,
+            rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
+        #[:de, :en].each do |locale|
+          #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
+            #"xml:lang": locale,
+            #rightsIdentifier: "CC-BY-4.0",
+            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+        #end
       end
 
       xml.descriptions do
         oai_locales.each do |locale|
-          xml.description "xml:lang": locale, descriptionType: "Abstract" do
-            xml.text! oai_abstract_description(locale)
-          end
+          xml.description oai_abstract_description(locale), "xml:lang": locale, descriptionType: "Abstract"
         end
         %w(de en).each do |locale|
-          xml.description "xml:lang": locale, descriptionType: "TechnicalInfo" do
-            xml.text! oai_media_files_description(locale)
-          end
-          xml.description "xml:lang": locale, descriptionType: "TechnicalInfo" do
-            xml.text! oai_transcript_description(locale)
-          end
+          xml.description oai_media_files_description(locale),
+            "xml:lang": locale,
+            descriptionType: "TechnicalInfo"
+          xml.description oai_transcript_description(locale),
+            "xml:lang": locale,
+            descriptionType: "TechnicalInfo"
         end
       end
 

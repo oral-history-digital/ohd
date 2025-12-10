@@ -85,6 +85,10 @@ module Project::Oai
     ohd_subject_registry_entry_ids
   end
 
+  def oai_subject_registry_entries
+    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
+  end
+
   def oai_abstract_description(locale)
     introduction(locale) ? ActionView::Base.full_sanitizer.sanitize(introduction(locale)) : ''
   end

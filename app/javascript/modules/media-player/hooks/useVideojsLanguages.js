@@ -1,13 +1,15 @@
 /* global require */
+import { useEffect, useMemo } from 'react';
+
 import {
     getLocale,
     getTranslations,
     getTranslationsView,
 } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
-import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import videojs from 'video.js';
+
 import {
     VIDEOJS_I18N_KEY_MAP,
     VIDEOJS_PLUGIN_TRANSLATION_MAP,

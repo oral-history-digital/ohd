@@ -1,19 +1,19 @@
-import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
-
 import { useEventTypeApi } from 'modules/api';
 import { AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
-import { Spinner } from 'modules/spinners';
 import {
-    useEventTypes,
     EventTypeForm,
+    useEventTypes,
     useMutateEventTypes,
 } from 'modules/event-types';
+import { useI18n } from 'modules/i18n';
 import { useInvalidateAllPersonData } from 'modules/person';
-import DataContainer from './DataContainer';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { Helmet } from 'react-helmet';
+
 import AddButton from './AddButton';
+import DataContainer from './DataContainer';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function EventTypesAdminPage() {

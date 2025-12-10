@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
 import { createElement, useState } from 'react';
-import { FaPencilAlt} from 'react-icons/fa';
 
 import { Checkbox } from 'modules/ui';
+import PropTypes from 'prop-types';
+import { FaPencilAlt } from 'react-icons/fa';
+
 import Element from '../Element';
 
 export default function Input({
@@ -33,11 +34,13 @@ export default function Input({
     const [changeFile, setChangeFile] = useState(false);
 
     const onChange = (event) => {
-        let newValue = event.target.files ? event.target.files[0] : event.target.value;
+        let newValue = event.target.files
+            ? event.target.files[0]
+            : event.target.value;
         if (event.target.type === 'checkbox') {
             newValue = event.target.checked;
         }
-        const name =  event.target.name;
+        const name = event.target.name;
 
         handleChange(name, newValue, data);
 
@@ -49,7 +52,7 @@ export default function Input({
             const valid = validate(newValue, otherError);
             handleErrors(name, !valid);
         }
-    }
+    };
 
     const cleanProps = () => {
         const props = {
@@ -64,11 +67,10 @@ export default function Input({
             defaultValue: defaultValue,
             onChange: onChange,
             onClick: onChange,
-        }
+        };
 
         return props;
     };
-
 
     const inputOrImg = () => {
         if (type === 'file' && data && data.src && !changeFile) {
@@ -83,13 +85,13 @@ export default function Input({
                         <FaPencilAlt className="Icon Icon--primary" />
                     </button>
                 </div>
-            )
+            );
         } else if (type === 'checkbox') {
             return createElement(Checkbox, cleanProps());
         } else {
             return createElement('input', cleanProps());
         }
-    }
+    };
 
     return (
         <Element
@@ -101,7 +103,9 @@ export default function Input({
             showErrors={showErrors}
             className={className}
             hidden={hidden}
-            valid={typeof validate === 'function' ? validate(defaultValue) : true}
+            valid={
+                typeof validate === 'function' ? validate(defaultValue) : true
+            }
             mandatory={typeof validate === 'function' && !optional}
             elementType={`${type}_input`}
             individualErrorMsg={individualErrorMsg}

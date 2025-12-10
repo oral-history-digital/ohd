@@ -1,14 +1,16 @@
+import { useEffect, useRef } from 'react';
+
 import classNames from 'classnames';
-import { useScrollOffset } from 'modules/media-player';
 import { AuthorizedContent } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { TapeAndTime } from 'modules/interview-helpers';
+import { useScrollOffset } from 'modules/media-player';
 import { Modal } from 'modules/ui';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+
 import SegmentHeadingForm from './SegmentHeadingForm';
 
 export default function Subheading({ data, active, sendTimeChangeRequest }) {

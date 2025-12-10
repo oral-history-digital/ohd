@@ -1,678 +1,678 @@
 ---
 - :attributes:
-  - :translations_attributes:
-    - name: Redaktion
-      locale: de
-    - name: Editor
-      locale: en
+    - :translations_attributes:
+        - name: Redaktion
+          locale: de
+        - name: Editor
+          locale: en
   :permissions:
-  - :name: General edit
-    :klass: General
-    :action_name: edit
+    - :name: General edit
+      :klass: General
+      :action_name: edit
 - :attributes:
-  - :translations_attributes:
-    - name: Erschließung
-      locale: de
-    - name: Developer
-      locale: en
+    - :translations_attributes:
+        - name: Erschließung
+          locale: de
+        - name: Developer
+          locale: en
   :permissions:
-  - :name: Annotation create
-    :klass: Annotation
-    :action_name: create
-  - :name: Annotation destroy
-    :klass: Annotation
-    :action_name: destroy
-  - :name: Annotation update
-    :klass: Annotation
-    :action_name: update
-  - :name: BiographicalEntry show
-    :klass: BiographicalEntry
-    :action_name: show
-  - :name: BiographicalEntry create
-    :klass: BiographicalEntry
-    :action_name: create
-  - :name: BiographicalEntry destroy
-    :klass: BiographicalEntry
-    :action_name: destroy
-  - :name: BiographicalEntry update
-    :klass: BiographicalEntry
-    :action_name: update
-  - :name: Collection update
-    :klass: Collection
-    :action_name: update
-  - :name: Contribution create
-    :klass: Contribution
-    :action_name: create
-  - :name: Contribution update
-    :klass: Contribution
-    :action_name: update
-  - :name: Contribution destroy
-    :klass: Contribution
-    :action_name: destroy
-  - :name: General edit
-    :klass: General
-    :action_name: edit
-  - :name: Interview create
-    :klass: Interview
-    :action_name: create
-  - :name: Interview show
-    :klass: Interview
-    :action_name: show
-  - :name: Interview update
-    :klass: Interview
-    :action_name: update
-  - :name: Interview destroy
-    :klass: Interview
-    :action_name: destroy
-  - :name: Interview update_speakers
-    :klass: Interview
-    :action_name: update_speakers
-  - :name: Interview mark_texts
-    :klass: Interview
-    :action_name: mark_texts
-  - :name: Material create
-    :klass: Material
-    :action_name: create
-  - :name: Material update
-    :klass: Material
-    :action_name: update
-  - :name: Material destroy
-    :klass: Material
-    :action_name: destroy
-  - :name: Material show
-    :klass: Material
-    :action_name: show
-  - :name: Person create
-    :klass: Person
-    :action_name: create
-  - :name: Person update
-    :klass: Person
-    :action_name: update
-  - :name: Person destroy
-    :klass: Person
-    :action_name: destroy
-  - :name: Photo create
-    :klass: Photo
-    :action_name: create
-  - :name: Photo update
-    :klass: Photo
-    :action_name: update
-  - :name: Photo destroy
-    :klass: Photo
-    :action_name: destroy
-  - :name: Photo show
-    :klass: Photo
-    :action_name: show
-  - :name: RegistryEntry create
-    :klass: RegistryEntry
-    :action_name: create
-  - :name: RegistryEntry update
-    :klass: RegistryEntry
-    :action_name: update
-  - :name: RegistryEntry destroy
-    :klass: RegistryEntry
-    :action_name: destroy
-  - :name: RegistryEntry merge
-    :klass: RegistryEntry
-    :action_name: merge
-  - :name: RegistryEntry show
-    :klass: RegistryEntry
-    :action_name: show
-  - :name: RegistryHierarchy create
-    :klass: RegistryHierarchy
-    :action_name: create
-  - :name: RegistryHierarchy destroy
-    :klass: RegistryHierarchy
-    :action_name: destroy
-  - :name: RegistryName show
-    :klass: RegistryName
-    :action_name: show
-  - :name: RegistryName create
-    :klass: RegistryName
-    :action_name: create
-  - :name: RegistryName destroy
-    :klass: RegistryName
-    :action_name: destroy
-  - :name: RegistryName update
-    :klass: RegistryName
-    :action_name: update
-  - :name: RegistryReference show
-    :klass: RegistryReference
-    :action_name: show
-  - :name: RegistryReference create
-    :klass: RegistryReference
-    :action_name: create
-  - :name: RegistryReference destroy
-    :klass: RegistryReference
-    :action_name: destroy
-  - :name: RegistryReference update
-    :klass: RegistryReference
-    :action_name: update
-  - :name: Segment update
-    :klass: Segment
-    :action_name: update
-  - :name: Upload create
-    :klass: Upload
-    :action_name: create
-  - :name: Interview upload_transcript
-    :klass: Interview
-    :action_name: upload_transcript
-  - :name: NormDatum destroy
-    :klass: NormDatum
-    :action_name: destroy
+    - :name: Annotation create
+      :klass: Annotation
+      :action_name: create
+    - :name: Annotation destroy
+      :klass: Annotation
+      :action_name: destroy
+    - :name: Annotation update
+      :klass: Annotation
+      :action_name: update
+    - :name: BiographicalEntry show
+      :klass: BiographicalEntry
+      :action_name: show
+    - :name: BiographicalEntry create
+      :klass: BiographicalEntry
+      :action_name: create
+    - :name: BiographicalEntry destroy
+      :klass: BiographicalEntry
+      :action_name: destroy
+    - :name: BiographicalEntry update
+      :klass: BiographicalEntry
+      :action_name: update
+    - :name: Collection update
+      :klass: Collection
+      :action_name: update
+    - :name: Contribution create
+      :klass: Contribution
+      :action_name: create
+    - :name: Contribution update
+      :klass: Contribution
+      :action_name: update
+    - :name: Contribution destroy
+      :klass: Contribution
+      :action_name: destroy
+    - :name: General edit
+      :klass: General
+      :action_name: edit
+    - :name: Interview create
+      :klass: Interview
+      :action_name: create
+    - :name: Interview show
+      :klass: Interview
+      :action_name: show
+    - :name: Interview update
+      :klass: Interview
+      :action_name: update
+    - :name: Interview destroy
+      :klass: Interview
+      :action_name: destroy
+    - :name: Interview update_speakers
+      :klass: Interview
+      :action_name: update_speakers
+    - :name: Interview mark_texts
+      :klass: Interview
+      :action_name: mark_texts
+    - :name: Material create
+      :klass: Material
+      :action_name: create
+    - :name: Material update
+      :klass: Material
+      :action_name: update
+    - :name: Material destroy
+      :klass: Material
+      :action_name: destroy
+    - :name: Material show
+      :klass: Material
+      :action_name: show
+    - :name: Person create
+      :klass: Person
+      :action_name: create
+    - :name: Person update
+      :klass: Person
+      :action_name: update
+    - :name: Person destroy
+      :klass: Person
+      :action_name: destroy
+    - :name: Photo create
+      :klass: Photo
+      :action_name: create
+    - :name: Photo update
+      :klass: Photo
+      :action_name: update
+    - :name: Photo destroy
+      :klass: Photo
+      :action_name: destroy
+    - :name: Photo show
+      :klass: Photo
+      :action_name: show
+    - :name: RegistryEntry create
+      :klass: RegistryEntry
+      :action_name: create
+    - :name: RegistryEntry update
+      :klass: RegistryEntry
+      :action_name: update
+    - :name: RegistryEntry destroy
+      :klass: RegistryEntry
+      :action_name: destroy
+    - :name: RegistryEntry merge
+      :klass: RegistryEntry
+      :action_name: merge
+    - :name: RegistryEntry show
+      :klass: RegistryEntry
+      :action_name: show
+    - :name: RegistryHierarchy create
+      :klass: RegistryHierarchy
+      :action_name: create
+    - :name: RegistryHierarchy destroy
+      :klass: RegistryHierarchy
+      :action_name: destroy
+    - :name: RegistryName show
+      :klass: RegistryName
+      :action_name: show
+    - :name: RegistryName create
+      :klass: RegistryName
+      :action_name: create
+    - :name: RegistryName destroy
+      :klass: RegistryName
+      :action_name: destroy
+    - :name: RegistryName update
+      :klass: RegistryName
+      :action_name: update
+    - :name: RegistryReference show
+      :klass: RegistryReference
+      :action_name: show
+    - :name: RegistryReference create
+      :klass: RegistryReference
+      :action_name: create
+    - :name: RegistryReference destroy
+      :klass: RegistryReference
+      :action_name: destroy
+    - :name: RegistryReference update
+      :klass: RegistryReference
+      :action_name: update
+    - :name: Segment update
+      :klass: Segment
+      :action_name: update
+    - :name: Upload create
+      :klass: Upload
+      :action_name: create
+    - :name: Interview upload_transcript
+      :klass: Interview
+      :action_name: upload_transcript
+    - :name: NormDatum destroy
+      :klass: NormDatum
+      :action_name: destroy
 - :attributes:
-  - :translations_attributes:
-    - name: Qualitätsmanagement
-      locale: de
-    - name: Quality Control
-      locale: en
+    - :translations_attributes:
+        - name: Qualitätsmanagement
+          locale: de
+        - name: Quality Control
+          locale: en
   :permissions:
-  - :name: Annotation create
-    :klass: Annotation
-    :action_name: create
-  - :name: Annotation destroy
-    :klass: Annotation
-    :action_name: destroy
-  - :name: Annotation update
-    :klass: Annotation
-    :action_name: update
-  - :name: BiographicalEntry show
-    :klass: BiographicalEntry
-    :action_name: show
-  - :name: BiographicalEntry create
-    :klass: BiographicalEntry
-    :action_name: create
-  - :name: BiographicalEntry destroy
-    :klass: BiographicalEntry
-    :action_name: destroy
-  - :name: BiographicalEntry update
-    :klass: BiographicalEntry
-    :action_name: update
-  - :name: Collection update
-    :klass: Collection
-    :action_name: update
-  - :name: Comment create
-    :klass: Comment
-    :action_name: create
-  - :name: comment destroy
-    :klass: Comment
-    :action_name: destroy
-  - :name: comment update
-    :klass: Comment
-    :action_name: update
-  - :name: Contribution create
-    :klass: Contribution
-    :action_name: create
-  - :name: Contribution update
-    :klass: Contribution
-    :action_name: update
-  - :name: Contribution destroy
-    :klass: Contribution
-    :action_name: destroy
-  - :name: General edit
-    :klass: General
-    :action_name: edit
-  - :name: Interview create
-    :klass: Interview
-    :action_name: create
-  - :name: Interview show
-    :klass: Interview
-    :action_name: show
-  - :name: Interview update
-    :klass: Interview
-    :action_name: update
-  - :name: Interview destroy
-    :klass: Interview
-    :action_name: destroy
-  - :name: Interview download
-    :klass: Interview
-    :action_name: download
-  - :name: Interview update_speakers
-    :klass: Interview
-    :action_name: update_speakers
-  - :name: Interview mark_texts
-    :klass: Interview
-    :action_name: mark_texts
-  - :name: Material create
-    :klass: Material
-    :action_name: create
-  - :name: Material update
-    :klass: Material
-    :action_name: update
-  - :name: Material destroy
-    :klass: Material
-    :action_name: destroy
-  - :name: Material show
-    :klass: Material
-    :action_name: show
-  - :name: MetadataField create
-    :klass: MetadataField
-    :action_name: create
-  - :name: MetadataField update
-    :klass: MetadataField
-    :action_name: update
-  - :name: MetadataField destroy
-    :klass: MetadataField
-    :action_name: destroy
-  - :name: Person create
-    :klass: Person
-    :action_name: create
-  - :name: Person update
-    :klass: Person
-    :action_name: update
-  - :name: Person destroy
-    :klass: Person
-    :action_name: destroy
-  - :name: Photo create
-    :klass: Photo
-    :action_name: create
-  - :name: Photo update
-    :klass: Photo
-    :action_name: update
-  - :name: Photo destroy
-    :klass: Photo
-    :action_name: destroy
-  - :name: Photo show
-    :klass: Photo
-    :action_name: show
-  - :name: RegistryEntry create
-    :klass: RegistryEntry
-    :action_name: create
-  - :name: RegistryEntry update
-    :klass: RegistryEntry
-    :action_name: update
-  - :name: RegistryEntry destroy
-    :klass: RegistryEntry
-    :action_name: destroy
-  - :name: RegistryEntry merge
-    :klass: RegistryEntry
-    :action_name: merge
-  - :name: RegistryEntry show
-    :klass: RegistryEntry
-    :action_name: show
-  - :name: RegistryHierarchy create
-    :klass: RegistryHierarchy
-    :action_name: create
-  - :name: RegistryHierarchy destroy
-    :klass: RegistryHierarchy
-    :action_name: destroy
-  - :name: RegistryName show
-    :klass: RegistryName
-    :action_name: show
-  - :name: RegistryName create
-    :klass: RegistryName
-    :action_name: create
-  - :name: RegistryName destroy
-    :klass: RegistryName
-    :action_name: destroy
-  - :name: RegistryName update
-    :klass: RegistryName
-    :action_name: update
-  - :name: RegistryReference show
-    :klass: RegistryReference
-    :action_name: show
-  - :name: RegistryReference create
-    :klass: RegistryReference
-    :action_name: create
-  - :name: RegistryReference destroy
-    :klass: RegistryReference
-    :action_name: destroy
-  - :name: RegistryReference update
-    :klass: RegistryReference
-    :action_name: update
-  - :name: Segment update
-    :klass: Segment
-    :action_name: update
-  - :name: Task assign
-    :klass: Task
-    :action_name: assign
-  - :name: Task create
-    :klass: Task
-    :action_name: create
-  - :name: Task destroy
-    :klass: Task
-    :action_name: destroy
-  - :name: Task update
-    :klass: Task
-    :action_name: update
-  - :name: Upload create
-    :klass: Upload
-    :action_name: create
-  - :name: Interview upload_transcript
-    :klass: Interview
-    :action_name: upload_transcript
-  - :name: UserRole create
-    :klass: UserRole
-    :action_name: create
-  - :name: UserRole destroy
-    :klass: UserRole
-    :action_name: destroy
-  - :name: NormDatum destroy
-    :klass: NormDatum
-    :action_name: destroy
+    - :name: Annotation create
+      :klass: Annotation
+      :action_name: create
+    - :name: Annotation destroy
+      :klass: Annotation
+      :action_name: destroy
+    - :name: Annotation update
+      :klass: Annotation
+      :action_name: update
+    - :name: BiographicalEntry show
+      :klass: BiographicalEntry
+      :action_name: show
+    - :name: BiographicalEntry create
+      :klass: BiographicalEntry
+      :action_name: create
+    - :name: BiographicalEntry destroy
+      :klass: BiographicalEntry
+      :action_name: destroy
+    - :name: BiographicalEntry update
+      :klass: BiographicalEntry
+      :action_name: update
+    - :name: Collection update
+      :klass: Collection
+      :action_name: update
+    - :name: Comment create
+      :klass: Comment
+      :action_name: create
+    - :name: comment destroy
+      :klass: Comment
+      :action_name: destroy
+    - :name: comment update
+      :klass: Comment
+      :action_name: update
+    - :name: Contribution create
+      :klass: Contribution
+      :action_name: create
+    - :name: Contribution update
+      :klass: Contribution
+      :action_name: update
+    - :name: Contribution destroy
+      :klass: Contribution
+      :action_name: destroy
+    - :name: General edit
+      :klass: General
+      :action_name: edit
+    - :name: Interview create
+      :klass: Interview
+      :action_name: create
+    - :name: Interview show
+      :klass: Interview
+      :action_name: show
+    - :name: Interview update
+      :klass: Interview
+      :action_name: update
+    - :name: Interview destroy
+      :klass: Interview
+      :action_name: destroy
+    - :name: Interview download
+      :klass: Interview
+      :action_name: download
+    - :name: Interview update_speakers
+      :klass: Interview
+      :action_name: update_speakers
+    - :name: Interview mark_texts
+      :klass: Interview
+      :action_name: mark_texts
+    - :name: Material create
+      :klass: Material
+      :action_name: create
+    - :name: Material update
+      :klass: Material
+      :action_name: update
+    - :name: Material destroy
+      :klass: Material
+      :action_name: destroy
+    - :name: Material show
+      :klass: Material
+      :action_name: show
+    - :name: MetadataField create
+      :klass: MetadataField
+      :action_name: create
+    - :name: MetadataField update
+      :klass: MetadataField
+      :action_name: update
+    - :name: MetadataField destroy
+      :klass: MetadataField
+      :action_name: destroy
+    - :name: Person create
+      :klass: Person
+      :action_name: create
+    - :name: Person update
+      :klass: Person
+      :action_name: update
+    - :name: Person destroy
+      :klass: Person
+      :action_name: destroy
+    - :name: Photo create
+      :klass: Photo
+      :action_name: create
+    - :name: Photo update
+      :klass: Photo
+      :action_name: update
+    - :name: Photo destroy
+      :klass: Photo
+      :action_name: destroy
+    - :name: Photo show
+      :klass: Photo
+      :action_name: show
+    - :name: RegistryEntry create
+      :klass: RegistryEntry
+      :action_name: create
+    - :name: RegistryEntry update
+      :klass: RegistryEntry
+      :action_name: update
+    - :name: RegistryEntry destroy
+      :klass: RegistryEntry
+      :action_name: destroy
+    - :name: RegistryEntry merge
+      :klass: RegistryEntry
+      :action_name: merge
+    - :name: RegistryEntry show
+      :klass: RegistryEntry
+      :action_name: show
+    - :name: RegistryHierarchy create
+      :klass: RegistryHierarchy
+      :action_name: create
+    - :name: RegistryHierarchy destroy
+      :klass: RegistryHierarchy
+      :action_name: destroy
+    - :name: RegistryName show
+      :klass: RegistryName
+      :action_name: show
+    - :name: RegistryName create
+      :klass: RegistryName
+      :action_name: create
+    - :name: RegistryName destroy
+      :klass: RegistryName
+      :action_name: destroy
+    - :name: RegistryName update
+      :klass: RegistryName
+      :action_name: update
+    - :name: RegistryReference show
+      :klass: RegistryReference
+      :action_name: show
+    - :name: RegistryReference create
+      :klass: RegistryReference
+      :action_name: create
+    - :name: RegistryReference destroy
+      :klass: RegistryReference
+      :action_name: destroy
+    - :name: RegistryReference update
+      :klass: RegistryReference
+      :action_name: update
+    - :name: Segment update
+      :klass: Segment
+      :action_name: update
+    - :name: Task assign
+      :klass: Task
+      :action_name: assign
+    - :name: Task create
+      :klass: Task
+      :action_name: create
+    - :name: Task destroy
+      :klass: Task
+      :action_name: destroy
+    - :name: Task update
+      :klass: Task
+      :action_name: update
+    - :name: Upload create
+      :klass: Upload
+      :action_name: create
+    - :name: Interview upload_transcript
+      :klass: Interview
+      :action_name: upload_transcript
+    - :name: UserRole create
+      :klass: UserRole
+      :action_name: create
+    - :name: UserRole destroy
+      :klass: UserRole
+      :action_name: destroy
+    - :name: NormDatum destroy
+      :klass: NormDatum
+      :action_name: destroy
 - :attributes:
-  - :translations_attributes:
-    - name: Archivmanagement
-      locale: de
-    - name: Archive Manager
-      locale: en
+    - :translations_attributes:
+        - name: Archivmanagement
+          locale: de
+        - name: Archive Manager
+          locale: en
   :permissions:
-  - :name: Annotation create
-    :klass: Annotation
-    :action_name: create
-  - :name: Annotation destroy
-    :klass: Annotation
-    :action_name: destroy
-  - :name: Annotation update
-    :klass: Annotation
-    :action_name: update
-  - :name: BiographicalEntry show
-    :klass: BiographicalEntry
-    :action_name: show
-  - :name: BiographicalEntry create
-    :klass: BiographicalEntry
-    :action_name: create
-  - :name: BiographicalEntry destroy
-    :klass: BiographicalEntry
-    :action_name: destroy
-  - :name: BiographicalEntry update
-    :klass: BiographicalEntry
-    :action_name: update
-  - :name: Collection create
-    :klass: Collection
-    :action_name: create
-  - :name: Collection destroy
-    :klass: Collection
-    :action_name: destroy
-  - :name: Collection update
-    :klass: Collection
-    :action_name: update
-  - :name: Comment create
-    :klass: Comment
-    :action_name: create
-  - :name: comment destroy
-    :klass: Comment
-    :action_name: destroy
-  - :name: comment update
-    :klass: Comment
-    :action_name: update
-  - :name: Contribution create
-    :klass: Contribution
-    :action_name: create
-  - :name: Contribution update
-    :klass: Contribution
-    :action_name: update
-  - :name: Contribution destroy
-    :klass: Contribution
-    :action_name: destroy
-  - :name: ContributionType create
-    :klass: ContributionType
-    :action_name: create
-  - :name: ContributionType destroy
-    :klass: ContributionType
-    :action_name: destroy
-  - :name: ContributionType update
-    :klass: ContributionType
-    :action_name: update
-  - :name: ExternalLink create
-    :klass: ExternalLink
-    :action_name: create
-  - :name: ExternalLink destroy
-    :klass: ExternalLink
-    :action_name: destroy
-  - :name: ExternalLink update
-    :klass: ExternalLink
-    :action_name: update
-  - :name: General edit
-    :klass: General
-    :action_name: edit
-  - :name: Interview create
-    :klass: Interview
-    :action_name: create
-  - :name: Interview show
-    :klass: Interview
-    :action_name: show
-  - :name: Interview update
-    :klass: Interview
-    :action_name: update
-  - :name: Interview destroy
-    :klass: Interview
-    :action_name: destroy
-  - :name: Interview download
-    :klass: Interview
-    :action_name: download
-  - :name: Interview update_speakers
-    :klass: Interview
-    :action_name: update_speakers
-  - :name: Interview mark_texts
-    :klass: Interview
-    :action_name: mark_texts
-  - :name: Logo create
-    :klass: Logo
-    :action_name: create
-  - :name: Logo update
-    :klass: Logo
-    :action_name: update
-  - :name: Logo destroy
-    :klass: Logo
-    :action_name: destroy
-  - :name: Material create
-    :klass: Material
-    :action_name: create
-  - :name: Material update
-    :klass: Material
-    :action_name: update
-  - :name: Material destroy
-    :klass: Material
-    :action_name: destroy
-  - :name: Material show
-    :klass: Material
-    :action_name: show
-  - :name: MetadataField create
-    :klass: MetadataField
-    :action_name: create
-  - :name: MetadataField update
-    :klass: MetadataField
-    :action_name: update
-  - :name: MetadataField destroy
-    :klass: MetadataField
-    :action_name: destroy
-  - :name: Person create
-    :klass: Person
-    :action_name: create
-  - :name: Person update
-    :klass: Person
-    :action_name: update
-  - :name: Person destroy
-    :klass: Person
-    :action_name: destroy
-  - :name: Photo create
-    :klass: Photo
-    :action_name: create
-  - :name: Photo update
-    :klass: Photo
-    :action_name: update
-  - :name: Photo destroy
-    :klass: Photo
-    :action_name: destroy
-  - :name: Photo show
-    :klass: Photo
-    :action_name: show
-  - :name: Project update
-    :klass: Project
-    :action_name: update
-  - :name: InstitutionProject update
-    :klass: InstitutionProject
-    :action_name: update
-  - :name: InstitutionProject create
-    :klass: InstitutionProject
-    :action_name: create
-  - :name: RegistryEntry create
-    :klass: RegistryEntry
-    :action_name: create
-  - :name: RegistryEntry update
-    :klass: RegistryEntry
-    :action_name: update
-  - :name: RegistryEntry destroy
-    :klass: RegistryEntry
-    :action_name: destroy
-  - :name: RegistryEntry merge
-    :klass: RegistryEntry
-    :action_name: merge
-  - :name: RegistryEntry show
-    :klass: RegistryEntry
-    :action_name: show
-  - :name: RegistryHierarchy create
-    :klass: RegistryHierarchy
-    :action_name: create
-  - :name: RegistryHierarchy destroy
-    :klass: RegistryHierarchy
-    :action_name: destroy
-  - :name: RegistryName show
-    :klass: RegistryName
-    :action_name: show
-  - :name: RegistryName create
-    :klass: RegistryName
-    :action_name: create
-  - :name: RegistryName destroy
-    :klass: RegistryName
-    :action_name: destroy
-  - :name: RegistryName update
-    :klass: RegistryName
-    :action_name: update
-  - :name: RegistryNameType create
-    :klass: RegistryNameType
-    :action_name: create
-  - :name: RegistryNameType destroy
-    :klass: RegistryNameType
-    :action_name: destroy
-  - :name: RegistryNameType update
-    :klass: RegistryNameType
-    :action_name: update
-  - :name: RegistryReference show
-    :klass: RegistryReference
-    :action_name: show
-  - :name: RegistryReference create
-    :klass: RegistryReference
-    :action_name: create
-  - :name: RegistryReference destroy
-    :klass: RegistryReference
-    :action_name: destroy
-  - :name: RegistryReference update
-    :klass: RegistryReference
-    :action_name: update
-  - :name: RegistryReferenceType create
-    :klass: RegistryReferenceType
-    :action_name: create
-  - :name: RegistryReferenceType destroy
-    :klass: RegistryReferenceType
-    :action_name: destroy
-  - :name: RegistryReferenceType update
-    :klass: RegistryReferenceType
-    :action_name: update
-  - :name: Role create
-    :klass: Role
-    :action_name: create
-  - :name: Role destroy
-    :klass: Role
-    :action_name: destroy
-  - :name: RolePermission create
-    :klass: RolePermission
-    :action_name: create
-  - :name: RolePermission destroy
-    :klass: RolePermission
-    :action_name: destroy
-  - :name: RolePermission update
-    :klass: RolePermission
-    :action_name: update
-  - :name: Segment update
-    :klass: Segment
-    :action_name: update
-  - :name: SponsorLogo create
-    :klass: SponsorLogo
-    :action_name: create
-  - :name: SponsorLogo update
-    :klass: SponsorLogo
-    :action_name: update
-  - :name: SponsorLogo destroy
-    :klass: SponsorLogo
-    :action_name: destroy
-  - :name: Task assign
-    :klass: Task
-    :action_name: assign
-  - :name: Task create
-    :klass: Task
-    :action_name: create
-  - :name: Task destroy
-    :klass: Task
-    :action_name: destroy
-  - :name: Task update
-    :klass: Task
-    :action_name: update
-  - :name: TaskType create
-    :klass: TaskType
-    :action_name: create
-  - :name: TaskType destroy
-    :klass: TaskType
-    :action_name: destroy
-  - :name: TaskTypePermission create
-    :klass: TaskTypePermission
-    :action_name: create
-  - :name: TaskTypePermission destroy
-    :klass: TaskTypePermission
-    :action_name: destroy
-  - :name: TaskTypePermission update
-    :klass: TaskTypePermission
-    :action_name: update
-  - :name: Upload create
-    :klass: Upload
-    :action_name: create
-  - :name: Interview upload_transcript
-    :klass: Interview
-    :action_name: upload_transcript
-  - :name: UploadedFile create
-    :klass: UploadedFile
-    :action_name: create
-  - :name: UploadedFile destroy
-    :klass: UploadedFile
-    :action_name: destroy
-  - :name: UploadedFile update
-    :klass: UploadedFile
-    :action_name: update
-  - :name: User update
-    :klass: User
-    :action_name: update
-  - :name: UserProject update
-    :klass: UserProject
-    :action_name: update
-  - :name: UserRole create
-    :klass: UserRole
-    :action_name: create
-  - :name: UserRole destroy
-    :klass: UserRole
-    :action_name: destroy
-  - :name: NormDatum destroy
-    :klass: NormDatum
-    :action_name: destroy
+    - :name: Annotation create
+      :klass: Annotation
+      :action_name: create
+    - :name: Annotation destroy
+      :klass: Annotation
+      :action_name: destroy
+    - :name: Annotation update
+      :klass: Annotation
+      :action_name: update
+    - :name: BiographicalEntry show
+      :klass: BiographicalEntry
+      :action_name: show
+    - :name: BiographicalEntry create
+      :klass: BiographicalEntry
+      :action_name: create
+    - :name: BiographicalEntry destroy
+      :klass: BiographicalEntry
+      :action_name: destroy
+    - :name: BiographicalEntry update
+      :klass: BiographicalEntry
+      :action_name: update
+    - :name: Collection create
+      :klass: Collection
+      :action_name: create
+    - :name: Collection destroy
+      :klass: Collection
+      :action_name: destroy
+    - :name: Collection update
+      :klass: Collection
+      :action_name: update
+    - :name: Comment create
+      :klass: Comment
+      :action_name: create
+    - :name: comment destroy
+      :klass: Comment
+      :action_name: destroy
+    - :name: comment update
+      :klass: Comment
+      :action_name: update
+    - :name: Contribution create
+      :klass: Contribution
+      :action_name: create
+    - :name: Contribution update
+      :klass: Contribution
+      :action_name: update
+    - :name: Contribution destroy
+      :klass: Contribution
+      :action_name: destroy
+    - :name: ContributionType create
+      :klass: ContributionType
+      :action_name: create
+    - :name: ContributionType destroy
+      :klass: ContributionType
+      :action_name: destroy
+    - :name: ContributionType update
+      :klass: ContributionType
+      :action_name: update
+    - :name: ExternalLink create
+      :klass: ExternalLink
+      :action_name: create
+    - :name: ExternalLink destroy
+      :klass: ExternalLink
+      :action_name: destroy
+    - :name: ExternalLink update
+      :klass: ExternalLink
+      :action_name: update
+    - :name: General edit
+      :klass: General
+      :action_name: edit
+    - :name: Interview create
+      :klass: Interview
+      :action_name: create
+    - :name: Interview show
+      :klass: Interview
+      :action_name: show
+    - :name: Interview update
+      :klass: Interview
+      :action_name: update
+    - :name: Interview destroy
+      :klass: Interview
+      :action_name: destroy
+    - :name: Interview download
+      :klass: Interview
+      :action_name: download
+    - :name: Interview update_speakers
+      :klass: Interview
+      :action_name: update_speakers
+    - :name: Interview mark_texts
+      :klass: Interview
+      :action_name: mark_texts
+    - :name: Logo create
+      :klass: Logo
+      :action_name: create
+    - :name: Logo update
+      :klass: Logo
+      :action_name: update
+    - :name: Logo destroy
+      :klass: Logo
+      :action_name: destroy
+    - :name: Material create
+      :klass: Material
+      :action_name: create
+    - :name: Material update
+      :klass: Material
+      :action_name: update
+    - :name: Material destroy
+      :klass: Material
+      :action_name: destroy
+    - :name: Material show
+      :klass: Material
+      :action_name: show
+    - :name: MetadataField create
+      :klass: MetadataField
+      :action_name: create
+    - :name: MetadataField update
+      :klass: MetadataField
+      :action_name: update
+    - :name: MetadataField destroy
+      :klass: MetadataField
+      :action_name: destroy
+    - :name: Person create
+      :klass: Person
+      :action_name: create
+    - :name: Person update
+      :klass: Person
+      :action_name: update
+    - :name: Person destroy
+      :klass: Person
+      :action_name: destroy
+    - :name: Photo create
+      :klass: Photo
+      :action_name: create
+    - :name: Photo update
+      :klass: Photo
+      :action_name: update
+    - :name: Photo destroy
+      :klass: Photo
+      :action_name: destroy
+    - :name: Photo show
+      :klass: Photo
+      :action_name: show
+    - :name: Project update
+      :klass: Project
+      :action_name: update
+    - :name: InstitutionProject update
+      :klass: InstitutionProject
+      :action_name: update
+    - :name: InstitutionProject create
+      :klass: InstitutionProject
+      :action_name: create
+    - :name: RegistryEntry create
+      :klass: RegistryEntry
+      :action_name: create
+    - :name: RegistryEntry update
+      :klass: RegistryEntry
+      :action_name: update
+    - :name: RegistryEntry destroy
+      :klass: RegistryEntry
+      :action_name: destroy
+    - :name: RegistryEntry merge
+      :klass: RegistryEntry
+      :action_name: merge
+    - :name: RegistryEntry show
+      :klass: RegistryEntry
+      :action_name: show
+    - :name: RegistryHierarchy create
+      :klass: RegistryHierarchy
+      :action_name: create
+    - :name: RegistryHierarchy destroy
+      :klass: RegistryHierarchy
+      :action_name: destroy
+    - :name: RegistryName show
+      :klass: RegistryName
+      :action_name: show
+    - :name: RegistryName create
+      :klass: RegistryName
+      :action_name: create
+    - :name: RegistryName destroy
+      :klass: RegistryName
+      :action_name: destroy
+    - :name: RegistryName update
+      :klass: RegistryName
+      :action_name: update
+    - :name: RegistryNameType create
+      :klass: RegistryNameType
+      :action_name: create
+    - :name: RegistryNameType destroy
+      :klass: RegistryNameType
+      :action_name: destroy
+    - :name: RegistryNameType update
+      :klass: RegistryNameType
+      :action_name: update
+    - :name: RegistryReference show
+      :klass: RegistryReference
+      :action_name: show
+    - :name: RegistryReference create
+      :klass: RegistryReference
+      :action_name: create
+    - :name: RegistryReference destroy
+      :klass: RegistryReference
+      :action_name: destroy
+    - :name: RegistryReference update
+      :klass: RegistryReference
+      :action_name: update
+    - :name: RegistryReferenceType create
+      :klass: RegistryReferenceType
+      :action_name: create
+    - :name: RegistryReferenceType destroy
+      :klass: RegistryReferenceType
+      :action_name: destroy
+    - :name: RegistryReferenceType update
+      :klass: RegistryReferenceType
+      :action_name: update
+    - :name: Role create
+      :klass: Role
+      :action_name: create
+    - :name: Role destroy
+      :klass: Role
+      :action_name: destroy
+    - :name: RolePermission create
+      :klass: RolePermission
+      :action_name: create
+    - :name: RolePermission destroy
+      :klass: RolePermission
+      :action_name: destroy
+    - :name: RolePermission update
+      :klass: RolePermission
+      :action_name: update
+    - :name: Segment update
+      :klass: Segment
+      :action_name: update
+    - :name: SponsorLogo create
+      :klass: SponsorLogo
+      :action_name: create
+    - :name: SponsorLogo update
+      :klass: SponsorLogo
+      :action_name: update
+    - :name: SponsorLogo destroy
+      :klass: SponsorLogo
+      :action_name: destroy
+    - :name: Task assign
+      :klass: Task
+      :action_name: assign
+    - :name: Task create
+      :klass: Task
+      :action_name: create
+    - :name: Task destroy
+      :klass: Task
+      :action_name: destroy
+    - :name: Task update
+      :klass: Task
+      :action_name: update
+    - :name: TaskType create
+      :klass: TaskType
+      :action_name: create
+    - :name: TaskType destroy
+      :klass: TaskType
+      :action_name: destroy
+    - :name: TaskTypePermission create
+      :klass: TaskTypePermission
+      :action_name: create
+    - :name: TaskTypePermission destroy
+      :klass: TaskTypePermission
+      :action_name: destroy
+    - :name: TaskTypePermission update
+      :klass: TaskTypePermission
+      :action_name: update
+    - :name: Upload create
+      :klass: Upload
+      :action_name: create
+    - :name: Interview upload_transcript
+      :klass: Interview
+      :action_name: upload_transcript
+    - :name: UploadedFile create
+      :klass: UploadedFile
+      :action_name: create
+    - :name: UploadedFile destroy
+      :klass: UploadedFile
+      :action_name: destroy
+    - :name: UploadedFile update
+      :klass: UploadedFile
+      :action_name: update
+    - :name: User update
+      :klass: User
+      :action_name: update
+    - :name: UserProject update
+      :klass: UserProject
+      :action_name: update
+    - :name: UserRole create
+      :klass: UserRole
+      :action_name: create
+    - :name: UserRole destroy
+      :klass: UserRole
+      :action_name: destroy
+    - :name: NormDatum destroy
+      :klass: NormDatum
+      :action_name: destroy
 - :attributes:
-  - :translations_attributes:
-    - name: Benutzer*innenverwaltung
-      locale: de
-    - name: User administration
-      locale: en
+    - :translations_attributes:
+        - name: Benutzer*innenverwaltung
+          locale: de
+        - name: User administration
+          locale: en
   :permissions:
-  - :name: General edit
-    :klass: General
-    :action_name: edit
-  - :name: User update
-    :klass: User
-    :action_name: update
-  - :name: UserProject update
-    :klass: UserProject
-    :action_name: update
-  - :name: UserRole create
-    :klass: UserRole
-    :action_name: create
-  - :name: UserRole destroy
-    :klass: UserRole
-    :action_name: destroy
+    - :name: General edit
+      :klass: General
+      :action_name: edit
+    - :name: User update
+      :klass: User
+      :action_name: update
+    - :name: UserProject update
+      :klass: UserProject
+      :action_name: update
+    - :name: UserRole create
+      :klass: UserRole
+      :action_name: create
+    - :name: UserRole destroy
+      :klass: UserRole
+      :action_name: destroy

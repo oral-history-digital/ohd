@@ -15,5 +15,5 @@ export {
     validateTapeNumber,
     validateColor,
     validateGeoCoordinate,
-    validateDate
+    validateDate,
 } from './validators';

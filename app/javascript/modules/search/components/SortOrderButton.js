@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 import {
     FaSortAlphaDown,
     FaSortAlphaUp,
@@ -9,27 +10,20 @@ import {
     FaSortNumericUp,
 } from 'react-icons/fa';
 
-import { useI18n } from 'modules/i18n';
-
-export default function SortOrderButton({
-    className,
-    type,
-    value,
-    onChange,
-}) {
+export default function SortOrderButton({ className, type, value, onChange }) {
     const { t } = useI18n();
 
     let Icon;
-    switch(type) {
-    case 'amount':
-        Icon = value === 'asc' ? FaSortAmountDownAlt : FaSortAmountUpAlt;
-        break;
-    case 'numeric':
-        Icon = value === 'asc' ? FaSortNumericDown : FaSortNumericUp;
-        break;
-    case 'alpha':
-    default:
-        Icon = value === 'asc' ? FaSortAlphaDown : FaSortAlphaUp;
+    switch (type) {
+        case 'amount':
+            Icon = value === 'asc' ? FaSortAmountDownAlt : FaSortAmountUpAlt;
+            break;
+        case 'numeric':
+            Icon = value === 'asc' ? FaSortNumericDown : FaSortNumericUp;
+            break;
+        case 'alpha':
+        default:
+            Icon = value === 'asc' ? FaSortAlphaDown : FaSortAlphaUp;
     }
 
     function handleChange() {
@@ -44,7 +38,7 @@ export default function SortOrderButton({
             title={t(`modules.search.sorting.order.${value}`)}
             onClick={handleChange}
         >
-            <Icon className="SortOrderButton-icon"/>
+            <Icon className="SortOrderButton-icon" />
         </button>
     );
 }

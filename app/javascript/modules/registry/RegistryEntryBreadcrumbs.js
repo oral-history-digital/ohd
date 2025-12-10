@@ -1,10 +1,7 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
-
-export default function RegistryEntryBreadcrumbs({
-    registryEntry,
-}) {
+export default function RegistryEntryBreadcrumbs({ registryEntry }) {
     const { locale } = useI18n();
 
     function label(id, key) {
@@ -26,8 +23,8 @@ export default function RegistryEntryBreadcrumbs({
         Object.keys(breadCrumbs).map((id, key) => {
             let breadCrumbPath = [];
             breadCrumbPath.push(label(id, `${key}`));
-            let current = breadCrumbs[id]
-            let counter = 0
+            let current = breadCrumbs[id];
+            let counter = 0;
             while (current) {
                 counter = counter + 1;
                 let currentId = Object.keys(current)[0];
@@ -35,9 +32,9 @@ export default function RegistryEntryBreadcrumbs({
                 current = current[currentId];
             }
             paths.push(breadCrumbPath.reverse().splice(1)); // remove first "Register"
-            paths.push(<br key={key}/>)
-        })
-        paths.splice(-1,1) //remove last <br />
+            paths.push(<br key={key} />);
+        });
+        paths.splice(-1, 1); //remove last <br />
     }
     return paths;
 }

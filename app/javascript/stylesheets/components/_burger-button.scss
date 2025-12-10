@@ -1,18 +1,18 @@
 .BurgerButton {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: none;
-    color: $gray-dark;
-    cursor: pointer;
-    font-size: $base-unit;
-    line-height: $base-unit;
-    outline: none;
-    padding: $base-unit * 0.25;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: $gray-dark;
+  cursor: pointer;
+  font-size: $base-unit;
+  line-height: $base-unit;
+  outline: none;
+  padding: $base-unit * 0.25;
 }
 
 .BurgerButton-icon {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
 
 .BurgerButton.is-closed {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }

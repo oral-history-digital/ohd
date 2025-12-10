@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Dialog } from '@reach/dialog';
 
-import { useI18n } from 'modules/i18n';
-import { t as originalT } from 'modules/i18n';
-import { underscore } from 'modules/strings';
-import { Form } from 'modules/forms';
+import { Dialog } from '@reach/dialog';
 import { submitDataWithFetch } from 'modules/api';
-import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
-import { usePathBase } from 'modules/routes';
 import { fetchTranslationsForLocale } from 'modules/archive';
+import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
+import { Form } from 'modules/forms';
+import { t as originalT, useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { underscore } from 'modules/strings';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 export default function UserForm({
     data,
@@ -185,6 +184,7 @@ UserForm.propTypes = {
         pre_access_location: PropTypes.string,
         first_name: PropTypes.string,
         last_name: PropTypes.string,
+        type: PropTypes.string,
     }),
     dataPath: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

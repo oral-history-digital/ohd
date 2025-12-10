@@ -1,8 +1,8 @@
+import { getTranslations, getTranslationsView } from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject } from 'modules/data';
-import { getTranslationsView, getTranslations } from 'modules/archive';
 import UserForm from './UserForm';
 
 const mapStateToProps = (state) => ({

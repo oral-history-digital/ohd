@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+
 import classNames from 'classnames';
 import { AuthorizedContent } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
@@ -7,9 +9,9 @@ import { useScrollOffset } from 'modules/media-player';
 import { Modal } from 'modules/ui';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
 import { FaMinus, FaPencilAlt, FaPlus } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+
 import SegmentHeadingForm from './SegmentHeadingForm';
 import SubheadingContainer from './SubheadingContainer';
 

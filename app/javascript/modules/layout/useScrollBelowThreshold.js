@@ -1,6 +1,6 @@
-import throttle from 'lodash.throttle';
 import { useEffect, useState } from 'react';
 
+import throttle from 'lodash.throttle';
 import {
     SITE_HEADER_HEIGHT_DESKTOP,
     SITE_HEADER_HEIGHT_MOBILE,

@@ -1,7 +1,9 @@
 // Content
 
 // Headlines
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: $font-family-heading;
   font-weight: $font-family-heading-weight;
 }
@@ -82,12 +84,14 @@ h6 {
 // Links
 
 a {
-  &:link, &:visited {
+  &:link,
+  &:visited {
     color: var(--primary-color); // formerly $link-color;
     background-color: transparent;
     text-decoration: none;
   }
-  &[href]:hover, &:active {
+  &[href]:hover,
+  &:active {
     text-decoration: underline;
   }
   &:hover {
@@ -114,11 +118,13 @@ p {
   //}
 }
 
-strong, b {
+strong,
+b {
   font-weight: bold;
 }
 
-em, i {
+em,
+i {
   font-style: italic;
 }
 

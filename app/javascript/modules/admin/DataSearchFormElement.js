@@ -1,9 +1,9 @@
 import { createElement } from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
-import { pluralize } from 'modules/strings';
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { pluralize } from 'modules/strings';
+import PropTypes from 'prop-types';
 
 export default function DataSearchFormElement({
     scope,
@@ -22,13 +22,16 @@ export default function DataSearchFormElement({
 
     if (element.type === 'select') {
         const selectOptions = element.values.map((value, index) => (
-            <option value={value} key={`${element.attributeName}-option-${index}`}>
+            <option
+                value={value}
+                key={`${element.attributeName}-option-${index}`}
+            >
                 {t(`${pluralize(element.attributeName)}.${value}`)}
             </option>
         ));
 
         selectOptions.unshift(
-            <option value='' key={`${scope}-choose`}>
+            <option value="" key={`${scope}-choose`}>
                 {t('choose')}
             </option>
         );

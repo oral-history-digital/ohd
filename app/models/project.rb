@@ -103,6 +103,7 @@ class Project < ApplicationRecord
     message: "%{value} is not a valid upload type" }
 
   scope :shared, -> { where(workflow_state: 'public' )}
+  scope :unshared, -> {where(workflow_state: 'unshared')}
 
   before_save :touch_interviews
   def touch_interviews
@@ -160,6 +161,10 @@ class Project < ApplicationRecord
 
   def is_ohd?
     identifier == 'ohd'
+  end
+
+  def interviewer_on_landing_page?
+    contribution_types.where(display_on_landing_page: true, code: 'interviewer').exists?
   end
 
   def num_interviews

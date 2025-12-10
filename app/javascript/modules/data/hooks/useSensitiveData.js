@@ -1,8 +1,9 @@
+import { useEffect } from 'react';
+
 import { fetchData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { pluralize, underscore } from 'modules/strings';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 export function useSensitiveData(data, sensitiveAttributes) {

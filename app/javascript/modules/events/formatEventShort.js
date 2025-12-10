@@ -9,9 +9,7 @@ export default function formatEventShort(event, locale) {
         dateStr += `–${endDate.toLocaleDateString(locale, { dateStyle: 'medium' })}`;
     }
 
-    const value = event.display_date ?
-        event.display_date :
-        dateStr;
+    const value = event.display_date ? event.display_date : dateStr;
 
     return value;
 }

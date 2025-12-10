@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FaTrash } from 'react-icons/fa';
 
-import { Spinner } from 'modules/spinners';
 import { deleteData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { FaTrash } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 
 export default function DestroyTranscript({ interview }) {
     const { t, locale } = useI18n();

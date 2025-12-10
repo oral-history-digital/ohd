@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { FaTimes, FaEllipsisH } from 'react-icons/fa';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react';
+
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { FaEllipsisH, FaTimes } from 'react-icons/fa';
 
 export default function Modal({
     title,
@@ -47,7 +48,7 @@ export default function Modal({
 
     return (
         <>
-            { !hideButton &&
+            {!hideButton && (
                 <button
                     type="button"
                     className={classNames('Modal-trigger', triggerClassName)}
@@ -57,7 +58,7 @@ export default function Modal({
                 >
                     {trigger}
                 </button>
-            }
+            )}
 
             <Dialog
                 className={classNames('Modal-dialog', className)}
@@ -73,23 +74,19 @@ export default function Modal({
                 onTouchMove={handleClick}
                 onTouchCancel={handleClick}
             >
-                {!hideHeading &&
-                    <h3 className="Modal-heading">{title}</h3>
-                }
+                {!hideHeading && <h3 className="Modal-heading">{title}</h3>}
 
-                {
-                    typeof children === 'function' ?
-                        children(close) :
-                        children
-                }
+                {typeof children === 'function' ? children(close) : children}
 
-                { !hideCloseButton && <button
-                    type="button"
-                    className="Modal-close"
-                    onClick={close}
-                >
-                    <FaTimes className="Modal-icon" />
-                </button> }
+                {!hideCloseButton && (
+                    <button
+                        type="button"
+                        className="Modal-close"
+                        onClick={close}
+                    >
+                        <FaTimes className="Modal-icon" />
+                    </button>
+                )}
             </Dialog>
         </>
     );
