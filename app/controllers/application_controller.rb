@@ -149,6 +149,11 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
+          # Redux state status tracking for projects data slice.
+          # Marks projects as 'fetched' to prevent redundant API calls on mount.
+          # - OHD portal: all projects loaded → status 'all: fetched'
+          # - Project domains: only current project loaded → status '{project.id}: fetched'
+          # - No project context (rare): empty hash, triggers lazy load on first access
           projects: (current_project && current_project.is_ohd?) ? {
             all: 'fetched'
           } : current_project ? {
@@ -164,10 +169,11 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        # Only load current project in initial state
-        # Other projects will be lazy-loaded via API when needed
-        # This reduces initial page load significantly when many projects exist
-        # Exception: On OHD portal, load all projects for the startpage
+        # Only load current project in initial Redux state for project-specific domains.
+        # Other projects will be lazy-loaded via API when needed.
+        # This reduces initial page load significantly when many projects exist.
+        # Exception: On OHD portal (current_project.is_ohd? == true), load all projects
+        # for the startpage project list, using Rails.cache with composite invalidation key.
         projects: current_project.is_ohd? ?
           Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
             Project.all.includes(
@@ -319,7 +325,9 @@ class ApplicationController < ActionController::Base
       "-#{opts[:cache_key_suffix]}-#{I18n.locale}"
     Rails.cache.fetch(cache_key) do
       raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
-      # Use as_json instead of JSON.parse(to_json) to avoid unnecessary string conversion
+      # Call as_json to force lazy serializer evaluation and trigger all database queries.
+      # Returns a Ruby hash structure that can be used directly by the data reducer.
+      # Alternative JSON.parse(to_json) would work but adds unnecessary string conversion overhead.
       raw.as_json
     end
   end
