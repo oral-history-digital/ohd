@@ -240,6 +240,8 @@ Rails.application.routes.draw do
       post "users", to: "devise/registrations#create"
       post "users/sign_in", to: "sessions#create"
       get "users/sign_in", to: "sessions#new"
+      get 'users/otp', to: 'sessions#otp'#, as: :users_otp
+      post 'users/verify_otp', to: 'sessions#verify_otp'#, as: :users_verify_otp
       get "users/is_logged_in", to: "sessions#is_logged_in"
       delete "users/sign_out", to: "sessions#destroy"
       patch "users/password", to: "passwords#update"
