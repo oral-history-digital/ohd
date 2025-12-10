@@ -35,18 +35,26 @@ class SessionsController < Devise::SessionsController
   end
 
   def create
-    self.resource = warden.authenticate!(auth_options)
-    set_flash_message!(:notice, :signed_in)
+    # First step:  validate email and password only
+    self.resource = resource_class.find_for_database_authentication(email: params[resource_name][:email])
+    
+    if resource && resource.valid_password?(params[resource_name][:password])
+      # Check if 2FA is enabled
+      if resource.otp_required_for_login?
+        # Store user id in session for second step
+        session[:otp_user_id] = resource.id
+        redirect_to users_otp_path
+      else
+        # No 2FA - sign in directly
+        sign_in(resource_name, resource)
+        yield resource if block_given?
 
-    path = stored_location_for(resource)
-
-    sign_in(resource_name, resource)
-    yield resource if block_given?
-
-    if path
-      respond_with resource, location: path
+        after_sign_in(resource)
+      end
     else
-      respond_with resource, location: url_with_access_token
+      # Invalid credentials
+      flash.now[:alert] = "Invalid email or password"
+      render :new, status: :unprocessable_entity
     end
   rescue BCrypt::Errors::InvalidHash
     respond_with(resource, location: url_with_access_token) do |format|
@@ -54,6 +62,32 @@ class SessionsController < Devise::SessionsController
         render json: {error: 'change_to_bcrypt', email: params['user_account']['login']}
       }
     end    
+  end
+
+  def verify_otp
+    # Second step:  verify OTP
+    resource = User.find_by(id: session[:otp_user_id])
+    
+    if resource. nil? 
+      redirect_to new_user_session_path, alert: "Session expired. Please log in again."
+      return
+    end
+
+    if resource.validate_and_consume_otp!(params[:otp_attempt])
+      session.delete(:otp_user_id)
+      sign_in(resource_name, resource)
+      yield resource if block_given?
+      after_sign_in(resource)
+    else
+      flash.now[:alert] = "Invalid authentication code"
+      render :otp, status: :unprocessable_entity
+    end
+  end
+
+  def otp
+    # Show OTP input form
+    @user = User.find_by(id: session[:otp_user_id])
+    redirect_to new_user_session_path, alert: "Please log in first" if @user.nil? 
   end
 
   def destroy
@@ -93,4 +127,14 @@ class SessionsController < Devise::SessionsController
   def join_params(base_url, params_string)
     "#{base_url}#{base_url.include?('?') ? '&' : '?'}#{params_string}"
   end
+
+  def after_sign_in(resource)
+    path = stored_location_for(resource)
+    if path
+      respond_with resource, location: path
+    else
+      respond_with resource, location: url_with_access_token
+    end
+  end
+
 end
