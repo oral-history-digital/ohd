@@ -180,6 +180,42 @@ For deployment instructions, see [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md).
 - Node modules are excluded from the bind mount to avoid performance issues
 - The container forwards ports 3000 (Rails), 8983 (Solr), and 3035 (webpack-dev-server)
 
+### Solr Reindexing
+
+To reindex content:
+
+**Quick reindex (10 interviews with related data):**
+
+```sh
+bin/rails solr:reindex:scoped LIMIT=10 WITH_RELATED=true
+```
+
+**Reindex more records (e.g., 100 interviews with related data):**
+
+```sh
+bin/rails solr:reindex:scoped LIMIT=100 WITH_RELATED=true
+```
+
+**Reindex specific project (e.g., 'za' project):**
+
+```sh
+bin/rails solr:reindex:scoped PROJECT_SHORTNAME=za WITH_RELATED=true
+```
+
+**Reindex without related data (faster):**
+
+```sh
+bin/rails solr:reindex:scoped LIMIT=50
+```
+
+**Full reindex (all models, all projects):**
+
+```sh
+bin/rails solr:reindex:all
+```
+
+The `WITH_RELATED=true` option automatically indexes associated people, segments, and photos, ensuring complete search functionality.
+
 ## Rebuilding the Container
 
 If you need to rebuild the container from scratch:

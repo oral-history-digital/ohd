@@ -16,7 +16,8 @@ wait_for_port() {
   done
 }
 
-log "Checking Solr is still available..."
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "🔍 Checking Solr availability..."
 wait_for_port solr 8983
 
 # Quick health check - setup-dev.sh already did comprehensive validation
@@ -26,23 +27,9 @@ else
   log "✅ Solr is responding"
 fi
 
-# Check if Solr reindexing might be needed
-log "Checking Solr index status..."
-solr_doc_count=$(curl -s "http://solr:8983/solr/default/select?q=*:*&rows=0&wt=json" | grep -o '"numFound":[0-9]*' | cut -d':' -f2 || echo "0")
-log "Current Solr index contains $solr_doc_count documents"
-
-if [[ "$solr_doc_count" -eq 0 ]]; then
-  log "⚠️  Solr index appears to be empty"
-  log "Quick start: bin/rails solr:reindex:development:quick"
-  log "More data: bin/rails solr:reindex:development:limited[10]"
-  log "Full reindex: bin/rails solr:reindex:all"
-elif [[ "$solr_doc_count" -lt 100 ]]; then
-  log "⚠️  Solr index has only $solr_doc_count documents (seems low)"
-  log "Limited reindex: bin/rails solr:reindex:development:limited[100]"
-  log "Full reindex: bin/rails solr:reindex:all"
-fi
-
-log "Starting virtual display for system tests..."
+log ""
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "🖥️  Starting virtual display for system tests..."
 export DISPLAY=:99
 if ! pgrep -f "Xvfb :99" > /dev/null; then
   Xvfb :99 -screen 0 1400x1400x24 &> /dev/null &
@@ -51,19 +38,40 @@ else
   log "✅ Virtual display already running"
 fi
 
-log "Starting Rails server..."
+log ""
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "🚀 Starting Rails server..."
 bin/rails server -b 0.0.0.0 -d
 wait_for_port localhost 3000
+log "✅ Rails server running on port 3000"
 
-log "Starting Webpack dev server..."
+log ""
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "📦 Starting Webpack dev server..."
 bin/shakapacker-dev-server &>/dev/null &
 wait_for_port localhost 3035 || log "⚠️  webpack port not open (optional)"
+log "✅ Webpack dev server running on port 3035"
 
-log "✅ All services are up!"
 log ""
-log "Solr reindexing options:"
-log "  Quick (10 interviews):           bin/rails solr:reindex:development:quick"
-log "  Limited (10 interviews + data):  bin/rails solr:reindex:development:limited[10]"
-log "  Full (all data, slow):           bin/rails solr:reindex:all"
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "📊 Checking Solr index status..."
+solr_doc_count=$(curl -s "http://solr:8983/solr/default/select?q=*:*&rows=0&wt=json" | grep -o '"numFound":[0-9]*' | cut -d':' -f2 || echo "0")
+
+if [[ "$solr_doc_count" -eq 0 ]]; then
+  log "⚠️  Solr index appears to be empty"
+else
+  log "✅ Solr index contains $solr_doc_count documents"
+fi
+
+log ""
+log "📚 Solr Reindexing Options:"
+log "  • Quick start:  bin/rails solr:reindex:scoped LIMIT=10 WITH_RELATED=true"
+log "  • More data:    bin/rails solr:reindex:scoped LIMIT=100 WITH_RELATED=true"
+log "  • Full reindex: bin/rails solr:reindex:all"
+
+log ""
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "✅ All services started successfully!"
 log ""
 log "🌐 Open in browser: http://portal.oral-history.localhost:3000/"
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
