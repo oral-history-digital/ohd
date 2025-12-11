@@ -1,116 +1,150 @@
+# Suppress logging during environment load for reindex task
+if ARGV.include?('solr:reindex:scoped')
+  require 'logger'
+  
+  # Suppress SQL logging by unsubscribing from notifications
+  ActiveSupport::Notifications.unsubscribe("sql.active_record")
+end
+
 namespace :solr do
   namespace :reindex do
-    namespace :development do
+    desc "Reindex with project/limit/model scoping: pass PROJECT_SHORTNAME or PROJECT_ID; MODEL (default Interview); LIMIT and BATCH_SIZE"
+    # Usage examples:
+    #   bin/rake solr:reindex:scoped                                      # Reindex all Interview records
+    #   bin/rake solr:reindex:scoped MODEL=RegistryEntry                  # Reindex all RegistryEntry records
+    #   bin/rake solr:reindex:scoped PROJECT_SHORTNAME=za                 # Reindex Interviews for project 'za'
+    #   bin/rake solr:reindex:scoped PROJECT_ID=1                         # Reindex Interviews for project with ID 1
+    #   bin/rake solr:reindex:scoped LIMIT=100                            # Reindex first 100 Interview records
+    #   bin/rake solr:reindex:scoped BATCH_SIZE=1000                      # Use batch size of 1000 (default 500)
+    #   bin/rake solr:reindex:scoped MODEL=Interview PROJECT_SHORTNAME=za LIMIT=50 BATCH_SIZE=10
+    #   bin/rake solr:reindex:scoped PROJECT_SHORTNAME=za LIMIT=10 WITH_RELATED=true  # Also index related people/segments/photos
+    task scoped: :environment do
+    model_name = ENV['MODEL'] || 'Interview'
+    
+    begin
+      model = model_name.constantize
+    rescue NameError
+      puts "Error: Model '#{model_name}' not found"
+      exit 1
+    end
+
+    unless model.respond_to?(:searchable) || model.respond_to?(:solr_index)
+      puts "Error: Model '#{model_name}' is not searchable (no Sunspot configuration)"
+      exit 1
+    end
+
+    project_short = ENV['PROJECT_SHORTNAME']
+    project_id = ENV['PROJECT_ID']
+    limit = ENV['LIMIT']&.to_i
+    batch_size = (ENV['BATCH_SIZE'] || 500).to_i
+    with_related = ENV['WITH_RELATED'] == 'true'
+
+    if batch_size < 1
+      puts "Error: BATCH_SIZE must be greater than 0"
+      exit 1
+    end
+
+    scope = model.all
+
+    if project_short
+      begin
+        project = Project.find_by!(shortname: project_short)
+        scope = scope.where(project_id: project.id)
+      rescue ActiveRecord::RecordNotFound
+        puts "Error: Project with shortname '#{project_short}' not found"
+        exit 1
+      end
+    elsif project_id
+      scope = scope.where(project_id: project_id.to_i)
+    end
+
+    scope = scope.limit(limit) if limit && limit > 0
+
+    puts "Sunspot reindex starting..."
+    puts "  Model: #{model_name}"
+    puts "  Project shortname: #{project_short || 'all'}"
+    puts "  Project ID: #{project_id || 'all'}"
+    puts "  Limit: #{limit || 'none'}"
+    puts "  Batch size: #{batch_size}"
+    
+    total = scope.count
+    puts "  Total records: #{total}"
+    
+    if total == 0
+      puts "No records to index."
+      exit 0
+    end
+
+    puts "\nIndexing..."
+    puts "(Query output suppressed)"
+    indexed = 0
+    start_time = Time.current
+
+    begin
+      scope.find_in_batches(batch_size: batch_size) do |batch|
+        Sunspot.index(batch)
+        Sunspot.commit
+        
+        indexed += batch.size
+        
+        elapsed = Time.current - start_time
+        rate = indexed / elapsed
+        eta = (total - indexed) / rate
+        
+        puts "Indexed #{indexed}/#{total} (#{(indexed.to_f / total * 100).round(1)}%) - Rate: #{rate.round(1)}/s - ETA: #{eta.round(0)}s"
+      end
+    rescue StandardError => e
+      puts "\nError during indexing: #{e.message}"
+      puts e.backtrace.first(5).join("\n")
+      exit 1
+    end
+
+    elapsed = Time.current - start_time
+    puts "\nSunspot reindex finished successfully."
+    puts "  Indexed: #{indexed} records"
+    puts "  Duration: #{elapsed.round(1)}s"
+    puts "  Average rate: #{(indexed / elapsed).round(1)} records/s"
+    
+    # Index related models if requested (only for Interview)
+    if with_related && model_name == 'Interview'
+      puts "\nIndexing related models..."
+      interview_ids = scope.pluck(:id)
       
-      desc 'Reindex a limited number of records for development (default: 10 interviews)'
-      task :limited, [:limit] => :environment do |task, args|
-        limit = (args[:limit] || ENV['LIMIT'] || 10).to_i
-        
-        puts "Development mode: Limited reindexing (#{limit} interviews max)"
-        start_time = Time.now
-        
-        # Temporarily suppress SQL logging but keep a logger for Sunspot
-        old_logger = ActiveRecord::Base.logger
-        if Rails.env.development?
-          # Create a null logger that discards output instead of setting to nil
-          null_logger = Logger.new(File::NULL)
-          null_logger.level = Logger::FATAL  # Only show fatal errors
-          ActiveRecord::Base.logger = null_logger
+      # Index people
+      puts "  Indexing people..."
+      person_ids = Contribution.where(interview_id: interview_ids).pluck(:person_id).uniq
+      if person_ids.any?
+        Person.where(id: person_ids).find_in_batches(batch_size: batch_size) do |batch|
+          Sunspot.index(batch)
         end
-        
-        begin
-          # Use incremental indexing - just reindex limited interviews like the working quick task
-          puts "Incrementally indexing #{limit} interviews (no index clearing)..."
-          Interview.limit(limit).reindex
-          
-          # Get the actual interview IDs that were indexed
-          interview_ids = Interview.limit(limit).pluck(:id)
-          puts "  ✅ Indexed #{interview_ids.count} interviews"
-          
-          # Now add related data incrementally too
-          puts "Indexing people from selected interviews..."
-          person_ids = Interview.where(id: interview_ids)
-                               .joins(:contributions)
-                               .pluck('contributions.person_id')
-                               .uniq
-          
-          if person_ids.any?
-            Person.where(id: person_ids).reindex
-            puts "  ✅ Indexed #{person_ids.count} people"
-          else
-            puts "  No people found for selected interviews"
-          end
-          
-          puts "Indexing segments from selected interviews..."
-          segment_ids = Interview.where(id: interview_ids).joins(:segments).pluck('segments.id').uniq
-          if segment_ids.any?
-            Segment.where(id: segment_ids).reindex
-            puts "  ✅ Indexed #{segment_ids.count} segments"
-          else
-            puts "  No segments found for selected interviews"
-          end
-          
-          puts "Indexing photos from selected interviews..."
-          photo_ids = Photo.joins(:interview).where(interviews: { id: interview_ids }).pluck(:id).uniq
-          if photo_ids.any?
-            Photo.where(id: photo_ids).reindex
-            puts "  ✅ Indexed #{photo_ids.count} photos"
-          else
-            puts "  No photos found for selected interviews"
-          end
-          
-          # Commit all changes
-          puts "Committing changes to Solr..."
-          Sunspot.commit
-          
-        ensure
-          # Restore SQL logging
-          ActiveRecord::Base.logger = old_logger if Rails.env.development?
-        end
-        
-        finish_time = Time.now
-        duration = finish_time - start_time
-        
-        puts ""
-        puts "✅ Development reindex complete!"
-        puts "   Duration: #{duration.round(1)} seconds"
-        puts "   Indexed: #{interview_ids&.count || 0} interviews + related data"
-        puts "   People: #{person_ids&.count || 0}"
-        puts "   Segments: #{segment_ids&.count || 0}"
-        puts "   Photos: #{photo_ids&.count || 0}"
-        puts ""
-        puts "💡 To index more records: bin/rails solr:reindex:development:limited[500]"
-        puts "💡 For full reindex: bin/rails solr:reindex:all"
+        Sunspot.commit
+        puts "    ✓ Indexed #{person_ids.count} people"
       end
       
-      desc 'Reindex only the first N interviews (very fast, default: 10)'
-      task :quick, [:limit] => :environment do |task, args|
-        limit = (args[:limit] || ENV['LIMIT'] || 10).to_i
-        
-        puts "⚡ Quick development reindex (#{limit} interviews only)"
-        start_time = Time.now
-        
-        # Suppress SQL logging but keep a logger for Sunspot
-        old_logger = ActiveRecord::Base.logger
-        if Rails.env.development?
-          null_logger = Logger.new(File::NULL)
-          null_logger.level = Logger::FATAL
-          ActiveRecord::Base.logger = null_logger
+      # Index segments
+      puts "  Indexing segments..."
+      segment_ids = Segment.where(interview_id: interview_ids).pluck(:id)
+      if segment_ids.any?
+        Segment.where(id: segment_ids).find_in_batches(batch_size: batch_size) do |batch|
+          Sunspot.index(batch)
         end
-        
-        begin
-          # Clear and reindex just interviews using the model's reindex method
-          Sunspot.remove_all
-          Interview.limit(limit).reindex
-          Sunspot.commit
-        ensure
-          ActiveRecord::Base.logger = old_logger if Rails.env.development?
-        end
-        
-        duration = Time.now - start_time
-        puts "✅ Quick reindex complete in #{duration.round(1)} seconds"
-        puts "💡 For more data: bin/rails solr:reindex:development:limited[100]"
+        Sunspot.commit
+        puts "    ✓ Indexed #{segment_ids.count} segments"
       end
+      
+      # Index photos
+      puts "  Indexing photos..."
+      photo_ids = Photo.joins(:interview).where(interviews: { id: interview_ids }).pluck(:id)
+      if photo_ids.any?
+        Photo.where(id: photo_ids).find_in_batches(batch_size: batch_size) do |batch|
+          Sunspot.index(batch)
+        end
+        Sunspot.commit
+        puts "    ✓ Indexed #{photo_ids.count} photos"
+      end
+      
+      puts "\n✓ Related models indexed successfully"
+    end
     end
   end
 end
