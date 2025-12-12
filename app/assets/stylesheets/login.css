@@ -223,3 +223,59 @@ p.alert {
   -webkit-appearance:  none;
   margin: 0;
 }
+
+#backup-code-section {
+  margin-top: 30px;
+  display: none;
+}
+
+.backup-code-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.backup-code-link a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.backup-code-link a:hover {
+  text-decoration: underline;
+}
+
+.backup-code-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius:  8px;
+  margin:  10px auto;
+  display: block;
+  text-transform: uppercase;
+}
+
+.backup-code-input:focus {
+  outline: none;
+  border-color: #4A90E2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.help-text {
+  text-align: center;
+  color:  #666;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.actions {
+  text-align: center;
+  margin-top: 20px;
+}

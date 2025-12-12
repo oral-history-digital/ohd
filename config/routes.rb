@@ -242,6 +242,8 @@ Rails.application.routes.draw do
       get "users/sign_in", to: "sessions#new"
       get 'users/otp', to: 'sessions#otp'#, as: :users_otp
       post 'users/verify_otp', to: 'sessions#verify_otp'#, as: :users_verify_otp
+      get 'users/resend_otp', to: 'sessions#resend_otp'#, as: :users_resend_otp
+      post 'users/verify_backup_code', to: 'sessions#verify_backup_code'#, as: :users_verify_backup_code
       get "users/is_logged_in", to: "sessions#is_logged_in"
       delete "users/sign_out", to: "sessions#destroy"
       patch "users/password", to: "passwords#update"

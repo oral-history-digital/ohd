@@ -84,10 +84,42 @@ class SessionsController < Devise::SessionsController
     end
   end
 
+  def verify_backup_code
+    resource = User.find_by(id: session[:otp_user_id])
+
+    if resource.nil?
+      redirect_to new_user_session_path, alert: "Session expired. Please log in again."
+      return
+    end
+
+    # Remove spaces and dashes for flexibility
+    backup_code = params[:backup_code].to_s.gsub(/[\s-]/, '')
+
+    if resource.invalidate_otp_backup_code!(backup_code)
+      session.delete(:otp_user_id)
+      sign_in(resource_name, resource)
+      after_sign_in(resource)
+    else
+      flash.now[:alert] = "Invalid backup code"
+      render :otp, status: :unprocessable_entity
+    end
+  end
+
   def otp
     # Show OTP input form
     @user = User.find_by(id: session[:otp_user_id])
     redirect_to new_user_session_path, alert: "Please log in first" if @user.nil? 
+  end
+
+  def resend_otp
+    user = User.find_by(id: session[:otp_user_id])
+    if user
+      user.send_new_otp_code
+      flash.now[:notice] = "A new authentication code has been sent to your email."
+      render :otp
+    else
+      redirect_to new_user_session_path, alert: "Please log in first"
+    end
   end
 
   def destroy

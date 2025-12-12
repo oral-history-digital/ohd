@@ -1,27 +1,65 @@
 h2 2FA
 
-= form_with url: users_verify_otp_path,
-  method: :post,
-  data: { controller: "otp", otp_target: "form" },
-  html: {class: 'Form'} do |f|
+.two-factor-container data-controller="backup-code"
+  #otp-section
+    = form_with url: users_verify_otp_path,
+      method: :post,
+      data: { controller: "otp", otp_target: "form" },
+      html: {class: 'Form'} do |f|
 
-  .form-group
-    .form-label
-      = f.label :otp_attempt,
-        TranslationValue.for('activerecord.attributes.user.otp_attempt', locale: locale),
-        class: 'FormLabel'
-      .otp-input-container
-        - 6.times do |i|
-          input[
-            type="text"
-            class="otp-digit"
-            maxlength="1"
-            pattern="[0-9]"
-            inputmode="numeric"
-            autocomplete="off"
-            data-otp-target="digit"
-            data-index="#{i}"
-            data-action="input->otp#handleInput keydown->otp#handleKeydown paste->otp#handlePaste"
-          ] 
+      .form-group
+        .form-label
+          = f.label :otp_attempt,
+            TranslationValue.for('activerecord.attributes.user.otp_attempt', locale: locale),
+            class: 'FormLabel'
+          .otp-input-container
+            - 6.times do |i|
+              input[
+                type="text"
+                class="otp-digit"
+                maxlength="1"
+                pattern="[0-9]"
+                inputmode="numeric"
+                autocomplete="off"
+                data-otp-target="digit"
+                data-index="#{i}"
+                data-action="input->otp#handleInput keydown->otp#handleKeydown paste->otp#handlePaste"
+              ] 
 
-    = f.hidden_field :otp_attempt, data: { otp_target: "hidden" }
+        = f.hidden_field :otp_attempt,
+          data: { otp_target: "hidden" }
+
+      .Form-footer.u-mt
+        = f.submit t('submit'),
+          class: 'Button Button--primaryAction',
+          data: { otp_target: "submit" }
+
+    .backup-code-link
+      = link_to t('resend_otp'), \
+        users_resend_otp_path, \
+        data: { turbo: false, turbo_method: :post, action: "click->backup-code#showAndResend" }, \
+        class: 'Link u-mt-md'
+
+  #backup-code-section data-controller="backup-code"
+    = form_with url: users_verify_backup_code_path, method: :post do |f|
+      .form-group
+        .form-label
+          = f.label :backup_code,
+            TranslationValue.for('activerecord.attributes.user.backup_code', locale: locale),
+            class: 'FormLabel'
+        = f.text_field :backup_code, 
+          placeholder: "XXXX-XXXX", 
+          autocomplete: "off",
+          data: { backup_code_target: "input" },
+          class: "backup-code-input"
+
+      .Form-footer.u-mt
+        = f.submit t('submit'),
+          class: 'Button Button--primaryAction',
+          data: { otp_target: "submit" }
+
+    .backup-code-link
+      a href="#" data-action="click->backup-code#hide"
+        Back to authenticator code
+
+  = link_to "Back to login", new_user_session_path

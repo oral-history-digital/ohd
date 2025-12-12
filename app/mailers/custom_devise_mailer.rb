@@ -59,6 +59,7 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def two_factor_authentication_code(user, code)
-    devise_mail(user, :two_factor_authentication_code, code: code)
+    @code = code
+    devise_mail(user, :two_factor_authentication_code)
   end
 end
