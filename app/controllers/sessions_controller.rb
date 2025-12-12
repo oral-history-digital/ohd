@@ -5,9 +5,9 @@ class SessionsController < Devise::SessionsController
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
-  before_action :set_project, only: [:new, :create, :is_logged_in]
-  before_action :set_path, only: [:new, :create, :is_logged_in]
-  before_action :set_locale, only: [:new, :create, :is_logged_in]
+  before_action :set_project, only: [:new, :create, :is_logged_in, :verify_otp]
+  before_action :set_path, only: [:new, :create, :is_logged_in, :verify_otp]
+  before_action :set_locale, only: [:new, :create, :is_logged_in, :verify_otp]
 
   respond_to :json, :html
 

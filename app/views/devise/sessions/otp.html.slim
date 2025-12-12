@@ -1,13 +1,27 @@
-h2 Two-Factor Authentication
+h2 2FA
 
-= form_with url: users_verify_otp_path, method: :post, html: {class: 'Form default'} do |f|
+= form_with url: users_verify_otp_path,
+  method: :post,
+  data: { controller: "otp", otp_target: "form" },
+  html: {class: 'Form'} do |f|
+
   .form-group
     .form-label
       = f.label :otp_attempt,
         TranslationValue.for('activerecord.attributes.user.otp_attempt', locale: locale),
         class: 'FormLabel'
-    .form-input
-      = f.text_field :otp_attempt, class: 'Input'
+      .otp-input-container
+        - 6.times do |i|
+          input[
+            type="text"
+            class="otp-digit"
+            maxlength="1"
+            pattern="[0-9]"
+            inputmode="numeric"
+            autocomplete="off"
+            data-otp-target="digit"
+            data-index="#{i}"
+            data-action="input->otp#handleInput keydown->otp#handleKeydown paste->otp#handlePaste"
+          ] 
 
-  .Form-footer.u-mt
-    = f.submit t(:login), class: 'Button Button--primaryAction'
+    = f.hidden_field :otp_attempt, data: { otp_target: "hidden" }
