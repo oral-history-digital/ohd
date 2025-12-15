@@ -217,9 +217,52 @@ class User < ApplicationRecord
   end
 
   def send_new_otp_code
-    human_readable_codes = generate_otp_backup_codes!
+    email_otp = generate_email_otp!
+    #human_readable_codes = generate_otp_backup_codes!
+    #save!
+    #code = human_readable_codes.first
+    CustomDeviseMailer.two_factor_authentication_code(self, email_otp).deliver_later
+  end
+
+  # Email OTP configuration
+  EMAIL_OTP_VALID_FOR = 10.minutes
+  EMAIL_OTP_LENGTH = 6
+
+  def generate_email_otp! 
+    # Generate 6-digit numeric code
+    otp = SecureRandom.random_number(10**EMAIL_OTP_LENGTH).to_s.rjust(EMAIL_OTP_LENGTH, '0')
+    
+    # Store encrypted version
+    self.email_otp_secret = BCrypt::Password.create(otp)
+    self.email_otp_sent_at = Time. current
     save!
-    code = human_readable_codes.first
-    CustomDeviseMailer.two_factor_authentication_code(self, code).deliver_later
+    
+    # Return plain text code (only time it's visible)
+    otp
+  end
+
+  def verify_email_otp(code)
+    return false if email_otp_secret.blank?  || email_otp_sent_at.blank?
+    
+    # Check if OTP is expired
+    return false if Time.current > email_otp_sent_at + EMAIL_OTP_VALID_FOR
+    
+    # Verify the code
+    BCrypt::Password.new(email_otp_secret) == code
+  end
+
+  def clear_email_otp! 
+    update(email_otp_secret: nil, email_otp_sent_at: nil)
+  end
+
+  def email_otp_expired?
+    return true if email_otp_sent_at.blank?
+    Time.current > email_otp_sent_at + EMAIL_OTP_VALID_FOR
+  end
+
+  def email_otp_time_remaining
+    return 0 if email_otp_sent_at.blank?
+    remaining = (email_otp_sent_at + EMAIL_OTP_VALID_FOR - Time.current).to_i
+    [remaining, 0].max
   end
 end

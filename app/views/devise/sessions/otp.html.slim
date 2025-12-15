@@ -37,8 +37,8 @@ h2 2FA
     .backup-code-link
       = link_to t('resend_otp'), \
         users_resend_otp_path, \
-        data: { turbo: false, turbo_method: :post, action: "click->backup-code#showAndResend" }, \
         class: 'Link u-mt-md'
+        /data: { turbo: false, turbo_method: :post, action: "click->backup-code#showAndResend" }, \
 
   #backup-code-section data-controller="backup-code"
     = form_with url: users_verify_backup_code_path, method: :post do |f|

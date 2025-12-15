@@ -73,7 +73,9 @@ class SessionsController < Devise::SessionsController
       return
     end
 
-    if resource.validate_and_consume_otp!(params[:otp_attempt])
+    if resource.validate_and_consume_otp!(params[:otp_attempt]) ||
+      resource.verify_email_otp(params[:otp_attempt])
+      resource.clear_email_otp!
       session.delete(:otp_user_id)
       sign_in(resource_name, resource)
       yield resource if block_given?

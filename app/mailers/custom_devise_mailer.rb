@@ -60,6 +60,7 @@ class CustomDeviseMailer < Devise::Mailer
 
   def two_factor_authentication_code(user, code)
     @code = code
+    @valid_for = User::EMAIL_OTP_VALID_FOR / 60
     devise_mail(user, :two_factor_authentication_code)
   end
 end

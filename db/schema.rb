@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_12_105511) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_15_141919) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -1190,6 +1190,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_12_105511) do
     t.boolean "otp_required_for_login"
     t.datetime "changed_to_otp_at"
     t.text "otp_backup_codes"
+    t.string "email_otp_secret"
+    t.datetime "email_otp_sent_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
   end
