@@ -101,12 +101,6 @@ class RegistryEntry < ApplicationRecord
     descendants
   end
 
-  def public_registry_references_count
-    registry_references.joins(:interview)
-      .where('interviews.workflow_state': 'public')
-      .count
-  end
-
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
