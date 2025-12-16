@@ -65,22 +65,33 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    @current_project = @current_project || (
-      (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
-        Project.where(shortname: params[:project_id]) :
-        Project.where(archive_domain: request.base_url)
-    ).includes(
-      :translations,
-      :registry_name_types,
-      :media_streams,
-      :map_sections,
-      registry_reference_types: :translations,
-      contribution_types: :translations,
-      metadata_fields: :translations,
-      external_links: :translations,
-      # Collections removed - load selectively when needed via CollectionsController
-      institution_projects: {institution: :translations},
-    ).first
+    # Memoization: Return if already loaded (even if nil) to prevent duplicate lookups
+    return @current_project if defined?(@current_project)
+    
+    # Determine lookup key (shortname or domain)
+    lookup_key = if params[:project_id].present? && !params[:project_id].is_a?(Array)
+      [:shortname, params[:project_id]]
+    else
+      [:archive_domain, request.base_url]
+    end
+    
+    # Cache project lookups across requests since projects change infrequently
+    cache_key = "project-#{lookup_key[0]}-#{lookup_key[1]}-#{Project.maximum(:updated_at)}"
+    
+    @current_project = Rails.cache.fetch(cache_key) do
+      Project.includes(
+        :translations,
+        :registry_name_types,
+        :media_streams,
+        :map_sections,
+        registry_reference_types: :translations,
+        contribution_types: :translations,
+        metadata_fields: :translations,
+        external_links: :translations,
+        # Collections removed - load selectively when needed via CollectionsController
+        institution_projects: {institution: :translations},
+      ).find_by(lookup_key[0] => lookup_key[1])
+    end
   end
 
   helper_method :current_project
