@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2025-12-16
+
+### Added
+
+- feat: add admin tasks ([#57](https://github.com/oral-history-digital/ohd/pull/57))
+
+### Changed
+
+- perf: selectively load necessary projects only ([#56](https://github.com/oral-history-digital/ohd/pull/56))
+- INTARCH-3260: Remove language from sort options ([#58](https://github.com/oral-history-digital/ohd/pull/58))
+
+### Fixed
+
+- prevent multiplied lines in registry-entry csv export ([d1b905390](https://github.com/oral-history-digital/ohd/commit/d1b905390e8fa31bcf1d323f13ea713c6ac50881))
+- force utf8 in read_bulk_texts_file_job ([839efca21](https://github.com/oral-history-digital/ohd/commit/839efca215785ff3cf8b5e95ed3bcd67d9586da2))
+- fix file deletion after read_bulk_texts_file_job ([158e9bed1](https://github.com/oral-history-digital/ohd/commit/158e9bed1d93ff396405db30dde95849386fc59f))
+- oai: wish fulfillment ([210446f67](https://github.com/oral-history-digital/ohd/commit/210446f674a55b5e71d5f259ba07f91ef8f70f18))
+- oai: project and collection subject-registry-entries ([d4696c63b](https://github.com/oral-history-digital/ohd/commit/d4696c63b15de6bc7ed80dd8653181df6c2e4924))
+- show all registry-references always ([b46e59e1b](https://github.com/oral-history-digital/ohd/commit/b46e59e1b6c901c0700b069212bb8dd41b112b24))
+
 ## [1.4.4] - 2025-12-05
 
 ### Fixed
@@ -221,7 +241,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
-[1.4.4]: https://github.com/oral-history-digital/ohd/compare/v1.4.4...v1.4.4
+[1.5.0]: https://github.com/oral-history-digital/ohd/compare/v1.4.4...v1.5.0
+[1.4.4]: https://github.com/oral-history-digital/ohd/compare/v1.4.3...v1.4.4
 [1.4.3]: https://github.com/oral-history-digital/ohd/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/oral-history-digital/ohd/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/oral-history-digital/ohd/compare/v1.4.0...v1.4.1
