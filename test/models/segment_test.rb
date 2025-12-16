@@ -145,5 +145,23 @@ class SegmentTest < ActiveSupport::TestCase
       #"<i(Bandende)>"
     #)
   #end
+
+  test "interview contributions have speaker designations" do
+    # Test that verifies speaker_designations are accessible from interview contributions
+    project = DataHelper.project_with_contribution_types_and_metadata_fields
+    interview = DataHelper.interview_with_everything(project, 1, false)
+    
+    # Verify that contributions exist and have speaker_designations
+    assert interview.contributions.any?, "Interview should have contributions"
+    
+    # Test that we can access speaker_designations (implementation-agnostic)
+    # DataHelper creates contributions with speaker_designations: 'INT', 'AB', 'KAM'
+    speaker_designations = interview.contributions.pluck(:speaker_designation).reject(&:blank?)
+    
+    assert_equal 3, speaker_designations.length, "Should have 3 speaker designations"
+    assert_includes speaker_designations, 'INT'
+    assert_includes speaker_designations, 'AB'
+    assert_includes speaker_designations, 'KAM'
+  end
 end
 
