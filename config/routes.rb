@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         confirmations: "confirmations",
         passwords: "passwords",
       }
+    resources :passkeys, only: [:index, :new, :create, :destroy]
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
     get 'catalog/stats',            to: 'catalog#stats'
@@ -243,7 +244,9 @@ Rails.application.routes.draw do
       get 'users/otp', to: 'sessions#otp'#, as: :users_otp
       post 'users/verify_otp', to: 'sessions#verify_otp'#, as: :users_verify_otp
       get 'users/resend_otp', to: 'sessions#resend_otp'#, as: :users_resend_otp
-      post 'users/verify_backup_code', to: 'sessions#verify_backup_code'#, as: :users_verify_backup_code
+      post 'passkey_login/challenge', to: 'passkey_sessions#challenge'
+      post 'passkey_login/verify', to:  'passkey_sessions#verify'
+
       get "users/is_logged_in", to: "sessions#is_logged_in"
       delete "users/sign_out", to: "sessions#destroy"
       patch "users/password", to: "passwords#update"

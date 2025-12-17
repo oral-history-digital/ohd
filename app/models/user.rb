@@ -22,11 +22,12 @@ class User < ApplicationRecord
     end
   end
 
-  # OTP via email
-  #has_one_time_password(encrypted: true)
-  #def send_two_factor_authentication_code(code)
-    #CustomDeviseMailer.two_factor_authentication_code(self, code).deliver_later
-  #end
+  has_many :webauthn_credentials, dependent: :destroy
+  
+  # Store WebAuthn ID
+  def webauthn_id
+    @webauthn_id ||= Base64.urlsafe_encode64(id.to_s, padding: false)
+  end
 
   def after_database_authentication
     if !confirmed?
@@ -218,9 +219,6 @@ class User < ApplicationRecord
 
   def send_new_otp_code
     email_otp = generate_email_otp!
-    #human_readable_codes = generate_otp_backup_codes!
-    #save!
-    #code = human_readable_codes.first
     CustomDeviseMailer.two_factor_authentication_code(self, email_otp).deliver_later
   end
 

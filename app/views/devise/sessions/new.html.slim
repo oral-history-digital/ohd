@@ -25,7 +25,11 @@ h2= t('login')
   .Form-footer.u-mt
     = f.submit t(:login), class: 'Button Button--primaryAction'
 
+.passkey-button-container data-controller="passkey"
+  button data-action="click->passkey#authenticate" Sign in with Passkey
+
 .register-link
   = link_to t('user.registration'), "#{@project.domain_with_optional_identifier}/#{@locale}?open_register_popup='true'", class: 'Link'
+
 .order-new-password-link
   = link_to t('forget_password'), "#{@project.domain_with_optional_identifier}/#{@locale}/users/password/new", class: 'Link'
