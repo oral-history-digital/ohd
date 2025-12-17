@@ -148,11 +148,12 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: (current_project && current_project.is_ohd?) ? {
+          projects: current_project&.is_ohd? ? {
             all: 'fetched'
-          } : current_project ? {
-            current_project.id => 'fetched'
-          } : {},
+          } : {
+            "#{current_project.id}": 'fetched',
+            "#{Project.ohd.id}": 'fetched',
+          },
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -179,6 +180,7 @@ class ApplicationController < ActionController::Base
             end
           end : {
           "#{current_project.id}": cache_single(current_project),
+          "#{Project.ohd.id}": cache_single(Project.ohd),
         },
         institutions: {},
         collections: {},
