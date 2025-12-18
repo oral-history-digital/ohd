@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         sessions: "sessions",
         confirmations: "confirmations",
         passwords: "passwords",
+        registrations: "registrations"
       }
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
@@ -237,7 +238,7 @@ Rails.application.routes.draw do
   #
   concern :unnamed_devise_routes do
     devise_scope :user do
-      post "users", to: "devise/registrations#create"
+      post "users", to: "registrations#create"
       post "users/sign_in", to: "sessions#create"
       get "users/sign_in", to: "sessions#new"
       get "users/is_logged_in", to: "sessions#is_logged_in"
