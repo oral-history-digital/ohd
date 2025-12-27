@@ -39,14 +39,14 @@ class Person < ApplicationRecord
   def touch_interviews
     # Setting touch: true in the contributions association does not work,
     # so we touch associated interviews in a callback.
-    interview_ids = contributions.map { |c| c.interview_id }.uniq
+    interview_ids = contributions.pluck(:interview_id).uniq
     interviews = Interview.where(id: interview_ids)
     interviews.touch_all
   end
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      contributions.map { |c| c.interview && c.interview.archive_id }.compact
+      contributions.joins(:interview).pluck('interviews.archive_id')
     end
 
     # dummy method, necessary for generic search
