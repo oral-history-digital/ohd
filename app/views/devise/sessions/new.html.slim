@@ -1,6 +1,10 @@
 h2= t('login')
 
-= form_for(resource, as: resource_name, url: "/#{params[:locale]}/users/sign_in", html: {class: 'Form default'}) do |f|
+= form_for resource,
+  as: resource_name,
+  url: "/#{params[:locale]}/users/sign_in",
+  data: { controller: "passkey" },
+  html: { class: 'Form default' } do |f|
 
   = hidden_field_tag :path, @path
   - if @project
@@ -12,7 +16,11 @@ h2= t('login')
         TranslationValue.for('activerecord.attributes.user.email', locale: locale),
         class: 'FormLabel'
     .form-input
-      = f.email_field :email, autofocus: true, autocomplete: "email", class: 'Input'
+      = f.email_field :email,
+        autofocus: true,
+        autocomplete: "email",
+        class: 'Input',
+        data: { passkey_target: 'email' }
 
   .form-group
     .form-label
@@ -23,10 +31,11 @@ h2= t('login')
       = f.password_field :password, autocomplete: "current-password", class: 'Input'
 
   .Form-footer.u-mt
-    = f.submit t(:login), class: 'Button Button--primaryAction'
-
-.passkey-button-container data-controller="passkey"
-  button data-action="click->passkey#authenticate" Sign in with Passkey
+    = f.submit t(:login),
+      class: 'Button Button--primaryAction'
+    = f.submit t(:login_with_passkey),
+      class: 'Button Button--secondaryAction',
+      data: { action: "passkey#authenticate" }
 
 .register-link
   = link_to t('user.registration'), "#{@project.domain_with_optional_identifier}/#{@locale}?open_register_popup='true'", class: 'Link'
