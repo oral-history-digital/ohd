@@ -125,17 +125,6 @@ input {
   overflow: visible;
 }
 
-form.default input[type='submit'] {
-  margin-left: 0;
-  width: 100%;
-  background-color: #6b6b5e;
-  transition: background-color 0.3s;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
-
 footer > input {
   width: auto !important;
 }
