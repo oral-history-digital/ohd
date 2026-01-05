@@ -13,7 +13,7 @@ h2= t('login')
   .form-group
     .form-label
       = f.label :email,
-        TranslationValue.for('activerecord.attributes.user.email', locale: locale),
+        tv('activerecord.attributes.user.email'),
         class: 'FormLabel'
     .form-input
       = f.email_field :email,
@@ -25,20 +25,27 @@ h2= t('login')
   .form-group
     .form-label
       = f.label :password,
-        TranslationValue.for('activerecord.attributes.user.password', locale: locale),
+        tv('activerecord.attributes.user.password'),
         class: 'FormLabel'
     .form-input
-      = f.password_field :password, autocomplete: "current-password", class: 'Input'
+      = f.password_field :password,
+        autocomplete: "current-password",
+        class: 'Input'
 
   .Form-footer.u-mt
-    = f.submit t(:login),
+    = f.submit tv(:login),
       class: 'Button Button--primaryAction'
-    = f.submit t(:login_with_passkey),
-      class: 'Button Button--secondaryAction',
+    = f.submit tv(:login_with_passkey),
+      type: 'button',
+      class: 'Button Button--secondaryAction u-ml',
       data: { action: "passkey#authenticate" }
 
 .register-link
-  = link_to t('user.registration'), "#{@project.domain_with_optional_identifier}/#{@locale}?open_register_popup='true'", class: 'Link'
+  = link_to tv('user.registration'),
+    "#{@project.domain_with_optional_identifier}/#{@locale}?open_register_popup='true'",
+    class: 'Link'
 
 .order-new-password-link
-  = link_to t('forget_password'), "#{@project.domain_with_optional_identifier}/#{@locale}/users/password/new", class: 'Link'
+  = link_to tv('forget_password'),
+    "#{@project.domain_with_optional_identifier}/#{@locale}/users/password/new",
+    class: 'Link'

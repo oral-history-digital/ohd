@@ -140,6 +140,10 @@ footer > input {
   width: auto !important;
 }
 
+.Form-footer {
+  display: flex;
+}
+
 .Form-footer > * {
   flex-grow: 1;
 }
@@ -148,6 +152,13 @@ footer > input {
   background-color: #e01217 !important;
   color: #fff;
   border: 0.125rem solid #e01217 !important;
+  padding: 0.625rem 1.375rem;
+  transition: filter 0.3s !important;
+  width: auto;
+}
+
+.Button--secondaryAction {
+  margin-left: 0.5rem;
   padding: 0.625rem 1.375rem;
   transition: filter 0.3s !important;
   width: auto;
