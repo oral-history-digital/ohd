@@ -1,7 +1,7 @@
 h2= t('login')
 
 = form_for resource,
-  as: resource_name,
+  as: :user,
   url: "/#{params[:locale]}/users/sign_in",
   data: { controller: "passkey" },
   html: { class: 'Form default' } do |f|

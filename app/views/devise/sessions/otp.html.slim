@@ -28,11 +28,11 @@ h2 2FA
       data: { otp_target: "hidden" }
 
   .Form-footer.u-mt
-    = f.submit t('submit'),
+    = f.submit tv(:login),
       class: 'Button Button--primaryAction',
       data: { otp_target: "submit" }
 
 .backup-code-link
-  = link_to t('resend_otp'), \
+  = link_to tv(:send_otp_per_mail), \
     users_resend_otp_path, \
     class: 'Link u-mt-md'

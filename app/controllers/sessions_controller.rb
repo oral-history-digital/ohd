@@ -53,7 +53,7 @@ class SessionsController < Devise::SessionsController
       end
     else
       # Invalid credentials
-      flash.now[:alert] = "Invalid email or password"
+      flash.now[:alert] = tv("devise.failure.invalid")
       render :new, status: :unprocessable_entity
     end
   rescue BCrypt::Errors::InvalidHash
@@ -69,7 +69,7 @@ class SessionsController < Devise::SessionsController
     resource = User.find_by(id: session[:otp_user_id])
     
     if resource. nil? 
-      redirect_to new_user_session_path, alert: "Session expired. Please log in again."
+      redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
       return
     end
 
@@ -81,28 +81,7 @@ class SessionsController < Devise::SessionsController
       yield resource if block_given?
       after_sign_in(resource)
     else
-      flash.now[:alert] = "Invalid authentication code"
-      render :otp, status: :unprocessable_entity
-    end
-  end
-
-  def verify_backup_code
-    resource = User.find_by(id: session[:otp_user_id])
-
-    if resource.nil?
-      redirect_to new_user_session_path, alert: "Session expired. Please log in again."
-      return
-    end
-
-    # Remove spaces and dashes for flexibility
-    backup_code = params[:backup_code].to_s.gsub(/[\s-]/, '')
-
-    if resource.invalidate_otp_backup_code!(backup_code)
-      session.delete(:otp_user_id)
-      sign_in(resource_name, resource)
-      after_sign_in(resource)
-    else
-      flash.now[:alert] = "Invalid backup code"
+      flash.now[:alert] = tv("devise.failure.invalid_token")
       render :otp, status: :unprocessable_entity
     end
   end
@@ -117,10 +96,10 @@ class SessionsController < Devise::SessionsController
     user = User.find_by(id: session[:otp_user_id])
     if user
       user.send_new_otp_code
-      flash.now[:notice] = "A new authentication code has been sent to your email."
+      flash.now[:notice] = tv("sent_otp_per_mail")
       render :otp
     else
-      redirect_to new_user_session_path, alert: "Please log in first"
+      redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
     end
   end
 

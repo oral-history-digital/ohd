@@ -20,7 +20,7 @@ class PasskeySessionsController < ApplicationController
       
       render json: options
     else
-      render json: { error: "No passkeys found" }, status: :not_found
+      render json: { error: tv("no_passkeys_found")}, status: :not_found
     end
   end
 
