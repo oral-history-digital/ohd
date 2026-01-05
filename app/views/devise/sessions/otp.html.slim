@@ -8,7 +8,7 @@ h2 2FA
   .form-group
     .form-label
       = f.label :otp_attempt,
-        TranslationValue.for('activerecord.attributes.user.otp_attempt', locale: locale),
+        tv('activerecord.attributes.user.otp_attempt'),
         class: 'FormLabel'
       .otp-input-container
         - 6.times do |i|

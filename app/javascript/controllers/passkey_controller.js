@@ -1,8 +1,15 @@
 import { get } from '@github/webauthn-json';
 import { Controller } from '@hotwired/stimulus';
 
+import { alertMessage } from '../utils/alert';
+
 export default class extends Controller {
     static targets = ['email'];
+
+    static values = {
+        noPasskeysFound: String,
+        emailMissing: String,
+    };
 
     async authenticate(event) {
         event.preventDefault();
@@ -10,7 +17,7 @@ export default class extends Controller {
         const email = this.hasEmailTarget ? this.emailTarget.value : null;
 
         if (!email) {
-            alert('Please enter your email address first');
+            alertMessage(this.emailMissingValue);
             return;
         }
 
@@ -31,7 +38,7 @@ export default class extends Controller {
             );
 
             if (!challengeResponse.ok) {
-                throw new Error('No passkeys found for this account');
+                throw new Error(this.noPasskeysFoundValue);
             }
 
             const options = await challengeResponse.json();
@@ -56,8 +63,7 @@ export default class extends Controller {
                 window.location.href = result.redirect_url;
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to authenticate:  ' + error.message);
+            alertMessage(error.message);
         }
     }
 }

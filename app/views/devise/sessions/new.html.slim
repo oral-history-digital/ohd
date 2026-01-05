@@ -3,7 +3,11 @@ h2= t('login')
 = form_for resource,
   as: :user,
   url: "/#{params[:locale]}/users/sign_in",
-  data: { controller: "passkey" },
+  data: {\
+    controller: "passkey",
+    "passkey-no-passkeys-found-value": tv(:no_passkeys_found),
+    "passkey-email-missing-value": tv(:email_missing)\
+  },
   html: { class: 'Form default' } do |f|
 
   = hidden_field_tag :path, @path

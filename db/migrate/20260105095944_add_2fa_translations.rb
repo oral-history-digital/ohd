@@ -25,6 +25,11 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       de: 'Ungültiger Passkey. Bitte versuchen Sie es erneut.',
       ru: 'Недействительный пасскей. Пожалуйста, попробуйте еще раз.'
     })
+    TranslationValue.create_or_update_for_key(:email_missing, {
+      en: 'Email is required to login with a passkey.',
+      de: 'E-Mail ist erforderlich, um sich mit einem Passkey anzumelden.',
+      ru: 'Для входа с помощью пасскея требуется адрес электронной почты.'
+    })
   end
 
   def down
@@ -33,7 +38,8 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       'send_otp_per_mail',
       'sent_otp_per_mail',
       'no_passkeys_found',
-      'invalid_passkey'
+      'invalid_passkey',
+      'email_missing'
     ]).destroy_all
   end
 end

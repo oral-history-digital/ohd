@@ -53,7 +53,7 @@ class PasskeySessionsController < ApplicationController
 
       render json: { success: true, redirect_url: after_sign_in_path_for(user) }
     rescue WebAuthn::SignCountVerificationError => e
-      render json: { error: "Invalid passkey" }, status: :unprocessable_entity
+      render json: { error: tv("invalid_passkey") }, status: :unprocessable_entity
     ensure
       session.delete(:authentication_challenge)
       session.delete(:passkey_user_id)

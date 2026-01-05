@@ -26,9 +26,10 @@ html
 
           main.Site-content
             .wrapper-content.u-line-length
-              - if notice
-                p.notice = notice
-              - if alert
-                p.alert = alert
+              .notification-container
+                - if notice
+                  p.notice = notice
+                - if alert
+                  p.alert = alert
 
               = yield

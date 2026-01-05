@@ -89,7 +89,7 @@ class SessionsController < Devise::SessionsController
   def otp
     # Show OTP input form
     @user = User.find_by(id: session[:otp_user_id])
-    redirect_to new_user_session_path, alert: "Please log in first" if @user.nil? 
+    redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated") if @user.nil? 
   end
 
   def resend_otp
