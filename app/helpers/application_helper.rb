@@ -3,8 +3,4 @@ module ApplicationHelper
   def latex_escape(text)
     LatexToPdf.escape_latex(text)
   end
-
-  def tv(key, locale=I18n.locale)
-    TranslationValue.for(key, locale)
-  end
 end

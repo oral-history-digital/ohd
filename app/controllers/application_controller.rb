@@ -253,6 +253,11 @@ class ApplicationController < ActionController::Base
                                .first
   end
 
+  def tv(key, locale=I18n.locale)
+    TranslationValue.for(key, locale)
+  end
+  helper_method :tv
+
   protected
 
   def configure_permitted_parameters
