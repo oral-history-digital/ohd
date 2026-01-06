@@ -30,6 +30,13 @@ export default function InterviewTextMaterials({
     const showTranscriptPDF =
         !project.is_catalog && (canEditInterview || isTranscriptPublic);
 
+    const localesWithObservations = interview.observations
+        ? project.available_locales.filter((lang) => {
+              const content = interview.observations[lang];
+              return content?.trim();
+          })
+        : [];
+
     if (!interview.language_id) {
         return null;
     }
@@ -41,20 +48,15 @@ export default function InterviewTextMaterials({
                     <span className="flyout-content-label">
                         {t('activerecord.attributes.interview.observations')}:
                     </span>
-                    {interview.observations &&
-                        Object.keys(interview.observations).map((locale) => {
-                            if (interview.observations[locale]) {
-                                return (
-                                    <InterviewDownloads
-                                        key={locale}
-                                        lang={locale}
-                                        type="observations"
-                                        condition={showObservations}
-                                        showEmpty={true}
-                                    />
-                                );
-                            }
-                        })}
+                    {localesWithObservations.map((lang) => (
+                        <InterviewDownloads
+                            key={lang}
+                            lang={lang}
+                            type="observations"
+                            condition={showObservations}
+                            showEmpty={true}
+                        />
+                    ))}
                 </p>
             )}
             {editView && (
