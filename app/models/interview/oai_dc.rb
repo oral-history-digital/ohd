@@ -14,6 +14,8 @@ module Interview::OaiDc
 
       oai_locales.each do |locale|
         xml.tag!('dc:identifier', oai_url_identifier(locale), "xml:lang": locale)
+      end
+      (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
       end
 
@@ -23,10 +25,8 @@ module Interview::OaiDc
         end
       end
 
-      oai_locales.each do |locale|
-        xml.tag!('dc:publisher', oai_publisher(locale), "xml:lang": locale)
-        xml.tag!('dc:contributor', oai_contributor(locale), "xml:lang": locale)
-      end
+      xml.tag!('dc:publisher', oai_publisher('en'), "xml:lang": 'en')
+      xml.tag!('dc:contributor', oai_contributor('en'), "xml:lang": 'en')
 
       xml.tag!('dc:date', oai_date)
 

@@ -34,7 +34,7 @@ module Interview::OaiDatacite
       end
 
       xml.titles do
-        [:de, :en].each do |locale|
+        (oai_locales | ['en']).each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
@@ -42,9 +42,9 @@ module Interview::OaiDatacite
       xml.creators do
         interviewees.each do |interviewee|
           xml.creator do
-            xml.creatorName anonymous_title(:de)
+            xml.creatorName anonymous_title(:en)
             if project.fullname_on_landing_page
-              xml.familyName interviewee.last_name(:de)
+              xml.familyName interviewee.last_name(:en)
             end
           end
         end

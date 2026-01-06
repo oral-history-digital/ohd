@@ -18,14 +18,15 @@ module Collection::OaiDc
 
       xml.tag!('dc:source', oai_identifier)
 
-      oai_locales.each do |locale|
+      (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
-        creator = oai_creator(locale)
-        unless creator.blank?
-          xml.tag!('dc:creator', creator, "xml:lang": locale)
-        end
-        xml.tag!('dc:publisher', oai_publisher(locale), "xml:lang": locale)
       end
+
+      creator = oai_creator('en')
+      unless creator.blank?
+        xml.tag!('dc:creator', creator, "xml:lang": 'en')
+      end
+      xml.tag!('dc:publisher', oai_publisher('en'), "xml:lang": 'en')
 
       xml.tag!('dc:contributor', project.manager)
       xml.tag!('dc:contributor', oai_contributor(:de))
