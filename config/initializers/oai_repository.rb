@@ -70,14 +70,14 @@ OaiRepository.setup do |config|
          model: Collection,
          description: 'Sammlungen'
        }
-    ] + (!(ActiveRecord::Base.connected? && ActiveRecord::Base.connection.table_exists?('projects')) ? [] : Project.shared.map do |project|
+    ] + (!(ActiveRecord::Base.connected? && ActiveRecord::Base.connection.table_exists?('projects')) ? [] : Project.shared.includes(:translations).map do |project|
       {
         spec: "archive:#{project.shortname}",
         name: project.name(:de),
         model: Project,
         #description: project.oai_abstract_description(:de)
       } 
-    end + Collection.all.map do |collection|
+    end + Collection.all.includes(:translations).map do |collection|
       {
         spec: "collection:#{collection.id}",
         name: collection.name(:de),

@@ -13,7 +13,7 @@ module Project::OaiDc
     ) do
 
       [:de, :en].each do |locale|
-        xml.tag!(oai_catalog_identifier(locale), 'dc:identifier', "xml:lang": locale)
+        xml.tag!('dc:identifier', oai_catalog_identifier(locale), "xml:lang": locale)
       end
 
       oai_locales.each do |locale|
