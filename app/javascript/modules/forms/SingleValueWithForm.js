@@ -28,18 +28,13 @@ export default function SingleValueWithForm({
     collapse,
     children,
     attribute,
-    data,
-    onlyStatus,
     noStatusCheckbox,
     hideEmpty = false,
     user,
     editView,
-    translations,
-    languages,
     submitData,
 }) {
     const [editing, setEditing] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
     const [collapsed, setCollapsed] = useState(collapse);
     const isStringValue = typeof value === 'string';
 
