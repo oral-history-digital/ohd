@@ -10,7 +10,7 @@ module Interview::OaiDatacite
       ).gsub(/\s+/, " ")
     ) do
 
-      xml.identifier oai_url_identifier(:de), identifierType: "URL"
+      xml.identifier oai_url_identifier(project.default_locale), identifierType: "URL"
 
       xml.alternateIdentifiers do
         alternate_oai_locales.each do |locale|
@@ -152,6 +152,4 @@ module Interview::OaiDatacite
     xml.target!
   end
 end
-
-
 
