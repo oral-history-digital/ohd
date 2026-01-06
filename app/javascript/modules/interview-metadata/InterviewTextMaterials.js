@@ -1,8 +1,4 @@
-import {
-    AuthShowContainer,
-    AuthorizedContent,
-    useAuthorization,
-} from 'modules/auth';
+import { AuthShowContainer, useAuthorization } from 'modules/auth';
 import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -19,16 +15,20 @@ export default function InterviewTextMaterials({
     const { project } = useProject();
 
     const { isAuthorized } = useAuthorization();
+
+    const canEditInterview = isAuthorized(interview, 'update');
+    const isObservationsPublic =
+        interview.properties?.public_attributes?.observations?.toString() ===
+        'true';
+    const isTranscriptPublic =
+        interview.properties?.public_attributes?.transcript?.toString() ===
+        'true';
+    const hasObservationsInLocale = Boolean(interview.observations?.[locale]);
+
     const showObservations =
-        isAuthorized(interview, 'update') ||
-        (interview.properties?.public_attributes?.observations?.toString() ===
-            'true' &&
-            interview.observations?.[locale]);
+        canEditInterview || (isObservationsPublic && hasObservationsInLocale);
     const showTranscriptPDF =
-        !project.is_catalog &&
-        (isAuthorized(interview, 'update') ||
-            interview.properties?.public_attributes?.transcript?.toString() ===
-                'true');
+        !project.is_catalog && (canEditInterview || isTranscriptPublic);
 
     if (!interview.language_id) {
         return null;
@@ -102,6 +102,7 @@ export default function InterviewTextMaterials({
 }
 
 InterviewTextMaterials.propTypes = {
-    isCatalog: PropTypes.bool,
     interview: PropTypes.object.isRequired,
+    isCatalog: PropTypes.bool,
+    editView: PropTypes.bool,
 };
