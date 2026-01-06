@@ -46,6 +46,10 @@ export default function DownloadLinks({ archiveId, numTapes, interview }) {
                     `${t('activerecord.models.metadata_field.other')} (DataCite)`
                 )}
                 {dataLink(
+                    `${pathBase}/interviews/${archiveId}/tei.xml`,
+                    `${t('activerecord.models.metadata_field.other')} (TEI)`
+                )}
+                {dataLink(
                     `${pathBase}/interviews/${archiveId}/export_all.zip`,
                     `${t('download_all_data')}`
                 )}
