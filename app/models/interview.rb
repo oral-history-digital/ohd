@@ -249,7 +249,11 @@ class Interview < ApplicationRecord
               end.where(registry_reference_type_id: facet.registry_reference_type_id).
               map(&:registry_entry_id).uniq
             when 'Interview'
-              self.respond_to?(facet.name) && self.send(facet.name)
+              if facet.name === 'interview_date'
+                self.interview_years
+              else
+                self.respond_to?(facet.name) && self.send(facet.name)
+              end
             when 'Person'
               interviewee.respond_to?(facet.name) && interviewee.send(facet.name)
             end
@@ -460,6 +464,20 @@ class Interview < ApplicationRecord
   def place_of_interview
     ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
     ref && ref.registry_entry
+  end
+
+  # Try to extract one or more years from text field interview_date.
+  def interview_years
+    if interview_date.blank?
+      return []
+    end
+
+    regexp = /\d{4}/
+    result = interview_date.scan(regexp)
+      .map(&:to_i)
+      .uniq
+      .sort
+    return result
   end
 
   def title(locale)
