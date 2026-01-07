@@ -35,8 +35,8 @@ class CompleteExport
           zip.put_next_entry("#{interview.archive_id}_biography_#{locale}.pdf")
           zip.write(interview.biography_pdf(:de, locale))
         end
-        if interview.has_protocol?(locale) && properties[:public_attributes] &&
-            properties[:public_attributes]['observations']
+        if interview.has_protocol?(locale) && interview.properties[:public_attributes] &&
+            interview.properties[:public_attributes]['observations']
           zip.put_next_entry("#{interview.archive_id}_protocol_#{locale}.pdf")
           zip.write(interview.observations_pdf(:de, locale))
         end
