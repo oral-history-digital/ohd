@@ -101,6 +101,7 @@ class Interview < ApplicationRecord
     collection_id
     signature_original
     description
+    observations
     transcript
     pseudo_links
     language_id

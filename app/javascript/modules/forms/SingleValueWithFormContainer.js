@@ -1,10 +1,5 @@
 import { getEditView } from 'modules/archive';
-import {
-    getCurrentProject,
-    getCurrentUser,
-    getLanguages,
-    submitData,
-} from 'modules/data';
+import { getCurrentUser, submitData } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,7 +11,6 @@ const mapStateToProps = (state) => {
         user: getCurrentUser(state),
         editView: getEditView(state),
         isLoggedIn: getIsLoggedIn(state),
-        languages: getLanguages(state),
     };
 };
 
