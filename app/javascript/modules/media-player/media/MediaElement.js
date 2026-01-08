@@ -256,12 +256,9 @@ export default function MediaElement({
 
         // Use tape number from ref since this function is called from event handler.
         const actualTape = tapeRef.current;
-        // Add new text tracks for primary language and translations only
-        // (excludes secondary language as it doesn't have subtitles)
-        const subtitleLanguages = [
-            interview.alpha3,
-            ...(interview.translation_alpha3s || []),
-        ].filter(Boolean); // Remove any null/undefined values
+
+        // Only add text tracks for languages with actual transcript data
+        const subtitleLanguages = interview.alpha3s_with_transcript || [];
 
         const newTracks = subtitleLanguages.map((lang) => ({
             src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${actualTape}`,
