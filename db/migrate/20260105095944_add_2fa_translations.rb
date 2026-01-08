@@ -30,6 +30,11 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       de: 'E-Mail ist erforderlich, um sich mit einem Passkey anzumelden.',
       ru: 'Для входа с помощью пасскея требуется адрес электронной почты.'
     })
+    TranslationValue.create_or_update_for_key(:passkey_deleted, {
+      en: "Passkey deleted. Note: You'll also need to manually delete it from your device's password manager (iCloud Keychain, Google Password Manager, etc.).",
+      de: "Passkey gelöscht. Hinweis: Sie müssen es auch manuell aus dem Passwort-Manager Ihres Geräts (iCloud Schlüsselbund, Google Passwort-Manager usw.) löschen.",
+      ru: "Пасскей удален. Примечание: вам также необходимо вручную удалить его из менеджера паролей вашего устройства (iCloud Keychain, Google Password Manager и т.д.)."
+    })
   end
 
   def down

@@ -12,6 +12,7 @@ import { FaPencilAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
 import PasskeyRegistration from './PasskeyRegistration';
+import Passkeys from './Passkeys';
 import TwoFAPopup from './TwoFAPopup';
 import UserDetailsContainer from './UserDetailsContainer';
 import UserDetailsFormContainer from './UserDetailsFormContainer';
@@ -62,6 +63,9 @@ export default function AccountPage() {
                     </div>
                     <div className="user-registration boxes">
                         {user && <PasskeyRegistration />}
+                    </div>
+                    <div className="user-registration boxes">
+                        {user && <Passkeys user={user} />}
                     </div>
                     <div className="user-registration boxes">
                         {user && <UserProjects />}

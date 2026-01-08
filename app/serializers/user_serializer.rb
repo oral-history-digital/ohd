@@ -36,6 +36,7 @@ class UserSerializer < ApplicationSerializer
     :do_not_track
 
   has_many :interview_permissions
+  has_many :webauthn_credentials
 
   def user_id
     object.id

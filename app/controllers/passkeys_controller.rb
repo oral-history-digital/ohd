@@ -53,15 +53,21 @@ class PasskeysController < ApplicationController
       session.delete(:creation_challenge)
     end
   end
-  
-  def index
-    @webauthn_credentials = current_user.webauthn_credentials
-  end
 
   def destroy
+    authorize(current_user)
     credential = current_user.webauthn_credentials.find(params[:id])
     credential.destroy
-    redirect_to settings_path, notice: "Passkey removed successfully"
+
+    render json: {
+      id: 'current',
+      data_type: 'users',
+      data: ::UserSerializer.new(
+        current_user,
+        is_current_user: true
+      ),
+      msg: tv("passkey_deleted")
+    }
   end
 
   private

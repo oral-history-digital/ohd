@@ -1,15 +1,23 @@
+import { deleteData } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { useDispatch } from 'react-redux';
+
 const Passkeys = ({ user }) => {
+    const dispatch = useDispatch();
+    const { t, locale } = useI18n();
+    const { project, projectId } = useProject();
+
     const handleDelete = (passkeyId) => {
-        // Implement the delete functionality here
-        console.log(`Delete passkey with ID: ${passkeyId}`);
+        dispatch(
+            deleteData({ project, projectId, locale }, 'passkeys', passkeyId)
+        );
     };
 
-    console.log('User passkeys:', user.passkeys);
-    console.log('user: ', user);
     return (
         <div>
             <h2>Passkeys</h2>
-            {user.passkeys.map((passkey) => (
+            {user?.webauthn_credentials?.map((passkey) => (
                 <div key={passkey.id}>
                     <h3>{passkey.nickname}</h3>
                     <button
