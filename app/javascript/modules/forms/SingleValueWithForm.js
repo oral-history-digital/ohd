@@ -28,18 +28,13 @@ export default function SingleValueWithForm({
     collapse,
     children,
     attribute,
-    data,
-    onlyStatus,
     noStatusCheckbox,
     hideEmpty = false,
     user,
     editView,
-    translations,
-    languages,
     submitData,
 }) {
     const [editing, setEditing] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
     const [collapsed, setCollapsed] = useState(collapse);
     const isStringValue = typeof value === 'string';
 
@@ -172,10 +167,25 @@ export default function SingleValueWithForm({
 }
 
 SingleValueWithForm.propTypes = {
-    obj: PropTypes.object,
-    attribute: PropTypes.string,
+    readOnly: PropTypes.bool,
     elementType: PropTypes.string,
     type: PropTypes.string,
-    readOnly: PropTypes.bool,
+    multiLocale: PropTypes.bool,
+    value: PropTypes.any,
+    validate: PropTypes.func,
+    values: PropTypes.array,
+    withEmpty: PropTypes.bool,
+    individualErrorMsg: PropTypes.string,
+    optionsScope: PropTypes.string,
+    obj: PropTypes.object,
+    noLabel: PropTypes.bool,
     linkUrls: PropTypes.bool,
+    collapse: PropTypes.bool,
+    children: PropTypes.node,
+    attribute: PropTypes.string,
+    noStatusCheckbox: PropTypes.bool,
+    hideEmpty: PropTypes.bool,
+    user: PropTypes.object,
+    editView: PropTypes.bool,
+    submitData: PropTypes.func.isRequired,
 };
