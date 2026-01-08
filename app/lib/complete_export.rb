@@ -35,8 +35,8 @@ class CompleteExport
           zip.put_next_entry("#{interview.archive_id}_biography_#{locale}.pdf")
           zip.write(interview.biography_pdf(:de, locale))
         end
-        if interview.has_protocol?(locale) && properties[:public_attributes] &&
-            properties[:public_attributes]['observations']
+        if interview.has_protocol?(locale) && interview.properties[:public_attributes] &&
+            interview.properties[:public_attributes]['observations']
           zip.put_next_entry("#{interview.archive_id}_protocol_#{locale}.pdf")
           zip.write(interview.observations_pdf(:de, locale))
         end
@@ -48,7 +48,7 @@ class CompleteExport
       end
 
       zip.put_next_entry("#{interview.archive_id}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml")
-      zip.write(interview.metadata_xml(:de))
+      zip.write(interview.datacite_xml(:de))
 
       if interview.photos.count > 0
         zip.put_next_entry("#{interview.archive_id}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip")

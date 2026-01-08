@@ -115,7 +115,7 @@ class RegistryEntry < ApplicationRecord
   searchable do
     integer :project_id, :stored => true, :references => Project
     string :archive_id, :multiple => true, :stored => true do
-      registry_references.map{|i| i.archive_id }
+      registry_references.pluck(:archive_id)
     end
     string :workflow_state
     (I18n.available_locales + ['orig']).each do |locale|
