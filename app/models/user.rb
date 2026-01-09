@@ -29,7 +29,7 @@ class User < ApplicationRecord
     @webauthn_id ||= Base64.urlsafe_encode64(id.to_s, padding: false)
   end
 
-  def after_database_authentication
+  def post_authentication_setup
     if !confirmed?
       resend_confirmation_instructions
     else
