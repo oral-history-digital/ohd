@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-01-09
+
+### Added
+
+- adding TEI download link ([eaec8e043](https://github.com/oral-history-digital/ohd/commit/eaec8e04305a6065d1d538fb735c9996b255fd62))
+
+### Changed
+
+- perf: replace with .pluck() for database queries ([#59](https://github.com/oral-history-digital/ohd/pull/59))
+- perf: optimize current_project method with caching and memoization ([#60](https://github.com/oral-history-digital/ohd/pull/60))
+
+### Fixed
+
+- fix: correctly save interview metadata observations ([#61](https://github.com/oral-history-digital/ohd/pull/61))
+- fix: only show subtitle options for languages with transcript in media player ([#62](https://github.com/oral-history-digital/ohd/pull/62))
+- adding ohd-project to the initially loaded projects, creating ohd-registry-references needs it ([8fe64de5d](https://github.com/oral-history-digital/ohd/commit/8fe64de5d089f13f2e8553661488900df1fb43de))
+- overwrite registrations_controller to integrate logging on registration-errors ([cb103763e](https://github.com/oral-history-digital/ohd/commit/cb103763ee2db40a274c97ddd81d9a521d0534f5))
+- fixing oai ([30d68cb79](https://github.com/oral-history-digital/ohd/commit/30d68cb79df74bb5d82b6c9e2ec52f557a9531e7))
+- some oai fixes ([505cfc614](https://github.com/oral-history-digital/ohd/commit/505cfc6148d7e2bcd4e73fe6f1444990c8830c2e))
+- oai: url-identifier in default locale ([696952ae9](https://github.com/oral-history-digital/ohd/commit/696952ae9c0822ec83233941a6b8fcf3679895b7))
+- fix complete export ([6c037a5b7](https://github.com/oral-history-digital/ohd/commit/6c037a5b75d7c6b0a87dac45cf4574fad6effd99), ([dd94b6b3b](https://github.com/oral-history-digital/ohd/commit/dd94b6b3b7fd0dff8cff5bd1f1b98d572620fe6c))
+
+### Removed
+
+- chore: remove obsolete spec files and config ([#63](https://github.com/oral-history-digital/ohd/pull/63))
+
 ## [1.5.0] - 2025-12-16
 
 ### Added
@@ -241,6 +267,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.6.0]: https://github.com/oral-history-digital/ohd/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/oral-history-digital/ohd/compare/v1.4.4...v1.5.0
 [1.4.4]: https://github.com/oral-history-digital/ohd/compare/v1.4.3...v1.4.4
 [1.4.3]: https://github.com/oral-history-digital/ohd/compare/v1.4.2...v1.4.3
