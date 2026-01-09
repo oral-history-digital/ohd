@@ -14,7 +14,7 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
 
     if (!user) return null;
 
-    const passkeysURL = `${OHD_DOMAINS[railsMode]}/${locale}/passkeys/new`;
+    const passkeysURL = `${OHD_DOMAINS[railsMode]}/${locale}/passkeys`;
 
     return (
         <Modal
@@ -32,7 +32,7 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
             {(close) => (
                 <iframe
                     src={passkeysURL}
-                    style={{ width: '100%', height: '80vh' }}
+                    style={{ width: '100%', height: '60vh' }}
                     scrolling="no"
                     frameBorder="0"
                     allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};

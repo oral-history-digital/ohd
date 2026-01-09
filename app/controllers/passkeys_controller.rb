@@ -35,20 +35,21 @@ class PasskeysController < ApplicationController
     end
   end
 
+  def index
+    policy_scope WebauthnCredential
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def destroy
     authorize(current_user)
     credential = current_user.webauthn_credentials.find(params[:id])
     credential.destroy
 
-    render json: {
-      id: 'current',
-      data_type: 'users',
-      data: ::UserSerializer.new(
-        current_user,
-        is_current_user: true
-      ),
-      msg: tv("passkey_deleted")
-    }
+    respond_to do |format|
+      format.html { redirect_to passkeys_path, notice: tv("passkey_deleted") }
+    end
   end
 
   private
