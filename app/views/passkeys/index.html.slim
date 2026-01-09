@@ -7,9 +7,8 @@ div data-controller="passkey" data-passkey-registration-url-value=new_passkey_pa
   button.btn.btn-primary data-action="click->passkey#register"
     | Register New Passkey
   
-  h3 Your Existing Passkeys
-  
   - if current_user.webauthn_credentials.any? 
+    h3 Your Existing Passkeys
     ul.passkey-list
       - current_user.webauthn_credentials.each do |credential|
         li
@@ -23,23 +22,24 @@ div data-controller="passkey" data-passkey-registration-url-value=new_passkey_pa
             passkey_path(credential),
             method: :delete,
             class: "btn btn-sm btn-danger"
+    
+    details.help-section
+      summary
+        strong How to remove passkeys from your device
+      
+      details
+        summary iOS/macOS (iCloud Keychain)
+        ol
+          li Go to Settings → Passwords
+          li Search for "#{request.host}"
+          li Select the passkey and tap "Delete"
+      
+      details
+        summary Android/Chrome (Google Password Manager)
+        ol
+          li Go to passwords.google.com
+          li Search for "#{request.host}"
+          li Select the passkey and click "Delete"
+
   - else
     p No passkeys registered yet.
-  
-  details.help-section
-    summary
-      strong How to remove passkeys from your device
-    
-    details
-      summary iOS/macOS (iCloud Keychain)
-      ol
-        li Go to Settings → Passwords
-        li Search for "#{request.host}"
-        li Select the passkey and tap "Delete"
-    
-    details
-      summary Android/Chrome (Google Password Manager)
-      ol
-        li Go to passwords.google.com
-        li Search for "#{request.host}"
-        li Select the passkey and click "Delete"
