@@ -1,34 +1,15 @@
 class PasskeysController < ApplicationController
   before_action :authenticate_user!
+  layout 'login'
   
   # Initialize passkey registration
   def new
     authorize current_user, :manage_passkeys?
 
-    rp_id = get_rp_id(request)
-
-    options = WebAuthn::Credential.options_for_create(
-      user: {
-        id: current_user.webauthn_id,
-        name: current_user.email,
-        display_name: current_user.email
-      },
-      authenticator_selection: {
-        user_verification: "required",
-        require_resident_key: false,
-        resident_key: "preferred",
-        authenticator_attachment: "platform"  # This requests platform authenticator (Touch ID, Windows Hello, etc.)
-      },
-      exclude: current_user.webauthn_credentials.pluck(:external_id),
-      rp: {
-        name: "OHD",
-        id: rp_id
-      }
-    )
-    
-    session[:creation_challenge] = options.challenge
-    
-    render json: options.as_json
+    respond_to do |format|
+      format.html
+      format.json { render_passkey_options }
+    end
   end
   
   # Complete passkey registration
@@ -76,5 +57,32 @@ class PasskeysController < ApplicationController
     uri = URI.parse(request.base_url)
     uri.host
     #request.host.include?('localhost') ? 'localhost' : request.host.split(':').first
+  end
+
+  def render_passkey_options
+    rp_id = get_rp_id(request)
+
+    options = WebAuthn::Credential.options_for_create(
+      user: {
+        id: current_user.webauthn_id,
+        name: current_user.email,
+        display_name: current_user.email
+      },
+      authenticator_selection: {
+        user_verification: "required",
+        require_resident_key: false,
+        resident_key: "preferred",
+        authenticator_attachment: "platform"  # This requests platform authenticator (Touch ID, Windows Hello, etc.)
+      },
+      exclude: current_user.webauthn_credentials.pluck(:external_id),
+      rp: {
+        name: "OHD",
+        id: rp_id
+      }
+    )
+
+    session[:creation_challenge] = options.challenge
+
+    render json: options.as_json
   end
 end

@@ -1,3 +1,4 @@
+import { OHD_DOMAINS } from 'modules/constants';
 import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
@@ -9,9 +10,11 @@ import Passkeys from './Passkeys';
 
 export default function TwoFAPopup({ showDialogInitially = true }) {
     const user = useSelector(getCurrentUser);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     if (!user) return null;
+
+    const passkeysURL = `${OHD_DOMAINS[railsMode]}/${locale}/passkeys/new`;
 
     return (
         <Modal
@@ -27,11 +30,12 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
             }
         >
             {(close) => (
-                <>
-                    <p>{`${t('passkeys.title')}`}</p>
-                    <PasskeyRegistration />
-                    <Passkeys user={user} />
-                </>
+                <iframe
+                    src={passkeysURL}
+                    style={{ width: '100%', height: '80vh' }}
+                    scrolling="no"
+                    frameBorder="0"
+                ></iframe>
             )}
         </Modal>
     );
