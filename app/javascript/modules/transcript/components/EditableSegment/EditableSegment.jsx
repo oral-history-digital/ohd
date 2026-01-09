@@ -14,6 +14,7 @@ import { useAutoScrollToRef } from '../../hooks';
 import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
 import BookmarkSegmentButton from '../BookmarkSegmentButton';
 import EditableSegmentText from './EditableSegmentText';
+import EditableTimecode from './EditableTimecode';
 import Initials from './Initials';
 import SegmentButtons from './SegmentButtons';
 import SegmentText from './SegmentText';
@@ -35,6 +36,7 @@ function Segment({
     const [activeButton, setActiveButton] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [editedText, setEditedText] = useState(null);
+    const [editedTimecode, setEditedTimecode] = useState(null);
 
     console.log('activeButton:', activeButton);
 
@@ -60,20 +62,24 @@ function Segment({
     const handleEditStart = () => {
         setEditMode(true);
         setEditedText(null); // Start with original text
+        setEditedTimecode(null); // Start with original time
         setActiveButton('edit');
     };
 
     const handleEditCancel = () => {
         setEditMode(false);
         setEditedText(null);
+        setEditedTimecode(null);
         setActiveButton(null);
     };
 
     const handleEditSave = async () => {
         // TODO: Implement save logic
         console.log('Saving segment text:', editedText);
+        console.log('Saving segment time:', editedTimecode);
         setEditMode(false);
         setEditedText(null);
+        setEditedTimecode(null);
         setActiveButton(null);
     };
 
@@ -87,7 +93,6 @@ function Segment({
 
     const showButtons =
         isAuthorized(segment) || isAuthorized({ type: 'General' }, 'edit');
-    console.log('showButtons:', showButtons);
 
     if (!text) {
         return null;
@@ -114,6 +119,11 @@ function Segment({
                         originalText={text}
                         editedText={editedText}
                         onTextChange={setEditedText}
+                    />
+                    <EditableTimecode
+                        segment={segment}
+                        editedTime={editedTimecode}
+                        onTimeChange={setEditedTimecode}
                     />
                     <div className="EditableSegment-actions">
                         <CancelButton
