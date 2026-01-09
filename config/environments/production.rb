@@ -108,18 +108,5 @@ Rails.application.configure do
 
   config.require_master_key = true
 
-  config.hosts = [
-    "portal.oral-history.digital",
-    "test.oral-history.digital",
-    "test1.oral-history.digital",
-    "test2.oral-history.digital",
-    "archiv.eiserner-vorhang.de",
-    "deutsches-gedaechtnis.fernuni-hagen.de",
-    "archiv.zwangsarbeit-archiv.de",
-    "archiv.cdoh.net",
-    "archive.occupation-memories.org",
-    "da03.cedis.fu-berlin.de",
-    "testimonies.campscapes.org",
-    "archiv.erlebte-geschichte.fu-berlin.de",
-  ]
+  config.hosts = YAML.load_file('config/allowed_domains.yml')[Rails.env] 
 end

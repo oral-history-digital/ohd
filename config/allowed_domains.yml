@@ -1,0 +1,25 @@
+development:
+  - localhost
+  - www.example.com
+  - portal.oral-history.localhost
+  - test1.oral-history.localhost
+  - test2.oral-history.localhost
+  - test3.oral-history.localhost
+production:
+  - portal.oral-history.digital
+  - test.oral-history.digital
+  - test1.oral-history.digital
+  - test2.oral-history.digital
+  - archiv.eiserner-vorhang.de
+  - deutsches-gedaechtnis.fernuni-hagen.de
+  - archiv.zwangsarbeit-archiv.de
+  - archiv.cdoh.net
+  - archive.occupation-memories.org
+  - da03.cedis.fu-berlin.de
+  - testimonies.campscapes.org
+  - archiv.erlebte-geschichte.fu-berlin.de
+staging:
+  - staging.oral-history.digital
+  - staging1.oral-history.digital
+  - staging2.oral-history.digital
+test:
