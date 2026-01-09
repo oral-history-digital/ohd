@@ -35,6 +35,8 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
                     style={{ width: '100%', height: '80vh' }}
                     scrolling="no"
                     frameBorder="0"
+                    allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};
+                        publickey-credentials-get ${OHD_DOMAINS[railsMode]}`}
                 ></iframe>
             )}
         </Modal>
