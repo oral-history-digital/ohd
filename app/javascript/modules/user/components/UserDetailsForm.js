@@ -1,4 +1,5 @@
 import { getCountryKeys } from 'modules/archive';
+import { EMAIL_REGEX } from 'modules/constants';
 import { Form } from 'modules/forms';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
