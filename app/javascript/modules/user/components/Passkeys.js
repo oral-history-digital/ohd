@@ -8,6 +8,8 @@ const Passkeys = ({ user }) => {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
 
+    if (!user) return null;
+
     const handleDelete = (passkeyId) => {
         dispatch(
             deleteData({ project, projectId, locale }, 'passkeys', passkeyId)
@@ -17,7 +19,7 @@ const Passkeys = ({ user }) => {
     return (
         <div>
             <h2>Passkeys</h2>
-            {user?.webauthn_credentials?.map((passkey) => (
+            {user.webauthn_credentials.map((passkey) => (
                 <div key={passkey.id}>
                     <h3>{passkey.nickname}</h3>
                     <button

@@ -11,8 +11,7 @@ import { Helmet } from 'react-helmet';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import PasskeyRegistration from './PasskeyRegistration';
-import Passkeys from './Passkeys';
+import PasskeyPopup from './PasskeyPopup';
 import TwoFAPopup from './TwoFAPopup';
 import UserDetailsContainer from './UserDetailsContainer';
 import UserDetailsFormContainer from './UserDetailsFormContainer';
@@ -56,16 +55,15 @@ export default function AccountPage() {
                                 <TwoFAPopup showDialogInitially={false} />
                             )}
                         </div>
+                        <div className="edit-account-icon">
+                            {user && (
+                                <PasskeyPopup showDialogInitially={false} />
+                            )}
+                        </div>
                     </div>
 
                     <div className="user-registration boxes">
                         {user && <UserDetailsContainer />}
-                    </div>
-                    <div className="user-registration boxes">
-                        {user && <PasskeyRegistration />}
-                    </div>
-                    <div className="user-registration boxes">
-                        {user && <Passkeys user={user} />}
                     </div>
                     <div className="user-registration boxes">
                         {user && <UserProjects />}

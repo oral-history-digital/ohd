@@ -44,7 +44,6 @@ const PasskeyRegistration = ({
             // Step 2: Create the credential (webauthn-json handles all conversions)
             const credential = await create({ publicKey: options });
 
-            console.log('Created credential:', credential);
             // Step 3: Send the credential to the server for verification
             const verificationResponse = await fetch(verificationUrl, {
                 method: 'POST',
@@ -66,7 +65,6 @@ const PasskeyRegistration = ({
                 onSuccess();
             }
         } catch (err) {
-            console.error('Passkey registration error:', err);
             setError(err.message || 'An error occurred during registration');
             if (onError) {
                 onError(err);
