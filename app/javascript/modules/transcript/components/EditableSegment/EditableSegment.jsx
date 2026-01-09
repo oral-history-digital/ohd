@@ -1,11 +1,21 @@
+import { memo, useRef, useState } from 'react';
+
 import classNames from 'classnames';
+import { useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import { useScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
+import { CancelButton, SubmitButton } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { memo, useRef } from 'react';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+
 import { useAutoScrollToRef } from '../../hooks';
+import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
+import BookmarkSegmentButton from '../BookmarkSegmentButton';
+import EditableSegmentText from './EditableSegmentText';
 import Initials from './Initials';
+import SegmentButtons from './SegmentButtons';
 import SegmentText from './SegmentText';
 
 function Segment({
@@ -18,8 +28,15 @@ function Segment({
     sendTimeChangeRequest,
 }) {
     const divEl = useRef();
+    const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
     const scrollOffset = useScrollOffset();
+    const { isAuthorized } = useAuthorization();
+    const [activeButton, setActiveButton] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [editedText, setEditedText] = useState(null);
+
+    console.log('activeButton:', activeButton);
 
     const shouldScroll =
         (autoScroll && isActive) || // Segment is active and autoScroll is enabled (e.g. during playback)
@@ -35,10 +52,46 @@ function Segment({
     ]);
 
     const handleSegmentClick = () => {
-        if (interview?.transcriptCoupled) {
+        if (interview?.transcriptCoupled && !editMode) {
             sendTimeChangeRequest(segment.tape_nbr, segment.time);
         }
     };
+
+    const handleEditStart = () => {
+        setEditMode(true);
+        setEditedText(null); // Start with original text
+        setActiveButton('edit');
+    };
+
+    const handleEditCancel = () => {
+        setEditMode(false);
+        setEditedText(null);
+        setActiveButton(null);
+    };
+
+    const handleEditSave = async () => {
+        // TODO: Implement save logic
+        console.log('Saving segment text:', editedText);
+        setEditMode(false);
+        setEditedText(null);
+        setActiveButton(null);
+    };
+
+    let text = isAuthorized(segment, 'update')
+        ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
+        : segment.text[`${contentLocale}-public`];
+
+    const textDir = checkTextDir(text);
+    // Enforce RTL wrapping if the text direction is RTL
+    text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
+
+    const showButtons =
+        isAuthorized(segment) || isAuthorized({ type: 'General' }, 'edit');
+    console.log('showButtons:', showButtons);
+
+    if (!text) {
+        return null;
+    }
 
     return (
         <div
@@ -49,15 +102,58 @@ function Segment({
             className={classNames('Segment', {
                 'Segment--withSpeaker': segment.speakerIdChanged,
                 'is-active': isActive,
+                'Segment--editMode': editMode,
             })}
+            style={{ background: '#f8f8f8' }}
         >
-            <Initials contributor={contributor} segment={segment} />
-            <SegmentText
-                segment={segment}
-                locale={contentLocale}
-                isActive={isActive}
-                handleClick={handleSegmentClick}
-            />
+            {editMode ? (
+                <>
+                    <EditableSegmentText
+                        segment={segment}
+                        locale={contentLocale}
+                        originalText={text}
+                        editedText={editedText}
+                        onTextChange={setEditedText}
+                    />
+                    <div className="EditableSegment-actions">
+                        <CancelButton
+                            handleCancel={handleEditCancel}
+                            variant="outlined"
+                            color="secondary"
+                            startIcon={<FaTimes className="Icon" />}
+                            title={t('button.cancel')}
+                            className="Button--icon"
+                        />
+                        <SubmitButton
+                            variant="contained"
+                            color="primary"
+                            onClick={handleEditSave}
+                            startIcon={<FaCheck className="Icon" />}
+                            title={t('button.save')}
+                            className="Button--icon"
+                        />
+                    </div>
+                </>
+            ) : (
+                <>
+                    <Initials contributor={contributor} segment={segment} />
+                    <SegmentText
+                        segment={segment}
+                        locale={contentLocale}
+                        isActive={isActive}
+                        handleClick={handleSegmentClick}
+                    />
+                    <BookmarkSegmentButton segment={segment} />
+                </>
+            )}
+
+            {!editMode && showButtons && (
+                <SegmentButtons
+                    segment={segment}
+                    setActiveButton={setActiveButton}
+                    onEditStart={handleEditStart}
+                />
+            )}
         </div>
     );
 }

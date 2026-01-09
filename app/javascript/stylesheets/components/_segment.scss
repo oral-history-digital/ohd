@@ -112,3 +112,48 @@ $segment-icon-width: 1.5 * $base-unit;
   direction: rtl;
   text-align: right;
 }
+.Segment--editMode {
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  padding: $base-unit;
+  padding-left: $base-unit;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  gap: $base-unit * 0.5;
+  display: flex;
+  flex-direction: column;
+}
+
+.EditableSegment-textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: $font-family;
+  font-size: 1rem;
+  line-height: $base-unit;
+  padding: $base-unit * 0.5;
+  resize: vertical;
+  min-height: 100px;
+  max-width: 100%;
+  width: 100%;
+  transition: border-color $transition-duration;
+  flex-grow: 1;
+
+  &:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+  }
+}
+
+.EditableSegment-textarea--rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.EditableSegment-actions {
+  display: flex;
+  gap: $base-unit * 0.5;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
