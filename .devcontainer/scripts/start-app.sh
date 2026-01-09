@@ -17,6 +17,42 @@ wait_for_port() {
 }
 
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "Webpack dev server is running in separate container on port 3035"
+log "HMR should be active at http://localhost:3035"
+log ""
+
+# Clean stale webpack manifest to prevent hash mismatches after rebuild
+if [ -f "/workspace/public/packs/manifest.json" ]; then
+  log "Cleaning stale webpack manifest..."
+  rm -rf /workspace/public/packs/manifest.json
+fi
+
+# Wait for webpack dev server to compile and write manifest
+log "Waiting for webpack dev server..."
+wait_for_port webpack 3035
+
+# Trigger webpack compilation by touching entry file
+log "Triggering webpack compilation..."
+touch /workspace/app/javascript/packs/application.js
+
+# Wait for manifest to be written
+max_wait=60
+i=0
+until [ -f "/workspace/public/packs/manifest.json" ] && [ -s "/workspace/public/packs/manifest.json" ]; do
+  ((i++)) && [[ $i -ge $max_wait ]] && { log "ERROR: Webpack manifest not created after ${max_wait}s"; break; }
+  sleep 1
+done
+
+if [ -f "/workspace/public/packs/manifest.json" ]; then
+  log "✅ Webpack manifest ready"
+else
+  log "⚠️  Webpack manifest not found - triggering manual compilation"
+  # Last resort: make a small change to force compilation
+  echo "// $(date)" >> /workspace/app/javascript/packs/application.js
+  sleep 5
+fi
+
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log "🔍 Checking Solr availability..."
 wait_for_port solr 8983
 
