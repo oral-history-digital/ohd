@@ -150,6 +150,12 @@ $segment-icon-width: 1.5 * $base-unit;
   text-align: right;
 }
 
+.EditableSegment-timecode {
+  label {
+    margin-right: $base-unit * 0.5;
+  }
+}
+
 .EditableSegment-actions {
   display: flex;
   gap: $base-unit * 0.5;
