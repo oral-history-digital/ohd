@@ -14,10 +14,11 @@ import { useProject } from 'modules/routes';
 import { Sidebar } from 'modules/sidebar';
 import {
     AfterConfirmationPopup,
+    AfterEnable2FAPopup,
+    AfterEnablePasskeyPopup,
     AfterRegisterPopup,
     AfterRequestProjectAccessPopup,
     AfterResetPassword,
-    AfterEnable2FAPopup,
     ConfirmNewZwarTosPopup,
     CorrectUserDataPopup,
 } from 'modules/user';
@@ -108,6 +109,7 @@ export default function Layout({
                 <CorrectUserDataPopup />
                 <AfterResetPassword />
                 <AfterEnable2FAPopup />
+                <AfterEnablePasskeyPopup />
                 <ConfirmNewZwarTosPopup />
                 <Helmet
                     defaultTitle={titleBase}

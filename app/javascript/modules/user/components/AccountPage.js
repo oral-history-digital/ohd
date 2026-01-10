@@ -56,7 +56,7 @@ export default function AccountPage() {
                             )}
                         </div>
                         <div className="edit-account-icon">
-                            {user && (
+                            {user?.passkey_required_for_login && (
                                 <PasskeyPopup showDialogInitially={false} />
                             )}
                         </div>

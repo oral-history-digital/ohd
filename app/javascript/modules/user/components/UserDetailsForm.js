@@ -71,6 +71,11 @@ export default function UserDetailsForm({
                     attribute: 'otp_required_for_login',
                     type: 'checkbox',
                 },
+                {
+                    elementType: 'input',
+                    attribute: 'passkey_required_for_login',
+                    type: 'checkbox',
+                },
             ]}
         />
     );

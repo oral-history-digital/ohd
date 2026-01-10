@@ -40,7 +40,7 @@ class SessionsController < Devise::SessionsController
     
     if resource && resource.valid_password?(params[resource_name][:password])
       # Check if 2FA is enabled
-      if resource.otp_required_for_login?
+      if resource.otp_required_for_login? || resource.passkey_required_for_login?
         # Store user id in session for second step
         session[:otp_user_id] = resource.id
         redirect_to users_otp_path

@@ -6,6 +6,8 @@ class UserSerializer < ApplicationSerializer
     :otp_qrcode,
     :otp_required_for_login,
     :changed_to_otp_at, 
+    :passkey_required_for_login,
+    :changed_to_passkey_at,
     :admin,
     :tos_agreement,
     :created_at,

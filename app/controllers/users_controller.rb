@@ -235,6 +235,7 @@ class UsersController < ApplicationController
       :default_locale,
       :workflow_state,
       :otp_required_for_login,
+      :passkey_required_for_login,
     )
   end
 
