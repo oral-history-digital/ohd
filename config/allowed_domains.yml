@@ -23,3 +23,5 @@ staging:
   - staging1.oral-history.digital
   - staging2.oral-history.digital
 test:
+  - test.portal.oral-history.localhost
+  - myproject.localhost

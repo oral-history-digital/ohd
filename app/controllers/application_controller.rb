@@ -277,6 +277,8 @@ class ApplicationController < ActionController::Base
       :pre_register_location,
       :password,
       :password_confirmation,
+      :otp_required_for_login,
+      :passkey_required_for_login,
     )}
   end
 

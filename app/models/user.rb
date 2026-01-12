@@ -15,10 +15,18 @@ class User < ApplicationRecord
 
   before_save :generate_two_factor_secret_if_needed
   def generate_two_factor_secret_if_needed
-    if self.otp_required_for_login_changed? &&
-      self.otp_required_for_login && self.otp_secret.blank?
+    if (self.otp_required_for_login_changed? || self.confirmed_at_changed?) &&
+        self.otp_required_for_login && self.otp_secret.blank?
       self.otp_secret = User.generate_otp_secret
       self.changed_to_otp_at = Time.now
+    end
+  end
+
+  before_save :update_passkey_required_timestamp
+  def update_passkey_required_timestamp
+    if (self.passkey_required_for_login_changed? || self.confirmed_at_changed?) &&
+        self.passkey_required_for_login
+      self.changed_to_passkey_at = Time.now
     end
   end
 

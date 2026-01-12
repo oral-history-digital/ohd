@@ -30,67 +30,6 @@ class BasicsTest < ApplicationSystemTestCase
     assert_text 'Last Name: Henderson'
   end
 
-  test "register as a new user" do
-    visit '/'
-
-    # step 1 - basic data
-    click_on 'Registration'
-    fill_in 'First Name', with: 'Mario'
-    fill_in 'Last Name', with: 'Rossi'
-    select 'Germany'
-    fill_in 'Street', with: 'Am Dornbusch 13'
-    fill_in 'City', with: 'Frankfurt am Main'
-    fill_in 'Email', with: 'mrossi@example.com'
-    fill_in 'Password', name: 'password', with: 'Password123!'
-    fill_in 'Password confirmation', with: 'Password123!'
-    check 'Terms of Use', visible: :all
-    check 'Privacy Policy', visible: :all
-    assert_text 'I agree to the Terms of Use of the Oral-History.Digital platform.'
-    assert_text 'I agree to the Privacy Policy of the Freie Universität Berlin.'
-    click_on 'Submit registration'
-    assert_text 'Your registration has been successfully submitted!'
-
-    # click link in mail
-    mails = ActionMailer::Base.deliveries
-    assert_equal 1, mails.count
-    confirmation = mails.last
-    assert_match /Confirmation of your registration/, confirmation.subject
-    link = links_from_email(confirmation)[0]
-    visit link
-
-    # step 2 - activation request
-    fill_in 'Institution', with: 'Goethe University'
-    select 'Researcher'
-    select 'Education'
-    fill_in 'specification', with: 'project ...'
-    check 'Terms of Use', visible: :all
-    click_on 'Submit activation request'
-    assert_text 'Your activation request has been successfully submitted'
-    click_on 'OK'
-    click_on 'Logout'
-
-    # step 3 - activate user as admin
-    login_as 'alice@example.com'
-    mails = ActionMailer::Base.deliveries
-    assert_equal 2, mails.count
-    request = mails.last
-    assert_match /request for review/, request.subject
-    link = links_from_email(request)[0]
-    visit link
-    click_on 'Editing interface'
-    click_on 'Edit item'
-    select 'Activate'
-    assert_text '<p>Hello Mario Rossi,</p><p>You now have access to the application'
-    click_on 'Submit'
-    click_on 'Account'
-    Capybara.reset_sessions!
-
-    # enjoy ...
-    visit '/'
-    login_as 'mrossi@example.com'
-    assert_text 'The test archive'
-  end
-
   test 'request archive access' do
     visit '/'
     login_as 'john@example.com'

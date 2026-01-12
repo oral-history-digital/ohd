@@ -49,13 +49,8 @@ module Archive
     config.action_dispatch.default_headers.delete('X-Frame-Options')
     
     allowed_domains = YAML.load_file('config/allowed_domains.yml')[Rails.env].map do |domain|
-      if Rails.env.development?
-        protocol = 'http'
-        port = ':3000'
-      else
-        protocol = 'https'
-        port = ''
-      end
+      protocol = Rails.env.development? || Rails.env.test? ? 'http' : 'https'
+      port = Rails.env.development? ? ':3000' : Rails.env.test? ? ':47001' : ''
       "#{protocol}://#{domain}#{port}"
     end
 
