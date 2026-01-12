@@ -20,7 +20,7 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
         <Modal
             key="passkeys-popup"
             triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
-            title={t('passkeys.title')}
+            title={t('passkey.title')}
             showDialogInitially={showDialogInitially}
             hideButton={showDialogInitially}
             trigger={

@@ -35,6 +35,41 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       de: "Passkey gelöscht. Hinweis: Sie müssen es auch manuell aus dem Passwort-Manager Ihres Geräts (iCloud Schlüsselbund, Google Passwort-Manager usw.) löschen.",
       ru: "Пасскей удален. Примечание: вам также необходимо вручную удалить его из менеджера паролей вашего устройства (iCloud Keychain, Google Password Manager и т.д.)."
     })
+    TranslationValue.create_or_update_for_key("activerecord.attributes.user.passkey_required_for_login", {
+      en: "Webauthn Passkey is required for login.",
+      de: "Webauthn Passkey ist für die Anmeldung erforderlich.",
+      ru: "Для входа требуется Webauthn Passkey."
+    })
+    TranslationValue.create_or_update_for_key("passkey.title", {
+      en: "Passkeys",
+      de: "Passkeys",
+      ru: "Пасскеи"
+    })
+    TranslationValue.create_or_update_for_key("passkey.register", {
+      en: "Register Passkey",
+      de: "Passkey registrieren",
+      ru: "Зарегистрировать пасскей"
+    })
+    TranslationValue.create_or_update_for_key("passkey.registered", {
+      en: "registered",
+      de: "registriert",
+      ru: "зарегистрирован"
+    })
+    TranslationValue.create_or_update_for_key("passkey.successfully_registered", {
+      en: "Passkey successfully registered.",
+      de: "Passkey erfolgreich registriert.",
+      ru: "Пасскей успешно зарегистрирован."
+    })
+    TranslationValue.create_or_update_for_key("activerecord.attributes.user.otp_required_for_login", {
+      en: "OTP is required for login.",
+      de: "OTP ist für die Anmeldung erforderlich.",
+      ru: "Для входа требуется OTP."
+    })
+    TranslationValue.create_or_update_for_key("activerecord.attributes.user.otp_attempt", {
+      en: "One-time Password",
+      de: "Einmaliges Passwort",
+      ru: "Одноразовый пароль"
+    })
   end
 
   def down
@@ -44,7 +79,15 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       'sent_otp_per_mail',
       'no_passkeys_found',
       'invalid_passkey',
-      'email_missing'
+      'email_missing',
+      'passkey_deleted',
+      'activerecord.attributes.user.passkey_required_for_login',
+      'passkey.title',
+      'passkey.register',
+      'passkey.registered',
+      'passkey.successfully_registered',
+      'activerecord.attributes.user.otp_required_for_login',
+      'activerecord.attributes.user.otp_attempt'
     ]).destroy_all
   end
 end

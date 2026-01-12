@@ -7,7 +7,8 @@ export default function AfterEnablePasskeyPopup({}) {
     const user = useSelector(getCurrentUser);
 
     const recentlyEnabledPasskey =
-        user && new Date(user.changed_to_otp_at).getTime() + 60000 > Date.now();
+        user &&
+        new Date(user.changed_to_passkey_at).getTime() + 60000 > Date.now();
 
     if (!user || !recentlyEnabledPasskey) return null;
 
