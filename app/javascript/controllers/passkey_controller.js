@@ -5,17 +5,27 @@ import { alertMessage } from '../utils/alert';
 import { getCsrfToken } from '../utils/csrfToken';
 
 export default class extends Controller {
-    static targets = ['email'];
+    static targets = ['email', 'nickname'];
 
     static values = {
         noPasskeysFound: String,
         emailMissing: String,
+        enterNickname: String,
+        registeredSuccessfully: String,
     };
 
     async register(event) {
         event.preventDefault();
         const registrationUrl = '/de/passkeys/new';
         const verificationUrl = '/de/passkeys';
+
+        const nickname = this.nicknameTarget.value.trim();
+
+        if (!nickname) {
+            alertMessage(this.enterNicknameValue);
+            this.nicknameTarget.focus();
+            return;
+        }
 
         try {
             // Check if WebAuthn is supported
@@ -45,7 +55,10 @@ export default class extends Controller {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'same-origin',
                 csrfToken: getCsrfToken(),
-                body: JSON.stringify({ credential: credential }),
+                body: JSON.stringify({
+                    credential: credential,
+                    nickname: nickname,
+                }),
             });
 
             if (!verificationResponse.ok) {
@@ -55,7 +68,7 @@ export default class extends Controller {
                 );
             }
 
-            alertMessage('Passkey added successfully!', 'success');
+            alertMessage(this.registeredSuccessfullyValue, 'success');
         } catch (error) {
             alertMessage(error.message);
         }
