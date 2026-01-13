@@ -45,6 +45,11 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       de: "Passkeys",
       ru: "Пасскеи"
     })
+    TranslationValue.create_or_update_for_key("passkey.enter_nickname", {
+      en: "Enter a name for your Passkey:",
+      de: "Geben Sie einen Namen für Ihren Passkey ein:",
+      ru: "Введите имя для вашего пасскея:"
+    })
     TranslationValue.create_or_update_for_key("passkey.register", {
       en: "Register Passkey",
       de: "Passkey registrieren",
@@ -83,6 +88,7 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       'passkey_deleted',
       'activerecord.attributes.user.passkey_required_for_login',
       'passkey.title',
+      'passkey.enter_nickname',
       'passkey.register',
       'passkey.registered',
       'passkey.successfully_registered',
