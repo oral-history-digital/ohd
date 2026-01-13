@@ -7,12 +7,12 @@ Rails.application.config.to_prepare do
   end
   
   # Fires after successful authentication
-  Warden:: Manager.after_authentication do |user, auth, opts|
+  Warden::Manager.after_authentication do |user, auth, opts|
     # Only on fresh authentication, not session restoration
   end
   
   # Fires before logout
-  Warden:: Manager.before_logout do |user, auth, opts|
+  Warden::Manager.before_logout do |user, auth, opts|
     # Clean up before user is logged out
   end
   

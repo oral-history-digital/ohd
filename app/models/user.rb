@@ -41,7 +41,7 @@ class User < ApplicationRecord
     if !confirmed?
       resend_confirmation_instructions
     else
-      Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
+      access_tokens.any? || Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
     end
   end
 
