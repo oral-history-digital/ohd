@@ -69,6 +69,8 @@ export default class extends Controller {
             }
 
             alertMessage(this.registeredSuccessfullyValue, 'success');
+            document.getElementById('passkeys').hidden = true;
+            document.getElementById('success').hidden = false;
         } catch (error) {
             alertMessage(error.message);
         }
@@ -119,6 +121,26 @@ export default class extends Controller {
             }
         } catch (error) {
             alertMessage(error.message);
+        }
+    }
+
+    closeModal(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        console.log('🚪 Close button clicked');
+
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+                type: 'closeModal',
+                source: 'passkeyRegistration',
+                data: {
+                    success: true,
+                    nickname: this.lastRegisteredNickname || null,
+                    action: 'userClosed',
+                },
+            });
         }
     }
 }

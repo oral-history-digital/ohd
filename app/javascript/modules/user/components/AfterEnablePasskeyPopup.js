@@ -8,6 +8,7 @@ export default function AfterEnablePasskeyPopup({}) {
 
     const recentlyEnabledPasskey =
         user &&
+        user.webauthn_credentials.length < 1 &&
         new Date(user.changed_to_passkey_at).getTime() + 60000 > Date.now();
 
     if (!user || !recentlyEnabledPasskey) return null;

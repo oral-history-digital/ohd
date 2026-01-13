@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { OHD_DOMAINS } from 'modules/constants';
 import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
@@ -5,12 +7,21 @@ import { Modal } from 'modules/ui';
 import { FaKey } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import PasskeyRegistration from './PasskeyRegistration';
-import Passkeys from './Passkeys';
+import { useIframeMessage } from '../useIframeMessage';
 
 export default function TwoFAPopup({ showDialogInitially = true }) {
     const user = useSelector(getCurrentUser);
     const { t, locale } = useI18n();
+    const closeModalRef = useRef(null);
+
+    useIframeMessage((data) => {
+        if (
+            data.type === 'closeModal' &&
+            data.source === 'passkeyRegistration'
+        ) {
+            closeModalRef.current?.();
+        }
+    });
 
     if (!user) return null;
 
@@ -29,16 +40,20 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
                 )
             }
         >
-            {(close) => (
-                <iframe
-                    src={passkeysURL}
-                    style={{ width: '100%', height: '60vh' }}
-                    scrolling="no"
-                    frameBorder="0"
-                    allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};
-                        publickey-credentials-get ${OHD_DOMAINS[railsMode]}`}
-                ></iframe>
-            )}
+            {(close) => {
+                closeModalRef.current = close;
+
+                return (
+                    <iframe
+                        src={passkeysURL}
+                        style={{ width: '100%', height: '60vh' }}
+                        scrolling="no"
+                        frameBorder="0"
+                        allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};
+                            publickey-credentials-get ${OHD_DOMAINS[railsMode]}`}
+                    />
+                );
+            }}
         </Modal>
     );
 }

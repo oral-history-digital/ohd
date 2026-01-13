@@ -45,9 +45,6 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_text 'The test archive'
   end
 
-  test "register as a new user with Webauthn checked" do
-  end
-
   test "register as a new user with Webauthn MFA" do
     email = 'hallo@du.de'
 
@@ -63,12 +60,36 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_not_nil user
     assert user.passkey_required_for_login
     assert user.changed_to_passkey_at + 10.minutes > Time.current
-    within_frame(find("iframe[src*='passkeys']")) do
-      fill_in "nickname", with: "laptop"
-      click_button "commit"
-      assert_text "Passkey successfully registered"
-    end
+    register_passkey
     assert user.webauthn_credentials.count == 1
+  end
+
+  test "passkey registration and login for a registered user" do
+    email = 'john@example.com'
+    user = User.find_by(email: email)
+    user.webauthn_credentials.destroy_all
+
+    visit '/'
+    login_as email
+
+    click_on 'Account'
+    click_on 'Edit'
+    check "user_passkey_required_for_login", visible: :all
+    click_on 'Submit'
+    sleep 0.5
+
+    register_passkey
+
+    assert user.webauthn_credentials.count == 1
+
+    click_on 'Logout'
+
+    click_on 'Login'
+    fill_in 'Email', with: email
+    click_on 'Login with Passkey'
+
+    assert_text 'Logout'
+    assert_text 'Account'
   end
 
   def fill_registration_form(first_name:, last_name:, email:, passkey_required: false, otp_required: false)
@@ -99,4 +120,12 @@ class RegistrationTest < ApplicationSystemTestCase
     visit link
   end
 
+  def register_passkey
+    within_frame(find("iframe[src*='passkeys']")) do
+      fill_in "nickname", with: "Test Chrome Device"
+      click_button "commit"
+      assert_text "Passkey successfully registered"
+      click_on 'OK'
+    end
+  end
 end

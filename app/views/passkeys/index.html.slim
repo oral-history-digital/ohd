@@ -1,93 +1,91 @@
-div
-  .passkey-registration-form
+div data-controller="passkey"
+  #success.actions hidden="true"
+    button.Button.Button--primaryAction data-action="click->passkey#closeModal"
+      | OK
+
+  #passkeys
+    .passkey-registration-form
+
+      = form_with url: "#",
+        method: :post,
+        data: {\
+          controller: "passkey",
+          action: "submit->passkey#register",
+          "passkey-no-passkeys-found-value": tv(:no_passkeys_found),
+          "passkey-email-missing-value": tv(:email_missing),
+          "passkey-enter-nickname-value": tv(:passkey_enter_nickname),
+          "passkey-registered-successfully-value": tv("passkey.successfully_registered"),
+          "data-passkey-registration-url-value": new_passkey_path,
+          "data-passkey-verification-url-value": passkeys_path\
+        },
+        html: { class: 'Form default' } do |f|
+
+        .form-group
+          .form-label
+            = f.label :nickname,
+              tv("activerecord.attributes.default.name"),
+              class: "FormLabel"
+
+          .form-input
+            = f.text_field :nickname,
+              id: "passkey_nickname",
+              placeholder: "e.g., My iPhone, Work Laptop, YubiKey",
+              data: { passkey_target: "nickname" },
+              class: 'Input'
+
+        .Form-footer.u-mt
+          = f.submit tv('passkey.register'),
+            class: 'Button Button--primaryAction'
     
-    = form_with url: "#",
-      method: :post,
-      data: {\
-        controller: "passkey",
-        action: "submit->passkey#register",
-        "passkey-no-passkeys-found-value": tv(:no_passkeys_found),
-        "passkey-email-missing-value": tv(:email_missing),
-        "passkey-enter-nickname-value": tv(:passkey_enter_nickname),
-        "passkey-registered-successfully-value": tv("passkey.successfully_registered"),
-        "data-passkey-registration-url-value": new_passkey_path,
-        "data-passkey-verification-url-value": passkeys_path\
-      },
-      html: { class: 'Form default' } do |f|
+    - if current_user.webauthn_credentials.any? 
 
-      .form-group
-        .form-label
-          = f.label :nickname,
-            tv("activerecord.attributes.default.name"),
-            class: "FormLabel"
-
-        .form-input
-          = f.text_field :nickname,
-            id: "passkey_nickname",
-            placeholder: "e.g., My iPhone, Work Laptop, YubiKey",
-            data: { passkey_target: "nickname" },
-            class: 'Input'
-
-        small.text-muted Help you identify this passkey later
+      h3 = tv('passkey.registered_passkeys')
+      ul.passkey-list
+        - current_user.webauthn_credentials.each do |credential|
+          li
+            strong = credential.nickname
+            = button_to tv('delete'),
+              passkey_path(credential),
+              method: :delete,
+              class: "btn btn-sm btn-danger"
       
-      .Form-footer.u-mt
-        = f.submit tv('passkey.register'),
-          class: 'Button Button--primaryAction'
-  
-  - if current_user.webauthn_credentials.any? 
+      details.help-section
+        summary
+          strong How to remove passkeys from your device
 
-    h3 = tv('passkey.registered_passkeys')
-    ul.passkey-list
-      - current_user.webauthn_credentials.each do |credential|
-        li
-          strong = credential.nickname
-          small
-            |  "(#{tv('passkey.registered')}: "
-            = time_ago_in_words(credential.created_at)
-            |  )
-          
-          = button_to tv('delete'),
-            passkey_path(credential),
-            method: :delete,
-            class: "btn btn-sm btn-danger"
-    
-    details.help-section
-      summary
-        strong How to remove passkeys from your device
-      
-      details
-        summary iOS/macOS (iCloud Keychain)
-        ol
-          li Go to Settings → Passwords
-          li Search for "#{request.host}"
-          li Select the passkey and tap "Delete"
-      
-      details
-        summary Android/Chrome (Google Password Manager)
-        ol
-          li Go to passwords.google.com
-          li Search for "#{request.host}"
-          li Select the passkey and click "Delete"
+        details
+          summary iOS/macOS (iCloud Keychain)
+          ol
+            li Go to Settings → Passwords
+            li Search for "#{request.host}"
+            li Select the passkey and tap "Delete"
 
-      details
-        summary Windows (Windows Hello)
-        ol
-          li Go to Settings → Accounts → Sign-in options
-          li Select "Passkeys" → Manage passkeys
-          li Find and delete the passkey for "#{request.host}"
+        details
+          summary Android/Chrome (Google Password Manager)
+          ol
+            li Go to passwords.google.com
+            li Search for "#{request.host}"
+            li Select the passkey and click "Delete"
 
-      details
-        summary 1Password, Bitwarden, etc.
-        p Open your password manager and search for "#{request.host}", then delete the passkey entry. 
+        details
+          summary Windows (Windows Hello)
+          ol
+            li Go to Settings → Accounts → Sign-in options
+            li Select "Passkeys" → Manage passkeys
+            li Find and delete the passkey for "#{request.host}"
 
-    .backup-recommendations
-      h4 🛡️ Backup Recommendations
-      ul
-        li 📱 Register passkeys on multiple devices you use regularly
-        li 🔑 Keep a physical security key (like YubiKey) as a backup
-        li 💾 Generate recovery codes for emergency access
+        details
+          summary 1Password, Bitwarden, etc.
+          p Open your password manager and search for "#{request.host}", then delete the passkey entry. 
 
-      = link_to "Manage Recovery Options", security_settings_path, class: "btn btn-secondary" if defined?(security_settings_path)
+      .backup-recommendations
+        h4 🛡️ Backup Recommendations
+        ul
+          li 📱 Register passkeys on multiple devices you use regularly
+          li 🔑 Keep a physical security key (like YubiKey) as a backup
+          li 💾 Generate recovery codes for emergency access
 
-  - else
-    p No passkeys registered yet.
+        = link_to "Manage Recovery Options", security_settings_path, class: "btn btn-secondary" if defined?(security_settings_path)
+
+    - else
+      p No passkeys registered yet.
