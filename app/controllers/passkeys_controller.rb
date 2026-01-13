@@ -43,12 +43,15 @@ class PasskeysController < ApplicationController
   end
 
   def destroy
-    authorize(current_user)
+    authorize current_user, :manage_passkeys?
     credential = current_user.webauthn_credentials.find(params[:id])
     credential.destroy
 
     respond_to do |format|
-      format.html { redirect_to passkeys_path, notice: tv("passkey_deleted") }
+      format.html do
+        flash.now[:notice] = tv("passkey_deleted")
+        render :index
+      end
     end
   end
 
