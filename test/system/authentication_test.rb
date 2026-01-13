@@ -63,10 +63,11 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_not_nil user
     assert user.passkey_required_for_login
     assert user.changed_to_passkey_at + 10.minutes > Time.current
-    assert_text 'Register passkey'
-    fill_in 'Name', with: 'My Security Key'
-    click_on 'Register Passkey'
-    assert_text 'Passkey successfully registered'
+    within_frame(find("iframe[src*='passkeys']")) do
+      fill_in "nickname", with: "laptop"
+      click_button "commit"
+      assert_text "Passkey successfully registered"
+    end
     assert user.webauthn_credentials.count == 1
   end
 
@@ -86,7 +87,6 @@ class RegistrationTest < ApplicationSystemTestCase
     check 'Terms of Use', visible: :all
     check 'Privacy Policy', visible: :all
     click_on 'Submit registration'
-    binding.pry
     assert_text 'Your registration has been successfully submitted!'
   end
 
