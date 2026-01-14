@@ -2,6 +2,7 @@ require "application_system_test_case"
 
 class RegistrationTest < ApplicationSystemTestCase
 
+  EMAIL = 'john@example.com'
   PASSWORD = 'Password123!'
 
   test "register as a new user without MFA" do
@@ -37,19 +38,18 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_text '<p>Hello Mario Rossi,</p><p>You now have access to the application'
     click_on 'Submit'
     click_on 'Account'
-    Capybara.reset_sessions!
+    #Capybara.reset_sessions!
+    click_on 'Logout'
 
     # enjoy ...
-    visit '/'
     login_as 'mrossi@example.com'
     assert_text 'The test archive'
   end
 
   test "register as a new user with Webauthn MFA" do
-    email = 'hallo@du.de'
-
+    email = 'hubert@example.com'
     fill_registration_form(
-      first_name: 'Mario',
+      first_name: 'Hubert',
       last_name: 'Rossi',
       email: email,
       passkey_required: true
@@ -65,12 +65,11 @@ class RegistrationTest < ApplicationSystemTestCase
   end
 
   test "passkey registration and login for a registered user" do
-    email = 'john@example.com'
-    user = User.find_by(email: email)
+    user = User.find_by(email: EMAIL)
     user.webauthn_credentials.destroy_all
 
     visit '/'
-    login_as email
+    login_as EMAIL
 
     click_on 'Account'
     click_on 'Edit'
@@ -85,13 +84,198 @@ class RegistrationTest < ApplicationSystemTestCase
     click_on 'Logout'
 
     click_on 'Login'
-    fill_in 'Email', with: email
+    fill_in 'Email', with: EMAIL
     click_on 'Login with Passkey'
 
     assert_text 'Logout'
     assert_text 'Account'
   end
 
+  test "user can enable TOTP during registration" do
+    email = 'achim@example.com'
+    fill_registration_form(
+      first_name: 'Achim',
+      last_name: 'Rossi',
+      email: email,
+      otp_required: true
+    )
+    confirm_registration_email
+
+    user = User.find_by(email: email)
+    assert_not_nil user
+    assert user.otp_required_for_login
+  end
+
+  test "user sees QR code and secret when enabling TOTP" do
+    visit '/'
+    login_as EMAIL
+
+    click_on 'Account'
+    click_on 'Edit'
+    
+    check "user_otp_required_for_login", visible: :all
+    click_on 'Submit'
+    
+    assert_text 'Scan this QR code'
+  end
+
+  test "user can login with TOTP code from authenticator app" do
+    user = User.find_by(email: EMAIL)
+    user.otp_secret = User.generate_otp_secret
+    user.otp_required_for_login = true
+    user.save!
+    
+    login_as EMAIL, PASSWORD
+    
+    # Should be redirected to 2FA page
+    assert_current_path users_otp_path(locale: I18n.locale)
+    assert_text '2FA'
+    
+    # Generate valid TOTP code
+    totp_code = user.current_otp
+    
+    totp_code.chars.each_with_index do |digit, index|
+      find("input.otp-digit[data-index='#{index}']").set(digit)
+    end
+
+    # Form should auto-submit after 6 digits
+    sleep 0.3
+    
+    assert_text 'Logout'
+  end
+
+  #test "stimulus controller handles paste of 6-digit code" do
+    #user = User.find_by(email: EMAIL)
+    #user.otp_secret = User.generate_otp_secret
+    #user.otp_required_for_login = true
+    #user.save!
+    
+    #login_as EMAIL, PASSWORD
+    
+    #totp_code = user.current_otp
+    
+    ## Paste entire code into first field
+    #first_digit_field = find('input[data-index="0"]')
+    #first_digit_field.send_keys(totp_code)
+
+    #page.execute_script("
+      #const input = document.querySelector('input.otp-digit[data-index=\"0\"]');
+      #const event = new ClipboardEvent('paste', {
+        #clipboardData: new DataTransfer()
+      #});
+      #event.clipboardData.setData('text/plain', '#{totp_code}');
+      #input.dispatchEvent(event);
+    #")
+
+    
+    #sleep 0.3
+    
+    #assert_text 'Logout'
+  #end
+
+  #test "stimulus controller allows backspace navigation" do
+    #user = User.find_by(email: EMAIL)
+    #user.otp_secret = User.generate_otp_secret
+    #user.otp_required_for_login = true
+    #user.save! 
+    
+    #login_as EMAIL, PASSWORD
+    
+    #find("input.otp-digit[data-index='0']").set('1')
+    #find("input.otp-digit[data-index='1']").set('2')
+    #find("input.otp-digit[data-index='2']").set('3')
+    
+    ## Press backspace in third field
+    #third_field = find("input.otp-digit[data-index='2']")
+    #third_field.send_keys(:backspace)
+    
+    ## Should focus second field and clear it
+    #second_field = find("input.otp-digit[data-index='1']")
+    #assert_equal '', second_field.value
+  #end
+
+  test "stimulus controller only accepts numbers" do
+    user = User.find_by(email: EMAIL)
+    user.otp_secret = User.generate_otp_secret
+    user.otp_required_for_login = true
+    user.save! 
+    
+    login_as EMAIL, PASSWORD
+    
+    first_input = find("input.otp-digit[data-index='0']")
+    first_input.set('abc')
+    
+    assert_equal '', first_input.value
+  end
+
+  #test "user can request email OTP as backup" do
+    #user = User.find_by(email: EMAIL)
+    #user.otp_secret = User.generate_otp_secret
+    #user.otp_required_for_login = true
+    #user.save! 
+    
+    #login_as EMAIL, PASSWORD
+    #click_on 'Send OTP via Email'
+
+    #email = ActionMailer::Base.deliveries.last
+    #assert_equal [user.email], email.to
+    #assert_match /authentication|code/i, email.subject
+    
+    #email_code = email.body.to_s.match(/\b\d{6}\b/).to_s
+    
+    #email_code.chars.each_with_index do |digit, index|
+      #find("input.otp-digit[data-index='#{index}']").set(digit)
+    #end
+    
+    #sleep 0.3
+    
+    #assert_text 'Logout'
+  #end
+
+  #test "invalid TOTP code shows error" do
+    #user = User.find_by(email: EMAIL)
+    #user.otp_secret = User.generate_otp_secret
+    #user.otp_required_for_login = true
+    #user.save!
+    
+    #login_as EMAIL, PASSWORD
+    
+    #'000000'.chars.each_with_index do |digit, index|
+      #find("input.otp-digit[data-index='#{index}']").set(digit)
+    #end
+    
+    #sleep 0.3
+    
+    #assert_text 'Invalid authentication code'
+    #assert_current_path users_otp_path(locale: I18n.locale)
+  #end
+
+  #test "user can disable TOTP from settings" do
+    #user = User.find_by(email: EMAIL)
+    #user.otp_secret = User.generate_otp_secret
+    #user.otp_required_for_login = true
+    #user.save!
+    
+    #login_as EMAIL, PASSWORD
+    
+    #totp_code = user.current_otp
+    #totp_code.chars.each_with_index do |digit, index|
+      #find("input.otp-digit[data-index='#{index}']").set(digit)
+    #end
+    
+    #sleep 0.3
+    
+    #click_on 'Account'
+    #click_on 'Edit'
+    
+    #uncheck "user_otp_required_for_login", visible: :all
+    #click_on 'Submit'
+    
+    #user.reload
+    #assert_not user.otp_required_for_login
+  #end
+
+  # Helper methods
   def fill_registration_form(first_name:, last_name:, email:, passkey_required: false, otp_required: false)
     visit '/'
     click_on 'Registration'
@@ -128,4 +312,5 @@ class RegistrationTest < ApplicationSystemTestCase
       click_on 'OK'
     end
   end
+
 end
