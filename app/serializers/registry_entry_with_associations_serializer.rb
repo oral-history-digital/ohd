@@ -6,7 +6,9 @@ class RegistryEntryWithAssociationsSerializer < RegistryEntrySerializer
              :ancestors
 
   def registry_references
-    object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
+    object.registry_references.
+      includes(:ref_object).
+      inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
   end
 
   def child_ids
@@ -19,7 +21,7 @@ class RegistryEntryWithAssociationsSerializer < RegistryEntrySerializer
   end
 
   def parent_ids
-    object.parents.map(&:id)
+    object.parents.pluck(:id)
   end
 
   def ancestors
