@@ -82,6 +82,8 @@ GEM
       activerecord (= 8.0.2)
       activesupport (= 8.0.2)
       marcel (~> 1.0)
+    activestorage-clamav-analyzer (0.1.0)
+      activestorage
     activesupport (8.0.2)
       base64
       benchmark (>= 0.3)
@@ -530,6 +532,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.13)
   activemodel-serializers-xml
   activerecord-session_store
+  activestorage-clamav-analyzer
   acts_as_taggable_on_steroids
   base64 (~> 0.2.0)
   bcrypt_pbkdf

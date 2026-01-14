@@ -52,6 +52,8 @@ gem 'sunspot_solr', '~> 2.7.1'
 gem 'progress_bar'
 gem 'shakapacker', '~> 8.0.2'
 
+gem 'activestorage-clamav-analyzer', require: "active_storage/clamav/analyzer"
+
 
 group :test, :development do
   gem "bundler-audit", "~> 0.9.1"
