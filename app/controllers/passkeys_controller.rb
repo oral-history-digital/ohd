@@ -49,7 +49,9 @@ class PasskeysController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to passkeys_path, notice: tv("passkey_deleted")
+        flash.now[:notice] = tv("passkey_deleted")
+        render :index
+        #redirect_to passkeys_path, notice: tv("passkey_deleted")
       end
     end
   end
