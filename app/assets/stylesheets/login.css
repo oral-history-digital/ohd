@@ -290,6 +290,7 @@ p.success {
   margin-top: 20px;
 }
 
-.passkey-delete {
+.button_to {
+  display: inline;
   margin-left: 10px;
 }
