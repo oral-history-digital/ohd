@@ -1,4 +1,5 @@
 div data-controller="passkey"
+
   #success.actions hidden="true"
     button.Button.Button--primaryAction data-action="click->passkey#closeModal"
       | OK
@@ -7,54 +8,9 @@ div data-controller="passkey"
     = render 'form'
     
     - if current_user.webauthn_credentials.any? 
-
       h3 = tv('passkey.registered_passkeys')
       ul.passkey-list
         - current_user.webauthn_credentials.each do |credential|
           li
-            strong = credential.nickname
-            = button_to tv('delete'),
-              passkey_path(credential),
-              method: :delete,
-              class: "btn btn-sm btn-danger"
+            = render 'passkey_item', credential: credential
       
-      details.help-section
-        summary
-          strong How to remove passkeys from your device
-
-        details
-          summary iOS/macOS (iCloud Keychain)
-          ol
-            li Go to Settings → Passwords
-            li Search for "#{request.host}"
-            li Select the passkey and tap "Delete"
-
-        details
-          summary Android/Chrome (Google Password Manager)
-          ol
-            li Go to passwords.google.com
-            li Search for "#{request.host}"
-            li Select the passkey and click "Delete"
-
-        details
-          summary Windows (Windows Hello)
-          ol
-            li Go to Settings → Accounts → Sign-in options
-            li Select "Passkeys" → Manage passkeys
-            li Find and delete the passkey for "#{request.host}"
-
-        details
-          summary 1Password, Bitwarden, etc.
-          p Open your password manager and search for "#{request.host}", then delete the passkey entry. 
-
-      .backup-recommendations
-        h4 🛡️ Backup Recommendations
-        ul
-          li 📱 Register passkeys on multiple devices you use regularly
-          li 🔑 Keep a physical security key (like YubiKey) as a backup
-          li 💾 Generate recovery codes for emergency access
-
-        = link_to "Manage Recovery Options", security_settings_path, class: "btn btn-secondary" if defined?(security_settings_path)
-
-    - else
-      p No passkeys registered yet.

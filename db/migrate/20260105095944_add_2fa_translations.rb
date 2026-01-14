@@ -60,6 +60,11 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       de: "registriert",
       ru: "зарегистрирован"
     })
+    TranslationValue.create_or_update_for_key('passkey.registered_passkeys', {
+      en: 'Registered Passkeys',
+      de: 'Registrierte Passkeys',
+      ru: 'Зарегистрированные пасскеи'
+    })
     TranslationValue.create_or_update_for_key("passkey.successfully_registered", {
       en: "Passkey successfully registered.",
       de: "Passkey erfolgreich registriert.",
@@ -91,6 +96,7 @@ class Add2faTranslations < ActiveRecord::Migration[8.0]
       'passkey.enter_nickname',
       'passkey.register',
       'passkey.registered',
+      'passkey.registered_passkeys',
       'passkey.successfully_registered',
       'activerecord.attributes.user.otp_required_for_login',
       'activerecord.attributes.user.otp_attempt'
