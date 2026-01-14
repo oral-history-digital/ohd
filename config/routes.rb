@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         sessions: "sessions",
         confirmations: "confirmations",
         passwords: "passwords",
+        registrations: "registrations"
       }
     resources :passkeys, only: [:index, :new, :create, :destroy]
     get "norm_data_api" => "registry_entries#norm_data_api"
@@ -238,7 +239,7 @@ Rails.application.routes.draw do
   #
   concern :unnamed_devise_routes do
     devise_scope :user do
-      post "users", to: "devise/registrations#create"
+      post "users", to: "registrations#create"
       post "users/sign_in", to: "sessions#create"
       get "users/sign_in", to: "sessions#new"
       get 'users/otp', to: 'sessions#otp'#, as: :users_otp

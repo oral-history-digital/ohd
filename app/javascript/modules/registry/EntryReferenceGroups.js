@@ -19,7 +19,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
     );
     const usedReferenceCount = project.is_ohd
         ? referenceCount
-        : projectRefs?.[0][1]?.length || 0;
+        : projectRefs?.[0]?.[1]?.length || 0;
 
     function title() {
         const refTranslation =
@@ -33,7 +33,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
         return <Spinner />;
     }
 
-    if (!project.is_ohd) {
+    if (!project.is_ohd && projectRefs?.length === 1) {
         return (
             <>
                 <h4>{title()}</h4>

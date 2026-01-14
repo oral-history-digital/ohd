@@ -1,8 +1,6 @@
 const possibleOptions = [
     'archive_id',
     'duration',
-    'language',
-    'language_id',
     'media_type',
     'collection_id',
 ];

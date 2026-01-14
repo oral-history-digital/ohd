@@ -101,6 +101,7 @@ class Interview < ApplicationRecord
     collection_id
     signature_original
     description
+    observations
     transcript
     pseudo_links
     language_id
@@ -359,11 +360,11 @@ class Interview < ApplicationRecord
   end
 
   def tasks_user_ids
-    tasks.map(&:user_id).compact.uniq
+    tasks.pluck(:user_id).compact.uniq
   end
 
   def tasks_supervisor_ids
-    tasks.map(&:supervisor_id).compact.uniq
+    tasks.pluck(:supervisor_id).compact.uniq
   end
 
   def tape_count=(d)
@@ -503,9 +504,7 @@ class Interview < ApplicationRecord
   end
 
   def alpha3s
-    interview_languages.map do |il|
-      il.language&.code
-    end.uniq
+    interview_languages.joins(:language).pluck('languages.code').uniq
   end
 
   def alpha3s_with_transcript
@@ -860,7 +859,15 @@ class Interview < ApplicationRecord
 
     def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
-        fulltext params[:fulltext]
+
+        if user&.accessible_projects&.pluck(:id)&.include?(project.id) ||
+            !project.is_ohd? && (
+              project.grant_project_access_instantly? ||
+              project.grant_access_without_login?
+            )
+          fulltext params[:fulltext]
+        end
+
         with(
           :workflow_state,
           user && (user.admin? || user.roles?(project, 'General', 'edit')) ?

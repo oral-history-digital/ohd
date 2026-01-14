@@ -41,14 +41,14 @@ module Project::OaiDatacite
       end
 
       xml.titles do
-        oai_locales.each do |locale|
+        (oai_locales | ['en']).each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
 
       xml.creators do
         xml.creator do
-          xml.creatorName oai_creator(:de)
+          xml.creatorName oai_creator(:en)
         end
       end
 
@@ -129,7 +129,7 @@ module Project::OaiDatacite
       end
 
       xml.descriptions do
-        oai_locales.each do |locale|
+        (oai_locales | ['en']).each do |locale|
           xml.description oai_abstract_description(locale), "xml:lang": locale, descriptionType: "Abstract"
         end
         %w(de en).each do |locale|

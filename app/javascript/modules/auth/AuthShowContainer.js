@@ -1,8 +1,4 @@
-import {
-    getCurrentInterview,
-    getCurrentUser,
-    getIsCatalog,
-} from 'modules/data';
+import { getCurrentInterview, getCurrentUser } from 'modules/data';
 import { getIsLoggedIn, getIsLoggedOut } from 'modules/user';
 import { connect } from 'react-redux';
 
@@ -13,7 +9,6 @@ const mapStateToProps = (state) => ({
     isLoggedOut: getIsLoggedOut(state),
     user: getCurrentUser(state),
     interview: getCurrentInterview(state),
-    isCatalog: getIsCatalog(state),
 });
 
 export default connect(mapStateToProps)(AuthShow);

@@ -1,6 +1,5 @@
 import groupBy from 'lodash.groupby';
 import { fetcher } from 'modules/api';
-import { getEditView } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
 import { getIsLoggedIn } from 'modules/user';
 import queryString from 'query-string';
@@ -10,11 +9,10 @@ import useSWRImmutable from 'swr/immutable';
 export default function useEntryReferences(registryEntry) {
     const pathBase = usePathBase();
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const isEditView = useSelector(getEditView);
 
     const params = {
         signed_in: isLoggedIn,
-        all: isEditView ? true : undefined,
+        all: true,
     };
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
 

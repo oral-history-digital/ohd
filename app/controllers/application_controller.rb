@@ -65,22 +65,33 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    @current_project = @current_project || (
-      (params[:project_id].present? && !params[:project_id].is_a?(Array)) ?
-        Project.where(shortname: params[:project_id]) :
-        Project.where(archive_domain: request.base_url)
-    ).includes(
-      :translations,
-      :registry_name_types,
-      :media_streams,
-      :map_sections,
-      registry_reference_types: :translations,
-      contribution_types: :translations,
-      metadata_fields: :translations,
-      external_links: :translations,
-      # Collections removed - load selectively when needed via CollectionsController
-      institution_projects: {institution: :translations},
-    ).first
+    # Memoization: Return if already loaded (even if nil) to prevent duplicate lookups
+    return @current_project if defined?(@current_project)
+    
+    # Determine lookup key (shortname or domain)
+    lookup_key = if params[:project_id].present? && !params[:project_id].is_a?(Array)
+      [:shortname, params[:project_id]]
+    else
+      [:archive_domain, request.base_url]
+    end
+    
+    # Cache project lookups across requests since projects change infrequently
+    cache_key = "project-#{lookup_key[0]}-#{lookup_key[1]}-#{Project.maximum(:updated_at)}"
+    
+    @current_project = Rails.cache.fetch(cache_key) do
+      Project.includes(
+        :translations,
+        :registry_name_types,
+        :media_streams,
+        :map_sections,
+        registry_reference_types: :translations,
+        contribution_types: :translations,
+        metadata_fields: :translations,
+        external_links: :translations,
+        # Collections removed - load selectively when needed via CollectionsController
+        institution_projects: {institution: :translations},
+      ).find_by(lookup_key[0] => lookup_key[1])
+    end
   end
 
   helper_method :current_project
@@ -90,7 +101,6 @@ class ApplicationController < ActionController::Base
   end
 
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
-  #
   def initial_redux_state
     @initial_redux_state ||= {
       archive: {
@@ -149,11 +159,12 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: {
-            all: 'fetched',
-            #"#{current_project.id}": 'fetched'
+          projects: current_project&.is_ohd? ? {
+            all: 'fetched'
+          } : {
+            "#{current_project.id}": 'fetched',
+            "#{Project.ohd.id}": 'fetched',
           },
-          #projects: {"#{current_project.id}": 'fetched'},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -164,19 +175,24 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-          Project.all.includes(
-            :translations,
-            :registry_reference_types,
-            # Collections removed - loaded via separate API call when needed
-          ).inject({}) do |mem, s|
-            mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-            mem
-          end
-        end,
-        #projects: {
-          #"#{current_project.id}": cache_single(current_project),
-        #},
+        # Only load current project in initial state
+        # Other projects will be lazy-loaded via API when needed
+        # This reduces initial page load significantly when many projects exist
+        # Exception: On OHD portal, load all projects for the startpage
+        projects: current_project.is_ohd? ?
+          Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+            Project.all.includes(
+              :translations,
+              :registry_reference_types,
+              :collections,
+            ).inject({}) do |mem, s|
+              mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+              mem
+            end
+          end : {
+          "#{current_project.id}": cache_single(current_project),
+          "#{Project.ohd.id}": cache_single(Project.ohd),
+        },
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
@@ -323,12 +339,8 @@ class ApplicationController < ActionController::Base
       "-#{opts[:cache_key_suffix]}-#{I18n.locale}"
     Rails.cache.fetch(cache_key) do
       raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
-      # compile raw-json to string first (making all db-requests!!) using to_json
-      # without to_json the lazy serializers wouldn`t do the work to really request the db
-      #
-      # then parse it back to json
-      #
-      JSON.parse(raw.to_json)
+      # Use as_json instead of JSON.parse(to_json) to avoid unnecessary string conversion
+      raw.as_json
     end
   end
 

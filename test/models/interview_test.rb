@@ -38,4 +38,41 @@ class InterviewTest < ActiveSupport::TestCase
     assert_equal("Victor, kannst Du uns kurz so erklären, wie die Firmen jetzt in der Villa strukturiert sind und warum das vor allem so geworden ist, warum die Aktiengesellschaften <[?]>.", interview.segments.first.text('ger-public'))
   end
 
+  test "tasks_user_ids returns unique user IDs" do
+    # If interview has tasks, should return unique user IDs
+    if interview.tasks.any?
+      user_ids = interview.tasks_user_ids
+      assert user_ids.is_a?(Array), "Should return an array"
+      assert_equal user_ids, user_ids.uniq, "Should return unique IDs"
+    else
+      skip "No tasks available for testing"
+    end
+  end
+
+  test "tasks_supervisor_ids returns unique supervisor IDs" do
+    # If interview has tasks, should return unique supervisor IDs
+    if interview.tasks.any?
+      supervisor_ids = interview.tasks_supervisor_ids
+      assert supervisor_ids.is_a?(Array), "Should return an array"
+      assert_equal supervisor_ids, supervisor_ids.uniq, "Should return unique IDs"
+    else
+      skip "No tasks available for testing"
+    end
+  end
+
+  test "alpha3s returns unique language codes" do
+    # interview_with_everything creates languages: rus, pol, ger, eng
+    codes = interview.alpha3s
+    
+    assert codes.is_a?(Array), "Should return an array"
+    assert codes.all? { |c| c.is_a?(String) }, "All codes should be strings"
+    assert_equal codes.uniq, codes, "Should return unique codes"
+    
+    # Verify it contains expected codes
+    assert_includes codes, 'rus'
+    assert_includes codes, 'pol'
+    assert_includes codes, 'ger'
+    assert_includes codes, 'eng'
+  end
+
 end

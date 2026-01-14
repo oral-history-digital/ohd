@@ -10,7 +10,6 @@ class RegistryEntrySerializer < ApplicationSerializer
              :parent_registry_hierarchy_ids,
              :children_count,
              :registry_references_count,
-             :public_registry_references_count,
              :associations_loaded
 
   has_many :registry_names

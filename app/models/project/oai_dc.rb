@@ -13,14 +13,14 @@ module Project::OaiDc
     ) do
 
       [:de, :en].each do |locale|
-        xml.tag!(oai_catalog_identifier(locale), 'dc:identifier', "xml:lang": locale)
+        xml.tag!('dc:identifier', oai_catalog_identifier(locale), "xml:lang": locale)
       end
 
-      oai_locales.each do |locale|
+      (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
-        xml.tag!('dc:creator', oai_creator(locale), "xml:lang": locale)
-        xml.tag!('dc:publisher', oai_publisher(locale), "xml:lang": locale)
       end
+      xml.tag!('dc:creator', oai_creator(:en), "xml:lang": :en)
+      xml.tag!('dc:publisher', oai_publisher(:en), "xml:lang": :en)
 
       oai_leaders.each do |leader_name|
         xml.tag!('dc:contributor', leader_name.strip)
@@ -53,7 +53,7 @@ module Project::OaiDc
       xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}")
 
       xml.tag!('dc:description', oai_size)
-      oai_locales.each do |locale|
+      (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:description', oai_abstract_description(locale), "xml:lang": locale)
       end
       %w(de en).each do |locale|

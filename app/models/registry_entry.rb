@@ -101,12 +101,6 @@ class RegistryEntry < ApplicationRecord
     descendants
   end
 
-  def public_registry_references_count
-    registry_references.joins(:interview)
-      .where('interviews.workflow_state': 'public')
-      .count
-  end
-
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
@@ -121,7 +115,7 @@ class RegistryEntry < ApplicationRecord
   searchable do
     integer :project_id, :stored => true, :references => Project
     string :archive_id, :multiple => true, :stored => true do
-      registry_references.map{|i| i.archive_id }
+      registry_references.pluck(:archive_id)
     end
     string :workflow_state
     (I18n.available_locales + ['orig']).each do |locale|

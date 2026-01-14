@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import classNames from 'classnames';
-import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Checkbox, Modal } from 'modules/ui';
@@ -32,7 +32,6 @@ export default function RegistryEntry({
 }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
-    const { isAuthorized } = useAuthorization();
     const isLoggedIn = useSelector(getIsLoggedIn);
 
     const [childrenVisible, setChildrenVisible] = useState(false);
@@ -56,12 +55,6 @@ export default function RegistryEntry({
 
     function showChildren() {
         setChildrenVisible((prev) => !prev);
-    }
-
-    function hasReferences() {
-        return isAuthorized({ type: 'General' }, 'edit')
-            ? data.registry_references_count > 0
-            : data.public_registry_references_count > 0;
     }
 
     const showOpenStreetMapLink = data.latitude + data.longitude !== 0;
@@ -95,7 +88,7 @@ export default function RegistryEntry({
                 )}
 
                 <>
-                    {isLoggedIn && hasReferences() ? (
+                    {isLoggedIn && data.registry_references_count > 0 ? (
                         <Modal
                             title={t(
                                 'activerecord.models.registry_entry.actions.show'

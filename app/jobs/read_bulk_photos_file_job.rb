@@ -80,9 +80,9 @@ class ReadBulkPhotosFileJob < ApplicationJob
           File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
 
           if photo.id
-            log("saved #{archive_id}: #{data[2]}", false)
+            jobs_logger.info("saved #{archive_id}: #{data[2]}")
           else
-            log("*** photo could not be saved because #{photo.errors}! data: '{data}")
+            jobs_logger.info("*** photo could not be saved because #{photo.errors}! data: '{data}")
           end
         end
       end
