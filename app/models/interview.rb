@@ -860,7 +860,7 @@ class Interview < ApplicationRecord
     def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
 
-        if user&.accessible_projects_ids&.include?(project.id) ||
+        if user&.accessible_projects&.pluck(:id)&.include?(project.id) ||
             !project.is_ohd? && (
               project.grant_project_access_instantly? ||
               project.grant_access_without_login?
