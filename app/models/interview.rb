@@ -859,7 +859,15 @@ class Interview < ApplicationRecord
 
     def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
-        fulltext params[:fulltext]
+
+        if user&.accessible_projects_ids&.include?(project.id) ||
+            !project.is_ohd? && (
+              project.grant_project_access_instantly? ||
+              project.grant_access_without_login?
+            )
+          fulltext params[:fulltext]
+        end
+
         with(
           :workflow_state,
           user && (user.admin? || user.roles?(project, 'General', 'edit')) ?

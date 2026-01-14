@@ -11,12 +11,12 @@ export default function AuthShow({
     ifCatalog,
     user,
     interview,
-    isCatalog,
     children,
 }) {
     const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const isRestricted = interview?.workflow_state === 'restricted';
+    const isCatalog = project?.is_catalog_project;
     const hasPermission =
         isAuthorized(interview, 'show') ||
         user?.interview_permissions?.some(
@@ -25,14 +25,14 @@ export default function AuthShow({
 
     if (
         // logged in and registered for the current project
-        //(isLoggedIn && ifLoggedIn) ||
         (((isRestricted && hasPermission) || !isRestricted) &&
             isLoggedIn &&
             ifLoggedIn &&
             user &&
             (user.admin ||
-                project.grant_access_without_login ||
-                project?.grant_project_access_instantly ||
+                (!project.is_ohd &&
+                    (project.grant_access_without_login ||
+                        project.grant_project_access_instantly)) ||
                 Object.values(user.user_projects).find(
                     (urp) =>
                         urp.project_id === project?.id &&
