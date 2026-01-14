@@ -73,6 +73,6 @@ AuthShow.propTypes = {
     ifNoProject: PropTypes.bool,
     ifCatalog: PropTypes.bool,
     user: PropTypes.object,
-    isCatalog: PropTypes.bool.isRequired,
+    isCatalog: PropTypes.bool,
     children: PropTypes.node,
 };
