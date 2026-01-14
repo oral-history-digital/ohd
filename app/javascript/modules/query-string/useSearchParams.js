@@ -25,6 +25,8 @@ export default function useSearchParams() {
     const fulltextIsSet = fulltext?.length > 0;
     const yearOfBirthMin = Number.parseInt(params.year_of_birth_min);
     const yearOfBirthMax = Number.parseInt(params.year_of_birth_max);
+    const interviewYearMin = Number.parseInt(params.interview_year_min);
+    const interviewYearMax = Number.parseInt(params.interview_year_max);
 
     const facets = {
         ...params,
@@ -34,6 +36,8 @@ export default function useSearchParams() {
     delete facets.fulltext;
     delete facets.year_of_birth_min;
     delete facets.year_of_birth_max;
+    delete facets.interview_year_min;
+    delete facets.interview_year_max;
 
     function setSortBy(value) {
         setParam('sort', value);
@@ -79,6 +83,13 @@ export default function useSearchParams() {
         setParams({
             year_of_birth_min: min,
             year_of_birth_max: max,
+        });
+    }
+
+    function setInterviewYearRange(min, max) {
+        setParams({
+            interview_year_min: min,
+            interview_year_max: max,
         });
     }
 
@@ -199,6 +210,8 @@ export default function useSearchParams() {
             sortOrder,
             yearOfBirthMin,
             yearOfBirthMax,
+            interviewYearMin,
+            interviewYearMax,
             fulltext,
             fulltextIsSet,
             facets,
@@ -209,6 +222,7 @@ export default function useSearchParams() {
             setFulltext,
             setFulltextAndSort,
             setYearOfBirthRange,
+            setInterviewYearRange,
             setRangeParam,
             getRangeParam,
             deleteRangeParam,

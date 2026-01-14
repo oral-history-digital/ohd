@@ -13,6 +13,7 @@ import useFacets from '../useFacets';
 import BirthYearFacet from './BirthYearFacet';
 import Facet from './Facet';
 import FacetDropdown from './FacetDropdown';
+import InterviewYearFacet from './InterviewYearFacet';
 import RangeFacet from './RangeFacet';
 
 export default function ArchiveFacets() {
@@ -53,6 +54,31 @@ export default function ArchiveFacets() {
                             label={facetData.name[locale]}
                         >
                             <BirthYearFacet
+                                sliderMin={yearRange.min}
+                                sliderMax={yearRange.max}
+                            />
+                        </FacetDropdown>
+                    );
+                } else if (facetName === 'interview_year') {
+                    if (!isFacetDataValid(facetData, locale, true)) {
+                        return null;
+                    }
+
+                    const yearRange = extractBirthYearRange(
+                        facetData.subfacets
+                    );
+
+                    if (!yearRange) {
+                        return null;
+                    }
+
+                    return (
+                        <FacetDropdown
+                            key={facetName}
+                            facet={facetName}
+                            label={facetData.name[locale]}
+                        >
+                            <InterviewYearFacet
                                 sliderMin={yearRange.min}
                                 sliderMax={yearRange.max}
                             />

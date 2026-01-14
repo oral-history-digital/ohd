@@ -63,11 +63,11 @@ class InterviewTest < ActiveSupport::TestCase
   test "alpha3s returns unique language codes" do
     # interview_with_everything creates languages: rus, pol, ger, eng
     codes = interview.alpha3s
-    
+
     assert codes.is_a?(Array), "Should return an array"
     assert codes.all? { |c| c.is_a?(String) }, "All codes should be strings"
     assert_equal codes.uniq, codes, "Should return unique codes"
-    
+
     # Verify it contains expected codes
     assert_includes codes, 'rus'
     assert_includes codes, 'pol'
@@ -75,4 +75,29 @@ class InterviewTest < ActiveSupport::TestCase
     assert_includes codes, 'eng'
   end
 
+  test "#interview_year should extract one or more years from interview_date string" do
+    interview1 = Interview.new(interview_date: "12.02.2014")
+    interview2 = Interview.new(interview_date: "1998")
+    interview3 = Interview.new(interview_date: "12.02.2014-18.02.2014")
+    interview4 = Interview.new(interview_date: "12.02.2014 und 1.1.2015")
+    interview5 = Interview.new(interview_date: "15.09.1998, 22.09.1998, 02.01.1999, 03.01.1999")
+    interview6 = Interview.new(interview_date: "2023-05-13")
+    interview7 = Interview.new(interview_date: "")
+    interview8 = Interview.new(interview_date: nil)
+
+    assert_equal([2014], interview1.interview_year)
+    assert_equal([1998], interview2.interview_year)
+    assert_equal([2014], interview3.interview_year)
+    assert_equal([2014, 2015], interview4.interview_year)
+    assert_equal([1998, 1999], interview5.interview_year)
+    assert_equal([2023], interview6.interview_year)
+    assert_equal([], interview7.interview_year)
+    assert_equal([], interview8.interview_year)
+  end
+
+  test "#interview_year should return unique and sorted values" do
+    interview = Interview.new(interview_date: "02.01.1999, 03.01.1999, 15.09.1998, 22.09.1998")
+
+    assert_equal([1998,1999], interview.interview_year)
+  end
 end

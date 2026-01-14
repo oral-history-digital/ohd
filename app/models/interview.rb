@@ -463,6 +463,20 @@ class Interview < ApplicationRecord
     ref && ref.registry_entry
   end
 
+  # Try to extract one or more years from text field interview_date.
+  def interview_year
+    if interview_date.blank?
+      return []
+    end
+
+    regexp = /\d{4}/
+    result = interview_date.scan(regexp)
+      .map(&:to_i)
+      .uniq
+      .sort
+    return result
+  end
+
   def title(locale)
     full_title(locale)
   end
