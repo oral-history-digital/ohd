@@ -30,8 +30,6 @@ class User < ApplicationRecord
     end
   end
 
-  has_many :webauthn_credentials, dependent: :destroy
-  
   # Store WebAuthn ID
   def webauthn_id
     @webauthn_id ||= Base64.urlsafe_encode64(id.to_s, padding: false)
@@ -54,6 +52,8 @@ class User < ApplicationRecord
            foreign_key: :resource_owner_id,
            dependent: :delete_all
 
+  has_many :webauthn_credentials, dependent: :destroy
+  
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :permissions, through: :roles
