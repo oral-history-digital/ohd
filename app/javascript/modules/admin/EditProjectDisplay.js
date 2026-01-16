@@ -1,6 +1,7 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 
@@ -12,7 +13,7 @@ import SponsorLogosContainer from './SponsorLogosContainer';
 
 export default function EditProjectDisplay() {
     const { t } = useI18n();
-    const project = useSelector(getCurrentProject);
+    const { project } = useProject();
     const user = useSelector(getCurrentUser);
 
     return (
@@ -25,7 +26,7 @@ export default function EditProjectDisplay() {
                     <h1 className="registry-entries-title">
                         {t(`edit.project.display`)}
                     </h1>
-                    <EditProjectDisplayAttributesContainer />
+                    <EditProjectDisplayAttributesContainer data={project} />
                     <h2 className="registry-entries-title">
                         {t(`edit.logo.admin`)}
                     </h2>
