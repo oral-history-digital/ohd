@@ -11,3 +11,5 @@ DEFAULT_PRIMARY_COLOR = '#e01217'
 # when the document is created with default options ( " as quote_char)
 #CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: "\x00"}
 CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: '"', liberal_parsing: true}
+
+PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+=]).{8,}$/
