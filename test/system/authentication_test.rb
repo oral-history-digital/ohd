@@ -87,6 +87,7 @@ class RegistrationTest < ApplicationSystemTestCase
     fill_in 'Email', with: EMAIL
     click_on 'Login with Passkey'
 
+    sleep 0.5
     assert_text 'Logout'
     assert_text 'Account'
   end

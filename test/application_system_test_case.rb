@@ -17,23 +17,19 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     "--user-data-dir=#{Dir.mktmpdir}",
     "--disable-dev-shm-usage",
     "--no-sandbox",
-
-      # Essential WebAuthn flags
     '--enable-features=WebAuthentication',
     '--allow-insecure-localhost',
+    '--disable-blink-features=AutomationControlled',
   ]
 
   if ENV['HEADLESS'] == 'true'
-    driven_by :selenium_headless, using: :chrome, screen_size: [1400, 1400] do |options|
-      opts.each do |arg|
-        options.add_argument(arg)
-      end
-    end
-  else
-    driven_by :selenium, using: :chrome, screen_size: [1400, 1400] do |options|
-      opts.each do |arg|
-        options.add_argument(arg)
-      end
+    opts << '--headless=new'  # Use new headless mode
+    opts << '--disable-gpu'
+  end
+
+  driven_by :selenium, using: :chrome, screen_size: [1400, 1400] do |options|
+    opts.each do |arg|
+      options.add_argument(arg)
     end
   end
 
