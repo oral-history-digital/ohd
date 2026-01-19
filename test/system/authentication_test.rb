@@ -2,6 +2,12 @@ require "application_system_test_case"
 
 class RegistrationTest < ApplicationSystemTestCase
 
+  setup do
+    visit "about:blank"
+    add_virtual_authenticator
+    sleep 0.5
+  end
+
   EMAIL = 'john@example.com'
   PASSWORD = 'Password123!'
 

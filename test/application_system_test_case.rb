@@ -33,16 +33,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     end
   end
 
-  setup do
-    visit "about:blank"
-    add_virtual_authenticator
-    sleep 0.5
-  end
-
   private
 
   def add_virtual_authenticator
-    @virtual_authenticator = page.driver.browser.add_virtual_authenticator(
+    @virtual_authenticator ||= page.driver.browser.add_virtual_authenticator(
       protocol: 'ctap2',
       transport:  'internal',
       hasResidentKey: true,
