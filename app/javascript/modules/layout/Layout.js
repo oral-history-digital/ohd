@@ -18,7 +18,6 @@ import {
     AfterEnablePasskeyPopup,
     AfterRegisterPopup,
     AfterRequestProjectAccessPopup,
-    AfterResetPassword,
     ConfirmNewZwarTosPopup,
     CorrectUserDataPopup,
 } from 'modules/user';
@@ -41,7 +40,6 @@ export default function Layout({
     sidebarVisible,
     children,
     toggleSidebar,
-    loggedInAt,
     projectsStatus,
     bannerActive,
     hideBanner,
@@ -107,7 +105,6 @@ export default function Layout({
                 <AfterConfirmationPopup />
                 <AfterRequestProjectAccessPopup />
                 <CorrectUserDataPopup />
-                <AfterResetPassword />
                 <AfterEnable2FAPopup />
                 <AfterEnablePasskeyPopup />
                 <ConfirmNewZwarTosPopup />
@@ -122,10 +119,7 @@ export default function Layout({
                 <div className={classNames('Layout-page', 'Site')}>
                     <SiteHeader />
 
-                    <MessagesContainer
-                        loggedInAt={loggedInAt}
-                        notifications={[]}
-                    />
+                    <MessagesContainer notifications={[]} />
 
                     <main className="Site-content">{children}</main>
 
@@ -157,7 +151,6 @@ export default function Layout({
 
 Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
-    loggedInAt: PropTypes.number,
     projectsStatus: PropTypes.object,
     sidebarVisible: PropTypes.bool,
     bannerActive: PropTypes.bool.isRequired,

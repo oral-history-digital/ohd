@@ -12,22 +12,14 @@ class PasswordsController < Devise::PasswordsController
 
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
-      set_flash_message!(:notice, :updated_not_active)
       render json: {
         success: true,
-        redirect_url: after_resetting_password_path_for(resource),
         user: resource,
-        msg: 'devise.passwords.updated'
       }
     else
       set_minimum_password_length
       render json: {active: true, error: 'devise.sessions.invalid_token'}
     end
   end
-
-  protected
-    def after_resetting_password_path_for(resource)
-      "#{current_project.domain_with_optional_identifier}/#{params[:locale]}"
-    end
 
 end

@@ -20,7 +20,6 @@ export { default as AfterRequestProjectAccessPopup } from './components/AfterReq
 export { default as AfterEnable2FAPopup } from './components/AfterEnable2FAPopup';
 export { default as AfterEnablePasskeyPopup } from './components/AfterEnablePasskeyPopup';
 export { default as CorrectUserDataPopup } from './components/CorrectUserDataPopup';
-export { default as AfterResetPassword } from './components/AfterResetPassword';
 export { default as ConfirmNewZwarTosPopup } from './components/ConfirmNewZwarTosPopup';
 export { default as RegisterPopupLink } from './components/RegisterPopupLink';
 export { default as ActivationFlow } from './components/ActivationFlow';
