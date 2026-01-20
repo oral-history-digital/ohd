@@ -17,6 +17,7 @@ class PasswordsController < Devise::PasswordsController
         success: true,
         redirect_url: after_resetting_password_path_for(resource),
         user: resource,
+        msg: 'devise.passwords.updated'
       }
     else
       set_minimum_password_length
@@ -26,8 +27,6 @@ class PasswordsController < Devise::PasswordsController
 
   protected
     def after_resetting_password_path_for(resource)
-      resource.pre_register_location
-    rescue
       "#{current_project.domain_with_optional_identifier}/#{params[:locale]}"
     end
 

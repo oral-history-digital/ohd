@@ -225,7 +225,6 @@ class BasicsTest < ApplicationSystemTestCase
     fill_in 'password_confirmation', with: 'Password123!'
     click_on 'Submit'
     assert_text 'This is the test archive of the oral history digital project'
-
   end
 
   test 'bookmarking segments' do
