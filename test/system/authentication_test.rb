@@ -2,12 +2,6 @@ require "application_system_test_case"
 
 class RegistrationTest < ApplicationSystemTestCase
 
-  setup do
-    visit "about:blank"
-    add_virtual_authenticator
-    sleep 0.5
-  end
-
   EMAIL = 'john@example.com'
   PASSWORD = 'Password123!'
 
@@ -53,6 +47,7 @@ class RegistrationTest < ApplicationSystemTestCase
   end
 
   test "register as a new user with Webauthn MFA" do
+    add_virtual_authenticator
     email = 'hubert@example.com'
     fill_registration_form(
       first_name: 'Hubert',
@@ -71,6 +66,7 @@ class RegistrationTest < ApplicationSystemTestCase
   end
 
   test "passkey registration and login for a registered user" do
+    add_virtual_authenticator
     user = User.find_by(email: EMAIL)
     user.webauthn_credentials.destroy_all
 
