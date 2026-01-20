@@ -1,7 +1,8 @@
 Rails.application.config.to_prepare do
   # Fires after user is set in session (any authentication method)
   Warden::Manager.after_set_user do |user, auth, opts|
-    if opts[:scope] == :user && user.is_a?(User)
+    if opts[:scope] == :user && user.is_a?(User) &&
+        opts[:event] == :authentication
       user.post_authentication_setup
     end
   end
