@@ -84,6 +84,8 @@
   <% tape.segments.order([:tape_number, :timecode]).includes(:translations).each do |segment| %>
 
     <% space_above = 0.4 %>
+    <%# Extract HH:MM:SS portion (indices 0-7) from formatted timecode like "00:12:34.50" %>
+    <% segment_timecode = Timecode.new(segment.timecode).timecode[0..7] %>
 
     <% if !segment.mainheading(content_locale_public).blank? %>
       \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(content_locale_public)) %>}
@@ -91,12 +93,12 @@
         <% space_above = 0 %>
         <%= render partial: "latex/title", locals: {title: "#{TranslationValue.for('tape', header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
       <% end %>
-      <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
+      <%= render partial: "latex/title", locals: {title: segment_timecode, space_above: space_above, space_below: 0, font_size: 10} %>
     <% end %>
 
     <% if !segment.subheading(content_locale_public).blank? %>
       \subsection{<%= latex_escape(CGI::unescapeHTML segment.subheading(content_locale_public)) %>}
-      <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
+      <%= render partial: "latex/title", locals: {title: segment_timecode, space_above: 0.4, space_below: 0, font_size: 10} %>
     <% end %>
 
     <% if segment.speaker_id != speaker_id && segment.speaking_person %>
