@@ -50,6 +50,9 @@ class CompleteExport
       zip.put_next_entry("#{interview.archive_id}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml")
       zip.write(interview.datacite_xml(:de))
 
+      zip.put_next_entry("#{interview.archive_id}_tei_#{DateTime.now.strftime("%Y_%m_%d")}.xml")
+      zip.write(interview.tei(:de))
+
       if interview.photos.count > 0
         zip.put_next_entry("#{interview.archive_id}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip")
         photos_zip = PhotoExport.new(interview.archive_id, project, true).process
