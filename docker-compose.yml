@@ -1,0 +1,208 @@
+# Docker Compose configuration
+# Production/Staging deployment with optional database service
+
+services:
+  # Main Rails application
+  app:
+    # Pull from registry (uncomment when image is available)
+    # image: ghcr.io/oral-history-digital/ohd:latest
+    # Build locally for testing
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ohd_app
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      # Mount secrets from host (managed by Capistrano linked files)
+      - ./config/database.yml:/app/config/database.yml:ro
+      - ./config/secrets.yml:/app/config/secrets.yml:ro
+      - ./config/storage.yml:/app/config/storage.yml:ro
+      - ./config/datacite.yml:/app/config/datacite.yml:ro
+      - ./config/master.key:/app/config/master.key:ro
+      # Persistent data
+      - app-cache:/app/tmp/cache
+      - app-files:/app/tmp/files
+      - app-logs:/app/log
+      # Optional: mount public directory for Nginx to serve static assets
+      - ./public:/app/public:ro
+    environment:
+      RAILS_ENV: production
+      RACK_ENV: production
+      NODE_ENV: production
+      RAILS_LOG_TO_STDOUT: 'true'
+      RAILS_SERVE_STATIC_FILES: 'false'
+      RAILS_MAX_THREADS: 5
+      PORT: 3000
+      # Services
+      REDIS_URL: redis://redis:6379/0
+      SOLR_URL: http://solr:8983/solr/default
+      SOLR_HOST: solr
+      SOLR_PORT: 8983
+      # Database (use DATABASE_URL for external DB or rely on database.yml)
+      # DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      redis:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      # db dependency removed - optional via --profile db
+    networks:
+      - ohd-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  # Background job worker (Delayed Job)
+  worker:
+    # Pull from registry (uncomment when image is available)
+    # image: ghcr.io/oral-history-digital/ohd:latest
+    # Build locally for testing
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ohd_worker
+    restart: unless-stopped
+    command: ['bundle', 'exec', 'rake', 'jobs:work']
+    volumes:
+      # Same secret mounts as app
+      - ./config/database.yml:/app/config/database.yml:ro
+      - ./config/secrets.yml:/app/config/secrets.yml:ro
+      - ./config/storage.yml:/app/config/storage.yml:ro
+      - ./config/datacite.yml:/app/config/datacite.yml:ro
+      - ./config/master.key:/app/config/master.key:ro
+      # Shared volumes
+      - app-cache:/app/tmp/cache
+      - app-files:/app/tmp/files
+      - app-logs:/app/log
+    environment:
+      RAILS_ENV: production
+      RACK_ENV: production
+      RAILS_LOG_TO_STDOUT: 'true'
+      # Services
+      REDIS_URL: redis://redis:6379/0
+      SOLR_URL: http://solr:8983/solr/default
+    depends_on:
+      app:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      # db dependency removed - optional via --profile db
+    networks:
+      - ohd-network
+
+  # Solr search engine
+  solr:
+    image: solr:8
+    container_name: ohd_solr
+    restart: unless-stopped
+    ports:
+      - '8985:8983'
+    volumes:
+      # Persistent Solr data (IMPORTANT: for production use)
+      - solr-data:/var/solr
+      # Mount entire conf directory for all supporting files
+      - ./solr/configsets/sunspot/conf:/opt/solr/server/solr/configsets/sunspot/conf:ro
+      # Override with Solr 8 compatible schema (devcontainer version)
+      - ./.devcontainer/config/schema-solr8.xml:/opt/solr/server/solr/configsets/sunspot/conf/schema.xml:ro
+    environment:
+      SOLR_HEAP: 512m
+      SOLR_JAVA_MEM: '-Xms512m -Xmx512m'
+    command:
+      - solr-precreate
+      - default
+      - /opt/solr/server/solr/configsets/sunspot/conf
+    networks:
+      - ohd-network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'curl',
+          '-f',
+          'http://localhost:8983/solr/default/admin/ping?wt=json',
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Redis for ActionCable
+  redis:
+    image: redis:7-alpine
+    container_name: ohd_redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ohd-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # MariaDB database (optional, use --profile db to enable)
+  # For production with external database, don't start this service
+  db:
+    image: mariadb:10.5
+    container_name: ohd_db
+    restart: unless-stopped
+    profiles:
+      - db
+    ports:
+      - '3307:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-changeme}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_production}
+      MYSQL_USER: ${MYSQL_USER:-ohd}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-changeme}
+    networks:
+      - ohd-network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '-p${MYSQL_ROOT_PASSWORD:-changeme}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Named volumes for data persistence
+volumes:
+  solr-data:
+    name: ohd_solr_data
+  redis-data:
+    name: ohd_redis_data
+  db-data:
+    name: ohd_db_data
+  app-cache:
+    name: ohd_app_cache
+  app-files:
+    name: ohd_app_files
+  app-logs:
+    name: ohd_app_logs
+
+# Internal network
+networks:
+  ohd-network:
+    name: ohd_network
+    driver: bridge

@@ -1,0 +1,62 @@
+# Docker Compose override for local development
+# This file is loaded automatically when running docker-compose locally
+# Use this for development-specific configurations
+
+services:
+  app:
+    # Use local build instead of pulling from registry
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Enable webpack-dev-server for hot reload
+    ports:
+      - "3000:3000"
+      - "3035:3035"
+    environment:
+      RAILS_ENV: development
+      RACK_ENV: development
+      NODE_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+      DISABLE_SPRING: "true"
+    # Override command to start both Rails and webpack-dev-server
+    command: >
+      bash -c "bin/rails server -b 0.0.0.0 &
+      bin/shakapacker-dev-server &
+      wait"
+    # Mount source code for live editing
+    volumes:
+      - .:/app:cached
+      - /app/node_modules
+      - /app/tmp/cache
+      - bundle-cache:/usr/local/bundle
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      RAILS_ENV: development
+      RACK_ENV: development
+    volumes:
+      - .:/app:cached
+      - /app/node_modules
+      - /app/tmp/cache
+      - bundle-cache:/usr/local/bundle
+
+  solr:
+    environment:
+      SOLR_HEAP: 256m
+      SOLR_JAVA_MEM: "-Xms256m -Xmx256m"
+
+  db:
+    # Always run database in development
+    profiles: []
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ohd_development
+      MYSQL_USER: ohd
+      MYSQL_PASSWORD: password
+
+volumes:
+  bundle-cache:
+    name: ohd_dev_bundle_cache
