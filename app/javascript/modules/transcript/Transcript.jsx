@@ -9,7 +9,7 @@ import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
-import EditableSegmentContainer from './components/EditableSegment';
+import EditableSegment from './components/EditableSegment';
 import SegmentContainer from './components/SegmentContainer';
 import TranscriptSkeleton from './components/TranscriptSkeleton';
 import {
@@ -195,7 +195,7 @@ export default function Transcript({
                                 active={active}
                                 transcriptCoupled={interview.transcript_coupled}
                             />
-                            <EditableSegmentContainer
+                            <EditableSegment
                                 key={`editable-segment-${segment.id}`}
                                 segment={segment}
                                 interview={interview}
