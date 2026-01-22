@@ -3,11 +3,12 @@ import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
 import PropTypes from 'prop-types';
+
 import {
     checkTextDir,
     enforceRtlOnTranscriptTokens,
     unescapeHtmlEntities,
-} from '../../utils';
+} from '../../../utils';
 
 export default function SegmentText({
     segment,
