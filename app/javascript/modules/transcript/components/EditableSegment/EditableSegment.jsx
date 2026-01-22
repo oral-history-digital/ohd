@@ -3,12 +3,14 @@ import { memo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { getAutoScroll } from 'modules/interview';
 import { formatTimecode } from 'modules/interview-helpers';
-import { useScrollOffset } from 'modules/media-player';
+import { sendTimeChangeRequest, useScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { CancelButton, SubmitButton } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useAutoScrollToRef } from '../../hooks';
 import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
@@ -19,20 +21,16 @@ import Initials from './Initials';
 import SegmentButtons from './SegmentButtons';
 import SegmentText from './SegmentText';
 
-function Segment({
-    segment,
-    interview,
-    contributor,
-    contentLocale,
-    isActive,
-    autoScroll,
-    sendTimeChangeRequest,
-}) {
+function Segment({ segment, interview, contributor, contentLocale, isActive }) {
     const divEl = useRef();
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
     const scrollOffset = useScrollOffset();
     const { isAuthorized } = useAuthorization();
+
+    const autoScroll = useSelector(getAutoScroll);
+    const dispatch = useDispatch();
+
     const [activeButton, setActiveButton] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [editedText, setEditedText] = useState(null);
@@ -55,7 +53,7 @@ function Segment({
 
     const handleSegmentClick = () => {
         if (interview?.transcriptCoupled && !editMode) {
-            sendTimeChangeRequest(segment.tape_nbr, segment.time);
+            dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
         }
     };
 
@@ -174,8 +172,6 @@ Segment.propTypes = {
     contributor: PropTypes.object,
     contentLocale: PropTypes.string.isRequired,
     isActive: PropTypes.bool,
-    autoScroll: PropTypes.bool,
-    sendTimeChangeRequest: PropTypes.func.isRequired,
 };
 
 const MemoizedSegment = memo(Segment);
