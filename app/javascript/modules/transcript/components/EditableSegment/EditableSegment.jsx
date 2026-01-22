@@ -15,13 +15,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAutoScrollToRef } from '../../hooks';
 import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
 import BookmarkSegmentButton from '../BookmarkSegmentButton';
-import EditableSegmentText from './EditableSegmentText';
-import EditableTimecode from './EditableTimecode';
-import Initials from './Initials';
-import SegmentButtons from './SegmentButtons';
-import SegmentText from './SegmentText';
+import {
+    EditableSegmentText,
+    EditableTimecode,
+    Initials,
+    SegmentButtons,
+    SegmentText,
+} from './components';
 
-function Segment({ segment, interview, contributor, contentLocale, isActive }) {
+function EditableSegment({
+    segment,
+    interview,
+    contributor,
+    contentLocale,
+    isActive,
+}) {
     const divEl = useRef();
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
@@ -166,7 +174,7 @@ function Segment({ segment, interview, contributor, contentLocale, isActive }) {
     );
 }
 
-Segment.propTypes = {
+EditableSegment.propTypes = {
     segment: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
     contributor: PropTypes.object,
@@ -174,6 +182,6 @@ Segment.propTypes = {
     isActive: PropTypes.bool,
 };
 
-const MemoizedSegment = memo(Segment);
+const MemoizedSegment = memo(EditableSegment);
 
 export default MemoizedSegment;
