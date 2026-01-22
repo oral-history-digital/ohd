@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { unescapeHtmlEntities } from '../../utils';
+import { unescapeHtmlEntities } from '../../../utils';
 
 export default function EditableSegmentText({
     segment,
