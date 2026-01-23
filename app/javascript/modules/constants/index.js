@@ -119,3 +119,43 @@ export const EMAIL_REGEX =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export const PASSWORD_REGEX =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+=]).{8,}$/;
+
+// DOMPurify sanitization configurations
+export const SANITIZE_CONFIG = {
+    // Strip all HTML - for registration errors and plain text content
+    PLAIN_TEXT: {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+    },
+    // Basic formatting - for banners and simple rich text
+    BASIC: {
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'a'],
+        ALLOWED_ATTR: ['href', 'target', 'rel'],
+    },
+    // Rich text - for CMS content with headings, lists, etc.
+    RICH_TEXT: {
+        ALLOWED_TAGS: [
+            'p',
+            'br',
+            'strong',
+            'em',
+            'a',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'ul',
+            'ol',
+            'li',
+            'blockquote',
+        ],
+        ALLOWED_ATTR: ['href', 'target', 'rel'],
+    },
+    // Search highlighting - preserves only mark tags for Solr highlights
+    SEARCH_RESULT: {
+        ALLOWED_TAGS: ['mark', 'em', 'strong'],
+        ALLOWED_ATTR: [],
+    },
+};
