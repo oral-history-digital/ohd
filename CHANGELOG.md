@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-01-22
+
+### Added
+
+- Implement interview year facet ([#66](https://github.com/oral-history-digital/ohd/pull/66))
+- adding tei to complete export ([8977a5377](https://github.com/oral-history-digital/ohd/commit/8977a5377ef53b5f2f23904c2d8967a646ecd74e))
+
+### Changed
+
+- chore: update schema.rb to include latest migrations ([c16e953d6](https://github.com/oral-history-digital/ohd/commit/c16e953d6f1ddbdaf5bf4f7cc3b7e219545975be))
+- slight performance improvement on registry_entry_serializer ([633a96909](https://github.com/oral-history-digital/ohd/commit/633a96909d7809e8e791af63da49967cb6412190))
+- adding += to password regex on frontend ([6ab0fc4e2](https://github.com/oral-history-digital/ohd/commit/6ab0fc4e2344fe386ada6785bc675081ffc589a5))
+- configure delayed job to use more workers and less time per job ([ba3b0ea39](https://github.com/oral-history-digital/ohd/commit/ba3b0ea39724d54564092932850ba638a40d5cef))
+
+### Fixed
+
+- fix: correct display of StartPageVideo ([#64](https://github.com/oral-history-digital/ohd/pull/64))
+- fix: 'mday out of range' error in transcript PDF generation ([#65](https://github.com/oral-history-digital/ohd/pull/65))
+- fix photo upload ([e11418330](https://github.com/oral-history-digital/ohd/commit/e11418330ce2a8c7b430190482d6e27e3792fc9b) & [e083a40f3](https://github.com/oral-history-digital/ohd/commit/e083a40f3ab82ba9b47f67257e85abbf4c707398))
+- hide fulltext-search-field and disable fulltext-search unless logged in and permitted or project configured to show it ([e2ecceb4b](https://github.com/oral-history-digital/ohd/commit/e2ecceb4b13c93667bb76e09196d3601240f7352))
+- fix search for logged in users ([12baffcfc](https://github.com/oral-history-digital/ohd/commit/12baffcfccb6ee8ad054247d73da89995b0cdaf2))
+- fix browser-back-button problem on editing projects ([a1db63468](https://github.com/oral-history-digital/ohd/commit/a1db6346836af4dabf4a7305ee95bedc4488635b))
+- fix: use precompiled platform-specific gems in devcontainer ([6b9eaadfb](https://github.com/oral-history-digital/ohd/commit/6b9eaadfb762a30600a55dca4b4e36eb123df052))
+- safe normdata links wo provider ([14d1d7432](https://github.com/oral-history-digital/ohd/commit/14d1d7432d94d38a5f1f30421cbf797784777c4d))
+- fix: update Spinner component to handle invalid size prop and improve propTypes definition ([677b921c4](https://github.com/oral-history-digital/ohd/commit/677b921c4dd63a20fc03559155748281b5679dcb))
+- fix: add pending migrations step to devcontainer setup script ([0c5a9b5cd](https://github.com/oral-history-digital/ohd/commit/0c5a9b5cd7547fd8e933367e5bc55cf757308f5a))
+
 ## [1.6.0] - 2026-01-09
 
 ### Added
@@ -267,6 +294,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.7.0]: https://github.com/oral-history-digital/ohd/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/oral-history-digital/ohd/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/oral-history-digital/ohd/compare/v1.4.4...v1.5.0
 [1.4.4]: https://github.com/oral-history-digital/ohd/compare/v1.4.3...v1.4.4
