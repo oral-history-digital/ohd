@@ -30,12 +30,13 @@ module Project::Oai
   end
 
   def oai_contributor(locale)
-    institutions_with_ancestors_names(locale)
+    #institutions_with_ancestors_names(locale)
+    "Oral-History.Digital / University Library of Freie Universität Berlin"
   end
 
   def oai_creator(locale)
-    institutions.first&.name(locale)
-    #root_institutions_names(locale)
+    #institutions.first&.name(locale)
+    institutions_with_ancestors_names(locale)
   end
 
   def oai_publisher(locale)
