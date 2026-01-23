@@ -52,30 +52,34 @@ export default function ArchiveCatalogPage() {
                     </p>
 
                     <dl className="DescriptionList">
-                        <dt className="DescriptionList-term">
-                            {project.institution_projects?.length === 1
-                                ? t('activerecord.models.institution.one')
-                                : t('activerecord.models.institution.other')}
-                        </dt>
-                        <dd className="DescriptionList-description">
-                            <ul className="UnorderedList">
-                                {Object.values(
-                                    project.institution_projects || {}
-                                )?.map((ip) => (
-                                    <li key={ip.institution_id}>
-                                        <Link
-                                            to={`/${locale}/catalog/institutions/${ip.institution_id}`}
-                                        >
-                                            {ip.name[locale]}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </dd>
+                        <div className="DescriptionList-group">
+                            <dt className="DescriptionList-term">
+                                {project.institution_projects?.length === 1
+                                    ? t('activerecord.models.institution.one')
+                                    : t(
+                                          'activerecord.models.institution.other'
+                                      )}
+                            </dt>
+                            <dd className="DescriptionList-description">
+                                <ul className="UnorderedList">
+                                    {Object.values(
+                                        project.institution_projects || {}
+                                    )?.map((ip) => (
+                                        <li key={ip.institution_id}>
+                                            <Link
+                                                to={`/${locale}/catalog/institutions/${ip.institution_id}`}
+                                            >
+                                                {ip.name[locale]}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </dd>
+                        </div>
                     </dl>
 
                     {projectTranslation?.introduction && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('modules.catalog.description')}
                             </dt>
@@ -85,11 +89,11 @@ export default function ArchiveCatalogPage() {
                                     __html: projectTranslation?.introduction,
                                 }}
                             />
-                        </>
+                        </div>
                     )}
 
                     {project.cooperation_partner && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t(
                                     'activerecord.attributes.project.cooperation_partner'
@@ -98,33 +102,33 @@ export default function ArchiveCatalogPage() {
                             <dd className="DescriptionList-description">
                                 {project.cooperation_partner}
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project.leader && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('activerecord.attributes.project.leader')}
                             </dt>
                             <dd className="DescriptionList-description">
                                 {project.leader}
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project.manager && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('activerecord.attributes.project.manager')}
                             </dt>
                             <dd className="DescriptionList-description">
                                 {project.manager}
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project.domain && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('activerecord.attributes.project.domain')}
                             </dt>
@@ -137,11 +141,11 @@ export default function ArchiveCatalogPage() {
                                     {project.domain}
                                 </a>
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project.pseudo_funder_names?.length > 0 && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t(
                                     'activerecord.attributes.project.pseudo_funder_names'
@@ -156,11 +160,11 @@ export default function ArchiveCatalogPage() {
                                     )}
                                 </ul>
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project.archive_domain && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t(
                                     'activerecord.attributes.project.archive_domain'
@@ -175,32 +179,33 @@ export default function ArchiveCatalogPage() {
                                     {project.archive_domain}
                                 </a>
                             </dd>
-                        </>
+                        </div>
                     )}
-
-                    <dt className="DescriptionList-term">
-                        {t('modules.catalog.volume')}
-                    </dt>
-                    <dd className="DescriptionList-description">
-                        {project.num_interviews}{' '}
-                        {project.num_interviews === 1
-                            ? t('activerecord.models.interview.one')
-                            : t('activerecord.models.interview.other')}
-                    </dd>
+                    <div className="DescriptionList-group">
+                        <dt className="DescriptionList-term">
+                            {t('modules.catalog.volume')}
+                        </dt>
+                        <dd className="DescriptionList-description">
+                            {project.num_interviews}{' '}
+                            {project.num_interviews === 1
+                                ? t('activerecord.models.interview.one')
+                                : t('activerecord.models.interview.other')}
+                        </dd>
+                    </div>
 
                     {project.publication_date && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('modules.catalog.publication_date')}
                             </dt>
                             <dd className="DescriptionList-description">
                                 {project.publication_date}
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project?.subjects.length > 0 && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('modules.catalog.subjects')}
                             </dt>
@@ -213,11 +218,11 @@ export default function ArchiveCatalogPage() {
                                     </span>
                                 ))}
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     {project?.levels_of_indexing.length > 0 && (
-                        <>
+                        <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('modules.catalog.level_of_indexing')}
                             </dt>
@@ -231,7 +236,7 @@ export default function ArchiveCatalogPage() {
                                     </span>
                                 ))}
                             </dd>
-                        </>
+                        </div>
                     )}
 
                     <ArchiveCatalog id={Number.parseInt(id)} />
