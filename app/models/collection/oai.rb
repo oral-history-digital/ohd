@@ -53,7 +53,7 @@ module Collection::Oai
   end
 
   def oai_type
-    "audio/video"
+    "Collection"
   end
 
   def type

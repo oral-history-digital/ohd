@@ -55,7 +55,7 @@ module Project::Oai
   end
 
   def oai_type
-    "audio/video"
+    "Archive"
   end
 
   def type
@@ -79,6 +79,16 @@ module Project::Oai
 
   def oai_languages
     Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
+  end
+
+  def oai_coverage
+    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
+    "#{dates.min}-#{dates.max}" rescue nil
+  end
+
+  def oai_birth_years
+    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
+    "#{birthyears.min}-#{birthyears.max}" rescue nil
   end
 
   def oai_subject_registry_entry_ids
