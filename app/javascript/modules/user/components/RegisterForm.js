@@ -5,6 +5,7 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from 'modules/constants';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { sanitizeHtml } from 'modules/utils';
 import request from 'superagent';
 
 import { NON_ZIP_COUNTRIES } from '../constants';
@@ -211,9 +212,9 @@ export default function RegisterForm({
     return (
         <>
             {registrationStatus ? (
+                // TODO: Is registrationStatus actually used? It seems to never be set and displayed
                 <p className="error">
-                    className='status' dangerouslySetInnerHTML=
-                    {{ __html: registrationStatus }}>
+                    {sanitizeHtml(registrationStatus, 'PLAIN_TEXT')}
                 </p>
             ) : (
                 <div>
