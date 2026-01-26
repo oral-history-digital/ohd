@@ -1,9 +1,9 @@
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
-import { formatYearRange, getMinMaxYear } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 import useCollectionData from './useCollectionData';
+import { formatYearRange, getMinMaxYear } from './utils/dateUtils';
 
 export default function CollectionData({ id, className }) {
     const { t } = useI18n();
