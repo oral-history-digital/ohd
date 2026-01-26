@@ -12,7 +12,25 @@ class ApplicationSerializer < ActiveModel::Serializer
   #
   def translations_attributes
     if object.respond_to? :translations
-      object.translations.map(&:as_json)
+      object.translations.map do |t|
+        t.attributes.inject({}) do |mem, (k, v)|
+          if [
+            'introduction',
+            'more_text',
+            'landing_page_text',
+            'restricted_landing_page_text'
+          ].include?(k)
+            v = ActionController::Base.helpers.sanitize(
+              v,
+              tags: %w[p br strong em u a ul ol li h1 h2 h3],
+              attributes: %w[href]
+            )
+          else
+            mem[k] = v
+          end
+          mem
+        end
+      end
     else
       []
     end

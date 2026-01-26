@@ -2,7 +2,6 @@ class ProjectSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :display_name,
-    :more_text,
     :shortname,
     :title,
     :num_interviews,
