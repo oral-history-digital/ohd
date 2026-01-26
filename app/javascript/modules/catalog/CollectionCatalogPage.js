@@ -5,6 +5,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
 import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
+import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
 import { FaChevronRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -83,7 +84,10 @@ export default function CollectionCatalogPage() {
                                     </dt>
                                     <dd
                                         dangerouslySetInnerHTML={{
-                                            __html: collection?.notes[locale],
+                                            __html: sanitizeHtml(
+                                                collection?.notes[locale],
+                                                'RICH_TEXT'
+                                            ),
                                         }}
                                         className="DescriptionList-description"
                                     />

@@ -5,6 +5,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
 import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
+import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
 import { FaChevronRight } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
@@ -86,7 +87,10 @@ export default function ArchiveCatalogPage() {
                             <dd
                                 className="DescriptionList-description"
                                 dangerouslySetInnerHTML={{
-                                    __html: projectTranslation?.introduction,
+                                    __html: sanitizeHtml(
+                                        projectTranslation?.introduction,
+                                        'RICH_TEXT'
+                                    ),
                                 }}
                             />
                         </div>
