@@ -5,4 +5,4 @@
     mail = mail.sub('ACCESS_TOKEN_WILL_BE_REPLACED', @user.access_tokens.last.token)
   end
 %>
-<%= mail.html_safe %>
+<%= sanitize(mail, tags: %w[a b i u p br strong em], attributes: %w[href]) %>

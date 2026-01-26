@@ -106,4 +106,8 @@ class UserProject < ApplicationRecord
       user.send("#{attr}=", value)
     end
   end
+
+  def devise_scope
+    :user
+  end
 end
