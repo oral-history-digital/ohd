@@ -3,6 +3,7 @@ import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,7 +35,9 @@ export default function TocResult({ data }) {
             </p>
             <p
                 className="SearchResult-text"
-                dangerouslySetInnerHTML={{ __html: data.text[alpha3] }}
+                dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(data.text[alpha3], 'SEARCH_RESULT'),
+                }}
             />
         </button>
     );

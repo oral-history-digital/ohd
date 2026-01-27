@@ -2,14 +2,14 @@ import { useTrackPageView } from 'modules/analytics';
 import { Fetch, getCollections, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { LinkOrA, usePathBase } from 'modules/routes';
+import { LinkOrA } from 'modules/routes';
 import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
+import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
 import { FaChevronRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import CollectionData from './CollectionData';
 
@@ -18,15 +18,9 @@ export default function CollectionCatalogPage() {
     const collections = useSelector(getCollections);
     const { t, locale } = useI18n();
     const { id } = useParams();
-    const pathBase = usePathBase();
     useTrackPageView();
 
     const collection = collections[id];
-
-    //if (!collection) {
-    //return <Navigate to={`${pathBase}/not_found`} replace />;
-    //}
-
     const project = projects[collection?.project_id];
 
     return (
@@ -68,19 +62,21 @@ export default function CollectionCatalogPage() {
                         )}
 
                         <dl className="DescriptionList">
-                            <dt className="DescriptionList-term">
-                                {t('activerecord.models.project.one')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                <Link
-                                    to={`/${locale}/catalog/archives/${project?.id}`}
-                                >
-                                    {project?.name[locale]}
-                                </Link>
-                            </dd>
+                            <div className="DescriptionList-group">
+                                <dt className="DescriptionList-term">
+                                    {t('activerecord.models.project.one')}
+                                </dt>
+                                <dd className="DescriptionList-description">
+                                    <Link
+                                        to={`/${locale}/catalog/archives/${project?.id}`}
+                                    >
+                                        {project?.name[locale]}
+                                    </Link>
+                                </dd>
+                            </div>
 
                             {collection?.notes[locale] && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t(
                                             'activerecord.attributes.collection.notes'
@@ -88,15 +84,18 @@ export default function CollectionCatalogPage() {
                                     </dt>
                                     <dd
                                         dangerouslySetInnerHTML={{
-                                            __html: collection?.notes[locale],
+                                            __html: sanitizeHtml(
+                                                collection?.notes[locale],
+                                                'RICH_TEXT'
+                                            ),
                                         }}
                                         className="DescriptionList-description"
                                     />
-                                </>
+                                </div>
                             )}
 
                             {collection?.responsibles?.[locale] && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t(
                                             'activerecord.attributes.collection.responsibles'
@@ -105,13 +104,13 @@ export default function CollectionCatalogPage() {
                                     <dd className="DescriptionList-description">
                                         {collection?.responsibles?.[locale]}
                                     </dd>
-                                </>
+                                </div>
                             )}
 
                             <CollectionData id={id} className="u-mb" />
 
                             {collection?.homepage[locale] && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t('modules.catalog.web_page')}
                                     </dt>
@@ -124,44 +123,51 @@ export default function CollectionCatalogPage() {
                                             {collection?.homepage[locale]}
                                         </a>
                                     </dd>
-                                </>
+                                </div>
                             )}
-
-                            <dt className="DescriptionList-term">
-                                {t('modules.catalog.volume')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {collection?.num_interviews}{' '}
-                                {t('activerecord.models.interview.other')}
-                            </dd>
-
-                            <dt className="DescriptionList-term">
-                                {t('modules.catalog.subjects')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {collection?.subjects.map((s, i) => (
-                                    <span key={`subject-${i}`}>
-                                        {s.descriptor[locale]}
-                                        {i < collection?.subjects.length - 1 &&
-                                            ', '}
-                                    </span>
-                                ))}
-                            </dd>
-
-                            <dt className="DescriptionList-term">
-                                {t('modules.catalog.level_of_indexing')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {collection?.levels_of_indexing.map((s, i) => (
-                                    <span key={`loi-${i}`}>
-                                        {`${s.count} ${s.descriptor[locale]}`}
-                                        {i <
-                                            collection?.levels_of_indexing
-                                                .length -
-                                                1 && ', '}
-                                    </span>
-                                ))}
-                            </dd>
+                            <div className="DescriptionList-group">
+                                <dt className="DescriptionList-term">
+                                    {t('modules.catalog.volume')}
+                                </dt>
+                                <dd className="DescriptionList-description">
+                                    {collection?.num_interviews}{' '}
+                                    {t('activerecord.models.interview.other')}
+                                </dd>
+                            </div>
+                            <div className="DescriptionList-group">
+                                <dt className="DescriptionList-term">
+                                    {t('modules.catalog.subjects')}
+                                </dt>
+                                <dd className="DescriptionList-description">
+                                    {collection?.subjects.map((s, i) => (
+                                        <span key={`subject-${i}`}>
+                                            {s.descriptor[locale]}
+                                            {i <
+                                                collection?.subjects.length -
+                                                    1 && ', '}
+                                        </span>
+                                    ))}
+                                </dd>
+                            </div>
+                            <div className="DescriptionList-group">
+                                <dt className="DescriptionList-term">
+                                    {t('modules.catalog.level_of_indexing')}
+                                </dt>
+                                <dd className="DescriptionList-description">
+                                    {collection?.levels_of_indexing.map(
+                                        (s, i) => (
+                                            <span key={`loi-${i}`}>
+                                                {`${s.count} ${s.descriptor[locale]}`}
+                                                {i <
+                                                    collection
+                                                        ?.levels_of_indexing
+                                                        .length -
+                                                        1 && ', '}
+                                            </span>
+                                        )
+                                    )}
+                                </dd>
+                            </div>
                         </dl>
                     </div>
                 </ErrorBoundary>

@@ -1,13 +1,19 @@
-.DescriptionList {
-}
-
-.DescriptionList > dt,
-.DescriptionList-term {
-  font-weight: bold;
-}
-
-.DescriptionList > dd,
-.DescriptionList-description {
+.DescriptionList-group {
   margin-bottom: $base-unit;
-  margin-left: 0;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  dt.DescriptionList-term {
+    font-weight: bold;
+  }
+
+  dd.DescriptionList-description {
+    margin-top: calc($base-unit / 6);
+    padding: 0;
+    margin-bottom: 0;
+  }
 }

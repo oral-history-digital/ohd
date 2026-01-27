@@ -1,5 +1,6 @@
 import { useIsEditor } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -22,7 +23,9 @@ export default function Banner({ onClose }) {
         <div className="Banner">
             <div
                 className="Banner-inner"
-                dangerouslySetInnerHTML={{ __html: bannerMessage }}
+                dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(bannerMessage, 'BASIC'),
+                }}
             />
             <button
                 onClick={onClose}

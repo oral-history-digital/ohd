@@ -3,6 +3,7 @@ import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
@@ -22,7 +23,10 @@ export default function Annotation({
             <p
                 className=""
                 dangerouslySetInnerHTML={{
-                    __html: annotation.text[contentLocale],
+                    __html: sanitizeHtml(
+                        annotation.text[contentLocale],
+                        'BASIC'
+                    ),
                 }}
             />
             <AuthorizedContent object={annotation} action="update">
@@ -68,7 +72,10 @@ export default function Annotation({
                             >
                                 <p
                                     dangerouslySetInnerHTML={{
-                                        __html: annotation.text[contentLocale],
+                                        __html: sanitizeHtml(
+                                            annotation.text[contentLocale],
+                                            'BASIC'
+                                        ),
                                     }}
                                 />
                             </DeleteItemForm>
