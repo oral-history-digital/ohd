@@ -143,6 +143,16 @@ export default function RegisterForm({
                     return PASSWORD_REGEX.test(v) && v === password;
                 },
             },
+            {
+                elementType: 'input',
+                attribute: 'otp_required_for_login',
+                type: 'checkbox',
+            },
+            {
+                elementType: 'input',
+                attribute: 'passkey_required_for_login',
+                type: 'checkbox',
+            },
         ];
 
         const newsletterElement = [
