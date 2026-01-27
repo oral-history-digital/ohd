@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ddd;
 
   video {
     width: auto;
@@ -11,7 +12,7 @@
     max-height: 70vh;
     height: auto;
     aspect-ratio: 16 / 9;
-    object-fit: contain;
+    object-fit: cover;
     display: block;
   }
 }
