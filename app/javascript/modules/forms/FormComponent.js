@@ -5,8 +5,8 @@ import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { RegistryTreeSelect } from 'modules/registry-tree-select';
 import { pluralize } from 'modules/strings';
+import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
 import PropTypes from 'prop-types';
-import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import RichTextEditor from 'react-rte-18support';
 
 import ErrorMessages from './ErrorMessages';
@@ -33,6 +33,7 @@ const elementTypeToComponent = {
 };
 
 export default function FormComponent({
+    buttonFullWidth = false,
     children,
     className,
     data,
@@ -282,42 +283,28 @@ export default function FormComponent({
                     />
                 )}
 
-                <div className="Form-footer u-mt">
-                    {nested ? (
-                        <button
-                            type="submit"
-                            className="Button Button--nested Button--editorialColor Button--icon"
-                        >
-                            <FaCheckCircle className="Icon Icon--editorial" />{' '}
-                            {t(submitText || 'apply')}
-                        </button>
-                    ) : (
-                        <input
-                            type="submit"
-                            className="Button Button--primaryAction"
-                            disabled={fetching}
-                            value={t(submitText || 'submit')}
+                <div
+                    className={classNames('Form-footer', 'u-mt', {
+                        'Form-footer--fullWidth': buttonFullWidth,
+                    })}
+                >
+                    {typeof onCancel === 'function' && (
+                        <CancelButton
+                            buttonText={t(nested ? 'discard' : 'cancel')}
+                            handleCancel={onCancel}
+                            isLoading={fetching}
+                            isDisabled={fetching}
+                            size={nested ? 'sm' : undefined}
                         />
                     )}
-                    {typeof onCancel === 'function' &&
-                        (nested ? (
-                            <button
-                                type="reset"
-                                className="Button Button--nested Button--editorialColor Button--icon"
-                                onClick={onCancel}
-                            >
-                                <FaTimes className="Icon Icon--editorial" />{' '}
-                                {t('discard')}
-                            </button>
-                        ) : (
-                            <input
-                                type="button"
-                                className="Button Button--secondaryAction"
-                                disabled={fetching}
-                                value={t('cancel')}
-                                onClick={onCancel}
-                            />
-                        ))}
+                    <SubmitButton
+                        buttonText={t(
+                            submitText || (nested ? 'apply' : 'submit')
+                        )}
+                        isLoading={fetching}
+                        isDisabled={fetching}
+                        size={nested ? 'sm' : undefined}
+                    />
                 </div>
             </form>
         </div>
