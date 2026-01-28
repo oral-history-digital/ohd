@@ -3,6 +3,7 @@ import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { Spinner } from 'modules/spinners';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -43,7 +44,9 @@ export default function AnnotationResult({ data }) {
             </div>
             <div
                 className="SearchResult-text"
-                dangerouslySetInnerHTML={{ __html: annotationText }}
+                dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(annotationText, 'SEARCH_RESULT'),
+                }}
             />
         </button>
     );

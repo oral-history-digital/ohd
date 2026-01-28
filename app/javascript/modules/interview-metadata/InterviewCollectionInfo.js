@@ -8,6 +8,7 @@ import { getCollectionsForCurrentProject } from 'modules/data';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaInfo } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -45,7 +46,10 @@ export default function InterviewCollectionInfo({ interview }) {
                     <DisclosurePanel>
                         <span
                             dangerouslySetInnerHTML={{
-                                __html: collection.notes[locale],
+                                __html: sanitizeHtml(
+                                    collection.notes[locale],
+                                    'RICH_TEXT'
+                                ),
                             }}
                         />
                     </DisclosurePanel>

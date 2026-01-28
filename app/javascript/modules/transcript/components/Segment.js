@@ -107,7 +107,7 @@ function Segment({
                             sendTimeChangeRequest(data.tape_nbr, data.time);
                     }}
                     // TODO: clean mog segment-texts from html in db
-                    //dangerouslySetInnerHTML={{__html: text}}
+                    //dangerouslySetInnerHTML={{__html: sanitizeHtml(text, 'PLAIN_TEXT') }}
                 >
                     {text?.replace(/&quot;/g, '"').replace(/&apos;/g, '`') || (
                         <i>{t('modules.transcript.no_text')}</i>
