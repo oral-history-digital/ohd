@@ -85,6 +85,9 @@ export function submitData(props, params, opts = {}, callback) {
         let id = params[dataType].id;
         delete params[dataType].id;
         return (dispatch) => {
+            // Dispatch REQUEST_DATA to set loading state
+            dispatch(requestData(pluralizedDataType, id));
+
             if (opts.updateStateBeforeSubmit)
                 dispatch(
                     updateData(pluralizedDataType, id, Object.values(params)[0])
