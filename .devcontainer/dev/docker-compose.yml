@@ -130,6 +130,8 @@ services:
       # Database connection for Rails environment initialization
       DATABASE_URL: mysql2://root:rootpassword@db:3306/ohd_development
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      # Use precompiled platform-specific gems instead of compiling from source
+      BUNDLE_FORCE_RUBY_PLATFORM: false
 
 volumes:
   db-data:
