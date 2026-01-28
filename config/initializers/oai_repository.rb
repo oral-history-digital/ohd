@@ -60,27 +60,27 @@ OaiRepository.setup do |config|
        #},
        {
          spec: 'archives',
-         name: 'Interview-Archive',
+         name: 'Interview-Archives',
          model: Project,
-         description: 'Archive'
+         description: 'Archives'
        },
        {
          spec: 'collections',
-         name: 'Interview-Sammlungen',
+         name: 'Interview-Collections',
          model: Collection,
-         description: 'Sammlungen'
+         description: 'Collections'
        }
     ] + (!(ActiveRecord::Base.connected? && ActiveRecord::Base.connection.table_exists?('projects')) ? [] : Project.shared.includes(:translations).map do |project|
       {
         spec: "archive:#{project.shortname}",
-        name: project.name(:de),
+        name: project.name(:en),
         model: Project,
         #description: project.oai_abstract_description(:de)
       } 
     end + Collection.all.includes(:translations).map do |collection|
       {
         spec: "collection:#{collection.id}",
-        name: collection.name(:de),
+        name: collection.name(:en),
         model: Collection,
         #description: collection.oai_abstract_description(:de)
       }
