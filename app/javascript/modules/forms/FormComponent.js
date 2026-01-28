@@ -178,7 +178,7 @@ export default function FormComponent({
     }
 
     function writeNestedObjectToStateValues(params, identifier, index) {
-        // for translations identifier is 'locale' to not multiply translations
+        // For translations identifier is 'locale' to not multiply translations
         identifier ||= 'id';
         let nestedScope = Object.keys(params)[0];
         let nestedObject = params[nestedScope];
@@ -199,8 +199,8 @@ export default function FormComponent({
         }));
     }
 
-    // props is a dummy here
-    function handleNestedFormSubmit(props, params, index) {
+    // Props is a dummy here
+    function handleNestedFormSubmit(_, params, index) {
         writeNestedObjectToStateValues(params, null, index);
     }
 
@@ -217,22 +217,22 @@ export default function FormComponent({
         ));
     }
 
-    function elementComponent(props) {
-        const preparedProps = { ...props };
-        preparedProps.scope = props.scope || scope;
-        preparedProps.showErrors = errors[props.attribute];
+    function elementComponent(element) {
+        const preparedProps = { ...element };
+        preparedProps.scope = element.scope || scope;
+        preparedProps.showErrors = errors[element.attribute];
         preparedProps.handleChange = handleChange;
         preparedProps.handleErrors = handleErrors;
-        preparedProps.key = props.attribute;
+        preparedProps.key = element.attribute;
         preparedProps.value =
-            values[props.attribute] !== undefined
-                ? values[props.attribute]
-                : props.value;
+            values[element.attribute] !== undefined
+                ? values[element.attribute]
+                : element.value;
         preparedProps.data = data;
-        preparedProps.accept = props.accept;
+        preparedProps.accept = element.accept;
 
-        // set defaults for the possibility to shorten elements list
-        if (!props.elementType) {
+        // Set defaults for the possibility to shorten elements list
+        if (!element.elementType) {
             preparedProps.elementType = 'input';
             preparedProps.type = 'text';
         }
@@ -265,12 +265,12 @@ export default function FormComponent({
             >
                 {children}
 
-                {elements.map((props) => {
+                {elements.map((element) => {
                     if (
-                        props.condition === undefined ||
-                        props.condition === true
+                        element.condition === undefined ||
+                        element.condition === true
                     ) {
-                        return elementComponent(props);
+                        return elementComponent(element);
                     }
                 })}
 
@@ -325,13 +325,27 @@ export default function FormComponent({
 }
 
 FormComponent.propTypes = {
+    buttonFullWidth: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
     ]),
     className: PropTypes.string,
     data: PropTypes.object,
-    elements: PropTypes.array.isRequired,
+    elements: PropTypes.arrayOf(
+        PropTypes.shape({
+            attribute: PropTypes.string,
+            value: PropTypes.any,
+            accept: PropTypes.string,
+            condition: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+            elementType: PropTypes.string,
+            hidden: PropTypes.bool,
+            optional: PropTypes.bool,
+            multiLocale: PropTypes.bool,
+            validate: PropTypes.func,
+            scope: PropTypes.string,
+        })
+    ).isRequired,
     fetching: PropTypes.bool,
     formClasses: PropTypes.string,
     formId: PropTypes.string,
