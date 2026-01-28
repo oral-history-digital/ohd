@@ -20,7 +20,7 @@ class ApplicationSerializer < ActiveModel::Serializer
             'landing_page_text',
             'restricted_landing_page_text'
           ].include?(k)
-            v = ActionController::Base.helpers.sanitize(
+            mem[k] = ActionController::Base.helpers.sanitize(
               v,
               tags: %w[p br strong em u a ul ol li h1 h2 h3],
               attributes: %w[href]
