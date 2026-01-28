@@ -25,16 +25,24 @@ export default function SegmentButtons({
 
     const handleEditClick = () => {
         if (onEditStart) {
-            onEditStart();
+            onEditStart('edit');
         } else {
             setActiveButton('edit');
         }
     };
     const handleAnnotationsClick = () => {
-        setActiveButton('annotations');
+        if (onEditStart) {
+            onEditStart('annotations');
+        } else {
+            setActiveButton('annotations');
+        }
     };
     const handleReferencesClick = () => {
-        setActiveButton('references');
+        if (onEditStart) {
+            onEditStart('references');
+        } else {
+            setActiveButton('references');
+        }
     };
 
     return (
