@@ -1,29 +1,24 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import classNames from 'classnames';
+import { getLocale, getProjectId } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
+import { getCurrentProject, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
 import { formatTimecode } from 'modules/interview-helpers';
 import { sendTimeChangeRequest, useScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
-import { CancelButton, SubmitButton } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useAutoScrollToRef } from '../../hooks';
 import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
 import BookmarkSegmentButton from '../BookmarkSegmentButton';
-import {
-    EditableSegmentText,
-    EditableTimecode,
-    Initials,
-    SegmentButtons,
-    SegmentText,
-} from './components';
+import SegmentForm from '../SegmentForm';
+import { Initials, SegmentButtons, SegmentText } from './components';
 
 function EditableSegment({
     segment,
@@ -39,12 +34,13 @@ function EditableSegment({
     const { isAuthorized } = useAuthorization();
 
     const autoScroll = useSelector(getAutoScroll);
+    const locale = useSelector(getLocale);
+    const projectId = useSelector(getProjectId);
+    const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
 
     const [activeButton, setActiveButton] = useState(null);
     const [editMode, setEditMode] = useState(false);
-    const [editedText, setEditedText] = useState(null);
-    const [editedTimecode, setEditedTimecode] = useState(null);
     const [tabIndex, setTabIndex] = useState(0);
 
     console.log('activeButton:', activeButton);
@@ -70,27 +66,18 @@ function EditableSegment({
 
     const handleEditStart = (buttonType = 'edit') => {
         setEditMode(true);
-        setEditedText(null); // Start with original text
-        setEditedTimecode(null); // Start with original time
         setActiveButton(buttonType);
     };
 
-    const handleEditCancel = () => {
+    const handleEditCancel = useCallback(() => {
         setEditMode(false);
-        setEditedText(null);
-        setEditedTimecode(null);
         setActiveButton(null);
-    };
+    }, []);
 
-    const handleEditSave = async () => {
-        // TODO: Implement save logic
-        console.log('Saving segment text:', editedText);
-        console.log('Saving segment time:', editedTimecode);
+    const handleEditSubmit = useCallback(() => {
         setEditMode(false);
-        setEditedText(null);
-        setEditedTimecode(null);
         setActiveButton(null);
-    };
+    }, []);
 
     let text = isAuthorized(segment, 'update')
         ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
@@ -114,71 +101,70 @@ function EditableSegment({
     );
 
     // Build tabs array based on permissions
-    const tabs = [];
-    if (showEditTab) {
-        tabs.push({
-            id: 'edit',
-            label: t('edit'),
-            content: (
-                <>
-                    <EditableSegmentText
+    const tabs = useMemo(() => {
+        const tabsArray = [];
+        if (showEditTab) {
+            tabsArray.push({
+                id: 'edit',
+                label: t('edit'),
+                content: (
+                    <SegmentForm
+                        locale={locale}
+                        projectId={projectId}
+                        project={project}
+                        contentLocale={contentLocale}
                         segment={segment}
-                        locale={contentLocale}
-                        originalText={text}
-                        editedText={editedText}
-                        onTextChange={setEditedText}
+                        submitData={(props, params) => {
+                            dispatch(submitData(props, params));
+                        }}
+                        onSubmit={handleEditSubmit}
+                        onCancel={handleEditCancel}
+                        includeTimecode
                     />
-                    <EditableTimecode
-                        segment={segment}
-                        editedTime={editedTimecode}
-                        onTimeChange={setEditedTimecode}
-                    />
-                    <div className="EditableSegment-actions">
-                        <CancelButton
-                            handleCancel={handleEditCancel}
-                            variant="outlined"
-                            color="secondary"
-                            startIcon={<FaTimes className="Icon" />}
-                            title={t('button.cancel')}
-                            className="Button--icon"
-                        />
-                        <SubmitButton
-                            variant="contained"
-                            color="primary"
-                            onClick={handleEditSave}
-                            startIcon={<FaCheck className="Icon" />}
-                            title={t('button.save')}
-                            className="Button--icon"
-                        />
+                ),
+            });
+        }
+        if (showAnnotationsTab) {
+            tabsArray.push({
+                id: 'annotations',
+                label: t('activerecord.models.annotation.other'),
+                content: (
+                    <div className="EditableSegment-tabContent">
+                        <p>{t('activerecord.models.annotation.other')}</p>
+                        <p>Annotations UI will be implemented here</p>
                     </div>
-                </>
-            ),
-        });
-    }
-    if (showAnnotationsTab) {
-        tabs.push({
-            id: 'annotations',
-            label: t('activerecord.models.annotation.other'),
-            content: (
-                <div className="EditableSegment-tabContent">
-                    <p>{t('activerecord.models.annotation.other')}</p>
-                    <p>Annotations UI will be implemented here</p>
-                </div>
-            ),
-        });
-    }
-    if (showReferencesTab) {
-        tabs.push({
-            id: 'references',
-            label: t('activerecord.models.registry_reference.other'),
-            content: (
-                <div className="EditableSegment-tabContent">
-                    <p>{t('activerecord.models.registry_reference.other')}</p>
-                    <p>Registry References UI will be implemented here</p>
-                </div>
-            ),
-        });
-    }
+                ),
+            });
+        }
+        if (showReferencesTab) {
+            tabsArray.push({
+                id: 'references',
+                label: t('activerecord.models.registry_reference.other'),
+                content: (
+                    <div className="EditableSegment-tabContent">
+                        <p>
+                            {t('activerecord.models.registry_reference.other')}
+                        </p>
+                        <p>Registry References UI will be implemented here</p>
+                    </div>
+                ),
+            });
+        }
+        return tabsArray;
+    }, [
+        showEditTab,
+        showAnnotationsTab,
+        showReferencesTab,
+        t,
+        locale,
+        projectId,
+        project,
+        contentLocale,
+        segment,
+        dispatch,
+        handleEditSubmit,
+        handleEditCancel,
+    ]);
 
     // Sync tabIndex with activeButton based on dynamic tabs array
     useEffect(() => {
