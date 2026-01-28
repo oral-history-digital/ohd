@@ -14,6 +14,7 @@ export default function EditData({
     sensitiveAttributes = [],
     helpTextCode,
     initialFormValues,
+    isLoading = false,
     scope,
     submitData,
 }) {
@@ -42,6 +43,7 @@ export default function EditData({
     return editing ? (
         <Form
             data={data}
+            fetching={isLoading}
             helpTextCode={helpTextCode}
             values={initialFormValues}
             scope={scope}
@@ -101,6 +103,7 @@ export default function EditData({
                 type="button"
                 className="Button Button--transparent Button--icon"
                 onClick={toggleEditing}
+                disabled={isLoading}
             >
                 <FaPencilAlt className="Icon Icon--editorial" />{' '}
                 {t('edit.default.edit')}
@@ -114,6 +117,7 @@ EditData.propTypes = {
     formElements: PropTypes.array.isRequired,
     helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
+    isLoading: PropTypes.bool,
     scope: PropTypes.string.isRequired,
     sensitiveAttributes: PropTypes.array,
     submitData: PropTypes.func.isRequired,
