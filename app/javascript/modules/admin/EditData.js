@@ -28,6 +28,17 @@ export default function EditData({
         setEditing((prev) => !prev);
     }
 
+    function handleSave(params) {
+        submitData(
+            { locale, projectId, project },
+            params,
+            { updateStateBeforeSubmit: true }, // Optimistic UI update
+            () => {
+                setEditing(false);
+            }
+        );
+    }
+
     return editing ? (
         <Form
             data={data}
@@ -35,8 +46,7 @@ export default function EditData({
             values={initialFormValues}
             scope={scope}
             onSubmit={(params) => {
-                submitData({ locale, projectId, project }, params);
-                toggleEditing();
+                handleSave(params);
             }}
             onCancel={toggleEditing}
             submitText="submit"
