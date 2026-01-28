@@ -50,7 +50,7 @@ module Collection::OaiDatacite
 
       xml.creators do
         xml.creator do
-          xml.creatorName oai_creator(:en)
+          xml.creatorName oai_creator(:en), "xml:lang": "en"
         end
       end
 
