@@ -56,4 +56,7 @@ SpeakerDesignationInputs.propTypes = {
     attribute: PropTypes.string.isRequired,
     value: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,
+    accept: PropTypes.string,
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
 };
