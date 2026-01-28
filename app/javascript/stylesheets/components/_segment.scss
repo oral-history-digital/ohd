@@ -115,33 +115,38 @@ $segment-icon-width: 1.5 * $base-unit;
 .Segment--editMode {
   border: 2px solid var(--primary-color);
   border-radius: 8px;
-  padding: $base-unit;
-  padding-left: $base-unit;
+  padding: $base-unit * 1.25;
   background: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  gap: $base-unit * 0.5;
   display: flex;
   flex-direction: column;
+  gap: $base-unit;
 }
 
 .EditableSegment-textarea {
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid $gray-light;
+  border-radius: 6px;
   font-family: $font-family;
-  font-size: 1rem;
-  line-height: $base-unit;
-  padding: $base-unit * 0.5;
+  font-size: $font-size-large;
+  line-height: 1.6;
+  padding: $base-unit * 0.75;
   resize: vertical;
-  min-height: 100px;
+  min-height: 120px;
   max-width: 100%;
   width: 100%;
-  transition: border-color $transition-duration;
-  flex-grow: 1;
+  transition: all $transition-duration;
+  background-color: $gray-paler;
+
+  &:hover {
+    border-color: $gray-medium;
+    background-color: white;
+  }
 
   &:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 120, 215, 0.1);
+    background-color: white;
   }
 }
 
@@ -151,15 +156,126 @@ $segment-icon-width: 1.5 * $base-unit;
 }
 
 .EditableSegment-timecode {
-  label {
-    margin-right: $base-unit * 0.5;
+  display: flex;
+  align-items: center;
+  gap: $base-unit * 0.5;
+  margin-top: $base-unit * 0.25;
+}
+
+.EditableSegment-timecodeLabel {
+  font-size: $font-size-medium;
+  font-weight: 500;
+  color: $gray-darker;
+  white-space: nowrap;
+}
+
+.EditableSegment-timecodeInput {
+  border: 1px solid $gray-light;
+  border-radius: 6px;
+  font-family: $font-family;
+  font-size: $font-size-medium;
+  padding: $base-unit * 0.5 $base-unit * 0.75;
+  transition: all $transition-duration;
+  background-color: $gray-paler;
+  min-width: 140px;
+
+  &:hover {
+    border-color: $gray-medium;
+    background-color: white;
+  }
+
+  &:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 120, 215, 0.1);
+    background-color: white;
+  }
+
+  &::placeholder {
+    color: $gray-medium;
+    font-style: italic;
   }
 }
 
 .EditableSegment-actions {
   display: flex;
-  gap: $base-unit * 0.5;
+  gap: $base-unit * 0.75;
   flex-shrink: 0;
   justify-content: flex-end;
   align-self: flex-end;
+  margin-top: $base-unit * 0.5;
+}
+
+.SegmentTabs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SegmentTabs-tabList {
+  display: flex;
+  gap: 2px;
+  border-bottom: 2px solid $gray-lighter;
+  margin-bottom: $base-unit * 0.75;
+  background: inherit;
+}
+
+.SegmentTabs-tab {
+  background-color: $gray-pale;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: $gray-dark;
+  cursor: pointer;
+  font-family: $font-family;
+  font-size: $font-size-medium;
+  font-weight: 500;
+  line-height: 1.2;
+  padding: $base-unit * 0.4 $base-unit * 0.75;
+  transition: all $transition-duration;
+  border-radius: 4px 4px 0 0;
+  outline: none;
+
+  &:hover {
+    background-color: $gray-lighter;
+    color: $gray-darkest;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 $focus-radius $focus-color;
+  }
+
+  &:active {
+    outline: none;
+  }
+
+  &[data-selected] {
+    background-color: white;
+    border-bottom-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+}
+
+.SegmentTabs-panels {
+  width: 100%;
+}
+
+.SegmentTabs-panel {
+  width: 100%;
+  animation: fadeIn $transition-duration;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.EditableSegment-tabContent {
+  padding: $base-unit * 0.5;
+  color: $gray-dark;
+  font-size: $font-size-medium;
 }

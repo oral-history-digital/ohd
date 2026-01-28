@@ -1,5 +1,7 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
+import '@reach/tabs/styles.css';
 import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -43,6 +45,7 @@ function EditableSegment({
     const [editMode, setEditMode] = useState(false);
     const [editedText, setEditedText] = useState(null);
     const [editedTimecode, setEditedTimecode] = useState(null);
+    const [tabIndex, setTabIndex] = useState(0);
 
     console.log('activeButton:', activeButton);
 
@@ -65,11 +68,11 @@ function EditableSegment({
         }
     };
 
-    const handleEditStart = () => {
+    const handleEditStart = (buttonType = 'edit') => {
         setEditMode(true);
         setEditedText(null); // Start with original text
         setEditedTimecode(null); // Start with original time
-        setActiveButton('edit');
+        setActiveButton(buttonType);
     };
 
     const handleEditCancel = () => {
@@ -100,24 +103,23 @@ function EditableSegment({
     const showButtons =
         isAuthorized(segment) || isAuthorized({ type: 'General' }, 'edit');
 
-    if (!text) {
-        return null;
-    }
+    const showEditTab = isAuthorized(segment, 'update');
+    const showAnnotationsTab = isAuthorized(
+        { type: 'Annotation', interview_id: segment.interview_id },
+        'update'
+    );
+    const showReferencesTab = isAuthorized(
+        { type: 'RegistryReference', interview_id: segment.interview_id },
+        'update'
+    );
 
-    return (
-        <div
-            id={`segment_${segment.id}`}
-            data-tape={segment.tape_nbr}
-            data-time={formatTimecode(segment.time, true)}
-            ref={divEl}
-            className={classNames('Segment', {
-                'Segment--withSpeaker': segment.speakerIdChanged,
-                'is-active': isActive,
-                'Segment--editMode': editMode,
-            })}
-            style={{ background: '#f8f8f8' }}
-        >
-            {editMode ? (
+    // Build tabs array based on permissions
+    const tabs = [];
+    if (showEditTab) {
+        tabs.push({
+            id: 'edit',
+            label: t('edit'),
+            content: (
                 <>
                     <EditableSegmentText
                         segment={segment}
@@ -150,6 +152,84 @@ function EditableSegment({
                         />
                     </div>
                 </>
+            ),
+        });
+    }
+    if (showAnnotationsTab) {
+        tabs.push({
+            id: 'annotations',
+            label: t('activerecord.models.annotation.other'),
+            content: (
+                <div className="EditableSegment-tabContent">
+                    <p>{t('activerecord.models.annotation.other')}</p>
+                    <p>Annotations UI will be implemented here</p>
+                </div>
+            ),
+        });
+    }
+    if (showReferencesTab) {
+        tabs.push({
+            id: 'references',
+            label: t('activerecord.models.registry_reference.other'),
+            content: (
+                <div className="EditableSegment-tabContent">
+                    <p>{t('activerecord.models.registry_reference.other')}</p>
+                    <p>Registry References UI will be implemented here</p>
+                </div>
+            ),
+        });
+    }
+
+    // Sync tabIndex with activeButton based on dynamic tabs array
+    useEffect(() => {
+        const index = tabs.findIndex((tab) => tab.id === activeButton);
+        if (index !== -1) {
+            setTabIndex(index);
+        }
+    }, [activeButton, tabs]);
+
+    if (!text) {
+        return null;
+    }
+
+    return (
+        <div
+            id={`segment_${segment.id}`}
+            data-tape={segment.tape_nbr}
+            data-time={formatTimecode(segment.time, true)}
+            ref={divEl}
+            className={classNames('Segment', {
+                'Segment--withSpeaker': segment.speakerIdChanged,
+                'is-active': isActive,
+                'Segment--editMode': editMode,
+            })}
+            style={{ background: '#f8f8f8' }}
+        >
+            {editMode ? (
+                <Tabs
+                    className="SegmentTabs"
+                    index={tabIndex}
+                    onChange={setTabIndex}
+                >
+                    <TabList className="SegmentTabs-tabList">
+                        {tabs.map((tab) => (
+                            <Tab key={tab.id} className="SegmentTabs-tab">
+                                {tab.label}
+                            </Tab>
+                        ))}
+                    </TabList>
+
+                    <TabPanels className="SegmentTabs-panels">
+                        {tabs.map((tab) => (
+                            <TabPanel
+                                key={tab.id}
+                                className="SegmentTabs-panel"
+                            >
+                                {tab.content}
+                            </TabPanel>
+                        ))}
+                    </TabPanels>
+                </Tabs>
             ) : (
                 <>
                     <Initials contributor={contributor} segment={segment} />
