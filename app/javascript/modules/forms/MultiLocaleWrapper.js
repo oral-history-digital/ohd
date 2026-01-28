@@ -9,7 +9,7 @@ import RichTextareaContainer from './input-components/RichTextareaContainer';
 import Textarea from './input-components/Textarea';
 
 export default function MultiLocaleWrapper(props) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
 
     const {
         attribute,
@@ -128,5 +128,16 @@ export default function MultiLocaleWrapper(props) {
 }
 
 MultiLocaleWrapper.propTypes = {
+    attribute: PropTypes.string,
+    elementType: PropTypes.string,
+    scope: PropTypes.string,
+    label: PropTypes.string,
+    mandatory: PropTypes.bool,
     data: PropTypes.object,
+    locales: PropTypes.array,
+    handleChange: PropTypes.func,
+    origAsLocale: PropTypes.bool,
+    value: PropTypes.any,
+    accept: PropTypes.string,
+    condition: PropTypes.bool,
 };

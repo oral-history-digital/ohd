@@ -175,4 +175,7 @@ Select.propTypes = {
     optionsScope: PropTypes.string,
     withEmpty: PropTypes.bool,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
+    accept: PropTypes.string,
 };

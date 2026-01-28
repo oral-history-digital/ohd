@@ -94,4 +94,8 @@ Textarea.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleErrors: PropTypes.func.isRequired,
     handlechangecallback: PropTypes.func,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
+    accept: PropTypes.string,
 };

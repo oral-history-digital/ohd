@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 import { FaArrowUp } from 'react-icons/fa';
 
 import Select from './SelectContainer';
@@ -25,9 +26,10 @@ export default function RegistryEntrySelect({
     const [selectedRegistryEntryId, setSelectedRegistryEntryId] = useState(
         data?.[attribute] || project?.root_registry_entry_id
     );
-    const [valid, setValid] = useState(
-        selectedRegistryEntryId !== project?.root_registry_entry_id
-    );
+
+    const selectedEntryStatus = registryEntriesStatus[selectedRegistryEntryId];
+    const childrenForEntryStatus =
+        registryEntriesStatus[`children_for_entry_${selectedRegistryEntryId}`];
 
     useEffect(() => {
         if (
@@ -48,14 +50,19 @@ export default function RegistryEntrySelect({
                 'with_associations=true'
             );
         }
-    }, [registryEntriesStatus[selectedRegistryEntryId]]);
+    }, [
+        selectedRegistryEntryId,
+        selectedEntryStatus,
+        registryEntriesStatus,
+        registryEntries,
+        fetchData,
+        locale,
+        project,
+    ]);
 
     useEffect(() => {
         if (
-            (selectedRegistryEntryId &&
-                !registryEntriesStatus[
-                    `children_for_entry_${selectedRegistryEntryId}`
-                ]) ||
+            (selectedRegistryEntryId && !childrenForEntryStatus) ||
             (registryEntriesStatus[selectedRegistryEntryId] &&
                 registryEntriesStatus[selectedRegistryEntryId].split('-')[0] ===
                     'reload')
@@ -69,7 +76,12 @@ export default function RegistryEntrySelect({
             );
         }
     }, [
-        registryEntriesStatus[`children_for_entry_${selectedRegistryEntryId}`],
+        selectedRegistryEntryId,
+        childrenForEntryStatus,
+        registryEntriesStatus,
+        fetchData,
+        locale,
+        project,
     ]);
 
     const parentRegistryEntryId = () => {
@@ -89,12 +101,12 @@ export default function RegistryEntrySelect({
 
     const registryEntriesToSelect = () => {
         if (
-            // check whether selected entry is loaded
+            // Check whether selected entry is loaded
             selectedRegistryEntry() &&
             selectedRegistryEntry().associations_loaded &&
             registryEntriesStatus[selectedRegistryEntryId]?.split('-')[0] ===
                 'fetched' &&
-            // check whether childEntries are loaded
+            // Check whether childEntries are loaded
             registryEntriesStatus[
                 `children_for_entry_${selectedRegistryEntryId}`
             ]?.split('-')[0] === 'fetched'
@@ -108,7 +120,7 @@ export default function RegistryEntrySelect({
                         ) === -1
                     );
                 })
-                .map((id, index) => {
+                .map((id) => {
                     return registryEntries[id];
                 });
         } else {
@@ -116,7 +128,7 @@ export default function RegistryEntrySelect({
         }
     };
 
-    const handleSelectedRegistryEntry = (name, value) => {
+    const handleSelectedRegistryEntry = (_, value) => {
         if (goDeeper) {
             if (
                 !registryEntries[value] ||
@@ -164,7 +176,6 @@ export default function RegistryEntrySelect({
                     className="Button Button--transparent Button--icon"
                     title={t('edit.registry_entry.go_up')}
                     onClick={() => {
-                        setValid(valid);
                         setSelectedRegistryEntryId(parentRegistryEntryId());
                         handleErrors(attribute, valid);
                     }}
@@ -217,3 +228,21 @@ export default function RegistryEntrySelect({
         </div>
     );
 }
+
+RegistryEntrySelect.propTypes = {
+    data: PropTypes.object,
+    attribute: PropTypes.string,
+    registryEntriesStatus: PropTypes.object,
+    registryEntries: PropTypes.object,
+    scope: PropTypes.string,
+    help: PropTypes.string,
+    handleChange: PropTypes.func,
+    handleErrors: PropTypes.func,
+    goDeeper: PropTypes.bool,
+    inTranscript: PropTypes.bool,
+    fetchData: PropTypes.func,
+    value: PropTypes.any,
+    accept: PropTypes.string,
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
+};

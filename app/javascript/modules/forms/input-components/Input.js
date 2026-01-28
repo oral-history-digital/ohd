@@ -117,6 +117,28 @@ export default function Input({
 }
 
 Input.propTypes = {
+    scope: PropTypes.string,
+    attribute: PropTypes.string,
+    type: PropTypes.string,
+    accept: PropTypes.string,
+    value: PropTypes.any,
+    data: PropTypes.object,
+    validate: PropTypes.func,
+    otherError: PropTypes.any,
+    label: PropTypes.string,
+    labelKey: PropTypes.string,
+    showErrors: PropTypes.bool,
+    optional: PropTypes.bool,
+    handleChange: PropTypes.func,
+    handlechangecallback: PropTypes.func,
+    handleErrors: PropTypes.func,
+    help: PropTypes.string,
+    individualErrorMsg: PropTypes.string,
+    hidden: PropTypes.bool,
+    className: PropTypes.string,
     readOnly: PropTypes.bool,
     placeholder: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
 };

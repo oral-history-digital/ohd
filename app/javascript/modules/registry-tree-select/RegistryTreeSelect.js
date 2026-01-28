@@ -22,4 +22,12 @@ export default function TreeSelect(props) {
 TreeSelect.propTypes = {
     loadOhdTree: PropTypes.bool.isRequired,
     data: PropTypes.object,
+    attribute: PropTypes.string,
+    value: PropTypes.any,
+    accept: PropTypes.string,
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
+    scope: PropTypes.string,
+    handleChange: PropTypes.func,
+    handleErrors: PropTypes.func,
 };
