@@ -73,7 +73,7 @@ module Collection::Oai
   end
 
   def oai_size
-    "#{interviews.count} Interviews"
+    "#{interviews.shared.count} Interviews"
   end
 
   def oai_coverage
