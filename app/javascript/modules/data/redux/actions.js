@@ -89,6 +89,9 @@ export function submitData(props, params, opts = {}, callback) {
                 dispatch(
                     updateData(pluralizedDataType, id, Object.values(params)[0])
                 );
+            // TODO: Add proper error handling callback for failed requests
+            // When updateStateBeforeSubmit is used, errors should either revert the optimistic update
+            // or trigger an error callback to show validation/server errors to the user
             Loader.put(
                 `${pathBase(props)}/${pluralizedDataType}/${id}`,
                 params,
@@ -101,6 +104,7 @@ export function submitData(props, params, opts = {}, callback) {
     } else {
         return (dispatch) => {
             //dispatch(addData(params));
+            // TODO: Add proper error handling callback for failed requests
             Loader.post(
                 `${pathBase(props)}/${pluralizedDataType}`,
                 params,
