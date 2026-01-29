@@ -1,3 +1,5 @@
+import { Fragment, createElement } from 'react';
+
 import reactStringReplace from 'react-string-replace';
 
 export default function t(
@@ -22,6 +24,11 @@ export default function t(
         Array.isArray(text)
             ? text.push(` (${usedKey})`)
             : (text += ` (${usedKey})`);
+    }
+
+    // Wrap array results in Fragment to avoid rendering as a keyed list
+    if (Array.isArray(text)) {
+        return createElement(Fragment, null, ...text);
     }
 
     return text;
