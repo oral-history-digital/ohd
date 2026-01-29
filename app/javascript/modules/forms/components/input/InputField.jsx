@@ -6,7 +6,7 @@ import { FaPencilAlt } from 'react-icons/fa';
 
 import Element from '../shared/Element';
 
-export default function Input({
+export default function InputField({
     scope,
     attribute,
     type,
@@ -116,7 +116,7 @@ export default function Input({
     );
 }
 
-Input.propTypes = {
+InputField.propTypes = {
     scope: PropTypes.string,
     attribute: PropTypes.string,
     type: PropTypes.string,

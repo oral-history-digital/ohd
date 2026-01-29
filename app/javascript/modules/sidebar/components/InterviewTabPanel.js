@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useIsEditor } from 'modules/archive';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { PROJECT_CAMPSCAPES } from 'modules/constants';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import { SingleValueWithForm } from 'modules/forms';
 import { GalleryContainer } from 'modules/gallery';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
@@ -146,7 +146,7 @@ export default function InterviewTabPanel({
                                     <InterviewInfoContainer />
                                     <InterviewContributorsContainer />
                                     <InterviewTextMaterialsContainer />
-                                    <SingleValueWithFormContainer
+                                    <SingleValueWithForm
                                         obj={interview}
                                         value={interview?.links}
                                         attribute="pseudo_links"

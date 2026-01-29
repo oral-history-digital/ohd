@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import missingStill from 'assets/images/missing_still.png';
 import classNames from 'classnames';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import { SingleValueWithForm } from 'modules/forms';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
@@ -32,7 +32,7 @@ export default function InterviewWorkflowRow({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const { fulltext } = useArchiveSearch();
-    const { data: people, isLoading } = usePeople();
+    const { isLoading } = usePeople(); // TODO: Does it make sense to onnly get loading state?
 
     const usersPath = `${pathBase}/users.json?workflow_users_for_project=${projectId}`;
     const { data: users } = useSWRImmutable(usersPath);
@@ -163,7 +163,7 @@ export default function InterviewWorkflowRow({
                 </div>
 
                 {box(
-                    <SingleValueWithFormContainer
+                    <SingleValueWithForm
                         elementType={'select'}
                         obj={interview}
                         attribute={'workflow_state'}

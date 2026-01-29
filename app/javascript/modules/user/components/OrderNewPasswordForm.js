@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { EMAIL_REGEX } from 'modules/constants';
-import { InputContainer } from 'modules/forms';
+import { InputField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -47,7 +47,7 @@ export default function OrderNewPasswordForm({ user, submitOrderNewPassword }) {
 
     return (
         <form className="default" onSubmit={handleSubmit}>
-            <InputContainer
+            <InputField
                 scope="user"
                 attribute="email"
                 value={user && EMAIL_REGEX.test(user.email) ? user.email : ''}
