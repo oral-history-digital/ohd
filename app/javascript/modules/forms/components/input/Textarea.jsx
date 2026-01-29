@@ -1,7 +1,7 @@
+import { checkTextDir } from 'modules/transcript';
 import PropTypes from 'prop-types';
 
-import { checkTextDir } from '../../transcript/utils';
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default function Textarea({
     value,

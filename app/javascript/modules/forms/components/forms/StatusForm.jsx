@@ -13,7 +13,6 @@ export default function StatusForm({ data, scope, attribute, value }) {
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
 
-    const [submitted, setSubmitted] = useState(false);
     const [editing, setEditing] = useState(false);
 
     return editing ? (

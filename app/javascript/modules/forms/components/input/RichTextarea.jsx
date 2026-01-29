@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 import RichTextEditor from 'react-rte-18support';
 
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default class RichTextarea extends Component {
     constructor(props) {
