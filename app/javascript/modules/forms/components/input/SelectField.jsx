@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Element from '../shared/Element';
 
-export default function Select({
+export default function SelectField({
     scope,
     attribute,
     value,
@@ -149,7 +149,7 @@ export default function Select({
     );
 }
 
-Select.propTypes = {
+SelectField.propTypes = {
     scope: PropTypes.string,
     attribute: PropTypes.string,
     value: PropTypes.oneOfType([

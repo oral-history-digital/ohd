@@ -1,18 +1,22 @@
 import { createElement, useState } from 'react';
 
+import { getProjectId } from 'modules/archive';
+import { getCurrentProject, submitData } from 'modules/data';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-const SubmitOnBlurForm = ({
+export default function SubmitOnBlurForm({
     attribute,
     scope,
     type = 'input',
     validate,
     data,
     locale,
-    projectId,
-    project,
-    submitData,
-}) => {
+}) {
+    const projectId = useSelector(getProjectId);
+    const project = useSelector(getCurrentProject);
+    const dispatch = useDispatch();
+
     const translation = data.translations_attributes.find(
         (t) => t.locale === locale
     );
@@ -37,20 +41,24 @@ const SubmitOnBlurForm = ({
     const submit = (event) => {
         event.preventDefault();
         if (valid) {
-            submitData(
-                { locale: 'de', project, projectId },
-                {
-                    [scope]: {
-                        id: data.id,
-                        translations_attributes: [
-                            {
-                                id: translation?.id || translationPublic?.id,
-                                locale,
-                                [attribute]: value,
-                            },
-                        ],
-                    },
-                }
+            dispatch(
+                submitData(
+                    { locale: 'de', project, projectId },
+                    {
+                        [scope]: {
+                            id: data.id,
+                            translations_attributes: [
+                                {
+                                    id:
+                                        translation?.id ||
+                                        translationPublic?.id,
+                                    locale,
+                                    [attribute]: value,
+                                },
+                            ],
+                        },
+                    }
+                )
             );
         }
     };
@@ -64,7 +72,7 @@ const SubmitOnBlurForm = ({
             })}
         </form>
     );
-};
+}
 
 SubmitOnBlurForm.propTypes = {
     attribute: PropTypes.string.isRequired,
@@ -73,9 +81,4 @@ SubmitOnBlurForm.propTypes = {
     validate: PropTypes.func,
     data: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
 };
-
-export default SubmitOnBlurForm;
