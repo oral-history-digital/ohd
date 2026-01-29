@@ -1,13 +1,16 @@
 import { createElement } from 'react';
 
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
+import { getProjectLocales } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-import { InputContainer, RichTextareaContainer, Textarea } from '../input';
+import { InputField, RichTextarea, Textarea } from '../input';
 
 export default function MultiLocaleWrapper(props) {
     const { t } = useI18n();
+    const locales = useSelector(getProjectLocales);
 
     const {
         attribute,
@@ -16,7 +19,6 @@ export default function MultiLocaleWrapper(props) {
         label,
         mandatory,
         data,
-        locales,
         handleChange,
         origAsLocale,
     } = props;
@@ -106,8 +108,8 @@ export default function MultiLocaleWrapper(props) {
     };
 
     const components = {
-        input: InputContainer,
-        richTextEditor: RichTextareaContainer,
+        input: InputField,
+        richTextEditor: RichTextarea,
         textarea: Textarea,
     };
 
@@ -132,7 +134,6 @@ MultiLocaleWrapper.propTypes = {
     label: PropTypes.string,
     mandatory: PropTypes.bool,
     data: PropTypes.object,
-    locales: PropTypes.array,
     handleChange: PropTypes.func,
     origAsLocale: PropTypes.bool,
     value: PropTypes.any,
