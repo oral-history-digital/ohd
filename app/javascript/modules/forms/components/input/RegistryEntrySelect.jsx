@@ -1,27 +1,34 @@
 import { useEffect, useState } from 'react';
 
+import {
+    fetchData,
+    getRegistryEntries,
+    getRegistryEntriesStatus,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaArrowUp } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Select from './SelectContainer';
+import SelectField from './SelectField';
 
 export default function RegistryEntrySelect({
     data,
     attribute,
-    registryEntriesStatus,
-    registryEntries,
     scope,
     help,
     handleChange,
     handleErrors,
     goDeeper,
     inTranscript,
-    fetchData,
 }) {
     const { project } = useProject();
     const { locale, t } = useI18n();
+
+    const registryEntriesStatus = useSelector(getRegistryEntriesStatus);
+    const registryEntries = useSelector(getRegistryEntries);
+    const dispatch = useDispatch();
 
     const [selectedRegistryEntryId, setSelectedRegistryEntryId] = useState(
         data?.[attribute] || project?.root_registry_entry_id
@@ -42,12 +49,14 @@ export default function RegistryEntrySelect({
                     !registryEntries[selectedRegistryEntryId]
                         .associations_loaded))
         ) {
-            fetchData(
-                { locale, project },
-                'registry_entries',
-                selectedRegistryEntryId,
-                null,
-                'with_associations=true'
+            dispatch(
+                fetchData(
+                    { locale, project },
+                    'registry_entries',
+                    selectedRegistryEntryId,
+                    null,
+                    'with_associations=true'
+                )
             );
         }
     }, [
@@ -55,7 +64,7 @@ export default function RegistryEntrySelect({
         selectedEntryStatus,
         registryEntriesStatus,
         registryEntries,
-        fetchData,
+        dispatch,
         locale,
         project,
     ]);
@@ -67,19 +76,21 @@ export default function RegistryEntrySelect({
                 registryEntriesStatus[selectedRegistryEntryId].split('-')[0] ===
                     'reload')
         ) {
-            fetchData(
-                { locale, project },
-                'registry_entries',
-                null,
-                null,
-                `children_for_entry=${selectedRegistryEntryId}`
+            dispatch(
+                fetchData(
+                    { locale, project },
+                    'registry_entries',
+                    null,
+                    null,
+                    `children_for_entry=${selectedRegistryEntryId}`
+                )
             );
         }
     }, [
         selectedRegistryEntryId,
         childrenForEntryStatus,
         registryEntriesStatus,
-        fetchData,
+        dispatch,
         locale,
         project,
     ]);
@@ -134,12 +145,14 @@ export default function RegistryEntrySelect({
                 !registryEntries[value] ||
                 !registryEntries[value].associations_loaded
             )
-                fetchData(
-                    { locale, project },
-                    'registry_entries',
-                    value,
-                    null,
-                    'with_associations=true'
+                dispatch(
+                    fetchData(
+                        { locale, project },
+                        'registry_entries',
+                        value,
+                        null,
+                        'with_associations=true'
+                    )
                 );
             setSelectedRegistryEntryId(parseInt(value));
         }
@@ -197,7 +210,7 @@ export default function RegistryEntrySelect({
             selectedRegistryEntry().child_ids[locale].length > 0
         ) {
             return (
-                <Select
+                <SelectField
                     attribute={attribute}
                     scope={scope}
                     value={selectedRegistryEntryId}
@@ -232,15 +245,12 @@ export default function RegistryEntrySelect({
 RegistryEntrySelect.propTypes = {
     data: PropTypes.object,
     attribute: PropTypes.string,
-    registryEntriesStatus: PropTypes.object,
-    registryEntries: PropTypes.object,
     scope: PropTypes.string,
     help: PropTypes.string,
     handleChange: PropTypes.func,
     handleErrors: PropTypes.func,
     goDeeper: PropTypes.bool,
     inTranscript: PropTypes.bool,
-    fetchData: PropTypes.func,
     value: PropTypes.any,
     accept: PropTypes.string,
     elementType: PropTypes.string,
