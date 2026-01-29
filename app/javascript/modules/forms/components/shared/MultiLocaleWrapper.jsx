@@ -4,9 +4,7 @@ import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import InputContainer from './input-components/InputContainer';
-import RichTextareaContainer from './input-components/RichTextareaContainer';
-import Textarea from './input-components/Textarea';
+import { InputContainer, RichTextareaContainer, Textarea } from '../input';
 
 export default function MultiLocaleWrapper(props) {
     const { t } = useI18n();

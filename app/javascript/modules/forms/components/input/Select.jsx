@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default function Select({
     scope,

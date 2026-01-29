@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default function ColorPicker({
     value,

@@ -9,16 +9,18 @@ import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
-import ErrorMessages from './ErrorMessages';
-import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
-import NestedScope from './NestedScope';
-import ColorPicker from './input-components/ColorPicker';
-import Extra from './input-components/Extra';
-import InputContainer from './input-components/InputContainer';
-import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
-import SelectContainer from './input-components/SelectContainer';
-import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
-import Textarea from './input-components/Textarea';
+import {
+    ColorPicker,
+    ErrorMessages,
+    Extra,
+    InputContainer,
+    MultiLocaleWrapperContainer,
+    NestedScope,
+    RegistryEntrySelectContainer,
+    SelectContainer,
+    SpeakerDesignationInputs,
+    Textarea,
+} from './components';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -32,7 +34,7 @@ const elementTypeToComponent = {
     extra: Extra,
 };
 
-export default function FormComponent({
+export default function Form({
     buttonFullWidth = false,
     children,
     className,
@@ -311,7 +313,7 @@ export default function FormComponent({
     );
 }
 
-FormComponent.propTypes = {
+Form.propTypes = {
     buttonFullWidth: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
@@ -338,7 +340,6 @@ FormComponent.propTypes = {
     formId: PropTypes.string,
     helpTextCode: PropTypes.string,
     index: PropTypes.number,
-    locale: PropTypes.string,
     nested: PropTypes.bool,
     nestedScopeProps: PropTypes.array,
     onCancel: PropTypes.func,

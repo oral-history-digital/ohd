@@ -9,7 +9,7 @@ import { underscore } from 'modules/strings';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTimes } from 'react-icons/fa';
 
-import ContentField from './ContentField';
+import ContentField from '../display/ContentField';
 
 export default function SingleValueWithForm({
     readOnly,
