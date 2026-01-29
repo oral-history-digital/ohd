@@ -4,7 +4,7 @@ import { Checkbox } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default function Input({
     scope,
@@ -132,7 +132,7 @@ Input.propTypes = {
     handleChange: PropTypes.func,
     handlechangecallback: PropTypes.func,
     handleErrors: PropTypes.func,
-    help: PropTypes.string,
+    help: PropTypes.node,
     individualErrorMsg: PropTypes.string,
     hidden: PropTypes.bool,
     className: PropTypes.string,
