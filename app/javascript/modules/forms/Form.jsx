@@ -13,22 +13,22 @@ import {
     ColorPicker,
     ErrorMessages,
     Extra,
-    InputContainer,
-    MultiLocaleWrapperContainer,
+    InputField,
+    MultiLocaleWrapper,
     NestedScope,
-    RegistryEntrySelectContainer,
-    SelectContainer,
+    RegistryEntrySelect,
+    SelectField,
     SpeakerDesignationInputs,
     Textarea,
 } from './components';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
-    input: InputContainer,
-    registryEntrySelect: RegistryEntrySelectContainer,
+    input: InputField,
+    registryEntrySelect: RegistryEntrySelect,
     registryEntryTreeSelect: RegistryTreeSelect,
     richTextEditor: RichTextEditor,
-    select: SelectContainer,
+    select: SelectField,
     speakerDesignationInputs: SpeakerDesignationInputs,
     textarea: Textarea,
     extra: Extra,
@@ -241,7 +241,7 @@ export default function Form({
         }
 
         if (preparedProps.multiLocale) {
-            return createElement(MultiLocaleWrapperContainer, preparedProps);
+            return createElement(MultiLocaleWrapper, preparedProps);
         } else {
             return createElement(
                 elementTypeToComponent[preparedProps.elementType],

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 
+import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
 import Element from '../shared/Element';
@@ -43,9 +44,6 @@ export default class RichTextarea extends Component {
     }
 
     render() {
-        let value =
-            this.props.value ||
-            (this.props.data && this.props.data[this.props.attribute]);
         return (
             <Element
                 scope={this.props.scope}
@@ -72,3 +70,21 @@ export default class RichTextarea extends Component {
         );
     }
 }
+
+RichTextarea.propTypes = {
+    attribute: PropTypes.string.isRequired,
+    data: PropTypes.object,
+    handleChange: PropTypes.func.isRequired,
+    handleErrors: PropTypes.func,
+    validate: PropTypes.func,
+    handlechangecallback: PropTypes.func,
+    value: PropTypes.string,
+    scope: PropTypes.string,
+    label: PropTypes.string,
+    labelKey: PropTypes.string,
+    showErrors: PropTypes.bool,
+    className: PropTypes.string,
+    hidden: PropTypes.bool,
+    individualErrorMsg: PropTypes.string,
+    help: PropTypes.string,
+};

@@ -1,10 +1,13 @@
 import { createElement, useState } from 'react';
 
 import classNames from 'classnames';
+import { getLocale, getProjectId } from 'modules/archive';
+import { deleteData, getCurrentProject, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function NestedScopeElement({
     element,
@@ -12,18 +15,18 @@ export default function NestedScopeElement({
     formProps,
     onSubmit,
     onDelete,
-    submitData,
-    deleteData,
     onDeleteCallback,
     formComponent,
     showForm,
     scope,
     elementRepresentation,
-    locale,
-    projectId,
-    project,
 }) {
     const { t } = useI18n();
+    const locale = useSelector(getLocale);
+    const projectId = useSelector(getProjectId);
+    const project = useSelector(getCurrentProject);
+    const dispatch = useDispatch();
+
     const [editing, setEditing] = useState(!!showForm);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
@@ -38,7 +41,10 @@ export default function NestedScopeElement({
                     data: element,
                     key: `nse-form-${index}-${element.creation_date}`,
                     index: index,
-                    submitData: !!element.id ? submitData : onSubmit,
+                    // eslint-disable-next-line no-extra-boolean-cast
+                    submitData: !!element.id // TODO: Clarify if element.id can be 0 (valid ID) - if not, remove !!
+                        ? (params, args) => dispatch(submitData(params, args))
+                        : onSubmit,
                     onSubmitCallback: cancel,
                     onCancel: cancel,
                     formClasses: 'nested-form default',
@@ -69,15 +75,17 @@ export default function NestedScopeElement({
                                 if (typeof element.id === 'undefined') {
                                     onDelete(index, scope);
                                 } else {
-                                    deleteData(
-                                        { locale, projectId, project },
-                                        pluralize(scope),
-                                        element.id,
-                                        null,
-                                        null,
-                                        false,
-                                        false,
-                                        onDeleteCallback
+                                    dispatch(
+                                        deleteData(
+                                            { locale, projectId, project },
+                                            pluralize(scope),
+                                            element.id,
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            onDeleteCallback
+                                        )
                                     );
                                 }
                             }}
@@ -103,5 +111,14 @@ export default function NestedScopeElement({
 }
 
 NestedScopeElement.propTypes = {
+    element: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    formProps: PropTypes.object,
+    onSubmit: PropTypes.func,
+    onDelete: PropTypes.func,
     onDeleteCallback: PropTypes.func,
+    formComponent: PropTypes.elementType.isRequired,
+    showForm: PropTypes.bool,
+    scope: PropTypes.string.isRequired,
+    elementRepresentation: PropTypes.func.isRequired,
 };
