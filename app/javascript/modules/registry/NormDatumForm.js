@@ -21,7 +21,7 @@ export default function NormDatumForm({
             scope="norm_datum"
             helpTextCode="norm_datum_form"
             onSubmit={(params) => {
-                submitData({ projectId, locale, project }, params);
+                submitData({ projectId, locale, project }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}

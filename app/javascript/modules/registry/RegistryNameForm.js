@@ -66,7 +66,7 @@ export default function RegistryNameForm({
         <Form
             scope="registry_name"
             onSubmit={(params) => {
-                submitData({ projectId, locale, project }, params);
+                submitData({ projectId, locale, project }, params, index);
             }}
             helpTextCode="registry_name_form"
             onSubmitCallback={onSubmitCallback}
