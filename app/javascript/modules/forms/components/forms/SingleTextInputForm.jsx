@@ -1,6 +1,7 @@
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function SingleTextInputForm({
     index,
@@ -32,3 +33,13 @@ export default function SingleTextInputForm({
         />
     );
 }
+
+SingleTextInputForm.propTypes = {
+    index: PropTypes.number,
+    submitData: PropTypes.func.isRequired,
+    onSubmitCallback: PropTypes.func,
+    onCancel: PropTypes.func,
+    formClasses: PropTypes.string,
+    data: PropTypes.object,
+    nested: PropTypes.bool,
+};
