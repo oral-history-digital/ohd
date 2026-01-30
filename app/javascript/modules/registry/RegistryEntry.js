@@ -5,7 +5,6 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Checkbox, Modal } from 'modules/ui';
-import { getIsLoggedIn } from 'modules/user';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -32,7 +31,6 @@ export default function RegistryEntry({
 }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
-    const isLoggedIn = useSelector(getIsLoggedIn);
 
     const [childrenVisible, setChildrenVisible] = useState(false);
 
@@ -88,29 +86,23 @@ export default function RegistryEntry({
                 )}
 
                 <>
-                    {isLoggedIn && data.registry_references_count > 0 ? (
-                        <Modal
-                            title={t(
-                                'activerecord.models.registry_entry.actions.show'
-                            )}
-                            triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
-                            trigger={
-                                <RegistryEntryLabel registryEntry={data} />
-                            }
-                        >
-                            {(close) => (
-                                <RegistryEntryShow
-                                    registryEntryId={data.id}
-                                    onSubmit={close}
-                                    normDataLinks={
-                                        <NormDataLinks registryEntry={data} />
-                                    }
-                                />
-                            )}
-                        </Modal>
-                    ) : (
-                        <RegistryEntryLabel registryEntry={data} />
-                    )}
+                    <Modal
+                        title={t(
+                            'activerecord.models.registry_entry.actions.show'
+                        )}
+                        triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
+                        trigger={<RegistryEntryLabel registryEntry={data} />}
+                    >
+                        {(close) => (
+                            <RegistryEntryShow
+                                registryEntryId={data.id}
+                                onSubmit={close}
+                                normDataLinks={
+                                    <NormDataLinks registryEntry={data} />
+                                }
+                            />
+                        )}
+                    </Modal>
                     <AuthorizedContent object={data} action="update">
                         <span className="u-ml-tiny">{`(ID: ${data.id})`}</span>
                     </AuthorizedContent>
