@@ -21,6 +21,9 @@ export default function NormDatumForm({
             scope="norm_datum"
             helpTextCode="norm_datum_form"
             onSubmit={(params) => {
+                // TODO: Check if it is correct to pass index here. If submitData is the Redux action
+                // dispatcher, index has no effect there. But if submitData is a custom function,
+                // it might need index (e.g. nested forms).
                 submitData({ projectId, locale, project }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
