@@ -20,7 +20,7 @@ import {
     SpeakerDesignationInputs,
     Textarea,
 } from './components';
-import { useFormState } from './hooks/useFormState';
+import { useFormState } from './hooks';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -62,8 +62,11 @@ export default function Form({
     const {
         values,
         errors,
+        touched,
         updateField,
         handleErrors,
+        touchField,
+        touchAllFields,
         valid,
         writeNestedObject,
         deleteNestedObject,
@@ -78,11 +81,13 @@ export default function Form({
             writeNestedObject(params, identifier);
         } else {
             updateField(name, value);
+            touchField(name);
         }
     }
 
     function handleSubmit(event) {
         event.preventDefault();
+        touchAllFields();
 
         if (valid()) {
             onSubmit({ [scope || submitScope]: values }, index);
@@ -115,9 +120,12 @@ export default function Form({
     function elementComponent(element) {
         const preparedProps = { ...element };
         preparedProps.scope = element.scope || scope;
-        preparedProps.showErrors = errors[element.attribute];
+        preparedProps.showErrors =
+            (touched[element.attribute] || submitted) &&
+            errors[element.attribute];
         preparedProps.handleChange = handleChange;
         preparedProps.handleErrors = handleErrors;
+        preparedProps.touchField = touchField;
         preparedProps.key = element.attribute;
         preparedProps.value =
             values[element.attribute] !== undefined
