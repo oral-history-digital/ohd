@@ -26,7 +26,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
         return <Spinner />;
     }
 
-    if (!project.is_ohd && projectRefs?.length === 1) {
+    if (!project.is_ohd && usedReferenceCount > 0) {
         return (
             <>
                 <h4>{referenceCountTitle(t, usedReferenceCount)}</h4>
@@ -36,7 +36,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
                 />
             </>
         );
-    } else {
+    } else if (project.is_ohd) {
         return (
             <>
                 <h4>{referenceCountTitle(t, usedReferenceCount)}</h4>

@@ -1,6 +1,5 @@
 import { getRegistryEntries } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { getIsLoggedIn } from 'modules/user';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -19,7 +18,6 @@ export default function RegistryEntryShow({
     const registryEntry = registryEntries[registryEntryId];
     const showOpenStreetMapLink =
         registryEntry.latitude + registryEntry.longitude !== 0;
-    const isLoggedIn = useSelector(getIsLoggedIn);
 
     return (
         <div>
@@ -39,19 +37,10 @@ export default function RegistryEntryShow({
             </h3>
             <div className="small-right">{normDataLinks}</div>
             <p>{registryEntry.notes[locale]}</p>
-            {isLoggedIn && registryEntry.registry_references_count > 0 ? (
-                <EntryReferenceGroups
-                    registryEntry={registryEntry}
-                    onSubmit={onSubmit}
-                />
-            ) : (
-                <h4>
-                    {referenceCountTitle(
-                        t,
-                        registryEntry.registry_references_count
-                    )}
-                </h4>
-            )}
+            <EntryReferenceGroups
+                registryEntry={registryEntry}
+                onSubmit={onSubmit}
+            />
         </div>
     );
 }
