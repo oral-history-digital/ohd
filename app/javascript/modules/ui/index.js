@@ -2,6 +2,7 @@ export { default as AdminMenu } from './AdminMenu';
 export { default as Checkbox } from './Checkbox';
 export { default as CopyText } from './CopyText';
 export { default as Disclosure } from './Disclosure';
+export { default as InlineNotification } from './InlineNotification';
 export { default as Modal } from './Modal';
 export { default as PhotoModal } from './PhotoModal';
 export { default as Breadcrumbs } from './Breadcrumbs';
