@@ -4,6 +4,7 @@ import { useHumanReadable, useSensitiveData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
@@ -27,6 +28,17 @@ export default function EditData({
         setEditing((prev) => !prev);
     }
 
+    function handleSave(params) {
+        submitData(
+            { locale, projectId, project },
+            params,
+            { updateStateBeforeSubmit: true }, // Optimistic UI update
+            () => {
+                setEditing(false);
+            }
+        );
+    }
+
     return editing ? (
         <Form
             data={data}
@@ -34,8 +46,7 @@ export default function EditData({
             values={initialFormValues}
             scope={scope}
             onSubmit={(params) => {
-                submitData({ locale, projectId, project }, params);
-                toggleEditing();
+                handleSave(params);
             }}
             onCancel={toggleEditing}
             submitText="submit"
@@ -45,19 +56,43 @@ export default function EditData({
         <form className="default">
             <dl className="DescriptionList">
                 {formElements.map((element) => (
-                    <div key={element.key} className={element.className}>
-                        <dt>
+                    <div
+                        key={element.key}
+                        className={`DescriptionList-group ${element.className || ''}`}
+                    >
+                        <dt className="DescriptionList-term">
                             {t(
                                 element.labelKey ||
                                     `activerecord.attributes.${scope}.${element.attribute}`
                             )}
                         </dt>
-                        <dd>
-                            {humanReadable({
-                                obj: data,
-                                attribute: element.attribute,
-                                collapsed: true,
-                            })}
+                        <dd className="DescriptionList-description">
+                            {element.elementType === 'richTextEditor'
+                                ? (() => {
+                                      const content = humanReadable({
+                                          obj: data,
+                                          attribute: element.attribute,
+                                          collapsed: true,
+                                      });
+                                      const sanitized = sanitizeHtml(
+                                          content,
+                                          'RICH_TEXT'
+                                      );
+                                      return isEmptyHtml(sanitized) ? (
+                                          '---'
+                                      ) : (
+                                          <div
+                                              dangerouslySetInnerHTML={{
+                                                  __html: sanitized,
+                                              }}
+                                          />
+                                      );
+                                  })()
+                                : humanReadable({
+                                      obj: data,
+                                      attribute: element.attribute,
+                                      collapsed: true,
+                                  })}
                         </dd>
                     </div>
                 ))}
@@ -80,5 +115,6 @@ EditData.propTypes = {
     helpTextCode: PropTypes.string,
     initialFormValues: PropTypes.array,
     scope: PropTypes.string.isRequired,
+    sensitiveAttributes: PropTypes.array,
     submitData: PropTypes.func.isRequired,
 };

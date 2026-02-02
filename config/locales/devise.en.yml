@@ -34,10 +34,10 @@ en:
       grant_project_access:
         subject: Activation of your access to the application '%{project_name}'
         text: |
-          <<p>p>Hello %{user_display_name},</p></p>
-          <<p>p>You now have access to the application '%{project_name}' for the research intention you specified.</p></p>
-          <<p>p>Please respect the interviewees' privacy rights and the archive's %{tos_link}.</p></p>
-          <<p>p>With best regards</p></p>
+          <p>Hello %{user_display_name},</p>
+          <p>You now have access to the application '%{project_name}' for the research intention you specified.</p>
+          <p>Please respect the interviewees' privacy rights and the archive's %{tos_link}.</p>
+          <p>With best regards</p>
           <p>%{project_name}</p>
       reject_project_access:
         subject: Your request to activate your account for the application '%{project_name}'

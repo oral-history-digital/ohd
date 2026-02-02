@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaList, FaSearch, FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -29,7 +30,11 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
 
     return (
         <article className={classNames(className, 'Startpage')}>
-            <p dangerouslySetInnerHTML={{ __html: introductionHtml }} />
+            <p
+                dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(introductionHtml, 'RICH_TEXT'),
+                }}
+            />
 
             <div className="u-mt-large">
                 <section>
@@ -54,8 +59,11 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
                                     </Link>{' '}
                                     <span
                                         dangerouslySetInnerHTML={{
-                                            __html: t(
-                                                'modules.site_startpage.search.text3'
+                                            __html: sanitizeHtml(
+                                                t(
+                                                    'modules.site_startpage.search.text3'
+                                                ),
+                                                'RICH_TEXT'
                                             ),
                                         }}
                                     />
@@ -89,8 +97,11 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
                                     </Link>{' '}
                                     <span
                                         dangerouslySetInnerHTML={{
-                                            __html: t(
-                                                'modules.site_startpage.catalog.text3'
+                                            __html: sanitizeHtml(
+                                                t(
+                                                    'modules.site_startpage.catalog.text3'
+                                                ),
+                                                'RICH_TEXT'
                                             ),
                                         }}
                                     />

@@ -1,5 +1,6 @@
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
+import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 
@@ -17,7 +18,9 @@ export default function ActivateAccount() {
             </Helmet>
             <ErrorBoundary>
                 {registrationStatus ? (
-                    <div className="errors">{registrationStatus}</div>
+                    <div className="errors">
+                        {sanitizeHtml(registrationStatus, 'PLAIN_TEXT')}
+                    </div>
                 ) : (
                     <ChangePasswordFormContainer />
                 )}
