@@ -25,3 +25,26 @@
 .Form-footer--fullWidth .Form-footer-buttons > input {
   flex-grow: 1;
 }
+
+/**
+ * Form Row Container
+ * Used to organize and layout form elements side-by-side or in custom grid layouts
+ * based on CSS classes.
+ * 
+ * Class naming: form-row--{groupName}
+ * Examples: form-row--name, form-row--address, form-row--single-email
+ */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/**
+ * Ungrouped elements with semantic naming
+ */
+[class*='form-row--single-'] {
+  display: grid;
+  grid-template-columns: 1fr;
+}

@@ -12,6 +12,7 @@ import {
     ColorPicker,
     ErrorMessages,
     Extra,
+    FormRow,
     InputField,
     MultiLocaleWrapper,
     NestedScope,
@@ -21,6 +22,7 @@ import {
     Textarea,
 } from './components';
 import { useFormState } from './hooks';
+import { organizeElementsByGroup } from './utils';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -99,6 +101,8 @@ export default function Form({
         }
     }
 
+    const organizedElements = organizeElementsByGroup(elements);
+
     // Props is a dummy here
     function handleNestedFormSubmit(_, params, index) {
         writeNestedObject(params, null, index);
@@ -168,14 +172,14 @@ export default function Form({
             >
                 {children}
 
-                {elements.map((element) => {
-                    if (
-                        element.condition === undefined ||
-                        element.condition === true
-                    ) {
-                        return elementComponent(element);
-                    }
-                })}
+                {organizedElements.map((item) => (
+                    <FormRow
+                        key={`group-${item.group}`}
+                        group={item.group}
+                        elements={item.elements}
+                        renderElement={elementComponent}
+                    />
+                ))}
 
                 {submitted && (
                     <ErrorMessages
@@ -255,6 +259,7 @@ Form.propTypes = {
             multiLocale: PropTypes.bool,
             validate: PropTypes.func,
             scope: PropTypes.string,
+            group: PropTypes.string,
         })
     ).isRequired,
     fetching: PropTypes.bool,
