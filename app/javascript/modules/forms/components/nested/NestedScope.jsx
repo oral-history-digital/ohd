@@ -1,17 +1,23 @@
 import { cloneElement, createElement, useState } from 'react';
 
 import classNames from 'classnames';
-import { getData } from 'modules/data';
+import { getLocale, getProjectId } from 'modules/archive';
+import {
+    deleteData,
+    getCurrentProject,
+    getData,
+    submitData,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { pluralize, underscore } from 'modules/strings';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NestedScopeElement from './NestedScopeElement';
 
 export default function NestedScope({
-    onSubmit,
+    onCreateNew,
     onDelete,
     formComponent,
     formProps,
@@ -26,8 +32,13 @@ export default function NestedScope({
     replaceNestedFormValues,
 }) {
     const { t } = useI18n();
+    const dispatch = useDispatch();
+    const locale = useSelector(getLocale);
+    const projectId = useSelector(getProjectId);
+    const project = useSelector(getCurrentProject);
     const dataState = useSelector(getData);
-    // get parent from state to keep it actual
+
+    // Get parent from state to keep it updated
     const parentDataState =
         parent?.type && dataState[pluralize(underscore(parent.type))];
     const actualParent = parentDataState ? parentDataState[parent.id] : parent;
@@ -39,12 +50,53 @@ export default function NestedScope({
     const [editing, setEditing] = useState(showElementsInForm);
     const cancel = () => setEditing(false);
 
+    /**
+     * Create a submit handler for a nested element.
+     * Routes to Redux action for existing items (with id) or local state for new items.
+     */
+    function createSubmitHandler(element) {
+        if (element.id) {
+            // Existing item - dispatch immediately to server via Redux
+            return (params, args) => dispatch(submitData(params, args));
+        } else {
+            // New item - update local form state, will be sent with parent
+            return onCreateNew;
+        }
+    }
+
+    /**
+     * Create a delete handler for a nested element.
+     * Routes to Redux action for existing items or local state for new items.
+     */
+    function createDeleteHandler(element, index) {
+        if (typeof element.id !== 'undefined') {
+            // Existing item - dispatch delete to server via Redux
+            return () => {
+                dispatch(
+                    deleteData(
+                        { locale, projectId, project },
+                        pluralize(scope),
+                        element.id,
+                        null,
+                        null,
+                        false,
+                        false,
+                        onDeleteCallback
+                    )
+                );
+            };
+        } else {
+            // New item - remove from local state
+            return () => onDelete(index, scope);
+        }
+    }
+
     const form = createElement(formComponent, {
         ...formProps,
         data: {},
         index: newElements.length,
         nested: true,
-        submitData: onSubmit,
+        submitData: onCreateNew,
         onSubmitCallback: cancel,
         onCancel: cancel,
         formClasses: 'nested-form default',
@@ -74,9 +126,8 @@ export default function NestedScope({
                         <NestedScopeElement
                             key={`nse-${index}`}
                             element={element}
-                            onSubmit={onSubmit}
-                            onDelete={onDelete}
-                            onDeleteCallback={onDeleteCallback}
+                            submitHandler={createSubmitHandler(element)}
+                            deleteHandler={createDeleteHandler(element, index)}
                             formComponent={formComponent}
                             formProps={formProps}
                             scope={scope}
@@ -91,8 +142,8 @@ export default function NestedScope({
                         key={`nnse-${index}`}
                         element={element}
                         index={index}
-                        onSubmit={onSubmit}
-                        onDelete={onDelete}
+                        submitHandler={createSubmitHandler(element)}
+                        deleteHandler={createDeleteHandler(element, index)}
                         formComponent={formComponent}
                         formProps={formProps}
                         scope={scope}
@@ -123,7 +174,7 @@ export default function NestedScope({
 }
 
 NestedScope.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onCreateNew: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
     formComponent: PropTypes.elementType.isRequired,
     formProps: PropTypes.object,
