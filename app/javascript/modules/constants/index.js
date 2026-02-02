@@ -129,7 +129,7 @@ export const SANITIZE_CONFIG = {
     },
     // Basic formatting - for banners and simple rich text
     BASIC: {
-        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'a'],
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'del', 's'],
         ALLOWED_ATTR: ['href', 'target', 'rel'],
     },
     // Rich text - for CMS content with headings, lists, etc.
@@ -160,6 +160,8 @@ export const SANITIZE_CONFIG = {
             'td',
             'hr',
             'u',
+            'del',
+            's',
         ],
         ALLOWED_ATTR: ['href', 'target', 'rel'],
     },
