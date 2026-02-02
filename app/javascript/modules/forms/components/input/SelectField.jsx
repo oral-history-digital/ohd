@@ -1,6 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
+import { useTouchFieldOnBlur } from '../../hooks';
 import Element from '../shared/Element';
 
 export default function SelectField({
@@ -17,6 +18,7 @@ export default function SelectField({
     handleChange,
     handlechangecallback,
     handleErrors,
+    touchField,
     help,
     individualErrorMsg,
     hidden,
@@ -26,6 +28,8 @@ export default function SelectField({
     withEmpty = false,
     id,
 }) {
+    const onBlur = useTouchFieldOnBlur(touchField);
+
     const defaultValue = value || data?.[attribute];
     const { t, locale } = useI18n();
 
@@ -142,6 +146,7 @@ export default function SelectField({
                 className="Input"
                 defaultValue={defaultValue}
                 onChange={onChange}
+                onBlur={onBlur}
             >
                 {options()}
             </select>
@@ -167,6 +172,7 @@ SelectField.propTypes = {
     handleChange: PropTypes.func,
     handlechangecallback: PropTypes.func,
     handleErrors: PropTypes.func,
+    touchField: PropTypes.func,
     help: PropTypes.string,
     individualErrorMsg: PropTypes.string,
     hidden: PropTypes.bool,

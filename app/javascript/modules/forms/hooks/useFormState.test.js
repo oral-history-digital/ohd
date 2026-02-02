@@ -171,6 +171,116 @@ describe('useFormState', () => {
         });
     });
 
+    describe('touched tracking', () => {
+        it('initializes with empty touched object', () => {
+            render({
+                initialValues: { email: '' },
+                data: null,
+                elements: [{ attribute: 'email' }],
+            });
+
+            expect(hook.touched).toEqual({});
+        });
+
+        it('marks a single field as touched', async () => {
+            render({
+                initialValues: { email: '', name: '' },
+                data: null,
+                elements: [{ attribute: 'email' }, { attribute: 'name' }],
+            });
+
+            await act(async () => {
+                hook.touchField('email');
+            });
+            wrapper.update();
+
+            expect(hook.touched).toEqual({ email: true });
+        });
+
+        it('marks multiple fields as touched individually', async () => {
+            render({
+                initialValues: { email: '', name: '', phone: '' },
+                data: null,
+                elements: [
+                    { attribute: 'email' },
+                    { attribute: 'name' },
+                    { attribute: 'phone' },
+                ],
+            });
+
+            await act(async () => {
+                hook.touchField('email');
+                hook.touchField('phone');
+            });
+            wrapper.update();
+
+            expect(hook.touched).toEqual({
+                email: true,
+                phone: true,
+            });
+        });
+
+        it('marks all fields as touched', async () => {
+            render({
+                initialValues: { email: '', name: '', phone: '' },
+                data: null,
+                elements: [
+                    { attribute: 'email' },
+                    { attribute: 'name' },
+                    { attribute: 'phone' },
+                ],
+            });
+
+            await act(async () => {
+                hook.touchAllFields();
+            });
+            wrapper.update();
+
+            expect(hook.touched).toEqual({
+                email: true,
+                name: true,
+                phone: true,
+            });
+        });
+
+        it('handles touchField with undefined gracefully', async () => {
+            render({
+                initialValues: { email: '' },
+                data: null,
+                elements: [{ attribute: 'email' }],
+            });
+
+            await act(async () => {
+                hook.touchField('undefined');
+            });
+            wrapper.update();
+
+            expect(hook.touched).toEqual({});
+        });
+
+        it('touchAllFields only includes elements with attributes', async () => {
+            render({
+                initialValues: { email: '', note: '' },
+                data: null,
+                elements: [
+                    { attribute: 'email' },
+                    { attribute: 'note' },
+                    { elementType: 'extra' }, // no attribute
+                ],
+            });
+
+            await act(async () => {
+                hook.touchAllFields();
+            });
+            wrapper.update();
+
+            expect(hook.touched).toEqual({
+                email: true,
+                note: true,
+            });
+        });
+    });
+
     describe('nested objects', () => {
         it('adds a nested object', async () => {
             render({
