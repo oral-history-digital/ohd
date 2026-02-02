@@ -13,6 +13,20 @@ const middlewares = [thunk];
 
 Enzyme.configure({ adapter: new Adapter() });
 
+// Mock the translation fetching to avoid network errors in tests
+jest.mock('modules/archive/actions', () => {
+    const actual = jest.requireActual('modules/archive/actions');
+    return {
+        ...actual,
+        fetchTranslationsForLocale: () => (dispatch) => {
+            dispatch({
+                type: 'MERGE_TRANSLATIONS',
+                translations: {},
+            });
+        },
+    };
+});
+
 // Mock the i18n module so the component can call useI18n() and original t
 // without needing the full translations fixture. This mock returns a
 // simple `t` implementation and a locale. For mailer keys we return an
