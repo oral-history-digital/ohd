@@ -175,7 +175,7 @@ class RegistryReferencesController < ApplicationController
     scope = show_all &&
             current_user &&
             (current_user.admin? || current_user.roles?(current_project, 'General', 'edit')) ?
-            'all' : 'public'
+            ['public', 'restricted', 'unshared'] : 'public'
   end
 
   def respond registry_reference

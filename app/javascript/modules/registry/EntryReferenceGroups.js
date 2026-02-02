@@ -59,7 +59,6 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
 }
 
 EntryReferenceGroups.propTypes = {
-    projects: PropTypes.array.isRequired,
     registryEntry: PropTypes.object,
     isLoggedIn: PropTypes.bool,
     onSubmit: PropTypes.func,
