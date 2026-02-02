@@ -102,7 +102,7 @@ export default function Form({
             <NestedScope
                 key={props.scope}
                 {...props}
-                onSubmit={handleNestedFormSubmit}
+                onCreateNew={handleNestedFormSubmit}
                 onDelete={deleteNestedObject}
                 getNewElements={() => getNestedObjects(props.scope)}
                 replaceNestedFormValues={replaceNestedFormValues}
