@@ -1,6 +1,7 @@
 import { checkTextDir } from 'modules/transcript';
 import PropTypes from 'prop-types';
 
+import { useTouchFieldOnBlur } from '../../hooks';
 import Element from '../shared/Element';
 
 export default function Textarea({
@@ -20,8 +21,11 @@ export default function Textarea({
     handleChange,
     handlechangecallback,
     handleErrors,
+    touchField,
     id,
 }) {
+    const onBlur = useTouchFieldOnBlur(touchField);
+
     const defaultValue = value || data?.[attribute];
     // Determine text direction
     const textDir = checkTextDir(defaultValue || '');
@@ -66,6 +70,7 @@ export default function Textarea({
                 className="Input"
                 defaultValue={defaultValue}
                 onChange={onChange}
+                onBlur={onBlur}
                 {...htmlOptions}
                 dir={textDir}
                 style={{
@@ -94,6 +99,7 @@ Textarea.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleErrors: PropTypes.func.isRequired,
     handlechangecallback: PropTypes.func,
+    touchField: PropTypes.func,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     elementType: PropTypes.string,
     condition: PropTypes.bool,

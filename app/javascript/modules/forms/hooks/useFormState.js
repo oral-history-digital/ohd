@@ -19,6 +19,7 @@ import { pluralize } from 'modules/strings';
 export function useFormState(initialValues, data, elements) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
+    const [touched, setTouched] = useState({});
 
     /**
      * Initialize form values from initialValues and data props.
@@ -63,6 +64,7 @@ export function useFormState(initialValues, data, elements) {
 
     /**
      * Initialize error state for all form elements.
+     * Errors are only tracked, but not shown until fields are touched or form is submitted.
      */
     function initErrors() {
         let errors = {};
@@ -71,6 +73,31 @@ export function useFormState(initialValues, data, elements) {
             if (element.attribute) errors[element.attribute] = error;
         });
         return errors;
+    }
+
+    /**
+     * Mark a field as touched by the user.
+     */
+    function touchField(name) {
+        if (name !== 'undefined') {
+            setTouched((prevTouched) => ({
+                ...prevTouched,
+                [name]: true,
+            }));
+        }
+    }
+
+    /**
+     * Mark all fields as touched (used on form submission attempt).
+     */
+    function touchAllFields() {
+        const allTouched = {};
+        elements.forEach((element) => {
+            if (element.attribute) {
+                allTouched[element.attribute] = true;
+            }
+        });
+        setTouched(allTouched);
     }
 
     /**
@@ -207,8 +234,11 @@ export function useFormState(initialValues, data, elements) {
     return {
         values,
         errors,
+        touched,
         updateField,
         handleErrors,
+        touchField,
+        touchAllFields,
         valid,
         writeNestedObject,
         deleteNestedObject,
