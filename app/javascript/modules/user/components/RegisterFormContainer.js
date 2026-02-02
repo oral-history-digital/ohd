@@ -1,5 +1,5 @@
 import { getCountryKeys } from 'modules/archive';
-import { getCurrentProject, getOHDProject } from 'modules/data';
+import { getCurrentProject } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -10,7 +10,6 @@ import RegisterForm from './RegisterForm';
 const mapStateToProps = (state) => {
     return {
         project: getCurrentProject(state),
-        ohdProject: getOHDProject(state),
         countryKeys: getCountryKeys(state),
         registrationStatus: getRegistrationStatus(state),
     };

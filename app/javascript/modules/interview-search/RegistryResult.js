@@ -3,6 +3,7 @@ import { useI18n } from 'modules/i18n';
 import { getTextAndLang } from 'modules/interview-references';
 import { Spinner } from 'modules/spinners';
 import { Disclosure } from 'modules/ui';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -21,7 +22,9 @@ export default function RegistryResult({ data }) {
         <>
             <h3
                 className="SearchResult-heading"
-                dangerouslySetInnerHTML={{ __html: data.text[locale] }}
+                dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(data.text[locale], 'SEARCH_RESULT'),
+                }}
             />
             {data.notes[locale] && (
                 <p className="SearchResult-meta">{data.notes[locale]}</p>

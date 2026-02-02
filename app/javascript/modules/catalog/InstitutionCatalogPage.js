@@ -60,7 +60,7 @@ export default function InstitutionCatalogPage() {
 
                         <dl className="DescriptionList">
                             {parentInstitution && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t(
                                             'modules.catalog.part_of_institution'
@@ -73,33 +73,33 @@ export default function InstitutionCatalogPage() {
                                             {parentInstitution.name[locale]}
                                         </Link>
                                     </dd>
-                                </>
+                                </div>
                             )}
 
                             {institution?.description[locale] && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t('modules.catalog.description')}
                                     </dt>
                                     <dd className="DescriptionList-description">
                                         {institution?.description[locale]}
                                     </dd>
-                                </>
+                                </div>
                             )}
 
                             {address && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t('modules.catalog.address')}
                                     </dt>
                                     <dd className="DescriptionList-description">
                                         {address}
                                     </dd>
-                                </>
+                                </div>
                             )}
 
                             {institution?.website && (
-                                <>
+                                <div className="DescriptionList-group">
                                     <dt className="DescriptionList-term">
                                         {t('modules.catalog.web_page')}
                                     </dt>
@@ -112,16 +112,17 @@ export default function InstitutionCatalogPage() {
                                             {institution?.website}
                                         </a>
                                     </dd>
-                                </>
+                                </div>
                             )}
-
-                            <dt className="DescriptionList-term">
-                                {t('modules.catalog.volume')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {institution?.num_interviews}{' '}
-                                {t('activerecord.models.interview.other')}
-                            </dd>
+                            <div className="DescriptionList-group">
+                                <dt className="DescriptionList-term">
+                                    {t('modules.catalog.volume')}
+                                </dt>
+                                <dd className="DescriptionList-description">
+                                    {institution?.num_interviews}{' '}
+                                    {t('activerecord.models.interview.other')}
+                                </dd>
+                            </div>
                         </dl>
 
                         {institution?.num_projects > 0 && (

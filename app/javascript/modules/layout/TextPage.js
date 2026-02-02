@@ -6,8 +6,8 @@ import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
@@ -50,7 +50,9 @@ export default function TextPage({ code }) {
         <ScrollToTop>
             <div className="wrapper-content register">
                 <div
-                    dangerouslySetInnerHTML={{ __html: text?.text?.[locale] }}
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizeHtml(text?.text?.[locale], 'RICH_TEXT'),
+                    }}
                 />
 
                 <AuthorizedContent object={project} action="update">
