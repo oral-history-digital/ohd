@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { RegistryTreeSelect } from 'modules/registry-tree-select';
-import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
+import { CancelButton, InlineNotification, SubmitButton } from 'modules/ui';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
@@ -47,7 +47,9 @@ export default function Form({
     index,
     nested,
     nestedScopeProps,
+    notification,
     onCancel,
+    onDismissNotification,
     onSubmit,
     onSubmitCallback,
     scope,
@@ -180,23 +182,45 @@ export default function Form({
                         'Form-footer--fullWidth': buttonFullWidth,
                     })}
                 >
-                    {typeof onCancel === 'function' && (
-                        <CancelButton
-                            buttonText={t(nested ? 'discard' : 'cancel')}
-                            handleCancel={onCancel}
+                    {notification && (
+                        <div className="Form-footer-notification">
+                            <InlineNotification
+                                variant={notification.variant || 'info'}
+                                title={notification.title}
+                                description={notification.description}
+                                additionalInfo={notification.additionalInfo}
+                                isClosable={notification.isClosable !== false}
+                                onClose={onDismissNotification}
+                                autoHideDuration={
+                                    notification.variant === 'success'
+                                        ? (notification.autoHideDuration ??
+                                          5000)
+                                        : notification.autoHideDuration
+                                }
+                                onAutoHide={onDismissNotification}
+                                actions={notification.actions}
+                            />
+                        </div>
+                    )}
+                    <div className="Form-footer-buttons">
+                        {typeof onCancel === 'function' && (
+                            <CancelButton
+                                buttonText={t(nested ? 'discard' : 'cancel')}
+                                handleCancel={onCancel}
+                                isLoading={fetching}
+                                isDisabled={fetching}
+                                size={nested ? 'sm' : undefined}
+                            />
+                        )}
+                        <SubmitButton
+                            buttonText={t(
+                                submitText || (nested ? 'apply' : 'submit')
+                            )}
                             isLoading={fetching}
                             isDisabled={fetching}
                             size={nested ? 'sm' : undefined}
                         />
-                    )}
-                    <SubmitButton
-                        buttonText={t(
-                            submitText || (nested ? 'apply' : 'submit')
-                        )}
-                        isLoading={fetching}
-                        isDisabled={fetching}
-                        size={nested ? 'sm' : undefined}
-                    />
+                    </div>
                 </div>
             </form>
         </div>
@@ -232,7 +256,17 @@ Form.propTypes = {
     index: PropTypes.number,
     nested: PropTypes.bool,
     nestedScopeProps: PropTypes.array,
+    notification: PropTypes.shape({
+        variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
+        title: PropTypes.string,
+        description: PropTypes.string,
+        additionalInfo: PropTypes.node,
+        isClosable: PropTypes.bool,
+        autoHideDuration: PropTypes.number,
+        actions: PropTypes.object,
+    }),
     onCancel: PropTypes.func,
+    onDismissNotification: PropTypes.func,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
     scope: PropTypes.string,
