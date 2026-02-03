@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-01-22
+
+### Added
+
+- feat: add DOMPurify-based sanitization to prevent XSS Attacks ([#67](https://github.com/oral-history-digital/ohd/pull/67))
+- feat: add generic button component ([#70](https://github.com/oral-history-digital/ohd/pull/70))
+- feat: add InlineNotification component ([#71](https://github.com/oral-history-digital/ohd/pull/71))
+- chore: add jsconfig.json for IDE configuration ([b44b11b87](https://github.com/oral-history-digital/ohd/commit/b44b11b87bdc8cb758647b5af8cbfeb0ab86e300))
+- adding workflow_state to collections #368 ([944c2521e](https://github.com/oral-history-digital/ohd/commit/944c2521e645b7643ec01035b29ec962fe8f8a22))
+- feat: add archive stats task and refactor for consistency ([3746f17f0](https://github.com/oral-history-digital/ohd/commit/3746f17f02df7f114e2fb06e155406418764b8c0))
+- add publication_date to project-serializer #443 ([0702214fe](https://github.com/oral-history-digital/ohd/commit/0702214fe8993950cfa728a0843aae8f54e615cd))
+- sanitize access mail #427 ([b7be55148](https://github.com/oral-history-digital/ohd/commit/b7be55148feb594e5f465504a4fe615726359eb8))
+- sanitize html in serializers #427 ([17c9d8b94](https://github.com/oral-history-digital/ohd/commit/17c9d8b94fda819fbda62a80f6bb468d4f6079b8))
+- prevent sql-injection in users_controller #427 ([fca75390d](https://github.com/oral-history-digital/ohd/commit/fca75390d49e92c362b7ff92d28f832b168e2eea))
+- oai: adding lang to funder and creator tags ([ffed8ab78](https://github.com/oral-history-digital/ohd/commit/ffed8ab78f200fa25eb3ffaa5bc74bc59568e1cc))
+- add test to ensure nested scope functionality ([918c03037](https://github.com/oral-history-digital/ohd/commit/918c0303755c4a130f95cddc8a8defed7d3a4d69))
+- extend csv-transcript upload test ([1949736e0](https://github.com/oral-history-digital/ohd/commit/1949736e0b5904e3922f4a5b9fe596c3894d60a1))
+
+### Fixed
+
+- cleanup unused helper ([a65c14945](https://github.com/oral-history-digital/ohd/commit/a65c14945b560af686afda361748f57c447bc88c))
+- prevent sql injection in task_type #427 ([f129d23d8](https://github.com/oral-history-digital/ohd/commit/f129d23d8a1296ac5030a69ac21a2c3e8a289533))
+- fix: adjust styling for mog startpage video ([bd96d29cc](https://github.com/oral-history-digital/ohd/commit/bd96d29cc9f6f72225f3e351610e7fee0582754d))
+- fix sanitizing in application serializer ([efa9d0871](https://github.com/oral-history-digital/ohd/commit/efa9d0871e3319c02a21211920c007e36672fc7f))
+- fix OHD fulltext search ([2c808aee4](https://github.com/oral-history-digital/ohd/commit/2c808aee440e75ef4b529a1818f638b3eeba6eb0))
+- setNames in english #353 ([60285956f](https://github.com/oral-history-digital/ohd/commit/60285956f938b9752a7b547351825e7533b00f73))
+- shared interviews count in oai collections and archives #345 ([a62f38539](https://github.com/oral-history-digital/ohd/commit/a62f385394999ff077203e9068cb154efc0882cc))
+- basically reverting fcfe87da4d5f503d1297704974c59b5619eca901, readding index into various forms which are used as nested forms, thus re-asuring functionality ([31bf3288e](https://github.com/oral-history-digital/ohd/commit/31bf3288e5372769bf2b9708e7af1832c7cebd74))
+- #146 landing page only for public interviews ([e6c8ed410](https://github.com/oral-history-digital/ohd/commit/e6c8ed410195e3fab868dc40bd27aa32ac0e5374))
+- pre-login registry description #319 ([745fc0437](https://github.com/oral-history-digital/ohd/commit/745fc0437f775a540b60e069c18e0ec8abe43d32))
+- #3215 adjust registry-references count to restricted interviews ([98563dcd4](https://github.com/oral-history-digital/ohd/commit/98563dcd4e3e401addd48ba5b5b09ed838fc1efb))
+- #421 do not translate nil lat/long values to nil, dedalo defaults seem to be already deleted ([d95e6bfc8](https://github.com/oral-history-digital/ohd/commit/d95e6bfc8d06a2c9676d936bc834fdfd3e5efdff))
+- fix: add defensive checks in ProjectLogo component ([d30fa25c5](https://github.com/oral-history-digital/ohd/commit/d30fa25c5994762ae933f5374482ce167bc35076))
+- #430 fix registry-reference display ([e43be8269](https://github.com/oral-history-digital/ohd/commit/e43be82697f005443dcfcb3cbf313a3cd39e5731))
+- fix: update schema version and modify table definitions for consistency ([d3ca97b54](https://github.com/oral-history-digital/ohd/commit/d3ca97b5480d369ddf9bd245fe8d55cc432330d8))
+- issues|374 ([26b92c168](https://github.com/oral-history-digital/ohd/commit/26b92c168fa9378e8fc6b74cad42053d4e74c0f5))
+- issues|373 ([e61381213](https://github.com/oral-history-digital/ohd/commit/e61381213e48f3037916050fef894807edeb92bc))
+
 ## [1.7.0] - 2026-01-22
 
 ### Added
@@ -294,6 +332,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.8.0]: https://github.com/oral-history-digital/ohd/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/oral-history-digital/ohd/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/oral-history-digital/ohd/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/oral-history-digital/ohd/compare/v1.4.4...v1.5.0
