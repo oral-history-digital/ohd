@@ -13,7 +13,7 @@ LoadedCheerio {
         class="form-row form-row--single-workflow_state"
       >
         <div
-          class="form-group"
+          class="form-group form-group--select form-group--workflow_state"
         >
           <div
             class="form-label"
@@ -55,7 +55,7 @@ LoadedCheerio {
         class="form-row form-row--single-mail_text"
       >
         <div
-          class="form-group"
+          class="form-group form-group--textarea form-group--mail_text"
         >
           <div
             class="form-label"
