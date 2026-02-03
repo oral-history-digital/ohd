@@ -51,6 +51,7 @@ export default function Form({
     nestedScopeProps,
     notification,
     onCancel,
+    onChange,
     onDismissNotification,
     onSubmit,
     onSubmitCallback,
@@ -65,6 +66,8 @@ export default function Form({
         values,
         errors,
         touched,
+        isDirty,
+        dirtyFields,
         updateField,
         handleErrors,
         touchField,
@@ -84,6 +87,10 @@ export default function Form({
         } else {
             updateField(name, value);
             touchField(name);
+        }
+        // Notify parent of changes with context
+        if (typeof onChange === 'function') {
+            onChange({ field: name, value, isDirty, dirtyFields });
         }
     }
 
@@ -278,6 +285,7 @@ Form.propTypes = {
         actions: PropTypes.object,
     }),
     onCancel: PropTypes.func,
+    onChange: PropTypes.func,
     onDismissNotification: PropTypes.func,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
