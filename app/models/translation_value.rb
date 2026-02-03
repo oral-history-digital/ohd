@@ -26,10 +26,17 @@ class TranslationValue < ApplicationRecord
     end
   end
 
+  def self.create_or_update_for_key(key, translations_hash)
+    tv = TranslationValue.find_or_create_by(key: key)
+    translations_hash.each do |locale, value|
+      tv.update(value: value, locale: locale)
+    end
+  end
+
   def self.create_from_hash(locale, translations_hash, old_key=nil)
     translations_hash.each do |key, value|
       if value.is_a?(Hash)
-        create_from_hash(locale, value, [old_key, key].compact.join('.'))
+        create_from_yaml(locale, value, [old_key, key].compact.join('.'))
       else
         TranslationValue.find_or_create_by(key: [old_key, key].compact.join('.')).update(value: value, locale: locale)
       end

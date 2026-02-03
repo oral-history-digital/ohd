@@ -15,6 +15,7 @@ html
     == stylesheet_pack_tag 'application'
 
     = action_cable_meta_tag
+    = csrf_meta_tags
 
     title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
 

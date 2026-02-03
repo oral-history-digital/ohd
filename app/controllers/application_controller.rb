@@ -202,7 +202,7 @@ class ApplicationController < ActionController::Base
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         users: {
-          current: current_user && ::UserSerializer.new(current_user) || nil #{}
+          current: current_user && ::UserSerializer.new(current_user, is_current_user: true) || nil #{}
         },
         registry_entries: {},
         interviews: {},
@@ -269,9 +269,15 @@ class ApplicationController < ActionController::Base
                                .first
   end
 
+  def tv(key, locale=I18n.locale)
+    TranslationValue.for(key, locale)
+  end
+  helper_method :tv
+
   protected
 
   def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
     devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(
       :appellation,
       :first_name,
@@ -287,6 +293,8 @@ class ApplicationController < ActionController::Base
       :pre_register_location,
       :password,
       :password_confirmation,
+      :otp_required_for_login,
+      :passkey_required_for_login,
     )}
   end
 

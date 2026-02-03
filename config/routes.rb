@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         passwords: "passwords",
         registrations: "registrations"
       }
+    resources :passkeys, only: [:index, :new, :create, :destroy]
     get "norm_data_api" => "registry_entries#norm_data_api"
     get 'catalog',                  to: 'catalog#index'
     get 'catalog/stats',            to: 'catalog#stats'
@@ -241,6 +242,12 @@ Rails.application.routes.draw do
       post "users", to: "registrations#create"
       post "users/sign_in", to: "sessions#create"
       get "users/sign_in", to: "sessions#new"
+      get 'users/otp', to: 'sessions#otp'#, as: :users_otp
+      post 'users/verify_otp', to: 'sessions#verify_otp'#, as: :users_verify_otp
+      get 'users/resend_otp', to: 'sessions#resend_otp'#, as: :users_resend_otp
+      post 'passkey_login/challenge', to: 'passkey_sessions#challenge'
+      post 'passkey_login/verify', to:  'passkey_sessions#verify'
+
       get "users/is_logged_in", to: "sessions#is_logged_in"
       delete "users/sign_out", to: "sessions#destroy"
       patch "users/password", to: "passwords#update"

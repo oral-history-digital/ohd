@@ -5,9 +5,9 @@ class SessionsController < Devise::SessionsController
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
-  before_action :set_project, only: [:new, :create, :is_logged_in]
-  before_action :set_path, only: [:new, :create, :is_logged_in]
-  before_action :set_locale, only: [:new, :create, :is_logged_in]
+  before_action :set_project, only: [:new, :create, :is_logged_in, :verify_otp]
+  before_action :set_path, only: [:new, :create, :is_logged_in, :verify_otp]
+  before_action :set_locale, only: [:new, :create, :is_logged_in, :verify_otp]
 
   respond_to :json, :html
 
@@ -28,25 +28,33 @@ class SessionsController < Devise::SessionsController
       else
         self.resource = resource_class.new(sign_in_params)
         project = Project.by_domain(request.base_url)
-        path = stored_location_for(resource).gsub("?checked_ohd_session=true", "")
+        path = stored_location_for(resource)&.gsub("?checked_ohd_session=true", "")
         redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
       end
     end
   end
 
   def create
-    self.resource = warden.authenticate!(auth_options)
-    set_flash_message!(:notice, :signed_in)
+    # First step:  validate email and password only
+    self.resource = resource_class.find_for_database_authentication(email: params[resource_name][:email])
+    
+    if resource && resource.valid_password?(params[resource_name][:password])
+      # Check if 2FA is enabled
+      if resource.otp_required_for_login? || resource.passkey_required_for_login?
+        # Store user id in session for second step
+        session[:otp_user_id] = resource.id
+        redirect_to users_otp_path
+      else
+        # No 2FA - sign in directly
+        sign_in(resource_name, resource)
+        yield resource if block_given?
 
-    path = stored_location_for(resource)
-
-    sign_in(resource_name, resource)
-    yield resource if block_given?
-
-    if path
-      respond_with resource, location: path
+        after_sign_in(resource)
+      end
     else
-      respond_with resource, location: url_with_access_token
+      # Invalid credentials
+      flash.now[:alert] = tv("devise.failure.invalid")
+      render :new, status: :unprocessable_entity
     end
   rescue BCrypt::Errors::InvalidHash
     respond_with(resource, location: url_with_access_token) do |format|
@@ -54,6 +62,45 @@ class SessionsController < Devise::SessionsController
         render json: {error: 'change_to_bcrypt', email: params['user_account']['login']}
       }
     end    
+  end
+
+  def verify_otp
+    # Second step:  verify OTP
+    resource = User.find_by(id: session[:otp_user_id])
+    
+    if resource. nil? 
+      redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
+      return
+    end
+
+    if resource.validate_and_consume_otp!(params[:otp_attempt]) ||
+      resource.verify_email_otp(params[:otp_attempt])
+      resource.clear_email_otp!
+      session.delete(:otp_user_id)
+      sign_in(resource_name, resource)
+      yield resource if block_given?
+      after_sign_in(resource)
+    else
+      flash.now[:alert] = tv("devise.failure.invalid_token")
+      render :otp, status: :unprocessable_entity
+    end
+  end
+
+  def otp
+    # Show OTP input form
+    @user = User.find_by(id: session[:otp_user_id])
+    redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated") if @user.nil? 
+  end
+
+  def resend_otp
+    user = User.find_by(id: session[:otp_user_id])
+    if user
+      user.send_new_otp_code
+      flash.now[:notice] = tv("sent_otp_per_mail")
+      render :otp
+    else
+      redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
+    end
   end
 
   def destroy
@@ -93,4 +140,14 @@ class SessionsController < Devise::SessionsController
   def join_params(base_url, params_string)
     "#{base_url}#{base_url.include?('?') ? '&' : '?'}#{params_string}"
   end
+
+  def after_sign_in(resource)
+    path = stored_location_for(resource)
+    if path
+      respond_with resource, location: path
+    else
+      respond_with resource, location: url_with_access_token
+    end
+  end
+
 end

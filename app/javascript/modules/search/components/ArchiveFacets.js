@@ -11,9 +11,9 @@ import {
 } from '../facetUtils';
 import useFacets from '../useFacets';
 import BirthYearFacet from './BirthYearFacet';
-import InterviewYearFacet from './InterviewYearFacet';
 import Facet from './Facet';
 import FacetDropdown from './FacetDropdown';
+import InterviewYearFacet from './InterviewYearFacet';
 import RangeFacet from './RangeFacet';
 
 export default function ArchiveFacets() {

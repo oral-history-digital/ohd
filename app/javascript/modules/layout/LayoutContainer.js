@@ -6,7 +6,6 @@ import {
     getProjectsStatus,
 } from 'modules/data';
 import { getSidebarVisible, toggleSidebar } from 'modules/sidebar';
-import { getLoggedInAt } from 'modules/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -16,7 +15,6 @@ const mapStateToProps = (state) => ({
     bannerActive: getBannerActive(state),
     collectionsStatus: getCollectionsStatus(state),
     languagesStatus: getLanguagesStatus(state),
-    loggedInAt: getLoggedInAt(state),
     projectsStatus: getProjectsStatus(state),
     sidebarVisible: getSidebarVisible(state),
 });
