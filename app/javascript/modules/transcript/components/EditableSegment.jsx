@@ -30,6 +30,10 @@ function EditableSegment({
     contributor,
     contentLocale,
     isActive,
+    isEditing,
+    onEditStart,
+    onEditEnd,
+    onUnsavedChangesChange,
 }) {
     const divEl = useRef();
     const { t } = useI18n();
@@ -44,8 +48,15 @@ function EditableSegment({
     const dispatch = useDispatch();
 
     const [activeButton, setActiveButton] = useState(null);
-    const [editMode, setEditMode] = useState(false);
     const [tabIndex, setTabIndex] = useState(0);
+
+    const handleFormChange = useCallback(
+        ({ isDirty }) => {
+            onUnsavedChangesChange?.(isDirty);
+            // dirtyFields is available if needed for more granular control
+        },
+        [onUnsavedChangesChange]
+    );
 
     const shouldScroll =
         (autoScroll && isActive) || // Segment is active and autoScroll is enabled (e.g. during playback)
@@ -61,25 +72,25 @@ function EditableSegment({
     ]);
 
     const handleSegmentClick = () => {
-        if (interview?.transcriptCoupled && !editMode) {
+        if (interview?.transcriptCoupled && !isEditing) {
             dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
         }
     };
 
     const handleEditStart = (buttonType = 'edit') => {
-        setEditMode(true);
+        onEditStart?.();
         setActiveButton(buttonType);
     };
 
     const handleEditCancel = useCallback(() => {
-        setEditMode(false);
+        onEditEnd?.();
         setActiveButton(null);
-    }, []);
+    }, [onEditEnd]);
 
     const handleEditSubmit = useCallback(() => {
-        setEditMode(false);
+        onEditEnd?.();
         setActiveButton(null);
-    }, []);
+    }, [onEditEnd]);
 
     let text = isAuthorized(segment, 'update')
         ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
@@ -121,6 +132,7 @@ function EditableSegment({
                         }}
                         onSubmit={handleEditSubmit}
                         onCancel={handleEditCancel}
+                        onChange={handleFormChange}
                         includeTimecode
                     />
                 ),
@@ -179,10 +191,10 @@ function EditableSegment({
             className={classNames('Segment', {
                 'Segment--withSpeaker': segment.speakerIdChanged,
                 'is-active': isActive,
-                'Segment--editMode': editMode,
+                'Segment--editMode': isEditing,
             })}
         >
-            {editMode ? (
+            {isEditing ? (
                 <Tabs
                     className="SegmentTabs"
                     index={tabIndex}
@@ -220,7 +232,7 @@ function EditableSegment({
                 </>
             )}
 
-            {!editMode && showButtons && (
+            {!isEditing && showButtons && (
                 <SegmentButtons
                     segment={segment}
                     setActiveButton={setActiveButton}
@@ -237,6 +249,10 @@ EditableSegment.propTypes = {
     contributor: PropTypes.object,
     contentLocale: PropTypes.string.isRequired,
     isActive: PropTypes.bool,
+    isEditing: PropTypes.bool,
+    onEditStart: PropTypes.func,
+    onEditEnd: PropTypes.func,
+    onUnsavedChangesChange: PropTypes.func,
 };
 
 const MemoizedSegment = memo(EditableSegment);

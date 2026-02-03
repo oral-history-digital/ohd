@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { getArchiveId } from 'modules/archive';
@@ -49,6 +49,30 @@ export default function Transcript({
         useInterviewContributors(interview?.id);
     const hasTranscript =
         interview?.alpha3s_with_transcript?.indexOf(transcriptLocale) > -1;
+
+    // Track which segment is currently being edited
+    const [editingSegmentId, setEditingSegmentId] = useState(null);
+    const [
+        editingSegmentHasUnsavedChanges,
+        setEditingSegmentHasUnsavedChanges,
+    ] = useState(false);
+
+    const handleEditStart = (segmentId) => {
+        if (editingSegmentId !== null && editingSegmentHasUnsavedChanges) {
+            // Prevent switching if current segment has unsaved changes
+            // TODO: Replace alert with nicer UI
+            alert(t('modules.transcript.unsaved_changes_warning'));
+            return false;
+        }
+        setEditingSegmentId(segmentId);
+        setEditingSegmentHasUnsavedChanges(false);
+        return true;
+    };
+
+    const handleEditEnd = () => {
+        setEditingSegmentId(null);
+        setEditingSegmentHasUnsavedChanges(false);
+    };
 
     const contributorInformation = useMemo(
         () => getContributorInformation(interview?.contributions, people),
@@ -156,6 +180,12 @@ export default function Transcript({
                                 }
                                 contentLocale={transcriptLocale}
                                 isActive={active}
+                                isEditing={editingSegmentId === segment.id}
+                                onEditStart={() => handleEditStart(segment.id)}
+                                onEditEnd={handleEditEnd}
+                                onUnsavedChangesChange={
+                                    setEditingSegmentHasUnsavedChanges
+                                }
                             />
                         </>
                     );
