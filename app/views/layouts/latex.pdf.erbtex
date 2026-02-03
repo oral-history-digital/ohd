@@ -1,6 +1,8 @@
 \documentclass[fontsize=10pt]{article}
 
-<% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'lualatex'}]} %>
+<% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'xelatex'}]} %>
+<%# to generate tableofcontents the doc has to be compiled more than once %>
+
 
 \usepackage[a4paper]{geometry}
 \setlength{\headheight}{54.0pt}
@@ -14,14 +16,14 @@
 \usepackage{titlesec}
 
 % We need our own Google Fonts Open Sans version that includes hebrew characters.
-\setmainfont{MyOpenSans}[
-  Path=<%= Rails.root.join('app', 'assets', 'fonts') %>/,
-  Extension=.ttf,
-  UprightFont = OpenSans-Regular,
-  BoldFont    = OpenSans-Bold,
-  ItalicFont  = OpenSans-Italic,
-  BoldItalicFont = OpenSans-BoldItalic
-]
+%\setmainfont{MyOpenSans}[
+%  Path=<%= Rails.root.join('app', 'assets', 'fonts') %>/,
+%  Extension=.ttf,
+%  UprightFont = OpenSans-Regular,
+%  BoldFont    = OpenSans-Bold,
+%  ItalicFont  = OpenSans-Italic,
+%  BoldItalicFont = OpenSans-BoldItalic
+%]
 
 \usepackage{setspace}
 \onehalfspacing
@@ -43,7 +45,21 @@
 
 \usepackage{enumitem}
 
-<%# to generate tableofcontents the doc has to be compiled more than once %>
+% support rtl languages
+% polyglosia needs xelatex
+\usepackage{polyglossia}
+\usepackage{bidi}
+
+\setmainlanguage{english}
+\setotherlanguages{arabic, hebrew}
+
+\setmainfont{Open Sans}
+
+\newfontfamily\arabicfont[Script=Arabic]{Amiri}
+%\newfontfamily\hebrewfont{David CLM}
+\newfontfamily\hebrewfont{FreeSerif}
+
+
 
 <%= yield %>
 

@@ -27,8 +27,8 @@ class Interview < ApplicationRecord
 
   has_many :tapes,
            -> {
-                  includes(:interview).
-                  order(:number)
+             includes(:interview).
+             order(:number)
            },
            dependent: :destroy,
            inverse_of: :interview
