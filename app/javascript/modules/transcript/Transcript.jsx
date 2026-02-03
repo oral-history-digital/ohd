@@ -1,52 +1,58 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import classNames from 'classnames';
+import { getArchiveId } from 'modules/archive';
 import { useIsEditor } from 'modules/archive';
+import {
+    fetchData,
+    getCurrentInterview,
+    getCurrentIntervieweeId,
+    getTranscriptFetched,
+} from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
+import { getAutoScroll } from 'modules/interview';
 import { isSegmentActive } from 'modules/interview-helpers';
+import { getCurrentTape, getIsIdle, getMediaTime } from 'modules/media-player';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-import EditableSegment from './components/EditableSegment';
-import SegmentContainer from './components/SegmentContainer';
-import TranscriptSkeleton from './components/TranscriptSkeleton';
+import { EditableSegment, TranscriptSkeleton } from './components';
 import {
     getContributorInformation,
     sortedSegmentsWithActiveIndex,
 } from './utils';
 
 export default function Transcript({
-    interview,
-    intervieweeId,
-    archiveId,
-    transcriptFetched,
     transcriptLocale,
     originalLocale = false,
     loadSegments,
-    mediaTime,
-    isIdle,
-    tape,
-    autoScroll,
-    fetchData,
 }) {
-    const [popupState, setPopupState] = useState({
-        popupSegmentId: null,
-        popupType: null,
-        openReference: null,
-    });
-    const { data: people, isLoading: peopleAreLoading } =
-        useInterviewContributors(interview.id);
+    const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const isEditor = useIsEditor();
+
+    // Redux state
+    const archiveId = useSelector(getArchiveId);
+    const interview = useSelector(getCurrentInterview);
+    const intervieweeId = useSelector(getCurrentIntervieweeId);
+    const tape = useSelector(getCurrentTape);
+    const mediaTime = useSelector(getMediaTime);
+    const isIdle = useSelector(getIsIdle);
+    const autoScroll = useSelector(getAutoScroll);
+    const transcriptFetched = useSelector(getTranscriptFetched);
+
+    const { data: people, isLoading: peopleAreLoading } =
+        useInterviewContributors(interview?.id);
     const hasTranscript =
-        interview.alpha3s_with_transcript.indexOf(transcriptLocale) > -1;
+        interview?.alpha3s_with_transcript?.indexOf(transcriptLocale) > -1;
 
     const contributorInformation = useMemo(
-        () => getContributorInformation(interview.contributions, people),
-        [interview.contributions, people]
+        () => getContributorInformation(interview?.contributions, people),
+        [interview?.contributions, people]
     );
 
     const isRtlLanguage = (locale) => {
@@ -60,54 +66,31 @@ export default function Transcript({
         if (!autoScroll && isIdle) {
             window.scrollTo(0, 0);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (loadSegments && !transcriptFetched) {
-            fetchData(
-                { locale, projectId, project },
-                'interviews',
-                archiveId,
-                'segments'
+            dispatch(
+                fetchData(
+                    { locale, projectId, project },
+                    'interviews',
+                    archiveId,
+                    'segments'
+                )
             );
         }
-    }, [loadSegments, transcriptFetched, archiveId]);
+    }, [
+        loadSegments,
+        transcriptFetched,
+        archiveId,
+        locale,
+        projectId,
+        project,
+        dispatch,
+    ]);
 
-    const openSegmentPopup = useCallback(
-        (segmentId, popupType) =>
-            setPopupState({
-                popupSegmentId: segmentId,
-                popupType,
-                openReference: null,
-            }),
-        []
-    );
-
-    const closeSegmentPopup = useCallback(
-        () =>
-            setPopupState({
-                popupSegmentId: null,
-                popupType: null,
-                openReference: null,
-            }),
-        []
-    );
-
-    const setOpenReference = useCallback(
-        (reference) =>
-            setPopupState((oldPopupState) => ({
-                ...oldPopupState,
-                openReference:
-                    oldPopupState.openReference === reference
-                        ? null
-                        : reference,
-            })),
-        []
-    );
-
-    const { popupSegmentId, popupType, openReference } = popupState;
-
-    if (!transcriptFetched || peopleAreLoading) {
+    if (!interview || !transcriptFetched || peopleAreLoading) {
         return <TranscriptSkeleton count={5} />;
     }
 
@@ -117,7 +100,6 @@ export default function Transcript({
             : t('without_translation');
     }
 
-    let tabIndex = originalLocale ? 0 : 1;
     let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, {
         interview,
         tape,
@@ -137,7 +119,6 @@ export default function Transcript({
                 })}
             >
                 {shownSegments.map((segment, index, array) => {
-                    console.log('SegmentContainer segment', segment);
                     segment.speaker_is_interviewee =
                         intervieweeId === segment.speaker_id;
                     if (
@@ -166,35 +147,6 @@ export default function Transcript({
 
                     return (
                         <>
-                            <SegmentContainer
-                                key={segment.id}
-                                data={segment}
-                                speakerInitials={
-                                    contributorInformation[segment.speaker_id]
-                                        ?.initials
-                                }
-                                speakerName={
-                                    contributorInformation[segment.speaker_id]
-                                        ?.fullname
-                                }
-                                contentLocale={transcriptLocale}
-                                popupType={
-                                    popupSegmentId === segment.id
-                                        ? popupType
-                                        : null
-                                }
-                                openReference={
-                                    popupSegmentId === segment.id
-                                        ? openReference
-                                        : null
-                                }
-                                openPopup={openSegmentPopup}
-                                closePopup={closeSegmentPopup}
-                                setOpenReference={setOpenReference}
-                                tabIndex={tabIndex}
-                                active={active}
-                                transcriptCoupled={interview.transcript_coupled}
-                            />
                             <EditableSegment
                                 key={`editable-segment-${segment.id}`}
                                 segment={segment}
@@ -216,14 +168,5 @@ export default function Transcript({
 Transcript.propTypes = {
     originalLocale: PropTypes.bool,
     loadSegments: PropTypes.bool,
-    archiveId: PropTypes.string.isRequired,
-    mediaTime: PropTypes.number.isRequired,
-    isIdle: PropTypes.bool.isRequired,
-    tape: PropTypes.number.isRequired,
-    autoScroll: PropTypes.bool.isRequired,
-    interview: PropTypes.object.isRequired,
-    intervieweeId: PropTypes.number,
-    transcriptFetched: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
-    fetchData: PropTypes.func.isRequired,
 };
