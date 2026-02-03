@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
     Fetch,
@@ -7,7 +7,7 @@ import {
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
 } from 'modules/data';
-import { SelectContainer } from 'modules/forms';
+import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { DateCell, TableWithPagination } from 'modules/tables';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ import { useSelector } from 'react-redux';
 import ArchiveManagementInCell from './ArchiveManagementInCell';
 import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 import RolesCell from './RolesCell';
-import TasksCell from './TasksCell';
 import UserRowActions from './UserRowActions';
 import UserRowInterviewPermissions from './UserRowInterviewPermissions';
 import useUsers from './useUsers';
@@ -78,7 +77,7 @@ export default function UserTable() {
         sorting
     );
 
-    const getDataPath = (row) => dataPath;
+    const getDataPath = () => dataPath;
 
     const currentUserProject = (row, project) => {
         return Object.values(row.user_projects).find(
@@ -215,7 +214,7 @@ export default function UserTable() {
                 manualSort={sorting}
                 changePageSize={false}
             >
-                <SelectContainer
+                <SelectField
                     className="u-mb-small"
                     values={workflowStateFilterValues}
                     label={t('activerecord.attributes.user.workflow_state')}
@@ -226,7 +225,7 @@ export default function UserTable() {
                     keepOrder={true}
                 />
                 {project.available_locales.length > 1 && (
-                    <SelectContainer
+                    <SelectField
                         className="u-mb-small"
                         values={localeFilterValues}
                         label={t('activerecord.attributes.user.default_locale')}
@@ -237,7 +236,7 @@ export default function UserTable() {
                     />
                 )}
                 {project.is_ohd && (
-                    <SelectContainer
+                    <SelectField
                         className="u-mb-small"
                         values={projects}
                         label={t('activerecord.models.project.one')}
@@ -256,7 +255,7 @@ export default function UserTable() {
                         ]}
                         testSelector={getRolesForCurrentProjectFetched}
                     >
-                        <SelectContainer
+                        <SelectField
                             className="u-mb-small"
                             values={projectRoles}
                             label={t('activerecord.models.role.one')}
