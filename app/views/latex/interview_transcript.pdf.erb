@@ -128,6 +128,13 @@
       %>
     <% end %>
 
+    <%
+      text = segment.text(content_locale_public)
+      if text.blank?
+        next
+      end
+    %>
+
     <% if rtl %>
       \begin{flushright}
     <% end %>
