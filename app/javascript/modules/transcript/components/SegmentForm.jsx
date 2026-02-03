@@ -12,6 +12,7 @@ export default function SegmentForm({
     submitData,
     onSubmit,
     onCancel,
+    onChange,
 }) {
     const interviewId = segment?.interview_id;
     const { data: people, isLoading } = useInterviewContributors(interviewId);
@@ -59,6 +60,7 @@ export default function SegmentForm({
                 scope="segment"
                 onSubmit={submitHandler}
                 onCancel={onCancel}
+                onChange={onChange}
                 data={segment}
                 values={{ locale: contentLocale }}
                 submitText="submit"
@@ -77,4 +79,5 @@ SegmentForm.propTypes = {
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
+    onChange: PropTypes.func,
 };
