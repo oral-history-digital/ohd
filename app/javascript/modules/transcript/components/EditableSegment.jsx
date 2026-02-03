@@ -14,11 +14,15 @@ import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useAutoScrollToRef } from '../../hooks';
-import { checkTextDir, enforceRtlOnTranscriptTokens } from '../../utils';
-import BookmarkSegmentButton from '../BookmarkSegmentButton';
-import SegmentForm from '../SegmentForm';
-import { Initials, SegmentButtons, SegmentText } from './components';
+import { useAutoScrollToRef } from '../hooks';
+import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
+import {
+    BookmarkSegmentButton,
+    Initials,
+    SegmentButtons,
+    SegmentForm,
+    SegmentText,
+} from './';
 
 function EditableSegment({
     segment,
@@ -42,8 +46,6 @@ function EditableSegment({
     const [activeButton, setActiveButton] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [tabIndex, setTabIndex] = useState(0);
-
-    console.log('activeButton:', activeButton);
 
     const shouldScroll =
         (autoScroll && isActive) || // Segment is active and autoScroll is enabled (e.g. during playback)
@@ -151,26 +153,16 @@ function EditableSegment({
             });
         }
         return tabsArray;
-    }, [
-        showEditTab,
-        showAnnotationsTab,
-        showReferencesTab,
-        t,
-        locale,
-        projectId,
-        project,
-        contentLocale,
-        segment,
-        dispatch,
-        handleEditSubmit,
-        handleEditCancel,
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showEditTab, showAnnotationsTab, showReferencesTab]);
 
     // Sync tabIndex with activeButton based on dynamic tabs array
     useEffect(() => {
-        const index = tabs.findIndex((tab) => tab.id === activeButton);
-        if (index !== -1) {
-            setTabIndex(index);
+        if (activeButton) {
+            const index = tabs.findIndex((tab) => tab.id === activeButton);
+            if (index !== -1) {
+                setTabIndex(index);
+            }
         }
     }, [activeButton, tabs]);
 
@@ -189,7 +181,6 @@ function EditableSegment({
                 'is-active': isActive,
                 'Segment--editMode': editMode,
             })}
-            style={{ background: '#f8f8f8' }}
         >
             {editMode ? (
                 <Tabs

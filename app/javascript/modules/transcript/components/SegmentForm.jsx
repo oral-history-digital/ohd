@@ -20,37 +20,49 @@ export default function SegmentForm({
         return <Spinner />;
     }
 
+    const submitHandler = (params) => {
+        submitData({ locale, projectId, project }, params);
+        onSubmit();
+    };
+
+    const formElements = [
+        {
+            elementType: 'textarea',
+            value:
+                segment?.text[contentLocale] ||
+                segment?.text[`${contentLocale}-public`],
+            attribute: `text_${contentLocale}`,
+            labelKey: 'activerecord.attributes.segment.text',
+        },
+        {
+            elementType: 'select',
+            attribute: 'speaker_id',
+            values: Object.values(people),
+            value: segment?.speaker_id,
+            withEmpty: true,
+            individualErrorMsg: 'empty',
+            group: 'secondary',
+        },
+        {
+            elementType: 'input',
+            attribute: 'timecode',
+            value: segment?.timecode || '',
+            withEmpty: false,
+            individualErrorMsg: 'empty',
+            group: 'secondary',
+        },
+    ];
+
     return (
         <div>
             <Form
                 scope="segment"
-                onSubmit={(params) => {
-                    submitData({ locale, projectId, project }, params);
-                    onSubmit();
-                }}
+                onSubmit={submitHandler}
                 onCancel={onCancel}
                 data={segment}
-                helpTextCode="segment_form"
                 values={{ locale: contentLocale }}
                 submitText="submit"
-                elements={[
-                    {
-                        elementType: 'select',
-                        attribute: 'speaker_id',
-                        values: Object.values(people),
-                        value: segment?.speaker_id,
-                        withEmpty: true,
-                        individualErrorMsg: 'empty',
-                    },
-                    {
-                        elementType: 'textarea',
-                        value:
-                            segment?.text[contentLocale] ||
-                            segment?.text[`${contentLocale}-public`],
-                        attribute: `text_${contentLocale}`,
-                        labelKey: 'activerecord.attributes.segment.text',
-                    },
-                ]}
+                elements={formElements}
             />
         </div>
     );

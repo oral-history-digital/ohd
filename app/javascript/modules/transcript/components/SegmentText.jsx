@@ -8,7 +8,7 @@ import {
     checkTextDir,
     enforceRtlOnTranscriptTokens,
     unescapeHtmlEntities,
-} from '../../../utils';
+} from '../utils';
 
 export default function SegmentText({
     segment,

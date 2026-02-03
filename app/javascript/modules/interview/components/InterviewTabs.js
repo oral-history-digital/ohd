@@ -12,7 +12,7 @@ import {
 import { useSearchParams } from 'modules/query-string';
 import { useProject } from 'modules/routes';
 import { TableOfContentsContainer } from 'modules/toc';
-import { TranscriptContainer } from 'modules/transcript';
+import { Transcript } from 'modules/transcript';
 import PropTypes from 'prop-types';
 import {
     FaList,
@@ -145,7 +145,7 @@ export default function InterviewTabs({ interview }) {
                         various useEffect-related problems. */}
                     <TabPanel>
                         {tabIndex === 0 && (
-                            <TranscriptContainer
+                            <Transcript
                                 transcriptLocale={interview.alpha3}
                                 originalLocale
                                 loadSegments
@@ -154,9 +154,7 @@ export default function InterviewTabs({ interview }) {
                     </TabPanel>
                     <TabPanel>
                         {tabIndex === 1 && (
-                            <TranscriptContainer
-                                transcriptLocale={translationLocale}
-                            />
+                            <Transcript transcriptLocale={translationLocale} />
                         )}
                     </TabPanel>
                     <TabPanel>
