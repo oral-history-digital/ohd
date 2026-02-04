@@ -140,25 +140,25 @@
     <% end %>
 
     <%
-      if segment.speaking_person.nil?
-        rtl_speaker = ''
-        ltr_speaker = ''
-      else
-        speaker = latex_escape(segment.speaking_person.name[header_locale.to_sym])
-        rtl_speaker = rtl ? " :#{speaker}" : ''
-        ltr_speaker = rtl ? '' : "#{speaker}: "
-      end
+        speaker_id,
+        rtl_speaker,
+        ltr_speaker = latex_speaker(
+          segment, speaker_id, rtl, header_locale
+        )
+
+        text = latex_escape(CGI.unescapeHTML(
+          segment.text(content_locale_public)
+        ))
     %>
 
-    <% text = segment.text(content_locale_public) %>
     <% if text.match?(/\p{Hebrew}/) %>
-      \texthebrew{<%= latex_escape(text) %>} \textit{<%= rtl_speaker %>}
+      \texthebrew{<%= text %>} \textit{<%= rtl_speaker %>}
     <% elsif text.match?(/\p{Arabic}/) %>
-      \textarabic{<%= latex_escape(text) %>} \textit{<%= rtl_speaker %>}
+      \textarabic{<%= text %>} \textit{<%= rtl_speaker %>}
     <% elsif text.match?(/\p{Tamil}/) %>
-      \textit{<%= ltr_speaker %>} \texttamil{<%= latex_escape(text) %>} \textit{<%= rtl_speaker %>}
+      \textit{<%= ltr_speaker %>} \texttamil{<%= text %>} \textit{<%= rtl_speaker %>}
     <% else %>
-      \textit{<%= ltr_speaker %>} <%= latex_escape(text) %> \textit{<%= rtl_speaker %>}
+      \textit{<%= ltr_speaker %>} <%= text %> \textit{<%= rtl_speaker %>}
     <% end %>
 
     <% if rtl %>
