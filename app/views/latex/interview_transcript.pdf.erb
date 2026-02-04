@@ -155,6 +155,8 @@
       \texthebrew{<%= latex_escape(text) %>} \textit{<%= rtl_speaker %>}
     <% elsif text.match?(/\p{Arabic}/) %>
       \textarabic{<%= latex_escape(text) %>} \textit{<%= rtl_speaker %>}
+    <% elsif text.match?(/\p{Tamil}/) %>
+      \textit{<%= ltr_speaker %>} \texttamil{<%= latex_escape(text) %>} \textit{<%= rtl_speaker %>}
     <% else %>
       \textit{<%= ltr_speaker %>} <%= latex_escape(text) %> \textit{<%= rtl_speaker %>}
     <% end %>
