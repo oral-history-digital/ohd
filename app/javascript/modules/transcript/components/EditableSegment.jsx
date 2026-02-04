@@ -34,6 +34,8 @@ function EditableSegment({
     onEditStart,
     onEditEnd,
     onUnsavedChangesChange,
+    prevSegmentTimecode,
+    nextSegmentTimecode,
 }) {
     const divEl = useRef();
     const { t } = useI18n();
@@ -119,7 +121,7 @@ function EditableSegment({
         if (showEditTab) {
             tabsArray.push({
                 id: 'edit',
-                label: t('edit'),
+                label: t('edit.segment.tab_edit'),
                 content: (
                     <SegmentForm
                         locale={locale}
@@ -133,7 +135,8 @@ function EditableSegment({
                         onSubmit={handleEditSubmit}
                         onCancel={handleEditCancel}
                         onChange={handleFormChange}
-                        includeTimecode
+                        prevSegmentTimecode={prevSegmentTimecode}
+                        nextSegmentTimecode={nextSegmentTimecode}
                     />
                 ),
             });
@@ -141,10 +144,9 @@ function EditableSegment({
         if (showAnnotationsTab) {
             tabsArray.push({
                 id: 'annotations',
-                label: t('activerecord.models.annotation.other'),
+                label: t('edit.segment.tab_annotations'),
                 content: (
                     <div className="EditableSegment-tabContent">
-                        <p>{t('activerecord.models.annotation.other')}</p>
                         <p>Annotations UI will be implemented here</p>
                     </div>
                 ),
@@ -153,12 +155,9 @@ function EditableSegment({
         if (showReferencesTab) {
             tabsArray.push({
                 id: 'references',
-                label: t('activerecord.models.registry_reference.other'),
+                label: t('edit.segment.tab_registry_references'),
                 content: (
                     <div className="EditableSegment-tabContent">
-                        <p>
-                            {t('activerecord.models.registry_reference.other')}
-                        </p>
                         <p>Registry References UI will be implemented here</p>
                     </div>
                 ),
@@ -253,6 +252,8 @@ EditableSegment.propTypes = {
     onEditStart: PropTypes.func,
     onEditEnd: PropTypes.func,
     onUnsavedChangesChange: PropTypes.func,
+    prevSegmentTimecode: PropTypes.string,
+    nextSegmentTimecode: PropTypes.string,
 };
 
 const MemoizedSegment = memo(EditableSegment);
