@@ -19,3 +19,7 @@ if (typeof globalThis.TextEncoder === 'undefined') {
     globalThis.TextEncoder = TextEncoder;
     globalThis.TextDecoder = TextDecoder;
 }
+
+// Mock React Fast Refresh for tests
+globalThis.$RefreshReg$ = () => {};
+globalThis.$RefreshSig$ = () => (type) => type;
