@@ -149,9 +149,9 @@ export function useFormState(initialValues, data, elements) {
             }
         });
 
-        // Check for added fields
+        // Check for added fields (not already in dirtyFields)
         currentKeys.forEach((key) => {
-            if (!initialKeys.includes(key)) {
+            if (!initialKeys.includes(key) && !dirtyFields.includes(key)) {
                 dirtyFields.push(key);
             }
         });
