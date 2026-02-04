@@ -1,15 +1,116 @@
-// SegmentForm styling
-// Controls layout for segment editing form with grouped fields
+// Controls layout for segment in edit mode
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 .Segment--editMode {
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  padding: $base-unit !important;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: calc($base-unit / 3 * 2);
+
+  // Increase spacing on very large screens
+  @media (min-width: 1600px) {
+    gap: $base-unit;
+    padding: $base-unit * 1.25;
+  }
+
+  .SegmentTabs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .SegmentTabs-tabList {
+    display: flex;
+    gap: 2px;
+    border-bottom: 2px solid $gray-lighter;
+    margin-bottom: calc($base-unit / 3 * 2);
+    background: inherit;
+  }
+
+  .SegmentTabs-tab {
+    background-color: $gray-pale;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: $gray-dark;
+    cursor: pointer;
+    font-family: $font-family;
+    font-size: $font-size-medium;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: $base-unit * 0.4 calc($base-unit / 3 * 2);
+    transition: all $transition-duration;
+    border-radius: 4px 4px 0 0;
+    outline: none;
+
+    &:hover {
+      background-color: $gray-lighter;
+      color: $gray-darkest;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 $focus-radius $focus-color;
+    }
+
+    &:active {
+      outline: none;
+    }
+
+    &[data-selected] {
+      background-color: white;
+      border-bottom-color: var(--primary-color);
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+  }
+
+  .SegmentTabs-panels {
+    width: 100%;
+  }
+
+  .SegmentTabs-panel {
+    width: 100%;
+    animation: fadeIn $transition-duration;
+  }
+
   // Labels positioned above all fields
   .form-group {
     display: flex;
     flex-direction: column;
   }
 
+  // First form-group in SegmentTabs-panel has no top margin
+  .SegmentTabs-panel:first-child .form-group {
+    margin-top: 0;
+  }
+
+  .form-group {
+    input,
+    select,
+    textarea {
+      width: 100% !important;
+    }
+
+    .help-block {
+      line-height: 1.2rem;
+      margin-left: 0;
+      margin-top: calc($base-unit / 6);
+    }
+  }
+
   .form-group--textarea textarea {
-    width: 100% !important;
+    min-height: 110px !important; /* Show 4 lines */
   }
 
   // Secondary group: speaker_id and timecode in two-column grid
@@ -18,17 +119,27 @@
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 
+    .form-group--speaker_id {
+      padding-right: $base-unit;
+    }
+
     // Timecode field - right aligned
     .form-group--timecode {
       align-items: flex-end;
       text-align: right;
+      padding-left: $base-unit;
 
       .form-label {
         margin-right: 0;
+        width: 100%;
       }
 
       .FormLabel {
         padding-right: 0;
+      }
+
+      .form-input input {
+        text-align: right;
       }
     }
   }
@@ -42,5 +153,21 @@
         text-align: left;
       }
     }
+  }
+
+  .SegmentForm-textarea {
+    direction: ltr;
+    text-align: left;
+
+    &-rtl {
+      direction: rtl;
+      text-align: right;
+    }
+  }
+
+  .textarea-rtl textarea,
+  .form-group.textarea-rtl .Input {
+    direction: rtl;
+    text-align: right;
   }
 }
