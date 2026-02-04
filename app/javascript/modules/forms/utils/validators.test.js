@@ -3,6 +3,8 @@ import {
     validateDate,
     validateGeoCoordinate,
     validateTapeNumber,
+    validateTimecode,
+    validateTimecodeInRange,
 } from './validators';
 
 describe('validateTapeNumber', () => {
@@ -79,6 +81,104 @@ describe('validateDate', () => {
 
     it('rejects another non-standard format', () => {
         const result = validateDate('13.05.2017');
+        expect(result).toBeFalsy();
+    });
+});
+
+describe('validateTimecode', () => {
+    it('accepts HH:MM:SS format', () => {
+        expect(validateTimecode('01:23:45')).toBeTruthy();
+    });
+
+    it('accepts HH:MM:SS.mmm format', () => {
+        expect(validateTimecode('01:23:45.123')).toBeTruthy();
+    });
+
+    it('accepts HH:MM:SS.m format', () => {
+        expect(validateTimecode('01:23:45.1')).toBeTruthy();
+    });
+
+    it('rejects invalid format', () => {
+        expect(validateTimecode('1:23:45')).toBeFalsy();
+    });
+
+    it('rejects missing colons', () => {
+        expect(validateTimecode('012345')).toBeFalsy();
+    });
+});
+
+describe('validateTimecodeInRange', () => {
+    it('accepts timecode between min and max', () => {
+        const result = validateTimecodeInRange(
+            '00:01:30',
+            '00:01:00',
+            '00:02:00'
+        );
+        expect(result).toBeTruthy();
+    });
+
+    it('rejects timecode equal to min', () => {
+        const result = validateTimecodeInRange(
+            '00:01:00',
+            '00:01:00',
+            '00:02:00'
+        );
+        expect(result).toBeFalsy();
+    });
+
+    it('rejects timecode equal to max', () => {
+        const result = validateTimecodeInRange(
+            '00:02:00',
+            '00:01:00',
+            '00:02:00'
+        );
+        expect(result).toBeFalsy();
+    });
+
+    it('rejects timecode below min', () => {
+        const result = validateTimecodeInRange(
+            '00:00:30',
+            '00:01:00',
+            '00:02:00'
+        );
+        expect(result).toBeFalsy();
+    });
+
+    it('rejects timecode above max', () => {
+        const result = validateTimecodeInRange(
+            '00:02:30',
+            '00:01:00',
+            '00:02:00'
+        );
+        expect(result).toBeFalsy();
+    });
+
+    it('accepts timecode with only min constraint', () => {
+        const result = validateTimecodeInRange('00:01:30', '00:01:00', null);
+        expect(result).toBeTruthy();
+    });
+
+    it('accepts timecode with only max constraint', () => {
+        const result = validateTimecodeInRange('00:01:30', null, '00:02:00');
+        expect(result).toBeTruthy();
+    });
+
+    it('accepts timecode with no constraints', () => {
+        const result = validateTimecodeInRange('00:01:30', null, null);
+        expect(result).toBeTruthy();
+    });
+
+    it('handles milliseconds correctly', () => {
+        const result = validateTimecodeInRange(
+            '00:01:30.500',
+            '00:01:30.000',
+            '00:01:31.000'
+        );
+        expect(result).toBeTruthy();
+    });
+
+    it('rejects invalid timecode format', () => {
+        const result = validateTimecodeInRange('1:30', '00:01:00', '00:02:00');
         expect(result).toBeFalsy();
     });
 });

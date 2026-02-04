@@ -1,7 +1,16 @@
+import { useState } from 'react';
+
 import { Form } from 'modules/forms';
+import {
+    validateTimecode,
+    validateTimecodeInRange,
+} from 'modules/forms/utils/validators';
+import { useI18n } from 'modules/i18n';
 import { useInterviewContributors } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
+
+import { getTimecodeHelpText } from '../utils';
 
 export default function SegmentForm({
     locale,
@@ -13,9 +22,15 @@ export default function SegmentForm({
     onSubmit,
     onCancel,
     onChange,
+    prevSegmentTimecode,
+    nextSegmentTimecode,
 }) {
     const interviewId = segment?.interview_id;
     const { data: people, isLoading } = useInterviewContributors(interviewId);
+    const { t } = useI18n();
+    const [timecodeError, setTimecodeError] = useState(
+        'invalid_timecode_range'
+    );
 
     if (isLoading) {
         return <Spinner />;
@@ -26,6 +41,24 @@ export default function SegmentForm({
         onSubmit();
     };
 
+    const timecodeValidationHandler = (value) => {
+        if (!validateTimecode(value)) {
+            setTimecodeError('invalid_format');
+            return false;
+        }
+        if (
+            !validateTimecodeInRange(
+                value,
+                prevSegmentTimecode,
+                nextSegmentTimecode
+            )
+        ) {
+            setTimecodeError('invalid_timecode_range');
+            return false;
+        }
+        return true;
+    };
+
     const formElements = [
         {
             elementType: 'textarea',
@@ -33,24 +66,32 @@ export default function SegmentForm({
                 segment?.text[contentLocale] ||
                 segment?.text[`${contentLocale}-public`],
             attribute: `text_${contentLocale}`,
-            labelKey: 'activerecord.attributes.segment.text',
+            labelKey: 'edit.segment.text',
         },
         {
             elementType: 'select',
             attribute: 'speaker_id',
-            values: Object.values(people),
+            values: Object.values(people || {}),
             value: segment?.speaker_id,
             withEmpty: true,
             individualErrorMsg: 'empty',
             group: 'secondary',
+            labelKey: 'edit.segment.speaker',
         },
         {
             elementType: 'input',
             attribute: 'timecode',
+            group: 'secondary',
             value: segment?.timecode || '',
             withEmpty: false,
-            individualErrorMsg: 'empty',
-            group: 'secondary',
+            validate: timecodeValidationHandler,
+            individualErrorMsg: timecodeError,
+            labelKey: 'edit.segment.timecode',
+            help: getTimecodeHelpText(
+                t,
+                prevSegmentTimecode,
+                nextSegmentTimecode
+            ),
         },
     ];
 
@@ -80,4 +121,6 @@ SegmentForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     onChange: PropTypes.func,
+    prevSegmentTimecode: PropTypes.string,
+    nextSegmentTimecode: PropTypes.string,
 };

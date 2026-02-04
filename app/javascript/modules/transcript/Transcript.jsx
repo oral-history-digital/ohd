@@ -157,6 +157,7 @@ export default function Transcript({
                         currentSpeakerName = segment.speaker;
                     }
 
+                    const prevSegment = array[index - 1];
                     const nextSegment = array[index + 1];
                     const active =
                         interview.transcript_coupled &&
@@ -186,6 +187,8 @@ export default function Transcript({
                                 onUnsavedChangesChange={
                                     setEditingSegmentHasUnsavedChanges
                                 }
+                                prevSegmentTimecode={prevSegment?.timecode}
+                                nextSegmentTimecode={nextSegment?.timecode}
                             />
                         </>
                     );
