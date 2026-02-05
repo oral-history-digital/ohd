@@ -33,34 +33,6 @@ export default function UserDetailsForm({
                     validate: (v) => EMAIL_REGEX.test(v),
                 },
                 {
-                    elementType: 'select',
-                    attribute: 'country',
-                    optionsScope: 'countries',
-                    values: countryKeys && countryKeys[locale],
-                    withEmpty: true,
-                    validate: function (v) {
-                        return v && v.length > 1;
-                    },
-                },
-                {
-                    attribute: 'street',
-                    type: 'text',
-                    validate: function (v) {
-                        return v && v.length > 1;
-                    },
-                },
-                {
-                    attribute: 'zipcode',
-                    type: 'text',
-                },
-                {
-                    attribute: 'city',
-                    type: 'text',
-                    validate: function (v) {
-                        return v && v.length > 1;
-                    },
-                },
-                {
                     elementType: 'input',
                     attribute: 'receive_newsletter',
                     type: 'checkbox',
