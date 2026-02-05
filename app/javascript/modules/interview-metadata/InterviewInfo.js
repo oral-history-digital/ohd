@@ -1,5 +1,5 @@
 import { AuthorizedContent } from 'modules/auth';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import PropTypes from 'prop-types';
@@ -15,26 +15,26 @@ export default function InterviewInfo({ interview, languages }) {
 
     return (
         <div>
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute="archive_id"
                 value={interview.archive_id}
                 readOnly
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute={'signature_original'}
                 value={interview.signature_original}
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute={'interview_date'}
                 value={interview.interview_date}
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute={'publication_date'}
                 value={interview.publication_date}
@@ -43,7 +43,7 @@ export default function InterviewInfo({ interview, languages }) {
                 }}
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute={'description'}
                 value={interview.description?.[locale]}
@@ -53,7 +53,7 @@ export default function InterviewInfo({ interview, languages }) {
                 hideEmpty
                 //collapse
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 optionsScope={'search_facets'}
                 elementType={'select'}
@@ -61,7 +61,7 @@ export default function InterviewInfo({ interview, languages }) {
                 value={t(`search_facets.${interview.media_type}`)}
                 attribute={'media_type'}
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute="media_missing"
                 value={t(`boolean_value.${interview.media_missing}`)}
@@ -70,7 +70,7 @@ export default function InterviewInfo({ interview, languages }) {
                 noStatusCheckbox
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 validate={function (v) {
                     return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v);
@@ -81,7 +81,7 @@ export default function InterviewInfo({ interview, languages }) {
                 } min`}
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 validate={function (v) {
                     return /^\d+$/.test(v);
@@ -90,7 +90,7 @@ export default function InterviewInfo({ interview, languages }) {
                 value={interview.tape_count}
                 hideEmpty
             />
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 elementType="input"
                 type="checkbox"
@@ -104,7 +104,7 @@ export default function InterviewInfo({ interview, languages }) {
                 'primary_translation_language_id',
                 'secondary_translation_language_id',
             ].map((attribute) => (
-                <SingleValueWithFormContainer
+                <SingleValueWithForm
                     key={attribute}
                     elementType={'select'}
                     obj={interview}
@@ -120,7 +120,7 @@ export default function InterviewInfo({ interview, languages }) {
             <InterviewCollectionInfo interview={interview} />
 
             <AuthorizedContent object={interview} action="update">
-                <SingleValueWithFormContainer
+                <SingleValueWithForm
                     elementType={'select'}
                     obj={interview}
                     attribute={'workflow_state'}
@@ -131,7 +131,7 @@ export default function InterviewInfo({ interview, languages }) {
                 />
             </AuthorizedContent>
 
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 attribute="startpage_position"
                 value={interview.startpage_position}

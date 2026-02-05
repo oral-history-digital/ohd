@@ -62,6 +62,23 @@ class RegistryTest < ApplicationSystemTestCase
     assert RegistryEntry.last.translations.first.notes == 'city in Turkey located at the Bosporus Strait'
   end
 
+  test 'reopening a saved registry name should not add a new registry name' do
+    click_on 'Add new subentry'
+    sleep 2
+    click_on 'Add index name'
+
+    find('#registry_name', wait: 3)
+    within '#registry_name' do
+      fill_in 'registry_name_descriptor_en', with: 'Istanbul'
+      click_on 'Submit'
+    end
+    within '.nested-scope.registry_name' do
+      click_on 'Edit'
+      click_on 'Submit'
+      assert_equal 1, all('.nested-scope-element').size
+    end
+  end
+
   test 'create registry entry without norm-data-api' do
     click_on 'Add new subentry'
     click_on 'Add index name'

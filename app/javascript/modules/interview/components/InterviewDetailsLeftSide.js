@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { ContentField } from 'modules/forms';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import {
     InterviewContributorsContainer,
@@ -89,7 +89,7 @@ export default function InterviewDetailsLeftSide({
                     value={interview.properties.subcollection}
                 />
             )}
-            <SingleValueWithFormContainer
+            <SingleValueWithForm
                 obj={interview}
                 value={interview?.links}
                 attribute="pseudo_links"

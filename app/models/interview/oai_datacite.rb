@@ -42,7 +42,7 @@ module Interview::OaiDatacite
       xml.creators do
         interviewees.each do |interviewee|
           xml.creator do
-            xml.creatorName anonymous_title(:en)
+            xml.creatorName anonymous_title(:en), "xml:lang": "en"
             if project.fullname_on_landing_page
               xml.familyName interviewee.last_name(:en)
             end
@@ -97,7 +97,7 @@ module Interview::OaiDatacite
       xml.fundingReferences do
         project.funder_names.each do |funder|
           xml.fundingReference do
-            xml.funderName funder.gsub("'", "")
+            xml.funderName funder.gsub("'", ""), "xml:lang": "en"
           end
         end
       end

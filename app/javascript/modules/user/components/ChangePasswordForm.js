@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
 import { PASSWORD_REGEX } from 'modules/constants';
-import { InputContainer } from 'modules/forms';
+import { InputField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePrevious } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -78,7 +77,7 @@ export default function ChangePasswordForm({
                 </div>
             ) : (
                 <form className="default" onSubmit={handleSubmit}>
-                    <InputContainer
+                    <InputField
                         label={t('devise.passwords.password')}
                         attribute="password"
                         type="password"
@@ -87,7 +86,7 @@ export default function ChangePasswordForm({
                         handleChange={handleChange}
                         handleErrors={handleErrors}
                     />
-                    <InputContainer
+                    <InputField
                         label={t('devise.passwords.password_confirmation')}
                         attribute="password_confirmation"
                         type="password"

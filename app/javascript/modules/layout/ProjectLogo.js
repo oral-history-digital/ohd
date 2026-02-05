@@ -8,17 +8,21 @@ export default function ProjectLogo({ logos, defaultLocale, className }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
-    let src = null;
-    if (logos) {
-        const logoArray = Object.values(logos);
+    // Return early if no logos are provided
+    if (!logos || Object.keys(logos).length === 0) return null;
 
-        const logoForLocale = logoArray.find((logo) => logo.locale === locale);
-        const logoForDefaultLocale = logoArray.find(
-            (logo) => logo.locale === defaultLocale
-        );
+    const logoArray = Object.values(logos).filter((logo) => logo?.src);
 
-        src = logoForLocale?.src || logoForDefaultLocale?.src || null;
-    }
+    if (logoArray.length === 0) return null; // All logos lack src
+
+    const logoForLocale = logoArray.find((logo) => logo.locale === locale);
+    const logoForDefaultLocale = logoArray.find(
+        (logo) => logo.locale === defaultLocale
+    );
+
+    const src = logoForLocale?.src || logoForDefaultLocale?.src;
+
+    if (!src) return null; // No suitable logo found
 
     return (
         <Link

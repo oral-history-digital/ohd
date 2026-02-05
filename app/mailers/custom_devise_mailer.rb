@@ -9,9 +9,13 @@ class CustomDeviseMailer < Devise::Mailer
   def access_mail(record, opts={})
     @project = opts[:project]
     @user_project = opts[:user_project]
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
-    devise_mail(record, :access_mail, opts)
+
+    devise_opts = {}
+    devise_opts[:from] = @project.contact_email
+    devise_opts[:reply_to] = @project.contact_email
+    devise_opts[:subject] = opts[:subject] if opts[:subject]
+
+    devise_mail(record, :access_mail, devise_opts)
   end
 
   def confirmation_instructions(record, token, opts={})
@@ -48,10 +52,11 @@ class CustomDeviseMailer < Devise::Mailer
 
     @url = "#{domain}/#{locale}/users/password/edit?reset_password_token=#{token}"
 
-    opts[:from] = contact_email
-    opts[:reply_to] = contact_email
-    opts[:subject] = TranslationValue.for('devise.mailer.reset_password_instructions.subject', record.default_locale)
-    devise_mail(record, :reset_password_instructions, opts)
+    devise_opts = {}
+    devise_opts[:from] = contact_email
+    devise_opts[:reply_to] = contact_email
+    devise_opts[:subject] = TranslationValue.for('devise.mailer.reset_password_instructions.subject', record.default_locale)
+    devise_mail(record, :reset_password_instructions, devise_opts)
   end
 
   def email_changed(record, opts={})

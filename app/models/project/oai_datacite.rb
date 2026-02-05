@@ -48,7 +48,7 @@ module Project::OaiDatacite
 
       xml.creators do
         xml.creator do
-          xml.creatorName oai_creator(:en)
+          xml.creatorName oai_creator(:en), "xml:lang": "en"
         end
       end
 
@@ -84,7 +84,7 @@ module Project::OaiDatacite
       xml.fundingReferences do
         funder_names.each do |funder|
           xml.fundingReference do
-            xml.funderName funder
+            xml.funderName funder, "xml:lang": "en"
           end
         end
       end

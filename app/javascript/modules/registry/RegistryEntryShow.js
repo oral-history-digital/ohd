@@ -6,13 +6,14 @@ import { useSelector } from 'react-redux';
 import EntryReferenceGroups from './EntryReferenceGroups';
 import OpenStreetMapLink from './OpenStreetMapLink';
 import RegistryEntryBreadcrumbs from './RegistryEntryBreadcrumbs';
+import referenceCountTitle from './referenceCountTitle';
 
 export default function RegistryEntryShow({
     registryEntryId,
     normDataLinks,
     onSubmit,
 }) {
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
     const registryEntries = useSelector(getRegistryEntries);
     const registryEntry = registryEntries[registryEntryId];
     const showOpenStreetMapLink =

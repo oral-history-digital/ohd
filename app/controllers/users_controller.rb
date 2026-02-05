@@ -103,7 +103,13 @@ class UsersController < ApplicationController
   end
 
   def index
-    order = params[:order] || 'last_name'
+    order = %w(
+      first_name
+      last_name
+      email
+      processed_at
+      workflow_state
+    ).include?(params[:order]) ? params[:order] : 'last_name'
     if ['processed_at', 'workflow_state'].include? order
       if current_project.is_ohd?
         order = "users.#{order}"
@@ -111,7 +117,7 @@ class UsersController < ApplicationController
         order = "user_projects.#{order}"
       end
     end
-    direction = params[:direction] || 'asc'
+    direction = %w(asc desc).include?(params[:direction]) ? params[:direction] : 'asc'
 
     users = policy_scope(User).
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
