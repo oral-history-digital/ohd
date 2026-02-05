@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { Form, SingleTextInputFormContainer } from 'modules/forms';
+import { Form, SingleTextInputForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function MarkTextForm({
     submitData,
@@ -53,7 +54,7 @@ export default function MarkTextForm({
                     ]}
                     nestedScopeProps={[
                         {
-                            formComponent: SingleTextInputFormContainer,
+                            formComponent: SingleTextInputForm,
                             formProps: {},
                             parent: interview,
                             scope: 'text',
@@ -70,6 +71,7 @@ export default function MarkTextForm({
             ? t('edit.text.' + markTextStatus[`for_interviews_${archiveId}`])
             : t('edit.mark_text.explanation');
         if (
+            // TODO: Review this part
             //markTextStatus[`for_interviews_${archiveId}`]
             //!showForm
             true
@@ -89,3 +91,15 @@ export default function MarkTextForm({
         </div>
     );
 }
+
+MarkTextForm.propTypes = {
+    submitData: PropTypes.func.isRequired,
+    interview: PropTypes.shape({
+        archive_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
+        alpha3s: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
+    archiveId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
+    markTextStatus: PropTypes.object,
+};
