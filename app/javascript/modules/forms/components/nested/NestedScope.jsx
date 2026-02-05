@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-import NestedScopeElementContainer from './NestedScopeElementContainer';
+import NestedScopeElement from './NestedScopeElement';
 
 export default function NestedScope({
     onSubmit,
@@ -71,7 +71,7 @@ export default function NestedScope({
             {Array.isArray(elements) &&
                 elements.map((element, index) => {
                     return (
-                        <NestedScopeElementContainer
+                        <NestedScopeElement
                             key={`nse-${index}`}
                             element={element}
                             onSubmit={onSubmit}
@@ -87,7 +87,7 @@ export default function NestedScope({
                 })}
             {newElements.map((element, index) => {
                 return (
-                    <NestedScopeElementContainer
+                    <NestedScopeElement
                         key={`nnse-${index}`}
                         element={element}
                         index={index}

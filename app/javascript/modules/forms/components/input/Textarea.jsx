@@ -1,7 +1,7 @@
+import { checkTextDir } from 'modules/transcript';
 import PropTypes from 'prop-types';
 
-import { checkTextDir } from '../../transcript/utils';
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default function Textarea({
     value,
@@ -94,4 +94,8 @@ Textarea.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleErrors: PropTypes.func.isRequired,
     handlechangecallback: PropTypes.func,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
+    accept: PropTypes.string,
 };
