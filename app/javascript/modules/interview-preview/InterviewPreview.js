@@ -29,6 +29,9 @@ export default function InterviewPreview({
     const [isExpanded, setIsExpanded] = useState(false);
     const { t, locale } = useI18n();
     const project = projects[interview.project_id];
+    console.log('InterviewPreview render', interview.archive_id);
+    console.log('projects', projects);
+    console.log('project', project);
     const { fulltext } = useArchiveSearch();
     const { savedInterviews } = useWorkbook();
 
