@@ -1,12 +1,24 @@
-\definecolor{primaryColor}{HTML}{<%= "#{(interview.project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
+<% primary_color = (interview.project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '') %>
+\definecolor{primaryColor}{HTML}{<%= primary_color %>}
 
 <%
+  rtl = ["ara", "heb"].include?(content_locale.to_s)
   interviewee_name = interview.interviewee.display_name
-  title = "#{TranslationValue.for("#{doc_type}_title", header_locale, lang: content_locale_human)} #{interviewee_name}"
-  header_text = "#{TranslationValue.for("#{doc_type}_header", header_locale, lang: content_locale_human)} #{interviewee_name} (#{TranslationValue.for('archive_id', header_locale)} #{interview.archive_id})"
+
+  title = [
+    tv("#{doc_type}_title", header_locale, lang: content_locale_human),
+    interviewee_name
+  ].join(" ")
+
+  header_text = [
+    tv("#{doc_type}_header", header_locale, lang: content_locale_human),
+    interviewee_name,
+    "(#{tv('archive_id', header_locale)} #{interview.archive_id})"
+  ].join(" ")
+
   tape = 0
   speaker_id = nil
- %>
+%>
 
 \title{<%= title %>}
 
@@ -40,11 +52,8 @@
       doc_type: doc_type
   }
 %>
-<%#= render partial: "latex/citation", locals: { interviewee_name: interviewee_name } %>
 
 \newpage
-
-<%#= render partial: "latex/observation" if @interview.observations(header_locale) && @interview.project.shortname != 'zwar' %>
 
 <%# set section fontsize: %>
 \titleformat{\section}
@@ -54,7 +63,7 @@
 
 <%# set title of  tableofcontents: %>
 <% if headings_in_content_locale %>
-  \renewcommand{\contentsname}{<%= TranslationValue.for('table_of_contents', header_locale) %>}
+  \renewcommand{\contentsname}{<%= tv('table_of_contents', header_locale) %>}
   \tableofcontents
 <% end %>
 
@@ -73,40 +82,88 @@
 \newpage
 
 <%= render partial: "latex/title",
-           locals: {
-               title: title,
-               space_above: 0,
-               space_below: 0.01,
-               font_size: 13
-           } %>
+  locals: {
+    title: title,
+    space_above: 0,
+    space_below: 0.01,
+    font_size: 13
+  }
+%>
 
 <% interview.tapes.each do |tape| %>
-  <% tape.segments.order([:tape_number, :timecode]).includes(:translations).each do |segment| %>
-
-    <% space_above = 0.4 %>
+  <% tape.segments.includes(:translations).each do |segment| %>
 
     <% if !segment.mainheading(content_locale_public).blank? %>
-      \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(content_locale_public)) %>}
+      \section{<%= latex_escape(segment.mainheading(content_locale_public)) %>}
       <% if tape != segment.tape.number %>
-        <% space_above = 0 %>
-        <%= render partial: "latex/title", locals: {title: "#{TranslationValue.for('tape', header_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
+        <%= render partial: "latex/title",
+          locals: {
+            title: "#{tv('tape', header_locale)} #{segment.tape.number}",
+            space_above: 0.7,
+            space_below: 0.05,
+            font_size: 10
+          }
+        %>
       <% end %>
-      <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
+
+      <%= render partial: "latex/title",
+        locals: {
+          title: Timecode.new(segment.timecode).timecode[0..7],
+          space_above: 0.4,
+          space_below: 0,
+          font_size: 10
+        }
+      %>
     <% end %>
 
     <% if !segment.subheading(content_locale_public).blank? %>
-      \subsection{<%= latex_escape(CGI::unescapeHTML segment.subheading(content_locale_public)) %>}
-      <%= render partial: "latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
+      \subsection{<%= latex_escape(segment.subheading(content_locale_public)) %>}
+      <%= render partial: "latex/title",
+        locals: {
+          title: Timecode.new(segment.timecode).timecode[0..7],
+          space_above: 0.4,
+          space_below: 0,
+          font_size: 10
+        }
+      %>
     <% end %>
 
-    <% if segment.speaker_id != speaker_id && segment.speaking_person %>
-      \vspace*{<%= 0.2 %>cm}
-      \textit{<%= segment.speaking_person.name[header_locale.to_sym] + ': ' %>}
-    <% end %>
-    <%= latex_escape(segment.text(content_locale_public)) %>
-    <%#= latex_escape(CGI::unescapeHTML(segment.text(content_locale_public))) %>
+    <%
+      text = segment.text(content_locale_public)
+      if text.blank?
+        next
+      end
+    %>
 
-    <% tape = segment.tape.number %>
-    <% speaker_id = segment.speaker_id %>
+    <% if rtl %>
+      \begin{flushright}
+    <% end %>
+
+    <%
+        speaker_id,
+        rtl_speaker,
+        ltr_speaker = latex_speaker(
+          segment, speaker_id, rtl, header_locale
+        )
+
+        text = latex_escape(CGI.unescapeHTML(
+          segment.text(content_locale_public)
+        ))
+    %>
+
+    <% if text.match?(/\p{Hebrew}/) %>
+      \texthebrew{<%= text %>} \textit{<%= rtl_speaker %>}
+    <% elsif text.match?(/\p{Arabic}/) %>
+      \textarabic{<%= text %>} \textit{<%= rtl_speaker %>}
+    <% elsif text.match?(/\p{Tamil}/) %>
+      \textit{<%= ltr_speaker %>} \texttamil{<%= text %>} \textit{<%= rtl_speaker %>}
+    <% else %>
+      \textit{<%= ltr_speaker %>} <%= text %> \textit{<%= rtl_speaker %>}
+    <% end %>
+
+    <% if rtl %>
+      \end{flushright}
+    <% end %>
+
   <% end %>
 <% end %>

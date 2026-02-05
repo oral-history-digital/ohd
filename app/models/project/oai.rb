@@ -30,12 +30,13 @@ module Project::Oai
   end
 
   def oai_contributor(locale)
-    institutions_with_ancestors_names(locale)
+    #institutions_with_ancestors_names(locale)
+    "Oral-History.Digital / University Library of Freie Universität Berlin"
   end
 
   def oai_creator(locale)
-    institutions.first&.name(locale)
-    #root_institutions_names(locale)
+    #institutions.first&.name(locale)
+    institutions_with_ancestors_names(locale)
   end
 
   def oai_publisher(locale)
@@ -55,7 +56,7 @@ module Project::Oai
   end
 
   def oai_type
-    "audio/video"
+    "Archive"
   end
 
   def type
@@ -74,11 +75,21 @@ module Project::Oai
   end
 
   def oai_size
-    "#{interviews.count} Interviews"
+    "#{interviews.shared.count} Interviews"
   end
 
   def oai_languages
     Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
+  end
+
+  def oai_coverage
+    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
+    "#{dates.min}-#{dates.max}" rescue nil
+  end
+
+  def oai_birth_years
+    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
+    "#{birthyears.min}-#{birthyears.max}" rescue nil
   end
 
   def oai_subject_registry_entry_ids

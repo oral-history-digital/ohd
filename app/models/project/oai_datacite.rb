@@ -48,7 +48,7 @@ module Project::OaiDatacite
 
       xml.creators do
         xml.creator do
-          xml.creatorName oai_creator(:en)
+          xml.creatorName oai_creator(:en), "xml:lang": "en"
         end
       end
 
@@ -84,12 +84,12 @@ module Project::OaiDatacite
       xml.fundingReferences do
         funder_names.each do |funder|
           xml.fundingReference do
-            xml.funderName funder
+            xml.funderName funder, "xml:lang": "en"
           end
         end
       end
         
-      xml.resourceType "audio/video", resourceTypeGeneral: "Audiovisual"
+      xml.resourceType oai_type, resourceTypeGeneral: "Audiovisual"
 
       xml.formats do
         oai_formats.each do |format|
@@ -101,7 +101,14 @@ module Project::OaiDatacite
         xml.size oai_size
       end
 
+      xml.version "1.0"
+
       xml.language oai_languages
+
+      xml.dates do
+        xml.date oai_coverage, dateType: "Coverage"
+        xml.date oai_birth_years, dateType: "Other", dateInformation: "years of birth"
+      end
 
       xml.subjects do
         oai_base_subject_tags(xml, :datacite)

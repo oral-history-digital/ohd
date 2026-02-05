@@ -109,7 +109,9 @@ export default function RegistryEntry({
                             )}
                         </Modal>
                     ) : (
-                        <RegistryEntryLabel registryEntry={data} />
+                        <span className="RegistryEntry-label">
+                            <RegistryEntryLabel registryEntry={data} />
+                        </span>
                     )}
                     <AuthorizedContent object={data} action="update">
                         <span className="u-ml-tiny">{`(ID: ${data.id})`}</span>

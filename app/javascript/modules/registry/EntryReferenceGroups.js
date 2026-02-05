@@ -7,6 +7,7 @@ import { Disclosure } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 import EntryReferences from './EntryReferences';
+import referenceCountTitle from './referenceCountTitle';
 import useEntryReferences from './useEntryReferences';
 
 export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
@@ -21,32 +22,24 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
         ? referenceCount
         : projectRefs?.[0]?.[1]?.length || 0;
 
-    function title() {
-        const refTranslation =
-            usedReferenceCount === 1
-                ? t('activerecord.models.registry_reference.one')
-                : t('activerecord.models.registry_reference.other');
-        return `${usedReferenceCount} ${refTranslation}`;
-    }
-
     if (isLoading) {
         return <Spinner />;
     }
 
-    if (!project.is_ohd && projectRefs?.length === 1) {
+    if (!project.is_ohd && usedReferenceCount > 0) {
         return (
             <>
-                <h4>{title()}</h4>
+                <h4>{referenceCountTitle(t, usedReferenceCount)}</h4>
                 <EntryReferences
                     references={projectRefs[0][1]}
                     onSubmit={onSubmit}
                 />
             </>
         );
-    } else {
+    } else if (project.is_ohd) {
         return (
             <>
-                <h4>{title()}</h4>
+                <h4>{referenceCountTitle(t, usedReferenceCount)}</h4>
 
                 {groupedRefs?.map(([shortname, references]) => (
                     <Disclosure
@@ -66,7 +59,6 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
 }
 
 EntryReferenceGroups.propTypes = {
-    projects: PropTypes.array.isRequired,
     registryEntry: PropTypes.object,
     isLoggedIn: PropTypes.bool,
     onSubmit: PropTypes.func,

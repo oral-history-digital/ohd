@@ -36,7 +36,8 @@ module Collection::Oai
   end
 
   def oai_contributor(locale)
-    project.institutions_with_ancestors_names(locale)
+    "Oral-History.Digital / University Library of Freie Universität Berlin"
+    #project.institutions_with_ancestors_names(locale)
   end
 
   def oai_creator(locale)
@@ -53,7 +54,7 @@ module Collection::Oai
   end
 
   def oai_type
-    "audio/video"
+    "Collection"
   end
 
   def type
@@ -72,7 +73,7 @@ module Collection::Oai
   end
 
   def oai_size
-    "#{interviews.count} Interviews"
+    "#{interviews.shared.count} Interviews"
   end
 
   def oai_coverage

@@ -1,5 +1,6 @@
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
@@ -27,7 +28,12 @@ export default function OrderNewPassword({ orderNewPasswordStatus, error }) {
                         {error && (
                             <div
                                 className="errors"
-                                dangerouslySetInnerHTML={{ __html: t(error) }}
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtml(
+                                        t(error),
+                                        'PLAIN_TEXT'
+                                    ),
+                                }}
                             />
                         )}
                         <OrderNewPasswordFormContainer />

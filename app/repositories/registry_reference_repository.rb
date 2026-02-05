@@ -14,7 +14,7 @@ class RegistryReferenceRepository
       .joins('INNER JOIN person_translations pt ON people.id = pt.person_id')
       .where('re.id': registry_entry_id)
       .where('ct.code': 'interviewee')
-      .where('i.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
+      .where('i.workflow_state': scope)
       .group('i.archive_id')
       .select("registry_references.id,
         i.archive_id,
@@ -42,7 +42,7 @@ class RegistryReferenceRepository
       .where('re.id': registry_entry_id)
       .where('registry_references.ref_object_type': 'Segment')
       .where('ct.code': 'interviewee')
-      .where('i.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
+      .where('i.workflow_state': scope)
       .group('registry_references.id')
       .select("registry_references.id,
         registry_references.ref_object_type,
@@ -75,7 +75,7 @@ class RegistryReferenceRepository
       .where.not('registry_entries.longitude': [nil, ''])
       .where('metadata_fields.use_in_map_search': true)
       .where('contribution_types.code': 'interviewee')
-      .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
+      .where('interviews.workflow_state': scope)
 
     result = entries.where('metadata_fields.ref_object_type': 'Person')
       .where('registry_references.ref_object_id': person_ids)
@@ -112,7 +112,7 @@ class RegistryReferenceRepository
       .where.not('registry_entries.longitude': [nil, ''])
       .where('registry_references.ref_object_type': 'Segment')
       .where('contribution_types.code': 'interviewee')
-      .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
+      .where('interviews.workflow_state': scope)
       .group('registry_references.id, people.use_pseudonym')
       .select("registry_references.id,
         registry_references.ref_object_type,

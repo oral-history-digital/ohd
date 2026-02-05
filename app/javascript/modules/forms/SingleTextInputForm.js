@@ -18,7 +18,7 @@ export default function SingleTextInputForm({
         <Form
             scope="text"
             onSubmit={(params) => {
-                submitData({ projectId, project, locale }, params);
+                submitData({ projectId, project, locale }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}

@@ -115,7 +115,7 @@ export default function EventForm({
                     submitData(
                         { locale, projectId, project },
                         params,
-                        {},
+                        index,
                         handleEventUpdate
                     );
                 }

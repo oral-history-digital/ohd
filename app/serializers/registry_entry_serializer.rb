@@ -23,16 +23,6 @@ class RegistryEntrySerializer < ApplicationSerializer
     object.localized_hash(:notes)
   end
 
-  def latitude
-    # exclude dedalo default location (Valencia)
-    object.latitude == '39.462571' ? 0 : object.latitude.to_f
-  end
-
-  def longitude
-    # exclude dedalo default location (Valencia)
-    object.longitude == '-0.376295' ? 0 : object.longitude.to_f
-  end
-
   def parent_registry_hierarchy_ids
     object.parent_registry_hierarchies.inject({}){|mem, h| mem[h.ancestor_id] = h.id; mem}
   end

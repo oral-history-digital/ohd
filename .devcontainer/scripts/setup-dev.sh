@@ -206,6 +206,9 @@ if [ "$choice" = "2" ]; then
   fi
 else
   log_message "✅ Skipped database setup - using existing database"
+  log_message "Running pending migrations..."
+  RAILS_ENV=development bundle exec rails db:migrate
+  log_message "  ✅ Pending migrations completed"
 fi
 
 log_message ""

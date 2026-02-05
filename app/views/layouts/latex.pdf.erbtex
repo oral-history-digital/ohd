@@ -1,6 +1,8 @@
 \documentclass[fontsize=10pt]{article}
 
-<% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'lualatex'}]} %>
+<% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'xelatex'}]} %>
+<%# to generate tableofcontents the doc has to be compiled more than once %>
+
 
 \usepackage[a4paper]{geometry}
 \setlength{\headheight}{54.0pt}
@@ -12,16 +14,6 @@
 
 \usepackage{fontspec}
 \usepackage{titlesec}
-
-% We need our own Google Fonts Open Sans version that includes hebrew characters.
-\setmainfont{MyOpenSans}[
-  Path=<%= Rails.root.join('app', 'assets', 'fonts') %>/,
-  Extension=.ttf,
-  UprightFont = OpenSans-Regular,
-  BoldFont    = OpenSans-Bold,
-  ItalicFont  = OpenSans-Italic,
-  BoldItalicFont = OpenSans-BoldItalic
-]
 
 \usepackage{setspace}
 \onehalfspacing
@@ -43,7 +35,34 @@
 
 \usepackage{enumitem}
 
-<%# to generate tableofcontents the doc has to be compiled more than once %>
+% support rtl languages
+% polyglosia needs xelatex
+\usepackage{polyglossia}
+\usepackage{bidi}
+
+\setmainlanguage{english}
+\setotherlanguages{arabic, hebrew, tamil}
+
+\setmainfont{Open Sans}
+\newfontfamily\arabicfont[Script=Arabic]{Amiri}
+
+% possible hebrew fonts:
+%David CLM	Traditional David font (serif), good for text
+%Frank Ruehl CLM	Classic Frank Ruehl style, widely used for body text
+%FrankRuehlCLM-Bold	Bold variant
+%Guttman Haim CLM	Serif, slightly wider
+%Miriam CLM	Sans-serif, clean
+%Nachlieli CLM	Serif, modern style
+%Rashi CLM	Used for Rashi script / commentaries
+%Taamey Ashkenaz CLM
+
+% hebrew
+%\newfontfamily\hebrewfont{David CLM}
+%\newfontfamily\hebrewfont{Frank Ruehl CLM}
+%\newfontfamily\hebrewfont{Alef}
+\newfontfamily\hebrewfont{FreeSerif}
+
+\newfontfamily\tamilfont{Noto Serif Tamil}
 
 <%= yield %>
 

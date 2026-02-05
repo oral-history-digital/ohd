@@ -39,6 +39,8 @@ services:
       SOLR_HOST: solr
       SOLR_PORT: 8983
       DISABLE_SPRING: true
+      # Use precompiled platform-specific gems instead of compiling from source
+      BUNDLE_FORCE_RUBY_PLATFORM: false
 
   db:
     image: mariadb:10.5

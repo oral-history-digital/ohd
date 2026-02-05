@@ -5,6 +5,7 @@ import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { MediaIcon } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
+import { sanitizeHtml } from 'modules/utils';
 import { useSelector } from 'react-redux';
 
 export default function MediaPreview() {
@@ -50,7 +51,10 @@ export default function MediaPreview() {
             <div
                 className="u-mt"
                 dangerouslySetInnerHTML={{
-                    __html: interview.landing_page_texts[locale],
+                    __html: sanitizeHtml(
+                        interview.landing_page_texts[locale],
+                        'RICH_TEXT'
+                    ),
                 }}
             />
         </div>

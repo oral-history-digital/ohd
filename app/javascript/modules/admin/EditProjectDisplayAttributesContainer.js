@@ -1,11 +1,10 @@
-import { getCurrentProject, submitData } from 'modules/data';
+import { submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import EditData from './EditData';
 
 const mapStateToProps = (state) => ({
-    data: getCurrentProject(state),
     scope: 'project',
     helpTextCode: 'archive_display_form',
     formElements: [

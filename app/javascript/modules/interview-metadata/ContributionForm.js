@@ -49,7 +49,7 @@ export default function ContributionForm({
                 if (typeof onSubmit === 'function') onSubmit();
             };
             // Pass callback to submitData that will be called after the API request completes
-            submitData({ locale, projectId, project }, params, {}, callback);
+            submitData({ locale, projectId, project }, params, index, callback);
         } else {
             // Fallback if submitData is not provided
             if (typeof onSubmit === 'function') onSubmit();

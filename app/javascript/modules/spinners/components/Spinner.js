@@ -27,6 +27,10 @@ export default function Spinner({
             size === 'small' ? smallPx : size === 'medium' ? mediumPx : largePx;
     } else if (typeof size === 'number') {
         sizeInPx = size;
+    } else {
+        console.warn(
+            `Spinner: Invalid size "${size}". Valid options are 'small', 'medium', 'large', or a custom number (px). Defaulting to 'medium'.`
+        );
     }
 
     const isSmall = sizeInPx <= smallPx;
@@ -52,7 +56,10 @@ export default function Spinner({
 }
 
 Spinner.propTypes = {
-    size: PropTypes.string,
+    size: PropTypes.oneOfType([
+        PropTypes.oneOf(['small', 'medium', 'large']),
+        PropTypes.number,
+    ]),
     color: PropTypes.string,
     withPadding: PropTypes.bool,
     className: PropTypes.string,

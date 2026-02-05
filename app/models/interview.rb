@@ -27,8 +27,8 @@ class Interview < ApplicationRecord
 
   has_many :tapes,
            -> {
-                  includes(:interview).
-                  order(:number)
+             includes(:interview).
+             order(:number)
            },
            dependent: :destroy,
            inverse_of: :interview
@@ -874,11 +874,7 @@ class Interview < ApplicationRecord
     def archive_search(user, project, locale, params, per_page = 12)
       search = Interview.search do
 
-        if user&.accessible_projects&.pluck(:id)&.include?(project.id) ||
-            !project.is_ohd? && (
-              project.grant_project_access_instantly? ||
-              project.grant_access_without_login?
-            )
+        if user
           fulltext params[:fulltext]
         end
 
@@ -891,7 +887,9 @@ class Interview < ApplicationRecord
         # the follwing is a really restrictive approach
         # it allows only users with project-access to find interviews of those projects
         #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
-        if project.is_ohd?
+        if project.is_ohd? && user && params[:fulltext]
+          with(:project_id, user&.accessible_projects&.pluck(:id))
+        elsif project.is_ohd? && !params[:fulltext]
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
         else
           with(:project_id, project.id)

@@ -4,6 +4,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 
@@ -75,7 +76,10 @@ export default function Home({ institutions }) {
                     </Fetch>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: getTranslation('introduction'),
+                            __html: sanitizeHtml(
+                                getTranslation('introduction'),
+                                'RICH_TEXT'
+                            ),
                         }}
                     />
                 </div>
@@ -83,7 +87,10 @@ export default function Home({ institutions }) {
                     <p
                         className="home-paragraph u-mt"
                         dangerouslySetInnerHTML={{
-                            __html: getTranslation('more_text'),
+                            __html: sanitizeHtml(
+                                getTranslation('more_text'),
+                                'RICH_TEXT'
+                            ),
                         }}
                     />
                 )}

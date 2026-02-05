@@ -1,17 +1,17 @@
+/* global railsMode */
 import { useState } from 'react';
 
-import { OHD_DOMAINS } from 'modules/constants';
-import { EMAIL_REGEX, PASSWORD_REGEX } from 'modules/constants';
+import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import request from 'superagent';
+import { sanitizeHtml } from 'modules/utils';
+import PropTypes from 'prop-types';
 
 import { NON_ZIP_COUNTRIES } from '../constants';
 
 export default function RegisterForm({
     project,
-    ohdProject,
     countryKeys,
     submitRegister,
     onSubmit,
@@ -40,7 +40,7 @@ export default function RegisterForm({
     const [password, setPassword] = useState(null);
     const [hideZip, setHideZip] = useState(true);
 
-    const handlePasswordChange = (name, value, data) => {
+    const handlePasswordChange = (_, value) => {
         setPassword(value);
     };
 
@@ -155,15 +155,6 @@ export default function RegisterForm({
             },
         ];
 
-        const newsletterElement = [
-            {
-                elementType: 'input',
-                attribute: 'receive_newsletter',
-                type: 'checkbox',
-                help: 'user.notes_on_receive_newsletter',
-            },
-        ];
-
         const tosPrivacyElements = [
             {
                 elementType: 'input',
@@ -221,9 +212,9 @@ export default function RegisterForm({
     return (
         <>
             {registrationStatus ? (
+                // TODO: Is registrationStatus actually used? It seems to never be set and displayed
                 <p className="error">
-                    className='status' dangerouslySetInnerHTML=
-                    {{ __html: registrationStatus }}>
+                    {sanitizeHtml(registrationStatus, 'PLAIN_TEXT')}
                 </p>
             ) : (
                 <div>
@@ -274,3 +265,14 @@ export default function RegisterForm({
         </>
     );
 }
+
+RegisterForm.propTypes = {
+    project: PropTypes.shape({
+        is_ohd: PropTypes.bool.isRequired,
+    }).isRequired,
+    countryKeys: PropTypes.object.isRequired,
+    submitRegister: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    registrationStatus: PropTypes.string,
+};

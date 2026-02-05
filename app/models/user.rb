@@ -75,7 +75,6 @@ class User < ApplicationRecord
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
-  validates_length_of :password, :within => 5..50, :allow_blank => true
   validate :password_complexity
   validates :first_name, presence: true, length: { minimum: 2 }, allow_blank: false
   validates :last_name, presence: true, length: { minimum: 2 }, allow_blank: false

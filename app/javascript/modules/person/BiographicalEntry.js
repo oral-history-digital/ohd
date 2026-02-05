@@ -11,6 +11,7 @@ import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
@@ -82,7 +83,9 @@ export default function BiographicalEntry({ data, deleteData }) {
                 </span>
                 <span
                     className="flyout-content-data"
-                    dangerouslySetInnerHTML={{ __html: data[name][locale] }}
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizeHtml(data[name][locale], 'BASIC'),
+                    }}
                 />
             </p>
         );

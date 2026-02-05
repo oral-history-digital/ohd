@@ -2,7 +2,6 @@ class ProjectSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :display_name,
-    :more_text,
     :shortname,
     :title,
     :num_interviews,
@@ -67,7 +66,8 @@ class ProjectSerializer < ApplicationSerializer
     :grant_project_access_instantly,
     :grant_access_without_login,
     :is_ohd,
-    :analytics_site_id
+    :analytics_site_id,
+    :publication_date
 
   has_one :access_config
   has_many :texts
