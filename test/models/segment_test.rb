@@ -85,6 +85,14 @@ class SegmentTest < ActiveSupport::TestCase
     )
   end
 
+  test "should parse <an bla bla> correctly" do
+    @segment.update(text: "ich sagte <an bla bla>. Dann sagte sie <an bla bla> und er <an glaub ich nicht>", locale: :ger)
+    assert_equal(
+      @segment.enciphered_text(:subtitle, :ger),
+      "ich sagte XXX. Dann sagte sie XXX und er XXX"
+    )
+  end
+
   test "should parse <? bla bla> correctly" do
     @segment.update(text: "<g(Gestikulieren) „Ja, ja, ich bin da Flughafenchef\"> und <? ich hab gesagt „Komm, äh\"> <v(Lachen)>", locale: :ger)
     assert_equal(
