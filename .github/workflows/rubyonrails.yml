@@ -85,7 +85,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: latex-logs
-        path: tmp/rails-latex/**/input.*
+          path: tmp/rails-latex/**/input.*
+          if-no-files-found: ignore
 
   # TODO: Enable linting again when issues are fixed
   # lint:
