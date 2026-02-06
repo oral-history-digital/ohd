@@ -261,8 +261,6 @@ Devise.setup do |config|
     manager.failure_app = UnauthorizedController
     #manager.intercept_401 = false
     #manager.default_strategies(scope: :user).unshift :some_external_strategy
-    manager.default_strategies(:scope => :user).unshift :two_factor_authenticatable
-    manager.default_strategies(:scope => :user).unshift :two_factor_backupable
   end
 
   # ==> Mountable engine configurations

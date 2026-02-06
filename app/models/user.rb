@@ -1,10 +1,9 @@
 class User < ApplicationRecord
   include WorkflowActiverecord
+  include MultiFactorAuthenticatable
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable
-  #devise :two_factor_authenticatable,
-         #:two_factor_backupable,
   devise :database_authenticatable,
          :registerable,
          :confirmable,
@@ -12,25 +11,6 @@ class User < ApplicationRecord
          :trackable,
          :validatable,
          :lockable
-
-  #serialize :otp_backup_codes#, Array
-
-  before_save :generate_two_factor_secret_if_needed
-  def generate_two_factor_secret_if_needed
-    if (self.otp_required_for_login_changed? || self.confirmed_at_changed?) &&
-        self.otp_required_for_login && self.otp_secret.blank?
-      self.otp_secret = User.generate_otp_secret
-      self.changed_to_otp_at = Time.now
-    end
-  end
-
-  before_save :update_passkey_required_timestamp
-  def update_passkey_required_timestamp
-    if (self.passkey_required_for_login_changed? || self.confirmed_at_changed?) &&
-        self.passkey_required_for_login
-      self.changed_to_passkey_at = Time.now
-    end
-  end
 
   # Store WebAuthn ID
   def webauthn_id
@@ -226,50 +206,4 @@ class User < ApplicationRecord
     recoverable
   end
 
-  def send_new_otp_code
-    email_otp = generate_email_otp!
-    CustomDeviseMailer.two_factor_authentication_code(self, email_otp).deliver_later
-  end
-
-  # Email OTP configuration
-  EMAIL_OTP_VALID_FOR = 10.minutes
-  EMAIL_OTP_LENGTH = 6
-
-  def generate_email_otp! 
-    # Generate 6-digit numeric code
-    otp = SecureRandom.random_number(10**EMAIL_OTP_LENGTH).to_s.rjust(EMAIL_OTP_LENGTH, '0')
-    
-    # Store encrypted version
-    self.email_otp_secret = BCrypt::Password.create(otp)
-    self.email_otp_sent_at = Time. current
-    save!
-    
-    # Return plain text code (only time it's visible)
-    otp
-  end
-
-  def verify_email_otp(code)
-    return false if email_otp_secret.blank?  || email_otp_sent_at.blank?
-    
-    # Check if OTP is expired
-    return false if Time.current > email_otp_sent_at + EMAIL_OTP_VALID_FOR
-    
-    # Verify the code
-    BCrypt::Password.new(email_otp_secret) == code
-  end
-
-  def clear_email_otp! 
-    update(email_otp_secret: nil, email_otp_sent_at: nil)
-  end
-
-  def email_otp_expired?
-    return true if email_otp_sent_at.blank?
-    Time.current > email_otp_sent_at + EMAIL_OTP_VALID_FOR
-  end
-
-  def email_otp_time_remaining
-    return 0 if email_otp_sent_at.blank?
-    remaining = (email_otp_sent_at + EMAIL_OTP_VALID_FOR - Time.current).to_i
-    [remaining, 0].max
-  end
 end
