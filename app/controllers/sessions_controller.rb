@@ -80,7 +80,8 @@ class SessionsController < Devise::SessionsController
       resource.increment_failed_attempts if user.respond_to?(:increment_failed_attempts)
       if resource.access_locked?
         flash[:alert] = tv('devise.failure.locked')
-        render :otp, status: :unprocessable_entity
+        #render :otp, status: :unprocessable_entity
+        redirect_to new_user_session_path
       else
         flash.now[:alert] = tv('devise.failure.invalid')
         render :otp, status: :unprocessable_entity
