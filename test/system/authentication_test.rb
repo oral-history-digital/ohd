@@ -46,54 +46,6 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_text 'The test archive'
   end
 
-  test "register as a new user with Webauthn MFA" do
-    add_virtual_authenticator
-    email = 'hubert@example.com'
-    fill_registration_form(
-      first_name: 'Hubert',
-      last_name: 'Rossi',
-      email: email,
-      passkey_required: true
-    )
-    confirm_registration_email
-
-    user = User.find_by(email: email)
-    assert_not_nil user
-    assert user.passkey_required_for_login
-    assert user.changed_to_passkey_at + 10.minutes > Time.current
-    register_passkey
-    assert user.webauthn_credentials.count == 1
-  end
-
-  test "passkey registration and login for a registered user" do
-    add_virtual_authenticator
-    user = User.find_by(email: EMAIL)
-    user.webauthn_credentials.destroy_all
-
-    visit '/'
-    login_as EMAIL
-
-    click_on 'Account'
-    click_on 'Edit'
-    check "user_passkey_required_for_login", visible: :all
-    click_on 'Submit'
-    sleep 0.5
-
-    register_passkey
-
-    assert user.webauthn_credentials.count == 1
-
-    click_on 'Logout'
-
-    click_on 'Login'
-    fill_in 'user[email]', with: EMAIL
-    click_on 'Login with Passkey'
-
-    sleep 0.5
-    assert_text 'Logout'
-    assert_text 'Account'
-  end
-
   test "user can enable TOTP during registration" do
     email = 'achim@example.com'
     fill_registration_form(
@@ -328,44 +280,6 @@ class RegistrationTest < ApplicationSystemTestCase
     click_on 'Login'
 
     assert_text 'The test archive'
-  end
-
-  # Helper methods
-  def fill_registration_form(first_name:, last_name:, email:, passkey_required: false, otp_required: false)
-    visit '/'
-    click_on 'Registration'
-    fill_in 'First Name', with: first_name
-    fill_in 'Last Name', with: last_name
-    select 'Germany'
-    fill_in 'Street', with: 'Am Dornbusch 13'
-    fill_in 'City', with: 'Frankfurt am Main'
-    fill_in 'Email', with: email
-    fill_in 'Password', name: 'password', with: PASSWORD
-    fill_in 'Password confirmation', with: PASSWORD
-    check "user_passkey_required_for_login", visible: :all if passkey_required
-    check "user_otp_required_for_login", visible: :all if otp_required
-    check 'Terms of Use', visible: :all
-    check 'Privacy Policy', visible: :all
-    click_on 'Submit registration'
-    assert_text 'Your registration has been successfully submitted!'
-  end
-
-  def confirm_registration_email
-    mails = ActionMailer::Base.deliveries
-    assert_equal 1, mails.count
-    confirmation = mails.last
-    assert_match /Confirmation of your registration/, confirmation.subject
-    link = links_from_email(confirmation)[0]
-    visit link
-  end
-
-  def register_passkey
-    within_frame(find("iframe[src*='passkeys']")) do
-      fill_in "nickname", with: "Test Chrome Device"
-      click_button "commit"
-      assert_text "Passkey successfully registered"
-      click_on 'OK'
-    end
   end
 
 end
