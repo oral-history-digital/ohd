@@ -86,7 +86,7 @@ class RegistrationTest < ApplicationSystemTestCase
     click_on 'Logout'
 
     click_on 'Login'
-    fill_in 'Email', with: EMAIL
+    fill_in 'user[email]', with: EMAIL
     click_on 'Login with Passkey'
 
     sleep 0.5
@@ -277,6 +277,64 @@ class RegistrationTest < ApplicationSystemTestCase
     #user.reload
     #assert_not user.otp_required_for_login
   #end
+
+  # locakable tests:
+  test "user account is locked after too many failed login attempts" do
+    user = User.find_by(email: EMAIL)
+    assert_not_nil user
+
+    # ensure clean state
+    user.update!(
+      failed_attempts: 0,
+      locked_at: nil
+    )
+
+    visit '/'
+    click_on 'Login'
+
+    # fail login configured times
+    (Devise.maximum_attempts - 1).times do |i|
+      fill_in 'user[email]', with: EMAIL
+      fill_in 'user[password]', with: 'WrongPassword8!'
+      click_on 'Login'
+
+      assert_text 'Invalid credentials'
+    end
+
+    fill_in 'user[email]', with: EMAIL
+    fill_in 'user[password]', with: 'WrongPassword8!'
+    click_on 'Login'
+
+    assert_text "You have one more attempt before your account is locked.\nLogin\nEmail\nPassword\nRegistration\nRecover password"
+
+    user.reload
+    assert user.access_locked?
+
+    # now try with the correct password
+    fill_in 'user[email]', with: EMAIL
+    fill_in 'user[password]', with: PASSWORD
+    click_on 'Login'
+
+    assert_text "Too many failed login attempts. Try again later or reset your password."
+  end
+
+  test "locked user can login after lock expires" do
+    user = User.find_by(email: EMAIL)
+
+    user.update!(
+      failed_attempts: Devise.maximum_attempts,
+      locked_at: (Devise.unlock_in + 1.minute).ago
+    )
+
+    visit '/'
+    click_on 'Login'
+
+    fill_in 'user[email]', with: EMAIL
+    fill_in 'user[password]', with: PASSWORD
+    click_on 'Login'
+
+    assert_text 'The test archive'
+  end
 
   # Helper methods
   def fill_registration_form(first_name:, last_name:, email:, passkey_required: false, otp_required: false)

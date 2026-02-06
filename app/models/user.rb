@@ -3,14 +3,17 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable
-  devise :two_factor_authenticatable,
+  #devise :two_factor_authenticatable,
+         #:two_factor_backupable,
+  devise :database_authenticatable,
          :registerable,
          :confirmable,
          :recoverable,
          :trackable,
-         :validatable
+         :validatable,
+         :lockable
 
-  serialize :otp_backup_codes#, Array
+  #serialize :otp_backup_codes#, Array
 
   before_save :generate_two_factor_secret_if_needed
   def generate_two_factor_secret_if_needed

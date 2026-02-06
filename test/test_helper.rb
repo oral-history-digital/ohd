@@ -69,8 +69,8 @@ class ActiveSupport::TestCase
     Capybara.reset_sessions!
     visit '/en/users/sign_in'
 
-    fill_in 'Email', with: user_or_email
-    fill_in 'Password', with: password
+    fill_in 'user[email]', with: user_or_email
+    fill_in 'user[password]', with: password
     click_on 'Login'
   end
 

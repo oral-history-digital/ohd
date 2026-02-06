@@ -26,7 +26,6 @@ class SessionsController < Devise::SessionsController
       if request.base_url == OHD_DOMAIN
         super
       else
-        self.resource = resource_class.new(sign_in_params)
         project = Project.by_domain(request.base_url)
         path = stored_location_for(resource)&.gsub("?checked_ohd_session=true", "")
         redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
@@ -35,25 +34,19 @@ class SessionsController < Devise::SessionsController
   end
 
   def create
-    # First step:  validate email and password only
-    self.resource = resource_class.find_for_database_authentication(email: params[resource_name][:email])
-    
-    if resource && resource.valid_password?(params[resource_name][:password])
-      # Check if 2FA is enabled
+    self.resource = warden.authenticate(scope: resource_name)
+
+    if resource
       if resource.otp_required_for_login? || resource.passkey_required_for_login?
-        # Store user id in session for second step
         session[:otp_user_id] = resource.id
+        sign_out(resource) # important
         redirect_to users_otp_path
       else
-        # No 2FA - sign in directly
         sign_in(resource_name, resource)
-        yield resource if block_given?
-
         after_sign_in(resource)
       end
     else
-      # Invalid credentials
-      flash.now[:alert] = tv("devise.failure.invalid")
+      flash.now[:alert] = tv("devise.failure.#{warden.message || :invalid}")
       render :new, status: :unprocessable_entity
     end
   rescue BCrypt::Errors::InvalidHash
@@ -64,11 +57,12 @@ class SessionsController < Devise::SessionsController
     end    
   end
 
+
   def verify_otp
     # Second step:  verify OTP
     resource = User.find_by(id: session[:otp_user_id])
     
-    if resource. nil? 
+    if resource.nil? 
       redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
       return
     end
