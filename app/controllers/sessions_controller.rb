@@ -69,14 +69,22 @@ class SessionsController < Devise::SessionsController
 
     if resource.validate_and_consume_otp!(params[:otp_attempt]) ||
       resource.verify_email_otp(params[:otp_attempt])
+
       resource.clear_email_otp!
+      resource.reset_failed_attempts! if resource.respond_to?(:reset_failed_attempts!)
       session.delete(:otp_user_id)
       sign_in(resource_name, resource)
       yield resource if block_given?
       after_sign_in(resource)
     else
-      flash.now[:alert] = tv("devise.failure.invalid_token")
-      render :otp, status: :unprocessable_entity
+      resource.increment_failed_attempts if user.respond_to?(:increment_failed_attempts)
+      if resource.access_locked?
+        flash[:alert] = tv('devise.failure.locked')
+        render :otp, status: :unprocessable_entity
+      else
+        flash.now[:alert] = tv('devise.failure.invalid')
+        render :otp, status: :unprocessable_entity
+      end
     end
   end
 
