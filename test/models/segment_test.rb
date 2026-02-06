@@ -91,6 +91,10 @@ class SegmentTest < ActiveSupport::TestCase
       @segment.enciphered_text(:subtitle, :ger),
       "ich sagte XXX. Dann sagte sie XXX und er XXX"
     )
+    assert_equal(
+      @segment.enciphered_text(:public, :ger),
+     "ich sagte XXX. Dann sagte sie XXX und er XXX"
+    )
   end
 
   test "should parse <? bla bla> correctly" do
