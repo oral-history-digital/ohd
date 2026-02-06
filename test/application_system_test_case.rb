@@ -33,18 +33,37 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     end
   end
 
+  def teardown
+    # Force a new browser session for the next test
+    Capybara.reset_sessions!
+    super
+  end
+
   private
 
   def add_virtual_authenticator
     return if @virtual_authenticator
-    @virtual_authenticator = page.driver.browser.add_virtual_authenticator(
-      protocol: 'ctap2',
-      transport:  'internal',
-      hasResidentKey: true,
-      hasUserVerification: true,
-      isUserConsenting: true,
-      isUserVerified: true
-    )
+    
+    # Try to add authenticator, skip if one already exists
+    begin
+      @virtual_authenticator = page.driver.browser.add_virtual_authenticator(
+        protocol: 'ctap2',
+        transport:  'internal',
+        hasResidentKey: true,
+        hasUserVerification: true,
+        isUserConsenting: true,
+        isUserVerified: true
+      )
+    rescue Selenium::WebDriver::Error::InvalidArgumentError => e
+      if e.message.include?("one internal authenticator")
+        # Browser session already has an authenticator, which shouldn't happen
+        # but we'll reset and retry
+        Capybara.reset_sessions!
+        retry
+      else
+        raise
+      end
+    end
   end
 
 end
