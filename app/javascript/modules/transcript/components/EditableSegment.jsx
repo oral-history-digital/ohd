@@ -9,7 +9,11 @@ import { getCurrentProject, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
 import { formatTimecode } from 'modules/interview-helpers';
-import { sendTimeChangeRequest, useScrollOffset } from 'modules/media-player';
+import {
+    sendTimeChangeRequest,
+    updateIsPlaying,
+    useScrollOffset,
+} from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,7 +67,8 @@ function EditableSegment({
     const shouldScroll =
         (autoScroll && isActive) || // Segment is active and autoScroll is enabled (e.g. during playback)
         segmentParam === segment.id || // Segment is targeted by the URL param (segmentParam === data.id)
-        (isActive && !segmentParam && autoScroll); // Segment is initially active and autoScroll is enabled, but no segmentParam is present
+        (isActive && !segmentParam && autoScroll) || // Segment is initially active and autoScroll is enabled, but no segmentParam is present
+        isEditing; // Segment is being edited
 
     // Use custom hook for auto-scroll logic
     useAutoScrollToRef(divEl, scrollOffset, shouldScroll, [
@@ -71,15 +76,22 @@ function EditableSegment({
         isActive,
         segment.id,
         segmentParam,
+        isEditing,
     ]);
 
     const handleSegmentClick = () => {
-        if (interview?.transcriptCoupled && !isEditing) {
+        if (interview?.transcript_coupled) {
             dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
         }
     };
 
     const handleEditStart = (buttonType = 'edit') => {
+        // Stop playback when entering edit mode
+        dispatch(updateIsPlaying(false));
+        // Jump to this segment's time when entering edit mode
+        if (interview?.transcript_coupled) {
+            dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
+        }
         onEditStart?.();
         setActiveButton(buttonType);
     };

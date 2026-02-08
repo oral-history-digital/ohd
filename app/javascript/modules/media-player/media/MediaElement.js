@@ -41,6 +41,7 @@ export default function MediaElement({
     interview,
     mediaStreams,
     tape,
+    isPlaying,
     timeChangeRequestAvailable,
     timeChangeRequest,
     updateIsPlaying,
@@ -286,10 +287,13 @@ export default function MediaElement({
 
             player.currentTime(timeChangeRequest);
 
-            if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
-                player.play();
-            } else {
-                player.autoplay(true);
+            // Only auto-play if it was already playing; respect pause state
+            if (isPlaying) {
+                if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
+                    player.play();
+                } else {
+                    player.autoplay(true);
+                }
             }
         }
     }
@@ -537,6 +541,7 @@ MediaElement.propTypes = {
     // guards against missing streams and returns null until streams are present.
     mediaStreams: PropTypes.object,
     tape: PropTypes.number,
+    isPlaying: PropTypes.bool,
     timeChangeRequestAvailable: PropTypes.bool,
     timeChangeRequest: PropTypes.number,
     updateIsPlaying: PropTypes.func.isRequired,

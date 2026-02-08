@@ -171,26 +171,24 @@ export default function Transcript({
                         });
 
                     return (
-                        <>
-                            <EditableSegment
-                                key={`editable-segment-${segment.id}`}
-                                segment={segment}
-                                interview={interview}
-                                contributor={
-                                    contributorInformation[segment.speaker_id]
-                                }
-                                contentLocale={transcriptLocale}
-                                isActive={active}
-                                isEditing={editingSegmentId === segment.id}
-                                onEditStart={() => handleEditStart(segment.id)}
-                                onEditEnd={handleEditEnd}
-                                onUnsavedChangesChange={
-                                    setEditingSegmentHasUnsavedChanges
-                                }
-                                prevSegmentTimecode={prevSegment?.timecode}
-                                nextSegmentTimecode={nextSegment?.timecode}
-                            />
-                        </>
+                        <EditableSegment
+                            key={`editable-segment-${segment.id}`}
+                            segment={segment}
+                            interview={interview}
+                            contributor={
+                                contributorInformation[segment.speaker_id]
+                            }
+                            contentLocale={transcriptLocale}
+                            isActive={active}
+                            isEditing={editingSegmentId === segment.id}
+                            onEditStart={() => handleEditStart(segment.id)}
+                            onEditEnd={handleEditEnd}
+                            onUnsavedChangesChange={
+                                setEditingSegmentHasUnsavedChanges
+                            }
+                            prevSegmentTimecode={prevSegment?.timecode}
+                            nextSegmentTimecode={nextSegment?.timecode}
+                        />
                     );
                 })}
             </div>

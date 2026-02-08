@@ -1,4 +1,4 @@
-export { sendTimeChangeRequest } from './redux/actions';
+export { sendTimeChangeRequest, updateIsPlaying } from './redux/actions';
 export { default as mediaPlayerReducer } from './redux/reducer';
 export {
     getCurrentTape,
