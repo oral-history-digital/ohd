@@ -9,10 +9,10 @@ export default function Initials({ contributor, segment }) {
     const title = contributor?.fullname || segment?.speaker || '';
 
     const cls = classNames(
-        'Segment-icon',
+        'Segment-initials',
         segment?.speaker_is_interviewee
-            ? 'Segment-icon--primary'
-            : 'Segment-icon--secondary'
+            ? 'Segment-initials--primary'
+            : 'Segment-initials--secondary'
     );
 
     return (

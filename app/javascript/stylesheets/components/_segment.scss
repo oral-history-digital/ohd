@@ -2,17 +2,12 @@
  * 1. Ellipsis
  */
 
-$segment-icon-width: 1.5 * $base-unit;
+$segment-icon-width: 2 * $base-unit;
 
 .Segment {
   align-items: flex-start;
   display: flex;
   max-width: 45rem;
-  padding-left: $segment-icon-width;
-}
-
-.Segment--withSpeaker {
-  padding-left: 0;
 }
 
 .Segment:not(:first-of-type) {
@@ -23,9 +18,8 @@ $segment-icon-width: 1.5 * $base-unit;
   margin-top: $base-unit;
 }
 
-.Segment-icon {
+.Segment-initials {
   display: inline-block;
-  flex-basis: $segment-icon-width;
   flex-shrink: 0;
   line-height: $base-unit;
   margin: 0;
@@ -38,12 +32,26 @@ $segment-icon-width: 1.5 * $base-unit;
   width: $segment-icon-width;
 }
 
-.Segment-icon--primary {
+.Segment-initials--primary {
   color: var(--primary-color);
 }
 
-.Segment-icon--secondary {
+.Segment-initials--secondary {
   color: $gray-dark;
+}
+
+.Segment-metaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: $segment-icon-width;
+  flex-shrink: 0;
+}
+
+.Segment-timecode {
+  font-size: 0.75rem;
+  color: $gray-medium;
+  line-height: 1.5rem;
 }
 
 .Segment-text {
