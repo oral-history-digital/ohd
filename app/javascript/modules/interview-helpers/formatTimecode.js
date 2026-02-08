@@ -6,6 +6,8 @@
  *                                          If false, returns HH:MM:SS format (e.g., "2:45:05")
  * @param {boolean} [includeMilliseconds=false] - If true, appends milliseconds to the output
  *                                                 (e.g., "2:45:05.760" or "2h45m05.760s")
+ * @param {boolean} [stripLeadingZeros=false] - If true, removes leading zero hours
+ *                                               (e.g., "00:03:46" becomes "3:46", "01:07:28" becomes "1:07:28")
  *
  * @returns {string} Formatted timecode string
  *
@@ -20,11 +22,20 @@
  * @example
  * // Returns "2h45m05s"
  * formatTimecode(9905.9, true)
+ *
+ * @example
+ * // Returns "3:46"
+ * formatTimecode(226, false, false, true)
+ *
+ * @example
+ * // Returns "1:07:28"
+ * formatTimecode(4048, false, false, true)
  */
 export default function formatTimecode(
     time,
     useHmsFormat = false,
-    includeMilliseconds = false
+    includeMilliseconds = false,
+    stripLeadingZeros = false
 ) {
     const hours = Math.floor(time / 3600).toString();
     const minutes = Math.floor((time % 3600) / 60).toString();
@@ -47,6 +58,12 @@ export default function formatTimecode(
         } else {
             str = `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
         }
+    }
+
+    // Strip leading zero hours if requested
+    if (stripLeadingZeros && !useHmsFormat) {
+        // Remove "0:" or "00:" prefix and leading zero from minutes if hours were 0
+        str = str.replace(/^0+:0?/, '');
     }
 
     return str;
