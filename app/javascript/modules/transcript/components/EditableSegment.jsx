@@ -220,7 +220,12 @@ function EditableSegment({
                 </Tabs>
             ) : (
                 <>
-                    <Initials contributor={contributor} segment={segment} />
+                    <div className="Segment-metaWrapper">
+                        <Initials contributor={contributor} segment={segment} />
+                        <div className="Segment-timecode">
+                            {formatTimecode(segment.time, false, false, true)}
+                        </div>
+                    </div>
                     <SegmentText
                         segment={segment}
                         locale={contentLocale}
