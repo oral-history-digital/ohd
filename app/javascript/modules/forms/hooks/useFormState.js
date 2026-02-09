@@ -19,7 +19,7 @@ import { pluralize } from 'modules/strings';
 export function useFormState(initialValues, data, elements) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
-    const [touched, setTouched] = useState({});
+    const [touched, setTouched] = useState(initTouched());
     const initialFormValues = initValues();
 
     /**
@@ -89,6 +89,23 @@ export function useFormState(initialValues, data, elements) {
             if (element.attribute) errors[element.attribute] = error;
         });
         return errors;
+    }
+
+    /**
+     * Initialize touched state for form elements.
+     * Fields with touchOnInvalid=true will be marked as touched if they have validation errors.
+     */
+    function initTouched() {
+        let touched = {};
+        elements.forEach((element) => {
+            if (element.attribute && element.touchOnInvalid) {
+                const error = hasError(element);
+                if (error) {
+                    touched[element.attribute] = true;
+                }
+            }
+        });
+        return touched;
     }
 
     /**
