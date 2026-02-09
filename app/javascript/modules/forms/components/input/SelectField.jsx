@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
@@ -33,9 +35,14 @@ export default function SelectField({
     const defaultValue = value || data?.[attribute];
     const { t, locale } = useI18n();
 
+    // Track current value for validation display
+    const [currentValue, setCurrentValue] = useState(defaultValue);
+
     const onChange = (event) => {
         const newValue = event.target.value;
         const name = event.target.name;
+
+        setCurrentValue(newValue);
 
         handleChange(name, newValue, data);
 
@@ -133,7 +140,7 @@ export default function SelectField({
             className={className}
             hidden={hidden}
             valid={
-                typeof validate === 'function' ? validate(defaultValue) : true
+                typeof validate === 'function' ? validate(currentValue) : true
             }
             mandatory={typeof validate === 'function'}
             elementType="select"
