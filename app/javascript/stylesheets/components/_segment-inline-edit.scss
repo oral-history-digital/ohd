@@ -121,6 +121,10 @@
 
     .form-group--speaker_id {
       padding-right: $base-unit;
+
+      .form-label {
+        width: 100%;
+      }
     }
 
     // Timecode field - right aligned
