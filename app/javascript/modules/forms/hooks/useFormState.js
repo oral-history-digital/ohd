@@ -28,6 +28,14 @@ export function useFormState(initialValues, data, elements) {
     function initValues() {
         const values = { ...initialValues };
         if (data) {
+            // Merge all data properties into form values for editing
+            // Skip internal metadata and nested attributes (handled separately)
+            Object.keys(data).forEach((key) => {
+                if (!['type', 'translations_attributes'].includes(key)) {
+                    values[key] = data[key];
+                }
+            });
+            // Ensure correct ID format for Interviews
             values.id = data.type === 'Interview' ? data.archive_id : data.id;
         }
         return values;
