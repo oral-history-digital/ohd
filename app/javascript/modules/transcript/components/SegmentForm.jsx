@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Form } from 'modules/forms';
 import {
@@ -32,31 +32,43 @@ export default function SegmentForm({
         'invalid_timecode_range'
     );
 
-    if (isLoading) {
-        return <Spinner />;
-    }
+    const [hasTimecodeError, setHasTimecodeError] = useState(false);
+
+    const timecodeValidationHandler = useCallback(
+        (value) => {
+            if (!validateTimecode(value)) {
+                setTimecodeError('invalid_format');
+                setHasTimecodeError(true);
+                return false;
+            }
+            if (
+                !validateTimecodeInRange(
+                    value,
+                    prevSegmentTimecode,
+                    nextSegmentTimecode
+                )
+            ) {
+                setTimecodeError('invalid_timecode_range');
+                setHasTimecodeError(true);
+                return false;
+            }
+            setHasTimecodeError(false);
+            return true;
+        },
+        [prevSegmentTimecode, nextSegmentTimecode]
+    );
+
+    // Validate initial timecode value
+    useEffect(() => {
+        const initialTimecode = segment?.timecode || '';
+        if (initialTimecode) {
+            timecodeValidationHandler(initialTimecode);
+        }
+    }, [segment?.timecode, timecodeValidationHandler]);
 
     const submitHandler = (params) => {
         submitData({ locale, projectId, project }, params);
         onSubmit();
-    };
-
-    const timecodeValidationHandler = (value) => {
-        if (!validateTimecode(value)) {
-            setTimecodeError('invalid_format');
-            return false;
-        }
-        if (
-            !validateTimecodeInRange(
-                value,
-                prevSegmentTimecode,
-                nextSegmentTimecode
-            )
-        ) {
-            setTimecodeError('invalid_timecode_range');
-            return false;
-        }
-        return true;
     };
 
     const formElements = [
@@ -95,15 +107,34 @@ export default function SegmentForm({
         },
     ];
 
-    return (
+    const handleFormChange = (changeData) => {
+        // Notify parent about changes, including validation state
+        if (onChange) {
+            onChange({
+                ...changeData,
+                hasValidationErrors: hasTimecodeError,
+            });
+        }
+    };
+
+    return isLoading ? (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Spinner />
+        </div>
+    ) : (
         <div>
             <Form
                 scope="segment"
                 onSubmit={submitHandler}
                 onCancel={onCancel}
-                onChange={onChange}
+                onChange={handleFormChange}
+                hasValidationErrors={hasTimecodeError}
+                disableIfUnchanged={true}
                 data={segment}
-                values={{ locale: contentLocale }}
+                values={{
+                    locale: contentLocale,
+                    timecode: segment?.timecode || '',
+                }}
                 submitText="submit"
                 elements={formElements}
             />
