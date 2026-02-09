@@ -59,8 +59,8 @@ function EditableSegment({
     const [tabIndex, setTabIndex] = useState(0);
 
     const handleFormChange = useCallback(
-        ({ isDirty }) => {
-            onUnsavedChangesChange?.(isDirty);
+        ({ isDirty, hasValidationErrors }) => {
+            onUnsavedChangesChange?.(isDirty || hasValidationErrors);
             // dirtyFields is available if needed for more granular control
         },
         [onUnsavedChangesChange]
