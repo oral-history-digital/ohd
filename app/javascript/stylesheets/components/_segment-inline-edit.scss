@@ -170,4 +170,79 @@
     direction: rtl;
     text-align: right;
   }
+
+  .SegmentRegistryReferences,
+  .SegmentAnnotations {
+    .SegmentAnnotations-list,
+    .SegmentRegistryReferences-list {
+      display: flex;
+      flex-direction: column;
+      gap: calc($base-unit * 0.75);
+      padding-left: 0;
+      list-style: none;
+      margin: 0;
+    }
+
+    // Annotation items - flex layout for content + buttons
+    ul > div {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: $base-unit;
+      padding: calc($base-unit * 0.75) 0;
+      border-bottom: 1px solid $gray-pale;
+      transition: border-color $transition-duration;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      p {
+        flex: 1;
+        margin: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+    }
+
+    // Button group positioning
+    .flyout-sub-tabs-content-ico {
+      display: flex;
+      gap: calc($base-unit / 3);
+      flex-shrink: 0;
+      align-items: center;
+      margin-top: calc($base-unit / 6);
+    }
+
+    button.Modal-trigger {
+      padding: calc($base-unit / 5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: $gray-dark;
+      transition: all $transition-duration;
+      border-radius: 4px;
+
+      &:hover {
+        color: var(--primary-color);
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+      }
+    }
+
+    .Button--add {
+      margin-top: $base-unit;
+    }
+
+    .Button--label {
+      margin-left: calc($base-unit / 4);
+    }
+  }
 }
