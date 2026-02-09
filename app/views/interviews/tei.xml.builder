@@ -237,7 +237,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
 
       xml.settingDesc do
         interview.oai_locales.each do |locale|
-          if interview.observations(locale)
+          if interview.observations(locale) && interview.observations_public?
             xml.setting "xml:lang": ISO_639.find(locale).alpha3, n: TranslationValue.for('metadata_labels.observations', locale) do
               interview.observations(locale).split("\n").each do |line|
                 xml.p line.strip unless line.strip.blank?

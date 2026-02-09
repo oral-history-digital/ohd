@@ -581,20 +581,18 @@ class Interview < ApplicationRecord
     escaped_text.gsub(/\r?\n/, '~\newline~')
   end
 
-  def index_observations?
-    #public_attributes = properties.fetch(:public_attributes, {})
-    #observations_public = public_attributes.fetch('observations', true)
-    observations_public = properties[:public_attributes]['observations'] if properties[:public_attributes]
+  def observations_public?
+    public_attributes = properties.fetch(:public_attributes, {})
+    public_attributes.fetch('observations', false)
+  end
 
-    if observations_public != true
-      false
+  def index_observations?
+    return false unless observations_public?
+    field = project.metadata_fields.where(name: 'observations').first
+    if field.present?
+      field.use_in_details_view
     else
-      field = project.metadata_fields.where(name: 'observations').first
-      if field.present?
-        field.use_in_details_view
-      else
-        true
-      end
+      true
     end
   end
 
