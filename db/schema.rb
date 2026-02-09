@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -389,7 +389,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
     t.boolean "transcript_coupled", default: true
     t.string "links"
     t.string "publication_date"
-    t.index ["project_id", "updated_at"], name: "index_interviews_on_project_and_updated_at"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end
@@ -580,7 +579,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
     t.integer "registry_references_count", default: 0
     t.integer "title"
     t.boolean "use_pseudonym", default: false, null: false
-    t.index ["project_id", "updated_at"], name: "index_people_on_project_and_updated_at"
   end
 
   create_table "permissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
