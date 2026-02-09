@@ -5,10 +5,20 @@ import { pluralize } from 'modules/strings';
 import {
     DELETE_STATUS_MSG,
     RECEIVE_DATA,
+    RECEIVE_ERROR,
     REMOVE_DATA,
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+
+function receiveError(dataType, id, error) {
+    return {
+        type: RECEIVE_ERROR,
+        dataType,
+        id,
+        error,
+    };
+}
 
 const updateData = (dataType, id, data, nestedDataType, nestedId) => ({
     type: UPDATE_DATA,
@@ -92,28 +102,24 @@ export function submitData(props, params, opts = {}, callback) {
                 dispatch(
                     updateData(pluralizedDataType, id, Object.values(params)[0])
                 );
-            // TODO: Add proper error handling callback for failed requests
-            // When updateStateBeforeSubmit is used, errors should either revert the optimistic update
-            // or trigger an error callback to show validation/server errors to the user
             Loader.put(
                 `${pathBase(props)}/${pluralizedDataType}/${id}`,
                 params,
                 dispatch,
                 receiveData,
-                undefined,
+                (error) => receiveError(pluralizedDataType, id, error),
                 callback
             );
         };
     } else {
         return (dispatch) => {
             //dispatch(addData(params));
-            // TODO: Add proper error handling callback for failed requests
             Loader.post(
                 `${pathBase(props)}/${pluralizedDataType}`,
                 params,
                 dispatch,
                 receiveData,
-                undefined,
+                (error) => receiveError(pluralizedDataType, null, error),
                 callback
             );
         };
