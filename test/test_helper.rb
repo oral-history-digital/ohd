@@ -86,7 +86,7 @@ class ActiveSupport::TestCase
     self.is_a?(::ApplicationSystemTestCase)
   end
 
-  def fill_registration_form(first_name:, last_name:, email:, password:  'Password123!', passkey_required: false, otp_required: false)
+  def fill_registration_form(first_name:, last_name:, email:, password: 'Password123!', passkey_required: false, otp_required: false)
     visit '/'
     click_on 'Registration'
     fill_in 'First Name', with: first_name

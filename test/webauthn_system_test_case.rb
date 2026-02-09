@@ -16,7 +16,7 @@ class WebauthnSystemTestCase < ApplicationSystemTestCase
 
   def add_virtual_authenticator
     return if @virtual_authenticator
-    
+
     begin
       @virtual_authenticator = page.driver.browser.add_virtual_authenticator(
         protocol: 'ctap2',
