@@ -219,7 +219,6 @@ export default function Form({
                             <CancelButton
                                 buttonText={t(nested ? 'discard' : 'cancel')}
                                 handleCancel={onCancel}
-                                isLoading={fetching}
                                 isDisabled={fetching}
                                 size={nested ? 'sm' : undefined}
                             />
