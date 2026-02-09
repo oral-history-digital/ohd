@@ -41,9 +41,9 @@ class PasskeySessionsController < ApplicationController
     db_credential = user.webauthn_credentials.find_by(external_id: webauthn_credential.id)
 
     begin
-      webauthn_credential. verify(
+      webauthn_credential.verify(
         session[:authentication_challenge],
-        public_key:  db_credential.public_key,
+        public_key: db_credential.public_key,
         sign_count: db_credential.sign_count
       )
 
