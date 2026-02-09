@@ -16,7 +16,7 @@ jobs:
       - name: Update packages
         run: sudo apt-get update
       - name: Install pdflatex
-        run: sudo apt-get install texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra
+        run: sudo apt-get install texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra texlive-lang-other texlive-lang-arabic -y
       #- name: List Javas
       #  run: sudo update-java-alternatives --list
       - name: Remove Javas
@@ -79,6 +79,13 @@ jobs:
         with:
           name: capybara-screenshots
           path: tmp/screenshots
+          if-no-files-found: ignore
+      - name: Upload log file on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-logs
+          path: tmp/rails-latex/**/input.*
           if-no-files-found: ignore
 
   # TODO: Enable linting again when issues are fixed

@@ -269,8 +269,8 @@ class ApplicationController < ActionController::Base
                                .first
   end
 
-  def tv(key, locale=I18n.locale)
-    TranslationValue.for(key, locale)
+  def tv(key, locale=I18n.locale, replacements={}, fallback_to_key=false)
+    TranslationValue.for(key, locale, replacements, fallback_to_key)
   end
   helper_method :tv
 

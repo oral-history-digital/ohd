@@ -1,14 +1,14 @@
 h2= t('login')
 
-= form_for resource,
-  as: :user,
+= form_with scope: :user,
   url: "/#{params[:locale]}/users/sign_in",
   data: {\
     controller: "passkey",
     "passkey-no-passkeys-found-value": tv(:no_passkeys_found),
     "passkey-email-missing-value": tv(:email_missing)\
   },
-  html: { class: 'Form default' } do |f|
+  html: { class: 'Form default' },
+  local: true do |f|
 
   = hidden_field_tag :path, @path
   - if @project

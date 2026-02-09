@@ -142,8 +142,8 @@ class BasicsTest < ApplicationSystemTestCase
     within '.SessionButtons' do
       click_on 'Login'
     end
-    fill_in 'Email', with: 'john@example.com'
-    fill_in 'Password', with: 'Password123!'
+    fill_in 'user[email]', with: 'john@example.com'
+    fill_in 'user[password]', with: 'Password123!'
     click_on 'Login'
 
     assert_text 'My Project'

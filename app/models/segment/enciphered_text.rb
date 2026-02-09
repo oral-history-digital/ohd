@@ -28,8 +28,8 @@ module Segment::EncipheredText
     when :subtitle
       text_original.
         # colonia
-        gsub(/<res\s+(.*)>/, hidden_text).                    # e.g. <res bla bla>
-        gsub(/<an\s+(.*)>/, "XXX").                           # e.g. <an bla bla>
+        gsub(/<res\s+(.*?)>/, hidden_text).                    # e.g. <res bla bla>
+        gsub(/<an\s+(.*?)>/, "XXX").                           # e.g. <an bla bla>
         gsub(/<n\(([^>|^(]*?)\)>/, "").                        # <n(1977)>
         gsub(/<i\(([^<|^(]*?)\)>/, "").                              # <i(Batteriewechsel)>
         gsub(/<p\d+>/, "").                                    # <p1>, <p2>, ...
@@ -61,8 +61,8 @@ module Segment::EncipheredText
     when :public
       text_original.
         # colonia
-        gsub(/<res\s+(.*)>/, hidden_text).                    # e.g. <res bla bla>
-        gsub(/<an\s+(.*)>/, "XXX").                           # e.g. <an bla bla>
+        gsub(/<res\s+(.*?)>/, hidden_text).                    # e.g. <res bla bla>
+        gsub(/<an\s+(.*?)>/, "XXX").                           # e.g. <an bla bla>
         gsub(/<n\(([^<|^(]*?)\)>/, '(\1)').                       # <n(1977)>
         #gsub(/<i\(([^<]*)\)>/, "<c(Pause)>").                    # <i(Batteriewechsel)>
         # zwar

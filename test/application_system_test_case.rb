@@ -33,18 +33,4 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     end
   end
 
-  private
-
-  def add_virtual_authenticator
-    return if @virtual_authenticator
-    @virtual_authenticator = page.driver.browser.add_virtual_authenticator(
-      protocol: 'ctap2',
-      transport:  'internal',
-      hasResidentKey: true,
-      hasUserVerification: true,
-      isUserConsenting: true,
-      isUserVerified: true
-    )
-  end
-
 end

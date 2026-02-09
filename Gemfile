@@ -43,7 +43,7 @@ gem 'base64', '~> 0.2.0'
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids'
 gem 'devise'
-gem 'devise-two-factor'
+gem 'rotp'
 gem 'webauthn'
 gem "rqrcode", "~> 3.0"
 gem 'doorkeeper', '~> 5.8.2'
