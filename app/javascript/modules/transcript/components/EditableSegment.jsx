@@ -23,8 +23,10 @@ import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
 import {
     BookmarkSegmentButton,
     Initials,
+    SegmentAnnotations,
     SegmentButtons,
     SegmentForm,
+    SegmentRegistryReferences,
     SegmentText,
 } from './';
 
@@ -128,51 +130,26 @@ function EditableSegment({
     );
 
     // Build tabs array based on permissions
+    // Note: segment is intentionally NOT in dependencies - we want stable tab structure
+    // but the segment prop will flow through to child components on re-render
     const tabs = useMemo(() => {
         const tabsArray = [];
         if (showEditTab) {
             tabsArray.push({
                 id: 'edit',
                 label: t('edit.segment.tab_edit'),
-                content: (
-                    <SegmentForm
-                        locale={locale}
-                        projectId={projectId}
-                        project={project}
-                        contentLocale={contentLocale}
-                        segment={segment}
-                        submitData={(props, params) => {
-                            dispatch(submitData(props, params));
-                        }}
-                        onSubmit={handleEditSubmit}
-                        onCancel={handleEditCancel}
-                        onChange={handleFormChange}
-                        prevSegmentTimecode={prevSegmentTimecode}
-                        nextSegmentTimecode={nextSegmentTimecode}
-                    />
-                ),
             });
         }
         if (showAnnotationsTab) {
             tabsArray.push({
                 id: 'annotations',
                 label: t('edit.segment.tab_annotations'),
-                content: (
-                    <div className="EditableSegment-tabContent">
-                        <p>Annotations UI will be implemented here</p>
-                    </div>
-                ),
             });
         }
         if (showReferencesTab) {
             tabsArray.push({
                 id: 'references',
                 label: t('edit.segment.tab_registry_references'),
-                content: (
-                    <div className="EditableSegment-tabContent">
-                        <p>Registry References UI will be implemented here</p>
-                    </div>
-                ),
             });
         }
         return tabsArray;
@@ -220,12 +197,49 @@ function EditableSegment({
                     </TabList>
 
                     <TabPanels className="SegmentTabs-panels">
-                        {tabs.map((tab) => (
+                        {tabs.map((tab, index) => (
                             <TabPanel
                                 key={tab.id}
                                 className="SegmentTabs-panel"
                             >
-                                {tab.content}
+                                {/* Only render tab content when active to prevent unmounted components from breaking */}
+                                {tabIndex === index && tab.id === 'edit' && (
+                                    <SegmentForm
+                                        locale={locale}
+                                        projectId={projectId}
+                                        project={project}
+                                        contentLocale={contentLocale}
+                                        segment={segment}
+                                        submitData={(props, params) => {
+                                            dispatch(submitData(props, params));
+                                        }}
+                                        onSubmit={handleEditSubmit}
+                                        onCancel={handleEditCancel}
+                                        onChange={handleFormChange}
+                                        prevSegmentTimecode={
+                                            prevSegmentTimecode
+                                        }
+                                        nextSegmentTimecode={
+                                            nextSegmentTimecode
+                                        }
+                                    />
+                                )}
+                                {tabIndex === index &&
+                                    tab.id === 'annotations' && (
+                                        <SegmentAnnotations
+                                            segment={segment}
+                                            contentLocale={contentLocale}
+                                            onCancel={handleEditCancel}
+                                        />
+                                    )}
+                                {tabIndex === index &&
+                                    tab.id === 'references' && (
+                                        <SegmentRegistryReferences
+                                            segment={segment}
+                                            interview={interview}
+                                            onCancel={handleEditCancel}
+                                        />
+                                    )}
                             </TabPanel>
                         ))}
                     </TabPanels>
