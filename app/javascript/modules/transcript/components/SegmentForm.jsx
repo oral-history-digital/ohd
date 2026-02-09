@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Form } from 'modules/forms';
 import {
@@ -31,8 +31,14 @@ export default function SegmentForm({
     const [timecodeError, setTimecodeError] = useState(
         'invalid_timecode_range'
     );
-
     const [hasTimecodeError, setHasTimecodeError] = useState(false);
+    const [hasSpeakerError, setHasSpeakerError] = useState(false);
+
+    const speakerValidationHandler = useCallback((value) => {
+        const isValid = value !== null && value !== undefined && value !== '';
+        setHasSpeakerError(!isValid);
+        return isValid;
+    }, []);
 
     const timecodeValidationHandler = useCallback(
         (value) => {
@@ -58,14 +64,6 @@ export default function SegmentForm({
         [prevSegmentTimecode, nextSegmentTimecode]
     );
 
-    // Validate initial timecode value
-    useEffect(() => {
-        const initialTimecode = segment?.timecode || '';
-        if (initialTimecode) {
-            timecodeValidationHandler(initialTimecode);
-        }
-    }, [segment?.timecode, timecodeValidationHandler]);
-
     const submitHandler = (params) => {
         submitData({ locale, projectId, project }, params);
         onSubmit();
@@ -86,7 +84,9 @@ export default function SegmentForm({
             values: Object.values(people || {}),
             value: segment?.speaker_id,
             withEmpty: true,
+            validate: speakerValidationHandler,
             individualErrorMsg: 'empty',
+            touchOnInvalid: true,
             group: 'secondary',
             labelKey: 'edit.segment.speaker',
         },
@@ -98,6 +98,7 @@ export default function SegmentForm({
             withEmpty: false,
             validate: timecodeValidationHandler,
             individualErrorMsg: timecodeError,
+            touchOnInvalid: true,
             labelKey: 'edit.segment.timecode',
             help: getTimecodeHelpText(
                 t,
@@ -106,16 +107,6 @@ export default function SegmentForm({
             ),
         },
     ];
-
-    const handleFormChange = (changeData) => {
-        // Notify parent about changes, including validation state
-        if (onChange) {
-            onChange({
-                ...changeData,
-                hasValidationErrors: hasTimecodeError,
-            });
-        }
-    };
 
     return isLoading ? (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -127,12 +118,13 @@ export default function SegmentForm({
                 scope="segment"
                 onSubmit={submitHandler}
                 onCancel={onCancel}
-                onChange={handleFormChange}
-                hasValidationErrors={hasTimecodeError}
+                onChange={onChange}
+                hasValidationErrors={hasTimecodeError || hasSpeakerError}
                 disableIfUnchanged={true}
                 data={segment}
                 values={{
                     locale: contentLocale,
+                    speaker_id: segment?.speaker_id,
                     timecode: segment?.timecode || '',
                 }}
                 submitText="submit"

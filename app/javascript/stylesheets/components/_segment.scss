@@ -51,7 +51,12 @@ $segment-icon-width: 2 * $base-unit;
 .Segment-timecode {
   font-size: 0.75rem;
   color: $gray-medium;
-  line-height: 1.5rem;
+  line-height: $base-unit;
+}
+
+/* If timecode follows speaker initials, reduce line height to visually group them */
+.Segment--withSpeaker .Segment-timecode {
+  line-height: calc($base-unit * 2 / 3);
 }
 
 .Segment-text {
