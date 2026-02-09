@@ -45,6 +45,7 @@ export default function Form({
     fetching,
     formClasses,
     formId,
+    hasValidationErrors = false,
     helpTextCode,
     index,
     nested,
@@ -55,6 +56,7 @@ export default function Form({
     onDismissNotification,
     onSubmit,
     onSubmitCallback,
+    disableIfUnchanged = false,
     scope,
     submitScope,
     submitText,
@@ -127,6 +129,28 @@ export default function Form({
             />
         ));
     }
+
+    // Determine why submit button should be disabled and appropriate help text
+    function getDisabledState() {
+        if (fetching) {
+            return { disabled: true, helpText: null };
+        }
+        if (hasValidationErrors) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.fix_validation_errors'),
+            };
+        }
+        if (submitted && !valid()) {
+            return { disabled: true, helpText: t('edit.form.fix_errors') };
+        }
+        if (disableIfUnchanged && !isDirty) {
+            return { disabled: true, helpText: t('edit.form.no_changes') };
+        }
+        return { disabled: false, helpText: null };
+    }
+
+    const submitButtonState = getDisabledState();
 
     function elementComponent(element) {
         const preparedProps = { ...element };
@@ -235,10 +259,27 @@ export default function Form({
                                 submitText || (nested ? 'apply' : 'submit')
                             )}
                             isLoading={fetching}
-                            isDisabled={fetching}
+                            isDisabled={submitButtonState.disabled}
+                            title={submitButtonState.helpText}
                             size={nested ? 'sm' : undefined}
                         />
                     </div>
+                    {!fetching && submitButtonState.helpText && (
+                        <div
+                            className="Form-footer-hint-container"
+                            style={{ textAlign: 'right' }}
+                        >
+                            <small
+                                className={classNames('Form-footer-hint', {
+                                    'Form-footer-hint--error':
+                                        hasValidationErrors ||
+                                        (submitted && !valid()),
+                                })}
+                            >
+                                {submitButtonState.helpText}
+                            </small>
+                        </div>
+                    )}
                 </div>
             </form>
         </div>
@@ -271,6 +312,7 @@ Form.propTypes = {
     fetching: PropTypes.bool,
     formClasses: PropTypes.string,
     formId: PropTypes.string,
+    hasValidationErrors: PropTypes.bool,
     helpTextCode: PropTypes.string,
     index: PropTypes.number,
     nested: PropTypes.bool,
@@ -289,6 +331,7 @@ Form.propTypes = {
     onDismissNotification: PropTypes.func,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
+    disableIfUnchanged: PropTypes.bool,
     scope: PropTypes.string,
     submitScope: PropTypes.string,
     submitText: PropTypes.string,
