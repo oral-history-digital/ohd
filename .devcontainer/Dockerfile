@@ -6,9 +6,13 @@ ARG NODE_VERSION=20
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=1000
+# NOTE: System package dependencies below must stay in sync with:
+#       .github/workflows/rubyonrails.yml (apt-get install line)
+#       Keep texlive packages and other system deps identical across both
 RUN groupadd --gid $USER_GID $USERNAME \
   && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
   && apt-get update && apt-get install -y sudo xvfb x11vnc novnc websockify wget gnupg unzip curl \
+    texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra texlive-lang-other texlive-lang-arabic \
   && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get update && apt-get install -y google-chrome-stable \
