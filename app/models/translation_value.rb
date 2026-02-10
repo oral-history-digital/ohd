@@ -55,4 +55,8 @@ class TranslationValue < ApplicationRecord
   def self.available?(key, locale)
     !!find_by(key: key)&.value(locale)
   end
+
+  def self.key_like(key_part)
+    where("translation_values.key LIKE ?", "%#{key_part}%")
+  end
 end
