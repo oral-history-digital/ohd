@@ -18,7 +18,8 @@ export default function MediaPreview() {
 
     function imageAvailable() {
         return (
-            (project.show_preview_img || projectAccessGranted) &&
+            (project.show_preview_img ||
+                interview.workflow_state === 'public') &&
             interview.still_url &&
             !loadingError
         );
