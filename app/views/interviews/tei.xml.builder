@@ -29,9 +29,9 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
 
         interview.contributors.uniq.each do |person|
           contribution_type_codes = interview.
-            contribution_type_codes_by_person_id(only_public: true)[person.id]
-          anonymous = !interview.project.fullname_on_landing_page &&
-            (%w(interviewee further_interviewee) & contribution_type_codes).any?
+            contribution_type_codes_by_person_id[person.id]
+          #anonymous = !interview.project.fullname_on_landing_page &&
+            #(%w(interviewee further_interviewee) & contribution_type_codes).any?
 
           next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
 
@@ -44,7 +44,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
               attributes = interview.speaking_people.include?(person) ? {corresp: "p#{person.id}"} : {}
               xml.persName attributes do
                 xml.forename person&.first_name_used(locale)
-                xml.surname person&.last_name_used(locale, anonymous: anonymous)
+                xml.surname person&.last_name_used(locale)#, anonymous: anonymous)
               end
             end
           end
@@ -181,9 +181,9 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
         interview.speaking_people.each do |person|
 
           contribution_type_codes = interview.
-            contribution_type_codes_by_person_id(only_public: true)[person.id]
-          anonymous = !interview.project.fullname_on_landing_page &&
-            (%w(interviewee further_interviewee) & contribution_type_codes).any?
+            contribution_type_codes_by_person_id[person.id]
+          #anonymous = !interview.project.fullname_on_landing_page &&
+            #(%w(interviewee further_interviewee) & contribution_type_codes).any?
 
           next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
 
@@ -191,7 +191,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
             xml.idno person.id.to_s, type: "OHD-ID"
             xml.persName do
               xml.forename person&.first_name_used(locale)
-              xml.surname person&.last_name_used(locale, anonymous: anonymous)
+              xml.surname person&.last_name_used(locale)#, anonymous: anonymous)
             end
             interview.oai_locales.each do |locale|
               contribution_type_codes.each do |contribution_type_code|
@@ -201,7 +201,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
               end
             end
 
-            unless anonymous
+            #unless anonymous
               place_of_birth = person&.place_of_birth
               date_of_birth = person&.date_of_birth
               if date_of_birth || place_of_birth
@@ -246,7 +246,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                     "xml:lang": ISO_639.find(locale).alpha3
                 end
               end
-            end
+            #end # anonymous
           end
         end
       end

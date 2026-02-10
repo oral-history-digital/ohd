@@ -1009,19 +1009,15 @@ class Interview < ApplicationRecord
   end
 
   # returns a hash of contribution_type codes indexed by person_id for all contributions of the interview
-  def contribution_type_codes_by_person_id(only_public: true)
+  def contribution_type_codes_by_person_id
     Rails.cache.fetch([
       "contribution_type_codes_by_person_id_for_interview",
       archive_id,
-      "only_public",
-      only_public,
       updated_at
     ].join("_")) do
       contributions.includes(:contribution_type).inject({}) do |mem, c|
         mem[c.person_id] ||= []
-        if !only_public || c.contribution_type.display_on_landing_page
-          mem[c.person_id] << c.contribution_type.code
-        end
+        mem[c.person_id] << c.contribution_type.code
         mem
       end
     end
