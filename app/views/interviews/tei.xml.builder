@@ -35,8 +35,8 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
 
           next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
 
-          xml.respStmt do
-            contribution_type_codes.each do |contribution_type_code|
+          contribution_type_codes.each do |contribution_type_code|
+            xml.respStmt do
               interview.project.available_locales.each do |locale|
                 xml.resp TranslationValue.for("contributions.#{contribution_type_code}", locale).strip,
                   "xml:lang": ISO_639.find(locale).alpha3
@@ -221,7 +221,9 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                 if person&.has_biography?(locale) && person&.biography_public?
                   xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
                     person&.biographical_entries.each do |biographical_entry|
-                      xml.p biographical_entry.text(locale)
+                      biographical_entry.text(locale).split(/[\n\r]+/).each do |line|
+                        xml.p line.strip unless line.strip.blank?
+                      end
                     end
                   end
                 end
@@ -284,31 +286,6 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
 
   xml.text "xml:lang": interview.alpha3 do
     
-    # headings
-    xml.spnGrp type: "heading" do
-      heading_alpha3s = interview.heading_alpha3s
-      interview.segments.with_heading.each do |segment|
-        heading_alpha3s.each do |heading_alpha3|
-          if segment.mainheading(heading_alpha3).present? ||
-              segment.mainheading("#{heading_alpha3}-public").present?
-            xml.span segment.mainheading(heading_alpha3) || segment.mainheading(heading_alpha3 + "-public"),
-              "xml:id": "mh#{segment.id}_#{heading_alpha3}",
-              "xml:lang": heading_alpha3,
-              from: "T#{segment.tape.number}_S#{segment.id}",
-              to: "T#{segment.tape.number}_S#{segment.id}"
-          end
-          if segment.subheading(heading_alpha3).present? ||
-              segment.subheading("#{heading_alpha3}-public").present?
-            xml.span segment.subheading(heading_alpha3) || segment.subheading(heading_alpha3 + "-public"),
-              "xml:id": "sh#{segment.id}_#{heading_alpha3}",
-              "xml:lang": heading_alpha3,
-              from: "T#{segment.tape.number}_S#{segment.id}",
-              to: "T#{segment.tape.number}_S#{segment.id}"
-          end
-        end
-      end
-    end
-
     interview.tapes.each do |tape|
       xml.timeline unit: "s", corresp: "#{interview.media_type}_#{tape.number}" do
         xml.when "xml:id": "T#{tape.number}_START", interval: "0.0", since: "T#{tape.number}_START"
@@ -411,6 +388,31 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
         end
       end
     end
-
   end
+
+  # headings
+  xml.spanGrp type: "heading" do
+    heading_alpha3s = interview.heading_alpha3s
+    interview.segments.with_heading.each do |segment|
+      heading_alpha3s.each do |heading_alpha3|
+        if segment.mainheading(heading_alpha3).present? ||
+            segment.mainheading("#{heading_alpha3}-public").present?
+          xml.span segment.mainheading(heading_alpha3) || segment.mainheading(heading_alpha3 + "-public"),
+            "xml:id": "mh#{segment.id}_#{heading_alpha3}",
+            "xml:lang": heading_alpha3,
+            from: "T#{segment.tape.number}_S#{segment.id}",
+            to: "T#{segment.tape.number}_S#{segment.id}"
+        end
+        if segment.subheading(heading_alpha3).present? ||
+            segment.subheading("#{heading_alpha3}-public").present?
+          xml.span segment.subheading(heading_alpha3) || segment.subheading(heading_alpha3 + "-public"),
+            "xml:id": "sh#{segment.id}_#{heading_alpha3}",
+            "xml:lang": heading_alpha3,
+            from: "T#{segment.tape.number}_S#{segment.id}",
+            to: "T#{segment.tape.number}_S#{segment.id}"
+        end
+      end
+    end
+  end
+
 end
