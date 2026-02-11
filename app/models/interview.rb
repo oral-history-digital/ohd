@@ -531,6 +531,14 @@ class Interview < ApplicationRecord
     end.uniq
   end
 
+  def heading_alpha3s
+    project.available_locales.select do |l|
+      has_heading?(ISO_639.find(l).try(:alpha3) || l)
+    end.map do |l|
+      ISO_639.find(l).try(:alpha3) || l
+    end
+  end
+
   def has_transcript?(locale)
     segment_count = segments
       .joins(:translations)

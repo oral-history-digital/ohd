@@ -283,6 +283,32 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
   end
 
   xml.text "xml:lang": interview.alpha3 do
+    
+    # headings
+    xml.spnGrp type: "heading" do
+      heading_alpha3s = interview.heading_alpha3s
+      interview.segments.with_heading.each do |segment|
+        heading_alpha3s.each do |heading_alpha3|
+          if segment.mainheading(heading_alpha3).present? ||
+              segment.mainheading("#{heading_alpha3}-public").present?
+            xml.span segment.mainheading(heading_alpha3) || segment.mainheading(heading_alpha3 + "-public"),
+              "xml:id": "mh#{segment.id}_#{heading_alpha3}",
+              "xml:lang": heading_alpha3,
+              from: "T#{segment.tape.number}_S#{segment.id}",
+              to: "T#{segment.tape.number}_S#{segment.id}"
+          end
+          if segment.subheading(heading_alpha3).present? ||
+              segment.subheading("#{heading_alpha3}-public").present?
+            xml.span segment.subheading(heading_alpha3) || segment.subheading(heading_alpha3 + "-public"),
+              "xml:id": "sh#{segment.id}_#{heading_alpha3}",
+              "xml:lang": heading_alpha3,
+              from: "T#{segment.tape.number}_S#{segment.id}",
+              to: "T#{segment.tape.number}_S#{segment.id}"
+          end
+        end
+      end
+    end
+
     interview.tapes.each do |tape|
       xml.timeline unit: "s", corresp: "#{interview.media_type}_#{tape.number}" do
         xml.when "xml:id": "T#{tape.number}_START", interval: "0.0", since: "T#{tape.number}_START"
