@@ -41,7 +41,9 @@ const Loader = {
                         'loading json from ' + url + ' failed: ' + error
                     );
                     console.error('original error: ' + error.original);
-                    dispatch(callback(error));
+                    if (typeof callback === 'function') {
+                        dispatch(callback(error));
+                    }
                 } else if (res) {
                     if (res.error) {
                         console.error(
@@ -177,7 +179,9 @@ const Loader = {
                 console.error('loading json from ' + url + ' failed: ' + error);
                 console.error('original error: ' + error.original);
                 console.error('url: ' + url);
-                dispatch(errorCallback(error));
+                if (typeof errorCallback === 'function') {
+                    dispatch(errorCallback(error));
+                }
             } else if (res) {
                 let json = JSON.parse(res.text);
                 if (res.error) {
