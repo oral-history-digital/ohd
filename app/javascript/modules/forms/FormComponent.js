@@ -60,10 +60,25 @@ export default function FormComponent({
     const { t } = useI18n();
 
     function initValues() {
-        const values = { ...initialValues };
+        let values = { ...initialValues };
+
+        // If no initial values provided, extract from data based on elements
+        if (!initialValues && data && elements) {
+            elements.forEach((element) => {
+                if (
+                    element.attribute &&
+                    data[element.attribute] !== undefined
+                ) {
+                    values[element.attribute] = data[element.attribute];
+                }
+            });
+        }
+
+        // Always add id from data
         if (data) {
             values.id = data.type === 'Interview' ? data.archive_id : data.id;
         }
+
         return values;
     }
 
