@@ -57,9 +57,9 @@ export default function EditData({
     ) : (
         <form className="default">
             <dl className="DescriptionList">
-                {formElements.map((element) => (
+                {formElements.map((element, index) => (
                     <div
-                        key={element.key}
+                        key={element.key || element.attribute || index}
                         className={`DescriptionList-group ${element.className || ''}`}
                     >
                         <dt className="DescriptionList-term">
