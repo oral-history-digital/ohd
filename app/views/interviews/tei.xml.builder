@@ -218,10 +218,10 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                 end
               end
               interview.oai_locales.each do |locale|
-                if person&.has_biography?(locale) && !person&.biography_public?
+                if person&.has_biography?(locale) && person&.biography_public?
                   xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
                     person&.biographical_entries.each do |biographical_entry|
-                      xml.text! biographical_entry.text(locale)
+                      xml.p biographical_entry.text(locale)
                     end
                   end
                 end
@@ -232,7 +232,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                   link = person&.description(:locale)[/.*(www|http:|https:+[^\s]+[\w])/, 1]
                   if text.present? || link.present?
                     xml.note n: TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale), "xml:lang": ISO_639.find(locale).alpha3 do
-                      xml.p if text.present?
+                      xml.p text if text.present?
                       xml.ref link, target: link if link.present?
                     end
                   end
