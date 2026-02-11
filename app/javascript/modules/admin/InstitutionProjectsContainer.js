@@ -3,6 +3,7 @@ import {
     fetchData,
     getCurrentProject,
     getInstitutions,
+    getStatuses,
     submitData,
 } from 'modules/data';
 import { connect } from 'react-redux';
@@ -12,12 +13,15 @@ import DataList from './DataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
+
     return {
         editView: true,
         data: project.institution_projects,
         outerScope: 'project',
         outerScopeId: project.id,
         scope: 'institution_project',
+        statuses: getStatuses(state),
+        otherDataToLoad: ['institution'],
         detailsAttributes: ['name', 'shortname'],
         initialFormValues: { project_id: project.id },
         formElements: [
