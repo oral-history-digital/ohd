@@ -77,6 +77,14 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     };
 }
 
+const defaultErrorHandler = (error) => {
+    console.error('Request failed:', error);
+    return {
+        type: 'ERROR',
+        error: error,
+    };
+};
+
 export function submitData(props, params, opts = {}, callback) {
     let dataType = Object.keys(params)[0];
     let pluralizedDataType = pluralize(dataType);
@@ -97,7 +105,7 @@ export function submitData(props, params, opts = {}, callback) {
                 params,
                 dispatch,
                 receiveData,
-                undefined,
+                defaultErrorHandler,
                 callback
             );
         };
@@ -110,7 +118,7 @@ export function submitData(props, params, opts = {}, callback) {
                 params,
                 dispatch,
                 receiveData,
-                undefined,
+                defaultErrorHandler,
                 callback
             );
         };
