@@ -1,14 +1,21 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
+import { submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
+import { useDispatch } from 'react-redux';
 
-import EditProjectAccessConfigAttributesContainer from './EditProjectAccessConfigAttributesContainer';
+import EditData from './EditData';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
-export default function EditProjectConfig() {
+export default function EditProjectAccessConfig() {
     const { t } = useI18n();
     const { project } = useProject();
+    const dispatch = useDispatch();
+
+    function submitHandler(props, params, opts, callback) {
+        dispatch(submitData(props, params, opts, callback));
+    }
 
     const formElements = [];
     const DEFAULT_FORM_ELEMENTS = {
@@ -46,7 +53,7 @@ export default function EditProjectConfig() {
     };
 
     if (project) {
-        Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute, value]) => {
+        Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute]) => {
             formElements.push({
                 elementType: 'extra',
                 tag: 'h3',
@@ -100,9 +107,12 @@ export default function EditProjectConfig() {
                     <h1 className="registry-entries-title">
                         {t(`edit.project.access_config`)}
                     </h1>
-                    <EditProjectAccessConfigAttributesContainer
+                    <EditData
                         data={project.access_config}
+                        scope="access_config"
+                        helpTextCode="access_config_form"
                         formElements={formElements}
+                        submitData={submitHandler}
                     />
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
