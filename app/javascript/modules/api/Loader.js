@@ -41,7 +41,9 @@ const Loader = {
                         'loading json from ' + url + ' failed: ' + error
                     );
                     console.error('original error: ' + error.original);
-                    dispatch(callback(error));
+                    if (typeof callback === 'function') {
+                        dispatch(callback(error));
+                    }
                 } else if (res) {
                     if (res.error) {
                         console.error(
