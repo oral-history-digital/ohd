@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 
 import EditData from './EditData';
 import EditViewOrRedirect from './EditViewOrRedirect';
+import { getInitialFormValuesFromElements } from './utils/formUtils';
+import { transformBracketNotationToNested } from './utils/transformBracketNotation';
 
 export default function EditProjectAccessConfig() {
     const { t } = useI18n();
@@ -14,7 +16,9 @@ export default function EditProjectAccessConfig() {
     const dispatch = useDispatch();
 
     function submitHandler(props, params, opts, callback) {
-        dispatch(submitData(props, params, opts, callback));
+        // Transform bracket notation attributes into nested objects
+        const transformedParams = transformBracketNotationToNested(params);
+        dispatch(submitData(props, transformedParams, opts, callback));
     }
 
     const formElements = [];
@@ -110,6 +114,9 @@ export default function EditProjectAccessConfig() {
                     <EditData
                         data={project.access_config}
                         scope="access_config"
+                        initialFormValues={getInitialFormValuesFromElements(
+                            formElements
+                        )}
                         helpTextCode="access_config_form"
                         formElements={formElements}
                         submitData={submitHandler}
