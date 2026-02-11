@@ -26,18 +26,25 @@ export function useFormState(initialValues, data, elements) {
      * For Interview entities, uses archive_id instead of id.
      */
     function initValues() {
-        const values = { ...initialValues };
-        if (data) {
-            // Merge all data properties into form values for editing
-            // Skip internal metadata and nested attributes (handled separately)
-            Object.keys(data).forEach((key) => {
-                if (!['type', 'translations_attributes'].includes(key)) {
-                    values[key] = data[key];
+        let values = { ...initialValues };
+
+        // If no initial values provided, extract from data based on elements
+        if (!initialValues && data && elements) {
+            elements.forEach((element) => {
+                if (
+                    element.attribute &&
+                    data[element.attribute] !== undefined
+                ) {
+                    values[element.attribute] = data[element.attribute];
                 }
             });
-            // Ensure correct ID format for Interviews
+        }
+
+        // Ensure correct ID format for Interviews
+        if (data) {
             values.id = data.type === 'Interview' ? data.archive_id : data.id;
         }
+
         return values;
     }
 
