@@ -1,6 +1,8 @@
 import request from 'superagent';
 import noCache from 'superagent-no-cache';
 
+import { flattenNestedObject } from './flattenNestedObject';
+
 const Loader = {
     getJson: function (url, queryParams, dispatch, callback) {
         request
@@ -158,10 +160,12 @@ const Loader = {
                             }
                         });
                     } else if (typeof params[scope][param] === 'object') {
-                        // value is a hash/ object
-                        req.field(
-                            `${scope}[${param}]`,
-                            JSON.stringify(params[scope][param])
+                        // value is a hash/object - flatten it using helper function
+                        flattenNestedObject(
+                            req,
+                            scope,
+                            param,
+                            params[scope][param]
                         );
                     } else {
                         // normal value
