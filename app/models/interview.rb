@@ -531,6 +531,14 @@ class Interview < ApplicationRecord
     end.uniq
   end
 
+  def heading_alpha3s
+    project.available_locales.select do |l|
+      has_heading?(ISO_639.find(l).try(:alpha3) || l)
+    end.map do |l|
+      ISO_639.find(l).try(:alpha3) || l
+    end
+  end
+
   def has_transcript?(locale)
     segment_count = segments
       .joins(:translations)
@@ -1008,4 +1016,18 @@ class Interview < ApplicationRecord
     Person.where(id: segments.pluck(:speaker_id).uniq).compact
   end
 
+  # returns a hash of contribution_type codes indexed by person_id for all contributions of the interview
+  def contribution_type_codes_by_person_id
+    Rails.cache.fetch([
+      "contribution_type_codes_by_person_id_for_interview",
+      archive_id,
+      updated_at
+    ].join("_")) do
+      contributions.includes(:contribution_type).inject({}) do |mem, c|
+        mem[c.person_id] ||= []
+        mem[c.person_id] << c.contribution_type.code
+        mem
+      end
+    end
+  end
 end

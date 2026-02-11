@@ -47,7 +47,7 @@ export default function DownloadLinks({ archiveId, numTapes, interview }) {
                 )}
                 {dataLink(
                     `${pathBase}/interviews/${archiveId}/tei.xml`,
-                    `${t('activerecord.models.metadata_field.other')} (TEI)`
+                    `${t('transcript')}/${t('activerecord.models.metadata_field.other')} (tei-xml)`
                 )}
                 {dataLink(
                     `${pathBase}/interviews/${archiveId}/export_all.zip`,

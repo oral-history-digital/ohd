@@ -19,12 +19,14 @@ class EditTableImport
       csv = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS.merge(col_sep: ";") })
     end
 
+    sheet = csv.sheet('default').parse(interview.edit_table_headers(locale))
+
     unless only_references
       interview.tapes.destroy_all
       interview.find_or_create_tapes(csv.cell(csv.last_row, 1).to_i)
     end
 
-    csv.sheet('default').parse(interview.edit_table_headers(locale))
+    sheet
   end
 
   def process
