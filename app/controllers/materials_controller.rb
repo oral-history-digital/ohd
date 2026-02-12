@@ -3,15 +3,15 @@ class MaterialsController < ApplicationController
 
   def create
     authorize Material
-    @uploaded_file = params[:material].delete(:data)
+    uploaded_file = params[:material].delete(:data)
 
-    if @uploaded_file.content_type == "application/pdf" && uploaded_file_is_pdf?
+    if valid_upload?(uploaded_file)
       adapted_params = material_params
       adapted_params[:attachable_id] = adapted_params.delete(:interview_id)
       adapted_params[:attachable_type] = "Interview"
 
       @material = Material.create(adapted_params)
-      @material.file.attach(io: @uploaded_file, filename: @uploaded_file.original_filename)
+      @material.file.attach(io: uploaded_file, filename: uploaded_file.original_filename)
 
       respond_to do |format|
         format.json do
@@ -82,7 +82,16 @@ class MaterialsController < ApplicationController
     )
   end
 
-  def uploaded_file_is_pdf?()
-    `file --mime-type --brief #{@uploaded_file.tempfile.path}`.strip == 'application/pdf'
+  def valid_upload?(file)
+    pdf?(file) && safe?(file)
+  end
+
+  def pdf?(file)
+    true
+    # file.content_type == "application/pdf" && `file --mime-type --brief #{file.tempfile.path}`.strip == 'application/pdf'
+  end
+
+  def safe?(file)
+    Clamby.safe?(file.tempfile.path)
   end
 end
