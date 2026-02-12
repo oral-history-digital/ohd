@@ -1,4 +1,6 @@
 require "test_helper"
+require_relative "system/helpers/form_testing_helper"
+require_relative "system/helpers/form_fields_discovery_helper"
 
 Capybara.configure do |c|
   url = URI.parse(OHD_DOMAIN)
@@ -12,6 +14,9 @@ end
 Selenium::WebDriver.logger.level = :error
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  include FormTestingHelper
+  include FormFieldsDiscoveryHelper
+
   if ENV['HEADLESS'] == 'true'
     driven_by :selenium_headless, using: :chrome, screen_size: [1400, 1400] do |options|
       options.add_argument("--user-data-dir=#{Dir.mktmpdir}")
