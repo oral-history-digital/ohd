@@ -27,6 +27,8 @@ RUN mkdir -p /etc/apt/keyrings \
     default-mysql-client \
     libmariadb-dev \
     default-jdk-headless \
+    clamav \
+    clamav-daemon \
     texlive-base \
     texlive-xetex \
     texlive-lang-all \

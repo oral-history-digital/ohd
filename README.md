@@ -103,6 +103,7 @@ For more detailed information about the Dev Container setup, see [.devcontainer/
 - Node.js >=18
 - yarn
 - Java Runtime Environment (Version 8)
+- ClamAV antimalware software
 - optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
 
 ### Application Setup
@@ -115,6 +116,7 @@ on Linux.
     ```bash
     sudo apt install temurin-8-jdk-amd64
     sudo update-java-alternatives --set temurin-8-jdk-amd64
+    sudo apt install clamav clamav-daemon
     sudo apt install texlive-base texlive-xetex texlive-lang-all fonts-freefont-ttf fonts-noto
     ```
 
