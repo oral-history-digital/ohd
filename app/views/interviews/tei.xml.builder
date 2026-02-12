@@ -387,31 +387,40 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
           end
         end
       end
-    end
-  end
 
-  # headings
-  xml.spanGrp type: "heading" do
-    heading_alpha3s = interview.heading_alpha3s
-    interview.segments.with_heading.each do |segment|
-      heading_alpha3s.each do |heading_alpha3|
-        if segment.mainheading(heading_alpha3).present? ||
-            segment.mainheading("#{heading_alpha3}-public").present?
-          xml.span segment.mainheading(heading_alpha3) || segment.mainheading(heading_alpha3 + "-public"),
-            "xml:id": "mh#{segment.id}_#{heading_alpha3}",
-            "xml:lang": heading_alpha3,
-            from: "T#{segment.tape.number}_S#{segment.id}",
-            to: "T#{segment.tape.number}_S#{segment.id}"
-        end
-        if segment.subheading(heading_alpha3).present? ||
-            segment.subheading("#{heading_alpha3}-public").present?
-          xml.span segment.subheading(heading_alpha3) || segment.subheading(heading_alpha3 + "-public"),
-            "xml:id": "sh#{segment.id}_#{heading_alpha3}",
-            "xml:lang": heading_alpha3,
-            from: "T#{segment.tape.number}_S#{segment.id}",
-            to: "T#{segment.tape.number}_S#{segment.id}"
+      heading_alpha3s = interview.heading_alpha3s
+
+      # mainheadings
+      xml.spanGrp type: "heading" do
+        interview.segments.with_heading.each do |segment|
+          heading_alpha3s.each do |heading_alpha3|
+            if segment.mainheading(heading_alpha3).present? ||
+                segment.mainheading("#{heading_alpha3}-public").present?
+              xml.span segment.mainheading(heading_alpha3) || segment.mainheading(heading_alpha3 + "-public"),
+                "xml:id": "mh#{segment.id}_#{heading_alpha3}",
+                "xml:lang": heading_alpha3,
+                from: "T#{segment.tape.number}_S#{segment.id}",
+                to: "T#{segment.tape.number}_S#{segment.id}"
+            end
+          end
         end
       end
+      # subheadings
+      xml.spanGrp type: "sub-heading" do
+        interview.segments.with_heading.each do |segment|
+          heading_alpha3s.each do |heading_alpha3|
+            if segment.subheading(heading_alpha3).present? ||
+                segment.subheading("#{heading_alpha3}-public").present?
+              xml.span segment.subheading(heading_alpha3) || segment.subheading(heading_alpha3 + "-public"),
+                "xml:id": "sh#{segment.id}_#{heading_alpha3}",
+                "xml:lang": heading_alpha3,
+                from: "T#{segment.tape.number}_S#{segment.id}",
+                to: "T#{segment.tape.number}_S#{segment.id}"
+            end
+          end
+        end
+      end
+
     end
   end
 
