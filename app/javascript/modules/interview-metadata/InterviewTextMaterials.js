@@ -1,5 +1,5 @@
 import { AuthShowContainer, useAuthorization } from 'modules/auth';
-import { SingleValueWithFormContainer, StatusForm } from 'modules/forms';
+import { SingleValueWithForm, StatusForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -60,7 +60,7 @@ export default function InterviewTextMaterials({
                 </p>
             )}
             {editView && (
-                <SingleValueWithFormContainer
+                <SingleValueWithForm
                     obj={interview}
                     collapse
                     elementType="textarea"
