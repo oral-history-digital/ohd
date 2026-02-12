@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
-import { getArchiveId } from 'modules/archive';
-import { useIsEditor } from 'modules/archive';
+import { getArchiveId, useIsEditor } from 'modules/archive';
 import {
     fetchData,
     getCurrentInterview,
@@ -13,7 +12,12 @@ import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
 import { isSegmentActive } from 'modules/interview-helpers';
-import { getCurrentTape, getIsIdle, getMediaTime } from 'modules/media-player';
+import {
+    getCurrentTape,
+    getIsIdle,
+    getMediaTime,
+    togglePlayerWidth,
+} from 'modules/media-player';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -64,6 +68,7 @@ export default function Transcript({
             alert(t('modules.transcript.unsaved_changes_warning'));
             return false;
         }
+        togglePlayerWidth(true); // Switch to compact player when editing starts
         setEditingSegmentId(segmentId);
         setEditingSegmentHasUnsavedChanges(false);
         return true;

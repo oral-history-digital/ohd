@@ -15,5 +15,6 @@ export {
 
 export * from './hooks';
 export * from './utils';
+export * from './plugins';
 
 export { default as MediaPlayer } from './components/MediaPlayer';

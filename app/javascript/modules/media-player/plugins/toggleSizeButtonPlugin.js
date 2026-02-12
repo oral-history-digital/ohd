@@ -18,7 +18,7 @@ const isCompactViewport = () => isMobile() || window.innerWidth < SCREEN_M;
 /**
  * Toggle player size by manipulating video max-width
  */
-const togglePlayerWidth = (isCompact) => {
+export const togglePlayerWidth = (isCompact) => {
     const maxWidth = isCompact ? VIDEO_MAX_WIDTH_SMALL : VIDEO_MAX_WIDTH_MEDIUM;
     document.documentElement.style.setProperty(
         '--media-player-video-max-width',
