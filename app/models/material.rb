@@ -15,8 +15,7 @@ class Material < ApplicationRecord
 
   def scan_for_viruses
     return unless self.attachment_changes['file']
-
-    path = self.attachment_changes['file'].attachable.tempfile.path
+    path = self.attachment_changes['file'].attachable[:io].tempfile.path
     Clamby.safe?(path)
   end
 end
