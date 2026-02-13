@@ -108,6 +108,7 @@ module DataHelper
     NormDataProvider.create name: 'osm', url_without_id: 'https://www.openstreetmap.org/'
     NormDataProvider.create name: "wikidata", url_without_id: "http://www.wikidata.org/entity/"
     NormDataProvider.create name: "geonames", url_without_id: "https://www.geonames.org/"
+    NormDataProvider.create name: "factgrid", url_without_id: "https://database.factgrid.de/wiki/Item:"
 
     institution = Institution.create!(
       name: "Test Institute",

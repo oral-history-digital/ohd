@@ -42,7 +42,10 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               list_priority: false,
               project_id: project.id,
               gnd_id: gnd_id,
-              osm_id: osm_id
+              osm_id: osm_id,
+              wikidata_id: wikidata_id,
+              geonames_id: geonames_id,
+              factgrid_id: factgrid_id
             }
             parent = nil
 
