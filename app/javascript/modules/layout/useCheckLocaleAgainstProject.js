@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { setLocale } from 'modules/archive';
+import { fetchTranslationsForLocale, setLocale } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { pathBase, useProject } from 'modules/routes';
 import { useDispatch } from 'react-redux';
@@ -61,14 +61,29 @@ export default function useCheckLocaleAgainstProject() {
     }
 
     function redirectToDefaultLocale() {
-        const newPathBase =
-            pathBase({ projectId, locale: project.default_locale, project }) +
-            '/';
+        const newPathBase = pathBase({
+            projectId,
+            locale: project.default_locale,
+            project,
+        });
         const newPath = location.pathname.replace(
             MATCH_PATH_BASE_PART,
-            newPathBase
+            newPathBase + '/'
         );
-        navigate(newPath, { replace: true });
-        dispatch(setLocale(locale));
+
+        dispatch(setLocale(project.default_locale));
+        dispatch(
+            fetchTranslationsForLocale(project.default_locale, newPathBase)
+        )
+            .then(() => {
+                // Only navigate and set locale after translations are loaded
+                navigate(newPath, { replace: true });
+            })
+            .catch((error) => {
+                console.error(
+                    'Failed to load translations for locale change:',
+                    error
+                );
+            });
     }
 }
