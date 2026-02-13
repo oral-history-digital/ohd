@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import classNames from 'classnames';
 import { Annotations } from 'modules/annotations';
 import { Fetch } from 'modules/data';
@@ -69,6 +67,7 @@ export default function EditTableCell({ type, segment, originalLocale }) {
             </div>
         );
     } else if ('registry_references') {
+        // TODO: Is this intentional? Should it be type === 'registry_references'?
         return (
             <div
                 className={classNames('EditTable-cell', {
@@ -93,7 +92,6 @@ export default function EditTableCell({ type, segment, originalLocale }) {
                 </Fetch>
             </div>
         );
-    } else {
     }
 }
 

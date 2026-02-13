@@ -1,6 +1,7 @@
 import {
     DELETE_STATUS_MSG,
     RECEIVE_DATA,
+    RECEIVE_ERROR,
     REMOVE_DATA,
     REQUEST_DATA,
     UPDATE_DATA,
@@ -416,6 +417,22 @@ export const dataReducer = (state = initialState, action) => {
                 });
             } else {
                 return state;
+            }
+
+        case RECEIVE_ERROR:
+            // Clear loading state and mark error
+            if (action.id) {
+                return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.dataType, {
+                        [action.id]: `error-${new Date()}`,
+                    }),
+                });
+            } else {
+                return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.dataType, {
+                        all: `error-${new Date()}`,
+                    }),
+                });
             }
 
         default:

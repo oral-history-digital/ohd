@@ -66,6 +66,10 @@ export default function RegistryNameForm({
         <Form
             scope="registry_name"
             onSubmit={(params) => {
+                // For nested forms, index is used by Form's handleNestedFormSubmit
+                // to insert new items at the correct array position. For existing
+                // items (Redux action), the index parameter is ignored.
+                // Routing between handlers is managed by the forms module.
                 submitData({ projectId, locale, project }, params, index);
             }}
             helpTextCode="registry_name_form"

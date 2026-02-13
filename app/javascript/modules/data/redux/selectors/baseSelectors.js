@@ -30,6 +30,11 @@ export const getSegments = (state) => getData(state).segments;
 
 export const getStatuses = (state) => getData(state).statuses;
 
+export const getIsLoading = (state, dataType, id) => {
+    const status = getStatuses(state)[dataType]?.[id];
+    return status === 'fetching';
+};
+
 export const getTasks = (state) => getData(state).tasks;
 
 export const getTranslationValues = (state) =>

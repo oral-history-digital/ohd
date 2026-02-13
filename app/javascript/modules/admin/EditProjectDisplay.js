@@ -1,11 +1,11 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import { getCurrentUser } from 'modules/data';
+import { getCurrentUser, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import EditProjectDisplayAttributesContainer from './EditProjectDisplayAttributesContainer';
+import EditData from './EditData';
 import EditViewOrRedirect from './EditViewOrRedirect';
 import LogosContainer from './LogosContainer';
 import MediaStreamsContainer from './MediaStreamsContainer';
@@ -14,7 +14,39 @@ import SponsorLogosContainer from './SponsorLogosContainer';
 export default function EditProjectDisplay() {
     const { t } = useI18n();
     const { project } = useProject();
+    const dispatch = useDispatch();
     const user = useSelector(getCurrentUser);
+
+    function submitHandler(props, params, opts, callback) {
+        dispatch(submitData(props, params, opts, callback));
+    }
+
+    const formElements = [
+        {
+            attribute: 'primary_color',
+            elementType: 'colorPicker',
+        },
+        {
+            attribute: 'secondary_color',
+            elementType: 'colorPicker',
+        },
+        {
+            attribute: 'editorial_color',
+            elementType: 'colorPicker',
+        },
+        {
+            attribute: 'aspect_x',
+            validate: function (v) {
+                return /^\d+$/.test(v);
+            },
+        },
+        {
+            attribute: 'aspect_y',
+            validate: function (v) {
+                return /^\d+$/.test(v);
+            },
+        },
+    ];
 
     return (
         <EditViewOrRedirect>
@@ -26,7 +58,13 @@ export default function EditProjectDisplay() {
                     <h1 className="registry-entries-title">
                         {t(`edit.project.display`)}
                     </h1>
-                    <EditProjectDisplayAttributesContainer data={project} />
+                    <EditData
+                        data={project}
+                        scope="project"
+                        helpTextCode="archive_display_form"
+                        formElements={formElements}
+                        submitData={submitHandler}
+                    />
                     <h2 className="registry-entries-title">
                         {t(`edit.logo.admin`)}
                     </h2>

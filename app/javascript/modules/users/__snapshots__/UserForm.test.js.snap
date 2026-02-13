@@ -10,81 +10,103 @@ LoadedCheerio {
       id="scope"
     >
       <div
-        class="form-group"
+        class="form-row form-row--single-workflow_state"
       >
         <div
-          class="form-label"
+          class="form-group form-group--select form-group--workflow_state"
         >
-          <label
-            class="FormLabel"
+          <div
+            class="form-label"
           >
-            Translated
-          </label>
-        </div>
-        <div
-          class="form-input"
-        >
-          <select
-            class="Input"
-            id="scope_workflow_state"
-            name="workflow_state"
+            <label
+              class="FormLabel"
+            >
+              Translated
+            </label>
+          </div>
+          <div
+            class="form-input"
           >
-            <option
-              value=""
+            <select
+              class="Input"
+              id="scope_workflow_state"
+              name="workflow_state"
             >
-              Translated
-            </option>
-            <option
-              value="block"
-            >
-              Translated
-            </option>
-            <option
-              value="remove"
-            >
-              Translated
-            </option>
-          </select>
+              <option
+                value=""
+              >
+                Translated
+              </option>
+              <option
+                value="block"
+              >
+                Translated
+              </option>
+              <option
+                value="remove"
+              >
+                Translated
+              </option>
+            </select>
+          </div>
         </div>
       </div>
       <div
-        class="form-group has-error"
+        class="form-row form-row--single-mail_text"
       >
         <div
-          class="form-label"
+          class="form-group form-group--textarea form-group--mail_text"
         >
-          <label
-            class="FormLabel"
-            for="scope_mail_text"
+          <div
+            class="form-label"
           >
-            Translated *
-          </label>
-        </div>
-        <div
-          class="form-input"
-        >
-          <textarea
-            class="Input"
-            dir="ltr"
-            id="scope_mail_text"
-            name="mail_text"
-            style="direction:ltr;text-align:left"
-          />
-        </div>
-        <div
-          class="help-block"
-        >
-          Translated
+            <label
+              class="FormLabel"
+              for="scope_mail_text"
+            >
+              Translated *
+            </label>
+          </div>
+          <div
+            class="form-input"
+          >
+            <textarea
+              class="Input"
+              dir="ltr"
+              id="scope_mail_text"
+              name="mail_text"
+              style="direction:ltr;text-align:left"
+            />
+          </div>
         </div>
       </div>
       <div
         class="Form-footer u-mt"
       >
-        <input
-          class="Button Button--primaryAction"
-          type="submit"
-          value="Translated"
-        />
+        <div
+          class="Form-footer-buttons"
+        >
+          <button
+            class="GenericButton GenericButton--contained GenericButton--primary GenericButton--md"
+            type="submit"
+          >
+            <svg
+              class="Icon"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+              />
+            </svg>
+            Translated
+          </button>
+        </div>
       </div>
     </form>
   </div>,
