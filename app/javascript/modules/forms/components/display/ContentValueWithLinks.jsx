@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import parseTextWithUrls from './parseTextWithUrls';
+import { parseTextWithUrls } from '../../utils';
 
 const isUrlRegexp = /^https?:\/\//i;
 

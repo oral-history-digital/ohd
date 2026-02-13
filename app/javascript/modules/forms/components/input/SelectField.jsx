@@ -1,9 +1,9 @@
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import Element from '../Element';
+import Element from '../shared/Element';
 
-export default function Select({
+export default function SelectField({
     scope,
     attribute,
     value,
@@ -149,7 +149,7 @@ export default function Select({
     );
 }
 
-Select.propTypes = {
+SelectField.propTypes = {
     scope: PropTypes.string,
     attribute: PropTypes.string,
     value: PropTypes.oneOfType([
@@ -175,4 +175,7 @@ Select.propTypes = {
     optionsScope: PropTypes.string,
     withEmpty: PropTypes.bool,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
+    accept: PropTypes.string,
 };

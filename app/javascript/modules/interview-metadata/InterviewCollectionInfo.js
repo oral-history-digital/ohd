@@ -5,7 +5,7 @@ import {
 } from '@reach/disclosure';
 import { useProjectAccessStatus } from 'modules/auth';
 import { getCollectionsForCurrentProject } from 'modules/data';
-import { SingleValueWithFormContainer } from 'modules/forms';
+import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { sanitizeHtml } from 'modules/utils';
@@ -25,7 +25,7 @@ export default function InterviewCollectionInfo({ interview }) {
     const titleText = t('modules.interview_metadata.show_collection_desc');
 
     return (
-        <SingleValueWithFormContainer
+        <SingleValueWithForm
             elementType="select"
             obj={interview}
             values={collections}
@@ -55,7 +55,7 @@ export default function InterviewCollectionInfo({ interview }) {
                     </DisclosurePanel>
                 </Disclosure>
             )}
-        </SingleValueWithFormContainer>
+        </SingleValueWithForm>
     );
 }
 

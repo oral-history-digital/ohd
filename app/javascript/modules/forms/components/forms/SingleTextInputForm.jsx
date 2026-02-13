@@ -1,6 +1,7 @@
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 export default function SingleTextInputForm({
     index,
@@ -18,6 +19,9 @@ export default function SingleTextInputForm({
         <Form
             scope="text"
             onSubmit={(params) => {
+                // TODO: Check if it is correct to pass index here. If submitData is the Redux action
+                // dispatcher, index has no effect there. But if submitData is a custom function,
+                // it might need index (e.g. nested forms).
                 submitData({ projectId, project, locale }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
@@ -32,3 +36,13 @@ export default function SingleTextInputForm({
         />
     );
 }
+
+SingleTextInputForm.propTypes = {
+    index: PropTypes.number,
+    submitData: PropTypes.func.isRequired,
+    onSubmitCallback: PropTypes.func,
+    onCancel: PropTypes.func,
+    formClasses: PropTypes.string,
+    data: PropTypes.object,
+    nested: PropTypes.bool,
+};
