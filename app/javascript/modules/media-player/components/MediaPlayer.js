@@ -1,8 +1,4 @@
 import classNames from 'classnames';
-import { getCurrentInterview } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
-import { useSelector } from 'react-redux';
 
 import MediaControlsContainer from '../containers/MediaControlsContainer';
 import MediaElementContainer from '../containers/MediaElementContainer';
@@ -10,50 +6,11 @@ import MediaPlayerButtonsContainer from '../containers/MediaPlayerButtonsContain
 import MediaPlayerTitle from './MediaPlayerTitle';
 
 export default function MediaPlayer() {
-    const { t, locale } = useI18n();
-    const { project } = useProject();
-    const interview = useSelector(getCurrentInterview);
-
-    function mediaMissingText() {
-        if (customMediaMissingTextAvailable()) {
-            return customMediaMissingText();
-        } else {
-            return t('modules.media_player.media_missing');
-        }
-    }
-
-    function customMediaMissingTextAvailable() {
-        const translation = projectTranslation();
-        return (
-            typeof translation?.media_missing_text === 'string' &&
-            translation.media_missing_text.trim().length > 0
-        );
-    }
-
-    function customMediaMissingText() {
-        return projectTranslation()?.media_missing_text;
-    }
-
-    function projectTranslation() {
-        return project.translations_attributes?.find(
-            (translation) => translation.locale === locale
-        );
-    }
-
     return (
         <div className={classNames('Layout-mediaPlayer', 'MediaPlayer')}>
             <div className="MediaPlayer-inner">
-                {interview.media_missing ? (
-                    <p className="MediaMissing">{mediaMissingText()}</p>
-                ) : (
-                    <MediaElementContainer />
-                )}
-
-                <header
-                    className={classNames('MediaHeader', {
-                        'MediaHeader--mediaMissing': interview.media_missing,
-                    })}
-                >
+                <MediaElementContainer />
+                <header className={classNames('MediaHeader')}>
                     <MediaPlayerTitle className="MediaHeader-title" />
                     <MediaControlsContainer className="MediaHeader-controls" />
                     <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />

@@ -9,6 +9,7 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import { useGetMediaMissingText } from '../hooks';
 import { useMediaPlayerResize, usePosterImage } from '../hooks';
 import '../plugins/configurationMenuPlugin.js';
 import '../plugins/customSkipButtonsPlugin.js';
@@ -54,6 +55,7 @@ export default function MediaElement({
     const playerRef = useRef(null);
     const tapeRef = useRef(tape); // Used for event handler below.
     const isTranslationsView = useSelector(getTranslationsView);
+    const mediaMissingText = useGetMediaMissingText();
 
     const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
@@ -486,32 +488,42 @@ export default function MediaElement({
                     'MediaElement--video': interview.media_type === 'video',
                     'MediaElement--audio': interview.media_type === 'audio',
                     'MediaElement--loading': !isReady,
+                    'MediaElement--mediaMissing': interview.media_missing,
                 }
             )}
         >
-            {isReady ? (
-                <VideoJS
-                    type={interview.media_type}
-                    options={videoJsOptions}
-                    onReady={handlePlayerReady}
-                    onEnded={handleEndedEvent}
-                />
+            {interview.media_missing ? (
+                <p className="MediaMissing">{mediaMissingText}</p>
             ) : (
-                <div className="MediaElement-placeholder" aria-hidden="true">
-                    {/* Reserve the same aspect ratio and minimum width while media is loading */}
-                    <Spinner />
-                </div>
+                <>
+                    {isReady ? (
+                        <VideoJS
+                            type={interview.media_type}
+                            options={videoJsOptions}
+                            onReady={handlePlayerReady}
+                            onEnded={handleEndedEvent}
+                        />
+                    ) : (
+                        <div
+                            className="MediaElement-placeholder"
+                            aria-hidden="true"
+                        >
+                            {/* Reserve the same aspect ratio and minimum width while media is loading */}
+                            <Spinner />
+                        </div>
+                    )}
+                    <div
+                        ref={resizeHandleRef}
+                        title={t('media_player.resize_handle_tooltip')}
+                        aria-label={t('media_player.resize_handle_tooltip')}
+                        data-tooltip={t('media_player.resize_handle_tooltip')}
+                        role="separator"
+                        className={classNames('MediaElement-resizeHandle', {
+                            'is-dragging': isDragging,
+                        })}
+                    />
+                </>
             )}
-            <div
-                ref={resizeHandleRef}
-                title={t('media_player.resize_handle_tooltip')}
-                aria-label={t('media_player.resize_handle_tooltip')}
-                data-tooltip={t('media_player.resize_handle_tooltip')}
-                role="separator"
-                className={classNames('MediaElement-resizeHandle', {
-                    'is-dragging': isDragging,
-                })}
-            />
         </div>
     );
 }
@@ -532,4 +544,5 @@ MediaElement.propTypes = {
     resetMedia: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     clearTimeChangeRequest: PropTypes.func.isRequired,
+    mediaMissingText: PropTypes.string.isRequired,
 };
