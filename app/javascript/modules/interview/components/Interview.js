@@ -81,11 +81,7 @@ export default function Interview({
                     </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut ifNoProject>
-                    {interview.workflow_state === 'unshared' ? (
-                        <>{t('devise.failure.unauthenticated')}</>
-                    ) : (
-                        <MediaPreview />
-                    )}
+                    <MediaPreview />
                 </AuthShowContainer>
             </div>
         );

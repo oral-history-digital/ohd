@@ -23,6 +23,10 @@ export default function MediaPreview() {
         );
     }
 
+    if (interview.workflow_state === 'unshared') {
+        return <>{t('unauthorized')}</>;
+    }
+
     return (
         <div className="MediaPreview u-mb-large">
             <h1 className="MediaPreview-title">
