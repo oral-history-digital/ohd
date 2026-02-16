@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { useProjectAccessStatus } from 'modules/auth';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { MediaIcon } from 'modules/interview-helpers';
@@ -11,15 +10,14 @@ import { useSelector } from 'react-redux';
 export default function MediaPreview() {
     const { t, locale } = useI18n();
     const { project } = useProject();
-    const { projectAccessGranted } = useProjectAccessStatus(project);
     const interview = useSelector(getCurrentInterview);
 
     const [loadingError, setLoadingError] = useState(false);
 
     function imageAvailable() {
         return (
-            (project.show_preview_img ||
-                interview.workflow_state === 'public') &&
+            project.show_preview_img &&
+            interview.workflow_state === 'public' &&
             interview.still_url &&
             !loadingError
         );
