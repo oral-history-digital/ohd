@@ -37,7 +37,7 @@ class TranslationValuesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.shortname}-translation_values-#{extra_params ? extra_params : "all"}-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "translation_values-#{extra_params ? extra_params : "all"}-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}" do
           {
             data: translation_values.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "translation_values",
