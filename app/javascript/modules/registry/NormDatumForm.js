@@ -21,9 +21,10 @@ export default function NormDatumForm({
             scope="norm_datum"
             helpTextCode="norm_datum_form"
             onSubmit={(params) => {
-                // TODO: Check if it is correct to pass index here. If submitData is the Redux action
-                // dispatcher, index has no effect there. But if submitData is a custom function,
-                // it might need index (e.g. nested forms).
+                // For nested forms, index is used by Form's handleNestedFormSubmit
+                // to insert new items at the correct array position. For existing
+                // items (Redux action), the index parameter is ignored.
+                // Routing between handlers is managed by the forms module.
                 submitData({ projectId, locale, project }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}

@@ -48,10 +48,12 @@ export default function ContributionForm({
                 await invalidateContributorsCache();
                 if (typeof onSubmit === 'function') onSubmit();
             };
-            // Pass callback to submitData that will be called after the API request completes
-            // TODO: Check if it is correct to pass index here. If submitData is the Redux action
-            // dispatcher, index has no effect there. But if submitData is a custom function,
-            // it might need index (e.g. nested forms).
+            // For nested forms, submitData can be either:
+            // 1. Redux action (existing items): signature is (props, params, opts, callback)
+            //    - index param is ignored by Redux action
+            // 2. Form's handleNestedFormSubmit (new items): signature is (dummy, params, index)
+            //    - index is used to insert item at correct array position
+            // The forms module routes to the correct handler based on element.id
             submitData({ locale, projectId, project }, params, index, callback);
         } else {
             // Fallback if submitData is not provided
