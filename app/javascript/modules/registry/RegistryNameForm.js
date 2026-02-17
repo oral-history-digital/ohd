@@ -66,6 +66,9 @@ export default function RegistryNameForm({
         <Form
             scope="registry_name"
             onSubmit={(params) => {
+                // TODO: Check if it is correct to pass index here. If submitData is the Redux action
+                // dispatcher, index has no effect there. But if submitData is a custom function,
+                // it might need index (e.g. nested forms).
                 submitData({ projectId, locale, project }, params, index);
             }}
             helpTextCode="registry_name_form"

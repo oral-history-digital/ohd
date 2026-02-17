@@ -49,6 +49,9 @@ export default function ContributionForm({
                 if (typeof onSubmit === 'function') onSubmit();
             };
             // Pass callback to submitData that will be called after the API request completes
+            // TODO: Check if it is correct to pass index here. If submitData is the Redux action
+            // dispatcher, index has no effect there. But if submitData is a custom function,
+            // it might need index (e.g. nested forms).
             submitData({ locale, projectId, project }, params, index, callback);
         } else {
             // Fallback if submitData is not provided

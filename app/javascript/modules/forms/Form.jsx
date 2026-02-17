@@ -5,34 +5,37 @@ import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { RegistryTreeSelect } from 'modules/registry-tree-select';
 import { pluralize } from 'modules/strings';
+import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
 import PropTypes from 'prop-types';
-import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import RichTextEditor from 'react-rte-18support';
 
-import ErrorMessages from './ErrorMessages';
-import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
-import NestedScope from './NestedScope';
-import ColorPicker from './input-components/ColorPicker';
-import Extra from './input-components/Extra';
-import InputContainer from './input-components/InputContainer';
-import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
-import SelectContainer from './input-components/SelectContainer';
-import SpeakerDesignationInputs from './input-components/SpeakerDesignationInputs';
-import Textarea from './input-components/Textarea';
+import {
+    ColorPicker,
+    ErrorMessages,
+    Extra,
+    InputField,
+    MultiLocaleWrapper,
+    NestedScope,
+    RegistryEntrySelect,
+    SelectField,
+    SpeakerDesignationInputs,
+    Textarea,
+} from './components';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
-    input: InputContainer,
-    registryEntrySelect: RegistryEntrySelectContainer,
+    input: InputField,
+    registryEntrySelect: RegistryEntrySelect,
     registryEntryTreeSelect: RegistryTreeSelect,
     richTextEditor: RichTextEditor,
-    select: SelectContainer,
+    select: SelectField,
     speakerDesignationInputs: SpeakerDesignationInputs,
     textarea: Textarea,
     extra: Extra,
 };
 
-export default function FormComponent({
+export default function Form({
+    buttonFullWidth = false,
     children,
     className,
     data,
@@ -178,7 +181,7 @@ export default function FormComponent({
     }
 
     function writeNestedObjectToStateValues(params, identifier, index) {
-        // for translations identifier is 'locale' to not multiply translations
+        // For translations identifier is 'locale' to not multiply translations
         identifier ||= 'id';
         let nestedScope = Object.keys(params)[0];
         let nestedObject = params[nestedScope];
@@ -199,8 +202,8 @@ export default function FormComponent({
         }));
     }
 
-    // props is a dummy here
-    function handleNestedFormSubmit(props, params, index) {
+    // Props is a dummy here
+    function handleNestedFormSubmit(_, params, index) {
         writeNestedObjectToStateValues(params, null, index);
     }
 
@@ -217,28 +220,28 @@ export default function FormComponent({
         ));
     }
 
-    function elementComponent(props) {
-        const preparedProps = { ...props };
-        preparedProps.scope = props.scope || scope;
-        preparedProps.showErrors = errors[props.attribute];
+    function elementComponent(element) {
+        const preparedProps = { ...element };
+        preparedProps.scope = element.scope || scope;
+        preparedProps.showErrors = errors[element.attribute];
         preparedProps.handleChange = handleChange;
         preparedProps.handleErrors = handleErrors;
-        preparedProps.key = props.attribute;
+        preparedProps.key = element.attribute;
         preparedProps.value =
-            values[props.attribute] !== undefined
-                ? values[props.attribute]
-                : props.value;
+            values[element.attribute] !== undefined
+                ? values[element.attribute]
+                : element.value;
         preparedProps.data = data;
-        preparedProps.accept = props.accept;
+        preparedProps.accept = element.accept;
 
-        // set defaults for the possibility to shorten elements list
-        if (!props.elementType) {
+        // Set defaults for the possibility to shorten elements list
+        if (!element.elementType) {
             preparedProps.elementType = 'input';
             preparedProps.type = 'text';
         }
 
         if (preparedProps.multiLocale) {
-            return createElement(MultiLocaleWrapperContainer, preparedProps);
+            return createElement(MultiLocaleWrapper, preparedProps);
         } else {
             return createElement(
                 elementTypeToComponent[preparedProps.elementType],
@@ -265,12 +268,12 @@ export default function FormComponent({
             >
                 {children}
 
-                {elements.map((props) => {
+                {elements.map((element) => {
                     if (
-                        props.condition === undefined ||
-                        props.condition === true
+                        element.condition === undefined ||
+                        element.condition === true
                     ) {
-                        return elementComponent(props);
+                        return elementComponent(element);
                     }
                 })}
 
@@ -282,62 +285,61 @@ export default function FormComponent({
                     />
                 )}
 
-                <div className="Form-footer u-mt">
-                    {nested ? (
-                        <button
-                            type="submit"
-                            className="Button Button--nested Button--editorialColor Button--icon"
-                        >
-                            <FaCheckCircle className="Icon Icon--editorial" />{' '}
-                            {t(submitText || 'apply')}
-                        </button>
-                    ) : (
-                        <input
-                            type="submit"
-                            className="Button Button--primaryAction"
-                            disabled={fetching}
-                            value={t(submitText || 'submit')}
+                <div
+                    className={classNames('Form-footer', 'u-mt', {
+                        'Form-footer--fullWidth': buttonFullWidth,
+                    })}
+                >
+                    {typeof onCancel === 'function' && (
+                        <CancelButton
+                            buttonText={t(nested ? 'discard' : 'cancel')}
+                            handleCancel={onCancel}
+                            isLoading={fetching}
+                            isDisabled={fetching}
+                            size={nested ? 'sm' : undefined}
                         />
                     )}
-                    {typeof onCancel === 'function' &&
-                        (nested ? (
-                            <button
-                                type="reset"
-                                className="Button Button--nested Button--editorialColor Button--icon"
-                                onClick={onCancel}
-                            >
-                                <FaTimes className="Icon Icon--editorial" />{' '}
-                                {t('discard')}
-                            </button>
-                        ) : (
-                            <input
-                                type="button"
-                                className="Button Button--secondaryAction"
-                                disabled={fetching}
-                                value={t('cancel')}
-                                onClick={onCancel}
-                            />
-                        ))}
+                    <SubmitButton
+                        buttonText={t(
+                            submitText || (nested ? 'apply' : 'submit')
+                        )}
+                        isLoading={fetching}
+                        isDisabled={fetching}
+                        size={nested ? 'sm' : undefined}
+                    />
                 </div>
             </form>
         </div>
     );
 }
 
-FormComponent.propTypes = {
+Form.propTypes = {
+    buttonFullWidth: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
     ]),
     className: PropTypes.string,
     data: PropTypes.object,
-    elements: PropTypes.array.isRequired,
+    elements: PropTypes.arrayOf(
+        PropTypes.shape({
+            attribute: PropTypes.string,
+            value: PropTypes.any,
+            accept: PropTypes.string,
+            condition: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+            elementType: PropTypes.string,
+            hidden: PropTypes.bool,
+            optional: PropTypes.bool,
+            multiLocale: PropTypes.bool,
+            validate: PropTypes.func,
+            scope: PropTypes.string,
+        })
+    ).isRequired,
     fetching: PropTypes.bool,
     formClasses: PropTypes.string,
     formId: PropTypes.string,
     helpTextCode: PropTypes.string,
     index: PropTypes.number,
-    locale: PropTypes.string,
     nested: PropTypes.bool,
     nestedScopeProps: PropTypes.array,
     onCancel: PropTypes.func,

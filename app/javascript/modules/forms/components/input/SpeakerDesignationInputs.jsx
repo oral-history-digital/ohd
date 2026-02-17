@@ -5,7 +5,7 @@ import { usePeople } from 'modules/person';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
-import InputContainer from './InputContainer';
+import InputField from './InputField';
 
 export default function SpeakerDesignationInputs({
     attribute,
@@ -39,7 +39,7 @@ export default function SpeakerDesignationInputs({
             {contributions.map((contribution) => {
                 const contributor = people[contribution.person_id];
                 const label = contributor?.display_name;
-                return createElement(InputContainer, {
+                return createElement(InputField, {
                     key: contribution.id,
                     scope: attribute,
                     attribute: contribution.id,
@@ -56,4 +56,7 @@ SpeakerDesignationInputs.propTypes = {
     attribute: PropTypes.string.isRequired,
     value: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,
+    accept: PropTypes.string,
+    elementType: PropTypes.string,
+    condition: PropTypes.bool,
 };

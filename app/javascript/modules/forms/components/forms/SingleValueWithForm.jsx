@@ -1,15 +1,18 @@
 import { useState } from 'react';
 
+import { getEditView } from 'modules/archive';
 import { AuthorizedContent, admin } from 'modules/auth';
 import { useProjectAccessStatus } from 'modules/auth';
+import { getCurrentUser, submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { underscore } from 'modules/strings';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
-import ContentField from './ContentField';
+import ContentField from '../display/ContentField';
 
 export default function SingleValueWithForm({
     readOnly,
@@ -30,9 +33,6 @@ export default function SingleValueWithForm({
     attribute,
     noStatusCheckbox,
     hideEmpty = false,
-    user,
-    editView,
-    submitData,
 }) {
     const [editing, setEditing] = useState(false);
     const [collapsed, setCollapsed] = useState(collapse);
@@ -41,6 +41,10 @@ export default function SingleValueWithForm({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const { projectAccessGranted } = useProjectAccessStatus(project);
+
+    const user = useSelector(getCurrentUser);
+    const editView = useSelector(getEditView);
+    const dispatch = useDispatch();
 
     const metadataField = Object.values(project.metadata_fields).find(
         (m) => m.name === attribute
@@ -84,9 +88,11 @@ export default function SingleValueWithForm({
         <Form
             scope={underscore(obj.type)}
             onSubmit={(params) => {
-                submitData({ project, projectId, locale }, params, {
-                    updateStateBeforeSubmit: true,
-                });
+                dispatch(
+                    submitData({ project, projectId, locale }, params, {
+                        updateStateBeforeSubmit: true,
+                    })
+                );
                 setEditing(false);
             }}
             onCancel={() => setEditing(false)}
@@ -185,7 +191,4 @@ SingleValueWithForm.propTypes = {
     attribute: PropTypes.string,
     noStatusCheckbox: PropTypes.bool,
     hideEmpty: PropTypes.bool,
-    user: PropTypes.object,
-    editView: PropTypes.bool,
-    submitData: PropTypes.func.isRequired,
 };

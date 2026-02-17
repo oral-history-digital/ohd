@@ -5,11 +5,10 @@ import {
     DisclosureButton,
     DisclosurePanel,
 } from '@reach/disclosure';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 
-import Element from '../Element';
+import Element from '../shared/Element';
 
 export default function ColorPicker({
     value,
@@ -75,4 +74,6 @@ ColorPicker.propTypes = {
     hidden: PropTypes.bool,
     data: PropTypes.object.isRequired,
     handleChange: PropTypes.func.isRequired,
+    accept: PropTypes.string,
+    condition: PropTypes.bool,
 };

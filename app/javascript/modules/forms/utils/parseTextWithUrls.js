@@ -1,7 +1,7 @@
 const regexp =
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
 
-export default function parseTextWithUrls(text) {
+export function parseTextWithUrls(text) {
     const textToParse = text || '';
     const parsedText = [];
     let cursor = 0;
@@ -22,3 +22,5 @@ export default function parseTextWithUrls(text) {
 
     return parsedText;
 }
+
+export default parseTextWithUrls;
