@@ -4,6 +4,7 @@ import { Checkbox } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
+import { useTouchFieldOnBlur } from '../../hooks';
 import Element from '../shared/Element';
 
 export default function InputField({
@@ -22,6 +23,7 @@ export default function InputField({
     handleChange,
     handlechangecallback,
     handleErrors,
+    touchField,
     help,
     individualErrorMsg,
     hidden,
@@ -30,6 +32,8 @@ export default function InputField({
     placeholder,
     id,
 }) {
+    const onBlur = useTouchFieldOnBlur(touchField);
+
     const defaultValue = value || data?.[attribute];
     const [changeFile, setChangeFile] = useState(false);
 
@@ -66,6 +70,7 @@ export default function InputField({
             defaultChecked: defaultValue,
             defaultValue: defaultValue,
             onChange: onChange,
+            onBlur: onBlur,
             onClick: onChange,
         };
 
@@ -132,6 +137,7 @@ InputField.propTypes = {
     handleChange: PropTypes.func,
     handlechangecallback: PropTypes.func,
     handleErrors: PropTypes.func,
+    touchField: PropTypes.func,
     help: PropTypes.node,
     individualErrorMsg: PropTypes.string,
     hidden: PropTypes.bool,

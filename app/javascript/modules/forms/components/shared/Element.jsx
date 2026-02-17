@@ -27,10 +27,16 @@ export default function Element({
 
     return (
         <div
-            className={classNames('form-group', className, {
-                hidden: hidden,
-                'has-error': !valid && showErrors,
-            })}
+            className={classNames(
+                'form-group',
+                `form-group--${elementType}`,
+                `form-group--${attribute}`,
+                className,
+                {
+                    hidden: hidden,
+                    'has-error': !valid && showErrors,
+                }
+            )}
         >
             <Label
                 label={label}

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { RegistryTreeSelect } from 'modules/registry-tree-select';
-import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
+import { CancelButton, InlineNotification, SubmitButton } from 'modules/ui';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
@@ -12,6 +12,7 @@ import {
     ColorPicker,
     ErrorMessages,
     Extra,
+    FormRow,
     InputField,
     MultiLocaleWrapper,
     NestedScope,
@@ -20,7 +21,8 @@ import {
     SpeakerDesignationInputs,
     Textarea,
 } from './components';
-import { useFormState } from './hooks/useFormState';
+import { useFormState } from './hooks';
+import { organizeElementsByGroup } from './utils';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -47,7 +49,9 @@ export default function Form({
     index,
     nested,
     nestedScopeProps,
+    notification,
     onCancel,
+    onDismissNotification,
     onSubmit,
     onSubmitCallback,
     scope,
@@ -60,8 +64,11 @@ export default function Form({
     const {
         values,
         errors,
+        touched,
         updateField,
         handleErrors,
+        touchField,
+        touchAllFields,
         valid,
         writeNestedObject,
         deleteNestedObject,
@@ -76,11 +83,13 @@ export default function Form({
             writeNestedObject(params, identifier);
         } else {
             updateField(name, value);
+            touchField(name);
         }
     }
 
     function handleSubmit(event) {
         event.preventDefault();
+        touchAllFields();
 
         if (valid()) {
             onSubmit({ [scope || submitScope]: values }, index);
@@ -91,6 +100,8 @@ export default function Form({
             setSubmitted(true);
         }
     }
+
+    const organizedElements = organizeElementsByGroup(elements);
 
     // Props is a dummy here
     function handleNestedFormSubmit(_, params, index) {
@@ -113,9 +124,12 @@ export default function Form({
     function elementComponent(element) {
         const preparedProps = { ...element };
         preparedProps.scope = element.scope || scope;
-        preparedProps.showErrors = errors[element.attribute];
+        preparedProps.showErrors =
+            (touched[element.attribute] || submitted) &&
+            errors[element.attribute];
         preparedProps.handleChange = handleChange;
         preparedProps.handleErrors = handleErrors;
+        preparedProps.touchField = touchField;
         preparedProps.key = element.attribute;
         preparedProps.value =
             values[element.attribute] !== undefined
@@ -158,14 +172,14 @@ export default function Form({
             >
                 {children}
 
-                {elements.map((element) => {
-                    if (
-                        element.condition === undefined ||
-                        element.condition === true
-                    ) {
-                        return elementComponent(element);
-                    }
-                })}
+                {organizedElements.map((item) => (
+                    <FormRow
+                        key={`group-${item.group}`}
+                        group={item.group}
+                        elements={item.elements}
+                        renderElement={elementComponent}
+                    />
+                ))}
 
                 {submitted && (
                     <ErrorMessages
@@ -180,23 +194,44 @@ export default function Form({
                         'Form-footer--fullWidth': buttonFullWidth,
                     })}
                 >
-                    {typeof onCancel === 'function' && (
-                        <CancelButton
-                            buttonText={t(nested ? 'discard' : 'cancel')}
-                            handleCancel={onCancel}
+                    {notification && (
+                        <div className="Form-footer-notification">
+                            <InlineNotification
+                                variant={notification.variant || 'info'}
+                                title={notification.title}
+                                description={notification.description}
+                                additionalInfo={notification.additionalInfo}
+                                isClosable={notification.isClosable !== false}
+                                onClose={onDismissNotification}
+                                autoHideDuration={
+                                    notification.variant === 'success'
+                                        ? (notification.autoHideDuration ??
+                                          5000)
+                                        : notification.autoHideDuration
+                                }
+                                onAutoHide={onDismissNotification}
+                                actions={notification.actions}
+                            />
+                        </div>
+                    )}
+                    <div className="Form-footer-buttons">
+                        {typeof onCancel === 'function' && (
+                            <CancelButton
+                                buttonText={t(nested ? 'discard' : 'cancel')}
+                                handleCancel={onCancel}
+                                isDisabled={fetching}
+                                size={nested ? 'sm' : undefined}
+                            />
+                        )}
+                        <SubmitButton
+                            buttonText={t(
+                                submitText || (nested ? 'apply' : 'submit')
+                            )}
                             isLoading={fetching}
                             isDisabled={fetching}
                             size={nested ? 'sm' : undefined}
                         />
-                    )}
-                    <SubmitButton
-                        buttonText={t(
-                            submitText || (nested ? 'apply' : 'submit')
-                        )}
-                        isLoading={fetching}
-                        isDisabled={fetching}
-                        size={nested ? 'sm' : undefined}
-                    />
+                    </div>
                 </div>
             </form>
         </div>
@@ -223,6 +258,7 @@ Form.propTypes = {
             multiLocale: PropTypes.bool,
             validate: PropTypes.func,
             scope: PropTypes.string,
+            group: PropTypes.string,
         })
     ).isRequired,
     fetching: PropTypes.bool,
@@ -232,7 +268,17 @@ Form.propTypes = {
     index: PropTypes.number,
     nested: PropTypes.bool,
     nestedScopeProps: PropTypes.array,
+    notification: PropTypes.shape({
+        variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
+        title: PropTypes.string,
+        description: PropTypes.string,
+        additionalInfo: PropTypes.node,
+        isClosable: PropTypes.bool,
+        autoHideDuration: PropTypes.number,
+        actions: PropTypes.object,
+    }),
     onCancel: PropTypes.func,
+    onDismissNotification: PropTypes.func,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
     scope: PropTypes.string,
