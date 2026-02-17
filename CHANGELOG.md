@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2026-02-17
+
+### Added
+
+- feat: add generic button component ([#70](https://github.com/oral-history-digital/ohd/pull/70))
+- feat: add InlineNotification component ([#71](https://github.com/oral-history-digital/ohd/pull/71))
+- feat: improve UI feedback ([#72](https://github.com/oral-history-digital/ohd/pull/72))
+- adding tamil font to transcript pdf ([7705babcf](https://github.com/oral-history-digital/ohd/commit/7705babcf4908cbf4c2aefeac7ccf73f703d4fc3))
+- install texlive-lang-other and texlive-lang-arabic on github ci ([1f3e82c27](https://github.com/oral-history-digital/ohd/commit/1f3e82c27f1804478e11038e612103adda4bbc7a))
+- translation_value search helper method ([2e40afd7b](https://github.com/oral-history-digital/ohd/commit/2e40afd7b4213d5ee1177bf5caf236c727e792c5))
+- show post landing page data in tei as well ([b4db86a19](https://github.com/oral-history-digital/ohd/commit/b4db86a196be27a960f94443bd053c61ec30ff41))
+- add public bio to tei ([713413d95](https://github.com/oral-history-digital/ohd/commit/713413d95b6aca87150f5e8e9ecf2117c2cbaf94))
+- extending registry export with other normdata-providers (1) #419 ([8e26b3f4f](https://github.com/oral-history-digital/ohd/commit/8e26b3f4f252d48c1c8e3731efec43e8048970c8))
+- tei: add headings #453 ([c57e7e6c1](https://github.com/oral-history-digital/ohd/commit/c57e7e6c189dc069660edb614293f00b22ae3330))
+
+### Changed
+
+- refactor: restructure forms component and remove Redux container pattern ([#68](https://github.com/oral-history-digital/ohd/pull/68))
+- refactor: centralize form state and simplify nested form routing ([#69](https://github.com/oral-history-digital/ohd/pull/69))
+- slightly refactor pdf transcript ([8f86696d7](https://github.com/oral-history-digital/ohd/commit/8f86696d7eb7c8ffe21bf7e7558f02a80948d84c))
+- speaker in pdf transcript only on speaker change ([5ba681cc5](https://github.com/oral-history-digital/ohd/commit/5ba681cc534825095d820fde8c1939c114d09aca))
+- show landing page for restricted interviews again ([b72cb0e8b](https://github.com/oral-history-digital/ohd/commit/b72cb0e8b0cd9cc9cc1b5b0a02a43731fac07a57))
+- make anonymisation parsing in segments non-greedy ([a0f1160f8](https://github.com/oral-history-digital/ohd/commit/a0f1160f8a69c9eebe680b5a13424c5498d0ffaf))
+- non-greedy anonymisation for public version as well ([194425839](https://github.com/oral-history-digital/ohd/commit/194425839fd32898ece91d105e41b8da5a4c13ec))
+- tei: observations only if public #445 ([e58ed528e](https://github.com/oral-history-digital/ohd/commit/e58ed528ea0e6195363957869156d8ed635bc0d6))
+- display fullnames if configured in tei #444 ([7c4e7a3c2](https://github.com/oral-history-digital/ohd/commit/7c4e7a3c26f6f5aed56b5968212148ddf095eb49))
+- unify contribution_type translations in transcript PDF #371 ([1aec79f49](https://github.com/oral-history-digital/ohd/commit/1aec79f49904ce3e5600758bcfe5e643aa71292f))
+- no still for restricted interviews preview #378 ([1083470d2](https://github.com/oral-history-digital/ohd/commit/1083470d2feb0100dce7dce08535e8b52db2f2d9))
+- rename tei link ([91f0c91ce](https://github.com/oral-history-digital/ohd/commit/91f0c91ce7801fbca1647636840bbbe4d0d2ee7d))
+- reading factgrid normdata on registry_entry import as well #419 ([c29fee526](https://github.com/oral-history-digital/ohd/commit/c29fee526d46cba9f53573586d2a3eadcb0ae94a))
+- no preview img for restricted interviews #146 ([83d0916e7](https://github.com/oral-history-digital/ohd/commit/83d0916e73560de111d687ecffc2e859b5882b55))
+- no preview for unshared interviews #146 ([b4b13f985](https://github.com/oral-history-digital/ohd/commit/b4b13f985c7562499c9bcc962ee9310ea3cbfca3))
+
+### Fixed
+
+- fix: update media missing text handling and display ([#73](https://github.com/oral-history-digital/ohd/pull/73))
+- 370: Fix missing translations when redirecting to default locale ([#74](https://github.com/oral-history-digital/ohd/pull/74))
+- flush rtl languages right #324, use xelatex and it s standart packages ([e235f69d1](https://github.com/oral-history-digital/ohd/commit/e235f69d15ac42be2a3f5d0e27a36e12146db767))
+- prevent empty segments to crash pdf ([9c8c4020b](https://github.com/oral-history-digital/ohd/commit/9c8c4020bc0a023e707159f06f2951e874647225))
+- destroy tapes and segments after verifying basic correctness of uploaded edit-table ([a4a5d4e4f](https://github.com/oral-history-digital/ohd/commit/a4a5d4e4f63c4bc15372c32d66ffc6ce679ecb2d))
+- fix et-import ([921553af7](https://github.com/oral-history-digital/ohd/commit/921553af7a68bf4074f17d179592a689864dd0f5))
+- tei fixes ([6d3693a37](https://github.com/oral-history-digital/ohd/commit/6d3693a3782bf4b98f9ca320e0747111ade7cb7e))
+- tei fixes ([87ec738ff](https://github.com/oral-history-digital/ohd/commit/87ec738ffb571c75d7a99b609d8703127380ce1c))
+- do not validate language.code ([efb614cb2](https://github.com/oral-history-digital/ohd/commit/efb614cb24249f1d6389b4220e4926febe0f1e0b))
+
 ## [1.8.0] - 2026-01-22
 
 ### Added
@@ -332,6 +377,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.9.0]: https://github.com/oral-history-digital/ohd/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/oral-history-digital/ohd/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/oral-history-digital/ohd/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/oral-history-digital/ohd/compare/v1.5.0...v1.6.0

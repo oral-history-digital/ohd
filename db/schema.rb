@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -389,7 +389,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
     t.boolean "transcript_coupled", default: true
     t.string "links"
     t.string "publication_date"
-    t.index ["project_id", "updated_at"], name: "index_interviews_on_project_and_updated_at"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end
@@ -580,7 +579,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
     t.integer "registry_references_count", default: 0
     t.integer "title"
     t.boolean "use_pseudonym", default: false, null: false
-    t.index ["project_id", "updated_at"], name: "index_people_on_project_and_updated_at"
   end
 
   create_table "permissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -1158,27 +1156,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_100000) do
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
     t.boolean "do_not_track", default: false, null: false
-    t.string "otp_secret"
-    t.integer "consumed_timestep"
-    t.boolean "otp_required_for_login"
-    t.datetime "changed_to_otp_at"
-    t.string "email_otp_secret"
-    t.datetime "email_otp_sent_at"
-    t.boolean "passkey_required_for_login", default: false, null: false
-    t.datetime "changed_to_passkey_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
-  end
-
-  create_table "webauthn_credentials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "external_id", null: false
-    t.string "public_key", null: false
-    t.string "nickname"
-    t.bigint "sign_count", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["external_id"], name: "index_webauthn_credentials_on_external_id", unique: true
   end
 
   create_table "workflow_comments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

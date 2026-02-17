@@ -1,6 +1,7 @@
 import { useTrackPageView } from 'modules/analytics';
 import { useLoadCompleteProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useProjectTranslation } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
 import { Breadcrumbs } from 'modules/ui';
@@ -20,9 +21,7 @@ export default function ArchiveCatalogPage() {
 
     const title = project.name[locale];
 
-    const projectTranslation = project.translations_attributes?.find(
-        (trans) => trans.locale === locale
-    );
+    const projectTranslation = useProjectTranslation(project);
 
     return (
         <ScrollToTop>

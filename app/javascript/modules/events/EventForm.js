@@ -112,6 +112,12 @@ export default function EventForm({
             }}
             onSubmit={(params) => {
                 if (typeof submitData === 'function') {
+                    // For nested forms, submitData can be either:
+                    // 1. Redux action (existing items): signature is (props, params, opts, callback)
+                    //    - index/callback params are ignored by Redux action
+                    // 2. Form's handleNestedFormSubmit (new items): signature is (dummy, params, index)
+                    //    - index is used to insert item at correct array position
+                    // The forms module routes to the correct handler based on element.id
                     submitData(
                         { locale, projectId, project },
                         params,
