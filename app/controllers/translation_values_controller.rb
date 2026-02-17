@@ -30,20 +30,33 @@ class TranslationValuesController < ApplicationController
       extra_params = "all"
     else
       page = params[:page] || 1
-      translation_values = policy_scope(TranslationValue).where(search_params).order(:key).paginate page: page
-      extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+      translation_values = policy_scope(TranslationValue).
+        where(search_params).order(:key).paginate page: page
+      extra_params = search_params.update(page: page).inject([]) do |mem, (k, v)|
+        mem << "#{k}_#{v}"
+        mem
+      end.join("_")
     end
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "translation_values-#{extra_params ? extra_params : "all"}-#{TranslationValue.count}-#{TranslationValue.maximum(:updated_at)}" do
+        json = Rails.cache.fetch([
+          "translation_values",
+          extra_params ? extra_params : "all",
+          TranslationValue.count,
+          TranslationValue.maximum(:updated_at)
+        ].join('-')) do
           {
-            data: translation_values.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: translation_values.inject({}) do |mem, s|
+              mem[s.id] = TranslationValueSerializer.new(s).as_json
+              mem
+            end,
             data_type: "translation_values",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: translation_values.respond_to?(:total_pages) ? translation_values.total_pages : nil,
+            result_pages_count: translation_values.respond_to?(:total_pages) ?
+              translation_values.total_pages : nil,
           }
         end
         render json: json
