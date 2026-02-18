@@ -84,11 +84,11 @@ class BasicsTest < ApplicationSystemTestCase
     #check 'Terms of Use', visible: :all
     sleep 1
     click_on 'Submit activation request'
-    assert_text 'Institution: Please fill'
-    assert_text 'Occupation: Please select'
-    assert_text 'Research Intention: Please select'
-    assert_text 'Specification of research intention: Please fill'
-    assert_text 'Terms of Use: Please agree'
+    assert_text "Institution *\nPlease fill"
+    assert_text "Occupation *\nPlease select"
+    assert_text "Research Intention *\nPlease select"
+    assert_text "Specification of research intention"
+    assert_text "Terms of Use"
   end
 
   test 'create interview' do
