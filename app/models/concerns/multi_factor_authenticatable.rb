@@ -18,17 +18,24 @@ module MultiFactorAuthenticatable
   end
 
   def generate_two_factor_secret_if_needed
-    if (self.otp_required_for_login_changed? || self.confirmed_at_changed?) &&
-        self.otp_required_for_login && self.otp_secret.blank?
-      self.otp_secret = User.generate_otp_secret
-      self.changed_to_otp_at = Time.now
+    if (self.otp_required_for_login_changed? || self.confirmed_at_changed?)
+      if self.otp_required_for_login && self.otp_secret.blank?
+        self.otp_secret = User.generate_otp_secret
+        self.changed_to_otp_at = Time.now
+      elsif !self.otp_required_for_login
+        self.otp_secret = nil
+        self.changed_to_otp_at = nil
+      end
     end
   end
 
   def update_passkey_required_timestamp
-    if (self.passkey_required_for_login_changed? || self.confirmed_at_changed?) &&
-        self.passkey_required_for_login
-      self.changed_to_passkey_at = Time.now
+    if (self.passkey_required_for_login_changed? || self.confirmed_at_changed?)
+      if self.passkey_required_for_login
+        self.changed_to_passkey_at = Time.now
+      else
+        self.changed_to_passkey_at = nil
+      end
     end
   end
 
