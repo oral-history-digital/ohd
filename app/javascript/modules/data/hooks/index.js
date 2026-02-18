@@ -1,3 +1,4 @@
+export * from './useGetInstitutions';
 export * from './useHumanReadable';
 export * from './useLoadCompleteProject';
 export * from './useMutateData';
