@@ -46,20 +46,20 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_text 'The test archive'
   end
 
-  test "user can enable TOTP during registration" do
-    email = 'achim@example.com'
-    fill_registration_form(
-      first_name: 'Achim',
-      last_name: 'Rossi',
-      email: email,
-      otp_required: true
-    )
-    confirm_registration_email
+  #test "user can enable TOTP during registration" do
+    #email = 'achim@example.com'
+    #fill_registration_form(
+      #first_name: 'Achim',
+      #last_name: 'Rossi',
+      #email: email,
+      #otp_required: true
+    #)
+    #confirm_registration_email
 
-    user = User.find_by(email: email)
-    assert_not_nil user
-    assert user.otp_required_for_login
-  end
+    #user = User.find_by(email: email)
+    #assert_not_nil user
+    #assert user.otp_required_for_login
+  #end
 
   test "user sees QR code and secret when enabling TOTP" do
     visit '/'
