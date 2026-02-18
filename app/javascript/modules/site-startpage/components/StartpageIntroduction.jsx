@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 import { FaList, FaSearch, FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-import useCatalogStats from './useCatalogStats';
+import { useCatalogStats } from '../hooks';
 
-export default function StartpageIntroduction({ className }) {
+export function StartpageIntroduction({ className }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const { data: stats, error, isLoading } = useCatalogStats();
@@ -128,6 +128,8 @@ ${stats?.num_institutions} ${t('modules.site_startpage.introduction.text5')}`;
         </article>
     );
 }
+
+export default StartpageIntroduction;
 
 StartpageIntroduction.propTypes = {
     className: PropTypes.string,
