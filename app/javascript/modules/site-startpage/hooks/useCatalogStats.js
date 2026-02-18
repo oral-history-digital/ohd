@@ -2,7 +2,7 @@ import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
 import useSWRImmutable from 'swr/immutable';
 
-export default function useCatalogStats() {
+export function useCatalogStats() {
     const pathBase = usePathBase();
     const path = `${pathBase}/catalog/stats`;
 
