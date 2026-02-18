@@ -27,18 +27,24 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
           xml.title interview.oai_title(locale), "xml:lang": ISO_639.find(locale).alpha3
         end
 
-        interview.contributions.each do |contribution|
-          xml.respStmt do
-            interview.project.available_locales.each do |locale|
-              xml.resp TranslationValue.for("contributions.#{contribution&.contribution_type&.code}", locale).strip, "xml:lang": ISO_639.find(locale).alpha3
-            end
-            attributes = interview.speaking_people.include?(contribution&.person) ? {corresp: "p#{contribution&.person_id}"} : {}
-            xml.persName attributes do
-              xml.forename contribution&.person&.first_name(locale)
-              if interview.project.fullname_on_landing_page
-                xml.surname contribution&.person&.last_name_used(locale)
-              else
-                xml.surname contribution&.person&.last_name_used(locale).strip[0].upcase + "."
+        interview.contributors.uniq.each do |person|
+          contribution_type_codes = interview.
+            contribution_type_codes_by_person_id[person.id]
+          #anonymous = !interview.project.fullname_on_landing_page &&
+            #(%w(interviewee further_interviewee) & contribution_type_codes).any?
+
+          next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
+
+          contribution_type_codes.each do |contribution_type_code|
+            xml.respStmt do
+              interview.project.available_locales.each do |locale|
+                xml.resp TranslationValue.for("contributions.#{contribution_type_code}", locale).strip,
+                  "xml:lang": ISO_639.find(locale).alpha3
+              end
+              attributes = interview.speaking_people.include?(person) ? {corresp: "p#{person.id}"} : {}
+              xml.persName attributes do
+                xml.forename person&.first_name_used(locale)
+                xml.surname person&.last_name_used(locale)#, anonymous: anonymous)
               end
             end
           end
@@ -172,72 +178,84 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
       end
 
       xml.particDesc do
-        project_contribution_types = interview.project.contribution_types.index_by(&:id)
         interview.speaking_people.each do |person|
+
+          contribution_type_codes = interview.
+            contribution_type_codes_by_person_id[person.id]
+          #anonymous = !interview.project.fullname_on_landing_page &&
+            #(%w(interviewee further_interviewee) & contribution_type_codes).any?
+
+          next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
+
           xml.person "xml:id": "p#{person.id}", sex: person&.gender do
             xml.idno person.id.to_s, type: "OHD-ID"
             xml.persName do
-              xml.forename person&.first_name(locale)
-              if interview.project.fullname_on_landing_page
-                xml.surname person&.last_name(locale)
-              end
-            end
-            role = project_contribution_types[interview.contributions.where(person_id: person.id).first&.contribution_type_id]&.code
-            interview.oai_locales.each do |locale|
-              xml.note TranslationValue.for("contributions.#{role}", locale), type: "role", "xml:lang": ISO_639.find(locale).alpha3
-            end
-
-            place_of_birth = person&.place_of_birth
-            date_of_birth = person&.date_of_birth
-            if date_of_birth || place_of_birth
-              xml.birth do
-                if place_of_birth
-                  xml.location do
-                    interview.oai_locales.each do |locale|
-                      xml.placeName place_of_birth.descriptor(locale), "xml:lang": ISO_639.find(locale).alpha3, corresp: "#r_#{place_of_birth.id}"
-                    end
-                  end
-                end
-                xml.date person&.date_of_birth.to_s,
-                  when: Date.parse(person&.date_of_birth).strftime("%Y-%m-%d") rescue person&.date_of_birth
-              end
+              xml.forename person&.first_name_used(locale)
+              xml.surname person&.last_name_used(locale)#, anonymous: anonymous)
             end
             interview.oai_locales.each do |locale|
-              if person&.has_biography?(locale) && !person&.biography_public?
-                xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
-                  person&.biographical_entries.each do |biographical_entry|
-                    xml.text! biographical_entry.text(locale)
-                  end
-                end
-              end
-            end
-            interview.oai_locales.each do |locale|
-              if person&.description(:locale)
-                text = person&.description(:locale).sub(/(www|http:|https:+[^\s]+[\w])/, "")
-                link = person&.description(:locale)[/.*(www|http:|https:+[^\s]+[\w])/, 1]
-                if text.present? || link.present?
-                  xml.note n: TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale), "xml:lang": ISO_639.find(locale).alpha3 do
-                    xml.p if text.present?
-                    xml.ref link, target: link if link.present?
-                  end
-                end
-              end
-            end
-            person&.registry_references.joins(:registry_reference_type).where.not(registry_reference_type: {code: 'birth_place'}).each do |registry_reference|
-              interview.oai_locales.each do |locale|
-                xml.note registry_reference.registry_entry.descriptor(locale).strip,
-                  corresp: "#re_#{registry_reference.registry_entry_id}",
-                  type: registry_reference.registry_reference_type&.name(locale),
+              contribution_type_codes.each do |contribution_type_code|
+                xml.note TranslationValue.for("contributions.#{contribution_type_code }", locale),
+                  type: "role",
                   "xml:lang": ISO_639.find(locale).alpha3
               end
             end
+
+            #unless anonymous
+              place_of_birth = person&.place_of_birth
+              date_of_birth = person&.date_of_birth
+              if date_of_birth || place_of_birth
+                xml.birth do
+                  if place_of_birth
+                    xml.location do
+                      interview.oai_locales.each do |locale|
+                        xml.placeName place_of_birth.descriptor(locale), "xml:lang": ISO_639.find(locale).alpha3, corresp: "#r_#{place_of_birth.id}"
+                      end
+                    end
+                  end
+                  xml.date person&.date_of_birth.to_s,
+                    when: Date.parse(person&.date_of_birth).strftime("%Y-%m-%d") rescue person&.date_of_birth
+                end
+              end
+              interview.oai_locales.each do |locale|
+                if person&.has_biography?(locale) && person&.biography_public?
+                  xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
+                    person&.biographical_entries.each do |biographical_entry|
+                      biographical_entry.text(locale).split(/[\n\r]+/).each do |line|
+                        xml.p line.strip unless line.strip.blank?
+                      end
+                    end
+                  end
+                end
+              end
+              interview.oai_locales.each do |locale|
+                if person&.description(:locale)
+                  text = person&.description(:locale).sub(/(www|http:|https:+[^\s]+[\w])/, "")
+                  link = person&.description(:locale)[/.*(www|http:|https:+[^\s]+[\w])/, 1]
+                  if text.present? || link.present?
+                    xml.note n: TranslationValue.for('activerecord.attributes.interview.pseudo_links', locale), "xml:lang": ISO_639.find(locale).alpha3 do
+                      xml.p text if text.present?
+                      xml.ref link, target: link if link.present?
+                    end
+                  end
+                end
+              end
+              person&.registry_references.joins(:registry_reference_type).where.not(registry_reference_type: {code: 'birth_place'}).each do |registry_reference|
+                interview.oai_locales.each do |locale|
+                  xml.note registry_reference.registry_entry.descriptor(locale).strip,
+                    corresp: "#re_#{registry_reference.registry_entry_id}",
+                    type: registry_reference.registry_reference_type&.name(locale),
+                    "xml:lang": ISO_639.find(locale).alpha3
+                end
+              end
+            #end # anonymous
           end
         end
       end
 
       xml.settingDesc do
         interview.oai_locales.each do |locale|
-          if interview.observations(locale)
+          if interview.observations(locale) && interview.observations_public?
             xml.setting "xml:lang": ISO_639.find(locale).alpha3, n: TranslationValue.for('metadata_labels.observations', locale) do
               interview.observations(locale).split("\n").each do |line|
                 xml.p line.strip unless line.strip.blank?
@@ -267,6 +285,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
   end
 
   xml.text "xml:lang": interview.alpha3 do
+    
     interview.tapes.each do |tape|
       xml.timeline unit: "s", corresp: "#{interview.media_type}_#{tape.number}" do
         xml.when "xml:id": "T#{tape.number}_START", interval: "0.0", since: "T#{tape.number}_START"
@@ -368,7 +387,41 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
           end
         end
       end
-    end
 
+      heading_alpha3s = interview.heading_alpha3s
+
+      # mainheadings
+      xml.spanGrp type: "heading" do
+        interview.segments.with_heading.each do |segment|
+          heading_alpha3s.each do |heading_alpha3|
+            if segment.mainheading(heading_alpha3).present? ||
+                segment.mainheading("#{heading_alpha3}-public").present?
+              xml.span segment.mainheading(heading_alpha3) || segment.mainheading(heading_alpha3 + "-public"),
+                "xml:id": "mh#{segment.id}_#{heading_alpha3}",
+                "xml:lang": heading_alpha3,
+                from: "T#{segment.tape.number}_S#{segment.id}",
+                to: "T#{segment.tape.number}_S#{segment.id}"
+            end
+          end
+        end
+      end
+      # subheadings
+      xml.spanGrp type: "sub-heading" do
+        interview.segments.with_heading.each do |segment|
+          heading_alpha3s.each do |heading_alpha3|
+            if segment.subheading(heading_alpha3).present? ||
+                segment.subheading("#{heading_alpha3}-public").present?
+              xml.span segment.subheading(heading_alpha3) || segment.subheading(heading_alpha3 + "-public"),
+                "xml:id": "sh#{segment.id}_#{heading_alpha3}",
+                "xml:lang": heading_alpha3,
+                from: "T#{segment.tape.number}_S#{segment.id}",
+                to: "T#{segment.tape.number}_S#{segment.id}"
+            end
+          end
+        end
+      end
+
+    end
   end
+
 end

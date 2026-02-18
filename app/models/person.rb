@@ -278,8 +278,9 @@ class Person < ApplicationRecord
     use_pseudonym ? pseudonym_first_name(locale) : first_name(locale)
   end
 
-  def last_name_used(locale = I18n.locale)
-    use_pseudonym ? pseudonym_last_name(locale) : last_name(locale)
+  def last_name_used(locale = I18n.locale, anonymous: false)
+    ln = use_pseudonym ? pseudonym_last_name(locale) : last_name(locale)
+    anonymous && ln.present? ? ln.strip.slice(0) + '.' : ln
   end
 
   def pseudonym(locale = I18n.locale)

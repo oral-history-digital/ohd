@@ -52,6 +52,7 @@ export default function RegisterForm({
                 values: ['not_specified', 'dr', 'prof'],
                 keepOrder: true,
                 withEmpty: true,
+                group: 'name',
             },
             {
                 elementType: 'input',
@@ -60,6 +61,7 @@ export default function RegisterForm({
                 validate: function (v) {
                     return v && v.length > 1;
                 },
+                group: 'name',
             },
             {
                 elementType: 'input',
@@ -68,6 +70,7 @@ export default function RegisterForm({
                 validate: function (v) {
                     return v && v.length > 1;
                 },
+                group: 'name',
             },
         ];
 
@@ -84,6 +87,7 @@ export default function RegisterForm({
                 handlechangecallback: (name, value) => {
                     setHideZip(NON_ZIP_COUNTRIES.indexOf(value) > -1);
                 },
+                group: 'address',
             },
         ];
 
@@ -95,6 +99,7 @@ export default function RegisterForm({
                 validate: function (v) {
                     return v && v.length > 1;
                 },
+                group: 'address',
             },
             {
                 elementType: 'input',
@@ -102,6 +107,7 @@ export default function RegisterForm({
                 type: 'text',
                 //validate: function(v){return v && v.length > 1},
                 hidden: hideZip,
+                group: 'address',
             },
             {
                 elementType: 'input',
@@ -110,6 +116,7 @@ export default function RegisterForm({
                 validate: function (v) {
                     return v && v.length > 1;
                 },
+                group: 'address',
             },
         ];
 
@@ -125,6 +132,7 @@ export default function RegisterForm({
                 help: emailCheckResponse.registration_error && (
                     <p className="notifications">{emailCheckResponse.msg}</p>
                 ),
+                group: 'email',
             },
             {
                 elementType: 'input',
@@ -134,6 +142,7 @@ export default function RegisterForm({
                     return PASSWORD_REGEX.test(v);
                 },
                 handlechangecallback: handlePasswordChange,
+                group: 'password',
             },
             {
                 elementType: 'input',
@@ -142,6 +151,7 @@ export default function RegisterForm({
                 validate: function (v) {
                     return PASSWORD_REGEX.test(v) && v === password;
                 },
+                group: 'password',
             },
             {
                 elementType: 'input',
@@ -177,6 +187,7 @@ export default function RegisterForm({
                         </a>
                     ),
                 }),
+                group: 'agreements',
             },
             {
                 elementType: 'input',
@@ -199,6 +210,7 @@ export default function RegisterForm({
                         </a>
                     ),
                 }),
+                group: 'agreements',
             },
         ];
 
@@ -261,6 +273,7 @@ export default function RegisterForm({
                     pre_register_location: location.href,
                 }}
                 onCancel={onCancel}
+                className="Registration-form"
             />
         </>
     );

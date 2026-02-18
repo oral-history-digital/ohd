@@ -365,17 +365,18 @@ class RegistryEntry < ApplicationRecord
 
   # normdata methods
   #
-  %w(gnd osm).each do |provider|
+  %w(gnd osm wikidata geonames factgrid).each do |provider|
     define_method "#{provider}_id=" do |nid|
       if nid
-        norm_datum = self.send("#{provider}_norm_data").first_or_initialize
+        norm_datum = norm_data.by_provider(provider).first_or_initialize
+        norm_datum.norm_data_provider = NormDataProvider.find_by(name: provider)
         norm_datum.nid = nid
         norm_datum.save
       end
     end
 
     define_method "#{provider}_id" do
-      norm_datum = self.send("#{provider}_norm_data").first
+      norm_datum = norm_data.by_provider(provider).first
       norm_datum && norm_datum.nid
     end
   end

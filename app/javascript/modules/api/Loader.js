@@ -1,6 +1,8 @@
 import request from 'superagent';
 import noCache from 'superagent-no-cache';
 
+import { flattenNestedObject } from './flattenNestedObject';
+
 const Loader = {
     getJson: function (url, queryParams, dispatch, callback) {
         request
@@ -41,7 +43,9 @@ const Loader = {
                         'loading json from ' + url + ' failed: ' + error
                     );
                     console.error('original error: ' + error.original);
-                    dispatch(callback(error));
+                    if (typeof callback === 'function') {
+                        dispatch(callback(error));
+                    }
                 } else if (res) {
                     if (res.error) {
                         console.error(
@@ -156,10 +160,12 @@ const Loader = {
                             }
                         });
                     } else if (typeof params[scope][param] === 'object') {
-                        // value is a hash/ object
-                        req.field(
-                            `${scope}[${param}]`,
-                            JSON.stringify(params[scope][param])
+                        // value is a hash/object - flatten it using helper function
+                        flattenNestedObject(
+                            req,
+                            scope,
+                            param,
+                            params[scope][param]
                         );
                     } else {
                         // normal value
@@ -177,7 +183,9 @@ const Loader = {
                 console.error('loading json from ' + url + ' failed: ' + error);
                 console.error('original error: ' + error.original);
                 console.error('url: ' + url);
-                dispatch(errorCallback(error));
+                if (typeof errorCallback === 'function') {
+                    dispatch(errorCallback(error));
+                }
             } else if (res) {
                 let json = JSON.parse(res.text);
                 if (res.error) {

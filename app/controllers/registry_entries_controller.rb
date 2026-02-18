@@ -138,7 +138,8 @@ class RegistryEntriesController < ApplicationController
             RegistryEntry.find(params[:root_id]) :
             current_project.root_registry_entry
           header_keys = %w(parent_name parent_id name id description
-            latitude longitude gnd_id osm_id linked_interviews status)
+            latitude longitude gnd_id osm_id wikidata_id geonames_id
+            factgrid_id linked_interviews)
           used_entry_ids = []
 
           csv = Rails.cache.fetch([
@@ -165,8 +166,10 @@ class RegistryEntriesController < ApplicationController
                     entry.longitude,
                     entry.gnd_id && entry.gnd_id.gsub(/[\r\n\t]/, ''),
                     entry.osm_id && entry.osm_id.gsub(/[\r\n\t]/, ''),
+                    entry.wikidata_id && entry.wikidata_id.gsub(/[\r\n\t]/, ''),
+                    entry.geonames_id && entry.geonames_id.gsub(/[\r\n\t]/, ''),
+                    entry.factgrid_id && entry.factgrid_id.gsub(/[\r\n\t]/, ''),
                     entry.registry_references.map(&:archive_id).compact.uniq.join('#'),
-                    entry.workflow_state,
                   ]
                 end
                 used_entry_ids << entry.id

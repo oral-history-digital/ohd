@@ -236,7 +236,7 @@ class Interview < ApplicationRecord
     end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
-      ((Project.ohd.present? ? Project.ohd.search_facets: []) | project.search_facets).inject({}) do |mem, facet|
+      ((Project.ohd.present? ? Project.ohd.search_facets : []) | project.search_facets).inject({}) do |mem, facet|
         if interviewee
           mem[facet.name] = case facet.source
             when 'RegistryReferenceType'
@@ -531,6 +531,14 @@ class Interview < ApplicationRecord
     end.uniq
   end
 
+  def heading_alpha3s
+    project.available_locales.select do |l|
+      has_heading?(ISO_639.find(l).try(:alpha3) || l)
+    end.map do |l|
+      ISO_639.find(l).try(:alpha3) || l
+    end
+  end
+
   def has_transcript?(locale)
     segment_count = segments
       .joins(:translations)
@@ -581,20 +589,18 @@ class Interview < ApplicationRecord
     escaped_text.gsub(/\r?\n/, '~\newline~')
   end
 
-  def index_observations?
-    #public_attributes = properties.fetch(:public_attributes, {})
-    #observations_public = public_attributes.fetch('observations', true)
-    observations_public = properties[:public_attributes]['observations'] if properties[:public_attributes]
+  def observations_public?
+    public_attributes = properties.fetch(:public_attributes, {})
+    public_attributes.fetch('observations', false)
+  end
 
-    if observations_public != true
-      false
+  def index_observations?
+    return false unless observations_public?
+    field = project.metadata_fields.where(name: 'observations').first
+    if field.present?
+      field.use_in_details_view
     else
-      field = project.metadata_fields.where(name: 'observations').first
-      if field.present?
-        field.use_in_details_view
-      else
-        true
-      end
+      true
     end
   end
 
@@ -1010,4 +1016,18 @@ class Interview < ApplicationRecord
     Person.where(id: segments.pluck(:speaker_id).uniq).compact
   end
 
+  # returns a hash of contribution_type codes indexed by person_id for all contributions of the interview
+  def contribution_type_codes_by_person_id
+    Rails.cache.fetch([
+      "contribution_type_codes_by_person_id_for_interview",
+      archive_id,
+      updated_at
+    ].join("_")) do
+      contributions.includes(:contribution_type).inject({}) do |mem, c|
+        mem[c.person_id] ||= []
+        mem[c.person_id] << c.contribution_type.code
+        mem
+      end
+    end
+  end
 end

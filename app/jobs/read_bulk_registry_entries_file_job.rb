@@ -25,6 +25,9 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
         longitude   = data[6]
         gnd_id      = data[7]
         osm_id      = data[8]
+        wikidata_id = data[9]
+        geonames_id = data[10]
+        factgrid_id = data[11]
 
         begin
           unless name.blank? && id.blank?
@@ -39,7 +42,10 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               list_priority: false,
               project_id: project.id,
               gnd_id: gnd_id,
-              osm_id: osm_id
+              osm_id: osm_id,
+              wikidata_id: wikidata_id,
+              geonames_id: geonames_id,
+              factgrid_id: factgrid_id
             }
             parent = nil
 

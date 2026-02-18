@@ -12,19 +12,19 @@
 <% end %>
 
 <%
-  {
-    interviewer: 'interview',
-    cinematographer: 'camera',
-    transcriptor: 'transcript',
-    translator: 'translation',
-    segmentator: 'segmentation'
-  }.each do |contribution_type_code, translation_key|
+  [
+    :interviewer,
+    :cinematographer,
+    :transcriptor,
+    :translator,
+    :segmentator,
+  ].each do |contribution_type_code|
     unless doc_type == 'transcript' && contribution_type_code == :translator
       contributors = interview.contributors_by_code(contribution_type_code)
       names = contributors.map{|i| "#{i.first_name(header_locale)} #{i.last_name(header_locale)}" }.join(", ")
       unless names.blank?
 %>
-        \par{<%= latex_escape( "#{TranslationValue.for(translation_key, header_locale)}: #{names}" ) %>}
+        \par{<%= latex_escape( "#{TranslationValue.for("contributions.#{contribution_type_code}", header_locale)}: #{names}" ) %>}
 <%
       end
     end
