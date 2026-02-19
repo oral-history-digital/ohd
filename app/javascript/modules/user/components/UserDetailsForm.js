@@ -39,6 +39,10 @@ export default function UserDetailsForm({
                     help: 'user.notes_on_receive_newsletter',
                 },
                 {
+                    elementType: 'extra',
+                    labelKey: 'user.mfa_login_info',
+                },
+                {
                     elementType: 'input',
                     attribute: 'otp_required_for_login',
                     type: 'checkbox',
