@@ -90,7 +90,7 @@ The development environment consists of three services:
 
 - `app`: The main Rails application container
 - `db`: MariaDB 10.5 database
-- `solr`: Solr 8 search engine
+- `solr`: Solr 5.5 search engine
 
 For more detailed information about the Dev Container setup, see [.devcontainer/README.md](.devcontainer/README.md).
 

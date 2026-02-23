@@ -22,5 +22,9 @@ solr/data
 Thumbs.db
 coverage
 spec/examples.txt
+# Secrets — never bake into image layers
+config/master.key
+config/credentials.yml.enc
+
 # Keep devcontainer files for now since we need them
 # .devcontainer
