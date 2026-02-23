@@ -77,7 +77,8 @@ class SessionsController < Devise::SessionsController
       yield resource if block_given?
       after_sign_in(resource)
     else
-      resource.increment_failed_attempts if user.respond_to?(:increment_failed_attempts)
+      resource.increment_failed_attempts if resource.respond_to?(:increment_failed_attempts)
+      resource.lock_access! if resource.respond_to?(:lock_access!) && resource.failed_attempts >= resource.class.maximum_attempts
       if resource.access_locked?
         flash[:alert] = tv('devise.failure.locked')
         #render :otp, status: :unprocessable_entity

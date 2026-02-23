@@ -50,6 +50,16 @@ class UpdateMfaTranslations < ActiveRecord::Migration[8.0]
       en: 'You have entered an incorrect or expired one-time code. Please go back to the login screen and enter a valid 6-digit code.',
       ru: 'Вы ввели неправильный или истекший одноразовый код. Пожалуйста, вернитесь на экран входа и введите действующий 6-значный код.'
     })
+    TranslationValue.create_or_update_for_key('passkey.explanation', {
+      de: 'Richten Sie bei Bedarf pro Gerät einen Passkey ein.',
+      en: 'Set up a passkey for each device if necessary.',
+      ru: 'При необходимости настройте пасскей для каждого устройства.'
+    })
+    TranslationValue.create_or_update_for_key('devise.failure.locked', {
+      de: 'Ihr Konto wurde gesperrt, weil zu viele fehlgeschlagene Anmeldeversuche unternommen wurden. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.',
+      en: 'Your account has been locked due to too many failed login attempts. Please try again later or contact support.',
+      ru: 'Ваша учетная запись была заблокирована из-за слишком большого количества неудачных попыток входа. Пожалуйста, попробуйте позже или свяжитесь со службой поддержки.'
+    })
   end
 
   def down
@@ -63,5 +73,7 @@ class UpdateMfaTranslations < ActiveRecord::Migration[8.0]
     TranslationValue.where(key: :send_otp_per_mail).destroy_all
     TranslationValue.where(key: :sent_otp_per_mail).destroy_all
     TranslationValue.where(key: 'devise.failure.invalid_otp').destroy_all
+    TranslationValue.where(key: 'passkey.explanation').destroy_all
+    TranslationValue.where(key: 'devise.failure.locked').destroy_all
   end
 end

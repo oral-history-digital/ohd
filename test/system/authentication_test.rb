@@ -84,7 +84,7 @@ class RegistrationTest < ApplicationSystemTestCase
     
     # Should be redirected to 2FA page
     assert_current_path users_otp_path(locale: I18n.locale)
-    assert_text '2FA'
+    assert_text 'One-time Code'
     
     # Generate valid TOTP code
     totp_code = user.current_otp

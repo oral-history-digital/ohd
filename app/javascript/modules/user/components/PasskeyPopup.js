@@ -2,6 +2,7 @@ import { useRef } from 'react';
 
 import { OHD_DOMAINS } from 'modules/constants';
 import { getCurrentUser } from 'modules/data';
+import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { FaKey } from 'react-icons/fa';
@@ -44,14 +45,17 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
                 closeModalRef.current = close;
 
                 return (
-                    <iframe
-                        src={passkeysURL}
-                        style={{ width: '100%', height: '60vh' }}
-                        scrolling="no"
-                        frameBorder="0"
-                        allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};
-                            publickey-credentials-get ${OHD_DOMAINS[railsMode]}`}
-                    />
+                    <>
+                        <HelpText code="mfa" />
+                        <iframe
+                            src={passkeysURL}
+                            style={{ width: '100%', height: '60vh' }}
+                            scrolling="no"
+                            frameBorder="0"
+                            allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};
+                                publickey-credentials-get ${OHD_DOMAINS[railsMode]}`}
+                        />
+                    </>
                 );
             }}
         </Modal>
