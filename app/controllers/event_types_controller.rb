@@ -30,7 +30,7 @@ class EventTypesController < ApplicationController
   def update
     event_type = EventType.find(params[:id])
     authorize event_type
-    event_type.update_attributes(event_type_params)
+    event_type.update(event_type_params)
 
     render json: event_type
   end
