@@ -99,7 +99,7 @@ services:
 
   # Solr search engine
   solr:
-    image: solr:8
+    image: solr:5.5
     container_name: ohd_solr
     restart: unless-stopped
     ports:
@@ -107,10 +107,8 @@ services:
     volumes:
       # Persistent Solr data (IMPORTANT: for production use)
       - solr-data:/var/solr
-      # Mount entire conf directory for all supporting files
-      - ./solr/configsets/sunspot/conf:/opt/solr/server/solr/configsets/sunspot/conf:ro
-      # Override with Solr 8 compatible schema (devcontainer version)
-      - ./.devcontainer/config/schema-solr8.xml:/opt/solr/server/solr/configsets/sunspot/conf/schema.xml:ro
+      # Mount configsets
+      - ./solr/configsets:/opt/solr/server/solr/configsets:ro
     environment:
       SOLR_HEAP: 512m
       SOLR_JAVA_MEM: '-Xms512m -Xmx512m'

@@ -1,60 +1,13 @@
 # Multi-stage production Dockerfile
 
 # =============================================================================
-# Stage 1: Base - System dependencies and language runtimes
+# Stage 1: Base - app user and working directory
 # =============================================================================
-FROM ruby:3.3.4-slim AS base
+# System dependencies, Node.js, Yarn, and JAVA_HOME are all provided by the
+# shared base image. See Dockerfile.base and .github/workflows/build-base-image.yml.
+FROM ghcr.io/oral-history-digital/ohd-base:latest AS base
 
-# Install system dependencies first
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    --no-install-recommends \
-    # Build essentials
-    build-essential \
-    pkg-config \
-    cmake \
-    autoconf \
-    git \
-    ca-certificates \
-    curl \
-    gnupg \
-    xz-utils \
-    # Database clients
-    default-mysql-client \
-    libmariadb-dev \
-    # Ruby gem native dependencies
-    libxml2-dev \
-    libxslt1-dev \
-    libmagickwand-dev \
-    libffi-dev \
-    # Java for Solr integration and mini_racer
-    default-jdk-headless \
-    # PDF generation via rails-latex gem (required)
-    texlive-base \
-    texlive-xetex \
-    texlive-lang-all \
-    fonts-freefont-ttf \
-    fonts-noto \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
-# Install Node.js 22.x LTS directly from official binaries
-# Current active LTS with support until April 2027 (matches package.json engines: >=18 <=22)
-# TODO: Test and upgrade to Node 24 LTS after verification in development
-ARG NODE_VERSION=22.22.0
-RUN curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz -o /tmp/node.tar.xz \
-  && tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 \
-  && rm /tmp/node.tar.xz \
-  && node --version \
-  && npm --version
-
-# Install Yarn package manager (Classic Stable)
-RUN npm install -g yarn@1.22.22 \
-  && yarn --version
-
-# Set JAVA_HOME for gems that need Java headers
-ENV JAVA_HOME=/usr/lib/jvm/default-java
-
-# Create app user (non-root for security)
+# Create app user (non-root for security; production-only concern)
 RUN groupadd --gid 1000 appuser \
   && useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser
 
