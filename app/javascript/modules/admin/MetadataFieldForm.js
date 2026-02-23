@@ -67,6 +67,9 @@ export default function MetadataFieldForm({
 }) {
     const { locale } = useI18n();
     const { project, projectId } = useProject();
+
+    const existingMetadataFields = Object.values(project.metadata_fields || {});
+
     const [source, setSource] = useState(data?.source);
     const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(
         data?.registry_reference_type_id
@@ -96,6 +99,34 @@ export default function MetadataFieldForm({
     const isRegistrySource = source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE;
     const isEventSource = source === METADATA_SOURCE_EVENT_TYPE;
 
+    // Compute already-used IDs/names, excluding the current item when editing
+    const usedRegistryReferenceTypeIds = new Set(
+        existingMetadataFields
+            .filter((mf) => mf.registry_reference_type_id && mf.id !== data?.id)
+            .map((mf) => String(mf.registry_reference_type_id))
+    );
+    const usedEventTypeIds = new Set(
+        existingMetadataFields
+            .filter((mf) => mf.event_type_id && mf.id !== data?.id)
+            .map((mf) => String(mf.event_type_id))
+    );
+    const usedNamesForSource = (src) =>
+        new Set(
+            existingMetadataFields
+                .filter((mf) => mf.source === src && mf.id !== data?.id)
+                .map((mf) => mf.name)
+        );
+
+    const filteredRegistryReferenceTypes = registryReferenceTypes
+        ? registryReferenceTypes.filter(
+              (rrt) => !usedRegistryReferenceTypeIds.has(String(rrt.id))
+          )
+        : registryReferenceTypes;
+
+    const filteredEventTypes = eventTypes
+        ? eventTypes.filter((et) => !usedEventTypeIds.has(String(et.id)))
+        : eventTypes;
+
     const nameValuesForSource = () => {
         if (source === METADATA_SOURCE_REGISTRY_REFERENCE_TYPE) {
             return (
@@ -105,7 +136,10 @@ export default function MetadataFieldForm({
         } else if (isEventSource) {
             return eventTypes.find((et) => et.id === eventTypeId)?.code;
         } else {
-            return NAME_VALUES[source];
+            const used = usedNamesForSource(source);
+            return (NAME_VALUES[source] || []).filter(
+                (name) => !used.has(name)
+            );
         }
     };
 
@@ -149,7 +183,7 @@ export default function MetadataFieldForm({
                     {
                         elementType: 'select',
                         attribute: 'registry_reference_type_id',
-                        values: registryReferenceTypes,
+                        values: filteredRegistryReferenceTypes,
                         withEmpty: true,
                         handlechangecallback:
                             handleRegistryReferenceTypeIdChange,
@@ -174,7 +208,7 @@ export default function MetadataFieldForm({
                     {
                         elementType: 'select',
                         attribute: 'event_type_id',
-                        values: eventTypes,
+                        values: filteredEventTypes,
                         withEmpty: true,
                         handlechangecallback: handleEventTypeIdChange,
                         hidden: !isEventSource,
