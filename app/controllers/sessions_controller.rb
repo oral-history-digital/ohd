@@ -83,7 +83,7 @@ class SessionsController < Devise::SessionsController
         #render :otp, status: :unprocessable_entity
         redirect_to new_user_session_path
       else
-        flash.now[:alert] = tv('devise.failure.invalid')
+        flash.now[:alert] = tv('devise.failure.invalid_otp')
         render :otp, status: :unprocessable_entity
       end
     end

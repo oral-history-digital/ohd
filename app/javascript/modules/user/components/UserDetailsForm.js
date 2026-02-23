@@ -33,12 +33,6 @@ export default function UserDetailsForm({
                     validate: (v) => EMAIL_REGEX.test(v),
                 },
                 {
-                    elementType: 'input',
-                    attribute: 'receive_newsletter',
-                    type: 'checkbox',
-                    help: 'user.notes_on_receive_newsletter',
-                },
-                {
                     elementType: 'extra',
                     labelKey: 'user.mfa_login_info',
                 },

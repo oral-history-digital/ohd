@@ -20,6 +20,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    redirect_to user_url('current')
+  end
+
   def update
     user = params[:id] == 'current' ? current_user : User.find(params[:id])
     authorize(user)
