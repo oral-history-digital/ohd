@@ -1,16 +1,14 @@
 import lockRegular from 'assets/images/lock-regular.svg';
 import lockSolid from 'assets/images/lock-solid.svg';
-import classNames from 'classnames';
 import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
-import { getInstitutions } from 'modules/data';
+import { useGetInstitutions } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
-export default function ArchiveTile({ archive }) {
+export function ArchiveTile({ archive }) {
     const { t, locale } = useI18n();
-    const institutions = useSelector(getInstitutions);
+    const institutions = useGetInstitutions();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(archive);
 
@@ -19,10 +17,12 @@ export default function ArchiveTile({ archive }) {
     const opaqueBackgroundColor = backgroundColor + '40';
 
     let institutionName;
-    const institutionProjectId = archive.institution_project_ids?.[0];
+    const institutionProjectId = archive.institution_ids?.[0];
     if (institutionProjectId) {
-        const institution = institutions[institutionId];
-        institutionName = institution.name[locale];
+        const institution = institutions[institutionProjectId];
+        if (institution) {
+            institutionName = institution.name[locale];
+        }
     }
 
     const logoSrc = Object.values(archive.logos)[0]?.src;
@@ -78,6 +78,8 @@ export default function ArchiveTile({ archive }) {
         </LinkOrA>
     );
 }
+
+export default ArchiveTile;
 
 ArchiveTile.propTypes = {
     archive: PropTypes.object.isRequired,

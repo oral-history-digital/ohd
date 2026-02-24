@@ -9,7 +9,7 @@ import ArchiveTile from './ArchiveTile';
 
 const INITIALLY_SHOWN_ARCHIVES = 6;
 
-export default function StartpageArchives({ className }) {
+export function StartpageArchives({ className }) {
     const archives = useSelector(getStartpageProjects);
     const [showMore, setShowMore] = useState(false);
     const { t } = useI18n();
@@ -46,6 +46,8 @@ export default function StartpageArchives({ className }) {
         </article>
     );
 }
+
+export default StartpageArchives;
 
 StartpageArchives.propTypes = {
     className: PropTypes.string,
