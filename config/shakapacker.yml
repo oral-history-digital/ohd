@@ -63,11 +63,11 @@ development:
     # Ensure only one of these entries is set.
     # server: https
 
-    host: localhost
+    host: 0.0.0.0
     port: 3035
     # Hot Module Replacement updates modules while the application is running without a full reload
     # Used instead of the `hot` key in https://webpack.js.org/configuration/dev-server/#devserverhot
-    hmr: false
+    hmr: true
     # If HMR is on, CSS will by inlined by delivering it as part of the script payload via style-loader. Be sure
     # that you add style-loader to your project dependencies.
     #
@@ -81,15 +81,15 @@ development:
     client:
       # Should we show a full-screen overlay in the browser when there are compiler errors or warnings?
       overlay: true
-      # May also be a string
-      # webSocketURL:
-      #  hostname: '0.0.0.0'
-      #  pathname: '/ws'
-      #  port: 8080
+      # WebSocket URL for devcontainer - allows HMR to work from host browser
+      webSocketURL:
+        hostname: localhost
+        pathname: /ws
+        port: 3035
     # Should we use gzip compression?
     compress: true
     # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
-    allowed_hosts: 'auto'
+    allowed_hosts: 'all'
     # Shows progress and colorizes output of bin/shakapacker[-dev-server]
     pretty: true
     headers:

@@ -56,7 +56,10 @@ log "✅ Rails server running on port 3000"
 log ""
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log "📦 Starting Webpack dev server..."
-bin/shakapacker-dev-server &>/dev/null &
+# setsid creates a new process session, fully detaching webpack from the
+# postStartCommand process group so VS Code can't kill it when the script exits.
+setsid nohup bin/shakapacker-dev-server > "$LOG_DIR/webpack.log" 2>&1 < /dev/null &
+disown
 if wait_for_port_soft localhost 3035; then
   log "✅ Webpack dev server running on port 3035"
 else
