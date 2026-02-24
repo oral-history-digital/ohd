@@ -41,7 +41,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     default-jdk-headless \
     # PDF generation via rails-latex gem
     texlive-base \
+    texlive-latex-base \
     texlive-xetex \
+    texlive-luatex \
+    texlive-fonts-extra \
     texlive-lang-all \
     fonts-freefont-ttf \
     fonts-noto \
