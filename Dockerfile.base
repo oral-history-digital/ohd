@@ -1,0 +1,88 @@
+# Shared base image for dev container and production.
+# Built and pushed to ghcr.io/oral-history-digital/ohd-base by
+# .github/workflows/build-base-image.yml.
+#
+# This image contains all expensive system dependencies (texlive, JDK, Node,
+# ImageMagick, …) shared between dev and prod. Gems and JS packages are NOT
+# installed here — those belong in the consuming Dockerfiles so their layer
+# cache stays independent and dev/prod bundle groups remain separate.
+#
+# NOTE: keep system packages in sync with:
+#   - .github/workflows/rubyonrails.yml (apt-get install line)
+#   - .devcontainer/Dockerfile (which extends this image)
+#   - Dockerfile (which uses this as its base stage in production)
+
+FROM ruby:3.3.4
+
+# Install all system dependencies in a single layer for maximum cache reuse.
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    --no-install-recommends \
+    # Build essentials
+    build-essential \
+    pkg-config \
+    cmake \
+    autoconf \
+    # Utilities
+    git \
+    ca-certificates \
+    curl \
+    gnupg \
+    xz-utils \
+    netcat-openbsd \
+    # Database clients
+    default-mysql-client \
+    libmariadb-dev \
+    # Ruby gem native dependencies
+    libxml2-dev \
+    libxslt1-dev \
+    libmagickwand-dev \
+    libffi-dev \
+    # Java for Solr integration
+    default-jdk-headless \
+    # PDF generation via rails-latex gem
+    texlive-base \
+    texlive-latex-base \
+    texlive-xetex \
+    texlive-luatex \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-freefont-ttf \
+    fonts-noto \
+    fonts-open-sans \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install Node.js LTS from official binaries.
+# Uses arch detection so the image builds correctly on both linux/amd64 and
+# linux/arm64 (Apple Silicon via Colima/Rosetta-free builds).
+ARG NODE_VERSION=22.22.0
+RUN ARCH=$(uname -m) \
+  && case "$ARCH" in \
+       x86_64)  NODE_ARCH=x64 ;; \
+       aarch64) NODE_ARCH=arm64 ;; \
+       *) echo "Unsupported arch: $ARCH" && exit 1 ;; \
+     esac \
+  && curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz" \
+       -o /tmp/node.tar.xz \
+  && tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 \
+  && rm /tmp/node.tar.xz \
+  && node --version \
+  && npm --version
+
+# Install Yarn Classic (v1)
+RUN npm install -g yarn@1.22.22 \
+  && yarn --version
+
+# Set JAVA_HOME for gems that need Java headers
+ENV JAVA_HOME=/usr/lib/jvm/default-java
+
+# Bundle config: store gems in /usr/local/bundle so they are not hidden by the
+# host volume mount at /workspace. The bundle-data named volume in
+# docker-compose.yml is mounted here so gems survive container restarts and are
+# auto-populated from the image on first start.
+ENV BUNDLE_PATH=/usr/local/bundle
+ENV BUNDLE_APP_CONFIG=/usr/local/bundle
+ENV BUNDLE_WITHOUT=production
+
+WORKDIR /workspace

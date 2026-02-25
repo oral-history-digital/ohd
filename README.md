@@ -35,20 +35,22 @@ This project includes a fully configured Dev Container setup for easy developmen
 
 The Dev Container setup will automatically:
 
-- Pull the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
+- Pull the pre-built base image with Ruby 3.3.4, Node.js 22.x, Java, and system dependencies
 - Build the development image with application-specific dependencies
 - Set up the MySQL database and Solr search server
 - Install application dependencies via Bundler and Yarn
 - Configure the database and other required services
-- Import the database dump
+- Import the database dump if present at `.devcontainer/db/dump.sql.gz`, or create a minimal database from the schema and seeds if no dump is found
+
+> **Tip:** To reimport the dump into an existing database at any time, run `bin/rake database:reimport`.
 
 ### Docker Architecture
 
 The development environment uses a two-stage Docker setup for faster build times:
 
-1. **Base Image (`Dockerfile.ruby-base`)**: Creates a foundation image with Ruby 3.3.4, Node.js 18.x, Java, and pre-installed system dependencies. This image is built and published to GitHub Container Registry as `ghcr.io/yotkadata/rails-base:latest`.
+1. **Base Image (`Dockerfile.base`)**: Creates a foundation image with Ruby 3.3.4, Node.js 22.x, Java, ImageMagick, TeX Live, and all system dependencies shared between dev and production. Built and published to GitHub Container Registry as `ghcr.io/oral-history-digital/ohd-base:latest` by the `publish-base-image` workflow.
 
-2. **Development Image (`.devcontainer/Dockerfile`)**: Uses the pre-built base image and adds application-specific dependencies and configuration for the development environment.
+2. **Development Image (`.devcontainer/Dockerfile`)**: Extends the base image with dev-only tooling (Chromium, Xvfb, VNC) and pre-installs gems and JS packages for faster container startup.
 
 ### Running the Application
 
@@ -90,7 +92,7 @@ The development environment consists of three services:
 
 - `app`: The main Rails application container
 - `db`: MariaDB 10.5 database
-- `solr`: Solr 8 search engine
+- `solr`: Solr 5.5 search engine
 
 For more detailed information about the Dev Container setup, see [.devcontainer/README.md](.devcontainer/README.md).
 
