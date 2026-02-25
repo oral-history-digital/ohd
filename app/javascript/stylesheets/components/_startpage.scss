@@ -10,3 +10,71 @@
 .Startpage-icon {
   font-size: $base-unit * 2;
 }
+
+.StartpageArchives-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.StartpageArchives-nav {
+  display: flex;
+  gap: $base-unit * 0.25;
+}
+
+.StartpageArchives-navBtn {
+  align-items: center;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.25rem;
+  height: $base-unit * 1.5;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  width: $base-unit * 1.5;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: #999;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.3;
+  }
+}
+
+.StartpageArchives-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: $base-unit * 0.75;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+
+  // Hide scrollbar visually but allow touch/swipe scroll
+  scrollbar-width: none; // Firefox
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari
+  }
+
+  > * {
+    // calc ensures N whole cards fit exactly:
+    // 1 card on small mobile, 2 on larger mobile, 3 on tablet+
+    flex: 0 0 calc(100%);
+
+    @include screen-xs-s {
+      flex: 0 0 calc((100% - #{$base-unit * 0.75}) / 2);
+    }
+
+    @include screen-s {
+      flex: 0 0 calc((100% - #{$base-unit * 0.75}) / 2);
+    }
+
+    @include screen-m {
+      flex: 0 0 calc((100% - #{$base-unit * 0.75 * 2}) / 3);
+    }
+  }
+}
