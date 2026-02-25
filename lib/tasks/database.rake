@@ -184,4 +184,37 @@ namespace :database do
       user_project.update(processed_at: user_project.user && user_project.user.created_at)
     end
   end
+
+  desc 'Drop and reimport the devcontainer database dump (.devcontainer/db/dump.sql.gz), then migrate'
+  task :reimport do
+    env = ENV.fetch('RAILS_ENV', 'development')
+    raise 'database:reimport can only be run in development (RAILS_ENV=development)' unless env == 'development'
+    dump_path = File.expand_path('.devcontainer/db/dump.sql.gz', Dir.pwd)
+    raise "Dump not found at #{dump_path}" unless File.exist?(dump_path)
+
+    # Remove credentials.yml.enc so Rails uses secrets.yml (no master.key in devcontainer)
+    creds = File.expand_path('config/credentials.yml.enc', Dir.pwd)
+    File.delete(creds) if File.exist?(creds)
+
+    db_yml = File.expand_path('config/database.yml', Dir.pwd)
+    require 'yaml'
+    db_config = YAML.safe_load(File.read(db_yml), aliases: true).fetch('development', {})
+    host     = db_config['host']     || 'db'
+    user     = db_config['username'] || 'root'
+    password = db_config['password'] || 'rootpassword'
+    database = db_config['database']
+
+    puts "Dropping and recreating #{database}…"
+    system("mysql -h #{host} -u #{user} -p#{password} -e "\
+           "'DROP DATABASE IF EXISTS #{database}; "\
+           "CREATE DATABASE #{database} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'")
+
+    puts "Importing #{dump_path}…"
+    system("gunzip < #{dump_path} | mysql -h #{host} -u #{user} -p#{password} #{database}")
+
+    puts "Running migrations…"
+    system('RAILS_ENV=development RAILS_LOG_LEVEL=error bundle exec rails db:migrate')
+
+    puts "\n✓ #{database} reimported and migrated."
+  end
 end
