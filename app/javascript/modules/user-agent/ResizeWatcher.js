@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import useResizeAware from 'react-resize-aware';
+import { useLocation } from 'react-router-dom';
 
 import {
     SCREEN_WIDTH_ABOVE_XL,
@@ -12,6 +13,7 @@ import {
 export default function ResizeWatcher({ children, hideSidebar, showSidebar }) {
     const [screenWidth, setScreenWidth] = useState(null);
     const [resizeListener, sizes] = useResizeAware();
+    const location = useLocation();
 
     useEffect(() => {
         handleResize();
@@ -25,7 +27,10 @@ export default function ResizeWatcher({ children, hideSidebar, showSidebar }) {
             return;
         }
 
-        if (newWidth === SCREEN_WIDTH_ABOVE_XL) {
+        // Don't auto-open sidebar on startpage (/:locale pattern)
+        const isStartpage = /^\/[a-z]{2}$/.test(location.pathname);
+
+        if (newWidth === SCREEN_WIDTH_ABOVE_XL && !isStartpage) {
             showSidebar();
         }
         if (newWidth === SCREEN_WIDTH_BELOW_M) {
