@@ -111,6 +111,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "babel-jest": "^29.7.0",
@@ -126,6 +127,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-enzyme": "^7.1.2",
     "jsdoc": "^4.0.4",
+    "react-refresh": "^0.18.0",
     "lint-staged": "^16.2.7",
     "prettier": "^3.6.2",
     "react-test-renderer": "^18.3.1",
