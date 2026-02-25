@@ -2,6 +2,9 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   display: block;
   transition: opacity $transition-duration;
+  box-sizing: border-box;
+  max-width: 410px;
+  width: 100%;
 }
 
 .ArchiveTile:link,
@@ -44,10 +47,18 @@
   background-color: white;
   border-bottom: none;
   border: 1px solid lightgrey;
-  padding-bottom: 100%;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  height: 180px;
+
+  @include screen-s {
+    height: 220px;
+  }
+
+  @include screen-m {
+    height: 260px;
+  }
 }
 
 .ArchiveTile-body {

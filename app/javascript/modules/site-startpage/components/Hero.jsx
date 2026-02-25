@@ -16,7 +16,7 @@ export function Hero() {
                     <Button
                         buttonText={heroData.buttons.secondary.label}
                         variant="outlined"
-                        size="large"
+                        size="lg"
                         onClick={() =>
                             navigate(heroData.buttons.secondary.target)
                         }
@@ -25,7 +25,7 @@ export function Hero() {
                     <Button
                         buttonText={heroData.buttons.primary.label}
                         variant="contained"
-                        size="large"
+                        size="lg"
                         onClick={() =>
                             navigate(heroData.buttons.primary.target)
                         }

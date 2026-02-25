@@ -20,7 +20,7 @@ export function StartpagePanel({ image, data, variant }) {
                     <Button
                         buttonText={<FaArrowRight />}
                         variant="contained"
-                        size="large"
+                        size="lg"
                         onClick={() => navigate(data.buttons.primary.target)}
                         className="Panel-cta--primary"
                     />

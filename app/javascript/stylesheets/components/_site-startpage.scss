@@ -43,13 +43,13 @@
 
 .Hero-text {
   margin: 0 0 $base-unit * 1.5 0;
-  font-size: 1rem;
+  font-size: 1.5rem;
   line-height: 1.6;
   color: white;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
   @include screen-m {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
   }
 }
 

@@ -1,6 +1,19 @@
 .Startpage {
+  max-width: 1280px;
+  margin: 0px auto 20px auto;
 }
 
+/* When the global layout shows the sidebar, apply the usual wrapper padding */
+.Layout.sidebar-is-visible .Startpage {
+  padding: 3rem 5% 3rem;
+}
+
+/* For viewports smaller than the max width, apply padding so content doesn't touch edges */
+@media (max-width: 1279px) {
+  .Startpage {
+    padding: 3rem 5% 3rem;
+  }
+}
 .Startpage-heading {
   font-size: 1.75rem;
   line-height: $base-unit * 2;
