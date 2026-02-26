@@ -1,6 +1,6 @@
 class ContributionType < ApplicationRecord
   belongs_to :project, touch: true
-  has_many :contributions
+  has_many :contributions, dependent: :restrict_with_error
 
   validates_uniqueness_of :code, :scope => [ :project_id ]
 
