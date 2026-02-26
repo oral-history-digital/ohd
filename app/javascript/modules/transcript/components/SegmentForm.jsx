@@ -8,6 +8,7 @@ import {
 import { useI18n } from 'modules/i18n';
 import { useInterviewContributors } from 'modules/person';
 import { Spinner } from 'modules/spinners';
+import { detectTimecodeFormat } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 import { getTimecodeHelpText } from '../utils';
@@ -28,6 +29,12 @@ export default function SegmentForm({
     const interviewId = segment?.interview_id;
     const { data: people, isLoading } = useInterviewContributors(interviewId);
     const { t } = useI18n();
+
+    // Detect timecode format from the interview data so ms and frames are not mixed
+    const timecodeFormat = detectTimecodeFormat(
+        segment?.timecode || prevSegmentTimecode || nextSegmentTimecode
+    );
+
     const [timecodeError, setTimecodeError] = useState(
         'invalid_timecode_range'
     );
@@ -42,8 +49,12 @@ export default function SegmentForm({
 
     const timecodeValidationHandler = useCallback(
         (value) => {
-            if (!validateTimecode(value)) {
-                setTimecodeError('invalid_format');
+            if (!validateTimecode(value, timecodeFormat)) {
+                setTimecodeError(
+                    timecodeFormat === 'frames'
+                        ? 'invalid_format_frames'
+                        : 'invalid_format'
+                );
                 setHasTimecodeError(true);
                 return false;
             }
@@ -51,7 +62,8 @@ export default function SegmentForm({
                 !validateTimecodeInRange(
                     value,
                     prevSegmentTimecode,
-                    nextSegmentTimecode
+                    nextSegmentTimecode,
+                    timecodeFormat
                 )
             ) {
                 setTimecodeError('invalid_timecode_range');
@@ -61,7 +73,7 @@ export default function SegmentForm({
             setHasTimecodeError(false);
             return true;
         },
-        [prevSegmentTimecode, nextSegmentTimecode]
+        [prevSegmentTimecode, nextSegmentTimecode, timecodeFormat]
     );
 
     const submitHandler = (params) => {
@@ -103,7 +115,8 @@ export default function SegmentForm({
             help: getTimecodeHelpText(
                 t,
                 prevSegmentTimecode,
-                nextSegmentTimecode
+                nextSegmentTimecode,
+                timecodeFormat
             ),
         },
     ];

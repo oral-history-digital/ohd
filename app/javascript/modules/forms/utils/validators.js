@@ -18,14 +18,32 @@ export function validateDate(v) {
     return date.test(v);
 }
 
-export function validateTimecode(v) {
-    // Timecode format: HH:MM:SS or HH:MM:SS.mmm
-    const timecode = /^\d{2}:\d{2}:\d{2}(\.\d{1,3})?$/;
-    return timecode.test(v);
+/**
+ * Validates a timecode string, optionally enforcing a specific format.
+ * @param {string} v - The timecode value to validate.
+ * @param {'ms'|'frames'|null} [format=null] - Expected format. When null, accepts
+ *   any valid timecode (1–3 decimal places or none) for backwards compatibility.
+ */
+export function validateTimecode(v, format = null) {
+    if (format === 'frames') {
+        // Frames format (25fps): HH:MM:SS or HH:MM:SS.ff (exactly 2 decimal places)
+        return /^\d{2}:\d{2}:\d{2}(\.\d{2})?$/.test(v);
+    }
+    if (format === 'ms') {
+        // Milliseconds format: HH:MM:SS or HH:MM:SS.mmm (exactly 3 decimal places)
+        return /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/.test(v);
+    }
+    // Legacy: accept either (1–3 decimal places or none)
+    return /^\d{2}:\d{2}:\d{2}(\.\d{1,3})?$/.test(v);
 }
 
-export function validateTimecodeInRange(value, minTimecode, maxTimecode) {
-    if (!validateTimecode(value)) {
+export function validateTimecodeInRange(
+    value,
+    minTimecode,
+    maxTimecode,
+    format = null
+) {
+    if (!validateTimecode(value, format)) {
         return false;
     }
 

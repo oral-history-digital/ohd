@@ -107,6 +107,52 @@ describe('validateTimecode', () => {
     });
 });
 
+describe('validateTimecode with format', () => {
+    describe('ms format', () => {
+        it('accepts HH:MM:SS.mmm (3 decimal places)', () => {
+            expect(validateTimecode('01:23:45.123', 'ms')).toBeTruthy();
+        });
+
+        it('accepts HH:MM:SS (no decimals)', () => {
+            expect(validateTimecode('01:23:45', 'ms')).toBeTruthy();
+        });
+
+        it('rejects HH:MM:SS.ff (2 decimal places)', () => {
+            expect(validateTimecode('01:23:45.12', 'ms')).toBeFalsy();
+        });
+
+        it('rejects HH:MM:SS.m (1 decimal place)', () => {
+            expect(validateTimecode('01:23:45.1', 'ms')).toBeFalsy();
+        });
+    });
+
+    describe('frames format', () => {
+        it('accepts HH:MM:SS.ff (2 decimal places)', () => {
+            expect(validateTimecode('01:23:45.12', 'frames')).toBeTruthy();
+        });
+
+        it('accepts HH:MM:SS (no decimals)', () => {
+            expect(validateTimecode('01:23:45', 'frames')).toBeTruthy();
+        });
+
+        it('rejects HH:MM:SS.mmm (3 decimal places)', () => {
+            expect(validateTimecode('01:23:45.123', 'frames')).toBeFalsy();
+        });
+
+        it('rejects HH:MM:SS.m (1 decimal place)', () => {
+            expect(validateTimecode('01:23:45.1', 'frames')).toBeFalsy();
+        });
+
+        it('accepts frame 00 (00:00:00.00)', () => {
+            expect(validateTimecode('00:00:00.00', 'frames')).toBeTruthy();
+        });
+
+        it('accepts frame 24 (max at 25fps)', () => {
+            expect(validateTimecode('00:00:59.24', 'frames')).toBeTruthy();
+        });
+    });
+});
+
 describe('validateTimecodeInRange', () => {
     it('accepts timecode between min and max', () => {
         const result = validateTimecodeInRange(
