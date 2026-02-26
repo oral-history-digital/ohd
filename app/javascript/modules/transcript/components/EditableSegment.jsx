@@ -116,7 +116,7 @@ function EditableSegment({
     // Enforce RTL wrapping if the text direction is RTL
     text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
 
-    const showButtons =
+    const showButtonsAndTimecodes =
         isAuthorized(segment) || isAuthorized({ type: 'General' }, 'edit');
 
     const showEditTab = isAuthorized(segment, 'update');
@@ -248,9 +248,16 @@ function EditableSegment({
                 <>
                     <div className="Segment-metaWrapper">
                         <Initials contributor={contributor} segment={segment} />
-                        <div className="Segment-timecode">
-                            {formatTimecode(segment.time, false, false, true)}
-                        </div>
+                        {showButtonsAndTimecodes && (
+                            <div className="Segment-timecode">
+                                {formatTimecode(
+                                    segment.time,
+                                    false,
+                                    false,
+                                    true
+                                )}
+                            </div>
+                        )}
                     </div>
                     <SegmentText
                         segment={segment}
@@ -262,7 +269,7 @@ function EditableSegment({
                 </>
             )}
 
-            {!isEditing && showButtons && (
+            {!isEditing && showButtonsAndTimecodes && (
                 <SegmentButtons
                     segment={segment}
                     setActiveButton={setActiveButton}
