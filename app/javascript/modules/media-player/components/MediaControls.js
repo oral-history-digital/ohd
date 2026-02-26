@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { formatTimecode } from 'modules/interview-helpers';
 import { usePathBase } from 'modules/routes';
 import { CopyText, Modal } from 'modules/ui';
+import { formatTimecode } from 'modules/utils';
 import { WorkbookItemForm } from 'modules/workbook';
 import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';

@@ -1,7 +1,6 @@
 import { useI18n } from 'modules/i18n';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
-
-import formatTimecode from './formatTimecode';
 
 export default function TapeAndTime({
     tape,

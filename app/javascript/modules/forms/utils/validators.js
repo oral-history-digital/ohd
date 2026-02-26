@@ -1,3 +1,5 @@
+import { timecodeToSeconds } from 'modules/utils';
+
 export function validateTapeNumber(v) {
     const number = /^\d{1,2}$/;
     return number.test(v);
@@ -37,6 +39,17 @@ export function validateTimecode(v, format = null) {
     return /^\d{2}:\d{2}:\d{2}(\.\d{1,3})?$/.test(v);
 }
 
+/**
+ * Validates that a timecode string is within an exclusive range.
+ *
+ * @param {string} value - The timecode to validate.
+ * @param {string|null} minTimecode - Lower bound (exclusive). Pass null to skip.
+ * @param {string|null} maxTimecode - Upper bound (exclusive). Pass null to skip.
+ * @param {'ms'|'frames'|null} [format=null] - Expected timecode format, passed
+ *   through to {@link validateTimecode}.
+ * @returns {boolean} True if the value is a valid timecode and strictly between
+ *   minTimecode and maxTimecode.
+ */
 export function validateTimecodeInRange(
     value,
     minTimecode,
@@ -47,29 +60,17 @@ export function validateTimecodeInRange(
         return false;
     }
 
-    const timeToSeconds = (tc) => {
-        const parts = tc.split(':');
-        const hours = parseInt(parts[0], 10);
-        const minutes = parseInt(parts[1], 10);
-        const secondsParts = parts[2].split('.');
-        const seconds = parseInt(secondsParts[0], 10);
-        const milliseconds = secondsParts[1]
-            ? parseInt(secondsParts[1].padEnd(3, '0'), 10)
-            : 0;
-        return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
-    };
-
-    const valueSeconds = timeToSeconds(value);
+    const valueSeconds = timecodeToSeconds(value);
 
     if (minTimecode) {
-        const minSeconds = timeToSeconds(minTimecode);
+        const minSeconds = timecodeToSeconds(minTimecode);
         if (valueSeconds <= minSeconds) {
             return false;
         }
     }
 
     if (maxTimecode) {
-        const maxSeconds = timeToSeconds(maxTimecode);
+        const maxSeconds = timecodeToSeconds(maxTimecode);
         if (valueSeconds >= maxSeconds) {
             return false;
         }

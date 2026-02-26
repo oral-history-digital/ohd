@@ -8,13 +8,13 @@ import { useAuthorization } from 'modules/auth';
 import { getCurrentProject, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
-import { formatTimecode } from 'modules/interview-helpers';
 import {
     sendTimeChangeRequest,
     updateIsPlaying,
     useScrollOffset,
 } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 

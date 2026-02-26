@@ -171,3 +171,6 @@ export const SANITIZE_CONFIG = {
         ALLOWED_ATTR: [],
     },
 };
+
+// Frames per second for timecode calculations
+export const FRAMES_PER_SECOND = 25;
