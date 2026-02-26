@@ -40,6 +40,9 @@ services:
       DISABLE_SPRING: true
       # Use precompiled platform-specific gems instead of compiling from source
       BUNDLE_FORCE_RUBY_PLATFORM: false
+      # Cap Node.js heap to prevent webpack-dev-server OOM-killing the host.
+      # Without this, V8 grows the heap unboundedly over a long dev session.
+      NODE_OPTIONS: '--max-old-space-size=2048'
 
   db:
     image: mariadb:10.5
