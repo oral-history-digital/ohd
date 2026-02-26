@@ -1,3 +1,50 @@
+import { FRAMES_PER_SECOND } from 'modules/constants';
+
+/**
+ * Detects the timecode format from a timecode string.
+ * @param {string|null|undefined} timecode
+ * @returns {'ms'|'frames'|null} - 'ms' for HH:MM:SS.mmm (3 decimal places),
+ *   'frames' for HH:MM:SS.ff (2 decimal places, 25fps base), or null if unknown.
+ */
+export function detectTimecodeFormat(timecode) {
+    if (!timecode) return null;
+    const match = timecode.match(/^\d{2}:\d{2}:\d{2}\.(\d+)$/);
+    if (!match) return null;
+    return match[1].length === 2 ? 'frames' : 'ms';
+}
+
+/**
+ * Converts a timecode string to seconds.
+ *
+ * Supports the following formats:
+ * - HH:MM:SS (e.g. "00:01:30")
+ * - HH:MM:SS.mmm (milliseconds, e.g. "00:01:30.500" → 90.5s)
+ * - HH:MM:SS.ff  (frames at 25fps, e.g. "00:01:30.12" → 90.48s)
+ *
+ * @param {string|null|undefined} timecode
+ * @returns {number} Total seconds (fractional). Returns 0 for falsy input.
+ */
+export function timecodeToSeconds(timecode) {
+    if (!timecode) return 0;
+    const parts = timecode.split(':');
+    if (parts.length !== 3) return 0;
+    const hours = parseInt(parts[0], 10);
+    const minutes = parseInt(parts[1], 10);
+    const secondsParts = parts[2].split('.');
+    const seconds = parseInt(secondsParts[0], 10);
+    let frac = 0;
+    if (secondsParts[1]) {
+        if (secondsParts[1].length === 2) {
+            // Frames format (25fps): divide frame number by FPS
+            frac = parseInt(secondsParts[1], 10) / FRAMES_PER_SECOND;
+        } else {
+            // Milliseconds format: pad to 3 digits
+            frac = parseInt(secondsParts[1].padEnd(3, '0'), 10) / 1000;
+        }
+    }
+    return hours * 3600 + minutes * 60 + seconds + frac;
+}
+
 /**
  * Formats a time duration in seconds to a human-readable timecode string.
  *
@@ -31,7 +78,7 @@
  * // Returns "1:07:28"
  * formatTimecode(4048, false, false, true)
  */
-export default function formatTimecode(
+export function formatTimecode(
     time,
     useHmsFormat = false,
     includeMilliseconds = false,

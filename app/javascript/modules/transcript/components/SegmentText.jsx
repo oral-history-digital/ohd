@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { formatTimecode } from 'modules/interview-helpers';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 import {
