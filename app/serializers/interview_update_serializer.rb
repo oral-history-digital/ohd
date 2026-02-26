@@ -15,8 +15,8 @@ class InterviewUpdateSerializer < ApplicationSerializer
       case attribute
       when /^public_/
         hash[:properties] = object.properties
-      when /duration|tape_count/
-        # already handled
+      when /duration|tape_count|description|observations/
+        # already handled by super via localized_hash or custom serializer method
       else
         hash[attribute] = object.send(attribute)
       end
