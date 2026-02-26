@@ -79,6 +79,62 @@
     width: 100%;
   }
 
+  .SegmentTabs-preview {
+    display: flex;
+    align-items: center;
+    padding-bottom: calc($base-unit / 3);
+    margin-bottom: calc($base-unit / 3);
+
+    .Button--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid var(--primary-color);
+      border-radius: 50%;
+      color: var(--primary-color);
+      font-size: 0.85rem;
+      transition:
+        background $transition-duration,
+        opacity $transition-duration;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      &[aria-pressed='true'] {
+        background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+      }
+
+      &:focus {
+        box-shadow: none; // Remove default focus outline
+      }
+    }
+  }
+
+  .SegmentTabs-previewTime {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.5rem;
+    font-size: $font-size-large;
+    color: $gray-dark;
+  }
+
+  .SegmentTabs-previewCurrent {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .SegmentTabs-previewSeparator {
+    color: $gray-medium;
+  }
+
+  .SegmentTabs-previewEnd {
+    opacity: 0.75;
+  }
+
   .SegmentTabs-panel {
     width: 100%;
     animation: fadeIn $transition-duration;

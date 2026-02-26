@@ -229,9 +229,9 @@ export default function MediaElement({
     }, [tape, interview.transcript_coupled]);
 
     // Check if time has been changed from outside of component.
+    // Also syncs Redux isPlaying=false → pauses the actual player.
+    // Runs on every render so that tape and time params are always recognised.
     useEffect(() => {
-        // Now checking on every render because otherwise tape and time params
-        // are not recognized.
         checkForTimeChangeRequest();
     });
 
@@ -280,6 +280,13 @@ export default function MediaElement({
         const player = playerRef.current;
         if (!player) {
             return;
+        }
+
+        // Sync Redux isPlaying=false → pause the actual player.
+        // Checked on every call so that external pause dispatches (e.g. segment
+        // preview stop) are reflected in VideoJS without a separate effect.
+        if (!isPlaying && !player.paused()) {
+            player.pause();
         }
 
         if (timeChangeRequestAvailable) {

@@ -23,6 +23,7 @@ import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
 import {
     BookmarkSegmentButton,
     Initials,
+    PreviewPlayer,
     SegmentAnnotations,
     SegmentButtons,
     SegmentForm,
@@ -68,10 +69,10 @@ function EditableSegment({
     );
 
     const shouldScroll =
-        (autoScroll && isActive) || // Segment is active and autoScroll is enabled (e.g. during playback)
-        segmentParam === segment.id || // Segment is targeted by the URL param (segmentParam === data.id)
-        (isActive && !segmentParam && autoScroll) || // Segment is initially active and autoScroll is enabled, but no segmentParam is present
-        isEditing; // Segment is being edited
+        (!isEditing && autoScroll && isActive) || // Segment is active during playback (suppressed while editing)
+        segmentParam === segment.id || // Segment is targeted by the URL param
+        (!isEditing && isActive && !segmentParam && autoScroll) || // Initially active with autoScroll, no segmentParam
+        isEditing; // Segment is being edited (scroll once when edit mode opens)
 
     // Use custom hook for auto-scroll logic
     useAutoScrollToRef(divEl, scrollOffset, shouldScroll, [
@@ -205,25 +206,37 @@ function EditableSegment({
                             >
                                 {/* Only render tab content when active to prevent unmounted components from breaking */}
                                 {tabIndex === index && tab.id === 'edit' && (
-                                    <SegmentForm
-                                        locale={locale}
-                                        projectId={projectId}
-                                        project={project}
-                                        contentLocale={contentLocale}
-                                        segment={segment}
-                                        submitData={(props, params) => {
-                                            dispatch(submitData(props, params));
-                                        }}
-                                        onSubmit={handleEditSubmit}
-                                        onCancel={handleEditCancel}
-                                        onChange={handleFormChange}
-                                        prevSegmentTimecode={
-                                            prevSegmentTimecode
-                                        }
-                                        nextSegmentTimecode={
-                                            nextSegmentTimecode
-                                        }
-                                    />
+                                    <>
+                                        {interview.transcript_coupled && (
+                                            <PreviewPlayer
+                                                segment={segment}
+                                                nextSegmentTimecode={
+                                                    nextSegmentTimecode
+                                                }
+                                            />
+                                        )}
+                                        <SegmentForm
+                                            locale={locale}
+                                            projectId={projectId}
+                                            project={project}
+                                            contentLocale={contentLocale}
+                                            segment={segment}
+                                            submitData={(props, params) => {
+                                                dispatch(
+                                                    submitData(props, params)
+                                                );
+                                            }}
+                                            onSubmit={handleEditSubmit}
+                                            onCancel={handleEditCancel}
+                                            onChange={handleFormChange}
+                                            prevSegmentTimecode={
+                                                prevSegmentTimecode
+                                            }
+                                            nextSegmentTimecode={
+                                                nextSegmentTimecode
+                                            }
+                                        />
+                                    </>
                                 )}
                                 {tabIndex === index &&
                                     tab.id === 'annotations' && (
