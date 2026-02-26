@@ -4,17 +4,21 @@ class MetadataFieldsController < ApplicationController
 
   def create
     authorize MetadataField
-    @metadata_field = MetadataField.create metadata_field_params
+    @metadata_field = MetadataField.new metadata_field_params
 
     respond_to do |format|
       format.json do
-        render json: {
-          id: @metadata_field.project_id,
-          data_type: 'projects',
-          nested_data_type: 'metadata_fields',
-          nested_id: @metadata_field.id,
-          data: cache_single(@metadata_field),
-        }
+        if @metadata_field.save
+          render json: {
+            id: @metadata_field.project_id,
+            data_type: 'projects',
+            nested_data_type: 'metadata_fields',
+            nested_id: @metadata_field.id,
+            data: cache_single(@metadata_field),
+          }
+        else
+          render json: { errors: @metadata_field.errors.full_messages }, status: :unprocessable_entity
+        end
       end
     end
   end
