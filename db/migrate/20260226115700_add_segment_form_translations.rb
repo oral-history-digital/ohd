@@ -36,11 +36,11 @@ class AddSegmentFormTranslations < ActiveRecord::Migration[8.0]
       ru: 'Говорящий',
     },
     'edit.segment.timecode': {
-      de: 'Timecode',
-      en: 'Timecode',
-      el: 'Χρονικός κώδικας',
-      es: 'Código de tiempo',
-      ru: 'Таймкод',
+      de: 'Start-Timecode',
+      en: 'Start Timecode',
+      el: 'Χρονικός κώδικας έναρξης',
+      es: 'Código de tiempo de inicio',
+      ru: 'Начальный таймкод',
     },
     'activerecord.errors.models.segment.attributes.timecode.invalid_timecode_range': {
       de: 'Timecode muss zwischen den Timecodes des vorherigen und nächsten Segments liegen',
