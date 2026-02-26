@@ -44,5 +44,10 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
   config.active_storage.service = :test
 
+  # Add test-specific encryption keys (safe for CI)
+  config.active_record.encryption.primary_key = "test_primary_key_for_ci_only"
+  config.active_record.encryption.deterministic_key = "test_deterministic_key_for_ci_only"
+  config.active_record.encryption.key_derivation_salt = "test_salt_for_ci_only"
+
   #config.active_record.legacy_connection_handling = false
 end

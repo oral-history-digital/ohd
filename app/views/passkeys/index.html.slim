@@ -1,0 +1,17 @@
+div data-controller="passkey"
+
+  #success.actions hidden="true"
+    button.Button.Button--primaryAction data-action="click->passkey#closeModal"
+      | OK
+
+  #passkeys
+    p= tv('passkey.explanation')
+    = render 'form'
+    
+    - if current_user.webauthn_credentials.any? 
+      h3 = tv('passkey.registered_passkeys')
+      ul.passkey-list
+        - current_user.webauthn_credentials.each do |credential|
+          li
+            = render 'passkey_item', credential: credential
+      

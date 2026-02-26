@@ -78,7 +78,8 @@ namespace :help_texts do
       ['user_search_form', 'User search form on user admin page'],
       ['workflow_management', 'Workflow management table'],
       ['workflow_tasks', 'Tasks section in workflow management table'],
-      ['interview_destroy_transcript', 'Delete Transcript by language']
+      ['interview_destroy_transcript', 'Delete Transcript by language'],
+      ['mfa', 'Help with multi-factor authentication (MFA)']
     ]
   end
 end

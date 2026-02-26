@@ -1,0 +1,12 @@
+strong = credential.nickname 
+= button_to passkey_path(credential),
+  method: :delete,
+  class: "passkey-delete" do
+    = fa_icon("trash")
+
+/strong = credential.nickname 
+/= link_to fa_icon("trash"),
+  /passkey_path(credential),
+  /data: { turbo_method: :delete },
+  /class: "passkey-delete"
+

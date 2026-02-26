@@ -11,7 +11,6 @@ import SlideShowSearchStats from './SlideShowSearchStats';
 export default function SlideShowSearchResults({
     interview,
     searchResults,
-    projectId,
     project,
 }) {
     const dispatch = useDispatch();
@@ -54,7 +53,7 @@ export default function SlideShowSearchResults({
                                 project={project}
                                 onLinkClick={() =>
                                     dispatch(
-                                        setProjectId(projectId),
+                                        setProjectId(project.shortname),
                                         setArchiveId(interview.archive_id)
                                     )
                                 }
@@ -83,6 +82,5 @@ export default function SlideShowSearchResults({
 SlideShowSearchResults.propTypes = {
     interview: PropTypes.object.isRequired,
     searchResults: PropTypes.object,
-    projectId: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
 };

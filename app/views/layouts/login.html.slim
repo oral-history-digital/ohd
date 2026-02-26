@@ -6,7 +6,10 @@ html
     meta http-equiv="x-ua-compatible" content="ie=edge"
     meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"
 
+    = csrf_meta_tags
+
     == stylesheet_link_tag 'login'
+    == javascript_pack_tag 'login'
 
     title == @project ? @project.name(I18n.locale.to_s) : 'OHD'
 
@@ -14,18 +17,19 @@ html
     .layout-indicator style="display: block;"
       .Layout
         .Layout-page.Site
-          header.LoginHeader
 
-            = image_tag  "/ohd-logo-gr.png", class: 'LoginHeader-logo'
-
-            - if @project && @project.logo && !@project.is_ohd?
-              = image_tag @project.logo.file, class: 'LoginHeader-logo'
+          - if params[:controller] != 'passkeys'
+            header.LoginHeader
+              = image_tag  "/ohd-logo-gr.png", class: 'LoginHeader-logo'
+              - if @project && @project.logo && !@project.is_ohd?
+                = image_tag @project.logo.file, class: 'LoginHeader-logo'
 
           main.Site-content
             .wrapper-content.u-line-length
-              - if notice
-                p.notice = notice
-              - if alert
-                p.alert = alert
+              .notification-container
+                - if notice
+                  p.notice = notice
+                - if alert
+                  p.alert = alert
 
               = yield

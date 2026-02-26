@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_19_160642) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -88,12 +88,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
-  create_table "banners", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "banners", charset: "utf8mb3", force: :cascade do |t|
     t.text "message_en"
     t.text "message_de"
     t.boolean "active", default: false, null: false
-    t.datetime "start_date", default: -> { "current_timestamp(6)" }, null: false
-    t.datetime "end_date", null: false
+    t.datetime "start_date", default: -> { "CURRENT_TIMESTAMP(6)" }, null: false
+    t.datetime "end_date", default: -> { "(now() + interval 10 day)" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "edit_mode_only", default: false, null: false
@@ -339,7 +339,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "interview_permissions", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "interview_permissions", charset: "utf8mb3", force: :cascade do |t|
     t.integer "interview_id"
     t.integer "user_id"
     t.string "action_name"
@@ -352,6 +352,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.text "observations", size: :long
     t.integer "interview_id"
     t.text "description"
+    t.index ["interview_id", "locale"], name: "index_interview_translations_on_ass_id_and_locale", unique: true
   end
 
   create_table "interviews", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -431,7 +432,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["project_id"], name: "index_map_sections_on_project_id"
   end
 
-  create_table "material_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "material_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "material_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -443,7 +444,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["material_id"], name: "index_material_translations_on_material_id"
   end
 
-  create_table "materials", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "materials", charset: "utf8mb3", force: :cascade do |t|
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.string "workflow_state", default: "unshared", null: false
@@ -513,7 +514,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "normdata_api_statistics", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "normdata_api_statistics", charset: "utf8mb3", force: :cascade do |t|
     t.string "search_term"
     t.string "saved_entry"
     t.integer "registry_entry_id"
@@ -562,7 +563,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "oauth_openid_requests", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "oauth_openid_requests", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "access_grant_id", null: false
     t.string "nonce", null: false
     t.index ["access_grant_id"], name: "index_oauth_openid_requests_on_access_grant_id"
@@ -706,7 +707,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
     t.integer "project_id"
-    t.virtual "has_geo_coords", type: :boolean, as: "`latitude` is not null and `latitude` <> '' and `longitude` is not null and `longitude` <> ''", stored: true
+    t.boolean "has_geo_coords"
     t.index ["code"], name: "index_registry_entries_on_code", length: 50
     t.index ["has_geo_coords"], name: "index_registry_entries_on_has_geo_coords"
     t.index ["project_id"], name: "index_registry_entries_on_project_id"
@@ -752,7 +753,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
-  create_table "registry_name_type_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "registry_name_type_translations", charset: "utf8mb3", force: :cascade do |t|
     t.integer "registry_name_type_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -833,7 +834,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
   end
 
-  create_table "role_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "role_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1002,7 +1003,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "translation_value_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "translation_value_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "translation_value_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1013,7 +1014,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.index ["translation_value_id"], name: "index_translation_value_translations_on_translation_value_id"
   end
 
-  create_table "translation_values", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
+  create_table "translation_values", charset: "utf8mb3", force: :cascade do |t|
     t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1156,8 +1157,29 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_09_144934) do
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
     t.boolean "do_not_track", default: false, null: false
+    t.string "otp_secret"
+    t.integer "consumed_timestep"
+    t.boolean "otp_required_for_login"
+    t.datetime "changed_to_otp_at"
+    t.string "email_otp_secret"
+    t.datetime "email_otp_sent_at"
+    t.boolean "passkey_required_for_login", default: false, null: false
+    t.datetime "changed_to_passkey_at"
+    t.integer "failed_attempts", default: 0, null: false
+    t.datetime "locked_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
+  end
+
+  create_table "webauthn_credentials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "external_id", null: false
+    t.string "public_key", null: false
+    t.string "nickname"
+    t.bigint "sign_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_id"], name: "index_webauthn_credentials_on_external_id", unique: true
   end
 
   create_table "workflow_comments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

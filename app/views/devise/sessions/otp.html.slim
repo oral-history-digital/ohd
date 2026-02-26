@@ -1,0 +1,38 @@
+h2= tv("activerecord.attributes.user.otp_attempt")
+
+= form_with url: users_verify_otp_path,
+  method: :post,
+  data: { controller: "otp", otp_target: "form" },
+  html: {class: 'Form'} do |f|
+
+  .form-group
+    .form-label
+      = f.label :otp_attempt,
+        tv('activerecord.attributes.user.otp_attempt'),
+        class: 'FormLabel'
+      .otp-input-container
+        - 6.times do |i|
+          input[
+            type="text"
+            class="otp-digit"
+            maxlength="1"
+            pattern="[0-9]"
+            inputmode="numeric"
+            autocomplete="off"
+            data-otp-target="digit"
+            data-index="#{i}"
+            data-action="input->otp#handleInput keydown->otp#handleKeydown paste->otp#handlePaste"
+          ] 
+
+    = f.hidden_field :otp_attempt,
+      data: { otp_target: "hidden" }
+
+  .Form-footer.u-mt
+    = f.submit tv(:login),
+      class: 'Button Button--primaryAction',
+      data: { otp_target: "submit" }
+
+.backup-code-link
+  = link_to tv(:send_otp_per_mail), \
+    users_resend_otp_path, \
+    class: 'Link u-mt-md'

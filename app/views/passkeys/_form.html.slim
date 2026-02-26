@@ -1,0 +1,33 @@
+.passkey-registration-form
+
+  = form_with url: "#",
+    method: :post,
+    data: {\
+      controller: "passkey",
+      action: "submit->passkey#register",
+      "passkey-no-passkeys-found-value": tv(:no_passkeys_found),
+      "passkey-email-missing-value": tv(:email_missing),
+      "passkey-enter-nickname-value": tv(:passkey_enter_nickname),
+      "passkey-registered-successfully-value": tv("passkey.successfully_registered"),
+      "data-passkey-registration-url-value": new_passkey_path,
+      "data-passkey-verification-url-value": passkeys_path\
+    },
+    html: { class: 'Form default' } do |f|
+
+    .form-group
+      .form-label
+        = f.label :nickname,
+          tv("activerecord.attributes.default.name"),
+          class: "FormLabel"
+
+      .form-input
+        = f.text_field :nickname,
+          id: "passkey_nickname",
+          placeholder: "e.g., My iPhone, Work Laptop, YubiKey",
+          data: { passkey_target: "nickname" },
+          class: 'Input'
+
+    .Form-footer.u-mt
+      = f.submit tv('passkey.register'),
+        class: 'Button Button--primaryAction'
+

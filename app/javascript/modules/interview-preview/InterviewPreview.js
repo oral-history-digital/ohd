@@ -29,7 +29,6 @@ export default function InterviewPreview({
     const [isExpanded, setIsExpanded] = useState(false);
     const { t, locale } = useI18n();
     const project = projects[interview.project_id];
-    const projectId = project.shortname;
     const { fulltext } = useArchiveSearch();
     const { savedInterviews } = useWorkbook();
 
@@ -114,7 +113,6 @@ export default function InterviewPreview({
                         <SlideShowSearchResults
                             interview={interview}
                             searchResults={searchResults}
-                            projectId={projectId}
                             project={project}
                         />
                     </div>

@@ -153,6 +153,16 @@ export default function RegisterForm({
                 },
                 group: 'password',
             },
+            //{
+            //elementType: 'input',
+            //attribute: 'otp_required_for_login',
+            //type: 'checkbox',
+            //},
+            //{
+            //elementType: 'input',
+            //attribute: 'passkey_required_for_login',
+            //type: 'checkbox',
+            //},
         ];
 
         const tosPrivacyElements = [

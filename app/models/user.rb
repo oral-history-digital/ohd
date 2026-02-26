@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include WorkflowActiverecord
+  include MultiFactorAuthenticatable
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, and :omniauthable
@@ -8,13 +9,19 @@ class User < ApplicationRecord
          :confirmable,
          :recoverable,
          :trackable,
-         :validatable
+         :validatable,
+         :lockable
 
-  def after_database_authentication
+  # Store WebAuthn ID
+  def webauthn_id
+    @webauthn_id ||= Base64.urlsafe_encode64(id.to_s, padding: false)
+  end
+
+  def post_authentication_setup
     if !confirmed?
       resend_confirmation_instructions
     else
-      Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
+      access_tokens.any? || Doorkeeper::AccessToken.create!(resource_owner_id: self.id)
     end
   end
 
@@ -27,6 +34,8 @@ class User < ApplicationRecord
            foreign_key: :resource_owner_id,
            dependent: :delete_all
 
+  has_many :webauthn_credentials, dependent: :destroy
+  
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :permissions, through: :roles
@@ -196,4 +205,5 @@ class User < ApplicationRecord
     end
     recoverable
   end
+
 end

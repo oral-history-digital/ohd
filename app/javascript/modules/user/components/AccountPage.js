@@ -11,6 +11,8 @@ import { Helmet } from 'react-helmet';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
+import PasskeyPopup from './PasskeyPopup';
+import TwoFAPopup from './TwoFAPopup';
 import UserDetailsContainer from './UserDetailsContainer';
 import UserDetailsFormContainer from './UserDetailsFormContainer';
 import UserProjects from './UserProjects';
@@ -47,6 +49,16 @@ export default function AccountPage() {
                                     />
                                 )}
                             </Modal>
+                        </div>
+                        <div className="edit-account-icon">
+                            {user?.otp_required_for_login && (
+                                <TwoFAPopup showDialogInitially={false} />
+                            )}
+                        </div>
+                        <div className="edit-account-icon">
+                            {user?.passkey_required_for_login && (
+                                <PasskeyPopup showDialogInitially={false} />
+                            )}
                         </div>
                     </div>
 

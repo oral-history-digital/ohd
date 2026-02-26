@@ -3,6 +3,11 @@ class UserSerializer < ApplicationSerializer
     :first_name,
     :last_name,
     :email,
+    :otp_qrcode,
+    :otp_required_for_login,
+    :changed_to_otp_at, 
+    :passkey_required_for_login,
+    :changed_to_passkey_at,
     :admin,
     :tos_agreement,
     :created_at,
@@ -33,6 +38,7 @@ class UserSerializer < ApplicationSerializer
     :do_not_track
 
   has_many :interview_permissions
+  has_many :webauthn_credentials
 
   def user_id
     object.id
@@ -68,17 +74,33 @@ class UserSerializer < ApplicationSerializer
   end
 
   def access_token
-    object.access_tokens.last&.token
+    instance_options[:is_current_user] ?
+      object.access_tokens.last&.token :
+      nil
+  end
+
+  def otp_qrcode
+    if instance_options[:is_current_user] && object.otp_required_for_login
+      qr = RQRCode::QRCode.new(
+        object.otp_provisioning_uri(
+          object.email,
+          issuer: "OralHistoryDigtal#{Rails.env.production? ? '' : " (#{Rails.env})"}"
+        )
+      )
+      svg = qr.as_svg(
+        offset: 0,
+        color: '000',
+        shape_rendering: 'crispEdges',
+        module_size: 6,
+        standalone: true
+      )
+    else
+      nil
+    end
   end
 
   def receive_newsletter
     object.receive_newsletter ? 'Ja' :'Nein'
   end
 
-  def country
-    I18n.available_locales.inject({}) do |mem, c|
-      mem[c] = ISO3166::Country.translations(c)[object.country] if object.country
-      mem
-    end
-  end
 end

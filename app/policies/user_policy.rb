@@ -12,6 +12,10 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def manage_passkeys?
+    user == record
+  end
+
   class Scope < Scope
     def resolve
       if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
