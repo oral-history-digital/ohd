@@ -28,6 +28,7 @@ import {
     SegmentForm,
     SegmentRegistryReferences,
     SegmentText,
+    Timecode,
 } from './';
 
 function EditableSegment({
@@ -249,14 +250,7 @@ function EditableSegment({
                     <div className="Segment-metaWrapper">
                         <Initials contributor={contributor} segment={segment} />
                         {showButtonsAndTimecodes && (
-                            <div className="Segment-timecode">
-                                {formatTimecode(
-                                    segment.time,
-                                    false,
-                                    false,
-                                    true
-                                )}
-                            </div>
+                            <Timecode segment={segment} />
                         )}
                     </div>
                     <SegmentText
