@@ -56,7 +56,18 @@ log "✅ Rails server running on port 3000"
 log ""
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log "📦 Starting Webpack dev server..."
-bin/shakapacker-dev-server &>/dev/null &
+# Kill any stale webpack dev server left over from a previous container start.
+# Without this guard every VS Code reconnect spawns a new process, accumulating
+# memory until the host OOMs.
+if pgrep -f "shakapacker-dev-server" > /dev/null; then
+  log "Stopping stale Webpack dev server..."
+  pkill -f "shakapacker-dev-server" || true
+  sleep 2
+fi
+# setsid creates a new process session, fully detaching webpack from the
+# postStartCommand process group so VS Code can't kill it when the script exits.
+setsid nohup bin/shakapacker-dev-server > "$LOG_DIR/webpack.log" 2>&1 < /dev/null &
+disown
 if wait_for_port_soft localhost 3035; then
   log "✅ Webpack dev server running on port 3035"
 else
