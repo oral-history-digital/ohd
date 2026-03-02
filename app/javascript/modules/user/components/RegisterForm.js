@@ -1,7 +1,12 @@
 /* global railsMode */
 import { useState } from 'react';
 
-import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
+import {
+    EMAIL_REGEX,
+    OHD_DOMAINS,
+    PASSWORD_REGEX,
+    PASSWORD_SPECIALS,
+} from 'modules/constants';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -143,6 +148,9 @@ export default function RegisterForm({
                 },
                 handlechangecallback: handlePasswordChange,
                 group: 'password',
+                help: t('user.password_requirements', {
+                    special_signs: PASSWORD_SPECIALS,
+                }),
             },
             {
                 elementType: 'input',
