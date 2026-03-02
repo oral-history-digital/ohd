@@ -3,8 +3,8 @@ import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function Messages({ loggedInAt, notifications }) {
-    const { t, locale } = useI18n();
+export function Messages({ loggedInAt, notifications }) {
+    const { t } = useI18n();
     const pathBase = usePathBase();
 
     if (loggedInAt + 5000 > Date.now()) {
@@ -18,7 +18,7 @@ function Messages({ loggedInAt, notifications }) {
                     return (
                         <p key={`notification-${index}`}>
                             {t(notification.title, {
-                                file: notification.file,
+                                file: notification.locale,
                                 archiveId: notification.archive_id,
                             })}
                             <Link

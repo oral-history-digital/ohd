@@ -1,4 +1,3 @@
-export { default as LayoutContainer } from './LayoutContainer';
+export { default as Layout } from './Layout';
 export { default as ThemeProvider } from './ThemeProvider';
-export { default as TextPage } from './TextPage';
-export { useScrollBelowThreshold } from './useScrollBelowThreshold';
+export * from './components';
