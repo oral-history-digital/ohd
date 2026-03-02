@@ -175,6 +175,12 @@ export default function Transcript({
                             currentTime: mediaTime,
                         });
 
+                    // Suppress isActive on all segments while any segment is
+                    // being edited — the edit UI replaces the active highlight,
+                    // and it also prevents mediaTime overshoots from briefly
+                    // highlighting the next segment during preview stop.
+                    const effectiveActive = active && editingSegmentId === null;
+
                     return (
                         <EditableSegment
                             key={`editable-segment-${segment.id}`}
@@ -184,8 +190,9 @@ export default function Transcript({
                                 contributorInformation[segment.speaker_id]
                             }
                             contentLocale={transcriptLocale}
-                            isActive={active}
+                            isActive={effectiveActive}
                             isEditing={editingSegmentId === segment.id}
+                            anySegmentEditing={editingSegmentId !== null}
                             onEditStart={() => handleEditStart(segment.id)}
                             onEditEnd={handleEditEnd}
                             onUnsavedChangesChange={

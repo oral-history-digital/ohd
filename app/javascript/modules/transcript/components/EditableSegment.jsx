@@ -39,6 +39,7 @@ function EditableSegment({
     contentLocale,
     isActive,
     isEditing,
+    anySegmentEditing,
     onEditStart,
     onEditEnd,
     onUnsavedChangesChange,
@@ -69,14 +70,15 @@ function EditableSegment({
     );
 
     const shouldScroll =
-        (!isEditing && autoScroll && isActive) || // Segment is active during playback (suppressed while editing)
+        (!anySegmentEditing && autoScroll && isActive) || // Segment is active during playback (suppressed whenever any segment is being edited)
         segmentParam === segment.id || // Segment is targeted by the URL param
-        (!isEditing && isActive && !segmentParam && autoScroll) || // Initially active with autoScroll, no segmentParam
+        (!anySegmentEditing && isActive && !segmentParam && autoScroll) || // Initially active with autoScroll, no segmentParam
         isEditing; // Segment is being edited (scroll once when edit mode opens)
 
     // Use custom hook for auto-scroll logic
     useAutoScrollToRef(divEl, scrollOffset, shouldScroll, [
         autoScroll,
+        anySegmentEditing,
         isActive,
         segment.id,
         segmentParam,
@@ -294,6 +296,7 @@ EditableSegment.propTypes = {
     contentLocale: PropTypes.string.isRequired,
     isActive: PropTypes.bool,
     isEditing: PropTypes.bool,
+    anySegmentEditing: PropTypes.bool,
     onEditStart: PropTypes.func,
     onEditEnd: PropTypes.func,
     onUnsavedChangesChange: PropTypes.func,
