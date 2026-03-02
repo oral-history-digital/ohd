@@ -1,22 +1,15 @@
-import { useProject } from 'modules/routes';
-
-import OHDLink from './OHDLink';
-import ProjectLogo from './ProjectLogo';
+import SiteHeaderBreadcrumbs from './SiteHeaderBreadcrumbs';
+import useSiteHeaderBreadcrumbs from './useSiteHeaderBreadcrumbs';
 
 export function SiteHeader() {
-    const { project } = useProject();
+    const crumbs = useSiteHeaderBreadcrumbs();
 
     return (
         <header className="SiteHeader">
-            <OHDLink className="SiteHeader-link SiteHeader-link--site" />
-
-            {project && (
-                <ProjectLogo
-                    className="SiteHeader-link SiteHeader-link--collection"
-                    logos={project.logos}
-                    defaultLocale={project.default_locale}
-                />
-            )}
+            <SiteHeaderBreadcrumbs
+                crumbs={crumbs}
+                className="SiteHeader-breadcrumbs"
+            />
         </header>
     );
 }

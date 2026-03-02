@@ -36,3 +36,57 @@
     max-height: 4.75rem;
   }
 }
+
+// Breadcrumbs strip inside SiteHeader
+.SiteHeaderBreadcrumbs {
+  align-items: center;
+  color: var(--primary-color);
+  display: flex;
+  flex-shrink: 0;
+}
+
+.SiteHeaderBreadcrumbs-list {
+  align-items: center;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.SiteHeaderBreadcrumbs-item {
+  align-items: center;
+  display: flex;
+}
+
+.SiteHeaderBreadcrumbs-divider {
+  flex-shrink: 0;
+  margin: 0 ($base-unit * 0.25);
+}
+
+.SiteHeaderBreadcrumbs-logoLink {
+  align-items: center;
+  display: flex;
+}
+
+.SiteHeaderBreadcrumbs-logo {
+  max-height: 2.25rem;
+  max-width: 100%;
+  vertical-align: bottom;
+
+  @include screen-m {
+    max-height: 3rem;
+  }
+}
+
+.SiteHeaderBreadcrumbs-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.SiteHeaderBreadcrumbs-current {
+  font-weight: bold;
+}
