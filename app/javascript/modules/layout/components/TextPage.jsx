@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
-export default function TextPage({ code }) {
+export function TextPage({ code }) {
     const [editing, setEditing] = useState(false);
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
@@ -73,3 +73,5 @@ export default function TextPage({ code }) {
 TextPage.propTypes = {
     code: PropTypes.string.isRequired,
 };
+
+export default TextPage;

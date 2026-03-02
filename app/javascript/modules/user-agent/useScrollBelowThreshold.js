@@ -89,3 +89,5 @@ export function useScrollBelowThreshold() {
 
     return isBelow;
 }
+
+export default useScrollBelowThreshold;
