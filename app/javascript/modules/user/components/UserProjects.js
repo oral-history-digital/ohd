@@ -29,6 +29,7 @@ function UserProjects() {
         user?.supervisedTasks && Object.values(user.supervised_tasks);
     const groupedSupervisedTasks = groupBy(supervisedTasks, 'project_id');
 
+    console.log('Rendering UserProjects with user', user);
     return (
         <>
             {currentProject && currentUserProject && (
@@ -45,6 +46,7 @@ function UserProjects() {
             )}
             {Object.values(user.user_projects).map((urp) => {
                 if (urp.project_id !== currentProject?.id) {
+                    console.log('Rendering project', urp.project_id);
                     return (
                         <UserProject
                             key={urp.id}
