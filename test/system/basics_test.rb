@@ -362,7 +362,7 @@ class BasicsTest < ApplicationSystemTestCase
     within '#transcript-downloads' do
       click_on 'Edit'
     end
-    uncheck 'Public', visible: :all
+    uncheck 'accessible', visible: :all
     click_on 'Submit'
 
     sleep 2

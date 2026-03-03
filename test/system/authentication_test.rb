@@ -84,7 +84,7 @@ class RegistrationTest < ApplicationSystemTestCase
     
     # Should be redirected to 2FA page
     assert_current_path users_otp_path(locale: I18n.locale)
-    assert_text 'One-time Code'
+    assert_text 'One-time code'
     
     # Generate valid TOTP code
     totp_code = user.current_otp
@@ -250,7 +250,7 @@ class RegistrationTest < ApplicationSystemTestCase
       fill_in 'user[password]', with: 'WrongPassword8!'
       click_on 'Login'
 
-      assert_text /Invalid credentials|You have one more attempt before|Too many failed login attempts/
+      assert_text /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
     end
 
     user.reload
