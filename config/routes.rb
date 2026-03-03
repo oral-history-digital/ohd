@@ -19,6 +19,11 @@ Rails.application.routes.draw do
     get 'catalog/institutions/:id', to: 'catalog#institution'
     get 'catalog/archives/:id',     to: 'catalog#archive'
     get 'catalog/collections/:id',  to: 'catalog#collection'
+    get 'explorer',                  to: 'explorer#index'
+    get 'explorer/institutions',     to: 'explorer#index'
+    get 'explorer/institutions/:id', to: 'explorer#institution'
+    get 'explorer/archives/:id',     to: 'explorer#archive'
+    get 'explorer/collections/:id',  to: 'explorer#collection'
   end
 
   concern :archive do
