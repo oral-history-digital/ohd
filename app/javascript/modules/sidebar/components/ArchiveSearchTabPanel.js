@@ -15,13 +15,14 @@ export default function ArchiveSearchTabPanel() {
     const { isOhd } = useProject();
     const selectedArchiveIds = useSelector(getSelectedArchiveIds);
 
+    const titleString = isOhd ? 'modules.sidebar.search' : 'archive_search';
+    const helpTextString = isOhd ? 'search_page' : 'archive_search_page';
+
     return (
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title u-flex">
-                {t(isOhd ? 'modules.sidebar.search' : 'archive_search')}
-                {isOhd && (
-                    <HelpText code="search_page" small className="u-ml-tiny" />
-                )}
+                {t(titleString)}
+                <HelpText code={helpTextString} small className="u-ml-tiny" />
             </h3>
 
             <ArchiveSearchFormContainer />
