@@ -16,6 +16,7 @@ html
 
     = action_cable_meta_tag
 
+    link rel="preload" href="/logo-ohd.svg" as="image" type="image/svg+xml"
     title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
 
   body

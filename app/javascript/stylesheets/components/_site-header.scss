@@ -30,7 +30,7 @@
   vertical-align: bottom;
 
   @include screen-m {
-    max-height: 4.75rem;
+    max-height: 3.5rem;
   }
 }
 
@@ -66,12 +66,19 @@
 }
 
 .SiteHeaderBreadcrumbs-logo {
-  max-height: 1.5rem;
+  max-height: 1.25rem;
   max-width: 100%;
   vertical-align: bottom;
 
   @include screen-m {
     max-height: 1.5rem;
+  }
+  &--large {
+    max-height: 3rem;
+
+    @include screen-m {
+      max-height: 3.25rem;
+    }
   }
 }
 

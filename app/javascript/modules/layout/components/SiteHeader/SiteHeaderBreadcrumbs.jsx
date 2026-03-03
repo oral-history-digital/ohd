@@ -34,7 +34,7 @@ function BreadcrumbDivider() {
     );
 }
 
-export default function SiteHeaderBreadcrumbs({ crumbs, className }) {
+export default function SiteHeaderBreadcrumbs({ crumbs, logoSrc, className }) {
     const { locale } = useI18n();
     const { project } = useProject();
     const dispatch = useDispatch();
@@ -49,6 +49,9 @@ export default function SiteHeaderBreadcrumbs({ crumbs, className }) {
         [dispatch]
     );
 
+    const src = logoSrc || '/logo-ohd.svg';
+    const isHome = crumbs.length === 0;
+
     // The OHD logo is always the first breadcrumb node.
     // Archives with their own domain link externally back to OHD; otherwise
     // use a React Router Link so redux state (projectId) is cleared.
@@ -62,8 +65,10 @@ export default function SiteHeaderBreadcrumbs({ crumbs, className }) {
             className="SiteHeaderBreadcrumbs-logoLink"
         >
             <img
-                className="SiteHeaderBreadcrumbs-logo"
-                src="/logo-ohd-no-text.svg"
+                className={classNames('SiteHeaderBreadcrumbs-logo', {
+                    'SiteHeaderBreadcrumbs-logo--large': isHome,
+                })}
+                src={src}
                 alt="OHD"
             />
         </a>
@@ -75,8 +80,10 @@ export default function SiteHeaderBreadcrumbs({ crumbs, className }) {
             className="SiteHeaderBreadcrumbs-logoLink"
         >
             <img
-                className="SiteHeaderBreadcrumbs-logo"
-                src="/logo-ohd.svg"
+                className={classNames('SiteHeaderBreadcrumbs-logo', {
+                    'SiteHeaderBreadcrumbs-logo--large': isHome,
+                })}
+                src={src}
                 alt="OHD"
             />
         </Link>
@@ -132,5 +139,7 @@ SiteHeaderBreadcrumbs.propTypes = {
             to: PropTypes.string,
         })
     ).isRequired,
+    /** Logo image src. Defaults to /logo-ohd.svg. */
+    logoSrc: PropTypes.string,
     className: PropTypes.string,
 };
