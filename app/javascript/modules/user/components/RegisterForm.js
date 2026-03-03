@@ -148,9 +148,6 @@ export default function RegisterForm({
                 },
                 handlechangecallback: handlePasswordChange,
                 group: 'password',
-                help: t('user.password_requirements', {
-                    special_signs: PASSWORD_SPECIALS,
-                }),
             },
             {
                 elementType: 'input',
