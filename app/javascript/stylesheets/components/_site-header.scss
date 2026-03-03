@@ -15,9 +15,6 @@
   }
 }
 
-.SiteHeader-link {
-}
-
 .SiteHeader-link--site {
   flex-shrink: 0;
 }
@@ -69,12 +66,12 @@
 }
 
 .SiteHeaderBreadcrumbs-logo {
-  max-height: 2.25rem;
+  max-height: 1.5rem;
   max-width: 100%;
   vertical-align: bottom;
 
   @include screen-m {
-    max-height: 3rem;
+    max-height: 1.5rem;
   }
 }
 
@@ -85,8 +82,4 @@
   &:hover {
     text-decoration: underline;
   }
-}
-
-.SiteHeaderBreadcrumbs-current {
-  font-weight: bold;
 }

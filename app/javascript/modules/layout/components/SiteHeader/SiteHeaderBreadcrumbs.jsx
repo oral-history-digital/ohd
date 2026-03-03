@@ -63,7 +63,7 @@ export default function SiteHeaderBreadcrumbs({ crumbs, className }) {
         >
             <img
                 className="SiteHeaderBreadcrumbs-logo"
-                src="/ohd-logo-gr.png"
+                src="/logo-ohd-no-text.svg"
                 alt="OHD"
             />
         </a>
@@ -76,7 +76,7 @@ export default function SiteHeaderBreadcrumbs({ crumbs, className }) {
         >
             <img
                 className="SiteHeaderBreadcrumbs-logo"
-                src="/ohd-logo-gr.png"
+                src="/logo-ohd.svg"
                 alt="OHD"
             />
         </Link>

@@ -36,11 +36,7 @@ function OHDLink({ className }) {
                 }
                 className={classNames(className, 'u-mr')}
             >
-                <img
-                    className="SiteHeader-logo"
-                    src="/ohd-logo-gr.png"
-                    alt=""
-                />
+                <img className="SiteHeader-logo" src="/logo-ohd.svg" alt="" />
             </a>
         ) : (
             <Link
@@ -49,11 +45,7 @@ function OHDLink({ className }) {
                 onClick={unsetProjectId}
                 className={classNames(className, 'u-mr')}
             >
-                <img
-                    className="SiteHeader-logo"
-                    src="/ohd-logo-gr.png"
-                    alt=""
-                />
+                <img className="SiteHeader-logo" src="/logo-ohd.svg" alt="" />
             </Link>
         )
     ) : null;
