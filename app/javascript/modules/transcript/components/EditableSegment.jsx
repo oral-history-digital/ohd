@@ -1,9 +1,9 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import classNames from 'classnames';
-import { getLocale, getProjectId } from 'modules/archive';
+import { getLocale, getProjectId, useIsEditor } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
 import { getCurrentProject, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
@@ -21,11 +21,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAutoScrollToRef } from '../hooks';
 import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
 import {
-    BookmarkSegmentButton,
     Initials,
     PreviewPlayer,
     SegmentAnnotations,
     SegmentButtons,
+    SegmentContentViewer,
     SegmentForm,
     SegmentRegistryReferences,
     SegmentText,
@@ -38,7 +38,7 @@ function EditableSegment({
     contributor,
     contentLocale,
     isActive,
-    isEditing,
+    isEditingSegment,
     anySegmentEditing,
     onEditStart,
     onEditEnd,
@@ -51,6 +51,11 @@ function EditableSegment({
     const { segment: segmentParam } = useTranscriptQueryString();
     const scrollOffset = useScrollOffset();
     const { isAuthorized } = useAuthorization();
+    const isEditviewActive = useIsEditor();
+    const canEditSegment = useMemo(
+        () => isAuthorized(segment, 'update'),
+        [segment, isAuthorized]
+    );
 
     const autoScroll = useSelector(getAutoScroll);
     const locale = useSelector(getLocale);
@@ -58,8 +63,8 @@ function EditableSegment({
     const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
 
-    const [activeButton, setActiveButton] = useState(null);
     const [tabIndex, setTabIndex] = useState(0);
+    const [displayedContentType, setDisplayedContentType] = useState(null);
 
     const handleFormChange = useCallback(
         ({ isDirty, hasValidationErrors }) => {
@@ -73,7 +78,7 @@ function EditableSegment({
         (!anySegmentEditing && autoScroll && isActive) || // Segment is active during playback (suppressed whenever any segment is being edited)
         segmentParam === segment.id || // Segment is targeted by the URL param
         (!anySegmentEditing && isActive && !segmentParam && autoScroll) || // Initially active with autoScroll, no segmentParam
-        isEditing; // Segment is being edited (scroll once when edit mode opens)
+        isEditingSegment; // Segment is being edited (scroll once when edit mode opens)
 
     // Use custom hook for auto-scroll logic
     useAutoScrollToRef(divEl, scrollOffset, shouldScroll, [
@@ -82,7 +87,7 @@ function EditableSegment({
         isActive,
         segment.id,
         segmentParam,
-        isEditing,
+        isEditingSegment,
     ]);
 
     const handleSegmentClick = () => {
@@ -99,20 +104,33 @@ function EditableSegment({
             dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
         }
         onEditStart?.();
-        setActiveButton(buttonType);
+        // Set the tab index based on which button was clicked
+        const index = tabs.findIndex((tab) => tab.id === buttonType);
+        if (index !== -1) {
+            setTabIndex(index);
+        }
     };
 
     const handleEditCancel = useCallback(() => {
         onEditEnd?.();
-        setActiveButton(null);
     }, [onEditEnd]);
 
     const handleEditSubmit = useCallback(() => {
         onEditEnd?.();
-        setActiveButton(null);
     }, [onEditEnd]);
 
-    let text = isAuthorized(segment, 'update')
+    const handleToggleContentDisplay = (contentType) => {
+        // Toggle: if same type is clicked, close it; otherwise switch to new type
+        setDisplayedContentType(
+            displayedContentType === contentType ? null : contentType
+        );
+    };
+
+    const handleCloseContentDisplay = () => {
+        setDisplayedContentType(null);
+    };
+
+    let text = canEditSegment
         ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
         : segment.text[`${contentLocale}-public`];
 
@@ -120,10 +138,7 @@ function EditableSegment({
     // Enforce RTL wrapping if the text direction is RTL
     text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
 
-    const showButtonsAndTimecodes =
-        isAuthorized(segment) || isAuthorized({ type: 'General' }, 'edit');
-
-    const showEditTab = isAuthorized(segment, 'update');
+    const showEditTab = canEditSegment;
     const showAnnotationsTab = isAuthorized(
         { type: 'Annotation', interview_id: segment.interview_id },
         'update'
@@ -160,19 +175,7 @@ function EditableSegment({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showEditTab, showAnnotationsTab, showReferencesTab]);
 
-    // Sync tabIndex with activeButton based on dynamic tabs array
-    useEffect(() => {
-        if (activeButton) {
-            const index = tabs.findIndex((tab) => tab.id === activeButton);
-            if (index !== -1) {
-                setTabIndex(index);
-            }
-        }
-    }, [activeButton, tabs]);
-
-    if (!text) {
-        return null;
-    }
+    if (!text) return null;
 
     return (
         <div
@@ -183,10 +186,10 @@ function EditableSegment({
             className={classNames('Segment', {
                 'Segment--withSpeaker': segment.speakerIdChanged,
                 'is-active': isActive,
-                'Segment--editMode': isEditing,
+                'Segment--editMode': isEditingSegment,
             })}
         >
-            {isEditing ? (
+            {isEditingSegment ? (
                 <Tabs
                     className="SegmentTabs"
                     index={tabIndex}
@@ -264,27 +267,35 @@ function EditableSegment({
                 <>
                     <div className="Segment-metaWrapper">
                         <Initials contributor={contributor} segment={segment} />
-                        {showButtonsAndTimecodes && (
-                            <Timecode segment={segment} />
+                        {isEditviewActive && <Timecode segment={segment} />}
+                    </div>
+                    <div>
+                        <SegmentText
+                            segment={segment}
+                            locale={contentLocale}
+                            isActive={isActive}
+                            handleClick={handleSegmentClick}
+                        />
+                        {!isEditingSegment && displayedContentType && (
+                            <SegmentContentViewer
+                                segment={segment}
+                                contentLocale={contentLocale}
+                                displayedContentType={displayedContentType}
+                                onClose={handleCloseContentDisplay}
+                            />
                         )}
                     </div>
-                    <SegmentText
-                        segment={segment}
-                        locale={contentLocale}
-                        isActive={isActive}
-                        handleClick={handleSegmentClick}
-                    />
-                    <BookmarkSegmentButton segment={segment} />
                 </>
             )}
 
-            {!isEditing && showButtonsAndTimecodes && (
-                <SegmentButtons
-                    segment={segment}
-                    setActiveButton={setActiveButton}
-                    onEditStart={handleEditStart}
-                />
-            )}
+            <SegmentButtons
+                segment={segment}
+                contentLocale={contentLocale}
+                onEditStart={handleEditStart}
+                onViewContentType={handleToggleContentDisplay}
+                isEditingSegment={isEditingSegment}
+                canEditSegment={canEditSegment}
+            />
         </div>
     );
 }
@@ -295,7 +306,7 @@ EditableSegment.propTypes = {
     contributor: PropTypes.object,
     contentLocale: PropTypes.string.isRequired,
     isActive: PropTypes.bool,
-    isEditing: PropTypes.bool,
+    isEditingSegment: PropTypes.bool,
     anySegmentEditing: PropTypes.bool,
     onEditStart: PropTypes.func,
     onEditEnd: PropTypes.func,

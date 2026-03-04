@@ -1,9 +1,10 @@
-export { default as BookmarkSegmentButton } from './BookmarkSegmentButton';
+export { default as BookmarkSegmentModal } from './BookmarkSegmentModal';
 export { default as EditableSegment } from './EditableSegment';
 export { default as Initials } from './Initials';
 export { default as PreviewPlayer } from './PreviewPlayer';
 export { default as SegmentAnnotations } from './SegmentAnnotations';
 export { default as SegmentButtons } from './SegmentButtons';
+export { default as SegmentContentViewer } from './SegmentContentViewer';
 export { default as SegmentForm } from './SegmentForm';
 export { default as SegmentRegistryReferences } from './SegmentRegistryReferences';
 export { default as SegmentText } from './SegmentText';

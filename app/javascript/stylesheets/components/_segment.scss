@@ -94,8 +94,8 @@ $segment-icon-width: 2 * $base-unit;
   transition: opacity $transition-duration;
 }
 
-.Segment:hover > .Segment-hiddenButton,
-.Segment-text:focus + .Segment-hiddenButton,
+.Segment:hover .Segment-hiddenButton,
+.Segment-text:focus ~ .Segment-buttons .Segment-hiddenButton,
 .Segment-hiddenButton:focus {
   opacity: 1;
 }

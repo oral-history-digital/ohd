@@ -37,7 +37,7 @@ export default function Transcript({
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
-    const isEditor = useIsEditor();
+    const isEditviewActive = useIsEditor();
 
     // Redux state
     const archiveId = useSelector(getArchiveId);
@@ -139,7 +139,7 @@ export default function Transcript({
 
     return (
         <>
-            {isEditor && (
+            {isEditviewActive && (
                 <HelpText code="interview_transcript" className="u-mb" />
             )}
             <div
@@ -191,10 +191,12 @@ export default function Transcript({
                             }
                             contentLocale={transcriptLocale}
                             isActive={effectiveActive}
-                            isEditing={
-                                isEditor && editingSegmentId === segment.id
+                            isEditingSegment={
+                                isEditviewActive &&
+                                editingSegmentId === segment.id
                             }
                             anySegmentEditing={editingSegmentId !== null}
+                            isEditviewActive={isEditviewActive}
                             onEditStart={() => handleEditStart(segment.id)}
                             onEditEnd={handleEditEnd}
                             onUnsavedChangesChange={
