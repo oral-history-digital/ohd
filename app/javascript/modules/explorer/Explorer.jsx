@@ -1,27 +1,36 @@
-import classNames from 'classnames';
+import { useState } from 'react';
 
-import { ArchivesList } from './components';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
+import '@reach/tabs/styles.css';
+import { FaArchive, FaUniversity } from 'react-icons/fa';
+import { useSearchParams } from 'react-router-dom';
+
+import { ArchivesList, InstitutionsList } from './components';
 import { useGetArchives, useGetCollections, useGetInstitutions } from './hooks';
 
 export function Explorer() {
+    const [tabIndex, setTabIndex] = useState(0);
+    const [searchParams] = useSearchParams();
+    const explorerQuery = searchParams.get('explorer_q') || '';
+    const explorerInterviewMin = searchParams.has('explorer_interviews_min')
+        ? Number(searchParams.get('explorer_interviews_min'))
+        : null;
+    const explorerInterviewMax = searchParams.has('explorer_interviews_max')
+        ? Number(searchParams.get('explorer_interviews_max'))
+        : null;
+
     const {
         data: archives,
         loading: loadingArchives,
         error: errorArchives,
     } = useGetArchives();
-    const {
-        data: collections,
-        loading: loadingCollections,
-        error: errorCollections,
-    } = useGetCollections();
+    const { loading: loadingCollections, error: errorCollections } =
+        useGetCollections();
     const {
         data: institutions,
         loading: loadingInstitutions,
         error: errorInstitutions,
     } = useGetInstitutions();
-    console.log('Archives:', archives);
-    console.log('Collections:', collections);
-    console.log('Institutions:', institutions);
 
     const isLoading =
         loadingArchives || loadingCollections || loadingInstitutions;
@@ -29,44 +38,67 @@ export function Explorer() {
 
     if (isLoading) {
         return (
-            <div className={classNames('explorer')}>
-                <div className={classNames('explorer__content')}>
-                    <h1 className={classNames('explorer__title')}>
-                        Loading...
-                    </h1>
-                </div>
+            <div className="Explorer">
+                <div className="Explorer-loading">Loading…</div>
             </div>
         );
     }
 
     if (hasError) {
         return (
-            <div className={classNames('explorer')}>
-                <div className={classNames('explorer__content')}>
-                    <h1 className={classNames('explorer__title')}>Error</h1>
-                    <p className={classNames('explorer__description')}>
-                        An error occurred while fetching data. Please try again
-                        later.
-                    </p>
+            <div className="Explorer">
+                <div className="Explorer-error">
+                    An error occurred while fetching data. Please try again
+                    later.
                 </div>
             </div>
         );
     }
 
     return (
-        <div className={classNames('explorer')}>
-            <div className={classNames('explorer__content')}>
-                <h1 className={classNames('explorer__title')}>Explorer</h1>
-                <p className={classNames('explorer__description')}>
-                    This is the explorer page. It will contain various tools and
-                    features to help you explore the interview data.
-                </p>
-                {/* 
-                Add Tabs here to switch between Archives and Institutions 
-                See app/javascript/modules/interview/components/InterviewTabs.js for an example
-                */}
-                <ArchivesList archives={archives} />
-            </div>
+        <div className="Explorer">
+            <Tabs
+                className="Explorer-tabs"
+                index={tabIndex}
+                onChange={setTabIndex}
+                keyboardActivation="manual"
+            >
+                <TabList className="Explorer-tabList">
+                    <Tab className="Explorer-tab">
+                        <FaArchive className="Explorer-tabIcon" />
+                        <span className="Explorer-tabText">
+                            Archives &amp; Collections
+                        </span>
+                    </Tab>
+                    <Tab className="Explorer-tab">
+                        <FaUniversity className="Explorer-tabIcon" />
+                        <span className="Explorer-tabText">Institutions</span>
+                    </Tab>
+                </TabList>
+
+                <TabPanels className="Explorer-tabPanels">
+                    <TabPanel className="Explorer-tabPanel">
+                        {tabIndex === 0 && (
+                            <ArchivesList
+                                archives={archives}
+                                query={explorerQuery}
+                                interviewMin={explorerInterviewMin}
+                                interviewMax={explorerInterviewMax}
+                            />
+                        )}
+                    </TabPanel>
+                    <TabPanel className="Explorer-tabPanel">
+                        {tabIndex === 1 && (
+                            <InstitutionsList
+                                institutions={institutions}
+                                query={explorerQuery}
+                                interviewMin={explorerInterviewMin}
+                                interviewMax={explorerInterviewMax}
+                            />
+                        )}
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
         </div>
     );
 }

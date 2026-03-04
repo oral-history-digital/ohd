@@ -1,22 +1,58 @@
-import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
-export function InstitutionsList() {
+import { filterInstitutions } from '../utils';
+import { InstitutionCard } from './InstitutionCard';
+import { InstitutionsMap } from './InstitutionsMap';
+
+export function InstitutionsList({
+    institutions,
+    query,
+    interviewMin,
+    interviewMax,
+}) {
+    if (!institutions || institutions.length === 0) {
+        return (
+            <div className="InstitutionsList InstitutionsList--empty">
+                <p>No institutions available at the moment.</p>
+            </div>
+        );
+    }
+
+    const filtered = filterInstitutions(
+        institutions,
+        query,
+        interviewMin,
+        interviewMax
+    );
+
     return (
-        <div className={classNames('institutions-list')}>
-            <div className={classNames('institutions-list__content')}>
-                <h1 className={classNames('institutions-list__title')}>
-                    Institutions List
-                </h1>
-                <p className={classNames('institutions-list__description')}>
-                    This is a placeholder for the Institutions List component.
-                    It will display a list of institutions, along with their
-                    names, descriptions, and links to view more details about
-                    each institution. Users will be able to click on an
-                    institution to view its collections and related archives.
-                </p>
+        <div className="InstitutionsList">
+            <InstitutionsMap institutions={filtered} height={400} />
+
+            <div className="InstitutionsList-cards">
+                {filtered.length === 0 ? (
+                    <div className="InstitutionsList InstitutionsList--empty">
+                        <p>No institutions match the current filters.</p>
+                    </div>
+                ) : (
+                    filtered.map((institution) => (
+                        <InstitutionCard
+                            key={institution.id}
+                            institution={institution}
+                            query={query}
+                        />
+                    ))
+                )}
             </div>
         </div>
     );
 }
+
+InstitutionsList.propTypes = {
+    institutions: PropTypes.array.isRequired,
+    query: PropTypes.string,
+    interviewMin: PropTypes.number,
+    interviewMax: PropTypes.number,
+};
 
 export default InstitutionsList;
