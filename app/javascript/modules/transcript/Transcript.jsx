@@ -191,7 +191,9 @@ export default function Transcript({
                             }
                             contentLocale={transcriptLocale}
                             isActive={effectiveActive}
-                            isEditing={editingSegmentId === segment.id}
+                            isEditing={
+                                isEditor && editingSegmentId === segment.id
+                            }
                             anySegmentEditing={editingSegmentId !== null}
                             onEditStart={() => handleEditStart(segment.id)}
                             onEditEnd={handleEditEnd}
