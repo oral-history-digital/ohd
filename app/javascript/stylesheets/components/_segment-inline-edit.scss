@@ -84,6 +84,7 @@
     align-items: center;
     padding-bottom: calc($base-unit / 3);
     margin-bottom: calc($base-unit / 3);
+    gap: calc($base-unit / 8);
 
     .Button--icon {
       display: flex;

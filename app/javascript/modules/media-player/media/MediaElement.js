@@ -282,11 +282,20 @@ export default function MediaElement({
             return;
         }
 
-        // Sync Redux isPlaying=false → pause the actual player.
-        // Checked on every call so that external pause dispatches (e.g. segment
-        // preview stop) are reflected in VideoJS without a separate effect.
+        // Sync Redux isPlaying state → actual player state.
+        // Bidirectional: pause when Redux says stop, play when Redux says go.
+        // Skip the play sync when a time change request is pending — the
+        // request handler below will call play() after seeking to avoid
+        // starting playback at a stale position.
         if (!isPlaying && !player.paused()) {
             player.pause();
+        }
+        if (isPlaying && player.paused() && !timeChangeRequestAvailable) {
+            if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
+                player.play();
+            } else {
+                player.autoplay(true);
+            }
         }
 
         if (timeChangeRequestAvailable) {

@@ -1,30 +1,44 @@
 import { useI18n } from 'modules/i18n';
 import { formatTimecode, timecodeToSeconds } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { FaPlay, FaStop } from 'react-icons/fa';
+import {
+    FaBackward,
+    FaForward,
+    FaPause,
+    FaPlay,
+    FaStepBackward,
+} from 'react-icons/fa';
 
 import { useSegmentPreview } from '../hooks';
 
 export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
     const { t } = useI18n();
 
-    const { isPreviewPlaying, togglePreview, currentTime } = useSegmentPreview(
-        segment,
-        nextSegmentTimecode
-    );
+    const {
+        isPreviewPlaying,
+        togglePlayPause,
+        seekToStart,
+        seekBy,
+        currentTime,
+    } = useSegmentPreview(segment, nextSegmentTimecode);
 
-    // Show live time during playback, otherwise show the segment start
-    const displayTime = isPreviewPlaying
-        ? currentTime
-        : timecodeToSeconds(segment.timecode);
+    const segmentStartTime = timecodeToSeconds(segment.timecode);
 
-    const formatTime = (seconds) =>
-        formatTimecode(seconds ?? 0, false, false, false);
+    const skipBackDisabled = currentTime < segmentStartTime + 0.5;
+    const skipBackFiveDisabled = currentTime < segmentStartTime + 5;
+    const skipForwardFiveDisabled =
+        nextSegmentTimecode == null ||
+        currentTime > timecodeToSeconds(nextSegmentTimecode) - 5;
 
-    const formattedTime = formatTime(displayTime);
+    const formatTime = (seconds, which) =>
+        isPreviewPlaying && which === 'start'
+            ? formatTimecode(seconds ?? 0, false, false, false) // Don't show milliseconds for live time to avoid jitter
+            : formatTimecode(seconds ?? 0, false, true, false);
+
+    const formattedStartTime = formatTime(currentTime, 'start');
 
     const formattedEndTime = nextSegmentTimecode
-        ? formatTime(timecodeToSeconds(nextSegmentTimecode))
+        ? formatTime(timecodeToSeconds(nextSegmentTimecode), 'end')
         : null;
 
     return (
@@ -32,24 +46,54 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
             <button
                 type="button"
                 className="Button Button--transparent Button--icon"
-                onClick={togglePreview}
+                onClick={togglePlayPause}
                 title={t(
                     isPreviewPlaying
-                        ? 'edit.segment.preview_stop'
+                        ? 'edit.segment.preview_pause'
                         : 'edit.segment.preview_play'
                 )}
                 aria-label={t(
                     isPreviewPlaying
-                        ? 'edit.segment.preview_stop'
+                        ? 'edit.segment.preview_pause'
                         : 'edit.segment.preview_play'
                 )}
                 aria-pressed={isPreviewPlaying}
             >
-                {isPreviewPlaying ? <FaStop /> : <FaPlay />}
+                {isPreviewPlaying ? <FaPause /> : <FaPlay />}
+            </button>
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                onClick={seekToStart}
+                title={t('edit.segment.preview_restart')}
+                aria-label={t('edit.segment.preview_restart')}
+                disabled={skipBackDisabled}
+            >
+                <FaStepBackward />
+            </button>
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                onClick={() => seekBy(-5)}
+                title={t('edit.segment.preview_back_5')}
+                aria-label={t('edit.segment.preview_back_5')}
+                disabled={skipBackFiveDisabled}
+            >
+                <FaBackward />
+            </button>
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                onClick={() => seekBy(5)}
+                title={t('edit.segment.preview_forward_5')}
+                aria-label={t('edit.segment.preview_forward_5')}
+                disabled={skipForwardFiveDisabled}
+            >
+                <FaForward />
             </button>
             <span className="SegmentTabs-previewTime">
                 <span className="SegmentTabs-previewCurrent">
-                    {formattedTime}
+                    {formattedStartTime}
                 </span>
                 {nextSegmentTimecode && (
                     <>
