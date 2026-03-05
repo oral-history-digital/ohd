@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import { getLocale, getProjectId, useIsEditor } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
 import { getCurrentProject, submitData } from 'modules/data';
-import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
 import { isSegmentActive } from 'modules/interview-helpers';
 import {
@@ -20,7 +19,7 @@ import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useAutoScrollToRef } from '../hooks';
+import { useAutoScrollToRef, useSegmentTabs } from '../hooks';
 import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
 import {
     Initials,
@@ -50,7 +49,6 @@ function EditableSegment({
     nextSegmentTimecode,
 }) {
     const divEl = useRef();
-    const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
     const { isAuthorized } = useAuthorization();
     const isEditviewActive = useIsEditor();
@@ -69,32 +67,11 @@ function EditableSegment({
         'update'
     );
 
-    // Build tabs array based on permissions
-    // Note: segment is intentionally NOT in dependencies - we want stable tab structure
-    // but the segment prop will flow through to child components on re-render
-    const tabs = useMemo(() => {
-        const tabsArray = [];
-        if (showEditTab) {
-            tabsArray.push({
-                id: 'edit',
-                label: t('edit.segment.tab_edit'),
-            });
-        }
-        if (showAnnotationsTab) {
-            tabsArray.push({
-                id: 'annotations',
-                label: t('edit.segment.tab_annotations'),
-            });
-        }
-        if (showReferencesTab) {
-            tabsArray.push({
-                id: 'references',
-                label: t('edit.segment.tab_registry_references'),
-            });
-        }
-        return tabsArray;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showEditTab, showAnnotationsTab, showReferencesTab]);
+    const tabs = useSegmentTabs(
+        showEditTab,
+        showAnnotationsTab,
+        showReferencesTab
+    );
 
     const autoScroll = useSelector(getAutoScroll);
     // Single inline selector so useSelector only re-renders this segment when
