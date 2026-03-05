@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import classNames from 'classnames';
 import { getArchiveId, useIsEditor } from 'modules/archive';
@@ -11,11 +11,7 @@ import {
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
-import {
-    getCurrentTape,
-    getIsIdle,
-    togglePlayerWidth,
-} from 'modules/media-player';
+import { getCurrentTape, getIsIdle } from 'modules/media-player';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -26,7 +22,7 @@ import {
     TranscriptSkeleton,
     UnsavedChangesDialog,
 } from './components';
-import { useProcessedSegments } from './hooks';
+import { useProcessedSegments, useSegmentEditing } from './hooks';
 import { getContributorInformation, isRtlLanguage } from './utils';
 
 export default function Transcript({
@@ -53,55 +49,15 @@ export default function Transcript({
     const hasTranscript =
         interview?.alpha3s_with_transcript?.indexOf(transcriptLocale) > -1;
 
-    // Track which segment is currently being edited
-    const [editingSegmentId, setEditingSegmentId] = useState(null);
-    const [
-        editingSegmentHasUnsavedChanges,
+    const {
+        editingSegmentId,
+        showUnsavedWarning,
+        setShowUnsavedWarning,
         setEditingSegmentHasUnsavedChanges,
-    ] = useState(false);
-
-    // Stable ref so EditableSegment can read whether any segment is being
-    // edited without subscribing to it as a prop (which would cause all
-    // segments to re-render when one edit opens/closes).
-    const editingSegmentIdRef = useRef(editingSegmentId);
-    editingSegmentIdRef.current = editingSegmentId;
-
-    // Ref keeps the latest editing state readable inside stable callbacks
-    // without listing them as deps (which would create a new function on every
-    // edit-state change and defeat memo() on all segments).
-    const editingStateRef = useRef({
-        editingSegmentId,
-        editingSegmentHasUnsavedChanges,
-    });
-    editingStateRef.current = {
-        editingSegmentId,
-        editingSegmentHasUnsavedChanges,
-    };
-
-    const [showUnsavedWarning, setShowUnsavedWarning] = useState(false);
-
-    const handleEditStart = useCallback(
-        (segmentId) => {
-            const {
-                editingSegmentId: currentId,
-                editingSegmentHasUnsavedChanges: hasUnsaved,
-            } = editingStateRef.current;
-            if (currentId !== null && hasUnsaved) {
-                setShowUnsavedWarning(true);
-                return false;
-            }
-            togglePlayerWidth(true); // Switch to compact player when editing starts
-            setEditingSegmentId(segmentId);
-            setEditingSegmentHasUnsavedChanges(false);
-            return true;
-        },
-        [] // no deps — all mutable values are read from editingStateRef; setters are stable
-    );
-
-    const handleEditEnd = useCallback(() => {
-        setEditingSegmentId(null);
-        setEditingSegmentHasUnsavedChanges(false);
-    }, []);
+        editingSegmentIdRef,
+        handleEditStart,
+        handleEditEnd,
+    } = useSegmentEditing();
 
     const contributorInformation = useMemo(
         () => getContributorInformation(interview?.contributions, people),
