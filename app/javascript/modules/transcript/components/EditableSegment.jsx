@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     useAutoScrollToRef,
     useIsSegmentActive,
+    useProcessedSegmentText,
     useSegmentTabs,
 } from '../hooks';
 import {
@@ -169,13 +170,11 @@ function EditableSegment({
         setDisplayedContentType(null);
     }, []);
 
-    let text = canEditSegment
-        ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
-        : segment.text[`${contentLocale}-public`];
-
-    const textDir = checkTextDir(text);
-    // Enforce RTL wrapping if the text direction is RTL
-    text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
+    const { text } = useProcessedSegmentText({
+        segment,
+        contentLocale,
+        canEditSegment,
+    });
 
     if (!text) return null;
 
