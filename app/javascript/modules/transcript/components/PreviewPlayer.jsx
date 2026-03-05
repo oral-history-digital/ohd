@@ -25,8 +25,8 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
     const segmentStartTime = timecodeToSeconds(segment.timecode);
 
     const skipBackDisabled = currentTime < segmentStartTime + 0.5;
-    const skipBackFiveDisabled = currentTime < segmentStartTime + 5;
-    const skipForwardFiveDisabled =
+    const skipBackStepDisabled = currentTime < segmentStartTime + 5;
+    const skipForwardStepDisabled =
         nextSegmentTimecode == null ||
         currentTime > timecodeToSeconds(nextSegmentTimecode) - 5;
 
@@ -74,20 +74,20 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
             <button
                 type="button"
                 className="Button Button--transparent Button--icon"
-                onClick={() => seekBy(-5)}
-                title={t('edit.segment.preview_back_5')}
-                aria-label={t('edit.segment.preview_back_5')}
-                disabled={skipBackFiveDisabled}
+                onClick={() => seekBy(-3)}
+                title={t('edit.segment.preview_back_3')}
+                aria-label={t('edit.segment.preview_back_3')}
+                disabled={skipBackStepDisabled}
             >
                 <FaBackward />
             </button>
             <button
                 type="button"
                 className="Button Button--transparent Button--icon"
-                onClick={() => seekBy(5)}
-                title={t('edit.segment.preview_forward_5')}
-                aria-label={t('edit.segment.preview_forward_5')}
-                disabled={skipForwardFiveDisabled}
+                onClick={() => seekBy(3)}
+                title={t('edit.segment.preview_forward_3')}
+                aria-label={t('edit.segment.preview_forward_3')}
+                disabled={skipForwardStepDisabled}
             >
                 <FaForward />
             </button>
