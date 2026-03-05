@@ -54,6 +54,11 @@ export function ArchiveCard({ archive, query }) {
                         <span className="ArchiveCard-metaItem">
                             {archive.interviews?.total || 0} Interviews
                         </span>
+                        {archive.publication_date && (
+                            <span className="ArchiveCard-metaItem">
+                                {archive.publication_date}
+                            </span>
+                        )}
                     </div>
                 </div>
             </button>

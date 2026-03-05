@@ -46,3 +46,47 @@ export const applyInterviewRangeParams = (
 
     return prev;
 };
+
+/**
+ * Sets or removes `explorer_year_min` / `explorer_year_max`
+ * search params. Values equal to the global bounds are removed (clean URL).
+ *
+ * @param {URLSearchParams} prev
+ * @param {number} min
+ * @param {number} max
+ * @param {number} globalMin
+ * @param {number} globalMax
+ * @returns {URLSearchParams}
+ */
+export const applyYearRangeParams = (prev, min, max, globalMin, globalMax) => {
+    if (min === globalMin) {
+        prev.delete('explorer_year_min');
+    } else {
+        prev.set('explorer_year_min', min);
+    }
+
+    if (max === globalMax) {
+        prev.delete('explorer_year_max');
+    } else {
+        prev.set('explorer_year_max', max);
+    }
+
+    return prev;
+};
+
+/**
+ * Sets or removes the `explorer_institution` search param.
+ * Accepts an array of ids; stores them comma-separated for a clean URL.
+ *
+ * @param {URLSearchParams} prev
+ * @param {number[]} institutionIds
+ * @returns {URLSearchParams}
+ */
+export const applyInstitutionParam = (prev, institutionIds) => {
+    if (institutionIds && institutionIds.length > 0) {
+        prev.set('explorer_institution', institutionIds.join(','));
+    } else {
+        prev.delete('explorer_institution');
+    }
+    return prev;
+};

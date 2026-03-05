@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import { filterArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
 
-export function ArchivesList({ archives, query, interviewMin, interviewMax }) {
+export function ArchivesList({
+    archives,
+    query,
+    interviewMin,
+    interviewMax,
+    yearMin,
+    yearMax,
+    institutionIds,
+}) {
     const filtered = filterArchives(
         archives,
         query,
         interviewMin,
-        interviewMax
+        interviewMax,
+        yearMin,
+        yearMax,
+        institutionIds
     );
 
     if (!filtered || filtered.length === 0) {
@@ -39,4 +50,7 @@ ArchivesList.propTypes = {
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,
+    yearMin: PropTypes.number,
+    yearMax: PropTypes.number,
+    institutionIds: PropTypes.arrayOf(PropTypes.number),
 };

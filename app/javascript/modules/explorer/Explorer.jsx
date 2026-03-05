@@ -1,23 +1,40 @@
-import { useState } from 'react';
-
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import { FaArchive, FaUniversity } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 
 import { ArchivesList, InstitutionsList } from './components';
-import { useGetArchives, useGetCollections, useGetInstitutions } from './hooks';
+import {
+    useExplorerParams,
+    useGetArchives,
+    useGetCollections,
+    useGetInstitutions,
+} from './hooks';
 
 export function Explorer() {
-    const [tabIndex, setTabIndex] = useState(0);
-    const [searchParams] = useSearchParams();
-    const explorerQuery = searchParams.get('explorer_q') || '';
-    const explorerInterviewMin = searchParams.has('explorer_interviews_min')
-        ? Number(searchParams.get('explorer_interviews_min'))
-        : null;
-    const explorerInterviewMax = searchParams.has('explorer_interviews_max')
-        ? Number(searchParams.get('explorer_interviews_max'))
-        : null;
+    const [, setSearchParams] = useSearchParams();
+    const {
+        tabIndex,
+        query,
+        interviewMin,
+        interviewMax,
+        yearMin,
+        yearMax,
+        institutionIds,
+    } = useExplorerParams();
+
+    const handleTabChange = (index) =>
+        setSearchParams(
+            (prev) => {
+                if (index === 0) {
+                    prev.delete('explorer_tab');
+                } else {
+                    prev.set('explorer_tab', index);
+                }
+                return prev;
+            },
+            { replace: true }
+        );
 
     const {
         data: archives,
@@ -60,7 +77,7 @@ export function Explorer() {
             <Tabs
                 className="Explorer-tabs"
                 index={tabIndex}
-                onChange={setTabIndex}
+                onChange={handleTabChange}
                 keyboardActivation="manual"
             >
                 <TabList className="Explorer-tabList">
@@ -81,9 +98,12 @@ export function Explorer() {
                         {tabIndex === 0 && (
                             <ArchivesList
                                 archives={archives}
-                                query={explorerQuery}
-                                interviewMin={explorerInterviewMin}
-                                interviewMax={explorerInterviewMax}
+                                query={query}
+                                interviewMin={interviewMin}
+                                interviewMax={interviewMax}
+                                yearMin={yearMin}
+                                yearMax={yearMax}
+                                institutionIds={institutionIds}
                             />
                         )}
                     </TabPanel>
@@ -91,9 +111,9 @@ export function Explorer() {
                         {tabIndex === 1 && (
                             <InstitutionsList
                                 institutions={institutions}
-                                query={explorerQuery}
-                                interviewMin={explorerInterviewMin}
-                                interviewMax={explorerInterviewMax}
+                                query={query}
+                                interviewMin={interviewMin}
+                                interviewMax={interviewMax}
                             />
                         )}
                     </TabPanel>

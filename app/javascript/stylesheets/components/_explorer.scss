@@ -134,6 +134,109 @@
   }
 }
 
+.ExplorerSidebarSearch-institutionSection {
+  margin-top: $base-unit * 0.75;
+  padding: 0 $base-unit * 0.5;
+}
+
+.InstitutionDropdown {
+  position: relative;
+}
+
+.InstitutionDropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  background: #fff;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: $gray-darkest;
+  text-align: left;
+  gap: 0.5rem;
+
+  &:hover {
+    border-color: $gray-medium;
+  }
+}
+
+.InstitutionDropdown-toggleLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.InstitutionDropdown-toggleIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+.InstitutionDropdown-chevron {
+  font-size: 0.625rem;
+  color: $gray-medium;
+  transition: transform 0.15s ease;
+
+  &--open {
+    transform: rotate(180deg);
+  }
+}
+
+.InstitutionDropdown-clear {
+  display: flex;
+  align-items: center;
+  font-size: 0.625rem;
+  color: $gray-medium;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color, $gray-darkest);
+  }
+}
+
+.InstitutionDropdown-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.InstitutionDropdown-item {
+  &:hover {
+    background: $gray-lightest;
+  }
+}
+
+.InstitutionDropdown-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  color: $gray-darkest;
+
+  input[type='checkbox'] {
+    accent-color: var(--primary-color, $gray-dark);
+    flex-shrink: 0;
+  }
+}
+
 .Explorer {
   max-width: 1200px;
   margin: 0 auto;
