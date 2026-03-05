@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { useWorkbook } from 'modules/workbook';
@@ -6,7 +8,7 @@ import { FaPencilAlt, FaStar, FaStickyNote, FaTag } from 'react-icons/fa';
 
 import { BookmarkSegmentModal } from '.';
 
-export default function SegmentButtons({
+function SegmentButtons({
     segment,
     contentLocale,
     onEditStart,
@@ -148,3 +150,5 @@ SegmentButtons.propTypes = {
     isEditingSegment: PropTypes.bool,
     canEditSegment: PropTypes.bool,
 };
+
+export default memo(SegmentButtons);

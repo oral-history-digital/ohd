@@ -10,3 +10,4 @@ export { default as SegmentRegistryReferences } from './SegmentRegistryReference
 export { default as SegmentText } from './SegmentText';
 export { default as Timecode } from './Timecode';
 export { default as TranscriptSkeleton } from './TranscriptSkeleton';
+export { default as UnsavedChangesDialog } from './UnsavedChangesDialog';

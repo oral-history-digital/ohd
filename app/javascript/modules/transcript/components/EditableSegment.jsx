@@ -8,10 +8,12 @@ import { useAuthorization } from 'modules/auth';
 import { getCurrentProject, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
+import { isSegmentActive } from 'modules/interview-helpers';
 import {
+    getCurrentTape,
+    getMediaTime,
     sendTimeChangeRequest,
     updateIsPlaying,
-    useScrollOffset,
 } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/utils';
@@ -37,9 +39,10 @@ function EditableSegment({
     interview,
     contributor,
     contentLocale,
-    isActive,
+    nextSegmentTime,
+    nextSegmentTape,
+    editingSegmentIdRef,
     isEditingSegment,
-    anySegmentEditing,
     onEditStart,
     onEditEnd,
     onUnsavedChangesChange,
@@ -49,94 +52,12 @@ function EditableSegment({
     const divEl = useRef();
     const { t } = useI18n();
     const { segment: segmentParam } = useTranscriptQueryString();
-    const scrollOffset = useScrollOffset();
     const { isAuthorized } = useAuthorization();
     const isEditviewActive = useIsEditor();
     const canEditSegment = useMemo(
         () => isAuthorized(segment, 'update'),
         [segment, isAuthorized]
     );
-
-    const autoScroll = useSelector(getAutoScroll);
-    const locale = useSelector(getLocale);
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
-    const dispatch = useDispatch();
-
-    const [tabIndex, setTabIndex] = useState(0);
-    const [displayedContentType, setDisplayedContentType] = useState(null);
-
-    const handleFormChange = useCallback(
-        ({ isDirty, hasValidationErrors }) => {
-            onUnsavedChangesChange?.(isDirty || hasValidationErrors);
-            // dirtyFields is available if needed for more granular control
-        },
-        [onUnsavedChangesChange]
-    );
-
-    const shouldScroll =
-        (!anySegmentEditing && autoScroll && isActive) || // Segment is active during playback (suppressed whenever any segment is being edited)
-        segmentParam === segment.id || // Segment is targeted by the URL param
-        (!anySegmentEditing && isActive && !segmentParam && autoScroll) || // Initially active with autoScroll, no segmentParam
-        isEditingSegment; // Segment is being edited (scroll once when edit mode opens)
-
-    // Use custom hook for auto-scroll logic
-    useAutoScrollToRef(divEl, scrollOffset, shouldScroll, [
-        autoScroll,
-        anySegmentEditing,
-        isActive,
-        segment.id,
-        segmentParam,
-        isEditingSegment,
-    ]);
-
-    const handleSegmentClick = () => {
-        if (interview?.transcript_coupled) {
-            dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
-        }
-    };
-
-    const handleEditStart = (buttonType = 'edit') => {
-        // Stop playback when entering edit mode
-        dispatch(updateIsPlaying(false));
-        // Jump to this segment's time when entering edit mode
-        if (interview?.transcript_coupled) {
-            dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
-        }
-        onEditStart?.();
-        // Set the tab index based on which button was clicked
-        const index = tabs.findIndex((tab) => tab.id === buttonType);
-        if (index !== -1) {
-            setTabIndex(index);
-        }
-    };
-
-    const handleEditCancel = useCallback(() => {
-        onEditEnd?.();
-    }, [onEditEnd]);
-
-    const handleEditSubmit = useCallback(() => {
-        onEditEnd?.();
-    }, [onEditEnd]);
-
-    const handleToggleContentDisplay = (contentType) => {
-        // Toggle: if same type is clicked, close it; otherwise switch to new type
-        setDisplayedContentType(
-            displayedContentType === contentType ? null : contentType
-        );
-    };
-
-    const handleCloseContentDisplay = () => {
-        setDisplayedContentType(null);
-    };
-
-    let text = canEditSegment
-        ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
-        : segment.text[`${contentLocale}-public`];
-
-    const textDir = checkTextDir(text);
-    // Enforce RTL wrapping if the text direction is RTL
-    text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
 
     const showEditTab = canEditSegment;
     const showAnnotationsTab = isAuthorized(
@@ -174,6 +95,123 @@ function EditableSegment({
         return tabsArray;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showEditTab, showAnnotationsTab, showReferencesTab]);
+
+    const autoScroll = useSelector(getAutoScroll);
+    // Single inline selector so useSelector only re-renders this segment when
+    // isActive actually changes (boolean ===). Subscribing to getMediaTime or
+    // getCurrentTape directly would re-render on every tick even when the
+    // segment's active state is unchanged.
+    const isActive = useSelector((state) => {
+        if (!interview?.transcript_coupled) return false;
+        return (
+            isSegmentActive({
+                thisSegmentTape: segment.tape_nbr,
+                thisSegmentTime: segment.time,
+                nextSegmentTape,
+                nextSegmentTime,
+                currentTape: getCurrentTape(state),
+                currentTime: getMediaTime(state),
+            }) && editingSegmentIdRef?.current === null
+        );
+    });
+    const locale = useSelector(getLocale);
+    const projectId = useSelector(getProjectId);
+    const project = useSelector(getCurrentProject);
+    const dispatch = useDispatch();
+
+    const [tabIndex, setTabIndex] = useState(0);
+    const [displayedContentType, setDisplayedContentType] = useState(null);
+
+    const handleFormChange = useCallback(
+        ({ isDirty, hasValidationErrors }) => {
+            onUnsavedChangesChange?.(isDirty || hasValidationErrors);
+            // dirtyFields is available if needed for more granular control
+        },
+        [onUnsavedChangesChange]
+    );
+
+    const handleSubmitData = useCallback(
+        (props, params) => dispatch(submitData(props, params)),
+        [dispatch]
+    );
+
+    const shouldScroll =
+        (autoScroll && isActive) || // Segment is active during playback (isActive is already false when any segment is being edited, via effectiveActive in Transcript)
+        segmentParam === segment.id || // Segment is targeted by the URL param
+        isEditingSegment; // Segment is being edited (scroll once when edit mode opens)
+
+    // Use custom hook for auto-scroll logic
+    useAutoScrollToRef(divEl, shouldScroll, [
+        autoScroll,
+        isActive,
+        segment.id,
+        segmentParam,
+        isEditingSegment,
+    ]);
+
+    const handleSegmentClick = useCallback(() => {
+        if (interview?.transcript_coupled) {
+            dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
+        }
+    }, [
+        dispatch,
+        interview?.transcript_coupled,
+        segment.tape_nbr,
+        segment.time,
+    ]);
+
+    const handleEditStart = useCallback(
+        (buttonType = 'edit') => {
+            // Stop playback when entering edit mode
+            dispatch(updateIsPlaying(false));
+            // Jump to this segment's time when entering edit mode
+            if (interview?.transcript_coupled) {
+                dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
+            }
+            onEditStart?.(segment.id);
+            // Set the tab index based on which button was clicked
+            const index = tabs.findIndex((tab) => tab.id === buttonType);
+            if (index !== -1) {
+                setTabIndex(index);
+            }
+        },
+        [
+            dispatch,
+            interview?.transcript_coupled,
+            segment.tape_nbr,
+            segment.time,
+            segment.id,
+            onEditStart,
+            tabs,
+        ]
+    );
+
+    const handleEditCancel = useCallback(() => {
+        onEditEnd?.();
+    }, [onEditEnd]);
+
+    const handleEditSubmit = useCallback(() => {
+        onEditEnd?.();
+    }, [onEditEnd]);
+
+    const handleToggleContentDisplay = useCallback((contentType) => {
+        // Toggle: if same type is clicked, close it; otherwise switch to new type
+        setDisplayedContentType((prev) =>
+            prev === contentType ? null : contentType
+        );
+    }, []);
+
+    const handleCloseContentDisplay = useCallback(() => {
+        setDisplayedContentType(null);
+    }, []);
+
+    let text = canEditSegment
+        ? segment.text[contentLocale] || segment.text[`${contentLocale}-public`]
+        : segment.text[`${contentLocale}-public`];
+
+    const textDir = checkTextDir(text);
+    // Enforce RTL wrapping if the text direction is RTL
+    text = textDir === 'rtl' ? enforceRtlOnTranscriptTokens(text) : text;
 
     if (!text) return null;
 
@@ -226,11 +264,7 @@ function EditableSegment({
                                             project={project}
                                             contentLocale={contentLocale}
                                             segment={segment}
-                                            submitData={(props, params) => {
-                                                dispatch(
-                                                    submitData(props, params)
-                                                );
-                                            }}
+                                            submitData={handleSubmitData}
                                             onSubmit={handleEditSubmit}
                                             onCancel={handleEditCancel}
                                             onChange={handleFormChange}
@@ -305,9 +339,10 @@ EditableSegment.propTypes = {
     interview: PropTypes.object.isRequired,
     contributor: PropTypes.object,
     contentLocale: PropTypes.string.isRequired,
-    isActive: PropTypes.bool,
+    nextSegmentTime: PropTypes.number,
+    nextSegmentTape: PropTypes.number,
+    editingSegmentIdRef: PropTypes.object,
     isEditingSegment: PropTypes.bool,
-    anySegmentEditing: PropTypes.bool,
     onEditStart: PropTypes.func,
     onEditEnd: PropTypes.func,
     onUnsavedChangesChange: PropTypes.func,

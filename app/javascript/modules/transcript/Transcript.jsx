@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 import { getArchiveId, useIsEditor } from 'modules/archive';
@@ -11,11 +11,9 @@ import {
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
-import { isSegmentActive } from 'modules/interview-helpers';
 import {
     getCurrentTape,
     getIsIdle,
-    getMediaTime,
     togglePlayerWidth,
 } from 'modules/media-player';
 import { useInterviewContributors } from 'modules/person';
@@ -23,7 +21,11 @@ import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { EditableSegment, TranscriptSkeleton } from './components';
+import {
+    EditableSegment,
+    TranscriptSkeleton,
+    UnsavedChangesDialog,
+} from './components';
 import {
     getContributorInformation,
     sortedSegmentsWithActiveIndex,
@@ -44,9 +46,8 @@ export default function Transcript({
     const interview = useSelector(getCurrentInterview);
     const intervieweeId = useSelector(getCurrentIntervieweeId);
     const tape = useSelector(getCurrentTape);
-    const mediaTime = useSelector(getMediaTime);
-    const isIdle = useSelector(getIsIdle);
     const autoScroll = useSelector(getAutoScroll);
+    const isIdle = useSelector(getIsIdle);
     const transcriptFetched = useSelector(getTranscriptFetched);
 
     const { data: people, isLoading: peopleAreLoading } =
@@ -61,23 +62,48 @@ export default function Transcript({
         setEditingSegmentHasUnsavedChanges,
     ] = useState(false);
 
-    const handleEditStart = (segmentId) => {
-        if (editingSegmentId !== null && editingSegmentHasUnsavedChanges) {
-            // Prevent switching if current segment has unsaved changes
-            // TODO: Replace alert with nicer UI
-            alert(t('modules.transcript.unsaved_changes_warning'));
-            return false;
-        }
-        togglePlayerWidth(true); // Switch to compact player when editing starts
-        setEditingSegmentId(segmentId);
-        setEditingSegmentHasUnsavedChanges(false);
-        return true;
+    // Stable ref so EditableSegment can read whether any segment is being
+    // edited without subscribing to it as a prop (which would cause all
+    // segments to re-render when one edit opens/closes).
+    const editingSegmentIdRef = useRef(editingSegmentId);
+    editingSegmentIdRef.current = editingSegmentId;
+
+    // Ref keeps the latest editing state readable inside stable callbacks
+    // without listing them as deps (which would create a new function on every
+    // edit-state change and defeat memo() on all segments).
+    const editingStateRef = useRef({
+        editingSegmentId,
+        editingSegmentHasUnsavedChanges,
+    });
+    editingStateRef.current = {
+        editingSegmentId,
+        editingSegmentHasUnsavedChanges,
     };
 
-    const handleEditEnd = () => {
+    const [showUnsavedWarning, setShowUnsavedWarning] = useState(false);
+
+    const handleEditStart = useCallback(
+        (segmentId) => {
+            const {
+                editingSegmentId: currentId,
+                editingSegmentHasUnsavedChanges: hasUnsaved,
+            } = editingStateRef.current;
+            if (currentId !== null && hasUnsaved) {
+                setShowUnsavedWarning(true);
+                return false;
+            }
+            togglePlayerWidth(true); // Switch to compact player when editing starts
+            setEditingSegmentId(segmentId);
+            setEditingSegmentHasUnsavedChanges(false);
+            return true;
+        },
+        [] // no deps — all mutable values are read from editingStateRef; setters are stable
+    );
+
+    const handleEditEnd = useCallback(() => {
         setEditingSegmentId(null);
         setEditingSegmentHasUnsavedChanges(false);
-    };
+    }, []);
 
     const contributorInformation = useMemo(
         () => getContributorInformation(interview?.contributions, people),
@@ -119,6 +145,46 @@ export default function Transcript({
         dispatch,
     ]);
 
+    // Memoize the sorted segment list so it only recomputes when the actual
+    // data changes (interview segments or tape), not on every mediaTime tick.
+    // Without this, Object.values().sort() produces new object references every
+    // render, making memo() on EditableSegment always see a changed `segment`
+    // prop and re-render all N segments on every animation frame.
+    const shownSegments = useMemo(() => {
+        if (!interview?.segments) return [];
+
+        const [, segments] = sortedSegmentsWithActiveIndex(0, {
+            interview,
+            tape,
+        });
+
+        // Annotate speaker changes and interviewee flag here so the segment
+        // objects are stable references — mutating them inside the render loop
+        // below would still work (same ref), but doing it here keeps the render
+        // loop pure and makes the mutations visible to memoized children.
+        let currentSpeakerName = '';
+        let currentSpeakerId = null;
+        segments.forEach((segment) => {
+            segment.speaker_is_interviewee =
+                intervieweeId === segment.speaker_id;
+            if (
+                (currentSpeakerId !== segment.speaker_id &&
+                    segment.speaker_id !== null) ||
+                (currentSpeakerName !== segment.speaker &&
+                    segment.speaker !== null &&
+                    segment.speaker_id === null)
+            ) {
+                segment.speakerIdChanged = true;
+                currentSpeakerId = segment.speaker_id;
+                currentSpeakerName = segment.speaker;
+            } else {
+                segment.speakerIdChanged = false;
+            }
+        });
+
+        return segments;
+    }, [interview, tape, intervieweeId]);
+
     if (!interview || !transcriptFetched || peopleAreLoading) {
         return <TranscriptSkeleton count={5} />;
     }
@@ -129,57 +195,23 @@ export default function Transcript({
             : t('without_translation');
     }
 
-    let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, {
-        interview,
-        tape,
-    });
-    let shownSegments = sortedWithIndex[1];
-    let currentSpeakerName = '',
-        currentSpeakerId = null;
-
     return (
         <>
             {isEditviewActive && (
                 <HelpText code="interview_transcript" className="u-mb" />
             )}
+            <UnsavedChangesDialog
+                isOpen={showUnsavedWarning}
+                onDismiss={() => setShowUnsavedWarning(false)}
+            />
             <div
                 className={classNames('Transcript', {
                     'Transcript--rtl': isRtlLanguage(transcriptLocale),
                 })}
             >
                 {shownSegments.map((segment, index, array) => {
-                    segment.speaker_is_interviewee =
-                        intervieweeId === segment.speaker_id;
-                    if (
-                        (currentSpeakerId !== segment.speaker_id &&
-                            segment.speaker_id !== null) ||
-                        (currentSpeakerName !== segment.speaker &&
-                            segment.speaker !== null &&
-                            segment.speaker_id === null)
-                    ) {
-                        segment.speakerIdChanged = true;
-                        currentSpeakerId = segment.speaker_id;
-                        currentSpeakerName = segment.speaker;
-                    }
-
                     const prevSegment = array[index - 1];
                     const nextSegment = array[index + 1];
-                    const active =
-                        interview.transcript_coupled &&
-                        isSegmentActive({
-                            thisSegmentTape: segment.tape_nbr,
-                            thisSegmentTime: segment.time,
-                            nextSegmentTape: nextSegment?.tape_nbr,
-                            nextSegmentTime: nextSegment?.time,
-                            currentTape: tape,
-                            currentTime: mediaTime,
-                        });
-
-                    // Suppress isActive on all segments while any segment is
-                    // being edited — the edit UI replaces the active highlight,
-                    // and it also prevents mediaTime overshoots from briefly
-                    // highlighting the next segment during preview stop.
-                    const effectiveActive = active && editingSegmentId === null;
 
                     return (
                         <EditableSegment
@@ -190,14 +222,14 @@ export default function Transcript({
                                 contributorInformation[segment.speaker_id]
                             }
                             contentLocale={transcriptLocale}
-                            isActive={effectiveActive}
+                            nextSegmentTime={nextSegment?.time}
+                            nextSegmentTape={nextSegment?.tape_nbr}
                             isEditingSegment={
                                 isEditviewActive &&
                                 editingSegmentId === segment.id
                             }
-                            anySegmentEditing={editingSegmentId !== null}
-                            isEditviewActive={isEditviewActive}
-                            onEditStart={() => handleEditStart(segment.id)}
+                            editingSegmentIdRef={editingSegmentIdRef}
+                            onEditStart={handleEditStart}
                             onEditEnd={handleEditEnd}
                             onUnsavedChangesChange={
                                 setEditingSegmentHasUnsavedChanges

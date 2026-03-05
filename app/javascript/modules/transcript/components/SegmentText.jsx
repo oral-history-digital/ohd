@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -10,12 +12,7 @@ import {
     unescapeHtmlEntities,
 } from '../utils';
 
-export default function SegmentText({
-    segment,
-    locale,
-    isActive,
-    handleClick,
-}) {
+function SegmentText({ segment, locale, isActive, handleClick }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
 
@@ -52,3 +49,5 @@ SegmentText.propTypes = {
     isActive: PropTypes.bool,
     handleClick: PropTypes.func,
 };
+
+export default memo(SegmentText);

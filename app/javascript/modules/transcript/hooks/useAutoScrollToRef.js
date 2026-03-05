@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+import { getScrollOffset } from 'modules/media-player';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 
 /**
@@ -10,12 +11,15 @@ import { scrollSmoothlyTo } from 'modules/user-agent';
  * If shouldScroll becomes false before the frame fires, the scroll is cancelled.
  * This prevents spurious scrolls from brief one-render flickers of shouldScroll.
  *
+ * scrollOffset is read lazily inside the rAF callback (via getScrollOffset())
+ * so that the media player's current height is used at the moment of scrolling,
+ * without subscribing to resize events or holding it in state.
+ *
  * @param {object} ref - React ref to the DOM element to scroll to
- * @param {number} scrollOffset - The offset in pixels to subtract from the top
  * @param {boolean} shouldScroll - Whether to trigger the scroll
  * @param {Array} deps - Additional dependencies for the effect
  */
-export function useAutoScrollToRef(ref, scrollOffset, shouldScroll, deps = []) {
+export function useAutoScrollToRef(ref, shouldScroll, deps = []) {
     const shouldScrollRef = useRef(shouldScroll);
     shouldScrollRef.current = shouldScroll;
 
@@ -39,9 +43,11 @@ export function useAutoScrollToRef(ref, scrollOffset, shouldScroll, deps = []) {
             if (!ref.current) return;
             const topOfElement = ref.current.offsetTop;
             if (topOfElement === 0) return;
-            scrollSmoothlyTo(0, topOfElement - scrollOffset);
+            // Read scroll offset lazily at scroll time — always reflects the
+            // current media player height without subscribing to resize events.
+            scrollSmoothlyTo(0, topOfElement - getScrollOffset());
         });
 
         return () => cancelAnimationFrame(frame);
-    }, [ref, scrollOffset, shouldScroll, ...deps]);
+    }, [ref, shouldScroll, ...deps]);
 }
