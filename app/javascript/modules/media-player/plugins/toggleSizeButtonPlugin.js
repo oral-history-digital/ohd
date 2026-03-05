@@ -26,6 +26,8 @@ export const togglePlayerWidth = (isCompact) => {
     );
     // Save to sessionStorage
     sessionStorage.setItem('videoPlayerWidth', maxWidth);
+    // Notify layout hooks so sticky positioning recalculates immediately
+    window.dispatchEvent(new CustomEvent('mediaPlayerResized'));
 };
 
 /* ------------------------------------------------------------------ */
