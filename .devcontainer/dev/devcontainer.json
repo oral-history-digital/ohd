@@ -7,7 +7,7 @@
   "workspaceFolder": "/workspace",
 
   // User inside the container
-  "remoteUser": "root",
+  "remoteUser": "vscode",
 
   // Environment variables
   "containerEnv": {

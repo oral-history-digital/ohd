@@ -3,8 +3,9 @@ services:
     ports:
       - '3000:3000'
       - '3035:3035'
-    # Override the base entrypoint and run a long-lived sleep so VS Code can attach
-    entrypoint: ['sleep', 'infinity']
+    # Entrypoint runs as root: fixes volume ownership, then exec's sleep infinity.
+    # VS Code's remoteUser:vscode ensures all interactive processes run as vscode.
+    entrypoint: ['bash', '/workspace/.devcontainer/scripts/entrypoint.sh']
     build:
       context: ../..
       dockerfile: .devcontainer/Dockerfile
