@@ -27,7 +27,7 @@ import {
     UnsavedChangesDialog,
 } from './components';
 import { useProcessedSegments } from './hooks';
-import { getContributorInformation } from './utils';
+import { getContributorInformation, isRtlLanguage } from './utils';
 
 export default function Transcript({
     transcriptLocale,
@@ -107,11 +107,6 @@ export default function Transcript({
         () => getContributorInformation(interview?.contributions, people),
         [interview?.contributions, people]
     );
-
-    const isRtlLanguage = (locale) => {
-        const rtlLanguages = ['ara', 'heb'];
-        return rtlLanguages.includes(locale);
-    };
 
     useEffect(() => {
         // Only scroll to top if media has not started yet and auto scroll is off.

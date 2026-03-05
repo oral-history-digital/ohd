@@ -175,3 +175,6 @@ export const SANITIZE_CONFIG = {
 
 // Frames per second for timecode calculations
 export const FRAMES_PER_SECOND = 25;
+
+// RTL languages (ISO 639-3 codes)
+export const RTL_LANGUAGES = ['ara', 'heb'];
