@@ -26,10 +26,8 @@ import {
     TranscriptSkeleton,
     UnsavedChangesDialog,
 } from './components';
-import {
-    getContributorInformation,
-    sortedSegmentsWithActiveIndex,
-} from './utils';
+import { useProcessedSegments } from './hooks';
+import { getContributorInformation } from './utils';
 
 export default function Transcript({
     transcriptLocale,
@@ -145,45 +143,11 @@ export default function Transcript({
         dispatch,
     ]);
 
-    // Memoize the sorted segment list so it only recomputes when the actual
-    // data changes (interview segments or tape), not on every mediaTime tick.
-    // Without this, Object.values().sort() produces new object references every
-    // render, making memo() on EditableSegment always see a changed `segment`
-    // prop and re-render all N segments on every animation frame.
-    const shownSegments = useMemo(() => {
-        if (!interview?.segments) return [];
-
-        const [, segments] = sortedSegmentsWithActiveIndex(0, {
-            interview,
-            tape,
-        });
-
-        // Annotate speaker changes and interviewee flag here so the segment
-        // objects are stable references — mutating them inside the render loop
-        // below would still work (same ref), but doing it here keeps the render
-        // loop pure and makes the mutations visible to memoized children.
-        let currentSpeakerName = '';
-        let currentSpeakerId = null;
-        segments.forEach((segment) => {
-            segment.speaker_is_interviewee =
-                intervieweeId === segment.speaker_id;
-            if (
-                (currentSpeakerId !== segment.speaker_id &&
-                    segment.speaker_id !== null) ||
-                (currentSpeakerName !== segment.speaker &&
-                    segment.speaker !== null &&
-                    segment.speaker_id === null)
-            ) {
-                segment.speakerIdChanged = true;
-                currentSpeakerId = segment.speaker_id;
-                currentSpeakerName = segment.speaker;
-            } else {
-                segment.speakerIdChanged = false;
-            }
-        });
-
-        return segments;
-    }, [interview, tape, intervieweeId]);
+    const processedSegments = useProcessedSegments(
+        interview,
+        tape,
+        intervieweeId
+    );
 
     if (!interview || !transcriptFetched || peopleAreLoading) {
         return <TranscriptSkeleton count={5} />;
@@ -209,7 +173,7 @@ export default function Transcript({
                     'Transcript--rtl': isRtlLanguage(transcriptLocale),
                 })}
             >
-                {shownSegments.map((segment, index, array) => {
+                {processedSegments.map((segment, index, array) => {
                     const prevSegment = array[index - 1];
                     const nextSegment = array[index + 1];
 
