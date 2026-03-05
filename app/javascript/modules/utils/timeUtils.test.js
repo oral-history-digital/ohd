@@ -212,4 +212,65 @@ describe('formatTimecode', () => {
         const expected = '10:02:05';
         expect(actual).toEqual(expected);
     });
+
+    describe('format parameter (frames)', () => {
+        test('formats sub-seconds as 2-digit frame number at 25fps', () => {
+            // 1s + 12/25 = 1.48s → frame 12
+            const actual = formatTimecode(1.48, false, true, false, 'frames');
+            expect(actual).toEqual('0:00:01.12');
+        });
+
+        test('frame 0 is padded to two digits', () => {
+            const actual = formatTimecode(10, false, true, false, 'frames');
+            expect(actual).toEqual('0:00:10.00');
+        });
+
+        test('rounds to nearest frame', () => {
+            // 0.5s = 0.5 * 25 = 12.5 → rounds to 13
+            const actual = formatTimecode(0.5, false, true, false, 'frames');
+            expect(actual).toEqual('0:00:00.13');
+        });
+
+        test('works in HMS format', () => {
+            // 9905 + 12/25 = 9905.48s → 2h45m05s, frame 12
+            const actual = formatTimecode(9905.48, true, true, false, 'frames');
+            expect(actual).toEqual('2h45m05.12s');
+        });
+
+        test('works with stripLeadingZeros', () => {
+            // 226 + 12/25 = 226.48s → 3:46.12
+            const actual = formatTimecode(226.48, false, true, true, 'frames');
+            expect(actual).toEqual('3:46.12');
+        });
+
+        test('format ms still produces 3-digit milliseconds (explicit parameter)', () => {
+            const actual = formatTimecode(25.3, false, true, false, 'ms');
+            expect(actual).toEqual('0:00:25.300');
+        });
+
+        test('default format (no 5th arg) is ms-compatible', () => {
+            const actual = formatTimecode(25.3, false, true);
+            expect(actual).toEqual('0:00:25.300');
+        });
+
+        test('round-trips with detectTimecodeFormat and timecodeToSeconds for ms', () => {
+            // formatTimecode uses single-digit hours, so '01:02:03.456' → '1:02:03.456'
+            const timecode = '01:02:03.456';
+            const fmt = detectTimecodeFormat(timecode);
+            const seconds = timecodeToSeconds(timecode);
+            expect(formatTimecode(seconds, false, true, false, fmt)).toEqual(
+                '1:02:03.456'
+            );
+        });
+
+        test('round-trips with detectTimecodeFormat and timecodeToSeconds for frames', () => {
+            // formatTimecode uses single-digit hours, so '00:01:30.12' → '0:01:30.12'
+            const timecode = '00:01:30.12';
+            const fmt = detectTimecodeFormat(timecode);
+            const seconds = timecodeToSeconds(timecode);
+            expect(formatTimecode(seconds, false, true, false, fmt)).toEqual(
+                '0:01:30.12'
+            );
+        });
+    });
 });

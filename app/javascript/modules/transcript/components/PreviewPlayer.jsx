@@ -1,5 +1,9 @@
 import { useI18n } from 'modules/i18n';
-import { formatTimecode, timecodeToSeconds } from 'modules/utils';
+import {
+    detectTimecodeFormat,
+    formatTimecode,
+    timecodeToSeconds,
+} from 'modules/utils';
 import PropTypes from 'prop-types';
 import {
     FaBackward,
@@ -22,6 +26,8 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
         currentTime,
     } = useSegmentPreview(segment, nextSegmentTimecode);
 
+    const timeCodeFormat = detectTimecodeFormat(segment.timecode) ?? 'ms';
+
     const segmentStartTime = timecodeToSeconds(segment.timecode);
 
     const skipBackDisabled = currentTime < segmentStartTime + 0.5;
@@ -33,7 +39,7 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
     const formatTime = (seconds, which) =>
         isPreviewPlaying && which === 'start'
             ? formatTimecode(seconds ?? 0, false, false, false) // Don't show milliseconds for live time to avoid jitter
-            : formatTimecode(seconds ?? 0, false, true, false);
+            : formatTimecode(seconds ?? 0, false, true, false, timeCodeFormat);
 
     const formattedStartTime = formatTime(currentTime, 'start');
 

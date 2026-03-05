@@ -48,13 +48,17 @@ export function timecodeToSeconds(timecode) {
 /**
  * Formats a time duration in seconds to a human-readable timecode string.
  *
- * @param {number} time - Time duration in seconds with decimal precision (e.g., 114.759
+ * @param {number} time - Time duration in seconds with decimal precision (e.g., 114.759)
  * @param {boolean} [useHmsFormat=false] - If true, returns HMS format (e.g., "2h45m05s").
  *                                          If false, returns HH:MM:SS format (e.g., "2:45:05")
- * @param {boolean} [includeMilliseconds=false] - If true, appends milliseconds to the output
- *                                                 (e.g., "2:45:05.760" or "2h45m05.760s")
+ * @param {boolean} [includeMilliseconds=false] - If true, appends sub-second precision to the
+ *                                                 output. The representation depends on `format`.
  * @param {boolean} [stripLeadingZeros=false] - If true, removes leading zero hours
  *                                               (e.g., "00:03:46" becomes "3:46", "01:07:28" becomes "1:07:28")
+ * @param {'ms'|'frames'} [format='ms'] - Sub-second format when `includeMilliseconds` is true.
+ *                                         'ms'     → 3-digit milliseconds  (e.g., ".760")
+ *                                         'frames' → 2-digit frame number at 25 fps (e.g., ".19")
+ *                                         Mirrors the return values of {@link detectTimecodeFormat}.
  *
  * @returns {string} Formatted timecode string
  *
@@ -65,6 +69,10 @@ export function timecodeToSeconds(timecode) {
  * @example
  * // Returns "0:00:25.300"
  * formatTimecode(25.3, false, true)
+ *
+ * @example
+ * // Returns "0:00:25.07" (25.3s → frame 7 of 25)
+ * formatTimecode(25.3, false, true, false, 'frames')
  *
  * @example
  * // Returns "2h45m05s"
@@ -82,29 +90,31 @@ export function formatTimecode(
     time,
     useHmsFormat = false,
     includeMilliseconds = false,
-    stripLeadingZeros = false
+    stripLeadingZeros = false,
+    format = 'ms'
 ) {
     const hours = Math.floor(time / 3600).toString();
     const minutes = Math.floor((time % 3600) / 60).toString();
     const secondsWithDecimal = time % 60;
     const seconds = Math.floor(secondsWithDecimal).toString();
-    const milliseconds = Math.round((secondsWithDecimal % 1) * 1000);
+
+    let fracStr = '';
+    if (includeMilliseconds) {
+        const frac = secondsWithDecimal % 1;
+        if (format === 'frames') {
+            const frames = Math.round(frac * FRAMES_PER_SECOND);
+            fracStr = `.${frames.toString().padStart(2, '0')}`;
+        } else {
+            const ms = Math.round(frac * 1000);
+            fracStr = `.${ms.toString().padStart(3, '0')}`;
+        }
+    }
 
     let str;
     if (useHmsFormat) {
-        if (includeMilliseconds) {
-            const paddedMilliseconds = milliseconds.toString().padStart(3, '0');
-            str = `${hours}h${minutes.padStart(2, '0')}m${seconds.padStart(2, '0')}.${paddedMilliseconds}s`;
-        } else {
-            str = `${hours}h${minutes.padStart(2, '0')}m${seconds.padStart(2, '0')}s`;
-        }
+        str = `${hours}h${minutes.padStart(2, '0')}m${seconds.padStart(2, '0')}${fracStr}s`;
     } else {
-        if (includeMilliseconds) {
-            const paddedMilliseconds = milliseconds.toString().padStart(3, '0');
-            str = `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}.${paddedMilliseconds}`;
-        } else {
-            str = `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
-        }
+        str = `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}${fracStr}`;
     }
 
     // Strip leading zero hours if requested
