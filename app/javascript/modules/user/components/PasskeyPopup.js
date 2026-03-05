@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 import { useIframeMessage } from '../useIframeMessage';
 
-export default function TwoFAPopup({ showDialogInitially = true }) {
+export default function PasskeyPopup({ showDialogInitially = true }) {
     const user = useSelector(getCurrentUser);
     const { t, locale } = useI18n();
     const closeModalRef = useRef(null);

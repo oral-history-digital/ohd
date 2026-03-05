@@ -10,6 +10,8 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
     const user = useSelector(getCurrentUser);
     const { t } = useI18n();
 
+    if (!user) return null;
+
     return (
         <Modal
             key="after-enable-2fa-popup"
