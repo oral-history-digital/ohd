@@ -9,10 +9,15 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useGetMediaMissingText } from '../hooks';
-import { useMediaPlayerResize, usePosterImage } from '../hooks';
+import {
+    useGetMediaMissingText,
+    useMediaPlayerResize,
+    usePosterImage,
+    useTimecodeFormat,
+} from '../hooks';
 import '../plugins/configurationMenuPlugin.js';
 import '../plugins/customSkipButtonsPlugin.js';
+import '../plugins/fractionalCurrentTimePlugin.js';
 import '../plugins/toggleSizeButtonPlugin.js';
 import {
     getQualityLabel,
@@ -63,6 +68,8 @@ export default function MediaElement({
     // Hook for manual resize via drag handle
     const { resizeHandleRef, isDragging } = useMediaPlayerResize();
 
+    const timecodeFormat = useTimecodeFormat(interview);
+
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources =
         mediaStreams &&
@@ -100,6 +107,10 @@ export default function MediaElement({
                 'skipBackward',
                 'playToggle',
                 'skipForward',
+                {
+                    name: 'FractionalCurrentTimeDisplay',
+                    timecodeFormat,
+                },
                 'volumePanel',
                 'playbackRateMenuButton',
                 'qualitySelector',
