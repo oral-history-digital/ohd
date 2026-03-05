@@ -15,6 +15,9 @@ module Interview::OaiDc
       oai_locales.each do |locale|
         xml.tag!('dc:identifier', oai_url_identifier(locale), "xml:lang": locale)
       end
+
+      xml.tag!('dc:identifier', oai_doi_identifier)
+
       (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
       end
