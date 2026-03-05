@@ -36,7 +36,7 @@
 %>
 
 <% if interview && interview.doi_status == 'created'
-     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{project.shortname}.#{interview.archive_id}, (#{TranslationValue.for('called', header_locale)}: #{Date.today.strftime("%d.%m.%Y")})."
+     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{interview.archive_id}, (#{TranslationValue.for('called', header_locale)}: #{Date.today.strftime("%d.%m.%Y")})."
    else
      footer_text += "."
    end
