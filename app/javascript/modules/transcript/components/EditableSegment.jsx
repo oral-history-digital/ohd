@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
     useAutoScrollToRef,
+    useContentDisplay,
     useIsSegmentActive,
     useProcessedSegmentText,
     useSegmentTabs,
@@ -85,7 +86,11 @@ function EditableSegment({
     const dispatch = useDispatch();
 
     const [tabIndex, setTabIndex] = useState(0);
-    const [displayedContentType, setDisplayedContentType] = useState(null);
+    const {
+        displayedContentType,
+        handleToggleContentDisplay,
+        handleCloseContentDisplay,
+    } = useContentDisplay();
 
     const handleFormChange = useCallback(
         ({ isDirty, hasValidationErrors }) => {
@@ -158,17 +163,6 @@ function EditableSegment({
     const handleEditSubmit = useCallback(() => {
         onEditEnd?.();
     }, [onEditEnd]);
-
-    const handleToggleContentDisplay = useCallback((contentType) => {
-        // Toggle: if same type is clicked, close it; otherwise switch to new type
-        setDisplayedContentType((prev) =>
-            prev === contentType ? null : contentType
-        );
-    }, []);
-
-    const handleCloseContentDisplay = useCallback(() => {
-        setDisplayedContentType(null);
-    }, []);
 
     const { text } = useProcessedSegmentText({
         segment,

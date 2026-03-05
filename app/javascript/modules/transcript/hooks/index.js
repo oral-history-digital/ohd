@@ -1,4 +1,5 @@
 export * from './useAutoScrollToRef';
+export * from './useContentDisplay';
 export * from './useIsSegmentActive';
 export * from './useProcessedSegments';
 export * from './useProcessedSegmentText';
