@@ -7,20 +7,17 @@ import { getLocale, getProjectId, useIsEditor } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
 import { getCurrentProject, submitData } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
-import { isSegmentActive } from 'modules/interview-helpers';
-import {
-    getCurrentTape,
-    getMediaTime,
-    sendTimeChangeRequest,
-    updateIsPlaying,
-} from 'modules/media-player';
+import { sendTimeChangeRequest, updateIsPlaying } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useAutoScrollToRef, useSegmentTabs } from '../hooks';
-import { checkTextDir, enforceRtlOnTranscriptTokens } from '../utils';
+import {
+    useAutoScrollToRef,
+    useIsSegmentActive,
+    useSegmentTabs,
+} from '../hooks';
 import {
     Initials,
     PreviewPlayer,
@@ -74,22 +71,12 @@ function EditableSegment({
     );
 
     const autoScroll = useSelector(getAutoScroll);
-    // Single inline selector so useSelector only re-renders this segment when
-    // isActive actually changes (boolean ===). Subscribing to getMediaTime or
-    // getCurrentTape directly would re-render on every tick even when the
-    // segment's active state is unchanged.
-    const isActive = useSelector((state) => {
-        if (!interview?.transcript_coupled) return false;
-        return (
-            isSegmentActive({
-                thisSegmentTape: segment.tape_nbr,
-                thisSegmentTime: segment.time,
-                nextSegmentTape,
-                nextSegmentTime,
-                currentTape: getCurrentTape(state),
-                currentTime: getMediaTime(state),
-            }) && editingSegmentIdRef?.current === null
-        );
+    const isActive = useIsSegmentActive({
+        segment,
+        interview,
+        nextSegmentTape,
+        nextSegmentTime,
+        editingSegmentIdRef,
     });
     const locale = useSelector(getLocale);
     const projectId = useSelector(getProjectId);
