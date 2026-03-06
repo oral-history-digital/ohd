@@ -1,5 +1,10 @@
+import { useState } from 'react';
+
 import classNames from 'classnames';
+import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { RegistryReferencesContainer } from 'modules/registry-references';
+import { useProject } from 'modules/routes';
 import { sanitizeHtml } from 'modules/utils';
 import { useWorkbook } from 'modules/workbook';
 import PropTypes from 'prop-types';
@@ -9,13 +14,15 @@ import { BookmarkSegmentModal } from '.';
 
 export default function SegmentContentViewer({
     segment,
+    interview,
     contentLocale,
     displayedContentType,
     onClose,
 }) {
-    const { t } = useI18n();
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
+    const { project } = useProject();
     const { savedSegments: workbookAnnotations } = useWorkbook();
+    const [openReference, setOpenReference] = useState(null);
 
     if (!displayedContentType) {
         return null;
@@ -100,21 +107,49 @@ export default function SegmentContentViewer({
 
                 {displayedContentType === 'references' && (
                     <div className="SegmentContentViewer-items SegmentContentViewer-references">
-                        {segment.registry_references?.map((reference) => (
-                            <div
-                                key={reference.id}
-                                className="SegmentContentViewer-item SegmentContentViewer-reference"
+                        <Fetch
+                            fetchParams={[
+                                'registry_entries',
+                                null,
+                                null,
+                                `ref_object_type=Segment&ref_object_id=${segment.id}`,
+                            ]}
+                            testDataType="registry_entries"
+                            testIdOrDesc={`ref_object_type_Segment_ref_object_id_${segment.id}`}
+                        >
+                            <Fetch
+                                fetchParams={[
+                                    'registry_entries',
+                                    project?.root_registry_entry_id,
+                                ]}
+                                testDataType="registry_entries"
+                                testIdOrDesc={project?.root_registry_entry_id}
                             >
+                                <RegistryReferencesContainer
+                                    refObject={segment}
+                                    interview={interview}
+                                    inTranscript
+                                    contentLocale={contentLocale}
+                                    setOpenReference={setOpenReference}
+                                />
+                            </Fetch>
+                        </Fetch>
+
+                        {openReference && (
+                            <div className="SegmentContentViewer-item SegmentContentViewer-reference">
                                 <div className="SegmentContentViewer-referenceName">
-                                    {reference.name[locale]}
+                                    {openReference.name?.[contentLocale] ||
+                                        openReference.name?.[locale]}
                                 </div>
-                                {reference.notes[locale] && (
+                                {(openReference.notes?.[contentLocale] ||
+                                    openReference.notes?.[locale]) && (
                                     <div className="SegmentContentViewer-referenceNotes">
-                                        {reference.notes[locale]}
+                                        {openReference.notes?.[contentLocale] ||
+                                            openReference.notes?.[locale]}
                                     </div>
                                 )}
                             </div>
-                        ))}
+                        )}
                     </div>
                 )}
             </div>
@@ -124,6 +159,7 @@ export default function SegmentContentViewer({
 
 SegmentContentViewer.propTypes = {
     segment: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
     displayedContentType: PropTypes.string,
     onClose: PropTypes.func.isRequired,

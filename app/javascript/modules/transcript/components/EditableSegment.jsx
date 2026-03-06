@@ -242,6 +242,7 @@ function EditableSegment({
                         {!isEditingSegment && displayedContentType && (
                             <SegmentContentViewer
                                 segment={segment}
+                                interview={interview}
                                 contentLocale={contentLocale}
                                 displayedContentType={displayedContentType}
                                 onClose={handleCloseContentDisplay}

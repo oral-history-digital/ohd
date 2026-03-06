@@ -243,6 +243,9 @@
 
   .SegmentRegistryReferences,
   .SegmentAnnotations {
+    .DraftEditor-editorContainer {
+      font-family: $font-family;
+    }
     .SegmentAnnotations-list,
     .SegmentRegistryReferences-list {
       display: flex;
@@ -254,7 +257,7 @@
     }
 
     // Annotation items - flex layout for content + buttons
-    ul > div {
+    div.SegmentAnnotation {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -273,46 +276,49 @@
         word-wrap: break-word;
         overflow-wrap: break-word;
       }
-    }
 
-    // Button group positioning
-    .flyout-sub-tabs-content-ico {
-      display: flex;
-      gap: calc($base-unit / 3);
-      flex-shrink: 0;
-      align-items: center;
-      margin-top: calc($base-unit / 6);
-    }
-
-    button.Modal-trigger {
-      padding: calc($base-unit / 5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: $gray-dark;
-      transition: all $transition-duration;
-      border-radius: 4px;
-
-      &:hover {
-        color: var(--primary-color);
-        background: rgba(0, 0, 0, 0.05);
+      // Button group positioning
+      .flyout-sub-tabs-content-ico {
+        display: flex;
+        gap: calc($base-unit / 3);
+        flex-shrink: 0;
+        align-items: center;
       }
 
-      &:focus-visible {
-        outline: 2px solid var(--primary-color);
-        outline-offset: 2px;
+      button.Modal-trigger {
+        padding: calc($base-unit / 5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: $gray-dark;
+        transition: all $transition-duration;
+        border-radius: 4px;
+
+        &:hover {
+          color: var(--primary-color);
+          background: rgba(0, 0, 0, 0.05);
+        }
+        &:focus-visible {
+          outline: 2px solid var(--primary-color);
+          outline-offset: 2px;
+        }
       }
     }
 
     .Button--add {
       margin-top: $base-unit;
+      display: block;
     }
 
     .Button--label {
       margin-left: calc($base-unit / 4);
     }
+  }
+
+  .SegmentRegistryReferences > button.Modal-trigger {
+    display: none;
   }
 }

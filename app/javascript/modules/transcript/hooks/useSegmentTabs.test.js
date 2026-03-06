@@ -17,12 +17,14 @@ jest.mock('modules/i18n', () => ({
 
 function TestComponent({
     showEditTab,
+    showHeadingsTab,
     showAnnotationsTab,
     showReferencesTab,
     onRender,
 }) {
     const tabs = useSegmentTabs(
         showEditTab,
+        showHeadingsTab,
         showAnnotationsTab,
         showReferencesTab
     );
@@ -36,6 +38,7 @@ function TestComponent({
 
 TestComponent.propTypes = {
     showEditTab: PropTypes.bool,
+    showHeadingsTab: PropTypes.bool,
     showAnnotationsTab: PropTypes.bool,
     showReferencesTab: PropTypes.bool,
     onRender: PropTypes.func.isRequired,
@@ -64,6 +67,7 @@ describe('useSegmentTabs', () => {
     it('returns array with edit tab when showEditTab is true', () => {
         render({
             showEditTab: true,
+            showHeadingsTab: false,
             showAnnotationsTab: false,
             showReferencesTab: false,
         });
@@ -73,9 +77,23 @@ describe('useSegmentTabs', () => {
         ]);
     });
 
+    it('returns array with headings tab when showHeadingsTab is true', () => {
+        render({
+            showEditTab: false,
+            showHeadingsTab: true,
+            showAnnotationsTab: false,
+            showReferencesTab: false,
+        });
+
+        expect(result).toEqual([
+            { id: 'headings', label: 'edit.segment.tab_headings' },
+        ]);
+    });
+
     it('returns array with annotations tab when showAnnotationsTab is true', () => {
         render({
             showEditTab: false,
+            showHeadingsTab: false,
             showAnnotationsTab: true,
             showReferencesTab: false,
         });
@@ -88,6 +106,7 @@ describe('useSegmentTabs', () => {
     it('returns array with references tab when showReferencesTab is true', () => {
         render({
             showEditTab: false,
+            showHeadingsTab: false,
             showAnnotationsTab: false,
             showReferencesTab: true,
         });
@@ -100,12 +119,14 @@ describe('useSegmentTabs', () => {
     it('returns multiple tabs when multiple flags are true', () => {
         render({
             showEditTab: true,
+            showHeadingsTab: true,
             showAnnotationsTab: true,
             showReferencesTab: true,
         });
 
         expect(result).toEqual([
             { id: 'edit', label: 'edit.segment.tab_edit' },
+            { id: 'headings', label: 'edit.segment.tab_headings' },
             { id: 'annotations', label: 'edit.segment.tab_annotations' },
             { id: 'references', label: 'edit.segment.tab_registry_references' },
         ]);
@@ -114,6 +135,7 @@ describe('useSegmentTabs', () => {
     it('returns empty array when all flags are false', () => {
         render({
             showEditTab: false,
+            showHeadingsTab: false,
             showAnnotationsTab: false,
             showReferencesTab: false,
         });
@@ -121,21 +143,24 @@ describe('useSegmentTabs', () => {
         expect(result).toEqual([]);
     });
 
-    it('maintains tab order: edit, annotations, references', () => {
+    it('maintains tab order: edit, headings, annotations, references', () => {
         render({
             showEditTab: true,
+            showHeadingsTab: true,
             showAnnotationsTab: true,
             showReferencesTab: true,
         });
 
         expect(result[0].id).toBe('edit');
-        expect(result[1].id).toBe('annotations');
-        expect(result[2].id).toBe('references');
+        expect(result[1].id).toBe('headings');
+        expect(result[2].id).toBe('annotations');
+        expect(result[3].id).toBe('references');
     });
 
     it('handles partial true flags', () => {
         render({
             showEditTab: true,
+            showHeadingsTab: false,
             showAnnotationsTab: false,
             showReferencesTab: true,
         });
