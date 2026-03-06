@@ -8,6 +8,7 @@ import { useAuthorization } from 'modules/auth';
 import { getCurrentProject } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
 import { useTranscriptQueryString } from 'modules/query-string';
+import { SegmentHeadingForm } from 'modules/toc';
 import { formatTimecode, timecodeToSeconds } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -57,6 +58,7 @@ function EditableSegment({
     );
 
     const showEditTab = canEditSegment;
+    const showHeadingsTab = canEditSegment;
     const showAnnotationsTab = isAuthorized(
         { type: 'Annotation', interview_id: segment.interview_id },
         'update'
@@ -68,6 +70,7 @@ function EditableSegment({
 
     const tabs = useSegmentTabs(
         showEditTab,
+        showHeadingsTab,
         showAnnotationsTab,
         showReferencesTab
     );
@@ -195,6 +198,14 @@ function EditableSegment({
                                         />
                                     </>
                                 )}
+                                {tabIndex === index &&
+                                    tab.id === 'headings' && (
+                                        <SegmentHeadingForm
+                                            segment={segment}
+                                            onSubmit={handleEditSubmit}
+                                            onCancel={handleEditCancel}
+                                        />
+                                    )}
                                 {tabIndex === index &&
                                     tab.id === 'annotations' && (
                                         <SegmentAnnotations

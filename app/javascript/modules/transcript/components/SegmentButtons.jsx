@@ -4,7 +4,13 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { useWorkbook } from 'modules/workbook';
 import PropTypes from 'prop-types';
-import { FaPencilAlt, FaStar, FaStickyNote, FaTag } from 'react-icons/fa';
+import {
+    FaHeading,
+    FaPencilAlt,
+    FaStar,
+    FaStickyNote,
+    FaTag,
+} from 'react-icons/fa';
 
 import { BookmarkSegmentModal } from '.';
 
@@ -19,6 +25,8 @@ function SegmentButtons({
     const { t } = useI18n();
     const { savedSegments } = useWorkbook();
 
+    const hasHeadings = segment.has_heading;
+
     // Annotations are tied to the content locales
     const hasAnnotations = Object.values(segment.annotations || {}).some(
         (annotation) =>
@@ -32,12 +40,9 @@ function SegmentButtons({
     const hasReferences = (segment.registry_references_count || 0) > 0;
 
     const showEditButton = canEditSegment;
+    const showHeadingsButton = canEditSegment || hasHeadings;
     const showAnnotationsButton = canEditSegment || hasAnnotations;
     const showReferencesButton = canEditSegment || hasReferences;
-
-    const handleEditClick = () => {
-        onEditStart('edit');
-    };
 
     const handleBookmarkClick = () => {
         if (hasBookmarks) {
@@ -45,6 +50,20 @@ function SegmentButtons({
             onViewContentType?.('bookmarks');
         }
         // If no bookmarks, opening modal is handled by BookmarkSegmentModal
+    };
+
+    const handleEditClick = () => {
+        onEditStart('edit');
+    };
+
+    const handleHeadingsClick = () => {
+        if (canEditSegment) {
+            // Editor: always open tabs
+            onEditStart('headings');
+        } else {
+            // Non-editor: show inline viewer
+            onViewContentType?.('headings');
+        }
     };
 
     const handleAnnotationsClick = () => {
@@ -93,6 +112,27 @@ function SegmentButtons({
                         onClick={handleEditClick}
                     >
                         <FaPencilAlt className="Icon Icon--editorial" />
+                    </button>
+                )}
+                {showHeadingsButton && (
+                    <button
+                        type="button"
+                        className="Button Button--transparent Button--icon"
+                        title={t(
+                            hasHeadings
+                                ? 'edit.segment.heading.edit'
+                                : 'edit.segment.heading.new'
+                        )}
+                        onClick={handleHeadingsClick}
+                    >
+                        <FaHeading
+                            className={classNames(
+                                'Icon',
+                                hasHeadings
+                                    ? 'Icon--primary'
+                                    : 'Icon--editorial'
+                            )}
+                        />
                     </button>
                 )}
                 {showAnnotationsButton && (

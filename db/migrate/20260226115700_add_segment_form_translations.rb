@@ -7,6 +7,13 @@ class AddSegmentFormTranslations < ActiveRecord::Migration[8.0]
       es: 'Editar',
       ru: 'Редактировать'
     },
+    'edit.segment.tab_headings': {
+      de: 'Überschriften',
+      en: 'Headings',
+      el: 'Επικεφαλίδες',
+      es: 'Encabezados',
+      ru: 'Заголовки'
+    },
     'edit.segment.tab_annotations': {
       de: 'Anmerkungen',
       en: 'Annotations',

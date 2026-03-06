@@ -232,6 +232,15 @@
     text-align: right;
   }
 
+  .SegmentHeadingForm {
+    .form-row {
+      margin-bottom: $base-unit * 1.5;
+    }
+    .multi-locale-input {
+      width: 100%;
+    }
+  }
+
   .SegmentRegistryReferences,
   .SegmentAnnotations {
     .SegmentAnnotations-list,
