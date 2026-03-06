@@ -8,7 +8,7 @@ import { useAuthorization } from 'modules/auth';
 import { getCurrentProject } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
 import { useTranscriptQueryString } from 'modules/query-string';
-import { formatTimecode } from 'modules/utils';
+import { formatTimecode, timecodeToSeconds } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -134,7 +134,10 @@ function EditableSegment({
         <div
             id={`segment_${segment.id}`}
             data-tape={segment.tape_nbr}
-            data-time={formatTimecode(segment.time, true)}
+            data-time={formatTimecode(
+                timecodeToSeconds(segment.timecode),
+                true
+            )}
             ref={divEl}
             className={classNames('Segment', {
                 'Segment--withSpeaker': segment.speakerIdChanged,

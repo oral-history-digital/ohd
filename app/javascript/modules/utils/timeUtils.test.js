@@ -289,10 +289,10 @@ describe('formatTimecode', () => {
             expect(actual).toEqual('0:00:10.00');
         });
 
-        test('rounds to nearest frame', () => {
-            // 0.5s = 0.5 * 25 = 12.5 → rounds to 13
+        test('truncates to frame (floors)', () => {
+            // 0.5s = 0.5 * 25 = 12.5 → floors to 12
             const actual = formatTimecode(0.5, false, true, false, 'frames');
-            expect(actual).toEqual('0:00:00.13');
+            expect(actual).toEqual('0:00:00.12');
         });
 
         test('works in HMS format', () => {

@@ -136,7 +136,7 @@ export function formatTimecode(
     if (includeMilliseconds) {
         const frac = secondsWithDecimal % 1;
         if (format === 'frames') {
-            const frames = Math.round(frac * FRAMES_PER_SECOND);
+            const frames = Math.floor(frac * FRAMES_PER_SECOND);
             fracStr = `.${frames.toString().padStart(2, '0')}`;
         } else {
             const ms = Math.round(frac * 1000);

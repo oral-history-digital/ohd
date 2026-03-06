@@ -30,21 +30,33 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
 
     const segmentStartTime = timecodeToSeconds(segment.timecode);
 
-    const skipBackDisabled = currentTime < segmentStartTime + 0.5;
+    const skipBackDisabled = currentTime <= segmentStartTime + 0.1;
     const skipBackStepDisabled = currentTime < segmentStartTime + 5;
     const skipForwardStepDisabled =
         nextSegmentTimecode == null ||
         currentTime > timecodeToSeconds(nextSegmentTimecode) - 5;
 
-    const formatTime = (seconds, which) =>
-        isPreviewPlaying && which === 'start'
-            ? formatTimecode(seconds ?? 0, false, false, false) // Don't show milliseconds for live time to avoid jitter
-            : formatTimecode(seconds ?? 0, false, true, false, timeCodeFormat);
-
-    const formattedStartTime = formatTime(currentTime, 'start');
+    // When the media is at (or snapped near) the segment start, display the
+    // exact parsed timecode rather than the media element's reported position,
+    // which may differ by up to one frame due to keyframe snapping.
+    // Elsewhere show the actual position; when playing omit sub-seconds to avoid jitter.
+    const ONE_FRAME = 1 / 25;
+    const displayTime =
+        Math.abs(currentTime - segmentStartTime) < ONE_FRAME
+            ? segmentStartTime
+            : currentTime;
+    const formattedStartTime = isPreviewPlaying
+        ? formatTimecode(displayTime, false, false, false)
+        : formatTimecode(displayTime, false, true, false, timeCodeFormat);
 
     const formattedEndTime = nextSegmentTimecode
-        ? formatTime(timecodeToSeconds(nextSegmentTimecode), 'end')
+        ? formatTimecode(
+              timecodeToSeconds(nextSegmentTimecode),
+              false,
+              true,
+              false,
+              timeCodeFormat
+          )
         : null;
 
     return (
