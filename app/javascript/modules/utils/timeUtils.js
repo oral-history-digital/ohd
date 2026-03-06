@@ -1,6 +1,32 @@
 import { FRAMES_PER_SECOND } from 'modules/constants';
 
 /**
+ * Normalizes a timecode string to use dot separator for sub-second precision.
+ * Converts HH:MM:SS:FF or HH:MM:SS:MMM to HH:MM:SS.FF or HH:MM:SS.MMM
+ *
+ * @param {string|null|undefined} timecode - Timecode to normalize
+ * @returns {string|null} Normalized timecode with dot separator, or null if invalid
+ */
+export function normalizeTimecode(timecode) {
+    if (!timecode) return null;
+
+    const colonParts = timecode.split(':');
+
+    // If there are 4 parts, the last one is sub-seconds (replace colon with dot)
+    if (colonParts.length === 4) {
+        return colonParts.slice(0, 3).join(':') + '.' + colonParts[3];
+    }
+
+    // If there are 3 parts, already in HH:MM:SS or HH:MM:SS.X format
+    if (colonParts.length === 3) {
+        return timecode;
+    }
+
+    // Invalid format
+    return null;
+}
+
+/**
  * Detects the timecode format from a timecode string.
  * @param {string|null|undefined} timecode
  * @returns {'ms'|'frames'|null} - 'ms' for HH:MM:SS.mmm (3 decimal places),
@@ -8,7 +34,9 @@ import { FRAMES_PER_SECOND } from 'modules/constants';
  */
 export function detectTimecodeFormat(timecode) {
     if (!timecode) return null;
-    const match = timecode.match(/^\d{2}:\d{2}:\d{2}\.(\d+)$/);
+    const normalized = normalizeTimecode(timecode);
+    if (!normalized) return null;
+    const match = normalized.match(/^\d{2}:\d{2}:\d{2}\.(\d+)$/);
     if (!match) return null;
     return match[1].length === 2 ? 'frames' : 'ms';
 }
@@ -20,14 +48,20 @@ export function detectTimecodeFormat(timecode) {
  * - HH:MM:SS (e.g. "00:01:30")
  * - HH:MM:SS.mmm (milliseconds, e.g. "00:01:30.500" → 90.5s)
  * - HH:MM:SS.ff  (frames at 25fps, e.g. "00:01:30.12" → 90.48s)
+ * - HH:MM:SS:mmm (milliseconds with colon separator, e.g. "00:01:30:500" → 90.5s)
+ * - HH:MM:SS:ff  (frames with colon separator, e.g. "00:01:30:12" → 90.48s)
  *
  * @param {string|null|undefined} timecode
  * @returns {number} Total seconds (fractional). Returns 0 for falsy input.
  */
 export function timecodeToSeconds(timecode) {
     if (!timecode) return 0;
-    const parts = timecode.split(':');
-    if (parts.length !== 3) return 0;
+
+    // Normalize colon-based frames/milliseconds format to dot-based format
+    const normalized = normalizeTimecode(timecode);
+    if (!normalized) return 0;
+
+    const parts = normalized.split(':');
     const hours = parseInt(parts[0], 10);
     const minutes = parseInt(parts[1], 10);
     const secondsParts = parts[2].split('.');

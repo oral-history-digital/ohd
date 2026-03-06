@@ -1,4 +1,4 @@
-import { detectTimecodeFormat } from 'modules/utils';
+import { detectTimecodeFormat, normalizeTimecode } from 'modules/utils';
 
 import { formatTimecode, timecodeToSeconds } from './timeUtils';
 
@@ -29,6 +29,48 @@ describe('detectTimecodeFormat', () => {
 
     it('returns ms for 1 decimal place (treated as ms variant)', () => {
         expect(detectTimecodeFormat('01:23:45.1')).toBe('ms');
+    });
+});
+
+describe('normalizeTimecode', () => {
+    it('returns timecode unchanged if already in dot format', () => {
+        expect(normalizeTimecode('00:01:30.500')).toBe('00:01:30.500');
+    });
+
+    it('converts colon separator to dot separator', () => {
+        expect(normalizeTimecode('00:01:30:500')).toBe('00:01:30.500');
+    });
+
+    it('converts colon format with frames', () => {
+        expect(normalizeTimecode('00:00:41:00')).toBe('00:00:41.00');
+    });
+
+    it('returns timecode unchanged if no sub-seconds', () => {
+        expect(normalizeTimecode('00:01:30')).toBe('00:01:30');
+    });
+
+    it('returns null for null input', () => {
+        expect(normalizeTimecode(null)).toBeNull();
+    });
+
+    it('returns null for undefined input', () => {
+        expect(normalizeTimecode(undefined)).toBeNull();
+    });
+
+    it('returns null for empty string', () => {
+        expect(normalizeTimecode('')).toBeNull();
+    });
+
+    it('returns null for invalid format (too few parts)', () => {
+        expect(normalizeTimecode('01:30')).toBeNull();
+    });
+
+    it('returns null for invalid format (too many parts)', () => {
+        expect(normalizeTimecode('00:01:30:500:100')).toBeNull();
+    });
+
+    it('handles complex timecodes with hours', () => {
+        expect(normalizeTimecode('01:02:03:456')).toBe('01:02:03.456');
     });
 });
 
@@ -77,6 +119,28 @@ describe('timecodeToSeconds', () => {
     it('converts a complex timecode with all parts', () => {
         // 1h 2m 3s 456ms = 3600 + 120 + 3 + 0.456 = 3723.456
         expect(timecodeToSeconds('01:02:03.456')).toBeCloseTo(3723.456);
+    });
+
+    it('converts HH:MM:SS:ff format (frames with colon separator)', () => {
+        // "00:00:01:12" → 1 second + frame 12 of 25 = 1 + 12/25 = 1.48
+        expect(timecodeToSeconds('00:00:01:12')).toBeCloseTo(1.48);
+    });
+
+    it('converts HH:MM:SS:mmm format (milliseconds with colon separator)', () => {
+        // "00:01:30:500" → 90.5 seconds
+        expect(timecodeToSeconds('00:01:30:500')).toBeCloseTo(90.5);
+    });
+
+    it('converts timecode with leading tape number in colon format', () => {
+        // "00:00:41:00" (used in the user's case) = 41 seconds
+        expect(timecodeToSeconds('00:00:41:00')).toBe(41);
+    });
+
+    it('converts complex timecode in colon format', () => {
+        // "00:00:37:00" should be 37 seconds
+        expect(timecodeToSeconds('00:00:37:00')).toBe(37);
+        // "00:00:51:00" should be 51 seconds
+        expect(timecodeToSeconds('00:00:51:00')).toBe(51);
     });
 });
 

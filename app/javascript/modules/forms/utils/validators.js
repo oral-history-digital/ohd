@@ -1,4 +1,4 @@
-import { timecodeToSeconds } from 'modules/utils';
+import { normalizeTimecode, timecodeToSeconds } from 'modules/utils';
 
 export function validateTapeNumber(v) {
     const number = /^\d{1,2}$/;
@@ -22,21 +22,43 @@ export function validateDate(v) {
 
 /**
  * Validates a timecode string, optionally enforcing a specific format.
+ * Accepts both dot and colon separators for sub-second precision:
+ * - HH:MM:SS, HH:MM:SS.FF or HH:MM:SS:FF (frames)
+ * - HH:MM:SS, HH:MM:SS.MMM or HH:MM:SS:MMM (milliseconds)
+ *
  * @param {string} v - The timecode value to validate.
  * @param {'ms'|'frames'|null} [format=null] - Expected format. When null, accepts
  *   any valid timecode (1–3 decimal places or none) for backwards compatibility.
  */
 export function validateTimecode(v, format = null) {
+    // Validate basic structure: HH:MM:SS with optional sub-seconds using either : or . separator
+    const basicFormat = /^\d{2}:\d{2}:\d{2}([:.]\d{1,3})?$/.test(v);
+    if (!basicFormat) {
+        return false;
+    }
+
+    // If no specific format required, accept any valid timecode
+    if (!format) {
+        return true;
+    }
+
+    // Normalize to dot separator for format validation
+    const normalized = normalizeTimecode(v);
+    if (!normalized) {
+        return false;
+    }
+
     if (format === 'frames') {
-        // Frames format (25fps): HH:MM:SS or HH:MM:SS.ff (exactly 2 decimal places)
-        return /^\d{2}:\d{2}:\d{2}(\.\d{2})?$/.test(v);
+        // Frames format (25fps): exactly 2 digits after separator (or none)
+        return /^\d{2}:\d{2}:\d{2}(\.\d{2})?$/.test(normalized);
     }
+
     if (format === 'ms') {
-        // Milliseconds format: HH:MM:SS or HH:MM:SS.mmm (exactly 3 decimal places)
-        return /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/.test(v);
+        // Milliseconds format: exactly 3 digits after separator (or none)
+        return /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/.test(normalized);
     }
-    // Legacy: accept either (1–3 decimal places or none)
-    return /^\d{2}:\d{2}:\d{2}(\.\d{1,3})?$/.test(v);
+
+    return false;
 }
 
 /**
