@@ -1,23 +1,23 @@
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import classNames from 'classnames';
 import { getLocale, getProjectId, useIsEditor } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
-import { getCurrentProject, submitData } from 'modules/data';
+import { getCurrentProject } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
-import { sendTimeChangeRequest, updateIsPlaying } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
     useAutoScrollToRef,
     useContentDisplay,
     useIsSegmentActive,
     useProcessedSegmentText,
+    useSegmentInteraction,
     useSegmentTabs,
 } from '../hooks';
 import {
@@ -83,7 +83,6 @@ function EditableSegment({
     const locale = useSelector(getLocale);
     const projectId = useSelector(getProjectId);
     const project = useSelector(getCurrentProject);
-    const dispatch = useDispatch();
 
     const [tabIndex, setTabIndex] = useState(0);
     const {
@@ -92,18 +91,22 @@ function EditableSegment({
         handleCloseContentDisplay,
     } = useContentDisplay();
 
-    const handleFormChange = useCallback(
-        ({ isDirty, hasValidationErrors }) => {
-            onUnsavedChangesChange?.(isDirty || hasValidationErrors);
-            // dirtyFields is available if needed for more granular control
-        },
-        [onUnsavedChangesChange]
-    );
-
-    const handleSubmitData = useCallback(
-        (props, params) => dispatch(submitData(props, params)),
-        [dispatch]
-    );
+    const {
+        handleFormChange,
+        handleSubmitData,
+        handleSegmentClick,
+        handleEditStart,
+        handleEditCancel,
+        handleEditSubmit,
+    } = useSegmentInteraction({
+        segment,
+        interview,
+        tabs,
+        onUnsavedChangesChange,
+        onEditStart,
+        onEditEnd,
+        setTabIndex,
+    });
 
     const shouldScroll =
         (autoScroll && isActive) || // Segment is active during playback (isActive is already false when any segment is being edited, via effectiveActive in Transcript)
@@ -118,51 +121,6 @@ function EditableSegment({
         segmentParam,
         isEditingSegment,
     ]);
-
-    const handleSegmentClick = useCallback(() => {
-        if (interview?.transcript_coupled) {
-            dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
-        }
-    }, [
-        dispatch,
-        interview?.transcript_coupled,
-        segment.tape_nbr,
-        segment.time,
-    ]);
-
-    const handleEditStart = useCallback(
-        (buttonType = 'edit') => {
-            // Stop playback when entering edit mode
-            dispatch(updateIsPlaying(false));
-            // Jump to this segment's time when entering edit mode
-            if (interview?.transcript_coupled) {
-                dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
-            }
-            onEditStart?.(segment.id);
-            // Set the tab index based on which button was clicked
-            const index = tabs.findIndex((tab) => tab.id === buttonType);
-            if (index !== -1) {
-                setTabIndex(index);
-            }
-        },
-        [
-            dispatch,
-            interview?.transcript_coupled,
-            segment.tape_nbr,
-            segment.time,
-            segment.id,
-            onEditStart,
-            tabs,
-        ]
-    );
-
-    const handleEditCancel = useCallback(() => {
-        onEditEnd?.();
-    }, [onEditEnd]);
-
-    const handleEditSubmit = useCallback(() => {
-        onEditEnd?.();
-    }, [onEditEnd]);
 
     const { text } = useProcessedSegmentText({
         segment,

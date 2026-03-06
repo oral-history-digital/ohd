@@ -4,5 +4,6 @@ export * from './useIsSegmentActive';
 export * from './useProcessedSegments';
 export * from './useProcessedSegmentText';
 export * from './useSegmentEditing';
+export * from './useSegmentInteraction';
 export * from './useSegmentPreview';
 export * from './useSegmentTabs';
