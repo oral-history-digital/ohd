@@ -289,10 +289,20 @@ describe('formatTimecode', () => {
             expect(actual).toEqual('0:00:10.00');
         });
 
-        test('truncates to frame (floors)', () => {
-            // 0.5s = 0.5 * 25 = 12.5 → floors to 12
-            const actual = formatTimecode(0.5, false, true, false, 'frames');
-            expect(actual).toEqual('0:00:00.12');
+        test('rounds to nearest frame, clamped at FPS-1', () => {
+            // 0.5s = 0.5 * 25 = 12.5 → rounds to 13
+            expect(formatTimecode(0.5, false, true, false, 'frames')).toEqual(
+                '0:00:00.13'
+            );
+            // 19/25 has float imprecision (0.7599999...) → must still round to 19
+            const secs = 9 * 60 + 6 + 19 / 25; // timecodeToSeconds('00:09:06.19')
+            expect(formatTimecode(secs, false, true, false, 'frames')).toEqual(
+                '0:09:06.19'
+            );
+            // near-1.0 frac must not overflow to 25
+            expect(formatTimecode(0.98, false, true, false, 'frames')).toEqual(
+                '0:00:00.24'
+            );
         });
 
         test('works in HMS format', () => {

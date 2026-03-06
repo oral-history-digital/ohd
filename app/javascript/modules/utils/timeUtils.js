@@ -136,7 +136,12 @@ export function formatTimecode(
     if (includeMilliseconds) {
         const frac = secondsWithDecimal % 1;
         if (format === 'frames') {
-            const frames = Math.floor(frac * FRAMES_PER_SECOND);
+            // Math.round fixes float precision (19/25 = 0.7599999... → floor gives 18).
+            // Clamp to FPS-1 to prevent overflow when rounding up at the boundary.
+            const frames = Math.min(
+                Math.round(frac * FRAMES_PER_SECOND),
+                FRAMES_PER_SECOND - 1
+            );
             fracStr = `.${frames.toString().padStart(2, '0')}`;
         } else {
             const ms = Math.round(frac * 1000);
