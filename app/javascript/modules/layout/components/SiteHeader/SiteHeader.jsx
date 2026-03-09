@@ -3,7 +3,7 @@ import { useProject } from 'modules/routes';
 import OHDLink from './OHDLink';
 import ProjectLogo from './ProjectLogo';
 
-function SiteHeader() {
+export function SiteHeader() {
     const { project } = useProject();
 
     return (

@@ -6,10 +6,9 @@ import { pathBase, useProject } from 'modules/routes';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const MATCH_PATH_BASE_PART =
-    /^(?:\/[\-a-z0-9]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
+const MATCH_PATH_BASE_PART = /^(?:\/[a-z0-9-]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
 
-export default function useCheckLocaleAgainstProject() {
+export function useCheckLocaleAgainstProject() {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();

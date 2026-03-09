@@ -1,3 +1,4 @@
+/* global railsMode */
 import { useCallback } from 'react';
 
 import classNames from 'classnames';
@@ -6,6 +7,7 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -30,7 +32,7 @@ function OHDLink({ className }) {
                 title="OHD"
                 href={
                     `${OHD_DOMAINS[railsMode]}/${locale}` +
-                    (!!accessTokenParam ? `?${accessTokenParam}` : '')
+                    (accessTokenParam ? `?${accessTokenParam}` : '')
                 }
                 className={classNames(className, 'u-mr')}
             >
@@ -58,3 +60,7 @@ function OHDLink({ className }) {
 }
 
 export default OHDLink;
+
+OHDLink.propTypes = {
+    className: PropTypes.string,
+};

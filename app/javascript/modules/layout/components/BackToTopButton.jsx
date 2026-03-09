@@ -6,7 +6,7 @@ import { scrollSmoothlyTo } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { FaArrowUp } from 'react-icons/fa';
 
-function BackToTopButton({ visible = false, fullscreen = false }) {
+export function BackToTopButton({ visible = false, fullscreen = false }) {
     const { t } = useI18n();
 
     const handleClick = () => {
