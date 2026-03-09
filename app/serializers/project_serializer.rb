@@ -138,7 +138,7 @@ class ProjectSerializer < ApplicationSerializer
     if Rails.env.test?
       '123'
     else
-      Rails.configuration.datacite['client_id']
+      Rails.configuration.datacite['prefix']
     end
   end
 end

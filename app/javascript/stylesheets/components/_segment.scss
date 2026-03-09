@@ -2,17 +2,12 @@
  * 1. Ellipsis
  */
 
-$segment-icon-width: 1.5 * $base-unit;
+$segment-icon-width: 2 * $base-unit;
 
 .Segment {
   align-items: flex-start;
   display: flex;
   max-width: 45rem;
-  padding-left: $segment-icon-width;
-}
-
-.Segment--withSpeaker {
-  padding-left: 0;
 }
 
 .Segment:not(:first-of-type) {
@@ -23,9 +18,8 @@ $segment-icon-width: 1.5 * $base-unit;
   margin-top: $base-unit;
 }
 
-.Segment-icon {
+.Segment-initials {
   display: inline-block;
-  flex-basis: $segment-icon-width;
   flex-shrink: 0;
   line-height: $base-unit;
   margin: 0;
@@ -38,12 +32,31 @@ $segment-icon-width: 1.5 * $base-unit;
   width: $segment-icon-width;
 }
 
-.Segment-icon--primary {
+.Segment-initials--primary {
   color: var(--primary-color);
 }
 
-.Segment-icon--secondary {
+.Segment-initials--secondary {
   color: $gray-dark;
+}
+
+.Segment-metaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: $segment-icon-width;
+  flex-shrink: 0;
+}
+
+.Segment-timecode {
+  font-size: 0.75rem;
+  color: $gray-medium;
+  line-height: $base-unit;
+}
+
+/* If timecode follows speaker initials, reduce line height to visually group them */
+.Segment--withSpeaker .Segment-timecode {
+  line-height: calc($base-unit * 2 / 3);
 }
 
 .Segment-text {
@@ -81,8 +94,8 @@ $segment-icon-width: 1.5 * $base-unit;
   transition: opacity $transition-duration;
 }
 
-.Segment:hover > .Segment-hiddenButton,
-.Segment-text:focus + .Segment-hiddenButton,
+.Segment:hover .Segment-hiddenButton,
+.Segment-text:focus ~ .Segment-buttons .Segment-hiddenButton,
 .Segment-hiddenButton:focus {
   opacity: 1;
 }
@@ -95,20 +108,4 @@ $segment-icon-width: 1.5 * $base-unit;
   min-width: $base-unit * 2;
   text-align: right;
   transition: border-color $transition-duration;
-}
-
-.SegmentForm-textarea {
-  direction: ltr;
-  text-align: left;
-
-  &-rtl {
-    direction: rtl;
-    text-align: right;
-  }
-}
-
-.textarea-rtl textarea,
-.form-group.textarea-rtl .Input {
-  direction: rtl;
-  text-align: right;
 }

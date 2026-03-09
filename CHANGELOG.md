@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.1] - 2026-02-26
+
+### Added
+
+- feat: add Docker base image ([#78](https://github.com/oral-history-digital/ohd/pull/78))
+
+### Changed
+
+- refactor: change file structure of startpage module ([#75](https://github.com/oral-history-digital/ohd/pull/75))
+- refactor: use shared base image in devcontainer, downgrade to Solr 5.5, simplify setup ([#80](https://github.com/oral-history-digital/ohd/pull/80))
+
+### Fixed
+
+- fix: prevent orphaned contributions when deleting a ContributionType ([#77](https://github.com/oral-history-digital/ohd/pull/77))
+- fix: correct issues with metadata fields ([#76](https://github.com/oral-history-digital/ohd/pull/76))
+- fix: prevent description/observations being overwritten with plain string in InterviewUpdateSerializer ([#79](https://github.com/oral-history-digital/ohd/pull/79))
+- rm project based cache for translation values ([7a13a9854](https://github.com/oral-history-digital/ohd/commit/7a13a985475b93b02c3197593fbc779fad82c604))
+- rm project based cache on single translation values ([6c3242e8a](https://github.com/oral-history-digital/ohd/commit/6c3242e8a21c2dda983bca46448a8f61dd33c6e7))
+- prevent RegistryNameForm from closing on a searched registry entry ([98e7bdea0](https://github.com/oral-history-digital/ohd/commit/98e7bdea0ae403fd61aec3f574e071da1961a717))
+- verify norm_data being destroyed on registry_entry.destroy ([bdca4df92](https://github.com/oral-history-digital/ohd/commit/bdca4df928a4300b03f1a26f93760b0e8c6261c3))
+
 ## [1.9.0] - 2026-02-17
 
 ### Added
@@ -377,6 +398,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[1.9.1]: https://github.com/oral-history-digital/ohd/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/oral-history-digital/ohd/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/oral-history-digital/ohd/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/oral-history-digital/ohd/compare/v1.6.0...v1.7.0

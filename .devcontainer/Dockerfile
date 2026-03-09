@@ -1,51 +1,56 @@
-# Use pre-built Rails base image with Java and Node.js
-FROM ghcr.io/yotkadata/rails-base:latest
-ARG NODE_VERSION=20
+# Dev container image.
+# Extends the shared base image (built from Dockerfile.base at repo root) with
+# dev-only tooling: browser testing, VNC access, and the vscode user.
+#
+# System packages, Node.js, Yarn, and BUNDLE_PATH are already provided by the
+# base image — do not reinstall them here.
+#
+# To rebuild the base image, trigger the "Build and Push Base Image" workflow
+# in GitHub Actions (or push a change to Dockerfile.base on main).
+FROM ghcr.io/oral-history-digital/ohd-base:latest
 
-# Create the 'vscode' user matching devcontainer.json remoteUser
+# Dev-only packages: browser testing (Capybara/Selenium) + VNC for visual debugging
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    chromium \
+    chromium-driver \
+    sudo \
+    xvfb \
+    x11vnc \
+    novnc \
+    websockify \
+    wget \
+    unzip \
+  && ln -sf /usr/bin/chromium /usr/local/bin/google-chrome \
+  && ln -sf /usr/bin/chromedriver /usr/local/bin/chromedriver \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Create the vscode user matching devcontainer.json remoteUser
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=1000
-# NOTE: System package dependencies below must stay in sync with:
-#       .github/workflows/rubyonrails.yml (apt-get install line)
-#       Keep texlive packages and other system deps identical across both
 RUN groupadd --gid $USER_GID $USERNAME \
   && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-  && apt-get update && apt-get install -y sudo xvfb x11vnc novnc websockify wget gnupg unzip curl \
-    texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra texlive-lang-other texlive-lang-arabic \
-  && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-  && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-  && apt-get update && apt-get install -y google-chrome-stable \
-  && CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+') \
-  && echo "Detected Chrome version: $CHROME_VERSION" \
-  && wget -q -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" \
-  && unzip -q /tmp/chromedriver.zip -d /tmp \
-  && mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/ \
-  && chmod +x /usr/local/bin/chromedriver \
-  && rm -rf /tmp/chromedriver* \
-  && chromedriver --version \
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
-  && chmod 0440 /etc/sudoers.d/$USERNAME \
-  && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /workspace
-
-# Install Node.js (NodeSource) and Yarn v1 to satisfy dev tooling
-# Use NODE_VERSION build arg to choose major Node version (default 20)
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-  && apt-get update \
-  && apt-get install -y nodejs \
-  && npm install -g yarn@1.22.19 \
-  && rm -rf /var/lib/apt/lists/* || true
+  && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Copy dependency files first for better layer caching
 COPY Gemfile Gemfile.lock* package.json yarn.lock ./
 
-# Install JS dependencies only (Ruby gems already in base image)
+# Pre-install gems into /usr/local/bundle (not /workspace, which is volume-mounted).
+# On first container start, Docker auto-populates the bundle-data named volume
+# from this image layer, so bundle install is skipped by setup-dev.sh.
+RUN gem install bundler \
+  && bundle config set --global path /usr/local/bundle \
+  && bundle config set --global without production \
+  && bundle config set --global jobs $(nproc) \
+  && bundle config set --global retry 3 \
+  && bundle install
+
+# Install JS dependencies (also layer-cached)
 RUN yarn install --frozen-lockfile --network-timeout 600000
 
-# Copy your application code (this layer changes most often)
+# Copy application code (changes most often — keep last)
 COPY . .
 
-# Optionally: Check versions for sanity
 RUN java -version && node -v && yarn -v

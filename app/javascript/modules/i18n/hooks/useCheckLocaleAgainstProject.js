@@ -1,0 +1,88 @@
+import { useEffect } from 'react';
+
+import { fetchTranslationsForLocale, setLocale } from 'modules/archive';
+import { useI18n } from 'modules/i18n';
+import { pathBase, useProject } from 'modules/routes';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+const MATCH_PATH_BASE_PART = /^(?:\/[a-z0-9-]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
+
+export function useCheckLocaleAgainstProject() {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { project, projectId } = useProject();
+    const { locale } = useI18n();
+
+    useEffect(() => {
+        checkLocaleAgainstProject();
+    });
+
+    function checkLocaleAgainstProject() {
+        const found = location.pathname.match(MATCH_PATH_BASE_PART);
+        const localeFromPath = Array.isArray(found) ? found[1] : null;
+
+        if (!localeFromPath) {
+            return;
+        }
+
+        // make exception for password paths
+        // TODO: removethis exception when all locales are present in OHD
+        const password = location.pathname.match(/\/password\//);
+        const confirmation = location.pathname.match(/\/confirmation\?/);
+        const conditions = location.pathname.match(/\/conditions$/);
+        const privacy_protection = location.pathname.match(
+            /\/privacy_protection$/
+        );
+
+        if (
+            projectHasLocale(localeFromPath) ||
+            password ||
+            conditions ||
+            privacy_protection ||
+            confirmation
+        ) {
+            setStateLocaleIfNecessary(localeFromPath);
+        } else {
+            redirectToDefaultLocale();
+        }
+    }
+
+    function projectHasLocale(aLocale) {
+        return project.available_locales.includes(aLocale);
+    }
+
+    function setStateLocaleIfNecessary(newLocale) {
+        if (newLocale !== locale) {
+            dispatch(setLocale(newLocale));
+        }
+    }
+
+    function redirectToDefaultLocale() {
+        const newPathBase = pathBase({
+            projectId,
+            locale: project.default_locale,
+            project,
+        });
+        const newPath = location.pathname.replace(
+            MATCH_PATH_BASE_PART,
+            newPathBase + '/'
+        );
+
+        dispatch(setLocale(project.default_locale));
+        dispatch(
+            fetchTranslationsForLocale(project.default_locale, newPathBase)
+        )
+            .then(() => {
+                // Only navigate and set locale after translations are loaded
+                navigate(newPath, { replace: true });
+            })
+            .catch((error) => {
+                console.error(
+                    'Failed to load translations for locale change:',
+                    error
+                );
+            });
+    }
+}

@@ -19,7 +19,8 @@ import { pluralize } from 'modules/strings';
 export function useFormState(initialValues, data, elements) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
-    const [touched, setTouched] = useState({});
+    const [touched, setTouched] = useState(initTouched());
+    const initialFormValues = initValues();
 
     /**
      * Initialize form values from initialValues and data props.
@@ -91,6 +92,23 @@ export function useFormState(initialValues, data, elements) {
     }
 
     /**
+     * Initialize touched state for form elements.
+     * Fields with touchOnInvalid=true will be marked as touched if they have validation errors.
+     */
+    function initTouched() {
+        let touched = {};
+        elements.forEach((element) => {
+            if (element.attribute && element.touchOnInvalid) {
+                const error = hasError(element);
+                if (error) {
+                    touched[element.attribute] = true;
+                }
+            }
+        });
+        return touched;
+    }
+
+    /**
      * Mark a field as touched by the user.
      */
     function touchField(name) {
@@ -125,6 +143,47 @@ export function useFormState(initialValues, data, elements) {
                 [name]: hasError,
             }));
         }
+    }
+
+    /**
+     * Check if form has unsaved changes by comparing current values with initial values.
+     * Returns an object with isDirty flag and array of changed field names.
+     */
+    function getDirtyState() {
+        const currentKeys = Object.keys(values).filter(
+            (key) => key !== 'id' && !key.endsWith('_attributes')
+        );
+        const initialKeys = Object.keys(initialFormValues).filter(
+            (key) => key !== 'id' && !key.endsWith('_attributes')
+        );
+
+        const dirtyFields = [];
+
+        // Check for changed values
+        currentKeys.forEach((key) => {
+            if (values[key] !== initialFormValues[key]) {
+                dirtyFields.push(key);
+            }
+        });
+
+        // Check for added fields (not already in dirtyFields)
+        currentKeys.forEach((key) => {
+            if (!initialKeys.includes(key) && !dirtyFields.includes(key)) {
+                dirtyFields.push(key);
+            }
+        });
+
+        // Check for removed fields
+        initialKeys.forEach((key) => {
+            if (!currentKeys.includes(key) && !dirtyFields.includes(key)) {
+                dirtyFields.push(key);
+            }
+        });
+
+        return {
+            isDirty: dirtyFields.length > 0,
+            dirtyFields: dirtyFields,
+        };
     }
 
     /**
@@ -246,10 +305,14 @@ export function useFormState(initialValues, data, elements) {
         }));
     }
 
+    const dirtyState = getDirtyState();
+
     return {
         values,
         errors,
         touched,
+        isDirty: dirtyState.isDirty,
+        dirtyFields: dirtyState.dirtyFields,
         updateField,
         handleErrors,
         touchField,

@@ -375,6 +375,179 @@ describe('useFormState', () => {
         });
     });
 
+    describe('isDirty and dirtyFields', () => {
+        it('returns false when form is pristine', () => {
+            render({
+                initialValues: { name: 'Test', email: 'test@example.com' },
+                data: null,
+                elements: [],
+            });
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('returns true and lists changed field when value changes', async () => {
+            render({
+                initialValues: { name: 'Test', email: 'test@example.com' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'New Name');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('tracks multiple dirty fields', async () => {
+            render({
+                initialValues: {
+                    name: 'Test',
+                    email: 'test@example.com',
+                    age: 25,
+                },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'New Name');
+                hook.updateField('age', 30);
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toContain('name');
+            expect(hook.dirtyFields).toContain('age');
+            expect(hook.dirtyFields.length).toBe(2);
+        });
+
+        it('returns false when value is changed back to initial', async () => {
+            render({
+                initialValues: { name: 'Test' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'New Name');
+            });
+            wrapper.update();
+            expect(hook.isDirty).toBe(true);
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('tracks added fields as dirty', async () => {
+            render({
+                initialValues: { name: 'Test' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('email', 'new@example.com');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toContain('email');
+        });
+
+        it('ignores id field in dirty check', async () => {
+            render({
+                initialValues: {},
+                data: { id: 42 },
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('id', 99);
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('ignores nested _attributes in dirty check', async () => {
+            render({
+                initialValues: {
+                    name: 'Test',
+                    events_attributes: [{ id: 1 }],
+                },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.writeNestedObject({ event: { id: 1, title: 'Updated' } });
+            });
+            wrapper.update();
+
+            // Should not track _attributes in dirtyFields
+            expect(hook.dirtyFields).not.toContain('events_attributes');
+        });
+
+        it('handles empty initial values', async () => {
+            render({
+                initialValues: {},
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('handles undefined values correctly', async () => {
+            render({
+                initialValues: { name: undefined },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('handles null values correctly', async () => {
+            render({
+                initialValues: { name: null },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+    });
+
     describe('replaceNestedFormValues', () => {
         it('replaces the specified nested scope without affecting other values', async () => {
             render({

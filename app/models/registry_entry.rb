@@ -22,7 +22,7 @@ class RegistryEntry < ApplicationRecord
            :dependent => :destroy
   accepts_nested_attributes_for :registry_names
 
-  has_many :norm_data
+  has_many :norm_data, autosave: true, dependent: :destroy
   accepts_nested_attributes_for :norm_data
 
   has_many :gnd_norm_data,
@@ -368,10 +368,11 @@ class RegistryEntry < ApplicationRecord
   %w(gnd osm wikidata geonames factgrid).each do |provider|
     define_method "#{provider}_id=" do |nid|
       if nid
-        norm_datum = norm_data.by_provider(provider).first_or_initialize
-        norm_datum.norm_data_provider = NormDataProvider.find_by(name: provider)
-        norm_datum.nid = nid
-        norm_datum.save
+        provider_record = NormDataProvider.find_by!(name: provider)
+        norm_datum = norm_data.find_or_initialize_by(
+          norm_data_provider_id: provider_record.id,
+          nid: nid
+        )
       end
     end
 

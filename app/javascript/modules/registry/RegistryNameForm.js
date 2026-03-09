@@ -24,9 +24,10 @@ export default function RegistryNameForm({
     const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
-    useEffect(() => {
-        searchRegistryEntry(`${pathBase}/searches/registry_entry`, {});
-    }, []);
+    // TODO: Is this necessary? It triggers the form to close if registry entry is a search result
+    //useEffect(() => {
+    //searchRegistryEntry(`${pathBase}/searches/registry_entry`, {});
+    //}, []);
 
     const defaultNameType = Object.values(registryNameTypes).find(
         (r) => r.code === 'spelling'

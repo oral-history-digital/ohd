@@ -25,3 +25,5 @@ export { default as RegisterPopupLink } from './components/RegisterPopupLink';
 export { default as ActivationFlow } from './components/ActivationFlow';
 export { default as ActivationActions } from './components/ActivationActions';
 export { default as canUseEditView } from './canUseEditView';
+export { default as useFetchAccount } from './hooks/useFetchAccount';
+export * from './hooks';
