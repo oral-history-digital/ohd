@@ -76,5 +76,7 @@ RAILS_LOG_LEVEL=error bundle exec rails runner '
 log "Precompiling webpack assets (first-run manifest)…"
 bundle exec bin/shakapacker
 log "  ✓ webpack done"
+log "  ℹ  With webpack-dev-server running, Rails will use port 3035 for HMR"
+log "  ℹ  These precompiled assets are only used as fallback if dev server is down"
 
 log "postCreateCommand complete ✓"
