@@ -92,10 +92,17 @@ export default function InterviewTabs({ interview }) {
             keyboardActivation="manual"
             index={tabIndex}
             onChange={setTabIndex}
+            data-testid="interview-tabs"
         >
             <div className="Layout-contentTabs">
-                <TabList className="Tabs-tabList">
-                    <Tab className="Tabs-tab">
+                <TabList
+                    className="Tabs-tabList"
+                    data-testid="interview-tabs-list"
+                >
+                    <Tab
+                        className="Tabs-tab"
+                        data-testid="interview-tab-transcript"
+                    >
                         <FaRegFileAlt className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {`${t('transcript')} (${interview.alpha3})`}
@@ -106,6 +113,7 @@ export default function InterviewTabs({ interview }) {
                         disabled={
                             !showTranslationTab(project, interview, locale)
                         }
+                        data-testid="interview-tab-translation"
                     >
                         <FaRegClone className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
@@ -120,19 +128,26 @@ export default function InterviewTabs({ interview }) {
                     <Tab
                         className="Tabs-tab"
                         disabled={!showTocTab(project, interview, locale)}
+                        data-testid="interview-tab-toc"
                     >
                         <FaList className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('table_of_contents')}
                         </span>
                     </Tab>
-                    <Tab className="Tabs-tab">
+                    <Tab
+                        className="Tabs-tab"
+                        data-testid="interview-tab-search"
+                    >
                         <FaSearch className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">
                             {t('interview_search')}
                         </span>
                     </Tab>
-                    <Tab className="Tabs-tab">
+                    <Tab
+                        className="Tabs-tab"
+                        data-testid="interview-tab-keywords"
+                    >
                         <FaTags className="Tabs-tabIcon" />
                         <span className="Tabs-tabText">{t('keywords')}</span>
                     </Tab>
@@ -143,7 +158,7 @@ export default function InterviewTabs({ interview }) {
                 <TabPanels>
                     {/* The conditional renderings are needed to prevent
                         various useEffect-related problems. */}
-                    <TabPanel>
+                    <TabPanel data-testid="interview-panel-transcript">
                         {tabIndex === 0 && (
                             <Transcript
                                 transcriptLocale={interview.alpha3}
@@ -152,22 +167,22 @@ export default function InterviewTabs({ interview }) {
                             />
                         )}
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel data-testid="interview-panel-translation">
                         {tabIndex === 1 && (
                             <Transcript transcriptLocale={translationLocale} />
                         )}
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel data-testid="interview-panel-toc">
                         {tabIndex === 2 && (
                             <TableOfContentsContainer
                                 alpha3={ALPHA2_TO_ALPHA3[locale]}
                             />
                         )}
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel data-testid="interview-panel-search">
                         {tabIndex === 3 && <InterviewSearchContainer />}
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel data-testid="interview-panel-keywords">
                         {tabIndex === 4 && <RefTreeContainer />}
                     </TabPanel>
                 </TabPanels>

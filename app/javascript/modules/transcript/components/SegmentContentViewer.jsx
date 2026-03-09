@@ -46,6 +46,7 @@ export default function SegmentContentViewer({
                 'SegmentContentViewer--references':
                     displayedContentType === 'references',
             })}
+            data-testid="segment-content-viewer"
         >
             <div className="SegmentContentViewer-header">
                 <h3 className="SegmentContentViewer-title">
@@ -60,6 +61,7 @@ export default function SegmentContentViewer({
                     className="Button Button--transparent Button--icon"
                     onClick={onClose}
                     title={t('common.close')}
+                    data-testid="segment-content-viewer-close"
                 >
                     <FaTimes className="Icon" />
                 </button>
@@ -67,7 +69,10 @@ export default function SegmentContentViewer({
 
             <div className="SegmentContentViewer-content">
                 {displayedContentType === 'bookmarks' && (
-                    <div className="SegmentContentViewer-items SegmentContentViewer-bookmarks">
+                    <div
+                        className="SegmentContentViewer-items SegmentContentViewer-bookmarks"
+                        data-testid="segment-bookmarks"
+                    >
                         {workbookAnnotationsForSegment?.map(
                             (userAnnotation) => (
                                 <p
@@ -94,7 +99,10 @@ export default function SegmentContentViewer({
                 )}
 
                 {displayedContentType === 'annotations' && (
-                    <div className="SegmentContentViewer-items SegmentContentViewer-annotations">
+                    <div
+                        className="SegmentContentViewer-items SegmentContentViewer-annotations"
+                        data-testid="segment-annotations-viewer"
+                    >
                         {annotationsInLocale.map((annotation) => (
                             <div
                                 key={annotation.id}
@@ -110,7 +118,10 @@ export default function SegmentContentViewer({
                 )}
 
                 {displayedContentType === 'references' && (
-                    <div className="SegmentContentViewer-items SegmentContentViewer-references">
+                    <div
+                        className="SegmentContentViewer-items SegmentContentViewer-references"
+                        data-testid="segment-references-viewer"
+                    >
                         <Fetch
                             fetchParams={[
                                 'registry_entries',

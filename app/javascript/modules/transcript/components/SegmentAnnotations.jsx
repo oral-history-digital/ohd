@@ -33,11 +33,17 @@ export default function SegmentAnnotations({
     );
 
     return (
-        <div className="SegmentAnnotations">
+        <div
+            className="SegmentAnnotations"
+            data-testid="segment-annotations-form"
+        >
             {!showForm && (
                 <>
                     {annotations.length > 0 && (
-                        <ul className="SegmentAnnotations-list">
+                        <ul
+                            className="SegmentAnnotations-list"
+                            data-testid="segment-annotations-list"
+                        >
                             {annotations.map((annotation) => (
                                 <AnnotationContainer
                                     annotation={annotation}
@@ -58,6 +64,7 @@ export default function SegmentAnnotations({
                         className="Button Button--transparent Button--add"
                         title={t('edit.segment.annotations.add')}
                         onClick={() => setShowForm(true)}
+                        data-testid="add-annotation"
                     >
                         <FaPlus className="Icon Icon--editorial Icon--small" />
                         <span className="Button--label">

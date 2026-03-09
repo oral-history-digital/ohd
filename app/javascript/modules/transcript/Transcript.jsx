@@ -123,6 +123,7 @@ export default function Transcript({
                 className={classNames('Transcript', {
                     'Transcript--rtl': isRtlLanguage(transcriptLocale),
                 })}
+                data-testid="transcript"
             >
                 {processedSegments.map((segment, index, array) => {
                     const prevSegment = array[index - 1];

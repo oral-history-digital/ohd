@@ -16,7 +16,12 @@ export default function Initials({ contributor, segment }) {
     );
 
     return (
-        <span className={cls} title={title} aria-label={title}>
+        <span
+            className={cls}
+            title={title}
+            aria-label={title}
+            data-testid="segment-initials"
+        >
             {initials}
         </span>
     );

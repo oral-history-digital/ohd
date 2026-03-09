@@ -23,6 +23,7 @@ export default function Timecode({ segment }) {
             className="Segment-timecode"
             title={hoverTitle}
             aria-label={hoverTitle}
+            data-testid="segment-timecode"
         >
             {formatTimecode(secs, false, false, true, fmt)}
             {tapeNumber && tapeNumber > 1 && (

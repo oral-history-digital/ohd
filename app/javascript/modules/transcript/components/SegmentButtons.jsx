@@ -87,13 +87,17 @@ function SegmentButtons({
 
     return (
         <>
-            <div className={classNames('Segment-buttons')}>
+            <div
+                className={classNames('Segment-buttons')}
+                data-testid="segment-buttons"
+            >
                 {hasBookmarks ? (
                     <button
                         type="button"
                         className="Button Button--transparent Button--icon"
                         title={t('modules.workbook.bookmarks')}
                         onClick={handleBookmarkClick}
+                        data-testid="segment-button-bookmarks"
                     >
                         <FaStar className="Icon Icon--primary" />
                     </button>
@@ -106,6 +110,7 @@ function SegmentButtons({
                         className="Button Button--transparent Button--icon"
                         title={t('edit.segment.transcript')}
                         onClick={handleEditClick}
+                        data-testid="segment-button-edit"
                     >
                         <FaPencilAlt className="Icon Icon--editorial" />
                     </button>
@@ -120,6 +125,7 @@ function SegmentButtons({
                                 : 'edit.segment.heading.new'
                         )}
                         onClick={handleHeadingsClick}
+                        data-testid="segment-button-headings"
                     >
                         <FaHeading
                             className={classNames(
@@ -141,6 +147,7 @@ function SegmentButtons({
                                 : 'edit.segment.annotations.new'
                         )}
                         onClick={handleAnnotationsClick}
+                        data-testid="segment-button-annotations"
                     >
                         <FaStickyNote
                             className={classNames(
@@ -162,6 +169,7 @@ function SegmentButtons({
                                 : 'edit.segment.references.new'
                         )}
                         onClick={handleReferencesClick}
+                        data-testid="segment-button-references"
                     >
                         <FaTag
                             className={classNames(

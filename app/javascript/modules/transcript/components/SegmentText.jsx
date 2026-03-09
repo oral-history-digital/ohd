@@ -35,6 +35,7 @@ function SegmentText({ segment, locale, isActive, handleClick }) {
             title={label}
             aria-label={label}
             onClick={handleClick}
+            data-testid="segment-text"
         >
             {unescapeHtmlEntities(text) || (
                 <i>{t('modules.transcript.no_text')}</i>

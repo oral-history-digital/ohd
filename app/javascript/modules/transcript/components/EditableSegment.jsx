@@ -156,7 +156,11 @@ function EditableSegment({
                 >
                     <TabList className="SegmentTabs-tabList">
                         {tabs.map((tab) => (
-                            <Tab key={tab.id} className="SegmentTabs-tab">
+                            <Tab
+                                key={tab.id}
+                                className="SegmentTabs-tab"
+                                data-testid={`segment-tab-${tab.id}`}
+                            >
                                 {tab.label}
                             </Tab>
                         ))}
@@ -167,6 +171,7 @@ function EditableSegment({
                             <TabPanel
                                 key={tab.id}
                                 className="SegmentTabs-panel"
+                                data-testid={`segment-panel-${tab.id}`}
                             >
                                 {/* Only render tab content when active to prevent unmounted components from breaking */}
                                 {tabIndex === index && tab.id === 'edit' && (
@@ -180,6 +185,7 @@ function EditableSegment({
                                             />
                                         )}
                                         <SegmentForm
+                                            data-testid="segment-form"
                                             locale={locale}
                                             projectId={projectId}
                                             project={project}
@@ -204,6 +210,7 @@ function EditableSegment({
                                             segment={segment}
                                             onSubmit={handleEditSubmit}
                                             onCancel={handleEditCancel}
+                                            data-testid="segment-headings"
                                         />
                                     )}
                                 {tabIndex === index &&
@@ -212,6 +219,7 @@ function EditableSegment({
                                             segment={segment}
                                             contentLocale={contentLocale}
                                             onCancel={handleEditCancel}
+                                            data-testid="segment-annotations"
                                         />
                                     )}
                                 {tabIndex === index &&
@@ -220,6 +228,7 @@ function EditableSegment({
                                             segment={segment}
                                             interview={interview}
                                             onCancel={handleEditCancel}
+                                            data-testid="segment-references"
                                         />
                                     )}
                             </TabPanel>
