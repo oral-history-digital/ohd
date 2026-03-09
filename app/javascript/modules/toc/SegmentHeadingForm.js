@@ -30,12 +30,15 @@ export default function SegmentHeadingForm({ segment, onSubmit, onCancel }) {
                     {
                         attribute: 'mainheading',
                         multiLocale: true,
+                        group: 'mainheading',
                     },
                     {
                         attribute: 'subheading',
                         multiLocale: true,
+                        group: 'subheading',
                     },
                 ]}
+                formClasses="SegmentHeadingForm"
             />
         </div>
     );

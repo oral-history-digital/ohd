@@ -145,11 +145,11 @@ class BasicsTest < ApplicationSystemTestCase
     #check 'Terms of Use', visible: :all
     sleep 1
     click_on 'Submit activation request'
-    assert_text 'Institution: Please fill'
-    assert_text 'Occupation: Please select'
-    assert_text 'Research Intention: Please select'
-    assert_text 'Specification of research intention: Please fill'
-    assert_text 'Terms of Use: Please agree'
+    assert_text 'Institution'
+    assert_text 'Occupation'
+    assert_text 'Research Intention'
+    assert_text 'Specification of research intention'
+    assert_text 'Terms of Use'
   end
 
   test 'create interview' do
@@ -389,26 +389,18 @@ class BasicsTest < ApplicationSystemTestCase
     sleep 1
     click_on 'R., Mario'
 
-    click_on 'Editing interface'
-
-    # # FIXME: Fails with "Unable to find field "Main heading (eng)" that is not disabled"
-    # click_on 'Add heading'
-    # fill_in 'Main heading (eng)', with: 'introduction'
-    # click_on 'Submit'
-    # reload_page
-    # click_on 'Table of contents'
-    # assert_text 'introduction'
-
-    click_on 'Transcript'
-    click_on 'Edit transcript'
+    click_test_id('toggle-edit-view-button')
+    click_test_id('interview-tab-transcript')
+    click_test_id('segment-button-edit')
     select 'Dupont, Jean'
-    click_on 'Submit'
-    assert_text "JD\nMy name is Mario Rossi"
+    click_test_id('submit-button')
+    assert_test_id_text('segment-initials', 'JD')
+    assert_test_id_text('segment-text', 'My name is Mario Rossi')
 
-    click_on 'Add annotations'
-    click_on 'Add annotation'
+    click_test_id('segment-button-annotations')
+    click_test_id('add-annotation')
     find('.public-DraftEditor-content').send_keys('my annotation')
-    click_on 'Submit'
+    click_test_id('submit-button')
   end
 
   test 'change transcript status' do

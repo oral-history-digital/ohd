@@ -1,20 +1,37 @@
+import classNames from 'classnames';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { WorkbookItemForm } from 'modules/workbook';
+import { WorkbookItemForm, useWorkbook } from 'modules/workbook';
 import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
-export default function BookmarkSegmentButton({ segment }) {
+import { getSegmentWorkbookAnnotations } from '../utils';
+
+export default function BookmarkSegmentModal({
+    segment,
+    trigger,
+    triggerClassName,
+}) {
     const { t } = useI18n();
     const interview = useSelector(getCurrentInterview);
+    const { savedSegments } = useWorkbook();
+
+    const hasBookmarks =
+        getSegmentWorkbookAnnotations(savedSegments, segment.id).length > 0;
+
+    // Default to star trigger if not provided
+    const defaultTrigger = <FaStar className="Icon Icon--unobtrusive" />;
+    const defaultTriggerClassName = classNames('Button--hover', {
+        'Segment-hiddenButton': !hasBookmarks,
+    });
 
     return (
         <Modal
             title={t('save_user_annotation')}
-            trigger={<FaStar className="Icon Icon--unobtrusive" />}
-            triggerClassName="Button--hover Segment-hiddenButton"
+            trigger={trigger || defaultTrigger}
+            triggerClassName={triggerClassName || defaultTriggerClassName}
         >
             {(closeModal) => (
                 <WorkbookItemForm
@@ -41,6 +58,8 @@ export default function BookmarkSegmentButton({ segment }) {
     );
 }
 
-BookmarkSegmentButton.propTypes = {
+BookmarkSegmentModal.propTypes = {
     segment: PropTypes.object.isRequired,
+    trigger: PropTypes.node,
+    triggerClassName: PropTypes.string,
 };
