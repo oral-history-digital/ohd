@@ -13,6 +13,7 @@ import {
 } from 'react-icons/fa';
 
 import { BookmarkSegmentModal } from '.';
+import { getSegmentAnnotations, getSegmentWorkbookAnnotations } from '../utils';
 
 function SegmentButtons({
     segment,
@@ -28,19 +29,14 @@ function SegmentButtons({
     const hasHeadings = segment.has_heading;
 
     // Annotations are tied to the content locales
-    const hasAnnotations = Object.values(segment.annotations || {}).some(
-        (annotation) =>
-            Object.prototype.hasOwnProperty.call(annotation.text, contentLocale)
-    );
-    const hasBookmarks = (savedSegments || []).some(
-        (annotation) =>
-            annotation.reference_id === segment.id &&
-            annotation.reference_type === 'Segment'
-    );
+    const hasAnnotations =
+        getSegmentAnnotations(segment, contentLocale).length > 0;
+    const hasBookmarks =
+        getSegmentWorkbookAnnotations(savedSegments, segment.id).length > 0;
     const hasReferences = (segment.registry_references_count || 0) > 0;
 
     const showEditButton = canEditSegment;
-    const showHeadingsButton = canEditSegment || hasHeadings;
+    const showHeadingsButton = canEditSegment;
     const showAnnotationsButton = canEditSegment || hasAnnotations;
     const showReferencesButton = canEditSegment || hasReferences;
 

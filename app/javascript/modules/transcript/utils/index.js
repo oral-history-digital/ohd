@@ -2,6 +2,8 @@ export * from './checkTextDir';
 export * from './enforceRtlOnTranscriptTokens';
 export * from './filterTranscriptionTags';
 export * from './getContributorInformation';
+export * from './getSegmentAnnotations';
+export * from './getSegmentWorkbookAnnotations';
 export * from './getTimecodeHelpText';
 export * from './isRtlLanguage';
 export * from './segmentsForTape';

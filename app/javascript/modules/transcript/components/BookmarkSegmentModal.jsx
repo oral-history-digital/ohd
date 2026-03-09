@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
+import { getSegmentWorkbookAnnotations } from '../utils';
+
 export default function BookmarkSegmentModal({
     segment,
     trigger,
@@ -16,11 +18,8 @@ export default function BookmarkSegmentModal({
     const interview = useSelector(getCurrentInterview);
     const { savedSegments } = useWorkbook();
 
-    const hasBookmarks = (savedSegments || []).some(
-        (annotation) =>
-            annotation.reference_id === segment.id &&
-            annotation.reference_type === 'Segment'
-    );
+    const hasBookmarks =
+        getSegmentWorkbookAnnotations(savedSegments, segment.id).length > 0;
 
     // Default to star trigger if not provided
     const defaultTrigger = <FaStar className="Icon Icon--unobtrusive" />;

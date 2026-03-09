@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 
 import { BookmarkSegmentModal } from '.';
+import { getSegmentAnnotations, getSegmentWorkbookAnnotations } from '../utils';
 
 export default function SegmentContentViewer({
     segment,
@@ -28,11 +29,14 @@ export default function SegmentContentViewer({
         return null;
     }
 
-    const annotationsForSegment = workbookAnnotations?.filter(
-        (annotation) =>
-            annotation.reference_id === segment.id &&
-            annotation.reference_type === 'Segment'
+    const workbookAnnotationsForSegment = getSegmentWorkbookAnnotations(
+        workbookAnnotations,
+        segment.id
     );
+
+    // Annotations are tied to the content locales, so only show
+    // if there are annotations in the current content locale
+    const annotationsInLocale = getSegmentAnnotations(segment, contentLocale);
 
     return (
         <div
@@ -64,14 +68,16 @@ export default function SegmentContentViewer({
             <div className="SegmentContentViewer-content">
                 {displayedContentType === 'bookmarks' && (
                     <div className="SegmentContentViewer-items SegmentContentViewer-bookmarks">
-                        {annotationsForSegment?.map((userAnnotation) => (
-                            <p
-                                key={userAnnotation.id}
-                                className="SegmentContentViewer-item SegmentContentViewer-bookmark"
-                            >
-                                {userAnnotation.description}
-                            </p>
-                        ))}
+                        {workbookAnnotationsForSegment?.map(
+                            (userAnnotation) => (
+                                <p
+                                    key={userAnnotation.id}
+                                    className="SegmentContentViewer-item SegmentContentViewer-bookmark"
+                                >
+                                    {userAnnotation.description}
+                                </p>
+                            )
+                        )}
                         <div className="SegmentContentViewer-bookmarkActions">
                             <BookmarkSegmentModal
                                 segment={segment}
@@ -89,19 +95,17 @@ export default function SegmentContentViewer({
 
                 {displayedContentType === 'annotations' && (
                     <div className="SegmentContentViewer-items SegmentContentViewer-annotations">
-                        {Object.values(segment.annotations || {}).map(
-                            (annotation) => (
-                                <div
-                                    key={annotation.id}
-                                    className="SegmentContentViewer-item SegmentContentViewer-annotation"
-                                    dangerouslySetInnerHTML={{
-                                        __html: sanitizeHtml(
-                                            annotation.text[contentLocale]
-                                        ),
-                                    }}
-                                />
-                            )
-                        )}
+                        {annotationsInLocale.map((annotation) => (
+                            <div
+                                key={annotation.id}
+                                className="SegmentContentViewer-item SegmentContentViewer-annotation"
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtml(
+                                        annotation.text[contentLocale]
+                                    ),
+                                }}
+                            />
+                        ))}
                     </div>
                 )}
 
