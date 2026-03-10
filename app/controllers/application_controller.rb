@@ -29,11 +29,14 @@ class ApplicationController < ActionController::Base
         !request.path.end_with?('/register', '/register/') &&
         storable_location?
       )
+        project = Project.by_domain(request.base_url)
+        return if project.blank?
+
         path = url_for(
           only_path: true,
           controller: 'sessions',
           action: 'is_logged_in',
-          project: Project.by_domain(request.base_url).identifier,
+          project: project.identifier,
           path: request.fullpath,
         )
         redirect_to "#{OHD_DOMAIN}#{path}"
@@ -76,10 +79,19 @@ class ApplicationController < ActionController::Base
       [:archive_domain, request.base_url]
     end
     
+    if lookup_key[0] == :archive_domain
+      normalized_domain = lookup_key[1].to_s.sub(%r{/+\z}, '')
+      lookup_values = [normalized_domain, "#{normalized_domain}/"].uniq
+      cache_lookup_value = normalized_domain
+    else
+      lookup_values = lookup_key[1]
+      cache_lookup_value = lookup_key[1]
+    end
+
     # Cache project lookups across requests since projects change infrequently
-    cache_key = "project-#{lookup_key[0]}-#{lookup_key[1]}-#{Project.maximum(:updated_at)}"
+    cache_key = "project-v2-#{lookup_key[0]}-#{cache_lookup_value}-#{Project.maximum(:updated_at)}"
     
-    @current_project = Rails.cache.fetch(cache_key) do
+    @current_project = Rails.cache.fetch(cache_key, skip_nil: true) do
       Project.includes(
         :translations,
         :registry_name_types,
@@ -91,7 +103,7 @@ class ApplicationController < ActionController::Base
         external_links: :translations,
         # Collections removed - load selectively when needed via CollectionsController
         institution_projects: {institution: :translations},
-      ).find_by(lookup_key[0] => lookup_key[1])
+      ).where(lookup_key[0] => lookup_values).first
     end
   end
 

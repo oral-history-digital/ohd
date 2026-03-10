@@ -2,6 +2,7 @@ import { getProjects } from 'modules/data';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
+import { findProjectByDomain } from './domainUtils';
 import isLocaleValid from './isLocaleValid';
 
 export default function useProject() {
@@ -17,9 +18,7 @@ export default function useProject() {
         );
     } else {
         // Archive is running on its own domain.
-        currentProject = projectArray.find(
-            (project) => project.archive_domain === window.location.origin
-        );
+        currentProject = findProjectByDomain(projects);
     }
 
     return {

@@ -17,7 +17,7 @@ import ProjectRoutes from './ProjectRoutes';
 const RoutesWithoutProjectId = ({ project }) => (
     <Routes>
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
-        {project.is_ohd ? (
+        {project?.is_ohd ? (
             <>
                 <Route exact path="/:locale" element={<Homepage />} />
                 <Route
