@@ -18,17 +18,42 @@ services:
       NODE_ENV: development
       RAILS_LOG_TO_STDOUT: "true"
       DISABLE_SPRING: "true"
+      BUNDLE_WITHOUT: ""
+      BUNDLE_IGNORE_CONFIG: "1"
+      MYSQL_HOST: ${MYSQL_HOST:-db}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_development}
+      MYSQL_TEST_DATABASE: ${MYSQL_TEST_DATABASE:-ohd_test}
+      MYSQL_USER: ${MYSQL_USER:-ohd}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
     # Override command to start both Rails and webpack-dev-server
-    command: >
-      bash -c "bin/rails server -b 0.0.0.0 &
-      bin/shakapacker-dev-server &
-      wait"
+    command:
+      - bash
+      - -lc
+      - |
+        set -e
+        # Ensure gems exist in the mounted bundle volume before boot.
+        bundle check || bundle install
+        # Keep node dependencies in sync for webpack-dev-server and React builds.
+        yarn install --frozen-lockfile
+        # Fresh DB volumes do not have migrations table yet; load schema once if missing.
+        bundle exec rails runner "exit(ActiveRecord::Base.connection.data_source_exists?('schema_migrations') ? 0 : 1)" || RAILS_ENV=development bundle exec rails db:schema:load
+        # Remove stale PID files left after unclean shutdowns to avoid Rails boot failure.
+        rm -f tmp/pids/server.pid
+        # Run Rails and webpack dev server together for local development.
+        bin/rails server -b 0.0.0.0 &
+        bin/shakapacker-dev-server &
+        # Keep container alive until either background process exits.
+        wait
     # Mount source code for live editing
     volumes:
       - .:/app:cached
+      - ./public:/app/public
       - /app/node_modules
       - /app/tmp/cache
       - bundle-cache:/usr/local/bundle
+    depends_on:
+      db:
+        condition: service_healthy
 
   worker:
     build:
@@ -37,11 +62,25 @@ services:
     environment:
       RAILS_ENV: development
       RACK_ENV: development
+      BUNDLE_WITHOUT: ""
+      BUNDLE_IGNORE_CONFIG: "1"
+      MYSQL_HOST: ${MYSQL_HOST:-db}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_development}
+      MYSQL_TEST_DATABASE: ${MYSQL_TEST_DATABASE:-ohd_test}
+      MYSQL_USER: ${MYSQL_USER:-ohd}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+    command: >
+      bash -lc "set -e;
+      bundle check || bundle install;
+      bundle exec rake jobs:work"
     volumes:
       - .:/app:cached
       - /app/node_modules
       - /app/tmp/cache
       - bundle-cache:/usr/local/bundle
+    depends_on:
+      db:
+        condition: service_healthy
 
   solr:
     environment:
@@ -52,10 +91,10 @@ services:
     # Always run database in development
     profiles: []
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: ohd_development
-      MYSQL_USER: ohd
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_development}
+      MYSQL_USER: ${MYSQL_USER:-ohd}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
 
 volumes:
   bundle-cache:

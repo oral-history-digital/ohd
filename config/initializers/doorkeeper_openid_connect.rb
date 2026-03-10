@@ -1,11 +1,33 @@
 # frozen_string_literal: true
 
-Doorkeeper::OpenidConnect.configure do
-  issuer do |resource_owner, application|
-    'https://portal.oral-history.digital'
+def resolve_openid_connect_signing_key
+  env_key = ENV['OIDC_SIGNING_KEY']
+  return env_key.gsub('\\n', "\n") if env_key.present?
+
+  begin
+    credentials_key = Rails.application.credentials.openid_connect_signing_key
+    return credentials_key if credentials_key.present?
+  rescue StandardError
+    # Fresh local setups can run without encrypted credentials.
   end
 
-  signing_key Rails.application.credentials.openid_connect_signing_key
+  if Rails.env.development? || Rails.env.test?
+    return OpenSSL::PKey::RSA.generate(2048).to_pem
+  end
+
+  raise 'Missing OIDC signing key: set OIDC_SIGNING_KEY or configure credentials.openid_connect_signing_key'
+end
+
+def resolve_openid_connect_issuer
+  ENV['OIDC_ISSUER'].presence || 'https://portal.oral-history.digital'
+end
+
+Doorkeeper::OpenidConnect.configure do
+  issuer do |resource_owner, application|
+    resolve_openid_connect_issuer
+  end
+
+  signing_key resolve_openid_connect_signing_key
 
   subject_types_supported [:public]
 

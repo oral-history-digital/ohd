@@ -1,6 +1,6 @@
 # Shared base image for dev container and production.
 # Built and pushed to ghcr.io/oral-history-digital/ohd-base by
-# .github/workflows/build-base-image.yml.
+# .github/workflows/publish-base-image.yml.
 #
 # This image contains all expensive system dependencies (texlive, JDK, Node,
 # ImageMagick, …) shared between dev and prod. Gems and JS packages are NOT

@@ -4,7 +4,7 @@
 # Stage 1: Base - app user and working directory
 # =============================================================================
 # System dependencies, Node.js, Yarn, and JAVA_HOME are all provided by the
-# shared base image. See Dockerfile.base and .github/workflows/build-base-image.yml.
+# shared base image. See Dockerfile.base and .github/workflows/publish-base-image.yml.
 FROM ghcr.io/oral-history-digital/ohd-base:latest AS base
 
 # Create app user (non-root for security; production-only concern)
