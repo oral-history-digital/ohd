@@ -7,6 +7,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
 
   def read_file(file_path, project, locale)
     I18n.locale = locale
+    registry_name_type = project.registry_name_types.find_by code: "spelling"
 
     csv = Roo::CSV.new(file_path, csv_options: CSV_OPTIONS)
     if csv.first.length == 1
@@ -61,7 +62,13 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               if entry.errors.any?
                 raise "Error creating entry with attributes #{entry_attributes}: #{entry.errors.full_messages.join(', ')}"
               else
-                RegistryName.create registry_entry_id: entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, locale: locale
+                RegistryName.create(
+                  registry_entry_id: entry.id,
+                  registry_name_type_id: registry_name_type.id,
+                  name_position: 0,
+                  descriptor: name,
+                  locale: locale
+                )
               end
             end
 
