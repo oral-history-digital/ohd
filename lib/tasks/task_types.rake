@@ -1,11 +1,24 @@
 namespace :task_types do
 
   desc 'create default_task_types_and permissions'
-  task :create_default_task_types_and_permissions, [:project_initials] => :environment do |t, args|
-    project = Project.where(initials: args.project_initials).first
+  task :create_default_task_types_and_permissions, [:project_identifier] => :environment do |_t, args|
+    identifier = args.project_identifier
+
+    project = if Project.column_names.include?('initials')
+      Project.find_by(initials: identifier) || Project.find_by(shortname: identifier)
+    else
+      Project.find_by(shortname: identifier)
+    end
+
+    raise "Project not found for identifier '#{identifier}'" if project.blank?
+
     default_task_types.each do |key, (label, abbreviation)|
       I18n.locale = project.default_locale
-      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: project.id, use: true
+      task_type = TaskType.find_or_initialize_by(key: key, project_id: project.id)
+      task_type.abbreviation = abbreviation
+      task_type.use = true
+      task_type.label = label if task_type.respond_to?(:label=)
+      task_type.save!
     end
     default_task_type_permissions.each do |task_type_key, permissions|
       task_type = TaskType.find_by key: task_type_key, project_id: project.id
