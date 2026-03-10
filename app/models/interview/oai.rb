@@ -38,11 +38,11 @@ module Interview::Oai
     #"#{project.domain_with_optional_identifier}/#{project.default_locale}/interviews/#{archive_id}"
   end
 
-  def oai_title(locale)
+  def oai_title(locale, anonymous: true)
     TranslationValue.for(
       'oai.xml_title',
       locale,
-      interviewee: anonymous_title(locale).strip,
+      interviewee: anonymous ? anonymous_title(locale) : full_title(locale),
       media_type: TranslationValue.for("media.#{media_type}", locale),
       date: interview_date
     )
