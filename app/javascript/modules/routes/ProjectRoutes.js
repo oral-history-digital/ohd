@@ -26,7 +26,6 @@ import {
     getProjectId,
     setArchiveId,
     setAvailableViewModes,
-    setProjectId,
     setViewMode,
 } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';

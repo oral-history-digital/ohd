@@ -1,10 +1,11 @@
+import zwarLogoDe2 from 'assets/images/zwar-logo-red_de.png';
 import PropTypes from 'prop-types';
 
-import zwarLogoDe2 from './zwar-logo-red_de.png';
-
-function ProjectFooter({ project, locale }) {
+export function ProjectFooter({ project, locale }) {
     const identifier = project && project.shortname;
+    console.log('ProjectFooter', { identifier, locale });
 
+    // TODO: This is currently dead code, ZWAR shortname is za. Decide what to do with it.
     if (identifier === 'zwar' && locale === 'de') {
         return (
             <div>
@@ -13,6 +14,7 @@ function ProjectFooter({ project, locale }) {
                     {/* lieber ein div, das sich ausklappt, dann sind normale <a>-Links möglich */}
                     <img
                         src={zwarLogoDe2}
+                        alt="Logo des ZWAR-Projekts"
                         style={{
                             paddingRight: '10px',
                             borderRight: '2px solid #9f403f',
@@ -42,8 +44,9 @@ function ProjectFooter({ project, locale }) {
                 </div>
                 <p></p>
                 <p>
-                    Eine Kooperation der Stiftung "Erinnerung, Verantwortung und
-                    Zukunft" mit der Freien Universität Berlin{' '}
+                    Eine Kooperation der Stiftung &quot;Erinnerung,
+                    Verantwortung und Zukunft&quot; mit der Freien Universität
+                    Berlin{' '}
                 </p>
             </div>
         );
@@ -61,8 +64,8 @@ function ProjectFooter({ project, locale }) {
                         href="https://ec.europa.eu/programmes/horizon2020/en"
                     >
                         This project has received funding from the European
-                        Union's Horizon 2020 research and innovation programme
-                        under grant agreement No 649307
+                        Union&apos;s Horizon 2020 research and innovation
+                        programme under grant agreement No 649307
                     </a>
                 </p>
             </div>
