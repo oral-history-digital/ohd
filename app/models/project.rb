@@ -108,7 +108,14 @@ class Project < ApplicationRecord
   scope :shared, -> { where(workflow_state: 'public' )}
   scope :unshared, -> {where(workflow_state: 'unshared')}
 
+  before_validation :normalize_domains
   before_save :touch_interviews
+
+  def normalize_domains
+    self.archive_domain = archive_domain.to_s.strip.sub(%r{/+\z}, '') if archive_domain.present?
+    self.domain = domain.to_s.strip.sub(%r{/+\z}, '') if respond_to?(:domain) && domain.present?
+  end
+
   def touch_interviews
     interviews.each(&:touch) if landing_page_text_changed?
   end
@@ -146,7 +153,8 @@ class Project < ApplicationRecord
     end
 
     def by_domain(domain)
-      where(archive_domain: domain).first
+      normalized = domain.to_s.sub(%r{/+\z}, '') # remove trailing slashes for matching
+      where(archive_domain: [normalized, "#{normalized}/"]).first
     end
 
     def by_identifier(identifier)

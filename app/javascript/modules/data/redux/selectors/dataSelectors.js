@@ -7,6 +7,7 @@ import {
 } from 'modules/archive';
 import { DEFAULT_LOCALES } from 'modules/constants';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
+import { findProjectByDomain } from 'modules/routes/domainUtils';
 import { createSelector } from 'reselect';
 
 import {
@@ -15,7 +16,6 @@ import {
     getStatuses,
     getUsers,
 } from './baseSelectors';
-import { projectByDomain } from './utils';
 
 /**
  * Basic Selectors others depend on
@@ -27,7 +27,7 @@ export const getCurrentProject = createSelector(
         const currentProject =
             Object.values(projects).find(
                 (project) => project.shortname === projectId
-            ) || projectByDomain(projects);
+            ) || findProjectByDomain(projects);
 
         return currentProject || null;
     }

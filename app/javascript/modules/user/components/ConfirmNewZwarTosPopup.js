@@ -20,7 +20,7 @@ export default function ConfirmNewZwarTosPopup({}) {
             return up.project_id === project?.id;
         });
 
-    if (['za', 'mog'].indexOf(project.shortname) === -1) {
+    if (!project || ['za', 'mog'].indexOf(project.shortname) === -1) {
         return null;
     }
     if (!currentProjectAccess) return null;

@@ -290,6 +290,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     # Main-level routes (no :project_id), e.g. homepage
     scope "/:locale" do
+      get "", to: "projects#index"
       get "/", to: "projects#index"
       resource :homepage_settings, only: [:show, :update]
       namespace :admin do
@@ -331,6 +332,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| Project.archive_domains.include?(request.base_url) }) do
     get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      get "", to: "projects#show"
       get "/", to: "projects#show"
       concerns :basic_project_routes
       resources :institutions

@@ -26,6 +26,8 @@ function OHDLink({ className }) {
         [dispatch]
     );
 
+    if (!project) return null;
+
     return project.display_ohd_link ? (
         project.archive_domain ? (
             <a

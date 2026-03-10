@@ -9,6 +9,8 @@ export default function RegisterPopupLink() {
     const { t } = useI18n();
     const isOpen = /open_register_popup/.test(location.search);
     const currentProject = useSelector(getCurrentProject);
+
+    if (!currentProject) return null;
     const showStepOne = !currentProject.is_ohd;
 
     return (

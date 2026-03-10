@@ -10,12 +10,13 @@ import useProject from './useProject';
 function RouteDivider() {
     const { project } = useProject();
 
-    const hasArchiveDomain = project && project.archive_domain;
+    const useRoutesWithoutProjectId =
+        Boolean(project?.archive_domain) || Boolean(project?.is_ohd);
 
     return (
         <AnalyticsProvider project={project}>
             <Layout>
-                {hasArchiveDomain ? (
+                {useRoutesWithoutProjectId ? (
                     <MemoizedRoutesWithoutProjectId project={project} />
                 ) : (
                     <MemoizedRoutesWithProjectId />
