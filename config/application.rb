@@ -41,6 +41,18 @@ module Archive
       Symbol
     ]
 
+    # Prefer per-instance environment secrets in containerized setups.
+    # If no master key is available, skip loading encrypted credentials file.
+    master_key_available = ENV['RAILS_MASTER_KEY'].to_s.strip != '' ||
+      File.size?(Rails.root.join('config', 'master.key'))
+    unless master_key_available
+      config.credentials.content_path = Rails.root.join('config', 'credentials', 'disabled.yml.enc')
+    end
+
+    config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY'] if ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY'].present?
+    config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY'] if ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY'].present?
+    config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT'] if ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT'].present?
+
     config.action_dispatch.cookies_serializer = :hybrid
     config.active_support.cache_format_version = 7.0
     config.active_support.to_time_preserves_timezone = :zone

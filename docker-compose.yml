@@ -20,7 +20,6 @@ services:
       - ./config/secrets.yml:/app/config/secrets.yml:ro
       - ./config/storage.yml:/app/config/storage.yml:ro
       - ./config/datacite.yml:/app/config/datacite.yml:ro
-      - ./config/master.key:/app/config/master.key:ro
       # Persistent data
       - app-cache:/app/tmp/cache
       - app-files:/app/tmp/files
@@ -40,6 +39,8 @@ services:
       SOLR_URL: http://solr:8983/solr/default
       SOLR_HOST: solr
       SOLR_PORT: 8983
+      # Required to decrypt config/credentials.yml.enc
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
       # Database (use DATABASE_URL for external DB or rely on database.yml)
       # DATABASE_URL: ${DATABASE_URL}
     depends_on:
@@ -51,7 +52,7 @@ services:
     networks:
       - ohd-network
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/']
       interval: 30s
       timeout: 5s
       retries: 3
@@ -74,7 +75,6 @@ services:
       - ./config/secrets.yml:/app/config/secrets.yml:ro
       - ./config/storage.yml:/app/config/storage.yml:ro
       - ./config/datacite.yml:/app/config/datacite.yml:ro
-      - ./config/master.key:/app/config/master.key:ro
       # Shared volumes
       - app-cache:/app/tmp/cache
       - app-files:/app/tmp/files
@@ -83,6 +83,8 @@ services:
       RAILS_ENV: production
       RACK_ENV: production
       RAILS_LOG_TO_STDOUT: 'true'
+      # Required to decrypt config/credentials.yml.enc
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
       # Services
       REDIS_URL: redis://redis:6379/0
       SOLR_URL: http://solr:8983/solr/default
@@ -161,6 +163,7 @@ services:
       - '3307:3306'
     volumes:
       - db-data:/var/lib/mysql
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-changeme}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_production}
