@@ -25,7 +25,8 @@ coverage
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
-/.env
+.env*
+!.env.example
 
 # Ruby/Bundler
 vendor/
