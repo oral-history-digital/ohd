@@ -4,11 +4,7 @@ import { FaArchive, FaUniversity } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 
 import { ArchivesList, InstitutionsList } from './components';
-import {
-    useExplorerParams,
-    useGetCollections,
-    useGetInstitutions,
-} from './hooks';
+import { useExplorerParams, useGetInstitutions } from './hooks';
 
 export function Explorer() {
     const [, setSearchParams] = useSearchParams();
@@ -35,16 +31,14 @@ export function Explorer() {
             { replace: true }
         );
 
-    const { loading: loadingCollections, error: errorCollections } =
-        useGetCollections();
     const {
         data: institutions,
         loading: loadingInstitutions,
         error: errorInstitutions,
     } = useGetInstitutions();
 
-    const isLoading = loadingCollections || loadingInstitutions;
-    const hasError = errorCollections || errorInstitutions;
+    const isLoading = loadingInstitutions;
+    const hasError = errorInstitutions;
 
     if (isLoading) {
         return (

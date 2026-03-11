@@ -1,4 +1,5 @@
 export * from './useGetArchives';
+export * from './useGetArchiveCollections';
 export * from './useGetInstitutions';
 export * from './useHumanReadable';
 export * from './useLoadCompleteProject';

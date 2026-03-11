@@ -5,13 +5,11 @@ import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
-import { useGetCollections } from '../hooks';
-import { CollectionCard } from './CollectionCard';
+import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
 export function ArchiveCard({ archive, query }) {
     const [expanded, setExpanded] = useState(false);
-    const { collections } = useGetCollections(archive.id);
 
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
@@ -99,20 +97,7 @@ export function ArchiveCard({ archive, query }) {
                         )}
                     </div>
 
-                    {collections && collections.length > 0 && (
-                        <div className="ArchiveCard-collections">
-                            <h4 className="ArchiveCard-collectionsTitle">
-                                Collections ({collections.length})
-                            </h4>
-                            {collections.map((collection) => (
-                                <CollectionCard
-                                    key={collection.id}
-                                    collection={collection}
-                                    query={query}
-                                />
-                            ))}
-                        </div>
-                    )}
+                    <CollectionList archive={archive} />
                 </div>
             )}
         </div>
