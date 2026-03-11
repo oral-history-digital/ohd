@@ -1,0 +1,36 @@
+development:
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
+  database: <%= ENV.fetch('MYSQL_DATABASE_DEVELOPMENT', 'ohd_development') %>
+  pool: 5
+  username: <%= ENV.fetch('MYSQL_USER_DEVELOPMENT', 'root') %>
+  password: <%= ENV.fetch('MYSQL_PASSWORD_DEVELOPMENT', 'rootpassword') %>
+  host: <%= ENV.fetch('MYSQL_HOST_DEVELOPMENT', 'db') %>
+  variables:
+    foreign_key_checks: 0
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
+  database: <%= ENV.fetch('MYSQL_DATABASE_TEST', 'ohd_test') %>
+  pool: 5
+  username: <%= ENV.fetch('MYSQL_USER_TEST', 'root') %>
+  password: <%= ENV.fetch('MYSQL_PASSWORD_TEST', 'rootpassword') %>
+  host: <%= ENV.fetch('MYSQL_HOST_TEST', 'db') %>
+  variables:
+    foreign_key_checks: 0
+
+production:
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
+  database: <%= ENV.fetch('MYSQL_DATABASE_PRODUCTION', 'ohd_production') %>
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS', 5) %>
+  username: <%= ENV.fetch('MYSQL_USER_PRODUCTION', 'ohd') %>
+  password: <%= ENV.fetch('MYSQL_PASSWORD_PRODUCTION', 'changeme') %>
+  host: <%= ENV.fetch('MYSQL_HOST_PRODUCTION', 'db') %>

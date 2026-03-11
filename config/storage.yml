@@ -1,20 +1,15 @@
 dev:
   service: Disk
-  root: <%= Rails.root.join("storage") %>
-
-fu_server:
-  service: Disk
-  root: /mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage
-  # new trove production path:
-  #root: /mnt/trove.storage.fu-berlin.de/ohd-av/ohd_assets/production
-  # new trove staging path:
-  #root: /mnt/trove.storage.fu-berlin.de/ohd-av/ohd_assets/staging
+  root: <%= ENV.fetch('STORAGE_DEV_ROOT', Rails.root.join('storage')) %>
 
 test:
   service: Disk
-  root: <%= Rails.root.join("tmp/storage") %>
+  root: <%= ENV.fetch('STORAGE_TEST_ROOT', Rails.root.join('tmp/storage')) %>
 
-amazon:
-  service: S3
-  access_key_id: ''
-  secret_access_key: ''
+staging:
+  service: Disk
+  root: <%= ENV.fetch('STORAGE_STAGING_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage') %>
+
+prod:
+  service: Disk
+  root: <%= ENV.fetch('STORAGE_PROD_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage') %>

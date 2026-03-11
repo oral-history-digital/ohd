@@ -50,6 +50,7 @@ COPY . .
 # (Real secrets will be mounted at runtime)
 RUN bundle exec rails secret > /tmp/secret.txt \
   && export SECRET_KEY_BASE=$(cat /tmp/secret.txt) \
+  && ruby -ropenssl -e 'File.write("/tmp/oidc_signing_key.pem", OpenSSL::PKey::RSA.new(2048).to_pem)' \
   && mkdir -p config \
   && echo "production:\n  secret_key_base: $(cat /tmp/secret.txt)" > config/secrets.yml \
   && echo "00000000000000000000000000000000" > config/master.key \
@@ -60,6 +61,10 @@ RUN bundle exec rails secret > /tmp/secret.txt \
 RUN RAILS_ENV=production \
     NODE_ENV=production \
     SECRET_KEY_BASE=$(cat /tmp/secret.txt) \
+    OIDC_SIGNING_KEY="$(cat /tmp/oidc_signing_key.pem)" \
+    OIDC_ISSUER=http://localhost \
+    DATACITE_CLIENT_ID_PRODUCTION=dummy \
+    DATACITE_PASSWORD_PRODUCTION=dummy \
     DISABLE_DATABASE_ENVIRONMENT_CHECK=1 \
     SOLR_URL=http://localhost:8983/solr/default \
     bundle exec rake assets:precompile
@@ -91,8 +96,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Copy bundler from builder
-COPY --from=builder /usr/local/bundle /usr/local/bundle
+# Copy bundler from builder with appuser ownership so runtime bundle install
+# works when /usr/local/bundle is mounted as a named volume in local dev.
+COPY --from=builder --chown=appuser:appuser /usr/local/bundle /usr/local/bundle
 
 # Copy application
 COPY --chown=appuser:appuser . /app
@@ -109,7 +115,9 @@ RUN mkdir -p \
     tmp/files \
     log \
     storage \
+    /usr/local/bundle \
   && chown -R appuser:appuser \
+    /usr/local/bundle \
     tmp \
     log \
     storage

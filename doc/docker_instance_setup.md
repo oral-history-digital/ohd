@@ -1,95 +1,124 @@
-# Docker Instance Setup (Local to Production)
+# Docker Instance Setup
 
-This runbook describes how to set up a new OHD instance locally first, then deploy it to production with the Docker-based runtime.
+This runbook covers local bootstrap and production deployment for OHD using Docker Compose.
 
-## Scope and assumptions
+## Scope
 
-- Docker runtime uses Puma in the `app` container.
-- Existing host-level Nginx reverse proxy remains in place.
-- Secrets are environment-first per instance (recommended).
-- `config/credentials.yml.enc` may remain in repo as compatibility fallback.
+- Runtime uses Puma in the `app` container.
+- Host-level Nginx reverse proxy is used in production.
+- Configuration is environment-first (`.env` / runtime env vars).
+- `config/credentials.yml.enc` can remain as compatibility fallback.
 
-## 1. Local bootstrap
+## Quickstart (Local, `--profile db`)
 
-1. Create a local env file from the template:
+1. Create `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-### Fresh Start (Clean-Room Reset)
-
-Use this whenever you want to fully re-test first-time setup behavior:
+2. Set minimum local values in `.env`:
 
 ```bash
-docker compose --profile db down
-docker volume rm ohd_db_data
+MYSQL_PASSWORD_DEVELOPMENT=changeme
+SECRET_KEY_BASE=<optional for dev, required for prod; 128+ hex chars>
+OIDC_SIGNING_KEY=<RSA private key PEM; single-line with literal \\n is supported>
+OIDC_ISSUER=http://portal.oral-history.localhost:3000
+```
+
+For local Docker bootstrap, keep test and development database names separate, but use the same local DB user/password unless you intentionally customize MariaDB users:
+
+```bash
+# Keep test DB separate (do not reuse development DB name)
+MYSQL_DATABASE_DEVELOPMENT=ohd_development
+MYSQL_DATABASE_TEST=ohd_test
+
+# Match the local MariaDB user created by compose defaults
+MYSQL_USER_DEVELOPMENT=ohd
+MYSQL_PASSWORD_DEVELOPMENT=changeme
+MYSQL_USER_TEST=ohd
+MYSQL_PASSWORD_TEST=changeme
+```
+
+If `MYSQL_USER_TEST` / `MYSQL_PASSWORD_TEST` are unset, Rails falls back to `root` / `rootpassword` from `config/database.yml`, which can fail against the default local MariaDB setup.
+
+Generate values:
+
+```bash
+# 1) SECRET_KEY_BASE (128 hex chars)
+openssl rand -hex 64
+
+# 2) OIDC_SIGNING_KEY as single-line value with literal \n (good for .env)
+openssl genrsa 2048 | awk '{printf "%s\\n",$0} END{print ""}'
+```
+
+If you store `OIDC_SIGNING_KEY` on one line in `.env`, replace line breaks with literal `\n`.
+
+3. Start stack:
+
+```bash
 docker compose --profile db up -d
 ```
 
-This removes all local MariaDB data and forces first-run initialization again.
-
-2. Set instance-specific values in `.env` (minimum):
-
-- `OIDC_SIGNING_KEY` (RSA private key PEM; use literal `\n` if single-line)
-- `OIDC_ISSUER` (for local, for example `http://portal.oral-history.localhost:3000`)
-- `MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD` (if using local db profile)
-
-Notes:
-
-- These `MYSQL_*` values are for the MariaDB container (`db` service) initialization.
-- On first startup of a fresh DB volume, they create/bootstrap the database and DB user.
-- If you use an external database instead of `--profile db`, you can skip `MYSQL_*` and configure Rails via `DATABASE_URL` (or `config/database.yml`).
-
-3. Ensure required config files exist:
-
-- `config/database.yml`
-- `config/secrets.yml`
-- `config/storage.yml`
-- `config/datacite.yml`
-
-4. For Docker-local DB, ensure `config/database.yml` uses host `db` (container service), not `localhost`.
-
-5. Start services:
+You can observe logs using:
 
 ```bash
-docker compose --profile db up -d
+docker compose --profile db logs -f
 ```
 
-On a fresh DB volume, app startup now auto-bootstraps the development schema.
-
-6. Optional manual database preparation (normally not needed):
-
-```bash
-docker compose --profile db exec app bundle exec rails db:prepare
-```
-
-Use this only for troubleshooting. If needed for a fully fresh instance:
-
-```bash
-docker compose --profile db exec app bundle exec rails db:create db:migrate db:seed
-```
-
-After seeding, run a quick baseline integrity check:
-
-```bash
-docker compose --profile db exec app bundle exec rake seeds:smoke
-```
-
-7. Check service state and logs:
+4. Verify services:
 
 ```bash
 docker compose --profile db ps
-docker compose --profile db logs -f app
+docker compose --profile db logs --tail=200 app
 ```
 
-Expected result after a fresh start:
+5. Initialize data (choose one):
 
-- `db` healthy
-- `app` healthy
-- `worker` starts after app becomes healthy
+```bash
+# Option A: quick demo data
+docker compose --profile db exec app bundle exec rails db:seed
+```
 
-If DB credentials were changed after a previous initialization, reset only the DB volume and start again:
+```bash
+# Option B: explicit instance bootstrap (recommended)
+docker compose --profile db exec app \
+	bundle exec rake "bootstrap:all[ohd,http://portal.oral-history.localhost:3000,admin@example.com,ChangeMe123?,Instance,Admin,en]"
+```
+
+`db:seed` is convenient for local testing. `bootstrap:all` is preferred when you want a predictable project/domain/admin setup.
+
+6. Configure local domain (required for host-based routing):
+
+```bash
+# Add host mapping on your machine (one-time)
+echo "127.0.0.1 portal.oral-history.localhost" | sudo tee -a /etc/hosts
+
+# Verify name resolution
+getent hosts portal.oral-history.localhost
+```
+
+```bash
+# Set the OHD project archive domain in the database
+docker compose --profile db exec app \
+  bundle exec rails runner "Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')"
+```
+
+```bash
+# Optional: verify app responds on the configured host
+curl -I http://portal.oral-history.localhost:3000
+```
+
+7. Validate baseline:
+
+- App responds at `http://portal.oral-history.localhost:3000`
+- Login works (`alice@example.com` and `Password123!` for seed data)
+- Solr search works
+- Worker runs background jobs
+
+## Local Bootstrap Details
+
+### Reset a local DB volume (clean-room)
 
 ```bash
 docker compose --profile db down
@@ -97,84 +126,181 @@ docker volume rm ohd_db_data
 docker compose --profile db up -d
 ```
 
-## 2. Local routing/domain setup
+Use this after changing DB credentials or when re-testing first-run initialization.
 
-1. Add hosts entry:
-
-```text
-127.0.0.1 portal.oral-history.localhost
-```
-
-2. Update the project archive domain in DB:
+### Optional DB troubleshooting commands
 
 ```bash
-docker compose --profile db exec app bundle exec rails runner "Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')"
+docker compose --profile db exec app bundle exec rails db:prepare
+docker compose --profile db exec app bundle exec rails db:create db:migrate db:seed
+docker compose --profile db exec app bundle exec rake seeds:smoke
 ```
 
-3. If you change base domains, keep backend/frontend constants in sync:
+### Recommended instance bootstrap
 
-- `config/initializers/constants.rb`
-- `app/javascript/modules/constants/index.js`
+Prefer explicit bootstrap tasks over demo-heavy `db:seed` for real instances:
 
-## 3. Local validation checklist
+```bash
+docker compose --profile db exec app \
+	bundle exec rake "bootstrap:all[myarchive,http://portal.myarchive.localhost:3000,admin@example.com,ChangeMe123?,Instance,Admin,en]"
+```
 
-- App boots and serves on `http://portal.oral-history.localhost:3000`
-- Login works
-- Search/Solr works
-- Background jobs run (`worker` healthy)
-- OIDC endpoints work with configured issuer/signing key
-- Restart from clean volumes succeeds (reproducibility)
+ENV-based equivalent:
 
-## 4. Production preparation
+```bash
+docker compose --profile db exec \
+	-e BOOTSTRAP_PROJECT_SHORTNAME=myarchive \
+	-e BOOTSTRAP_ARCHIVE_DOMAIN=http://portal.myarchive.localhost:3000 \
+	-e BOOTSTRAP_ADMIN_EMAIL=admin@example.com \
+	-e BOOTSTRAP_ADMIN_PASSWORD="ChangeMe123?" \
+	-e BOOTSTRAP_ADMIN_FIRST_NAME=Instance \
+	-e BOOTSTRAP_ADMIN_LAST_NAME=Admin \
+	-e BOOTSTRAP_DEFAULT_LOCALE=en \
+	app bundle exec rake bootstrap:all
+```
 
-Set per-instance production secrets (secret manager or host env):
+## Environment Variables
 
+Use `.env.example` as the baseline app-variable reference.
+
+### Production critical (must set)
+
+- `SECRET_KEY_BASE`
 - `OIDC_SIGNING_KEY`
 - `OIDC_ISSUER`
-- `DATABASE_URL` (or equivalent DB config path)
+- `MYSQL_HOST_PRODUCTION`
+- `MYSQL_USER_PRODUCTION`
+- `MYSQL_PASSWORD_PRODUCTION`
+- `MYSQL_DATABASE_PRODUCTION`
+- `DATACITE_CLIENT_ID_PRODUCTION`
+- `DATACITE_PASSWORD_PRODUCTION`
+
+### Production recommended
+
+- `OHD_DOMAIN_PRODUCTION`
+- `STORAGE_PROD_ROOT`
+- `RAILS_MAX_THREADS` (default `5`)
+
+### Runtime/infrastructure (compose/orchestrator)
+
 - `REDIS_URL`
 - `SOLR_URL`
-- `RAILS_MASTER_KEY` only if encrypted credentials are intentionally used
 
-Important:
+### Optional
 
-- Do not commit `.env`
-- Do not commit `config/master.key`
+- `ALLOW_LOCALHOST_IN_PRODUCTION` (default `false`)
+- `OHD_EXTRA_HOSTS_DEVELOPMENT` (comma-separated hostnames)
+- `OHD_EXTRA_HOSTS_STAGING` (comma-separated hostnames)
+- `OHD_EXTRA_HOSTS_PRODUCTION` (comma-separated hostnames)
+- `ACTIVE_RECORD_ENCRYPTION_*`
 
-## 5. Production deploy (Docker runtime)
+## Staging-Like Deployment
 
-1. Build/publish image (GHCR workflows).
-2. On deploy host, ensure compose files + linked config files are present.
-3. Pull and start services:
+Current Docker runtime uses `RAILS_ENV=production`. For staging, use staging endpoints/secrets with production-scoped variable names expected by mounted configs.
+
+```bash
+RAILS_ENV=production
+MYSQL_HOST_PRODUCTION=db.staging.internal
+MYSQL_USER_PRODUCTION=ohd_staging
+MYSQL_PASSWORD_PRODUCTION=<secure password>
+MYSQL_DATABASE_PRODUCTION=ohd_staging
+STORAGE_STAGING_ROOT=/mnt/staging/ohd/storage
+OHD_DOMAIN_STAGING=https://staging.oral-history.digital
+OIDC_SIGNING_KEY=<RSA key>
+OIDC_ISSUER=https://staging.oral-history.digital
+SECRET_KEY_BASE=<generate with `rails secret`>
+```
+
+## Production Deploy
+
+1. Ensure compose files and linked config mounts exist on host.
+2. Pull and start runtime services:
 
 ```bash
 docker compose pull app worker
 docker compose up -d app worker
 ```
 
-4. Run migrations:
+3. Run migrations:
 
 ```bash
 docker compose exec app bundle exec rails db:migrate
 ```
 
-5. Verify health and logs:
+4. Verify:
 
 ```bash
 docker compose ps
 docker compose logs --tail=200 app
 ```
 
-## 6. Post-deploy checks
+5. Post-deploy checks:
 
-- Tenant/domain routing works as expected
-- OIDC issuer/signing key match instance URL and policy
-- Worker processes queued jobs
+- Domain routing works
+- OIDC issuer/signing key match instance URL
+- Worker processes jobs
 - Solr ping/search works
-- Rollback path is tested (previous image tag)
 
-## Notes on credentials
+## Host Setup (Production)
 
-- `config/credentials.yml.enc` is normally committed in Rails and can remain during migration.
-- For Dockerized multi-instance deployments, prefer env-provided secrets.
-- Remove credentials-based fallback only after all environments are validated with env-only secrets.
+### Prerequisites
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg lsb-release nginx certbot python3-certbot-nginx
+```
+
+- Install Docker Engine and Compose plugin (official Docker docs for your distro).
+- Open ports `22/tcp`, `80/tcp`, `443/tcp`.
+
+### Nginx reverse proxy example
+
+`/etc/nginx/sites-available/ohd.conf`:
+
+```nginx
+server {
+	listen 80;
+	server_name portal.example.org;
+
+	location / {
+		proxy_pass http://127.0.0.1:3000;
+		proxy_http_version 1.1;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_read_timeout 300;
+		proxy_send_timeout 300;
+	}
+}
+```
+
+Enable and validate:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/ohd.conf /etc/nginx/sites-enabled/ohd.conf
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+Issue certificate:
+
+```bash
+sudo certbot --nginx -d portal.example.org
+```
+
+## Config Mapping Reference
+
+- `config/database.yml` uses: `MYSQL_*_DEVELOPMENT`, `MYSQL_*_TEST`, `MYSQL_*_PRODUCTION`.
+- `config/datacite.yml` uses: `DATACITE_*_DEVELOPMENT`, `DATACITE_*_TEST`, `DATACITE_*_PRODUCTION`.
+- `config/storage.yml` uses: `STORAGE_DEV_ROOT`, `STORAGE_TEST_ROOT`, `STORAGE_STAGING_ROOT`, `STORAGE_PROD_ROOT`.
+- `config/initializers/constants.rb` uses: `OHD_DOMAIN` and `OHD_DOMAIN_<ENV>`.
+- `config/secrets.yml` reads `SECRET_KEY_BASE` for production.
+
+## Security Notes
+
+- Do not commit `.env`.
+- Do not commit `config/master.key`.
+- Inject secrets at runtime (env vars / secret manager).
