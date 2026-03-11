@@ -4,7 +4,7 @@ import { FaArchive, FaUniversity } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 
 import { ArchivesList, InstitutionsList } from './components';
-import { useExplorerParams, useGetInstitutions } from './hooks';
+import { useExplorerParams } from './hooks';
 
 export function Explorer() {
     const [, setSearchParams] = useSearchParams();
@@ -30,34 +30,6 @@ export function Explorer() {
             },
             { replace: true }
         );
-
-    const {
-        data: institutions,
-        loading: loadingInstitutions,
-        error: errorInstitutions,
-    } = useGetInstitutions();
-
-    const isLoading = loadingInstitutions;
-    const hasError = errorInstitutions;
-
-    if (isLoading) {
-        return (
-            <div className="Explorer">
-                <div className="Explorer-loading">Loading…</div>
-            </div>
-        );
-    }
-
-    if (hasError) {
-        return (
-            <div className="Explorer">
-                <div className="Explorer-error">
-                    An error occurred while fetching data. Please try again
-                    later.
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="Explorer">
@@ -96,7 +68,6 @@ export function Explorer() {
                     <TabPanel className="Explorer-tabPanel">
                         {tabIndex === 1 && (
                             <InstitutionsList
-                                institutions={institutions}
                                 query={query}
                                 interviewMin={interviewMin}
                                 interviewMax={interviewMax}

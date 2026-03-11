@@ -1,15 +1,29 @@
+import { useGetInstitutionsList } from 'modules/data';
 import PropTypes from 'prop-types';
 
 import { filterInstitutions } from '../utils';
 import { InstitutionCard } from './InstitutionCard';
 import { InstitutionsMap } from './InstitutionsMap';
 
-export function InstitutionsList({
-    institutions,
-    query,
-    interviewMin,
-    interviewMax,
-}) {
+export function InstitutionsList({ query, interviewMin, interviewMax }) {
+    const { institutions, loading, error } = useGetInstitutionsList();
+
+    if (loading) {
+        return (
+            <div className="InstitutionsList InstitutionsList--empty">
+                <p>Loading institutions...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="InstitutionsList InstitutionsList--empty">
+                <p>An error occurred while loading institutions.</p>
+            </div>
+        );
+    }
+
     if (!institutions || institutions.length === 0) {
         return (
             <div className="InstitutionsList InstitutionsList--empty">
@@ -18,7 +32,7 @@ export function InstitutionsList({
         );
     }
 
-    const filtered = filterInstitutions(
+    const filteredInstitutions = filterInstitutions(
         institutions,
         query,
         interviewMin,
@@ -27,15 +41,15 @@ export function InstitutionsList({
 
     return (
         <div className="InstitutionsList">
-            <InstitutionsMap institutions={filtered} height={400} />
+            <InstitutionsMap institutions={filteredInstitutions} height={400} />
 
             <div className="InstitutionsList-cards">
-                {filtered.length === 0 ? (
+                {filteredInstitutions.length === 0 ? (
                     <div className="InstitutionsList InstitutionsList--empty">
                         <p>No institutions match the current filters.</p>
                     </div>
                 ) : (
-                    filtered.map((institution) => (
+                    filteredInstitutions.map((institution) => (
                         <InstitutionCard
                             key={institution.id}
                             institution={institution}
@@ -49,7 +63,6 @@ export function InstitutionsList({
 }
 
 InstitutionsList.propTypes = {
-    institutions: PropTypes.array.isRequired,
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,
