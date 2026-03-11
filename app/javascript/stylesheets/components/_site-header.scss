@@ -66,13 +66,10 @@
 }
 
 .SiteHeaderBreadcrumbs-logo {
-  max-height: 1.25rem;
+  height: 23px;
   max-width: 100%;
   vertical-align: bottom;
 
-  @include screen-m {
-    max-height: 2rem;
-  }
   &--large {
     max-height: 3.5rem;
 
