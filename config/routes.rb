@@ -265,6 +265,7 @@ Rails.application.routes.draw do
         get :archives
       end
       member do
+        get :collections, to: 'collections#for_project'
         get :contact_email
       end
     end
@@ -276,6 +277,7 @@ Rails.application.routes.draw do
         get :archives
       end
       member do
+        get :collections, to: 'collections#for_project'
         get :contact_email
       end
     end

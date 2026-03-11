@@ -2,8 +2,12 @@ require 'test_helper'
 require 'securerandom'
 
 class ProjectsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    host! 'test.portal.oral-history.localhost:47001'
+  end
+
   test 'should get lightweight archives payload with pagination metadata' do
-    get "#{root_url}/en/projects/archives.json?page=1"
+    get archives_projects_path(locale: 'en', format: :json), params: { page: 1 }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -48,7 +52,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should support all option for archives payload' do
-    get "#{root_url}/en/projects/archives.json?all=true"
+    get archives_projects_path(locale: 'en', format: :json), params: { all: true }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -60,13 +64,14 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should hide unshared projects in index all mode for anonymous users' do
     reset!
+    host! 'test.portal.oral-history.localhost:47001'
 
     unshared_project = DataHelper.test_project(
       shortname: "us#{SecureRandom.hex(4)}i",
       workflow_state: 'unshared'
     )
 
-    get "#{root_url}/en/projects.json?all=true"
+    get projects_path(locale: 'en', format: :json), params: { all: true }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -81,7 +86,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     )
 
     login_as User.find_by!(email: 'alice@example.com')
-    get "#{root_url}/en/projects.json?all=true"
+    get projects_path(locale: 'en', format: :json), params: { all: true }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -91,13 +96,17 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should hide unshared projects for anonymous users when filtering by workflow_state' do
     reset!
+    host! 'test.portal.oral-history.localhost:47001'
 
     DataHelper.test_project(
       shortname: "us#{SecureRandom.hex(4)}a",
       workflow_state: 'unshared'
     )
 
-    get "#{root_url}/en/projects/archives.json?workflow_state=unshared&all=true"
+    get archives_projects_path(locale: 'en', format: :json), params: {
+      workflow_state: 'unshared',
+      all: true
+    }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -111,7 +120,10 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     )
 
     login_as User.find_by!(email: 'alice@example.com')
-    get "#{root_url}/en/projects/archives.json?workflow_state=unshared&all=true"
+    get archives_projects_path(locale: 'en', format: :json), params: {
+      workflow_state: 'unshared',
+      all: true
+    }
     assert_response :success
 
     data = JSON.parse(response.body)
