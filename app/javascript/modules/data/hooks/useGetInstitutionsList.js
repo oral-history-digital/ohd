@@ -3,7 +3,7 @@ import { usePathBase } from 'modules/routes';
 import useSWRImmutable from 'swr/immutable';
 
 export function useGetInstitutionsList(options = {}) {
-    const { page = 1, all = true } = options;
+    const { page = 1, all = false } = options;
     const pathBase = usePathBase();
     const queryParams = new URLSearchParams();
     if (all) {

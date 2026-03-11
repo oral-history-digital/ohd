@@ -24,15 +24,16 @@ const Range = Slider.createSliderWithTooltip(Slider.Range);
 export function ExplorerSidebarSearch() {
     const match = useMatch('/:locale/explorer/*');
     const [searchParams, setSearchParams] = useSearchParams();
-    const { archives } = useGetArchives();
+    const { archives } = useGetArchives({ all: true, workflowState: 'public' });
+
+    const institutions = useExplorerArchiveInstitutions({
+        archives,
+    });
     const { globalMin, globalMax } = useExplorerInterviewRange({
         archives,
-        institutions: [],
+        institutions,
     });
     const { globalYearMin, globalYearMax } = useExplorerYearRange({
-        archives,
-    });
-    const institutions = useExplorerArchiveInstitutions({
         archives,
     });
 

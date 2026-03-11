@@ -6,7 +6,9 @@ import { InstitutionCard } from './InstitutionCard';
 import { InstitutionsMap } from './InstitutionsMap';
 
 export function InstitutionsList({ query, interviewMin, interviewMax }) {
-    const { institutions, loading, error } = useGetInstitutionsList();
+    const { institutions, loading, error } = useGetInstitutionsList({
+        all: true,
+    });
 
     if (loading) {
         return (
