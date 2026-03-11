@@ -21,7 +21,15 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
-        json = Rails.cache.fetch "projects-#{extra_params}-#{Project.count}-#{Project.maximum(:updated_at)}" do
+        cache_key = [
+          'projects',
+          extra_params,
+          projects_cache_scope_key,
+          Project.count,
+          Project.maximum(:updated_at)
+        ].join('-')
+
+        json = Rails.cache.fetch(cache_key) do
           {
             data: projects.
               includes(:translations, metadata_fields: [
@@ -148,6 +156,13 @@ class ProjectsController < ApplicationController
   end
 
   private
+    def projects_cache_scope_key
+      # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).
+      return 'anonymous' unless current_user
+      return 'admin' if current_user.admin?
+
+      "user-#{current_user.id}"
+    end
     # if a project is updated or destroyed from ohd.de
     def set_project
       @project = params[:id] ? Project.find(params[:id]) : current_project
