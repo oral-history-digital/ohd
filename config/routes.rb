@@ -294,7 +294,11 @@ Rails.application.routes.draw do
     scope "/:locale" do
       get "/", to: "projects#index"
       concerns :all_project_routes
-      resources :institutions
+      resources :institutions do
+        collection do
+          get :list
+        end
+      end
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
       concerns :unnamed_devise_routes, :search, :archive
@@ -308,7 +312,11 @@ Rails.application.routes.draw do
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
         concerns :basic_project_routes
-        resources :institutions
+        resources :institutions do
+          collection do
+            get :list
+          end
+        end
         concerns :archive
         concerns :unnamed_devise_routes, :search
         concerns :account
@@ -326,7 +334,11 @@ Rails.application.routes.draw do
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
       concerns :basic_project_routes
-      resources :institutions
+      resources :institutions do
+        collection do
+          get :list
+        end
+      end
       concerns :archive
       concerns :unnamed_devise_routes, :search
       concerns :account
