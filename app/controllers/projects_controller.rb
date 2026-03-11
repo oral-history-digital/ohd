@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   skip_before_action :authenticate_user!,
-    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index]
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index, :archives]
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
@@ -45,6 +45,66 @@ class ProjectsController < ApplicationController
         render json: json
       end
     end
+  end
+
+  # GET /projects/archives
+  def archives
+    # This endpoint is global, so force nil project context and avoid per-request project cache lookup.
+    @current_project = nil
+    authorize Project, :show?
+
+    scoped_projects = policy_scope(Project)
+    scoped_projects = scoped_projects.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
+
+    if params.keys.include?('all')
+      projects = scoped_projects.order(created_at: :desc)
+      page = nil
+      extra_params = 'all'
+    else
+      page = params[:page] || 1
+      projects = scoped_projects.order(created_at: :desc).paginate(page: page)
+      extra_params = "page_#{page}"
+    end
+
+    projects = projects.includes(
+      :translations,
+      { institutions: :translations },
+      logos: [file_attachment: :blob]
+    )
+
+    project_ids = projects.map(&:id)
+
+    interview_counts = Interview
+      .where(project_id: project_ids)
+      .group(:project_id, :workflow_state)
+      .count
+
+    collection_counts = Collection
+      .where(project_id: project_ids)
+      .group(:project_id, :workflow_state)
+      .count
+
+    cache_key = [
+      'projects-archives',
+      extra_params,
+      projects_cache_scope_key,
+      normalized_workflow_states&.join(','),
+      I18n.locale,
+      Project.count,
+      Project.maximum(:updated_at),
+      Interview.maximum(:updated_at),
+      Collection.maximum(:updated_at)
+    ].join('-')
+
+    json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
+      {
+        data: serialized_archives(projects, interview_counts, collection_counts),
+        page: page,
+        result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
+      }
+    end
+
+    render json: json
   end
 
   # GET /projects/1
@@ -163,6 +223,32 @@ class ProjectsController < ApplicationController
 
       "user-#{current_user.id}"
     end
+
+    def normalized_workflow_states
+      return @normalized_workflow_states if defined?(@normalized_workflow_states)
+
+      value = params[:workflow_state]
+      # blank/all means "do not filter by workflow_state".
+      return @normalized_workflow_states = nil if value.blank? || value == 'all'
+
+      states = value.to_s.split(',').map(&:strip).reject(&:blank?)
+      # Project supports only these workflow states.
+      allowed_states = %w(public unshared)
+      filtered_states = states & allowed_states
+
+      # Invalid-only input falls back to no filter.
+      @normalized_workflow_states = filtered_states.presence
+    end
+
+    def serialized_archives(projects, interview_counts, collection_counts)
+      ActiveModelSerializers::SerializableResource.new(
+        projects,
+        each_serializer: ProjectArchiveSerializer,
+        interview_counts: interview_counts,
+        collection_counts: collection_counts
+      ).as_json
+    end
+
     # if a project is updated or destroyed from ohd.de
     def set_project
       @project = params[:id] ? Project.find(params[:id]) : current_project

@@ -1,6 +1,63 @@
+require 'test_helper'
 require 'securerandom'
 
 class ProjectsControllerTest < ActionDispatch::IntegrationTest
+  test 'should get lightweight archives payload with pagination metadata' do
+    get "#{root_url}/en/projects/archives.json?page=1"
+    assert_response :success
+
+    data = JSON.parse(response.body)
+    assert data.key?('data')
+    assert data.key?('page')
+    assert data.key?('result_pages_count')
+
+    data = data['data']
+    assert data.is_a?(Array)
+    assert data.any?
+
+    archive = data.first
+
+    assert archive.key?('id')
+    assert archive.key?('name')
+    assert archive.key?('display_name')
+    assert archive.key?('shortname')
+    assert archive.key?('archive_domain')
+    assert archive.key?('latitude')
+    assert archive.key?('longitude')
+    assert archive.key?('introduction')
+    assert archive.key?('more_text')
+    assert archive.key?('institutions')
+    assert archive.key?('interviews')
+    assert archive.key?('collections')
+    assert archive.key?('logo')
+    assert archive.key?('workflow_state')
+    assert archive.key?('available_locales')
+    assert archive.key?('has_map')
+    assert archive.key?('is_catalog')
+    assert archive.key?('has_newsletter')
+    assert archive.key?('publication_date')
+
+    assert archive['interviews'].key?('public')
+    assert archive['interviews'].key?('restricted')
+    assert archive['interviews'].key?('unshared')
+    assert archive['interviews'].key?('total')
+
+    assert archive['collections'].key?('public')
+    assert archive['collections'].key?('restricted')
+    assert archive['collections'].key?('total')
+  end
+
+  test 'should support all option for archives payload' do
+    get "#{root_url}/en/projects/archives.json?all=true"
+    assert_response :success
+
+    data = JSON.parse(response.body)
+    assert data.key?('data')
+    assert_nil data['page']
+    assert_nil data['result_pages_count']
+    assert data['data'].is_a?(Array)
+  end
+
   test 'should hide unshared projects in index all mode for anonymous users' do
     reset!
 
