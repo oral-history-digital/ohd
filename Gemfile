@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rdoc'
 gem 'rails', '~> 8.0.2'
+gem 'puma'
 gem 'mysql2', '~> 0.5.6'
 gem "redis", "~> 4.0"
 gem 'pundit'
@@ -73,7 +74,6 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'puma'
   gem 'rb-readline'
 end
 

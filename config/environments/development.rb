@@ -69,5 +69,8 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.hosts = YAML.load_file('config/allowed_domains.yml')[Rails.env] 
+  allowed_domains = YAML.load_file(Rails.root.join('config/allowed_domains.yml')).fetch(Rails.env, [])
+  extra_hosts = ENV.fetch('OHD_EXTRA_HOSTS_DEVELOPMENT', '').split(',').map(&:strip).reject(&:blank?)
+
+  config.hosts = (allowed_domains + extra_hosts).uniq
 end

@@ -8,24 +8,25 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # Enable webpack-dev-server for hot reload
     ports:
-      - "3000:3000"
-      - "3035:3035"
+      - '3000:3000'
     environment:
       RAILS_ENV: development
       RACK_ENV: development
       NODE_ENV: development
-      RAILS_LOG_TO_STDOUT: "true"
-      DISABLE_SPRING: "true"
-      BUNDLE_WITHOUT: ""
-      BUNDLE_IGNORE_CONFIG: "1"
-      MYSQL_HOST: ${MYSQL_HOST:-db}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_development}
-      MYSQL_TEST_DATABASE: ${MYSQL_TEST_DATABASE:-ohd_test}
-      MYSQL_USER: ${MYSQL_USER:-ohd}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
-    # Override command to start both Rails and webpack-dev-server
+      RAILS_LOG_TO_STDOUT: 'true'
+      DISABLE_SPRING: 'true'
+      BUNDLE_WITHOUT: ''
+      BUNDLE_IGNORE_CONFIG: '1'
+      MYSQL_HOST_DEVELOPMENT: ${MYSQL_HOST_DEVELOPMENT:-db}
+      MYSQL_DATABASE_DEVELOPMENT: ${MYSQL_DATABASE_DEVELOPMENT:-ohd_development}
+      MYSQL_HOST_TEST: ${MYSQL_HOST_TEST:-db}
+      MYSQL_DATABASE_TEST: ${MYSQL_DATABASE_TEST:-ohd_test}
+      MYSQL_USER_DEVELOPMENT: ${MYSQL_USER_DEVELOPMENT:-ohd}
+      MYSQL_PASSWORD_DEVELOPMENT: ${MYSQL_PASSWORD_DEVELOPMENT:-changeme}
+      MYSQL_USER_TEST: ${MYSQL_USER_TEST:-ohd}
+      MYSQL_PASSWORD_TEST: ${MYSQL_PASSWORD_TEST:-changeme}
+    # Override command to start Rails only
     command:
       - bash
       - -lc
@@ -33,17 +34,15 @@ services:
         set -e
         # Ensure gems exist in the mounted bundle volume before boot.
         bundle check || bundle install
-        # Keep node dependencies in sync for webpack-dev-server and React builds.
+        # Keep node dependencies in sync for frontend builds.
         yarn install --frozen-lockfile
+        # Prebuild packs once to avoid stale manifest/chunk mismatches without dev-server.
+        RAILS_ENV=development NODE_ENV=development bin/shakapacker
         # Fresh DB volumes do not have migrations table yet; load schema once if missing.
         bundle exec rails runner "exit(ActiveRecord::Base.connection.data_source_exists?('schema_migrations') ? 0 : 1)" || RAILS_ENV=development bundle exec rails db:schema:load
         # Remove stale PID files left after unclean shutdowns to avoid Rails boot failure.
         rm -f tmp/pids/server.pid
-        # Run Rails and webpack dev server together for local development.
-        bin/rails server -b 0.0.0.0 &
-        bin/shakapacker-dev-server &
-        # Keep container alive until either background process exits.
-        wait
+        exec bin/rails server -b 0.0.0.0
     # Mount source code for live editing
     volumes:
       - .:/app:cached
@@ -62,13 +61,16 @@ services:
     environment:
       RAILS_ENV: development
       RACK_ENV: development
-      BUNDLE_WITHOUT: ""
-      BUNDLE_IGNORE_CONFIG: "1"
-      MYSQL_HOST: ${MYSQL_HOST:-db}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_development}
-      MYSQL_TEST_DATABASE: ${MYSQL_TEST_DATABASE:-ohd_test}
-      MYSQL_USER: ${MYSQL_USER:-ohd}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      BUNDLE_WITHOUT: ''
+      BUNDLE_IGNORE_CONFIG: '1'
+      MYSQL_HOST_DEVELOPMENT: ${MYSQL_HOST_DEVELOPMENT:-db}
+      MYSQL_DATABASE_DEVELOPMENT: ${MYSQL_DATABASE_DEVELOPMENT:-ohd_development}
+      MYSQL_HOST_TEST: ${MYSQL_HOST_TEST:-db}
+      MYSQL_DATABASE_TEST: ${MYSQL_DATABASE_TEST:-ohd_test}
+      MYSQL_USER_DEVELOPMENT: ${MYSQL_USER_DEVELOPMENT:-ohd}
+      MYSQL_PASSWORD_DEVELOPMENT: ${MYSQL_PASSWORD_DEVELOPMENT:-changeme}
+      MYSQL_USER_TEST: ${MYSQL_USER_TEST:-ohd}
+      MYSQL_PASSWORD_TEST: ${MYSQL_PASSWORD_TEST:-changeme}
     command: >
       bash -lc "set -e;
       bundle check || bundle install;
@@ -85,16 +87,16 @@ services:
   solr:
     environment:
       SOLR_HEAP: 256m
-      SOLR_JAVA_MEM: "-Xms256m -Xmx256m"
+      SOLR_JAVA_MEM: '-Xms256m -Xmx256m'
 
   db:
     # Always run database in development
     profiles: []
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-ohd_development}
-      MYSQL_USER: ${MYSQL_USER:-ohd}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD_DEVELOPMENT:-changeme}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_DEVELOPMENT:-ohd_development}
+      MYSQL_USER: ${MYSQL_USER_DEVELOPMENT:-ohd}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_DEVELOPMENT:-changeme}
 
 volumes:
   bundle-cache:

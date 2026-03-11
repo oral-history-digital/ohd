@@ -25,8 +25,8 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   #config.assets.compile = false
 
-  # Store files locally.
-  config.active_storage.service = :fu_server
+  # File storage configuration
+  config.active_storage.service = :staging
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -106,5 +106,8 @@ Rails.application.configure do
 
   config.require_master_key = true
 
-  config.hosts = YAML.load_file('config/allowed_domains.yml')[Rails.env] 
+  allowed_domains = YAML.load_file(Rails.root.join('config/allowed_domains.yml')).fetch(Rails.env, [])
+  extra_hosts = ENV.fetch('OHD_EXTRA_HOSTS_STAGING', '').split(',').map(&:strip).reject(&:blank?)
+
+  config.hosts = (allowed_domains + extra_hosts).uniq
 end

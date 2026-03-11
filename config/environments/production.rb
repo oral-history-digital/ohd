@@ -29,8 +29,8 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   #config.assets.compile = false
 
-  # Store files locally.
-  config.active_storage.service = :fu_server
+  # File storage configuration
+  config.active_storage.service = :prod
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
@@ -108,5 +108,18 @@ Rails.application.configure do
 
   config.require_master_key = true
 
-  config.hosts = YAML.load_file('config/allowed_domains.yml')[Rails.env] 
+  allowed_domains = YAML.load_file(Rails.root.join('config/allowed_domains.yml')).fetch(Rails.env, [])
+  extra_hosts = ENV.fetch('OHD_EXTRA_HOSTS_PRODUCTION', '').split(',').map(&:strip).reject(&:blank?)
+
+  config.hosts = allowed_domains + extra_hosts
+
+  # Keep production host authorization strict by default, but allow local
+  # containerized smoke testing when explicitly opted in.
+  if ENV["ALLOW_LOCALHOST_IN_PRODUCTION"] == "true"
+    config.hosts << "localhost"
+    config.hosts << "127.0.0.1"
+    config.hosts << "portal.oral-history.localhost"
+  end
+
+  config.hosts.uniq!
 end
