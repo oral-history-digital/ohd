@@ -6,7 +6,6 @@ import { useSearchParams } from 'react-router-dom';
 import { ArchivesList, InstitutionsList } from './components';
 import {
     useExplorerParams,
-    useGetArchives,
     useGetCollections,
     useGetInstitutions,
 } from './hooks';
@@ -36,11 +35,6 @@ export function Explorer() {
             { replace: true }
         );
 
-    const {
-        data: archives,
-        loading: loadingArchives,
-        error: errorArchives,
-    } = useGetArchives();
     const { loading: loadingCollections, error: errorCollections } =
         useGetCollections();
     const {
@@ -49,9 +43,8 @@ export function Explorer() {
         error: errorInstitutions,
     } = useGetInstitutions();
 
-    const isLoading =
-        loadingArchives || loadingCollections || loadingInstitutions;
-    const hasError = errorArchives || errorCollections || errorInstitutions;
+    const isLoading = loadingCollections || loadingInstitutions;
+    const hasError = errorCollections || errorInstitutions;
 
     if (isLoading) {
         return (
@@ -97,7 +90,6 @@ export function Explorer() {
                     <TabPanel className="Explorer-tabPanel">
                         {tabIndex === 0 && (
                             <ArchivesList
-                                archives={archives}
                                 query={query}
                                 interviewMin={interviewMin}
                                 interviewMax={interviewMax}

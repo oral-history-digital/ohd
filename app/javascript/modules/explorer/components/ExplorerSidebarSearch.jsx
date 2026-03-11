@@ -1,3 +1,4 @@
+import { useGetArchives } from 'modules/data';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FaSearch, FaTimes } from 'react-icons/fa';
@@ -18,12 +19,22 @@ import { InstitutionDropdown } from './InstitutionDropdown';
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 
+// TODO: Split this container into ExplorerSearchInput, ExplorerRangeFilter, and
+// ExplorerInstitutionFilter subcomponents while keeping URL param orchestration here.
 export function ExplorerSidebarSearch() {
     const match = useMatch('/:locale/explorer/*');
     const [searchParams, setSearchParams] = useSearchParams();
-    const { globalMin, globalMax } = useExplorerInterviewRange();
-    const { globalYearMin, globalYearMax } = useExplorerYearRange();
-    const institutions = useExplorerArchiveInstitutions();
+    const { archives } = useGetArchives();
+    const { globalMin, globalMax } = useExplorerInterviewRange({
+        archives,
+        institutions: [],
+    });
+    const { globalYearMin, globalYearMax } = useExplorerYearRange({
+        archives,
+    });
+    const institutions = useExplorerArchiveInstitutions({
+        archives,
+    });
 
     const tabIndex = Number(searchParams.get('explorer_tab')) || 0;
     const isArchivesTab = tabIndex === 0;

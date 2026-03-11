@@ -1,10 +1,10 @@
+import { useGetArchives } from 'modules/data';
 import PropTypes from 'prop-types';
 
 import { filterArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
 
 export function ArchivesList({
-    archives,
     query,
     interviewMin,
     interviewMax,
@@ -12,6 +12,11 @@ export function ArchivesList({
     yearMax,
     institutionIds,
 }) {
+    const { archives, isLoading, error } = useGetArchives({
+        all: true,
+        workflowState: 'public',
+    });
+
     const filtered = filterArchives(
         archives,
         query,
@@ -21,6 +26,27 @@ export function ArchivesList({
         yearMax,
         institutionIds
     );
+
+    // TODO: Use t() and/or Spinner
+    if (isLoading) {
+        return (
+            <div className="Explorer">
+                <div className="Explorer-loading">Loading…</div>
+            </div>
+        );
+    }
+
+    // TODO: Use t() and/or a nicer error message
+    if (error) {
+        return (
+            <div className="Explorer">
+                <div className="Explorer-error">
+                    An error occurred while fetching data. Please try again
+                    later.
+                </div>
+            </div>
+        );
+    }
 
     if (!filtered || filtered.length === 0) {
         return (
@@ -46,7 +72,6 @@ export function ArchivesList({
 export default ArchivesList;
 
 ArchivesList.propTypes = {
-    archives: PropTypes.array.isRequired,
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,

@@ -1,3 +1,4 @@
+export * from './useGetArchives';
 export * from './useGetInstitutions';
 export * from './useHumanReadable';
 export * from './useLoadCompleteProject';
