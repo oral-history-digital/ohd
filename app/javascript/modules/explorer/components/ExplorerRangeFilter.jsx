@@ -1,7 +1,12 @@
+import { useRef, useState } from 'react';
+
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FaTimes } from 'react-icons/fa';
+
+// rc-slider default handle radius (px) — accounts for track inset
+const HANDLE_RADIUS = 7;
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 
@@ -14,6 +19,22 @@ export function ExplorerRangeFilter({
 }) {
     const [min, max] = value;
     const isFiltered = min > globalMin || max < globalMax;
+    const [hoverTooltip, setHoverTooltip] = useState(null);
+    const wrapperRef = useRef(null);
+
+    const handleMouseMove = (e) => {
+        if (!wrapperRef.current) return;
+        const rect = wrapperRef.current.getBoundingClientRect();
+        const trackWidth = rect.width - HANDLE_RADIUS * 2;
+        const fraction = Math.max(
+            0,
+            Math.min(1, (e.clientX - rect.left - HANDLE_RADIUS) / trackWidth)
+        );
+        const hoverValue = Math.round(
+            globalMin + fraction * (globalMax - globalMin)
+        );
+        setHoverTooltip({ x: e.clientX - rect.left, value: hoverValue });
+    };
 
     return (
         <div className="ExplorerSidebarSearch-rangeSection">
@@ -33,14 +54,27 @@ export function ExplorerRangeFilter({
                     )}
                 </span>
             </div>
-            <div className="ExplorerSidebarSearch-sliderWrapper">
+            <div
+                ref={wrapperRef}
+                className="ExplorerSidebarSearch-sliderWrapper"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => setHoverTooltip(null)}
+            >
+                {hoverTooltip && (
+                    <div
+                        className="ExplorerRangeFilter-hoverTooltip"
+                        style={{ left: hoverTooltip.x }}
+                    >
+                        {hoverTooltip.value}
+                    </div>
+                )}
                 <Range
                     min={globalMin}
                     max={globalMax}
                     value={value}
                     onChange={onChange}
                     step={1}
-                    tipProps={{ placement: 'top' }}
+                    tipProps={{ visible: false }}
                 />
             </div>
         </div>
