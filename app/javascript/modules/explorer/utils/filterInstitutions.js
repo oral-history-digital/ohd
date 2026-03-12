@@ -11,7 +11,9 @@ export const filterInstitutions = (
     institutions,
     query,
     interviewMin,
-    interviewMax
+    interviewMax,
+    instArchiveMin,
+    instArchiveMax
 ) =>
     institutions.filter((i) => {
         if (query) {
@@ -27,6 +29,12 @@ export const filterInstitutions = (
             const total = i.interviews?.total ?? 0;
             if (interviewMin !== null && total < interviewMin) return false;
             if (interviewMax !== null && total > interviewMax) return false;
+        }
+
+        if (instArchiveMin !== null || instArchiveMax !== null) {
+            const count = i.archives?.length ?? 0;
+            if (instArchiveMin !== null && count < instArchiveMin) return false;
+            if (instArchiveMax !== null && count > instArchiveMax) return false;
         }
 
         return true;

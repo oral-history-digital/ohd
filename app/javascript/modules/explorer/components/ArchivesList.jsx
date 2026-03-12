@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import {
     useAccordion,
+    useArchivesAndCollectionsRange,
     useArchivesSort,
-    useExplorerCollectionRange,
 } from '../hooks';
 import { filterArchives, sortArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
@@ -27,7 +27,7 @@ export function ArchivesList({
         workflowState: 'public',
     });
     const { globalCollectionMin, globalCollectionMax } =
-        useExplorerCollectionRange({ archives });
+        useArchivesAndCollectionsRange({ items: archives });
 
     const filtered = filterArchives(
         archives,

@@ -4,6 +4,8 @@ export const FILTER_PARAMS = [
     'explorer_interviews_max',
     'explorer_collections_min',
     'explorer_collections_max',
+    'explorer_inst_archives_min',
+    'explorer_inst_archives_max',
     'explorer_year_min',
     'explorer_year_max',
     'explorer_institution',
@@ -81,6 +83,28 @@ export const applyCollectionRangeParams = (
         prev.delete('explorer_collections_max');
     } else {
         prev.set('explorer_collections_max', max);
+    }
+
+    return prev;
+};
+
+export const applyInstArchiveRangeParams = (
+    prev,
+    min,
+    max,
+    globalMin,
+    globalMax
+) => {
+    if (min === globalMin) {
+        prev.delete('explorer_inst_archives_min');
+    } else {
+        prev.set('explorer_inst_archives_min', min);
+    }
+
+    if (max === globalMax) {
+        prev.delete('explorer_inst_archives_max');
+    } else {
+        prev.set('explorer_inst_archives_max', max);
     }
 
     return prev;

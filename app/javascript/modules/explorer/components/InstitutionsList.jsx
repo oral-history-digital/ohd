@@ -6,7 +6,13 @@ import { filterInstitutions } from '../utils';
 import { InstitutionCard } from './InstitutionCard';
 import { InstitutionsMap } from './InstitutionsMap';
 
-export function InstitutionsList({ query, interviewMin, interviewMax }) {
+export function InstitutionsList({
+    query,
+    interviewMin,
+    interviewMax,
+    instArchiveMin,
+    instArchiveMax,
+}) {
     const { expandedId, toggle } = useAccordion();
     const { institutions, loading, error } = useGetInstitutionsList({
         all: true,
@@ -40,7 +46,9 @@ export function InstitutionsList({ query, interviewMin, interviewMax }) {
         institutions,
         query,
         interviewMin,
-        interviewMax
+        interviewMax,
+        instArchiveMin,
+        instArchiveMax
     );
 
     return (
@@ -72,6 +80,8 @@ InstitutionsList.propTypes = {
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,
+    instArchiveMin: PropTypes.number,
+    instArchiveMax: PropTypes.number,
 };
 
 export default InstitutionsList;

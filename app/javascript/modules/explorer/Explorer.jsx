@@ -16,6 +16,8 @@ export function Explorer() {
         interviewMax,
         collectionMin,
         collectionMax,
+        instArchiveMin,
+        instArchiveMax,
         yearMin,
         yearMax,
         institutionIds,
@@ -77,6 +79,8 @@ export function Explorer() {
                                 query={query}
                                 interviewMin={interviewMin}
                                 interviewMax={interviewMax}
+                                instArchiveMin={instArchiveMin}
+                                instArchiveMax={instArchiveMax}
                             />
                         )}
                     </TabPanel>

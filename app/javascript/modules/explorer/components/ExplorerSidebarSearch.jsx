@@ -2,14 +2,15 @@ import { useGetArchives, useGetInstitutionsList } from 'modules/data';
 import { useMatch, useSearchParams } from 'react-router-dom';
 
 import {
+    useArchivesAndCollectionsRange,
     useExplorerArchiveInstitutions,
-    useExplorerCollectionRange,
     useExplorerInterviewRange,
     useExplorerYearRange,
 } from '../hooks';
 import {
     FILTER_PARAMS,
     applyCollectionRangeParams,
+    applyInstArchiveRangeParams,
     applyInstitutionParam,
     applyInterviewRangeParams,
     applyQueryParam,
@@ -37,7 +38,14 @@ export function ExplorerSidebarSearch() {
         items: isArchivesTab ? archives : (institutionsList ?? []),
     });
     const { globalCollectionMin, globalCollectionMax } =
-        useExplorerCollectionRange({ archives });
+        useArchivesAndCollectionsRange({ items: archives });
+    const {
+        globalCollectionMin: globalInstArchiveMin,
+        globalCollectionMax: globalInstArchiveMax,
+    } = useArchivesAndCollectionsRange({
+        items: institutionsList ?? [],
+        getCount: (i) => i.archives?.length ?? 0,
+    });
     const { globalYearMin, globalYearMax } = useExplorerYearRange({ archives });
 
     const query = searchParams.get('explorer_q') || '';
@@ -51,6 +59,12 @@ export function ExplorerSidebarSearch() {
     const collectionMax =
         Number(searchParams.get('explorer_collections_max')) ||
         globalCollectionMax;
+    const instArchiveMin =
+        Number(searchParams.get('explorer_inst_archives_min')) ||
+        globalInstArchiveMin;
+    const instArchiveMax =
+        Number(searchParams.get('explorer_inst_archives_max')) ||
+        globalInstArchiveMax;
     const yearMin =
         Number(searchParams.get('explorer_year_min')) || globalYearMin;
     const yearMax =
@@ -89,6 +103,19 @@ export function ExplorerSidebarSearch() {
                     max,
                     globalCollectionMin,
                     globalCollectionMax
+                ),
+            { replace: true }
+        );
+
+    const handleInstArchiveRangeChange = ([min, max]) =>
+        setSearchParams(
+            (prev) =>
+                applyInstArchiveRangeParams(
+                    prev,
+                    min,
+                    max,
+                    globalInstArchiveMin,
+                    globalInstArchiveMax
                 ),
             { replace: true }
         );
@@ -153,6 +180,16 @@ export function ExplorerSidebarSearch() {
                     globalMax={globalCollectionMax}
                     value={[collectionMin, collectionMax]}
                     onChange={handleCollectionRangeChange}
+                />
+            )}
+
+            {!isArchivesTab && (
+                <ExplorerRangeFilter
+                    label="Archives"
+                    globalMin={globalInstArchiveMin}
+                    globalMax={globalInstArchiveMax}
+                    value={[instArchiveMin, instArchiveMax]}
+                    onChange={handleInstArchiveRangeChange}
                 />
             )}
 
