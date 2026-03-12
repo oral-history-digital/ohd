@@ -9,12 +9,18 @@ export function useDropdown({ align = 'left' } = {}) {
     const computeStyle = useCallback(() => {
         if (!toggleRef.current) return;
         const rect = toggleRef.current.getBoundingClientRect();
+        const viewportWidth = document.documentElement.clientWidth;
+        const viewportHeight = window.innerHeight;
+        const spaceBelow = viewportHeight - rect.bottom - 4;
+        const maxHeight = Math.max(80, Math.min(220, spaceBelow - 8));
+
         if (align === 'right') {
             setPanelStyle({
                 position: 'fixed',
                 top: rect.bottom + 4,
-                right: window.innerWidth - rect.right,
+                right: viewportWidth - rect.right,
                 minWidth: rect.width,
+                maxHeight,
                 zIndex: 1000,
             });
         } else {
@@ -23,6 +29,7 @@ export function useDropdown({ align = 'left' } = {}) {
                 top: rect.bottom + 4,
                 left: rect.left,
                 width: rect.width,
+                maxHeight,
                 zIndex: 1000,
             });
         }
