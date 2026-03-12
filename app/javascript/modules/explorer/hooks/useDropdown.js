@@ -13,12 +13,19 @@ export function useDropdown({ align = 'left' } = {}) {
         const viewportWidth = document.documentElement.clientWidth;
         const viewportHeight = window.innerHeight;
         const spaceBelow = viewportHeight - rect.bottom - 4;
-        const maxHeight = Math.max(80, Math.min(220, spaceBelow - 8));
+        const spaceAbove = rect.top - 4;
+        const openUpward = spaceBelow < 120 && spaceAbove > spaceBelow;
+        const availableSpace = openUpward ? spaceAbove : spaceBelow;
+        const maxHeight = Math.max(80, Math.min(300, availableSpace - 8));
+
+        const vertical = openUpward
+            ? { bottom: viewportHeight - rect.top + 4 }
+            : { top: rect.bottom + 4 };
 
         if (align === 'right') {
             setPanelStyle({
                 position: 'fixed',
-                top: rect.bottom + 4,
+                ...vertical,
                 right: viewportWidth - rect.right,
                 minWidth: rect.width,
                 maxHeight,
@@ -27,7 +34,7 @@ export function useDropdown({ align = 'left' } = {}) {
         } else {
             setPanelStyle({
                 position: 'fixed',
-                top: rect.bottom + 4,
+                ...vertical,
                 left: rect.left,
                 width: rect.width,
                 maxHeight,
