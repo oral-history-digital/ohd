@@ -1,11 +1,13 @@
 import { useGetInstitutionsList } from 'modules/data';
 import PropTypes from 'prop-types';
 
+import { useAccordion } from '../hooks';
 import { filterInstitutions } from '../utils';
 import { InstitutionCard } from './InstitutionCard';
 import { InstitutionsMap } from './InstitutionsMap';
 
 export function InstitutionsList({ query, interviewMin, interviewMax }) {
+    const { expandedId, toggle } = useAccordion();
     const { institutions, loading, error } = useGetInstitutionsList({
         all: true,
     });
@@ -56,6 +58,8 @@ export function InstitutionsList({ query, interviewMin, interviewMax }) {
                             key={institution.id}
                             institution={institution}
                             query={query}
+                            expanded={expandedId === institution.id}
+                            onToggle={() => toggle(institution.id)}
                         />
                     ))
                 )}

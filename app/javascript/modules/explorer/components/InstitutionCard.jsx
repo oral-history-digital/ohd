@@ -1,14 +1,10 @@
-import { useState } from 'react';
-
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
 import { HighlightText } from './HighlightText';
 
-export function InstitutionCard({ institution, query }) {
-    const [expanded, setExpanded] = useState(false);
-
+export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const hasArchives = institution.archives?.length > 0;
     const hasChildren = institution.children?.length > 0;
 
@@ -20,7 +16,7 @@ export function InstitutionCard({ institution, query }) {
         >
             <button
                 className="InstitutionCard-header"
-                onClick={() => setExpanded((prev) => !prev)}
+                onClick={onToggle}
                 aria-expanded={expanded}
             >
                 <span className="InstitutionCard-chevron">
@@ -131,4 +127,6 @@ export default InstitutionCard;
 InstitutionCard.propTypes = {
     institution: PropTypes.object.isRequired,
     query: PropTypes.string,
+    expanded: PropTypes.bool,
+    onToggle: PropTypes.func,
 };

@@ -1,3 +1,4 @@
+export * from './useAccordion';
 export * from './useExplorerArchiveInstitutions';
 export * from './useExplorerInterviewRange';
 export * from './useExplorerParams';

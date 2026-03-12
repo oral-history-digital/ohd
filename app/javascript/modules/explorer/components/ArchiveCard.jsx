@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import classNames from 'classnames';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -8,9 +6,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
-export function ArchiveCard({ archive, query }) {
-    const [expanded, setExpanded] = useState(false);
-
+export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
         .join(', ');
@@ -23,7 +19,7 @@ export function ArchiveCard({ archive, query }) {
         >
             <button
                 className="ArchiveCard-header"
-                onClick={() => setExpanded((prev) => !prev)}
+                onClick={onToggle}
                 aria-expanded={expanded}
             >
                 <span className="ArchiveCard-chevron">
@@ -109,4 +105,6 @@ export default ArchiveCard;
 ArchiveCard.propTypes = {
     archive: PropTypes.object.isRequired,
     query: PropTypes.string,
+    expanded: PropTypes.bool,
+    onToggle: PropTypes.func,
 };

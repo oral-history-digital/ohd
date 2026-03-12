@@ -1,6 +1,7 @@
 import { useGetArchives } from 'modules/data';
 import PropTypes from 'prop-types';
 
+import { useAccordion } from '../hooks';
 import { filterArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
 
@@ -12,6 +13,7 @@ export function ArchivesList({
     yearMax,
     institutionIds,
 }) {
+    const { expandedId, toggle } = useAccordion();
     const { archives, isLoading, error } = useGetArchives({
         all: true,
         workflowState: 'public',
@@ -63,7 +65,13 @@ export function ArchivesList({
     return (
         <div className="ArchivesList">
             {filtered.map((archive) => (
-                <ArchiveCard key={archive.id} archive={archive} query={query} />
+                <ArchiveCard
+                    key={archive.id}
+                    archive={archive}
+                    query={query}
+                    expanded={expandedId === archive.id}
+                    onToggle={() => toggle(archive.id)}
+                />
             ))}
         </div>
     );
