@@ -1,4 +1,5 @@
 import { useGetArchives, useGetInstitutionsList } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { useMatch, useSearchParams } from 'react-router-dom';
 
 import {
@@ -23,6 +24,7 @@ import { ExplorerResetFilters } from './ExplorerResetFilters';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
 
 export function ExplorerSidebarSearch() {
+    const { t } = useI18n();
     const match = useMatch('/:locale/explorer/*');
     const [searchParams, setSearchParams] = useSearchParams();
     const { archives } = useGetArchives({ all: true, workflowState: 'public' });
@@ -166,7 +168,7 @@ export function ExplorerSidebarSearch() {
             />
 
             <ExplorerRangeFilter
-                label="Interviews"
+                label={t('explorer.interviews')}
                 globalMin={globalMin}
                 globalMax={globalMax}
                 value={[interviewMin, interviewMax]}
@@ -175,7 +177,7 @@ export function ExplorerSidebarSearch() {
 
             {isArchivesTab && (
                 <ExplorerRangeFilter
-                    label="Collections"
+                    label={t('explorer.collections')}
                     globalMin={globalCollectionMin}
                     globalMax={globalCollectionMax}
                     value={[collectionMin, collectionMax]}
@@ -185,7 +187,7 @@ export function ExplorerSidebarSearch() {
 
             {!isArchivesTab && (
                 <ExplorerRangeFilter
-                    label="Archives"
+                    label={t('explorer.archives')}
                     globalMin={globalInstArchiveMin}
                     globalMax={globalInstArchiveMax}
                     value={[instArchiveMin, instArchiveMax]}
@@ -195,7 +197,7 @@ export function ExplorerSidebarSearch() {
 
             {isArchivesTab && globalYearMin !== null && (
                 <ExplorerRangeFilter
-                    label="Publication year"
+                    label={t('explorer.publication_year')}
                     globalMin={globalYearMin}
                     globalMax={globalYearMax}
                     value={[yearMin, yearMax]}

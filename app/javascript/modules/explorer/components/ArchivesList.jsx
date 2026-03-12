@@ -1,4 +1,5 @@
 import { useGetArchives } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
 import {
@@ -20,6 +21,7 @@ export function ArchivesList({
     yearMax,
     institutionIds,
 }) {
+    const { t } = useI18n();
     const { expandedId, toggle } = useAccordion();
     const { sort, setSort } = useArchivesSort();
     const { archives, isLoading, error } = useGetArchives({
@@ -42,15 +44,18 @@ export function ArchivesList({
     );
 
     if (isLoading) {
-        return <div className="ArchivesList--loading">Loading archives…</div>;
+        return (
+            <div className="ArchivesList--loading">
+                {t('explorer.archives_list.loading')}
+            </div>
+        );
     }
 
     if (error) {
         return (
             <div className="ArchivesList">
                 <div className="ArchivesList--error">
-                    An error occurred while loading archives. Please try again
-                    later.
+                    {t('explorer.archives_list.error')}
                 </div>
             </div>
         );
@@ -61,8 +66,10 @@ export function ArchivesList({
             <div className="ArchivesList ArchivesList--empty">
                 <p>
                     {query
-                        ? `No archives found for "${query}".`
-                        : 'No archives available at the moment.'}
+                        ? t('explorer.archives_list.no_results_query', {
+                              query,
+                          })
+                        : t('explorer.archives_list.no_results')}
                 </p>
             </div>
         );

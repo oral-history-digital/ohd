@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
@@ -8,6 +9,7 @@ import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
 export function ArchiveCard({ archive, query, expanded, onToggle }) {
+    const { t } = useI18n();
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
     const institutionNames = archive.institutions
@@ -46,10 +48,12 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                             </span>
                         )}
                         <span className="ArchiveCard-metaItem">
-                            {archive.collections?.total || 0} Collections
+                            {archive.collections?.total || 0}{' '}
+                            {t('explorer.collections')}
                         </span>
                         <span className="ArchiveCard-metaItem">
-                            {archive.interviews?.total || 0} Interviews
+                            {archive.interviews?.total || 0}{' '}
+                            {t('explorer.interviews')}
                         </span>
                         {archive.publication_date && (
                             <span className="ArchiveCard-metaItem">
@@ -83,7 +87,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                     <div className="ArchiveCard-details">
                         {archive.available_locales?.length > 0 && (
                             <span className="ArchiveCard-detailItem">
-                                Languages:{' '}
+                                {t('explorer.languages')}:{' '}
                                 {archive.available_locales
                                     .map((l) => l.toUpperCase())
                                     .join(', ')}
@@ -91,7 +95,8 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         )}
                         {archive.publication_date && (
                             <span className="ArchiveCard-detailItem">
-                                Published: {archive.publication_date}
+                                {t('explorer.published')}:{' '}
+                                {archive.publication_date}
                             </span>
                         )}
                     </div>
@@ -104,7 +109,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        View archive page
+                        {t('explorer.view_archive_page')}
                         <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
                     </Link>
                 </div>

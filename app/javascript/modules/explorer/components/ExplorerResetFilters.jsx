@@ -1,7 +1,10 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 
 export function ExplorerResetFilters({ onClick }) {
+    const { t } = useI18n();
+
     return (
         <button
             type="button"
@@ -9,7 +12,7 @@ export function ExplorerResetFilters({ onClick }) {
             onClick={onClick}
         >
             <FaTimes />
-            Reset all filters
+            {t('explorer.reset_all_filters')}
         </button>
     );
 }

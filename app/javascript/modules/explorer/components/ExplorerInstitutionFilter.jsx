@@ -1,3 +1,4 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
 import { InstitutionDropdown } from './InstitutionDropdown';
@@ -8,10 +9,12 @@ export function ExplorerInstitutionFilter({
     onChange,
     onClearAll,
 }) {
+    const { t } = useI18n();
+
     return (
         <div className="ExplorerSidebarSearch-institutionSection">
             <div className="ExplorerSidebarSearch-rangeLabel">
-                <span>Institution</span>
+                <span>{t('explorer.institution_filter.label')}</span>
             </div>
             <InstitutionDropdown
                 institutions={institutions}

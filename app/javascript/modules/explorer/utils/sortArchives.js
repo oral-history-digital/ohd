@@ -1,10 +1,10 @@
 export const SORT_OPTIONS = [
-    { value: 'interviews_asc', label: 'Interviews (Ascending)' },
-    { value: 'interviews_desc', label: 'Interviews (Descending)' },
-    { value: 'collections_asc', label: 'Collections (Ascending)' },
-    { value: 'collections_desc', label: 'Collections (Descending)' },
-    { value: 'name_asc', label: 'Name (A–Z)' },
-    { value: 'name_desc', label: 'Name (Z–A)' },
+    { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
+    { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
+    { value: 'collections_asc', labelKey: 'explorer.sort.collections_asc' },
+    { value: 'collections_desc', labelKey: 'explorer.sort.collections_desc' },
+    { value: 'name_asc', labelKey: 'explorer.sort.name_asc' },
+    { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
 ];
 
 export const DEFAULT_SORT = 'interviews_asc';

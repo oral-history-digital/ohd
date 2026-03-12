@@ -1,10 +1,12 @@
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
 import { HighlightText } from './HighlightText';
 
 export function InstitutionCard({ institution, query, expanded, onToggle }) {
+    const { t } = useI18n();
     const hasArchives = institution.archives?.length > 0;
     const hasChildren = institution.children?.length > 0;
 
@@ -30,15 +32,18 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                     <div className="InstitutionCard-meta">
                         {hasArchives && (
                             <span className="InstitutionCard-metaItem">
-                                {institution.archives.length} Archives
+                                {institution.archives.length}{' '}
+                                {t('explorer.archives')}
                             </span>
                         )}
                         <span className="InstitutionCard-metaItem">
-                            {institution.interviews?.total || 0} Interviews
+                            {institution.interviews?.total || 0}{' '}
+                            {t('explorer.interviews')}
                         </span>
                         {hasChildren && (
                             <span className="InstitutionCard-metaItem">
-                                {institution.children.length} Sub-institutions
+                                {institution.children.length}{' '}
+                                {t('explorer.sub_institutions')}
                             </span>
                         )}
                     </div>
@@ -59,7 +64,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                     {institution.parent?.name && (
                         <div className="InstitutionCard-parent">
                             <span className="InstitutionCard-label">
-                                Parent institution:{' '}
+                                {t('explorer.parent_institution')}:{' '}
                             </span>
                             {institution.parent.name}
                         </div>
@@ -68,7 +73,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                     {hasChildren && (
                         <div className="InstitutionCard-children">
                             <h4 className="InstitutionCard-sectionTitle">
-                                Sub-institutions
+                                {t('explorer.sub_institutions')}
                             </h4>
                             <ul className="InstitutionCard-list">
                                 {institution.children.map((child) => (
@@ -86,7 +91,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                     {hasArchives && (
                         <div className="InstitutionCard-archives">
                             <h4 className="InstitutionCard-sectionTitle">
-                                Archives
+                                {t('explorer.archives')}
                             </h4>
                             <ul className="InstitutionCard-list">
                                 {institution.archives.map((archive) => (
@@ -107,7 +112,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                                     ({
                                                         archive.interviews_count
                                                     }{' '}
-                                                    Interviews)
+                                                    {t('explorer.interviews')})
                                                 </span>
                                             )}
                                         </div>

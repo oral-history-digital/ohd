@@ -1,4 +1,5 @@
 import { useGetInstitutionsList } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
 import { useAccordion, useInstitutionsSort } from '../hooks';
@@ -14,6 +15,7 @@ export function InstitutionsList({
     instArchiveMin,
     instArchiveMax,
 }) {
+    const { t } = useI18n();
     const { expandedId, toggle } = useAccordion();
     const { sort, setSort } = useInstitutionsSort();
     const { institutions, loading, error } = useGetInstitutionsList({
@@ -23,7 +25,7 @@ export function InstitutionsList({
     if (loading) {
         return (
             <div className="InstitutionsList InstitutionsList--empty">
-                <p>Loading institutions...</p>
+                <p>{t('explorer.institutions_list.loading')}</p>
             </div>
         );
     }
@@ -31,7 +33,7 @@ export function InstitutionsList({
     if (error) {
         return (
             <div className="InstitutionsList InstitutionsList--empty">
-                <p>An error occurred while loading institutions.</p>
+                <p>{t('explorer.institutions_list.error')}</p>
             </div>
         );
     }
@@ -39,7 +41,7 @@ export function InstitutionsList({
     if (!institutions || institutions.length === 0) {
         return (
             <div className="InstitutionsList InstitutionsList--empty">
-                <p>No institutions available at the moment.</p>
+                <p>{t('explorer.institutions_list.no_results')}</p>
             </div>
         );
     }
@@ -63,7 +65,11 @@ export function InstitutionsList({
             <div className="InstitutionsList-cards">
                 {sortedInstitutions.length === 0 ? (
                     <div className="InstitutionsList InstitutionsList--empty">
-                        <p>No institutions match the current filters.</p>
+                        <p>
+                            {t(
+                                'explorer.institutions_list.no_results_filtered'
+                            )}
+                        </p>
                     </div>
                 ) : (
                     sortedInstitutions.map((institution) => (

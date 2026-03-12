@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
@@ -8,6 +9,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HighlightText } from './HighlightText';
 
 export function CollectionCard({ collection, query }) {
+    const { t } = useI18n();
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -30,7 +32,8 @@ export function CollectionCard({ collection, query }) {
                     </h4>
                     <div className="CollectionCard-meta">
                         <span className="CollectionCard-metaItem">
-                            {collection.interviews?.total || 0} Interviews
+                            {collection.interviews?.total || 0}{' '}
+                            {t('explorer.interviews')}
                         </span>
                         {collection.institution && (
                             <span className="CollectionCard-metaItem">
@@ -58,7 +61,7 @@ export function CollectionCard({ collection, query }) {
                     <div className="CollectionCard-details">
                         {collection.responsibles?.length > 0 && (
                             <span className="CollectionCard-detailItem">
-                                Responsible:{' '}
+                                {t('explorer.responsible')}:{' '}
                                 {collection.responsibles.join(', ')}
                             </span>
                         )}
@@ -69,12 +72,13 @@ export function CollectionCard({ collection, query }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Homepage
+                                {t('explorer.homepage')}
                             </a>
                         )}
                         {collection.publication_date && (
                             <span className="CollectionCard-detailItem">
-                                Published: {collection.publication_date}
+                                {t('explorer.published')}:{' '}
+                                {collection.publication_date}
                             </span>
                         )}
                     </div>

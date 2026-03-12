@@ -1,3 +1,4 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
 import { Dropdown } from './Dropdown';
@@ -8,13 +9,20 @@ export function InstitutionDropdown({
     onChange,
     onClearAll,
 }) {
+    const { t } = useI18n();
     const hasSelection = values.length > 0;
 
     const toggleLabel = hasSelection
         ? values.length === 1
             ? institutions.find((i) => i.id === values[0])?.name
-            : `${values.length} institutions`
-        : 'All institutions';
+            : []
+                  .concat(
+                      t('explorer.institution_dropdown.multiple', {
+                          count: values.length,
+                      })
+                  )
+                  .join('')
+        : t('explorer.institution_dropdown.all');
 
     return (
         <Dropdown

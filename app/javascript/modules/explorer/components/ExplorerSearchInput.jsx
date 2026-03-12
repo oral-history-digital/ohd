@@ -1,7 +1,10 @@
+import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 
 export function ExplorerSearchInput({ value, onChange, onClear }) {
+    const { t } = useI18n();
+
     return (
         <div className="ExplorerSidebarSearch-inputWrapper">
             <FaSearch className="ExplorerSidebarSearch-icon" />
@@ -10,13 +13,13 @@ export function ExplorerSearchInput({ value, onChange, onClear }) {
                 type="text"
                 value={value}
                 onChange={onChange}
-                placeholder="Search archives &amp; institutions…"
+                placeholder={t('explorer.search_placeholder')}
             />
             {value && (
                 <button
                     className="ExplorerSidebarSearch-clear"
                     onClick={onClear}
-                    aria-label="Clear search"
+                    aria-label={t('explorer.clear_search')}
                     type="button"
                 >
                     <FaTimes />

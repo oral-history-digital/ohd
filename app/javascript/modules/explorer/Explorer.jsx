@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
+import { useI18n } from 'modules/i18n';
 import { FaArchive, FaUniversity } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ import { useExplorerParams } from './hooks';
 import { resetExplorerFilters } from './utils';
 
 export function Explorer() {
+    const { t } = useI18n();
     const [, setSearchParams] = useSearchParams();
     const {
         tabIndex,
@@ -49,12 +51,14 @@ export function Explorer() {
                     <Tab className="Explorer-tab">
                         <FaArchive className="Explorer-tabIcon" />
                         <span className="Explorer-tabText">
-                            Archives &amp; Collections
+                            {t('explorer.tab.archives_and_collections')}
                         </span>
                     </Tab>
                     <Tab className="Explorer-tab">
                         <FaUniversity className="Explorer-tabIcon" />
-                        <span className="Explorer-tabText">Institutions</span>
+                        <span className="Explorer-tabText">
+                            {t('explorer.tab.institutions')}
+                        </span>
                     </Tab>
                 </TabList>
 
