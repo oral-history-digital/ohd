@@ -66,6 +66,16 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
 
             {expanded && (
                 <div className="ArchiveCard-body">
+                    <Link
+                        className="ArchiveCard-pageButton"
+                        to={`/${locale}/catalog/archives/${archive.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t('explorer.view_archive_page')}
+                        <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
+                    </Link>
+
                     {archive.introduction && (
                         <div
                             className="ArchiveCard-description"
@@ -102,16 +112,6 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                     </div>
 
                     <CollectionList archive={archive} />
-
-                    <Link
-                        className="ArchiveCard-pageLink"
-                        to={`/${locale}/catalog/archives/${archive.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t('explorer.view_archive_page')}
-                        <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
-                    </Link>
                 </div>
             )}
         </div>
