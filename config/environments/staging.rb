@@ -106,9 +106,5 @@ Rails.application.configure do
 
   config.require_master_key = true
 
-  config.hosts = [
-    "staging.oral-history.digital",
-    "staging1.oral-history.digital",
-    "staging2.oral-history.digital",
-  ]
+  config.hosts = YAML.load_file('config/allowed_domains.yml')[Rails.env] 
 end

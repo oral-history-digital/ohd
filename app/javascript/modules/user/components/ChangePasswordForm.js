@@ -7,7 +7,7 @@ import { usePrevious } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export default function ChangePasswordForm({
     user,
@@ -25,16 +25,8 @@ export default function ChangePasswordForm({
     const { t } = useI18n();
     const pathBase = usePathBase();
 
-    const navigate = useNavigate();
     const location = useLocation();
     const { resetPasswordToken } = useParams();
-
-    // Does what? Redirect after login?
-    const prevAccount = usePrevious(user);
-    if (!prevAccount?.email && user.email) {
-        const to = projectId ? `${pathBase}/searches/archive` : `/${locale}`;
-        navigate(to);
-    }
 
     function handleChange(name, value) {
         setValues((prev) => ({
@@ -80,33 +72,39 @@ export default function ChangePasswordForm({
 
             {user.error && <p className="error">{t(user.error)}</p>}
 
-            <form className="default" onSubmit={handleSubmit}>
-                <InputField
-                    label={t('devise.passwords.password')}
-                    attribute="password"
-                    type="password"
-                    showErrors={showErrors}
-                    validate={(v) => PASSWORD_REGEX.test(v)}
-                    handleChange={handleChange}
-                    handleErrors={handleErrors}
-                />
-                <InputField
-                    label={t('devise.passwords.password_confirmation')}
-                    attribute="password_confirmation"
-                    type="password"
-                    showErrors={showErrors}
-                    validate={(v) =>
-                        PASSWORD_REGEX.test(v) && v === values.password
-                    }
-                    handleChange={handleChange}
-                    handleErrors={handleErrors}
-                />
+            {user?.changePasswordStatus?.success ? (
+                <div className="success">
+                    {t('devise.passwords.updated_not_active')}
+                </div>
+            ) : (
+                <form className="default" onSubmit={handleSubmit}>
+                    <InputField
+                        label={t('devise.passwords.password')}
+                        attribute="password"
+                        type="password"
+                        showErrors={showErrors}
+                        validate={(v) => PASSWORD_REGEX.test(v)}
+                        handleChange={handleChange}
+                        handleErrors={handleErrors}
+                    />
+                    <InputField
+                        label={t('devise.passwords.password_confirmation')}
+                        attribute="password_confirmation"
+                        type="password"
+                        showErrors={showErrors}
+                        validate={(v) =>
+                            PASSWORD_REGEX.test(v) && v === values.password
+                        }
+                        handleChange={handleChange}
+                        handleErrors={handleErrors}
+                    />
 
-                <input
-                    type="submit"
-                    value={t('devise.registrations.activate_submit')}
-                />
-            </form>
+                    <input
+                        type="submit"
+                        value={t('devise.registrations.activate_submit')}
+                    />
+                </form>
+            )}
         </div>
     );
 }

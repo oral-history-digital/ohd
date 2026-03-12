@@ -55,7 +55,7 @@ export default function UserEdit({ data, dataPath, onSubmit }) {
         }
 
         if (detail === 'country') {
-            return value[locale];
+            return value ? t(`countries.${value}`) : '';
         }
 
         return value;

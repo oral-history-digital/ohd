@@ -44,5 +44,25 @@ module Archive
     config.action_dispatch.cookies_serializer = :hybrid
     config.active_support.cache_format_version = 7.0
     config.active_support.to_time_preserves_timezone = :zone
+
+    # Remove default X-Frame-Options
+    config.action_dispatch.default_headers.delete('X-Frame-Options')
+    
+    allowed_domains = YAML.load_file('config/allowed_domains.yml')[Rails.env].map do |domain|
+      protocol = Rails.env.development? || Rails.env.test? ? 'http' : 'https'
+      port = Rails.env.development? ? ':3000' : Rails.env.test? ? ':47001' : ''
+      "#{protocol}://#{domain}#{port}"
+    end
+
+    # Add Content-Security-Policy instead
+    config.action_dispatch.default_headers['Content-Security-Policy'] = ([
+      'frame-ancestors', 
+      'self'
+    ] + allowed_domains).join(' ')
+
+    # Allow WebAuthn in iframes from these domains
+    config.action_dispatch.default_headers['Permissions-Policy'] = 
+      "publickey-credentials-create=(self #{allowed_domains.map{|d| "\"#{d}\""}.join(' ')}), " +
+      "publickey-credentials-get=(self #{allowed_domains.map{|d| "\"#{d}\""}.join(' ')})"
   end
 end

@@ -73,8 +73,8 @@ export default function UserProject({
 
 UserProject.propTypes = {
     userProject: PropTypes.object.isRequired,
-    roles: PropTypes.object,
-    interviewPermissions: PropTypes.object,
-    tasks: PropTypes.object,
-    supervisedTasks: PropTypes.object,
+    roles: PropTypes.array,
+    interviewPermissions: PropTypes.array,
+    tasks: PropTypes.array,
+    supervisedTasks: PropTypes.array,
 };

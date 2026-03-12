@@ -14,10 +14,14 @@ class UsersController < ApplicationController
         render json: {
           id: 'current',
           data_type: 'users',
-          data: current_user && ::UserSerializer.new(current_user)
+          data: current_user && ::UserSerializer.new(current_user, is_current_user: true)
         }
       end
     end
+  end
+
+  def edit
+    redirect_to user_url('current')
   end
 
   def update
@@ -26,9 +30,20 @@ class UsersController < ApplicationController
     user.update(user_params)
 
     if params[:user][:workflow_state] == 'remove'
-      render json: {id: params[:id], data_type: 'users', data: {id: params[:id], workflow_state: 'removed'}}
+      render json: {
+        id: params[:id],
+        data_type: 'users',
+        data: {
+          id: params[:id],
+          workflow_state: 'removed'
+        }
+      }
     else
-      render json: {id: user.id, data_type: 'users', data: ::UserSerializer.new(user)}
+      render json: {
+        id: user == current_user ? 'current' : user.id,
+        data_type: 'users',
+        data: ::UserSerializer.new(user,
+        is_current_user: user == current_user)}
     end
   end
 
@@ -229,6 +244,8 @@ class UsersController < ApplicationController
       :priv_agreement,
       :default_locale,
       :workflow_state,
+      :otp_required_for_login,
+      :passkey_required_for_login,
     )
   end
 
