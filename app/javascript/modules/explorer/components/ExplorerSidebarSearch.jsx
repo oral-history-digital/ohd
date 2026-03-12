@@ -1,7 +1,4 @@
-import { useGetArchives } from 'modules/data';
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { useGetArchives, useGetInstitutionsList } from 'modules/data';
 import { useMatch, useSearchParams } from 'react-router-dom';
 
 import {
@@ -15,30 +12,26 @@ import {
     applyQueryParam,
     applyYearRangeParams,
 } from '../utils';
-import { InstitutionDropdown } from './InstitutionDropdown';
+import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
+import { ExplorerRangeFilter } from './ExplorerRangeFilter';
+import { ExplorerSearchInput } from './ExplorerSearchInput';
 
-const Range = Slider.createSliderWithTooltip(Slider.Range);
-
-// TODO: Split this container into ExplorerSearchInput, ExplorerRangeFilter, and
-// ExplorerInstitutionFilter subcomponents while keeping URL param orchestration here.
 export function ExplorerSidebarSearch() {
     const match = useMatch('/:locale/explorer/*');
     const [searchParams, setSearchParams] = useSearchParams();
     const { archives } = useGetArchives({ all: true, workflowState: 'public' });
-
-    const institutions = useExplorerArchiveInstitutions({
-        archives,
-    });
-    const { globalMin, globalMax } = useExplorerInterviewRange({
-        archives,
-        institutions,
-    });
-    const { globalYearMin, globalYearMax } = useExplorerYearRange({
-        archives,
+    const { institutions: institutionsList } = useGetInstitutionsList({
+        all: true,
     });
 
     const tabIndex = Number(searchParams.get('explorer_tab')) || 0;
     const isArchivesTab = tabIndex === 0;
+
+    const archiveInstitutions = useExplorerArchiveInstitutions({ archives });
+    const { globalMin, globalMax } = useExplorerInterviewRange({
+        items: isArchivesTab ? archives : (institutionsList ?? []),
+    });
+    const { globalYearMin, globalYearMax } = useExplorerYearRange({ archives });
 
     const query = searchParams.get('explorer_q') || '';
     const interviewMin =
@@ -101,116 +94,39 @@ export function ExplorerSidebarSearch() {
             replace: true,
         });
 
-    const isInterviewRangeFiltered =
-        interviewMin > globalMin || interviewMax < globalMax;
-    const isYearRangeFiltered =
-        yearMin > globalYearMin || yearMax < globalYearMax;
-
     return (
         <div className="ExplorerSidebarSearch">
-            <div className="ExplorerSidebarSearch-inputWrapper">
-                <FaSearch className="ExplorerSidebarSearch-icon" />
-                <input
-                    className="ExplorerSidebarSearch-input"
-                    type="text"
-                    value={query}
-                    onChange={handleQueryChange}
-                    placeholder="Search archives &amp; institutions…"
-                />
-                {query && (
-                    <button
-                        className="ExplorerSidebarSearch-clear"
-                        onClick={handleClear}
-                        aria-label="Clear search"
-                        type="button"
-                    >
-                        <FaTimes />
-                    </button>
-                )}
-            </div>
+            <ExplorerSearchInput
+                value={query}
+                onChange={handleQueryChange}
+                onClear={handleClear}
+            />
 
-            <div className="ExplorerSidebarSearch-rangeSection">
-                <div className="ExplorerSidebarSearch-rangeLabel">
-                    <span>Interviews</span>
-                    <span className="ExplorerSidebarSearch-rangeValues">
-                        {interviewMin}–{interviewMax}
-                        {isInterviewRangeFiltered && (
-                            <button
-                                className="ExplorerSidebarSearch-rangeReset"
-                                type="button"
-                                onClick={() =>
-                                    handleInterviewRangeChange([
-                                        globalMin,
-                                        globalMax,
-                                    ])
-                                }
-                                aria-label="Reset interview filter"
-                            >
-                                <FaTimes />
-                            </button>
-                        )}
-                    </span>
-                </div>
-                <div className="ExplorerSidebarSearch-sliderWrapper">
-                    <Range
-                        min={globalMin}
-                        max={globalMax}
-                        value={[interviewMin, interviewMax]}
-                        onChange={handleInterviewRangeChange}
-                        step={1}
-                        tipProps={{ placement: 'top' }}
-                    />
-                </div>
-            </div>
+            <ExplorerRangeFilter
+                label="Interviews"
+                globalMin={globalMin}
+                globalMax={globalMax}
+                value={[interviewMin, interviewMax]}
+                onChange={handleInterviewRangeChange}
+            />
 
             {isArchivesTab && globalYearMin !== null && (
-                <div className="ExplorerSidebarSearch-rangeSection">
-                    <div className="ExplorerSidebarSearch-rangeLabel">
-                        <span>Publication year</span>
-                        <span className="ExplorerSidebarSearch-rangeValues">
-                            {yearMin}–{yearMax}
-                            {isYearRangeFiltered && (
-                                <button
-                                    className="ExplorerSidebarSearch-rangeReset"
-                                    type="button"
-                                    onClick={() =>
-                                        handleYearRangeChange([
-                                            globalYearMin,
-                                            globalYearMax,
-                                        ])
-                                    }
-                                    aria-label="Reset year filter"
-                                >
-                                    <FaTimes />
-                                </button>
-                            )}
-                        </span>
-                    </div>
-                    <div className="ExplorerSidebarSearch-sliderWrapper">
-                        <Range
-                            min={globalYearMin}
-                            max={globalYearMax}
-                            value={[yearMin, yearMax]}
-                            onChange={handleYearRangeChange}
-                            step={1}
-                            tipProps={{ placement: 'top' }}
-                        />
-                    </div>
-                </div>
+                <ExplorerRangeFilter
+                    label="Publication year"
+                    globalMin={globalYearMin}
+                    globalMax={globalYearMax}
+                    value={[yearMin, yearMax]}
+                    onChange={handleYearRangeChange}
+                />
             )}
 
             {isArchivesTab && (
-                <div className="ExplorerSidebarSearch-institutionSection">
-                    <div className="ExplorerSidebarSearch-rangeLabel">
-                        <span>Institution</span>
-                    </div>
-                    <InstitutionDropdown
-                        institutions={institutions}
-                        values={institutionIds}
-                        onChange={handleInstitutionChange}
-                        onClearAll={handleInstitutionClearAll}
-                    />
-                </div>
+                <ExplorerInstitutionFilter
+                    institutions={archiveInstitutions}
+                    values={institutionIds}
+                    onChange={handleInstitutionChange}
+                    onClearAll={handleInstitutionClearAll}
+                />
             )}
         </div>
     );
