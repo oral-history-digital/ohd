@@ -1,10 +1,11 @@
 import { useGetInstitutionsList } from 'modules/data';
 import PropTypes from 'prop-types';
 
-import { useAccordion } from '../hooks';
-import { filterInstitutions } from '../utils';
+import { useAccordion, useInstitutionsSort } from '../hooks';
+import { filterInstitutions, sortInstitutions } from '../utils';
 import { InstitutionCard } from './InstitutionCard';
 import { InstitutionsMap } from './InstitutionsMap';
+import { InstitutionsSortControl } from './InstitutionsSortControl';
 
 export function InstitutionsList({
     query,
@@ -14,6 +15,7 @@ export function InstitutionsList({
     instArchiveMax,
 }) {
     const { expandedId, toggle } = useAccordion();
+    const { sort, setSort } = useInstitutionsSort();
     const { institutions, loading, error } = useGetInstitutionsList({
         all: true,
     });
@@ -51,17 +53,20 @@ export function InstitutionsList({
         instArchiveMax
     );
 
+    const sortedInstitutions = sortInstitutions(filteredInstitutions, sort);
+
     return (
         <div className="InstitutionsList">
             <InstitutionsMap institutions={filteredInstitutions} height={400} />
+            <InstitutionsSortControl value={sort} onChange={setSort} />
 
             <div className="InstitutionsList-cards">
-                {filteredInstitutions.length === 0 ? (
+                {sortedInstitutions.length === 0 ? (
                     <div className="InstitutionsList InstitutionsList--empty">
                         <p>No institutions match the current filters.</p>
                     </div>
                 ) : (
-                    filteredInstitutions.map((institution) => (
+                    sortedInstitutions.map((institution) => (
                         <InstitutionCard
                             key={institution.id}
                             institution={institution}

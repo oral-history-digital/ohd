@@ -13,3 +13,4 @@ export * from './CollectionPage';
 export * from './InstitutionCard';
 export * from './InstitutionPage';
 export * from './InstitutionsList';
+export * from './InstitutionsSortControl';

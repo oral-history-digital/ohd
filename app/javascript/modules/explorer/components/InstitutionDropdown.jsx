@@ -14,8 +14,6 @@ export function InstitutionDropdown({
 
     const hasSelection = values.length > 0;
 
-    const toggleItem = (id) => onChange(id);
-
     const handleClear = (e) => {
         e.stopPropagation();
         onClearAll();
@@ -84,7 +82,7 @@ export function InstitutionDropdown({
                                 <input
                                     type="checkbox"
                                     checked={values.includes(inst.id)}
-                                    onChange={() => toggleItem(inst.id)}
+                                    onChange={() => onChange(inst.id)}
                                 />
                                 <span>{inst.name}</span>
                             </label>

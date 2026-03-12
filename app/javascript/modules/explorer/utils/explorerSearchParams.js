@@ -10,6 +10,7 @@ export const FILTER_PARAMS = [
     'explorer_year_max',
     'explorer_institution',
     'explorer_sort',
+    'explorer_inst_sort',
 ];
 
 export const resetExplorerFilters = (prev) => {
