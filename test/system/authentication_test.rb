@@ -261,7 +261,7 @@ class RegistrationTest < ApplicationSystemTestCase
     fill_in 'user[password]', with: PASSWORD
     click_on 'Login'
 
-    assert_text "Too many failed login attempts. Try again later or reset your password."
+    assert_text "For security reasons, your account is locked after multiple failed attempts."
   end
 
   test "locked user can login after lock expires" do
