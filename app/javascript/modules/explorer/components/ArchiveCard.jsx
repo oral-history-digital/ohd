@@ -1,12 +1,15 @@
 import classNames from 'classnames';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
+import { Link, useMatch } from 'react-router-dom';
 
 import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
 export function ArchiveCard({ archive, query, expanded, onToggle }) {
+    const match = useMatch('/:locale/*');
+    const locale = match?.params?.locale || 'de';
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
         .join(', ');
@@ -94,6 +97,16 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                     </div>
 
                     <CollectionList archive={archive} />
+
+                    <Link
+                        className="ArchiveCard-pageLink"
+                        to={`/${locale}/catalog/archives/${archive.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        View archive page
+                        <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
+                    </Link>
                 </div>
             )}
         </div>
