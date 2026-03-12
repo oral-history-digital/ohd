@@ -5,6 +5,7 @@ export function useDropdown({ align = 'left' } = {}) {
     const [panelStyle, setPanelStyle] = useState({});
     const containerRef = useRef(null);
     const toggleRef = useRef(null);
+    const panelRef = useRef(null);
 
     const computeStyle = useCallback(() => {
         if (!toggleRef.current) return;
@@ -40,7 +41,11 @@ export function useDropdown({ align = 'left' } = {}) {
         computeStyle();
 
         const handleClose = (e) => {
-            if (!containerRef.current?.contains(e.target)) setOpen(false);
+            if (
+                !containerRef.current?.contains(e.target) &&
+                !panelRef.current?.contains(e.target)
+            )
+                setOpen(false);
         };
         const handleReposition = () => computeStyle();
 
@@ -57,5 +62,13 @@ export function useDropdown({ align = 'left' } = {}) {
     const toggle = () => setOpen((p) => !p);
     const close = () => setOpen(false);
 
-    return { open, toggle, close, containerRef, toggleRef, panelStyle };
+    return {
+        open,
+        toggle,
+        close,
+        containerRef,
+        toggleRef,
+        panelRef,
+        panelStyle,
+    };
 }

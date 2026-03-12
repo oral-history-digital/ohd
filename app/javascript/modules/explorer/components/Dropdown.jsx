@@ -6,7 +6,15 @@ import { FaChevronDown, FaTimes } from 'react-icons/fa';
 import { useDropdown } from '../hooks';
 
 export function Dropdown({ label, onClear, children, className, align }) {
-    const { open, toggle, containerRef, toggleRef, panelStyle } = useDropdown({
+    const {
+        open,
+        toggle,
+        close,
+        containerRef,
+        toggleRef,
+        panelRef,
+        panelStyle,
+    } = useDropdown({
         align,
     });
 
@@ -53,12 +61,16 @@ export function Dropdown({ label, onClear, children, className, align }) {
             {open &&
                 createPortal(
                     <div
+                        ref={panelRef}
                         className={classNames(
                             'Dropdown-panel',
                             className && `${className}-panel`
                         )}
                         style={panelStyle}
                         role="listbox"
+                        tabIndex={-1}
+                        onClick={close}
+                        onKeyDown={(e) => e.key === 'Escape' && close()}
                     >
                         {children}
                     </div>,

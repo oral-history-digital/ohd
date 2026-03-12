@@ -7,7 +7,7 @@ export const SORT_OPTIONS = [
     { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
 ];
 
-export const DEFAULT_SORT = 'interviews_asc';
+export const DEFAULT_SORT = 'interviews_desc';
 
 export const sortArchives = (archives, sort) => {
     const [field, dir] = (sort || DEFAULT_SORT).split('_');
