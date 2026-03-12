@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- feat: add Multifactor Authorization
+- feat: add Multifactor Authentication
 - feat: add devises lockable (locked after five authentication trials)
 
 ## [1.9.1] - 2026-02-26
