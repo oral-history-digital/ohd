@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 
 import FeaturedInterviews from './FeaturedInterviews';
+import ProjectLogo from './ProjectLogo';
 import StartPageVideo from './StartPageVideo';
 
 export default function Home({ institutions }) {
@@ -48,51 +49,60 @@ export default function Home({ institutions }) {
             <div className="wrapper-content home-content">
                 <RedirectOnLogin path="/searches/archive" />
                 {showStartPageVideo() ? <StartPageVideo /> : null}
-                <div className="home-text">
-                    <h1>{getTranslation('name')}</h1>
-                    <Fetch
-                        fetchParams={['institutions', null, null, 'all']}
-                        testDataType="institutions"
-                        testIdOrDesc="all"
-                        fallback={
-                            <Skeleton baseColor="#ddd" highlightColor="#eee" />
-                        }
-                    >
-                        {project &&
-                            Object.values(project.institution_projects).map(
-                                (ip) => (
-                                    <p key={ip.id}>
-                                        <b>
-                                            {institutions[ip.institution_id]
-                                                ?.name[locale] ||
-                                                institutions[ip.institution_id]
-                                                    ?.name[
-                                                    project.default_locale
-                                                ]}
-                                        </b>
-                                    </p>
-                                )
-                            )}
-                    </Fetch>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: sanitizeHtml(
-                                getTranslation('introduction'),
-                                'RICH_TEXT'
-                            ),
-                        }}
-                    />
+                <div className="ProjectHome--hero">
+                    <ProjectLogo />
+                    <div className="ProjectHome--heroText">
+                        <h1>{getTranslation('name')}</h1>
+                        <Fetch
+                            fetchParams={['institutions', null, null, 'all']}
+                            testDataType="institutions"
+                            testIdOrDesc="all"
+                            fallback={
+                                <Skeleton
+                                    baseColor="#ddd"
+                                    highlightColor="#eee"
+                                />
+                            }
+                        >
+                            {project &&
+                                Object.values(project.institution_projects).map(
+                                    (ip) => (
+                                        <p key={ip.id}>
+                                            <b>
+                                                {institutions[ip.institution_id]
+                                                    ?.name[locale] ||
+                                                    institutions[
+                                                        ip.institution_id
+                                                    ]?.name[
+                                                        project.default_locale
+                                                    ]}
+                                            </b>
+                                        </p>
+                                    )
+                                )}
+                        </Fetch>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtml(
+                                    getTranslation('introduction'),
+                                    'RICH_TEXT'
+                                ),
+                            }}
+                        />
+                    </div>
                 </div>
                 {getTranslation('more_text') && (
-                    <p
-                        className="home-paragraph u-mt"
-                        dangerouslySetInnerHTML={{
-                            __html: sanitizeHtml(
-                                getTranslation('more_text'),
-                                'RICH_TEXT'
-                            ),
-                        }}
-                    />
+                    <div className="ProjectHome--moreText">
+                        <p
+                            className="u-mt"
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtml(
+                                    getTranslation('more_text'),
+                                    'RICH_TEXT'
+                                ),
+                            }}
+                        />
+                    </div>
                 )}
                 {showFeaturedInterviews() && (
                     <div className="Container u-mt u-mb-large">

@@ -1,12 +1,19 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
-import PropTypes from 'prop-types';
+import { usePathBase, useProject } from 'modules/routes';
 import { Link } from 'react-router-dom';
 
-export default function ProjectLogo({ logos, defaultLocale, className }) {
+export default function ProjectLogo() {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+    const { project } = useProject();
+
+    if (!project) {
+        return null;
+    }
+
+    const logos = project?.logos || {};
+    const defaultLocale = project.default_locale;
 
     // Return early if no logos are provided
     if (!logos || Object.keys(logos).length === 0) return null;
@@ -25,18 +32,18 @@ export default function ProjectLogo({ logos, defaultLocale, className }) {
     if (!src) return null; // No suitable logo found
 
     return (
-        <Link
-            to={pathBase}
-            className={classNames('Link', className)}
-            title={t('home')}
-        >
-            <img className="SiteHeader-logo" src={src} alt="Collection logo" />
-        </Link>
+        <div className="ProjectLogo">
+            <Link
+                to={pathBase}
+                className={classNames('Link', 'ProjectLogo--link')}
+                title={t('Home')}
+            >
+                <img
+                    className="ProjectLogo--logo"
+                    src={src}
+                    alt="Project logo"
+                />
+            </Link>
+        </div>
     );
 }
-
-ProjectLogo.propTypes = {
-    logos: PropTypes.object.isRequired,
-    defaultLocale: PropTypes.string.isRequired,
-    className: PropTypes.string,
-};

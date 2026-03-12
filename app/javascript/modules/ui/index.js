@@ -1,5 +1,4 @@
 export { default as AdminMenu } from './AdminMenu';
-export { default as Breadcrumbs } from './Breadcrumbs';
 export { Button, CancelButton, SubmitButton } from './Buttons';
 export { default as Checkbox } from './Checkbox';
 export { PAGINATION_DEFAULT_PAGE_SIZE } from './constants';

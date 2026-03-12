@@ -1,13 +1,52 @@
 .Breadcrumbs {
-  color: $ui-background-color;
-  font-size: 0.875rem;
+  align-items: center;
+  color: var(--primary-color);
+  display: flex;
+  flex-shrink: 0;
 }
 
-.Breadcrumbs-separator {
-  padding-left: 0.25 * $base-unit;
-  padding-right: 0.25 * $base-unit;
+.Breadcrumbs-list {
+  align-items: center;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.Breadcrumbs-lastItem {
-  font-weight: bold;
+.Breadcrumbs-item {
+  align-items: center;
+  display: flex;
+}
+
+.Breadcrumbs-divider {
+  flex-shrink: 0;
+  margin: 0 ($base-unit * 0.25);
+}
+
+.Breadcrumbs-logoLink {
+  align-items: center;
+  display: flex;
+}
+
+.Breadcrumbs-logo {
+  height: 23px;
+  max-width: 100%;
+  vertical-align: bottom;
+
+  &--large {
+    max-height: 3.5rem;
+
+    @include screen-m {
+      max-height: 4.25rem;
+    }
+  }
+}
+
+.Breadcrumbs-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

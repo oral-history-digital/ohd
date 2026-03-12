@@ -25,8 +25,11 @@ import {
     getLoggedInAt,
     useFetchAccount,
 } from 'modules/user';
-import { ResizeWatcherContainer, isMobile } from 'modules/user-agent';
-import { useScrollBelowThreshold } from 'modules/user-agent';
+import {
+    ResizeWatcherContainer,
+    isMobile,
+    useScrollBelowThreshold,
+} from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
