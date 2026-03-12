@@ -1,9 +1,10 @@
 import { useGetArchives } from 'modules/data';
 import PropTypes from 'prop-types';
 
-import { useAccordion } from '../hooks';
-import { filterArchives } from '../utils';
+import { useAccordion, useArchivesSort } from '../hooks';
+import { filterArchives, sortArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
+import { ArchivesSortControl } from './ArchivesSortControl';
 
 export function ArchivesList({
     query,
@@ -14,6 +15,7 @@ export function ArchivesList({
     institutionIds,
 }) {
     const { expandedId, toggle } = useAccordion();
+    const { sort, setSort } = useArchivesSort();
     const { archives, isLoading, error } = useGetArchives({
         all: true,
         workflowState: 'public',
@@ -64,7 +66,8 @@ export function ArchivesList({
 
     return (
         <div className="ArchivesList">
-            {filtered.map((archive) => (
+            <ArchivesSortControl value={sort} onChange={setSort} />
+            {sortArchives(filtered, sort).map((archive) => (
                 <ArchiveCard
                     key={archive.id}
                     archive={archive}

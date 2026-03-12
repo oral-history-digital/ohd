@@ -1,6 +1,7 @@
 export * from './ArchiveCard';
 export * from './ArchivePage';
 export * from './ArchivesList';
+export * from './ArchivesSortControl';
 export * from './ExplorerInstitutionFilter';
 export * from './ExplorerRangeFilter';
 export * from './ExplorerSearchInput';
