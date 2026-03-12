@@ -18,9 +18,19 @@ export function Explorer() {
         institutionIds,
     } = useExplorerParams();
 
+    const FILTER_PARAMS = [
+        'explorer_q',
+        'explorer_interviews_min',
+        'explorer_interviews_max',
+        'explorer_year_min',
+        'explorer_year_max',
+        'explorer_institution',
+    ];
+
     const handleTabChange = (index) =>
         setSearchParams(
             (prev) => {
+                FILTER_PARAMS.forEach((key) => prev.delete(key));
                 if (index === 0) {
                     prev.delete('explorer_tab');
                 } else {
