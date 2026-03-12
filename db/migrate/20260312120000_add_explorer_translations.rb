@@ -162,6 +162,15 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Відкрити сторінку архіву',
       ar: 'عرض صفحة الأرشيف',
     },
+    'explorer.view_collection_page': {
+      de: 'Sammlungsseite öffnen',
+      en: 'View collection page',
+      el: 'Προβολή σελίδας συλλογής',
+      es: 'Ver página de la colección',
+      ru: 'Открыть страницу коллекции',
+      uk: 'Відкрити сторінку колекції',
+      ar: 'عرض صفحة المجموعة',
+    },
     'explorer.sub_institutions': {
       de: 'Unterinstitutionen',
       en: 'Sub-institutions',

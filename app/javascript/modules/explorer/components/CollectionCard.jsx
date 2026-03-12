@@ -4,13 +4,16 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
+import { Link, useMatch } from 'react-router-dom';
 
 import { HighlightText } from './HighlightText';
 
 export function CollectionCard({ collection, query }) {
     const { t } = useI18n();
     const [expanded, setExpanded] = useState(false);
+    const match = useMatch('/:locale/*');
+    const locale = match?.params?.locale || 'de';
 
     return (
         <div
@@ -49,6 +52,16 @@ export function CollectionCard({ collection, query }) {
 
             {expanded && (
                 <div className="CollectionCard-body">
+                    <Link
+                        className="CollectionCard-pageButton"
+                        to={`/${locale}/catalog/collections/${collection.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t('explorer.view_collection_page')}
+                        <FaExternalLinkAlt className="CollectionCard-pageLinkIcon" />
+                    </Link>
+
                     {collection.notes && (
                         <div
                             className="CollectionCard-notes"
