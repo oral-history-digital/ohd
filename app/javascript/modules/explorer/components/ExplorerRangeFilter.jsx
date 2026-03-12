@@ -9,7 +9,7 @@ import { FaTimes } from 'react-icons/fa';
 // rc-slider default handle radius (px) — accounts for track inset
 const HANDLE_RADIUS = 7;
 
-const Range = Slider.createSliderWithTooltip(Slider.Range);
+const Range = Slider.Range;
 
 export function ExplorerRangeFilter({
     label,
@@ -78,7 +78,6 @@ export function ExplorerRangeFilter({
                     value={value}
                     onChange={onChange}
                     step={1}
-                    tipProps={{ visible: false }}
                 />
             </div>
         </div>
