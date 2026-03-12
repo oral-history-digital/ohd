@@ -133,6 +133,26 @@
   z-index: 10;
 }
 
+.ExplorerResetFilters {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.75rem;
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  background: none;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: $gray-dark;
+
+  &:hover {
+    border-color: var(--primary-color, $gray-darkest);
+    color: var(--primary-color, $gray-darkest);
+  }
+}
+
 .ExplorerSidebarSearch-clear {
   flex-shrink: 0;
   display: flex;

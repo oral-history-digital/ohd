@@ -7,13 +7,16 @@ import {
     useExplorerYearRange,
 } from '../hooks';
 import {
+    FILTER_PARAMS,
     applyInstitutionParam,
     applyInterviewRangeParams,
     applyQueryParam,
     applyYearRangeParams,
+    resetExplorerFilters,
 } from '../utils';
 import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
 import { ExplorerRangeFilter } from './ExplorerRangeFilter';
+import { ExplorerResetFilters } from './ExplorerResetFilters';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
 
 export function ExplorerSidebarSearch() {
@@ -94,8 +97,18 @@ export function ExplorerSidebarSearch() {
             replace: true,
         });
 
+    const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
+
+    const handleResetAll = () =>
+        setSearchParams((prev) => resetExplorerFilters(prev), {
+            replace: true,
+        });
+
     return (
         <div className="ExplorerSidebarSearch">
+            {hasActiveFilters && (
+                <ExplorerResetFilters onClick={handleResetAll} />
+            )}
             <ExplorerSearchInput
                 value={query}
                 onChange={handleQueryChange}

@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { ArchivesList, InstitutionsList } from './components';
 import { useExplorerParams } from './hooks';
+import { resetExplorerFilters } from './utils';
 
 export function Explorer() {
     const [, setSearchParams] = useSearchParams();
@@ -18,20 +19,10 @@ export function Explorer() {
         institutionIds,
     } = useExplorerParams();
 
-    const FILTER_PARAMS = [
-        'explorer_q',
-        'explorer_interviews_min',
-        'explorer_interviews_max',
-        'explorer_year_min',
-        'explorer_year_max',
-        'explorer_institution',
-        'explorer_sort',
-    ];
-
     const handleTabChange = (index) =>
         setSearchParams(
             (prev) => {
-                FILTER_PARAMS.forEach((key) => prev.delete(key));
+                resetExplorerFilters(prev);
                 if (index === 0) {
                     prev.delete('explorer_tab');
                 } else {

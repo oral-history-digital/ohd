@@ -1,3 +1,18 @@
+export const FILTER_PARAMS = [
+    'explorer_q',
+    'explorer_interviews_min',
+    'explorer_interviews_max',
+    'explorer_year_min',
+    'explorer_year_max',
+    'explorer_institution',
+    'explorer_sort',
+];
+
+export const resetExplorerFilters = (prev) => {
+    FILTER_PARAMS.forEach((key) => prev.delete(key));
+    return prev;
+};
+
 /**
  * Sets or removes the `explorer_q` search param.
  *

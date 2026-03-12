@@ -4,6 +4,7 @@ export * from './ArchivesList';
 export * from './ArchivesSortControl';
 export * from './ExplorerInstitutionFilter';
 export * from './ExplorerRangeFilter';
+export * from './ExplorerResetFilters';
 export * from './ExplorerSearchInput';
 export * from './ExplorerSidebarSearch';
 export * from './HighlightText';
