@@ -14,6 +14,8 @@ export function Explorer() {
         query,
         interviewMin,
         interviewMax,
+        collectionMin,
+        collectionMax,
         yearMin,
         yearMax,
         institutionIds,
@@ -61,6 +63,8 @@ export function Explorer() {
                                 query={query}
                                 interviewMin={interviewMin}
                                 interviewMax={interviewMax}
+                                collectionMin={collectionMin}
+                                collectionMax={collectionMax}
                                 yearMin={yearMin}
                                 yearMax={yearMax}
                                 institutionIds={institutionIds}

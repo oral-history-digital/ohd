@@ -16,6 +16,12 @@ export const useExplorerParams = () => {
         interviewMax: searchParams.has('explorer_interviews_max')
             ? Number(searchParams.get('explorer_interviews_max'))
             : null,
+        collectionMin: searchParams.has('explorer_collections_min')
+            ? Number(searchParams.get('explorer_collections_min'))
+            : null,
+        collectionMax: searchParams.has('explorer_collections_max')
+            ? Number(searchParams.get('explorer_collections_max'))
+            : null,
         yearMin: searchParams.has('explorer_year_min')
             ? Number(searchParams.get('explorer_year_min'))
             : null,

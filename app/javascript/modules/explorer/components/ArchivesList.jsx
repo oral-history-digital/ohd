@@ -1,7 +1,11 @@
 import { useGetArchives } from 'modules/data';
 import PropTypes from 'prop-types';
 
-import { useAccordion, useArchivesSort } from '../hooks';
+import {
+    useAccordion,
+    useArchivesSort,
+    useExplorerCollectionRange,
+} from '../hooks';
 import { filterArchives, sortArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
 import { ArchivesSortControl } from './ArchivesSortControl';
@@ -10,6 +14,8 @@ export function ArchivesList({
     query,
     interviewMin,
     interviewMax,
+    collectionMin,
+    collectionMax,
     yearMin,
     yearMax,
     institutionIds,
@@ -20,12 +26,16 @@ export function ArchivesList({
         all: true,
         workflowState: 'public',
     });
+    const { globalCollectionMin, globalCollectionMax } =
+        useExplorerCollectionRange({ archives });
 
     const filtered = filterArchives(
         archives,
         query,
         interviewMin,
         interviewMax,
+        collectionMin ?? globalCollectionMin,
+        collectionMax ?? globalCollectionMax,
         yearMin,
         yearMax,
         institutionIds
@@ -86,6 +96,8 @@ ArchivesList.propTypes = {
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,
+    collectionMin: PropTypes.number,
+    collectionMax: PropTypes.number,
     yearMin: PropTypes.number,
     yearMax: PropTypes.number,
     institutionIds: PropTypes.arrayOf(PropTypes.number),

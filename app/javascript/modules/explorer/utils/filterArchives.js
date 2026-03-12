@@ -15,6 +15,8 @@ export const filterArchives = (
     query,
     interviewMin,
     interviewMax,
+    collectionMin,
+    collectionMax,
     yearMin,
     yearMax,
     institutionIds
@@ -34,6 +36,12 @@ export const filterArchives = (
             const total = a.interviews?.total ?? 0;
             if (interviewMin !== null && total < interviewMin) return false;
             if (interviewMax !== null && total > interviewMax) return false;
+        }
+
+        if (collectionMin !== null || collectionMax !== null) {
+            const total = a.collections?.total ?? 0;
+            if (collectionMin !== null && total < collectionMin) return false;
+            if (collectionMax !== null && total > collectionMax) return false;
         }
 
         if (yearMin !== null || yearMax !== null) {
