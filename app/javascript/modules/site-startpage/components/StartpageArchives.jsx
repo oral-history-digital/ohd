@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { getStartpageProjects } from 'modules/data';
+import { useGetInstitutions } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -9,6 +10,7 @@ import ArchiveTile from './ArchiveTile';
 
 export function StartpageArchives({ className }) {
     const archives = useSelector(getStartpageProjects);
+    const institutions = useGetInstitutions();
     const { t } = useI18n();
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -87,7 +89,11 @@ export function StartpageArchives({ className }) {
                 onScroll={handleScroll}
             >
                 {archives.map((archive) => (
-                    <ArchiveTile key={archive.id} archive={archive} />
+                    <ArchiveTile
+                        key={archive.id}
+                        archive={archive}
+                        institutions={institutions}
+                    />
                 ))}
             </div>
         </article>
