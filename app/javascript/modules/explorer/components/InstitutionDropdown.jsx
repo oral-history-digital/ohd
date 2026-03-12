@@ -29,6 +29,7 @@ export function InstitutionDropdown({
             className="InstitutionDropdown"
             label={toggleLabel}
             onClear={hasSelection ? onClearAll : undefined}
+            closeOnItemClick={false}
         >
             <ul className="InstitutionDropdown-list">
                 {institutions.map((inst) => (

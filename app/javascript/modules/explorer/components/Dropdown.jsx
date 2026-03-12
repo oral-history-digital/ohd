@@ -5,7 +5,14 @@ import { FaChevronDown, FaTimes } from 'react-icons/fa';
 
 import { useDropdown } from '../hooks';
 
-export function Dropdown({ label, onClear, children, className, align }) {
+export function Dropdown({
+    label,
+    onClear,
+    children,
+    className,
+    align,
+    closeOnItemClick = true,
+}) {
     const {
         open,
         toggle,
@@ -69,7 +76,7 @@ export function Dropdown({ label, onClear, children, className, align }) {
                         style={panelStyle}
                         role="listbox"
                         tabIndex={-1}
-                        onClick={close}
+                        onClick={closeOnItemClick ? close : undefined}
                         onKeyDown={(e) => e.key === 'Escape' && close()}
                     >
                         {children}
@@ -86,6 +93,7 @@ Dropdown.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     align: PropTypes.oneOf(['left', 'right']),
+    closeOnItemClick: PropTypes.bool,
 };
 
 export default Dropdown;
