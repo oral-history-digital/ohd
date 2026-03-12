@@ -20,8 +20,7 @@ import {
     ConfirmNewZwarTosPopup,
     CorrectUserDataPopup,
 } from 'modules/user';
-import { ResizeWatcherContainer } from 'modules/user-agent';
-import { isMobile } from 'modules/user-agent';
+import { ResizeWatcher, isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useSearchParams } from 'react-router-dom';
@@ -92,7 +91,7 @@ export default function Layout({
         : '/favicon.ico';
 
     return (
-        <ResizeWatcherContainer>
+        <ResizeWatcher>
             <div
                 className={classNames('Layout', {
                     'sidebar-is-visible': sidebarVisible,
@@ -147,7 +146,7 @@ export default function Layout({
                     <Banner onClose={handleBannerClose} />
                 )}
             </div>
-        </ResizeWatcherContainer>
+        </ResizeWatcher>
     );
 }
 

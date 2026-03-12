@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
+import { useSidebar } from 'modules/sidebar';
 import PropTypes from 'prop-types';
 import useResizeAware from 'react-resize-aware';
-import { useLocation } from 'react-router-dom';
 
 import {
     SCREEN_WIDTH_ABOVE_XL,
@@ -10,35 +10,33 @@ import {
     currentScreenWidth,
 } from './media-queries';
 
-export default function ResizeWatcher({ children, hideSidebar, showSidebar }) {
-    const [screenWidth, setScreenWidth] = useState(null);
+export default function ResizeWatcher({ children }) {
+    const previousScreenWidth = useRef(null);
     const [resizeListener, sizes] = useResizeAware();
-    const location = useLocation();
+    const { hide, show } = useSidebar();
 
     useEffect(() => {
-        handleResize();
-    }, [sizes.width]);
-
-    function handleResize() {
-        const oldWidth = screenWidth;
+        const oldWidth = previousScreenWidth.current;
         const newWidth = currentScreenWidth();
+
+        // First measurement only establishes the baseline.
+        if (oldWidth === null) {
+            previousScreenWidth.current = newWidth;
+            return;
+        }
 
         if (oldWidth === newWidth) {
             return;
         }
 
-        // Don't auto-open sidebar on startpage (/:locale pattern)
-        const isStartpage = /^\/[a-z]{2}$/.test(location.pathname);
-
-        if (newWidth === SCREEN_WIDTH_ABOVE_XL && !isStartpage) {
-            showSidebar();
+        if (newWidth === SCREEN_WIDTH_ABOVE_XL) {
+            show();
         }
         if (newWidth === SCREEN_WIDTH_BELOW_M) {
-            hideSidebar();
+            hide();
         }
-
-        setScreenWidth(newWidth);
-    }
+        previousScreenWidth.current = newWidth;
+    }, [sizes.width, show, hide]);
 
     return (
         <div style={{ position: 'relative' }}>
@@ -50,6 +48,4 @@ export default function ResizeWatcher({ children, hideSidebar, showSidebar }) {
 
 ResizeWatcher.propTypes = {
     children: PropTypes.node.isRequired,
-    hideSidebar: PropTypes.func.isRequired,
-    showSidebar: PropTypes.func.isRequired,
 };
