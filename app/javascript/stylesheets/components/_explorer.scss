@@ -406,6 +406,49 @@
   color: $gray-dark;
 }
 
+.ArchivesList--loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: $base-unit * 4;
+  color: $gray-medium;
+  font-size: 0.875rem;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid $gray-lighter;
+    border-top-color: var(--primary-color, $gray-dark);
+    border-radius: 50%;
+    animation: explorer-spin 0.75s linear infinite;
+  }
+}
+
+@keyframes explorer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ArchivesList--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: $base-unit 0;
+  padding: $base-unit * 0.75 $base-unit;
+  background: rgba(143, 32, 28, 0.06);
+  border: 1px solid rgba(143, 32, 28, 0.25);
+  border-radius: 6px;
+  color: rgba(143, 32, 28, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 // ArchiveCard
 // --------------------------------------------------
 

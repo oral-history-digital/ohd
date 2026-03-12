@@ -41,21 +41,15 @@ export function ArchivesList({
         institutionIds
     );
 
-    // TODO: Use t() and/or Spinner
     if (isLoading) {
-        return (
-            <div className="Explorer">
-                <div className="Explorer-loading">Loading…</div>
-            </div>
-        );
+        return <div className="ArchivesList--loading">Loading archives…</div>;
     }
 
-    // TODO: Use t() and/or a nicer error message
     if (error) {
         return (
-            <div className="Explorer">
-                <div className="Explorer-error">
-                    An error occurred while fetching data. Please try again
+            <div className="ArchivesList">
+                <div className="ArchivesList--error">
+                    An error occurred while loading archives. Please try again
                     later.
                 </div>
             </div>
