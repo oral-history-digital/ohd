@@ -10,7 +10,7 @@ export function useExplorerInterviewRange({ items }) {
             .filter((n) => !isNaN(n));
 
         return {
-            globalMin: Math.max(1, Math.min(...counts)),
+            globalMin: 0,
             globalMax: Math.max(...counts),
         };
     }, [items]);

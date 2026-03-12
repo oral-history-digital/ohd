@@ -10,7 +10,7 @@ export function useArchivesAndCollectionsRange({
         const counts = items.map(getCount).filter((n) => !isNaN(n));
 
         return {
-            globalCollectionMin: Math.max(1, Math.min(...counts)),
+            globalCollectionMin: Math.min(...counts),
             globalCollectionMax: Math.max(...counts),
         };
     }, [items, getCount]);
