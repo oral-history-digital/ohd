@@ -52,16 +52,6 @@ export function CollectionCard({ collection, query }) {
 
             {expanded && (
                 <div className="CollectionCard-body">
-                    <Link
-                        className="CollectionCard-pageButton"
-                        to={`/${locale}/catalog/collections/${collection.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t('explorer.view_collection_page')}
-                        <FaExternalLinkAlt className="CollectionCard-pageLinkIcon" />
-                    </Link>
-
                     {collection.notes && (
                         <div
                             className="CollectionCard-notes"
@@ -95,6 +85,16 @@ export function CollectionCard({ collection, query }) {
                             </span>
                         )}
                     </div>
+
+                    <Link
+                        className="CollectionCard-pageButton"
+                        to={`/${locale}/catalog/collections/${collection.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t('explorer.view_collection_page')}
+                        <FaExternalLinkAlt className="CollectionCard-pageLinkIcon" />
+                    </Link>
                 </div>
             )}
         </div>

@@ -1,7 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import { useI18n } from 'modules/i18n';
-import { useShowSidebarOnMount } from 'modules/sidebar';
 import { Helmet } from 'react-helmet';
 import { FaArchive, FaUniversity } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
@@ -26,9 +25,6 @@ export function Explorer() {
         yearMax,
         institutionIds,
     } = useExplorerParams();
-
-    // Show sidebar when visiting explorer
-    useShowSidebarOnMount();
 
     const handleTabChange = (index) =>
         setSearchParams(

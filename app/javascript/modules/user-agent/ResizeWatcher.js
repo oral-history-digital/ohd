@@ -19,8 +19,14 @@ export default function ResizeWatcher({ children }) {
         const oldWidth = previousScreenWidth.current;
         const newWidth = currentScreenWidth();
 
-        // First measurement only establishes the baseline.
+        // On initial mount, enforce the breakpoint-driven default state.
         if (oldWidth === null) {
+            if (newWidth === SCREEN_WIDTH_ABOVE_XL) {
+                show();
+            }
+            if (newWidth === SCREEN_WIDTH_BELOW_M) {
+                hide();
+            }
             previousScreenWidth.current = newWidth;
             return;
         }

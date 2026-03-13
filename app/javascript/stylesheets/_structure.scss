@@ -32,7 +32,7 @@ body {
 footer {
   background: #fff; //$gray-dark;
   border-top: 1px solid $gray-dark;
-  padding: 30px 5%;
+  padding: $base-unit * 2 0;
   p {
     margin-top: 10px;
     padding-top: 5px;
@@ -299,7 +299,7 @@ a.small {
   padding: 0;
 
   .ProjectHome--hero {
-    padding: $base-unit 5%;
+    padding: $base-unit 0;
 
     &.ProjectHome--hero--hasLogo {
       display: flex;
@@ -327,10 +327,6 @@ a.small {
         display: block;
       }
     }
-  }
-
-  .ProjectHome--moreText {
-    padding: 0 5% 0 5%;
   }
 }
 
@@ -442,7 +438,9 @@ a.small {
 }
 
 .footer-navigation {
-  padding: 5% a {
+  padding: 5%;
+
+  a {
     margin-right: 10%;
   }
   .fa.fa-chevron-right {

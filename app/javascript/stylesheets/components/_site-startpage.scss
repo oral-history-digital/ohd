@@ -2,8 +2,14 @@
   position: relative;
   background-size: 100% auto;
   background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   margin-bottom: $base-unit * 2;
+
+  @include screen-xs-s {
+    background-size: cover;
+    background-position: right top;
+  }
 
   &::before {
     content: '';
@@ -21,7 +27,8 @@
   position: relative;
   z-index: 2;
   color: white;
-  padding: $base-unit * 2 $base-unit * 3;
+  padding: clamp($base-unit * 0.75, 2vw, $base-unit * 1.75)
+    clamp($base-unit, 4vw, $base-unit * 2.5);
 }
 
 .Hero-heading {

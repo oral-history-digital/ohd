@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { sanitizeHtml } from 'modules/utils';
+import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { Link, useMatch } from 'react-router-dom';
@@ -66,16 +66,6 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
 
             {expanded && (
                 <div className="ArchiveCard-body">
-                    <Link
-                        className="ArchiveCard-pageButton"
-                        to={`/${locale}/catalog/archives/${archive.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t('explorer.view_archive_page')}
-                        <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
-                    </Link>
-
                     {archive.introduction && (
                         <div
                             className="ArchiveCard-description"
@@ -85,7 +75,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         />
                     )}
 
-                    {archive.more_text && (
+                    {archive.more_text && !isEmptyHtml(archive.more_text) && (
                         <div
                             className="ArchiveCard-moreText"
                             dangerouslySetInnerHTML={{
@@ -110,6 +100,16 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                             </span>
                         )}
                     </div>
+
+                    <Link
+                        className="ArchiveCard-pageButton"
+                        to={`/${locale}/catalog/archives/${archive.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t('explorer.view_archive_page')}
+                        <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
+                    </Link>
 
                     <CollectionList archive={archive} />
                 </div>

@@ -1,5 +1,4 @@
 import { useTrackPageView } from 'modules/analytics';
-import { useHideSidebarOnMount } from 'modules/sidebar';
 
 import {
     Hero,
@@ -10,7 +9,6 @@ import {
 
 export default function SiteStartpage() {
     useTrackPageView();
-    useHideSidebarOnMount();
 
     return (
         <div className="Startpage project-index">

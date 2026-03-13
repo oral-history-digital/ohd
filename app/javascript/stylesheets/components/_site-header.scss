@@ -8,7 +8,7 @@
   display: flex;
   height: $site-header-height-mobile;
   overflow: hidden;
-  padding: ($base-unit) 5%;
+  padding: $base-unit 0;
 
   @include screen-m {
     height: $site-header-height-desktop;

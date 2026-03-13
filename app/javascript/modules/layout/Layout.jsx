@@ -13,7 +13,7 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { fetchData, getProjectsStatus } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useProject } from 'modules/routes';
+import { useCurrentPage, useProject } from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import {
     AfterConfirmationPopup,
@@ -52,8 +52,10 @@ export default function Layout({ children }) {
     const loggedInAt = useSelector(getLoggedInAt);
 
     const { project } = useProject();
+    const currentPage = useCurrentPage();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
+    const isInterviewPage = currentPage.pageType === 'interview_detail';
 
     useCheckLocaleAgainstProject();
     useFetchAccount();
@@ -109,6 +111,7 @@ export default function Layout({ children }) {
             <div
                 className={classNames('Layout', {
                     'sidebar-is-visible': sidebarVisible,
+                    'is-interview-page': isInterviewPage,
                     'is-sticky': scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
                 })}
