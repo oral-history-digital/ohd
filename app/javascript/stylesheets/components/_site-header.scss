@@ -8,31 +8,9 @@
   display: flex;
   height: $site-header-height-mobile;
   overflow: hidden;
-  padding: ($base-unit * 0.5) 5%;
+  padding: $base-unit 0;
 
   @include screen-m {
     height: $site-header-height-desktop;
-  }
-}
-
-.SiteHeader-link {
-}
-
-.SiteHeader-link--site {
-  flex-shrink: 0;
-}
-
-.SiteHeader-link--collection {
-  flex-shrink: 1;
-  max-width: 17.5 * $base-unit;
-}
-
-.SiteHeader-logo {
-  max-height: 3.5rem;
-  max-width: 100%;
-  vertical-align: bottom;
-
-  @include screen-m {
-    max-height: 4.75rem;
   }
 }

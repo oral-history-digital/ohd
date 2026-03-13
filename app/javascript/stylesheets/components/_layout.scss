@@ -1,7 +1,27 @@
+.Layout {
+  // Main content grows fluidly and stops at this width.
+  --layout-main-max-width: 1280px;
+  // Sidebar width from tablet to desktop (below XL).
+  --layout-sidebar-width-fluid: clamp(320px, 42vw, 460px);
+  // XL sidebar: 320px at 1280px viewport, then grows with viewport up to 600px.
+  --layout-sidebar-width-xl: clamp(320px, 25vw, 600px);
+}
+
 .Layout-page {
+  width: 100%;
+  padding: 0 $base-unit * 2;
+
   .fa-eye,
   .fa-globe {
     color: var(--primary-color) !important;
+  }
+}
+
+.Layout:not(.sidebar-is-visible):not(.is-interview-page) > .Layout-page {
+  @include screen-xl {
+    width: min(100%, var(--layout-main-max-width));
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -13,7 +33,7 @@
 }
 
 .wrapper-content {
-  padding: ($base-unit * 2) 5% ($base-unit * 2);
+  padding: ($base-unit * 2) 0;
 }
 
 .Layout-sidebar {
@@ -26,15 +46,11 @@
   z-index: $z-index-sidebar;
 
   @include screen-m {
-    width: 44%;
-  }
-
-  @include screen-l {
-    width: 40%;
+    width: var(--layout-sidebar-width-fluid);
   }
 
   @include screen-xl {
-    width: 36%;
+    width: var(--layout-sidebar-width-xl);
   }
 }
 
@@ -71,10 +87,23 @@
     );
   }
 }
+.Layout.sidebar-is-visible.is-interview-page > .Layout-page {
+  padding: 0;
 
-.Layout.sidebar-is-visible > .Layout-page {
+  .wrapper-content {
+    padding-left: $base-unit * 2;
+  }
+}
+
+.Layout.sidebar-is-visible:not(.is-interview-page) > .Layout-page {
   @include screen-xl {
-    width: 64%;
+    width: min(
+      calc(100% - var(--layout-sidebar-width-xl)),
+      var(--layout-main-max-width)
+    );
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateX(calc(var(--layout-sidebar-width-xl) / -2));
   }
 }
 
@@ -82,17 +111,27 @@
   display: block;
 }
 
-.Layout.is-sticky.sidebar-is-visible {
+.Layout.is-sticky.sidebar-is-visible:not(.is-interview-page) {
   @include screen-xl {
     .Layout-page {
-      width: 64%;
+      width: min(
+        calc(100% - var(--layout-sidebar-width-xl)),
+        var(--layout-main-max-width)
+      );
+      margin-left: auto;
+      margin-right: auto;
+      transform: translateX(calc(var(--layout-sidebar-width-xl) / -2));
     }
 
     .Layout-mediaPlayer,
     .Layout-contentTabs {
-      right: 36%;
-      width: 64%;
-      left: auto;
+      width: min(
+        calc(100% - var(--layout-sidebar-width-xl)),
+        var(--layout-main-max-width)
+      );
+      left: 50%;
+      right: auto;
+      transform: translateX(calc(-50% - (var(--layout-sidebar-width-xl) / 2)));
     }
   }
 }

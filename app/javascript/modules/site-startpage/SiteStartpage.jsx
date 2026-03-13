@@ -1,13 +1,22 @@
 import { useTrackPageView } from 'modules/analytics';
 
-import { StartpageArchives, StartpageIntroduction } from './components';
+import {
+    Hero,
+    PanelInterviews,
+    PanelRegister,
+    StartpageArchives,
+} from './components';
 
 export default function SiteStartpage() {
     useTrackPageView();
 
     return (
-        <div className="wrapper-content project-index">
-            <StartpageIntroduction />
+        <div className="Startpage project-index">
+            <Hero />
+            <div className="Grid Grid--2">
+                <PanelInterviews />
+                <PanelRegister />
+            </div>
             <StartpageArchives className="u-mt-large" />
         </div>
     );

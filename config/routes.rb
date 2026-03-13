@@ -20,6 +20,11 @@ Rails.application.routes.draw do
     get 'catalog/institutions/:id', to: 'catalog#institution'
     get 'catalog/archives/:id',     to: 'catalog#archive'
     get 'catalog/collections/:id',  to: 'catalog#collection'
+    get 'explorer',                  to: 'explorer#index'
+    get 'explorer/institutions',     to: 'explorer#index'
+    get 'explorer/institutions/:id', to: 'explorer#institution'
+    get 'explorer/archives/:id',     to: 'explorer#archive'
+    get 'explorer/collections/:id',  to: 'explorer#collection'
   end
 
   concern :archive do
@@ -263,7 +268,11 @@ Rails.application.routes.draw do
 
   concern :basic_project_routes do
     resources :projects, only: [:show, :update, :destroy] do
+      collection do
+        get :archives
+      end
       member do
+        get :collections, to: 'collections#for_project'
         get :contact_email
       end
     end
@@ -271,7 +280,11 @@ Rails.application.routes.draw do
 
   concern :all_project_routes do
     resources :projects, only: [:show, :index, :create, :update, :destroy] do
+      collection do
+        get :archives
+      end
       member do
+        get :collections, to: 'collections#for_project'
         get :contact_email
       end
     end
@@ -288,7 +301,11 @@ Rails.application.routes.draw do
     scope "/:locale" do
       get "/", to: "projects#index"
       concerns :all_project_routes
-      resources :institutions
+      resources :institutions do
+        collection do
+          get :list
+        end
+      end
       resources :help_texts, only: [:index, :update]
       resources :logos, only: [:create, :update, :destroy]
       concerns :unnamed_devise_routes, :search, :archive
@@ -302,7 +319,11 @@ Rails.application.routes.draw do
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         get "/", to: "projects#show"
         concerns :basic_project_routes
-        resources :institutions
+        resources :institutions do
+          collection do
+            get :list
+          end
+        end
         concerns :archive
         concerns :unnamed_devise_routes, :search
         concerns :account
@@ -320,7 +341,11 @@ Rails.application.routes.draw do
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       get "/", to: "projects#show"
       concerns :basic_project_routes
-      resources :institutions
+      resources :institutions do
+        collection do
+          get :list
+        end
+      end
       concerns :archive
       concerns :unnamed_devise_routes, :search
       concerns :account

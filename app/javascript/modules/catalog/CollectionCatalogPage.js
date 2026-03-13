@@ -3,7 +3,6 @@ import { Fetch, getCollections, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
-import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
@@ -35,14 +34,6 @@ export default function CollectionCatalogPage() {
                 </Helmet>
                 <ErrorBoundary>
                     <div className="wrapper-content interviews">
-                        <Breadcrumbs className="u-mb">
-                            <Link to={`/${locale}/catalog`}>
-                                {t('modules.catalog.title')}
-                            </Link>
-                            {t('activerecord.models.collection.other')}
-                            {collection?.name[locale]}
-                        </Breadcrumbs>
-
                         <h1 className="search-results-title u-mb">
                             {collection?.name[locale]}
                         </h1>

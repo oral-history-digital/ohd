@@ -1,0 +1,10 @@
+{
+  "heading": "Recherche in den Interviews",
+  "text": "Die Suche führt zu einzelnen Interviews aus verschiedenen Archiven. Filtern können Sie z. B. nach Thema, Sprache oder GEschlecht. Im Volltext können Sie nur in den Archiven suchen, für die Sie freigeschaltet sind.",
+  "buttons": {
+    "primary": {
+      "label": "Zur Interview-Recherche",
+      "target": "/de/searches/archive"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "heading": "Anmeldung",
+  "text": "Um die Persönlichkeitsrechte der Interviewten zu schützen, verlangen die meisten Archive eine Anmeldung. Bitte registrieren Sie sich in Oral-History.Digital und lassen Sie sich für einzelne Archive freischalten, um auf die vollständigen Interviews zugreifen zu können.",
+  "buttons": {
+    "primary": {
+      "label": "Zur Anmeldung",
+      "target": "/de/searches/archive"
+    }
+  }
+}

@@ -1365,6 +1365,7 @@ es:
           error: Error loading person contributions
     catalog:
       title: Catalog
+      breadcrumb_title: Archivos & Colecciones
       part_of_institution: Part of institution
       description: Description
       address: Address

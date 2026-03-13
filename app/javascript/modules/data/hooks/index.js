@@ -1,4 +1,7 @@
+export * from './useGetArchiveCollections';
+export * from './useGetArchives';
 export * from './useGetInstitutions';
+export * from './useGetInstitutionsList';
 export * from './useHumanReadable';
 export * from './useLoadCompleteProject';
 export * from './useMutateData';

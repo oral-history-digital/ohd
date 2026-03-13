@@ -13,7 +13,7 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { fetchData, getProjectsStatus } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useProject } from 'modules/routes';
+import { useCurrentPage, useProject } from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import {
     AfterConfirmationPopup,
@@ -26,8 +26,11 @@ import {
     getLoggedInAt,
     useFetchAccount,
 } from 'modules/user';
-import { ResizeWatcherContainer, isMobile } from 'modules/user-agent';
-import { useScrollBelowThreshold } from 'modules/user-agent';
+import {
+    ResizeWatcher,
+    isMobile,
+    useScrollBelowThreshold,
+} from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,8 +53,10 @@ export default function Layout({ children }) {
     const loggedInAt = useSelector(getLoggedInAt);
 
     const { project } = useProject();
+    const currentPage = useCurrentPage();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
+    const isInterviewPage = currentPage.pageType === 'interview_detail';
 
     useCheckLocaleAgainstProject();
     useFetchAccount();
@@ -103,10 +108,11 @@ export default function Layout({ children }) {
         : '/favicon.ico';
 
     return (
-        <ResizeWatcherContainer>
+        <ResizeWatcher>
             <div
                 className={classNames('Layout', {
                     'sidebar-is-visible': sidebarVisible,
+                    'is-interview-page': isInterviewPage,
                     'is-sticky': scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
                 })}
@@ -155,7 +161,7 @@ export default function Layout({ children }) {
                     <Banner onClose={handleBannerClose} />
                 )}
             </div>
-        </ResizeWatcherContainer>
+        </ResizeWatcher>
     );
 }
 
