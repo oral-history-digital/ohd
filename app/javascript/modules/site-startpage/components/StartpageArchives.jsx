@@ -16,6 +16,14 @@ export function StartpageArchives({ className }) {
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
 
+    // Sort by number of contained interviews DESC and keep first 15
+    const sortedArchives = [...archives].sort((a, b) => {
+        const aCount = a.num_interviews || 0;
+        const bCount = b.num_interviews || 0;
+        return bCount - aCount;
+    });
+    const displayedArchives = sortedArchives.slice(0, 15);
+
     const updateScrollButtons = useCallback(() => {
         const el = scrollRef.current;
         if (!el) return;
@@ -27,7 +35,7 @@ export function StartpageArchives({ className }) {
         updateScrollButtons();
         window.addEventListener('resize', updateScrollButtons);
         return () => window.removeEventListener('resize', updateScrollButtons);
-    }, [updateScrollButtons, archives]);
+    }, [updateScrollButtons, displayedArchives]);
 
     const getCardWidth = () => {
         const el = scrollRef.current;
@@ -88,7 +96,7 @@ export function StartpageArchives({ className }) {
                 ref={scrollRef}
                 onScroll={handleScroll}
             >
-                {archives.map((archive) => (
+                {displayedArchives.map((archive) => (
                     <ArchiveTile
                         key={archive.id}
                         archive={archive}
