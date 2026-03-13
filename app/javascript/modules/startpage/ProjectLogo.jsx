@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import { SmartImage } from 'modules/ui';
 import { Link } from 'react-router-dom';
 
 export default function ProjectLogo() {
@@ -8,9 +9,7 @@ export default function ProjectLogo() {
     const pathBase = usePathBase();
     const { project } = useProject();
 
-    if (!project) {
-        return null;
-    }
+    if (!project) return null;
 
     const logos = project?.logos || {};
     const defaultLocale = project.default_locale;
@@ -38,10 +37,11 @@ export default function ProjectLogo() {
                 className={classNames('Link', 'ProjectLogo--link')}
                 title={t('Home')}
             >
-                <img
-                    className="ProjectLogo--logo"
+                <SmartImage
                     src={src}
-                    alt="Project logo"
+                    alt={t('Project logo')}
+                    className="ProjectLogo--logo"
+                    lazy={false}
                 />
             </Link>
         </div>
