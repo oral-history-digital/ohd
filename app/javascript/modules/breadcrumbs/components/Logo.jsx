@@ -6,7 +6,8 @@ export function Logo({ logoSrc, title }) {
     const { locale } = useI18n();
 
     const src = logoSrc || '/logo-ohd-no-text.svg';
-    const displayTitle = title || 'OHD';
+    const displayTitle = title || 'Oral-History.Digital (oh.d)';
+    const altText = `${displayTitle} logo`;
 
     return (
         <Link
@@ -14,7 +15,7 @@ export function Logo({ logoSrc, title }) {
             title={displayTitle}
             className="Breadcrumbs-logoLink"
         >
-            <img className={'Breadcrumbs-logo'} src={src} alt={displayTitle} />
+            <img className={'Breadcrumbs-logo'} src={src} alt={altText} />
         </Link>
     );
 }
