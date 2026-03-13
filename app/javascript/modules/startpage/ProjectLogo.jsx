@@ -1,49 +1,48 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { SmartImage } from 'modules/ui';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export default function ProjectLogo() {
+import getProjectLogoSrc from './utils/getProjectLogoSrc';
+
+export default function ProjectLogo({ project, isLinkActive = true }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
-    const { project } = useProject();
 
     if (!project) return null;
 
-    const logos = project?.logos || {};
-    const defaultLocale = project.default_locale;
-
-    // Return early if no logos are provided
-    if (!logos || Object.keys(logos).length === 0) return null;
-
-    const logoArray = Object.values(logos).filter((logo) => logo?.src);
-
-    if (logoArray.length === 0) return null; // All logos lack src
-
-    const logoForLocale = logoArray.find((logo) => logo.locale === locale);
-    const logoForDefaultLocale = logoArray.find(
-        (logo) => logo.locale === defaultLocale
-    );
-
-    const src = logoForLocale?.src || logoForDefaultLocale?.src;
-
+    const src = getProjectLogoSrc(project, locale);
     if (!src) return null; // No suitable logo found
+
+    const image = (
+        <SmartImage
+            src={src}
+            alt={t('Project logo')}
+            className="ProjectLogo--logo"
+            lazy={false}
+        />
+    );
 
     return (
         <div className="ProjectLogo">
-            <Link
-                to={pathBase}
-                className={classNames('Link', 'ProjectLogo--link')}
-                title={t('Home')}
-            >
-                <SmartImage
-                    src={src}
-                    alt={t('Project logo')}
-                    className="ProjectLogo--logo"
-                    lazy={false}
-                />
-            </Link>
+            {isLinkActive ? (
+                <Link
+                    to={pathBase}
+                    className={classNames('Link', 'ProjectLogo--link')}
+                    title={t('Home')}
+                >
+                    {image}
+                </Link>
+            ) : (
+                image
+            )}
         </div>
     );
 }
+
+ProjectLogo.propTypes = {
+    project: PropTypes.object.isRequired,
+    isLinkActive: PropTypes.bool,
+};

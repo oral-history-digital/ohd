@@ -1,16 +1,18 @@
+import classNames from 'classnames';
 import { useTrackPageView } from 'modules/analytics';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
-import { sanitizeHtml } from 'modules/utils';
+import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 
 import FeaturedInterviews from './FeaturedInterviews';
 import ProjectLogo from './ProjectLogo';
 import StartPageVideo from './StartPageVideo';
+import getProjectLogoSrc from './utils/getProjectLogoSrc';
 
 export default function Home({ institutions }) {
     const { project, projectId } = useProject();
@@ -20,6 +22,8 @@ export default function Home({ institutions }) {
     if (!project.translations_attributes) {
         return null;
     }
+
+    const hasLogo = Boolean(getProjectLogoSrc(project, locale));
 
     function showStartPageVideo() {
         return projectId === 'mog';
@@ -49,8 +53,12 @@ export default function Home({ institutions }) {
             <div className="wrapper-content home-content">
                 <RedirectOnLogin path="/searches/archive" />
                 {showStartPageVideo() ? <StartPageVideo /> : null}
-                <div className="ProjectHome--hero">
-                    <ProjectLogo />
+                <div
+                    className={classNames('ProjectHome--hero', {
+                        'ProjectHome--hero--hasLogo': hasLogo,
+                    })}
+                >
+                    <ProjectLogo project={project} isLinkActive={false} />
                     <div className="ProjectHome--heroText">
                         <h1>{getTranslation('name')}</h1>
                         <Fetch
@@ -81,17 +89,19 @@ export default function Home({ institutions }) {
                                     )
                                 )}
                         </Fetch>
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: sanitizeHtml(
-                                    getTranslation('introduction'),
-                                    'RICH_TEXT'
-                                ),
-                            }}
-                        />
+                        {!isEmptyHtml(getTranslation('introduction')) && (
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtml(
+                                        getTranslation('introduction'),
+                                        'RICH_TEXT'
+                                    ),
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
-                {getTranslation('more_text') && (
+                {!isEmptyHtml(getTranslation('more_text')) && (
                     <div className="ProjectHome--moreText">
                         <p
                             className="u-mt"
