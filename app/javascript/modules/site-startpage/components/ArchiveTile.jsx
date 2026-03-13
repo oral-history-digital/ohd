@@ -3,6 +3,7 @@ import lockSolid from 'assets/images/lock-solid.svg';
 import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
+import { SmartImage } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 export function ArchiveTile({ archive, institutions }) {
@@ -56,11 +57,11 @@ export function ArchiveTile({ archive, institutions }) {
                     </div>
                 )}
 
-                <div
+                <SmartImage
+                    src={logoSrc}
+                    alt={name}
                     className="ArchiveTile-image"
-                    style={{
-                        backgroundImage: logoSrc ? `url(${logoSrc})` : null,
-                    }}
+                    objectFit="contain"
                 />
 
                 <div className="ArchiveTile-body">
