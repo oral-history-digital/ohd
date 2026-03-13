@@ -64,8 +64,7 @@ namespace :segments do
     updated = 0
     errors = []
 
-    #Segment.where.not("timecode REGEXP ?", '^\\d{2}:\\d{2}:\\d{2}\\.\\d{3}$').find_each do |segment|
-    Interview.find_by_archive_id("za001").segments.find_each do |segment|
+    Segment.where.not("timecode REGEXP ?", '^\\d{2}:\\d{2}:\\d{2}\\.\\d{3}$').find_each do |segment|
       new_timecode = normalize_timecode(segment.timecode)
 
       changes = {}
