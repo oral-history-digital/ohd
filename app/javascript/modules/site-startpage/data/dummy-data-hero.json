@@ -1,0 +1,8 @@
+{
+  "heading": "Oral-History.Digital",
+  "text": "Oral-History.Digital ist eine Erschließungs- und Recherche-Plattform für Audio- oder Video-Interviews mit Zeitzeuginnen und Zeitzeugen.",
+  "buttons": {
+    "primary": { "label": "Archive und Sammlungen", "target": "/de/catalog" },
+    "secondary": { "label": "Institutionen", "target": "/de/catalog" }
+  }
+}

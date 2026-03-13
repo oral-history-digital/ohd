@@ -1,48 +1,109 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { getStartpageProjects } from 'modules/data';
+import { useGetInstitutions } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import ArchiveTile from './ArchiveTile';
 
-const INITIALLY_SHOWN_ARCHIVES = 6;
-
 export function StartpageArchives({ className }) {
     const archives = useSelector(getStartpageProjects);
-    const [showMore, setShowMore] = useState(false);
+    const institutions = useGetInstitutions();
     const { t } = useI18n();
+    const scrollRef = useRef(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
 
-    const shownArchives = showMore
-        ? archives
-        : archives.slice(0, INITIALLY_SHOWN_ARCHIVES);
+    // Sort by number of contained interviews DESC and keep first 15
+    const sortedArchives = [...archives].sort((a, b) => {
+        const aCount = a.num_interviews || 0;
+        const bCount = b.num_interviews || 0;
+        return bCount - aCount;
+    });
+    const displayedArchives = sortedArchives.slice(0, 15);
 
-    const displayShowMoreButton = archives.length > INITIALLY_SHOWN_ARCHIVES;
+    const updateScrollButtons = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        setCanScrollLeft(el.scrollLeft > 0);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+    }, []);
+
+    useEffect(() => {
+        updateScrollButtons();
+        window.addEventListener('resize', updateScrollButtons);
+        return () => window.removeEventListener('resize', updateScrollButtons);
+    }, [updateScrollButtons, displayedArchives]);
+
+    const getCardWidth = () => {
+        const el = scrollRef.current;
+        if (!el || !el.firstElementChild) return 0;
+        const child = el.firstElementChild;
+        const style = window.getComputedStyle(el);
+        const gap = parseFloat(style.gap) || 0;
+        return child.offsetWidth + gap;
+    };
+
+    const CARDS_PER_SCROLL = 3;
+
+    const scroll = (direction) => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const cardWidth = getCardWidth();
+        el.scrollBy({
+            left: direction * cardWidth * CARDS_PER_SCROLL,
+            behavior: 'smooth',
+        });
+    };
+
+    const handleScroll = () => {
+        updateScrollButtons();
+    };
 
     return (
         <article className={className}>
-            <h3 className="Startpage-heading u-mt-none u-mb-none">
-                {t('modules.site_startpage.sample_archives')}
-            </h3>
+            <div className="StartpageArchives-header">
+                <h3 className="Startpage-heading u-mt-none u-mb-none">
+                    {t('modules.site_startpage.sample_archives')}
+                </h3>
 
-            <div className="Grid u-mt">
-                {shownArchives.map((archive) => (
-                    <ArchiveTile key={archive.id} archive={archive} />
-                ))}
-            </div>
-
-            {!showMore && displayShowMoreButton && (
-                <div className="u-align-center u-mt-large">
+                <div className="StartpageArchives-nav">
                     <button
                         type="button"
-                        className="Button Button--transparent Button--primaryColor"
-                        onClick={() => setShowMore(true)}
+                        className="StartpageArchives-navBtn"
+                        onClick={() => scroll(-1)}
+                        disabled={!canScrollLeft}
+                        aria-label={t('modules.site_startpage.previous')}
                     >
-                        {t('modules.site_startpage.more_results')}
+                        &#8249;
+                    </button>
+                    <button
+                        type="button"
+                        className="StartpageArchives-navBtn"
+                        onClick={() => scroll(1)}
+                        disabled={!canScrollRight}
+                        aria-label={t('modules.site_startpage.next')}
+                    >
+                        &#8250;
                     </button>
                 </div>
-            )}
+            </div>
+
+            <div
+                className="StartpageArchives-scroll u-mt"
+                ref={scrollRef}
+                onScroll={handleScroll}
+            >
+                {displayedArchives.map((archive) => (
+                    <ArchiveTile
+                        key={archive.id}
+                        archive={archive}
+                        institutions={institutions}
+                    />
+                ))}
+            </div>
         </article>
     );
 }

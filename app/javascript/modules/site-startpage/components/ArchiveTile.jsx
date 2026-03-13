@@ -1,14 +1,13 @@
 import lockRegular from 'assets/images/lock-regular.svg';
 import lockSolid from 'assets/images/lock-solid.svg';
 import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
-import { useGetInstitutions } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
+import { SmartImage } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-export function ArchiveTile({ archive }) {
+export function ArchiveTile({ archive, institutions }) {
     const { t, locale } = useI18n();
-    const institutions = useGetInstitutions();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(archive);
 
@@ -58,11 +57,11 @@ export function ArchiveTile({ archive }) {
                     </div>
                 )}
 
-                <div
+                <SmartImage
+                    src={logoSrc}
+                    alt={name}
                     className="ArchiveTile-image"
-                    style={{
-                        backgroundImage: logoSrc ? `url(${logoSrc})` : null,
-                    }}
+                    objectFit="contain"
                 />
 
                 <div className="ArchiveTile-body">
@@ -83,4 +82,5 @@ export default ArchiveTile;
 
 ArchiveTile.propTypes = {
     archive: PropTypes.object.isRequired,
+    institutions: PropTypes.object.isRequired,
 };
