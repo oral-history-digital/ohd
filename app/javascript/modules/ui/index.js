@@ -11,3 +11,4 @@ export { default as InlineNotification } from './InlineNotification';
 export { default as Modal } from './Modal';
 export { default as Pagination } from './Pagination';
 export { default as PhotoModal } from './PhotoModal';
+export { default as SmartImage } from './SmartImage';
