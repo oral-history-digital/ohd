@@ -1,10 +1,12 @@
+import { normalizeNameForSort } from 'modules/utils';
+
 export const SORT_OPTIONS = [
-    { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
     { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
-    { value: 'collections_asc', labelKey: 'explorer.sort.collections_asc' },
-    { value: 'collections_desc', labelKey: 'explorer.sort.collections_desc' },
+    { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
     { value: 'name_asc', labelKey: 'explorer.sort.name_asc' },
     { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
+    { value: 'collections_desc', labelKey: 'explorer.sort.collections_desc' },
+    { value: 'collections_asc', labelKey: 'explorer.sort.collections_asc' },
 ];
 
 export const DEFAULT_SORT = 'interviews_desc';
@@ -16,9 +18,19 @@ export const sortArchives = (archives, sort) => {
     return [...archives].sort((a, b) => {
         let av, bv;
         if (field === 'name') {
-            av = (a.display_name || a.name || '').toLowerCase();
-            bv = (b.display_name || b.name || '').toLowerCase();
-            return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+            const aName = (a.display_name || a.name || '').toLowerCase();
+            const bName = (b.display_name || b.name || '').toLowerCase();
+            av = normalizeNameForSort(aName);
+            bv = normalizeNameForSort(bName);
+
+            const normalizedComparison = av.localeCompare(bv);
+            if (normalizedComparison !== 0) {
+                return asc ? normalizedComparison : -normalizedComparison;
+            }
+
+            // Fallback keeps ordering deterministic when normalized names match.
+            const originalComparison = aName.localeCompare(bName);
+            return asc ? originalComparison : -originalComparison;
         }
         if (field === 'interviews') {
             av = a.interviews?.total ?? 0;
