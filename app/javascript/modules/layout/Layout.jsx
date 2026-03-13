@@ -26,7 +26,7 @@ import {
     useFetchAccount,
 } from 'modules/user';
 import {
-    ResizeWatcherContainer,
+    ResizeWatcher,
     isMobile,
     useScrollBelowThreshold,
 } from 'modules/user-agent';
@@ -105,7 +105,7 @@ export default function Layout({ children }) {
         : '/favicon.ico';
 
     return (
-        <ResizeWatcherContainer>
+        <ResizeWatcher>
             <div
                 className={classNames('Layout', {
                     'sidebar-is-visible': sidebarVisible,
@@ -156,7 +156,7 @@ export default function Layout({ children }) {
                     <Banner onClose={handleBannerClose} />
                 )}
             </div>
-        </ResizeWatcherContainer>
+        </ResizeWatcher>
     );
 }
 

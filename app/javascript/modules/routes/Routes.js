@@ -5,8 +5,10 @@ import {
     HelpTextAdminPage,
     WrappedInstitutionsContainer,
 } from 'modules/admin';
+import { ExplorerRoutes } from 'modules/explorer';
 import { SiteStartpage } from 'modules/site-startpage';
 import { HomeContainer } from 'modules/startpage';
+import PropTypes from 'prop-types';
 import { Route, Routes } from 'react-router-dom';
 
 import CatalogRoutes from './CatalogRoutes';
@@ -35,6 +37,10 @@ const RoutesWithoutProjectId = ({ project }) => (
                     element={<HelpTextAdminPage />}
                 />
                 <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
+                <Route
+                    path="/:locale/explorer/*"
+                    element={<ExplorerRoutes />}
+                />
             </>
         ) : (
             <Route exact path="/:locale" element={<HomeContainer />} />
@@ -54,3 +60,7 @@ const RoutesWithProjectId = () => (
 );
 
 export const MemoizedRoutesWithProjectId = memo(RoutesWithProjectId);
+
+RoutesWithoutProjectId.propTypes = {
+    project: PropTypes.object,
+};

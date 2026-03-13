@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { getCurrentUser } from 'modules/data';
+import { ExplorerSidebarSearch } from 'modules/explorer';
 import {
     ActivationActions,
     ActivationFlow,
@@ -35,6 +36,8 @@ export default function Sidebar({ className }) {
             <ActivationActions className="u-mr u-mb u-ml" />
 
             <SidebarTabsContainer />
+
+            <ExplorerSidebarSearch />
         </div>
     );
 }

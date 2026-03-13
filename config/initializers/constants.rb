@@ -12,4 +12,4 @@ DEFAULT_PRIMARY_COLOR = '#e01217'
 #CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: "\x00"}
 CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: '"', liberal_parsing: true}
 
-PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+=]).{8,}$/
+PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+=_,.:;~]).{8,}$/
