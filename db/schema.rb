@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_03_122300) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_12_130000) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -1156,8 +1156,29 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_03_122300) do
     t.string "workflow_state", default: "created"
     t.string "pre_register_location"
     t.boolean "do_not_track", default: false, null: false
+    t.string "otp_secret"
+    t.integer "consumed_timestep"
+    t.boolean "otp_required_for_login"
+    t.datetime "changed_to_otp_at"
+    t.string "email_otp_secret"
+    t.datetime "email_otp_sent_at"
+    t.boolean "passkey_required_for_login", default: false, null: false
+    t.datetime "changed_to_passkey_at"
+    t.integer "failed_attempts", default: 0, null: false
+    t.datetime "locked_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, length: 191
+  end
+
+  create_table "webauthn_credentials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "external_id", null: false
+    t.string "public_key", null: false
+    t.string "nickname"
+    t.bigint "sign_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_id"], name: "index_webauthn_credentials_on_external_id", unique: true
   end
 
   create_table "workflow_comments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
