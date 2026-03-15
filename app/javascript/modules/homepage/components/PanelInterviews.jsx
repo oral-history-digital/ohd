@@ -1,15 +1,11 @@
 import panelImg from 'assets/images/panel-interviews.jpg';
 
 import panelData from '../data/dummy-data-panel-interview.json';
-import StartpagePanel from './StartpagePanel';
+import HomepagePanel from './HomepagePanel';
 
 export function PanelInterviews() {
     return (
-        <StartpagePanel
-            image={panelImg}
-            data={panelData}
-            variant="interviews"
-        />
+        <HomepagePanel image={panelImg} data={panelData} variant="interviews" />
     );
 }
 

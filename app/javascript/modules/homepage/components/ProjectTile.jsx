@@ -6,7 +6,7 @@ import { LinkOrA } from 'modules/routes';
 import { SmartImage } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-export function ArchiveTile({ archive }) {
+export function ProjectTile({ archive }) {
     const { t } = useI18n();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(archive);
@@ -34,21 +34,21 @@ export function ArchiveTile({ archive }) {
 
     return (
         <LinkOrA
-            className="ArchiveTile"
+            className="ProjectTile"
             style={{ backgroundColor: opaqueBackgroundColor }}
             project={archive}
             to=""
         >
-            <article className="ArchiveTile-inner">
+            <article className="ProjectTile-inner">
                 {showLock && (
                     <div
-                        className="ArchiveTile-lock"
+                        className="ProjectTile-lock"
                         title={lockLabel}
                         aria-label={lockLabel}
                     >
                         <img
                             src={lockIconSrc}
-                            className="ArchiveTile-lockImg"
+                            className="ProjectTile-lockImg"
                             alt=""
                         />
                     </div>
@@ -57,16 +57,16 @@ export function ArchiveTile({ archive }) {
                 <SmartImage
                     src={logoSrc}
                     alt={name}
-                    className="ArchiveTile-image"
+                    className="ProjectTile-image"
                     objectFit="contain"
                 />
 
-                <div className="ArchiveTile-body">
-                    <h4 className="ArchiveTile-title">{name}</h4>
-                    <p className="ArchiveTile-text ArchiveTile-text--ellipsis">
+                <div className="ProjectTile-body">
+                    <h4 className="ProjectTile-title">{name}</h4>
+                    <p className="ProjectTile-text ProjectTile-text--ellipsis">
                         {institutionName}
                     </p>
-                    <p className="ArchiveTile-text">
+                    <p className="ProjectTile-text">
                         {archive.interviews?.total || 0} Interviews
                     </p>
                 </div>
@@ -75,8 +75,8 @@ export function ArchiveTile({ archive }) {
     );
 }
 
-export default ArchiveTile;
+export default ProjectTile;
 
-ArchiveTile.propTypes = {
+ProjectTile.propTypes = {
     archive: PropTypes.object.isRequired,
 };

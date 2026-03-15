@@ -4,9 +4,9 @@ import { useGetArchives } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import ArchiveTile from './ArchiveTile';
+import ProjectTile from './ProjectTile';
 
-export function StartpageArchives({ className }) {
+export function HomepageProjects({ className }) {
     const { archives } = useGetArchives({ all: true, workflowState: 'public' });
     const { t } = useI18n();
     const scrollRef = useRef(null);
@@ -61,15 +61,15 @@ export function StartpageArchives({ className }) {
 
     return (
         <article className={className}>
-            <div className="StartpageArchives-header">
-                <h3 className="Startpage-heading u-mt-none u-mb-none">
+            <div className="HomepageProjects-header">
+                <h3 className="Homepage-heading u-mt-none u-mb-none">
                     {t('modules.site_startpage.sample_archives')}
                 </h3>
 
-                <div className="StartpageArchives-nav">
+                <div className="HomepageProjects-nav">
                     <button
                         type="button"
-                        className="StartpageArchives-navBtn"
+                        className="HomepageProjects-navBtn"
                         onClick={() => scroll(-1)}
                         disabled={!canScrollLeft}
                         aria-label={t('modules.site_startpage.previous')}
@@ -78,7 +78,7 @@ export function StartpageArchives({ className }) {
                     </button>
                     <button
                         type="button"
-                        className="StartpageArchives-navBtn"
+                        className="HomepageProjects-navBtn"
                         onClick={() => scroll(1)}
                         disabled={!canScrollRight}
                         aria-label={t('modules.site_startpage.next')}
@@ -89,20 +89,20 @@ export function StartpageArchives({ className }) {
             </div>
 
             <div
-                className="StartpageArchives-scroll u-mt"
+                className="HomepageProjects-scroll u-mt"
                 ref={scrollRef}
                 onScroll={handleScroll}
             >
                 {displayedArchives.map((archive) => (
-                    <ArchiveTile key={archive.id} archive={archive} />
+                    <ProjectTile key={archive.id} archive={archive} />
                 ))}
             </div>
         </article>
     );
 }
 
-export default StartpageArchives;
+export default HomepageProjects;
 
-StartpageArchives.propTypes = {
+HomepageProjects.propTypes = {
     className: PropTypes.string,
 };

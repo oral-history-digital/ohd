@@ -6,7 +6,7 @@ import {
     WrappedInstitutionsContainer,
 } from 'modules/admin';
 import { ExplorerRoutes } from 'modules/explorer';
-import { SiteStartpage } from 'modules/site-startpage';
+import { Homepage } from 'modules/homepage';
 import { HomeContainer } from 'modules/startpage';
 import PropTypes from 'prop-types';
 import { Route, Routes } from 'react-router-dom';
@@ -20,7 +20,7 @@ const RoutesWithoutProjectId = ({ project }) => (
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
         {project.is_ohd ? (
             <>
-                <Route exact path="/:locale" element={<SiteStartpage />} />
+                <Route exact path="/:locale" element={<Homepage />} />
                 <Route
                     exact
                     path="/:locale/projects"

@@ -1,11 +1,11 @@
 import panelImg from 'assets/images/panel-register.jpg';
 
 import panelData from '../data/dummy-data-panel-register.json';
-import StartpagePanel from './StartpagePanel';
+import HomepagePanel from './HomepagePanel';
 
 export function PanelRegister() {
     return (
-        <StartpagePanel image={panelImg} data={panelData} variant="register" />
+        <HomepagePanel image={panelImg} data={panelData} variant="register" />
     );
 }
 

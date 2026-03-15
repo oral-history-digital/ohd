@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-export function StartpagePanel({ image, data, variant }) {
+export function HomepagePanel({ image, data, variant }) {
     const navigate = useNavigate();
 
     return (
@@ -30,7 +30,7 @@ export function StartpagePanel({ image, data, variant }) {
     );
 }
 
-StartpagePanel.propTypes = {
+HomepagePanel.propTypes = {
     image: PropTypes.string.isRequired,
     data: PropTypes.shape({
         heading: PropTypes.string.isRequired,
@@ -44,4 +44,4 @@ StartpagePanel.propTypes = {
     variant: PropTypes.string.isRequired,
 };
 
-export default StartpagePanel;
+export default HomepagePanel;

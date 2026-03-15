@@ -2,22 +2,22 @@ import { useTrackPageView } from 'modules/analytics';
 
 import {
     Hero,
+    HomepageProjects,
     PanelInterviews,
     PanelRegister,
-    StartpageArchives,
 } from './components';
 
-export default function SiteStartpage() {
+export default function Homepage() {
     useTrackPageView();
 
     return (
-        <div className="Startpage project-index">
+        <div className="Homepage project-index">
             <Hero />
             <div className="Grid Grid--2">
                 <PanelInterviews />
                 <PanelRegister />
             </div>
-            <StartpageArchives className="u-mt-large" />
+            <HomepageProjects className="u-mt-large" />
         </div>
     );
 }
