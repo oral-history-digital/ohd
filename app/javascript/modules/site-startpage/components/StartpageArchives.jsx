@@ -1,16 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { getStartpageProjects } from 'modules/data';
-import { useGetInstitutions } from 'modules/data';
+import { useGetArchives } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import ArchiveTile from './ArchiveTile';
 
 export function StartpageArchives({ className }) {
-    const archives = useSelector(getStartpageProjects);
-    const institutions = useGetInstitutions();
+    const { archives } = useGetArchives({ all: true, workflowState: 'public' });
     const { t } = useI18n();
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -18,8 +15,8 @@ export function StartpageArchives({ className }) {
 
     // Sort by number of contained interviews DESC and keep first 15
     const sortedArchives = [...archives].sort((a, b) => {
-        const aCount = a.num_interviews || 0;
-        const bCount = b.num_interviews || 0;
+        const aCount = a.interviews?.total || 0;
+        const bCount = b.interviews?.total || 0;
         return bCount - aCount;
     });
     const displayedArchives = sortedArchives.slice(0, 15);
@@ -97,11 +94,7 @@ export function StartpageArchives({ className }) {
                 onScroll={handleScroll}
             >
                 {displayedArchives.map((archive) => (
-                    <ArchiveTile
-                        key={archive.id}
-                        archive={archive}
-                        institutions={institutions}
-                    />
+                    <ArchiveTile key={archive.id} archive={archive} />
                 ))}
             </div>
         </article>

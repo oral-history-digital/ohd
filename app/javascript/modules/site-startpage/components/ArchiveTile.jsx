@@ -6,26 +6,23 @@ import { LinkOrA } from 'modules/routes';
 import { SmartImage } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-export function ArchiveTile({ archive, institutions }) {
-    const { t, locale } = useI18n();
+export function ArchiveTile({ archive }) {
+    const { t } = useI18n();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(archive);
 
-    const name = archive.display_name[locale] || archive.name[locale];
+    const name = archive.display_name || archive.name;
     const backgroundColor = archive.primary_color || '#333333';
     const opaqueBackgroundColor = backgroundColor + '40';
 
-    let institutionName;
-    const institutionProjectId = archive.institution_ids?.[0];
-    if (institutionProjectId) {
-        const institution = institutions[institutionProjectId];
-        if (institution) {
-            institutionName = institution.name[locale];
-        }
-    }
+    const institutionName = archive.institutions
+        ?.map((institution) => institution.name)
+        .filter(Boolean)
+        .join(', ');
 
-    const logoSrc = Object.values(archive.logos)[0]?.src;
-    const showLock = !projectAccessGranted;
+    const logoSrc = archive.logo?.url;
+    const showLock =
+        archive.workflow_state !== 'public' && !projectAccessGranted;
     const lockIconSrc =
         projectAccessStatus === PROJECT_ACCESS_REQUESTED
             ? lockRegular
@@ -70,7 +67,7 @@ export function ArchiveTile({ archive, institutions }) {
                         {institutionName}
                     </p>
                     <p className="ArchiveTile-text">
-                        {archive.num_interviews} Interviews
+                        {archive.interviews?.total || 0} Interviews
                     </p>
                 </div>
             </article>
@@ -82,5 +79,4 @@ export default ArchiveTile;
 
 ArchiveTile.propTypes = {
     archive: PropTypes.object.isRequired,
-    institutions: PropTypes.object.isRequired,
 };
