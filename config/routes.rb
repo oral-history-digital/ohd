@@ -269,7 +269,7 @@ Rails.application.routes.draw do
   concern :basic_project_routes do
     resources :projects, only: [:show, :update, :destroy] do
       collection do
-        get :archives
+        get :list
       end
       member do
         get :collections, to: 'collections#for_project'
@@ -281,7 +281,7 @@ Rails.application.routes.draw do
   concern :all_project_routes do
     resources :projects, only: [:show, :index, :create, :update, :destroy] do
       collection do
-        get :archives
+        get :list
       end
       member do
         get :collections, to: 'collections#for_project'

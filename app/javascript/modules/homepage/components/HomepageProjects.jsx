@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useGetArchives } from 'modules/data';
+import { useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
 import ProjectTile from './ProjectTile';
 
 export function HomepageProjects({ className }) {
-    const { archives } = useGetArchives({ all: true, workflowState: 'public' });
+    const { projects: archives } = useGetProjects({
+        all: true,
+        workflowState: 'public',
+    });
     const { t } = useI18n();
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);

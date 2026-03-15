@@ -1,4 +1,4 @@
-import { useGetArchives, useGetInstitutionsList } from 'modules/data';
+import { useGetInstitutionsList, useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useMatch, useSearchParams } from 'react-router-dom';
 
@@ -27,7 +27,10 @@ export function ExplorerSidebarSearch() {
     const { t } = useI18n();
     const match = useMatch('/:locale/explorer/*');
     const [searchParams, setSearchParams] = useSearchParams();
-    const { archives } = useGetArchives({ all: true, workflowState: 'public' });
+    const { projects: archives } = useGetProjects({
+        all: true,
+        workflowState: 'public',
+    });
     const { institutions: institutionsList } = useGetInstitutionsList({
         all: true,
     });

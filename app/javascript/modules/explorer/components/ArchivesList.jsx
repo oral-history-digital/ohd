@@ -1,4 +1,4 @@
-import { useGetArchives } from 'modules/data';
+import { useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
@@ -24,7 +24,11 @@ export function ArchivesList({
     const { t } = useI18n();
     const { expandedId, toggle } = useAccordion();
     const { sort, setSort } = useArchivesSort();
-    const { archives, isLoading, error } = useGetArchives({
+    const {
+        projects: archives,
+        isLoading,
+        error,
+    } = useGetProjects({
         all: true,
         workflowState: 'public',
     });

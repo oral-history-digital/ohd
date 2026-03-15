@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   skip_before_action :authenticate_user!,
-    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index, :archives]
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index, :list]
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
@@ -47,8 +47,8 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/archives
-  def archives
+  # GET /projects/list
+  def list
     # This endpoint is global, so force nil project context and avoid per-request project cache lookup.
     @current_project = nil
     authorize Project, :show?
@@ -85,7 +85,7 @@ class ProjectsController < ApplicationController
       .count
 
     cache_key = [
-      'projects-archives',
+      'projects-list',
       extra_params,
       projects_cache_scope_key,
       normalized_workflow_states&.join(','),
@@ -98,7 +98,7 @@ class ProjectsController < ApplicationController
 
     json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
       {
-        data: serialized_archives(projects, interview_counts, collection_counts),
+        data: serialized_projects(projects, interview_counts, collection_counts),
         page: page,
         result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
       }
@@ -240,7 +240,7 @@ class ProjectsController < ApplicationController
       @normalized_workflow_states = filtered_states.presence
     end
 
-    def serialized_archives(projects, interview_counts, collection_counts)
+    def serialized_projects(projects, interview_counts, collection_counts)
       ActiveModelSerializers::SerializableResource.new(
         projects,
         each_serializer: ProjectArchiveSerializer,
