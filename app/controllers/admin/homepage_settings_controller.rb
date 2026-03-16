@@ -1,62 +1,9 @@
 class Admin::HomepageSettingsController < Admin::BaseController
-  def show
-    instance_setting = InstanceSetting.current
-    authorize instance_setting
-
-    render json: {
-      data_type: 'homepage_settings',
-      data: Admin::InstanceSettingSerializer.new(instance_setting).as_json
-    }
-  end
-
-  def update
-    instance_setting = InstanceSetting.current
-    authorize instance_setting
-
-    updated_setting = InstanceSettings::Upsert.perform(
-      instance_setting: instance_setting,
-      attributes: homepage_setting_params.to_h
-    )
-
-    render json: {
-      data_type: 'homepage_settings',
-      data: Admin::InstanceSettingSerializer.new(updated_setting).as_json
-    }
-  end
+  include HomepageSettingsActions
 
   private
 
-  def homepage_setting_params
-    params.require(:homepage_setting).permit(
-      :umbrella_project_id,
-      blocks: [
-        :id,
-        :code,
-        :position,
-        :button_primary_target,
-        :button_secondary_target,
-        :show_secondary_button,
-        {
-          translations_attributes: [
-            :id,
-            :locale,
-            :heading,
-            :text,
-            :button_primary_label,
-            :button_secondary_label,
-            :image_alt
-          ]
-        },
-        {
-          image: [
-            :id,
-            :locale,
-            :title,
-            :href,
-            :file
-          ]
-        }
-      ]
-    )
+  def serializer_class
+    Admin::InstanceSettingSerializer
   end
 end
