@@ -62,6 +62,7 @@
 // --------------------------------------------------
 
 .ArchivesList {
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -290,6 +291,31 @@
 
 h4.CollectionList-collectionsTitle {
   margin: $base-unit 0 $base-unit * 0.5;
+}
+
+.CollectionList-showMoreButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  margin: $base-unit * 0.25 0 $base-unit * 0.5;
+  padding: 0 0.625rem;
+  border: 1px solid $gray-light;
+  border-radius: 999px;
+  background: #fff;
+  color: $gray-darkest;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: $gray-lightest;
+    border-color: $gray-medium;
+  }
 }
 
 // CollectionCard

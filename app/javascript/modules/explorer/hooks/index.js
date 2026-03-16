@@ -7,3 +7,4 @@ export * from './useArchivesAndCollectionsRange';
 export * from './useExplorerInterviewRange';
 export * from './useExplorerParams';
 export * from './useExplorerYearRange';
+export * from './useSelectableHeaderToggle';

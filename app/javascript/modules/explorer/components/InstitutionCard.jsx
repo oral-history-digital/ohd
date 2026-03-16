@@ -3,12 +3,15 @@ import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
+import { useSelectableHeaderToggle } from '../hooks';
 import { HighlightText } from './HighlightText';
 
 export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const { t } = useI18n();
     const hasArchives = institution.archives?.length > 0;
     const hasChildren = institution.children?.length > 0;
+    const { handleHeaderClick, handleHeaderKeyDown } =
+        useSelectableHeaderToggle(onToggle);
 
     return (
         <div
@@ -16,9 +19,12 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                 'InstitutionCard--expanded': expanded,
             })}
         >
-            <button
+            <div
                 className="InstitutionCard-header"
-                onClick={onToggle}
+                onClick={handleHeaderClick}
+                onKeyDown={handleHeaderKeyDown}
+                role="button"
+                tabIndex={0}
                 aria-expanded={expanded}
             >
                 <span className="InstitutionCard-chevron">
@@ -48,7 +54,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                         )}
                     </div>
                 </div>
-            </button>
+            </div>
 
             {expanded && (
                 <div className="InstitutionCard-body">

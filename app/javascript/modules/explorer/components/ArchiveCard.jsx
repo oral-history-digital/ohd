@@ -3,18 +3,22 @@ import { useI18n } from 'modules/i18n';
 import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
-import { Link, useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
+import { useSelectableHeaderToggle } from '../hooks';
 import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
 export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const { t } = useI18n();
+    const navigate = useNavigate();
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
         .join(', ');
+    const { handleHeaderClick, handleHeaderKeyDown } =
+        useSelectableHeaderToggle(onToggle);
 
     return (
         <div
@@ -22,9 +26,12 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                 'ArchiveCard--expanded': expanded,
             })}
         >
-            <button
+            <div
                 className="ArchiveCard-header"
-                onClick={onToggle}
+                onClick={handleHeaderClick}
+                onKeyDown={handleHeaderKeyDown}
+                role="button"
+                tabIndex={0}
                 aria-expanded={expanded}
             >
                 <span className="ArchiveCard-chevron">
@@ -62,7 +69,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         )}
                     </div>
                 </div>
-            </button>
+            </div>
 
             {expanded && (
                 <div className="ArchiveCard-body">
@@ -101,15 +108,18 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         )}
                     </div>
 
-                    <Link
+                    <button
+                        type="button"
                         className="ArchiveCard-pageButton"
-                        to={`/${locale}/catalog/archives/${archive.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        onClick={() =>
+                            navigate(
+                                `/${locale}/catalog/archives/${archive.id}`
+                            )
+                        }
                     >
                         {t('explorer.view_archive_page')}
                         <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
-                    </Link>
+                    </button>
 
                     <CollectionList archive={archive} />
                 </div>
