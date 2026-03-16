@@ -5,7 +5,6 @@ import {
     HelpTextAdminPage,
     WrappedInstitutionsContainer,
 } from 'modules/admin';
-import { ExplorerRoutes } from 'modules/explorer';
 import { Homepage } from 'modules/homepage';
 import { HomeContainer } from 'modules/startpage';
 import PropTypes from 'prop-types';
@@ -37,10 +36,6 @@ const RoutesWithoutProjectId = ({ project }) => (
                     element={<HelpTextAdminPage />}
                 />
                 <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
-                <Route
-                    path="/:locale/explorer/*"
-                    element={<ExplorerRoutes />}
-                />
             </>
         ) : (
             <Route exact path="/:locale" element={<HomeContainer />} />

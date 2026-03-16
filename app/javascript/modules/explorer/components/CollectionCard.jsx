@@ -15,6 +15,12 @@ export function CollectionCard({ collection, query }) {
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
 
+    // TODO: We exclude unshared interviews here, but maybe we should show them in the
+    // collection page with a note that they are unshared?
+    // Should be handled consistently across the app
+    const numInterviews =
+        collection.interviews?.total - collection.interviews?.unshared || 0;
+
     return (
         <div
             className={classNames('CollectionCard', {
@@ -35,8 +41,7 @@ export function CollectionCard({ collection, query }) {
                     </h4>
                     <div className="CollectionCard-meta">
                         <span className="CollectionCard-metaItem">
-                            {collection.interviews?.total || 0}{' '}
-                            {t('explorer.interviews')}
+                            {numInterviews} {t('explorer.interviews')}
                         </span>
                         {collection.institution && (
                             <span className="CollectionCard-metaItem">
@@ -89,7 +94,6 @@ export function CollectionCard({ collection, query }) {
                     <Link
                         className="CollectionCard-pageButton"
                         to={`/${locale}/catalog/collections/${collection.id}`}
-                        target="_blank"
                         rel="noopener noreferrer"
                     >
                         {t('explorer.view_collection_page')}
