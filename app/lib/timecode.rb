@@ -6,7 +6,7 @@ class Timecode
       when String
         @timecode = time
         Timecode::parse_timecode(time)
-      when Integer, Float then time
+      when Integer, Float, BigDecimal then time
       when NilClass then 0
       else nil
       end
@@ -83,6 +83,7 @@ class Timecode
 
   # yields the formatted timecode from a duration in secs
   def self.format_duration(time)
+    return "00:00:00.000" unless time
     ms = ((time % 1) * 1000).round
     hours = (time / 3600).to_i
     mins = ((time - hours * 3600) / 60).to_i
