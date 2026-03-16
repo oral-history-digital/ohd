@@ -5,7 +5,7 @@
     "primary": { "label": "Archive und Sammlungen", "target": "/de/catalog" },
     "secondary": {
       "label": "Institutionen",
-      "target": "/de/catalog?explorer_tab=1"
+      "target": "/de/catalog/institutions"
     }
   }
 }

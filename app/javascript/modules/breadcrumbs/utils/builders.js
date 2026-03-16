@@ -69,8 +69,17 @@ export function buildInterviewItems(currentPage, context) {
  */
 export function buildCatalogItems(currentPage, labels, entityLabels, context) {
     const { params, pathBase } = currentPage;
+    const { catalogTypeLabels } = context;
     const catalogType = params.catalogType || 'root';
     const catalogBasePath = joinPath(pathBase, '/catalog');
+    const isInstitutionsPage = catalogType === 'institutions';
+    const isInstitutionsIndexPage = isInstitutionsPage && !params.id;
+    const catalogParentLabel = isInstitutionsPage
+        ? catalogTypeLabels.institutions || labels.catalog_page
+        : labels.catalog_page;
+    const catalogParentPath = isInstitutionsPage
+        ? joinPath(catalogBasePath, '/institutions')
+        : catalogBasePath;
 
     const items = [
         {
@@ -81,9 +90,9 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
         },
         {
             key: 'catalog',
-            label: labels.catalog_page,
-            to: catalogBasePath,
-            isCurrent: catalogType === 'root',
+            label: catalogParentLabel,
+            to: catalogParentPath,
+            isCurrent: catalogType === 'root' || isInstitutionsIndexPage,
         },
     ];
 

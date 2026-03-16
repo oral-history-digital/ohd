@@ -496,6 +496,7 @@ describe('useBreadcrumbModel', () => {
             translations: {
                 home: 'Start',
                 'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'activerecord.models.institution.other': 'Institutionen',
             },
         });
 
@@ -508,8 +509,8 @@ describe('useBreadcrumbModel', () => {
             },
             {
                 key: 'catalog',
-                label: 'Archive & Sammlungen',
-                to: '/de/catalog',
+                label: 'Institutionen',
+                to: '/de/catalog/institutions',
                 isCurrent: false,
             },
             {
@@ -518,6 +519,50 @@ describe('useBreadcrumbModel', () => {
                 to: null,
                 isCurrent: true,
                 loading: false,
+            },
+        ]);
+    });
+
+    it('shows institutions label for catalog institutions index page', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'catalog_page',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: null,
+                    catalogType: 'institutions',
+                    id: null,
+                },
+                pathBase: '/de',
+                pathname: '/de/catalog/institutions',
+                search: '',
+            },
+            project: null,
+            interview: null,
+            currentUser: null,
+            collections: {},
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'activerecord.models.institution.other': 'Institutionen',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'home',
+                label: 'Start',
+                to: '/de',
+                isCurrent: false,
+            },
+            {
+                key: 'catalog',
+                label: 'Institutionen',
+                to: '/de/catalog/institutions',
+                isCurrent: true,
             },
         ]);
     });

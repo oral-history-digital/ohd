@@ -1,6 +1,7 @@
 import { useGetInstitutionsList, useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useMatch, useSearchParams } from 'react-router-dom';
+import { useCurrentPage } from 'modules/routes';
+import { useSearchParams } from 'react-router-dom';
 
 import {
     useArchivesAndCollectionsRange,
@@ -25,8 +26,7 @@ import { ExplorerSearchInput } from './ExplorerSearchInput';
 
 export function ExplorerSidebarSearch() {
     const { t } = useI18n();
-    // TODO: Consider using useCurrentPage to determine if we're on an explorer-related page
-    const match = useMatch('/:locale/catalog/*');
+    const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
     const { projects: archives } = useGetProjects({
         all: true,
@@ -36,7 +36,10 @@ export function ExplorerSidebarSearch() {
         all: true,
     });
 
-    const tabIndex = Number(searchParams.get('explorer_tab')) || 0;
+    const isCatalogPage = currentPage.pageType === 'catalog_page';
+    const isInstitutionsTab =
+        isCatalogPage && currentPage.params.catalogType === 'institutions';
+    const tabIndex = isInstitutionsTab ? 1 : 0;
     const isArchivesTab = tabIndex === 0;
 
     const archiveInstitutions = useExplorerArchiveInstitutions({ archives });
@@ -83,7 +86,7 @@ export function ExplorerSidebarSearch() {
               .filter(Boolean)
         : [];
 
-    if (!match) return null;
+    if (!isCatalogPage) return null;
 
     const handleQueryChange = (e) =>
         setSearchParams((prev) => applyQueryParam(prev, e.target.value), {

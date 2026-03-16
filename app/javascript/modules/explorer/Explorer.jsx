@@ -1,9 +1,10 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import { useI18n } from 'modules/i18n';
+import { useCurrentPage } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { FaArchive, FaUniversity } from 'react-icons/fa';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ArchivesList, InstitutionsList } from './components';
 import { useExplorerParams } from './hooks';
@@ -11,6 +12,8 @@ import { resetExplorerFilters } from './utils';
 
 export function Explorer() {
     const { t } = useI18n();
+    const currentPage = useCurrentPage();
+    const navigate = useNavigate();
     const [, setSearchParams] = useSearchParams();
     const {
         tabIndex,
@@ -25,30 +28,34 @@ export function Explorer() {
         yearMax,
         institutionIds,
     } = useExplorerParams();
+    const archivesTabLabel = t('explorer.tab.archives_and_collections');
+    const institutionsTabLabel = t('explorer.tab.institutions');
+    const explorerTitle =
+        tabIndex === 1 ? institutionsTabLabel : archivesTabLabel;
 
-    const handleTabChange = (index) =>
+    const handleTabChange = (index) => {
+        const catalogBasePath = `${currentPage.pathBase}/catalog`;
+        const nextPath =
+            index === 1 ? `${catalogBasePath}/institutions` : catalogBasePath;
+
         setSearchParams(
             (prev) => {
                 resetExplorerFilters(prev);
-                if (index === 0) {
-                    prev.delete('explorer_tab');
-                } else {
-                    prev.set('explorer_tab', index);
-                }
                 return prev;
             },
             { replace: true }
         );
 
+        navigate(nextPath, { replace: true });
+    };
+
     return (
         <>
             <Helmet>
-                <title>{t('modules.catalog.title')}</title>
+                <title>{explorerTitle}</title>
             </Helmet>
             <div className="Explorer">
-                <h1 className="Explorer--title">
-                    {t('modules.catalog.title')}
-                </h1>
+                <h1 className="Explorer--title">{explorerTitle}</h1>
                 <Tabs
                     className="Explorer-tabs"
                     index={tabIndex}
@@ -59,13 +66,13 @@ export function Explorer() {
                         <Tab className="Explorer-tab">
                             <FaArchive className="Explorer-tabIcon" />
                             <span className="Explorer-tabText">
-                                {t('explorer.tab.archives_and_collections')}
+                                {archivesTabLabel}
                             </span>
                         </Tab>
                         <Tab className="Explorer-tab">
                             <FaUniversity className="Explorer-tabIcon" />
                             <span className="Explorer-tabText">
-                                {t('explorer.tab.institutions')}
+                                {institutionsTabLabel}
                             </span>
                         </Tab>
                     </TabList>

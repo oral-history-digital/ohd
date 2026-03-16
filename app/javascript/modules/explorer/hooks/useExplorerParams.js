@@ -1,3 +1,4 @@
+import { useCurrentPage } from 'modules/routes';
 import { useSearchParams } from 'react-router-dom';
 
 /**
@@ -5,10 +6,15 @@ import { useSearchParams } from 'react-router-dom';
  * centralizing type conversion and default values.
  */
 export const useExplorerParams = () => {
+    const currentPage = useCurrentPage();
     const [searchParams] = useSearchParams();
+    const isInstitutionsTab =
+        currentPage.pageType === 'catalog_page' &&
+        currentPage.params.catalogType === 'institutions';
+    const tabIndex = isInstitutionsTab ? 1 : 0;
 
     return {
-        tabIndex: Number(searchParams.get('explorer_tab')) || 0,
+        tabIndex,
         query: searchParams.get('explorer_q') || '',
         interviewMin: searchParams.has('explorer_interviews_min')
             ? Number(searchParams.get('explorer_interviews_min'))
