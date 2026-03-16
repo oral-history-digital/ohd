@@ -25,7 +25,8 @@ import { ExplorerSearchInput } from './ExplorerSearchInput';
 
 export function ExplorerSidebarSearch() {
     const { t } = useI18n();
-    const match = useMatch('/:locale/explorer/*');
+    // TODO: Consider using useCurrentPage to determine if we're on an explorer-related page
+    const match = useMatch('/:locale/catalog/*');
     const [searchParams, setSearchParams] = useSearchParams();
     const { projects: archives } = useGetProjects({
         all: true,
