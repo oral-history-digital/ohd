@@ -91,12 +91,19 @@
 .Layout.sidebar-is-visible.is-interview-page.is-logged-in > .Layout-page {
   padding: 0;
 
+  @include screen-xl {
+    width: calc(100% - var(--layout-sidebar-width-xl));
+    margin-left: 0;
+    margin-right: 0;
+    transform: none;
+  }
+
   .wrapper-content {
     padding-left: $base-unit * 2;
   }
 }
 
-.Layout.sidebar-is-visible:not(.is-interview-page.is-logged-in) > .Layout-page {
+.Layout.sidebar-is-visible > .Layout-page {
   @include screen-xl {
     width: min(
       calc(100% - var(--layout-sidebar-width-xl)),
@@ -112,7 +119,7 @@
   display: block;
 }
 
-.Layout.is-sticky.sidebar-is-visible:not(.is-interview-page.is-logged-in) {
+.Layout.is-sticky.sidebar-is-visible {
   @include screen-xl {
     .Layout-page {
       width: min(
@@ -133,6 +140,25 @@
       left: 50%;
       right: auto;
       transform: translateX(calc(-50% - (var(--layout-sidebar-width-xl) / 2)));
+    }
+  }
+}
+
+.Layout.is-sticky.sidebar-is-visible.is-interview-page.is-logged-in {
+  @include screen-xl {
+    .Layout-page {
+      width: calc(100% - var(--layout-sidebar-width-xl));
+      margin-left: 0;
+      margin-right: 0;
+      transform: none;
+    }
+
+    .Layout-mediaPlayer,
+    .Layout-contentTabs {
+      width: calc(100% - var(--layout-sidebar-width-xl));
+      left: 0;
+      right: auto;
+      transform: none;
     }
   }
 }
