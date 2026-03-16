@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { Button } from 'modules/ui';
 import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
@@ -109,19 +110,18 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                             </span>
                         )}
                     </div>
-
-                    <button
-                        type="button"
-                        className="ArchiveCard-pageButton"
-                        onClick={() =>
-                            navigate(
-                                `/${locale}/catalog/archives/${archive.id}`
-                            )
-                        }
-                    >
-                        {t('explorer.view_archive_page')}
-                        <FaExternalLinkAlt className="ArchiveCard-pageLinkIcon" />
-                    </button>
+                    <div className="ArchiveCard-pageButton">
+                        <Button
+                            buttonText={t('explorer.view_archive_page')}
+                            variant="contained"
+                            onClick={() =>
+                                navigate(
+                                    `/${locale}/catalog/archives/${archive.id}`
+                                )
+                            }
+                            endIcon={<FaExternalLinkAlt />}
+                        />
+                    </div>
 
                     <CollectionList archive={archive} />
                 </div>

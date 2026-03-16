@@ -2,15 +2,17 @@ import { useState } from 'react';
 
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { Button } from 'modules/ui';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
-import { Link, useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 import { HighlightText } from './HighlightText';
 
 export function CollectionCard({ collection, query }) {
     const { t } = useI18n();
+    const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
@@ -90,15 +92,19 @@ export function CollectionCard({ collection, query }) {
                             </span>
                         )}
                     </div>
-
-                    <Link
-                        className="CollectionCard-pageButton"
-                        to={`/${locale}/catalog/collections/${collection.id}`}
-                        rel="noopener noreferrer"
-                    >
-                        {t('explorer.view_collection_page')}
-                        <FaExternalLinkAlt className="CollectionCard-pageLinkIcon" />
-                    </Link>
+                    <div className="CollectionCard-pageButton">
+                        <Button
+                            buttonText={t('explorer.view_collection_page')}
+                            variant="contained"
+                            onClick={() =>
+                                navigate(
+                                    `/${locale}/catalog/collections/${collection.id}`
+                                )
+                            }
+                            endIcon={<FaExternalLinkAlt />}
+                            size="sm"
+                        />
+                    </div>
                 </div>
             )}
         </div>

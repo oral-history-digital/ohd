@@ -1,14 +1,18 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
+import { Button } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
 import { HighlightText } from './HighlightText';
 
 export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const cardRef = useScrollToExpandedCard(expanded);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const navigate = useNavigate();
     const hasArchives = institution.archives?.length > 0;
     const hasChildren = institution.children?.length > 0;
     const { handleHeaderClick, handleHeaderKeyDown } =
@@ -95,6 +99,19 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             </ul>
                         </div>
                     )}
+
+                    <div className="InstitutionCard-pageButton">
+                        <Button
+                            buttonText={t('explorer.view_institution_page')}
+                            variant="contained"
+                            onClick={() =>
+                                navigate(
+                                    `/${locale}/catalog/institutions/${institution.id}`
+                                )
+                            }
+                            endIcon={<FaExternalLinkAlt />}
+                        />
+                    </div>
 
                     {hasArchives && (
                         <div className="InstitutionCard-archives">
