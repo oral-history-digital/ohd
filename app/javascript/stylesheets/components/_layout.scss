@@ -17,7 +17,8 @@
   }
 }
 
-.Layout:not(.sidebar-is-visible):not(.is-interview-page) > .Layout-page {
+.Layout:not(.sidebar-is-visible):not(.is-interview-page.is-logged-in)
+  > .Layout-page {
   @include screen-xl {
     width: min(100%, var(--layout-main-max-width));
     margin-left: auto;
@@ -87,7 +88,7 @@
     );
   }
 }
-.Layout.sidebar-is-visible.is-interview-page > .Layout-page {
+.Layout.sidebar-is-visible.is-interview-page.is-logged-in > .Layout-page {
   padding: 0;
 
   .wrapper-content {
@@ -95,7 +96,7 @@
   }
 }
 
-.Layout.sidebar-is-visible:not(.is-interview-page) > .Layout-page {
+.Layout.sidebar-is-visible:not(.is-interview-page.is-logged-in) > .Layout-page {
   @include screen-xl {
     width: min(
       calc(100% - var(--layout-sidebar-width-xl)),
@@ -111,7 +112,7 @@
   display: block;
 }
 
-.Layout.is-sticky.sidebar-is-visible:not(.is-interview-page) {
+.Layout.is-sticky.sidebar-is-visible:not(.is-interview-page.is-logged-in) {
   @include screen-xl {
     .Layout-page {
       width: min(

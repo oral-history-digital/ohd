@@ -23,6 +23,7 @@ import {
     AfterRequestProjectAccessPopup,
     ConfirmNewZwarTosPopup,
     CorrectUserDataPopup,
+    getIsLoggedIn,
     getLoggedInAt,
     useFetchAccount,
 } from 'modules/user';
@@ -51,6 +52,7 @@ export default function Layout({ children }) {
     const projectsStatus = useSelector(getProjectsStatus);
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
+    const isLoggedIn = useSelector(getIsLoggedIn);
 
     const { project } = useProject();
     const currentPage = useCurrentPage();
@@ -111,6 +113,7 @@ export default function Layout({ children }) {
         <ResizeWatcher>
             <div
                 className={classNames('Layout', {
+                    'is-logged-in': isLoggedIn,
                     'sidebar-is-visible': sidebarVisible,
                     'is-interview-page': isInterviewPage,
                     'is-sticky': scrollPositionBelowThreshold,

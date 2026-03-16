@@ -14,3 +14,7 @@
     height: $site-header-height-desktop;
   }
 }
+
+.Layout.sidebar-is-visible.is-interview-page.is-logged-in .SiteHeader {
+  padding-left: $base-unit;
+}
