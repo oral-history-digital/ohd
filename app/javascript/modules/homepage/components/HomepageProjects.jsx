@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import ProjectTile from './ProjectTile';
 
 export function HomepageProjects({ className }) {
-    const { projects: archives } = useGetProjects({
+    const { projects } = useGetProjects({
         all: true,
         workflowState: 'public',
     });
@@ -17,12 +17,12 @@ export function HomepageProjects({ className }) {
     const [canScrollRight, setCanScrollRight] = useState(false);
 
     // Sort by number of contained interviews DESC and keep first 15
-    const sortedArchives = [...archives].sort((a, b) => {
+    const sortedProjects = [...projects].sort((a, b) => {
         const aCount = a.interviews?.total || 0;
         const bCount = b.interviews?.total || 0;
         return bCount - aCount;
     });
-    const displayedArchives = sortedArchives.slice(0, 15);
+    const displayedProjects = sortedProjects.slice(0, 15);
 
     const updateScrollButtons = useCallback(() => {
         const el = scrollRef.current;
@@ -35,7 +35,7 @@ export function HomepageProjects({ className }) {
         updateScrollButtons();
         window.addEventListener('resize', updateScrollButtons);
         return () => window.removeEventListener('resize', updateScrollButtons);
-    }, [updateScrollButtons, displayedArchives]);
+    }, [updateScrollButtons, displayedProjects]);
 
     const getCardWidth = () => {
         const el = scrollRef.current;
@@ -96,8 +96,8 @@ export function HomepageProjects({ className }) {
                 ref={scrollRef}
                 onScroll={handleScroll}
             >
-                {displayedArchives.map((archive) => (
-                    <ProjectTile key={archive.id} archive={archive} />
+                {displayedProjects.map((project) => (
+                    <ProjectTile key={project.id} project={project} />
                 ))}
             </div>
         </article>

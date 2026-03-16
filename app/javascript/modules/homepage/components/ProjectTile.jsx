@@ -6,21 +6,21 @@ import { LinkOrA } from 'modules/routes';
 import { SmartImage } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-export function ProjectTile({ archive }) {
+export function ProjectTile({ project }) {
     const { t } = useI18n();
     const { projectAccessGranted, projectAccessStatus } =
-        useProjectAccessStatus(archive);
+        useProjectAccessStatus(project);
 
-    const name = archive.display_name || archive.name;
-    const backgroundColor = archive.primary_color || '#333333';
+    const name = project.display_name || project.name;
+    const backgroundColor = project.primary_color || '#333333';
     const opaqueBackgroundColor = backgroundColor + '40';
 
-    const institutionName = archive.institutions
+    const institutionName = project.institutions
         ?.map((institution) => institution.name)
         .filter(Boolean)
         .join(', ');
 
-    const logoSrc = archive.logo?.url;
+    const logoSrc = project.logo?.url;
     const showLock = !projectAccessGranted;
     const lockIconSrc =
         projectAccessStatus === PROJECT_ACCESS_REQUESTED
@@ -35,7 +35,7 @@ export function ProjectTile({ archive }) {
         <LinkOrA
             className="ProjectTile"
             style={{ backgroundColor: opaqueBackgroundColor }}
-            project={archive}
+            project={project}
             to=""
         >
             <article className="ProjectTile-inner">
@@ -66,7 +66,7 @@ export function ProjectTile({ archive }) {
                         {institutionName}
                     </p>
                     <p className="ProjectTile-text">
-                        {archive.interviews?.total || 0} Interviews
+                        {project.interviews?.total || 0} Interviews
                     </p>
                 </div>
             </article>
@@ -77,5 +77,5 @@ export function ProjectTile({ archive }) {
 export default ProjectTile;
 
 ProjectTile.propTypes = {
-    archive: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
 };
