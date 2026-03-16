@@ -7,7 +7,10 @@ export function HomepagePanel({ image, data, variant }) {
     const navigate = useNavigate();
 
     return (
-        <section className={`Panel Panel--${variant}`}>
+        <section
+            className={`Panel Panel--${variant}`}
+            data-testid={`homepage-panel-${variant}`}
+        >
             <div className="Panel-content">
                 <img
                     src={image}
@@ -23,6 +26,7 @@ export function HomepagePanel({ image, data, variant }) {
                         size="lg"
                         onClick={() => navigate(data.buttons.primary.target)}
                         className="Panel-cta--primary"
+                        data-testid={`homepage-panel-cta-primary-${variant}`}
                     />
                 </div>
             </div>

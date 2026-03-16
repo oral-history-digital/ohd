@@ -38,12 +38,16 @@ export function ProjectTile({ project }) {
             project={project}
             to=""
         >
-            <article className="ProjectTile-inner">
+            <article
+                className="ProjectTile-inner"
+                data-testid={`homepage-project-tile-${project.id}`}
+            >
                 {showLock && (
                     <div
                         className="ProjectTile-lock"
                         title={lockLabel}
                         aria-label={lockLabel}
+                        data-testid={`homepage-project-tile-lock-${project.id}`}
                     >
                         <img
                             src={lockIconSrc}

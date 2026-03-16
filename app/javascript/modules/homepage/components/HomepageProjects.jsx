@@ -63,19 +63,29 @@ export function HomepageProjects({ className }) {
     };
 
     return (
-        <article className={className}>
-            <div className="HomepageProjects-header">
-                <h3 className="Homepage-heading u-mt-none u-mb-none">
+        <article className={className} data-testid="homepage-projects">
+            <div
+                className="HomepageProjects-header"
+                data-testid="homepage-projects-header"
+            >
+                <h3
+                    className="Homepage-heading u-mt-none u-mb-none"
+                    data-testid="homepage-projects-heading"
+                >
                     {t('modules.site_startpage.sample_archives')}
                 </h3>
 
-                <div className="HomepageProjects-nav">
+                <div
+                    className="HomepageProjects-nav"
+                    data-testid="homepage-projects-nav"
+                >
                     <button
                         type="button"
                         className="HomepageProjects-navBtn"
                         onClick={() => scroll(-1)}
                         disabled={!canScrollLeft}
                         aria-label={t('modules.site_startpage.previous')}
+                        data-testid="homepage-projects-nav-prev"
                     >
                         &#8249;
                     </button>
@@ -85,6 +95,7 @@ export function HomepageProjects({ className }) {
                         onClick={() => scroll(1)}
                         disabled={!canScrollRight}
                         aria-label={t('modules.site_startpage.next')}
+                        data-testid="homepage-projects-nav-next"
                     >
                         &#8250;
                     </button>
@@ -95,6 +106,7 @@ export function HomepageProjects({ className }) {
                 className="HomepageProjects-scroll u-mt"
                 ref={scrollRef}
                 onScroll={handleScroll}
+                data-testid="homepage-projects-scroll"
             >
                 {displayedProjects.map((project) => (
                     <ProjectTile key={project.id} project={project} />

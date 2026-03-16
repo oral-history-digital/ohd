@@ -11,9 +11,9 @@ export default function Homepage() {
     useTrackPageView();
 
     return (
-        <div className="Homepage project-index">
+        <div className="Homepage project-index" data-testid="homepage-root">
             <Hero />
-            <div className="Grid Grid--2">
+            <div className="Grid Grid--2" data-testid="homepage-panels-grid">
                 <PanelInterviews />
                 <PanelRegister />
             </div>

@@ -8,11 +8,22 @@ export function Hero() {
     const navigate = useNavigate();
 
     return (
-        <section className="Hero" style={{ backgroundImage: `url(${heroBg})` }}>
-            <div className="Hero-content">
-                <h1 className="Hero-heading">{heroData.heading}</h1>
-                <p className="Hero-text">{heroData.text}</p>
-                <div className="CtaWrapper">
+        <section
+            className="Hero"
+            style={{ backgroundImage: `url(${heroBg})` }}
+            data-testid="homepage-hero"
+        >
+            <div className="Hero-content" data-testid="homepage-hero-content">
+                <h1
+                    className="Hero-heading"
+                    data-testid="homepage-hero-heading"
+                >
+                    {heroData.heading}
+                </h1>
+                <p className="Hero-text" data-testid="homepage-hero-text">
+                    {heroData.text}
+                </p>
+                <div className="CtaWrapper" data-testid="homepage-hero-cta">
                     <Button
                         buttonText={heroData.buttons.secondary.label}
                         variant="outlined"
@@ -21,6 +32,7 @@ export function Hero() {
                             navigate(heroData.buttons.secondary.target)
                         }
                         className="Hero-cta--secondary"
+                        data-testid="homepage-hero-cta-secondary"
                     />
                     <Button
                         buttonText={heroData.buttons.primary.label}
@@ -30,6 +42,7 @@ export function Hero() {
                             navigate(heroData.buttons.primary.target)
                         }
                         className="Hero-cta--primary"
+                        data-testid="homepage-hero-cta-primary"
                     />
                 </div>
             </div>
