@@ -154,7 +154,7 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       ar: 'تاريخ النشر',
     },
     'explorer.view_archive_page': {
-      de: 'Archivseite öffnen',
+      de: 'Archiv anzeigen',
       en: 'View archive page',
       el: 'Προβολή σελίδας αρχείου',
       es: 'Ver página del archivo',
@@ -163,13 +163,22 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       ar: 'عرض صفحة الأرشيف',
     },
     'explorer.view_collection_page': {
-      de: 'Sammlungsseite öffnen',
+      de: 'Sammlung anzeigen',
       en: 'View collection page',
       el: 'Προβολή σελίδας συλλογής',
       es: 'Ver página de la colección',
       ru: 'Открыть страницу коллекции',
       uk: 'Відкрити сторінку колекції',
       ar: 'عرض صفحة المجموعة',
+    },
+    'explorer.view_institution_page': {
+      de: 'Institution anzeigen',
+      en: 'View institution page',
+      el: 'Προβολή σελίδας ιδρύματος',
+      es: 'Ver página de la institución',
+      ru: 'Открыть страницу учреждения',
+      uk: 'Відкрити сторінку установи',
+      ar: 'عرض صفحة المؤسسة',
     },
     'explorer.sub_institutions': {
       de: 'Unterinstitutionen',
