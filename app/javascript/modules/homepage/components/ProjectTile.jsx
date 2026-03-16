@@ -21,8 +21,7 @@ export function ProjectTile({ archive }) {
         .join(', ');
 
     const logoSrc = archive.logo?.url;
-    const showLock =
-        archive.workflow_state !== 'public' && !projectAccessGranted;
+    const showLock = !projectAccessGranted;
     const lockIconSrc =
         projectAccessStatus === PROJECT_ACCESS_REQUESTED
             ? lockRegular
