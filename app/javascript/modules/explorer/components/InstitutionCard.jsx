@@ -3,10 +3,11 @@ import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
-import { useSelectableHeaderToggle } from '../hooks';
+import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
 import { HighlightText } from './HighlightText';
 
 export function InstitutionCard({ institution, query, expanded, onToggle }) {
+    const cardRef = useScrollToExpandedCard(expanded);
     const { t } = useI18n();
     const hasArchives = institution.archives?.length > 0;
     const hasChildren = institution.children?.length > 0;
@@ -15,6 +16,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
 
     return (
         <div
+            ref={cardRef}
             className={classNames('InstitutionCard', {
                 'InstitutionCard--expanded': expanded,
             })}

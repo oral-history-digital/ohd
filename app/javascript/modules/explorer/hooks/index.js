@@ -9,3 +9,4 @@ export * from './useExplorerParams';
 export * from './useExplorerYearRange';
 export * from './useInstitutionsSort';
 export * from './useSelectableHeaderToggle';
+export * from './useScrollToExpandedCard';
