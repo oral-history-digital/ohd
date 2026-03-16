@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_03_122300) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_16_121943) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -358,7 +358,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_03_122300) do
   create_table "interviews", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "archive_id", limit: 255
     t.integer "collection_id"
-    t.integer "duration"
+    t.decimal "duration", precision: 10, scale: 3
     t.boolean "translated"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil

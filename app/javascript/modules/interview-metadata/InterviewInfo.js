@@ -73,9 +73,10 @@ export default function InterviewInfo({ interview, languages }) {
             <SingleValueWithForm
                 obj={interview}
                 validate={function (v) {
-                    return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v);
+                    return /^\d{2}:\d{2}:\d{2}.\d{3}$/.test(v);
                 }}
                 attribute={'duration'}
+                individualErrorMsg={'format'}
                 value={`${interview.duration.split(':')[0]} h ${
                     interview.duration.split(':')[1]
                 } min`}
