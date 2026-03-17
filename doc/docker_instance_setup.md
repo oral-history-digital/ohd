@@ -90,6 +90,8 @@ docker compose --profile db exec app \
 
 6. Configure local domain (required for host-based routing):
 
+Use the default local domain in examples unless you intentionally need a custom project domain.
+
 ```bash
 # Add host mapping on your machine (one-time)
 echo "127.0.0.1 portal.oral-history.localhost" | sudo tee -a /etc/hosts
@@ -107,6 +109,31 @@ docker compose --profile db exec app \
 ```bash
 # Optional: verify app responds on the configured host
 curl -I http://portal.oral-history.localhost:3000
+```
+
+If you still see a "Blocked hosts" page in development, restart the app container so Rails reloads host authorization config:
+
+```bash
+docker compose --profile db restart app
+```
+
+### Using a different local domain
+
+If you want to use a custom domain such as `portal.myarchive.localhost`:
+
+1. Use that full URL in your bootstrap task (`http://portal.myarchive.localhost:3000`).
+2. Add it to `/etc/hosts`:
+
+```bash
+echo "127.0.0.1 portal.myarchive.localhost" | sudo tee -a /etc/hosts
+getent hosts portal.myarchive.localhost
+```
+
+3. If needed, set additional allowed development hosts with `OHD_EXTRA_HOSTS_DEVELOPMENT` (comma-separated), then restart app:
+
+```bash
+OHD_EXTRA_HOSTS_DEVELOPMENT=portal.myarchive.localhost docker compose --profile db up -d app
+docker compose --profile db restart app
 ```
 
 7. Validate baseline:
@@ -142,15 +169,19 @@ Prefer explicit bootstrap tasks over demo-heavy `db:seed` for real instances:
 
 ```bash
 docker compose --profile db exec app \
-	bundle exec rake "bootstrap:all[myarchive,http://portal.myarchive.localhost:3000,admin@example.com,ChangeMe123?,Instance,Admin,en]"
+	bundle exec rake "bootstrap:all[ohd,http://portal.oral-history.localhost:3000,admin@example.com,ChangeMe123?,Instance,Admin,en]"
 ```
+
+Important: A baseline project with shortname `ohd` is currently required by parts of the app (`Project.ohd`).
+Using only another shortname (for example `myarchive`) can lead to runtime errors on page load.
+This will be changed in the future.
 
 ENV-based equivalent:
 
 ```bash
 docker compose --profile db exec \
-	-e BOOTSTRAP_PROJECT_SHORTNAME=myarchive \
-	-e BOOTSTRAP_ARCHIVE_DOMAIN=http://portal.myarchive.localhost:3000 \
+	-e BOOTSTRAP_PROJECT_SHORTNAME=ohd \
+	-e BOOTSTRAP_ARCHIVE_DOMAIN=http://portal.oral-history.localhost:3000 \
 	-e BOOTSTRAP_ADMIN_EMAIL=admin@example.com \
 	-e BOOTSTRAP_ADMIN_PASSWORD="ChangeMe123?" \
 	-e BOOTSTRAP_ADMIN_FIRST_NAME=Instance \
