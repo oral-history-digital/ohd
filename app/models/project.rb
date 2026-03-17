@@ -70,6 +70,9 @@ class Project < ApplicationRecord
     create_access_config!
   end
 
+  after_commit :refresh_related_institutions_on_workflow_state_change,
+    if: :saved_change_to_workflow_state?
+
   #
   # define pseudo-methods for serialized attributes
   #
@@ -323,6 +326,20 @@ class Project < ApplicationRecord
     institutions_with_ancestors.map do |i|
       i.name(locale)
     end.join(", ")
+  end
+
+  def refresh_related_institutions_on_workflow_state_change
+    impacted = institutions.includes(:parent).to_a
+
+    impacted.each do |institution|
+      institution.update_projects_count
+      institution.update_interviews_count
+      institution.touch
+
+      institution.parent&.update_projects_count
+      institution.parent&.update_interviews_count
+      institution.parent&.touch
+    end
   end
 
   def search_facets_hash
