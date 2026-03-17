@@ -544,5 +544,4 @@ MediaElement.propTypes = {
     resetMedia: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     clearTimeChangeRequest: PropTypes.func.isRequired,
-    mediaMissingText: PropTypes.string.isRequired,
 };

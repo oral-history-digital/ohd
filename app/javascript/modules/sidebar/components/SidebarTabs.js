@@ -33,6 +33,7 @@ export default function SidebarTabs({
     const pathBase = usePathBase();
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const isInterviewRoute = pathname.includes('/interviews/');
 
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
@@ -213,6 +214,7 @@ export default function SidebarTabs({
 
                 <TabPanel key="3">
                     {showInterviewTab &&
+                        isInterviewRoute &&
                         tabIndex === indexes.INDEX_INTERVIEW && (
                             <StateCheck
                                 testSelector={getCurrentInterviewFetched}
