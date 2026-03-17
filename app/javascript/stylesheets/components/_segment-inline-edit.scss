@@ -1,0 +1,324 @@
+// Controls layout for segment in edit mode
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Segment--editMode {
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  padding: $base-unit !important;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: calc($base-unit / 3 * 2);
+
+  // Increase spacing on very large screens
+  @media (min-width: 1600px) {
+    gap: $base-unit;
+    padding: $base-unit * 1.25;
+  }
+
+  .SegmentTabs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .SegmentTabs-tabList {
+    display: flex;
+    gap: 2px;
+    border-bottom: 2px solid $gray-lighter;
+    margin-bottom: calc($base-unit / 3 * 2);
+    background: inherit;
+  }
+
+  .SegmentTabs-tab {
+    background-color: $gray-pale;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: $gray-dark;
+    cursor: pointer;
+    font-family: $font-family;
+    font-size: $font-size-medium;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: $base-unit * 0.4 calc($base-unit / 3 * 2);
+    transition: all $transition-duration;
+    border-radius: 4px 4px 0 0;
+    outline: none;
+
+    &:hover {
+      background-color: $gray-lighter;
+      color: $gray-darkest;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 $focus-radius $focus-color;
+    }
+
+    &:active {
+      outline: none;
+    }
+
+    &[data-selected] {
+      background-color: var(--primary-color);
+      border-bottom-color: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+
+  .SegmentTabs-panels {
+    width: 100%;
+  }
+
+  .SegmentTabs-preview {
+    display: flex;
+    align-items: center;
+    padding-bottom: calc($base-unit / 3);
+    margin-bottom: calc($base-unit / 3);
+    gap: calc($base-unit / 8);
+
+    .Button--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid var(--primary-color);
+      border-radius: 50%;
+      color: var(--primary-color);
+      font-size: 0.85rem;
+      transition:
+        background $transition-duration,
+        opacity $transition-duration;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      &[aria-pressed='true'] {
+        background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+      }
+
+      &:focus {
+        box-shadow: none; // Remove default focus outline
+      }
+    }
+  }
+
+  .SegmentTabs-previewTime {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.5rem;
+    font-size: $font-size-large;
+    color: $gray-dark;
+  }
+
+  .SegmentTabs-previewCurrent {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .SegmentTabs-previewSeparator {
+    color: $gray-medium;
+  }
+
+  .SegmentTabs-previewEnd {
+    opacity: 0.75;
+  }
+
+  .SegmentTabs-panel {
+    width: 100%;
+    animation: fadeIn $transition-duration;
+  }
+
+  // Labels positioned above all fields
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // First form-group in SegmentTabs-panel has no top margin
+  .SegmentTabs-panel:first-child .form-group {
+    margin-top: 0;
+  }
+
+  .form-group {
+    input,
+    select,
+    textarea {
+      width: 100% !important;
+    }
+
+    .help-block {
+      line-height: 1.2rem;
+      margin-left: 0;
+      margin-top: calc($base-unit / 6);
+    }
+  }
+
+  .form-group--textarea textarea {
+    min-height: 110px !important; /* Show 4 lines */
+  }
+
+  // Secondary group: speaker_id and timecode in two-column grid
+  .form-row--secondary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .form-group--speaker_id {
+      padding-right: $base-unit;
+
+      .form-label {
+        width: 100%;
+      }
+    }
+
+    // Timecode field - right aligned
+    .form-group--timecode {
+      align-items: flex-end;
+      text-align: right;
+      padding-left: $base-unit;
+
+      .form-label {
+        margin-right: 0;
+        width: 100%;
+      }
+
+      .FormLabel {
+        padding-right: 0;
+      }
+
+      .form-input input {
+        text-align: right;
+      }
+    }
+  }
+
+  // Responsive: stack on smaller screens
+  @media (max-width: 768px) {
+    .form-row--secondary {
+      grid-template-columns: 1fr;
+
+      .form-group:last-child {
+        text-align: left;
+      }
+    }
+  }
+
+  .SegmentForm-textarea {
+    direction: ltr;
+    text-align: left;
+
+    &-rtl {
+      direction: rtl;
+      text-align: right;
+    }
+  }
+
+  .textarea-rtl textarea,
+  .form-group.textarea-rtl .Input {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .SegmentHeadingForm {
+    .form-row {
+      margin-bottom: $base-unit * 1.5;
+    }
+    .multi-locale-input {
+      width: 100%;
+    }
+  }
+
+  .SegmentRegistryReferences,
+  .SegmentAnnotations {
+    .DraftEditor-editorContainer {
+      font-family: $font-family;
+    }
+    .SegmentAnnotations-list,
+    .SegmentRegistryReferences-list {
+      display: flex;
+      flex-direction: column;
+      gap: calc($base-unit * 0.75);
+      padding-left: 0;
+      list-style: none;
+      margin: 0;
+    }
+
+    // Annotation items - flex layout for content + buttons
+    div.SegmentAnnotation {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: $base-unit;
+      padding: calc($base-unit * 0.75) 0;
+      border-bottom: 1px solid $gray-pale;
+      transition: border-color $transition-duration;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      p {
+        flex: 1;
+        margin: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      // Button group positioning
+      .flyout-sub-tabs-content-ico {
+        display: flex;
+        gap: calc($base-unit / 3);
+        flex-shrink: 0;
+        align-items: center;
+      }
+
+      button.Modal-trigger {
+        padding: calc($base-unit / 5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: $gray-dark;
+        transition: all $transition-duration;
+        border-radius: 4px;
+
+        &:hover {
+          color: var(--primary-color);
+          background: rgba(0, 0, 0, 0.05);
+        }
+        &:focus-visible {
+          outline: 2px solid var(--primary-color);
+          outline-offset: 2px;
+        }
+      }
+    }
+
+    .Button--add {
+      margin-top: $base-unit;
+      display: block;
+    }
+
+    .Button--label {
+      margin-left: calc($base-unit / 4);
+    }
+  }
+
+  .SegmentRegistryReferences > button.Modal-trigger {
+    display: none;
+  }
+}

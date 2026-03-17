@@ -54,6 +54,7 @@ export default function CancelButton({
             ariaLabel={ariaLabel}
             loadingText={loadingText}
             startIcon={startIcon}
+            data-testid="cancel-button"
             {...props}
         />
     );

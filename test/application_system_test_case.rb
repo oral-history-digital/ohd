@@ -38,4 +38,17 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     end
   end
 
+  def click_test_id(test_id)
+    find("[data-testid=\"#{test_id}\"]").click
+  end
+
+  def find_test_id(test_id)
+    find("[data-testid=\"#{test_id}\"]")
+  end
+
+  def assert_test_id_text(test_id, text)
+    within find_test_id(test_id) do
+      assert_text text
+    end
+  end
 end
