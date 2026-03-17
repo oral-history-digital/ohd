@@ -17,9 +17,8 @@ module Interview::OaiDatacite
           xml.alternateIdentifier oai_url_identifier(locale),
             alternateIdentifierType: "URL"
         end
-        #xml.alternateIdentifier alternateIdentifierType: "DOI" do
-          #xml.text! oai_doi_identifier
-        #end
+        xml.alternateIdentifier oai_doi_identifier,
+          alternateIdentifierType: "DOI"
       end
 
       xml.relatedIdentifiers do

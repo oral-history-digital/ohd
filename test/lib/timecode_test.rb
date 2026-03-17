@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class TimecodeTest < ActiveSupport::TestCase
-  test 'should parse the "02:01:50.10" format correctly' do
-    timecode = '[1] 02:01:50.10'
-    time = 7200 + 110.4
+  test 'should parse the "02:01:50.100" format correctly' do
+    timecode = '[1] 02:01:50.100'
+    time = 7200 + 110.1
     assert_equal time, Timecode.parse_timecode(timecode)
   end
 

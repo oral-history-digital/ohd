@@ -2,7 +2,7 @@
   "name": "ohd",
   "repository": "https://github.com/oral-history-digital/ohd",
   "license": "AGPL-3.0-only",
-  "version": "1.9.1",
+  "version": "2.0.0",
   "engines": {
     "node": ">=18 <=24"
   },
@@ -16,6 +16,8 @@
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.7",
     "@babel/runtime": "^7.25.0",
+    "@github/webauthn-json": "^2.1.1",
+    "@hotwired/stimulus": "^3.2.2",
     "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@reach/checkbox": "^0.18.0",
     "@reach/dialog": "^0.18.0",

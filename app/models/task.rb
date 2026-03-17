@@ -1,8 +1,8 @@
 class Task < ApplicationRecord
   include WorkflowActiverecord
 
-  belongs_to :user
-  belongs_to :supervisor, class_name: 'User'
+  belongs_to :user, touch: true
+  belongs_to :supervisor, class_name: 'User', touch: true
   belongs_to :task_type
   has_many :permissions, through: :task_type
   belongs_to :interview, touch: true
@@ -22,30 +22,35 @@ class Task < ApplicationRecord
       event :finish, transitions_to: :finished
       event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
+      event :reset, transition_to: :created
     end
     state :started do
       event :start, transition_to: :started
       event :finish, transitions_to: :finished
       event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
+      event :reset, transition_to: :created
     end
     state :finished do
       event :start, transition_to: :started
       event :finish, transitions_to: :finished
       event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
+      event :reset, transition_to: :created
     end
     state :cleared do
       event :start, transition_to: :started
       event :finish, transitions_to: :finished
       event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
+      event :reset, transition_to: :created
     end
     state :restarted do
       event :start, transition_to: :started
       event :finish, transitions_to: :finished
       event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
+      event :reset, transition_to: :created
     end
   end
 
@@ -89,6 +94,19 @@ class Task < ApplicationRecord
   def restart
     AdminMailer.with(task: self, receiver: user).task_restarted.deliver_now if user
     self.update(restarted_at: DateTime.now)
+  end
+
+  def reset
+    self.update(
+      assigned_to_user_at: nil,
+      assigned_to_supervisor_at: nil,
+      started_at: nil,
+      finished_at: nil,
+      cleared_at: nil,
+      restarted_at: nil,
+      user_id: nil,
+      supervisor_id: nil
+    )
   end
 
   def archive_id=(aid)

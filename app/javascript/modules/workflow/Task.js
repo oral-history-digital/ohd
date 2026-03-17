@@ -185,6 +185,31 @@ export default function Task({ task, interview, users, scope, submitData }) {
                 <input type="submit" value={t('submit')} />
             </form>
             <AuthorizedContent object={task} action="update">
+                <button
+                    type="button"
+                    onClick={() => {
+                        setThisTask({
+                            id: task.id,
+                            user_id: null,
+                            supervisor_id: null,
+                        });
+                        submitData(
+                            { locale, project },
+                            {
+                                task: {
+                                    id: task.id,
+                                    //user_id: task.user_id,
+                                    //supervisor_id: task.supervisor_id,
+                                    workflow_state: 'reset',
+                                },
+                            }
+                        );
+                    }}
+                >
+                    {t('reset')}
+                </button>
+            </AuthorizedContent>
+            <AuthorizedContent object={task} action="update">
                 {box(
                     <CommentsContainer
                         data={task.comments}

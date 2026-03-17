@@ -1,12 +1,7 @@
 /* global railsMode */
 import { useState } from 'react';
 
-import {
-    EMAIL_REGEX,
-    OHD_DOMAINS,
-    PASSWORD_REGEX,
-    PASSWORD_SPECIALS,
-} from 'modules/constants';
+import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -158,6 +153,16 @@ export default function RegisterForm({
                 },
                 group: 'password',
             },
+            //{
+            //elementType: 'input',
+            //attribute: 'otp_required_for_login',
+            //type: 'checkbox',
+            //},
+            //{
+            //elementType: 'input',
+            //attribute: 'passkey_required_for_login',
+            //type: 'checkbox',
+            //},
         ];
 
         const tosPrivacyElements = [

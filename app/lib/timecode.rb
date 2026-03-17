@@ -6,7 +6,7 @@ class Timecode
       when String
         @timecode = time
         Timecode::parse_timecode(time)
-      when Integer, Float then time
+      when Integer, Float, BigDecimal then time
       when NilClass then 0
       else nil
       end
@@ -74,7 +74,7 @@ class Timecode
   # HH:MM:SS:mmm (colon ms), and HH:MM:SS:ff (colon frames)
   def self.parse_timecode(timecode)
     timecode.gsub!(/^\[\d{1,2}\]\s*/,'')
-    duration_in_secs = (timecode[/\.\d{2}$/] || '0').sub('.','').to_f / 25
+    duration_in_secs = 0
     milliseconds = (timecode[/\.\d{3}$/] || '0').to_f
     parts = timecode.split(':')
     # Handle colon-separated sub-seconds (HH:MM:SS:ff or HH:MM:SS:mmm)
@@ -95,11 +95,12 @@ class Timecode
 
   # yields the formatted timecode from a duration in secs
   def self.format_duration(time)
-    frames = ((time % 1) * 25).to_i
+    return "00:00:00.000" unless time
+    ms = ((time % 1) * 1000).round
     hours = (time / 3600).to_i
     mins = ((time - hours * 3600) / 60).to_i
     secs = (time - hours * 3600 - mins * 60).to_i
-    "#{hours.to_s.rjust(2,'0')}:#{mins.to_s.rjust(2,'0')}:#{secs.to_s.rjust(2,'0')}.#{frames.to_s.rjust(2,'0')}"
+    "#{hours.to_s.rjust(2,'0')}:#{mins.to_s.rjust(2,'0')}:#{secs.to_s.rjust(2,'0')}.#{ms.to_s.rjust(3,'0')}"
   end
 
 end

@@ -24,14 +24,12 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
     xml.fileDesc do
       xml.titleStmt do
         %w(de en).each do |locale|
-          xml.title interview.oai_title(locale), "xml:lang": ISO_639.find(locale).alpha3
+          xml.title interview.oai_title(locale, anonymous: false), "xml:lang": ISO_639.find(locale).alpha3
         end
 
         interview.contributors.uniq.each do |person|
           contribution_type_codes = interview.
             contribution_type_codes_by_person_id[person.id]
-          #anonymous = !interview.project.fullname_on_landing_page &&
-            #(%w(interviewee further_interviewee) & contribution_type_codes).any?
 
           next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
 
@@ -43,8 +41,8 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
               end
               attributes = interview.speaking_people.include?(person) ? {corresp: "p#{person.id}"} : {}
               xml.persName attributes do
-                xml.forename person&.first_name_used(locale)
-                xml.surname person&.last_name_used(locale)#, anonymous: anonymous)
+                xml.forename person&.first_name(locale)
+                xml.surname person&.last_name(locale)
               end
             end
           end
@@ -182,16 +180,14 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
 
           contribution_type_codes = interview.
             contribution_type_codes_by_person_id[person.id]
-          #anonymous = !interview.project.fullname_on_landing_page &&
-            #(%w(interviewee further_interviewee) & contribution_type_codes).any?
 
           next if contribution_type_codes.blank? # skip people that should not be displayed on the landing page
 
           xml.person "xml:id": "p#{person.id}", sex: person&.gender do
             xml.idno person.id.to_s, type: "OHD-ID"
             xml.persName do
-              xml.forename person&.first_name_used(locale)
-              xml.surname person&.last_name_used(locale)#, anonymous: anonymous)
+              xml.forename person&.first_name(locale)
+              xml.surname person&.last_name(locale)
             end
             interview.oai_locales.each do |locale|
               contribution_type_codes.each do |contribution_type_code|
@@ -274,7 +270,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
       xml.textClass do
         xml.keywords scheme: "#ohdTopics" do
           interview.oai_subject_registry_entries.each do |registry_entry|
-            interview.oai_locales.each do |locale|
+            %w(de en).each do |locale|
               xml.term registry_entry.to_s(locale).strip, corresp: "re_#{registry_entry.id}", "xml:lang": ISO_639.find(locale).alpha3
             end
           end

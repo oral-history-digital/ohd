@@ -5,6 +5,10 @@ dev:
 fu_server:
   service: Disk
   root: /mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage
+  # new trove production path:
+  #root: /mnt/trove.storage.fu-berlin.de/ohd-av/ohd_assets/production
+  # new trove staging path:
+  #root: /mnt/trove.storage.fu-berlin.de/ohd-av/ohd_assets/staging
 
 test:
   service: Disk

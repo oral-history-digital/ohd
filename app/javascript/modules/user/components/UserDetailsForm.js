@@ -1,5 +1,8 @@
+import { getCountryKeys } from 'modules/archive';
+import { EMAIL_REGEX } from 'modules/constants';
 import { Form } from 'modules/forms';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export default function UserDetailsForm({
     user,
@@ -10,6 +13,8 @@ export default function UserDetailsForm({
     submitData,
     onCancel,
 }) {
+    const countryKeys = useSelector(getCountryKeys);
+
     return (
         <Form
             data={user}
@@ -25,11 +30,21 @@ export default function UserDetailsForm({
                     attribute: 'email',
                     elementType: 'input',
                     type: 'email',
-                    validate: function (v) {
-                        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-                            v
-                        );
-                    },
+                    validate: (v) => EMAIL_REGEX.test(v),
+                },
+                {
+                    elementType: 'extra',
+                    labelKey: 'user.mfa_login_info',
+                },
+                {
+                    elementType: 'input',
+                    attribute: 'otp_required_for_login',
+                    type: 'checkbox',
+                },
+                {
+                    elementType: 'input',
+                    attribute: 'passkey_required_for_login',
+                    type: 'checkbox',
                 },
             ]}
         />
