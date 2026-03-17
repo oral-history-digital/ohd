@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { useCurrentPage, usePathBase } from 'modules/routes';
 import ProjectLogo from 'modules/startpage/ProjectLogo';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -13,8 +13,12 @@ import { getArchiveLabel } from './utils';
 export default function Breadcrumbs({ logoSrc }) {
     const crumbs = useBreadcrumbs();
     const { mode, archiveProject, archivePath } = useBreadcrumbMode();
+    const currentPage = useCurrentPage();
     const { locale } = useI18n();
     const pathBase = usePathBase();
+    const isArchiveStartpageLayout =
+        mode === BREADCRUMB_MODES.ARCHIVE_LOGO &&
+        currentPage.pageType === 'project_startpage';
 
     // archivePath is set explicitly for the OHD-catalog case; otherwise fall
     // back to the current route's base path (archive on own domain/route).
@@ -46,38 +50,87 @@ export default function Breadcrumbs({ logoSrc }) {
     if (!crumbs) return null;
 
     return (
-        <nav aria-label="breadcrumb" className={classNames('Breadcrumbs')}>
-            <ol className="Breadcrumbs-list">
-                <li className="Breadcrumbs-item">{renderLogo()}</li>
+        <nav
+            aria-label="breadcrumb"
+            className={classNames('Breadcrumbs', {
+                'Breadcrumbs--stacked': isArchiveStartpageLayout,
+            })}
+        >
+            {isArchiveStartpageLayout ? (
+                <>
+                    <div className="Breadcrumbs-logoRow">{renderLogo()}</div>
+                    <ol className="Breadcrumbs-list Breadcrumbs-list--subline">
+                        {crumbs.map((crumb, index) => {
+                            const isLast = index === crumbs.length - 1;
+                            const shouldRenderAsCurrent =
+                                !crumb.to || (isLast && !crumb.allowLastLink);
 
-                {crumbs.map((crumb, index) => {
-                    const isLast = index === crumbs.length - 1;
-                    const shouldRenderAsCurrent =
-                        !crumb.to || (isLast && !crumb.allowLastLink);
+                            return (
+                                <li key={index} className="Breadcrumbs-item">
+                                    <span
+                                        className="Breadcrumbs-dividerText"
+                                        aria-hidden="true"
+                                    >
+                                        /
+                                    </span>
 
-                    return (
-                        <li key={index} className="Breadcrumbs-item">
-                            <Divider />
+                                    {shouldRenderAsCurrent ? (
+                                        <span
+                                            className="Breadcrumbs-current"
+                                            aria-current={
+                                                isLast ? 'page' : undefined
+                                            }
+                                        >
+                                            {crumb.label}
+                                        </span>
+                                    ) : (
+                                        <Link
+                                            to={crumb.to}
+                                            className="Breadcrumbs-link"
+                                        >
+                                            {crumb.label}
+                                        </Link>
+                                    )}
+                                </li>
+                            );
+                        })}
+                    </ol>
+                </>
+            ) : (
+                <ol className="Breadcrumbs-list">
+                    <li className="Breadcrumbs-item">{renderLogo()}</li>
 
-                            {shouldRenderAsCurrent ? (
-                                <span
-                                    className="Breadcrumbs-current"
-                                    aria-current={isLast ? 'page' : undefined}
-                                >
-                                    {crumb.label}
-                                </span>
-                            ) : (
-                                <Link
-                                    to={crumb.to}
-                                    className="Breadcrumbs-link"
-                                >
-                                    {crumb.label}
-                                </Link>
-                            )}
-                        </li>
-                    );
-                })}
-            </ol>
+                    {crumbs.map((crumb, index) => {
+                        const isLast = index === crumbs.length - 1;
+                        const shouldRenderAsCurrent =
+                            !crumb.to || (isLast && !crumb.allowLastLink);
+
+                        return (
+                            <li key={index} className="Breadcrumbs-item">
+                                <Divider />
+
+                                {shouldRenderAsCurrent ? (
+                                    <span
+                                        className="Breadcrumbs-current"
+                                        aria-current={
+                                            isLast ? 'page' : undefined
+                                        }
+                                    >
+                                        {crumb.label}
+                                    </span>
+                                ) : (
+                                    <Link
+                                        to={crumb.to}
+                                        className="Breadcrumbs-link"
+                                    >
+                                        {crumb.label}
+                                    </Link>
+                                )}
+                            </li>
+                        );
+                    })}
+                </ol>
+            )}
         </nav>
     );
 }

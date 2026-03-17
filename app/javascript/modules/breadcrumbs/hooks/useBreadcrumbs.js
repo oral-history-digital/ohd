@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
-import { getProjectName } from '../utils';
+import { getProjectName, translateWithFallback } from '../utils';
 import { BREADCRUMB_MODES, useBreadcrumbMode } from './useBreadcrumbMode';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
 
@@ -9,7 +9,7 @@ import { useBreadcrumbModel } from './useBreadcrumbModel';
  * Returns SiteHeader breadcrumb items `{ label, to? }` for the current route.
  */
 export function useBreadcrumbs() {
-    const { locale } = useI18n();
+    const { locale, t } = useI18n();
     const { project } = useProject();
     const { currentPage, items } = useBreadcrumbModel();
     const { mode } = useBreadcrumbMode();
@@ -23,10 +23,46 @@ export function useBreadcrumbs() {
             return [];
         }
 
-        // Modes B/C: the root logo element already represents the archive,
-        // so no additional crumb is needed.
+        // Archive startpage with logo: second line breadcrumb
+        // / Catalog / Archive / ArchiveName
+        if (mode === BREADCRUMB_MODES.ARCHIVE_LOGO) {
+            const projectName =
+                getProjectName(project, locale) || project.shortname;
+            const catalogLabel = translateWithFallback(
+                t,
+                'modules.catalog.breadcrumb_title',
+                'Catalog'
+            );
+            const archiveLabel = translateWithFallback(
+                t,
+                'activerecord.models.project.one',
+                'Archive'
+            );
+
+            return [
+                {
+                    label: catalogLabel,
+                    to: `/${locale}/catalog`,
+                },
+                {
+                    label: archiveLabel,
+                },
+                {
+                    label: projectName,
+                },
+            ];
+        }
+
+        // Archive startpage without logo: keep breadcrumb inline and only show
+        // / Archive & Sammlungen.
         if (mode !== BREADCRUMB_MODES.OHD) {
-            return [];
+            const catalogLabel = translateWithFallback(
+                t,
+                'modules.catalog.breadcrumb_title',
+                'Catalog'
+            );
+
+            return [{ label: catalogLabel }];
         }
 
         const projectName = getProjectName(project, locale);

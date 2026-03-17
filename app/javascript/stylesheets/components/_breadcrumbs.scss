@@ -5,6 +5,35 @@
   flex-shrink: 0;
 }
 
+.Breadcrumbs--stacked {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.Breadcrumbs-logoRow {
+  margin-bottom: $base-unit * 0.35;
+}
+
+.Breadcrumbs--stacked .ProjectLogo--logo {
+  max-height: 3.4rem;
+
+  @include screen-m {
+    max-height: 5rem;
+  }
+}
+
+.Breadcrumbs-list--subline {
+  font-size: 0.95rem;
+}
+
+.Breadcrumbs-dividerText {
+  margin: 0 ($base-unit * 0.4);
+}
+
+.Breadcrumbs-item:first-child .Breadcrumbs-dividerText {
+  margin-left: 0;
+}
+
 .Breadcrumbs-list {
   align-items: center;
   display: flex;
