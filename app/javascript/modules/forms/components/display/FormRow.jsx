@@ -8,7 +8,10 @@ import PropTypes from 'prop-types';
  */
 export default function FormRow({ group, elements, renderElement }) {
     return (
-        <div className={classNames('form-row', `form-row--${group}`)}>
+        <div
+            className={classNames('form-row', `form-row--${group}`)}
+            data-testid={`form-row-${group}`}
+        >
             {elements.map((element) => {
                 if (
                     element.condition === undefined ||
