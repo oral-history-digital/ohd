@@ -119,7 +119,7 @@ namespace :bootstrap do
 
     Helpers.invoke_task('roles:create_permissions')
     Helpers.invoke_task('roles:create_default_roles_and_permissions')
-    Helpers.invoke_task('translations:bootstrap')
+    Helpers.invoke_task('translations:import')
 
     puts 'Bootstrap system defaults complete'
   end
