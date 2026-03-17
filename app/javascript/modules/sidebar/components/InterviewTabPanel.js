@@ -52,7 +52,7 @@ export default function InterviewTabPanel({
 
     const searchPath = `${pathBase}/searches/archive?fulltext=${archiveId}`;
 
-    if (!archiveId || archiveId === 'new') {
+    if (!archiveId || archiveId === 'new' || !projectId || !interview) {
         return null;
     }
 
@@ -292,7 +292,7 @@ export default function InterviewTabPanel({
 
 InterviewTabPanel.propTypes = {
     archiveId: PropTypes.string,
-    projectId: PropTypes.string.isRequired,
+    projectId: PropTypes.string,
     interview: PropTypes.object,
     intervieweeId: PropTypes.number,
     hasMap: PropTypes.bool.isRequired,

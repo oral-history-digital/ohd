@@ -22,8 +22,11 @@ namespace :segments do
       # Strip again in case removing chars left spaces
       tc = tc.strip
 
+      # HH:MM:SS:XXXX (four digits after last colon -> just replace cut off last digit)
+      if tc.match?(/\A\d{2}:\d{2}:\d{2}.\d{4}\z/)
+        tc = tc[0..-2]
       # HH:MM:SS:XXX (three digits after last colon -> just replace last : with .)
-      if tc.match?(/\A\d{1,2}:\d{2}:\d{2}:\d{3}\z/)
+      elsif tc.match?(/\A\d{1,2}:\d{2}:\d{2}:\d{3}\z/)
         tc = tc.sub(/:(\d{3})\z/, '.\1')
       # HH:MM:SS:XX (two digits after last colon -> frames, replace : with . and convert)
       elsif tc.match?(/\A\d{1,2}:\d{2}:\d{2}:\d{2}\z/)
@@ -64,8 +67,7 @@ namespace :segments do
     updated = 0
     errors = []
 
-    #Segment.where.not("timecode REGEXP ?", '^\\d{2}:\\d{2}:\\d{2}\\.\\d{3}$').find_each do |segment|
-    Interview.find_by_archive_id("za001").segments.find_each do |segment|
+    Segment.where.not("timecode REGEXP ?", '^\\d{2}:\\d{2}:\\d{2}\\.\\d{3}$').find_each do |segment|
       new_timecode = normalize_timecode(segment.timecode)
 
       changes = {}
