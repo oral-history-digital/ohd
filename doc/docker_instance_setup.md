@@ -163,6 +163,40 @@ docker compose --profile db exec app bundle exec rails db:create db:migrate db:s
 docker compose --profile db exec app bundle exec rake seeds:smoke
 ```
 
+### Solr indexing in Docker
+
+When the app runs in containers, trigger indexing from the `app` container.
+
+Verify Solr container status:
+
+```bash
+docker compose --profile db ps solr
+```
+
+Run a full Sunspot reindex:
+
+```bash
+docker compose --profile db exec app bundle exec rake sunspot:reindex
+```
+
+Run targeted custom reindex tasks (faster for partial updates):
+
+```bash
+# Reindex all custom model tasks + commit
+docker compose --profile db exec app bundle exec rake solr:reindex:all
+
+# Reindex only segments
+docker compose --profile db exec app bundle exec rake solr:reindex:segments
+
+# Reindex only interviews
+docker compose --profile db exec app bundle exec rake solr:reindex:interviews
+
+# Commit pending index changes
+docker compose --profile db exec app bundle exec rake solr:reindex:commit
+```
+
+Tip: use `sunspot:reindex` for complete rebuilds and `solr:reindex:*` for incremental maintenance.
+
 ### Recommended instance bootstrap
 
 Prefer explicit bootstrap tasks over demo-heavy `db:seed` for real instances:
