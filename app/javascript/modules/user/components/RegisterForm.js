@@ -1,23 +1,30 @@
 /* global railsMode */
 import { useState } from 'react';
 
+import { getCountryKeys } from 'modules/archive';
 import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
+import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { submitRegister } from '../actions';
 import { NON_ZIP_COUNTRIES } from '../constants';
+import { getRegistrationStatus } from '../selectors';
 
 export default function RegisterForm({
-    project,
-    countryKeys,
-    submitRegister,
     onSubmit,
     onCancel,
-    registrationStatus,
+    showCancelButton = false,
 }) {
+    const project = useSelector(getCurrentProject);
+    const countryKeys = useSelector(getCountryKeys);
+    const registrationStatus = useSelector(getRegistrationStatus);
+    const dispatch = useDispatch();
+
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
@@ -153,16 +160,6 @@ export default function RegisterForm({
                 },
                 group: 'password',
             },
-            //{
-            //elementType: 'input',
-            //attribute: 'otp_required_for_login',
-            //type: 'checkbox',
-            //},
-            //{
-            //elementType: 'input',
-            //attribute: 'passkey_required_for_login',
-            //type: 'checkbox',
-            //},
         ];
 
         const tosPrivacyElements = [
@@ -260,7 +257,7 @@ export default function RegisterForm({
                 scope="user"
                 onSubmit={(params) => {
                     if (!emailCheckResponse.registration_error) {
-                        submitRegister(`${pathBase}/users`, params);
+                        dispatch(submitRegister(`${pathBase}/users`, params));
                         onSubmit();
                     } else {
                         return null;
@@ -272,7 +269,7 @@ export default function RegisterForm({
                     default_locale: locale,
                     pre_register_location: location.href,
                 }}
-                onCancel={onCancel}
+                onCancel={showCancelButton ? onCancel : undefined}
                 className="Registration-form"
             />
         </>
@@ -280,12 +277,12 @@ export default function RegisterForm({
 }
 
 RegisterForm.propTypes = {
-    project: PropTypes.shape({
-        is_ohd: PropTypes.bool.isRequired,
-    }).isRequired,
-    countryKeys: PropTypes.object.isRequired,
-    submitRegister: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    registrationStatus: PropTypes.string,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
+    showCancelButton: PropTypes.bool,
+};
+
+RegisterForm.defaultProps = {
+    onSubmit: () => null,
+    onCancel: () => null,
 };

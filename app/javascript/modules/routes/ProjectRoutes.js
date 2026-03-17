@@ -10,6 +10,7 @@ import {
     MetadataFieldsContainer,
     PeopleAdminPage,
     UploadsPage,
+    UsersAdminPage,
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
     WrappedLanguagesContainer,
@@ -20,7 +21,6 @@ import {
     WrappedTaskTypesContainer,
     WrappedTranslationValuesContainer,
 } from 'modules/admin';
-import { UsersAdminPage } from 'modules/admin';
 import {
     clearViewModes,
     getProjectId,
@@ -39,6 +39,7 @@ import {
     AccountPage,
     ActivateAccount,
     OrderNewPasswordContainer,
+    RegisterPage,
 } from 'modules/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
@@ -88,6 +89,7 @@ export default function ProjectRoutes() {
                     path="users/password/edit"
                     element={<ActivateAccount />}
                 />
+                <Route path="register" element={<RegisterPage />} />
                 <Route path="users" element={<UsersAdminPage />} />
                 <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
