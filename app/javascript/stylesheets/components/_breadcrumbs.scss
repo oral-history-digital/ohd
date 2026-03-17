@@ -50,3 +50,22 @@
     text-decoration: underline;
   }
 }
+
+// Mode C — archive name rendered as a logo substitute.
+.SimulateLogo {
+  align-items: center;
+  display: flex;
+  text-decoration: none;
+}
+
+.SimulateLogo-text {
+  background-color: var(--primary-color, #2d3748);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 4px 10px;
+  white-space: nowrap;
+}

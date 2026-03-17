@@ -1,28 +1,65 @@
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import ProjectLogo from 'modules/startpage/ProjectLogo';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Divider, Logo } from './components';
-import { useBreadcrumbs } from './hooks';
+import { Divider, Logo, SimulateLogo } from './components';
+import { BREADCRUMB_MODES, useBreadcrumbMode } from './hooks/useBreadcrumbMode';
+import { useBreadcrumbs } from './hooks/useBreadcrumbs';
+import { getArchiveLabel } from './utils';
 
 export default function Breadcrumbs({ logoSrc }) {
     const crumbs = useBreadcrumbs();
+    const { mode, archiveProject, archivePath } = useBreadcrumbMode();
+    const { locale } = useI18n();
+    const pathBase = usePathBase();
+
+    // archivePath is set explicitly for the OHD-catalog case; otherwise fall
+    // back to the current route's base path (archive on own domain/route).
+    const resolvedArchivePath = archivePath ?? pathBase;
+
+    const renderLogo = () => {
+        if (mode === BREADCRUMB_MODES.ARCHIVE_LOGO) {
+            return (
+                <Link to={resolvedArchivePath} className="Breadcrumbs-logoLink">
+                    <ProjectLogo
+                        project={archiveProject}
+                        isLinkActive={false}
+                    />
+                </Link>
+            );
+        }
+
+        if (mode === BREADCRUMB_MODES.ARCHIVE_NAME) {
+            const name =
+                getArchiveLabel(archiveProject, locale) ??
+                archiveProject.shortname;
+            return <SimulateLogo archiveName={name} to={resolvedArchivePath} />;
+        }
+
+        // Mode A — OHD logo (default behaviour).
+        return <Logo logoSrc={logoSrc} />;
+    };
+
+    if (!crumbs) return null;
 
     return (
         <nav aria-label="breadcrumb" className={classNames('Breadcrumbs')}>
             <ol className="Breadcrumbs-list">
-                <li className="Breadcrumbs-item">
-                    <Logo logoSrc={logoSrc} />
-                </li>
+                <li className="Breadcrumbs-item">{renderLogo()}</li>
 
                 {crumbs.map((crumb, index) => {
                     const isLast = index === crumbs.length - 1;
+                    const shouldRenderAsCurrent =
+                        !crumb.to || (isLast && !crumb.allowLastLink);
 
                     return (
                         <li key={index} className="Breadcrumbs-item">
                             <Divider />
 
-                            {isLast || !crumb.to ? (
+                            {shouldRenderAsCurrent ? (
                                 <span
                                     className="Breadcrumbs-current"
                                     aria-current={isLast ? 'page' : undefined}
