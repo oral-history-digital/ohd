@@ -9,6 +9,9 @@ import PropTypes from 'prop-types';
  * @param {Object} props - Component props
  * @param {('submit'|'button'|'reset')} [props.type='button'] - HTML button type. 'submit': form submission, 'button': regular button, 'reset': reset form fields
  * @param {Function} [props.onClick] - Callback function when button is clicked
+ * @param {string} [props.href] - Optional link URL. When set, the component renders as an anchor.
+ * @param {string} [props.target] - Anchor target when href is provided (for example, '_blank')
+ * @param {string} [props.rel] - Anchor rel attribute when href is provided
  * @param {ReactNode|string} [props.buttonText] - Button display text or element (uses i18n translation if not provided)
  * @param {string} [props.ariaLabel] - Aria label for accessibility (required for icon-only buttons)
  * @param {boolean} [props.isLoading] - Shows loading spinner and disables button when true
@@ -28,6 +31,9 @@ import PropTypes from 'prop-types';
 export default function Button({
     type = 'button',
     onClick,
+    href,
+    target,
+    rel,
     buttonText,
     ariaLabel,
     isLoading,
@@ -61,16 +67,23 @@ export default function Button({
         className
     );
 
-    return (
-        <button
-            type={type}
-            className={buttonClass}
-            disabled={isDisabled || isLoading}
-            onClick={onClick}
-            aria-busy={isLoading}
-            aria-label={finalAriaLabel}
-            {...props}
-        >
+    const isInactive = isDisabled || isLoading;
+    const isLink = typeof href === 'string' && href.length > 0;
+    const finalRel = target === '_blank' ? rel || 'noopener noreferrer' : rel;
+
+    const handleClick = (event) => {
+        if (isInactive) {
+            event.preventDefault();
+            return;
+        }
+
+        if (onClick) {
+            onClick(event);
+        }
+    };
+
+    const content = (
+        <>
             {isLoading ? (
                 <span className="LoadingSpinner" aria-hidden="true" />
             ) : (
@@ -78,6 +91,38 @@ export default function Button({
             )}
             {!isIconOnly && displayText}
             {endIcon}
+        </>
+    );
+
+    if (isLink) {
+        return (
+            <a
+                className={buttonClass}
+                href={href}
+                target={target}
+                rel={finalRel}
+                onClick={handleClick}
+                aria-busy={isLoading}
+                aria-label={finalAriaLabel}
+                aria-disabled={isInactive || undefined}
+                {...props}
+            >
+                {content}
+            </a>
+        );
+    }
+
+    return (
+        <button
+            type={type}
+            className={buttonClass}
+            disabled={isInactive}
+            onClick={handleClick}
+            aria-busy={isLoading}
+            aria-label={finalAriaLabel}
+            {...props}
+        >
+            {content}
         </button>
     );
 }
@@ -85,6 +130,9 @@ export default function Button({
 Button.propTypes = {
     type: PropTypes.oneOf(['submit', 'button', 'reset']),
     onClick: PropTypes.func,
+    href: PropTypes.string,
+    target: PropTypes.string,
+    rel: PropTypes.string,
     buttonText: PropTypes.node,
     ariaLabel: PropTypes.string,
     isLoading: PropTypes.bool,
