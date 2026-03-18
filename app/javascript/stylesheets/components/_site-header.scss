@@ -8,31 +8,51 @@
   display: flex;
   height: $site-header-height-mobile;
   overflow: hidden;
-  padding: ($base-unit * 0.5) 5%;
+  padding: $base-unit 0;
 
   @include screen-m {
     height: $site-header-height-desktop;
   }
 }
 
-.SiteHeader-link {
+.SiteHeader .ProjectLogo--link {
+  display: inline-block;
 }
 
-.SiteHeader-link--site {
-  flex-shrink: 0;
+.SiteHeader .ProjectLogo--logo {
+  height: 3.5rem;
+  width: auto;
 }
 
-.SiteHeader-link--collection {
-  flex-shrink: 1;
-  max-width: 17.5 * $base-unit;
+.SiteHeader .ProjectLogo--logo .SmartImage--img,
+.SiteHeader .ProjectLogo--logo .SmartImage--preview,
+.SiteHeader .ProjectLogo--logo .SmartImage--skeleton,
+.SiteHeader .ProjectLogo--logo .SmartImage--placeholder {
+  height: 100%;
+  width: 100%;
 }
 
-.SiteHeader-logo {
-  max-height: 3.5rem;
-  max-width: 100%;
-  vertical-align: bottom;
+@include screen-m {
+  .SiteHeader .ProjectLogo--logo {
+    height: 4.75rem;
+  }
+}
+
+.SiteHeader--stacked {
+  flex-direction: column;
+  height: auto;
+  min-height: $site-header-height-mobile;
+  overflow: visible;
 
   @include screen-m {
-    max-height: 4.75rem;
+    min-height: $site-header-height-desktop;
   }
+
+  .Breadcrumbs {
+    margin-top: $base-unit;
+  }
+}
+
+.Layout.sidebar-is-visible.is-interview-page.is-logged-in .SiteHeader {
+  padding-left: $base-unit;
 }

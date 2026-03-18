@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * @param {Object} props - Component props
  * @param {('submit'|'button'|'reset')} [props.type='button'] - HTML button type. 'submit': form submission, 'button': regular button, 'reset': reset form fields
  * @param {Function} [props.onClick] - Callback function when button is clicked
- * @param {string} [props.buttonText] - Button display text (uses i18n translation if not provided)
+ * @param {ReactNode|string} [props.buttonText] - Button display text or element (uses i18n translation if not provided)
  * @param {string} [props.ariaLabel] - Aria label for accessibility (required for icon-only buttons)
  * @param {boolean} [props.isLoading] - Shows loading spinner and disables button when true
  * @param {string} [props.loadingText] - Text to display while loading (defaults to buttonText)
@@ -85,7 +85,7 @@ export default function Button({
 Button.propTypes = {
     type: PropTypes.oneOf(['submit', 'button', 'reset']),
     onClick: PropTypes.func,
-    buttonText: PropTypes.string,
+    buttonText: PropTypes.node,
     ariaLabel: PropTypes.string,
     isLoading: PropTypes.bool,
     loadingText: PropTypes.string,
