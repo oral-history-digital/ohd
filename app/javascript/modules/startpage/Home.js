@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useTrackPageView } from 'modules/analytics';
+import { BREADCRUMB_MODES, useBreadcrumbMode } from 'modules/breadcrumbs';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -17,7 +18,11 @@ import getProjectLogoSrc from './utils/getProjectLogoSrc';
 export default function Home({ institutions }) {
     const { project, projectId } = useProject();
     const { locale } = useI18n();
+    const breadcrumbMode = useBreadcrumbMode();
+
     useTrackPageView();
+
+    const showProjectLogo = breadcrumbMode !== BREADCRUMB_MODES.ARCHIVE_LOGO;
 
     if (!project.translations_attributes) {
         return null;
@@ -55,10 +60,13 @@ export default function Home({ institutions }) {
                 {showStartPageVideo() ? <StartPageVideo /> : null}
                 <div
                     className={classNames('ProjectHome--hero', {
-                        'ProjectHome--hero--hasLogo': hasLogo,
+                        'ProjectHome--hero--hasLogo':
+                            hasLogo && showProjectLogo,
                     })}
                 >
-                    <ProjectLogo project={project} isLinkActive={false} />
+                    {showProjectLogo && (
+                        <ProjectLogo project={project} isLinkActive={false} />
+                    )}
                     <div className="ProjectHome--heroText">
                         <h1>{getTranslation('name')}</h1>
                         <Fetch

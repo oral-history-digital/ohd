@@ -176,7 +176,7 @@ describe('useBreadcrumbModel', () => {
             {
                 key: 'collection',
                 label: 'Sammlung A',
-                to: null,
+                to: '/mog/de/searches/archive?collection_id[]=7&sort=random',
                 isCurrent: false,
             },
             {
@@ -224,6 +224,12 @@ describe('useBreadcrumbModel', () => {
                 key: 'archive',
                 label: 'Archiv Alpha',
                 to: '/mog/de',
+                isCurrent: false,
+            },
+            {
+                key: 'search_archive',
+                label: 'Search',
+                to: '/mog/de/searches/archive',
                 isCurrent: false,
             },
             {
@@ -457,6 +463,12 @@ describe('useBreadcrumbModel', () => {
                 isCurrent: false,
             },
             {
+                key: 'search_archive',
+                label: 'Search',
+                to: '/mog/de/searches/archive',
+                isCurrent: false,
+            },
+            {
                 key: 'interview',
                 label: 'A. Person',
                 to: '/mog/de/interviews/za001',
@@ -563,6 +575,202 @@ describe('useBreadcrumbModel', () => {
                 label: 'Institutionen',
                 to: '/de/catalog/institutions',
                 isCurrent: true,
+            },
+        ]);
+    });
+
+    it('includes archive parent on project-scoped archive search pages', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'search_archive',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: 'adg',
+                },
+                pathBase: '/adg/de',
+                pathname: '/adg/de/searches/archive',
+                search: '?collection_id[]=21894736',
+            },
+            project: {
+                shortname: 'adg',
+                is_ohd: false,
+                default_locale: 'de',
+                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+            },
+            interview: null,
+            currentUser: null,
+            collections: {
+                21894736: {
+                    id: 21894736,
+                    default_locale: 'de',
+                    name: { de: 'Sammlung ADG 1' },
+                },
+            },
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                interviews: 'Interviews',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'home',
+                label: 'Start',
+                to: '/adg/de',
+                isCurrent: false,
+            },
+            {
+                key: 'archive',
+                label: 'Archiv Deutsches Gedaechtnis',
+                to: '/adg/de',
+                isCurrent: false,
+            },
+            {
+                key: 'search_archive',
+                label: 'Sammlung ADG 1',
+                to: '/adg/de/searches/archive',
+                isCurrent: true,
+                loading: false,
+            },
+        ]);
+    });
+
+    it('omits archive parent on OHD archive search pages', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'search_archive',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: null,
+                },
+                pathBase: '/de',
+                pathname: '/de/searches/archive',
+                search: '?sort=random',
+            },
+            project: null,
+            interview: null,
+            currentUser: null,
+            collections: {},
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                interviews: 'Interviews',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'home',
+                label: 'Start',
+                to: '/de',
+                isCurrent: false,
+            },
+            {
+                key: 'search_archive',
+                label: 'Interviews',
+                to: '/de/searches/archive',
+                isCurrent: true,
+                loading: false,
+            },
+        ]);
+    });
+
+    it('includes archive parent on project-scoped map search pages', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'search_map',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: 'adg',
+                },
+                pathBase: '/adg/de',
+                pathname: '/adg/de/searches/map',
+                search: '',
+            },
+            project: {
+                shortname: 'adg',
+                is_ohd: false,
+                default_locale: 'de',
+                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+            },
+            interview: null,
+            currentUser: null,
+            collections: {},
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                'modules.search_map.title': 'Kartenansicht',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'home',
+                label: 'Start',
+                to: '/adg/de',
+                isCurrent: false,
+            },
+            {
+                key: 'archive',
+                label: 'Archiv Deutsches Gedaechtnis',
+                to: '/adg/de',
+                isCurrent: false,
+            },
+            {
+                key: 'search_map',
+                label: 'Kartenansicht',
+                to: '/adg/de/searches/map',
+                isCurrent: true,
+                loading: false,
+            },
+        ]);
+    });
+
+    it('omits archive parent on OHD map search pages', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'search_map',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: null,
+                },
+                pathBase: '/de',
+                pathname: '/de/searches/map',
+                search: '',
+            },
+            project: null,
+            interview: null,
+            currentUser: null,
+            collections: {},
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                'modules.search_map.title': 'Kartenansicht',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'home',
+                label: 'Start',
+                to: '/de',
+                isCurrent: false,
+            },
+            {
+                key: 'search_map',
+                label: 'Kartenansicht',
+                to: '/de/searches/map',
+                isCurrent: true,
+                loading: false,
             },
         ]);
     });

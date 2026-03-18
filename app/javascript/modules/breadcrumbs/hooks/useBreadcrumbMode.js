@@ -2,59 +2,38 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import getProjectLogoSrc from 'modules/startpage/utils/getProjectLogoSrc';
 
-import { useBreadcrumbModel } from './useBreadcrumbModel';
-
 export const BREADCRUMB_MODES = {
-    /** Mode A — OHD is the umbrella; show the OHD logo (default). */
+    /** Mode A — OHD is the umbrella; show the OHD breadcrumb logo (default). */
     OHD: 'ohd',
     /** Mode B — independent archive with a logo; show the archive logo. */
     ARCHIVE_LOGO: 'archive_logo',
-    /** Mode C — independent archive without a logo; show SimulateLogo. */
+    /** Mode C — independent archive that has no logo; show SimulateLogo. */
     ARCHIVE_NAME: 'archive_name',
 };
 
 /**
- * Resolves which breadcrumb root mode applies for the current route.
+ * Resolves breadcrumb root mode from the current project settings.
  *
- * Returns:
- *   mode          — one of BREADCRUMB_MODES
- *   archiveProject — the archive project object (null for Mode A)
- *   archivePath   — explicit link target for the logo.
- *                   null when the container should fall back to usePathBase().
+ * Rules:
+ * - OHD mode when there is no project, the project is OHD, or OHD branding is enabled.
+ * - Archive mode otherwise, choosing archive logo when available and archive-name fallback when not.
  */
 export function useBreadcrumbMode() {
     const { project } = useProject();
     const { locale } = useI18n();
-    const { currentPage } = useBreadcrumbModel();
 
-    // /:locale/catalog* should always start with OHD branding.
-    if (currentPage.pageType === 'catalog_page') {
-        return {
-            mode: BREADCRUMB_MODES.OHD,
-            archiveProject: null,
-            archivePath: null,
-        };
-    }
+    if (!project) return BREADCRUMB_MODES.OHD;
 
-    // On archive-scoped routes (/:archiveName/:locale/...), the breadcrumb root
-    // should always use the current archive branding (logo or simulated logo).
-    if (project && !project.is_ohd) {
+    // For non-OHD projects without forced OHD branding, prefer the project logo.
+    // If no logo exists for this locale, fall back to archive-name rendering.
+    if (!project.is_ohd && !project?.display_ohd_link) {
         const logoSrc = getProjectLogoSrc(project, locale);
-        return {
-            mode: logoSrc
-                ? BREADCRUMB_MODES.ARCHIVE_LOGO
-                : BREADCRUMB_MODES.ARCHIVE_NAME,
-            archiveProject: project,
-            // null → container resolves via usePathBase().
-            archivePath: null,
-        };
+        return logoSrc
+            ? BREADCRUMB_MODES.ARCHIVE_LOGO
+            : BREADCRUMB_MODES.ARCHIVE_NAME;
     }
 
-    return {
-        mode: BREADCRUMB_MODES.OHD,
-        archiveProject: null,
-        archivePath: null,
-    };
+    return BREADCRUMB_MODES.OHD;
 }
 
 export default useBreadcrumbMode;

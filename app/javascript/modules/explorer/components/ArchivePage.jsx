@@ -19,10 +19,19 @@ export function ArchivePage() {
     const id = Number(useParams().id);
     const project = useLoadCompleteProject(id);
     useTrackPageView();
-
-    const title = project.name[locale];
-
     const projectTranslation = useProjectTranslation(project);
+
+    if (!project) {
+        return (
+            <ScrollToTop>
+                <ErrorBoundary>
+                    <div className="wrapper-content interviews" />
+                </ErrorBoundary>
+            </ScrollToTop>
+        );
+    }
+
+    const title = project.name?.[locale] || '';
 
     return (
         <ScrollToTop>
@@ -200,7 +209,7 @@ export function ArchivePage() {
                         </div>
                     )}
 
-                    {project?.subjects.length > 0 && (
+                    {project?.subjects?.length > 0 && (
                         <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('modules.catalog.subjects')}
@@ -209,7 +218,7 @@ export function ArchivePage() {
                                 {project?.subjects.map((s, i) => (
                                     <span key={`subject-${i}`}>
                                         {s.descriptor[locale]}
-                                        {i < project?.subjects.length - 1 &&
+                                        {i < project?.subjects?.length - 1 &&
                                             ', '}
                                     </span>
                                 ))}
@@ -217,7 +226,7 @@ export function ArchivePage() {
                         </div>
                     )}
 
-                    {project?.levels_of_indexing.length > 0 && (
+                    {project?.levels_of_indexing?.length > 0 && (
                         <div className="DescriptionList-group">
                             <dt className="DescriptionList-term">
                                 {t('modules.catalog.level_of_indexing')}
@@ -227,7 +236,8 @@ export function ArchivePage() {
                                     <span key={`loi-${i}`}>
                                         {`${s.count} ${s.descriptor[locale]}`}
                                         {i <
-                                            project?.levels_of_indexing.length -
+                                            project?.levels_of_indexing
+                                                ?.length -
                                                 1 && ', '}
                                     </span>
                                 ))}

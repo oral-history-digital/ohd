@@ -1,3 +1,5 @@
+import AdgLogo from 'assets/images/adg-logo.png';
+import zwarLogo from 'assets/images/zwar-logo.png';
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -13,14 +15,25 @@ export default function ProjectLogo({ project, isLinkActive = true }) {
 
     if (!project) return null;
 
-    const src = getProjectLogoSrc(project, locale);
+    let src = getProjectLogoSrc(project, locale);
     if (!src) return null; // No suitable logo found
+
+    // Temporary hardcoded overrides for projects with custom logo needs.
+    // TODO: remove
+    if (project.shortname === 'za') {
+        src = zwarLogo;
+    }
+
+    if (project.shortname === 'adg') {
+        src = AdgLogo;
+    }
 
     const image = (
         <SmartImage
             src={src}
             alt={t('Project logo')}
             className="ProjectLogo--logo"
+            aspectRatio="auto"
             lazy={false}
         />
     );

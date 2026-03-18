@@ -15,6 +15,44 @@
   }
 }
 
+.SiteHeader .ProjectLogo--link {
+  display: inline-block;
+}
+
+.SiteHeader .ProjectLogo--logo {
+  height: 3.5rem;
+  width: auto;
+}
+
+.SiteHeader .ProjectLogo--logo .SmartImage--img,
+.SiteHeader .ProjectLogo--logo .SmartImage--preview,
+.SiteHeader .ProjectLogo--logo .SmartImage--skeleton,
+.SiteHeader .ProjectLogo--logo .SmartImage--placeholder {
+  height: 100%;
+  width: 100%;
+}
+
+@include screen-m {
+  .SiteHeader .ProjectLogo--logo {
+    height: 4.75rem;
+  }
+}
+
+.SiteHeader--stacked {
+  flex-direction: column;
+  height: auto;
+  min-height: $site-header-height-mobile;
+  overflow: visible;
+
+  @include screen-m {
+    min-height: $site-header-height-desktop;
+  }
+
+  .Breadcrumbs {
+    margin-top: $base-unit;
+  }
+}
+
 .Layout.sidebar-is-visible.is-interview-page.is-logged-in .SiteHeader {
   padding-left: $base-unit;
 }

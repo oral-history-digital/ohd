@@ -1,17 +1,27 @@
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
+import { getArchiveLabel } from '../utils';
 
 /**
  * Renders an archive name as a visually prominent logo substitute.
  * Used when an archive has no logo image (Mode C).
  * Purely presentational — all data is received via props.
  */
-export function SimulateLogo({ archiveName, to }) {
-    const text = <span className="SimulateLogo-text">{archiveName}</span>;
+export function SimulateLogo({ project }) {
+    const { locale } = useI18n();
+    const pathBase = usePathBase();
 
-    if (to) {
+    if (!project) return null;
+
+    const name = getArchiveLabel(project, locale) ?? project.shortname;
+    const text = <span className="SimulateLogo-text">{name}</span>;
+
+    if (pathBase) {
         return (
-            <Link to={to} className="SimulateLogo Breadcrumbs-logoLink">
+            <Link to={pathBase} className="SimulateLogo Breadcrumbs-logoLink">
                 {text}
             </Link>
         );
@@ -21,8 +31,7 @@ export function SimulateLogo({ archiveName, to }) {
 }
 
 SimulateLogo.propTypes = {
-    archiveName: PropTypes.string.isRequired,
-    to: PropTypes.string,
+    project: PropTypes.object.isRequired,
 };
 
 export default SimulateLogo;

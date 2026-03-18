@@ -24,15 +24,16 @@ export function buildInterviewItems(currentPage, context) {
 
     const archiveLabel =
         entityLabels.archive || getArchiveLabel(project, locale) || labels.home;
+    const collectionLabel =
+        entityLabels.collection ||
+        getInterviewCollectionLabel(interview, collections, locale);
     const interviewLabel =
         entityLabels.interview ||
         getInterviewLabel(interview, locale, canShowFullTitle) ||
         params.archiveId ||
         labels.interview_detail;
-    const collectionLabel =
-        entityLabels.collection ||
-        getInterviewCollectionLabel(interview, collections, locale);
 
+    // Base breadcrumb item is always the archive
     const items = [
         {
             key: 'archive',
@@ -42,11 +43,23 @@ export function buildInterviewItems(currentPage, context) {
         },
     ];
 
+    // If the interview belongs to a collection, include that as an intermediate breadcrumb item
     if (collectionLabel) {
         items.push({
             key: 'collection',
             label: collectionLabel,
-            to: null,
+            to: joinPath(
+                pathBase,
+                `/searches/archive?collection_id[]=${interview.collection_id}&sort=random`
+            ),
+            isCurrent: false,
+        });
+    } else {
+        // If no collection, add an item linking the search page for the project as a fallback
+        items.push({
+            key: 'search_archive',
+            label: labels.search_archive,
+            to: joinPath(pathBase, '/searches/archive'),
             isCurrent: false,
         });
     }
@@ -143,8 +156,8 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
  * Builds breadcrumb items for non-catalog known page types.
  */
 export function buildKnownItems(currentPage, context) {
-    const { labels, entityLabels, staticPageLabels } = context;
-    const { pageType, params, pathBase } = currentPage;
+    const { labels, entityLabels, staticPageLabels, project, locale } = context;
+    const { pageType, params, pathBase, search } = currentPage;
 
     if (pageType === 'project_startpage') {
         return [
@@ -165,6 +178,72 @@ export function buildKnownItems(currentPage, context) {
         return buildInterviewItems(currentPage, context);
     }
 
+    const archiveParentPagePaths = {
+        search_archive: '/searches/archive',
+        search_map: '/searches/map',
+        register: '/register',
+        register_page: '/register',
+    };
+
+    if (archiveParentPagePaths[pageType]) {
+        const searchParams = new URLSearchParams(search || '');
+        const collectionFilterId =
+            searchParams.getAll('collection_id[]')[0] ||
+            searchParams.get('collection_id');
+        const filteredCollectionLabel =
+            pageType === 'search_archive' && collectionFilterId
+                ? getCatalogItemLabel(
+                      'collections',
+                      collectionFilterId,
+                      context
+                  )
+                : null;
+
+        const currentItem = {
+            key: pageType,
+            label:
+                filteredCollectionLabel ||
+                labels[pageType] ||
+                humanizeSegment(pageType),
+            to: joinPath(pathBase, archiveParentPagePaths[pageType]),
+            isCurrent: true,
+            loading: false,
+        };
+
+        if (project && !project.is_ohd) {
+            const archiveLabel =
+                entityLabels.archive ||
+                getArchiveLabel(project, locale) ||
+                labels.home;
+
+            return [
+                {
+                    key: 'home',
+                    label: labels.home,
+                    to: pathBase,
+                    isCurrent: false,
+                },
+                {
+                    key: 'archive',
+                    label: archiveLabel,
+                    to: pathBase,
+                    isCurrent: false,
+                },
+                currentItem,
+            ];
+        }
+
+        return [
+            {
+                key: 'home',
+                label: labels.home,
+                to: pathBase,
+                isCurrent: false,
+            },
+            currentItem,
+        ];
+    }
+
     const pagePathByType = {
         interview_detail: params.archiveId
             ? joinPath(pathBase, `/interviews/${params.archiveId}`)
@@ -172,6 +251,8 @@ export function buildKnownItems(currentPage, context) {
         collections: joinPath(pathBase, '/collections'),
         search_archive: joinPath(pathBase, '/searches/archive'),
         search_map: joinPath(pathBase, '/searches/map'),
+        register: joinPath(pathBase, '/register'),
+        register_page: joinPath(pathBase, '/register'),
         registry_entries: joinPath(pathBase, '/registry_entries'),
         user_page: joinPath(pathBase, '/users'),
         project_admin_page: joinPath(pathBase, '/project/edit-config'),
