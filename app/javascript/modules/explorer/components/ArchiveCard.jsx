@@ -22,6 +22,10 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
 
+    const archiveUrl = archive.archive_domain
+        ? archive.archive_domain
+        : `/${archive.shortname}/${locale}`;
+
     return (
         <div
             ref={cardRef}
@@ -112,13 +116,18 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                     </div>
                     <div className="ArchiveCard-pageButton">
                         <Button
-                            buttonText={t('explorer.view_archive_page')}
-                            variant="contained"
+                            buttonText={t('explorer.view_archive_details')}
+                            variant="outlined"
                             onClick={() =>
                                 navigate(
                                     `/${locale}/catalog/archives/${archive.id}`
                                 )
                             }
+                        />
+                        <Button
+                            buttonText={t('explorer.view_archive_page')}
+                            variant="contained"
+                            onClick={() => navigate(archiveUrl)}
                             endIcon={<FaExternalLinkAlt />}
                         />
                     </div>

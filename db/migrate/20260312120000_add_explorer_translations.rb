@@ -153,6 +153,15 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Опубліковано',
       ar: 'تاريخ النشر',
     },
+    'explorer.view_archive_details': {
+      de: 'Details anzeigen',
+      en: 'View details',
+      el: 'Προβολή λεπτομερειών',
+      es: 'Ver detalles',
+      ru: 'Просмотреть детали',
+      uk: 'Переглянути деталі',
+      ar: 'عرض التفاصيل',
+    },
     'explorer.view_archive_page': {
       de: 'Archiv anzeigen',
       en: 'View archive page',
@@ -162,6 +171,15 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Відкрити сторінку архіву',
       ar: 'عرض صفحة الأرشيف',
     },
+    'explorer.view_collection_details': {
+      de: 'Details anzeigen',
+      en: 'View details',
+      el: 'Προβολή λεπτομερειών',
+      es: 'Ver detalles',
+      ru: 'Просмотреть детали',
+      uk: 'Переглянути деталі',
+      ar: 'عرض التفاصيل',
+    },
     'explorer.view_collection_page': {
       de: 'Sammlung anzeigen',
       en: 'View collection page',
@@ -170,6 +188,15 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       ru: 'Открыть страницу коллекции',
       uk: 'Відкрити сторінку колекції',
       ar: 'عرض صفحة المجموعة',
+    },
+    'explorer.view_institution_details': {
+      de: 'Details anzeigen',
+      en: 'View details',
+      el: 'Προβολή λεπτομερειών',
+      es: 'Ver detalles',
+      ru: 'Просмотреть детали',
+      uk: 'Переглянути деталі',
+      ar: 'عرض التفاصيل',
     },
     'explorer.view_institution_page': {
       de: 'Institution anzeigen',

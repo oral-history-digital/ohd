@@ -8,7 +8,6 @@ import { formatYearRange, getMinMaxYear } from '../utils';
 export function CollectionPageData({ id, className }) {
     const { t } = useI18n();
     const { collectionData, error, isLoading } = useCollectionData(id);
-    console.log('CollectionPageData', { collectionData });
 
     if (isLoading) {
         return <Spinner className={className} />;

@@ -259,6 +259,7 @@
 .InstitutionCard .InstitutionCard-pageButton {
   display: flex;
   justify-content: flex-end;
+  gap: $base-unit * 0.5;
 }
 
 .ArchivesCard-collections {
