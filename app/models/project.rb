@@ -51,6 +51,12 @@ class Project < ApplicationRecord
   has_many :texts, dependent: :destroy
   has_many :materials, as: :attachable
 
+  has_many :affiliates, dependent: :destroy
+  has_many :cooperation_partners, dependent: :destroy
+  has_many :leaders, dependent: :destroy
+  has_many :managers, dependent: :destroy
+  has_many :funders, dependent: :destroy
+
   translates :name, :display_name, :introduction, :more_text, :landing_page_text, :restricted_landing_page_text,
     :media_missing_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
@@ -59,7 +65,6 @@ class Project < ApplicationRecord
   serialize :available_locales, type: Array
   serialize :upload_types, type: Array
   #serialize :name, type: Array
-  serialize :funder_names, type: Array
   serialize :logged_out_visible_registry_entry_ids, type: Array
   serialize :hidden_registry_entry_ids, type: Array
   serialize :hidden_transcript_registry_entry_ids, type: Array
@@ -79,7 +84,6 @@ class Project < ApplicationRecord
   [:view_modes,
     :available_locales,
     :upload_types,
-    :funder_names,
     :logged_out_visible_registry_entry_ids,
     :hidden_registry_entry_ids,
     :pdf_registry_entry_ids,

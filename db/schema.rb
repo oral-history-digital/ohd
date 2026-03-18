@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_16_121943) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_17_132156) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -49,6 +49,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_121943) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "affiliates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "type"
+    t.string "name_type"
+    t.string "name"
+    t.string "url"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_affiliates_on_project_id"
   end
 
   create_table "annotation_translations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -659,10 +670,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_121943) do
     t.string "domain"
     t.string "archive_domain"
     t.string "doi"
-    t.string "cooperation_partner"
-    t.string "leader"
-    t.string "manager"
-    t.string "funder_names"
     t.string "contact_email"
     t.boolean "has_newsletter"
     t.boolean "is_catalog"

@@ -1,0 +1,2 @@
+class CooperationPartnerPolicy < AffiliatePolicy
+end

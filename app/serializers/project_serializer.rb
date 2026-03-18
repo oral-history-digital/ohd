@@ -26,11 +26,6 @@ class ProjectSerializer < ApplicationSerializer
     :archive_domain,
     :domain_with_optional_identifier,
     :doi,
-    :cooperation_partner,
-    :leader,
-    :manager,
-    :funder_names,
-    :pseudo_funder_names,
     :has_newsletter,
     :logged_out_visible_registry_entry_ids,
     :pseudo_logged_out_visible_registry_entry_ids,
@@ -43,6 +38,10 @@ class ProjectSerializer < ApplicationSerializer
     :people,
     :collections,
     :collection_ids,
+    :cooperation_partners,
+    :leaders,
+    :managers,
+    :funders,
     :registry_name_types,
     :registry_reference_types,
     :registry_reference_type_ids,
@@ -92,12 +91,26 @@ class ProjectSerializer < ApplicationSerializer
     map_sections
     institution_projects
     collections
+    cooperation_partners
+    leaders
+    managers
+    funders
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
     end
   end
 
+  %w(
+    cooperation_partners
+    leaders
+    managers
+    funders
+  ).each do |m|
+    define_method m do
+      object.send(m).inject({}) { |mem, c| mem[c.id] = AffiliateSerializer.new(c); mem }
+    end
+  end
   # more load-intense data.
   # should be loaded only where needed.
   %w(

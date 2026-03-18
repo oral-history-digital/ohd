@@ -1,0 +1,2 @@
+class FunderPolicy < AffiliatePolicy
+end

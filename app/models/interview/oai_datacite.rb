@@ -56,9 +56,9 @@ module Interview::OaiDatacite
       end
 
       xml.contributors do
-        if !project.cooperation_partner.blank?
+        project.cooperation_partners.each do |cooperation_partner|
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{project.cooperation_partner.gsub("'", "")} (Kooperationspartner)",
+            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Kooperationspartner)",
               "xml:lang": "en",
               nameType: "Organizational"
           end
@@ -70,16 +70,16 @@ module Interview::OaiDatacite
               nameType: "Personal"
           end
         end
-        if !project.leader.blank?
+        project.leaders.each do |leader|
           xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName project.leader,
+            xml.contributorName leader.name,
               "xml:lang": "en",
               nameType: "Personal"
           end
         end
-        if !project.manager.blank?
+        project.managers.each do |manager|
           xml.contributor contributorType: "ProjectManager" do
-            xml.contributorName project.manager,
+            xml.contributorName manager.name,
               "xml:lang": "en",
               nameType: "Personal"
           end
@@ -94,9 +94,9 @@ module Interview::OaiDatacite
       end
 
       xml.fundingReferences do
-        project.funder_names.each do |funder|
+        project.funders.each do |funder|
           xml.fundingReference do
-            xml.funderName funder.gsub("'", ""), "xml:lang": "en"
+            xml.funderName funder.name.gsub("'", ""), "xml:lang": "en"
           end
         end
       end

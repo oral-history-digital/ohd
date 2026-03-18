@@ -1,0 +1,3 @@
+class LeadersController < AffiliatesController
+end
+
