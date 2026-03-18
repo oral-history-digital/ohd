@@ -147,6 +147,7 @@ export default function SelectField({
                 defaultValue={defaultValue}
                 onChange={onChange}
                 onBlur={onBlur}
+                data-testid={`${scope}-${attribute}-select`}
             >
                 {options()}
             </select>
