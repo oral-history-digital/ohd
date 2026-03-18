@@ -54,6 +54,10 @@ const PAGE_DEFINITIONS = [
         patterns: withProjectAndLocale('/searches/map'),
     },
     {
+        pageType: 'register_page',
+        patterns: withProjectAndLocale('/register'),
+    },
+    {
         pageType: 'registry_entries',
         patterns: withProjectAndLocale('/registry_entries'),
     },

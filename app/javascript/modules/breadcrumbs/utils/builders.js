@@ -157,7 +157,7 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
  */
 export function buildKnownItems(currentPage, context) {
     const { labels, entityLabels, staticPageLabels, project, locale } = context;
-    const { pageType, params, pathBase, search } = currentPage;
+    const { pageType, subtype, params, pathBase } = currentPage;
 
     if (pageType === 'project_startpage') {
         return [
@@ -186,12 +186,12 @@ export function buildKnownItems(currentPage, context) {
     };
 
     if (archiveParentPagePaths[pageType]) {
-        const searchParams = new URLSearchParams(search || '');
-        const collectionFilterId =
-            searchParams.getAll('collection_id[]')[0] ||
-            searchParams.get('collection_id');
+        const collectionFilterId = params.collectionId;
+        // Only collection-filtered archive searches should replace the generic label.
         const filteredCollectionLabel =
-            pageType === 'search_archive' && collectionFilterId
+            pageType === 'search_archive' &&
+            subtype === 'collection_search' &&
+            collectionFilterId
                 ? getCatalogItemLabel(
                       'collections',
                       collectionFilterId,
@@ -210,7 +210,14 @@ export function buildKnownItems(currentPage, context) {
             loading: false,
         };
 
-        if (project && !project.is_ohd) {
+        // search_archive uses explicit route subtypes; other pages infer from project scope.
+        const hasArchiveParent =
+            pageType === 'search_archive'
+                ? subtype === 'project_search' ||
+                  subtype === 'collection_search'
+                : Boolean(project && !project.is_ohd);
+
+        if (hasArchiveParent) {
             const archiveLabel =
                 entityLabels.archive ||
                 getArchiveLabel(project, locale) ||
@@ -261,6 +268,7 @@ export function buildKnownItems(currentPage, context) {
             : null,
     };
 
+    // Generic fallback for known pages that do not need dedicated branch logic.
     let currentLabel = labels[pageType] || humanizeSegment(pageType);
 
     if (pageType === 'interview_detail') {

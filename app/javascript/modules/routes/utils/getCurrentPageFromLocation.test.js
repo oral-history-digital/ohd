@@ -92,6 +92,71 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.isKnown).toBe(true);
     });
 
+    it('classifies register page routes', () => {
+        const result = getCurrentPageFromLocation(
+            buildLocation('/mog/de/register')
+        );
+
+        expect(result.pageType).toBe('register_page');
+        expect(result.params).toEqual({
+            projectId: 'mog',
+            locale: 'de',
+        });
+        expect(result.pathBase).toBe('/mog/de');
+        expect(result.isKnown).toBe(true);
+    });
+
+    it('classifies main-site search_archive subtype', () => {
+        const result = getCurrentPageFromLocation(
+            buildLocation('/de/searches/archive', '?sort=random')
+        );
+
+        expect(result.pageType).toBe('search_archive');
+        expect(result.subtype).toBe('main_site_search');
+        expect(result.params).toEqual({
+            projectId: null,
+            locale: 'de',
+            collectionId: null,
+        });
+        expect(result.pathBase).toBe('/de');
+        expect(result.isKnown).toBe(true);
+    });
+
+    it('classifies project search_archive subtype', () => {
+        const result = getCurrentPageFromLocation(
+            buildLocation('/adg/de/searches/archive')
+        );
+
+        expect(result.pageType).toBe('search_archive');
+        expect(result.subtype).toBe('project_search');
+        expect(result.params).toEqual({
+            projectId: 'adg',
+            locale: 'de',
+            collectionId: null,
+        });
+        expect(result.pathBase).toBe('/adg/de');
+        expect(result.isKnown).toBe(true);
+    });
+
+    it('classifies collection-filtered search_archive subtype', () => {
+        const result = getCurrentPageFromLocation(
+            buildLocation(
+                '/adg/de/searches/archive',
+                '?collection_id[]=21894736'
+            )
+        );
+
+        expect(result.pageType).toBe('search_archive');
+        expect(result.subtype).toBe('collection_search');
+        expect(result.params).toEqual({
+            projectId: 'adg',
+            locale: 'de',
+            collectionId: '21894736',
+        });
+        expect(result.pathBase).toBe('/adg/de');
+        expect(result.isKnown).toBe(true);
+    });
+
     it('returns unknown with extracted context when route is unmatched', () => {
         const result = getCurrentPageFromLocation(
             buildLocation('/mog/de/not-a-real-page', '?foo=bar')

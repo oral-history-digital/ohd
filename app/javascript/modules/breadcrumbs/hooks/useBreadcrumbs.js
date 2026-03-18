@@ -14,7 +14,11 @@ export function useBreadcrumbs() {
     const { project } = useProject();
     const breadcrumbMode = useBreadcrumbMode();
     const { currentPage, items } = useBreadcrumbModel();
-    console.log('useBreadcrumbs', { currentPage, items, breadcrumbMode });
+    console.log('useBreadcrumbs', currentPage.pageType, {
+        currentPage,
+        items,
+        breadcrumbMode,
+    });
 
     if (!project) return [];
 

@@ -25,9 +25,26 @@ function getPathBase({ locale, projectId }) {
 }
 
 /**
+ * Resolves dynamic subtypes that depend on params/search context.
+ */
+function resolveSubtype(pageType, baseSubtype, params) {
+    if (pageType !== 'search_archive') {
+        return baseSubtype || null;
+    }
+
+    const hasCollectionFilter = Boolean(params.collectionId);
+
+    if (hasCollectionFilter) {
+        return 'collection_search';
+    }
+
+    return params.projectId ? 'project_search' : 'main_site_search';
+}
+
+/**
  * Enriches matched params with page-specific metadata.
  */
-function enrichParamsForPage(pageType, params, pathname) {
+function enrichParamsForPage(pageType, params, pathname, search = '') {
     if (pageType === 'catalog_page') {
         const segments = normalizePathname(pathname).split('/').filter(Boolean);
         const catalogIndex = segments.findIndex(
@@ -50,6 +67,19 @@ function enrichParamsForPage(pageType, params, pathname) {
         return {
             ...params,
             staticPageCode: staticPageCode || null,
+        };
+    }
+
+    if (pageType === 'search_archive') {
+        const searchParams = new URLSearchParams(search || '');
+        const collectionId =
+            searchParams.getAll('collection_id[]')[0] ||
+            searchParams.get('collection_id') ||
+            null;
+
+        return {
+            ...params,
+            collectionId,
         };
     }
 
@@ -96,12 +126,17 @@ export default function getCurrentPageFromLocation({ pathname, search = '' }) {
                 projectId: params.projectId || null,
                 locale: params.locale || null,
             },
-            normalizedPathname
+            normalizedPathname,
+            search
         );
 
         return {
             pageType: definition.pageType,
-            subtype: definition.subtype || null,
+            subtype: resolveSubtype(
+                definition.pageType,
+                definition.subtype,
+                enrichedParams
+            ),
             params: enrichedParams,
             pathBase: getPathBase(enrichedParams),
             pathname: normalizedPathname,

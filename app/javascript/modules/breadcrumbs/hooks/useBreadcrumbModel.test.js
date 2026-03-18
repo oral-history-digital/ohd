@@ -583,10 +583,12 @@ describe('useBreadcrumbModel', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'search_archive',
+                subtype: 'collection_search',
                 isKnown: true,
                 params: {
                     locale: 'de',
                     projectId: 'adg',
+                    collectionId: '21894736',
                 },
                 pathBase: '/adg/de',
                 pathname: '/adg/de/searches/archive',
@@ -642,10 +644,12 @@ describe('useBreadcrumbModel', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'search_archive',
+                subtype: 'main_site_search',
                 isKnown: true,
                 params: {
                     locale: 'de',
                     projectId: null,
+                    collectionId: null,
                 },
                 pathBase: '/de',
                 pathname: '/de/searches/archive',
