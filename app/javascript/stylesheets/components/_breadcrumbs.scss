@@ -2,7 +2,8 @@
   align-items: center;
   color: var(--primary-color);
   display: flex;
-  flex-shrink: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .Breadcrumbs-list--subline {
@@ -22,12 +23,19 @@
   display: flex;
   list-style: none;
   margin: 0;
+  min-width: 0;
+  overflow: hidden;
   padding: 0;
 }
 
 .Breadcrumbs-item {
   align-items: center;
   display: flex;
+  min-width: 0;
+}
+
+.Breadcrumbs-item--crumb {
+  flex: 1 1 auto;
 }
 
 .Breadcrumbs-divider {
@@ -56,11 +64,19 @@
 
 .Breadcrumbs-link {
   color: inherit;
+  display: block;
   text-decoration: none;
 
   &:hover {
     text-decoration: underline;
   }
+}
+
+.Breadcrumbs-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // Mode C — archive name rendered as a logo substitute.

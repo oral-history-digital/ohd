@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import { Divider, Logo, SimulateLogo } from './components';
+import { BreadcrumbItem, Logo, SimulateLogo } from './components';
 import { BREADCRUMB_MODES, useBreadcrumbMode } from './hooks/useBreadcrumbMode';
 import { useBreadcrumbs } from './hooks/useBreadcrumbs';
 
@@ -38,30 +37,12 @@ export default function Breadcrumbs({ logoSrc }) {
                 )}
 
                 {crumbs.map((crumb, index) => {
-                    const isLast = index === crumbs.length - 1;
-                    const shouldRenderAsCurrent =
-                        !crumb.to || (isLast && !crumb.allowLastLink);
-
                     return (
-                        <li key={index} className="Breadcrumbs-item">
-                            <Divider />
-
-                            {shouldRenderAsCurrent ? (
-                                <span
-                                    className="Breadcrumbs-current"
-                                    aria-current={isLast ? 'page' : undefined}
-                                >
-                                    {crumb.label}
-                                </span>
-                            ) : (
-                                <Link
-                                    to={crumb.to}
-                                    className="Breadcrumbs-link"
-                                >
-                                    {crumb.label}
-                                </Link>
-                            )}
-                        </li>
+                        <BreadcrumbItem
+                            key={index}
+                            crumb={crumb}
+                            isLast={index === crumbs.length - 1}
+                        />
                     );
                 })}
             </ol>
