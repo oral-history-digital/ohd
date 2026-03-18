@@ -22,9 +22,11 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
 
+    // TODO: Sanitize archiveUrl
     const archiveUrl = archive.archive_domain
         ? archive.archive_domain
         : `/${archive.shortname}/${locale}`;
+    const isExternalArchiveLink = Boolean(archive.archive_domain);
 
     return (
         <div
@@ -127,7 +129,17 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         <Button
                             buttonText={t('explorer.view_archive_page')}
                             variant="contained"
-                            onClick={() => navigate(archiveUrl)}
+                            onClick={
+                                isExternalArchiveLink
+                                    ? undefined
+                                    : () => navigate(archiveUrl)
+                            }
+                            href={
+                                isExternalArchiveLink ? archiveUrl : undefined
+                            }
+                            target={
+                                isExternalArchiveLink ? '_blank' : undefined
+                            }
                             endIcon={<FaExternalLinkAlt />}
                         />
                     </div>
