@@ -778,4 +778,57 @@ describe('useBreadcrumbModel', () => {
             },
         ]);
     });
+
+    it('uses translated register label on register pages', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'register_page',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: 'adg',
+                },
+                pathBase: '/adg/de',
+                pathname: '/adg/de/register',
+                search: '',
+            },
+            project: {
+                shortname: 'adg',
+                is_ohd: false,
+                default_locale: 'de',
+                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+            },
+            interview: null,
+            currentUser: null,
+            collections: {},
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                'user.registration': 'Registrierung',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'home',
+                label: 'Start',
+                to: '/adg/de',
+                isCurrent: false,
+            },
+            {
+                key: 'archive',
+                label: 'Archiv Deutsches Gedaechtnis',
+                to: '/adg/de',
+                isCurrent: false,
+            },
+            {
+                key: 'register_page',
+                label: 'Registrierung',
+                to: '/adg/de/register',
+                isCurrent: true,
+                loading: false,
+            },
+        ]);
+    });
 });

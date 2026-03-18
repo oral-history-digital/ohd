@@ -4,7 +4,7 @@
   "buttons": {
     "primary": {
       "label": "Zur Anmeldung",
-      "target": "/de/searches/archive"
+      "target": "/de/register"
     }
   }
 }

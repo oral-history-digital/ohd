@@ -164,12 +164,17 @@ export function buildDefaultLabels(t) {
             'Registry Entries'
         ),
         static_text_page: 'Page', // TODO: Add specific translation keys for each static page type
-        user_page: translateWithFallback(
+        user_page: translateWithFallback(t, 'edit.users.admin', 'Users'),
+        project_admin_page: translateWithFallback(
             t,
-            'activerecord.models.user.other',
-            'Users'
+            'edit.administration',
+            'Administration'
         ),
-        project_admin_page: 'Project Settings', // TODO: Add specific translation keys for each project admin page type
+        register_page: translateWithFallback(
+            t,
+            'user.registration',
+            'Register'
+        ),
         catalog_page: translateWithFallback(
             t,
             'modules.catalog.breadcrumb_title',
