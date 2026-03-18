@@ -63,6 +63,11 @@ export default function Form({
     values: initialValues,
 }) {
     const [submitted, setSubmitted] = useState(false);
+    const baseFormIdentifier = formId || scope || submitScope || 'form';
+    const formIdentifier =
+        typeof index === 'number'
+            ? `${baseFormIdentifier}-${index}`
+            : baseFormIdentifier;
 
     const {
         values,
@@ -190,16 +195,18 @@ export default function Form({
             className={classNames(className, 'LoadingOverlay', {
                 'is-loading': fetching,
             })}
+            data-testid={`${formIdentifier}-form-wrapper`}
         >
             {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
 
             {nestedScopes()}
             <form
-                id={formId || scope}
+                id={formIdentifier}
                 className={classNames('Form', formClasses, {
                     [`${scope} default`]: !formClasses,
                 })}
                 onSubmit={handleSubmit}
+                data-testid={`${formIdentifier}-form`}
             >
                 {children}
 

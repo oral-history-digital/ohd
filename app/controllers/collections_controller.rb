@@ -1,5 +1,5 @@
 class CollectionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:index, :show, :for_project]
 
   def show
     @collection = Collection.find params[:id]
@@ -86,6 +86,43 @@ class CollectionsController < ApplicationController
     end
   end
 
+  # GET /projects/:id/collections
+  def for_project
+    authorize Project, :show?
+
+    project = policy_scope(Project).find_by(id: params[:id]) ||
+      policy_scope(Project).find_by(shortname: params[:id])
+    raise ActiveRecord::RecordNotFound if project.blank?
+
+    collections = Collection
+      .where(project_id: project.id)
+      .order(created_at: :desc)
+      .includes(:translations, institution: :translations)
+
+    interview_counts = Interview
+      .where(collection_id: collections.map(&:id))
+      .group(:collection_id, :workflow_state)
+      .count
+
+    cache_key = [
+      'project-collections',
+      project.id,
+      projects_cache_scope_key,
+      I18n.locale,
+      Collection.count,
+      Collection.maximum(:updated_at),
+      Interview.maximum(:updated_at)
+    ].join('-')
+
+    json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
+      {
+        data: serialized_project_collections(collections, interview_counts)
+      }
+    end
+
+    render json: json
+  end
+
   def destroy
     @collection = Collection.find(params[:id])
     authorize @collection
@@ -101,6 +138,22 @@ class CollectionsController < ApplicationController
   end
 
   private
+
+  def projects_cache_scope_key
+    # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).
+    return 'anonymous' unless current_user
+    return 'admin' if current_user.admin?
+
+    "user-#{current_user.id}"
+  end
+
+  def serialized_project_collections(collections, interview_counts)
+    ActiveModelSerializers::SerializableResource.new(
+      collections,
+      each_serializer: ProjectCollectionsSerializer,
+      interview_counts: interview_counts
+    ).as_json
+  end
 
   def respond collection
     respond_to do |format|

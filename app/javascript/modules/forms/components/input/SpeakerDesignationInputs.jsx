@@ -34,7 +34,10 @@ export default function SpeakerDesignationInputs({
     }
 
     return (
-        <div className="speaker-designation-input">
+        <div
+            className="speaker-designation-input"
+            data-testid={`${attribute}-speaker-designation-input`}
+        >
             <h4>{t('speaker_designations')}</h4>
             {contributions.map((contribution) => {
                 const contributor = people[contribution.person_id];

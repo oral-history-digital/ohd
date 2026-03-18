@@ -5,6 +5,7 @@ import { MdOutlineFitScreen } from 'react-icons/md';
 import videojs from 'video.js';
 
 import { VIDEO_MAX_WIDTH_MEDIUM, VIDEO_MAX_WIDTH_SMALL } from '../constants';
+import { disposeReactRoot } from '../utils/disposeReactRoot';
 
 const VjsButton = videojs.getComponent('Button');
 
@@ -230,7 +231,8 @@ class ToggleSizeButton extends VjsButton {
         });
 
         /* Render icon with React inside the native Video.js button */
-        createRoot(el).render(
+        this.iconRoot = createRoot(el);
+        this.iconRoot.render(
             <span className="vjs-icon-placeholder">
                 <MdOutlineFitScreen style={{ fontSize: '1.2rem' }} />
             </span>
@@ -246,6 +248,9 @@ class ToggleSizeButton extends VjsButton {
             'pluginTranslationsUpdated',
             this.handleTranslationUpdate
         );
+        disposeReactRoot(this.iconRoot);
+        this.iconRoot = null;
+
         super.dispose();
     }
 }
