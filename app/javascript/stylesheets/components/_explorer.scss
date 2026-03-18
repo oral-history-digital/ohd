@@ -1,0 +1,904 @@
+.Explorer {
+  margin-bottom: $base-unit * 2;
+}
+
+.Explorer-loading,
+.Explorer-error {
+  padding: $base-unit * 2;
+  text-align: center;
+  color: $gray-dark;
+  font-size: 1.125rem;
+}
+
+.Explorer--title {
+  margin-bottom: $base-unit * 2;
+}
+
+// Tabs
+// --------------------------------------------------
+
+.Explorer-tabs {
+  width: 100%;
+}
+
+.Explorer-tabList {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid $gray-lighter;
+  margin-bottom: $base-unit;
+}
+
+.Explorer-tab {
+  display: flex;
+  align-items: center;
+  gap: $base-unit * 0.5;
+  padding: ($base-unit * 0.5) $base-unit;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: $gray-dark;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    color: $gray-darkest;
+  }
+
+  &[data-selected] {
+    color: var(--primary-color, $gray-darkest);
+    border-bottom-color: var(--primary-color, $gray-darkest);
+    font-weight: 600;
+  }
+}
+
+.Explorer-tabIcon {
+  font-size: 1rem;
+}
+
+.Explorer-tabPanels {
+  min-height: 400px;
+}
+
+// ArchivesList
+// --------------------------------------------------
+
+.ArchivesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ArchivesList--empty {
+  padding: $base-unit * 2;
+  text-align: center;
+  color: $gray-dark;
+}
+
+.ArchivesList--loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $base-unit * 0.5;
+  padding: $base-unit * 4;
+  color: $gray-medium;
+  font-size: 0.875rem;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid $gray-lighter;
+    border-top-color: var(--primary-color, $gray-dark);
+    border-radius: 50%;
+    animation: explorer-spin 0.75s linear infinite;
+  }
+}
+
+@keyframes explorer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ArchivesList--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $base-unit * 0.5;
+  margin: $base-unit 0;
+  padding: $base-unit * 0.75 $base-unit;
+  background: rgba(143, 32, 28, 0.06);
+  border: 1px solid rgba(143, 32, 28, 0.25);
+  border-radius: 6px;
+  color: rgba(143, 32, 28, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+// ArchiveCard
+// --------------------------------------------------
+
+.ArchiveCard {
+  border: 1px solid $gray-lighter;
+  border-radius: 6px;
+  background: #fff;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.ArchiveCard--expanded {
+  border-color: $gray-light;
+}
+
+.ArchiveCard-header {
+  display: flex;
+  align-items: center;
+  gap: $base-unit * 0.5;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.ArchiveCard-chevron {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: $gray-medium;
+  font-size: $base-unit * 0.5;
+}
+
+.ArchiveCard-logo {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.ArchiveCard-headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.ArchiveCard-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $gray-darkest;
+  line-height: 1.3;
+}
+
+.ArchiveCard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 0.25rem;
+}
+
+.ArchiveCard-metaItem {
+  font-size: 0.8125rem;
+  color: $gray-dark;
+}
+
+.ArchiveCard-body {
+  padding: $base-unit;
+  border-top: 1px solid $gray-lightest;
+}
+
+.ArchiveCard-description {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: $gray-darker;
+
+  a {
+    color: var(--primary-color, #c0392b);
+    text-decoration: underline;
+  }
+
+  p {
+    margin: 0 0 0.5rem;
+  }
+}
+
+.ArchiveCard-moreText {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: $gray-dark;
+
+  p {
+    margin: 0 0 0.5rem;
+  }
+}
+
+.ArchiveCard-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: $base-unit * 0.5;
+}
+
+.ArchiveCard-detailItem {
+  font-size: 0.8125rem;
+  color: $gray-dark;
+}
+
+.ArchiveCard-pageLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: $base-unit * 0.5;
+  font-size: 0.8125rem;
+  color: var(--primary-color, $gray-darkest);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.ArchiveCard-pageLinkIcon {
+  font-size: 0.6875rem;
+}
+
+.ArchiveCard .ArchiveCard-pageButton,
+.CollectionCard .CollectionCard-pageButton,
+.InstitutionCard .InstitutionCard-pageButton {
+  display: flex;
+  justify-content: flex-end;
+  gap: $base-unit * 0.5;
+}
+
+.ArchivesCard-collections {
+  margin-top: 1rem;
+}
+
+.ArchivesCard-collectionsTitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-darker;
+}
+
+h4.CollectionList-collectionsTitle {
+  margin: $base-unit 0 $base-unit * 0.5;
+}
+
+.CollectionList-showMoreButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  margin: $base-unit * 0.25 0 $base-unit * 0.5;
+  padding: 0 0.625rem;
+  border: 1px solid $gray-light;
+  border-radius: 999px;
+  background: #fff;
+  color: $gray-darkest;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: $gray-lightest;
+    border-color: $gray-medium;
+  }
+}
+
+// CollectionCard
+// --------------------------------------------------
+
+.CollectionCard {
+  border: 1px solid $gray-lightest;
+  border-radius: 4px;
+  background: $gray-paler;
+  margin-bottom: $base-unit * 0.5;
+}
+
+.CollectionCard--expanded {
+  border-color: $gray-light;
+}
+
+.CollectionCard-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem $base-unit * 0.5;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.CollectionCard-chevron {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: $gray-medium;
+  font-size: 0.625rem;
+}
+
+.CollectionCard-headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.CollectionCard-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-darkest;
+}
+
+.CollectionCard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem $base-unit * 0.5;
+  margin-top: 0.125rem;
+}
+
+.CollectionCard-metaItem {
+  font-size: $base-unit * 0.5;
+  color: $gray-dark;
+}
+
+.CollectionCard-body {
+  padding: 0 $base-unit * 0.5 $base-unit * 0.5 1.75rem;
+  border-top: 1px solid $gray-lightest;
+}
+
+.CollectionCard-notes {
+  margin: 0.5rem 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: $gray-darker;
+  white-space: pre-line;
+}
+
+.CollectionCard-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.CollectionCard-detailItem {
+  font-size: $base-unit * 0.5;
+  color: $gray-dark;
+}
+
+.CollectionCard-link {
+  color: var(--primary-color, #c0392b);
+  text-decoration: underline;
+}
+
+// InstitutionsList
+// --------------------------------------------------
+
+.InstitutionsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.InstitutionsList--empty {
+  padding: $base-unit * 2;
+  text-align: center;
+  color: $gray-dark;
+}
+
+.InstitutionsList-resizeHandle {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.InstitutionsList-resizeSlider {
+  width: 120px;
+  accent-color: var(--primary-color, #c0392b);
+}
+
+.InstitutionsList-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+// InstitutionsMap
+// --------------------------------------------------
+
+.InstitutionsMap {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid $gray-lighter;
+}
+
+.InstitutionsMap-container {
+  width: 100%;
+  z-index: 1;
+}
+
+// InstitutionCard
+// --------------------------------------------------
+
+.InstitutionCard {
+  border: 1px solid $gray-lighter;
+  border-radius: 6px;
+  background: #fff;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.InstitutionCard--expanded {
+  border-color: $gray-light;
+}
+
+.InstitutionCard-header {
+  display: flex;
+  align-items: center;
+  gap: $base-unit * 0.5;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.InstitutionCard-chevron {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: $gray-medium;
+  font-size: $base-unit * 0.5;
+}
+
+.InstitutionCard-logo {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.InstitutionCard-headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.InstitutionCard-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $gray-darkest;
+  line-height: 1.3;
+}
+
+.InstitutionCard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 0.25rem;
+}
+
+.InstitutionCard-metaItem {
+  font-size: 0.8125rem;
+  color: $gray-dark;
+}
+
+.InstitutionCard-body {
+  padding: 0 1rem 1rem 2.75rem;
+  border-top: 1px solid $gray-lightest;
+}
+
+.InstitutionCard-description {
+  margin: $base-unit * 0.5 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: $gray-darker;
+}
+
+.InstitutionCard-parent {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: $gray-dark;
+}
+
+.InstitutionCard-label {
+  font-weight: 600;
+}
+
+.InstitutionCard-sectionTitle {
+  margin: $base-unit * 0.5 0 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-darker;
+}
+
+.InstitutionCard-list {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+  font-size: 0.8125rem;
+  color: $gray-dark;
+  line-height: 1.6;
+}
+
+.InstitutionCard-archiveItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+}
+
+.InstitutionCard-archiveLogo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 3px;
+}
+
+.InstitutionCard-archiveCount {
+  font-size: $base-unit * 0.5;
+  color: $gray-medium;
+}
+
+.InstitutionCard-children,
+.InstitutionCard-archives {
+  margin-top: 0.5rem;
+}
+
+// Highlight
+// --------------------------------------------------
+
+.Highlight {
+  background-color: rgba(143, 32, 28, 0.15);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+// Explorer
+// --------------------------------------------------
+
+// ExplorerSidebarSearch
+// --------------------------------------------------
+
+.ExplorerSidebarSearch {
+  padding: 0 $base-unit * 0.5 $base-unit * 0.75;
+  margin-top: 20px;
+}
+
+.ExplorerSidebarSearch-inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: $gray-lightest;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  padding: 0.375rem 0.625rem;
+
+  &:focus-within {
+    border-color: var(--primary-color, $gray-dark);
+    background: #fff;
+  }
+}
+
+.ExplorerSidebarSearch-icon {
+  flex-shrink: 0;
+  color: $gray-medium;
+  font-size: $base-unit * 0.5;
+}
+
+.ExplorerSidebarSearch-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  color: $gray-darkest;
+  outline: none;
+  min-width: 0;
+
+  &::placeholder {
+    color: $gray-medium;
+  }
+}
+
+.ExplorerSidebarSearch-rangeSection {
+  margin-top: $base-unit * 0.375;
+  padding: 0 $base-unit * 0.5;
+}
+
+.ExplorerSidebarSearch-rangeLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: $gray-dark;
+  margin-bottom: 0.625rem;
+}
+
+.ExplorerSidebarSearch-rangeValues {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-variant-numeric: tabular-nums;
+  color: $gray-darker;
+  font-weight: 500;
+}
+
+.ExplorerSidebarSearch-rangeReset {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: $gray-medium;
+  font-size: 0.625rem;
+  line-height: 1;
+
+  &:hover {
+    color: var(--primary-color, $gray-darkest);
+  }
+}
+
+.ExplorerSidebarSearch-sliderWrapper {
+  position: relative;
+  padding: 0 7px;
+
+  // Override rc-slider colors with primary color
+  .rc-slider-track {
+    background-color: var(--primary-color, $gray-dark);
+  }
+
+  .rc-slider-handle {
+    border-color: var(--primary-color, $gray-dark);
+
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: var(--primary-color, $gray-dark);
+      box-shadow: 0 0 0 3px rgba(143, 32, 28, 0.15);
+    }
+  }
+
+  .rc-slider-dot-active {
+    border-color: var(--primary-color, $gray-dark);
+  }
+}
+
+.ExplorerRangeFilter-hoverTooltip {
+  position: absolute;
+  top: -28px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.ExplorerResetFilters {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: $base-unit * 0.5;
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  background: none;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: $gray-dark;
+
+  &:hover {
+    border-color: var(--primary-color, $gray-darkest);
+    color: var(--primary-color, $gray-darkest);
+  }
+}
+
+.ExplorerSidebarSearch-clear {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: $gray-medium;
+  font-size: $base-unit * 0.5;
+
+  &:hover {
+    color: $gray-darkest;
+  }
+}
+
+.ExplorerSidebarSearch-institutionSection {
+  margin-top: $base-unit * 0.75;
+  padding: 0 $base-unit * 0.5;
+}
+
+// Dropdown (shared primitive)
+// --------------------------------------------------
+
+.Dropdown {
+  position: relative;
+}
+
+.Dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.375rem 0.5rem;
+  background: #fff;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: $gray-darkest;
+  text-align: left;
+  gap: 0.5rem;
+
+  &:hover {
+    border-color: $gray-medium;
+  }
+}
+
+.Dropdown-toggleLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Dropdown-toggleIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+.Dropdown-chevron {
+  font-size: 0.625rem;
+  color: $gray-medium;
+  transition: transform 0.15s ease;
+
+  &--open {
+    transform: rotate(180deg);
+  }
+}
+
+.Dropdown-clear {
+  display: flex;
+  align-items: center;
+  font-size: 0.625rem;
+  color: $gray-medium;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color, $gray-darkest);
+  }
+}
+
+.Dropdown-panel {
+  background: #fff;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0;
+  overflow-y: auto;
+}
+
+// InstitutionDropdown context
+.InstitutionDropdown {
+  .Dropdown-toggle {
+    width: 100%;
+  }
+}
+
+.InstitutionDropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// SortControl context
+.SortControl {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin: $base-unit * 0.5 0;
+}
+
+.SortControl-label {
+  font-size: 0.8125rem;
+  color: $gray-darkest;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.SortControl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.SortControl-item {
+  display: block;
+}
+
+.SortControl-option {
+  display: block;
+  width: 100%;
+  padding: 0.375rem $base-unit * 0.5;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: $gray-darkest;
+  text-align: left;
+  white-space: nowrap;
+
+  &:hover {
+    background: $gray-lightest;
+  }
+
+  &--active {
+    font-weight: 600;
+    color: var(--primary-color, $gray-darkest);
+  }
+}
+
+.InstitutionDropdown-item {
+  &:hover {
+    background: $gray-lightest;
+  }
+}
+
+.InstitutionDropdown-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem $base-unit * 0.5;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  color: $gray-darkest;
+
+  input[type='checkbox'] {
+    accent-color: var(--primary-color, $gray-dark);
+    flex-shrink: 0;
+  }
+}

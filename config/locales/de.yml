@@ -1436,6 +1436,7 @@ de:
           error: Fehler beim Laden der Mitwirkungen
     catalog:
       title: Katalog
+      breadcrumb_title: Archive & Sammlungen
       part_of_institution: Teil der Institution
       description: Beschreibung
       address: Adresse

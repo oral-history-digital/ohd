@@ -1842,6 +1842,7 @@ ru:
           error: Error loading person contributions
     catalog:
       title: Catalog
+      breadcrumb_title: Archives & Collections
       part_of_institution: Part of institution
       description: Description
       address: Address
