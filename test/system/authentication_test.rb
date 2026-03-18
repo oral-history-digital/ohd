@@ -13,13 +13,15 @@ class RegistrationTest < ApplicationSystemTestCase
     )
     confirm_registration_email
 
-    # step 2 - 
-    fill_in 'Institution', with: 'Goethe University'
-    select 'Researcher'
-    select 'Education'
-    fill_in 'specification', with: 'project ...'
-    check 'Terms of Use', visible: :all
-    click_on 'Submit activation request'
+    # step 2
+    within("[data-testid='user_project-form-wrapper']") do
+      find_test_id('user_project-organization-text-input').set('Goethe University')
+      select_test_id_option('user_project-job_description-select', 'Researcher')
+      select_test_id_option('user_project-research_intentions-select', 'Education')
+      find_test_id('user_project-specification-textarea').set('project ...')
+      click_test_id('user_project-tos_agreement-checkbox-input')
+      click_on 'Submit activation request'
+    end
     assert_text 'Your activation request has been successfully submitted'
     click_on 'OK'
     click_on 'Logout'
