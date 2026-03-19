@@ -398,6 +398,7 @@ h4.CollectionList-collectionsTitle {
 .InstitutionsList {
   display: flex;
   flex-direction: column;
+  gap: $base-unit * 0.5;
 }
 
 .InstitutionsList--empty {
@@ -420,22 +421,80 @@ h4.CollectionList-collectionsTitle {
 .InstitutionsList-cards {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: calc($base-unit / 3);
 }
 
 // InstitutionsMap
 // --------------------------------------------------
 
 .InstitutionsMap {
+  position: relative;
+  isolation: isolate;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid $gray-lighter;
+  background-color: #f5f5f5;
+
+  .Map {
+    margin: 0;
+  }
+}
+
+.InstitutionsMap-frame {
+  width: 100%;
+  transition: height 0.28s ease;
 }
 
 .InstitutionsMap-container {
+  position: relative;
   width: 100%;
   z-index: 1;
+}
+
+.InstitutionsMap-sizeToggle {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: $gray-darkest;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.95),
+      0 0 0 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .InstitutionsMap-frame,
+  .InstitutionsMap-sizeToggle {
+    transition: none;
+  }
 }
 
 // InstitutionCard
@@ -839,7 +898,7 @@ h4.CollectionList-collectionsTitle {
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin: $base-unit * 0.5 0;
+  margin-top: $base-unit * 0.5;
 }
 
 .SortControl-label {

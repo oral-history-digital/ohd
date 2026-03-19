@@ -59,7 +59,7 @@ export function InstitutionsList({
 
     return (
         <div className="InstitutionsList">
-            <InstitutionsMap institutions={filteredInstitutions} height={400} />
+            <InstitutionsMap institutions={filteredInstitutions} />
             <InstitutionsSortControl value={sort} onChange={setSort} />
 
             <div className="InstitutionsList-cards">
