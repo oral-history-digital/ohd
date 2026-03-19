@@ -68,30 +68,6 @@ export function CollectionCard({ collection, query }) {
                         />
                     )}
 
-                    <div className="CollectionCard-details">
-                        {collection.responsibles?.length > 0 && (
-                            <span className="CollectionCard-detailItem">
-                                {t('explorer.responsible')}:{' '}
-                                {collection.responsibles.join(', ')}
-                            </span>
-                        )}
-                        {collection.homepage && (
-                            <a
-                                className="CollectionCard-detailItem CollectionCard-link"
-                                href={collection.homepage}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {t('explorer.homepage')}
-                            </a>
-                        )}
-                        {collection.publication_date && (
-                            <span className="CollectionCard-detailItem">
-                                {t('explorer.published')}:{' '}
-                                {collection.publication_date}
-                            </span>
-                        )}
-                    </div>
                     <div className="CollectionCard-pageButton">
                         <Button
                             buttonText={t('explorer.view_collection_page')}

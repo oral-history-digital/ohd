@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
-import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
+import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useMatch, useNavigate } from 'react-router-dom';
@@ -84,20 +84,15 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         <div
                             className="ArchiveCard-description"
                             dangerouslySetInnerHTML={{
-                                __html: sanitizeHtml(archive.introduction),
+                                __html: sanitizeHtml(
+                                    archive.introduction,
+                                    'RICH_TEXT'
+                                ),
                             }}
                         />
                     )}
 
-                    {archive.more_text && !isEmptyHtml(archive.more_text) && (
-                        <div
-                            className="ArchiveCard-moreText"
-                            dangerouslySetInnerHTML={{
-                                __html: sanitizeHtml(archive.more_text),
-                            }}
-                        />
-                    )}
-
+                    {/* TODO: Replace by interview languages (needs API change) */}
                     <div className="ArchiveCard-details">
                         {archive.available_locales?.length > 0 && (
                             <span className="ArchiveCard-detailItem">
@@ -105,12 +100,6 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                                 {archive.available_locales
                                     .map((l) => l.toUpperCase())
                                     .join(', ')}
-                            </span>
-                        )}
-                        {archive.publication_date && (
-                            <span className="ArchiveCard-detailItem">
-                                {t('explorer.published')}:{' '}
-                                {archive.publication_date}
                             </span>
                         )}
                     </div>
