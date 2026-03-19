@@ -1,15 +1,13 @@
 import { normalizeNameForSort } from 'modules/utils';
 
 export const SORT_OPTIONS = [
-    { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
-    { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
     { value: 'name_asc', labelKey: 'explorer.sort.name_asc' },
     { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
-    { value: 'collections_desc', labelKey: 'explorer.sort.collections_desc' },
-    { value: 'collections_asc', labelKey: 'explorer.sort.collections_asc' },
+    { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
+    { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
 ];
 
-export const DEFAULT_SORT = 'interviews_desc';
+export const DEFAULT_SORT = 'name_asc';
 
 export const sortArchives = (archives, sort) => {
     const [field, dir] = (sort || DEFAULT_SORT).split('_');

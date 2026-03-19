@@ -5,8 +5,6 @@ export const INST_SORT_OPTIONS = [
     { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
     { value: 'archives_desc', labelKey: 'explorer.sort.archives_desc' },
     { value: 'archives_asc', labelKey: 'explorer.sort.archives_asc' },
-    { value: 'collections_desc', labelKey: 'explorer.sort.collections_desc' },
-    { value: 'collections_asc', labelKey: 'explorer.sort.collections_asc' },
     { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
     { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
 ];
