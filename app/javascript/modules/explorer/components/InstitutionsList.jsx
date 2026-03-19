@@ -69,9 +69,13 @@ export function InstitutionsList({
 
     return (
         <div className="InstitutionsList">
-            <h2 className="Explorer-listTitle">{institutionsCountLabel}</h2>
             <InstitutionsMap institutions={filteredInstitutions} />
-            <InstitutionsSortControl value={sort} onChange={setSort} />
+            <div className="InstitutionsList--filtersInfo">
+                <p className="InstitutionsList--countLabel">
+                    {institutionsCountLabel}
+                </p>
+                <InstitutionsSortControl value={sort} onChange={setSort} />
+            </div>
 
             <div className="InstitutionsList-cards">
                 {sortedInstitutions.length === 0 ? (

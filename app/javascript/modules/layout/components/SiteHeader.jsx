@@ -9,22 +9,25 @@ import SiteLogo from './SiteLogo';
 
 export function SiteHeader() {
     const currentPage = useCurrentPage();
-    const isHome = currentPage.pageType === 'site_startpage';
     const breadcrumbMode = useBreadcrumbMode();
     const { project } = useProject();
 
+    const isHome = currentPage.pageType === 'site_startpage';
     const showProjectLogo =
         !isHome && breadcrumbMode === BREADCRUMB_MODES.ARCHIVE_LOGO && project;
+    const showBreadcrumbs = !isHome;
 
     return (
         <header
             className={classNames('SiteHeader', {
                 'SiteHeader--stacked': showProjectLogo,
+                'SiteHeader--hasLargeLogo': isHome || showProjectLogo,
+                'SiteHeader--hasBreadcrumbs': showBreadcrumbs,
             })}
         >
             {isHome && <SiteLogo />}
             {showProjectLogo && <ProjectLogo project={project} />}
-            {!isHome && <Breadcrumbs />}
+            {showBreadcrumbs && <Breadcrumbs />}
         </header>
     );
 }

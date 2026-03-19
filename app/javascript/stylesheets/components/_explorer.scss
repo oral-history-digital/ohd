@@ -1,5 +1,5 @@
 .Explorer {
-  margin-bottom: $base-unit * 2;
+  margin: $base-unit * 2 0;
 }
 
 .Explorer-loading,
@@ -11,13 +11,28 @@
 }
 
 .Explorer--title {
-  margin-bottom: $base-unit * 2;
+  margin-top: 0;
+  margin-bottom: $base-unit;
 }
 
-.Explorer-listTitle {
+.ArchivesList--filtersInfo,
+.InstitutionsList--filtersInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: $base-unit * 0.5;
+}
+
+.ArchivesList--filtersInfo .SortControl,
+.InstitutionsList--filtersInfo .SortControl {
+  margin-left: auto;
+}
+
+.ArchivesList--countLabel,
+.InstitutionsList--countLabel {
   margin: 0;
-  font-size: 1.125rem;
-  color: $gray-darkest;
+  font-weight: bold;
 }
 
 // Tabs
@@ -920,7 +935,6 @@ h4.CollectionList-collectionsTitle {
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: $base-unit * 0.5;
 }
 
 .SortControl-label {

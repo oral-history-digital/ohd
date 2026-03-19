@@ -6,13 +6,9 @@
   align-items: flex-start;
   background: #fff;
   display: flex;
-  height: $site-header-height-mobile;
-  overflow: hidden;
-  padding: $base-unit 0;
-
-  @include screen-m {
-    height: $site-header-height-desktop;
-  }
+  height: auto;
+  overflow: visible;
+  margin: $base-unit 0;
 }
 
 .SiteHeader .ProjectLogo--link {

@@ -74,7 +74,6 @@ export function ArchivesList({
     if (!filtered || filtered.length === 0) {
         return (
             <div className="ArchivesList ArchivesList--empty">
-                <h2 className="Explorer-listTitle">{archivesCountLabel}</h2>
                 <p>
                     {query
                         ? t('explorer.archives_list.no_results_query', {
@@ -88,8 +87,10 @@ export function ArchivesList({
 
     return (
         <div className="ArchivesList">
-            <h2 className="Explorer-listTitle">{archivesCountLabel}</h2>
-            <ArchivesSortControl value={sort} onChange={setSort} />
+            <div className="ArchivesList--filtersInfo">
+                <p className="ArchivesList--countLabel">{archivesCountLabel}</p>
+                <ArchivesSortControl value={sort} onChange={setSort} />
+            </div>
             {sortArchives(filtered, sort).map((archive) => (
                 <ArchiveCard
                     key={archive.id}
