@@ -183,7 +183,7 @@ export function ExplorerSidebarSearch() {
             />
 
             <ExplorerRangeFilter
-                label={t('explorer.interviews')}
+                label={t('explorer.filter.interviews')}
                 globalMin={globalMin}
                 globalMax={globalMax}
                 value={[interviewMin, interviewMax]}
@@ -192,7 +192,7 @@ export function ExplorerSidebarSearch() {
 
             {isArchivesTab && (
                 <ExplorerRangeFilter
-                    label={t('explorer.collections')}
+                    label={t('explorer.filter.collections')}
                     globalMin={globalCollectionMin}
                     globalMax={globalCollectionMax}
                     value={[collectionMin, collectionMax]}
@@ -202,7 +202,7 @@ export function ExplorerSidebarSearch() {
 
             {!isArchivesTab && (
                 <ExplorerRangeFilter
-                    label={t('explorer.archives')}
+                    label={t('explorer.filter.archives')}
                     globalMin={globalInstArchiveMin}
                     globalMax={globalInstArchiveMax}
                     value={[instArchiveMin, instArchiveMax]}
