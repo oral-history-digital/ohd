@@ -4,7 +4,7 @@ import { Button } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
 import { HighlightText } from './HighlightText';
@@ -82,20 +82,14 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                 {t('explorer.parent_institution')}:{' '}
                             </span>
                             {institution.parent.id ? (
-                                <Button
-                                    buttonText={institution.parent.name}
-                                    variant="contained"
-                                    size="sm"
-                                    className="InstitutionCard-relatedButton"
-                                    onClick={() =>
-                                        navigate(
-                                            institutionDetailsPath(
-                                                institution.parent.id
-                                            )
-                                        )
-                                    }
-                                    endIcon={<FaExternalLinkAlt />}
-                                />
+                                <Link
+                                    to={institutionDetailsPath(
+                                        institution.parent.id
+                                    )}
+                                    className="InstitutionCard-inlineLink"
+                                >
+                                    {institution.parent.name}
+                                </Link>
                             ) : (
                                 institution.parent.name
                             )}
@@ -110,25 +104,17 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             <ul className="InstitutionCard-list">
                                 {institution.children.map((child) => (
                                     <li key={child.id}>
-                                        <Button
-                                            buttonText={
-                                                <HighlightText
-                                                    text={child.name}
-                                                    query={query}
-                                                />
-                                            }
-                                            variant="contained"
-                                            size="sm"
-                                            className="InstitutionCard-relatedButton"
-                                            onClick={() =>
-                                                navigate(
-                                                    institutionDetailsPath(
-                                                        child.id
-                                                    )
-                                                )
-                                            }
-                                            endIcon={<FaExternalLinkAlt />}
-                                        />
+                                        <Link
+                                            to={institutionDetailsPath(
+                                                child.id
+                                            )}
+                                            className="InstitutionCard-listLink"
+                                        >
+                                            <HighlightText
+                                                text={child.name}
+                                                query={query}
+                                            />
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
@@ -159,43 +145,26 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                         key={archive.id}
                                         className="InstitutionCard-archiveItem"
                                     >
-                                        <Button
-                                            buttonText={
-                                                <span>
-                                                    <strong>
-                                                        <HighlightText
-                                                            text={archive.name}
-                                                            query={query}
-                                                        />
-                                                    </strong>
-                                                    {archive.interviews_count >
-                                                        0 && (
-                                                        <span className="InstitutionCard-archiveCount">
-                                                            {' '}
-                                                            (
-                                                            {
-                                                                archive.interviews_count
-                                                            }{' '}
-                                                            {t(
-                                                                'explorer.interviews'
-                                                            )}
-                                                            )
-                                                        </span>
-                                                    )}
+                                        <Link
+                                            to={archiveDetailsPath(archive.id)}
+                                            className="InstitutionCard-listLink"
+                                        >
+                                            <strong>
+                                                <HighlightText
+                                                    text={archive.name}
+                                                    query={query}
+                                                />
+                                            </strong>
+                                            {archive.interviews_count > 0 && (
+                                                <span className="InstitutionCard-archiveCount">
+                                                    {' '}
+                                                    ({
+                                                        archive.interviews_count
+                                                    }{' '}
+                                                    {t('explorer.interviews')})
                                                 </span>
-                                            }
-                                            variant="contained"
-                                            size="sm"
-                                            className="InstitutionCard-relatedButton"
-                                            onClick={() =>
-                                                navigate(
-                                                    archiveDetailsPath(
-                                                        archive.id
-                                                    )
-                                                )
-                                            }
-                                            endIcon={<FaExternalLinkAlt />}
-                                        />
+                                            )}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
