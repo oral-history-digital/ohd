@@ -16,21 +16,25 @@
 }
 
 .ArchivesList--filtersInfo,
-.InstitutionsList--filtersInfo {
+.InstitutionsList--filtersInfo,
+.CollectionList--filtersInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin-top: $base-unit * 0.5;
+  margin-bottom: $base-unit * 1.5;
 }
 
 .ArchivesList--filtersInfo .SortControl,
-.InstitutionsList--filtersInfo .SortControl {
+.InstitutionsList--filtersInfo .SortControl,
+.CollectionList--filtersInfo .SortControl {
   margin-left: auto;
 }
 
 .ArchivesList--countLabel,
-.InstitutionsList--countLabel {
+.InstitutionsList--countLabel,
+.CollectionList--countLabel {
   margin: 0;
   font-weight: bold;
 }

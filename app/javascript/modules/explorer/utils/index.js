@@ -9,4 +9,5 @@ export * from './filterCollections';
 export * from './filterInstitutions';
 export * from './highlightQueryInHtml';
 export * from './sortArchives';
+export * from './sortCollections';
 export * from './sortInstitutions';

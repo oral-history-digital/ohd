@@ -3,6 +3,7 @@ export * from './ArchivePage';
 export * from './ArchivesList';
 export * from './ArchivesSortControl';
 export * from './CollectionCard';
+export * from './CollectionSortControl';
 export * from './CollectionPage';
 export * from './Dropdown';
 export * from './ExplorerInstitutionFilter';

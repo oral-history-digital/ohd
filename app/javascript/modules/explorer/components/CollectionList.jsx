@@ -4,8 +4,10 @@ import { useGetArchiveCollections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import { useFilteredCollections } from '../hooks';
+import { useCollectionsSort, useFilteredCollections } from '../hooks';
+import { sortCollections } from '../utils';
 import { CollectionCard } from './CollectionCard';
+import { CollectionSortControl } from './CollectionSortControl';
 
 const INITIAL_VISIBLE_COLLECTIONS = 10;
 
@@ -13,25 +15,30 @@ export function CollectionList({ archive, query = '' }) {
     const { t } = useI18n();
     const { collections } = useGetArchiveCollections(archive.id);
     const [showAllCollections, setShowAllCollections] = useState(false);
+    const { sort, setSort } = useCollectionsSort();
     const filteredCollections = useFilteredCollections({ collections, query });
+    const sortedCollections = sortCollections(filteredCollections, sort);
 
     if (!collections || collections.length === 0) return null;
 
     const hiddenCollectionsCount = Math.max(
-        filteredCollections.length - INITIAL_VISIBLE_COLLECTIONS,
+        sortedCollections.length - INITIAL_VISIBLE_COLLECTIONS,
         0
     );
     const visibleCollections = showAllCollections
-        ? filteredCollections
-        : filteredCollections.slice(0, INITIAL_VISIBLE_COLLECTIONS);
+        ? sortedCollections
+        : sortedCollections.slice(0, INITIAL_VISIBLE_COLLECTIONS);
 
     return (
         <div className={'CollectionList'}>
-            <h4 className="CollectionList-collectionsTitle">
-                {t('explorer.collection_list.title', {
-                    count: filteredCollections.length,
-                })}
-            </h4>
+            <div className="CollectionList--filtersInfo">
+                <p className="CollectionList--countLabel">
+                    {t('explorer.collection_list.title', {
+                        count: filteredCollections.length,
+                    })}
+                </p>
+                <CollectionSortControl value={sort} onChange={setSort} />
+            </div>
             {visibleCollections.map((collection) => (
                 <CollectionCard
                     key={collection.id}
