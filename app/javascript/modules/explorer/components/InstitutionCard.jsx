@@ -137,8 +137,8 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
 
                     <div className="InstitutionCard-pageButton">
                         <Button
-                            buttonText={t('explorer.view_institution_page')}
-                            variant="contained"
+                            buttonText={t('explorer.view_institution_details')}
+                            variant="outlined"
                             onClick={() =>
                                 navigate(
                                     `/${locale}/catalog/institutions/${institution.id}`
