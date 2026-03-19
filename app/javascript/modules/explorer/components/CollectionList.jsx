@@ -4,34 +4,40 @@ import { useGetArchiveCollections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
+import { useFilteredCollections } from '../hooks';
 import { CollectionCard } from './CollectionCard';
 
 const INITIAL_VISIBLE_COLLECTIONS = 10;
 
-export function CollectionList({ archive }) {
+export function CollectionList({ archive, query = '' }) {
     const { t } = useI18n();
     const { collections } = useGetArchiveCollections(archive.id);
     const [showAllCollections, setShowAllCollections] = useState(false);
+    const filteredCollections = useFilteredCollections({ collections, query });
 
     if (!collections || collections.length === 0) return null;
 
     const hiddenCollectionsCount = Math.max(
-        collections.length - INITIAL_VISIBLE_COLLECTIONS,
+        filteredCollections.length - INITIAL_VISIBLE_COLLECTIONS,
         0
     );
     const visibleCollections = showAllCollections
-        ? collections
-        : collections.slice(0, INITIAL_VISIBLE_COLLECTIONS);
+        ? filteredCollections
+        : filteredCollections.slice(0, INITIAL_VISIBLE_COLLECTIONS);
 
     return (
         <div className={'CollectionList'}>
             <h4 className="CollectionList-collectionsTitle">
                 {t('explorer.collection_list.title', {
-                    count: collections.length,
+                    count: filteredCollections.length,
                 })}
             </h4>
             {visibleCollections.map((collection) => (
-                <CollectionCard key={collection.id} collection={collection} />
+                <CollectionCard
+                    key={collection.id}
+                    collection={collection}
+                    query={query}
+                />
             ))}
             {!showAllCollections && hiddenCollectionsCount > 0 && (
                 <button
@@ -51,4 +57,5 @@ export default CollectionList;
 
 CollectionList.propTypes = {
     archive: PropTypes.object.isRequired,
+    query: PropTypes.string,
 };

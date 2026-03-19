@@ -22,6 +22,8 @@ export const filterArchives = (
             const lower = query.toLowerCase();
             const matchesText =
                 (a.display_name || a.name)?.toLowerCase().includes(lower) ||
+                a.description?.toLowerCase().includes(lower) ||
+                a.introduction?.toLowerCase().includes(lower) ||
                 a.institutions?.some((i) =>
                     i.name?.toLowerCase().includes(lower)
                 );

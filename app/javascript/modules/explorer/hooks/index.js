@@ -8,6 +8,7 @@ export * from './useExplorerListCountLabel';
 export * from './useExplorerInterviewRange';
 export * from './useExplorerParams';
 export * from './useExplorerYearRange';
+export * from './useFilteredCollections';
 export * from './useInstitutionsSort';
 export * from './useSelectableHeaderToggle';
 export * from './useScrollToExpandedCard';

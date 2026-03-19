@@ -3,11 +3,11 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
-import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useMatch, useNavigate } from 'react-router-dom';
 
+import { highlightQueryInHtml } from '../utils';
 import { HighlightText } from './HighlightText';
 
 export function CollectionCard({ collection, query }) {
@@ -63,7 +63,10 @@ export function CollectionCard({ collection, query }) {
                         <div
                             className="CollectionCard-notes"
                             dangerouslySetInnerHTML={{
-                                __html: sanitizeHtml(collection.notes),
+                                __html: highlightQueryInHtml(
+                                    collection.notes,
+                                    query
+                                ),
                             }}
                         />
                     )}

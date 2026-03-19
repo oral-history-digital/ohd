@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
-import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useMatch, useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
+import { highlightQueryInHtml } from '../utils';
 import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
@@ -79,8 +79,9 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         <div
                             className="ArchiveCard-description"
                             dangerouslySetInnerHTML={{
-                                __html: sanitizeHtml(
+                                __html: highlightQueryInHtml(
                                     archive.introduction,
+                                    query,
                                     'RICH_TEXT'
                                 ),
                             }}
@@ -116,7 +117,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         />
                     </div>
 
-                    <CollectionList archive={archive} />
+                    <CollectionList archive={archive} query={query} />
                 </div>
             )}
         </div>

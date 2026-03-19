@@ -5,6 +5,8 @@ export * from './buildInstitutionMarkers';
 export * from './dateUtils';
 export * from './explorerSearchParams';
 export * from './filterArchives';
+export * from './filterCollections';
 export * from './filterInstitutions';
+export * from './highlightQueryInHtml';
 export * from './sortArchives';
 export * from './sortInstitutions';

@@ -219,11 +219,16 @@
   border-top: 1px solid $gray-lightest;
 }
 
-.ArchiveCard-description {
+.ArchiveCard-description,
+.InstitutionCard-description {
+  font-family: inherit;
+  font-weight: 400;
   font-size: 0.875rem;
   line-height: 1.6;
   color: $gray-darker;
+}
 
+.ArchiveCard-description {
   a {
     color: var(--primary-color, #c0392b);
     text-decoration: underline;
@@ -620,9 +625,7 @@ h4.CollectionList-collectionsTitle {
 
 .InstitutionCard-description {
   margin: $base-unit * 0.5 0 0;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: $gray-darker;
+  font-size: 1rem;
 }
 
 .InstitutionCard-parent {
