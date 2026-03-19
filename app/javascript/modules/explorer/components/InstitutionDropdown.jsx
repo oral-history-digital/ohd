@@ -1,7 +1,9 @@
+import { useMemo, useState } from 'react';
+
+import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
-
-import { Dropdown } from './Dropdown';
+import { FaSearch } from 'react-icons/fa';
 
 export function InstitutionDropdown({
     institutions,
@@ -10,29 +12,55 @@ export function InstitutionDropdown({
     onClearAll,
 }) {
     const { t } = useI18n();
+    const [filter, setFilter] = useState('');
     const hasSelection = values.length > 0;
 
-    const toggleLabel = hasSelection
-        ? values.length === 1
-            ? institutions.find((i) => i.id === values[0])?.name
-            : []
-                  .concat(
-                      t('explorer.institution_dropdown.multiple', {
-                          count: values.length,
-                      })
-                  )
-                  .join('')
-        : t('explorer.institution_dropdown.all');
+    const filteredInstitutions = useMemo(() => {
+        const normalizedFilter = filter.trim().toLowerCase();
+        if (!normalizedFilter) return institutions;
+
+        return institutions.filter((inst) =>
+            inst.name?.toLowerCase().includes(normalizedFilter)
+        );
+    }, [filter, institutions]);
+
+    const handleFilterKeyDown = (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        }
+    };
 
     return (
-        <Dropdown
-            className="InstitutionDropdown"
-            label={toggleLabel}
-            onClear={hasSelection ? onClearAll : undefined}
-            closeOnItemClick={false}
-        >
+        <div className="ExplorerInstitutionList">
+            {institutions.length >= 10 && (
+                <div className="facet-filter">
+                    <FaSearch className="Icon Icon--primary Icon--small" />
+                    <input
+                        type="text"
+                        className={classNames('filter', 'forced_labor_group')}
+                        value={filter}
+                        onChange={(event) => setFilter(event.target.value)}
+                        onKeyDown={handleFilterKeyDown}
+                        style={{
+                            borderBottom: '1px solid ',
+                            marginBottom: '0.7rem',
+                        }}
+                    />
+                </div>
+            )}
+
+            {hasSelection && (
+                <button
+                    type="button"
+                    className="ExplorerInstitutionList-clear"
+                    onClick={onClearAll}
+                >
+                    {t('explorer.institution_dropdown.all')}
+                </button>
+            )}
+
             <ul className="InstitutionDropdown-list">
-                {institutions.map((inst) => (
+                {filteredInstitutions.map((inst) => (
                     <li key={inst.id} className="InstitutionDropdown-item">
                         <label className="InstitutionDropdown-label">
                             <input
@@ -45,7 +73,7 @@ export function InstitutionDropdown({
                     </li>
                 ))}
             </ul>
-        </Dropdown>
+        </div>
     );
 }
 

@@ -869,6 +869,34 @@ h4.CollectionList-collectionsTitle {
   padding: 0 $base-unit * 0.5;
 }
 
+.ExplorerSidebarSearch-institutionSection {
+  .facet-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .facet-filter .filter {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+.ExplorerInstitutionList-clear {
+  margin-bottom: 0.375rem;
+  border: none;
+  background: none;
+  color: var(--primary-color, $gray-darkest);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+}
+
 // Dropdown (shared primitive)
 // --------------------------------------------------
 
