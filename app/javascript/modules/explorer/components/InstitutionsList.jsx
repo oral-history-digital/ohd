@@ -2,7 +2,11 @@ import { useGetInstitutionsList } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-import { useAccordion, useInstitutionsSort } from '../hooks';
+import {
+    useAccordion,
+    useExplorerListCountLabel,
+    useInstitutionsSort,
+} from '../hooks';
 import { filterInstitutions, sortInstitutions } from '../utils';
 import { InstitutionCard } from './InstitutionCard';
 import { InstitutionsMap } from './InstitutionsMap';
@@ -20,6 +24,21 @@ export function InstitutionsList({
     const { sort, setSort } = useInstitutionsSort();
     const { institutions, loading, error } = useGetInstitutionsList({
         all: true,
+    });
+
+    const allInstitutions = institutions || [];
+    const filteredInstitutions = filterInstitutions(
+        allInstitutions,
+        query,
+        interviewMin,
+        interviewMax,
+        instArchiveMin,
+        instArchiveMax
+    );
+    const institutionsCountLabel = useExplorerListCountLabel({
+        scope: 'institutions',
+        displayedItems: filteredInstitutions,
+        totalItems: allInstitutions,
     });
 
     if (loading) {
@@ -46,19 +65,11 @@ export function InstitutionsList({
         );
     }
 
-    const filteredInstitutions = filterInstitutions(
-        institutions,
-        query,
-        interviewMin,
-        interviewMax,
-        instArchiveMin,
-        instArchiveMax
-    );
-
     const sortedInstitutions = sortInstitutions(filteredInstitutions, sort);
 
     return (
         <div className="InstitutionsList">
+            <h2 className="Explorer-listTitle">{institutionsCountLabel}</h2>
             <InstitutionsMap institutions={filteredInstitutions} />
             <InstitutionsSortControl value={sort} onChange={setSort} />
 

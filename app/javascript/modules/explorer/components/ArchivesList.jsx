@@ -6,6 +6,7 @@ import {
     useAccordion,
     useArchivesAndCollectionsRange,
     useArchivesSort,
+    useExplorerListCountLabel,
 } from '../hooks';
 import { filterArchives, sortArchives } from '../utils';
 import { ArchiveCard } from './ArchiveCard';
@@ -46,6 +47,11 @@ export function ArchivesList({
         yearMax,
         institutionIds
     );
+    const archivesCountLabel = useExplorerListCountLabel({
+        scope: 'archives',
+        displayedItems: filtered,
+        totalItems: archives,
+    });
 
     if (isLoading) {
         return (
@@ -68,6 +74,7 @@ export function ArchivesList({
     if (!filtered || filtered.length === 0) {
         return (
             <div className="ArchivesList ArchivesList--empty">
+                <h2 className="Explorer-listTitle">{archivesCountLabel}</h2>
                 <p>
                     {query
                         ? t('explorer.archives_list.no_results_query', {
@@ -81,6 +88,7 @@ export function ArchivesList({
 
     return (
         <div className="ArchivesList">
+            <h2 className="Explorer-listTitle">{archivesCountLabel}</h2>
             <ArchivesSortControl value={sort} onChange={setSort} />
             {sortArchives(filtered, sort).map((archive) => (
                 <ArchiveCard

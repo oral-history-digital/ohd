@@ -37,6 +37,14 @@ export function ExplorerSidebarSearch() {
     });
 
     const isCatalogPage = currentPage.pageType === 'catalog_page';
+    const isCatalogRoot =
+        isCatalogPage && currentPage.params.catalogType === 'root';
+    const isInstitutionsIndex =
+        isCatalogPage &&
+        currentPage.params.catalogType === 'institutions' &&
+        !currentPage.params.id;
+    const showSidebarFilters = isCatalogRoot || isInstitutionsIndex;
+
     const isInstitutionsTab =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
     const tabIndex = isInstitutionsTab ? 1 : 0;
@@ -86,7 +94,7 @@ export function ExplorerSidebarSearch() {
               .filter(Boolean)
         : [];
 
-    if (!isCatalogPage) return null;
+    if (!showSidebarFilters) return null;
 
     const handleQueryChange = (e) =>
         setSearchParams((prev) => applyQueryParam(prev, e.target.value), {

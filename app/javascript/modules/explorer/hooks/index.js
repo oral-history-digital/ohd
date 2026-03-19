@@ -4,6 +4,7 @@ export * from './useArchivesSort';
 export * from './useCollectionData';
 export * from './useDropdown';
 export * from './useExplorerArchiveInstitutions';
+export * from './useExplorerListCountLabel';
 export * from './useExplorerInterviewRange';
 export * from './useExplorerParams';
 export * from './useExplorerYearRange';

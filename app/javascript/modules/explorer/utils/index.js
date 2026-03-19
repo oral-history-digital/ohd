@@ -1,4 +1,5 @@
 export * from './buildArchiveInstitutions';
+export * from './buildListCountMeta';
 export * from './buildArchiveYearRange';
 export * from './buildInstitutionMarkers';
 export * from './dateUtils';

@@ -17,6 +17,9 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const hasChildren = institution.children?.length > 0;
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
+    const institutionDetailsPath = (id) =>
+        `/${locale}/catalog/institutions/${id}`;
+    const archiveDetailsPath = (id) => `/${locale}/catalog/archives/${id}`;
 
     return (
         <div
@@ -78,7 +81,24 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             <span className="InstitutionCard-label">
                                 {t('explorer.parent_institution')}:{' '}
                             </span>
-                            {institution.parent.name}
+                            {institution.parent.id ? (
+                                <Button
+                                    buttonText={institution.parent.name}
+                                    variant="contained"
+                                    size="sm"
+                                    className="InstitutionCard-relatedButton"
+                                    onClick={() =>
+                                        navigate(
+                                            institutionDetailsPath(
+                                                institution.parent.id
+                                            )
+                                        )
+                                    }
+                                    endIcon={<FaExternalLinkAlt />}
+                                />
+                            ) : (
+                                institution.parent.name
+                            )}
                         </div>
                     )}
 
@@ -90,9 +110,24 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             <ul className="InstitutionCard-list">
                                 {institution.children.map((child) => (
                                     <li key={child.id}>
-                                        <HighlightText
-                                            text={child.name}
-                                            query={query}
+                                        <Button
+                                            buttonText={
+                                                <HighlightText
+                                                    text={child.name}
+                                                    query={query}
+                                                />
+                                            }
+                                            variant="contained"
+                                            size="sm"
+                                            className="InstitutionCard-relatedButton"
+                                            onClick={() =>
+                                                navigate(
+                                                    institutionDetailsPath(
+                                                        child.id
+                                                    )
+                                                )
+                                            }
+                                            endIcon={<FaExternalLinkAlt />}
                                         />
                                     </li>
                                 ))}
@@ -124,23 +159,43 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                         key={archive.id}
                                         className="InstitutionCard-archiveItem"
                                     >
-                                        <div>
-                                            <strong>
-                                                <HighlightText
-                                                    text={archive.name}
-                                                    query={query}
-                                                />
-                                            </strong>
-                                            {archive.interviews_count > 0 && (
-                                                <span className="InstitutionCard-archiveCount">
-                                                    {' '}
-                                                    ({
-                                                        archive.interviews_count
-                                                    }{' '}
-                                                    {t('explorer.interviews')})
+                                        <Button
+                                            buttonText={
+                                                <span>
+                                                    <strong>
+                                                        <HighlightText
+                                                            text={archive.name}
+                                                            query={query}
+                                                        />
+                                                    </strong>
+                                                    {archive.interviews_count >
+                                                        0 && (
+                                                        <span className="InstitutionCard-archiveCount">
+                                                            {' '}
+                                                            (
+                                                            {
+                                                                archive.interviews_count
+                                                            }{' '}
+                                                            {t(
+                                                                'explorer.interviews'
+                                                            )}
+                                                            )
+                                                        </span>
+                                                    )}
                                                 </span>
-                                            )}
-                                        </div>
+                                            }
+                                            variant="contained"
+                                            size="sm"
+                                            className="InstitutionCard-relatedButton"
+                                            onClick={() =>
+                                                navigate(
+                                                    archiveDetailsPath(
+                                                        archive.id
+                                                    )
+                                                )
+                                            }
+                                            endIcon={<FaExternalLinkAlt />}
+                                        />
                                     </li>
                                 ))}
                             </ul>
