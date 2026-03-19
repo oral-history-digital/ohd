@@ -24,8 +24,6 @@ export function Explorer() {
         collectionMax,
         instArchiveMin,
         instArchiveMax,
-        yearMin,
-        yearMax,
         institutionIds,
     } = useExplorerParams();
     const archivesTabLabel = t('explorer.tab.archives_and_collections');
@@ -86,8 +84,6 @@ export function Explorer() {
                                     interviewMax={interviewMax}
                                     collectionMin={collectionMin}
                                     collectionMax={collectionMax}
-                                    yearMin={yearMin}
-                                    yearMax={yearMax}
                                     institutionIds={institutionIds}
                                 />
                             )}

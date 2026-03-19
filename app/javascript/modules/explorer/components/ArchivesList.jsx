@@ -18,8 +18,6 @@ export function ArchivesList({
     interviewMax,
     collectionMin,
     collectionMax,
-    yearMin,
-    yearMax,
     institutionIds,
 }) {
     const { t } = useI18n();
@@ -43,8 +41,6 @@ export function ArchivesList({
         interviewMax,
         collectionMin ?? globalCollectionMin,
         collectionMax ?? globalCollectionMax,
-        yearMin,
-        yearMax,
         institutionIds
     );
     const archivesCountLabel = useExplorerListCountLabel({
@@ -112,7 +108,5 @@ ArchivesList.propTypes = {
     interviewMax: PropTypes.number,
     collectionMin: PropTypes.number,
     collectionMax: PropTypes.number,
-    yearMin: PropTypes.number,
-    yearMax: PropTypes.number,
     institutionIds: PropTypes.arrayOf(PropTypes.number),
 };

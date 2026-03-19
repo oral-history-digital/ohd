@@ -34,12 +34,6 @@ export const useExplorerParams = () => {
         instArchiveMax: searchParams.has('explorer_inst_archives_max')
             ? Number(searchParams.get('explorer_inst_archives_max'))
             : null,
-        yearMin: searchParams.has('explorer_year_min')
-            ? Number(searchParams.get('explorer_year_min'))
-            : null,
-        yearMax: searchParams.has('explorer_year_max')
-            ? Number(searchParams.get('explorer_year_max'))
-            : null,
         institutionIds: searchParams.has('explorer_institution')
             ? searchParams
                   .get('explorer_institution')

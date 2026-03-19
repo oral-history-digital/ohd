@@ -69,11 +69,6 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                             {archive.interviews?.total || 0}{' '}
                             {t('explorer.interviews')}
                         </span>
-                        {archive.publication_date && (
-                            <span className="ArchiveCard-metaItem">
-                                {archive.publication_date}
-                            </span>
-                        )}
                     </div>
                 </div>
             </div>

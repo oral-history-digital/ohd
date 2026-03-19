@@ -7,7 +7,6 @@ import {
     useArchivesAndCollectionsRange,
     useExplorerArchiveInstitutions,
     useExplorerInterviewRange,
-    useExplorerYearRange,
 } from '../hooks';
 import {
     FILTER_PARAMS,
@@ -16,7 +15,6 @@ import {
     applyInstitutionParam,
     applyInterviewRangeParams,
     applyQueryParam,
-    applyYearRangeParams,
     resetExplorerFilters,
 } from '../utils';
 import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
@@ -63,7 +61,6 @@ export function ExplorerSidebarSearch() {
         items: institutionsList ?? [],
         getCount: (i) => i.archives?.length ?? 0,
     });
-    const { globalYearMin, globalYearMax } = useExplorerYearRange({ archives });
 
     const query = searchParams.get('explorer_q') || '';
     const interviewMin =
@@ -82,10 +79,6 @@ export function ExplorerSidebarSearch() {
     const instArchiveMax =
         Number(searchParams.get('explorer_inst_archives_max')) ||
         globalInstArchiveMax;
-    const yearMin =
-        Number(searchParams.get('explorer_year_min')) || globalYearMin;
-    const yearMax =
-        Number(searchParams.get('explorer_year_max')) || globalYearMax;
     const institutionIds = searchParams.has('explorer_institution')
         ? searchParams
               .get('explorer_institution')
@@ -133,19 +126,6 @@ export function ExplorerSidebarSearch() {
                     max,
                     globalInstArchiveMin,
                     globalInstArchiveMax
-                ),
-            { replace: true }
-        );
-
-    const handleYearRangeChange = ([min, max]) =>
-        setSearchParams(
-            (prev) =>
-                applyYearRangeParams(
-                    prev,
-                    min,
-                    max,
-                    globalYearMin,
-                    globalYearMax
                 ),
             { replace: true }
         );
@@ -207,16 +187,6 @@ export function ExplorerSidebarSearch() {
                     globalMax={globalInstArchiveMax}
                     value={[instArchiveMin, instArchiveMax]}
                     onChange={handleInstArchiveRangeChange}
-                />
-            )}
-
-            {isArchivesTab && globalYearMin !== null && (
-                <ExplorerRangeFilter
-                    label={t('explorer.publication_year')}
-                    globalMin={globalYearMin}
-                    globalMax={globalYearMax}
-                    value={[yearMin, yearMax]}
-                    onChange={handleYearRangeChange}
                 />
             )}
 
