@@ -105,7 +105,15 @@ export default function SidebarTabs({
             onChange={handleTabClick}
         >
             <TabList>
-                <Tab key="1" className="SidebarTabs-tab">
+                <Tab
+                    key="1"
+                    className="SidebarTabs-tab"
+                    disabled={!showCatalogTab}
+                >
+                    {t('modules.sidebar.catalog')}
+                </Tab>
+
+                <Tab key="2" className="SidebarTabs-tab">
                     {t(
                         isCampscapesProject && !archiveId
                             ? ('user.notes_on_tos_agreement',
@@ -114,14 +122,6 @@ export default function SidebarTabs({
                               ? 'modules.sidebar.search'
                               : 'archive_search'
                     )}
-                </Tab>
-
-                <Tab
-                    key="2"
-                    className="SidebarTabs-tab"
-                    disabled={!showCatalogTab}
-                >
-                    {t('modules.sidebar.catalog')}
                 </Tab>
 
                 <Tab
@@ -202,15 +202,15 @@ export default function SidebarTabs({
             </TabList>
 
             <TabPanels>
-                <TabPanel key="1">
+                <TabPanel key="1" />
+
+                <TabPanel key="2">
                     {tabIndex === indexes.INDEX_SEARCH && (
                         <ArchiveSearchTabPanel
                             selectedArchiveIds={selectedArchiveIds}
                         />
                     )}
                 </TabPanel>
-
-                <TabPanel key="2" />
 
                 <TabPanel key="3">
                     {showInterviewTab &&
