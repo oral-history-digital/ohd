@@ -2,6 +2,10 @@ require 'test_helper'
 require 'securerandom'
 
 class CollectionsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    host! 'test.portal.oral-history.localhost:47001'
+  end
+
   test 'should get collections payload for a given project' do
     project = DataHelper.test_project(shortname: "ca#{SecureRandom.hex(4)}a")
     institution = Institution.first
@@ -18,15 +22,22 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
       workflow_state: 'public'
     )
 
-    get "#{root_url}/en/projects/#{project.id}/collections.json"
+    get collections_project_path(project, locale: 'en', format: :json)
     assert_response :success
 
     json = JSON.parse(response.body)
     assert json.key?('data')
+    assert json.key?('project')
 
     data = json['data']
     assert data.is_a?(Array)
     assert_equal 1, data.length
+
+    project_json = json['project']
+    assert project_json.key?('id')
+    assert project_json.key?('shortname')
+    assert project_json.key?('name')
+    assert project_json.key?('archive_domain')
 
     item = data.first
     assert_equal collection.id, item['id']
@@ -42,6 +53,7 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     assert item.key?('responsibles')
     assert item.key?('publication_date')
     assert item.key?('workflow_state')
+    assert item.key?('languages_interviews')
 
     assert item['interviews'].key?('public')
     assert item['interviews'].key?('restricted')
@@ -51,6 +63,7 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should hide unshared project collections from anonymous users' do
     reset!
+    host! 'test.portal.oral-history.localhost:47001'
 
     project = DataHelper.test_project(
       shortname: "cu#{SecureRandom.hex(4)}a",
@@ -59,7 +72,7 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
 
     Collection.create!(project: project, institution: Institution.first, name: 'Private collection')
 
-    get "#{root_url}/en/projects/#{project.id}/collections.json"
+    get collections_project_path(project, locale: 'en', format: :json)
     assert_response :not_found
   end
 
@@ -72,7 +85,7 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     collection = Collection.create!(project: project, institution: Institution.first, name: 'Private collection')
 
     login_as User.find_by!(email: 'alice@example.com')
-    get "#{root_url}/en/projects/#{project.id}/collections.json"
+    get collections_project_path(project, locale: 'en', format: :json)
     assert_response :success
 
     data = JSON.parse(response.body).fetch('data', [])

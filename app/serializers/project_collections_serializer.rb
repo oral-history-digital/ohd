@@ -11,7 +11,8 @@ class ProjectCollectionsSerializer < ActiveModel::Serializer
     :interviewers,
     :responsibles,
     :publication_date,
-    :workflow_state
+    :workflow_state,
+    :languages_interviews
 
   def institution
     return nil unless object.institution
@@ -46,6 +47,11 @@ class ProjectCollectionsSerializer < ActiveModel::Serializer
 
   def responsibles
     array_value(object.responsibles)
+  end
+
+  def languages_interviews
+    source = instance_options[:interview_languages_by_collection] || {}
+    source.fetch(object.id, [])
   end
 
   private

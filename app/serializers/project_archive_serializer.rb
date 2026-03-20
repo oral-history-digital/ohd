@@ -13,7 +13,8 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :collections,
     :logo,
     :workflow_state,
-    :available_locales,
+    :languages_ui,
+    :languages_interviews,
     :has_map,
     :is_catalog,
     :has_newsletter,
@@ -87,6 +88,15 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
 
   def longitude
     institution_with_coordinates&.longitude
+  end
+
+  def languages_ui
+    object.available_locales || []
+  end
+
+  def languages_interviews
+    source = instance_options[:interview_languages_by_project] || {}
+    source.fetch(object.id, [])
   end
 
   private

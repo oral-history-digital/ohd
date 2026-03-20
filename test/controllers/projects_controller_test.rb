@@ -7,7 +7,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get lightweight archives payload with pagination metadata' do
-    get archives_projects_path(locale: 'en', format: :json), params: { page: 1 }
+    get list_projects_path(locale: 'en', format: :json), params: { page: 1 }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -35,7 +35,8 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert archive.key?('collections')
     assert archive.key?('logo')
     assert archive.key?('workflow_state')
-    assert archive.key?('available_locales')
+    assert archive.key?('languages_ui')
+    assert archive.key?('languages_interviews')
     assert archive.key?('has_map')
     assert archive.key?('is_catalog')
     assert archive.key?('has_newsletter')
@@ -52,7 +53,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should support all option for archives payload' do
-    get archives_projects_path(locale: 'en', format: :json), params: { all: true }
+    get list_projects_path(locale: 'en', format: :json), params: { all: true }
     assert_response :success
 
     data = JSON.parse(response.body)
@@ -103,7 +104,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       workflow_state: 'unshared'
     )
 
-    get archives_projects_path(locale: 'en', format: :json), params: {
+    get list_projects_path(locale: 'en', format: :json), params: {
       workflow_state: 'unshared',
       all: true
     }
@@ -120,7 +121,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     )
 
     login_as User.find_by!(email: 'alice@example.com')
-    get archives_projects_path(locale: 'en', format: :json), params: {
+    get list_projects_path(locale: 'en', format: :json), params: {
       workflow_state: 'unshared',
       all: true
     }

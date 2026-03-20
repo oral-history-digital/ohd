@@ -94,8 +94,9 @@ class CollectionsController < ApplicationController
       policy_scope(Project).find_by(shortname: params[:id])
     raise ActiveRecord::RecordNotFound if project.blank?
 
-    collections_scope = policy_scope(Collection)
-      .where(project_id: project.id)
+    # The project has already been resolved through policy_scope(Project), so
+    # limit collections directly to that authorized project.
+    collections_scope = Collection.where(project_id: project.id)
 
     collections_scope = collections_scope.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
 
@@ -119,6 +120,8 @@ class CollectionsController < ApplicationController
       .group(:collection_id, :workflow_state)
       .count
 
+    interview_languages_by_collection = interview_languages_by_collection(collections.map(&:id))
+
     cache_key = [
       'project-collections',
       project.id,
@@ -129,12 +132,14 @@ class CollectionsController < ApplicationController
       Project.maximum(:updated_at),
       Collection.count,
       Collection.maximum(:updated_at),
-      Interview.maximum(:updated_at)
+      Interview.maximum(:updated_at),
+      InterviewLanguage.maximum(:updated_at),
+      Language.maximum(:updated_at)
     ].join('-')
 
     json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
       {
-        data: serialized_project_collections(collections, interview_counts),
+        data: serialized_project_collections(collections, interview_counts, interview_languages_by_collection),
         project: serialized_project_summary(project),
         page: page,
         result_pages_count: collections.respond_to?(:total_pages) ? collections.total_pages : nil
@@ -168,11 +173,12 @@ class CollectionsController < ApplicationController
     "user-#{current_user.id}"
   end
 
-  def serialized_project_collections(collections, interview_counts)
+  def serialized_project_collections(collections, interview_counts, interview_languages_by_collection)
     ActiveModelSerializers::SerializableResource.new(
       collections,
       each_serializer: ProjectCollectionsSerializer,
-      interview_counts: interview_counts
+      interview_counts: interview_counts,
+      interview_languages_by_collection: interview_languages_by_collection
     ).as_json
   end
 
@@ -183,6 +189,23 @@ class CollectionsController < ApplicationController
       name: project.name,
       archive_domain: project.archive_domain.presence
     }
+  end
+
+  def interview_languages_by_collection(collection_ids)
+    return {} if collection_ids.blank?
+
+    rows = InterviewLanguage
+      .joins(:interview, :language)
+      .where(interviews: { collection_id: collection_ids, workflow_state: %w(public restricted unshared) })
+      .distinct
+      .pluck('interviews.collection_id', 'languages.code')
+
+    rows.each_with_object({}) do |(collection_id, language_code), result|
+      next if language_code.blank?
+
+      result[collection_id] ||= []
+      result[collection_id] << language_code
+    end.transform_values { |codes| codes.uniq.sort }
   end
 
   def respond collection

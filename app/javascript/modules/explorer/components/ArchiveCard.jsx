@@ -35,6 +35,12 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const numCollections = formatNum(countCollections);
     const numAccessibleInterviews = formatNum(countAccessibleInterviews);
 
+    const interviewLanguages = archive.languages_interviews || [];
+    const interviewLanguagesStr = interviewLanguages
+        .map((l) => t(l))
+        .sort((a, b) => a.localeCompare(b, locale))
+        .join(', ');
+
     return (
         <div
             ref={cardRef}
@@ -120,17 +126,15 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         </>
                     )}
 
-                    {/* TODO: Replace by interview languages (needs API change) */}
-                    <div className="ArchiveCard-details">
-                        {archive.available_locales?.length > 0 && (
+                    {interviewLanguages.length > 0 && (
+                        <div className="ArchiveCard-details">
                             <span className="ArchiveCard-detailItem">
-                                {t('explorer.languages')}:{' '}
-                                {archive.available_locales
-                                    .map((l) => l.toUpperCase())
-                                    .join(', ')}
+                                {t('explorer.interview_languages')}:{' '}
+                                {interviewLanguagesStr}
                             </span>
-                        )}
-                    </div>
+                        </div>
+                    )}
+
                     <div className="ArchiveCard-pageButton">
                         <Button
                             buttonText={t('explorer.view_archive_details')}

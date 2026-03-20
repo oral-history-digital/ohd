@@ -153,14 +153,14 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Архіви',
       ar: 'الأرشيفات',
     },
-    'explorer.languages': {
-      de: 'Sprachen',
-      en: 'Languages',
-      el: 'Γλώσσες',
-      es: 'Idiomas',
-      ru: 'Языки',
-      uk: 'Мови',
-      ar: 'اللغات',
+    'explorer.interview_languages': {
+      de: 'Interview-Sprachen',
+      en: 'Interview Languages',
+      el: 'Γλώσσες Συνεντεύξεων',
+      es: 'Idiomas de Entrevistas',
+      ru: 'Языки Интервью',
+      uk: 'Мови Інтерв\'ю',
+      ar: 'لغات المقابلات',
     },
     'explorer.published': {
       de: 'Veröffentlicht',

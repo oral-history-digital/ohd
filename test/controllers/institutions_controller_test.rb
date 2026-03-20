@@ -31,9 +31,13 @@ class InstitutionsControllerTest < ActionDispatch::IntegrationTest
     assert institution.key?('collections')
     assert institution.key?('interviews')
 
-    assert institution['collections'].key?('count')
+    assert institution['collections'].key?('public')
+    assert institution['collections'].key?('restricted')
+    assert institution['collections'].key?('unshared')
+    assert institution['collections'].key?('total')
     assert institution['interviews'].key?('public')
     assert institution['interviews'].key?('restricted')
+    assert institution['interviews'].key?('unshared')
     assert institution['interviews'].key?('total')
   end
 

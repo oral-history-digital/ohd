@@ -84,6 +84,8 @@ class ProjectsController < ApplicationController
       .group(:project_id, :workflow_state)
       .count
 
+    interview_languages_by_project = interview_languages_by_project(project_ids)
+
     cache_key = [
       'projects-list',
       extra_params,
@@ -93,12 +95,13 @@ class ProjectsController < ApplicationController
       Project.count,
       Project.maximum(:updated_at),
       Interview.maximum(:updated_at),
+      Language.maximum(:updated_at),
       Collection.maximum(:updated_at)
     ].join('-')
 
     json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
       {
-        data: serialized_projects(projects, interview_counts, collection_counts),
+        data: serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project),
         page: page,
         result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
       }
@@ -240,13 +243,31 @@ class ProjectsController < ApplicationController
       @normalized_workflow_states = filtered_states.presence
     end
 
-    def serialized_projects(projects, interview_counts, collection_counts)
+    def serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project)
       ActiveModelSerializers::SerializableResource.new(
         projects,
         each_serializer: ProjectArchiveSerializer,
         interview_counts: interview_counts,
-        collection_counts: collection_counts
+        collection_counts: collection_counts,
+        interview_languages_by_project: interview_languages_by_project
       ).as_json
+    end
+
+    def interview_languages_by_project(project_ids)
+      return {} if project_ids.blank?
+
+      rows = InterviewLanguage
+        .joins(:interview, :language)
+        .where(interviews: { project_id: project_ids, workflow_state: %w(public restricted unshared) })
+        .distinct
+        .pluck('interviews.project_id', 'languages.code')
+
+      rows.each_with_object({}) do |(project_id, language_code), result|
+        next if language_code.blank?
+
+        result[project_id] ||= []
+        result[project_id] << language_code
+      end.transform_values { |codes| codes.uniq.sort }
     end
 
     # if a project is updated or destroyed from ohd.de

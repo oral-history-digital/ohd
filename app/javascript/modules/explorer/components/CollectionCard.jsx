@@ -29,6 +29,12 @@ export function CollectionCard({ collection, archive, query }) {
     const numInterviews = formatNum(countInterviews);
     const numAccessibleInterviews = formatNum(countAccessibleInterviews);
 
+    const interviewLanguages = collection.languages_interviews || [];
+    const interviewLanguagesStr = interviewLanguages
+        .map((l) => t(l))
+        .sort((a, b) => a.localeCompare(b, locale))
+        .join(', ');
+
     return (
         <div
             className={classNames('CollectionCard', {
@@ -100,6 +106,15 @@ export function CollectionCard({ collection, archive, query }) {
                                 </span>
                             </div>
                         </>
+                    )}
+
+                    {interviewLanguages.length > 0 && (
+                        <div className="ArchiveCard-details">
+                            <span className="ArchiveCard-detailItem">
+                                {t('explorer.interview_languages')}:{' '}
+                                {interviewLanguagesStr}
+                            </span>
+                        </div>
                     )}
 
                     <div className="CollectionCard-pageButton">
