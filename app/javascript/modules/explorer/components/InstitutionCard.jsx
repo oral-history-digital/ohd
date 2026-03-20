@@ -120,20 +120,6 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             </ul>
                         </div>
                     )}
-
-                    <div className="InstitutionCard-pageButton">
-                        <Button
-                            buttonText={t('explorer.view_institution_details')}
-                            variant="outlined"
-                            onClick={() =>
-                                navigate(
-                                    `/${locale}/catalog/institutions/${institution.id}`
-                                )
-                            }
-                            endIcon={<FaExternalLinkAlt />}
-                        />
-                    </div>
-
                     {hasArchives && (
                         <div className="InstitutionCard-archives">
                             <h4 className="InstitutionCard-sectionTitle">
@@ -149,12 +135,10 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                             to={archiveDetailsPath(archive.id)}
                                             className="InstitutionCard-listLink"
                                         >
-                                            <strong>
-                                                <HighlightText
-                                                    text={archive.name}
-                                                    query={query}
-                                                />
-                                            </strong>
+                                            <HighlightText
+                                                text={archive.name}
+                                                query={query}
+                                            />
                                             {archive.interviews_count > 0 && (
                                                 <span className="InstitutionCard-archiveCount">
                                                     {' '}
@@ -170,6 +154,18 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             </ul>
                         </div>
                     )}
+                    <div className="InstitutionCard-pageButton">
+                        <Button
+                            buttonText={t('explorer.view_institution_details')}
+                            variant="outlined"
+                            onClick={() =>
+                                navigate(
+                                    `/${locale}/catalog/institutions/${institution.id}`
+                                )
+                            }
+                            endIcon={<FaExternalLinkAlt />}
+                        />
+                    </div>
                 </div>
             )}
         </div>

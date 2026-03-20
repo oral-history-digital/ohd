@@ -6,7 +6,7 @@ import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
-import { highlightQueryInHtml } from '../utils';
+import { getArchiveUrl, highlightQueryInHtml } from '../utils';
 import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 
@@ -20,9 +20,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
 
-    const archiveUrl = archive.archive_domain
-        ? archive.archive_domain
-        : `/${archive.shortname}/${locale}`;
+    const archiveUrl = getArchiveUrl(archive, locale);
 
     return (
         <div

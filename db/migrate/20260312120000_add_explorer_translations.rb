@@ -288,6 +288,15 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Колекції (%{count})',
       ar: 'المجموعات (%{count})',
     },
+    'explorer.no_collection_notes': {
+      de: 'Aktuell ist keine Beschreibung für diese Sammlung verfügbar.',
+      en: 'No description available for this collection at the moment.',
+      el: 'Δεν υπάρχει διαθέσιμη περιγραφή για αυτή τη συλλογή αυτή τη στιγμή.',
+      es: 'No hay descripción disponible para esta colección en este momento.',
+      ru: 'Описание для этой коллекции в данный момент недоступно.',
+      uk: 'Опис для цієї колекції наразі недоступний.',
+      ar: 'لا يوجد وصف متاح لهذه المجموعة في الوقت الحالي.',
+    },
     'explorer.reset_filter': {
       de: '%{label}-Filter zurücksetzen',
       en: 'Reset %{label} filter',

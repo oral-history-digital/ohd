@@ -43,6 +43,7 @@ export function CollectionList({ archive, query = '' }) {
                 <CollectionCard
                     key={collection.id}
                     collection={collection}
+                    archive={archive}
                     query={query}
                 />
             ))}

@@ -3,19 +3,22 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
+import { isEmptyHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useMatch, useNavigate } from 'react-router-dom';
 
-import { highlightQueryInHtml } from '../utils';
+import { getArchiveUrl, highlightQueryInHtml } from '../utils';
 import { HighlightText } from './HighlightText';
 
-export function CollectionCard({ collection, query }) {
+export function CollectionCard({ collection, archive, query }) {
     const { t } = useI18n();
     const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
+
+    const archiveUrl = getArchiveUrl(archive, locale);
 
     // TODO: We exclude unshared interviews here, but maybe we should show them in the
     // collection page with a note that they are unshared?
@@ -59,7 +62,7 @@ export function CollectionCard({ collection, query }) {
 
             {expanded && (
                 <div className="CollectionCard-body">
-                    {collection.notes && (
+                    {!isEmptyHtml(collection.notes) ? (
                         <div
                             className="CollectionCard-notes"
                             dangerouslySetInnerHTML={{
@@ -69,15 +72,29 @@ export function CollectionCard({ collection, query }) {
                                 ),
                             }}
                         />
+                    ) : (
+                        <p className="CollectionCard-notes CollectionCard-notes--empty">
+                            {t('explorer.no_collection_notes')}
+                        </p>
                     )}
 
                     <div className="CollectionCard-pageButton">
+                        <Button
+                            buttonText={t('explorer.view_collection_details')}
+                            variant="outlined"
+                            onClick={() =>
+                                navigate(
+                                    `/${locale}/catalog/collections/${collection.id}`
+                                )
+                            }
+                            size="sm"
+                        />
                         <Button
                             buttonText={t('explorer.view_collection_page')}
                             variant="contained"
                             onClick={() =>
                                 navigate(
-                                    `/${locale}/catalog/collections/${collection.id}`
+                                    `${archiveUrl}/searches/archive?collection_id[]=${collection.id}`
                                 )
                             }
                             endIcon={<FaExternalLinkAlt />}
@@ -94,5 +111,6 @@ export default CollectionCard;
 
 CollectionCard.propTypes = {
     collection: PropTypes.object.isRequired,
+    archive: PropTypes.object.isRequired,
     query: PropTypes.string,
 };
