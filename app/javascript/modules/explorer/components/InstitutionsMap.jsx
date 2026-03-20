@@ -55,12 +55,14 @@ function InstitutionMarker({ marker }) {
                 placeName={marker.name}
                 numInterviewRefs={0}
                 numSegmentRefs={0}
+                showNumRefs={false}
             />
             <MapPopup
                 title={marker.name}
                 registryEntryId={marker.id}
                 popupComponent={InstitutionsMapPopup}
                 marker={marker}
+                popupClassName="MapPopupContainer--wide"
             />
         </CircleMarker>
     );

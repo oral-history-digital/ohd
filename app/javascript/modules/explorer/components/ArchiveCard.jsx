@@ -3,7 +3,7 @@ import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
 import { highlightQueryInHtml } from '../utils';
@@ -12,10 +12,8 @@ import { HighlightText } from './HighlightText';
 
 export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const cardRef = useScrollToExpandedCard(expanded);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const navigate = useNavigate();
-    const match = useMatch('/:locale/*');
-    const locale = match?.params?.locale || 'de';
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
         .join(', ');

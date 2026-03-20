@@ -36,6 +36,15 @@ class AddExplorerListCountTranslations < ActiveRecord::Migration[8.0]
       uk: '%{count} установ (із %{total})',
       ar: '%{count} مؤسسات (من أصل %{total})',
     },
+    'explorer.institutions_map.and_more': {
+      de: '... und %{count} weitere',
+      en: '... and %{count} more',
+      el: '... και %{count} ακόμα',
+      es: '... y %{count} más',
+      ru: '... и еще %{count}',
+      uk: '... та ще %{count}',
+      ar: 'و %{count} أخرى',
+    },
   }.freeze
 
   def up

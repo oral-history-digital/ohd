@@ -11,12 +11,21 @@
   width: $base-unit * 10;
 }
 
+.MapPopup--wide {
+  width: $base-unit * 15;
+}
+
+.MapPopupContainer--wide .leaflet-popup-content {
+  width: $base-unit * 15 !important;
+}
+
 .MapPopup-heading {
   color: black;
   font-size: 1rem;
   font-weight: bold;
   line-height: $base-unit;
   margin: 0 0 ($base-unit * 0.5);
+  overflow-wrap: anywhere;
 }
 
 .MapPopup-subHeading {
@@ -24,6 +33,7 @@
   font-size: 1rem;
   line-height: $base-unit;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .MapPopup-subSubHeading {
@@ -43,6 +53,11 @@
 .MapPopup-text {
   font-size: 0.875rem;
   line-height: $base-unit;
+  overflow-wrap: anywhere;
+}
+
+.MapPopup a {
+  overflow-wrap: anywhere;
 }
 
 .MapPopup-link {

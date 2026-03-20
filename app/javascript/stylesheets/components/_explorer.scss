@@ -494,6 +494,17 @@ h4.CollectionList-collectionsTitle {
     background: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
+
+  // Reset list to show li bullets and spacing
+  .MapPopup-list {
+    list-style-type: disc;
+    // margin-left: 1.25rem;
+    padding-left: 0.75rem;
+
+    li {
+      line-height: $line-height-small;
+    }
+  }
 }
 
 .InstitutionsMap-container {

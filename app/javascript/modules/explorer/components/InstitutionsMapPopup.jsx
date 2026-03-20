@@ -1,18 +1,25 @@
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export function InstitutionsMapPopup({ title, marker }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
+
     const children = marker.children || [];
-    const archives = (marker.archives || []).slice(0, 1);
+    const archives = (marker.archives || []).slice(0, 2); // Show up to 2 archives
+    const institutionUrl = `${pathBase}/catalog/institutions/${marker.id}`;
 
     return (
-        <div className="MapPopup">
-            <h3 className="MapPopup-heading">{title}</h3>
+        <div className="MapPopup MapPopup--wide">
+            <Link to={institutionUrl}>
+                <h3 className="MapPopup-heading">{title}</h3>
+            </Link>
 
             {children.length > 0 && (
                 <>
-                    <h4 className="MapPopup-subSubHeading">
+                    <h4 className="MapPopup-subHeading">
                         {t('explorer.sub_institutions')}:
                     </h4>
                     <ul className="MapPopup-list">
@@ -27,15 +34,19 @@ export function InstitutionsMapPopup({ title, marker }) {
 
             {archives.length > 0 && (
                 <>
-                    <h4 className="MapPopup-subSubHeading">
-                        {t('explorer.archives')}:
+                    <h4 className="MapPopup-subHeading">
+                        {t('explorer.archives')} ({marker.archives.length}):
                     </h4>
                     <ul className="MapPopup-list">
                         {archives.map((archive) => (
                             <li key={archive.id} className="MapPopup-text">
-                                {archive.name}
+                                <Link
+                                    to={`${pathBase}/catalog/archives/${archive.id}`}
+                                >
+                                    {archive.name}
+                                </Link>
                                 {archive.interviews_count > 0 && (
-                                    <span>
+                                    <span className="MapPopup-interviewCount">
                                         {' '}
                                         ({archive.interviews_count}{' '}
                                         {t('explorer.interviews')})
@@ -43,16 +54,25 @@ export function InstitutionsMapPopup({ title, marker }) {
                                 )}
                             </li>
                         ))}
+                        {marker.archives.length > 2 && (
+                            <li className="MapPopup-text">
+                                <Link to={institutionUrl}>
+                                    {t('explorer.institutions_map.and_more', {
+                                        count: marker.archives.length - 2,
+                                    })}
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </>
             )}
         </div>
     );
 }
-
 InstitutionsMapPopup.propTypes = {
     title: PropTypes.string.isRequired,
     marker: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         children: PropTypes.arrayOf(
             PropTypes.shape({
