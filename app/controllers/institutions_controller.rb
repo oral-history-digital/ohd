@@ -77,13 +77,22 @@ class InstitutionsController < ApplicationController
       .group('institution_projects.institution_id', :workflow_state)
       .count
 
-    collection_counts = Collection
-      .where(project_id: visible_project_ids, institution_id: institution_ids)
-      .group(:institution_id)
+    project_interview_counts = Interview
+      .where(project_id: visible_project_ids)
+      .group(:project_id, :workflow_state)
       .count
+
+    collection_counts = Collection
+      .joins(project: :institution_projects)
+      .where(project_id: visible_project_ids)
+      .where(institution_projects: { institution_id: institution_ids })
+      .group('institution_projects.institution_id', :workflow_state)
+      .distinct
+      .count(:id)
 
     cache_key = [
       'institutions-list',
+      'v6',
       extra_params,
       projects_cache_scope_key,
       I18n.locale,
@@ -101,6 +110,7 @@ class InstitutionsController < ApplicationController
           each_serializer: InstitutionListSerializer,
           projects_by_institution: projects_by_institution,
           interview_counts: interview_counts,
+          project_interview_counts: project_interview_counts,
           collection_counts: collection_counts
         ).as_json,
         page: page,

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
+import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +24,16 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     // TODO: Sanitize archiveUrl
     const archiveUrl = getArchiveUrl(archive, locale);
     const isExternalArchiveLink = Boolean(archive.archive_domain);
+
+    const countCollections = archive.collections?.total || 0;
+    const countInterviews = archive.interviews?.total || 0;
+    const countAccessibleInterviews =
+        archive.interviews?.public + archive.interviews?.restricted || 0;
+
+    const formatNum = (num) => formatNumber(num, 0, locale);
+    const numInterviews = formatNum(countInterviews);
+    const numCollections = formatNum(countCollections);
+    const numAccessibleInterviews = formatNum(countAccessibleInterviews);
 
     return (
         <div
@@ -59,14 +70,16 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                                 />
                             </span>
                         )}
-                        <span className="ArchiveCard-metaItem">
-                            {archive.collections?.total || 0}{' '}
-                            {t('explorer.collections')}
-                        </span>
-                        <span className="ArchiveCard-metaItem">
-                            {archive.interviews?.total || 0}{' '}
-                            {t('explorer.interviews')}
-                        </span>
+                        {countCollections > 0 && (
+                            <span className="ArchiveCard-metaItem">
+                                {numCollections} {t('explorer.collections')}
+                            </span>
+                        )}
+                        {countInterviews > 0 && (
+                            <span className="ArchiveCard-metaItem">
+                                {numInterviews} {t('explorer.interviews')}
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>
@@ -84,6 +97,27 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                                 ),
                             }}
                         />
+                    )}
+
+                    {countInterviews > 0 && (
+                        <>
+                            <div className="ArchiveCard-interviewCounts ArchiveCard-interviewCounts--total">
+                                <span className="ArchiveCard-label">
+                                    {t('explorer.interviews_total')}:{' '}
+                                </span>
+                                <span className="ArchiveCard-interviewCount">
+                                    {numInterviews}
+                                </span>
+                            </div>
+                            <div className="ArchiveCard-interviewCounts ArchiveCard-interviewCounts--accessible">
+                                <span className="ArchiveCard-label">
+                                    {t('explorer.interviews_accessible')}:{' '}
+                                </span>
+                                <span className="ArchiveCard-interviewCount">
+                                    {numAccessibleInterviews}
+                                </span>
+                            </div>
+                        </>
                     )}
 
                     {/* TODO: Replace by interview languages (needs API change) */}

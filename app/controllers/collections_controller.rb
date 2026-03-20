@@ -94,10 +94,25 @@ class CollectionsController < ApplicationController
       policy_scope(Project).find_by(shortname: params[:id])
     raise ActiveRecord::RecordNotFound if project.blank?
 
-    collections = Collection
+    collections_scope = policy_scope(Collection)
       .where(project_id: project.id)
-      .order(created_at: :desc)
-      .includes(:translations, institution: :translations)
+
+    collections_scope = collections_scope.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
+
+    if params.keys.include?("all")
+      collections = collections_scope
+        .order(created_at: :desc)
+        .includes(:translations, institution: :translations, project: :translations)
+      page = nil
+      extra_params = 'all'
+    else
+      page = params[:page] || 1
+      collections = collections_scope
+        .order(created_at: :desc)
+        .includes(:translations, institution: :translations, project: :translations)
+        .paginate(page: page)
+      extra_params = "page_#{page}"
+    end
 
     interview_counts = Interview
       .where(collection_id: collections.map(&:id))
@@ -107,8 +122,11 @@ class CollectionsController < ApplicationController
     cache_key = [
       'project-collections',
       project.id,
+      extra_params,
       projects_cache_scope_key,
+      normalized_workflow_states&.join(','),
       I18n.locale,
+      Project.maximum(:updated_at),
       Collection.count,
       Collection.maximum(:updated_at),
       Interview.maximum(:updated_at)
@@ -116,7 +134,10 @@ class CollectionsController < ApplicationController
 
     json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
       {
-        data: serialized_project_collections(collections, interview_counts)
+        data: serialized_project_collections(collections, interview_counts),
+        project: serialized_project_summary(project),
+        page: page,
+        result_pages_count: collections.respond_to?(:total_pages) ? collections.total_pages : nil
       }
     end
 
@@ -155,6 +176,15 @@ class CollectionsController < ApplicationController
     ).as_json
   end
 
+  def serialized_project_summary(project)
+    {
+      id: project.id,
+      shortname: project.shortname,
+      name: project.name,
+      archive_domain: project.archive_domain.presence
+    }
+  end
+
   def respond collection
     respond_to do |format|
       format.json do
@@ -184,5 +214,18 @@ class CollectionsController < ApplicationController
     params.permit(
       :name
     ).to_h.select{|k,v| !v.blank? }
+  end
+
+  def normalized_workflow_states
+    return @normalized_workflow_states if defined?(@normalized_workflow_states)
+
+    value = params[:workflow_state]
+    return @normalized_workflow_states = nil if value.blank? || value == 'all'
+
+    states = value.to_s.split(',').map(&:strip).reject(&:blank?)
+    allowed_states = %w(public restricted unshared)
+    filtered_states = states & allowed_states
+
+    @normalized_workflow_states = filtered_states.presence
   end
 end

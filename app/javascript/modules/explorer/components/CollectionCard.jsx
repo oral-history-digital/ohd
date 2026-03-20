@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
 import { isEmptyHtml } from 'modules/utils';
+import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useMatch, useNavigate } from 'react-router-dom';
@@ -20,11 +21,13 @@ export function CollectionCard({ collection, archive, query }) {
 
     const archiveUrl = getArchiveUrl(archive, locale);
 
-    // TODO: We exclude unshared interviews here, but maybe we should show them in the
-    // collection page with a note that they are unshared?
-    // Should be handled consistently across the app
-    const numInterviews =
-        collection.interviews?.total - collection.interviews?.unshared || 0;
+    const countInterviews = collection.interviews?.total || 0;
+    const countAccessibleInterviews =
+        collection.interviews?.public + collection.interviews?.restricted || 0;
+
+    const formatNum = (num) => formatNumber(num, 0, locale);
+    const numInterviews = formatNum(countInterviews);
+    const numAccessibleInterviews = formatNum(countAccessibleInterviews);
 
     return (
         <div
@@ -76,6 +79,27 @@ export function CollectionCard({ collection, archive, query }) {
                         <p className="CollectionCard-notes CollectionCard-notes--empty">
                             {t('explorer.no_collection_notes')}
                         </p>
+                    )}
+
+                    {countInterviews > 0 && (
+                        <>
+                            <div className="CollectionCard-interviewCounts CollectionCard-interviewCounts--total">
+                                <span className="CollectionCard-label">
+                                    {t('explorer.interviews_total')}:{' '}
+                                </span>
+                                <span className="CollectionCard-interviewCount">
+                                    {numInterviews}
+                                </span>
+                            </div>
+                            <div className="CollectionCard-interviewCounts CollectionCard-interviewCounts--accessible">
+                                <span className="CollectionCard-label">
+                                    {t('explorer.interviews_accessible')}:{' '}
+                                </span>
+                                <span className="CollectionCard-interviewCount">
+                                    {numAccessibleInterviews}
+                                </span>
+                            </div>
+                        </>
                     )}
 
                     <div className="CollectionCard-pageButton">

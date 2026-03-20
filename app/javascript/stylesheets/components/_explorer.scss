@@ -191,14 +191,6 @@
   font-size: $base-unit * 0.5;
 }
 
-.ArchiveCard-logo {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
 .ArchiveCard-headerContent {
   flex: 1;
   min-width: 0;
@@ -225,6 +217,9 @@
 }
 
 .ArchiveCard-body {
+  display: flex;
+  flex-direction: column;
+  gap: $base-unit * 0.5;
   padding: $base-unit;
   border-top: 1px solid $gray-lightest;
 }
@@ -238,6 +233,12 @@
   :first-child {
     margin-top: 0;
   }
+}
+
+.ArchiveCard-label,
+.InstitutionCard-label,
+.CollectionCard-label {
+  font-weight: bold;
 }
 
 .InstitutionCard-description {

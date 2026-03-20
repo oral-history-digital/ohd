@@ -45,7 +45,7 @@ describe('sortArchives', () => {
         ]);
     });
 
-    test('sorts by interviews descending by default', () => {
+    test('sorts by name ascending by default', () => {
         const archives = [
             { name: 'A', interviews: { total: 1 } },
             { name: 'B', interviews: { total: 5 } },
@@ -54,7 +54,7 @@ describe('sortArchives', () => {
 
         const actual = sortArchives(archives).map((archive) => archive.name);
 
-        expect(actual).toEqual(['B', 'A', 'C']);
+        expect(actual).toEqual(['A', 'B', 'C']);
     });
 
     test('sorts by collections ascending and treats missing totals as zero', () => {

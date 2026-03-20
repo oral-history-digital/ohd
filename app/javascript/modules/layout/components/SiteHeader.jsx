@@ -15,7 +15,7 @@ export function SiteHeader() {
     const isHome = currentPage.pageType === 'site_startpage';
     const showProjectLogo =
         !isHome && breadcrumbMode === BREADCRUMB_MODES.ARCHIVE_LOGO && project;
-    const showBreadcrumbs = !isHome;
+    const showBreadcrumbs = !isHome && !showProjectLogo;
 
     return (
         <header

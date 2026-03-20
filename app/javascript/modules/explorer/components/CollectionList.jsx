@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useGetArchiveCollections } from 'modules/data';
+import { useGetProjectCollections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
@@ -13,7 +13,10 @@ const INITIAL_VISIBLE_COLLECTIONS = 10;
 
 export function CollectionList({ archive, query = '' }) {
     const { t } = useI18n();
-    const { collections } = useGetArchiveCollections(archive.id);
+    const { collections } = useGetProjectCollections(archive.id, {
+        all: true,
+        workflowState: 'public',
+    });
     const [showAllCollections, setShowAllCollections] = useState(false);
     const { sort, setSort } = useCollectionsSort();
     const filteredCollections = useFilteredCollections({ collections, query });
