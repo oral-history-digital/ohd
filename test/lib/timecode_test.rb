@@ -18,6 +18,18 @@ class TimecodeTest < ActiveSupport::TestCase
     time = 7200 + 110
     assert_equal time, Timecode.parse_timecode(timecode)
   end
+
+  test 'should parse colon-separated ms format HH:MM:SS:mmm correctly' do
+    assert_in_delta 90.5, Timecode.parse_timecode('00:01:30:500'), 0.001
+  end
+
+  test 'should parse colon-separated frames format HH:MM:SS:ff correctly' do
+    assert_in_delta 1 + 12.0 / 25, Timecode.parse_timecode('00:00:01:12'), 0.001
+  end
+
+  test 'should parse colon-separated frames with tape prefix correctly' do
+    assert_in_delta 1 + 12.0 / 25, Timecode.parse_timecode('[1] 00:00:01:12'), 0.001
+  end
 end
 
 class TimecodeDiffTest < ActiveSupport::TestCase
