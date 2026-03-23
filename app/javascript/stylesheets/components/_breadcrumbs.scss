@@ -38,6 +38,10 @@
   flex: 1 1 auto;
 }
 
+.Breadcrumbs-item--projectRoot {
+  font-weight: bold;
+}
+
 .Breadcrumbs-divider {
   flex-shrink: 0;
   margin: 0 ($base-unit * 0.5) 0 ($base-unit * 0.75);

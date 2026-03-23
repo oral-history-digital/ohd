@@ -2,8 +2,6 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
 import { getProjectName } from '../utils';
-import { BREADCRUMB_MODES } from './useBreadcrumbMode';
-import { useBreadcrumbMode } from './useBreadcrumbMode';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
 
 /**
@@ -12,21 +10,19 @@ import { useBreadcrumbModel } from './useBreadcrumbModel';
 export function useBreadcrumbs() {
     const { locale } = useI18n();
     const { project } = useProject();
-    const breadcrumbMode = useBreadcrumbMode();
     const { currentPage, items } = useBreadcrumbModel();
 
     if (!project) return [];
 
     if (currentPage.pageType === 'project_startpage') {
-        if (
-            project.is_ohd ||
-            breadcrumbMode === BREADCRUMB_MODES.ARCHIVE_LOGO
-        ) {
+        if (project.is_ohd) {
             return [];
         }
 
         const projectName = getProjectName(project, locale);
-        return projectName ? [{ label: projectName }] : [];
+        return projectName
+            ? [{ key: 'archive', label: projectName, isProjectRoot: true }]
+            : [];
     }
 
     if (!Array.isArray(items) || items.length === 0) {
@@ -37,8 +33,10 @@ export function useBreadcrumbs() {
     const crumbs = items
         .filter((item) => item.key !== 'home')
         .map((item) => ({
+            key: item.key,
             label: item.label,
             to: item.to || undefined,
+            isProjectRoot: item.key === 'archive',
         }));
 
     return crumbs;

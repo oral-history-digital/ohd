@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { useTrackPageView } from 'modules/analytics';
-import { BREADCRUMB_MODES, useBreadcrumbMode } from 'modules/breadcrumbs';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -18,11 +17,10 @@ import getProjectLogoSrc from './utils/getProjectLogoSrc';
 export default function Home({ institutions }) {
     const { project, projectId } = useProject();
     const { locale } = useI18n();
-    const breadcrumbMode = useBreadcrumbMode();
 
     useTrackPageView();
 
-    const showProjectLogo = breadcrumbMode !== BREADCRUMB_MODES.ARCHIVE_LOGO;
+    const showProjectLogo = project && project?.display_ohd_link === true;
 
     if (!project.translations_attributes) {
         return null;

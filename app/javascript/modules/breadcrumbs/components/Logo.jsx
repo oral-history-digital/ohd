@@ -1,13 +1,18 @@
 /* global railsMode */
+import classNames from 'classnames';
 import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export function Logo({ logoSrc, title }) {
+export function Logo({ logoSrc, title, variant = 'default' }) {
     const { locale } = useI18n();
 
-    const src = logoSrc || '/logo-ohd-no-text.svg';
+    const src =
+        logoSrc ||
+        (variant === 'outline'
+            ? '/logo-ohd-no-text-outline.svg'
+            : '/logo-ohd-no-text.svg');
     const displayTitle = title || 'Oral-History.Digital (oh.d)';
     const altText = `${displayTitle} logo`;
     const ohdDomain = OHD_DOMAINS[railsMode];
@@ -23,7 +28,13 @@ export function Logo({ logoSrc, title }) {
                 title={displayTitle}
                 className="Breadcrumbs-logoLink"
             >
-                <img className={'Breadcrumbs-logo'} src={src} alt={altText} />
+                <img
+                    className={classNames('Breadcrumbs-logo', {
+                        'Breadcrumbs-logo--outline': variant === 'outline',
+                    })}
+                    src={src}
+                    alt={altText}
+                />
             </Link>
         );
     }
@@ -34,7 +45,13 @@ export function Logo({ logoSrc, title }) {
             title={displayTitle}
             className="Breadcrumbs-logoLink"
         >
-            <img className={'Breadcrumbs-logo'} src={src} alt={altText} />
+            <img
+                className={classNames('Breadcrumbs-logo', {
+                    'Breadcrumbs-logo--outline': variant === 'outline',
+                })}
+                src={src}
+                alt={altText}
+            />
         </a>
     );
 }
@@ -42,6 +59,7 @@ export function Logo({ logoSrc, title }) {
 Logo.propTypes = {
     logoSrc: PropTypes.string,
     title: PropTypes.string,
+    variant: PropTypes.oneOf(['default', 'outline']),
 };
 
 export default Logo;

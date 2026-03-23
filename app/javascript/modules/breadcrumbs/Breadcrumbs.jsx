@@ -2,39 +2,29 @@ import classNames from 'classnames';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
-import { BreadcrumbItem, Logo, SimulateLogo } from './components';
-import { BREADCRUMB_MODES, useBreadcrumbMode } from './hooks/useBreadcrumbMode';
+import { BreadcrumbItem, Logo } from './components';
 import { useBreadcrumbs } from './hooks/useBreadcrumbs';
 
 export default function Breadcrumbs({ logoSrc }) {
-    const breadcrumbMode = useBreadcrumbMode();
     const { project } = useProject();
     const crumbs = useBreadcrumbs();
 
-    function renderBreadcrumbRootLogo() {
-        if (breadcrumbMode === BREADCRUMB_MODES.ARCHIVE_LOGO) {
-            return null;
-        }
+    const shouldHideBreadcrumbs =
+        crumbs.length === 0 ||
+        (!project?.is_ohd && project?.display_ohd_link === false);
 
-        if (breadcrumbMode === BREADCRUMB_MODES.ARCHIVE_NAME) {
-            return <SimulateLogo project={project} />;
-        }
-
-        return <Logo logoSrc={logoSrc} />;
-    }
-
-    const breadcrumbRootLogo = renderBreadcrumbRootLogo();
-
-    if (crumbs.length === 0 && !breadcrumbRootLogo) {
+    if (shouldHideBreadcrumbs) {
         return null;
     }
+
+    const logoVariant = project?.is_ohd ? 'default' : 'outline';
 
     return (
         <nav aria-label="breadcrumb" className={classNames('Breadcrumbs')}>
             <ol className="Breadcrumbs-list">
-                {breadcrumbRootLogo && (
-                    <li className="Breadcrumbs-item">{breadcrumbRootLogo}</li>
-                )}
+                <li className="Breadcrumbs-item">
+                    <Logo logoSrc={logoSrc} variant={logoVariant} />
+                </li>
 
                 {crumbs.map((crumb, index) => {
                     return (
@@ -42,6 +32,8 @@ export default function Breadcrumbs({ logoSrc }) {
                             key={index}
                             crumb={crumb}
                             isLast={index === crumbs.length - 1}
+                            index={index}
+                            totalCount={crumbs.length}
                         />
                     );
                 })}
