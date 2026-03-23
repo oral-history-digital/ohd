@@ -1,5 +1,7 @@
 # This workflow runs Jest tests for JavaScript/React components
-name: 'Jest Tests'
+# and compiles assets with Shakapacker for production builds to
+# ensure that the application is ready for deployment.
+name: 'Run Jest Tests and Build'
 
 on:
   push:
@@ -26,3 +28,22 @@ jobs:
 
       - name: Run Jest tests
         run: yarn test
+
+  production-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Install production dependencies
+        run: yarn install --production --frozen-lockfile --ignore-engines --network-timeout 600000
+
+      - name: Compile assets with Shakapacker (production)
+        run: RAILS_ENV=production bin/shakapacker
