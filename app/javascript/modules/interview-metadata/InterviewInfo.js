@@ -2,6 +2,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
+import { formatDuration } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 import InterviewCollectionInfo from './InterviewCollectionInfo';
@@ -77,9 +78,7 @@ export default function InterviewInfo({ interview, languages }) {
                 }}
                 attribute={'duration'}
                 individualErrorMsg={'format'}
-                value={`${interview.duration.split(':')[0]} h ${
-                    interview.duration.split(':')[1]
-                } min`}
+                value={formatDuration(interview.duration)}
                 hideEmpty
             />
             <SingleValueWithForm

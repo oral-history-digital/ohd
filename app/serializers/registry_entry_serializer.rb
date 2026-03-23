@@ -34,4 +34,11 @@ class RegistryEntrySerializer < ApplicationSerializer
     false
   end
 
+  def latitude
+    object.latitude.blank? ? nil : object.latitude.to_f
+  end
+
+  def longitude
+    object.longitude.blank? ? nil : object.longitude.to_f
+  end
 end

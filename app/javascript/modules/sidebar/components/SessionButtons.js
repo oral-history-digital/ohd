@@ -1,10 +1,11 @@
+/* global railsMode */
 import classNames from 'classnames';
 import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
 import { clearStateData, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
-import { RegisterPopupLink, getIsLoggedIn, submitLogout } from 'modules/user';
+import { getIsLoggedIn, submitLogout } from 'modules/user';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -81,7 +82,7 @@ export default function SessionButtons({ className }) {
         </div>
     ) : (
         <div className={classNames('SessionButtons', className)}>
-            <RegisterPopupLink />
+            <Link to={`${pathBase}/register`}>{t('user.registration')}</Link>
             <a href={loginURL} className="u-ml-small">
                 {t('login')}
             </a>

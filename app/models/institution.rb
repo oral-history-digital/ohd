@@ -53,4 +53,29 @@ class Institution < ApplicationRecord
     self.interviews_count = sum
     self.save
   end
+
+  def update_projects_count
+    # Collect IDs of this institution and direct children. Counting logic is 
+    # limited to a two-level hierarchy (parent + immediate children).
+    institution_ids = [id] + children.ids
+
+    # Count the number of distinct public projects linked to institutions in the set
+    projects_count_value = Project
+      .joins(:institutions)
+      .where(institutions: { id: institution_ids })
+      .where(workflow_state: 'public')
+      .distinct
+      .count
+
+    # We intentionally use `update_columns` instead of `save`/`update` to
+    # avoid unintended side effects (callbacks, auditing hooks, etc.)
+    # and ensure the counter refresh cannot fail due to unrelated validations.
+    #
+    # `updated_at` is set manually because `update_columns` does not update
+    # timestamp columns automatically.
+    update_columns(
+      projects_count: projects_count_value,
+      updated_at: Time.current
+    )
+  end
 end

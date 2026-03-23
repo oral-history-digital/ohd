@@ -4,16 +4,20 @@ exports[`<UserForm /> renders a form with the correct elements 1`] = `
 LoadedCheerio {
   "0": <div
     class="LoadingOverlay"
+    data-testid="scope-form-wrapper"
   >
     <form
       class="Form scope default"
+      data-testid="scope-form"
       id="scope"
     >
       <div
         class="form-row form-row--single-workflow_state"
+        data-testid="form-row-single-workflow_state"
       >
         <div
           class="form-group form-group--select form-group--workflow_state"
+          data-testid="scope-workflow_state-element"
         >
           <div
             class="form-label"
@@ -29,6 +33,7 @@ LoadedCheerio {
           >
             <select
               class="Input"
+              data-testid="scope-workflow_state-select"
               id="scope_workflow_state"
               name="workflow_state"
             >
@@ -53,9 +58,11 @@ LoadedCheerio {
       </div>
       <div
         class="form-row form-row--single-mail_text"
+        data-testid="form-row-single-mail_text"
       >
         <div
           class="form-group form-group--textarea form-group--mail_text"
+          data-testid="scope-mail_text-element"
         >
           <div
             class="form-label"
@@ -72,6 +79,7 @@ LoadedCheerio {
           >
             <textarea
               class="Input"
+              data-testid="scope-mail_text-textarea"
               dir="ltr"
               id="scope_mail_text"
               name="mail_text"
