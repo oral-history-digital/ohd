@@ -1,4 +1,4 @@
-import { isNil } from 'lodash';
+import isNil from 'lodash.isnil';
 
 /**
  * Converts a value in seconds into a human-readable duration string.
