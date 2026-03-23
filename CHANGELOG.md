@@ -5,7 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2026-01-12
+## [2.1.0] - 2026-03-23
+
+### Added
+
+- feat: add task for translation export/import ([#89](https://github.com/oral-history-digital/ohd/pull/89))
+- feat(user): refactor registration to hooks and add register page route ([#91](https://github.com/oral-history-digital/ohd/pull/91))
+- adding segments task to update timecodes ([4bf2217c2](https://github.com/oral-history-digital/ohd/commit/4bf2217c23140726f1d3a0330a56305cf1e0ec9b))
+- extend rake task to unify timecodes ([abbf1d3ba](https://github.com/oral-history-digital/ohd/commit/abbf1d3ba368a7abd6bf094c29bde74c5b856608))
+- feat(ci): add production build step to jest test runs ([2b573e284](https://github.com/oral-history-digital/ohd/commit/2b573e284bfa7c6c72191a141065314b9cc91e4b))
+
+### Changed
+
+- change timecodes to unique ms format ([a20d80b7b](https://github.com/oral-history-digital/ohd/commit/a20d80b7b61c7364d0018db26a55d0ead0bfe313))
+- adapt to decimal time format ([f9b4155d6](https://github.com/oral-history-digital/ohd/commit/f9b4155d6cffa29b430336df7a3ea5e7bd18e5bd))
+- rm test cae from segments task ([35c8aeeb1](https://github.com/oral-history-digital/ohd/commit/35c8aeeb1566c19cfd117ec298cb31c8f5e2275a))
+- serialize blank lat/lon values to null ([e55cf92b3](https://github.com/oral-history-digital/ohd/commit/e55cf92b30975182460bf6912042461702164424))
+
+### Fixed
+
+- fix: minor corrections ([#90](https://github.com/oral-history-digital/ohd/pull/90))
+- fix: avoid cache leaks across visibility contexts (anonymous/admin/per-user) ([#86](https://github.com/oral-history-digital/ohd/pull/86))
+- fix: add project count updates for institutions on project changes ([#87](https://github.com/oral-history-digital/ohd/pull/87))
+- fix: implement formatDuration utility to fix duration.split is not a function errors ([#92](https://github.com/oral-history-digital/ohd/pull/92))
+- fix: enhance timecode parsing to support colon-separated sub-seconds and frames ([#84](https://github.com/oral-history-digital/ohd/pull/84))
+- rm doubled ohd conditions ([5c7247940](https://github.com/oral-history-digital/ohd/commit/5c7247940440c7a3e382331d478e76a5eed0c03c))
+
+## [2.0.0] - 2026-03-12
 
 ### Added
 
@@ -405,6 +431,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.1.0]: https://github.com/oral-history-digital/ohd/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/oral-history-digital/ohd/compare/v1.9.1...v2.0.0
 [1.9.1]: https://github.com/oral-history-digital/ohd/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/oral-history-digital/ohd/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/oral-history-digital/ohd/compare/v1.7.0...v1.8.0
