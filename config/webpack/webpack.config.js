@@ -3,7 +3,6 @@
 const path = require('path');
 const { generateWebpackConfig } = require('shakapacker');
 const webpack = require('webpack');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const pjson = require(path.resolve(__dirname, '../../package.json'));
 const version = pjson && pjson.version ? pjson.version : 'unknown';
@@ -27,6 +26,8 @@ webpackConfig.plugins.push(
 // Add React Fast Refresh plugin for true HMR in development
 // This works in conjunction with the babel plugin
 if (isDevServer) {
+    const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
     webpackConfig.plugins.push(
         new ReactRefreshWebpackPlugin({
             overlay: false, // Disable overlay, webpack-dev-server already has one

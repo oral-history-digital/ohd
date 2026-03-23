@@ -1,8 +1,11 @@
+/* eslint-env node */
+
 module.exports = function (api) {
     var validEnv = ['development', 'test', 'production'];
     var currentEnv = api.env();
     var isDevelopmentEnv = api.env('development');
     var isTestEnv = api.env('test');
+    var isDevServer = isDevelopmentEnv && !!process.env.WEBPACK_SERVE;
 
     if (!validEnv.includes(currentEnv)) {
         throw new Error(
@@ -28,8 +31,8 @@ module.exports = function (api) {
         ].filter(Boolean),
         plugins: [
             // Enable React Fast Refresh for HMR in development
-            // This plugin is only active when building for development
-            isDevelopmentEnv && 'react-refresh/babel',
+            // This plugin must only run with webpack-dev-server, where the refresh runtime exists
+            isDevServer && 'react-refresh/babel',
         ].filter(Boolean),
     };
 };
