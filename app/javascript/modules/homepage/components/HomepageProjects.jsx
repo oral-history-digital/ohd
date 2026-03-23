@@ -84,20 +84,26 @@ export function HomepageProjects({ className }) {
                         className="HomepageProjects-navBtn"
                         onClick={() => scroll(-1)}
                         disabled={!canScrollLeft}
+                        title={t('modules.site_startpage.previous')}
                         aria-label={t('modules.site_startpage.previous')}
                         data-testid="homepage-projects-nav-prev"
                     >
-                        &#8249;
+                        <span className="HomepageProjects-navIcon">
+                            &#8249;
+                        </span>
                     </button>
                     <button
                         type="button"
                         className="HomepageProjects-navBtn"
                         onClick={() => scroll(1)}
                         disabled={!canScrollRight}
+                        title={t('modules.site_startpage.next')}
                         aria-label={t('modules.site_startpage.next')}
                         data-testid="homepage-projects-nav-next"
                     >
-                        &#8250;
+                        <span className="HomepageProjects-navIcon">
+                            &#8250;
+                        </span>
                     </button>
                 </div>
             </div>

@@ -48,6 +48,12 @@
     }
   }
 
+  .HomepageProjects-navIcon {
+    display: block;
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+
   .HomepageProjects-scroll {
     display: flex;
     overflow-x: auto;
