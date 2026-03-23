@@ -26,15 +26,11 @@ $back-to-top-margin: $base-unit;
   z-index: $z-index-back-to-top;
 
   @include screen-m {
-    right: calc(44% + #{$back-to-top-margin});
-  }
-
-  @include screen-l {
-    right: calc(40% + #{$back-to-top-margin});
+    right: calc(var(--layout-sidebar-width-fluid) + #{$back-to-top-margin});
   }
 
   @include screen-xl {
-    right: calc(36% + #{$back-to-top-margin});
+    right: calc(var(--layout-sidebar-width-xl) + #{$back-to-top-margin});
   }
 }
 

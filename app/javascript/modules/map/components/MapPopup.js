@@ -6,9 +6,10 @@ import { Popup } from 'react-leaflet';
 export default function MapPopup(props) {
     const popupEl = useRef(null);
     const MapPopupContent = props.popupComponent;
+    const { popupClassName } = props;
 
     return (
-        <Popup ref={popupEl}>
+        <Popup ref={popupEl} className={popupClassName}>
             <MapPopupContent
                 {...props}
                 onUpdate={() => {
@@ -23,4 +24,5 @@ MapPopup.propTypes = {
     title: PropTypes.string.isRequired,
     registryEntryId: PropTypes.number.isRequired,
     popupComponent: PropTypes.elementType.isRequired,
+    popupClassName: PropTypes.string,
 };
