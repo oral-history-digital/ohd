@@ -1,0 +1,125 @@
+import { useTrackPageView } from 'modules/analytics';
+import { Fetch, getInstitutions } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { ErrorBoundary } from 'modules/react-toolbox';
+import { ScrollToTop } from 'modules/user-agent';
+import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+
+// TODO: This component is legacy code from the old catalog component before redesign.
+// It should be revised, especially regarding how data is loaded
+
+export function InstitutionPage() {
+    const allInstitutions = useSelector(getInstitutions);
+    const { t, locale } = useI18n();
+    const id = Number(useParams().id);
+    useTrackPageView();
+
+    const institution = allInstitutions[id];
+
+    const title = institution?.name[locale];
+
+    let parentInstitution;
+    if (institution?.parent_id) {
+        parentInstitution = allInstitutions[institution.parent_id];
+    }
+
+    const cityParts = [institution?.zip, institution?.city];
+
+    const addressParts = [
+        institution?.street,
+        cityParts.filter((part) => part?.length > 0).join(' '),
+        institution?.country,
+    ];
+
+    const address = addressParts.filter((part) => part?.length > 0).join(', ');
+
+    return (
+        <ScrollToTop>
+            <Helmet>
+                <title>{title}</title>
+            </Helmet>
+            <ErrorBoundary>
+                <Fetch
+                    fetchParams={['institutions', id]}
+                    testDataType="institutions"
+                    testIdOrDesc={id}
+                >
+                    <div className="wrapper-content interviews">
+                        <h1 className="search-results-title u-mb">{title}</h1>
+
+                        <dl className="DescriptionList">
+                            {parentInstitution && (
+                                <div className="DescriptionList-group">
+                                    <dt className="DescriptionList-term">
+                                        {t(
+                                            'modules.catalog.part_of_institution'
+                                        )}
+                                    </dt>
+                                    <dd className="DescriptionList-description">
+                                        <Link
+                                            to={`/${locale}/catalog/institutions/${parentInstitution.id}`}
+                                        >
+                                            {parentInstitution.name[locale]}
+                                        </Link>
+                                    </dd>
+                                </div>
+                            )}
+
+                            {institution?.description[locale] && (
+                                <div className="DescriptionList-group">
+                                    <dt className="DescriptionList-term">
+                                        {t('modules.catalog.description')}
+                                    </dt>
+                                    <dd className="DescriptionList-description">
+                                        {institution?.description[locale]}
+                                    </dd>
+                                </div>
+                            )}
+
+                            {address && (
+                                <div className="DescriptionList-group">
+                                    <dt className="DescriptionList-term">
+                                        {t('modules.catalog.address')}
+                                    </dt>
+                                    <dd className="DescriptionList-description">
+                                        {address}
+                                    </dd>
+                                </div>
+                            )}
+
+                            {institution?.website && (
+                                <div className="DescriptionList-group">
+                                    <dt className="DescriptionList-term">
+                                        {t('modules.catalog.web_page')}
+                                    </dt>
+                                    <dd className="DescriptionList-description">
+                                        <a
+                                            href={institution?.website}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {institution?.website}
+                                        </a>
+                                    </dd>
+                                </div>
+                            )}
+                            <div className="DescriptionList-group">
+                                <dt className="DescriptionList-term">
+                                    {t('modules.catalog.volume')}
+                                </dt>
+                                <dd className="DescriptionList-description">
+                                    {institution?.num_interviews}{' '}
+                                    {t('activerecord.models.interview.other')}
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </Fetch>
+            </ErrorBoundary>
+        </ScrollToTop>
+    );
+}
+
+export default InstitutionPage;
