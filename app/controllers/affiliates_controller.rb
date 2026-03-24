@@ -13,7 +13,7 @@ class AffiliatesController < ApplicationController
         render json: {
           id: @affiliate.project_id,
           data_type: 'projects',
-          nested_data_type: @affiliate.type.downcase.pluralize,
+          nested_data_type: @affiliate.type.underscore.pluralize,
           nested_id: @affiliate.id,
           data: cache_single(@affiliate, serializer_name: 'Affiliate'),
         }
@@ -30,7 +30,7 @@ class AffiliatesController < ApplicationController
         render json: {
           id: @affiliate.project_id,
           data_type: 'projects',
-          nested_data_type: @affiliate.type.downcase.pluralize,
+          nested_data_type: @affiliate.type.underscore.pluralize,
           nested_id: @affiliate.id,
           data: cache_single(@affiliate, serializer_name: 'Affiliate'),
         }
