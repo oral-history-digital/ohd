@@ -150,21 +150,16 @@ export default function SegmentContentViewer({
                             </Fetch>
                         </Fetch>
 
-                        {openReference && (
-                            <div className="SegmentContentViewer-item SegmentContentViewer-reference">
-                                <div className="SegmentContentViewer-referenceName">
-                                    {openReference.name?.[contentLocale] ||
-                                        openReference.name?.[locale]}
-                                </div>
-                                {(openReference.notes?.[contentLocale] ||
-                                    openReference.notes?.[locale]) && (
+                        {openReference &&
+                            (openReference.notes?.[contentLocale] ||
+                                openReference.notes?.[locale]) && (
+                                <div className="SegmentContentViewer-item SegmentContentViewer-reference">
                                     <div className="SegmentContentViewer-referenceNotes">
                                         {openReference.notes?.[contentLocale] ||
                                             openReference.notes?.[locale]}
                                     </div>
-                                )}
-                            </div>
-                        )}
+                                </div>
+                            )}
                     </div>
                 )}
             </div>

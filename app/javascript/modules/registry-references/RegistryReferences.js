@@ -126,5 +126,6 @@ RegistryReferences.propTypes = {
     interview: PropTypes.object.isRequired,
     registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
+    contentLocale: PropTypes.string,
     setOpenReference: PropTypes.func,
 };
