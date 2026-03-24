@@ -100,6 +100,12 @@ export default function RegistryReference({
         registryEntry.notes[contentLocale] || registryEntry.notes[locale]
     );
 
+    function toggleOpenReference() {
+        setOpenReference((currentReference) =>
+            currentReference?.id === registryEntry.id ? null : registryEntry
+        );
+    }
+
     return (
         <li className="RegistryReference registry-reference">
             {hasNote && setOpenReference ? (
@@ -107,7 +113,7 @@ export default function RegistryReference({
                     type="button"
                     id={'reference-' + registryReference.id}
                     className="RegistryReference-name RegistryReference-name--link"
-                    onClick={() => setOpenReference(registryEntry)}
+                    onClick={toggleOpenReference}
                 >
                     {registryEntry.name[contentLocale] ||
                         registryEntry.name[locale]}
@@ -191,6 +197,7 @@ RegistryReference.propTypes = {
     registryReference: PropTypes.object.isRequired,
     registryEntry: PropTypes.object,
     refObject: PropTypes.object,
+    contentLocale: PropTypes.string,
     registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
     setOpenReference: PropTypes.func,

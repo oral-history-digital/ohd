@@ -5,6 +5,11 @@ $button-border-width: $base-unit * 0.083333;
   font-family: $font-family;
   line-height: $base-unit;
   outline: none;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 }
 
 .Button:focus {

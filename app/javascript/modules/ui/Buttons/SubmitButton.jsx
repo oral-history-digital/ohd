@@ -54,6 +54,7 @@ export default function SubmitButton({
             ariaLabel={ariaLabel}
             loadingText={loadingText}
             startIcon={startIcon}
+            data-testid="submit-button"
             {...props}
         />
     );
