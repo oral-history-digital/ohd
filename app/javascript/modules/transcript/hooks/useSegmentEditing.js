@@ -19,6 +19,7 @@ export function useSegmentEditing() {
         setEditingSegmentHasUnsavedChanges,
     ] = useState(false);
     const [showUnsavedWarning, setShowUnsavedWarning] = useState(false);
+    const pendingUnsavedActionRef = useRef(null);
 
     // Stable ref so EditableSegment can read whether any segment is being
     // edited without subscribing to it as a prop (which would cause all
@@ -38,28 +39,74 @@ export function useSegmentEditing() {
         editingSegmentHasUnsavedChanges,
     };
 
-    const handleEditStart = useCallback(
-        (segmentId) => {
-            const {
-                editingSegmentId: currentId,
-                editingSegmentHasUnsavedChanges: hasUnsaved,
-            } = editingStateRef.current;
-            if (currentId !== null && hasUnsaved) {
+    const handleUnsavedChangesAttempt = useCallback(
+        (onContinue) => {
+            const { editingSegmentHasUnsavedChanges: hasUnsaved } =
+                editingStateRef.current;
+
+            if (hasUnsaved) {
+                pendingUnsavedActionRef.current =
+                    typeof onContinue === 'function' ? onContinue : null;
                 setShowUnsavedWarning(true);
                 return false;
             }
-            togglePlayerWidth(true); // Switch to compact player when editing starts
-            setEditingSegmentId(segmentId);
-            setEditingSegmentHasUnsavedChanges(false);
+
             return true;
         },
-        [] // no deps — all mutable values are read from editingStateRef; setters are stable
+        [] // no deps — reads mutable editing state through ref
+    );
+
+    const dismissUnsavedWarning = useCallback(() => {
+        pendingUnsavedActionRef.current = null;
+        setShowUnsavedWarning(false);
+    }, []);
+
+    const continueAfterUnsavedWarning = useCallback(() => {
+        const pendingAction = pendingUnsavedActionRef.current;
+        pendingUnsavedActionRef.current = null;
+        setShowUnsavedWarning(false);
+        setEditingSegmentHasUnsavedChanges(false);
+
+        if (typeof pendingAction === 'function') {
+            pendingAction();
+        }
+    }, []);
+
+    const handleEditStart = useCallback(
+        (segmentId) => {
+            const { editingSegmentId: currentId } = editingStateRef.current;
+            const startEditing = () => {
+                togglePlayerWidth(true); // Switch to compact player when editing starts
+                setEditingSegmentId(segmentId);
+                setEditingSegmentHasUnsavedChanges(false);
+            };
+
+            if (
+                currentId !== null &&
+                !handleUnsavedChangesAttempt(startEditing)
+            ) {
+                return false;
+            }
+
+            startEditing();
+            return true;
+        },
+        [handleUnsavedChangesAttempt]
     );
 
     const handleEditEnd = useCallback(() => {
-        setEditingSegmentId(null);
-        setEditingSegmentHasUnsavedChanges(false);
-    }, []);
+        const endEditing = () => {
+            setEditingSegmentId(null);
+            setEditingSegmentHasUnsavedChanges(false);
+        };
+
+        if (!handleUnsavedChangesAttempt(endEditing)) {
+            return false;
+        }
+
+        endEditing();
+        return true;
+    }, [handleUnsavedChangesAttempt]);
 
     return {
         editingSegmentId,
@@ -68,7 +115,10 @@ export function useSegmentEditing() {
         setEditingSegmentHasUnsavedChanges,
         showUnsavedWarning,
         setShowUnsavedWarning,
+        dismissUnsavedWarning,
+        continueAfterUnsavedWarning,
         editingSegmentIdRef,
+        handleUnsavedChangesAttempt,
         handleEditStart,
         handleEditEnd,
     };

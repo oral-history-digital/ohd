@@ -66,13 +66,16 @@ export function useSegmentInteraction({
 
     const handleEditStart = useCallback(
         (buttonType = 'edit') => {
+            const didStart = onEditStart?.(segment.id);
+            if (didStart === false) return;
+
             // Stop playback when entering edit mode
             dispatch(updateIsPlaying(false));
             // Jump to this segment's time when entering edit mode
             if (interview?.transcript_coupled) {
                 dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time));
             }
-            onEditStart?.(segment.id);
+
             // Set the tab index based on which button was clicked
             const index = tabs.findIndex((tab) => tab.id === buttonType);
             if (index !== -1) {
@@ -96,8 +99,9 @@ export function useSegmentInteraction({
     }, [onEditEnd]);
 
     const handleEditSubmit = useCallback(() => {
+        onUnsavedChangesChange?.(false);
         // Keep edit mode active after save for consistent behavior across tabs.
-    }, []);
+    }, [onUnsavedChangesChange]);
 
     return {
         handleFormChange,

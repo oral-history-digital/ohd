@@ -20,6 +20,7 @@ export function useSegmentSaveNotification(segmentId) {
             setSaveNotification({
                 variant: 'success',
                 title: t('modules.forms.save_success'),
+                autoHideDuration: 1000,
             });
             setIsSavePending(false);
             return;

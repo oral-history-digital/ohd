@@ -149,33 +149,59 @@ export function useFormState(initialValues, data, elements) {
      * Check if form has unsaved changes by comparing current values with initial values.
      * Returns an object with isDirty flag and array of changed field names.
      */
-    function getDirtyState() {
-        const currentKeys = Object.keys(values).filter(
-            (key) => key !== 'id' && !key.endsWith('_attributes')
+    function areValuesEqual(a, b) {
+        if (a === b) {
+            return true;
+        }
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        // Handle arrays and objects with deep equality check
+        if (Array.isArray(a) || Array.isArray(b)) {
+            if (!Array.isArray(a) || !Array.isArray(b)) {
+                return false;
+            }
+
+            if (a.length !== b.length) {
+                return false;
+            }
+
+            return a.every((item, index) => areValuesEqual(item, b[index]));
+        }
+
+        if (typeof a === 'object' && typeof b === 'object') {
+            const aKeys = Object.keys(a);
+            const bKeys = Object.keys(b);
+
+            if (aKeys.length !== bKeys.length) {
+                return false;
+            }
+
+            return aKeys.every(
+                (key) =>
+                    Object.prototype.hasOwnProperty.call(b, key) &&
+                    areValuesEqual(a[key], b[key])
+            );
+        }
+
+        return false;
+    }
+
+    function getDirtyStateForValues(valuesToCheck = values) {
+        const currentKeys = Object.keys(valuesToCheck).filter(
+            (key) => key !== 'id'
         );
         const initialKeys = Object.keys(initialFormValues).filter(
-            (key) => key !== 'id' && !key.endsWith('_attributes')
+            (key) => key !== 'id'
         );
+        const allKeys = Array.from(new Set([...currentKeys, ...initialKeys]));
 
         const dirtyFields = [];
 
-        // Check for changed values
-        currentKeys.forEach((key) => {
-            if (values[key] !== initialFormValues[key]) {
-                dirtyFields.push(key);
-            }
-        });
-
-        // Check for added fields (not already in dirtyFields)
-        currentKeys.forEach((key) => {
-            if (!initialKeys.includes(key) && !dirtyFields.includes(key)) {
-                dirtyFields.push(key);
-            }
-        });
-
-        // Check for removed fields
-        initialKeys.forEach((key) => {
-            if (!currentKeys.includes(key) && !dirtyFields.includes(key)) {
+        allKeys.forEach((key) => {
+            if (!areValuesEqual(valuesToCheck[key], initialFormValues[key])) {
                 dirtyFields.push(key);
             }
         });
@@ -313,7 +339,7 @@ export function useFormState(initialValues, data, elements) {
         setInitialFormValues({ ...nextValues });
     }
 
-    const dirtyState = getDirtyState();
+    const dirtyState = getDirtyStateForValues();
 
     return {
         values,
@@ -331,5 +357,6 @@ export function useFormState(initialValues, data, elements) {
         getNestedObjects,
         replaceNestedFormValues,
         markCurrentValuesAsClean,
+        getDirtyStateForValues,
     };
 }

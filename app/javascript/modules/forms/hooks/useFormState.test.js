@@ -480,7 +480,7 @@ describe('useFormState', () => {
             expect(hook.dirtyFields).toEqual([]);
         });
 
-        it('ignores nested _attributes in dirty check', async () => {
+        it('tracks nested _attributes in dirty check', async () => {
             render({
                 initialValues: {
                     name: 'Test',
@@ -495,8 +495,8 @@ describe('useFormState', () => {
             });
             wrapper.update();
 
-            // Should not track _attributes in dirtyFields
-            expect(hook.dirtyFields).not.toContain('events_attributes');
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toContain('events_attributes');
         });
 
         it('handles empty initial values', async () => {
@@ -569,6 +569,22 @@ describe('useFormState', () => {
 
             expect(hook.isDirty).toBe(false);
             expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('computes dirty state for next values immediately', () => {
+            render({
+                initialValues: { name: 'Test', email: 'test@example.com' },
+                data: null,
+                elements: [],
+            });
+
+            const dirtyState = hook.getDirtyStateForValues({
+                ...hook.values,
+                name: 'T',
+            });
+
+            expect(dirtyState.isDirty).toBe(true);
+            expect(dirtyState.dirtyFields).toEqual(['name']);
         });
     });
 

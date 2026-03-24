@@ -321,4 +321,14 @@
   .SegmentRegistryReferences > button.Modal-trigger {
     display: none;
   }
+
+  .UnsavedChangesDialog {
+    .InlineNotification {
+      margin-bottom: 0;
+    }
+  }
+
+  .InlineNotification__title {
+    font-weight: normal;
+  }
 }

@@ -17,11 +17,7 @@ import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    EditableSegment,
-    TranscriptSkeleton,
-    UnsavedChangesDialog,
-} from './components';
+import { EditableSegment, TranscriptSkeleton } from './components';
 import { useProcessedSegments, useSegmentEditing } from './hooks';
 import { getContributorInformation, isRtlLanguage } from './utils';
 
@@ -49,15 +45,8 @@ export default function Transcript({
     const hasTranscript =
         interview?.alpha3s_with_transcript?.indexOf(transcriptLocale) > -1;
 
-    const {
-        editingSegmentId,
-        showUnsavedWarning,
-        setShowUnsavedWarning,
-        setEditingSegmentHasUnsavedChanges,
-        editingSegmentIdRef,
-        handleEditStart,
-        handleEditEnd,
-    } = useSegmentEditing();
+    const segmentEditing = useSegmentEditing();
+    const { editingSegmentId } = segmentEditing;
 
     const contributorInformation = useMemo(
         () => getContributorInformation(interview?.contributions, people),
@@ -115,10 +104,6 @@ export default function Transcript({
             {isEditviewActive && (
                 <HelpText code="interview_transcript" className="u-mb" />
             )}
-            <UnsavedChangesDialog
-                isOpen={showUnsavedWarning}
-                onDismiss={() => setShowUnsavedWarning(false)}
-            />
             <div
                 className={classNames('Transcript', {
                     'Transcript--rtl': isRtlLanguage(transcriptLocale),
@@ -128,6 +113,8 @@ export default function Transcript({
                 {processedSegments.map((segment, index, array) => {
                     const prevSegment = array[index - 1];
                     const nextSegment = array[index + 1];
+                    const isEditingSegment =
+                        isEditviewActive && editingSegmentId === segment.id;
 
                     return (
                         <EditableSegment
@@ -140,16 +127,8 @@ export default function Transcript({
                             contentLocale={transcriptLocale}
                             nextSegmentTime={nextSegment?.time}
                             nextSegmentTape={nextSegment?.tape_nbr}
-                            isEditingSegment={
-                                isEditviewActive &&
-                                editingSegmentId === segment.id
-                            }
-                            editingSegmentIdRef={editingSegmentIdRef}
-                            onEditStart={handleEditStart}
-                            onEditEnd={handleEditEnd}
-                            onUnsavedChangesChange={
-                                setEditingSegmentHasUnsavedChanges
-                            }
+                            isEditingSegment={isEditingSegment}
+                            segmentEditing={segmentEditing}
                             prevSegmentTimecode={prevSegment?.timecode}
                             nextSegmentTimecode={nextSegment?.timecode}
                         />

@@ -7,8 +7,10 @@ import { getLocale, getProjectId, useIsEditor } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
 import { getCurrentProject } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
+import { getScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
 import { SegmentHeadingForm } from 'modules/toc';
+import { scrollSmoothlyTo } from 'modules/user-agent';
 import { formatTimecode, timecodeToSeconds } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -31,6 +33,7 @@ import {
     SegmentRegistryReferences,
     SegmentText,
     Timecode,
+    UnsavedChangesDialog,
 } from './';
 
 function EditableSegment({
@@ -40,11 +43,8 @@ function EditableSegment({
     contentLocale,
     nextSegmentTime,
     nextSegmentTape,
-    editingSegmentIdRef,
+    segmentEditing,
     isEditingSegment,
-    onEditStart,
-    onEditEnd,
-    onUnsavedChangesChange,
     prevSegmentTimecode,
     nextSegmentTimecode,
 }) {
@@ -67,6 +67,17 @@ function EditableSegment({
         { type: 'RegistryReference', interview_id: segment.interview_id },
         'update'
     );
+
+    const {
+        editingSegmentIdRef,
+        showUnsavedWarning,
+        dismissUnsavedWarning,
+        continueAfterUnsavedWarning,
+        handleUnsavedChangesAttempt,
+        handleEditStart: handleStartEditing,
+        handleEditEnd: handleEndEditing,
+        setEditingSegmentHasUnsavedChanges,
+    } = segmentEditing;
 
     const tabs = useSegmentTabs(
         showEditTab,
@@ -94,6 +105,42 @@ function EditableSegment({
         handleCloseContentDisplay,
     } = useContentDisplay();
 
+    const scrollToSegment = () => {
+        if (!divEl.current) return;
+        const topOfElement = divEl.current.offsetTop;
+        if (topOfElement === 0) return;
+        scrollSmoothlyTo(0, topOfElement - getScrollOffset());
+    };
+
+    const handleUnsavedDismiss = () => {
+        dismissUnsavedWarning();
+        requestAnimationFrame(scrollToSegment);
+    };
+
+    const handleUnsavedContinue = () => {
+        continueAfterUnsavedWarning();
+        requestAnimationFrame(scrollToSegment);
+    };
+
+    const handleTabChange = (nextTabIndex) => {
+        const currentTabId = tabs[tabIndex]?.id;
+        const nextTabId = tabs[nextTabIndex]?.id;
+        const tabUnmountsForm =
+            currentTabId === 'edit' || currentTabId === 'headings';
+
+        // Leaving edit/headings tab unmounts a form; block it when unsaved changes exist.
+        if (
+            tabUnmountsForm &&
+            nextTabId !== currentTabId &&
+            handleUnsavedChangesAttempt &&
+            !handleUnsavedChangesAttempt(() => setTabIndex(nextTabIndex))
+        ) {
+            return;
+        }
+
+        setTabIndex(nextTabIndex);
+    };
+
     const {
         handleFormChange,
         handleSubmitData,
@@ -105,9 +152,9 @@ function EditableSegment({
         segment,
         interview,
         tabs,
-        onUnsavedChangesChange,
-        onEditStart,
-        onEditEnd,
+        onUnsavedChangesChange: setEditingSegmentHasUnsavedChanges,
+        onEditStart: handleStartEditing,
+        onEditEnd: handleEndEditing,
         setTabIndex,
     });
 
@@ -152,7 +199,7 @@ function EditableSegment({
                 <Tabs
                     className="SegmentTabs"
                     index={tabIndex}
-                    onChange={setTabIndex}
+                    onChange={handleTabChange}
                 >
                     <TabList className="SegmentTabs-tabList">
                         {tabs.map((tab) => (
@@ -210,6 +257,7 @@ function EditableSegment({
                                             segment={segment}
                                             onSubmit={handleEditSubmit}
                                             onCancel={handleEditCancel}
+                                            onChange={handleFormChange}
                                             data-testid="segment-headings"
                                             submitText="save"
                                             cancelText="close"
@@ -236,6 +284,11 @@ function EditableSegment({
                             </TabPanel>
                         ))}
                     </TabPanels>
+                    <UnsavedChangesDialog
+                        isOpen={isEditingSegment && showUnsavedWarning}
+                        onDismiss={handleUnsavedDismiss}
+                        onContinue={handleUnsavedContinue}
+                    />
                 </Tabs>
             ) : (
                 <>
@@ -262,7 +315,6 @@ function EditableSegment({
                     </div>
                 </>
             )}
-
             <SegmentButtons
                 segment={segment}
                 contentLocale={contentLocale}
@@ -282,11 +334,17 @@ EditableSegment.propTypes = {
     contentLocale: PropTypes.string.isRequired,
     nextSegmentTime: PropTypes.number,
     nextSegmentTape: PropTypes.number,
-    editingSegmentIdRef: PropTypes.object,
+    segmentEditing: PropTypes.shape({
+        editingSegmentIdRef: PropTypes.object,
+        showUnsavedWarning: PropTypes.bool,
+        dismissUnsavedWarning: PropTypes.func,
+        continueAfterUnsavedWarning: PropTypes.func,
+        handleUnsavedChangesAttempt: PropTypes.func,
+        handleEditStart: PropTypes.func,
+        handleEditEnd: PropTypes.func,
+        setEditingSegmentHasUnsavedChanges: PropTypes.func,
+    }).isRequired,
     isEditingSegment: PropTypes.bool,
-    onEditStart: PropTypes.func,
-    onEditEnd: PropTypes.func,
-    onUnsavedChangesChange: PropTypes.func,
     prevSegmentTimecode: PropTypes.string,
     nextSegmentTimecode: PropTypes.string,
 };

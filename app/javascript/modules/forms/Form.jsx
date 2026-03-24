@@ -75,7 +75,6 @@ export default function Form({
         errors,
         touched,
         isDirty,
-        dirtyFields,
         updateField,
         handleErrors,
         touchField,
@@ -86,6 +85,7 @@ export default function Form({
         getNestedObjects,
         replaceNestedFormValues,
         markCurrentValuesAsClean,
+        getDirtyStateForValues,
     } = useFormState(initialValues, data, elements);
 
     const { t } = useI18n();
@@ -93,13 +93,37 @@ export default function Form({
     function handleChange(name, value, params, identifier) {
         if (params && !name && !value) {
             writeNestedObject(params, identifier);
+
+            if (typeof onChange === 'function') {
+                onChange({
+                    field: identifier || 'nested',
+                    value: params,
+                    isDirty: true,
+                    dirtyFields: [identifier || 'nested'],
+                });
+            }
+
+            return;
         } else {
+            const nextValues = {
+                ...values,
+                [name]: value,
+            };
+            const nextDirtyState = getDirtyStateForValues(nextValues);
+
             updateField(name, value);
             touchField(name);
-        }
-        // Notify parent of changes with context
-        if (typeof onChange === 'function') {
-            onChange({ field: name, value, isDirty, dirtyFields });
+
+            if (typeof onChange === 'function') {
+                onChange({
+                    field: name,
+                    value,
+                    isDirty: nextDirtyState.isDirty,
+                    dirtyFields: nextDirtyState.dirtyFields,
+                });
+            }
+
+            return;
         }
     }
 

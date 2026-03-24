@@ -1,36 +1,49 @@
-import { Dialog } from '@reach/dialog';
-import '@reach/dialog/styles.css';
+import { useRef } from 'react';
+
 import { useI18n } from 'modules/i18n';
-import { Button } from 'modules/ui';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-function UnsavedChangesDialog({ isOpen, onDismiss }) {
+import { useAutoScrollToRef } from '../hooks';
+
+function UnsavedChangesDialog({ isOpen, onDismiss, onContinue }) {
+    const notificationRef = useRef(null);
     const { t } = useI18n();
-    const message = t('modules.transcript.unsaved_changes_warning');
+    const message = t('modules.transcript.unsaved_changes.warning');
+
+    useAutoScrollToRef(notificationRef, isOpen, []);
+
+    if (!isOpen) {
+        return null;
+    }
 
     return (
-        <Dialog
-            className="Modal-dialog UnsavedChangesDialog"
-            isOpen={isOpen}
-            onDismiss={onDismiss}
-            aria-label={message}
-        >
-            <p className="UnsavedChangesDialog-message">{message}</p>
-            <div className="u-flex u-mt">
-                <Button
-                    buttonText={t('ok')}
-                    variant="contained"
-                    color="primary"
-                    onClick={onDismiss}
-                />
-            </div>
-        </Dialog>
+        <div className="UnsavedChangesDialog" ref={notificationRef}>
+            <InlineNotification
+                variant="warning"
+                title={message}
+                isClosable={false}
+                actions={{
+                    cancel: {
+                        label: t('modules.transcript.unsaved_changes.return'),
+                        onClick: onDismiss,
+                    },
+                    submit: {
+                        label: t('modules.transcript.unsaved_changes.continue'),
+                        onClick: onContinue,
+                    },
+                }}
+                className="UnsavedChangesDialog--notification"
+                role="alert"
+            />
+        </div>
     );
 }
 
 UnsavedChangesDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onDismiss: PropTypes.func.isRequired,
+    onContinue: PropTypes.func.isRequired,
 };
 
 export default UnsavedChangesDialog;

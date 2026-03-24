@@ -237,6 +237,7 @@ describe('useSegmentInteraction', () => {
 
         lastResult.handleEditSubmit();
         expect(defaultProps.onEditEnd).not.toHaveBeenCalled();
+        expect(defaultProps.onUnsavedChangesChange).toHaveBeenCalledWith(false);
     });
 
     it('handles missing callbacks gracefully', () => {

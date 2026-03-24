@@ -3,6 +3,7 @@ import React from 'react';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { mount } from 'enzyme';
 import PropTypes from 'prop-types';
+import { act } from 'react-dom/test-utils';
 
 import { useSegmentEditing } from './useSegmentEditing';
 
@@ -80,6 +81,11 @@ describe('useSegmentEditing', () => {
         expect(typeof hook.handleEditEnd).toBe('function');
     });
 
+    it('provides handleUnsavedChangesAttempt function', () => {
+        render();
+        expect(typeof hook.handleUnsavedChangesAttempt).toBe('function');
+    });
+
     it('provides setEditingSegmentId function', () => {
         render();
         expect(typeof hook.setEditingSegmentId).toBe('function');
@@ -95,8 +101,82 @@ describe('useSegmentEditing', () => {
         expect(typeof hook.setShowUnsavedWarning).toBe('function');
     });
 
+    it('provides dismissUnsavedWarning function', () => {
+        render();
+        expect(typeof hook.dismissUnsavedWarning).toBe('function');
+    });
+
+    it('provides continueAfterUnsavedWarning function', () => {
+        render();
+        expect(typeof hook.continueAfterUnsavedWarning).toBe('function');
+    });
+
     it('editingSegmentIdRef.current reflects initial null state', () => {
         render();
         expect(hook.editingSegmentIdRef.current).toBeNull();
+    });
+
+    it('handleEditEnd returns true and closes when there are no unsaved changes', () => {
+        render();
+
+        act(() => {
+            hook.setEditingSegmentId(1);
+        });
+        wrapper.update();
+
+        let result;
+        act(() => {
+            result = hook.handleEditEnd();
+        });
+        wrapper.update();
+
+        expect(result).toBe(true);
+    });
+
+    it('handleEditEnd returns false and shows warning when unsaved changes exist', () => {
+        render();
+
+        act(() => {
+            hook.setEditingSegmentId(1);
+            hook.setEditingSegmentHasUnsavedChanges(true);
+        });
+        wrapper.update();
+
+        let result;
+        act(() => {
+            result = hook.handleEditEnd();
+        });
+        wrapper.update();
+
+        expect(result).toBe(false);
+        expect(hook.showUnsavedWarning).toBe(true);
+    });
+
+    it('continueAfterUnsavedWarning executes pending action and clears warning', () => {
+        render();
+        const onContinue = jest.fn();
+
+        act(() => {
+            hook.setEditingSegmentHasUnsavedChanges(true);
+        });
+        wrapper.update();
+
+        let result;
+        act(() => {
+            result = hook.handleUnsavedChangesAttempt(onContinue);
+        });
+        wrapper.update();
+
+        expect(result).toBe(false);
+        expect(hook.showUnsavedWarning).toBe(true);
+
+        act(() => {
+            hook.continueAfterUnsavedWarning();
+        });
+        wrapper.update();
+
+        expect(onContinue).toHaveBeenCalledTimes(1);
+        expect(hook.showUnsavedWarning).toBe(false);
+        expect(hook.editingSegmentHasUnsavedChanges).toBe(false);
     });
 });

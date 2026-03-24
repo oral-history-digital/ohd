@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { mount } from 'enzyme';
@@ -23,7 +23,7 @@ jest.mock('modules/i18n', () => ({
 function TestComponent({ segmentId, onRender }) {
     const result = useSegmentSaveNotification(segmentId);
 
-    React.useEffect(() => {
+    useEffect(() => {
         onRender(result);
     }, [result, onRender]);
 
@@ -97,6 +97,7 @@ describe('useSegmentSaveNotification', () => {
         expect(lastResult.saveNotification).toEqual({
             variant: 'success',
             title: 'modules.forms.save_success',
+            autoHideDuration: 1000,
         });
     });
 
