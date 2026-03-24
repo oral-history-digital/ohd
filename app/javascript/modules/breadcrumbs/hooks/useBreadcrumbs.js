@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
-import { getProjectName } from '../utils';
+import { getProjectLabel } from '../utils';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
 
 /**
@@ -12,16 +12,17 @@ export function useBreadcrumbs() {
     const { project } = useProject();
     const { currentPage, items } = useBreadcrumbModel();
 
-    if (!project) return [];
+    if (!project) {
+        return [];
+    }
+
+    const projectLabel = project.is_ohd
+        ? null
+        : getProjectLabel(project, locale);
 
     if (currentPage.pageType === 'project_startpage') {
-        if (project.is_ohd) {
-            return [];
-        }
-
-        const projectName = getProjectName(project, locale);
-        return projectName
-            ? [{ key: 'archive', label: projectName, isProjectRoot: true }]
+        return projectLabel
+            ? [{ key: 'archive', label: projectLabel, isProjectRoot: true }]
             : [];
     }
 
@@ -29,15 +30,29 @@ export function useBreadcrumbs() {
         return [];
     }
 
-    // Logo already represents the home root, so drop the synthetic home item.
-    const crumbs = items
-        .filter((item) => item.key !== 'home')
-        .map((item) => ({
-            key: item.key,
-            label: item.label,
-            to: item.to || undefined,
-            isProjectRoot: item.key === 'archive',
-        }));
+    // Map model items to breadcrumb items, ensuring `to` is only included when defined
+    const crumbs = items.map((item) => ({
+        key: item.key,
+        label: item.label,
+        to: item.to || undefined,
+        isProjectRoot: item.key === 'archive',
+    }));
+
+    // Add project root as first breadcrumb item for non-OHD projects
+    const shouldPrependProjectRoot =
+        projectLabel && crumbs.length > 0 && crumbs[0]?.isProjectRoot !== true;
+
+    if (shouldPrependProjectRoot) {
+        return [
+            {
+                key: 'archive',
+                label: projectLabel,
+                to: currentPage.pathBase || undefined,
+                isProjectRoot: true,
+            },
+            ...crumbs,
+        ];
+    }
 
     return crumbs;
 }

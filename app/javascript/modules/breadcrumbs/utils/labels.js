@@ -19,7 +19,7 @@ export const CATALOG_TYPE_KEYS = {
 /**
  * Returns the current archive label from project display/name values.
  */
-export function getArchiveLabel(project, locale) {
+export function getProjectLabel(project, locale) {
     if (!project) {
         return null;
     }

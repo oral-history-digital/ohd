@@ -13,9 +13,7 @@ export default function Breadcrumbs({ logoSrc }) {
         crumbs.length === 0 ||
         (!project?.is_ohd && project?.display_ohd_link === false);
 
-    if (shouldHideBreadcrumbs) {
-        return null;
-    }
+    if (shouldHideBreadcrumbs) return null;
 
     const logoVariant = project?.is_ohd ? 'default' : 'outline';
 

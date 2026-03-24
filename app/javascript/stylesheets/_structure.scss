@@ -41,6 +41,10 @@ footer {
   }
 }
 
+.is-interview-page footer {
+  padding: $base-unit * 2;
+}
+
 .footer-bottom-nav {
   font-size: $font-size-medium;
   list-style-type: none;

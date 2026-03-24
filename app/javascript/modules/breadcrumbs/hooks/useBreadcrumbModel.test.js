@@ -124,7 +124,7 @@ describe('useBreadcrumbModel', () => {
         expect(result.items).toEqual([]);
     });
 
-    it('builds Archive -> Collection -> Interview for interview pages', () => {
+    it('builds Collection -> Interview for interview pages', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'interview_detail',
@@ -167,12 +167,6 @@ describe('useBreadcrumbModel', () => {
         });
 
         expect(result.items).toEqual([
-            {
-                key: 'archive',
-                label: 'Archiv Alpha',
-                to: '/mog/de',
-                isCurrent: false,
-            },
             {
                 key: 'collection',
                 label: 'Sammlung A',
@@ -221,12 +215,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'archive',
-                label: 'Archiv Alpha',
-                to: '/mog/de',
-                isCurrent: false,
-            },
-            {
                 key: 'search_archive',
                 label: 'Search',
                 to: '/mog/de/searches/archive',
@@ -269,12 +257,6 @@ describe('useBreadcrumbModel', () => {
         });
 
         expect(result.items).toEqual([
-            {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
             {
                 key: 'static_text_page',
                 label: 'Kontakt',
@@ -321,12 +303,6 @@ describe('useBreadcrumbModel', () => {
         });
 
         expect(result.items).toEqual([
-            {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
             {
                 key: 'catalog',
                 label: 'Archive & Sammlungen',
@@ -387,12 +363,6 @@ describe('useBreadcrumbModel', () => {
         });
 
         expect(result.items).toEqual([
-            {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
             {
                 key: 'catalog',
                 label: 'Archive & Sammlungen',
@@ -457,12 +427,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'archive',
-                label: 'Archiv Alpha',
-                to: '/mog/de',
-                isCurrent: false,
-            },
-            {
                 key: 'search_archive',
                 label: 'Search',
                 to: '/mog/de/searches/archive',
@@ -514,12 +478,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
-            {
                 key: 'catalog',
                 label: 'Institutionen',
                 to: '/de/catalog/institutions',
@@ -565,12 +523,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
-            {
                 key: 'catalog',
                 label: 'Institutionen',
                 to: '/de/catalog/institutions',
@@ -579,7 +531,7 @@ describe('useBreadcrumbModel', () => {
         ]);
     });
 
-    it('includes archive parent on project-scoped archive search pages', () => {
+    it('builds project-scoped archive search pages without global roots', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'search_archive',
@@ -619,18 +571,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'home',
-                label: 'Start',
-                to: '/adg/de',
-                isCurrent: false,
-            },
-            {
-                key: 'archive',
-                label: 'Archiv Deutsches Gedaechtnis',
-                to: '/adg/de',
-                isCurrent: false,
-            },
-            {
                 key: 'search_archive',
                 label: 'Sammlung ADG 1',
                 to: '/adg/de/searches/archive',
@@ -640,7 +580,7 @@ describe('useBreadcrumbModel', () => {
         ]);
     });
 
-    it('omits archive parent on OHD archive search pages', () => {
+    it('builds OHD archive search pages without global roots', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'search_archive',
@@ -669,12 +609,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
-            {
                 key: 'search_archive',
                 label: 'Interviews',
                 to: '/de/searches/archive',
@@ -684,7 +618,7 @@ describe('useBreadcrumbModel', () => {
         ]);
     });
 
-    it('includes archive parent on project-scoped map search pages', () => {
+    it('builds project-scoped map search pages without global roots', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'search_map',
@@ -716,18 +650,6 @@ describe('useBreadcrumbModel', () => {
 
         expect(result.items).toEqual([
             {
-                key: 'home',
-                label: 'Start',
-                to: '/adg/de',
-                isCurrent: false,
-            },
-            {
-                key: 'archive',
-                label: 'Archiv Deutsches Gedaechtnis',
-                to: '/adg/de',
-                isCurrent: false,
-            },
-            {
                 key: 'search_map',
                 label: 'Kartenansicht',
                 to: '/adg/de/searches/map',
@@ -737,7 +659,7 @@ describe('useBreadcrumbModel', () => {
         ]);
     });
 
-    it('omits archive parent on OHD map search pages', () => {
+    it('builds OHD map search pages without global roots', () => {
         const result = getHookResult({
             currentPage: {
                 pageType: 'search_map',
@@ -763,12 +685,6 @@ describe('useBreadcrumbModel', () => {
         });
 
         expect(result.items).toEqual([
-            {
-                key: 'home',
-                label: 'Start',
-                to: '/de',
-                isCurrent: false,
-            },
             {
                 key: 'search_map',
                 label: 'Kartenansicht',
@@ -810,18 +726,6 @@ describe('useBreadcrumbModel', () => {
         });
 
         expect(result.items).toEqual([
-            {
-                key: 'home',
-                label: 'Start',
-                to: '/adg/de',
-                isCurrent: false,
-            },
-            {
-                key: 'archive',
-                label: 'Archiv Deutsches Gedaechtnis',
-                to: '/adg/de',
-                isCurrent: false,
-            },
             {
                 key: 'register_page',
                 label: 'Registrierung',

@@ -22,7 +22,7 @@ export default function Home({ institutions }) {
 
     const showProjectLogo = project && project?.display_ohd_link === true;
 
-    if (!project.translations_attributes) {
+    if (!project || !project.translations_attributes) {
         return null;
     }
 

@@ -109,6 +109,8 @@ export default function Layout({ children }) {
         ? `/favicons/favicon-${project?.shortname}.ico`
         : '/favicon.ico';
 
+    if (!project) return null;
+
     return (
         <ResizeWatcher>
             <div

@@ -211,7 +211,6 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                     `/${locale}/catalog/institutions/${institution.id}`
                                 )
                             }
-                            endIcon={<FaExternalLinkAlt />}
                         />
                     </div>
                 </div>

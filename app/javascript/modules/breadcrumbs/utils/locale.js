@@ -29,20 +29,3 @@ export function getLocalizedValue(value, locale, defaultLocale) {
 
     return null;
 }
-
-/**
- * Returns a localized project name for header breadcrumb display.
- */
-export function getProjectName(project, locale) {
-    if (!project) {
-        return null;
-    }
-
-    return (
-        project.display_name?.[locale] ||
-        project.name?.[locale] ||
-        project.name?.[project.default_locale] ||
-        project.shortname ||
-        null
-    );
-}

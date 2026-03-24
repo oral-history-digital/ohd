@@ -3,36 +3,36 @@ import { getLocalizedValue } from './locale';
 /**
  * Returns parent archive information for a catalog collection detail page.
  */
-export function getCatalogCollectionParentArchive(itemId, context) {
+export function getCatalogCollectionParentProject(itemId, context) {
     const { locale, collections, projects } = context;
 
     const collection = collections[itemId];
-    const archiveId = collection?.project_id;
-    if (!archiveId) {
+    const projectId = collection?.project_id;
+    if (!projectId) {
         return null;
     }
 
-    const archive = projects[archiveId];
-    if (!archive) {
+    const project = projects[projectId];
+    if (!project) {
         return null;
     }
 
-    const archiveLabel =
+    const projectLabel =
         getLocalizedValue(
-            archive.display_name,
+            project.display_name,
             locale,
-            archive.default_locale
+            project.default_locale
         ) ||
-        getLocalizedValue(archive.name, locale, archive.default_locale) ||
-        archive.shortname ||
+        getLocalizedValue(project.name, locale, project.default_locale) ||
+        project.shortname ||
         null;
 
-    if (!archiveLabel) {
+    if (!projectLabel) {
         return null;
     }
 
     return {
-        archiveId,
-        archiveLabel,
+        projectId: projectId,
+        projectLabel: projectLabel,
     };
 }

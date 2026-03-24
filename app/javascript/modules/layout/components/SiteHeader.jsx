@@ -16,14 +16,9 @@ export function SiteHeader() {
         !project?.is_ohd &&
         project?.display_ohd_link === false;
     const canShowBreadcrumbs =
-        project?.is_ohd || project?.display_ohd_link === true;
+        (project && project?.is_ohd) ||
+        (project && project?.display_ohd_link === true);
     const showBreadcrumbs = !isHome && !showProjectLogo && canShowBreadcrumbs;
-
-    console.log('Rendering SiteHeader', {
-        currentPage: currentPage.pageType,
-        projectIsOhd: project.is_ohd,
-        projectDisplayOhdLink: project.display_ohd_link,
-    });
 
     return (
         <header

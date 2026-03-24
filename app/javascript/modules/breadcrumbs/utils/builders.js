@@ -1,6 +1,5 @@
-import { getCatalogCollectionParentArchive } from './entities';
+import { getCatalogCollectionParentProject } from './entities';
 import {
-    getArchiveLabel,
     getCatalogItemLabel,
     getInterviewCollectionLabel,
     getInterviewLabel,
@@ -14,7 +13,6 @@ export function buildInterviewItems(currentPage, context) {
     const {
         labels,
         entityLabels,
-        project,
         interview,
         collections,
         locale,
@@ -22,8 +20,6 @@ export function buildInterviewItems(currentPage, context) {
     } = context;
     const { params, pathBase } = currentPage;
 
-    const archiveLabel =
-        entityLabels.archive || getArchiveLabel(project, locale) || labels.home;
     const collectionLabel =
         entityLabels.collection ||
         getInterviewCollectionLabel(interview, collections, locale);
@@ -33,15 +29,8 @@ export function buildInterviewItems(currentPage, context) {
         params.archiveId ||
         labels.interview_detail;
 
-    // Base breadcrumb item is always the archive
-    const items = [
-        {
-            key: 'archive',
-            label: archiveLabel,
-            to: pathBase,
-            isCurrent: false,
-        },
-    ];
+    // Start empty (Project Home will be added globally for non-OHD projects)
+    const items = [];
 
     // If the interview belongs to a collection, include that as an intermediate breadcrumb item
     if (collectionLabel) {
@@ -96,12 +85,6 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
 
     const items = [
         {
-            key: 'home',
-            label: labels.home,
-            to: pathBase,
-            isCurrent: false,
-        },
-        {
             key: 'catalog',
             label: catalogParentLabel,
             to: catalogParentPath,
@@ -110,18 +93,18 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
     ];
 
     if (params.id) {
-        const parentArchive =
+        const parentProject =
             catalogType === 'collections'
-                ? getCatalogCollectionParentArchive(params.id, context)
+                ? getCatalogCollectionParentProject(params.id, context)
                 : null;
 
-        if (parentArchive) {
+        if (parentProject) {
             items.push({
-                key: `catalog_archive_${parentArchive.archiveId}`,
-                label: parentArchive.archiveLabel,
+                key: `catalog_archive_${parentProject.projectId}`,
+                label: parentProject.projectLabel,
                 to: joinPath(
                     catalogBasePath,
-                    `/archives/${parentArchive.archiveId}`
+                    `/archives/${parentProject.projectId}`
                 ),
                 isCurrent: false,
             });
@@ -156,18 +139,11 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
  * Builds breadcrumb items for non-catalog known page types.
  */
 export function buildKnownItems(currentPage, context) {
-    const { labels, entityLabels, staticPageLabels, project, locale } = context;
+    const { labels, entityLabels, staticPageLabels } = context;
     const { pageType, subtype, params, pathBase } = currentPage;
 
     if (pageType === 'project_startpage') {
-        return [
-            {
-                key: 'home',
-                label: labels.home,
-                to: pathBase,
-                isCurrent: true,
-            },
-        ];
+        return [];
     }
 
     if (pageType === 'catalog_page') {
@@ -178,14 +154,14 @@ export function buildKnownItems(currentPage, context) {
         return buildInterviewItems(currentPage, context);
     }
 
-    const archiveParentPagePaths = {
+    const projectParentPagePaths = {
         search_archive: '/searches/archive',
         search_map: '/searches/map',
         register: '/register',
         register_page: '/register',
     };
 
-    if (archiveParentPagePaths[pageType]) {
+    if (projectParentPagePaths[pageType]) {
         const collectionFilterId = params.collectionId;
         // Only collection-filtered archive searches should replace the generic label.
         const filteredCollectionLabel =
@@ -205,50 +181,12 @@ export function buildKnownItems(currentPage, context) {
                 filteredCollectionLabel ||
                 labels[pageType] ||
                 humanizeSegment(pageType),
-            to: joinPath(pathBase, archiveParentPagePaths[pageType]),
+            to: joinPath(pathBase, projectParentPagePaths[pageType]),
             isCurrent: true,
             loading: false,
         };
 
-        // search_archive uses explicit route subtypes; other pages infer from project scope.
-        const hasArchiveParent =
-            pageType === 'search_archive'
-                ? subtype === 'project_search' ||
-                  subtype === 'collection_search'
-                : Boolean(project && !project.is_ohd);
-
-        if (hasArchiveParent) {
-            const archiveLabel =
-                entityLabels.archive ||
-                getArchiveLabel(project, locale) ||
-                labels.home;
-
-            return [
-                {
-                    key: 'home',
-                    label: labels.home,
-                    to: pathBase,
-                    isCurrent: false,
-                },
-                {
-                    key: 'archive',
-                    label: archiveLabel,
-                    to: pathBase,
-                    isCurrent: false,
-                },
-                currentItem,
-            ];
-        }
-
-        return [
-            {
-                key: 'home',
-                label: labels.home,
-                to: pathBase,
-                isCurrent: false,
-            },
-            currentItem,
-        ];
+        return [currentItem];
     }
 
     const pagePathByType = {
@@ -283,12 +221,6 @@ export function buildKnownItems(currentPage, context) {
     }
 
     return [
-        {
-            key: 'home',
-            label: labels.home,
-            to: pathBase,
-            isCurrent: false,
-        },
         {
             key: pageType,
             label: currentLabel,
