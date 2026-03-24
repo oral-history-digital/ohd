@@ -1,17 +1,17 @@
 .SegmentContentViewer {
-  margin-top: $base-unit;
+  margin: $base-unit * 0.5 0;
   border: 1px solid $gray-light;
   border-radius: 4px;
-  background-color: $gray-paler;
+  max-width: $line-length;
 }
 
 .SegmentContentViewer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: calc($base-unit * 0.25) calc($base-unit * 0.5);
+  padding: calc($base-unit * 0.1) calc($base-unit * 0.3);
   border-bottom: 1px solid $gray-light;
-  background-color: $gray-pale;
+  background-color: $gray-paler;
 }
 
 .SegmentContentViewer-title {
@@ -22,7 +22,7 @@
 }
 
 .SegmentContentViewer-content {
-  padding: calc($base-unit * 0.5);
+  padding: calc($base-unit * 0.3);
 }
 
 .SegmentContentViewer-items {
@@ -33,7 +33,7 @@
 
 .SegmentContentViewer-item {
   margin: 0;
-  padding: $base-unit * 0.5;
+  padding: calc($base-unit * 0.1) calc($base-unit * 0.3);
   line-height: 1.5;
   color: $gray-darker;
   background-color: white;
