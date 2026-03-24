@@ -232,11 +232,11 @@ describe('useSegmentInteraction', () => {
         expect(defaultProps.onEditEnd).toHaveBeenCalled();
     });
 
-    it('handleEditSubmit calls onEditEnd', () => {
+    it('handleEditSubmit keeps edit mode active', () => {
         render();
 
         lastResult.handleEditSubmit();
-        expect(defaultProps.onEditEnd).toHaveBeenCalled();
+        expect(defaultProps.onEditEnd).not.toHaveBeenCalled();
     });
 
     it('handles missing callbacks gracefully', () => {

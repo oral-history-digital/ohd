@@ -60,6 +60,7 @@ export default function Form({
     scope,
     submitScope,
     submitText,
+    cancelText,
     values: initialValues,
 }) {
     const [submitted, setSubmitted] = useState(false);
@@ -84,6 +85,7 @@ export default function Form({
         deleteNestedObject,
         getNestedObjects,
         replaceNestedFormValues,
+        markCurrentValuesAsClean,
     } = useFormState(initialValues, data, elements);
 
     const { t } = useI18n();
@@ -107,6 +109,8 @@ export default function Form({
 
         if (valid()) {
             onSubmit({ [scope || submitScope]: values }, index);
+            markCurrentValuesAsClean(values);
+            setSubmitted(false);
             if (typeof onSubmitCallback === 'function') {
                 onSubmitCallback();
             }
@@ -232,30 +236,13 @@ export default function Form({
                         'Form-footer--fullWidth': buttonFullWidth,
                     })}
                 >
-                    {notification && (
-                        <div className="Form-footer-notification">
-                            <InlineNotification
-                                variant={notification.variant || 'info'}
-                                title={notification.title}
-                                description={notification.description}
-                                additionalInfo={notification.additionalInfo}
-                                isClosable={notification.isClosable !== false}
-                                onClose={onDismissNotification}
-                                autoHideDuration={
-                                    notification.variant === 'success'
-                                        ? (notification.autoHideDuration ??
-                                          5000)
-                                        : notification.autoHideDuration
-                                }
-                                onAutoHide={onDismissNotification}
-                                actions={notification.actions}
-                            />
-                        </div>
-                    )}
                     <div className="Form-footer-buttons">
                         {typeof onCancel === 'function' && (
                             <CancelButton
-                                buttonText={t(nested ? 'discard' : 'cancel')}
+                                buttonText={t(
+                                    cancelText ||
+                                        (nested ? 'discard' : 'cancel')
+                                )}
                                 handleCancel={onCancel}
                                 isDisabled={fetching}
                                 size={nested ? 'sm' : undefined}
@@ -285,6 +272,26 @@ export default function Form({
                             >
                                 {submitButtonState.helpText}
                             </small>
+                        </div>
+                    )}
+                    {notification && (
+                        <div className="Form-footer-notification">
+                            <InlineNotification
+                                variant={notification.variant || 'info'}
+                                title={notification.title}
+                                description={notification.description}
+                                additionalInfo={notification.additionalInfo}
+                                isClosable={notification.isClosable !== false}
+                                onClose={onDismissNotification}
+                                autoHideDuration={
+                                    notification.variant === 'success'
+                                        ? (notification.autoHideDuration ??
+                                          5000)
+                                        : notification.autoHideDuration
+                                }
+                                onAutoHide={onDismissNotification}
+                                actions={notification.actions}
+                            />
                         </div>
                     )}
                 </div>
@@ -342,5 +349,6 @@ Form.propTypes = {
     scope: PropTypes.string,
     submitScope: PropTypes.string,
     submitText: PropTypes.string,
+    cancelText: PropTypes.string,
     values: PropTypes.object,
 };

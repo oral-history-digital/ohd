@@ -211,6 +211,8 @@ function EditableSegment({
                                             onSubmit={handleEditSubmit}
                                             onCancel={handleEditCancel}
                                             data-testid="segment-headings"
+                                            submitText="save"
+                                            cancelText="close"
                                         />
                                     )}
                                 {tabIndex === index &&

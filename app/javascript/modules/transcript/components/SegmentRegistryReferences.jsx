@@ -7,7 +7,7 @@ import {
     RegistryReferencesContainer,
 } from 'modules/registry-references';
 import { useProject } from 'modules/routes';
-import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
+import { CancelButton } from 'modules/ui/Buttons';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
@@ -97,13 +97,8 @@ export default function SegmentRegistryReferences({
                 <div className="Form-footer u-mt">
                     <div className="Form-footer-buttons">
                         <CancelButton
-                            buttonText={t('cancel')}
+                            buttonText={t('close')}
                             handleCancel={handleFormCancel}
-                        />
-                        <SubmitButton
-                            buttonText={t('submit')}
-                            onClick={handleFormCancel}
-                            isDisabled
                         />
                     </div>
                 </div>

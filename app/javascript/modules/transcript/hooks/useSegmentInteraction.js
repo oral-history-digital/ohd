@@ -96,8 +96,8 @@ export function useSegmentInteraction({
     }, [onEditEnd]);
 
     const handleEditSubmit = useCallback(() => {
-        onEditEnd?.();
-    }, [onEditEnd]);
+        // Keep edit mode active after save for consistent behavior across tabs.
+    }, []);
 
     return {
         handleFormChange,

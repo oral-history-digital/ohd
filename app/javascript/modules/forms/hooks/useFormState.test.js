@@ -546,6 +546,30 @@ describe('useFormState', () => {
             expect(hook.isDirty).toBe(true);
             expect(hook.dirtyFields).toEqual(['name']);
         });
+
+        it('can mark current values as clean after save', async () => {
+            render({
+                initialValues: { name: 'Test' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Saved Name');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+
+            await act(async () => {
+                hook.markCurrentValuesAsClean();
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
     });
 
     describe('replaceNestedFormValues', () => {

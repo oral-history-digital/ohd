@@ -6,4 +6,5 @@ export * from './useProcessedSegmentText';
 export * from './useSegmentEditing';
 export * from './useSegmentInteraction';
 export * from './useSegmentPreview';
+export * from './useSegmentSaveNotification';
 export * from './useSegmentTabs';

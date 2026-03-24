@@ -11,6 +11,7 @@ import { Spinner } from 'modules/spinners';
 import { detectTimecodeFormat } from 'modules/utils';
 import PropTypes from 'prop-types';
 
+import { useSegmentSaveNotification } from '../hooks';
 import { getTimecodeHelpText } from '../utils';
 
 export default function SegmentForm({
@@ -29,6 +30,12 @@ export default function SegmentForm({
     const interviewId = segment?.interview_id;
     const { data: people, isLoading } = useInterviewContributors(interviewId);
     const { t } = useI18n();
+    const {
+        isSaving,
+        saveNotification,
+        handleSaveStart,
+        dismissSaveNotification,
+    } = useSegmentSaveNotification(segment?.id);
 
     // Detect timecode format from the interview data so ms and frames are not mixed
     const timecodeFormat = detectTimecodeFormat(
@@ -40,7 +47,6 @@ export default function SegmentForm({
     );
     const [hasTimecodeError, setHasTimecodeError] = useState(false);
     const [hasSpeakerError, setHasSpeakerError] = useState(false);
-
     // Pure validators — no setState, safe to call during render
     const isSpeakerValid = useCallback((value) => {
         return value !== null && value !== undefined && value !== '';
@@ -91,10 +97,17 @@ export default function SegmentForm({
                 onChange(changeInfo);
             }
         },
-        [timecodeFormat, prevSegmentTimecode, nextSegmentTimecode, onChange]
+        [
+            timecodeFormat,
+            prevSegmentTimecode,
+            nextSegmentTimecode,
+            isSpeakerValid,
+            onChange,
+        ]
     );
 
     const submitHandler = (params) => {
+        handleSaveStart(); // Set saving state and clear notifications before dispatching save action
         submitData({ locale, projectId, project }, params);
         onSubmit();
     };
@@ -150,15 +163,19 @@ export default function SegmentForm({
                 onSubmit={submitHandler}
                 onCancel={onCancel}
                 onChange={handleFormChange}
+                fetching={isSaving}
                 hasValidationErrors={hasTimecodeError || hasSpeakerError}
                 disableIfUnchanged={true}
+                notification={saveNotification}
+                onDismissNotification={dismissSaveNotification}
                 data={segment}
                 values={{
                     locale: contentLocale,
                     speaker_id: segment?.speaker_id,
                     timecode: segment?.timecode || '',
                 }}
-                submitText="submit"
+                submitText="save"
+                cancelText="close"
                 elements={formElements}
             />
         </div>

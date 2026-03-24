@@ -20,7 +20,7 @@ export function useFormState(initialValues, data, elements) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
     const [touched, setTouched] = useState(initTouched());
-    const initialFormValues = initValues();
+    const [initialFormValues, setInitialFormValues] = useState(initValues());
 
     /**
      * Initialize form values from initialValues and data props.
@@ -305,6 +305,14 @@ export function useFormState(initialValues, data, elements) {
         }));
     }
 
+    /**
+     * Mark current values as the clean baseline after a successful save.
+     * This allows disableIfUnchanged forms to disable submit immediately.
+     */
+    function markCurrentValuesAsClean(nextValues = values) {
+        setInitialFormValues({ ...nextValues });
+    }
+
     const dirtyState = getDirtyState();
 
     return {
@@ -322,5 +330,6 @@ export function useFormState(initialValues, data, elements) {
         deleteNestedObject,
         getNestedObjects,
         replaceNestedFormValues,
+        markCurrentValuesAsClean,
     };
 }

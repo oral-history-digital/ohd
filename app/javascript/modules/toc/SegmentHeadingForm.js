@@ -5,7 +5,13 @@ import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-export default function SegmentHeadingForm({ segment, onSubmit, onCancel }) {
+export default function SegmentHeadingForm({
+    segment,
+    onSubmit,
+    onCancel,
+    submitText,
+    cancelText,
+}) {
     const { locale } = useI18n();
     const { project, projectId } = useProject();
     const dispatch = useDispatch();
@@ -25,7 +31,8 @@ export default function SegmentHeadingForm({ segment, onSubmit, onCancel }) {
                 onCancel={onCancel}
                 data={segment}
                 helpTextCode="language_form"
-                submitText="submit"
+                submitText={submitText || 'submit'}
+                cancelText={cancelText || 'cancel'}
                 elements={[
                     {
                         attribute: 'mainheading',
@@ -48,4 +55,6 @@ SegmentHeadingForm.propTypes = {
     segment: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
+    submitText: PropTypes.string,
+    cancelText: PropTypes.string,
 };
