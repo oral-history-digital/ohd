@@ -76,6 +76,11 @@ export default function Layout({ children }) {
             }
         }
 
+        if (!project?.id) {
+            removeAccessTokenParam();
+            return;
+        }
+
         if (!projectsStatus[project.id]) {
             dispatch(
                 fetchData(
