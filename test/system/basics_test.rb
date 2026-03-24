@@ -332,6 +332,10 @@ class BasicsTest < ApplicationSystemTestCase
     click_test_id('segment-button-edit')
     select 'Dupont, Jean'
     click_test_id('submit-button')
+    within '.Segment--editMode' do
+      assert_selector("[data-testid='cancel-button']:not([disabled])")
+      click_test_id('cancel-button')
+    end
     assert_test_id_text('segment-initials', 'JD')
     assert_test_id_text('segment-text', 'My name is Mario Rossi')
 
