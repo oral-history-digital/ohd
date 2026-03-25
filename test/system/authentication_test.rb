@@ -48,6 +48,57 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_text 'The test archive'
   end
 
+  test "register confirmation returns to originating page and shows access step two" do
+    email = 'flow-check@example.com'
+
+    visit '/en/searches/archive'
+    within '.SessionButtons' do
+      click_test_id('register-link')
+    end
+
+    fill_in 'First Name', with: 'Flow'
+    fill_in 'Last Name', with: 'Check'
+    select 'Germany'
+    fill_in 'Street', with: 'Am Dornbusch 13'
+    fill_in 'City', with: 'Frankfurt am Main'
+    fill_in 'Email', with: email
+    fill_in 'Password', name: 'password', with: 'Password123!'
+    fill_in 'Password confirmation', with: 'Password123!'
+    check 'Terms of Use', visible: :all
+    check 'Privacy Policy', visible: :all
+    click_on 'Submit registration'
+
+    assert_text 'Your registration has been successfully submitted!'
+
+    user = User.find_by(email: email)
+    assert_not_nil user
+    assert_match %r{\Ahttp://test\.portal\.oral-history\.localhost:47001/en/searches/archive(\?.*)?\z}, user.pre_register_location
+
+    confirm_registration_email
+
+    assert_match %r{\A/en/searches/archive(\?.*)?\z}, current_path
+    expected_path = current_path
+    assert_selector("[data-testid='user_project-form-wrapper']")
+
+    within("[data-testid='user_project-form-wrapper']") do
+      find_test_id('user_project-organization-text-input').set('Goethe University')
+      select_test_id_option('user_project-job_description-select', 'Researcher')
+      select_test_id_option('user_project-research_intentions-select', 'Education')
+      find_test_id('user_project-specification-textarea').set('project ...')
+      click_test_id('user_project-tos_agreement-checkbox-input')
+      click_on 'Submit activation request'
+    end
+
+    assert_text 'Your activation request has been successfully submitted'
+    assert_equal expected_path, current_path
+    click_on 'OK'
+    assert_equal expected_path, current_path
+
+    mails = ActionMailer::Base.deliveries
+    assert_equal 2, mails.count
+    assert_match /request for review/, mails.last.subject
+  end
+
   #test "user can enable TOTP during registration" do
     #email = 'achim@example.com'
     #fill_registration_form(

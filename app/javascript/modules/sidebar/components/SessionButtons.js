@@ -21,6 +21,14 @@ export default function SessionButtons({ className }) {
 
     const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}${encodeURIComponent(location.search)}&project=${projectId}`;
 
+    const handleRegisterClick = () => {
+        // Store the current path for redirect after successful registration
+        sessionStorage.setItem(
+            'registrationReturnPath',
+            location.pathname + location.search
+        );
+    };
+
     return isLoggedIn ? (
         <div className={classNames('SessionButtons', className)}>
             <Link to={`${pathBase}/users/current`}>{t('account_page')}</Link>
@@ -82,8 +90,14 @@ export default function SessionButtons({ className }) {
         </div>
     ) : (
         <div className={classNames('SessionButtons', className)}>
-            <Link to={`${pathBase}/register`}>{t('user.registration')}</Link>
-            <a href={loginURL} className="u-ml-small">
+            <Link
+                to={`${pathBase}/register`}
+                onClick={handleRegisterClick}
+                data-testid="register-link"
+            >
+                {t('user.registration')}
+            </Link>
+            <a href={loginURL} className="u-ml-small" data-testid="login-link">
                 {t('login')}
             </a>
         </div>

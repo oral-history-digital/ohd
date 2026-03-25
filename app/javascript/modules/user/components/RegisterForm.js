@@ -28,6 +28,17 @@ export default function RegisterForm({
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
+    const storedReturnPath = sessionStorage.getItem('registrationReturnPath');
+    const safeReturnPath =
+        storedReturnPath &&
+        storedReturnPath.startsWith('/') &&
+        !storedReturnPath.startsWith('//')
+            ? storedReturnPath
+            : null;
+    const preRegisterLocation = safeReturnPath
+        ? `${location.origin}${safeReturnPath}`
+        : location.href;
+
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
     const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
 
@@ -267,7 +278,7 @@ export default function RegisterForm({
                 elements={formElements()}
                 values={{
                     default_locale: locale,
-                    pre_register_location: location.href,
+                    pre_register_location: preRegisterLocation,
                 }}
                 onCancel={showCancelButton ? onCancel : undefined}
                 className="Registration-form"
