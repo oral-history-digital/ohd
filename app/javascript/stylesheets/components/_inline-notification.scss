@@ -95,10 +95,14 @@ $inline-notification-fade-duration: 300ms;
 
   // Title
   &__title {
-    font-weight: 600;
     font-size: $font-size-large;
     line-height: $line-height-large;
     color: $gray-darkest;
+  }
+
+  // If description is present, make title more prominent
+  .InlineNotification__container--hasDescription &__title {
+    font-weight: 600;
   }
 
   // Description

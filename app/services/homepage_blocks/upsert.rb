@@ -12,7 +12,7 @@ module HomepageBlocks
 
     def initialize(instance_setting:, attributes:)
       @instance_setting = instance_setting
-      @attributes = attributes.with_indifferent_access.slice(*ATTRIBUTES)
+      @attributes = normalize_attributes(attributes).with_indifferent_access.slice(*ATTRIBUTES)
     end
 
     def perform
@@ -34,6 +34,17 @@ module HomepageBlocks
 
     def block_attributes
       @attributes.except(:id)
+    end
+
+    def normalize_attributes(attributes)
+      return {} if attributes.blank?
+
+      if attributes.is_a?(Array)
+        candidate = attributes.find { |item| item.respond_to?(:with_indifferent_access) }
+        return candidate || {}
+      end
+
+      attributes
     end
   end
 end

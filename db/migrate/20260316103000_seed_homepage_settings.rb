@@ -46,8 +46,8 @@ class SeedHomepageSettings < ActiveRecord::Migration[8.0]
   BLOCK_DEFAULTS = {
     'hero' => {
       position: 0,
-      button_primary_target: '/explorer',
-      button_secondary_target: '/explorer',
+      button_primary_target: '/catalog',
+      button_secondary_target: '/catalog/institutions',
       show_secondary_button: true
     },
     'panel_interview' => {
@@ -58,7 +58,7 @@ class SeedHomepageSettings < ActiveRecord::Migration[8.0]
     },
     'panel_register' => {
       position: 2,
-      button_primary_target: '/searches/archive',
+      button_primary_target: '/register',
       button_secondary_target: nil,
       show_secondary_button: false
     }

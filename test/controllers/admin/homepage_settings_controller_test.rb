@@ -23,7 +23,7 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
   test 'should return full locale payload for admin' do
     login_as User.find_by!(email: 'alice@example.com')
 
-    get admin_homepage_settings_path(locale: 'de', format: :json)
+    get admin_instance_setting_path(locale: 'de', format: :json)
 
     assert_response :success
 
@@ -39,7 +39,7 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
   test 'should reject non admin' do
     login_as User.find_by!(email: 'john@example.com')
 
-    get admin_homepage_settings_path(locale: 'de', format: :json)
+    get admin_instance_setting_path(locale: 'de', format: :json)
 
     assert_response :redirect
     assert_match '/users/sign_in', response.location

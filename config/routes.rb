@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-access-config", to: "projects#edit_access_config"
     get "project/edit-display", to: "projects#edit_display"
+    get "admin/instance", to: "projects#show"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"
     get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
@@ -292,7 +293,10 @@ Rails.application.routes.draw do
       get "/", to: "projects#index"
       resource :homepage_settings, only: [:show, :update]
       namespace :admin do
-        resource :homepage_settings, only: [:show, :update]
+        resource :instance_setting,
+                 only: [:show, :update],
+                 path: 'instance-settings',
+                 controller: :homepage_settings
       end
       concerns :all_project_routes
       resources :institutions

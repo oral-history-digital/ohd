@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { AuthorizedContent } from 'modules/auth';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -9,6 +10,7 @@ import { FaDownload } from 'react-icons/fa';
 import Select from 'react-select';
 
 import AdminSubTab from './AdminSubTab';
+import SubTab from './SubTab';
 
 export default function UsersAdminTabPanel({ countryKeys, project }) {
     const { t, locale } = useI18n();
@@ -99,6 +101,15 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
                         )}
                     </div>
                 </AdminSubTab>
+                <AuthorizedContent
+                    object={{ type: 'InstanceSetting' }}
+                    action="update"
+                >
+                    <SubTab
+                        title={t('edit.instance.title')}
+                        url={`${pathBase}/admin/instance`}
+                    />
+                </AuthorizedContent>
             </div>
         </ErrorBoundary>
     );

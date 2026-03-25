@@ -26,17 +26,35 @@ module InstanceSettings
     def upsert_blocks!
       blocks = @attributes['blocks'] || @attributes[:blocks] || []
 
-      blocks.each do |raw_block|
+      normalize_blocks(blocks).each do |raw_block|
         block = HomepageBlocks::Upsert.perform(
           instance_setting: @instance_setting,
           attributes: raw_block
         )
 
         image_attributes = raw_block['image'] || raw_block[:image]
-        next if image_attributes.blank?
 
-        HomepageBlocks::AttachImage.perform(block: block, attributes: image_attributes)
+        normalize_images(image_attributes).each do |attributes|
+          HomepageBlocks::AttachImage.perform(block: block, attributes: attributes)
+        end
       end
+    end
+
+    def normalize_images(image_attributes)
+      return [] if image_attributes.blank?
+
+      return image_attributes.compact if image_attributes.is_a?(Array)
+
+      [image_attributes]
+    end
+
+    def normalize_blocks(blocks)
+      return [] if blocks.blank?
+
+      return blocks.compact if blocks.is_a?(Array)
+      return blocks.values.compact if blocks.is_a?(Hash)
+
+      [blocks]
     end
   end
 end
