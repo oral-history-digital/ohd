@@ -27,7 +27,7 @@ class SessionsController < Devise::SessionsController
         super
       else
         project = Project.by_domain(request.base_url)
-        path = stored_location_for(resource)&.gsub("?checked_ohd_session=true", "")
+        path = remove_checked_ohd_session(stored_location_for(resource))
         redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
       end
     end
@@ -129,7 +129,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def set_path
-    @path = params[:path]
+    @path = remove_checked_ohd_session(params[:path])
   end
 
   def set_locale
@@ -146,12 +146,26 @@ class SessionsController < Devise::SessionsController
   end
 
   def after_sign_in(resource)
-    path = stored_location_for(resource)
+    path = remove_checked_ohd_session(stored_location_for(resource))
     if path
       respond_with resource, location: path
     else
       respond_with resource, location: url_with_access_token
     end
+  end
+
+  def remove_checked_ohd_session(path)
+    return path if path.blank?
+
+    uri = URI.parse(path)
+    return path if uri.query.blank?
+
+    query = Rack::Utils.parse_nested_query(uri.query)
+    query.delete('checked_ohd_session')
+    uri.query = query.to_query.presence
+    uri.to_s
+  rescue URI::InvalidURIError
+    path
   end
 
 end
