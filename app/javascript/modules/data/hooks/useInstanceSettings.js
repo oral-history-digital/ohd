@@ -4,13 +4,13 @@ import buildFormData from 'modules/api/buildFormData';
 import { usePathBase } from 'modules/routes';
 import useSWR from 'swr';
 
-export function useInstanceSetting() {
+export function useInstanceSettings() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const pathBase = usePathBase();
     const path = `${pathBase}/admin/instance-settings.json`;
     const { isLoading, data: response, error, mutate } = useSWR(path);
 
-    async function updateInstanceSetting(params) {
+    async function updateInstanceSettings(params) {
         setIsSubmitting(true);
 
         const formData = new FormData();
@@ -48,9 +48,9 @@ export function useInstanceSetting() {
         isSubmitting,
         error,
         mutate,
-        instanceSetting: response?.data,
-        updateInstanceSetting,
+        instanceSettings: response?.data,
+        updateInstanceSettings,
     };
 }
 
-export default useInstanceSetting;
+export default useInstanceSettings;

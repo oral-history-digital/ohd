@@ -1,6 +1,6 @@
 export * from './useGetInstitutions';
 export * from './useHumanReadable';
-export * from './useInstanceSetting';
+export * from './useInstanceSettings';
 export * from './useLoadCompleteProject';
 export * from './useMutateData';
 export * from './useMutateDatum';

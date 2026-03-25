@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { useInstanceSetting } from 'modules/data';
+import { useInstanceSettings } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
@@ -18,9 +18,9 @@ export default function InstanceSettingAdminPage() {
         isLoading,
         isSubmitting,
         error,
-        instanceSetting,
-        updateInstanceSetting,
-    } = useInstanceSetting();
+        instanceSettings,
+        updateInstanceSettings,
+    } = useInstanceSettings();
 
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -97,7 +97,7 @@ export default function InstanceSettingAdminPage() {
     ];
 
     function blockData(code) {
-        return instanceSetting?.blocks?.[code] || null;
+        return instanceSettings?.blocks?.[code] || null;
     }
 
     function blockImageForLocale(code, imageLocale) {
@@ -111,7 +111,7 @@ export default function InstanceSettingAdminPage() {
 
     function instanceInitialValues() {
         return {
-            umbrella_project_id: instanceSetting?.umbrella_project_id,
+            umbrella_project_id: instanceSettings?.umbrella_project_id,
         };
     }
 
@@ -187,7 +187,7 @@ export default function InstanceSettingAdminPage() {
 
         return submitWithNotification(
             () =>
-                updateInstanceSetting({
+                updateInstanceSettings({
                     homepage_setting: {
                         umbrella_project_id: values.umbrella_project_id,
                     },
@@ -238,7 +238,7 @@ export default function InstanceSettingAdminPage() {
         return submitWithNotification(
             () =>
                 (async () => {
-                    let result = await updateInstanceSetting({
+                    let result = await updateInstanceSettings({
                         homepage_setting: {
                             blocks: [
                                 {
@@ -251,7 +251,7 @@ export default function InstanceSettingAdminPage() {
                         },
                     });
                     for (let i = 1; i < imageUpdates.length; i += 1) {
-                        result = await updateInstanceSetting({
+                        result = await updateInstanceSettings({
                             homepage_setting: {
                                 blocks: [
                                     {
@@ -286,10 +286,10 @@ export default function InstanceSettingAdminPage() {
                         <h1>{t('edit.instance.title')}</h1>
                         {isLoading && <Spinner withPadding />}
                         {!isLoading && error && <p>{error.message}</p>}
-                        {!isLoading && !error && instanceSetting && (
+                        {!isLoading && !error && instanceSettings && (
                             <>
                                 <Form
-                                    data={instanceSetting}
+                                    data={instanceSettings}
                                     values={instanceInitialValues()}
                                     scope="homepage_setting"
                                     submitText="submit"
