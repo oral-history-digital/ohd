@@ -4,6 +4,7 @@ import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
 import { clearStateData, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { pathWithoutInternalSessionFlag } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import { getIsLoggedIn, submitLogout } from 'modules/user';
 import PropTypes from 'prop-types';
@@ -25,7 +26,7 @@ export default function SessionButtons({ className }) {
         // Store the current path for redirect after successful registration
         sessionStorage.setItem(
             'registrationReturnPath',
-            location.pathname + location.search
+            pathWithoutInternalSessionFlag(location.pathname, location.search)
         );
     };
 

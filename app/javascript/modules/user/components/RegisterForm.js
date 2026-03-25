@@ -6,6 +6,7 @@ import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
 import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { sanitizeInternalReturnPath } from 'modules/query-string';
 import { usePathBase } from 'modules/routes';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -29,14 +30,12 @@ export default function RegisterForm({
     const pathBase = usePathBase();
 
     const storedReturnPath = sessionStorage.getItem('registrationReturnPath');
-    const safeReturnPath =
-        storedReturnPath &&
-        storedReturnPath.startsWith('/') &&
-        !storedReturnPath.startsWith('//')
-            ? storedReturnPath
-            : null;
-    const preRegisterLocation = safeReturnPath
-        ? `${location.origin}${safeReturnPath}`
+    const sanitizedStoredReturnPath = sanitizeInternalReturnPath(
+        storedReturnPath,
+        null
+    );
+    const preRegisterLocation = sanitizedStoredReturnPath
+        ? `${location.origin}${sanitizedStoredReturnPath}`
         : location.href;
 
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;

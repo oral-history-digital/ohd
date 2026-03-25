@@ -1,4 +1,5 @@
 import { useI18n } from 'modules/i18n';
+import { sanitizeInternalReturnPath } from 'modules/query-string';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -17,10 +18,7 @@ export default function AfterRegisterPopup() {
         const rawPath = sessionStorage.getItem('registrationReturnPath');
         sessionStorage.removeItem('registrationReturnPath');
 
-        const returnPath =
-            rawPath && rawPath.startsWith('/') && !rawPath.startsWith('//')
-                ? rawPath
-                : '/';
+        const returnPath = sanitizeInternalReturnPath(rawPath);
 
         closeModal();
         navigate(returnPath);

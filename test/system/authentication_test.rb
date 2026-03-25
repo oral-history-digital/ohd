@@ -51,7 +51,7 @@ class RegistrationTest < ApplicationSystemTestCase
   test "register confirmation returns to originating page and shows access step two" do
     email = 'flow-check@example.com'
 
-    visit '/en/searches/archive'
+    visit '/en/searches/archive?sort=random&checked_ohd_session=true'
     within '.SessionButtons' do
       click_test_id('register-link')
     end
@@ -72,11 +72,14 @@ class RegistrationTest < ApplicationSystemTestCase
 
     user = User.find_by(email: email)
     assert_not_nil user
-    assert_match %r{\Ahttp://test\.portal\.oral-history\.localhost:47001/en/searches/archive(\?.*)?\z}, user.pre_register_location
+    assert_equal 'http://test.portal.oral-history.localhost:47001/en/searches/archive?sort=random', user.pre_register_location
 
     confirm_registration_email
 
-    assert_match %r{\A/en/searches/archive(\?.*)?\z}, current_path
+    current_query = Rack::Utils.parse_nested_query(URI.parse(current_url).query)
+    assert_equal '/en/searches/archive', current_path
+    assert_equal 'random', current_query['sort']
+    assert_nil current_query['checked_ohd_session']
     expected_path = current_path
     assert_selector("[data-testid='user_project-form-wrapper']")
 
