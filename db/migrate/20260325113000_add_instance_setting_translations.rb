@@ -162,6 +162,15 @@ class AddInstanceSettingTranslations < ActiveRecord::Migration[8.0]
       uk: 'Файл зображення',
       ar: 'ملف الصورة',
     },
+    'edit.instance.block.current_image': {
+      de: 'Aktuelles Bild',
+      en: 'Current image',
+      el: 'Τρέχουσα εικόνα',
+      es: 'Imagen actual',
+      ru: 'Текущее изображение',
+      uk: 'Поточне зображення',
+      ar: 'الصورة الحالية',
+    },
     'edit.instance.block.image_title': {
       de: 'Bildtitel',
       en: 'Image title',

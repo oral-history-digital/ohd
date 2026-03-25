@@ -38,63 +38,67 @@ export default function InstanceSettingAdminPage() {
         },
     ];
 
-    const blockFormElements = [
-        {
-            attribute: 'heading',
-            label: t('edit.instance.block.heading'),
-            multiLocale: true,
-        },
-        {
-            attribute: 'text',
-            elementType: 'textarea',
-            label: t('edit.instance.block.text'),
-            multiLocale: true,
-            htmlOptions: { rows: 2 },
-        },
-        {
-            attribute: 'image_file_de',
-            elementType: 'input',
-            type: 'file',
-            accept: 'image/*',
-            label: `${t('edit.instance.block.image_file')} (DE)`,
-        },
-        {
-            attribute: 'image_file_en',
-            elementType: 'input',
-            type: 'file',
-            accept: 'image/*',
-            label: `${t('edit.instance.block.image_file')} (EN)`,
-        },
-        {
-            attribute: 'image_alt',
-            label: t('edit.instance.block.image_alt'),
-            multiLocale: true,
-        },
-        {
-            attribute: 'button_primary_label',
-            label: t('edit.instance.block.button_primary_label'),
-            multiLocale: true,
-        },
-        {
-            attribute: 'button_secondary_label',
-            label: t('edit.instance.block.button_secondary_label'),
-            multiLocale: true,
-        },
-        {
-            attribute: 'button_primary_target',
-            label: t('edit.instance.block.button_primary_target'),
-        },
-        {
-            attribute: 'button_secondary_target',
-            label: t('edit.instance.block.button_secondary_target'),
-        },
-        {
-            attribute: 'show_secondary_button',
-            elementType: 'input',
-            type: 'checkbox',
-            label: t('edit.instance.block.show_secondary_button'),
-        },
-    ];
+    function blockFormElements(code) {
+        return [
+            {
+                attribute: 'heading',
+                label: t('edit.instance.block.heading'),
+                multiLocale: true,
+            },
+            {
+                attribute: 'text',
+                elementType: 'textarea',
+                label: t('edit.instance.block.text'),
+                multiLocale: true,
+                htmlOptions: { rows: 2 },
+            },
+            {
+                attribute: 'image_file_de',
+                elementType: 'input',
+                type: 'file',
+                accept: 'image/*',
+                label: `${t('edit.instance.block.image_file')} (DE)`,
+                help: blockCurrentImageLink(code, 'de'),
+            },
+            {
+                attribute: 'image_file_en',
+                elementType: 'input',
+                type: 'file',
+                accept: 'image/*',
+                label: `${t('edit.instance.block.image_file')} (EN)`,
+                help: blockCurrentImageLink(code, 'en'),
+            },
+            {
+                attribute: 'image_alt',
+                label: t('edit.instance.block.image_alt'),
+                multiLocale: true,
+            },
+            {
+                attribute: 'button_primary_label',
+                label: t('edit.instance.block.button_primary_label'),
+                multiLocale: true,
+            },
+            {
+                attribute: 'button_secondary_label',
+                label: t('edit.instance.block.button_secondary_label'),
+                multiLocale: true,
+            },
+            {
+                attribute: 'button_primary_target',
+                label: t('edit.instance.block.button_primary_target'),
+            },
+            {
+                attribute: 'button_secondary_target',
+                label: t('edit.instance.block.button_secondary_target'),
+            },
+            {
+                attribute: 'show_secondary_button',
+                elementType: 'input',
+                type: 'checkbox',
+                label: t('edit.instance.block.show_secondary_button'),
+            },
+        ];
+    }
 
     function blockData(code) {
         return instanceSettings?.blocks?.[code] || null;
@@ -107,6 +111,19 @@ export default function InstanceSettingAdminPage() {
         }
 
         return block.images.find((item) => item.locale === imageLocale) || null;
+    }
+
+    function blockCurrentImageLink(code, imageLocale) {
+        const image = blockImageForLocale(code, imageLocale);
+        if (!image?.src) {
+            return null;
+        }
+
+        return (
+            <a href={image.src} target="_blank" rel="noopener noreferrer">
+                {t('edit.instance.block.current_image')}
+            </a>
+        );
     }
 
     function instanceInitialValues() {
@@ -331,7 +348,6 @@ export default function InstanceSettingAdminPage() {
                                                 translations_attributes: [],
                                                 images: [],
                                             };
-
                                             return (
                                                 <TabPanel
                                                     key={code}
@@ -345,9 +361,9 @@ export default function InstanceSettingAdminPage() {
                                                         )}
                                                         scope="homepage_block"
                                                         submitText="submit"
-                                                        elements={
-                                                            blockFormElements
-                                                        }
+                                                        elements={blockFormElements(
+                                                            code
+                                                        )}
                                                         fetching={isSubmitting}
                                                         notification={
                                                             blockNotifications[
