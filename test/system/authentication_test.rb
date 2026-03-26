@@ -374,4 +374,21 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_text 'Redirect Project'
   end
 
+  test "login from project startpage works without refresh" do
+    visit '/de'
+    assert_current_path '/de'
+
+    visit '/ohf/de'
+    assert_current_path '/ohf/de'
+
+    visit '/de/users/sign_in?path=/ohf/de&project=ohf'
+
+    fill_in 'user[email]', with: 'alice@example.com'
+    password_field = find_field('user[password]')
+    password_field.set('Password123!')
+    password_field.send_keys(:enter)
+
+    assert_equal '/ohf/de', current_path
+  end
+
 end

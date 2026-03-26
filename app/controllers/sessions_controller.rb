@@ -20,6 +20,11 @@ class SessionsController < Devise::SessionsController
   end
 
   def new
+    # Use the explicit path from the login URL (when present) and persist it
+    # so create/after_sign_in do not depend on stale stored locations.
+    path = current_return_path
+    store_location_for(resource_name, path) if path.present?
+
     if current_user
       redirect_to url_with_access_token
     else
@@ -27,7 +32,6 @@ class SessionsController < Devise::SessionsController
         super
       else
         project = Project.by_domain(request.base_url)
-        path = remove_checked_ohd_session(stored_location_for(resource))
         redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
       end
     end
@@ -146,12 +150,27 @@ class SessionsController < Devise::SessionsController
   end
 
   def after_sign_in(resource)
-    path = remove_checked_ohd_session(stored_location_for(resource))
+    path = current_return_path
     if path
-      respond_with resource, location: path
+      # Cross-domain login starts on OHD and needs a full target URL to land
+      # on project domains (including an access token for session handover).
+      if request.base_url == OHD_DOMAIN && @project&.archive_domain.present?
+        @path = path
+        respond_with resource, location: url_with_access_token
+      else
+        respond_with resource, location: path
+      end
     else
       respond_with resource, location: url_with_access_token
     end
+  end
+
+  def current_return_path
+    # Prefer explicit path from params, fallback to Devise stored location.
+    # In both cases strip the internal loop-prevention flag.
+    remove_checked_ohd_session(
+      params[:path].presence || stored_location_for(resource_name)
+    )
   end
 
   def remove_checked_ohd_session(path)
