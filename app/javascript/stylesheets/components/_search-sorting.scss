@@ -15,3 +15,7 @@
   flex-basis: 7 * $base-unit;
   flex-grow: 0;
 }
+
+.SearchResults-inlineSorting {
+  justify-content: flex-end;
+}
