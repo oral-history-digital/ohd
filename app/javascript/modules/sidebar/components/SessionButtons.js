@@ -19,8 +19,12 @@ export default function SessionButtons({ className }) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const archiveId = useSelector(getArchiveId);
     const projects = useSelector(getProjects);
+    const loginReturnPath = pathWithoutInternalSessionFlag(
+        location.pathname,
+        location.search
+    );
 
-    const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}${encodeURIComponent(location.search)}&project=${projectId}`;
+    const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${encodeURIComponent(loginReturnPath)}&project=${projectId}`;
 
     const handleRegisterClick = () => {
         // Store the current path for redirect after successful registration
