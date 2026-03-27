@@ -86,6 +86,60 @@ h1.search-results-title {
   //float: left;
   //margin-right: 30px;
 }
+
+.SearchResults-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $base-unit * 0.5;
+}
+
+.SearchResults-headerTitle {
+  margin-bottom: 0;
+}
+
+.SearchResults-headerActions {
+  display: flex;
+  align-items: flex-start;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.SearchResults-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $base-unit * 0.5;
+}
+
+.SearchResults-controlsSort {
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+
+.SearchResults-controlsTabs {
+  flex: 0 1 auto;
+  margin-bottom: 0;
+  margin-right: auto;
+}
+
+@include screen-xs {
+  .SearchResults-header {
+    flex-wrap: wrap;
+  }
+
+  .SearchResults-controlsSort {
+    flex: 1 1 100%;
+    margin-left: 0;
+  }
+
+  .SearchResults-controlsTabs {
+    flex: 1 1 100%;
+    margin-right: 0;
+  }
+}
+
 .search-results-legend {
   margin: 0;
   padding: 0;

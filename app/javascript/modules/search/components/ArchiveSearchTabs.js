@@ -20,6 +20,7 @@ export default function ArchiveSearchTabs({
     interviews,
     empty,
     loading,
+    controls,
     className,
     viewModes,
     currentViewMode,
@@ -45,21 +46,29 @@ export default function ArchiveSearchTabs({
             index={(viewModes && viewModes.indexOf(currentViewMode)) || 0}
             onChange={handleTabClick}
         >
-            <TabList className="Tabs-tabList">
-                {viewModes?.map((viewMode) => (
-                    <Tab
-                        key={viewMode}
-                        className={classNames('Tabs-tab', {
-                            hidden:
-                                viewModes.length < 2 ||
-                                (viewMode === VIEWMODE_WORKFLOW &&
-                                    !isAuthorized({ type: 'General' }, 'edit')),
-                        })}
-                    >
-                        <span>{t(viewMode)}</span>
-                    </Tab>
-                ))}
-            </TabList>
+            <div className="SearchResults-controls">
+                <TabList className="Tabs-tabList SearchResults-controlsTabs">
+                    {viewModes?.map((viewMode) => (
+                        <Tab
+                            key={viewMode}
+                            className={classNames('Tabs-tab', {
+                                hidden:
+                                    viewModes.length < 2 ||
+                                    (viewMode === VIEWMODE_WORKFLOW &&
+                                        !isAuthorized(
+                                            { type: 'General' },
+                                            'edit'
+                                        )),
+                            })}
+                        >
+                            <span>{t(viewMode)}</span>
+                        </Tab>
+                    ))}
+                </TabList>
+                {controls && (
+                    <div className="SearchResults-controlsSort">{controls}</div>
+                )}
+            </div>
 
             <hr className="Rule u-mt" />
 
@@ -141,6 +150,7 @@ ArchiveSearchTabs.propTypes = {
     interviews: PropTypes.array,
     empty: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,
+    controls: PropTypes.node,
     className: PropTypes.string,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,
