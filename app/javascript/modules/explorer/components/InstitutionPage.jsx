@@ -1,39 +1,32 @@
 import { useTrackPageView } from 'modules/analytics';
-import { Fetch, getInstitutions } from 'modules/data';
-import { useI18n } from 'modules/i18n';
+import { useGetInstitution } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-// TODO: This component is legacy code from the old catalog component before redesign.
-// It should be revised, especially regarding how data is loaded
+import { ArchivesList } from './ArchivesList';
+import {
+    Address,
+    GenericDetail,
+    Institutions,
+    InterviewStats,
+    RichtextDetail,
+    Website,
+} from './details';
 
 export function InstitutionPage() {
-    const allInstitutions = useSelector(getInstitutions);
-    const { t, locale } = useI18n();
     const id = Number(useParams().id);
+    const { institution } = useGetInstitution(id);
     useTrackPageView();
 
-    const institution = allInstitutions[id];
+    const title = institution?.name;
 
-    const title = institution?.name[locale];
-
-    let parentInstitution;
-    if (institution?.parent_id) {
-        parentInstitution = allInstitutions[institution.parent_id];
-    }
-
-    const cityParts = [institution?.zip, institution?.city];
-
-    const addressParts = [
-        institution?.street,
-        cityParts.filter((part) => part?.length > 0).join(' '),
-        institution?.country,
+    // Get IDs for institution & children to show archives list
+    const idsForArchivesList = [
+        ...(institution?.id ? [institution.id] : []),
+        ...(institution?.children?.map((child) => child.id) || []),
     ];
-
-    const address = addressParts.filter((part) => part?.length > 0).join(', ');
 
     return (
         <ScrollToTop>
@@ -41,82 +34,56 @@ export function InstitutionPage() {
                 <title>{title}</title>
             </Helmet>
             <ErrorBoundary>
-                <Fetch
-                    fetchParams={['institutions', id]}
-                    testDataType="institutions"
-                    testIdOrDesc={id}
-                >
-                    <div className="wrapper-content interviews">
-                        <h1 className="search-results-title u-mb">{title}</h1>
+                <div className="wrapper-content InstitutionDetails">
+                    <h1 className="u-mb">{title}</h1>
 
-                        <dl className="DescriptionList">
-                            {parentInstitution && (
-                                <div className="DescriptionList-group">
-                                    <dt className="DescriptionList-term">
-                                        {t(
-                                            'modules.catalog.part_of_institution'
-                                        )}
-                                    </dt>
-                                    <dd className="DescriptionList-description">
-                                        <Link
-                                            to={`/${locale}/catalog/institutions/${parentInstitution.id}`}
-                                        >
-                                            {parentInstitution.name[locale]}
-                                        </Link>
-                                    </dd>
-                                </div>
-                            )}
+                    <dl className="DescriptionList">
+                        <Institutions
+                            institutions={institution?.parent}
+                            labelKey="modules.catalog.part_of_institution"
+                        />
 
-                            {institution?.description[locale] && (
-                                <div className="DescriptionList-group">
-                                    <dt className="DescriptionList-term">
-                                        {t('modules.catalog.description')}
-                                    </dt>
-                                    <dd className="DescriptionList-description">
-                                        {institution?.description[locale]}
-                                    </dd>
-                                </div>
-                            )}
+                        <Institutions
+                            institutions={institution?.children}
+                            labelKey="explorer.sub_institutions"
+                        />
 
-                            {address && (
-                                <div className="DescriptionList-group">
-                                    <dt className="DescriptionList-term">
-                                        {t('modules.catalog.address')}
-                                    </dt>
-                                    <dd className="DescriptionList-description">
-                                        {address}
-                                    </dd>
-                                </div>
-                            )}
+                        <RichtextDetail
+                            richtext={institution?.description}
+                            labelKey="modules.catalog.description"
+                        />
 
-                            {institution?.website && (
-                                <div className="DescriptionList-group">
-                                    <dt className="DescriptionList-term">
-                                        {t('modules.catalog.web_page')}
-                                    </dt>
-                                    <dd className="DescriptionList-description">
-                                        <a
-                                            href={institution?.website}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            {institution?.website}
-                                        </a>
-                                    </dd>
-                                </div>
-                            )}
-                            <div className="DescriptionList-group">
-                                <dt className="DescriptionList-term">
-                                    {t('modules.catalog.volume')}
-                                </dt>
-                                <dd className="DescriptionList-description">
-                                    {institution?.num_interviews}{' '}
-                                    {t('activerecord.models.interview.other')}
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </Fetch>
+                        <Address
+                            address={institution?.address}
+                            lat={institution?.latitude}
+                            lon={institution?.longitude}
+                        />
+
+                        <Website url={institution?.website} />
+
+                        <InterviewStats counts={institution?.interviews} />
+
+                        <GenericDetail
+                            value={institution?.isil}
+                            labelKey="activerecord.attributes.institution.isil"
+                            groupClassName="InstitutionDetails-isil"
+                        />
+
+                        <GenericDetail
+                            value={institution?.gnd}
+                            labelKey="activerecord.attributes.institution.gnd"
+                            groupClassName="InstitutionDetails-gnd"
+                        />
+                    </dl>
+
+                    {idsForArchivesList && institution?.archives.length > 0 && (
+                        <ArchivesList
+                            institutionIds={idsForArchivesList}
+                            showTotals={false}
+                            hideifEmpty={true}
+                        />
+                    )}
+                </div>
             </ErrorBoundary>
         </ScrollToTop>
     );

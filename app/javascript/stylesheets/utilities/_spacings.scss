@@ -9,8 +9,27 @@
    .u-mt-small {
      margin-top: 0.5rem !important; }
 
+   .u-mv {
+     margin-top: 1rem !important;
+     margin-bottom: 1rem !important; }
+
+   .u-mh-large {
+     margin-left: 2rem !important;
+     margin-right: 2rem !important; }
+
    .u-mt {
      margin-top: 1rem !important; }
+
+   .u-p-none {
+     padding: 0 !important; }
+
+   .u-pv-small {
+     padding-top: 0.5rem !important;
+     padding-bottom: 0.5rem !important; }
+
+   .u-ph-tiny {
+     padding-left: 0.25rem !important;
+     padding-right: 0.25rem !important; }
 
    etc...
 
@@ -22,10 +41,13 @@ $spacing-directions: (
   '-right': 'r',
   '-bottom': 'b',
   '-left': 'l',
+  '-vertical': 'v',
+  '-horizontal': 'h',
 ) !default;
 
 $spacing-properties: (
   'margin': 'm',
+  'padding': 'p',
 ) !default;
 
 $spacing-sizes: (
@@ -34,13 +56,22 @@ $spacing-sizes: (
   '-tiny': 0.25 * $base-unit,
   null: 1 * $base-unit,
   '-large': 2 * $base-unit,
+  '-xlarge': 3 * $base-unit,
 ) !default;
 
 @each $property, $property-namespace in $spacing-properties {
   @each $direction, $direction-namespace in $spacing-directions {
     @each $size, $value in $spacing-sizes {
       .u-#{$property-namespace}#{$direction-namespace}#{$size} {
-        #{$property}#{$direction}: $value !important;
+        @if $direction == '-vertical' {
+          #{$property}-top: $value !important;
+          #{$property}-bottom: $value !important;
+        } @else if $direction == '-horizontal' {
+          #{$property}-left: $value !important;
+          #{$property}-right: $value !important;
+        } @else {
+          #{$property}#{$direction}: $value !important;
+        }
       }
     }
   }

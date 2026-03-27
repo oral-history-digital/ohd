@@ -3,14 +3,14 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
-import { isEmptyHtml } from 'modules/utils';
-import { formatNumber } from 'modules/utils';
+import { formatNumber, isEmptyHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useMatch, useNavigate } from 'react-router-dom';
 
-import { getArchiveUrl, highlightQueryInHtml } from '../utils';
+import { getProjectUrl } from '../utils';
 import { HighlightText } from './HighlightText';
+import { InterviewLanguages, InterviewStats, RichtextDetail } from './details';
 
 export function CollectionCard({ collection, archive, query }) {
     const { t } = useI18n();
@@ -19,21 +19,10 @@ export function CollectionCard({ collection, archive, query }) {
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
 
-    const archiveUrl = getArchiveUrl(archive, locale);
+    const { url: projectUrl } = getProjectUrl(archive, locale);
 
     const countInterviews = collection.interviews?.total || 0;
-    const countAccessibleInterviews =
-        collection.interviews?.public + collection.interviews?.restricted || 0;
-
-    const formatNum = (num) => formatNumber(num, 0, locale);
-    const numInterviews = formatNum(countInterviews);
-    const numAccessibleInterviews = formatNum(countAccessibleInterviews);
-
-    const interviewLanguages = collection.languages_interviews || [];
-    const interviewLanguagesStr = interviewLanguages
-        .map((l) => t(l))
-        .sort((a, b) => a.localeCompare(b, locale))
-        .join(', ');
+    const numInterviews = formatNumber(countInterviews, 0, locale);
 
     return (
         <div
@@ -72,14 +61,9 @@ export function CollectionCard({ collection, archive, query }) {
             {expanded && (
                 <div className="CollectionCard-body">
                     {!isEmptyHtml(collection.notes) ? (
-                        <div
-                            className="CollectionCard-notes"
-                            dangerouslySetInnerHTML={{
-                                __html: highlightQueryInHtml(
-                                    collection.notes,
-                                    query
-                                ),
-                            }}
+                        <RichtextDetail
+                            richtext={collection.notes}
+                            highlightString={query}
                         />
                     ) : (
                         <p className="CollectionCard-notes CollectionCard-notes--empty">
@@ -87,35 +71,11 @@ export function CollectionCard({ collection, archive, query }) {
                         </p>
                     )}
 
-                    {countInterviews > 0 && (
-                        <>
-                            <div className="CollectionCard-interviewCounts CollectionCard-interviewCounts--total">
-                                <span className="CollectionCard-label">
-                                    {t('explorer.interviews_total')}:{' '}
-                                </span>
-                                <span className="CollectionCard-interviewCount">
-                                    {numInterviews}
-                                </span>
-                            </div>
-                            <div className="CollectionCard-interviewCounts CollectionCard-interviewCounts--accessible">
-                                <span className="CollectionCard-label">
-                                    {t('explorer.interviews_accessible')}:{' '}
-                                </span>
-                                <span className="CollectionCard-interviewCount">
-                                    {numAccessibleInterviews}
-                                </span>
-                            </div>
-                        </>
-                    )}
+                    <InterviewStats counts={collection.interviews} />
 
-                    {interviewLanguages.length > 0 && (
-                        <div className="ArchiveCard-details">
-                            <span className="ArchiveCard-detailItem">
-                                {t('explorer.interview_languages')}:{' '}
-                                {interviewLanguagesStr}
-                            </span>
-                        </div>
-                    )}
+                    <InterviewLanguages
+                        languages={collection.languages_interviews}
+                    />
 
                     <div className="CollectionCard-pageButton">
                         <Button
@@ -133,7 +93,7 @@ export function CollectionCard({ collection, archive, query }) {
                             variant="contained"
                             onClick={() =>
                                 navigate(
-                                    `${archiveUrl}/searches/archive?collection_id[]=${collection.id}`
+                                    `${projectUrl}/searches/archive?collection_id[]=${collection.id}`
                                 )
                             }
                             endIcon={<FaExternalLinkAlt />}

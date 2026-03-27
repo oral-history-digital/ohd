@@ -123,7 +123,8 @@ export default function Layout({ children }) {
                     'is-logged-in': isLoggedIn,
                     'sidebar-is-visible': sidebarVisible,
                     'is-interview-page': isInterviewPage,
-                    'is-sticky': scrollPositionBelowThreshold,
+                    'is-sticky':
+                        isInterviewPage && scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
                 })}
             >

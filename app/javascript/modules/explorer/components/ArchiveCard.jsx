@@ -1,45 +1,35 @@
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { Button } from 'modules/ui';
+import { LinkButton } from 'modules/ui';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
-import { getArchiveUrl, highlightQueryInHtml } from '../utils';
+import { getProjectUrl } from '../utils';
 import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
+import { InterviewLanguages, InterviewStats, RichtextDetail } from './details';
 
 export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const cardRef = useScrollToExpandedCard(expanded);
     const { t, locale } = useI18n();
-    const navigate = useNavigate();
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
         .join(', ');
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
 
-    // TODO: Sanitize archiveUrl
-    const archiveUrl = getArchiveUrl(archive, locale);
-    const isExternalArchiveLink = Boolean(archive.archive_domain);
+    // TODO: Sanitize projectUrl
+    const { url: projectUrl, isExternalUrl: isExternalArchiveLink } =
+        getProjectUrl(archive, locale);
 
     const countCollections = archive.collections?.total || 0;
     const countInterviews = archive.interviews?.total || 0;
-    const countAccessibleInterviews =
-        archive.interviews?.public + archive.interviews?.restricted || 0;
 
     const formatNum = (num) => formatNumber(num, 0, locale);
     const numInterviews = formatNum(countInterviews);
     const numCollections = formatNum(countCollections);
-    const numAccessibleInterviews = formatNum(countAccessibleInterviews);
-
-    const interviewLanguages = archive.languages_interviews || [];
-    const interviewLanguagesStr = interviewLanguages
-        .map((l) => t(l))
-        .sort((a, b) => a.localeCompare(b, locale))
-        .join(', ');
 
     return (
         <div
@@ -92,70 +82,26 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
 
             {expanded && (
                 <div className="ArchiveCard-body">
-                    {archive.introduction && (
-                        <div
-                            className="ArchiveCard-description"
-                            dangerouslySetInnerHTML={{
-                                __html: highlightQueryInHtml(
-                                    archive.introduction,
-                                    query,
-                                    'RICH_TEXT'
-                                ),
-                            }}
-                        />
-                    )}
-
-                    {countInterviews > 0 && (
-                        <>
-                            <div className="ArchiveCard-interviewCounts ArchiveCard-interviewCounts--total">
-                                <span className="ArchiveCard-label">
-                                    {t('explorer.interviews_total')}:{' '}
-                                </span>
-                                <span className="ArchiveCard-interviewCount">
-                                    {numInterviews}
-                                </span>
-                            </div>
-                            <div className="ArchiveCard-interviewCounts ArchiveCard-interviewCounts--accessible">
-                                <span className="ArchiveCard-label">
-                                    {t('explorer.interviews_accessible')}:{' '}
-                                </span>
-                                <span className="ArchiveCard-interviewCount">
-                                    {numAccessibleInterviews}
-                                </span>
-                            </div>
-                        </>
-                    )}
-
-                    {interviewLanguages.length > 0 && (
-                        <div className="ArchiveCard-details">
-                            <span className="ArchiveCard-detailItem">
-                                {t('explorer.interview_languages')}:{' '}
-                                {interviewLanguagesStr}
-                            </span>
-                        </div>
-                    )}
+                    <RichtextDetail
+                        richtext={archive.introduction}
+                        highlightString={query}
+                    />
+                    <InterviewStats counts={archive.interviews} />
+                    <InterviewLanguages
+                        languages={archive.languages_interviews}
+                    />
 
                     <div className="ArchiveCard-pageButton">
-                        <Button
+                        <LinkButton
                             buttonText={t('explorer.view_archive_details')}
                             variant="outlined"
-                            onClick={() =>
-                                navigate(
-                                    `/${locale}/catalog/archives/${archive.id}`
-                                )
-                            }
+                            to={`/${locale}/catalog/archives/${archive.id}`}
                         />
-                        <Button
+                        <LinkButton
                             buttonText={t('explorer.view_archive_page')}
                             variant="contained"
-                            onClick={
-                                isExternalArchiveLink
-                                    ? undefined
-                                    : () => navigate(archiveUrl)
-                            }
-                            href={
-                                isExternalArchiveLink ? archiveUrl : undefined
-                            }
+                            to={projectUrl}
+                            isExternal={isExternalArchiveLink}
                             target={
                                 isExternalArchiveLink ? '_blank' : undefined
                             }

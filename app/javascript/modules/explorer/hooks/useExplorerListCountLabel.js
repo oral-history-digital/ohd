@@ -17,6 +17,7 @@ export function useExplorerListCountLabel({
     scope,
     displayedItems,
     totalItems,
+    showTotals = true,
 }) {
     const { t } = useI18n();
 
@@ -27,10 +28,11 @@ export function useExplorerListCountLabel({
         );
 
         const keyBase = `explorer.${scope}_list`;
-        const key = hasActiveFilter
-            ? `${keyBase}.count_with_total`
-            : `${keyBase}.count`;
+        const key =
+            hasActiveFilter && showTotals
+                ? `${keyBase}.count_with_total`
+                : `${keyBase}.count`;
 
         return t(key, { count, total });
-    }, [displayedItems, scope, t, totalItems]);
+    }, [displayedItems, scope, t, totalItems, showTotals]);
 }

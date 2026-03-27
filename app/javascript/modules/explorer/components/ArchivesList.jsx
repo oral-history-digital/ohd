@@ -19,6 +19,8 @@ export function ArchivesList({
     collectionMin,
     collectionMax,
     institutionIds,
+    showTotals = true,
+    hideifEmpty = false,
 }) {
     const { t } = useI18n();
     const { expandedId, toggle } = useAccordion();
@@ -47,6 +49,7 @@ export function ArchivesList({
         scope: 'archives',
         displayedItems: filtered,
         totalItems: archives,
+        showTotals,
     });
 
     if (isLoading) {
@@ -68,6 +71,10 @@ export function ArchivesList({
     }
 
     if (!filtered || filtered.length === 0) {
+        if (hideifEmpty) {
+            return null;
+        }
+
         return (
             <div className="ArchivesList ArchivesList--empty">
                 <p>
@@ -109,4 +116,6 @@ ArchivesList.propTypes = {
     collectionMin: PropTypes.number,
     collectionMax: PropTypes.number,
     institutionIds: PropTypes.arrayOf(PropTypes.number),
+    showTotals: PropTypes.bool,
+    hideifEmpty: PropTypes.bool,
 };

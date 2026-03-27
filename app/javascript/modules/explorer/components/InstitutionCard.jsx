@@ -4,11 +4,11 @@ import { Button } from 'modules/ui';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
 import { HighlightText } from './HighlightText';
+import { Institutions, InterviewStats, RichtextDetail } from './details';
 
 export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const cardRef = useScrollToExpandedCard(expanded);
@@ -17,24 +17,17 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const hasChildren = institution.children?.length > 0;
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
-    const institutionDetailsPath = (id) =>
-        `/${locale}/catalog/institutions/${id}`;
-    const archiveDetailsPath = (id) => `/${locale}/catalog/archives/${id}`;
 
     const countArchives = institution.archives?.length || 0;
     const countCollections =
         (institution.collections?.public || 0) +
         (institution.collections?.restricted || 0);
     const countInterviews = institution.interviews?.total || 0;
-    const countAccessibleInterviews =
-        (institution.interviews?.public || 0) +
-        (institution.interviews?.restricted || 0);
 
     const formatNum = (num) => formatNumber(num, 0, locale);
     const numArchives = formatNum(countArchives);
     const numCollections = formatNum(countCollections);
     const numInterviews = formatNum(countInterviews);
-    const numAccessibleInterviews = formatNum(countAccessibleInterviews);
 
     return (
         <div
@@ -92,116 +85,23 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
 
             {expanded && (
                 <div className="InstitutionCard-body">
-                    {institution.description && (
-                        <p className="InstitutionCard-description">
-                            <HighlightText
-                                text={institution.description}
-                                query={query}
-                            />
-                        </p>
-                    )}
+                    <RichtextDetail
+                        richtext={institution.description}
+                        highlightString={query}
+                    />
 
-                    {institution.parent?.name && (
-                        <div className="InstitutionCard-parent">
-                            <span className="InstitutionCard-label">
-                                {t('explorer.parent_institution')}:{' '}
-                            </span>
-                            {institution.parent.id ? (
-                                <Link
-                                    to={institutionDetailsPath(
-                                        institution.parent.id
-                                    )}
-                                    className="InstitutionCard-inlineLink"
-                                >
-                                    {institution.parent.name}
-                                </Link>
-                            ) : (
-                                institution.parent.name
-                            )}
-                        </div>
-                    )}
+                    <Institutions
+                        institutions={institution.parent}
+                        labelKey="explorer.parent_institution"
+                    />
 
-                    {hasChildren && (
-                        <div className="InstitutionCard-children">
-                            <h4 className="InstitutionCard-sectionTitle">
-                                {t('explorer.sub_institutions')}
-                            </h4>
-                            <ul className="InstitutionCard-list">
-                                {institution.children.map((child) => (
-                                    <li key={child.id}>
-                                        <Link
-                                            to={institutionDetailsPath(
-                                                child.id
-                                            )}
-                                            className="InstitutionCard-listLink"
-                                        >
-                                            <HighlightText
-                                                text={child.name}
-                                                query={query}
-                                            />
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    <Institutions
+                        institutions={institution.children}
+                        labelKey="explorer.sub_institutions"
+                    />
 
-                    {countInterviews > 0 && (
-                        <>
-                            <div className="InstitutionCard-interviewCounts InstitutionCard-interviewCounts--total">
-                                <span className="InstitutionCard-label">
-                                    {t('explorer.interviews_total')}:{' '}
-                                </span>
-                                <span className="InstitutionCard-interviewCount">
-                                    {numInterviews}
-                                </span>
-                            </div>
-                            <div className="InstitutionCard-interviewCounts InstitutionCard-interviewCounts--accessible">
-                                <span className="InstitutionCard-label">
-                                    {t('explorer.interviews_accessible')}:{' '}
-                                </span>
-                                <span className="InstitutionCard-interviewCount">
-                                    {numAccessibleInterviews}
-                                </span>
-                            </div>
-                        </>
-                    )}
+                    <InterviewStats counts={institution.interviews} />
 
-                    {countArchives > 0 && (
-                        <div className="InstitutionCard-archives">
-                            <h4 className="InstitutionCard-sectionTitle">
-                                {t('explorer.archives')}
-                            </h4>
-                            <ul className="InstitutionCard-list">
-                                {institution.archives.map((archive) => (
-                                    <li
-                                        key={archive.id}
-                                        className="InstitutionCard-archiveItem"
-                                    >
-                                        <Link
-                                            to={archiveDetailsPath(archive.id)}
-                                            className="InstitutionCard-listLink"
-                                        >
-                                            <HighlightText
-                                                text={archive.name}
-                                                query={query}
-                                            />
-                                            {archive.interviews_count > 0 && (
-                                                <span className="InstitutionCard-archiveCount">
-                                                    {' '}
-                                                    (
-                                                    {formatNum(
-                                                        archive.interviews_count
-                                                    )}{' '}
-                                                    {t('explorer.interviews')})
-                                                </span>
-                                            )}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
                     <div className="InstitutionCard-pageButton">
                         <Button
                             buttonText={t('explorer.view_institution_details')}

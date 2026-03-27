@@ -1,7 +1,6 @@
 export * from './useAccordion';
 export * from './useArchivesAndCollectionsRange';
 export * from './useArchivesSort';
-export * from './useCollectionData';
 export * from './useCollectionsSort';
 export * from './useDropdown';
 export * from './useExplorerArchiveInstitutions';

@@ -1,5 +1,5 @@
 export { default as AdminMenu } from './AdminMenu';
-export { Button, CancelButton, SubmitButton } from './Buttons';
+export { Button, CancelButton, LinkButton, SubmitButton } from './Buttons';
 export { default as Checkbox } from './Checkbox';
 export { PAGINATION_DEFAULT_PAGE_SIZE } from './constants';
 export { default as CopyText } from './CopyText';

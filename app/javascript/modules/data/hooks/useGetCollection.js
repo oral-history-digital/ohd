@@ -1,23 +1,21 @@
 import { fetcher } from 'modules/api';
-import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import useSWRImmutable from 'swr/immutable';
 
-export function useCollectionData(id) {
-    const { locale } = useI18n();
+export function useGetCollection(id) {
     const pathBase = usePathBase();
-    const path = `${pathBase}/catalog/collections/${id}?lang=${locale}`;
+    const path = id ? `${pathBase}/collections/${id}.json?lite=1` : null;
     const { isValidating, isLoading, data, error } = useSWRImmutable(
         path,
         fetcher
     );
 
     return {
-        collectionData: data,
+        collection: data?.data,
         error,
         isValidating,
         isLoading,
     };
 }
 
-export default useCollectionData;
+export default useGetCollection;
