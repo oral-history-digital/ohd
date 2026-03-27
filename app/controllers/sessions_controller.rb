@@ -1,13 +1,14 @@
 class SessionsController < Devise::SessionsController
+  include SignInRedirect
 
   skip_before_action :require_no_authentication
   skip_before_action :check_ohd_session
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
-  before_action :set_project, only: [:new, :create, :is_logged_in, :verify_otp]
-  before_action :set_path, only: [:new, :create, :is_logged_in, :verify_otp]
-  before_action :set_locale, only: [:new, :create, :is_logged_in, :verify_otp]
+  before_action :set_project, only: [:new, :create, :is_logged_in, :verify_otp, :otp]
+  before_action :set_path, only: [:new, :create, :is_logged_in, :verify_otp, :otp]
+  before_action :set_locale, only: [:new, :create, :is_logged_in, :verify_otp, :otp]
 
   respond_to :json, :html
 
@@ -44,7 +45,7 @@ class SessionsController < Devise::SessionsController
       if resource.otp_required_for_login? || resource.passkey_required_for_login?
         session[:otp_user_id] = resource.id
         sign_out(resource) # important
-        redirect_to users_otp_path
+        redirect_to users_otp_path(project: @project.shortname, path: @path, locale: @locale)
       else
         sign_in(resource_name, resource)
         after_sign_in(resource)
