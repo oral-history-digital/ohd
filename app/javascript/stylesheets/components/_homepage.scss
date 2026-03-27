@@ -98,7 +98,7 @@
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
-    margin-bottom: $base-unit * 2;
+    margin-bottom: $base-unit;
 
     @include screen-xs-s {
       background-position: right top;
@@ -176,14 +176,10 @@
     background: $gray-paler !important;
   }
 
-  .Panel {
-    margin-bottom: $base-unit * 2;
-  }
-
   .Panel-content {
     display: flex;
     flex-direction: column;
-    gap: $base-unit;
+    gap: $base-unit * 0.5;
   }
 
   .Panel-image {
@@ -202,10 +198,8 @@
   }
 
   .Panel-heading {
-    margin: 0 0 $base-unit * 0.5 0;
-    font-size: 1.5rem;
+    margin: $base-unit 0 0 0;
     font-weight: 700;
-    line-height: 1.3;
 
     @include screen-m {
       font-size: 1.75rem;
@@ -213,9 +207,9 @@
   }
 
   .Panel-text {
-    margin: 0 0 $base-unit 0;
+    margin: 0;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: $line-height-large;
     color: $gray-dark;
   }
 

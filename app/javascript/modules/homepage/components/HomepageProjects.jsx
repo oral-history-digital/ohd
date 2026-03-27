@@ -109,7 +109,7 @@ export function HomepageProjects({ className }) {
             </div>
 
             <div
-                className="HomepageProjects-scroll u-mt"
+                className="HomepageProjects-scroll"
                 ref={scrollRef}
                 onScroll={handleScroll}
                 data-testid="homepage-projects-scroll"
