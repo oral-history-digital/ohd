@@ -139,7 +139,7 @@ class RegistrationTest < ApplicationSystemTestCase
     login_as EMAIL, PASSWORD
     
     # Should be redirected to 2FA page
-    assert_current_path users_otp_path(locale: I18n.locale)
+    assert_current_path users_otp_path(locale: I18n.locale), ignore_query: true
     assert_text 'One-time code'
     
     # Generate valid TOTP code
