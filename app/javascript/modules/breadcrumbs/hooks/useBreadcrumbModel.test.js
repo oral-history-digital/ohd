@@ -2,11 +2,12 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { shallow } from 'enzyme';
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
 import {
-    getCollections,
     getCurrentInterview,
     getCurrentUser,
-    getInstitutions,
-    getProjects,
+    getUsersStatus,
+    useGetCollection,
+    useGetInstitution,
+    useGetProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useSelector } from 'react-redux';
@@ -41,11 +42,12 @@ jest.mock('react-redux', () => ({
 }));
 
 jest.mock('modules/data', () => ({
-    getCollections: jest.fn(),
     getCurrentInterview: jest.fn(),
     getCurrentUser: jest.fn(),
-    getInstitutions: jest.fn(),
-    getProjects: jest.fn(),
+    getUsersStatus: jest.fn(),
+    useGetCollection: jest.fn(),
+    useGetInstitution: jest.fn(),
+    useGetProject: jest.fn(),
 }));
 
 /**
@@ -67,6 +69,7 @@ function getHookResult({
     institutions,
     projects,
     currentUser,
+    usersStatus,
     authCanUpdate,
     projectAccessGranted,
     translations,
@@ -86,9 +89,18 @@ function getHookResult({
 
     getCurrentInterview.mockImplementation(() => interview);
     getCurrentUser.mockImplementation(() => currentUser || null);
-    getCollections.mockImplementation(() => collections);
-    getInstitutions.mockImplementation(() => institutions || {});
-    getProjects.mockImplementation(() => projects || {});
+    getUsersStatus.mockImplementation(() => usersStatus || 'fetched');
+    useGetCollection.mockImplementation((id) => ({
+        collection:
+            (id && (collections?.[id] || collections?.[Number(id)])) || null,
+    }));
+    useGetInstitution.mockImplementation((id) => ({
+        institution:
+            (id && (institutions?.[id] || institutions?.[Number(id)])) || null,
+    }));
+    useGetProject.mockImplementation((id) => ({
+        project: (id && (projects?.[id] || projects?.[Number(id)])) || null,
+    }));
     useSelector.mockImplementation((selector) => selector({}));
 
     const wrapper = shallow(<HookReader />);
@@ -341,6 +353,7 @@ describe('useBreadcrumbModel', () => {
                 87579294: {
                     id: 87579294,
                     project_id: 456146,
+                    project_name: 'Zeitzeugenarchiv FVV',
                     default_locale: 'de',
                     name: {
                         de: "Colonia Dignidad - Collection 'Deutsche Seelen'",
@@ -374,6 +387,67 @@ describe('useBreadcrumbModel', () => {
                 label: 'Zeitzeugenarchiv FVV',
                 to: '/de/catalog/archives/456146',
                 isCurrent: false,
+                loading: false,
+            },
+            {
+                key: 'catalog_item_87579294',
+                label: "Colonia Dignidad - Collection 'Deutsche Seelen'",
+                to: null,
+                isCurrent: true,
+                loading: false,
+            },
+        ]);
+    });
+
+    it('uses parent project id fallback while parent archive label is still loading', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'catalog_page',
+                isKnown: true,
+                params: {
+                    locale: 'de',
+                    projectId: null,
+                    catalogType: 'collections',
+                    id: '87579294',
+                },
+                pathBase: '/de',
+                pathname: '/de/catalog/collections/87579294',
+                search: '',
+            },
+            project: null,
+            interview: null,
+            currentUser: null,
+            collections: {
+                87579294: {
+                    id: 87579294,
+                    project_id: 456146,
+                    default_locale: 'de',
+                    name: {
+                        de: "Colonia Dignidad - Collection 'Deutsche Seelen'",
+                    },
+                },
+            },
+            institutions: {},
+            projects: {},
+            translations: {
+                home: 'Start',
+                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'catalog',
+                label: 'Archive & Sammlungen',
+                to: '/de/catalog',
+                isCurrent: false,
+            },
+            {
+                key: 'catalog_archive_456146',
+                label: '456146',
+                to: '/de/catalog/archives/456146',
+                isCurrent: false,
+                loading: true,
             },
             {
                 key: 'catalog_item_87579294',
@@ -438,6 +512,64 @@ describe('useBreadcrumbModel', () => {
                 to: '/mog/de/interviews/za001',
                 isCurrent: true,
                 loading: false,
+            },
+        ]);
+    });
+
+    it('keeps interview breadcrumb in loading state until restricted access is resolved', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'interview_detail',
+                isKnown: true,
+                params: {
+                    projectId: 'mog',
+                    locale: 'de',
+                    archiveId: 'za001',
+                },
+                pathBase: '/mog/de',
+                pathname: '/mog/de/interviews/za001',
+                search: '',
+            },
+            project: {
+                shortname: 'mog',
+                default_locale: 'de',
+                display_name: { de: 'Archiv Alpha' },
+            },
+            interview: {
+                id: 101,
+                archive_id: 'za001',
+                workflow_state: 'restricted',
+                short_title: { de: 'Full Visible Name' },
+                anonymous_title: { de: 'A. Person' },
+            },
+            currentUser: {
+                interview_permissions: [],
+            },
+            usersStatus: 'fetching',
+            collections: {},
+            institutions: {},
+            projects: {},
+            projectAccessGranted: true,
+            authCanUpdate: false,
+            translations: {
+                home: 'Start',
+                'activerecord.models.interview.one': 'Interview',
+            },
+        });
+
+        expect(result.items).toEqual([
+            {
+                key: 'search_archive',
+                label: 'Search',
+                to: '/mog/de/searches/archive',
+                isCurrent: false,
+            },
+            {
+                key: 'interview',
+                label: 'A. Person',
+                to: '/mog/de/interviews/za001',
+                isCurrent: true,
+                loading: true,
             },
         ]);
     });

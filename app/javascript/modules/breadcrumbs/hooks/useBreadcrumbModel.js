@@ -2,11 +2,12 @@ import { useMemo } from 'react';
 
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
 import {
-    getCollections,
     getCurrentInterview,
     getCurrentUser,
-    getInstitutions,
-    getProjects,
+    getUsersStatus,
+    useGetCollection,
+    useGetInstitution,
+    useGetProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { canShowFullInterviewTitle } from 'modules/interview-helpers';
@@ -30,10 +31,25 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project || {});
     const currentUser = useSelector(getCurrentUser);
+    const usersStatus = useSelector(getUsersStatus);
     const interview = useSelector(getCurrentInterview);
-    const collections = useSelector(getCollections);
-    const institutions = useSelector(getInstitutions);
-    const projects = useSelector(getProjects);
+
+    const params = currentPage?.params || {};
+    const catalogType = params.catalogType;
+    const catalogItemId = params.id;
+    const collectionId =
+        (catalogType === 'collections' && catalogItemId) ||
+        params.collectionId ||
+        interview?.collection_id ||
+        null;
+    const institutionId = catalogType === 'institutions' ? catalogItemId : null;
+    const archiveProjectId = catalogType === 'archives' ? catalogItemId : null;
+
+    const { project: archiveProject } = useGetProject(archiveProjectId, {
+        lite: true,
+    });
+    const { collection } = useGetCollection(collectionId);
+    const { institution } = useGetInstitution(institutionId);
 
     return useMemo(() => {
         const mergedLabels = {
@@ -55,10 +71,12 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
             catalogTypeLabels,
             entityLabels,
             project,
+            currentUser,
+            usersStatus,
             interview,
-            collections,
-            institutions,
-            projects,
+            collection,
+            institution,
+            archiveProject,
             locale,
             canShowFullTitle,
         };
@@ -75,16 +93,17 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
             items: buildKnownItems(currentPage, context),
         };
     }, [
-        collections,
+        archiveProject,
+        collection,
         currentPage,
         currentUser,
         entityLabels,
         interview,
         isAuthorized,
-        institutions,
+        institution,
         labels,
         locale,
-        projects,
+        usersStatus,
         projectAccessGranted,
         project,
         t,

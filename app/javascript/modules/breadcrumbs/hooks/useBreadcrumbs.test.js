@@ -132,4 +132,39 @@ describe('useBreadcrumbs', () => {
             },
         ]);
     });
+
+    it('preserves loading state from model items', () => {
+        const result = renderHookResult({
+            project: {
+                is_ohd: false,
+                default_locale: 'de',
+                display_name: { de: 'Projekt Alpha' },
+            },
+            currentPage: { pageType: 'catalog_page', pathBase: '/de' },
+            modelItems: [
+                {
+                    key: 'catalog_archive_456146',
+                    label: '456146',
+                    to: '/de/catalog/archives/456146',
+                    loading: true,
+                },
+            ],
+        });
+
+        expect(result).toEqual([
+            {
+                key: 'archive',
+                label: 'Projekt Alpha',
+                to: '/de',
+                isProjectRoot: true,
+            },
+            {
+                key: 'catalog_archive_456146',
+                label: '456146',
+                to: '/de/catalog/archives/456146',
+                isProjectRoot: false,
+                loading: true,
+            },
+        ]);
+    });
 });

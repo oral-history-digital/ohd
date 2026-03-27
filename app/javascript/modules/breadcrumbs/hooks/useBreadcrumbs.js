@@ -36,6 +36,7 @@ export function useBreadcrumbs() {
         label: item.label,
         to: item.to || undefined,
         isProjectRoot: item.key === 'archive',
+        ...(item.loading ? { loading: true } : {}),
     }));
 
     // Add project root as first breadcrumb item for non-OHD projects

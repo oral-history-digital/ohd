@@ -70,17 +70,11 @@ export function getInterviewLabel(interview, locale, canShowFullTitle) {
 /**
  * Returns a localized collection name for the interview collection.
  */
-export function getInterviewCollectionLabel(
-    interview,
-    collectionsById,
-    locale
-) {
-    if (!interview?.collection_id) {
-        return null;
-    }
-
-    const collection = collectionsById[interview.collection_id];
-    if (!collection) {
+export function getInterviewCollectionLabel(interview, collection, locale) {
+    if (
+        !interview?.collection_id ||
+        String(collection?.id) !== String(interview.collection_id)
+    ) {
         return null;
     }
 
@@ -95,14 +89,17 @@ export function getInterviewCollectionLabel(
  * Returns a localized catalog item label from loaded domain data.
  */
 export function getCatalogItemLabel(catalogType, itemId, context) {
-    const { locale, collections, institutions, projects } = context;
+    const { locale, collection, institution, archiveProject } = context;
 
     if (!itemId) {
         return null;
     }
 
     if (catalogType === 'archives') {
-        const archive = projects[itemId];
+        const archive =
+            String(archiveProject?.id) === String(itemId)
+                ? archiveProject
+                : null;
         return (
             getLocalizedValue(
                 archive?.display_name,
@@ -116,7 +113,10 @@ export function getCatalogItemLabel(catalogType, itemId, context) {
     }
 
     if (catalogType === 'collections') {
-        const collection = collections[itemId];
+        if (String(collection?.id) !== String(itemId)) {
+            return null;
+        }
+
         return getLocalizedValue(
             collection?.name,
             locale,
@@ -125,7 +125,10 @@ export function getCatalogItemLabel(catalogType, itemId, context) {
     }
 
     if (catalogType === 'institutions') {
-        const institution = institutions[itemId];
+        if (String(institution?.id) !== String(itemId)) {
+            return null;
+        }
+
         return getLocalizedValue(
             institution?.name,
             locale,

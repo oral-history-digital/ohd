@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { Link } from 'react-router-dom';
 
 import { Divider } from './Divider';
@@ -9,6 +11,12 @@ export function BreadcrumbItem({ crumb, isLast, index, totalCount }) {
     const position = index + 1;
     const isFirst = index === 0;
     const isMiddle = index > 0 && index < totalCount - 1;
+    const labelClasses = classNames('Breadcrumbs-label');
+    const renderedLabel = crumb.loading ? (
+        <Skeleton width="20ch" inline />
+    ) : (
+        crumb.label
+    );
 
     const itemClasses = classNames(
         'Breadcrumbs-item',
@@ -31,19 +39,21 @@ export function BreadcrumbItem({ crumb, isLast, index, totalCount }) {
 
             {shouldRenderAsCurrent ? (
                 <span
-                    className="Breadcrumbs-current Breadcrumbs-label"
+                    className={classNames('Breadcrumbs-current', labelClasses)}
                     aria-current={isLast ? 'page' : undefined}
+                    aria-busy={crumb.loading || undefined}
                     title={crumb.label}
                 >
-                    {crumb.label}
+                    {renderedLabel}
                 </span>
             ) : (
                 <Link
                     to={crumb.to}
-                    className="Breadcrumbs-link Breadcrumbs-label"
+                    className={classNames('Breadcrumbs-link', labelClasses)}
+                    aria-busy={crumb.loading || undefined}
                     title={crumb.label}
                 >
-                    {crumb.label}
+                    {renderedLabel}
                 </Link>
             )}
         </li>
@@ -57,6 +67,7 @@ BreadcrumbItem.propTypes = {
         to: PropTypes.string,
         allowLastLink: PropTypes.bool,
         isProjectRoot: PropTypes.bool,
+        loading: PropTypes.bool,
     }).isRequired,
     index: PropTypes.number.isRequired,
     isLast: PropTypes.bool.isRequired,

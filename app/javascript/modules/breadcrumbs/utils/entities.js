@@ -4,17 +4,49 @@ import { getLocalizedValue } from './locale';
  * Returns parent archive information for a catalog collection detail page.
  */
 export function getCatalogCollectionParentProject(itemId, context) {
-    const { locale, collections, projects } = context;
+    const { locale, collection, collectionParentProject } = context;
 
-    const collection = collections[itemId];
+    if (String(collection?.id) !== String(itemId)) {
+        return null;
+    }
+
     const projectId = collection?.project_id;
     if (!projectId) {
         return null;
     }
 
-    const project = projects[projectId];
+    const collectionProjectLabel =
+        getLocalizedValue(
+            collection?.project_display_name,
+            locale,
+            collection?.default_locale
+        ) ||
+        getLocalizedValue(
+            collection?.project_name,
+            locale,
+            collection?.default_locale
+        ) ||
+        collection?.project_shortname ||
+        null;
+
+    if (collectionProjectLabel) {
+        return {
+            projectId: projectId,
+            projectLabel: collectionProjectLabel,
+            loading: false,
+        };
+    }
+
+    const project =
+        String(collectionParentProject?.id) === String(projectId)
+            ? collectionParentProject
+            : null;
     if (!project) {
-        return null;
+        return {
+            projectId: projectId,
+            projectLabel: null,
+            loading: true,
+        };
     }
 
     const projectLabel =
@@ -28,11 +60,16 @@ export function getCatalogCollectionParentProject(itemId, context) {
         null;
 
     if (!projectLabel) {
-        return null;
+        return {
+            projectId: projectId,
+            projectLabel: null,
+            loading: true,
+        };
     }
 
     return {
         projectId: projectId,
         projectLabel: projectLabel,
+        loading: false,
     };
 }

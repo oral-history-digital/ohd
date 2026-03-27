@@ -14,7 +14,10 @@ export function buildInterviewItems(currentPage, context) {
         labels,
         entityLabels,
         interview,
-        collections,
+        collection,
+        project,
+        currentUser,
+        usersStatus,
         locale,
         canShowFullTitle,
     } = context;
@@ -22,10 +25,30 @@ export function buildInterviewItems(currentPage, context) {
 
     const collectionLabel =
         entityLabels.collection ||
-        getInterviewCollectionLabel(interview, collections, locale);
+        getInterviewCollectionLabel(interview, collection, locale);
+    const resolvedInterviewLabel = getInterviewLabel(
+        interview,
+        locale,
+        canShowFullTitle
+    );
+    const usersFetched =
+        typeof usersStatus === 'string'
+            ? usersStatus.startsWith('fetched')
+            : false;
+    const interviewIsRestricted = interview?.workflow_state === 'restricted';
+    const waitingForUserAccessResolution =
+        interviewIsRestricted && !usersFetched;
+    const waitingForProjectResolution =
+        interviewIsRestricted && Boolean(currentUser) && !project;
+    const shouldShowInterviewSkeleton =
+        !entityLabels.interview &&
+        (!interview ||
+            waitingForUserAccessResolution ||
+            waitingForProjectResolution ||
+            !resolvedInterviewLabel);
     const interviewLabel =
         entityLabels.interview ||
-        getInterviewLabel(interview, locale, canShowFullTitle) ||
+        resolvedInterviewLabel ||
         params.archiveId ||
         labels.interview_detail;
 
@@ -60,7 +83,7 @@ export function buildInterviewItems(currentPage, context) {
             ? joinPath(pathBase, `/interviews/${params.archiveId}`)
             : null,
         isCurrent: true,
-        loading: !entityLabels.interview && !interview,
+        loading: shouldShowInterviewSkeleton,
     });
 
     return items;
@@ -101,12 +124,15 @@ export function buildCatalogItems(currentPage, labels, entityLabels, context) {
         if (parentProject) {
             items.push({
                 key: `catalog_archive_${parentProject.projectId}`,
-                label: parentProject.projectLabel,
+                label:
+                    parentProject.projectLabel ||
+                    String(parentProject.projectId),
                 to: joinPath(
                     catalogBasePath,
                     `/archives/${parentProject.projectId}`
                 ),
                 isCurrent: false,
+                loading: Boolean(parentProject.loading),
             });
         }
 
