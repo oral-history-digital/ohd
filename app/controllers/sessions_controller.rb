@@ -21,6 +21,11 @@ class SessionsController < Devise::SessionsController
   end
 
   def new
+    # Use the explicit path from the login URL (when present) and persist it
+    # so create/after_sign_in do not depend on stale stored locations.
+    path = current_return_path
+    store_location_for(resource_name, path) if path.present?
+
     if current_user
       redirect_to url_with_access_token
     else
@@ -28,7 +33,6 @@ class SessionsController < Devise::SessionsController
         super
       else
         project = Project.by_domain(request.base_url)
-        path = stored_location_for(:user)&.gsub("?checked_ohd_session=true", "")
         redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
       end
     end
@@ -121,4 +125,5 @@ class SessionsController < Devise::SessionsController
     @locale = params[:locale]
     I18n.locale = @locale if @locale
   end
+
 end
