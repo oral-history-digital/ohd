@@ -73,18 +73,11 @@ class ProjectsController < ApplicationController
     )
 
     project_ids = projects.map(&:id)
+    metrics = ProjectMetricsRepository.new(project_ids)
 
-    interview_counts = Interview
-      .where(project_id: project_ids)
-      .group(:project_id, :workflow_state)
-      .count
-
-    collection_counts = Collection
-      .where(project_id: project_ids)
-      .group(:project_id, :workflow_state)
-      .count
-
-    interview_languages_by_project = interview_languages_by_project(project_ids)
+    interview_counts = metrics.interview_counts_by_project
+    collection_counts = metrics.collection_counts_by_project
+    interview_languages_by_project = metrics.interview_languages_by_project
 
     cache_key = [
       'projects-list',
@@ -117,7 +110,11 @@ class ProjectsController < ApplicationController
         render :template => "/react/app"
       end
       format.json do
-        render json: data_json(@project)
+        if params[:lite].present?
+          render json: lite_project_json(@project)
+        else
+          render json: data_json(@project)
+        end
       end
     end
   end
@@ -219,6 +216,26 @@ class ProjectsController < ApplicationController
   end
 
   private
+    def lite_project_json(project)
+      payload = ProjectLitePayloadBuilder.perform(project)
+
+      {
+        id: project.id,
+        data_type: 'projects',
+        data: cache_single(
+          project,
+          serializer_name: 'ProjectLite',
+          interview_counts: payload[:interview_counts],
+          collection_counts: payload[:collection_counts],
+          media_types_by_project: payload[:media_types_by_project],
+          interview_languages_by_project: payload[:interview_languages_by_project],
+          interview_year_ranges_by_project: payload[:interview_year_ranges_by_project],
+          birth_year_ranges_by_project: payload[:birth_year_ranges_by_project],
+          cache_key_suffix: payload[:cache_key_suffix]
+        )
+      }
+    end
+
     def projects_cache_scope_key
       # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).
       return 'anonymous' unless current_user
@@ -251,23 +268,6 @@ class ProjectsController < ApplicationController
         collection_counts: collection_counts,
         interview_languages_by_project: interview_languages_by_project
       ).as_json
-    end
-
-    def interview_languages_by_project(project_ids)
-      return {} if project_ids.blank?
-
-      rows = InterviewLanguage
-        .joins(:interview, :language)
-        .where(interviews: { project_id: project_ids, workflow_state: %w(public restricted unshared) })
-        .distinct
-        .pluck('interviews.project_id', 'languages.code')
-
-      rows.each_with_object({}) do |(project_id, language_code), result|
-        next if language_code.blank?
-
-        result[project_id] ||= []
-        result[project_id] << language_code
-      end.transform_values { |codes| codes.uniq.sort }
     end
 
     # if a project is updated or destroyed from ohd.de

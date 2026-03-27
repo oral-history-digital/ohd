@@ -2,6 +2,10 @@ class InstitutionListSerializer < ActiveModel::Serializer
   attributes :id,
     :name,
     :description,
+    :isil,
+    :gnd,
+    :website,
+    :address,
     :latitude,
     :longitude,
     :parent,
@@ -36,6 +40,15 @@ class InstitutionListSerializer < ActiveModel::Serializer
     {
       id: localized_logo.id,
       url: Rails.application.routes.url_helpers.rails_blob_path(localized_logo.file, only_path: true)
+    }
+  end
+
+  def address
+    {
+      street: object.street,
+      zip: object.zip,
+      city: object.city,
+      country: object.country
     }
   end
 

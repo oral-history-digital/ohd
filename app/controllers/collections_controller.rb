@@ -10,7 +10,11 @@ class CollectionsController < ApplicationController
         render :template => "/react/app"
       end
       format.json do
-        render json: data_json(@collection)
+        if params[:lite].present?
+          render json: lite_collection_json(@collection)
+        else
+          render json: data_json(@collection)
+        end
       end
     end
   end
@@ -164,6 +168,25 @@ class CollectionsController < ApplicationController
   end
 
   private
+
+  def lite_collection_json(collection)
+    payload = CollectionLitePayloadBuilder.perform(collection)
+
+    {
+      id: collection.id,
+      data_type: 'collections',
+      data: cache_single(
+        collection,
+        serializer_name: 'CollectionLite',
+        interviews: payload[:interviews],
+        media_types: payload[:media_types],
+        interview_year_range: payload[:interview_year_range],
+        birth_year_range: payload[:birth_year_range],
+        languages_interviews: payload[:languages_interviews],
+        cache_key_suffix: payload[:cache_key_suffix]
+      )
+    }
+  end
 
   def projects_cache_scope_key
     # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).

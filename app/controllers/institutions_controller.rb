@@ -53,42 +53,15 @@ class InstitutionsController < ApplicationController
       logos: [file_attachment: :blob]
     )
 
-    visible_projects = policy_scope(Project)
-      .includes(
-        :translations,
-        { institutions: :translations },
-        logos: [file_attachment: :blob]
-      )
+    metrics = InstitutionMetricsRepository.new(
+      institutions: institutions,
+      projects_scope: policy_scope(Project)
+    )
 
-    visible_project_ids = visible_projects.map(&:id)
-    institution_ids = institutions.map(&:id)
-
-    projects_by_institution = Hash.new { |hash, key| hash[key] = [] }
-    visible_projects.each do |project|
-      project.institutions.each do |institution|
-        projects_by_institution[institution.id] << project
-      end
-    end
-
-    interview_counts = Interview
-      .joins(project: :institution_projects)
-      .where(project_id: visible_project_ids)
-      .where(institution_projects: { institution_id: institution_ids })
-      .group('institution_projects.institution_id', :workflow_state)
-      .count
-
-    project_interview_counts = Interview
-      .where(project_id: visible_project_ids)
-      .group(:project_id, :workflow_state)
-      .count
-
-    collection_counts = Collection
-      .joins(project: :institution_projects)
-      .where(project_id: visible_project_ids)
-      .where(institution_projects: { institution_id: institution_ids })
-      .group('institution_projects.institution_id', :workflow_state)
-      .distinct
-      .count(:id)
+    projects_by_institution = metrics.projects_by_institution
+    interview_counts = metrics.interview_counts
+    project_interview_counts = metrics.project_interview_counts
+    collection_counts = metrics.collection_counts
 
     cache_key = [
       'institutions-list',
@@ -127,7 +100,11 @@ class InstitutionsController < ApplicationController
         render :template => "/react/app"
       end
       format.json do
-        render json: data_json(@institution)
+        if params[:lite].present?
+          render json: lite_institution_json(@institution)
+        else
+          render json: data_json(@institution)
+        end
       end
     end
   end
@@ -160,6 +137,24 @@ class InstitutionsController < ApplicationController
   end
 
   private
+    def lite_institution_json(institution)
+      payload = InstitutionLitePayloadBuilder.perform(institution, policy_scope(Project))
+
+      {
+        id: institution.id,
+        data_type: 'institutions',
+        data: cache_single(
+          institution,
+          serializer_name: 'InstitutionList',
+          projects_by_institution: payload[:projects_by_institution],
+          interview_counts: payload[:interview_counts],
+          project_interview_counts: payload[:project_interview_counts],
+          collection_counts: payload[:collection_counts],
+          cache_key_suffix: payload[:cache_key_suffix]
+        )
+      }
+    end
+
     def projects_cache_scope_key
       # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).
       return 'anonymous' unless current_user
