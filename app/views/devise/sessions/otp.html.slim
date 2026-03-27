@@ -5,6 +5,10 @@ h2= tv("activerecord.attributes.user.otp_attempt")
   data: { controller: "otp", otp_target: "form" },
   html: {class: 'Form'} do |f|
 
+  = hidden_field_tag :path, @path
+  - if @project
+    = hidden_field_tag :project, @project.shortname
+
   .form-group
     .form-label
       = f.label :otp_attempt,
