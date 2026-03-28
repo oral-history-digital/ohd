@@ -13,7 +13,7 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { fetchData, getProjectsStatus } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useProject } from 'modules/routes';
+import { useCurrentPage, useProject } from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import {
     AfterConfirmationPopup,
@@ -23,11 +23,15 @@ import {
     AfterRequestProjectAccessPopup,
     ConfirmNewZwarTosPopup,
     CorrectUserDataPopup,
+    getIsLoggedIn,
     getLoggedInAt,
     useFetchAccount,
 } from 'modules/user';
-import { ResizeWatcherContainer, isMobile } from 'modules/user-agent';
-import { useScrollBelowThreshold } from 'modules/user-agent';
+import {
+    ResizeWatcher,
+    isMobile,
+    useScrollBelowThreshold,
+} from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,10 +52,13 @@ export default function Layout({ children }) {
     const projectsStatus = useSelector(getProjectsStatus);
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
+    const isLoggedIn = useSelector(getIsLoggedIn);
 
     const { project } = useProject();
+    const currentPage = useCurrentPage();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
+    const isInterviewPage = currentPage.pageType === 'interview_detail';
 
     useCheckLocaleAgainstProject();
     useFetchAccount();
@@ -67,6 +74,11 @@ export default function Layout({ children }) {
                 searchParams.delete('access_token');
                 setSearchParams(searchParams);
             }
+        }
+
+        if (!project?.id) {
+            removeAccessTokenParam();
+            return;
         }
 
         if (!projectsStatus[project.id]) {
@@ -102,12 +114,17 @@ export default function Layout({ children }) {
         ? `/favicons/favicon-${project?.shortname}.ico`
         : '/favicon.ico';
 
+    if (!project) return null;
+
     return (
-        <ResizeWatcherContainer>
+        <ResizeWatcher>
             <div
                 className={classNames('Layout', {
+                    'is-logged-in': isLoggedIn,
                     'sidebar-is-visible': sidebarVisible,
-                    'is-sticky': scrollPositionBelowThreshold,
+                    'is-interview-page': isInterviewPage,
+                    'is-sticky':
+                        isInterviewPage && scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
                 })}
             >
@@ -155,7 +172,7 @@ export default function Layout({ children }) {
                     <Banner onClose={handleBannerClose} />
                 )}
             </div>
-        </ResizeWatcherContainer>
+        </ResizeWatcher>
     );
 }
 

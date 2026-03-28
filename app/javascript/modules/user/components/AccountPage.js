@@ -23,7 +23,6 @@ export default function AccountPage() {
     const user = useSelector(getCurrentUser);
     useTrackPageView();
 
-    console.log('Rendering AccountPage with user', user);
     return (
         <div className="wrapper-content register account-page">
             <Helmet>

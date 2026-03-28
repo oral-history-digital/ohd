@@ -134,8 +134,6 @@ export default class extends Controller {
             event.preventDefault();
         }
 
-        console.log('🚪 Close button clicked');
-
         if (window.parent && window.parent !== window) {
             window.parent.postMessage({
                 type: 'closeModal',

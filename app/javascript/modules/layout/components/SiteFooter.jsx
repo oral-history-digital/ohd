@@ -13,6 +13,8 @@ export function SiteFooter() {
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
 
+    if (!project) return null;
+
     const links = project.external_links || {};
     const sponsorLogos = project.sponsor_logos || [];
 

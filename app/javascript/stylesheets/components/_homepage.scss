@@ -1,0 +1,303 @@
+.Homepage {
+  margin: 0 0 $base-unit * 2;
+  padding: 0;
+
+  .Homepage-heading {
+    font-size: 1.75rem;
+    line-height: $base-unit * 2;
+    text-transform: uppercase;
+  }
+
+  .Homepage-icon {
+    font-size: $base-unit * 2;
+  }
+
+  .HomepageProjects-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .HomepageProjects-nav {
+    display: flex;
+    gap: $base-unit * 0.25;
+  }
+
+  .HomepageProjects-navBtn {
+    align-items: center;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    font-size: 1.25rem;
+    height: $base-unit * 1.5;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    width: $base-unit * 1.5;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.05);
+      border-color: #999;
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.3;
+    }
+  }
+
+  .HomepageProjects-navIcon {
+    display: block;
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+
+  .HomepageProjects-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: $base-unit * 0.75;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+
+    // Hide scrollbar visually but allow touch/swipe scroll
+    scrollbar-width: none; // Firefox
+    &::-webkit-scrollbar {
+      display: none; // Chrome, Safari
+    }
+
+    > * {
+      // calc ensures N whole cards fit exactly:
+      // 1 card on small mobile, 2 on larger mobile, 3 on tablet+
+      flex: 0 0 calc(100%);
+      min-width: 0;
+
+      // ProjectTile has a global max-width; unset it in the scroller so
+      // the calculated flex-basis can fully control visible card count.
+      max-width: none;
+
+      @include screen-xs-s {
+        flex: 0 0 calc((100% - #{$base-unit * 0.75}) / 2);
+      }
+
+      @include screen-s {
+        flex: 0 0 calc((100% - #{$base-unit * 0.75}) / 2);
+      }
+
+      @include screen-m {
+        flex: 0 0 calc((100% - #{$base-unit * 0.75 * 2}) / 3);
+      }
+    }
+  }
+
+  .Hero {
+    position: relative;
+    // `cover` avoids top/bottom or side gaps when aspect ratios differ.
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    margin-bottom: $base-unit;
+
+    @include screen-xs-s {
+      background-position: right top;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 1;
+    }
+  }
+
+  .Hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: clamp($base-unit * 0.75, 2vw, $base-unit * 1.75)
+      clamp($base-unit, 4vw, $base-unit * 2.5);
+  }
+
+  .Hero-heading {
+    margin: 0 0 $base-unit 0;
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    @include screen-m {
+      font-size: 2.5rem;
+    }
+
+    @include screen-l {
+      font-size: 3rem;
+    }
+  }
+
+  .Hero-text {
+    margin: 0 0 $base-unit * 1.5 0;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+    @include screen-m {
+      font-size: 1.5rem;
+    }
+  }
+
+  .CtaWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $base-unit;
+    justify-content: flex-end;
+    align-items: center;
+
+    @include screen-m {
+      flex-direction: row;
+      gap: $base-unit;
+    }
+  }
+
+  .Hero-cta--secondary,
+  .Hero-cta--primary {
+    white-space: nowrap;
+  }
+
+  .Hero-cta--secondary,
+  .Hero-cta--secondary:hover {
+    background: $gray-paler !important;
+  }
+
+  .Panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: $base-unit * 0.5;
+  }
+
+  .Panel-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+
+    @include screen-m {
+      max-height: 400px;
+    }
+
+    @include screen-l {
+      max-height: 450px;
+    }
+  }
+
+  .Panel-heading {
+    margin: $base-unit 0 0 0;
+    font-weight: 700;
+
+    @include screen-m {
+      font-size: 1.75rem;
+    }
+  }
+
+  .Panel-text {
+    margin: 0;
+    font-size: 1rem;
+    line-height: $line-height-large;
+    color: $gray-dark;
+  }
+
+  .ProjectTile {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+    display: block;
+    transition: opacity $transition-duration;
+    box-sizing: border-box;
+    max-width: 410px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+  }
+
+  .ProjectTile:link,
+  .ProjectTile:hover,
+  .ProjectTile:active,
+  .ProjectTile:visited {
+    color: $body-text-color;
+  }
+
+  .ProjectTile:hover,
+  .ProjectTile:focus {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
+  }
+
+  .ProjectTile-inner {
+    position: relative;
+  }
+
+  .ProjectTile-lock {
+    align-items: center;
+    background-color: #bbbbbbcc;
+    border-radius: 50%;
+    display: flex;
+    height: $base-unit * 1.5;
+    justify-content: center;
+    line-height: $base-unit;
+    position: absolute;
+    right: $base-unit * 0.5;
+    text-align: center;
+    top: $base-unit * 0.5;
+    width: $base-unit * 1.5;
+    z-index: 1;
+  }
+
+  .ProjectTile-lockImg {
+    height: 1rem;
+  }
+
+  .ProjectTile-image {
+    background-color: white;
+    border-bottom: none;
+    border: 1px solid lightgrey;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+    height: 180px;
+
+    @include screen-s {
+      height: 220px;
+    }
+
+    @include screen-m {
+      height: 260px;
+    }
+  }
+
+  .ProjectTile-body {
+    padding: $base-unit * 0.5;
+    font-weight: normal;
+  }
+
+  .ProjectTile-title {
+    color: black;
+    font-weight: bold;
+    line-height: $base-unit;
+    margin: 0;
+  }
+
+  .ProjectTile-text {
+    color: $body-text-color;
+    margin: 0;
+  }
+
+  .ProjectTile-text--ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

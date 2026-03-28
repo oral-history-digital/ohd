@@ -14,7 +14,7 @@ export const CONTENT_TABS_HEIGHT = 3 * ONE_REM;
 // Breakpoints (must match SCSS variables in app/javascript/stylesheets/_variables.scss)
 export const SCREEN_M = 768; // $screen-m
 export const SCREEN_L = 990; // $screen-l
-export const SCREEN_XL = 1200; // $screen-xl
+export const SCREEN_XL = 1280; // $screen-xl
 
 // Buffer space between top of active segment and Video/Menu
 export const SPACE_BEFORE_ACTIVE_SEGMENT = 2 * CSS_BASE_UNIT;

@@ -32,13 +32,17 @@ body {
 footer {
   background: #fff; //$gray-dark;
   border-top: 1px solid $gray-dark;
-  padding: 30px 5%;
+  padding: $base-unit * 2 0;
   p {
     margin-top: 10px;
     padding-top: 5px;
     font-size: $font-size-medium;
     color: $gray-dark;
   }
+}
+
+.is-interview-page footer {
+  padding: $base-unit * 2;
 }
 
 .footer-bottom-nav {
@@ -298,13 +302,35 @@ a.small {
 .wrapper-content.home-content {
   padding: 0;
 
-  .home-text {
-    padding: 15px 5% 30px 5%;
-    background-color: #ddd;
-  }
+  .ProjectHome--hero {
+    padding: $base-unit 0;
 
-  .home-paragraph {
-    padding: 0 5% 0 5%;
+    &.ProjectHome--hero--hasLogo {
+      display: flex;
+      flex-direction: row-reverse;
+
+      .ProjectHome--heroText {
+        width: 67%;
+      }
+    }
+
+    .ProjectHome--heroText {
+      h1 {
+        margin-top: 0;
+      }
+    }
+
+    .ProjectLogo {
+      margin-left: $base-unit;
+      width: 33%;
+      height: fit-content;
+      // Ensure the logo image scales properly within its container
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
   }
 }
 
@@ -416,7 +442,9 @@ a.small {
 }
 
 .footer-navigation {
-  padding: 5% a {
+  padding: 5%;
+
+  a {
     margin-right: 10%;
   }
   .fa.fa-chevron-right {

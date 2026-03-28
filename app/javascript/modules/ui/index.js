@@ -1,6 +1,5 @@
 export { default as AdminMenu } from './AdminMenu';
-export { default as Breadcrumbs } from './Breadcrumbs';
-export { Button, CancelButton, SubmitButton } from './Buttons';
+export { Button, CancelButton, LinkButton, SubmitButton } from './Buttons';
 export { default as Checkbox } from './Checkbox';
 export { PAGINATION_DEFAULT_PAGE_SIZE } from './constants';
 export { default as CopyText } from './CopyText';
@@ -11,3 +10,4 @@ export { default as InlineNotification } from './InlineNotification';
 export { default as Modal } from './Modal';
 export { default as Pagination } from './Pagination';
 export { default as PhotoModal } from './PhotoModal';
+export { default as SmartImage } from './SmartImage';

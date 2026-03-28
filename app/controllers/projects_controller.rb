@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   skip_before_action :authenticate_user!,
-    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index]
+    only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :index, :list]
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
@@ -47,6 +47,62 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # GET /projects/list
+  def list
+    # This endpoint is global, so force nil project context and avoid per-request project cache lookup.
+    @current_project = nil
+    authorize Project, :show?
+
+    scoped_projects = policy_scope(Project)
+    scoped_projects = scoped_projects.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
+
+    if params.keys.include?('all')
+      projects = scoped_projects.order(created_at: :desc)
+      page = nil
+      extra_params = 'all'
+    else
+      page = params[:page] || 1
+      projects = scoped_projects.order(created_at: :desc).paginate(page: page)
+      extra_params = "page_#{page}"
+    end
+
+    projects = projects.includes(
+      :translations,
+      { institutions: :translations },
+      logos: [file_attachment: :blob]
+    )
+
+    project_ids = projects.map(&:id)
+    metrics = ProjectMetricsRepository.new(project_ids)
+
+    interview_counts = metrics.interview_counts_by_project
+    collection_counts = metrics.collection_counts_by_project
+    interview_languages_by_project = metrics.interview_languages_by_project
+
+    cache_key = [
+      'projects-list',
+      extra_params,
+      projects_cache_scope_key,
+      normalized_workflow_states&.join(','),
+      I18n.locale,
+      Project.count,
+      Project.maximum(:updated_at),
+      Interview.maximum(:updated_at),
+      Language.maximum(:updated_at),
+      Collection.maximum(:updated_at)
+    ].join('-')
+
+    json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
+      {
+        data: serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project),
+        page: page,
+        result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
+      }
+    end
+
+    render json: json
+  end
+
   # GET /projects/1
   def show
     respond_to do |format|
@@ -54,7 +110,11 @@ class ProjectsController < ApplicationController
         render :template => "/react/app"
       end
       format.json do
-        render json: data_json(@project)
+        if params[:lite].present?
+          render json: lite_project_json(@project)
+        else
+          render json: data_json(@project)
+        end
       end
     end
   end
@@ -156,6 +216,26 @@ class ProjectsController < ApplicationController
   end
 
   private
+    def lite_project_json(project)
+      payload = ProjectLitePayloadBuilder.perform(project)
+
+      {
+        id: project.id,
+        data_type: 'projects',
+        data: cache_single(
+          project,
+          serializer_name: 'ProjectLite',
+          interview_counts: payload[:interview_counts],
+          collection_counts: payload[:collection_counts],
+          media_types_by_project: payload[:media_types_by_project],
+          interview_languages_by_project: payload[:interview_languages_by_project],
+          interview_year_ranges_by_project: payload[:interview_year_ranges_by_project],
+          birth_year_ranges_by_project: payload[:birth_year_ranges_by_project],
+          cache_key_suffix: payload[:cache_key_suffix]
+        )
+      }
+    end
+
     def projects_cache_scope_key
       # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).
       return 'anonymous' unless current_user
@@ -163,6 +243,33 @@ class ProjectsController < ApplicationController
 
       "user-#{current_user.id}"
     end
+
+    def normalized_workflow_states
+      return @normalized_workflow_states if defined?(@normalized_workflow_states)
+
+      value = params[:workflow_state]
+      # blank/all means "do not filter by workflow_state".
+      return @normalized_workflow_states = nil if value.blank? || value == 'all'
+
+      states = value.to_s.split(',').map(&:strip).reject(&:blank?)
+      # Project supports only these workflow states.
+      allowed_states = %w(public unshared)
+      filtered_states = states & allowed_states
+
+      # Invalid-only input falls back to no filter.
+      @normalized_workflow_states = filtered_states.presence
+    end
+
+    def serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project)
+      ActiveModelSerializers::SerializableResource.new(
+        projects,
+        each_serializer: ProjectArchiveSerializer,
+        interview_counts: interview_counts,
+        collection_counts: collection_counts,
+        interview_languages_by_project: interview_languages_by_project
+      ).as_json
+    end
+
     # if a project is updated or destroyed from ohd.de
     def set_project
       @project = params[:id] ? Project.find(params[:id]) : current_project

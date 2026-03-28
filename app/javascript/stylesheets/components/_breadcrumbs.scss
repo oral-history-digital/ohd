@@ -1,13 +1,84 @@
 .Breadcrumbs {
-  color: $ui-background-color;
-  font-size: 0.875rem;
+  align-items: center;
+  color: var(--primary-color);
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-.Breadcrumbs-separator {
-  padding-left: 0.25 * $base-unit;
-  padding-right: 0.25 * $base-unit;
+.Breadcrumbs-list--subline {
+  font-size: 0.95rem;
 }
 
-.Breadcrumbs-lastItem {
+.Breadcrumbs-dividerText {
+  margin: 0 ($base-unit * 0.4);
+}
+
+.Breadcrumbs-item:first-child .Breadcrumbs-divider {
+  margin-left: 0;
+}
+
+.Breadcrumbs-list {
+  align-items: center;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.Breadcrumbs-item {
+  align-items: center;
+  display: flex;
+  min-width: 0;
+}
+
+.Breadcrumbs-item--crumb {
+  flex: 1 1 auto;
+}
+
+.Breadcrumbs-item--projectRoot {
   font-weight: bold;
+}
+
+.Breadcrumbs-divider {
+  flex-shrink: 0;
+  margin: 0 ($base-unit * 0.5) 0 ($base-unit * 0.75);
+}
+
+.Breadcrumbs-logoLink {
+  align-items: center;
+  display: flex;
+}
+
+.Breadcrumbs-logo {
+  height: 23px;
+  max-width: 100%;
+  vertical-align: bottom;
+
+  &--large {
+    max-height: 3.5rem;
+
+    @include screen-m {
+      max-height: 4.25rem;
+    }
+  }
+}
+
+.Breadcrumbs-link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.Breadcrumbs-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

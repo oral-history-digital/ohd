@@ -1,5 +1,5 @@
 class InstitutionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:index, :show, :list]
   before_action :set_institution, only: [:show, :edit, :update, :destroy]
 
   # GET /institutions
@@ -30,16 +30,85 @@ class InstitutionsController < ApplicationController
     end
   end
 
+  # GET /institutions/list
+  def list
+    authorize Institution, :show?
+
+    scoped_institutions = policy_scope(Institution).order(:id)
+
+    if params.keys.include?('all')
+      institutions = scoped_institutions
+      page = nil
+      extra_params = 'all'
+    else
+      page = params[:page] || 1
+      institutions = scoped_institutions.paginate(page: page)
+      extra_params = "page_#{page}"
+    end
+
+    institutions = institutions.includes(
+      :translations,
+      { parent: :translations },
+      { children: :translations },
+      logos: [file_attachment: :blob]
+    )
+
+    metrics = InstitutionMetricsRepository.new(
+      institutions: institutions,
+      projects_scope: policy_scope(Project)
+    )
+
+    projects_by_institution = metrics.projects_by_institution
+    interview_counts = metrics.interview_counts
+    project_interview_counts = metrics.project_interview_counts
+    collection_counts = metrics.collection_counts
+
+    cache_key = [
+      'institutions-list',
+      'v6',
+      extra_params,
+      projects_cache_scope_key,
+      I18n.locale,
+      Institution.count,
+      Institution.maximum(:updated_at),
+      Project.maximum(:updated_at),
+      Interview.maximum(:updated_at),
+      Collection.maximum(:updated_at)
+    ].join('-')
+
+    json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
+      {
+        data: ActiveModelSerializers::SerializableResource.new(
+          institutions,
+          each_serializer: InstitutionListSerializer,
+          projects_by_institution: projects_by_institution,
+          interview_counts: interview_counts,
+          project_interview_counts: project_interview_counts,
+          collection_counts: collection_counts
+        ).as_json,
+        page: page,
+        result_pages_count: institutions.respond_to?(:total_pages) ? institutions.total_pages : nil
+      }
+    end
+
+    render json: json
+  end
+
   def show
     respond_to do |format|
       format.html do
         render :template => "/react/app"
       end
       format.json do
-        render json: data_json(@institution)
+        if params[:lite].present?
+          render json: lite_institution_json(@institution)
+        else
+          render json: data_json(@institution)
+        end
       end
     end
   end
+  
   # POST /institutions
   def create
     authorize Institution
@@ -68,6 +137,32 @@ class InstitutionsController < ApplicationController
   end
 
   private
+    def lite_institution_json(institution)
+      payload = InstitutionLitePayloadBuilder.perform(institution, policy_scope(Project))
+
+      {
+        id: institution.id,
+        data_type: 'institutions',
+        data: cache_single(
+          institution,
+          serializer_name: 'InstitutionList',
+          projects_by_institution: payload[:projects_by_institution],
+          interview_counts: payload[:interview_counts],
+          project_interview_counts: payload[:project_interview_counts],
+          collection_counts: payload[:collection_counts],
+          cache_key_suffix: payload[:cache_key_suffix]
+        )
+      }
+    end
+
+    def projects_cache_scope_key
+      # Avoid cache leaks across visibility contexts (anonymous/admin/per-user).
+      return 'anonymous' unless current_user
+      return 'admin' if current_user.admin?
+
+      "user-#{current_user.id}"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_institution
       @institution = Institution.find(params[:id])

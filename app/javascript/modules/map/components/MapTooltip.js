@@ -5,6 +5,7 @@ export default function MapTooltip({
     placeName,
     numInterviewRefs,
     numSegmentRefs,
+    showNumRefs = true,
 }) {
     let numRefs;
     if (numInterviewRefs === 0) {
@@ -29,7 +30,7 @@ export default function MapTooltip({
 
     return (
         <Tooltip>
-            {placeName} {numRefs}
+            {placeName} {showNumRefs ? numRefs : null}
         </Tooltip>
     );
 }
@@ -38,4 +39,5 @@ MapTooltip.propTypes = {
     placeName: PropTypes.string.isRequired,
     numInterviewRefs: PropTypes.number.isRequired,
     numSegmentRefs: PropTypes.number.isRequired,
+    showNumRefs: PropTypes.bool,
 };
