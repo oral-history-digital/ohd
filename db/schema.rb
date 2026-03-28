@@ -694,10 +694,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_26_164700) do
     t.string "domain"
     t.string "archive_domain"
     t.string "doi"
-    t.string "cooperation_partner"
-    t.string "leader"
-    t.string "manager"
-    t.string "funder_names"
     t.string "contact_email"
     t.boolean "has_newsletter"
     t.boolean "is_catalog"
@@ -726,6 +722,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_26_164700) do
     t.integer "analytics_site_id"
     t.integer "interviews_count", default: 0, null: false
     t.string "publication_date"
+    t.string "cooperation_partner"
+    t.string "leader"
+    t.string "manager"
+    t.string "funder_names"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
