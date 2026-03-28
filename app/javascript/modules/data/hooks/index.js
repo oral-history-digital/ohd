@@ -6,6 +6,7 @@ export * from './useGetProject';
 export * from './useGetProjectCollections';
 export * from './useGetProjects';
 export * from './useHumanReadable';
+export * from './useInstanceSettings';
 export * from './useLoadCompleteProject';
 export * from './useMutateData';
 export * from './useMutateDatum';

@@ -1,0 +1,62 @@
+.AdminEditInstance {
+  margin-top: 0px !important; // TODO: Remove this override when is-sticky is scoped to interview pages
+
+  .AdminEditInstance-tabs {
+    margin-top: $base-unit * 2;
+
+    h2 {
+      margin: $base-unit 0;
+    }
+
+    .AdminEditInstance-tabList {
+      border-bottom: 2px solid #ddd;
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .AdminEditInstance-tab {
+      align-items: center;
+      background: none;
+      border: none;
+      border-bottom-width: medium;
+      border-bottom-style: none;
+      border-bottom-color: currentcolor;
+      border-bottom: 3px solid transparent;
+      border-bottom-color: transparent;
+      color: #666;
+      cursor: pointer;
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      transition:
+        color 0.2s,
+        border-color 0.2s;
+    }
+
+    .AdminEditInstance-tab[data-selected] {
+      border-bottom-color: #222;
+      border-bottom-color: var(--primary-color, #222);
+      color: #222;
+      color: var(--primary-color, #222);
+      font-weight: 600;
+    }
+  }
+
+  .form-row {
+    margin: $base-unit 0;
+
+    .multi-locale-input {
+      margin: $base-unit 0;
+    }
+
+    .form-group:first-child {
+      margin-top: 0;
+    }
+
+    // Remove min-height
+    textarea {
+      min-height: initial;
+    }
+  }
+}
