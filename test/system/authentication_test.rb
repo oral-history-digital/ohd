@@ -301,21 +301,33 @@ class RegistrationTest < ApplicationSystemTestCase
     click_on 'Login'
 
     # fail login configured times
-    Devise.maximum_attempts.times do |i|
-      fill_in 'user[email]', with: EMAIL
-      fill_in 'user[password]', with: 'WrongPassword8!'
-      click_on 'Login'
+    Devise.maximum_attempts.times do
+      assert_current_path '/en/users/sign_in', ignore_query: true
+      assert_selector 'form.Form.default'
 
-      assert_text /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
+      within('form.Form.default') do
+        fill_in 'user[email]', with: EMAIL
+        fill_in 'user[password]', with: 'WrongPassword8!'
+        click_on 'Login'
+      end
+
+      assert_current_path '/en/users/sign_in', ignore_query: true
+      assert_selector 'form.Form.default'
+      assert_selector '.notification-container', text: /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
     end
 
     user.reload
     assert user.access_locked?
 
     # now try with the correct password
-    fill_in 'user[email]', with: EMAIL
-    fill_in 'user[password]', with: PASSWORD
-    click_on 'Login'
+    assert_current_path '/en/users/sign_in', ignore_query: true
+    assert_selector 'form.Form.default'
+
+    within('form.Form.default') do
+      fill_in 'user[email]', with: EMAIL
+      fill_in 'user[password]', with: PASSWORD
+      click_on 'Login'
+    end
 
     assert_text "For security reasons, your account is locked after multiple failed attempts."
   end
@@ -375,13 +387,15 @@ class RegistrationTest < ApplicationSystemTestCase
   end
 
   test "login from project startpage works without refresh" do
-    visit '/de'
-    assert_current_path '/de'
+    Capybara.reset_sessions!
 
-    visit '/ohf/de'
-    assert_current_path '/ohf/de'
+    visit "#{OHD_DOMAIN}/de"
+    assert_current_path '/de', ignore_query: true
 
-    visit '/de/users/sign_in?path=/ohf/de&project=ohf'
+    visit "#{OHD_DOMAIN}/ohf/de"
+    assert_current_path '/ohf/de', ignore_query: true
+
+    visit "#{OHD_DOMAIN}/de/users/sign_in?path=/ohf/de&project=ohf"
 
     fill_in 'user[email]', with: 'alice@example.com'
     password_field = find_field('user[password]')
