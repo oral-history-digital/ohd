@@ -55,5 +55,4 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
       assert_text text
     end
   end
-
 end

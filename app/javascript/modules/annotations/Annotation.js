@@ -19,9 +19,8 @@ export default function Annotation({
     const { project, projectId } = useProject();
 
     return (
-        <div>
-            <p
-                className=""
+        <div className="SegmentAnnotation">
+            <span
                 dangerouslySetInnerHTML={{
                     __html: sanitizeHtml(
                         annotation.text[contentLocale],

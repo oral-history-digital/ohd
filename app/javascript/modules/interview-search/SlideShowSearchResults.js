@@ -1,6 +1,6 @@
 import { setArchiveId, setProjectId } from 'modules/archive';
-import { formatTimecode } from 'modules/interview-helpers';
 import { LinkOrA } from 'modules/routes';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
