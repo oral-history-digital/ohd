@@ -1,4 +1,4 @@
-import { INDEX_NONE, INDEX_SEARCH } from './constants';
+import { INDEX_ADMINISTRATION, INDEX_NONE, INDEX_SEARCH } from './constants';
 import tabIndexFromRoute from './tabIndexFromRoute';
 
 test('returns tab index for a route', () => {
@@ -10,5 +10,11 @@ test('returns tab index for a route', () => {
 test('returns none tab index for home route', () => {
     const actual = tabIndexFromRoute('/de', '/de');
     const expected = INDEX_NONE;
+    expect(actual).toEqual(expected);
+});
+
+test('returns administration tab index for admin instance route', () => {
+    const actual = tabIndexFromRoute('/de', '/de/admin/instance');
+    const expected = INDEX_ADMINISTRATION;
     expect(actual).toEqual(expected);
 });

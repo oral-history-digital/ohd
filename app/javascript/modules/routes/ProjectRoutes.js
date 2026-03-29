@@ -7,6 +7,7 @@ import {
     EditProjectDisplay,
     EditProjectInfo,
     EventTypesAdminPage,
+    InstanceSettingAdminPage,
     MetadataFieldsContainer,
     PeopleAdminPage,
     UploadsPage,
@@ -91,6 +92,10 @@ export default function ProjectRoutes() {
                 />
                 <Route path="register" element={<RegisterPage />} />
                 <Route path="users" element={<UsersAdminPage />} />
+                <Route
+                    path="admin/instance"
+                    element={<InstanceSettingAdminPage />}
+                />
                 <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />
                 <Route

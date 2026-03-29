@@ -1,0 +1,2 @@
+class HomepageImage < UploadedFile
+end
