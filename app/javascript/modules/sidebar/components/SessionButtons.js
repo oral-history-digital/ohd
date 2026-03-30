@@ -4,6 +4,7 @@ import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
 import { clearStateData, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { pathWithoutInternalSessionFlag } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import { getIsLoggedIn, submitLogout } from 'modules/user';
 import PropTypes from 'prop-types';
@@ -18,8 +19,20 @@ export default function SessionButtons({ className }) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const archiveId = useSelector(getArchiveId);
     const projects = useSelector(getProjects);
+    const loginReturnPath = pathWithoutInternalSessionFlag(
+        location.pathname,
+        location.search
+    );
 
-    const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${location.pathname}${encodeURIComponent(location.search)}&project=${projectId}`;
+    const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${encodeURIComponent(loginReturnPath)}&project=${projectId}`;
+
+    const handleRegisterClick = () => {
+        // Store the current path for redirect after successful registration
+        sessionStorage.setItem(
+            'registrationReturnPath',
+            pathWithoutInternalSessionFlag(location.pathname, location.search)
+        );
+    };
 
     return isLoggedIn ? (
         <div className={classNames('SessionButtons', className)}>
@@ -82,8 +95,14 @@ export default function SessionButtons({ className }) {
         </div>
     ) : (
         <div className={classNames('SessionButtons', className)}>
-            <Link to={`${pathBase}/register`}>{t('user.registration')}</Link>
-            <a href={loginURL} className="u-ml-small">
+            <Link
+                to={`${pathBase}/register`}
+                onClick={handleRegisterClick}
+                data-testid="register-link"
+            >
+                {t('user.registration')}
+            </Link>
+            <a href={loginURL} className="u-ml-small" data-testid="login-link">
                 {t('login')}
             </a>
         </div>
