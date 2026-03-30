@@ -4,6 +4,8 @@
 .Tabs-tabList {
   background: transparent;
   height: $horizontal-tabs-height;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .Tabs-tab {
