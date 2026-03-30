@@ -46,7 +46,7 @@ function ArchiveSearch() {
             </div>
 
             <ArchiveSearchTabsContainer
-                className="u-mt-small"
+                className="u-mt"
                 controls={
                     <ArchiveSearchSorting className="SearchResults-inlineSorting" />
                 }
