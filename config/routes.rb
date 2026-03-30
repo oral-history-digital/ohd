@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-access-config", to: "projects#edit_access_config"
     get "project/edit-display", to: "projects#edit_display"
+    get "admin/instance", to: "projects#show"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"
     get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
@@ -287,16 +288,25 @@ Rails.application.routes.draw do
     end
   end
 
-  # these are the routes with :project_id as first part of path
+  # These are the routes for the OHD domain, including both:
+  # 1) portal-level routes with /:locale (no :project_id)
+  # 2) archive routes with /:project_id/:locale
   #
-  # for development it is now set to portal.oral-history.localhost:3000
-  # you should write portal.oral-history.localhost to your /etc/hosts file
+  # For development it is now set to portal.oral-history.localhost:3000
+  # You should write portal.oral-history.localhost to your /etc/hosts file
   #
-  # in production this should be the ohd-domain
-  #
+  # In production this should be the ohd-domain
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
+    # Main-level routes (no :project_id), e.g. homepage
     scope "/:locale" do
       get "/", to: "projects#index"
+      resource :homepage_settings, only: [:show, :update]
+      namespace :admin do
+        resource :instance_setting,
+                 only: [:show, :update],
+                 path: 'instance-settings',
+                 controller: :homepage_settings
+      end
       concerns :all_project_routes
       resources :institutions do
         collection do
@@ -308,6 +318,8 @@ Rails.application.routes.draw do
       concerns :unnamed_devise_routes, :search, :archive
       concerns :account
     end
+
+    # Project-level routes with :project_id
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
       get "/", to: redirect{|params, request|
         project = Project.by_identifier(params[:project_id])
@@ -328,10 +340,10 @@ Rails.application.routes.draw do
     end
   end
 
-  # in development set your projects archive_domain-attribute to sth. you have
+  # In development, set your project's archive_domain attribute to something you have
   # written into your /etc/hosts (localhost or www.example.com might just be there)
   #
-  # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
+  # In production, these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.base_url) }) do
     get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
