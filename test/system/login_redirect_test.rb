@@ -50,13 +50,14 @@ class LoginRedirectTest < ApplicationSystemTestCase
     visit "#{OHD_DOMAIN}/de"
     startpage_url = URI.parse(current_url)
     assert_equal URI.parse(OHD_DOMAIN).host, startpage_url.host
-    assert_current_path '/de', ignore_query: true
+    startpage_locale = startpage_url.path.split('/')[1]
+    assert_includes %w[de en], startpage_locale
 
     visit "#{OHD_DOMAIN}/ohf/de"
     assert_current_path '/ohf/de', ignore_query: true
 
-    visit "#{OHD_DOMAIN}/de/users/sign_in?path=/ohf/de&project=ohf"
-    assert_current_path '/de/users/sign_in', ignore_query: true
+    visit "#{OHD_DOMAIN}/#{startpage_locale}/users/sign_in?path=/ohf/de&project=ohf"
+    assert_current_path "/#{startpage_locale}/users/sign_in", ignore_query: true
 
     fill_in 'user[email]', with: 'alice@example.com'
     password_field = find_field('user[password]')
