@@ -11,10 +11,9 @@ export const useExplorerParams = () => {
     const isInstitutionsTab =
         currentPage.pageType === 'catalog_page' &&
         currentPage.params.catalogType === 'institutions';
-    const tabIndex = isInstitutionsTab ? 1 : 0;
 
     return {
-        tabIndex,
+        isInstitutionsTab,
         query: searchParams.get('explorer_q') || '',
         interviewMin: searchParams.has('explorer_interviews_min')
             ? Number(searchParams.get('explorer_interviews_min'))

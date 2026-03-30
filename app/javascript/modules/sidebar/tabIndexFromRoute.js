@@ -13,6 +13,8 @@ export default function tabIndexFromRoute(pathBase, pathname) {
         index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/searches/archive`, pathname)) {
         index = indexes.INDEX_SEARCH;
+    } else if (matchPath(`${pathBase}/catalog/institutions/*`, pathname)) {
+        index = indexes.INDEX_CATALOG_INSTITUTIONS;
     } else if (matchPath(`${pathBase}/catalog/*`, pathname)) {
         index = indexes.INDEX_CATALOG;
     } else if (matchPath(`${pathBase}/interviews/new`, pathname)) {

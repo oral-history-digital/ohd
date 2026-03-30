@@ -45,8 +45,7 @@ export function ExplorerSidebarSearch() {
 
     const isInstitutionsTab =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
-    const tabIndex = isInstitutionsTab ? 1 : 0;
-    const isArchivesTab = tabIndex === 0;
+    const isArchivesTab = !isInstitutionsTab;
 
     const archiveInstitutions = useExplorerArchiveInstitutions({ archives });
     const { globalMin, globalMax } = useExplorerInterviewRange({
@@ -145,6 +144,9 @@ export function ExplorerSidebarSearch() {
         });
 
     const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
+    const searchPlaceholderKey = isArchivesTab
+        ? 'explorer.search_placeholder.archives'
+        : 'explorer.search_placeholder.institutions';
 
     const handleResetAll = () =>
         setSearchParams((prev) => resetExplorerFilters(prev), {
@@ -160,6 +162,7 @@ export function ExplorerSidebarSearch() {
                 value={query}
                 onChange={handleQueryChange}
                 onClear={handleClear}
+                placeholderKey={searchPlaceholderKey}
             />
 
             <ExplorerRangeFilter

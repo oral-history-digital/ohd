@@ -56,6 +56,9 @@ export default function SidebarTabs({
             case indexes.INDEX_CATALOG:
                 navigate(`${pathBase}/catalog`);
                 break;
+            case indexes.INDEX_CATALOG_INSTITUTIONS:
+                navigate(`${pathBase}/catalog/institutions`);
+                break;
             case indexes.INDEX_INTERVIEW:
                 navigate(`${pathBase}/interviews/${archiveId}`);
                 break;
@@ -113,7 +116,15 @@ export default function SidebarTabs({
                     {t('modules.sidebar.catalog')}
                 </Tab>
 
-                <Tab key="2" className="SidebarTabs-tab">
+                <Tab
+                    key="2"
+                    className="SidebarTabs-tab"
+                    disabled={!showCatalogTab}
+                >
+                    {t('activerecord.models.institution.other')}
+                </Tab>
+
+                <Tab key="3" className="SidebarTabs-tab">
                     {t(
                         isCampscapesProject && !archiveId
                             ? ('user.notes_on_tos_agreement',
@@ -125,7 +136,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="3"
+                    key="4"
                     className="SidebarTabs-tab"
                     disabled={!showInterviewTab}
                 >
@@ -133,19 +144,19 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="4"
+                    key="5"
                     className="SidebarTabs-tab"
                     disabled={!showRegistryTab}
                 >
                     {t('registry')}
                 </Tab>
 
-                <Tab key="5" className="SidebarTabs-tab" disabled={!showMapTab}>
+                <Tab key="6" className="SidebarTabs-tab" disabled={!showMapTab}>
                     {t('map')}
                 </Tab>
 
                 <Tab
-                    key="6"
+                    key="7"
                     className="SidebarTabs-tab"
                     disabled={!showWorkbookTab}
                 >
@@ -153,7 +164,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="7"
+                    key="8"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showIndexingTab}
                 >
@@ -161,7 +172,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="8"
+                    key="9"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showAdministrationTab}
                 >
@@ -169,7 +180,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="9"
+                    key="10"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showProjectAdminTab}
                 >
@@ -177,7 +188,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="10"
+                    key="11"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showProjectsTab}
                 >
@@ -185,7 +196,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="11"
+                    key="12"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showInstitutionsTab}
                 >
@@ -193,7 +204,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="12"
+                    key="13"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showHelpTextsTab}
                 >
@@ -204,7 +215,9 @@ export default function SidebarTabs({
             <TabPanels>
                 <TabPanel key="1" />
 
-                <TabPanel key="2">
+                <TabPanel key="2" />
+
+                <TabPanel key="3">
                     {tabIndex === indexes.INDEX_SEARCH && (
                         <ArchiveSearchTabPanel
                             selectedArchiveIds={selectedArchiveIds}
@@ -212,7 +225,7 @@ export default function SidebarTabs({
                     )}
                 </TabPanel>
 
-                <TabPanel key="3">
+                <TabPanel key="4">
                     {showInterviewTab &&
                         isInterviewRoute &&
                         tabIndex === indexes.INDEX_INTERVIEW && (
@@ -225,50 +238,50 @@ export default function SidebarTabs({
                         )}
                 </TabPanel>
 
-                <TabPanel key="4">
+                <TabPanel key="5">
                     {showRegistryTab &&
                         tabIndex === indexes.INDEX_REGISTRY_ENTRIES && (
                             <RegistryEntriesTabPanelContainer />
                         )}
                 </TabPanel>
 
-                <TabPanel key="5">
+                <TabPanel key="6">
                     {showMapTab && tabIndex === indexes.INDEX_MAP && (
                         <MapTabPanelContainer />
                     )}
                 </TabPanel>
 
-                <TabPanel key="6">
+                <TabPanel key="7">
                     {showWorkbookTab && tabIndex === indexes.INDEX_WORKBOOK && (
                         <WorkbookTabPanel />
                     )}
                 </TabPanel>
 
-                <TabPanel key="7">
+                <TabPanel key="8">
                     {showIndexingTab && tabIndex === indexes.INDEX_INDEXING && (
                         <IndexingTabPanel />
                     )}
                 </TabPanel>
 
-                <TabPanel key="8">
+                <TabPanel key="9">
                     {showAdministrationTab &&
                         tabIndex === indexes.INDEX_ADMINISTRATION && (
                             <UsersAdminTabPanelContainer />
                         )}
                 </TabPanel>
 
-                <TabPanel key="9">
+                <TabPanel key="10">
                     {showProjectAdminTab &&
                         tabIndex === indexes.INDEX_PROJECT_ACCESS && (
                             <ProjectConfigTabPanel />
                         )}
                 </TabPanel>
 
-                <TabPanel key="10" />
-
                 <TabPanel key="11" />
 
                 <TabPanel key="12" />
+
+                <TabPanel key="13" />
             </TabPanels>
         </Tabs>
     );
