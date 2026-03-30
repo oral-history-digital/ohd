@@ -81,7 +81,7 @@ export function CollectionPage() {
             </Helmet>
             <ErrorBoundary>
                 <div className="wrapper-content CollectionDetails">
-                    <h1 className="search-results-title u-mb">
+                    <h1 className="Page-main-title CollectionDetails-title">
                         {collectionName}
                     </h1>
 

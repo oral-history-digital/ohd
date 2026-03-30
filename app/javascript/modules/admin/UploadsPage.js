@@ -15,7 +15,7 @@ export default function UploadsPage() {
                     <title>{t(`edit.upload.upload`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t(`edit.upload.upload`)}
                     </h1>
                     <UploadsForm />

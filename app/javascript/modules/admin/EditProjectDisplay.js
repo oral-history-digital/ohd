@@ -55,7 +55,7 @@ export default function EditProjectDisplay() {
                     <title>{t(`edit.project.display`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t(`edit.project.display`)}
                     </h1>
                     <EditData
@@ -65,9 +65,7 @@ export default function EditProjectDisplay() {
                         formElements={formElements}
                         submitData={submitHandler}
                     />
-                    <h2 className="registry-entries-title">
-                        {t(`edit.logo.admin`)}
-                    </h2>
+                    <h2>{t(`edit.logo.admin`)}</h2>
                     <LogosContainer
                         data={project.logos}
                         outerScope={'project'}
@@ -78,15 +76,11 @@ export default function EditProjectDisplay() {
                             type: 'Logo',
                         }}
                     />
-                    <h2 className="registry-entries-title">
-                        {t(`edit.sponsor_logo.admin`)}
-                    </h2>
+                    <h2>{t(`edit.sponsor_logo.admin`)}</h2>
                     <SponsorLogosContainer />
                     {user?.admin && (
                         <>
-                            <h2 className="registry-entries-title">
-                                {t(`edit.media_stream.admin`)}
-                            </h2>
+                            <h2>{t(`edit.media_stream.admin`)}</h2>
                             <MediaStreamsContainer />
                         </>
                     )}

@@ -66,7 +66,9 @@ export default function Home({ institutions }) {
                         <ProjectLogo project={project} isLinkActive={false} />
                     )}
                     <div className="ProjectHome--heroText">
-                        <h1>{getTranslation('name')}</h1>
+                        <h1 className="Page-main-title">
+                            {getTranslation('name')}
+                        </h1>
                         <Fetch
                             fetchParams={['institutions', null, null, 'all']}
                             testDataType="institutions"

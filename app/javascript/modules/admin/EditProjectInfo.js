@@ -74,7 +74,7 @@ export default function EditProjectInfo() {
                     <title>{t(`edit.project.info`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t(`edit.project.info`)}
                     </h1>
                     <EditData
@@ -85,13 +85,9 @@ export default function EditProjectInfo() {
                         submitData={submitHandler}
                         isLoading={isLoading}
                     />
-                    <h2 className="registry-entries-title">
-                        {t(`edit.external_link.admin`)}
-                    </h2>
+                    <h2>{t(`edit.external_link.admin`)}</h2>
                     <ExternalLinksContainer />
-                    <h2 className="registry-entries-title">
-                        {t(`edit.institution_project.admin`)}
-                    </h2>
+                    <h2>{t(`edit.institution_project.admin`)}</h2>
                     <InstitutionProjectsContainer />
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>

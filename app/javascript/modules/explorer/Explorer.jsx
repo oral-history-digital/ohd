@@ -29,7 +29,9 @@ export function Explorer() {
                 <title>{explorerTitle}</title>
             </Helmet>
             <div className="Explorer">
-                <h1 className="Explorer--title">{explorerTitle}</h1>
+                <h1 className="Page-main-title Explorer--title">
+                    {explorerTitle}
+                </h1>
                 {isInstitutionsTab ? (
                     <div className="Explorer-tabPanel">
                         <InstitutionsList
