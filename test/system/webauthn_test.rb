@@ -25,7 +25,7 @@ class WebauthnTest < WebauthnSystemTestCase
   #end
 
   test "passkey registration and login for a registered user" do
-    add_virtual_authenticator
+    project = setup_redirect_project_for_user(email: EMAIL)
     user = User.find_by(email: EMAIL)
     user.webauthn_credentials.destroy_all
 
@@ -44,13 +44,22 @@ class WebauthnTest < WebauthnSystemTestCase
 
     click_on 'Logout'
 
-    click_on 'Login'
+    visit "#{project.archive_domain}/en/searches/archive?sort=random"
+    assert_text 'Redirect Project'
+
+    within '.SessionButtons' do
+      click_test_id('login-link')
+    end
+
     fill_in 'user[email]', with: EMAIL
     click_on 'Login with Passkey'
 
     sleep 0.5
     assert_text 'Logout'
     assert_text 'Account'
+
+    # After login, the user should be redirected back to the project subpage they started from.
+    assert_redirected_to_project_subpage
   end
 
 end

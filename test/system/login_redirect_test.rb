@@ -1,5 +1,4 @@
 require "application_system_test_case"
-require "webauthn_system_test_case"
 
 
 class LoginRedirectTest < ApplicationSystemTestCase
@@ -68,7 +67,7 @@ class LoginRedirectTest < ApplicationSystemTestCase
   end
 
   test "login with TOTP from project subpage redirects back to that subpage" do
-    project = setup_redirect_project_for_user
+    project = setup_redirect_project_for_user(email: EMAIL)
     user = User.find_by(email: EMAIL)
 
     user.update!(
@@ -98,114 +97,6 @@ class LoginRedirectTest < ApplicationSystemTestCase
     sleep 0.3
 
     assert_redirected_to_project_subpage
-  end
-
-  private
-
-  def setup_redirect_project_for_user
-    project = DataHelper.test_project(
-      shortname: 'redirproj',
-      archive_domain: 'http://redirectproject.localhost:47001',
-      name: 'Redirect Project',
-      introduction: 'Redirect intro',
-      more_text: 'Redirect more text',
-      landing_page_text: 'Redirect project landing page'
-    )
-    DataHelper.test_registry(project)
-    DataHelper.test_contribution_type(project)
-
-    user = User.find_by(email: EMAIL)
-    DataHelper.grant_access(project, user)
-
-    project
-  end
-
-  def assert_redirected_to_project_subpage
-    redirected_url = URI.parse(current_url)
-    redirected_query = Rack::Utils.parse_nested_query(redirected_url.query)
-
-    assert_equal 'redirectproject.localhost', redirected_url.host
-    assert_equal '/en/searches/archive', redirected_url.path
-    assert_equal 'random', redirected_query['sort']
-    assert_nil redirected_query['checked_ohd_session']
-    assert_text 'Redirect Project'
-  end
-
-end
-
-class PasskeyLoginRedirectTest < WebauthnSystemTestCase
-
-  EMAIL = 'john@example.com'
-
-  test "login with passkey from project subpage redirects back to that subpage" do
-    project = setup_redirect_project_for_user
-    user = User.find_by(email: EMAIL)
-
-    user.update!(
-      otp_required_for_login: false,
-      passkey_required_for_login: false
-    )
-    user.webauthn_credentials.destroy_all
-
-    visit '/'
-    login_as EMAIL
-
-    click_on 'Account'
-    click_on 'Edit'
-    check 'user_passkey_required_for_login', visible: :all
-    click_on 'Submit'
-    sleep 0.5
-
-    register_passkey
-    user.reload
-    assert_equal 1, user.webauthn_credentials.count
-
-    click_on 'Logout'
-
-    visit "#{project.archive_domain}/en/searches/archive?sort=random"
-    assert_text 'Redirect Project'
-
-    within '.SessionButtons' do
-      click_test_id('login-link')
-    end
-
-    fill_in 'user[email]', with: EMAIL
-    click_on 'Login with Passkey'
-
-    sleep 0.5
-
-    assert_redirected_to_project_subpage
-  end
-
-  private
-
-  def setup_redirect_project_for_user
-    project = DataHelper.test_project(
-      shortname: 'redirproj',
-      archive_domain: 'http://redirectproject.localhost:47001',
-      name: 'Redirect Project',
-      introduction: 'Redirect intro',
-      more_text: 'Redirect more text',
-      landing_page_text: 'Redirect project landing page'
-    )
-    DataHelper.test_registry(project)
-    DataHelper.test_contribution_type(project)
-
-    user = User.find_by(email: EMAIL)
-    DataHelper.grant_access(project, user)
-
-    project
-  end
-
-  def assert_redirected_to_project_subpage
-    redirected_url = URI.parse(current_url)
-    redirected_query = Rack::Utils.parse_nested_query(redirected_url.query)
-
-    assert_equal 'redirectproject.localhost', redirected_url.host
-    assert_equal '/en/searches/archive', redirected_url.path
-    assert_equal 'random', redirected_query['sort']
-    assert_nil redirected_query['checked_ohd_session']
-    assert_text 'Redirect Project'
   end
 
 end
