@@ -33,6 +33,7 @@ export function Hero() {
                         }
                         className="Hero-cta--secondary"
                         data-testid="homepage-hero-cta-secondary"
+                        title={heroData.buttons.secondary.description}
                     />
                     <Button
                         buttonText={heroData.buttons.primary.label}
@@ -43,6 +44,7 @@ export function Hero() {
                         }
                         className="Hero-cta--primary"
                         data-testid="homepage-hero-cta-primary"
+                        title={heroData.buttons.primary.description}
                     />
                 </div>
             </div>

@@ -199,6 +199,10 @@
     }
   }
 
+  .Panel-image--clickable {
+    cursor: pointer;
+  }
+
   .Panel-heading {
     margin: $base-unit 0 0 0;
     font-weight: 700;
