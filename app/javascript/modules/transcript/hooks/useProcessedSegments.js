@@ -45,15 +45,19 @@ export function useProcessedSegments(interview, tape, intervieweeId) {
                 return;
             }
 
+            // Treat transition from a known speaker to no-speaker as a boundary,
+            // so speaker visibility toggles when assigning/unassigning speakers.
+            if (speakerKey === null) {
+                segment.speakerIdChanged = currentSpeakerKey !== null;
+                currentSpeakerKey = null;
+                return;
+            }
+
             if (speakerKey !== null && speakerKey !== currentSpeakerKey) {
                 segment.speakerIdChanged = true;
                 currentSpeakerKey = speakerKey;
             } else {
                 segment.speakerIdChanged = false;
-                if (speakerKey === null) {
-                    // Reset baseline on segments without a speaker so the next speaker starts a new block.
-                    currentSpeakerKey = null;
-                }
             }
         });
 

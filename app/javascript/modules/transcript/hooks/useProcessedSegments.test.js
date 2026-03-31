@@ -220,7 +220,28 @@ describe('useProcessedSegments', () => {
         });
 
         expect(result[0].speakerIdChanged).toBe(true);
-        expect(result[1].speakerIdChanged).toBe(false);
+        expect(result[1].speakerIdChanged).toBe(true);
         expect(result[2].speakerIdChanged).toBe(true);
+    });
+
+    it('marks only the first no-speaker segment in a run as changed', () => {
+        sortedSegmentsWithActiveIndex.mockImplementationOnce((activeIndex) => [
+            activeIndex,
+            [
+                { id: 1, speaker_id: 1, speaker: 'Alice', time: '0:00' },
+                { id: 2, speaker_id: null, speaker: undefined, time: '0:10' },
+                { id: 3, speaker_id: null, speaker: undefined, time: '0:20' },
+            ],
+        ]);
+
+        render({
+            interview: { id: 1, segments: [{ id: 1 }] },
+            tape: null,
+            intervieweeId: null,
+        });
+
+        expect(result[0].speakerIdChanged).toBe(true);
+        expect(result[1].speakerIdChanged).toBe(true);
+        expect(result[2].speakerIdChanged).toBe(false);
     });
 });
