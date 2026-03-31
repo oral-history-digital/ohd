@@ -1,9 +1,14 @@
 class PasskeySessionsController < ApplicationController
+  include SignInRedirect
+
   skip_before_action :authenticate_user!
   skip_before_action :check_ohd_session
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
+  before_action :set_project, only: [:challenge, :verify]
+  before_action :set_path, only: [:challenge, :verify]
+  before_action :set_locale, only: [:challenge, :verify]
   
   # Step 1: Generate authentication challenge
   def challenge
@@ -51,7 +56,7 @@ class PasskeySessionsController < ApplicationController
       sign_in(:user, user)
       #after_sign_in(resource)
 
-      render json: { success: true, redirect_url: after_sign_in_path_for(user) }
+      render json: { success: true, redirect_url: sign_in_redirect_url(user) }
     rescue WebAuthn::SignCountVerificationError => e
       render json: { error: tv("invalid_passkey") }, status: :unprocessable_entity
     ensure

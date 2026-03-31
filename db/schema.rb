@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_24_103700) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_25_113000) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -284,6 +284,33 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_103700) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "homepage_block_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "homepage_block_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "heading"
+    t.text "text"
+    t.string "button_primary_label"
+    t.string "button_secondary_label"
+    t.string "image_alt"
+    t.index ["homepage_block_id"], name: "index_homepage_block_translations_on_homepage_block_id"
+    t.index ["locale"], name: "index_homepage_block_translations_on_locale"
+  end
+
+  create_table "homepage_blocks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "instance_setting_id", null: false
+    t.string "code", null: false
+    t.integer "position", default: 0, null: false
+    t.string "button_primary_target", null: false
+    t.string "button_secondary_target"
+    t.boolean "show_secondary_button", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["instance_setting_id", "code"], name: "index_homepage_blocks_on_instance_setting_id_and_code", unique: true
+    t.index ["instance_setting_id"], name: "index_homepage_blocks_on_instance_setting_id"
+  end
+
   create_table "imports", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "importable_id"
     t.string "importable_type", limit: 255
@@ -292,6 +319,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_103700) do
     t.string "content", limit: 400
     t.datetime "created_at", precision: nil
     t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", length: { importable_type: 191 }
+  end
+
+  create_table "instance_settings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "singleton_key", default: "default", null: false
+    t.bigint "umbrella_project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["singleton_key"], name: "index_instance_settings_on_singleton_key", unique: true
+    t.index ["umbrella_project_id"], name: "index_instance_settings_on_umbrella_project_id"
   end
 
   create_table "institution_projects", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -1200,6 +1236,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_103700) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "archiving_batches", "projects"
   add_foreign_key "event_types", "projects"
+  add_foreign_key "homepage_blocks", "instance_settings"
+  add_foreign_key "instance_settings", "projects", column: "umbrella_project_id"
   add_foreign_key "map_sections", "projects"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
