@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import classNames from 'classnames';
-import { useI18n } from 'modules/i18n';
+import { pluralizeKey, useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
 import { formatNumber, isEmptyHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -24,6 +24,10 @@ export function CollectionCard({ collection, archive, query }) {
     const countInterviews = collection.interviews?.total || 0;
     const numInterviews = formatNumber(countInterviews, 0, locale);
 
+    const interviewsLabel = t(
+        pluralizeKey('activerecord.models.interview', countInterviews, locale)
+    );
+
     return (
         <div
             className={classNames('CollectionCard', {
@@ -44,7 +48,7 @@ export function CollectionCard({ collection, archive, query }) {
                     </h4>
                     <div className="CollectionCard-meta">
                         <span className="CollectionCard-metaItem">
-                            {numInterviews} {t('explorer.interviews')}
+                            {numInterviews} {interviewsLabel}
                         </span>
                         {collection.institution && (
                             <span className="CollectionCard-metaItem">

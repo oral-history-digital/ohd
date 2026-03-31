@@ -167,4 +167,69 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1980, payload.dig('interview_year_range', 'min')
     assert_equal 1981, payload.dig('interview_year_range', 'max')
   end
+
+  test 'should only count interviews from public projects in lite collection payload' do
+    public_project = DataHelper.test_project(
+      shortname: "cup#{SecureRandom.hex(3)}a",
+      workflow_state: 'public'
+    )
+
+    unshared_project = DataHelper.test_project(
+      shortname: "cup#{SecureRandom.hex(3)}b",
+      workflow_state: 'unshared'
+    )
+
+    institution = Institution.first
+
+    collection = Collection.create!(
+      project: public_project,
+      institution: institution,
+      name: 'Test collection with multiple projects'
+    )
+
+    # Create 2 interviews in public project
+    Interview.create!(
+      project: public_project,
+      collection: collection,
+      archive_id: "#{public_project.shortname}100",
+      media_type: 'video',
+      interview_date: '2020-01-01',
+      workflow_state: 'public'
+    )
+
+    Interview.create!(
+      project: public_project,
+      collection: collection,
+      archive_id: "#{public_project.shortname}101",
+      media_type: 'audio',
+      interview_date: '2021-01-01',
+      workflow_state: 'public'
+    )
+
+    # Create interview in unshared project - should NOT be counted
+    Interview.create!(
+      project: unshared_project,
+      collection: collection,
+      archive_id: "#{unshared_project.shortname}100",
+      media_type: 'video',
+      interview_date: '2022-01-01',
+      workflow_state: 'public'
+    )
+
+    get collection_path(collection, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :success
+
+    body = JSON.parse(response.body)
+    payload = body['data']
+
+    # Should only count interviews from the public project
+    assert_equal 2, payload.dig('interviews', 'total')
+    assert_equal 2, payload.dig('interviews', 'public')
+    assert_equal 0, payload.dig('interviews', 'restricted')
+    assert_equal 0, payload.dig('interviews', 'unshared')
+    
+    # Only public project interviews should be in media types
+    assert_equal 1, payload.dig('media_types', 'video')
+    assert_equal 1, payload.dig('media_types', 'audio')
+  end
 end

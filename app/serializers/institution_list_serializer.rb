@@ -53,7 +53,13 @@ class InstitutionListSerializer < ActiveModel::Serializer
   end
 
   def archives
-    projects_by_institution.fetch(object.id, []).map do |project|
+    projects_by_institution.fetch(object.id, []).map do |entry|
+      project = entry[:project] || entry['project'] || entry
+      source_institution_id =
+        entry.is_a?(Hash) ? (entry[:source_institution_id] || entry['source_institution_id']) : object.id
+      source_institution_name =
+        entry.is_a?(Hash) ? (entry[:source_institution_name] || entry['source_institution_name']) : object.name
+
       localized_logo = localized_logo_for(project.logos)
       interviews_count =
         project_count_for(project.id, 'public') +
@@ -64,12 +70,16 @@ class InstitutionListSerializer < ActiveModel::Serializer
         id: project.id,
         name: project.name,
         shortname: project.shortname,
+        workflow_state: project.workflow_state,
         archive_domain: project.archive_domain,
         logo: localized_logo&.file&.attachment ? {
           id: localized_logo.id,
           url: Rails.application.routes.url_helpers.rails_blob_path(localized_logo.file, only_path: true)
         } : nil,
-        interviews_count: interviews_count
+        interviews_count: interviews_count,
+        from_child: source_institution_id != object.id,
+        source_institution_id: source_institution_id,
+        source_institution_name: source_institution_name
       }
     end
   end

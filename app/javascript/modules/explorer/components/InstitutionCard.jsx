@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useI18n } from 'modules/i18n';
+import { pluralizeKey, useI18n } from 'modules/i18n';
 import { Button } from 'modules/ui';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -7,6 +7,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
+import { ArchivesList } from './ArchivesList';
 import { HighlightText } from './HighlightText';
 import { Institutions, InterviewStats, RichtextDetail } from './details';
 
@@ -18,7 +19,10 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
 
-    const countArchives = institution.archives?.length || 0;
+    const countArchives =
+        institution.archives?.filter(
+            (archive) => archive.workflow_state === 'public'
+        ).length || 0;
     const countCollections =
         (institution.collections?.public || 0) +
         (institution.collections?.restricted || 0);
@@ -28,6 +32,22 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const numArchives = formatNum(countArchives);
     const numCollections = formatNum(countCollections);
     const numInterviews = formatNum(countInterviews);
+
+    const archivesLabel = t(
+        pluralizeKey('activerecord.models.project', countArchives, locale)
+    );
+    const collectionsLabel = t(
+        pluralizeKey('activerecord.models.collection', countCollections, locale)
+    );
+    const interviewsLabel = t(
+        pluralizeKey('activerecord.models.interview', countInterviews, locale)
+    );
+
+    // Get IDs for institution & children to show archives list
+    const idsForArchivesList = [
+        ...(institution?.id ? [institution.id] : []),
+        ...(institution?.children?.map((child) => child.id) || []),
+    ];
 
     return (
         <div
@@ -66,17 +86,17 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                         )}
                         {countArchives > 0 && (
                             <span className="InstitutionCard-metaItem">
-                                {numArchives} {t('explorer.archives')}
+                                {numArchives} {archivesLabel}
                             </span>
                         )}
                         {countCollections > 0 && (
                             <span className="InstitutionCard-metaItem">
-                                {numCollections} {t('explorer.collections')}
+                                {numCollections} {collectionsLabel}
                             </span>
                         )}
                         {countInterviews > 0 && (
                             <span className="InstitutionCard-metaItem">
-                                {numInterviews} {t('explorer.interviews')}
+                                {numInterviews} {interviewsLabel}
                             </span>
                         )}
                     </div>
@@ -113,6 +133,14 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                             }
                         />
                     </div>
+
+                    {idsForArchivesList && institution?.archives.length > 0 && (
+                        <ArchivesList
+                            institutionIds={idsForArchivesList}
+                            showTotals={false}
+                            hideifEmpty={true}
+                        />
+                    )}
                 </div>
             )}
         </div>

@@ -65,7 +65,6 @@ class InstitutionsController < ApplicationController
 
     cache_key = [
       'institutions-list',
-      'v6',
       extra_params,
       projects_cache_scope_key,
       I18n.locale,

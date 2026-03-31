@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { useI18n } from 'modules/i18n';
+import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -18,7 +19,7 @@ export function ExplorerRangeFilter({
     value,
     onChange,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const [min, max] = value;
     const isFiltered = min > globalMin || max < globalMax;
     const [hoverTooltip, setHoverTooltip] = useState(null);
@@ -43,7 +44,8 @@ export function ExplorerRangeFilter({
             <div className="ExplorerSidebarSearch-rangeLabel">
                 <span>{label}</span>
                 <span className="ExplorerSidebarSearch-rangeValues">
-                    {min}–{max}
+                    {formatNumber(min, 0, locale)}–
+                    {formatNumber(max, 0, locale)}
                     {isFiltered && (
                         <button
                             className="ExplorerSidebarSearch-rangeReset"

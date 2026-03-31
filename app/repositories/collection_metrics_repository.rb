@@ -25,8 +25,10 @@ class CollectionMetricsRepository
 
   def interview_language_codes
     InterviewLanguage
-      .joins(:interview, :language)
+      .joins(interview: :project)
       .where(interviews: { collection_id: @collection_id, workflow_state: WORKFLOW_STATES })
+      .where(projects: { workflow_state: 'public' })
+      .joins(:language)
       .distinct
       .pluck('languages.code')
       .compact
@@ -40,9 +42,11 @@ class CollectionMetricsRepository
 
   def birth_year_range
     rows = Contribution
-      .joins(:interview, :contribution_type, :person)
+      .joins(interview: :project)
+      .joins(:contribution_type, :person)
       .where(interviews: { collection_id: @collection_id, workflow_state: WORKFLOW_STATES })
       .where(contribution_types: { code: 'interviewee' })
+      .where(projects: { workflow_state: 'public' })
       .pluck('people.date_of_birth')
 
     range_from_date_strings(rows)
@@ -58,9 +62,11 @@ class CollectionMetricsRepository
 
   def birthdays
     Contribution
-      .joins(:interview, :contribution_type, :person)
+      .joins(interview: :project)
+      .joins(:contribution_type, :person)
       .where(interviews: { collection_id: @collection_id, workflow_state: WORKFLOW_STATES })
       .where(contribution_types: { code: 'interviewee' })
+      .where(projects: { workflow_state: 'public' })
       .pluck('people.date_of_birth')
       .map { |value| parse_or_keep(value) }
       .reject(&:nil?)
@@ -79,8 +85,7 @@ class CollectionMetricsRepository
         .where(interviews: { collection_id: @collection_id })
         .maximum(:updated_at),
       person_updated_at: Person
-        .joins(:contributions)
-        .joins('INNER JOIN interviews ON interviews.id = contributions.interview_id')
+        .joins(contributions: :interview)
         .where(interviews: { collection_id: @collection_id })
         .maximum(:updated_at)
     }
@@ -89,7 +94,9 @@ class CollectionMetricsRepository
   private
 
   def interviews_scope
-    @interviews_scope ||= Interview.where(collection_id: @collection_id, workflow_state: WORKFLOW_STATES)
+    @interviews_scope ||= Interview
+      .joins(:project)
+      .where(collection_id: @collection_id, workflow_state: WORKFLOW_STATES, projects: { workflow_state: 'public' })
   end
 
   def range_from_date_strings(values)

@@ -1,10 +1,20 @@
-.UnorderedList {
+ul.UnorderedList {
   margin-bottom: 0;
   margin-top: 0;
-  padding-left: $base-unit;
+  padding-left: calc($base-unit / 2);
+
+  li {
+    padding-left: calc($base-unit / 12);
+  }
+
+  li::marker {
+    content: '– '; /* en dash */
+    font-size: 0.9em;
+    opacity: 0.6;
+  }
 }
 
-.UnorderedList--plain {
+ul.UnorderedList--plain {
   list-style-type: none;
   padding-left: 0;
 }
