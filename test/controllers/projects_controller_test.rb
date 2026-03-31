@@ -132,6 +132,19 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_includes ids, unshared_project.id
   end
 
+  test 'should forbid anonymous users from loading unshared project lite payload' do
+    reset!
+    host! 'test.portal.oral-history.localhost:47001'
+
+    unshared_project = DataHelper.test_project(
+      shortname: "us#{SecureRandom.hex(4)}lp",
+      workflow_state: 'unshared'
+    )
+
+    get project_path(unshared_project, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :forbidden
+  end
+
   test 'should return lightweight single project payload in show when lite flag is set' do
     project = DataHelper.test_project(
       shortname: "sp#{SecureRandom.hex(3)}a",

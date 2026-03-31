@@ -93,6 +93,61 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     assert_includes ids, collection.id
   end
 
+  test 'should hide unshared collections in public project for anonymous users' do
+    reset!
+    host! 'test.portal.oral-history.localhost:47001'
+
+    project = DataHelper.test_project(
+      shortname: "cw#{SecureRandom.hex(4)}u",
+      workflow_state: 'public'
+    )
+
+    public_collection = Collection.create!(
+      project: project,
+      institution: Institution.first,
+      name: 'Visible collection',
+      workflow_state: 'public'
+    )
+
+    Collection.create!(
+      project: project,
+      institution: Institution.first,
+      name: 'Hidden unshared collection',
+      workflow_state: 'unshared'
+    )
+
+    get collections_project_path(project, locale: 'en', format: :json), params: {
+      all: true,
+      workflow_state: 'unshared'
+    }
+    assert_response :success
+
+    data = JSON.parse(response.body).fetch('data', [])
+    ids = data.map { |item| item['id'] }
+    assert_not_includes ids, public_collection.id
+    assert_equal [], data
+  end
+
+  test 'should forbid anonymous users from loading unshared collection lite payload' do
+    reset!
+    host! 'test.portal.oral-history.localhost:47001'
+
+    project = DataHelper.test_project(
+      shortname: "cl#{SecureRandom.hex(4)}u",
+      workflow_state: 'public'
+    )
+
+    collection = Collection.create!(
+      project: project,
+      institution: Institution.first,
+      name: 'Private collection payload',
+      workflow_state: 'unshared'
+    )
+
+    get collection_path(collection, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :forbidden
+  end
+
   test 'should return lightweight single collection payload in show when lite flag is set' do
     project = DataHelper.test_project(shortname: "cw#{SecureRandom.hex(4)}a")
     institution = Institution.first
