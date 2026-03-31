@@ -46,11 +46,6 @@ export default function SegmentForm({
         'invalid_timecode_range'
     );
     const [hasTimecodeError, setHasTimecodeError] = useState(false);
-    const [hasSpeakerError, setHasSpeakerError] = useState(false);
-    // Pure validators — no setState, safe to call during render
-    const isSpeakerValid = useCallback((value) => {
-        return value !== null && value !== undefined && value !== '';
-    }, []);
 
     const isTimecodeValid = useCallback(
         (value) => {
@@ -90,20 +85,12 @@ export default function SegmentForm({
                 } else {
                     setHasTimecodeError(false);
                 }
-            } else if (field === 'speaker_id') {
-                setHasSpeakerError(!isSpeakerValid(value));
             }
             if (typeof onChange === 'function') {
                 onChange(changeInfo);
             }
         },
-        [
-            timecodeFormat,
-            prevSegmentTimecode,
-            nextSegmentTimecode,
-            isSpeakerValid,
-            onChange,
-        ]
+        [timecodeFormat, prevSegmentTimecode, nextSegmentTimecode, onChange]
     );
 
     const submitHandler = (params) => {
@@ -127,7 +114,6 @@ export default function SegmentForm({
             values: Object.values(people || {}),
             value: segment?.speaker_id,
             withEmpty: true,
-            validate: isSpeakerValid,
             individualErrorMsg: 'empty',
             touchOnInvalid: true,
             group: 'secondary',
@@ -164,7 +150,7 @@ export default function SegmentForm({
                 onCancel={onCancel}
                 onChange={handleFormChange}
                 fetching={isSaving}
-                hasValidationErrors={hasTimecodeError || hasSpeakerError}
+                hasValidationErrors={hasTimecodeError}
                 disableIfUnchanged={true}
                 notification={saveNotification}
                 onDismissNotification={dismissSaveNotification}
