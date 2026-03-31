@@ -90,21 +90,37 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
 export function submitData(props, params, opts = {}, callback) {
     let dataType = Object.keys(params)[0];
     let pluralizedDataType = pluralize(dataType);
+    const payloadData = params?.[dataType] || {};
+    const id = payloadData.id;
 
-    if (params[dataType].id) {
-        let id = params[dataType].id;
-        delete params[dataType].id;
+    if (id) {
+        // Keep caller-owned form state immutable. Some forms reuse the same params
+        // object across multiple saves, so deleting id in-place would switch PUT -> POST.
+        // The API expects id in the URL for updates, not in the request body.
+        const payload = {
+            ...params,
+            [dataType]: Object.keys(payloadData).reduce((acc, key) => {
+                if (key !== 'id') {
+                    acc[key] = payloadData[key];
+                }
+                return acc;
+            }, {}),
+        };
         return (dispatch) => {
             // Dispatch REQUEST_DATA to set loading state
             dispatch(requestData(pluralizedDataType, id));
 
             if (opts.updateStateBeforeSubmit)
                 dispatch(
-                    updateData(pluralizedDataType, id, Object.values(params)[0])
+                    updateData(
+                        pluralizedDataType,
+                        id,
+                        Object.values(payload)[0]
+                    )
                 );
             Loader.put(
                 `${pathBase(props)}/${pluralizedDataType}/${id}`,
-                params,
+                payload,
                 dispatch,
                 receiveData,
                 (error) => receiveError(pluralizedDataType, id, error),
@@ -112,6 +128,10 @@ export function submitData(props, params, opts = {}, callback) {
             );
         };
     } else {
+        console.warn('submitData: No ID found, using POST instead of PUT', {
+            dataType,
+            params: params[dataType],
+        });
         return (dispatch) => {
             //dispatch(addData(params));
             Loader.post(

@@ -156,6 +156,7 @@ export default function SegmentForm({
                 onDismissNotification={dismissSaveNotification}
                 data={segment}
                 values={{
+                    id: segment?.id,
                     locale: contentLocale,
                     speaker_id: segment?.speaker_id,
                     timecode: segment?.timecode || '',
