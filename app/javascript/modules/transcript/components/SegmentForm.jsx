@@ -95,8 +95,9 @@ export default function SegmentForm({
 
     const submitHandler = (params) => {
         handleSaveStart(); // Set saving state and clear notifications before dispatching save action
-        submitData({ locale, projectId, project }, params);
-        onSubmit();
+        submitData({ locale, projectId, project }, params, () => {
+            onSubmit();
+        });
     };
 
     const formElements = [

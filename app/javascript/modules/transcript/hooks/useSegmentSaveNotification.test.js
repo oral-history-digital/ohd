@@ -106,6 +106,9 @@ describe('useSegmentSaveNotification', () => {
 
         lastResult.handleSaveStart();
 
+        mockStatuses = { segments: { 1: 'fetching' } };
+        rerender({ segmentId: 1 });
+
         mockStatuses = { segments: { 1: 'error-123' } };
         rerender({ segmentId: 1 });
 
@@ -122,6 +125,8 @@ describe('useSegmentSaveNotification', () => {
         act(() => {
             lastResult.handleSaveStart();
         });
+        mockStatuses = { segments: { 1: 'fetching' } };
+        rerender({ segmentId: 1 });
         mockStatuses = { segments: { 1: 'fetched-123' } };
         rerender({ segmentId: 1 });
 
@@ -141,6 +146,8 @@ describe('useSegmentSaveNotification', () => {
         act(() => {
             lastResult.handleSaveStart();
         });
+        mockStatuses = { segments: { 1: 'fetching' } };
+        rerender({ segmentId: 1 });
         mockStatuses = { segments: { 1: 'fetched-123' } };
         rerender({ segmentId: 1 });
         expect(lastResult.saveNotification).not.toBeNull();
@@ -149,5 +156,82 @@ describe('useSegmentSaveNotification', () => {
         rerender({ segmentId: 2 });
 
         expect(lastResult.saveNotification).toBeNull();
+    });
+
+    it('does not show success from stale fetched status before a new request starts', () => {
+        render();
+
+        // Existing fetched status from a previous save should not trigger success.
+        mockStatuses = { segments: { 1: 'fetched-previous' } };
+        rerender({ segmentId: 1 });
+
+        act(() => {
+            lastResult.handleSaveStart();
+        });
+        rerender({ segmentId: 1 });
+
+        expect(lastResult.saveNotification).toBeNull();
+        expect(lastResult.isSaving).toBe(false);
+
+        // After a real request cycle (fetching -> fetched), success appears.
+        mockStatuses = { segments: { 1: 'fetching' } };
+        rerender({ segmentId: 1 });
+        mockStatuses = { segments: { 1: 'fetched-current' } };
+        rerender({ segmentId: 1 });
+
+        expect(lastResult.saveNotification).toEqual({
+            variant: 'success',
+            title: 'modules.forms.save_success',
+            autoHideDuration: 1000,
+        });
+    });
+
+    it('shows error notification when only global segment status transitions to error', () => {
+        render();
+
+        act(() => {
+            lastResult.handleSaveStart();
+        });
+
+        mockStatuses = { segments: { all: 'fetching' } };
+        rerender({ segmentId: 1 });
+        expect(lastResult.isSaving).toBe(true);
+
+        mockStatuses = { segments: { all: 'error-404' } };
+        rerender({ segmentId: 1 });
+
+        expect(lastResult.isSaving).toBe(false);
+        expect(lastResult.saveNotification).toEqual({
+            variant: 'error',
+            title: 'modules.forms.save_error',
+        });
+    });
+
+    it('shows global error even when segment status is stale fetched', () => {
+        render();
+
+        // Previous successful segment status is still present.
+        mockStatuses = { segments: { 1: 'fetched-previous' } };
+        rerender({ segmentId: 1 });
+
+        act(() => {
+            lastResult.handleSaveStart();
+        });
+
+        // New request goes through global status path (e.g. POST fallback).
+        mockStatuses = { segments: { 1: 'fetched-previous', all: 'fetching' } };
+        rerender({ segmentId: 1 });
+        expect(lastResult.isSaving).toBe(true);
+
+        mockStatuses = {
+            segments: { 1: 'fetched-previous', all: 'error-404' },
+        };
+        rerender({ segmentId: 1 });
+
+        expect(lastResult.isSaving).toBe(false);
+        expect(lastResult.saveNotification).toEqual({
+            variant: 'error',
+            title: 'modules.forms.save_error',
+        });
     });
 });

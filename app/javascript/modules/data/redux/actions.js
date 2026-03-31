@@ -133,6 +133,10 @@ export function submitData(props, params, opts = {}, callback) {
             params: params[dataType],
         });
         return (dispatch) => {
+            // Start status tracking for POST under segments.all (no item id available).
+            // This dispatch is required so the UI can transition fetching -> error/success
+            // and show the correct notification on failed create/update fallbacks.
+            dispatch(requestData(pluralizedDataType));
             //dispatch(addData(params));
             Loader.post(
                 `${pathBase(props)}/${pluralizedDataType}`,
