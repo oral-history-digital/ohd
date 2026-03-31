@@ -7,10 +7,14 @@ const STATIC_TEXT_PAGE_CODES = [
 ];
 
 const PROJECT_ADMIN_PATTERNS = [
+    '/admin/instance',
     '/project/edit-info',
     '/project/edit-config',
     '/project/edit-access-config',
     '/project/edit-display',
+    '/projects',
+    '/institutions',
+    '/help_texts',
     '/metadata_fields',
     '/people',
     '/event_types',

@@ -92,6 +92,29 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.isKnown).toBe(true);
     });
 
+    it('classifies locale-only admin paths as project admin pages', () => {
+        const paths = [
+            '/de/uploads/new',
+            '/de/registry_reference_types',
+            '/de/admin/instance',
+            '/de/projects',
+            '/de/institutions',
+            '/de/help_texts',
+        ];
+
+        paths.forEach((path) => {
+            const result = getCurrentPageFromLocation(buildLocation(path));
+
+            expect(result.pageType).toBe('project_admin_page');
+            expect(result.params).toEqual({
+                projectId: null,
+                locale: 'de',
+            });
+            expect(result.pathBase).toBe('/de');
+            expect(result.isKnown).toBe(true);
+        });
+    });
+
     it('classifies register page routes', () => {
         const result = getCurrentPageFromLocation(
             buildLocation('/mog/de/register')
