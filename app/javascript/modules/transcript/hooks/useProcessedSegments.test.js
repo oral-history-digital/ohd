@@ -4,6 +4,7 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { mount } from 'enzyme';
 import PropTypes from 'prop-types';
 
+import { sortedSegmentsWithActiveIndex } from '../utils';
 import { useProcessedSegments } from './useProcessedSegments';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -171,5 +172,55 @@ describe('useProcessedSegments', () => {
         });
 
         expect(result).not.toBe(firstResult);
+    });
+
+    it('marks first segment as changed when speaker is missing', () => {
+        sortedSegmentsWithActiveIndex.mockImplementationOnce((activeIndex) => [
+            activeIndex,
+            [
+                {
+                    id: 1,
+                    speaker_id: null,
+                    speaker: undefined,
+                    time: '0:00',
+                },
+                {
+                    id: 2,
+                    speaker_id: null,
+                    speaker: undefined,
+                    time: '0:10',
+                },
+            ],
+        ]);
+
+        render({
+            interview: { id: 1, segments: [{ id: 1 }] },
+            tape: null,
+            intervieweeId: null,
+        });
+
+        expect(result[0].speakerIdChanged).toBe(true);
+        expect(result[1].speakerIdChanged).toBe(false);
+    });
+
+    it('resets speaker block after a no-speaker segment', () => {
+        sortedSegmentsWithActiveIndex.mockImplementationOnce((activeIndex) => [
+            activeIndex,
+            [
+                { id: 1, speaker_id: 1, speaker: 'Alice', time: '0:00' },
+                { id: 2, speaker_id: null, speaker: undefined, time: '0:10' },
+                { id: 3, speaker_id: 1, speaker: 'Alice', time: '0:20' },
+            ],
+        ]);
+
+        render({
+            interview: { id: 1, segments: [{ id: 1 }] },
+            tape: null,
+            intervieweeId: null,
+        });
+
+        expect(result[0].speakerIdChanged).toBe(true);
+        expect(result[1].speakerIdChanged).toBe(false);
+        expect(result[2].speakerIdChanged).toBe(true);
     });
 });

@@ -15,23 +15,45 @@ export function useProcessedSegments(interview, tape, intervieweeId) {
         // objects are stable references — mutating them inside the render loop
         // below would still work (same ref), but doing it here keeps the render
         // loop pure and makes the mutations visible to memoized children.
-        let currentSpeakerName = '';
-        let currentSpeakerId = null;
-        segments.forEach((segment) => {
+        let currentSpeakerKey = null;
+        segments.forEach((segment, index) => {
             segment.speaker_is_interviewee =
                 intervieweeId === segment.speaker_id;
-            if (
-                (currentSpeakerId !== segment.speaker_id &&
-                    segment.speaker_id !== null) ||
-                (currentSpeakerName !== segment.speaker &&
-                    segment.speaker !== null &&
-                    segment.speaker_id === null)
-            ) {
+
+            const hasSpeakerId =
+                segment.speaker_id !== null && segment.speaker_id !== undefined;
+            const normalizedSpeakerName =
+                typeof segment.speaker === 'string'
+                    ? segment.speaker.trim()
+                    : segment.speaker;
+            const hasSpeakerName =
+                normalizedSpeakerName !== null &&
+                normalizedSpeakerName !== undefined &&
+                normalizedSpeakerName !== '';
+
+            // Prefer stable numeric speaker_id. Fallback to speaker name when id is missing.
+            const speakerKey = hasSpeakerId
+                ? `id:${segment.speaker_id}`
+                : hasSpeakerName
+                  ? `name:${normalizedSpeakerName}`
+                  : null;
+
+            // Mark the first segment as a speaker change to ensure initials are shown
+            if (index === 0) {
                 segment.speakerIdChanged = true;
-                currentSpeakerId = segment.speaker_id;
-                currentSpeakerName = segment.speaker;
+                currentSpeakerKey = speakerKey;
+                return;
+            }
+
+            if (speakerKey !== null && speakerKey !== currentSpeakerKey) {
+                segment.speakerIdChanged = true;
+                currentSpeakerKey = speakerKey;
             } else {
                 segment.speakerIdChanged = false;
+                if (speakerKey === null) {
+                    // Reset baseline on segments without a speaker so the next speaker starts a new block.
+                    currentSpeakerKey = null;
+                }
             }
         });
 
