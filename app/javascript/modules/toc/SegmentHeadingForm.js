@@ -24,18 +24,28 @@ export default function SegmentHeadingForm({
         dismissSaveNotification,
     } = useSegmentSaveNotification(segment?.id);
 
+    const submitHandler = (params) => {
+        handleSaveStart();
+
+        const afterSubmitCallback =
+            typeof onSubmit === 'function' ? onSubmit : undefined;
+
+        dispatch(
+            submitData(
+                { locale, projectId, project },
+                params,
+                {},
+                afterSubmitCallback
+            )
+        );
+    };
+
     return (
         <div>
             <Form
                 scope="segment"
                 onSubmit={(params) => {
-                    handleSaveStart();
-                    dispatch(
-                        submitData({ locale, projectId, project }, params)
-                    );
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
-                    }
+                    submitHandler(params);
                 }}
                 onCancel={onCancel}
                 onChange={onChange}
