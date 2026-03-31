@@ -300,7 +300,9 @@ export default function InstanceSettingAdminPage() {
                         object={{ type: 'InstanceSetting' }}
                         action="update"
                     >
-                        <h1>{t('edit.instance.title')}</h1>
+                        <h1 className="Page-main-title">
+                            {t('edit.instance.title')}
+                        </h1>
                         {isLoading && <Spinner withPadding />}
                         {!isLoading && error && <p>{error.message}</p>}
                         {!isLoading && !error && instanceSettings && (

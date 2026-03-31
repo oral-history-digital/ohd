@@ -25,12 +25,12 @@
 
   .HomepageProjects-navBtn {
     align-items: center;
-    background: none;
-    border: 1px solid #ccc;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     height: $base-unit * 1.5;
     justify-content: center;
     line-height: 1;
@@ -38,8 +38,8 @@
     width: $base-unit * 1.5;
 
     &:hover:not(:disabled) {
-      background-color: rgba(0, 0, 0, 0.05);
-      border-color: #999;
+      filter: brightness(1.15);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     &:disabled {
@@ -52,6 +52,7 @@
     display: block;
     line-height: 1;
     transform: translateY(-1px);
+    color: white;
   }
 
   .HomepageProjects-scroll {
@@ -60,6 +61,7 @@
     gap: $base-unit * 0.75;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    align-items: flex-start;
 
     // Hide scrollbar visually but allow touch/swipe scroll
     scrollbar-width: none; // Firefox
@@ -197,6 +199,10 @@
     }
   }
 
+  .Panel-image--clickable {
+    cursor: pointer;
+  }
+
   .Panel-heading {
     margin: $base-unit 0 0 0;
     font-weight: 700;
@@ -214,90 +220,97 @@
   }
 
   .ProjectTile {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
-    display: block;
+    display: flex;
+    flex-direction: column;
     transition: opacity $transition-duration;
     box-sizing: border-box;
     max-width: 410px;
     width: 100%;
     padding: 0;
-    border: 0;
-  }
+    border: 1px solid $gray-pale;
 
-  .ProjectTile:link,
-  .ProjectTile:hover,
-  .ProjectTile:active,
-  .ProjectTile:visited {
-    color: $body-text-color;
-  }
-
-  .ProjectTile:hover,
-  .ProjectTile:focus {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
-  }
-
-  .ProjectTile-inner {
-    position: relative;
-  }
-
-  .ProjectTile-lock {
-    align-items: center;
-    background-color: #bbbbbbcc;
-    border-radius: 50%;
-    display: flex;
-    height: $base-unit * 1.5;
-    justify-content: center;
-    line-height: $base-unit;
-    position: absolute;
-    right: $base-unit * 0.5;
-    text-align: center;
-    top: $base-unit * 0.5;
-    width: $base-unit * 1.5;
-    z-index: 1;
-  }
-
-  .ProjectTile-lockImg {
-    height: 1rem;
-  }
-
-  .ProjectTile-image {
-    background-color: white;
-    border-bottom: none;
-    border: 1px solid lightgrey;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: contain;
-    height: 180px;
-
-    @include screen-s {
-      height: 220px;
+    &:link,
+    &:hover,
+    &:active,
+    &:visited {
+      color: $body-text-color;
     }
 
-    @include screen-m {
-      height: 260px;
+    &:hover,
+    &:focus {
+      border: 1px solid $gray-light;
     }
-  }
 
-  .ProjectTile-body {
-    padding: $base-unit * 0.5;
-    font-weight: normal;
-  }
+    .ProjectTile-inner {
+      position: relative;
+      margin: 0;
+      align-self: flex-start;
+      width: 100%;
+    }
 
-  .ProjectTile-title {
-    color: black;
-    font-weight: bold;
-    line-height: $base-unit;
-    margin: 0;
-  }
+    .ProjectTile-lock {
+      align-items: center;
+      background-color: #bbbbbbcc;
+      border-radius: 50%;
+      display: flex;
+      height: $base-unit * 1.5;
+      justify-content: center;
+      line-height: $base-unit;
+      position: absolute;
+      right: $base-unit * 0.5;
+      text-align: center;
+      top: $base-unit * 0.5;
+      width: $base-unit * 1.5;
+      z-index: 1;
+    }
 
-  .ProjectTile-text {
-    color: $body-text-color;
-    margin: 0;
-  }
+    .ProjectTile-lockImg {
+      height: 1rem;
+    }
 
-  .ProjectTile-text--ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    .ProjectTile-image {
+      background-color: white;
+      border-bottom: none;
+      border: 1px solid lightgrey;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: contain;
+      height: auto;
+      display: block;
+    }
+
+    .ProjectTile-body {
+      padding: $base-unit * 0.5;
+      font-weight: normal;
+    }
+
+    .ProjectTile-title,
+    .ProjectTile-text {
+      color: $body-text-color;
+      line-height: $line-height-medium !important;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: $base-unit * 0.25 0;
+      white-space: nowrap;
+    }
+
+    .ProjectTile-title {
+      font-weight: bold;
+    }
+
+    .ProjectTile-text--ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover .ProjectTile-title,
+    &:focus .ProjectTile-title,
+    &:hover .ProjectTile-text,
+    &:focus .ProjectTile-text {
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+    }
   }
 }

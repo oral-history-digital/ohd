@@ -9,7 +9,8 @@ class ProjectMetricsRepository
     return {} if @project_ids.blank?
 
     Interview
-      .where(project_id: @project_ids)
+      .joins(:project)
+      .where(project_id: @project_ids, projects: { workflow_state: 'public' })
       .group(:project_id, :workflow_state)
       .count
   end
@@ -27,8 +28,10 @@ class ProjectMetricsRepository
     return {} if @project_ids.blank?
 
     rows = InterviewLanguage
-      .joins(:interview, :language)
+      .joins(interview: :project)
+      .joins(:language)
       .where(interviews: { project_id: @project_ids, workflow_state: %w(public restricted unshared) })
+      .where(projects: { workflow_state: 'public' })
       .distinct
       .pluck('interviews.project_id', 'languages.code')
 
@@ -44,7 +47,8 @@ class ProjectMetricsRepository
     return {} if @project_ids.blank?
 
     rows = Interview
-      .where(project_id: @project_ids)
+      .joins(:project)
+      .where(project_id: @project_ids, projects: { workflow_state: 'public' })
       .pluck(:project_id, :interview_date)
 
     rows.each_with_object({}) do |(project_id, interview_date), result|
@@ -64,9 +68,11 @@ class ProjectMetricsRepository
     return {} if @project_ids.blank?
 
     rows = Contribution
-      .joins(:interview, :contribution_type, :person)
+      .joins(interview: :project)
+      .joins(:contribution_type, :person)
       .where(interviews: { project_id: @project_ids })
       .where(contribution_types: { code: 'interviewee' })
+      .where(projects: { workflow_state: 'public' })
       .pluck('interviews.project_id', 'people.date_of_birth')
 
     rows.each_with_object({}) do |(project_id, date_of_birth), result|
@@ -95,7 +101,8 @@ class ProjectMetricsRepository
     return {} if @project_ids.blank?
 
     rows = Interview
-      .where(project_id: @project_ids, workflow_state: WORKFLOW_STATES)
+      .joins(:project)
+      .where(project_id: @project_ids, workflow_state: WORKFLOW_STATES, projects: { workflow_state: 'public' })
       .group(:project_id, :media_type)
       .count
 

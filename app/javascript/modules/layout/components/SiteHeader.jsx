@@ -23,7 +23,6 @@ export function SiteHeader() {
     return (
         <header
             className={classNames('SiteHeader', {
-                'SiteHeader--stacked': showProjectLogo,
                 'SiteHeader--hasLargeLogo': isHome || showProjectLogo,
                 'SiteHeader--hasBreadcrumbs': showBreadcrumbs,
             })}

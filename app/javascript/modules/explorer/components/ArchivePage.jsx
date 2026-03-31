@@ -56,7 +56,9 @@ export function ArchivePage() {
             </Helmet>
             <ErrorBoundary>
                 <div className="wrapper-content ProjectDetails">
-                    <h1 className="ProjectDetails-title u-mb">{title}</h1>
+                    <h1 className="Page-main-title ProjectDetails-title u-mb">
+                        {title}
+                    </h1>
                     <div className="ProjectDetails-layout">
                         <div className="ProjectDetails-main">
                             <div className="ProjectDetails-actions">

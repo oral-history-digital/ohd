@@ -4,16 +4,15 @@ import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import { SmartImage } from 'modules/ui';
+import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 export function ProjectTile({ project }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(project);
 
     const name = project.display_name || project.name;
-    const backgroundColor = project.primary_color || '#333333';
-    const opaqueBackgroundColor = backgroundColor + '40';
 
     const institutionName = project.institutions
         ?.map((institution) => institution.name)
@@ -31,13 +30,23 @@ export function ProjectTile({ project }) {
             ? t('modules.site_startpage.access_requested')
             : t('modules.site_startpage.no_access');
 
+    const numInterviews = formatNumber(
+        project.interviews?.total || 0,
+        0, // no decimal places
+        locale
+    );
+
+    const interviewsStr = t(
+        project.interviews?.total === 1
+            ? 'activerecord.models.interview.one'
+            : 'activerecord.models.interview.other',
+        {
+            count: project.interviews?.total || 0,
+        }
+    );
+
     return (
-        <LinkOrA
-            className="ProjectTile"
-            style={{ backgroundColor: opaqueBackgroundColor }}
-            project={project}
-            to=""
-        >
+        <LinkOrA className="ProjectTile" project={project} to="">
             <article
                 className="ProjectTile-inner"
                 data-testid={`homepage-project-tile-${project.id}`}
@@ -70,7 +79,7 @@ export function ProjectTile({ project }) {
                         {institutionName}
                     </p>
                     <p className="ProjectTile-text">
-                        {project.interviews?.total || 0} Interviews
+                        {numInterviews} {interviewsStr}
                     </p>
                 </div>
             </article>

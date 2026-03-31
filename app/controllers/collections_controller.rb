@@ -98,9 +98,7 @@ class CollectionsController < ApplicationController
       policy_scope(Project).find_by(shortname: params[:id])
     raise ActiveRecord::RecordNotFound if project.blank?
 
-    # The project has already been resolved through policy_scope(Project), so
-    # limit collections directly to that authorized project.
-    collections_scope = Collection.where(project_id: project.id)
+    collections_scope = policy_scope(Collection).where(project_id: project.id)
 
     collections_scope = collections_scope.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
 
@@ -119,12 +117,14 @@ class CollectionsController < ApplicationController
       extra_params = "page_#{page}"
     end
 
+    collection_ids = collections.map(&:id)
+
     interview_counts = Interview
-      .where(collection_id: collections.map(&:id))
+      .where(collection_id: collection_ids)
       .group(:collection_id, :workflow_state)
       .count
 
-    interview_languages_by_collection = interview_languages_by_collection(collections.map(&:id))
+    interview_languages_by_collection = interview_languages_by_collection(collection_ids)
 
     cache_key = [
       'project-collections',

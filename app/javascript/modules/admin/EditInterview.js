@@ -18,7 +18,7 @@ export default function EditInterview() {
                     <title>{t('edit.interview.new')}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t('edit.interview.new')}
                     </h1>
                     {showForm ? (

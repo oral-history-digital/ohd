@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useI18n } from 'modules/i18n';
+import { pluralizeKey, useI18n } from 'modules/i18n';
 import { LinkButton } from 'modules/ui';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -28,8 +28,14 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const countInterviews = archive.interviews?.total || 0;
 
     const formatNum = (num) => formatNumber(num, 0, locale);
-    const numInterviews = formatNum(countInterviews);
     const numCollections = formatNum(countCollections);
+    const numInterviews = formatNum(countInterviews);
+    const collectionsLabel = t(
+        pluralizeKey('activerecord.models.collection', countCollections, locale)
+    );
+    const interviewsLabel = t(
+        pluralizeKey('activerecord.models.interview', countInterviews, locale)
+    );
 
     return (
         <div
@@ -68,12 +74,12 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         )}
                         {countCollections > 0 && (
                             <span className="ArchiveCard-metaItem">
-                                {numCollections} {t('explorer.collections')}
+                                {numCollections} {collectionsLabel}
                             </span>
                         )}
                         {countInterviews > 0 && (
                             <span className="ArchiveCard-metaItem">
-                                {numInterviews} {t('explorer.interviews')}
+                                {numInterviews} {interviewsLabel}
                             </span>
                         )}
                     </div>

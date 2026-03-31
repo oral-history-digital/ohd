@@ -34,19 +34,22 @@ function ArchiveSearch() {
 
     return (
         <>
-            <h1 className="search-results-title">
-                {total?.toLocaleString(locale)} {t('interviews')}
-            </h1>
-            <div className="SearchResults-legend search-results-legend u-mt">
-                <AuthShowContainer ifLoggedIn>
-                    <SearchActions />
-                </AuthShowContainer>
+            <div className="SearchResults-header">
+                <h1 className="Page-main-title search-results-title SearchResults-headerTitle">
+                    {total?.toLocaleString(locale)} {t('interviews')}
+                </h1>
+                <div className="SearchResults-headerActions">
+                    <AuthShowContainer ifLoggedIn>
+                        <SearchActions />
+                    </AuthShowContainer>
+                </div>
             </div>
 
-            <ArchiveSearchSorting className="u-mt-small" />
-
             <ArchiveSearchTabsContainer
-                className="u-mt-small"
+                className="u-mt"
+                controls={
+                    <ArchiveSearchSorting className="SearchResults-inlineSorting" />
+                }
                 interviews={interviews}
                 empty={isEmpty}
                 loading={isLoading}

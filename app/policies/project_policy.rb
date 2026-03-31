@@ -1,5 +1,15 @@
 class ProjectPolicy < ApplicationPolicy
 
+  def show?
+    return true if record.is_a?(Class) # Return early for class-level checks
+    return true if user&.admin?
+    return true if record.workflow_state == 'public'
+    return false unless user
+
+    user.user_projects.where(workflow_state: 'project_access_granted', project_id: record.id).exists? ||
+      user.roles.where(project_id: record.id).exists?
+  end
+
   class Scope < Scope
     def resolve
       base_scope = scope.all

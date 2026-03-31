@@ -132,6 +132,19 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_includes ids, unshared_project.id
   end
 
+  test 'should forbid anonymous users from loading unshared project lite payload' do
+    reset!
+    host! 'test.portal.oral-history.localhost:47001'
+
+    unshared_project = DataHelper.test_project(
+      shortname: "us#{SecureRandom.hex(4)}lp",
+      workflow_state: 'unshared'
+    )
+
+    get project_path(unshared_project, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :forbidden
+  end
+
   test 'should return lightweight single project payload in show when lite flag is set' do
     project = DataHelper.test_project(
       shortname: "sp#{SecureRandom.hex(3)}a",
@@ -258,5 +271,60 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_equal project.cooperation_partner, payload.dig('contact_people', 'cooperation_partner')
     assert_equal project.leader, payload.dig('contact_people', 'leader')
     assert_equal project.manager, payload.dig('contact_people', 'manager')
+  end
+
+  test 'should only count interviews from public projects in lite payload' do
+    public_project = DataHelper.test_project(
+      shortname: "pup#{SecureRandom.hex(3)}a",
+      workflow_state: 'public'
+    )
+
+    unshared_project = DataHelper.test_project(
+      shortname: "pup#{SecureRandom.hex(3)}b",
+      workflow_state: 'unshared'
+    )
+
+    institution = Institution.first
+    
+    public_collection = Collection.create!(
+      project: public_project,
+      institution: institution,
+      name: 'Public Collection'
+    )
+
+    unshared_collection = Collection.create!(
+      project: unshared_project,
+      institution: institution,
+      name: 'Unshared Collection'
+    )
+
+    # Create interview in public project
+    Interview.create!(
+      project: public_project,
+      collection: public_collection,
+      archive_id: "#{public_project.shortname}001",
+      media_type: 'audio',
+      workflow_state: 'public'
+    )
+
+    # Create interview in unshared project - should NOT be counted
+    Interview.create!(
+      project: unshared_project,
+      collection: unshared_collection,
+      archive_id: "#{unshared_project.shortname}001",
+      media_type: 'video',
+      workflow_state: 'public'
+    )
+
+    login_as User.find_by!(email: 'alice@example.com')
+    get project_path(public_project, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :success
+
+    body = JSON.parse(response.body)
+    payload = body['data']
+
+    # Should only count interviews from the public project
+    assert_equal 1, payload.dig('interviews', 'public')
+    assert_equal 1, payload.dig('interviews', 'total')
   end
 end

@@ -1,4 +1,5 @@
 import { Button } from 'modules/ui';
+import { SmartImage } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +13,14 @@ export function HomepagePanel({ image, data, variant }) {
             data-testid={`homepage-panel-${variant}`}
         >
             <div className="Panel-content">
-                <img
+                <SmartImage
                     src={image}
                     alt=""
-                    className={`Panel-image Panel-image--${variant}`}
+                    className={`Panel-image Panel-image--${variant} Panel-image--clickable`}
+                    aspectRatio="16/9"
+                    objectFit="cover"
+                    onClick={() => navigate(data.buttons.primary.target)}
+                    data-testid={`homepage-panel-image-${variant}`}
                 />
                 <h2 className="Panel-heading">{data.heading}</h2>
                 <p className="Panel-text">{data.text}</p>

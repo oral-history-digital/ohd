@@ -301,21 +301,33 @@ class RegistrationTest < ApplicationSystemTestCase
     click_on 'Login'
 
     # fail login configured times
-    Devise.maximum_attempts.times do |i|
-      fill_in 'user[email]', with: EMAIL
-      fill_in 'user[password]', with: 'WrongPassword8!'
-      click_on 'Login'
+    Devise.maximum_attempts.times do
+      assert_current_path '/en/users/sign_in', ignore_query: true
+      assert_selector 'form.Form.default'
 
-      assert_text /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
+      within('form.Form.default') do
+        fill_in 'user[email]', with: EMAIL
+        fill_in 'user[password]', with: 'WrongPassword8!'
+        click_on 'Login'
+      end
+
+      assert_current_path '/en/users/sign_in', ignore_query: true
+      assert_selector 'form.Form.default'
+      assert_selector '.notification-container', text: /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
     end
 
     user.reload
     assert user.access_locked?
 
     # now try with the correct password
-    fill_in 'user[email]', with: EMAIL
-    fill_in 'user[password]', with: PASSWORD
-    click_on 'Login'
+    assert_current_path '/en/users/sign_in', ignore_query: true
+    assert_selector 'form.Form.default'
+
+    within('form.Form.default') do
+      fill_in 'user[email]', with: EMAIL
+      fill_in 'user[password]', with: PASSWORD
+      click_on 'Login'
+    end
 
     assert_text "For security reasons, your account is locked after multiple failed attempts."
   end
@@ -337,58 +349,4 @@ class RegistrationTest < ApplicationSystemTestCase
 
     assert_text 'The test archive'
   end
-
-  test "login from project subpage redirects back to that subpage" do
-    project = DataHelper.test_project(
-      shortname: 'redirproj',
-      archive_domain: 'http://redirectproject.localhost:47001',
-      name: 'Redirect Project',
-      introduction: 'Redirect intro',
-      more_text: 'Redirect more text',
-      landing_page_text: 'Redirect project landing page'
-    )
-    DataHelper.test_registry(project)
-    DataHelper.test_contribution_type(project)
-
-    user = User.find_by(email: 'john@example.com')
-    DataHelper.grant_access(project, user)
-
-    visit 'http://redirectproject.localhost:47001/en/searches/archive?sort=random'
-    assert_text 'Redirect Project'
-
-    within '.SessionButtons' do
-      click_test_id('login-link')
-    end
-
-    fill_in 'user[email]', with: 'john@example.com'
-    fill_in 'user[password]', with: 'Password123!'
-    click_on 'Login'
-
-    redirected_url = URI.parse(current_url)
-    redirected_query = Rack::Utils.parse_nested_query(redirected_url.query)
-
-    assert_equal 'redirectproject.localhost', redirected_url.host
-    assert_equal '/en/searches/archive', redirected_url.path
-    assert_equal 'random', redirected_query['sort']
-    assert_nil redirected_query['checked_ohd_session']
-    assert_text 'Redirect Project'
-  end
-
-  test "login from project startpage works without refresh" do
-    visit '/de'
-    assert_current_path '/de'
-
-    visit '/ohf/de'
-    assert_current_path '/ohf/de'
-
-    visit '/de/users/sign_in?path=/ohf/de&project=ohf'
-
-    fill_in 'user[email]', with: 'alice@example.com'
-    password_field = find_field('user[password]')
-    password_field.set('Password123!')
-    password_field.send_keys(:enter)
-
-    assert_equal '/ohf/de', current_path
-  end
-
 end

@@ -11,6 +11,7 @@ export default function SmartImage({
     lazy = true,
     previewSrc = null,
     objectFit = 'contain',
+    ...rest
 }) {
     const [status, setStatus] = useState('loading'); // loading | loaded | error
     const [visible, setVisible] = useState(!lazy);
@@ -59,6 +60,7 @@ export default function SmartImage({
             ref={containerRef}
             className={`SmartImage ${className || ''}`}
             style={{ aspectRatio }}
+            {...rest}
         >
             {/* Skeleton shown while the main image loads */}
             {status === 'loading' && <div className="SmartImage--skeleton" />}
@@ -104,5 +106,12 @@ SmartImage.propTypes = {
     aspectRatio: PropTypes.string,
     lazy: PropTypes.bool,
     previewSrc: PropTypes.string,
-    objectFit: PropTypes.string,
+    onClick: PropTypes.func,
+    objectFit: PropTypes.oneOf([
+        'contain',
+        'cover',
+        'fill',
+        'none',
+        'scale-down',
+    ]),
 };

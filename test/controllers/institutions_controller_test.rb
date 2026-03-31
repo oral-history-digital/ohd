@@ -223,5 +223,85 @@ class InstitutionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, parent_entry.dig('interviews', 'public')
     assert_equal 1, parent_entry.dig('interviews', 'restricted')
     assert_equal 2, parent_entry.dig('interviews', 'total')
+
+    parent_archives = parent_entry.fetch('archives', [])
+    shared_archive = parent_archives.find { |archive| archive['id'] == shared_project.id }
+    child_only_archive = parent_archives.find { |archive| archive['id'] == child_only_project.id }
+
+    refute_nil shared_archive
+    refute_nil child_only_archive
+    assert_equal false, shared_archive['from_child']
+    assert_equal true, child_only_archive['from_child']
+    assert_equal parent.id, shared_archive['source_institution_id']
+    assert_equal parent.name, shared_archive['source_institution_name']
+    assert_equal child.id, child_only_archive['source_institution_id']
+    assert_equal child.name, child_only_archive['source_institution_name']
+  end
+
+  test 'should only count interviews from public projects in institution lite payload' do
+    institution = Institution.create!(name: "Inst #{SecureRandom.hex(4)}")
+
+    public_project = DataHelper.test_project(
+      shortname: "iup#{SecureRandom.hex(3)}a",
+      workflow_state: 'public'
+    )
+
+    unshared_project = DataHelper.test_project(
+      shortname: "iup#{SecureRandom.hex(3)}b",
+      workflow_state: 'unshared'
+    )
+
+    InstitutionProject.create!(institution: institution, project: public_project)
+    InstitutionProject.create!(institution: institution, project: unshared_project)
+
+    public_collection = Collection.create!(
+      project: public_project,
+      institution: institution,
+      name: 'Public Collection'
+    )
+
+    unshared_collection = Collection.create!(
+      project: unshared_project,
+      institution: institution,
+      name: 'Unshared Collection'
+    )
+
+    # Create 2 interviews in public project
+    Interview.create!(
+      project: public_project,
+      collection: public_collection,
+      archive_id: "#{public_project.shortname}100",
+      media_type: 'audio',
+      workflow_state: 'public'
+    )
+
+    Interview.create!(
+      project: public_project,
+      collection: public_collection,
+      archive_id: "#{public_project.shortname}101",
+      media_type: 'video',
+      workflow_state: 'restricted'
+    )
+
+    # Create interview in unshared project - should NOT be counted
+    Interview.create!(
+      project: unshared_project,
+      collection: unshared_collection,
+      archive_id: "#{unshared_project.shortname}100",
+      media_type: 'audio',
+      workflow_state: 'public'
+    )
+
+    get institution_path(institution, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :success
+
+    body = JSON.parse(response.body)
+    payload = body['data']
+
+    # Should only count interviews from the public project
+    assert_equal 1, payload.dig('interviews', 'public')
+    assert_equal 1, payload.dig('interviews', 'restricted')
+    assert_equal 0, payload.dig('interviews', 'unshared')
+    assert_equal 2, payload.dig('interviews', 'total')
   end
 end

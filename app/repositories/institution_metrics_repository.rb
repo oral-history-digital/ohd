@@ -6,17 +6,26 @@ class InstitutionMetricsRepository
   end
 
   def projects_by_institution
-    result = Hash.new { |hash, key| hash[key] = [] }
+    direct_map = Hash.new { |hash, key| hash[key] = [] }
 
     visible_projects.each do |project|
       project.institutions.each do |institution|
-        next unless @institution_ids.include?(institution.id)
-
-        result[institution.id] << project
+        direct_map[institution.id] << {
+          project: project,
+          source_institution_id: institution.id,
+          source_institution_name: institution.name
+        }
       end
     end
 
-    result
+    descendant_ids_map.each_with_object({}) do |(institution_id, related_ids), result|
+      entries = related_ids.flat_map { |id| direct_map[id] }
+
+      # Keep a unique archive entry per project; prefer direct institution assignment.
+      result[institution_id] = entries
+        .sort_by { |entry| entry[:source_institution_id] == institution_id ? 0 : 1 }
+        .uniq { |entry| entry[:project].id }
+    end
   end
 
   def interview_counts
@@ -27,7 +36,8 @@ class InstitutionMetricsRepository
     return {} if visible_project_ids.blank?
 
     Interview
-      .where(project_id: visible_project_ids)
+      .joins(:project)
+      .where(project_id: visible_project_ids, projects: { workflow_state: 'public' })
       .group(:project_id, :workflow_state)
       .count
   end

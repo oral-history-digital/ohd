@@ -90,15 +90,6 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Скинути всі фільтри',
       ar: 'إعادة تعيين جميع المرشحات',
     },
-    'explorer.search_placeholder': {
-      de: 'Archive & Institutionen suchen…',
-      en: 'Search archives & institutions…',
-      el: 'Αναζήτηση αρχείων & ιδρυμάτων…',
-      es: 'Buscar archivos e instituciones…',
-      ru: 'Поиск архивов и учреждений…',
-      uk: 'Пошук архівів і установ…',
-      ar: 'البحث في الأرشيفات والمؤسسات…',
-    },
     'explorer.clear_search': {
       de: 'Suche löschen',
       en: 'Clear search',

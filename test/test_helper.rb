@@ -23,8 +23,20 @@ end
 class ActiveSupport::TestCase
   include Devise::Test::IntegrationHelpers
 
-  DatabaseCleaner.clean_with :deletion
-  DatabaseCleaner.clean
+  begin
+    retries = 0
+
+    DatabaseCleaner.clean_with :deletion
+    DatabaseCleaner.clean
+  rescue ActiveRecord::LockWaitTimeout, Mysql2::Error::TimeoutError
+    # In CI environments with parallel test execution, we can occasionally run into 
+    # database lock timeouts. Retrying a few times can help mitigate this.
+    retries += 1
+    raise if retries > 3
+
+    sleep 0.5
+    retry
+  end
 
   # TODO: rebase test data on seed data once seed data is ready
   # load "#{Rails.root}/db/seeds.rb"

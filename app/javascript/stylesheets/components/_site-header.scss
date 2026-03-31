@@ -34,21 +34,6 @@
   }
 }
 
-.SiteHeader--stacked {
-  flex-direction: column;
-  height: auto;
-  min-height: $site-header-height-mobile;
-  overflow: visible;
-
-  @include screen-m {
-    min-height: $site-header-height-desktop;
-  }
-
-  .Breadcrumbs {
-    margin-top: $base-unit;
-  }
-}
-
 .Layout.sidebar-is-visible.is-interview-page.is-logged-in .SiteHeader {
   padding-left: $base-unit;
 }

@@ -2,7 +2,12 @@ import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 
-export function ExplorerSearchInput({ value, onChange, onClear }) {
+export function ExplorerSearchInput({
+    value,
+    onChange,
+    onClear,
+    placeholderKey,
+}) {
     const { t } = useI18n();
 
     return (
@@ -13,7 +18,7 @@ export function ExplorerSearchInput({ value, onChange, onClear }) {
                 type="text"
                 value={value}
                 onChange={onChange}
-                placeholder={t('explorer.search_placeholder')}
+                placeholder={t(placeholderKey)}
             />
             {value && (
                 <button
@@ -33,6 +38,7 @@ ExplorerSearchInput.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
+    placeholderKey: PropTypes.string.isRequired,
 };
 
 export default ExplorerSearchInput;

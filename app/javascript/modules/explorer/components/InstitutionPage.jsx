@@ -35,7 +35,9 @@ export function InstitutionPage() {
             </Helmet>
             <ErrorBoundary>
                 <div className="wrapper-content InstitutionDetails">
-                    <h1 className="u-mb">{title}</h1>
+                    <h1 className="Page-main-title InstitutionDetails-title">
+                        {title}
+                    </h1>
 
                     <dl className="DescriptionList">
                         <Institutions

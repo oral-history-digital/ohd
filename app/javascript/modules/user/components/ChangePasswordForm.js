@@ -68,7 +68,7 @@ export default function ChangePasswordForm({
 
     return (
         <div>
-            <h1>{t('devise.passwords.change')}</h1>
+            <h1 className="Page-main-title">{t('devise.passwords.change')}</h1>
 
             {user.error && <p className="error">{t(user.error)}</p>}
 
