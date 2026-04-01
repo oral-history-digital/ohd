@@ -115,7 +115,11 @@ $segment-icon-width: 2 * $base-unit;
   transition: border-color $transition-duration;
 }
 
-@media (max-width: 600px) {
+@media (max-width: $screen-m) {
+  .Segment:not(:first-of-type) {
+    margin-top: $base-unit;
+  }
+
   .Segment.Segment--isEditor {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
