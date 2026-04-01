@@ -277,6 +277,7 @@
       background-size: contain;
       height: auto;
       display: block;
+      padding: calc($base-unit / 2);
     }
 
     .ProjectTile-body {
