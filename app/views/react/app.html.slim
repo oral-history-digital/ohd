@@ -1,3 +1,24 @@
 noscript
   = t('noscript')
-= react_component('App', props: initial_redux_state)
+
+- if project_bootstrap_issue
+  .wrapper-content
+    .u-mt-large
+      h1 Project Configuration Required
+      - if project_bootstrap_issue[:type] == :missing_current_project
+        p
+          | The requested project is not mapped to this host:
+          strong = " #{project_bootstrap_issue[:host]}"
+        p
+          | Set a project's archive_domain to this URL and restart the app container. You can use the following command to update the archive_domain of a project using the shorname as identifier:
+        pre
+          code = "docker compose --profile db exec -e RAILS_ENV=development app bundle exec rails runner \"Project.[SHORTNAME].update!(archive_domain: '#{project_bootstrap_issue[:host]}')\""
+      - elsif project_bootstrap_issue[:type] == :missing_ohd_project
+        p
+          | The umbrella project with shortname ohd is missing.
+        p
+          | Re-run bootstrap or set a project with shortname
+          strong  ohd
+          |  before loading this page.
+- else
+  = react_component('App', props: initial_redux_state)

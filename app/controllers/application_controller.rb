@@ -109,12 +109,80 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_project
 
+  # Check if there are issues with the current project setup that would prevent the app from functioning properly
+  # This is used to display a warning banner on the frontend with instructions on how to fix the issue
+  def project_bootstrap_issue
+    return @project_bootstrap_issue if defined?(@project_bootstrap_issue)
+
+    if current_project.nil?
+      @project_bootstrap_issue = {
+        type: :missing_current_project,
+        host: request.base_url,
+      }
+    elsif Project.ohd.nil?
+      @project_bootstrap_issue = {
+        type: :missing_ohd_project,
+        host: request.base_url,
+      }
+    else
+      @project_bootstrap_issue = nil
+    end
+  end
+  helper_method :project_bootstrap_issue
+
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end
 
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   def initial_redux_state
+    ohd_project = Project.ohd
+    on_ohd_portal = current_project&.is_ohd?
+
+    # Determine fetch status for projects based on context
+    # to allow frontend to decide what to load lazily
+    project_statuses = if on_ohd_portal
+      {
+        all: 'fetched'
+      }
+    elsif current_project && ohd_project
+      {
+        "#{current_project.id}": 'fetched',
+        "#{ohd_project.id}": 'fetched',
+      }
+    elsif current_project
+      {
+        "#{current_project.id}": 'fetched',
+      }
+    else
+      {}
+    end
+
+    projects_data = if on_ohd_portal
+      # Cache all projects for OHD portal since they are needed for the startpage and project switching
+      Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
+        Project.all.includes(
+          :translations,
+          :registry_reference_types,
+          :collections,
+        ).inject({}) do |mem, s|
+          mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
+          mem
+        end
+      end
+    elsif current_project && ohd_project
+      {
+        "#{current_project.id}": cache_single(current_project),
+        "#{ohd_project.id}": cache_single(ohd_project),
+      }
+    elsif current_project
+      {
+        "#{current_project.id}": cache_single(current_project),
+      }
+    else
+      {}
+    end
+
     @initial_redux_state ||= {
       archive: {
         locale: I18n.locale,
@@ -172,12 +240,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: current_project&.is_ohd? ? {
-            all: 'fetched'
-          } : {
-            "#{current_project.id}": 'fetched',
-            "#{Project.ohd.id}": 'fetched',
-          },
+          projects: project_statuses,
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -192,20 +255,7 @@ class ApplicationController < ActionController::Base
         # Other projects will be lazy-loaded via API when needed
         # This reduces initial page load significantly when many projects exist
         # Exception: On OHD portal, load all projects for the startpage
-        projects: current_project.is_ohd? ?
-          Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-            Project.all.includes(
-              :translations,
-              :registry_reference_types,
-              :collections,
-            ).inject({}) do |mem, s|
-              mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-              mem
-            end
-          end : {
-          "#{current_project.id}": cache_single(current_project),
-          "#{Project.ohd.id}": cache_single(Project.ohd),
-        },
+        projects: projects_data,
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
