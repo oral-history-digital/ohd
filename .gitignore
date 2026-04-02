@@ -44,3 +44,4 @@ solr/pids
 .devcontainer/.env
 .devcontainer/dev/.env
 .directory
+docker-compose.override.yml

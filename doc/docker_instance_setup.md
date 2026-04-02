@@ -9,7 +9,16 @@ This runbook covers local bootstrap and production deployment for OHD using Dock
 - Configuration is environment-first (`.env` / runtime env vars).
 - `config/credentials.yml.enc` can remain as compatibility fallback.
 
-## Quickstart (Local, `--profile db`)
+## Quickstart (Local)
+
+Docker Compose always loads `docker-compose.yml` by default.
+For local development, enable local overrides once by copying the example file:
+
+```bash
+cp docker-compose.override.example.yml docker-compose.override.yml
+```
+
+After that, use regular short commands in this section (`docker compose --profile db ...`).
 
 1. Create `.env`:
 
@@ -185,6 +194,33 @@ Behavior:
 - For non-interactive runs, set `FORCE=true` to skip the prompt.
 - `database:reimport` remains a devcontainer convenience task and always imports `.devcontainer/db/dump.sql.gz`.
 
+### Recommended instance bootstrap
+
+Prefer explicit bootstrap tasks over demo-heavy `db:seed` for real instances:
+
+```bash
+docker compose --profile db exec app \
+	bundle exec rake "bootstrap:all[ohd,http://portal.oral-history.localhost:3000,admin@example.com,ChangeMe123?,Instance,Admin,en]"
+```
+
+Important: A baseline project with shortname `ohd` is currently required by parts of the app (`Project.ohd`).
+Using only another shortname (for example `myarchive`) can lead to runtime errors on page load.
+This will be changed in the future.
+
+ENV-based equivalent:
+
+```bash
+docker compose --profile db exec \
+	-e BOOTSTRAP_PROJECT_SHORTNAME=ohd \
+	-e BOOTSTRAP_ARCHIVE_DOMAIN=http://portal.oral-history.localhost:3000 \
+	-e BOOTSTRAP_ADMIN_EMAIL=admin@example.com \
+	-e BOOTSTRAP_ADMIN_PASSWORD="ChangeMe123?" \
+	-e BOOTSTRAP_ADMIN_FIRST_NAME=Instance \
+	-e BOOTSTRAP_ADMIN_LAST_NAME=Admin \
+	-e BOOTSTRAP_DEFAULT_LOCALE=en \
+	app bundle exec rake bootstrap:all
+```
+
 ### Solr indexing in Docker
 
 When the app runs in containers, trigger indexing from the `app` container.
@@ -215,36 +251,13 @@ docker compose --profile db exec app bundle exec rake solr:reindex:interviews
 
 # Commit pending index changes
 docker compose --profile db exec app bundle exec rake solr:reindex:commit
+
+# Limit to one Project and a given number of items
+docker compose --profile db exec app bundle exec rake solr:reindex:scoped PROJECT_SHORTNAME=za LIMIT=10 WITH_RELATED=true
 ```
 
 Tip: use `sunspot:reindex` for complete rebuilds and `solr:reindex:*` for incremental maintenance.
 
-### Recommended instance bootstrap
-
-Prefer explicit bootstrap tasks over demo-heavy `db:seed` for real instances:
-
-```bash
-docker compose --profile db exec app \
-	bundle exec rake "bootstrap:all[ohd,http://portal.oral-history.localhost:3000,admin@example.com,ChangeMe123?,Instance,Admin,en]"
-```
-
-Important: A baseline project with shortname `ohd` is currently required by parts of the app (`Project.ohd`).
-Using only another shortname (for example `myarchive`) can lead to runtime errors on page load.
-This will be changed in the future.
-
-ENV-based equivalent:
-
-```bash
-docker compose --profile db exec \
-	-e BOOTSTRAP_PROJECT_SHORTNAME=ohd \
-	-e BOOTSTRAP_ARCHIVE_DOMAIN=http://portal.oral-history.localhost:3000 \
-	-e BOOTSTRAP_ADMIN_EMAIL=admin@example.com \
-	-e BOOTSTRAP_ADMIN_PASSWORD="ChangeMe123?" \
-	-e BOOTSTRAP_ADMIN_FIRST_NAME=Instance \
-	-e BOOTSTRAP_ADMIN_LAST_NAME=Admin \
-	-e BOOTSTRAP_DEFAULT_LOCALE=en \
-	app bundle exec rake bootstrap:all
-```
 
 ## Environment Variables
 
@@ -304,21 +317,21 @@ SECRET_KEY_BASE=<generate with `rails secret`>
 2. Pull and start runtime services:
 
 ```bash
-docker compose pull app worker
-docker compose up -d app worker
+docker compose -f docker-compose.yml pull app worker
+docker compose -f docker-compose.yml up -d app worker
 ```
 
 3. Run migrations:
 
 ```bash
-docker compose exec app bundle exec rails db:migrate
+docker compose -f docker-compose.yml exec app bundle exec rails db:migrate
 ```
 
 4. Verify:
 
 ```bash
-docker compose ps
-docker compose logs --tail=200 app
+docker compose -f docker-compose.yml ps
+docker compose -f docker-compose.yml logs --tail=200 app
 ```
 
 5. Post-deploy checks:

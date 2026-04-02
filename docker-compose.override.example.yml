@@ -1,15 +1,14 @@
-# Docker Compose override for local development
-# This file is loaded automatically when running docker-compose locally
-# Use this for development-specific configurations
+# Docker Compose override example for local development
+#
+# This file is intentionally NOT auto-loaded by Docker Compose.
+# Use it explicitly with:
+#   docker compose -f docker-compose.yml -f docker-compose.override.example.yml --profile db <command>
+#
+# If you want auto-loading for your local machine, copy this file to
+# docker-compose.override.yml (gitignored).
 
 services:
   app:
-    # Use local build instead of pulling from registry
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
     environment:
       RAILS_ENV: development
       RACK_ENV: development
@@ -26,7 +25,6 @@ services:
       MYSQL_PASSWORD_DEVELOPMENT: ${MYSQL_PASSWORD_DEVELOPMENT:-changeme}
       MYSQL_USER_TEST: ${MYSQL_USER_TEST:-ohd}
       MYSQL_PASSWORD_TEST: ${MYSQL_PASSWORD_TEST:-changeme}
-    # Override command to start Rails only
     command:
       - bash
       - -lc
@@ -43,7 +41,6 @@ services:
         # Remove stale PID files left after unclean shutdowns to avoid Rails boot failure.
         rm -f tmp/pids/server.pid
         exec bin/rails server -b 0.0.0.0
-    # Mount source code for live editing
     volumes:
       - .:/app:cached
       - ./public:/app/public
@@ -55,9 +52,6 @@ services:
         condition: service_healthy
 
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
     environment:
       RAILS_ENV: development
       RACK_ENV: development
@@ -90,8 +84,6 @@ services:
       SOLR_JAVA_MEM: '-Xms256m -Xmx256m'
 
   db:
-    # Always run database in development
-    profiles: []
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD_DEVELOPMENT:-changeme}
       MYSQL_DATABASE: ${MYSQL_DATABASE_DEVELOPMENT:-ohd_development}
