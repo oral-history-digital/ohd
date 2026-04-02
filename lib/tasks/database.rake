@@ -29,6 +29,71 @@
 # 8. reindex target-db: rake solr:reindex:all
 
 namespace :database do
+  # Load the database configuration for the given environment, resolving any ERB and aliases
+  def resolved_db_config(env_name)
+    db_yml = File.expand_path('config/database.yml', Dir.pwd)
+    require 'yaml'
+    require 'erb'
+    YAML.safe_load(ERB.new(File.read(db_yml)).result, aliases: true).fetch(env_name, {})
+  end
+
+  def import_dump_into_database(dump_path:, env_name:, remove_credentials: false, force: false)
+    require 'open3'
+
+    raise "Dump not found at #{dump_path}" unless File.exist?(dump_path)
+
+    if remove_credentials
+      # Remove credentials.yml.enc so Rails uses secrets.yml (no master.key in devcontainer).
+      creds = File.expand_path('config/credentials.yml.enc', Dir.pwd)
+      File.delete(creds) if File.exist?(creds)
+    end
+
+    db_config = resolved_db_config(env_name)
+    host = db_config['host'] || 'db'
+    user = db_config['username'] || 'root'
+    password = db_config['password'] || 'rootpassword'
+    database = db_config['database']
+
+    raise "No database configured for environment '#{env_name}'" if database.to_s.strip.empty?
+
+    count_sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='#{database.to_s.gsub("'", "\\\\'")}';"
+    stdout, status = Open3.capture2(
+      { 'MYSQL_PWD' => password.to_s },
+      'mysql', '-N', '-B', '-h', host.to_s, '-u', user.to_s, '-e', count_sql
+    )
+    raise "Failed to inspect target database '#{database}'" unless status.success?
+
+    table_count = stdout.to_s.strip.to_i
+    unless force || table_count.zero?
+      if !$stdin.tty?
+        raise "Database '#{database}' already contains #{table_count} tables. Re-run with FORCE=true to continue non-interactively."
+      end
+
+      print "Database '#{database}' already contains #{table_count} tables. Drop and import from #{dump_path}? [y/N]: "
+      answer = $stdin.gets.to_s.strip.downcase
+      raise 'Import cancelled by user' unless %w[y yes].include?(answer)
+    end
+
+    puts "Dropping and recreating #{database}…"
+    drop_and_create_sql = "DROP DATABASE IF EXISTS #{database}; CREATE DATABASE #{database} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    ok = system({ 'MYSQL_PWD' => password.to_s }, 'mysql', '-h', host.to_s, '-u', user.to_s, '-e', drop_and_create_sql)
+    raise "Failed to drop and recreate #{database}" unless ok
+
+    puts "Importing #{dump_path}…"
+    source_cmd = dump_path.end_with?('.gz') ? ['gunzip', '-c', dump_path] : ['cat', dump_path]
+    statuses = Open3.pipeline(
+      source_cmd,
+      [{ 'MYSQL_PWD' => password.to_s }, 'mysql', '-h', host.to_s, '-u', user.to_s, database.to_s]
+    )
+    raise 'Failed to import database dump' unless statuses.all?(&:success?)
+
+    puts 'Running migrations…'
+    ok = system({ 'RAILS_ENV' => env_name, 'RAILS_LOG_LEVEL' => 'error' }, 'bundle', 'exec', 'rails', 'db:migrate')
+    raise "Failed to run migrations for #{env_name}. Run manually: bundle exec rails db:migrate RAILS_ENV=#{env_name}" unless ok
+
+    puts "\n✓ #{database} imported and migrated."
+  end
+
   desc 'show development database'
   task :show => :environment do
     database = Rails.configuration.database_configuration['development']['database']
@@ -185,36 +250,35 @@ namespace :database do
     end
   end
 
+  desc 'Import SQL dump into configured database and migrate (supports .sql and .sql.gz)'
+  task :import, [:dump_path] do |t, args|
+    env_name = ENV.fetch('TARGET_ENV', ENV.fetch('RAILS_ENV', 'development'))
+    force = ENV.fetch('FORCE', 'false').to_s.downcase == 'true'
+    dump_path = args[:dump_path] || ENV['DUMP_PATH']
+    raise 'Provide dump path as task arg or DUMP_PATH env var' if dump_path.to_s.strip.empty?
+
+    if env_name == 'production' && ENV.fetch('ALLOW_DATABASE_IMPORT_PRODUCTION', 'false').to_s.downcase != 'true'
+      raise 'Refusing to import into production by default. Set ALLOW_DATABASE_IMPORT_PRODUCTION=true to override.'
+    end
+
+    import_dump_into_database(
+      dump_path: File.expand_path(dump_path, Dir.pwd),
+      env_name: env_name,
+      remove_credentials: false,
+      force: force
+    )
+  end
+
   desc 'Drop and reimport the devcontainer database dump (.devcontainer/db/dump.sql.gz), then migrate'
   task :reimport do
     env = ENV.fetch('RAILS_ENV', 'development')
     raise 'database:reimport can only be run in development (RAILS_ENV=development)' unless env == 'development'
-    dump_path = File.expand_path('.devcontainer/db/dump.sql.gz', Dir.pwd)
-    raise "Dump not found at #{dump_path}" unless File.exist?(dump_path)
 
-    # Remove credentials.yml.enc so Rails uses secrets.yml (no master.key in devcontainer)
-    creds = File.expand_path('config/credentials.yml.enc', Dir.pwd)
-    File.delete(creds) if File.exist?(creds)
-
-    db_yml = File.expand_path('config/database.yml', Dir.pwd)
-    require 'yaml'
-    db_config = YAML.safe_load(File.read(db_yml), aliases: true).fetch('development', {})
-    host     = db_config['host']     || 'db'
-    user     = db_config['username'] || 'root'
-    password = db_config['password'] || 'rootpassword'
-    database = db_config['database']
-
-    puts "Dropping and recreating #{database}…"
-    system("mysql -h #{host} -u #{user} -p#{password} -e "\
-           "'DROP DATABASE IF EXISTS #{database}; "\
-           "CREATE DATABASE #{database} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'")
-
-    puts "Importing #{dump_path}…"
-    system("gunzip < #{dump_path} | mysql -h #{host} -u #{user} -p#{password} #{database}")
-
-    puts "Running migrations…"
-    system('RAILS_ENV=development RAILS_LOG_LEVEL=error bundle exec rails db:migrate')
-
-    puts "\n✓ #{database} reimported and migrated."
+    import_dump_into_database(
+      dump_path: File.expand_path('.devcontainer/db/dump.sql.gz', Dir.pwd),
+      env_name: 'development',
+      remove_credentials: true,
+      force: true
+    )
   end
 end
