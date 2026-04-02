@@ -163,6 +163,28 @@ docker compose --profile db exec app bundle exec rails db:create db:migrate db:s
 docker compose --profile db exec app bundle exec rake seeds:smoke
 ```
 
+### Import an existing database dump
+
+Use this when migrating an existing OHD instance into the local Docker setup.
+
+```bash
+# .sql.gz dump (recommended)
+docker compose --profile db exec -e RAILS_ENV=development app \
+	bundle exec rake "database:import[./path/to/dump.sql.gz]"
+```
+
+```bash
+# .sql dump also works
+docker compose --profile db exec -e RAILS_ENV=development app \
+	bundle exec rake "database:import[./path/to/dump.sql]"
+```
+
+Behavior:
+
+- The task prompts for confirmation before dropping a non-empty target database.
+- For non-interactive runs, set `FORCE=true` to skip the prompt.
+- `database:reimport` remains a devcontainer convenience task and always imports `.devcontainer/db/dump.sql.gz`.
+
 ### Solr indexing in Docker
 
 When the app runs in containers, trigger indexing from the `app` container.
