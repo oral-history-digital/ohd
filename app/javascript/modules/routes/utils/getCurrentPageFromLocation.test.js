@@ -115,6 +115,24 @@ describe('getCurrentPageFromLocation', () => {
         });
     });
 
+    it('classifies catalog institutions path as catalog page', () => {
+        const result = getCurrentPageFromLocation(
+            buildLocation('/de/catalog/institutions')
+        );
+
+        expect(result.pageType).toBe('catalog_page');
+        expect(result.params).toEqual(
+            expect.objectContaining({
+                projectId: null,
+                locale: 'de',
+                catalogType: 'institutions',
+                id: null,
+            })
+        );
+        expect(result.pathBase).toBe('/de');
+        expect(result.isKnown).toBe(true);
+    });
+
     it('classifies register page routes', () => {
         const result = getCurrentPageFromLocation(
             buildLocation('/mog/de/register')
