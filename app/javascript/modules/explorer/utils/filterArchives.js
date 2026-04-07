@@ -24,8 +24,10 @@ export const filterArchives = (
                 (a.display_name || a.name)?.toLowerCase().includes(lower) ||
                 a.description?.toLowerCase().includes(lower) ||
                 a.introduction?.toLowerCase().includes(lower) ||
-                a.institutions?.some((i) =>
-                    i.name?.toLowerCase().includes(lower)
+                a.institutions?.some(
+                    (i) =>
+                        i.name?.toLowerCase().includes(lower) ||
+                        i.parent?.name?.toLowerCase().includes(lower) // Include parent institution in text search
                 );
             if (!matchesText) return false;
         }
@@ -43,8 +45,10 @@ export const filterArchives = (
         }
 
         if (institutionIds && institutionIds.length > 0) {
-            const belongs = a.institutions?.some((i) =>
-                institutionIds.includes(i.id)
+            const belongs = a.institutions?.some(
+                (i) =>
+                    institutionIds.includes(i.id) ||
+                    (i.parent?.id && institutionIds.includes(i.parent.id)) // Include parent institution in filtering
             );
             if (!belongs) return false;
         }

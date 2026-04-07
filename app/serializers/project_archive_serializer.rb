@@ -44,7 +44,11 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     object.institutions.map do |institution|
       {
         id: institution.id,
-        name: institution.name
+        name: institution.name,
+        parent: institution.parent ? {
+          id: institution.parent.id,
+          name: institution.parent.name
+        } : nil
       }
     end
   end

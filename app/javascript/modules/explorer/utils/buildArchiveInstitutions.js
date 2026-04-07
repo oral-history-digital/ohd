@@ -12,6 +12,12 @@ export const buildArchiveInstitutions = (archives) => {
             if (inst.id && !seen.has(inst.id)) {
                 seen.set(inst.id, inst.name);
             }
+
+            // Also include parent institutions to allow filtering by them
+            const parent = inst.parent;
+            if (parent?.id && !seen.has(parent.id)) {
+                seen.set(parent.id, parent.name);
+            }
         });
     });
 

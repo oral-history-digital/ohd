@@ -68,7 +68,7 @@ class ProjectsController < ApplicationController
 
     projects = projects.includes(
       :translations,
-      { institutions: :translations },
+      { institutions: [:translations, { parent: :translations }] },
       logos: [file_attachment: :blob]
     )
 
