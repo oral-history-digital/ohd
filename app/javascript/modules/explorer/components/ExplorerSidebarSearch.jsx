@@ -56,16 +56,18 @@ export function ExplorerSidebarSearch() {
         useArchivesAndCollectionsRange({ items: archives });
 
     const query = searchParams.get('explorer_q') || '';
-    const interviewMin =
-        Number(searchParams.get('explorer_interviews_min')) || globalMin;
-    const interviewMax =
-        Number(searchParams.get('explorer_interviews_max')) || globalMax;
-    const collectionMin =
-        Number(searchParams.get('explorer_collections_min')) ||
-        globalCollectionMin;
-    const collectionMax =
-        Number(searchParams.get('explorer_collections_max')) ||
-        globalCollectionMax;
+    const interviewMin = searchParams.has('explorer_interviews_min')
+        ? Number(searchParams.get('explorer_interviews_min'))
+        : globalMin;
+    const interviewMax = searchParams.has('explorer_interviews_max')
+        ? Number(searchParams.get('explorer_interviews_max'))
+        : globalMax;
+    const collectionMin = searchParams.has('explorer_collections_min')
+        ? Number(searchParams.get('explorer_collections_min'))
+        : globalCollectionMin;
+    const collectionMax = searchParams.has('explorer_collections_max')
+        ? Number(searchParams.get('explorer_collections_max'))
+        : globalCollectionMax;
     const institutionIds = searchParams.has('explorer_institution')
         ? searchParams
               .get('explorer_institution')

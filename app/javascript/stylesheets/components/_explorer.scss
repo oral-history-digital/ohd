@@ -50,6 +50,7 @@
 .CollectionList--countLabel {
   margin: 0;
   font-weight: bold;
+  font-size: $font-size-larger;
 }
 
 // Tabs
@@ -738,7 +739,7 @@ h4.CollectionList-collectionsTitle {
 }
 
 .ExplorerSidebarSearch-rangeSection {
-  margin-top: $base-unit * 0.375;
+  margin-top: $base-unit;
   padding: 0 $base-unit * 0.5;
 }
 
