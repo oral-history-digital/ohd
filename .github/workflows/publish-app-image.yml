@@ -36,8 +36,8 @@ jobs:
             exit 1
           fi
 
-          if [ "$TAG" = "latest" ]; then
-            echo "Refusing to push 'latest' via manual dispatch"
+          if [ "$TAG" = "latest" ] && [ "${GITHUB_REF##*/}" != "feat/dockerize-app" ]; then
+            echo "Refusing to push 'latest' outside dockerization branch"
             exit 1
           fi
 

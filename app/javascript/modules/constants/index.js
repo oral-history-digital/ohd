@@ -37,6 +37,8 @@ export const METADATA_SOURCE_PERSON = 'Person';
 export const METADATA_SOURCE_REGISTRY_REFERENCE_TYPE = 'RegistryReferenceType';
 export const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 
+// TODO: Replace hardcoded OHD domains with runtime-injected config (or same-origin URLs)
+// so staging/production host changes do not require frontend rebuilds.
 export const OHD_LOCATION = 'https://portal.oral-history.digital';
 export const OHD_DOMAINS = {
     development: 'http://portal.oral-history.localhost:3000',
