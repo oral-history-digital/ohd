@@ -1,6 +1,7 @@
 export * from './Address';
 export * from './ProjectDomain';
 export * from './CooperationPartner';
+export * from './Citation';
 export * from './GenericDetail';
 export * from './GenericLink';
 export * from './IndexingLevels';
