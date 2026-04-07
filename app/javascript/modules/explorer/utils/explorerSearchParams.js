@@ -9,6 +9,7 @@ export const FILTER_PARAMS = [
     'explorer_year_min',
     'explorer_year_max',
     'explorer_institution',
+    'explorer_institution_level',
     'explorer_sort',
     'explorer_inst_sort',
 ];
@@ -130,5 +131,23 @@ export const applyInstitutionParam = (prev, institutionIds) => {
     } else {
         prev.delete('explorer_institution');
     }
+    return prev;
+};
+
+/**
+ * Sets or removes the `explorer_institution_level` search param.
+ * Allowed values are `all`, `with_children`, and `with_parent`; `all` is omitted for a clean URL.
+ *
+ * @param {URLSearchParams} prev
+ * @param {'all' | 'with_children' | 'with_parent'} level
+ * @returns {URLSearchParams}
+ */
+export const applyInstitutionLevelParam = (prev, level) => {
+    if (level && level !== 'all') {
+        prev.set('explorer_institution_level', level);
+    } else {
+        prev.delete('explorer_institution_level');
+    }
+
     return prev;
 };

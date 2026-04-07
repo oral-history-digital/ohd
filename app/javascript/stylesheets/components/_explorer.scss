@@ -797,6 +797,38 @@ h4.CollectionList-collectionsTitle {
   }
 }
 
+.ExplorerInstitutionLevelFilter {
+  margin-top: $base-unit * 0.375;
+  padding: 0 $base-unit * 0.5;
+}
+
+.ExplorerInstitutionLevelFilter-label {
+  margin-bottom: 0.625rem;
+}
+
+.ExplorerInstitutionLevelFilter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ExplorerInstitutionLevelFilter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $gray-darker;
+
+  input {
+    margin: 0;
+    accent-color: var(--primary-color, $gray-dark);
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-color, $gray-dark);
+      outline-offset: 2px;
+    }
+  }
+}
+
 .ExplorerRangeFilter-hoverTooltip {
   position: absolute;
   top: -28px;

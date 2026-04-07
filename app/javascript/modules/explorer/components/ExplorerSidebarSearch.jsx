@@ -11,12 +11,14 @@ import {
 import {
     FILTER_PARAMS,
     applyCollectionRangeParams,
+    applyInstitutionLevelParam,
     applyInstitutionParam,
     applyInterviewRangeParams,
     applyQueryParam,
     resetExplorerFilters,
 } from '../utils';
 import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
+import { ExplorerInstitutionLevelFilter } from './ExplorerInstitutionLevelFilter';
 import { ExplorerRangeFilter } from './ExplorerRangeFilter';
 import { ExplorerResetFilters } from './ExplorerResetFilters';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
@@ -71,6 +73,14 @@ export function ExplorerSidebarSearch() {
               .map(Number)
               .filter(Boolean)
         : [];
+    const institutionLevelParam = searchParams.get(
+        'explorer_institution_level'
+    );
+    const institutionLevel = ['with_children', 'with_parent'].includes(
+        institutionLevelParam
+    )
+        ? institutionLevelParam
+        : 'all';
 
     if (!showSidebarFilters) return null;
 
@@ -115,6 +125,14 @@ export function ExplorerSidebarSearch() {
         setSearchParams((prev) => applyInstitutionParam(prev, []), {
             replace: true,
         });
+
+    const handleInstitutionLevelChange = (e) =>
+        setSearchParams(
+            (prev) => applyInstitutionLevelParam(prev, e.target.value),
+            {
+                replace: true,
+            }
+        );
 
     const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
     const searchPlaceholderKey = isArchivesTab
@@ -162,6 +180,13 @@ export function ExplorerSidebarSearch() {
                     values={institutionIds}
                     onChange={handleInstitutionChange}
                     onClearAll={handleInstitutionClearAll}
+                />
+            )}
+
+            {!isArchivesTab && (
+                <ExplorerInstitutionLevelFilter
+                    value={institutionLevel}
+                    onChange={handleInstitutionLevelChange}
                 />
             )}
         </div>

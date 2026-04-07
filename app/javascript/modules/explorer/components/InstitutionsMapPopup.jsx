@@ -1,15 +1,18 @@
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export function InstitutionsMapPopup({ title, marker }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
     const children = marker.children || [];
     const archives = (marker.archives || []).slice(0, 2); // Show up to 2 archives
     const institutionUrl = `${pathBase}/catalog/institutions/${marker.id}`;
+
+    const formatNum = (num) => formatNumber(num, 0, locale);
 
     return (
         <div className="MapPopup MapPopup--wide">
@@ -35,7 +38,8 @@ export function InstitutionsMapPopup({ title, marker }) {
             {archives.length > 0 && (
                 <>
                     <h4 className="MapPopup-subHeading">
-                        {t('explorer.archives')} ({marker.archives.length}):
+                        {t('explorer.archives')} (
+                        {formatNum(marker.archives.length)}):
                     </h4>
                     <ul className="MapPopup-list">
                         {archives.map((archive) => (
@@ -48,7 +52,9 @@ export function InstitutionsMapPopup({ title, marker }) {
                                 {archive.interviews_count > 0 && (
                                     <span className="MapPopup-interviewCount">
                                         {' '}
-                                        ({archive.interviews_count}{' '}
+                                        ({formatNum(
+                                            archive.interviews_count
+                                        )}{' '}
                                         {t('explorer.interviews')})
                                     </span>
                                 )}
@@ -58,7 +64,9 @@ export function InstitutionsMapPopup({ title, marker }) {
                             <li className="MapPopup-text">
                                 <Link to={institutionUrl}>
                                     {t('explorer.institutions_map.and_more', {
-                                        count: marker.archives.length - 2,
+                                        count: formatNum(
+                                            marker.archives.length - 2
+                                        ),
                                     })}
                                 </Link>
                             </li>

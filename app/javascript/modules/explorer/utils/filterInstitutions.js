@@ -13,9 +13,21 @@ export const filterInstitutions = (
     interviewMin,
     interviewMax,
     instArchiveMin,
-    instArchiveMax
+    instArchiveMax,
+    institutionLevel = 'all'
 ) =>
     institutions.filter((i) => {
+        if (
+            institutionLevel === 'with_children' &&
+            (i.children?.length ?? 0) === 0
+        ) {
+            return false;
+        }
+
+        if (institutionLevel === 'with_parent' && !i.parent?.id) {
+            return false;
+        }
+
         if (query) {
             const lower = query.toLowerCase();
             const matchesQuery =

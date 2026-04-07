@@ -7,6 +7,7 @@ export * from './CollectionPage';
 export * from './CollectionSortControl';
 export * from './Dropdown';
 export * from './ExplorerInstitutionFilter';
+export * from './ExplorerInstitutionLevelFilter';
 export * from './ExplorerRangeFilter';
 export * from './ExplorerResetFilters';
 export * from './ExplorerSearchInput';

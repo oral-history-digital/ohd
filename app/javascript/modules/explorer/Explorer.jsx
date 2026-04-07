@@ -16,6 +16,7 @@ export function Explorer() {
         instArchiveMin,
         instArchiveMax,
         institutionIds,
+        institutionLevel,
     } = useExplorerParams();
     const archivesTabLabel = t('explorer.tab.archives_and_collections');
     const institutionsTabLabel = t('explorer.tab.institutions');
@@ -40,6 +41,7 @@ export function Explorer() {
                             interviewMax={interviewMax}
                             instArchiveMin={instArchiveMin}
                             instArchiveMax={instArchiveMax}
+                            institutionLevel={institutionLevel}
                         />
                     </div>
                 ) : (
