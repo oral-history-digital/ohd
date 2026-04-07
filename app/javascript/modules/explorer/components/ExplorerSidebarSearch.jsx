@@ -11,7 +11,6 @@ import {
 import {
     FILTER_PARAMS,
     applyCollectionRangeParams,
-    applyInstArchiveRangeParams,
     applyInstitutionParam,
     applyInterviewRangeParams,
     applyQueryParam,
@@ -53,13 +52,6 @@ export function ExplorerSidebarSearch() {
     });
     const { globalCollectionMin, globalCollectionMax } =
         useArchivesAndCollectionsRange({ items: archives });
-    const {
-        globalCollectionMin: globalInstArchiveMin,
-        globalCollectionMax: globalInstArchiveMax,
-    } = useArchivesAndCollectionsRange({
-        items: institutionsList ?? [],
-        getCount: (i) => i.archives?.length ?? 0,
-    });
 
     const query = searchParams.get('explorer_q') || '';
     const interviewMin =
@@ -72,12 +64,6 @@ export function ExplorerSidebarSearch() {
     const collectionMax =
         Number(searchParams.get('explorer_collections_max')) ||
         globalCollectionMax;
-    const instArchiveMin =
-        Number(searchParams.get('explorer_inst_archives_min')) ||
-        globalInstArchiveMin;
-    const instArchiveMax =
-        Number(searchParams.get('explorer_inst_archives_max')) ||
-        globalInstArchiveMax;
     const institutionIds = searchParams.has('explorer_institution')
         ? searchParams
               .get('explorer_institution')
@@ -112,19 +98,6 @@ export function ExplorerSidebarSearch() {
                     max,
                     globalCollectionMin,
                     globalCollectionMax
-                ),
-            { replace: true }
-        );
-
-    const handleInstArchiveRangeChange = ([min, max]) =>
-        setSearchParams(
-            (prev) =>
-                applyInstArchiveRangeParams(
-                    prev,
-                    min,
-                    max,
-                    globalInstArchiveMin,
-                    globalInstArchiveMax
                 ),
             { replace: true }
         );
@@ -180,16 +153,6 @@ export function ExplorerSidebarSearch() {
                     globalMax={globalCollectionMax}
                     value={[collectionMin, collectionMax]}
                     onChange={handleCollectionRangeChange}
-                />
-            )}
-
-            {!isArchivesTab && (
-                <ExplorerRangeFilter
-                    label={t('explorer.filter.archives')}
-                    globalMin={globalInstArchiveMin}
-                    globalMax={globalInstArchiveMax}
-                    value={[instArchiveMin, instArchiveMax]}
-                    onChange={handleInstArchiveRangeChange}
                 />
             )}
 

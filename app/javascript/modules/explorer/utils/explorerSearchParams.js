@@ -89,28 +89,6 @@ export const applyCollectionRangeParams = (
     return prev;
 };
 
-export const applyInstArchiveRangeParams = (
-    prev,
-    min,
-    max,
-    globalMin,
-    globalMax
-) => {
-    if (min === globalMin) {
-        prev.delete('explorer_inst_archives_min');
-    } else {
-        prev.set('explorer_inst_archives_min', min);
-    }
-
-    if (max === globalMax) {
-        prev.delete('explorer_inst_archives_max');
-    } else {
-        prev.set('explorer_inst_archives_max', max);
-    }
-
-    return prev;
-};
-
 /**
  * Sets or removes `explorer_year_min` / `explorer_year_max`
  * search params. Values equal to the global bounds are removed (clean URL).
