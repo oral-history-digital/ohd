@@ -4,12 +4,12 @@
 services:
   # Main Rails application
   app:
-    # Pull from registry (uncomment when image is available)
-    # image: ghcr.io/oral-history-digital/ohd:latest
-    # Build locally for testing
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # Pull from registry
+    image: ghcr.io/oral-history-digital/ohd:latest
+    # To build locally for testing, use the following build configuration:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: ohd_app
     restart: unless-stopped
     ports:
@@ -25,7 +25,7 @@ services:
       - app-files:/app/tmp/files
       - app-logs:/app/log
       # Optional: mount public directory for Nginx to serve static assets
-      - ./public:/app/public:ro
+      # - ./public:/app/public:ro
     environment:
       RAILS_ENV: production
       RACK_ENV: production
@@ -74,7 +74,14 @@ services:
     networks:
       - ohd-network
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/']
+      test:
+        [
+          'CMD',
+          'ruby',
+          '-rsocket',
+          '-e',
+          "TCPSocket.new('127.0.0.1', 3000).close",
+        ]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -83,11 +90,11 @@ services:
   # Background job worker (Delayed Job)
   worker:
     # Pull from registry (uncomment when image is available)
-    # image: ghcr.io/oral-history-digital/ohd:latest
-    # Build locally for testing
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/oral-history-digital/ohd:latest
+    # To build locally for testing, use the following build configuration:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: ohd_worker
     restart: unless-stopped
     command: ['bundle', 'exec', 'rake', 'jobs:work']
