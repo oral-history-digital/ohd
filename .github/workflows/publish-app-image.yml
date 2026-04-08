@@ -1,0 +1,20 @@
+# This is a stub workflow for building and pushing Docker images.
+name: Build and Push Docker Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker image tag'
+        required: true
+        default: 'ci-test'
+
+jobs:
+  stub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stub execution
+        run: |
+          echo "Stub workflow executed"
+          echo "Ref: ${{ github.ref }}"
+          echo "Tag input: ${{ github.event.inputs.tag }}"
