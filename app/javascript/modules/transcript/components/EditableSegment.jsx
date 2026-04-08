@@ -193,6 +193,7 @@ function EditableSegment({
                 'Segment--withSpeaker': segment.speakerIdChanged,
                 'is-active': isActive,
                 'Segment--editMode': isEditingSegment,
+                'Segment--isEditor': isEditviewActive,
             })}
         >
             {isEditingSegment ? (
@@ -296,7 +297,7 @@ function EditableSegment({
                         <Initials contributor={contributor} segment={segment} />
                         {isEditviewActive && <Timecode segment={segment} />}
                     </div>
-                    <div>
+                    <div className="Segment-content">
                         <SegmentText
                             segment={segment}
                             locale={contentLocale}
