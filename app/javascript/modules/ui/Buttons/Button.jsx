@@ -55,18 +55,6 @@ export default function Button({
         isLoading && loadingText ? loadingText : buttonText || t('submit');
     const finalAriaLabel = ariaLabel || (isIconOnly ? displayText : undefined);
 
-    const buttonClass = classNames(
-        'GenericButton',
-        `GenericButton--${variant}`,
-        `GenericButton--${color}`,
-        `GenericButton--${size}`,
-        {
-            'GenericButton--fullWidth': fullWidth,
-            'GenericButton--iconOnly': isIconOnly,
-        },
-        className
-    );
-
     const isInactive = isDisabled || isLoading;
     const isLink = typeof href === 'string' && href.length > 0;
     const finalRel = target === '_blank' ? rel || 'noopener noreferrer' : rel;
@@ -82,6 +70,18 @@ export default function Button({
         }
     };
 
+    const buttonClass = classNames(
+        'GenericButton',
+        `GenericButton--${variant}`,
+        `GenericButton--${color}`,
+        `GenericButton--${size}`,
+        {
+            'GenericButton--fullWidth': fullWidth,
+            'GenericButton--iconOnly': isIconOnly,
+            'GenericButton--disabled': isInactive,
+        },
+        className
+    );
     const content = (
         <>
             {isLoading ? (
@@ -98,7 +98,7 @@ export default function Button({
         return (
             <a
                 className={buttonClass}
-                href={href}
+                href={isInactive ? undefined : href}
                 target={target}
                 rel={finalRel}
                 onClick={handleClick}

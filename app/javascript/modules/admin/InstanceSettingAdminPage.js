@@ -79,8 +79,18 @@ export default function InstanceSettingAdminPage() {
                 multiLocale: true,
             },
             {
+                attribute: 'button_primary_description',
+                label: t('edit.instance.block.button_primary_description'),
+                multiLocale: true,
+            },
+            {
                 attribute: 'button_secondary_label',
                 label: t('edit.instance.block.button_secondary_label'),
+                multiLocale: true,
+            },
+            {
+                attribute: 'button_secondary_description',
+                label: t('edit.instance.block.button_secondary_description'),
                 multiLocale: true,
             },
             {

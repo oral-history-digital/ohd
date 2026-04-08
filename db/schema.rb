@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_08_112000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_08_133000) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -294,6 +294,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_112000) do
     t.string "button_primary_label"
     t.string "button_secondary_label"
     t.string "image_alt"
+    t.text "button_primary_description"
+    t.text "button_secondary_description"
     t.index ["homepage_block_id"], name: "index_homepage_block_translations_on_homepage_block_id"
     t.index ["locale"], name: "index_homepage_block_translations_on_locale"
   end

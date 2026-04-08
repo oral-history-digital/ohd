@@ -25,17 +25,18 @@ $generic-button-border-width: $base-unit * 0.083333;
     box-shadow: 0 0 0 $focus-radius $focus-color;
   }
 
-  &:disabled {
+  &:disabled,
+  &.GenericButton--disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
 
-  &:not(:disabled):hover {
+  &:not(:disabled):not(.GenericButton--disabled):hover {
     filter: brightness(1.15);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
-  &:not(:disabled):active {
+  &:not(:disabled):not(.GenericButton--disabled):active {
     transform: scale(0.98);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
