@@ -26,6 +26,7 @@ import {
     RichtextDetail,
     Subjects,
     Website,
+    XmlLinks,
     YearRange,
 } from './details';
 
@@ -142,6 +143,9 @@ export function ArchivePage() {
                                     institutions={project.institutions}
                                     projectName={title}
                                     projectId={project.id}
+                                />
+                                <XmlLinks
+                                    projectShortname={project.shortname}
                                 />
                             </dl>
                         </div>

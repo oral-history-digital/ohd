@@ -21,6 +21,7 @@ import {
     RichtextDetail,
     Subjects,
     Website,
+    XmlLinks,
     YearRange,
 } from './details';
 
@@ -137,6 +138,7 @@ export function CollectionPage() {
                             collectionName={collection?.name}
                             collectionId={collection?.id}
                         />
+                        <XmlLinks collectionId={collection.id} />
                     </dl>
                 </div>
             </ErrorBoundary>

@@ -152,6 +152,18 @@
   line-height: 1.5;
 }
 
+.DescriptionList-group--xml-links .DescriptionList-description {
+  display: flex;
+  gap: $base-unit * 0.75;
+  flex-wrap: wrap;
+
+  .XmlLink {
+    display: inline-flex;
+    align-items: center; // vertically center icon + text
+    gap: $base-unit * 0.2;
+  }
+}
+
 // ArchiveCard
 // --------------------------------------------------
 
@@ -690,9 +702,6 @@ h4.CollectionList-collectionsTitle {
   border-radius: 2px;
   padding: 0 1px;
 }
-
-// Explorer
-// --------------------------------------------------
 
 // ExplorerSidebarSearch
 // --------------------------------------------------
