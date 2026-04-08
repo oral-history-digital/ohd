@@ -177,3 +177,13 @@ export const FRAMES_PER_SECOND = 25;
 
 // RTL languages (ISO 639-3 codes)
 export const RTL_LANGUAGES = ['ara', 'heb'];
+
+/**
+ * OAI XML export related constants and functions
+ */
+export const OAI_INSTANCE_IDENTIFIER = 'oral-history.digital';
+
+export const XML_LINK_TYPES = [
+    { metadataPrefix: 'oai_datacite', text: 'Datacite' },
+    { metadataPrefix: 'oai_dc', text: 'Dublin Core' },
+];

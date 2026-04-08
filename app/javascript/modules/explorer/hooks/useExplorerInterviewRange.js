@@ -7,11 +7,13 @@ export function useExplorerInterviewRange({ items }) {
     return useMemo(() => {
         const counts = items
             .map((item) => item.interviews?.total ?? 0)
-            .filter((n) => !isNaN(n));
+            .filter((n) => Number.isFinite(n));
+
+        const safeMax = counts.length > 0 ? Math.max(...counts) : 0;
 
         return {
             globalMin: 0,
-            globalMax: Math.max(...counts),
+            globalMax: safeMax,
         };
     }, [items]);
 }

@@ -215,6 +215,20 @@ export function buildKnownItems(currentPage, context) {
         return [currentItem];
     }
 
+    if (pageType === 'user_page' && subtype === 'users_admin') {
+        return [
+            {
+                key: 'project_admin_page',
+                label:
+                    labels.project_admin_page ||
+                    humanizeSegment('project_admin_page'),
+                to: null,
+                isCurrent: true,
+                loading: false,
+            },
+        ];
+    }
+
     const pagePathByType = {
         interview_detail: params.archiveId
             ? joinPath(pathBase, `/interviews/${params.archiveId}`)
@@ -226,7 +240,7 @@ export function buildKnownItems(currentPage, context) {
         register_page: joinPath(pathBase, '/register'),
         registry_entries: joinPath(pathBase, '/registry_entries'),
         user_page: joinPath(pathBase, '/users'),
-        project_admin_page: joinPath(pathBase, '/project/edit-config'),
+        project_admin_page: null,
         static_text_page: params.staticPageCode
             ? joinPath(pathBase, `/${params.staticPageCode}`)
             : null,

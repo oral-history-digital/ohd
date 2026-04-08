@@ -1,4 +1,5 @@
 export * from './useGetCollection';
+export * from './useGetHomepageSettings';
 export * from './useGetInstitution';
 export * from './useGetInstitutions';
 export * from './useGetInstitutionsList';

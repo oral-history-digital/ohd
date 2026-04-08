@@ -100,7 +100,7 @@ class AddInstanceSettingTranslations < ActiveRecord::Migration[8.0]
       ar: 'تسمية الزر الأساسي',
     },
     'edit.instance.block.button_secondary_label': {
-      de: 'Sekundäres Button-Label',
+      de: 'Button-Text Sekundäraktion',
       en: 'Secondary button label',
       el: 'Ετικέτα δευτερεύοντος κουμπιού',
       es: 'Etiqueta del botón secundario',

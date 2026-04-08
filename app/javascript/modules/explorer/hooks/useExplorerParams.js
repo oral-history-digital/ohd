@@ -8,6 +8,14 @@ import { useSearchParams } from 'react-router-dom';
 export const useExplorerParams = () => {
     const currentPage = useCurrentPage();
     const [searchParams] = useSearchParams();
+    const institutionLevelParam = searchParams.get(
+        'explorer_institution_level'
+    );
+    const institutionLevel = ['with_children', 'with_parent'].includes(
+        institutionLevelParam
+    )
+        ? institutionLevelParam
+        : 'all';
     const isInstitutionsTab =
         currentPage.pageType === 'catalog_page' &&
         currentPage.params.catalogType === 'institutions';
@@ -40,5 +48,6 @@ export const useExplorerParams = () => {
                   .map(Number)
                   .filter(Boolean)
             : [],
+        institutionLevel,
     };
 };

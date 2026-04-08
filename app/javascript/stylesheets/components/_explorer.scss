@@ -50,6 +50,7 @@
 .CollectionList--countLabel {
   margin: 0;
   font-weight: bold;
+  font-size: $font-size-larger;
 }
 
 // Tabs
@@ -149,6 +150,18 @@
   border-radius: 6px;
   color: rgba(143, 32, 28, 0.9);
   line-height: 1.5;
+}
+
+.DescriptionList-group--xml-links .DescriptionList-description {
+  display: flex;
+  gap: $base-unit * 0.75;
+  flex-wrap: wrap;
+
+  .XmlLink {
+    display: inline-flex;
+    align-items: center; // vertically center icon + text
+    gap: $base-unit * 0.2;
+  }
 }
 
 // ArchiveCard
@@ -690,9 +703,6 @@ h4.CollectionList-collectionsTitle {
   padding: 0 1px;
 }
 
-// Explorer
-// --------------------------------------------------
-
 // ExplorerSidebarSearch
 // --------------------------------------------------
 
@@ -738,7 +748,7 @@ h4.CollectionList-collectionsTitle {
 }
 
 .ExplorerSidebarSearch-rangeSection {
-  margin-top: $base-unit * 0.375;
+  margin-top: $base-unit;
   padding: 0 $base-unit * 0.5;
 }
 
@@ -794,6 +804,38 @@ h4.CollectionList-collectionsTitle {
 
   .rc-slider-dot-active {
     border-color: var(--primary-color, $gray-dark);
+  }
+}
+
+.ExplorerInstitutionLevelFilter {
+  margin-top: $base-unit * 0.375;
+  padding: 0 $base-unit * 0.5;
+}
+
+.ExplorerInstitutionLevelFilter-label {
+  margin-bottom: 0.625rem;
+}
+
+.ExplorerInstitutionLevelFilter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ExplorerInstitutionLevelFilter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $gray-darker;
+
+  input {
+    margin: 0;
+    accent-color: var(--primary-color, $gray-dark);
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-color, $gray-dark);
+      outline-offset: 2px;
+    }
   }
 }
 

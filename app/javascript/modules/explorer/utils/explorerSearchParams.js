@@ -9,6 +9,7 @@ export const FILTER_PARAMS = [
     'explorer_year_min',
     'explorer_year_max',
     'explorer_institution',
+    'explorer_institution_level',
     'explorer_sort',
     'explorer_inst_sort',
 ];
@@ -89,28 +90,6 @@ export const applyCollectionRangeParams = (
     return prev;
 };
 
-export const applyInstArchiveRangeParams = (
-    prev,
-    min,
-    max,
-    globalMin,
-    globalMax
-) => {
-    if (min === globalMin) {
-        prev.delete('explorer_inst_archives_min');
-    } else {
-        prev.set('explorer_inst_archives_min', min);
-    }
-
-    if (max === globalMax) {
-        prev.delete('explorer_inst_archives_max');
-    } else {
-        prev.set('explorer_inst_archives_max', max);
-    }
-
-    return prev;
-};
-
 /**
  * Sets or removes `explorer_year_min` / `explorer_year_max`
  * search params. Values equal to the global bounds are removed (clean URL).
@@ -152,5 +131,23 @@ export const applyInstitutionParam = (prev, institutionIds) => {
     } else {
         prev.delete('explorer_institution');
     }
+    return prev;
+};
+
+/**
+ * Sets or removes the `explorer_institution_level` search param.
+ * Allowed values are `all`, `with_children`, and `with_parent`; `all` is omitted for a clean URL.
+ *
+ * @param {URLSearchParams} prev
+ * @param {'all' | 'with_children' | 'with_parent'} level
+ * @returns {URLSearchParams}
+ */
+export const applyInstitutionLevelParam = (prev, level) => {
+    if (level && level !== 'all') {
+        prev.set('explorer_institution_level', level);
+    } else {
+        prev.delete('explorer_institution_level');
+    }
+
     return prev;
 };

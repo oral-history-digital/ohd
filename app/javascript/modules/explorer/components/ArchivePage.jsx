@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { getProjectUrl } from '../utils';
 import CollectionList from './CollectionList';
 import {
+    Citation,
     CooperationPartner,
     IndexingLevels,
     Institutions,
@@ -25,6 +26,7 @@ import {
     RichtextDetail,
     Subjects,
     Website,
+    XmlLinks,
     YearRange,
 } from './details';
 
@@ -135,6 +137,15 @@ export function ArchivePage() {
                                     pseudoFunderNames={
                                         project.pseudo_funder_names
                                     }
+                                />
+                                <Citation
+                                    type="project"
+                                    institutions={project.institutions}
+                                    projectName={title}
+                                    projectId={project.id}
+                                />
+                                <XmlLinks
+                                    projectShortname={project.shortname}
                                 />
                             </dl>
                         </div>

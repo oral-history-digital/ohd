@@ -46,6 +46,8 @@ module HomepageSettingsActions
             :text,
             :button_primary_label,
             :button_secondary_label,
+            :button_primary_description,
+            :button_secondary_description,
             :image_alt
           ]
         },

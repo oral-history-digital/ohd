@@ -18,6 +18,7 @@ export function InstitutionsList({
     interviewMax,
     instArchiveMin,
     instArchiveMax,
+    institutionLevel,
 }) {
     const { t } = useI18n();
     const { expandedId, toggle } = useAccordion();
@@ -33,7 +34,8 @@ export function InstitutionsList({
         interviewMin,
         interviewMax,
         instArchiveMin,
-        instArchiveMax
+        instArchiveMax,
+        institutionLevel
     );
     const institutionsCountLabel = useExplorerListCountLabel({
         scope: 'institutions',
@@ -108,6 +110,7 @@ InstitutionsList.propTypes = {
     interviewMax: PropTypes.number,
     instArchiveMin: PropTypes.number,
     instArchiveMax: PropTypes.number,
+    institutionLevel: PropTypes.oneOf(['all', 'with_children', 'with_parent']),
 };
 
 export default InstitutionsList;

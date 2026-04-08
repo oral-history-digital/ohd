@@ -11,13 +11,14 @@ import {
 import {
     FILTER_PARAMS,
     applyCollectionRangeParams,
-    applyInstArchiveRangeParams,
+    applyInstitutionLevelParam,
     applyInstitutionParam,
     applyInterviewRangeParams,
     applyQueryParam,
     resetExplorerFilters,
 } from '../utils';
 import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
+import { ExplorerInstitutionLevelFilter } from './ExplorerInstitutionLevelFilter';
 import { ExplorerRangeFilter } from './ExplorerRangeFilter';
 import { ExplorerResetFilters } from './ExplorerResetFilters';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
@@ -53,31 +54,20 @@ export function ExplorerSidebarSearch() {
     });
     const { globalCollectionMin, globalCollectionMax } =
         useArchivesAndCollectionsRange({ items: archives });
-    const {
-        globalCollectionMin: globalInstArchiveMin,
-        globalCollectionMax: globalInstArchiveMax,
-    } = useArchivesAndCollectionsRange({
-        items: institutionsList ?? [],
-        getCount: (i) => i.archives?.length ?? 0,
-    });
 
     const query = searchParams.get('explorer_q') || '';
-    const interviewMin =
-        Number(searchParams.get('explorer_interviews_min')) || globalMin;
-    const interviewMax =
-        Number(searchParams.get('explorer_interviews_max')) || globalMax;
-    const collectionMin =
-        Number(searchParams.get('explorer_collections_min')) ||
-        globalCollectionMin;
-    const collectionMax =
-        Number(searchParams.get('explorer_collections_max')) ||
-        globalCollectionMax;
-    const instArchiveMin =
-        Number(searchParams.get('explorer_inst_archives_min')) ||
-        globalInstArchiveMin;
-    const instArchiveMax =
-        Number(searchParams.get('explorer_inst_archives_max')) ||
-        globalInstArchiveMax;
+    const interviewMin = searchParams.has('explorer_interviews_min')
+        ? Number(searchParams.get('explorer_interviews_min'))
+        : globalMin;
+    const interviewMax = searchParams.has('explorer_interviews_max')
+        ? Number(searchParams.get('explorer_interviews_max'))
+        : globalMax;
+    const collectionMin = searchParams.has('explorer_collections_min')
+        ? Number(searchParams.get('explorer_collections_min'))
+        : globalCollectionMin;
+    const collectionMax = searchParams.has('explorer_collections_max')
+        ? Number(searchParams.get('explorer_collections_max'))
+        : globalCollectionMax;
     const institutionIds = searchParams.has('explorer_institution')
         ? searchParams
               .get('explorer_institution')
@@ -85,6 +75,14 @@ export function ExplorerSidebarSearch() {
               .map(Number)
               .filter(Boolean)
         : [];
+    const institutionLevelParam = searchParams.get(
+        'explorer_institution_level'
+    );
+    const institutionLevel = ['with_children', 'with_parent'].includes(
+        institutionLevelParam
+    )
+        ? institutionLevelParam
+        : 'all';
 
     if (!showSidebarFilters) return null;
 
@@ -116,19 +114,6 @@ export function ExplorerSidebarSearch() {
             { replace: true }
         );
 
-    const handleInstArchiveRangeChange = ([min, max]) =>
-        setSearchParams(
-            (prev) =>
-                applyInstArchiveRangeParams(
-                    prev,
-                    min,
-                    max,
-                    globalInstArchiveMin,
-                    globalInstArchiveMax
-                ),
-            { replace: true }
-        );
-
     const handleInstitutionChange = (id) => {
         const next = institutionIds.includes(id)
             ? institutionIds.filter((x) => x !== id)
@@ -142,6 +127,14 @@ export function ExplorerSidebarSearch() {
         setSearchParams((prev) => applyInstitutionParam(prev, []), {
             replace: true,
         });
+
+    const handleInstitutionLevelChange = (e) =>
+        setSearchParams(
+            (prev) => applyInstitutionLevelParam(prev, e.target.value),
+            {
+                replace: true,
+            }
+        );
 
     const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
     const searchPlaceholderKey = isArchivesTab
@@ -183,22 +176,19 @@ export function ExplorerSidebarSearch() {
                 />
             )}
 
-            {!isArchivesTab && (
-                <ExplorerRangeFilter
-                    label={t('explorer.filter.archives')}
-                    globalMin={globalInstArchiveMin}
-                    globalMax={globalInstArchiveMax}
-                    value={[instArchiveMin, instArchiveMax]}
-                    onChange={handleInstArchiveRangeChange}
-                />
-            )}
-
             {isArchivesTab && (
                 <ExplorerInstitutionFilter
                     institutions={archiveInstitutions}
                     values={institutionIds}
                     onChange={handleInstitutionChange}
                     onClearAll={handleInstitutionClearAll}
+                />
+            )}
+
+            {!isArchivesTab && (
+                <ExplorerInstitutionLevelFilter
+                    value={institutionLevel}
+                    onChange={handleInstitutionLevelChange}
                 />
             )}
         </div>

@@ -9,6 +9,7 @@ import { FaChevronRight } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
 import {
+    Citation,
     IndexingLevels,
     Institutions,
     InterviewLanguages,
@@ -20,6 +21,7 @@ import {
     RichtextDetail,
     Subjects,
     Website,
+    XmlLinks,
     YearRange,
 } from './details';
 
@@ -129,6 +131,14 @@ export function CollectionPage() {
                         />
                         <Subjects subjects={collection.subjects} />
                         <Responsibles responsibles={collectionResponsibles} />
+                        <Citation
+                            type="collection"
+                            institutions={project.institutions}
+                            projectName={project?.display_name || project?.name}
+                            collectionName={collection?.name}
+                            collectionId={collection?.id}
+                        />
+                        <XmlLinks collectionId={collection.id} />
                     </dl>
                 </div>
             </ErrorBoundary>

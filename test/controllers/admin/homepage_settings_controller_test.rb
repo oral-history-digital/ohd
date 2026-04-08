@@ -34,6 +34,10 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
     locales = hero['translations_attributes'].map { |entry| entry['locale'] }
     assert_includes locales, 'de'
     assert_includes locales, 'en'
+
+    de_translation = hero['translations_attributes'].find { |entry| entry['locale'] == 'de' }
+    assert_equal 'Primary description de', de_translation['button_primary_description']
+    assert_equal 'Secondary description de', de_translation['button_secondary_description']
   end
 
   test 'should reject non admin' do
@@ -54,6 +58,8 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
       text: "#{heading} text",
       button_primary_label: 'Primary',
       button_secondary_label: 'Secondary',
+      button_primary_description: "Primary description #{locale}",
+      button_secondary_description: "Secondary description #{locale}",
       image_alt: "#{heading} image"
     )
   end

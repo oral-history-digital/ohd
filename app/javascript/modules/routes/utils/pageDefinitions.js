@@ -7,10 +7,14 @@ const STATIC_TEXT_PAGE_CODES = [
 ];
 
 const PROJECT_ADMIN_PATTERNS = [
+    '/admin/instance',
     '/project/edit-info',
     '/project/edit-config',
     '/project/edit-access-config',
     '/project/edit-display',
+    '/projects',
+    '/institutions',
+    '/help_texts',
     '/metadata_fields',
     '/people',
     '/event_types',
@@ -86,6 +90,10 @@ const PAGE_DEFINITIONS = [
         patterns: withProjectAndLocale('/users'),
     },
     {
+        pageType: 'catalog_page',
+        patterns: ['/:locale/catalog', '/:locale/catalog/*'],
+    },
+    {
         pageType: 'project_admin_page',
         patterns: PROJECT_ADMIN_PATTERNS.flatMap((pattern) =>
             withProjectAndLocale(pattern)
@@ -96,10 +104,6 @@ const PAGE_DEFINITIONS = [
         patterns: STATIC_TEXT_PAGE_CODES.flatMap((code) =>
             withProjectAndLocale(`/${code}`)
         ),
-    },
-    {
-        pageType: 'catalog_page',
-        patterns: ['/:locale/catalog', '/:locale/catalog/*'],
     },
     {
         pageType: 'project_startpage',
