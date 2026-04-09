@@ -9,7 +9,12 @@ export function YearRange({ years, labelKey, className }) {
 
     const minYear = Number(years?.min);
     const maxYear = Number(years?.max);
-    const hasYearRange = Number.isFinite(minYear) && Number.isFinite(maxYear);
+    const hasYearRange =
+        Number.isFinite(minYear) &&
+        Number.isFinite(maxYear) &&
+        minYear !== 0 &&
+        maxYear !== 0 &&
+        minYear <= maxYear;
 
     if (!hasYearRange) {
         return null;
