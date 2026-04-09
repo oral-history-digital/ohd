@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2026-04-09
+
+### Fixed
+
+- fix: enhance user authorization checks for instance settings in UsersAdminTabPanel ([6b4a43b54](https://github.com/oral-history-digital/ohd/commit/6b4a43b5406469fbe1518b59b9a578eeb35abefc))
+
+### Changed
+
+- chore: update default branch to 'staging' in deployment configuration ([1c957f7dc](https://github.com/oral-history-digital/ohd/commit/1c957f7dcc26a41427cb8f128514f5bc0cfe2c12))
+
 ## [2.2.0] - 2026-04-09
 
 ### Added
@@ -453,6 +463,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/oral-history-digital/ohd/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/oral-history-digital/ohd/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/oral-history-digital/ohd/compare/v1.9.1...v2.0.0
