@@ -169,36 +169,88 @@ const requestTranslations = () => ({
     type: REQUEST_TRANSLATIONS,
 });
 
+// Neue Action-Creator:
+
+const setTranslationsDigest = (digest) => ({
+    type: SET_TRANSLATIONS_DIGEST,
+    digest,
+});
+
+/**
+ * Checks whether the server-side translations have changed by comparing
+ * a lightweight digest. Only fetches the full translation payload when
+ * the digest differs from the one stored in Redux.
+ *
+ * Cost: one tiny JSON request (~40 bytes) instead of the full payload.
+ */
 export function fetchTranslationsForLocale(locale, pathBase) {
     return (dispatch, getState) => {
-        // Check if we already have translations for this locale
-        const currentState = getState();
-        const existingTranslations = currentState.archive.translations || {};
+        const state = getState();
+        const existingDigest = state.archive.translationsDigest;
+        const existingTranslations = state.archive.translations || {};
 
-        // Check if we already have some translations for this locale
         const hasTranslationsForLocale = Object.keys(existingTranslations).some(
             (key) =>
                 existingTranslations[key] && existingTranslations[key][locale]
         );
 
-        // If we already have translations for this locale, don't fetch again
-        if (hasTranslationsForLocale) {
-            return Promise.resolve();
+        // If we have no translations at all for this locale, skip the
+        // digest check and fetch immediately.
+        if (!hasTranslationsForLocale) {
+            return fetchFullTranslations(dispatch, locale, pathBase);
         }
 
-        dispatch(requestTranslations());
-
-        // Build the API endpoint (prefer explicit pathBase when provided)
-        const url = `${pathBase}/translation_strings.json`;
+        // Otherwise, ask the server for the current digest first.
+        const digestUrl = `${pathBase}/translation_strings/digest.json`;
 
         return request
-            .get(url)
+            .get(digestUrl)
             .then((response) => {
-                dispatch(mergeTranslations(response.body.translations || {}));
+                const serverDigest = response.body.digest;
+
+                if (serverDigest === existingDigest) {
+                    // Nothing changed – no need to re-fetch.
+                    return Promise.resolve();
+                }
+
+                // Digest differs → translations have changed on the server.
+                return fetchFullTranslations(
+                    dispatch,
+                    locale,
+                    pathBase,
+                    serverDigest
+                );
             })
             .catch((error) => {
-                console.error('Failed to fetch translations:', error);
-                // Don't dispatch anything on error to keep existing translations
+                console.error('Failed to check translation digest:', error);
+                // Graceful degradation: keep existing translations.
+                return Promise.resolve();
             });
     };
+}
+
+function fetchFullTranslations(dispatch, locale, pathBase, digest) {
+    dispatch(requestTranslations());
+
+    const url = `${pathBase}/translation_strings.json`;
+
+    return request
+        .get(url)
+        .then((response) => {
+            dispatch(mergeTranslations(response.body.translations || {}));
+
+            // Persist the digest so subsequent checks can compare.
+            // If we didn't get a digest yet (first load), fetch it.
+            if (digest) {
+                dispatch(setTranslationsDigest(digest));
+            } else {
+                const digestUrl = `${pathBase}/translation_strings/digest.json`;
+                return request.get(digestUrl).then((res) => {
+                    dispatch(setTranslationsDigest(res.body.digest));
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Failed to fetch translations:', error);
+        });
 }
