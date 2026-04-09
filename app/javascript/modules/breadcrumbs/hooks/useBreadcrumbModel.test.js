@@ -98,9 +98,16 @@ function getHookResult({
         institution:
             (id && (institutions?.[id] || institutions?.[Number(id)])) || null,
     }));
-    useGetProject.mockImplementation((id) => ({
-        project: (id && (projects?.[id] || projects?.[Number(id)])) || null,
-    }));
+    useGetProject.mockImplementation((params = {}) => {
+        const projectIdentifier = params.id || params.shortname;
+        return {
+            project:
+                (projectIdentifier &&
+                    (projects?.[projectIdentifier] ||
+                        projects?.[Number(projectIdentifier)])) ||
+                null,
+        };
+    });
     useSelector.mockImplementation((selector) => selector({}));
 
     const wrapper = shallow(<HookReader />);

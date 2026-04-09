@@ -273,6 +273,20 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_equal project.manager, payload.dig('contact_people', 'manager')
   end
 
+  test 'should return project payload when show id is project shortname' do
+    project = DataHelper.test_project(
+      shortname: "sp#{SecureRandom.hex(3)}z",
+      workflow_state: 'public'
+    )
+
+    get project_path(project.shortname, locale: 'en', format: :json), params: { lite: 1 }
+    assert_response :success
+
+    body = JSON.parse(response.body)
+    assert_equal project.id, body['id']
+    assert_equal project.shortname, body.dig('data', 'shortname')
+  end
+
   test 'should only count interviews from public projects in lite payload' do
     public_project = DataHelper.test_project(
       shortname: "pup#{SecureRandom.hex(3)}a",

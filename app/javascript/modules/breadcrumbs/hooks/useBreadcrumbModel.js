@@ -45,7 +45,8 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
     const institutionId = catalogType === 'institutions' ? catalogItemId : null;
     const archiveProjectId = catalogType === 'archives' ? catalogItemId : null;
 
-    const { project: archiveProject } = useGetProject(archiveProjectId, {
+    const { project: archiveProject } = useGetProject({
+        id: archiveProjectId,
         lite: true,
     });
     const { collection } = useGetCollection(collectionId);

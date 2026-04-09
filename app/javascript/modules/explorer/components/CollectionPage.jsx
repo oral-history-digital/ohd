@@ -29,7 +29,10 @@ export function CollectionPage() {
     const { t, locale } = useI18n();
     const { id } = useParams();
     const { collection, error, isLoading } = useGetCollection(id);
-    const { project } = useGetProject(collection?.project_id, { lite: true });
+    const { project } = useGetProject({
+        id: collection?.project_id,
+        lite: true,
+    });
 
     useTrackPageView();
 

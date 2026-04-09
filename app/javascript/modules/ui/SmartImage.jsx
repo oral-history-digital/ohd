@@ -100,7 +100,7 @@ export default function SmartImage({
 }
 
 SmartImage.propTypes = {
-    src: PropTypes.string.isRequired,
+    src: PropTypes.string,
     alt: PropTypes.string,
     className: PropTypes.string,
     aspectRatio: PropTypes.string,

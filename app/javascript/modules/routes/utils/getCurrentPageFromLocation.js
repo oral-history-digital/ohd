@@ -6,22 +6,16 @@ import { PAGE_DEFINITIONS, STATIC_TEXT_PAGE_CODES } from './pageDefinitions';
  * Normalizes a pathname by removing trailing slashes (except for root).
  */
 function normalizePathname(pathname) {
-    if (!pathname || pathname === '/') {
-        return '/';
-    }
-
+    if (!pathname || pathname === '/') return '/';
     return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 }
 
 /**
  * Returns the base project/locale prefix used to build internal links.
  */
-function getPathBase({ locale, projectId }) {
-    if (!locale) {
-        return null;
-    }
-
-    return projectId ? `/${projectId}/${locale}` : `/${locale}`;
+function getPathBase({ locale, projectShortname }) {
+    if (!locale) return null;
+    return projectShortname ? `/${projectShortname}/${locale}` : `/${locale}`;
 }
 
 /**
@@ -38,7 +32,7 @@ function resolveSubtype(pageType, baseSubtype, params) {
         return 'collection_search';
     }
 
-    return params.projectId ? 'project_search' : 'main_site_search';
+    return params.projectShortname ? 'project_search' : 'main_site_search';
 }
 
 /**
@@ -119,11 +113,13 @@ export default function getCurrentPageFromLocation({ pathname, search = '' }) {
 
     if (matched) {
         const { definition, params } = matched;
+        const { projectId: routeProjectShortname, ...otherParams } =
+            params || {};
         const enrichedParams = enrichParamsForPage(
             definition.pageType,
             {
-                ...params,
-                projectId: params.projectId || null,
+                ...otherParams,
+                projectShortname: routeProjectShortname || null,
                 locale: params.locale || null,
             },
             normalizedPathname,
@@ -163,10 +159,13 @@ export default function getCurrentPageFromLocation({ pathname, search = '' }) {
         pageType: 'unknown',
         subtype: null,
         params: {
-            projectId: fallbackParams.projectId || null,
+            projectShortname: fallbackParams.projectId || null,
             locale: fallbackParams.locale || null,
         },
-        pathBase: getPathBase(fallbackParams),
+        pathBase: getPathBase({
+            projectShortname: fallbackParams.projectId || null,
+            locale: fallbackParams.locale || null,
+        }),
         pathname: normalizedPathname,
         search,
         isKnown: false,
