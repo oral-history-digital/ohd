@@ -6,7 +6,7 @@ import {
     WrappedInstitutionsContainer,
 } from 'modules/admin';
 import { Homepage } from 'modules/homepage';
-import { HomeContainer } from 'modules/startpage';
+import { ProjectHome } from 'modules/startpage';
 import PropTypes from 'prop-types';
 import { Route, Routes } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const RoutesWithoutProjectId = ({ project }) => (
                 <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
             </>
         ) : (
-            <Route exact path="/:locale" element={<HomeContainer />} />
+            <Route exact path="/:locale" element={<ProjectHome />} />
         )}
         <Route path="/:locale/*" element={<ProjectRoutes />} />
     </Routes>
@@ -49,7 +49,7 @@ export const MemoizedRoutesWithoutProjectId = memo(RoutesWithoutProjectId);
 const RoutesWithProjectId = () => (
     <Routes>
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
-        <Route exact path="/:projectId/:locale" element={<HomeContainer />} />
+        <Route exact path="/:projectId/:locale" element={<ProjectHome />} />
         <Route path="/:projectId/:locale/*" element={<ProjectRoutes />} />
     </Routes>
 );

@@ -30,7 +30,11 @@ function HookReader() {
  */
 function readHookResult(location, project = null) {
     useLocation.mockReturnValue(location);
-    useProject.mockReturnValue({ project });
+    useProject.mockReturnValue({
+        projectShortname: project?.shortname,
+        projectDbId: project?.id,
+        isOhd: project?.is_ohd,
+    });
     const wrapper = shallow(<HookReader />);
     return JSON.parse(wrapper.text());
 }
@@ -46,6 +50,7 @@ describe('useCurrentPage', () => {
         expect(result.pageType).toBe('project_startpage');
         expect(result.params).toEqual({
             locale: 'de',
+            projectShortname: null,
             projectId: null,
         });
         expect(result.pathBase).toBe('/de');
@@ -55,12 +60,13 @@ describe('useCurrentPage', () => {
     it('returns site_startpage context for locale root route on ohd project', () => {
         const result = readHookResult(
             { pathname: '/de', search: '' },
-            { is_ohd: true }
+            { id: 21894749, shortname: 'ohd', is_ohd: true }
         );
 
         expect(result.pageType).toBe('site_startpage');
         expect(result.params).toEqual({
             locale: 'de',
+            projectShortname: null,
             projectId: null,
         });
         expect(result.pathBase).toBe('/de');
@@ -75,7 +81,8 @@ describe('useCurrentPage', () => {
 
         expect(result.pageType).toBe('interview_detail');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
+            projectId: null,
             locale: 'de',
             archiveId: 'ARC-1',
         });
@@ -91,11 +98,33 @@ describe('useCurrentPage', () => {
 
         expect(result.pageType).toBe('unknown');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
+            projectId: null,
             locale: 'de',
         });
         expect(result.pathBase).toBe('/mog/de');
         expect(result.search).toBe('?q=test');
         expect(result.isKnown).toBe(false);
+    });
+
+    it('includes numeric projectId when project is loaded', () => {
+        const result = readHookResult(
+            {
+                pathname: '/mog/de/interviews/ARC-1',
+                search: '',
+            },
+            {
+                id: 42,
+                shortname: 'mog',
+                is_ohd: false,
+            }
+        );
+
+        expect(result.params).toEqual({
+            projectShortname: 'mog',
+            projectId: 42,
+            locale: 'de',
+            archiveId: 'ARC-1',
+        });
     });
 });

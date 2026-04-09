@@ -3,14 +3,17 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import useProject from '../useProject';
-import { getCurrentPageFromLocation } from '../utils';
+import {
+    getCurrentPageFromLocation,
+    normalizeCurrentPageWithProjectContext,
+} from '../utils';
 
 /**
  * Resolves the current route location into a normalized page context object.
  */
 export function useCurrentPage() {
     const location = useLocation();
-    const { project } = useProject();
+    const { projectShortname, projectDbId: projectId, isOhd } = useProject();
 
     return useMemo(() => {
         const currentPage = getCurrentPageFromLocation({
@@ -18,18 +21,16 @@ export function useCurrentPage() {
             search: location.search,
         });
 
-        // OHD root (/:locale) renders the site-wide startpage, not a project startpage.
-        if (
-            currentPage.pageType === 'project_startpage' &&
-            !currentPage.params?.projectId &&
-            project?.is_ohd
-        ) {
-            return {
-                ...currentPage,
-                pageType: 'site_startpage',
-            };
-        }
-
-        return currentPage;
-    }, [location.pathname, location.search, project]);
+        return normalizeCurrentPageWithProjectContext(currentPage, {
+            isOhd,
+            projectShortname,
+            projectId,
+        });
+    }, [
+        location.pathname,
+        location.search,
+        isOhd,
+        projectShortname,
+        projectId,
+    ]);
 }

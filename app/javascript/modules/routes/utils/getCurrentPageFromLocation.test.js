@@ -14,7 +14,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.pageType).toBe('project_startpage');
         expect(result.params).toEqual({
             locale: 'de',
-            projectId: null,
+            projectShortname: null,
         });
         expect(result.pathBase).toBe('/de');
         expect(result.isKnown).toBe(true);
@@ -25,7 +25,7 @@ describe('getCurrentPageFromLocation', () => {
 
         expect(result.pageType).toBe('project_startpage');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
             locale: 'de',
         });
         expect(result.pathBase).toBe('/mog/de');
@@ -39,7 +39,7 @@ describe('getCurrentPageFromLocation', () => {
 
         expect(result.pageType).toBe('interview_detail');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
             locale: 'de',
             archiveId: 'A-123',
         });
@@ -56,7 +56,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.params).toEqual(
             expect.objectContaining({
                 locale: 'de',
-                projectId: null,
+                projectShortname: null,
                 catalogType: 'collections',
                 id: '90408866',
             })
@@ -71,7 +71,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.pageType).toBe('static_text_page');
         expect(result.params).toEqual({
             locale: 'de',
-            projectId: null,
+            projectShortname: null,
             staticPageCode: 'contact',
         });
         expect(result.pathBase).toBe('/de');
@@ -85,7 +85,7 @@ describe('getCurrentPageFromLocation', () => {
 
         expect(result.pageType).toBe('project_admin_page');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
             locale: 'de',
         });
         expect(result.pathBase).toBe('/mog/de');
@@ -107,7 +107,7 @@ describe('getCurrentPageFromLocation', () => {
 
             expect(result.pageType).toBe('project_admin_page');
             expect(result.params).toEqual({
-                projectId: null,
+                projectShortname: null,
                 locale: 'de',
             });
             expect(result.pathBase).toBe('/de');
@@ -123,7 +123,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.pageType).toBe('catalog_page');
         expect(result.params).toEqual(
             expect.objectContaining({
-                projectId: null,
+                projectShortname: null,
                 locale: 'de',
                 catalogType: 'institutions',
                 id: null,
@@ -140,7 +140,7 @@ describe('getCurrentPageFromLocation', () => {
 
         expect(result.pageType).toBe('register_page');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
             locale: 'de',
         });
         expect(result.pathBase).toBe('/mog/de');
@@ -155,7 +155,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.pageType).toBe('search_archive');
         expect(result.subtype).toBe('main_site_search');
         expect(result.params).toEqual({
-            projectId: null,
+            projectShortname: null,
             locale: 'de',
             collectionId: null,
         });
@@ -171,7 +171,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.pageType).toBe('search_archive');
         expect(result.subtype).toBe('project_search');
         expect(result.params).toEqual({
-            projectId: 'adg',
+            projectShortname: 'adg',
             locale: 'de',
             collectionId: null,
         });
@@ -190,7 +190,7 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.pageType).toBe('search_archive');
         expect(result.subtype).toBe('collection_search');
         expect(result.params).toEqual({
-            projectId: 'adg',
+            projectShortname: 'adg',
             locale: 'de',
             collectionId: '21894736',
         });
@@ -205,7 +205,7 @@ describe('getCurrentPageFromLocation', () => {
 
         expect(result.pageType).toBe('unknown');
         expect(result.params).toEqual({
-            projectId: 'mog',
+            projectShortname: 'mog',
             locale: 'de',
         });
         expect(result.pathBase).toBe('/mog/de');

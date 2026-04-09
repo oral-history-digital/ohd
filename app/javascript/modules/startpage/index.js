@@ -1,2 +1,2 @@
-export { default as HomeContainer } from './HomeContainer';
+export { default as ProjectHome } from './ProjectHome';
 export { default as ProjectLogo } from './ProjectLogo';

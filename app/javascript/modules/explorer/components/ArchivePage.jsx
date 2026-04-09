@@ -33,7 +33,7 @@ import {
 export function ArchivePage() {
     const { t, locale } = useI18n();
     const id = Number(useParams().id);
-    const { project } = useGetProject(id, { lite: true });
+    const { project } = useGetProject({ id, lite: true });
     useTrackPageView();
 
     if (!project) {
