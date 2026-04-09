@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_08_133000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_09_172500) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -696,6 +696,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_133000) do
     t.string "domain"
     t.string "archive_domain"
     t.string "doi"
+    t.string "cooperation_partner"
+    t.string "leader"
+    t.string "manager"
+    t.string "funder_names"
     t.string "contact_email"
     t.boolean "has_newsletter"
     t.boolean "is_catalog"
@@ -724,10 +728,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_133000) do
     t.integer "analytics_site_id"
     t.integer "interviews_count", default: 0, null: false
     t.string "publication_date"
-    t.string "cooperation_partner"
-    t.string "leader"
-    t.string "manager"
-    t.string "funder_names"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 

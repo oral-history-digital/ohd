@@ -2,17 +2,18 @@ import { useTrackPageView } from 'modules/analytics';
 import { useGetProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { LinkButton, SmartImage } from 'modules/ui';
+import { LinkOrA } from 'modules/routes';
+import { SmartImage } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
 import { FaChevronRight } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
-import { getProjectUrl } from '../utils';
 import CollectionList from './CollectionList';
 import {
     Citation,
     CooperationPartner,
+    GenericDetail,
     IndexingLevels,
     Institutions,
     InterviewLanguages,
@@ -31,7 +32,7 @@ import {
 } from './details';
 
 export function ArchivePage() {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const id = Number(useParams().id);
     const { project } = useGetProject({ id, lite: true });
     useTrackPageView();
@@ -48,9 +49,6 @@ export function ArchivePage() {
 
     const title = project.display_name || project.name || '';
 
-    const { url: projectUrl, isExternalUrl: isExternalProjectLink } =
-        getProjectUrl(project, locale);
-
     return (
         <ScrollToTop>
             <Helmet>
@@ -64,22 +62,13 @@ export function ArchivePage() {
                     <div className="ProjectDetails-layout">
                         <div className="ProjectDetails-main">
                             <div className="ProjectDetails-actions">
-                                <LinkButton
-                                    buttonText={t('explorer.view_archive_page')}
-                                    variant="text"
-                                    to={projectUrl}
-                                    isExternal={isExternalProjectLink}
-                                    target={
-                                        isExternalProjectLink
-                                            ? '_blank'
-                                            : '_self'
-                                    }
-                                    startIcon={
-                                        <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
-                                    }
-                                    size="lg"
-                                    className="u-pl-none"
-                                />
+                                <LinkOrA
+                                    project={project}
+                                    className="ProminentLink"
+                                >
+                                    <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
+                                    {t('explorer.view_archive_page')}
+                                </LinkOrA>
 
                                 {project.logo?.url && (
                                     <SmartImage
@@ -147,6 +136,14 @@ export function ArchivePage() {
                                 <XmlLinks
                                     projectShortname={project.shortname}
                                 />
+                                {!project.is_catalog && (
+                                    <GenericDetail
+                                        labelKey="explorer.export_formats.label"
+                                        value={t(
+                                            'explorer.export_formats.description'
+                                        )}
+                                    />
+                                )}
                             </dl>
                         </div>
 
