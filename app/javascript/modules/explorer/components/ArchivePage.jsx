@@ -97,7 +97,6 @@ export function ArchivePage() {
                                 <PublicationDate
                                     publicationDate={project.publication_date}
                                 />
-
                                 <InterviewStats counts={project.interviews} />
                                 <MediaTypes mediaTypes={project?.media_types} />
                                 <YearRange
@@ -132,10 +131,7 @@ export function ArchivePage() {
                                     institutions={project.institutions}
                                     projectName={title}
                                     projectId={project.id}
-                                />
-                                <XmlLinks
-                                    projectShortname={project.shortname}
-                                />
+                                />{' '}
                                 {!project.is_catalog && (
                                     <GenericDetail
                                         labelKey="explorer.export_formats.label"
@@ -144,6 +140,9 @@ export function ArchivePage() {
                                         )}
                                     />
                                 )}
+                                <XmlLinks
+                                    projectShortname={project.shortname}
+                                />
                             </dl>
                         </div>
 

@@ -18,10 +18,11 @@ export function CollectionCard({ collection, archive, query }) {
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
 
-    const { url: projectUrl, isExternalUrl } = getProjectUrl(archive, locale);
+    const { url, isExternalUrl } = getProjectUrl(archive, locale);
+    const projectUrl = isExternalUrl ? `${url}/${locale}` : url; // Ensure we have the locale in the URL for external links
 
     const collectionDetailsUrl = `/${locale}/catalog/collections/${collection.id}`;
-    const collectionPageUrl = `${projectUrl}/${locale}/searches/archive?collection_id[]=${collection.id}`;
+    const collectionPageUrl = `${projectUrl}/searches/archive?collection_id[]=${collection.id}`;
 
     const countInterviews = collection.interviews?.total || 0;
     const numInterviews = formatNumber(countInterviews, 0, locale);

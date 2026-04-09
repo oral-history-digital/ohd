@@ -116,7 +116,6 @@ export function CollectionPage() {
                         <PublicationDate
                             publicationDate={collection.publication_date}
                         />
-
                         <InterviewStats counts={collection.interviews} />
                         <MediaTypes mediaTypes={collection?.media_types} />
                         <YearRange
@@ -141,14 +140,14 @@ export function CollectionPage() {
                             projectName={project?.display_name || project?.name}
                             collectionName={collection?.name}
                             collectionId={collection?.id}
-                        />
-                        <XmlLinks collectionId={collection.id} />
+                        />{' '}
                         {!project.is_catalog && (
                             <GenericDetail
                                 labelKey="explorer.export_formats.label"
                                 value={t('explorer.export_formats.description')}
                             />
                         )}
+                        <XmlLinks collectionId={collection.id} />
                     </dl>
                 </div>
             </ErrorBoundary>
