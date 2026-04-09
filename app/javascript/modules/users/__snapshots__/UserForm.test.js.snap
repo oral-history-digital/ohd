@@ -96,6 +96,7 @@ LoadedCheerio {
         >
           <button
             class="GenericButton GenericButton--contained GenericButton--primary GenericButton--md"
+            data-testid="submit-button"
             type="submit"
           >
             <svg

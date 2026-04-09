@@ -304,7 +304,7 @@ Notes about branches and staging in this project:
         BRANCH=feature/your-branch bundle exec cap ohd_archive_staging deploy
         ```
 
-        #### Or deploy using the stage's default branch as configured in the stage file
+        #### Or deploy using the stage's default branch (`staging`) as configured in the stage file
 
         ```
         bundle exec cap ohd_archive_staging deploy

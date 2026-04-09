@@ -5,6 +5,11 @@ import { flattenNestedObject } from './flattenNestedObject';
 
 const Loader = {
     getJson: function (url, queryParams, dispatch, callback) {
+        const dispatchCallback =
+            typeof callback === 'function'
+                ? (payload) => dispatch(callback(payload))
+                : null;
+
         request
             .get(url)
             .use(noCache)
@@ -13,48 +18,57 @@ const Loader = {
             .end((error, res) => {
                 if (error) {
                     console.error(
-                        'loading json from ' + url + ' failed: ' + error
+                        'Loading JSON from ' + url + ' failed: ' + error
                     );
-                    console.error('original error: ' + error.original);
-                    if (typeof callback === 'function') {
-                        dispatch(callback(error));
-                    }
+                    console.error('Original error: ' + error.original);
+                    dispatchCallback?.(error);
                 } else if (res) {
-                    if (res.error) {
+                    // Check HTTP status code - 4xx and 5xx are errors
+                    if (res.status >= 400) {
                         console.error(
-                            'loading json from ' + url + ' failed: ' + res.error
+                            `Loading JSON from ${url} failed with status ${res.status}`
+                        );
+                        dispatchCallback?.(res);
+                    } else if (res.error) {
+                        console.error(
+                            `Loading JSON from ${url} failed: ${res.error}`
                         );
                     } else {
-                        if (typeof callback === 'function') {
-                            dispatch(callback(JSON.parse(res.text)));
-                        }
+                        dispatchCallback?.(JSON.parse(res.text));
                     }
                 }
             });
     },
 
     delete: function (url, dispatch, callback, cb) {
+        const dispatchCallback =
+            typeof callback === 'function'
+                ? (payload) => dispatch(callback(payload))
+                : null;
+
         request
             .delete(url)
             .set('Accept', 'application/json')
             .end((error, res) => {
                 if (error) {
                     console.error(
-                        'loading json from ' + url + ' failed: ' + error
+                        'Loading JSON from ' + url + ' failed: ' + error
                     );
-                    console.error('original error: ' + error.original);
-                    if (typeof callback === 'function') {
-                        dispatch(callback(error));
-                    }
+                    console.error('Original error: ' + error.original);
+                    dispatchCallback?.(error);
                 } else if (res) {
-                    if (res.error) {
+                    // Check HTTP status code - 4xx and 5xx are errors
+                    if (res.status >= 400) {
                         console.error(
-                            'deleting from ' + url + ' failed: ' + error
+                            `Deleting from ${url} failed with status ${res.status}`
+                        );
+                        dispatchCallback?.(res);
+                    } else if (res.error) {
+                        console.error(
+                            `Deleting from ${url} failed: ${res.error}`
                         );
                     } else {
-                        if (typeof callback === 'function') {
-                            dispatch(callback(JSON.parse(res.text)));
-                        }
+                        dispatchCallback?.(JSON.parse(res.text));
                         if (typeof cb === 'function') {
                             cb(JSON.parse(res.text));
                         }
@@ -180,20 +194,31 @@ const Loader = {
         req.set('Accept', 'application/json');
         req.end((error, res) => {
             if (error) {
-                console.error('loading json from ' + url + ' failed: ' + error);
-                console.error('original error: ' + error.original);
-                console.error('url: ' + url);
+                console.error('Loading JSON from ' + url + ' failed: ' + error);
+                console.error('Original error: ' + error.original);
+                console.error('URL: ' + url);
                 if (typeof errorCallback === 'function') {
                     dispatch(errorCallback(error));
                 }
             } else if (res) {
                 let json = JSON.parse(res.text);
-                if (res.error) {
+                // Check HTTP status code - 4xx and 5xx are errors
+                if (res.status >= 400) {
+                    console.error(
+                        'Loading JSON from ' +
+                            url +
+                            ' failed with status ' +
+                            res.status
+                    );
+                    if (typeof errorCallback === 'function') {
+                        dispatch(errorCallback(json || res));
+                    }
+                } else if (res.error) {
                     if (typeof errorCallback === 'function') {
                         dispatch(errorCallback(json));
                     } else {
                         console.error(
-                            'loading json from ' + url + ' failed: ' + error
+                            'Loading JSON from ' + url + ' failed: ' + error
                         );
                     }
                 } else if (json.error) {
