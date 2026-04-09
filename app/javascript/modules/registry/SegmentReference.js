@@ -1,15 +1,13 @@
 import { setArchiveId } from 'modules/archive';
-import { TapeAndTime, formatTimecode } from 'modules/interview-helpers';
+import { TapeAndTime } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { LinkOrA } from 'modules/routes';
-import { usePathBase } from 'modules/routes';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 export default function SegmentReference({ project, segmentRef, onSubmit }) {
     const dispatch = useDispatch();
-    const pathBase = usePathBase();
     const timecode = formatTimecode(segmentRef.time, true);
 
     const onLinkClick = () => {
@@ -43,6 +41,7 @@ export default function SegmentReference({ project, segmentRef, onSubmit }) {
 }
 
 SegmentReference.propTypes = {
+    project: PropTypes.object.isRequired,
     segmentRef: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
 };

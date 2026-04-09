@@ -9,10 +9,15 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useGetMediaMissingText } from '../hooks';
-import { useMediaPlayerResize, usePosterImage } from '../hooks';
+import {
+    useGetMediaMissingText,
+    useMediaPlayerResize,
+    usePosterImage,
+    useTimecodeFormat,
+} from '../hooks';
 import '../plugins/configurationMenuPlugin.js';
 import '../plugins/customSkipButtonsPlugin.js';
+import '../plugins/fractionalCurrentTimePlugin.js';
 import '../plugins/toggleSizeButtonPlugin.js';
 import {
     getQualityLabel,
@@ -41,6 +46,7 @@ export default function MediaElement({
     interview,
     mediaStreams,
     tape,
+    isPlaying,
     timeChangeRequestAvailable,
     timeChangeRequest,
     updateIsPlaying,
@@ -61,6 +67,8 @@ export default function MediaElement({
 
     // Hook for manual resize via drag handle
     const { resizeHandleRef, isDragging } = useMediaPlayerResize();
+
+    const timecodeFormat = useTimecodeFormat(interview);
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources =
@@ -99,6 +107,10 @@ export default function MediaElement({
                 'skipBackward',
                 'playToggle',
                 'skipForward',
+                {
+                    name: 'FractionalCurrentTimeDisplay',
+                    timecodeFormat,
+                },
                 'volumePanel',
                 'playbackRateMenuButton',
                 'qualitySelector',
@@ -228,9 +240,9 @@ export default function MediaElement({
     }, [tape, interview.transcript_coupled]);
 
     // Check if time has been changed from outside of component.
+    // Also syncs Redux isPlaying=false → pauses the actual player.
+    // Runs on every render so that tape and time params are always recognised.
     useEffect(() => {
-        // Now checking on every render because otherwise tape and time params
-        // are not recognized.
         checkForTimeChangeRequest();
     });
 
@@ -281,15 +293,34 @@ export default function MediaElement({
             return;
         }
 
+        // Sync Redux isPlaying state → actual player state.
+        // Bidirectional: pause when Redux says stop, play when Redux says go.
+        // Skip the play sync when a time change request is pending — the
+        // request handler below will call play() after seeking to avoid
+        // starting playback at a stale position.
+        if (!isPlaying && !player.paused()) {
+            player.pause();
+        }
+        if (isPlaying && player.paused() && !timeChangeRequestAvailable) {
+            if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
+                player.play();
+            } else {
+                player.autoplay(true);
+            }
+        }
+
         if (timeChangeRequestAvailable) {
             clearTimeChangeRequest();
 
             player.currentTime(timeChangeRequest);
 
-            if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
-                player.play();
-            } else {
-                player.autoplay(true);
+            // Only auto-play if it was already playing; respect pause state
+            if (isPlaying) {
+                if (player.readyState() >= READY_STATE_HAVE_CURRENT_DATA) {
+                    player.play();
+                } else {
+                    player.autoplay(true);
+                }
             }
         }
     }
@@ -537,6 +568,7 @@ MediaElement.propTypes = {
     // guards against missing streams and returns null until streams are present.
     mediaStreams: PropTypes.object,
     tape: PropTypes.number,
+    isPlaying: PropTypes.bool,
     timeChangeRequestAvailable: PropTypes.bool,
     timeChangeRequest: PropTypes.number,
     updateIsPlaying: PropTypes.func.isRequired,

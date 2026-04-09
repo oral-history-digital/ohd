@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { TapeAndTime, formatTimecode } from 'modules/interview-helpers';
+import { TapeAndTime } from 'modules/interview-helpers';
 import { LinkOrA, useProject } from 'modules/routes';
 import { convertLegacyQuery, useFacets } from 'modules/search';
 import { isMobile } from 'modules/user-agent';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
