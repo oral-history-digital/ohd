@@ -2,17 +2,12 @@
  * 1. Ellipsis
  */
 
-$segment-icon-width: 1.5 * $base-unit;
+$segment-icon-width: 2 * $base-unit;
 
 .Segment {
   align-items: flex-start;
   display: flex;
   max-width: 45rem;
-  padding-left: $segment-icon-width;
-}
-
-.Segment--withSpeaker {
-  padding-left: 0;
 }
 
 .Segment:not(:first-of-type) {
@@ -23,9 +18,8 @@ $segment-icon-width: 1.5 * $base-unit;
   margin-top: $base-unit;
 }
 
-.Segment-icon {
+.Segment-initials {
   display: inline-block;
-  flex-basis: $segment-icon-width;
   flex-shrink: 0;
   line-height: $base-unit;
   margin: 0;
@@ -38,12 +32,36 @@ $segment-icon-width: 1.5 * $base-unit;
   width: $segment-icon-width;
 }
 
-.Segment-icon--primary {
+.Segment-initials--primary {
   color: var(--primary-color);
 }
 
-.Segment-icon--secondary {
+.Segment-initials--secondary {
   color: $gray-dark;
+}
+
+.Segment-metaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: $segment-icon-width;
+  flex-shrink: 0;
+}
+
+.Segment-timecode {
+  font-size: 0.75rem;
+  color: $gray-medium;
+  line-height: $base-unit;
+}
+
+.Segment-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/* If timecode follows speaker initials, reduce line height to visually group them */
+.Segment--withSpeaker .Segment-timecode {
+  line-height: calc($base-unit * 2 / 3);
 }
 
 .Segment-text {
@@ -81,8 +99,8 @@ $segment-icon-width: 1.5 * $base-unit;
   transition: opacity $transition-duration;
 }
 
-.Segment:hover > .Segment-hiddenButton,
-.Segment-text:focus + .Segment-hiddenButton,
+.Segment:hover .Segment-hiddenButton,
+.Segment-text:focus ~ .Segment-buttons .Segment-hiddenButton,
 .Segment-hiddenButton:focus {
   opacity: 1;
 }
@@ -97,18 +115,40 @@ $segment-icon-width: 1.5 * $base-unit;
   transition: border-color $transition-duration;
 }
 
-.SegmentForm-textarea {
-  direction: ltr;
-  text-align: left;
-
-  &-rtl {
-    direction: rtl;
-    text-align: right;
+@media (max-width: $screen-m) {
+  .Segment:not(:first-of-type) {
+    margin-top: $base-unit;
   }
-}
 
-.textarea-rtl textarea,
-.form-group.textarea-rtl .Input {
-  direction: rtl;
-  text-align: right;
+  .Segment.Segment--isEditor {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 0.5rem;
+    row-gap: 0.25rem;
+    max-width: 100%;
+  }
+
+  .Segment.Segment--isEditor .Segment-metaWrapper {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    min-width: $segment-icon-width;
+  }
+
+  .Segment.Segment--isEditor .Segment-buttons {
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: 0;
+    align-self: start;
+  }
+
+  .Segment.Segment--isEditor .Segment-content {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .Segment.Segment--isEditor .Segment-text {
+    max-width: none;
+    padding-left: 0;
+  }
 }

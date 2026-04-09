@@ -17,7 +17,7 @@ export const SCREEN_L = 990; // $screen-l
 export const SCREEN_XL = 1200; // $screen-xl
 
 // Buffer space between top of active segment and Video/Menu
-export const SPACE_BEFORE_ACTIVE_SEGMENT = 8 * CSS_BASE_UNIT;
+export const SPACE_BEFORE_ACTIVE_SEGMENT = 2 * CSS_BASE_UNIT;
 
 export const PROJECT_CDOH = 'cdoh';
 export const PROJECT_DG = 'dg';
@@ -173,3 +173,9 @@ export const SANITIZE_CONFIG = {
         ALLOWED_ATTR: [],
     },
 };
+
+// Frames per second for timecode calculations
+export const FRAMES_PER_SECOND = 25;
+
+// RTL languages (ISO 639-3 codes)
+export const RTL_LANGUAGES = ['ara', 'heb'];

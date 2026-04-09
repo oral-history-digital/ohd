@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2026-04-09
+
+### Fixed
+
+- fix: enhance user authorization checks for instance settings in UsersAdminTabPanel ([6b4a43b54](https://github.com/oral-history-digital/ohd/commit/6b4a43b5406469fbe1518b59b9a578eeb35abefc))
+
+### Changed
+
+- chore: update default branch to 'staging' in deployment configuration ([1c957f7dc](https://github.com/oral-history-digital/ohd/commit/1c957f7dcc26a41427cb8f128514f5bc0cfe2c12))
+
+## [2.2.0] - 2026-04-09
+
+### Added
+
+- feat: segment inline edit ([#85](https://github.com/oral-history-digital/ohd/pull/85))
+- feat: add homepage settings endpoints and admin page ([#95](https://github.com/oral-history-digital/ohd/pull/95))
+- feat: implement Hot Module Replacement (HMR) with React Fast Refresh support ([#81](https://github.com/oral-history-digital/ohd/pull/81))
+
+### Changed
+
+- feat: improve styles in search page ([#96](https://github.com/oral-history-digital/ohd/pull/96))
+- cleanup citation ([4354e960e](https://github.com/oral-history-digital/ohd/commit/4354e960e46337c60b66198e959c75267f680acd))
+
+### Fixed
+
+- fix: redirect errors on registration and login ([#94](https://github.com/oral-history-digital/ohd/pull/94))
+- redirect after otp sign in ([4e6649e01](https://github.com/oral-history-digital/ohd/commit/4e6649e0132fe5af29ab3209d6e9f1708f567b0f))
+- add redirection after passkey sign in ([c0d45c33c](https://github.com/oral-history-digital/ohd/commit/c0d45c33cd19b2be2196637cefb71f14923b9efb))
+- fix: redirect errors on registration and login (#94) ([593b03e35](https://github.com/oral-history-digital/ohd/commit/593b03e359f4dcc5e70e34e3665760bf264a44ea))
+- prevent uploads with non-ms timecodes (transcript/ER) ([ce415858b](https://github.com/oral-history-digital/ohd/commit/ce415858b2a9ad4594c3a304470c6e827f5438c9))
+- adapt tests to restricted timecode format ([fff6c9cc6](https://github.com/oral-history-digital/ohd/commit/fff6c9cc69e5d0f0296b2d2d192fede1ec930f55))
+
 ## [2.1.0] - 2026-03-23
 
 ### Added
@@ -431,6 +463,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1
+[2.2.0]: https://github.com/oral-history-digital/ohd/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/oral-history-digital/ohd/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/oral-history-digital/ohd/compare/v1.9.1...v2.0.0
 [1.9.1]: https://github.com/oral-history-digital/ohd/compare/v1.9.0...v1.9.1

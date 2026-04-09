@@ -18,6 +18,7 @@ export default function ToggleEditView({ className }) {
                 onClick={() => dispatch(changeToEditView(!editView))}
                 title="Switch edit view"
                 aria-label="Switch edit view"
+                data-testid="toggle-edit-view-button"
             >
                 {editView ? (
                     <FaToggleOn className="Icon Icon--large u-vertical-align-bottom u-color-editorial" />

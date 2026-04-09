@@ -19,7 +19,8 @@ import { pluralize } from 'modules/strings';
 export function useFormState(initialValues, data, elements) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
-    const [touched, setTouched] = useState({});
+    const [touched, setTouched] = useState(initTouched());
+    const [initialFormValues, setInitialFormValues] = useState(initValues());
 
     /**
      * Initialize form values from initialValues and data props.
@@ -91,6 +92,23 @@ export function useFormState(initialValues, data, elements) {
     }
 
     /**
+     * Initialize touched state for form elements.
+     * Fields with touchOnInvalid=true will be marked as touched if they have validation errors.
+     */
+    function initTouched() {
+        let touched = {};
+        elements.forEach((element) => {
+            if (element.attribute && element.touchOnInvalid) {
+                const error = hasError(element);
+                if (error) {
+                    touched[element.attribute] = true;
+                }
+            }
+        });
+        return touched;
+    }
+
+    /**
      * Mark a field as touched by the user.
      */
     function touchField(name) {
@@ -125,6 +143,73 @@ export function useFormState(initialValues, data, elements) {
                 [name]: hasError,
             }));
         }
+    }
+
+    /**
+     * Check if form has unsaved changes by comparing current values with initial values.
+     * Returns an object with isDirty flag and array of changed field names.
+     */
+    function areValuesEqual(a, b) {
+        if (a === b) {
+            return true;
+        }
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        // Handle arrays and objects with deep equality check
+        if (Array.isArray(a) || Array.isArray(b)) {
+            if (!Array.isArray(a) || !Array.isArray(b)) {
+                return false;
+            }
+
+            if (a.length !== b.length) {
+                return false;
+            }
+
+            return a.every((item, index) => areValuesEqual(item, b[index]));
+        }
+
+        if (typeof a === 'object' && typeof b === 'object') {
+            const aKeys = Object.keys(a);
+            const bKeys = Object.keys(b);
+
+            if (aKeys.length !== bKeys.length) {
+                return false;
+            }
+
+            return aKeys.every(
+                (key) =>
+                    Object.prototype.hasOwnProperty.call(b, key) &&
+                    areValuesEqual(a[key], b[key])
+            );
+        }
+
+        return false;
+    }
+
+    function getDirtyStateForValues(valuesToCheck = values) {
+        const currentKeys = Object.keys(valuesToCheck).filter(
+            (key) => key !== 'id'
+        );
+        const initialKeys = Object.keys(initialFormValues).filter(
+            (key) => key !== 'id'
+        );
+        const allKeys = Array.from(new Set([...currentKeys, ...initialKeys]));
+
+        const dirtyFields = [];
+
+        allKeys.forEach((key) => {
+            if (!areValuesEqual(valuesToCheck[key], initialFormValues[key])) {
+                dirtyFields.push(key);
+            }
+        });
+
+        return {
+            isDirty: dirtyFields.length > 0,
+            dirtyFields: dirtyFields,
+        };
     }
 
     /**
@@ -246,10 +331,22 @@ export function useFormState(initialValues, data, elements) {
         }));
     }
 
+    /**
+     * Mark current values as the clean baseline after a successful save.
+     * This allows disableIfUnchanged forms to disable submit immediately.
+     */
+    function markCurrentValuesAsClean(nextValues = values) {
+        setInitialFormValues({ ...nextValues });
+    }
+
+    const dirtyState = getDirtyStateForValues();
+
     return {
         values,
         errors,
         touched,
+        isDirty: dirtyState.isDirty,
+        dirtyFields: dirtyState.dirtyFields,
         updateField,
         handleErrors,
         touchField,
@@ -259,5 +356,7 @@ export function useFormState(initialValues, data, elements) {
         deleteNestedObject,
         getNestedObjects,
         replaceNestedFormValues,
+        markCurrentValuesAsClean,
+        getDirtyStateForValues,
     };
 }
