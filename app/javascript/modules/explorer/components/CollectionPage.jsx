@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 
 import {
     Citation,
+    GenericDetail,
     IndexingLevels,
     Institutions,
     InterviewLanguages,
@@ -142,6 +143,12 @@ export function CollectionPage() {
                             collectionId={collection?.id}
                         />
                         <XmlLinks collectionId={collection.id} />
+                        {!project.is_catalog && (
+                            <GenericDetail
+                                labelKey="explorer.export_formats.label"
+                                value={t('explorer.export_formats.description')}
+                            />
+                        )}
                     </dl>
                 </div>
             </ErrorBoundary>

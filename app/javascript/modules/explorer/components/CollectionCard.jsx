@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import classNames from 'classnames';
 import { pluralizeKey, useI18n } from 'modules/i18n';
-import { Button } from 'modules/ui';
+import { LinkButton } from 'modules/ui';
 import { formatNumber, isEmptyHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 
 import { getProjectUrl } from '../utils';
 import { HighlightText } from './HighlightText';
@@ -14,12 +14,14 @@ import { InterviewLanguages, InterviewStats, RichtextDetail } from './details';
 
 export function CollectionCard({ collection, archive, query }) {
     const { t } = useI18n();
-    const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
 
-    const { url: projectUrl } = getProjectUrl(archive, locale);
+    const { url: projectUrl, isExternalUrl } = getProjectUrl(archive, locale);
+
+    const collectionDetailsUrl = `/${locale}/catalog/collections/${collection.id}`;
+    const collectionPageUrl = `${projectUrl}/${locale}/searches/archive?collection_id[]=${collection.id}`;
 
     const countInterviews = collection.interviews?.total || 0;
     const numInterviews = formatNumber(countInterviews, 0, locale);
@@ -82,26 +84,20 @@ export function CollectionCard({ collection, archive, query }) {
                     />
 
                     <div className="CollectionCard-pageButton">
-                        <Button
+                        <LinkButton
                             buttonText={t('explorer.view_collection_details')}
                             variant="outlined"
-                            onClick={() =>
-                                navigate(
-                                    `/${locale}/catalog/collections/${collection.id}`
-                                )
-                            }
+                            to={collectionDetailsUrl}
                             size="sm"
                         />
-                        <Button
+                        <LinkButton
                             buttonText={t('explorer.view_collection_page')}
                             variant="contained"
-                            onClick={() =>
-                                navigate(
-                                    `${projectUrl}/searches/archive?collection_id[]=${collection.id}`
-                                )
-                            }
-                            endIcon={<FaExternalLinkAlt />}
+                            to={collectionPageUrl}
                             size="sm"
+                            isExternal={isExternalUrl}
+                            target={isExternalUrl ? '_blank' : undefined}
+                            endIcon={<FaExternalLinkAlt />}
                         />
                     </div>
                 </div>
