@@ -70,35 +70,37 @@ export default function InterviewTextMaterials({
                     noLabel
                 />
             )}
-            {!isCatalog && showTranscriptPDF && (
-                <AuthShowContainer ifLoggedIn>
-                    <p key="transcript-downloads" id="transcript-downloads">
-                        <span className="flyout-content-label">
-                            {t('transcript')}:
-                        </span>
-                        {interview.alpha3s_with_transcript.map((lang) => {
-                            return (
-                                <InterviewDownloads
-                                    key={lang}
-                                    lang={lang}
-                                    type="transcript"
-                                    condition={showTranscriptPDF}
-                                    showEmpty={true}
-                                />
-                            );
-                        })}
-                        <StatusForm
-                            data={interview}
-                            scope="interview"
-                            attribute="public_transcript"
-                            value={
-                                interview.properties?.public_attributes?.transcript?.toString() ===
-                                'true'
-                            }
-                        />
-                    </p>
-                </AuthShowContainer>
-            )}
+            {!isCatalog &&
+                showTranscriptPDF &&
+                interview.alpha3s_with_transcript?.length > 0 && (
+                    <AuthShowContainer ifLoggedIn>
+                        <p key="transcript-downloads" id="transcript-downloads">
+                            <span className="flyout-content-label">
+                                {t('transcript')}:
+                            </span>
+                            {interview.alpha3s_with_transcript.map((lang) => {
+                                return (
+                                    <InterviewDownloads
+                                        key={lang}
+                                        lang={lang}
+                                        type="transcript"
+                                        condition={showTranscriptPDF}
+                                        showEmpty={true}
+                                    />
+                                );
+                            })}
+                            <StatusForm
+                                data={interview}
+                                scope="interview"
+                                attribute="public_transcript"
+                                value={
+                                    interview.properties?.public_attributes?.transcript?.toString() ===
+                                    'true'
+                                }
+                            />
+                        </p>
+                    </AuthShowContainer>
+                )}
         </>
     );
 }
