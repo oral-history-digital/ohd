@@ -28,7 +28,7 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import AdminActionsContainer from './AdminActionsContainer';
+import AdminActions from './AdminActions';
 import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
 import SubTab from './SubTab';
@@ -265,9 +265,7 @@ export default function InterviewTabPanel({
 
                         <AuthorizedContent object={interview} action="update">
                             <SubTab title={t('admin_actions')}>
-                                <AdminActionsContainer
-                                    archiveIds={[archiveId]}
-                                />
+                                <AdminActions archiveIds={[archiveId]} />
                             </SubTab>
                         </AuthorizedContent>
                     </AuthShowContainer>
