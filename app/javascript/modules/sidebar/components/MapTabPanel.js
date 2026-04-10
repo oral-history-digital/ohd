@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { MapFacets } from 'modules/search';
 import PropTypes from 'prop-types';
 
-import AdminActionsContainer from './AdminActionsContainer';
+import AdminActions from './AdminActions';
 import SubTab from './SubTab';
 
 function MapTabPanel({ selectedArchiveIds }) {
@@ -19,9 +19,7 @@ function MapTabPanel({ selectedArchiveIds }) {
             <div className="flyout-sub-tabs-container flyout-video">
                 <AuthorizedContent object={{ type: 'General' }} action="edit">
                     <SubTab title={t('admin_actions')}>
-                        <AdminActionsContainer
-                            archiveIds={selectedArchiveIds}
-                        />
+                        <AdminActions archiveIds={selectedArchiveIds} />
                     </SubTab>
                 </AuthorizedContent>
             </div>

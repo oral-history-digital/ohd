@@ -1,3 +1,4 @@
+export * from './useArchiveSearchIds';
 export * from './useGetCollection';
 export * from './useGetHomepageSettings';
 export * from './useGetInstitution';
