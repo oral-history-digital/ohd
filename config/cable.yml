@@ -6,6 +6,10 @@ development:
 test:
   adapter: async
 
+staging:
+  adapter: redis
+  url: <%= ENV.fetch('REDIS_URL', 'redis://redis:6379/0') %>
+
 production:
   adapter: redis
-  url: ENV['REDIS_URL']
+  url: <%= ENV.fetch('REDIS_URL', 'redis://redis:6379/0') %>

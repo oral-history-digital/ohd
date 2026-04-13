@@ -11,174 +11,81 @@ production without any modifications.
 
 ## Development Options
 
-There are two ways to set up this project for development:
+Choose one setup path:
 
-1. [Setup with VS Code Dev Containers](#vs-code-dev-containers-setup) (recommended)
-2. [Manual Setup](#manual-setup)
+1. [VS Code Dev Containers (recommended)](#option-1-vs-code-dev-containers-recommended)
+2. [Docker Compose Runtime](#option-2-docker-compose-runtime)
+3. [Manual Setup (legacy)](#option-3-manual-setup-legacy)
 
-## VS Code Dev Containers Setup
+### Option 1: VS Code Dev Containers (recommended)
 
-This project includes a fully configured Dev Container setup for easy development with Visual Studio Code.
+Best for daily development in VS Code.
 
-### Prerequisites
+Prerequisites:
 
-- [Docker](https://www.docker.com/get-started) (version 20.10.7 or later)
+- [Docker](https://www.docker.com/get-started)
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code
+- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-### Setup Process
+Quick start:
 
-1. Clone this repository
-2. Open the repository in Visual Studio Code
-3. Download the database dump and place it as `dump.sql.gz` in `.devcontainer/db/`
-4. When prompted, click on "Reopen in Container" to start the development container
+1. Clone the repository in VS Code.
+2. (Optional) Place `dump.sql.gz` in `.devcontainer/db/`.
+3. Click "Reopen in Container" when prompted.
+4. If needed, restart app with `./.devcontainer/scripts/start-app.sh`.
 
-The Dev Container setup will automatically:
+Result:
 
-- Pull the pre-built base image with Ruby 3.3.4, Node.js 22.x, Java, and system dependencies
-- Build the development image with application-specific dependencies
-- Set up the MySQL database and Solr search server
-- Install application dependencies via Bundler and Yarn
-- Configure the database and other required services
-- Import the database dump if present at `.devcontainer/db/dump.sql.gz`, or create a minimal database from the schema and seeds if no dump is found
-
-> **Tip:** To reimport the dump into an existing database at any time, run `bin/rake database:reimport`.
-
-### Docker Architecture
-
-The development environment uses a two-stage Docker setup for faster build times:
-
-1. **Base Image (`Dockerfile.base`)**: Creates a foundation image with Ruby 3.3.4, Node.js 22.x, Java, ImageMagick, TeX Live, and all system dependencies shared between dev and production. Built and published to GitHub Container Registry as `ghcr.io/oral-history-digital/ohd-base:latest` by the `publish-base-image` workflow.
-
-2. **Development Image (`.devcontainer/Dockerfile`)**: Extends the base image with dev-only tooling (Chromium, Xvfb, VNC) and pre-installs gems and JS packages for faster container startup.
-
-### Running the Application
-
-Once the container is built and configured, the application should start automatically. If you need to restart it, use:
-
-```sh
-/workspace/.devcontainer/scripts/start-app.sh
-```
-
-### Accessing the Application
-
-After starting the application, you can access it at:
-
-- URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
+- App URL: [http://portal.oral-history.localhost:3000/](http://portal.oral-history.localhost:3000/)
 - Admin login: `alice@example.com`
 - Password: `password`
 
-### Project Domain Configuration
+More details: [.devcontainer/README.md](.devcontainer/README.md)
 
-The Dev Container setup automatically configures the OHD project's `archive_domain` to work with the local development environment (`http://portal.oral-history.localhost:3000`). This happens during the initial setup after the database is imported or created.
+### Option 2: Docker Compose Runtime
 
-If you need to manually update the project domain (e.g., after importing a production database dump), you can run:
+Best when you want a Docker-first runtime without Dev Containers.
 
-```ruby
-bundle exec rails runner "Project.ohd.update(archive_domain: 'http://portal.oral-history.localhost:3000')"
-```
+Use cases:
 
-Or in the Rails console:
+- Local all-in-one stack (includes MariaDB): `docker compose --profile db ...`
+- Staging/production-like runtime (external DB): `docker compose ...`
 
-```ruby
-Project.ohd.update archive_domain: "http://portal.oral-history.localhost:3000"
-```
+Runtime architecture:
 
-Without the correct domain configuration, the application will not route requests properly and the site will not work.
+- `app`: Rails/Puma web process
+- `worker`: Delayed Job background worker
+- `solr`: search index
+- `redis`: Action Cable backend
+- `db` (optional, profile `db`): local MariaDB only
+- Internal network: `ohd_network`
+- Persistent volumes: Solr/Redis/DB/app cache/files/logs
 
-### Container Components
+Docker image structure:
 
-The development environment consists of three services:
+- `Dockerfile.base`: shared dependency base image
+- `Dockerfile`: multi-stage runtime image
 
-- `app`: The main Rails application container
-- `db`: MariaDB 10.5 database
-- `solr`: Solr 5.5 search engine
+Detailed setup/deploy runbook: [doc/docker_instance_setup.md](doc/docker_instance_setup.md)
 
-For more detailed information about the Dev Container setup, see [.devcontainer/README.md](.devcontainer/README.md).
+### Option 3: Manual Setup (legacy)
 
-## Manual Setup
+Manual setup is still possible but no longer recommended.
 
-### Prerequisites
+Prerequisites:
 
 - Ruby 3.0.7
 - MySQL/MariaDB
 - Node.js >=18
-- yarn
+- Yarn
 - Java Runtime Environment (Version 8)
-- optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
 
-### Application Setup
-
-This is how to setup the OHD archive software in your development environment
-on Linux.
-
-1. Install system packages:
-
-    ```bash
-    sudo apt install temurin-8-jdk-amd64
-    sudo update-java-alternatives --set temurin-8-jdk-amd64
-    sudo apt install texlive-base texlive-xetex texlive-lang-all fonts-freefont-ttf fonts-noto
-    ```
-
-2. Install packages:
-
-    ```bash
-    bundle install
-    yarn install
-    ```
-
-3. Copy configuration files:
-
-    ```bash
-    cp config/database.example.yml config/database.yml
-    cp config/datacite.example.yml config/datacite.yml
-    ```
-
-4. Adapt the database.yml according to your MySQL configuration and setup the databases:
-
-    ```bash
-    bin/rake db:setup
-    ```
-
-5. Create initial admin user:
-
-    ```bash
-    bin/rake user:create['alice@example.com','password','Alice','Tester']
-    ```
-
-## Starting the Application
-
-You can either start Solr, the Rails server and the Webpack dev server separately in three
-terminals (this is better for Rails debugging with Byebug):
-
-```bash
-bin/start_app
-bin/start_search
-bin/shakapacker-dev-server
-```
-
-Or you can use foreman to start all three servers at once (Foreman runs the commands
-in Procfile):
-
-```bash
-foreman start
-```
-
-Now you should be able to load the OHD portal startpage at
-
-http://localhost:3000
-
-or
-
-http://portal.oral-history.localhost:3000
-
-respectively.
+Use [doc/docker_instance_setup.md](doc/docker_instance_setup.md) as the actively maintained setup reference.
 
 ## Routing/ Domains
 
 We use fixed domains in the routing process.
-If you want to use other domains (you have to, at least in production) you have to change these domains
-in the following files in your app-directory:
+If you want to use other domains (required in production) you need to keep domain constants in sync in:
 
 ```bash
 app/javascript/modules/constants/index.js

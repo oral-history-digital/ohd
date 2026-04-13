@@ -10,6 +10,12 @@ test:
   password: <%= ENV.fetch('DATACITE_PASSWORD_TEST', 'Epub_test!') %>
   url: <%= ENV.fetch('DATACITE_URL_TEST', 'https://api.test.datacite.org/dois') %>
 
+staging:
+  prefix: <%= ENV.fetch('DATACITE_PREFIX_STAGING', '10.17169') %>
+  client_id: <%= ENV.fetch('DATACITE_CLIENT_ID_STAGING') %>
+  password: <%= ENV.fetch('DATACITE_PASSWORD_STAGING') %>
+  url: <%= ENV.fetch('DATACITE_URL_STAGING', 'https://api.datacite.org/dois') %>
+
 production:
   prefix: <%= ENV.fetch('DATACITE_PREFIX_PRODUCTION', '10.17169') %>
   client_id: <%= ENV.fetch('DATACITE_CLIENT_ID_PRODUCTION') %>
