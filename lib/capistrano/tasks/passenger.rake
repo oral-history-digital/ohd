@@ -1,4 +1,5 @@
 namespace :deploy do
+  # Legacy source-based restart hook for Passenger deployments (not used by docker:deploy).
   after :restart, :restart_passenger do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       within release_path do
