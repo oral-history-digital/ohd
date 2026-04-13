@@ -1,16 +1,20 @@
 services:
   app:
+    image: ohd-devcontainer-app:local
+    build:
+      # With multiple compose files, relative paths resolve from the first file
+      # (repo root), so use root-relative paths here.
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    # Entrypoint runs as root to fix mount ownership; interactive shell runs as vscode.
+    entrypoint: ['bash', '/workspace/.devcontainer/scripts/entrypoint.sh']
+    command: sleep infinity
+    working_dir: /workspace
     ports:
       - '3000:3000'
       - '3035:3035'
-    # Entrypoint runs as root: fixes volume ownership, then exec's sleep infinity.
-    # VS Code's remoteUser:vscode ensures all interactive processes run as vscode.
-    entrypoint: ['bash', '/workspace/.devcontainer/scripts/entrypoint.sh']
-    build:
-      context: ../..
-      dockerfile: .devcontainer/Dockerfile
     volumes:
-      - ../..:/workspace:cached
+      - .:/workspace:cached
       # Exclude node_modules from the mount to prevent host/container conflicts
       - /workspace/node_modules
       - /workspace/tmp/cache
@@ -24,12 +28,11 @@ services:
       - 'portal.oral-history.localhost:127.0.0.1'
       - 'test.portal.oral-history.localhost:127.0.0.1'
     depends_on:
-      db:
-        condition: service_healthy
       solr:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
-      # Critical environment settings
       RAILS_ENV: development
       RACK_ENV: development
       NODE_ENV: development
@@ -46,60 +49,41 @@ services:
       NODE_OPTIONS: '--max-old-space-size=2048'
 
   db:
-    image: mariadb:10.5
-    restart: unless-stopped
-    volumes:
-      - db-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: ohd_development
-    ports:
-      - '3306:3306'
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'mysql',
-          '-h',
-          'db',
-          '-u',
-          'root',
-          '-prootpassword',
-          '-e',
-          'SELECT 1',
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpassword
 
   solr:
-    image: solr:5.5
     platform: linux/amd64 # No multi-arch image available, force AMD64
     ports:
       - '8983:8983'
-    volumes:
-      - solr-data:/var/solr
-      - ../../solr/configsets:/opt/solr/server/solr/configsets:ro
-      - ../scripts/setup-solr.sh:/usr/local/bin/setup-solr.sh:ro
-    environment:
-      - SOLR_HEAP=512m
-    # Use the external script for setup
-    entrypoint: ['/bin/bash', '/usr/local/bin/setup-solr.sh']
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'bash',
-          '-c',
-          'curl -s "http://localhost:8983/solr/admin/cores?action=STATUS&wt=json" | grep -q "\"default\"" && curl -s "http://localhost:8983/solr/default/admin/ping?wt=json" | grep -q "\"status\":\"OK\""',
-        ]
-      interval: 15s
-      timeout: 10s
-      retries: 12
-      start_period: 90s
+
+  redis:
+    ports:
+      - '6379:6379'
 
 volumes:
   db-data:
+    name: ohd_dev_db_data
   solr-data:
-  setup-logs:
+    name: ohd_dev_solr_data
+  redis-data:
+    name: ohd_dev_redis_data
+  app-cache:
+    name: ohd_dev_app_cache
+  app-files:
+    name: ohd_dev_app_files
+  app-logs:
+    name: ohd_dev_app_logs
   bundle-data:
+    name: ohd_dev_bundle_data
+  setup-logs:
+    name: ohd_dev_setup_logs
+
+networks:
+  ohd-network:
+    name: ohd_dev_network

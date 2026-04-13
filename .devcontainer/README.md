@@ -9,6 +9,8 @@ This project provides two separate devcontainer environments:
 1. **Development Environment** (`.devcontainer/dev/`) - Full development setup with Solr, database, etc.
 2. **Deployment Environment** (`.devcontainer/deploy/`) - Minimal environment for deployment tasks only
 
+The Development Environment reuses the root runtime Compose stack (`docker-compose.yml`) with a small dev-only override file (`.devcontainer/dev/docker-compose.yml`). This keeps service definitions aligned between runtime and development.
+
 ## Getting Started (Development)
 
 1. Install [Docker](https://www.docker.com/get-started) on your machine. Ensure you have Docker version 20.10.7 or later.
@@ -75,34 +77,35 @@ See [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md) for detailed setup instructions
 
 The Dev Container setup uses a pre-built base image for faster startup times. The setup process includes:
 
-- Pulling the pre-built base image with Ruby 3.3.4, Node.js 18.x, Java, and system dependencies
+- Pulling the pre-built base image with Ruby 3.3.4, Node.js 22.x, Java, and system dependencies
 - Building the development image with application-specific dependencies
 - Setting up the MySQL database and Solr search server
 - Installing application dependencies via Bundler and Yarn
-- Configuring the database and other required services
+- Running initial database bootstrap or dump import
 - Importing the database dump
 
 ## Docker Architecture
 
-The development environment uses a two-stage Docker setup:
+The development environment uses the same image strategy as runtime:
 
-1. **Base Image (`Dockerfile.ruby-base`)**: Creates a foundation image with Ruby 3.3.4, Node.js 18.x, Java, and pre-installed system dependencies. This image is built and published to GitHub Container Registry as `ghcr.io/yotkadata/rails-base:latest`.
+1. **Shared Base Image (`Dockerfile.base`)**: Provides Ruby 3.3.4, Node.js 22.x, Java, and shared system dependencies. Published as `ghcr.io/oral-history-digital/ohd-base:latest`.
 
-2. **Development Image (`.devcontainer/Dockerfile`)**: Uses the pre-built base image and adds application-specific dependencies and configuration for the development environment.
+2. **Development Image (`.devcontainer/Dockerfile`)**: Extends the shared base image with dev-only tooling (Chromium, Xvfb, noVNC) and cached dependencies for fast startup.
 
 ## Environment Configuration
 
-The setup automatically configures several important files:
+Development uses repository config files with environment overrides.
+The setup validates that these files exist:
 
 - `database.yml` - Configuration for MySQL connection
 - `datacite.yml` - Settings for DataCite integration
 - `sunspot.yml` - Solr search engine configuration
 
-Database permissions are also automatically configured for proper access from the application.
+No automatic copying from example files is performed.
 
 ## Running the Application
 
-Once the container is built and configured, the application should start automatically. If you need to restart it, use:
+After opening the devcontainer, start app processes manually:
 
 ```sh
 /workspace/.devcontainer/scripts/start-app.sh
@@ -110,9 +113,7 @@ Once the container is built and configured, the application should start automat
 
 This script will:
 
-- Add the necessary host entry for portal.oral-history.localhost
-- Stop any existing application processes
-- Start Solr and reindex content
+- Stop any existing Rails/webpack processes
 - Start the webpack dev server
 - Start the Rails server
 
@@ -152,11 +153,12 @@ After starting the application, you can access it at:
 
 ## Container Components (Development Environment)
 
-The development environment consists of three services:
+The development environment consists of these services:
 
 - `app`: The main Rails application container
 - `db`: MariaDB 10.5 database
 - `solr`: Solr 5.5 search engine
+- `redis`: Redis for ActionCable/runtime parity
 
 ## Development vs Deployment
 
