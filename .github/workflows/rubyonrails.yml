@@ -5,32 +5,38 @@
 # This workflow will install a prebuilt Ruby version, install dependencies, and
 # run tests and linters.
 name: 'Ruby on Rails CI'
-on: [push]
+on:
+  push:
+  pull_request:
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
-      JAVA_HOME: /usr/lib/jvm/temurin-8-jdk-amd64
+      # Use env overrides consumed by config/database.yml in CI.
+      MYSQL_HOST_TEST: 127.0.0.1
+      MYSQL_USER_TEST: root
+      MYSQL_PASSWORD_TEST: root
+      MYSQL_DATABASE_TEST: ohd_archive_test
     steps:
-      - name: Update packages
-        run: sudo apt-get update
-      - name: Install pdflatex
-        run: sudo apt-get install texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra texlive-lang-other texlive-lang-arabic -y
-      #- name: List Javas
-      #  run: sudo update-java-alternatives --list
-      - name: Remove Javas
-        run: sudo apt remove temurin-11-jdk temurin-17-jdk temurin-21-jdk
-      #- name: List Javas again
-      #  run: sudo update-java-alternatives --list
-      - name: Use Java 8
-        run: sudo update-java-alternatives --set temurin-8-jdk-amd64
-      #- name: Set env variable
-      #  run: export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
-      - name: Confirm Java version
-        run: java -version
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Update packages
+        run: sudo apt-get update
+      - name: Set up Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+      - name: Install pdflatex
+        run: sudo apt-get install texlive-latex-base texlive-xetex texlive-luatex texlive-fonts-extra texlive-lang-other texlive-lang-arabic -y
+      - name: Confirm Java version
+        run: java -version
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
       # Add or replace dependency steps here
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
@@ -38,22 +44,14 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Install foreman
-        run: gem install foreman
       - name: Install node modules
         run: yarn
-      - name: Copy datacite.yml file
-        run: cp config/datacite.example.yml config/datacite.yml
-      - name: Copy database.yml file
-        run: cp config/database.example.yml config/database.yml
       - name: Create database
-        run: mysql -u root -proot -e "create database ohd_archive_test";
+        run: mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS ohd_archive_test;"
       # Add or replace database setup steps here
       - name: Set up database schema
         run: bin/rails db:schema:load
       # Other setup stuff
-      - name: Add localhost to /etc/hosts
-        run: sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
       - name: Add test domain to /etc/hosts
         run: sudo echo "127.0.0.1 test.portal.oral-history.localhost" | sudo tee -a /etc/hosts
       - name: Start server
