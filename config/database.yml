@@ -25,6 +25,16 @@ test:
   variables:
     foreign_key_checks: 0
 
+staging:
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
+  database: <%= ENV.fetch('MYSQL_DATABASE_STAGING', 'ohd_staging') %>
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS', 5) %>
+  username: <%= ENV.fetch('MYSQL_USER_STAGING', 'ohd') %>
+  password: <%= ENV.fetch('MYSQL_PASSWORD_STAGING', 'changeme') %>
+  host: <%= ENV.fetch('MYSQL_HOST_STAGING', 'db') %>
+
 production:
   adapter: mysql2
   encoding: utf8mb4

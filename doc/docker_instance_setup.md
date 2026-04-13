@@ -258,10 +258,12 @@ docker compose --profile db exec app bundle exec rake solr:reindex:scoped PROJEC
 
 Tip: use `sunspot:reindex` for complete rebuilds and `solr:reindex:*` for incremental maintenance.
 
-
 ## Environment Variables
 
 Use `.env.example` as the baseline app-variable reference.
+
+Policy: defaults live in Rails config files (`config/*.yml` and initializers).
+Compose should pass env vars as overrides, not duplicate app defaults.
 
 ### Production critical (must set)
 
@@ -294,16 +296,24 @@ Use `.env.example` as the baseline app-variable reference.
 - `OHD_EXTRA_HOSTS_PRODUCTION` (comma-separated hostnames)
 - `ACTIVE_RECORD_ENCRYPTION_*`
 
-## Staging-Like Deployment
+## Staging Deployment
 
-Current Docker runtime uses `RAILS_ENV=production`. For staging, use staging endpoints/secrets with production-scoped variable names expected by mounted configs.
+Docker Compose supports true staging mode via `RAILS_ENV=staging`.
 
 ```bash
-RAILS_ENV=production
-MYSQL_HOST_PRODUCTION=db.staging.internal
-MYSQL_USER_PRODUCTION=ohd_staging
-MYSQL_PASSWORD_PRODUCTION=<secure password>
-MYSQL_DATABASE_PRODUCTION=ohd_staging
+RAILS_ENV=staging
+RACK_ENV=staging
+NODE_ENV=production
+
+MYSQL_HOST_STAGING=db.staging.internal
+MYSQL_USER_STAGING=ohd_staging
+MYSQL_PASSWORD_STAGING=<secure password>
+MYSQL_DATABASE_STAGING=ohd_staging
+
+DATACITE_CLIENT_ID_STAGING=<datacite-client-id>
+DATACITE_PASSWORD_STAGING=<datacite-password>
+DATACITE_URL_STAGING=https://api.test.datacite.org/dois
+
 STORAGE_STAGING_ROOT=/mnt/staging/ohd/storage
 OHD_DOMAIN_STAGING=https://staging.oral-history.digital
 OIDC_SIGNING_KEY=<RSA key>
@@ -393,11 +403,11 @@ sudo certbot --nginx -d portal.example.org
 
 ## Config Mapping Reference
 
-- `config/database.yml` uses: `MYSQL_*_DEVELOPMENT`, `MYSQL_*_TEST`, `MYSQL_*_PRODUCTION`.
-- `config/datacite.yml` uses: `DATACITE_*_DEVELOPMENT`, `DATACITE_*_TEST`, `DATACITE_*_PRODUCTION`.
+- `config/database.yml` uses: `MYSQL_*_DEVELOPMENT`, `MYSQL_*_TEST`, `MYSQL_*_STAGING`, `MYSQL_*_PRODUCTION`.
+- `config/datacite.yml` uses: `DATACITE_*_DEVELOPMENT`, `DATACITE_*_TEST`, `DATACITE_*_STAGING`, `DATACITE_*_PRODUCTION`.
 - `config/storage.yml` uses: `STORAGE_DEV_ROOT`, `STORAGE_TEST_ROOT`, `STORAGE_STAGING_ROOT`, `STORAGE_PROD_ROOT`.
 - `config/initializers/constants.rb` uses: `OHD_DOMAIN` and `OHD_DOMAIN_<ENV>`.
-- `config/secrets.yml` reads `SECRET_KEY_BASE` for production.
+- `config/secrets.yml` reads `SECRET_KEY_BASE` for staging and production.
 
 ## Security Notes
 

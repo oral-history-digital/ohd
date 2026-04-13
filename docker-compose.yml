@@ -27,44 +27,56 @@ services:
       # Optional: mount public directory for Nginx to serve static assets
       # - ./public:/app/public:ro
     environment:
-      RAILS_ENV: production
-      RACK_ENV: production
-      NODE_ENV: production
+      # Runtime environment (override via .env, defaults remain production)
+      RAILS_ENV: ${RAILS_ENV:-production}
+      RACK_ENV: ${RACK_ENV:-production}
+      NODE_ENV: ${NODE_ENV:-production}
       RAILS_LOG_TO_STDOUT: 'true'
       RAILS_SERVE_STATIC_FILES: 'false'
       RAILS_MAX_THREADS: ${RAILS_MAX_THREADS:-5}
       PORT: 3000
-      ALLOW_LOCALHOST_IN_PRODUCTION: ${ALLOW_LOCALHOST_IN_PRODUCTION:-false}
+      ALLOW_LOCALHOST_IN_PRODUCTION:
       # Services
-      REDIS_URL: redis://redis:6379/0
+      REDIS_URL:
       SOLR_URL: http://solr:8983/solr/default
       SOLR_HOST: solr
       SOLR_PORT: 8983
       # Required to decrypt config/credentials.yml.enc
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
+      RAILS_MASTER_KEY:
       # Required by Rails in production for message verifiers/cookies
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-}
+      SECRET_KEY_BASE:
       # OpenID Connect settings (env-first)
-      OIDC_SIGNING_KEY: ${OIDC_SIGNING_KEY:-}
-      OIDC_ISSUER: ${OIDC_ISSUER:-}
-      OHD_DOMAIN: ${OHD_DOMAIN:-}
-      OHD_DOMAIN_PRODUCTION: ${OHD_DOMAIN_PRODUCTION:-}
+      OIDC_SIGNING_KEY:
+      OIDC_ISSUER:
+      OHD_DOMAIN:
+      OHD_DOMAIN_STAGING:
+      OHD_DOMAIN_PRODUCTION:
+      # Policy: defaults live in Rails config files; Compose only passes overrides from host/.env.
       # Optional Active Record encryption keys
-      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: ${ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY:-}
-      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: ${ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY:-}
-      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: ${ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT:-}
-      # Production database overrides (read by config/database.yml)
-      MYSQL_HOST_PRODUCTION: ${MYSQL_HOST_PRODUCTION:-db}
-      MYSQL_DATABASE_PRODUCTION: ${MYSQL_DATABASE_PRODUCTION:-ohd_production}
-      MYSQL_USER_PRODUCTION: ${MYSQL_USER_PRODUCTION:-ohd}
-      MYSQL_PASSWORD_PRODUCTION: ${MYSQL_PASSWORD_PRODUCTION:-changeme}
-      # DataCite settings (read by config/datacite.yml)
-      DATACITE_PREFIX_PRODUCTION: ${DATACITE_PREFIX_PRODUCTION:-10.17169}
-      DATACITE_CLIENT_ID_PRODUCTION: ${DATACITE_CLIENT_ID_PRODUCTION:-}
-      DATACITE_PASSWORD_PRODUCTION: ${DATACITE_PASSWORD_PRODUCTION:-}
-      DATACITE_URL_PRODUCTION: ${DATACITE_URL_PRODUCTION:-https://api.datacite.org/dois}
-      # Active Storage disk root for production service
-      STORAGE_PROD_ROOT: ${STORAGE_PROD_ROOT:-/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage}
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY:
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY:
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT:
+      # Database settings (defaults are defined in config/database.yml)
+      MYSQL_HOST_PRODUCTION:
+      MYSQL_DATABASE_PRODUCTION:
+      MYSQL_USER_PRODUCTION:
+      MYSQL_PASSWORD_PRODUCTION:
+      MYSQL_HOST_STAGING:
+      MYSQL_DATABASE_STAGING:
+      MYSQL_USER_STAGING:
+      MYSQL_PASSWORD_STAGING:
+      # DataCite settings (defaults are defined in config/datacite.yml)
+      DATACITE_PREFIX_PRODUCTION:
+      DATACITE_CLIENT_ID_PRODUCTION:
+      DATACITE_PASSWORD_PRODUCTION:
+      DATACITE_URL_PRODUCTION:
+      DATACITE_PREFIX_STAGING:
+      DATACITE_CLIENT_ID_STAGING:
+      DATACITE_PASSWORD_STAGING:
+      DATACITE_URL_STAGING:
+      # Active Storage roots (defaults are defined in config/storage.yml)
+      STORAGE_PROD_ROOT:
+      STORAGE_STAGING_ROOT:
     depends_on:
       redis:
         condition: service_healthy
@@ -109,38 +121,50 @@ services:
       - app-files:/app/tmp/files
       - app-logs:/app/log
     environment:
-      RAILS_ENV: production
-      RACK_ENV: production
+      # Runtime environment (override via .env, defaults set to production)
+      RAILS_ENV: ${RAILS_ENV:-production}
+      RACK_ENV: ${RACK_ENV:-production}
       RAILS_LOG_TO_STDOUT: 'true'
       RAILS_MAX_THREADS: ${RAILS_MAX_THREADS:-5}
-      ALLOW_LOCALHOST_IN_PRODUCTION: ${ALLOW_LOCALHOST_IN_PRODUCTION:-false}
+      ALLOW_LOCALHOST_IN_PRODUCTION:
       # Required to decrypt config/credentials.yml.enc
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
+      RAILS_MASTER_KEY:
       # Required by Rails in production for encrypted/signed payloads
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-}
+      SECRET_KEY_BASE:
       # OpenID Connect settings (env-first)
-      OIDC_SIGNING_KEY: ${OIDC_SIGNING_KEY:-}
-      OIDC_ISSUER: ${OIDC_ISSUER:-}
-      OHD_DOMAIN: ${OHD_DOMAIN:-}
-      OHD_DOMAIN_PRODUCTION: ${OHD_DOMAIN_PRODUCTION:-}
+      OIDC_SIGNING_KEY:
+      OIDC_ISSUER:
+      OHD_DOMAIN:
+      OHD_DOMAIN_STAGING:
+      OHD_DOMAIN_PRODUCTION:
+      # Policy: defaults live in Rails config files; Compose only passes overrides from host/.env.
       # Optional Active Record encryption keys
-      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: ${ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY:-}
-      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: ${ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY:-}
-      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: ${ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT:-}
-      # Production database overrides (read by config/database.yml)
-      MYSQL_HOST_PRODUCTION: ${MYSQL_HOST_PRODUCTION:-db}
-      MYSQL_DATABASE_PRODUCTION: ${MYSQL_DATABASE_PRODUCTION:-ohd_production}
-      MYSQL_USER_PRODUCTION: ${MYSQL_USER_PRODUCTION:-ohd}
-      MYSQL_PASSWORD_PRODUCTION: ${MYSQL_PASSWORD_PRODUCTION:-changeme}
-      # DataCite settings (read by config/datacite.yml)
-      DATACITE_PREFIX_PRODUCTION: ${DATACITE_PREFIX_PRODUCTION:-10.17169}
-      DATACITE_CLIENT_ID_PRODUCTION: ${DATACITE_CLIENT_ID_PRODUCTION:-}
-      DATACITE_PASSWORD_PRODUCTION: ${DATACITE_PASSWORD_PRODUCTION:-}
-      DATACITE_URL_PRODUCTION: ${DATACITE_URL_PRODUCTION:-https://api.datacite.org/dois}
-      # Active Storage disk root for production service
-      STORAGE_PROD_ROOT: ${STORAGE_PROD_ROOT:-/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage}
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY:
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY:
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT:
+      # Database settings (defaults are defined in config/database.yml)
+      MYSQL_HOST_PRODUCTION:
+      MYSQL_DATABASE_PRODUCTION:
+      MYSQL_USER_PRODUCTION:
+      MYSQL_PASSWORD_PRODUCTION:
+      MYSQL_HOST_STAGING:
+      MYSQL_DATABASE_STAGING:
+      MYSQL_USER_STAGING:
+      MYSQL_PASSWORD_STAGING:
+      # DataCite settings (defaults are defined in config/datacite.yml)
+      DATACITE_PREFIX_PRODUCTION:
+      DATACITE_CLIENT_ID_PRODUCTION:
+      DATACITE_PASSWORD_PRODUCTION:
+      DATACITE_URL_PRODUCTION:
+      DATACITE_PREFIX_STAGING:
+      DATACITE_CLIENT_ID_STAGING:
+      DATACITE_PASSWORD_STAGING:
+      DATACITE_URL_STAGING:
+      # Active Storage roots (defaults are defined in config/storage.yml)
+      STORAGE_PROD_ROOT:
+      STORAGE_STAGING_ROOT:
       # Services
-      REDIS_URL: redis://redis:6379/0
+      REDIS_URL:
       SOLR_URL: http://solr:8983/solr/default
     depends_on:
       app:
