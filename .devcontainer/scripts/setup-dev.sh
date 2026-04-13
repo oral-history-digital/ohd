@@ -11,13 +11,17 @@ log_e() { echo "[$(date '+%H:%M:%S')] ERROR: $*" >&2; }
 
 log "postCreateCommand starting…"
 
-# ── Config files ──────────────────────────────────────────────────────────────
-log "Copying config files…"
-[[ ! -f config/database.yml ]] && cp .devcontainer/config/database.yml config/database.yml && log "  ✓ config/database.yml"
-[[ ! -f config/datacite.yml ]] && cp config/datacite.example.yml config/datacite.yml       && log "  ✓ config/datacite.yml"
-# Always overwrite – devcontainer must point at the solr container
-cp .devcontainer/config/sunspot.yml config/sunspot.yml
-log "  ✓ config/sunspot.yml"
+# ── Config validation ─────────────────────────────────────────────────────────
+log "Validating required config files…"
+required_files=(config/database.yml config/datacite.yml config/sunspot.yml)
+for file in "${required_files[@]}"; do
+  if [[ ! -f "$file" ]]; then
+    log_e "Missing required file: $file"
+    log_e "Devcontainer expects repository config files with environment overrides."
+    exit 1
+  fi
+done
+log "  ✓ required config files present"
 
 # ── Dependencies ──────────────────────────────────────────────────────────────
 log "Installing gems…"
@@ -25,8 +29,12 @@ bundle check > /dev/null 2>&1 || bundle install --quiet
 log "  ✓ gems ready"
 
 log "Installing JS packages…"
-yarn install --frozen-lockfile
-log "  ✓ JS packages ready"
+if [[ -f node_modules/.yarn-integrity ]]; then
+  log "  ✓ JS packages ready (cached)"
+else
+  yarn install --frozen-lockfile
+  log "  ✓ JS packages ready"
+fi
 
 # ── Wait for Solr default core ────────────────────────────────────────────────
 log "Waiting for Solr default core…"
@@ -72,11 +80,14 @@ RAILS_LOG_LEVEL=error bundle exec rails runner '
   || log_e "Domain config failed – run manually if needed:
      bundle exec rails runner 'Project.ohd.update(archive_domain: \"http://portal.oral-history.localhost:3000\")'"
 
-# ── Webpack ───────────────────────────────────────────────────────────────────
-log "Precompiling webpack assets (first-run manifest)…"
-bundle exec bin/shakapacker
-log "  ✓ webpack done"
-log "  ℹ  With webpack-dev-server running, Rails will use port 3035 for HMR"
-log "  ℹ  These precompiled assets are only used as fallback if dev server is down"
+# ── Webpack fallback assets (optional) ───────────────────────────────────────
+if [[ ! -f public/packs/manifest.json ]]; then
+  log "No webpack manifest found – building fallback assets once…"
+  bundle exec bin/shakapacker
+  log "  ✓ webpack fallback assets ready"
+else
+  log "Webpack manifest already present – skipping fallback build"
+fi
+log "  ℹ  With webpack-dev-server running, Rails uses port 3035 for HMR"
 
 log "postCreateCommand complete ✓"
