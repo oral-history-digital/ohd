@@ -174,14 +174,17 @@ export default function Form({
         if (fetching) {
             return { disabled: true, helpText: null };
         }
-        if (
-            hasValidationErrors ||
-            hasTouchedValidationErrors ||
-            hasMissingRequired
-        ) {
+        if (hasValidationErrors || hasTouchedValidationErrors) {
             return {
                 disabled: true,
                 helpText: t('edit.form.fix_validation_errors'),
+            };
+        }
+        // Hide validation error message in initial state when user hasn't interacted with the form yet
+        if (hasMissingRequired) {
+            return {
+                disabled: true,
+                helpText: null,
             };
         }
         if (submitted && !valid()) {
