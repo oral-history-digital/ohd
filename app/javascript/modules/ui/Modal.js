@@ -18,9 +18,15 @@ export default function Modal({
     hideButton = false,
     hideCloseButton = false,
     onBeforeOpen = null,
+    onClose = null,
 }) {
     const [showDialog, setShowDialog] = useState(showDialogInitially);
-    const close = () => setShowDialog(false);
+    const close = () => {
+        setShowDialog(false);
+        if (typeof onClose === 'function') {
+            onClose();
+        }
+    };
 
     const open = () => {
         if (typeof onBeforeOpen === 'function') {
@@ -108,4 +114,5 @@ Modal.propTypes = {
     hideButton: PropTypes.bool,
     hideCloseButton: PropTypes.bool,
     onBeforeOpen: PropTypes.func,
+    onClose: PropTypes.func,
 };
