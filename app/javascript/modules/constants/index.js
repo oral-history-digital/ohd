@@ -116,9 +116,15 @@ export const CONTRIBUTION_TYPES_SPEAKING = [
 ];
 
 export const EMAIL_REGEX =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+// Password regex requires at least one uppercase letter, one lowercase letter, one number,
+// and one special character from the set #?!@$%^&*+=_,.:;~-.
+// It also requires the password to be at least 8 characters long.
+// IMPORTANT: Keep this regex in sync with the one used in the backend (config/initializers/constants.rb)
+// to ensure consistent validation across the application.
 export const PASSWORD_REGEX =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[-#?!@$%^&*+=_,.:;~]).{8,}$/;
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*+=_,.:;~-]).{8,}$/;
 
 // DOMPurify sanitization configurations
 export const SANITIZE_CONFIG = {

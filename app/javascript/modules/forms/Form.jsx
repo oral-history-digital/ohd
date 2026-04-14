@@ -22,7 +22,7 @@ import {
     Textarea,
 } from './components';
 import { useFormState } from './hooks';
-import { organizeElementsByGroup } from './utils';
+import { hasMissingRequiredValues, organizeElementsByGroup } from './utils';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -165,13 +165,30 @@ export default function Form({
 
     // Determine why submit button should be disabled and appropriate help text
     function getDisabledState() {
+        const hasMissingRequired = hasMissingRequiredValues(
+            elements,
+            values,
+            data
+        );
+
+        const hasTouchedValidationErrors = Object.keys(errors).some(
+            (attribute) => touched[attribute] && errors[attribute]
+        );
+
         if (fetching) {
             return { disabled: true, helpText: null };
         }
-        if (hasValidationErrors) {
+        if (hasValidationErrors || hasTouchedValidationErrors) {
             return {
                 disabled: true,
                 helpText: t('edit.form.fix_validation_errors'),
+            };
+        }
+        // Hide validation error message in initial state when user hasn't interacted with the form yet
+        if (hasMissingRequired) {
+            return {
+                disabled: true,
+                helpText: null,
             };
         }
         if (submitted && !valid()) {
@@ -200,6 +217,7 @@ export default function Form({
                 ? values[element.attribute]
                 : element.value;
         preparedProps.data = data;
+        preparedProps.formValues = values;
         preparedProps.accept = element.accept;
 
         // Set defaults for the possibility to shorten elements list

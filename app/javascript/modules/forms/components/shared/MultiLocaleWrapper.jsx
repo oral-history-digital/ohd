@@ -1,7 +1,8 @@
-import { createElement } from 'react';
+import { createElement, useRef } from 'react';
 
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 import { getProjectLocales } from 'modules/data';
+import { getMergedTranslations } from 'modules/forms/utils';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -18,10 +19,16 @@ export default function MultiLocaleWrapper(props) {
         scope,
         label,
         mandatory,
-        data,
+        data, // Persisted data
+        formValues, // Current form values which may include unsaved changes
         handleChange,
+        handleErrors,
+        validate,
         origAsLocale,
     } = props;
+
+    const localEditedValuesRef = useRef({});
+    const usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
 
     const usedLocale = (locale) => {
         const alpha3 = ALPHA2_TO_ALPHA3[locale];
@@ -37,13 +44,12 @@ export default function MultiLocaleWrapper(props) {
     };
 
     const findTranslation = (locale) => {
-        if (!data?.translations_attributes) {
+        const translationsArray = getMergedTranslations(data, formValues);
+
+        if (translationsArray.length === 0) {
             return null;
         }
 
-        const translationsArray = Array.isArray(data.translations_attributes)
-            ? data.translations_attributes
-            : Object.values(data.translations_attributes);
         const originalTranslation = translationsArray.find(
             (t) => t.locale === locale
         );
@@ -80,7 +86,39 @@ export default function MultiLocaleWrapper(props) {
         return translation;
     };
 
+    const getLiveTranslationValue = (localeKey) => {
+        // Prefer just-typed values because parent form state updates asynchronously.
+        if (
+            Object.prototype.hasOwnProperty.call(
+                localEditedValuesRef.current,
+                localeKey
+            )
+        ) {
+            return localEditedValuesRef.current[localeKey];
+        }
+
+        return findTranslation(localeKey)?.[attribute];
+    };
+
+    const updateMultiLocaleErrorState = () => {
+        if (
+            typeof validate !== 'function' ||
+            typeof handleErrors !== 'function'
+        ) {
+            return;
+        }
+
+        // Multi-locale fields are valid when at least one locale passes validation.
+        const hasAnyValidTranslation = usedLocales.some((locale) =>
+            validate(getLiveTranslationValue(usedLocale(locale)))
+        );
+
+        handleErrors(attribute, !hasAnyValidTranslation);
+    };
+
     const onChange = (name, value, translation) => {
+        localEditedValuesRef.current[translation.locale] = value;
+
         let params = {
             translation: {
                 [name]: value,
@@ -89,6 +127,8 @@ export default function MultiLocaleWrapper(props) {
             },
         };
         handleChange(null, null, params, 'locale');
+
+        updateMultiLocaleErrorState();
     };
 
     const preparedProps = (locale) => {
@@ -113,8 +153,6 @@ export default function MultiLocaleWrapper(props) {
         textarea: Textarea,
     };
 
-    const usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
-
     return (
         <div className="multi-locale-input">
             {usedLocales.map((locale) => {
@@ -134,7 +172,10 @@ MultiLocaleWrapper.propTypes = {
     label: PropTypes.string,
     mandatory: PropTypes.bool,
     data: PropTypes.object,
+    formValues: PropTypes.object,
     handleChange: PropTypes.func,
+    handleErrors: PropTypes.func,
+    validate: PropTypes.func,
     origAsLocale: PropTypes.bool,
     value: PropTypes.any,
     accept: PropTypes.string,

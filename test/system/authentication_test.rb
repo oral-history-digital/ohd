@@ -102,6 +102,34 @@ class RegistrationTest < ApplicationSystemTestCase
     assert_match /request for review/, mails.last.subject
   end
 
+  test "registration confirmation email uses UI locale" do
+    email = "locale-check-#{SecureRandom.hex(4)}@example.com"
+
+    fill_registration_form(
+      first_name: 'Mario',
+      last_name: 'Rossi',
+      email: email,
+      locale: 'de'
+    )
+
+    user = User.find_by(email: email)
+    assert_not_nil user
+    assert_equal 'de', user.default_locale
+
+    mails = ActionMailer::Base.deliveries
+    assert_equal 1, mails.count
+
+    confirmation = mails.last
+    expected_subject = TranslationValue.for(
+      'devise.mailer.confirmation_instructions.subject',
+      'de'
+    )
+    assert_equal expected_subject, confirmation.subject
+
+    link = links_from_email(confirmation)[0]
+    assert_match %r{/de/users/confirmation\?confirmation_token=}, link
+  end
+
   #test "user can enable TOTP during registration" do
     #email = 'achim@example.com'
     #fill_registration_form(
