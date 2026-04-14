@@ -121,4 +121,60 @@ describe('hasMissingRequiredValues', () => {
 
         expect(hasMissingRequiredValues(elements, { email: '' })).toBe(true);
     });
+
+    it('returns false for multi-locale required field when nested translations include valid value', () => {
+        const elements = [
+            {
+                attribute: 'descriptor',
+                multiLocale: true,
+                validate: (v) => v && v.length > 1,
+            },
+        ];
+
+        const values = {
+            translations_attributes: [
+                { locale: 'en', descriptor: '' },
+                { locale: 'de', descriptor: 'Name' },
+            ],
+        };
+
+        expect(hasMissingRequiredValues(elements, values, {})).toBe(false);
+    });
+
+    it('returns false for multi-locale required field when existing data has valid translation', () => {
+        const elements = [
+            {
+                attribute: 'descriptor',
+                multiLocale: true,
+                validate: (v) => v && v.length > 1,
+            },
+        ];
+
+        const data = {
+            translations_attributes: [
+                { locale: 'en', descriptor: 'Persisted value' },
+            ],
+        };
+
+        expect(hasMissingRequiredValues(elements, {}, data)).toBe(false);
+    });
+
+    it('returns true for multi-locale required field when no translation passes validation', () => {
+        const elements = [
+            {
+                attribute: 'descriptor',
+                multiLocale: true,
+                validate: (v) => v && v.length > 1,
+            },
+        ];
+
+        const values = {
+            translations_attributes: [
+                { locale: 'en', descriptor: '' },
+                { locale: 'de', descriptor: null },
+            ],
+        };
+
+        expect(hasMissingRequiredValues(elements, values, {})).toBe(true);
+    });
 });

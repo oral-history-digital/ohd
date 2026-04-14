@@ -165,7 +165,11 @@ export default function Form({
 
     // Determine why submit button should be disabled and appropriate help text
     function getDisabledState() {
-        const hasMissingRequired = hasMissingRequiredValues(elements, values);
+        const hasMissingRequired = hasMissingRequiredValues(
+            elements,
+            values,
+            data
+        );
 
         const hasTouchedValidationErrors = Object.keys(errors).some(
             (attribute) => touched[attribute] && errors[attribute]
@@ -213,6 +217,7 @@ export default function Form({
                 ? values[element.attribute]
                 : element.value;
         preparedProps.data = data;
+        preparedProps.formValues = values;
         preparedProps.accept = element.accept;
 
         // Set defaults for the possibility to shorten elements list

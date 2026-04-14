@@ -1,3 +1,5 @@
+import { getMergedTranslations } from './getMergedTranslations';
+
 /**
  * Checks whether a form has missing values for required elements.
  *
@@ -14,9 +16,10 @@
  *
  * @param {Array} elements - Form element definitions
  * @param {Object} values - Current form values
+ * @param {Object} data - Existing persisted record data (edit forms)
  * @returns {boolean} True when at least one required field is empty
  */
-export function hasMissingRequiredValues(elements, values) {
+export function hasMissingRequiredValues(elements, values, data) {
     return elements.some((element) => {
         if (
             !element?.attribute ||
@@ -25,6 +28,14 @@ export function hasMissingRequiredValues(elements, values) {
             typeof element.validate !== 'function'
         ) {
             return false;
+        }
+
+        if (element.multiLocale) {
+            const translationValues = getMergedTranslations(data, values)
+                .map((translation) => translation?.[element.attribute])
+                .filter((value) => value !== undefined && value !== null);
+
+            return !translationValues.some((value) => element.validate(value));
         }
 
         const currentValue =
