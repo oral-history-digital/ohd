@@ -76,19 +76,20 @@ class BasicsTest < ApplicationSystemTestCase
     sleep 1
     click_on 'Request activation for this archive'
 
-    # the following fields should not be filled to trigger validation errors:
-    #fill_in 'Institution', with: 'Nowhere University'
-    #select 'Student'
-    #select 'School project'
-    #fill_in 'Specification of research intention', with: 'details details'
-    #check 'Terms of Use', visible: :all
-    sleep 1
-    click_on 'Submit activation request'
-    assert_text 'Institution'
-    assert_text 'Occupation'
-    assert_text 'Research Intention'
-    assert_text 'Specification of research intention'
-    assert_text 'Terms of Use'
+    # Verifiy that submit is disabled
+    assert_test_id_button_state('submit-button', disabled: true)
+
+    # Fill in form
+    fill_in_test_id('user_project-organization-text-input', with: 'Nowhere University')
+    select_test_id_option('user_project-job_description-select', 'Student')
+    select_test_id_option('user_project-research_intentions-select', 'School project')
+    fill_in_test_id('user_project-specification-textarea', with: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+    click_test_id('user_project-tos_agreement-checkbox-input')
+
+    # Verify that submit is enabled
+    assert_test_id_button_state('submit-button', disabled: false)
+    click_test_id('submit-button')
+    assert_text 'Your activation request has been successfully submitted!'
   end
 
   test 'create interview' do
