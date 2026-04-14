@@ -4,6 +4,7 @@ import {
     AUTH_ERROR,
     CHANGED_PASSWORD,
     CHANGE_PASSWORD,
+    CLEAR_REGISTRATION_STATUS,
     LOGGED_IN,
     LOGIN,
     LOGOUT,
@@ -11,7 +12,9 @@ import {
     ORDER_NEW_PASSWORD,
     REGISTER,
     REGISTERED,
+    REGISTER_ERROR,
 } from './action-types';
+import { normalizeRegisterErrorMessage } from './utils';
 
 const login = () => ({
     type: LOGIN,
@@ -55,14 +58,23 @@ const register = () => ({
     type: REGISTER,
 });
 
-const registered = (json) => ({
+const registered = () => ({
     type: REGISTERED,
+});
+
+const registerError = (json) => ({
+    type: REGISTER_ERROR,
+    registrationStatus: normalizeRegisterErrorMessage(json),
+});
+
+export const clearRegistrationStatus = () => ({
+    type: CLEAR_REGISTRATION_STATUS,
 });
 
 export function submitRegister(url, params) {
     return (dispatch) => {
         dispatch(register());
-        Loader.post(url, params, dispatch, registered);
+        Loader.post(url, params, dispatch, registered, registerError);
     };
 }
 
@@ -90,9 +102,8 @@ const orderNewPassword = () => ({
     type: ORDER_NEW_PASSWORD,
 });
 
-const orderedNewPassword = (json) => ({
+const orderedNewPassword = () => ({
     type: ORDERED_NEW_PASSWORD,
-    //orderNewPasswordStatus: json
 });
 
 export function submitOrderNewPassword(url, params) {
