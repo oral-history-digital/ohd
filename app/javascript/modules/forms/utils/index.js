@@ -1,3 +1,4 @@
-export { parseTextWithUrls } from './parseTextWithUrls';
-export * from './validators';
+export * from './hasMissingRequiredValues';
 export * from './organizeElementsByGroup';
+export * from './parseTextWithUrls';
+export * from './validators';
