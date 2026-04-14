@@ -14,6 +14,14 @@ set :rbenv_type, :system
 set :rbenv_ruby, '3.3.4'
 set :rbenv_custom_path, '/opt/rbenv'
 
+# Load legacy deploy/runtime vars from host-side env file.
+set :deploy_env_file, "#{fetch(:deploy_to)}/shared/config/deploy.env"
+env_loader = "set -a && . #{fetch(:deploy_env_file)} && set +a"
+# Add env loading to the beginning of bundle, rake, and rails commands
+SSHKit.config.command_map.prefix[:bundle].unshift(env_loader)
+SSHKit.config.command_map.prefix[:rake].unshift(env_loader)
+SSHKit.config.command_map.prefix[:rails].unshift(env_loader)
+
 # Docker Compose deployment settings
 set :docker_compose_dir, -> { "#{fetch(:deploy_to)}/current" }
 set :docker_compose_file, 'docker-compose.yml'
