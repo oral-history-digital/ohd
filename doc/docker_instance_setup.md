@@ -2,6 +2,8 @@
 
 This runbook covers local bootstrap and production deployment for OHD using Docker Compose.
 
+If you are in the intermediate migration phase (legacy + Docker deploy in parallel), see `doc/deployment_transition.md`.
+
 ## Scope
 
 - Runtime uses Puma in the `app` container.
