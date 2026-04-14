@@ -1,4 +1,7 @@
-export function normalizeRegisterErrorMessage(json) {
+export function normalizeRegisterErrorMessage(
+    json,
+    translate = (message) => message
+) {
     if (typeof json?.error === 'string' && json.error.length > 0) {
         return json.error;
     }
@@ -14,7 +17,9 @@ export function normalizeRegisterErrorMessage(json) {
         }
     }
 
-    return 'devise.failure.invalid';
+    return translate(
+        'modules.registration.messages.generic_registration_error'
+    );
 }
 
 export default normalizeRegisterErrorMessage;

@@ -1,6 +1,8 @@
 import { normalizeRegisterErrorMessage } from './normalizeRegisterErrorMessage';
 
 describe('normalizeRegisterErrorMessage', () => {
+    const translate = (key) => `translated:${key}`;
+
     it('returns json.error when it is a non-empty string', () => {
         expect(
             normalizeRegisterErrorMessage({
@@ -40,35 +42,48 @@ describe('normalizeRegisterErrorMessage', () => {
     });
 
     it('falls back when json.error is an empty string', () => {
-        expect(normalizeRegisterErrorMessage({ error: '' })).toBe(
-            'devise.failure.invalid'
+        expect(normalizeRegisterErrorMessage({ error: '' }, translate)).toBe(
+            'translated:modules.registration.messages.generic_registration_error'
         );
     });
 
     it('falls back when errors array is empty', () => {
-        expect(normalizeRegisterErrorMessage({ errors: [] })).toBe(
-            'devise.failure.invalid'
+        expect(normalizeRegisterErrorMessage({ errors: [] }, translate)).toBe(
+            'translated:modules.registration.messages.generic_registration_error'
         );
     });
 
     it('falls back when errors object has no truthy messages', () => {
         expect(
-            normalizeRegisterErrorMessage({
-                errors: {
-                    email: ['', null],
-                    password: [undefined, false],
+            normalizeRegisterErrorMessage(
+                {
+                    errors: {
+                        email: ['', null],
+                        password: [undefined, false],
+                    },
                 },
-            })
-        ).toBe('devise.failure.invalid');
+                translate
+            )
+        ).toBe(
+            'translated:modules.registration.messages.generic_registration_error'
+        );
     });
 
     it('falls back when json is nullish or empty', () => {
-        expect(normalizeRegisterErrorMessage()).toBe('devise.failure.invalid');
-        expect(normalizeRegisterErrorMessage(null)).toBe(
-            'devise.failure.invalid'
+        expect(normalizeRegisterErrorMessage(undefined, translate)).toBe(
+            'translated:modules.registration.messages.generic_registration_error'
         );
-        expect(normalizeRegisterErrorMessage({})).toBe(
-            'devise.failure.invalid'
+        expect(normalizeRegisterErrorMessage(null, translate)).toBe(
+            'translated:modules.registration.messages.generic_registration_error'
+        );
+        expect(normalizeRegisterErrorMessage({}, translate)).toBe(
+            'translated:modules.registration.messages.generic_registration_error'
+        );
+    });
+
+    it('falls back to key when no translator is provided', () => {
+        expect(normalizeRegisterErrorMessage()).toBe(
+            'modules.registration.messages.generic_registration_error'
         );
     });
 });

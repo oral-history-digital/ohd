@@ -256,7 +256,7 @@ export default function RegisterForm({
         const emailCheckResult = await checkEmailAvailability(email);
 
         if (!emailCheckResult.registration_error) {
-            dispatch(submitRegister(`${pathBase}/users`, params));
+            dispatch(submitRegister(`${pathBase}/users`, params, t));
             onSubmit();
         } else {
             setEmailCheckResponse(emailCheckResult);
@@ -267,7 +267,7 @@ export default function RegisterForm({
     const registrationNotification = registrationStatus
         ? {
               variant: 'error',
-              description: sanitizeHtml(registrationStatus, 'PLAIN_TEXT'),
+              title: sanitizeHtml(registrationStatus, 'PLAIN_TEXT'),
           }
         : null;
 

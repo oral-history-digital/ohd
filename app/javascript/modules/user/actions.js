@@ -62,19 +62,21 @@ const registered = () => ({
     type: REGISTERED,
 });
 
-const registerError = (json) => ({
+const registerError = (json, translate) => ({
     type: REGISTER_ERROR,
-    registrationStatus: normalizeRegisterErrorMessage(json),
+    registrationStatus: normalizeRegisterErrorMessage(json, translate),
 });
 
 export const clearRegistrationStatus = () => ({
     type: CLEAR_REGISTRATION_STATUS,
 });
 
-export function submitRegister(url, params) {
+export function submitRegister(url, params, translate = (message) => message) {
     return (dispatch) => {
         dispatch(register());
-        Loader.post(url, params, dispatch, registered, registerError);
+        Loader.post(url, params, dispatch, registered, (json) =>
+            registerError(json, translate)
+        );
     };
 }
 
