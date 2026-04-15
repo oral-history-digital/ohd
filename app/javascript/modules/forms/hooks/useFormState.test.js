@@ -7,14 +7,27 @@ import { act } from 'react-dom/test-utils';
 
 import { useFormState } from './useFormState';
 
+jest.mock('modules/i18n');
+
 Enzyme.configure({ adapter: new Adapter() });
 
 function HookHarness(props) {
     return <InnerHarness {...props} />;
 }
 
-function InnerHarness({ initialValues, data, elements, onRender }) {
-    const hook = useFormState(initialValues, data, elements);
+function InnerHarness({
+    initialValues,
+    data,
+    elements,
+    submitStateOptions,
+    onRender,
+}) {
+    const hook = useFormState(
+        initialValues,
+        data,
+        elements,
+        submitStateOptions
+    );
 
     React.useEffect(() => {
         onRender(hook);
@@ -27,6 +40,7 @@ InnerHarness.propTypes = {
     initialValues: PropTypes.object,
     data: PropTypes.object,
     elements: PropTypes.array,
+    submitStateOptions: PropTypes.object,
     onRender: PropTypes.func.isRequired,
 };
 
@@ -34,6 +48,7 @@ describe('useFormState', () => {
     let wrapper;
     let hook;
 
+    // Helper function to render the hook with given props and capture the hook instance
     const render = (props) => {
         wrapper = mount(
             <HookHarness
@@ -45,6 +60,7 @@ describe('useFormState', () => {
         );
     };
 
+    // Clean up after each test
     afterEach(() => {
         if (wrapper) wrapper.unmount();
         hook = null;
@@ -612,6 +628,101 @@ describe('useFormState', () => {
                 name: 'Test',
                 events_attributes: [{ id: 3 }, { id: 4 }],
                 contributions_attributes: [{ id: 10 }],
+            });
+        });
+    });
+
+    describe('getSubmitButtonState', () => {
+        it('does not stay disabled from stale touched password confirmation errors', () => {
+            let password = 'secret1';
+
+            render({
+                initialValues: {
+                    password: 'mismatch',
+                    password_confirmation: 'mismatch',
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'password',
+                        validate: (value) =>
+                            Boolean(value && value.length >= 6),
+                    },
+                    {
+                        attribute: 'password_confirmation',
+                        validate: (value) =>
+                            Boolean(
+                                value && value.length >= 6 && value === password
+                            ),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('password_confirmation');
+                hook.handleErrors('password_confirmation', true);
+            });
+            wrapper.update();
+
+            password = 'mismatch';
+            act(() => {
+                hook.touchField('password');
+            });
+            wrapper.update();
+
+            expect(hook.hasMissingRequired).toBe(false);
+            expect(hook.submitButtonState).toEqual({
+                disabled: false,
+                helpText: null,
+            });
+        });
+
+        it('returns validation help text when touched field is currently invalid', () => {
+            render({
+                initialValues: {
+                    password: 'secret1',
+                    password_confirmation: 'not-matching',
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'password',
+                        validate: (value) =>
+                            Boolean(value && value.length >= 6),
+                    },
+                    {
+                        attribute: 'password_confirmation',
+                        validate: (value) =>
+                            Boolean(
+                                value &&
+                                    value.length >= 6 &&
+                                    value === 'secret1'
+                            ),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('password_confirmation');
+            });
+            wrapper.update();
+
+            expect(hook.hasMissingRequired).toBe(false);
+            expect(hook.submitButtonState).toEqual({
+                disabled: true,
+                helpText: 'edit.form.fix_validation_errors',
             });
         });
     });

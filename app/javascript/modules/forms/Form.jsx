@@ -22,7 +22,7 @@ import {
     Textarea,
 } from './components';
 import { useFormState } from './hooks';
-import { hasMissingRequiredValues, organizeElementsByGroup } from './utils';
+import { organizeElementsByGroup } from './utils';
 
 const elementTypeToComponent = {
     colorPicker: ColorPicker,
@@ -74,7 +74,6 @@ export default function Form({
         values,
         errors,
         touched,
-        isDirty,
         updateField,
         handleErrors,
         touchField,
@@ -86,7 +85,13 @@ export default function Form({
         replaceNestedFormValues,
         markCurrentValuesAsClean,
         getDirtyStateForValues,
-    } = useFormState(initialValues, data, elements);
+        submitButtonState,
+    } = useFormState(initialValues, data, elements, {
+        fetching,
+        hasValidationErrors,
+        submitted,
+        disableIfUnchanged,
+    });
 
     const { t } = useI18n();
 
@@ -162,45 +167,6 @@ export default function Form({
             />
         ));
     }
-
-    // Determine why submit button should be disabled and appropriate help text
-    function getDisabledState() {
-        const hasMissingRequired = hasMissingRequiredValues(
-            elements,
-            values,
-            data
-        );
-
-        const hasTouchedValidationErrors = Object.keys(errors).some(
-            (attribute) => touched[attribute] && errors[attribute]
-        );
-
-        if (fetching) {
-            return { disabled: true, helpText: null };
-        }
-        if (hasValidationErrors || hasTouchedValidationErrors) {
-            return {
-                disabled: true,
-                helpText: t('edit.form.fix_validation_errors'),
-            };
-        }
-        // Hide validation error message in initial state when user hasn't interacted with the form yet
-        if (hasMissingRequired) {
-            return {
-                disabled: true,
-                helpText: null,
-            };
-        }
-        if (submitted && !valid()) {
-            return { disabled: true, helpText: t('edit.form.fix_errors') };
-        }
-        if (disableIfUnchanged && !isDirty) {
-            return { disabled: true, helpText: t('edit.form.no_changes') };
-        }
-        return { disabled: false, helpText: null };
-    }
-
-    const submitButtonState = getDisabledState();
 
     function elementComponent(element) {
         const preparedProps = { ...element };
