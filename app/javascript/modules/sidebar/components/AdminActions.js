@@ -1,34 +1,35 @@
-import { useEffect, useState } from 'react';
-
+import {
+    addRemoveArchiveId,
+    getDoiResult,
+    setArchiveIds,
+} from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
+import { useArchiveSearchIds } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
-import { useArchiveSearch } from 'modules/search';
+import { useSearchParams } from 'modules/query-string';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import DOIText from './DOIText';
 import DeleteInterviews from './DeleteInterviews';
 import SubmitInterviewIds from './SubmitInterviewIds';
 import UpdateInterviews from './UpdateInterviews';
 
-export default function AdminActions({
-    archiveIds,
-    statuses,
-    doiResult,
-    setArchiveIds,
-    addRemoveArchiveId,
-}) {
+export default function AdminActions({ archiveIds }) {
     const { t } = useI18n();
-    const { interviews, total, setSize } = useArchiveSearch();
-    const [checkAll, setCheckAll] = useState(false);
+    const dispatch = useDispatch();
+    const doiResult = useSelector(getDoiResult);
+    const { allParams } = useSearchParams();
+    const { fetchAllFilteredArchiveIds, isLoading: checkAll } =
+        useArchiveSearchIds();
 
-    useEffect(() => {
-        if (total === interviews?.length && checkAll) {
-            setArchiveIds(interviews.map((i) => i.archive_id));
-            setCheckAll(false);
-        }
-    }, [interviews]);
+    async function selectAllFilteredInterviews() {
+        const archiveIdsForSelection =
+            await fetchAllFilteredArchiveIds(allParams);
+        dispatch(setArchiveIds(archiveIdsForSelection));
+    }
 
     const selectedArchiveIds = archiveIds.filter(
         (archiveId) => archiveId !== 'dummy'
@@ -133,7 +134,7 @@ export default function AdminActions({
             <button
                 type="button"
                 className="Button"
-                onClick={() => addRemoveArchiveId(-1)}
+                onClick={() => dispatch(addRemoveArchiveId(-1))}
             >
                 {t('reset')}
             </button>{' '}
@@ -143,10 +144,7 @@ export default function AdminActions({
                 <button
                     type="button"
                     className="Button"
-                    onClick={() => {
-                        setSize(total);
-                        setCheckAll(true);
-                    }}
+                    onClick={selectAllFilteredInterviews}
                 >
                     {t('set_all')}
                 </button>
@@ -157,8 +155,4 @@ export default function AdminActions({
 
 AdminActions.propTypes = {
     archiveIds: PropTypes.array,
-    doiResult: PropTypes.object,
-    statuses: PropTypes.object,
-    setArchiveIds: PropTypes.func.isRequired,
-    addRemoveArchiveId: PropTypes.func.isRequired,
 };

@@ -1,3 +1,4 @@
+export * from './useArchiveSearchIds';
 export * from './useGetInstitutions';
 export * from './useHumanReadable';
 export * from './useInstanceSettings';
