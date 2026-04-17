@@ -1,0 +1,129 @@
+class AddInterviewStatisticsTranslations < ActiveRecord::Migration[8.0]
+  TRANSLATIONS = {
+    'download_interview_statistics': {
+      de: 'Interview-Statistiken herunterladen',
+      en: 'Download interview statistics',
+      el: 'Λήψη στατιστικών συνεντεύξεων',
+      es: 'Descargar estadisticas de entrevistas',
+      ru: 'Скачать статистику интервью',
+      uk: 'Завантажити статистику інтервʼю',
+      ar: 'تنزيل احصائيات المقابلات'
+    },
+    'interview_statistics.report_title': {
+      de: 'Interview-Statistiken',
+      en: 'Interview statistics',
+      el: 'Στατιστικα συνεντευξεων',
+      es: 'Estadisticas de entrevistas',
+      ru: 'Статистика интервью',
+      uk: 'Статистика інтервʼю',
+      ar: 'احصائيات المقابلات'
+    },
+    'interview_statistics.header': {
+      de: 'Interview-Statistiken (%{date})',
+      en: 'Interview statistics (%{date})',
+      el: 'Στατιστικα συνεντευξεων (%{date})',
+      es: 'Estadisticas de entrevistas (%{date})',
+      ru: 'Статистика интервью (%{date})',
+      uk: 'Статистика інтервʼю (%{date})',
+      ar: 'احصائيات المقابلات (%{date})'
+    },
+    'interview_statistics.total': {
+      de: 'Insgesamt',
+      en: 'Total',
+      el: 'Συνολο',
+      es: 'Total',
+      ru: 'Всего',
+      uk: 'Всього',
+      ar: 'الاجمالي'
+    },
+    'interview_statistics.not_specified': {
+      de: 'Nicht angegeben',
+      en: 'Not specified',
+      el: 'Δεν προσδιοριζεται',
+      es: 'No especificado',
+      ru: 'Не указано',
+      uk: 'Не вказано',
+      ar: 'غير محدد'
+    },
+    'interview_statistics.section.workflow_state': {
+      de: 'Workflow-Status',
+      en: 'Workflow state',
+      el: 'Κατασταση ροης εργασιας',
+      es: 'Estado del flujo de trabajo',
+      ru: 'Состояние рабочего процесса',
+      uk: 'Стан робочого процесу',
+      ar: 'حالة سير العمل'
+    },
+    'interview_statistics.section.project': {
+      de: 'Projekt',
+      en: 'Project',
+      el: 'Εργο',
+      es: 'Proyecto',
+      ru: 'Проект',
+      uk: 'Проєкт',
+      ar: 'المشروع'
+    },
+    'interview_statistics.section.institution': {
+      de: 'Institution',
+      en: 'Institution',
+      el: 'Ιδρυμα',
+      es: 'Institucion',
+      ru: 'Организация',
+      uk: 'Установа',
+      ar: 'المؤسسة'
+    },
+    'interview_statistics.section.institution_country': {
+      de: 'Institution (Land)',
+      en: 'Institution country',
+      el: 'Χωρα ιδρυματος',
+      es: 'Pais de la institucion',
+      ru: 'Страна организации',
+      uk: 'Країна установи',
+      ar: 'بلد المؤسسة'
+    },
+    'interview_statistics.section.language': {
+      de: 'Sprache',
+      en: 'Language',
+      el: 'Γλωσσα',
+      es: 'Idioma',
+      ru: 'Язык',
+      uk: 'Мова',
+      ar: 'اللغة'
+    },
+    'interview_statistics.section.media_type': {
+      de: 'Medientyp',
+      en: 'Multimedia type',
+      el: 'Τυπος πολυμεσων',
+      es: 'Tipo multimedia',
+      ru: 'Тип мультимедиа',
+      uk: 'Тип мультимедіа',
+      ar: 'نوع الوسائط المتعددة'
+    },
+    'interview_statistics.section.indexing_level': {
+      de: 'Niveau der Indexierung/Kuration',
+      en: 'Level of indexing/curation',
+      el: 'Επιπεδο ευρετηριασης/επιμελειας',
+      es: 'Nivel de indexacion/curaduria',
+      ru: 'Уровень индексации/кураторства',
+      uk: 'Рівень індексації/курації',
+      ar: 'مستوى الفهرسة/التنسيق'
+    }
+  }.freeze
+
+  def up
+    TRANSLATIONS.each do |key, translations|
+      tv = TranslationValue.find_or_create_by(key: key)
+
+      translations.each do |locale, value|
+        translation = tv.translations.find_or_initialize_by(locale: locale.to_s)
+        translation.update(value: value)
+      end
+    end
+  end
+
+  def down
+    TRANSLATIONS.keys.each do |key|
+      TranslationValue.where(key: key).destroy_all
+    end
+  end
+end

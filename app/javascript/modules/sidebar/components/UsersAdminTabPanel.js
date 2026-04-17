@@ -69,6 +69,17 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
                                 {t('download_user_statistics')}
                             </a>
                         </div>
+                        <div>
+                            <a
+                                href={`${pathBase}/admin/interview_statistics.csv`}
+                            >
+                                <FaDownload
+                                    className="Icon Icon--primary"
+                                    title={t('download_interview_statistics')}
+                                />{' '}
+                                {t('download_interview_statistics')}
+                            </a>
+                        </div>
                         <Select
                             options={countryKeyOptions()}
                             className="basic-multi-select"

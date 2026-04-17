@@ -191,6 +191,7 @@ Rails.application.routes.draw do
           get :usage_report
         end
       end
+      resources :interview_statistics, only: [:index]
       resources :imports do
         collection do
           get :for_interview
