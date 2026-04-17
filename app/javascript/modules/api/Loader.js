@@ -2,6 +2,7 @@ import request from 'superagent';
 import noCache from 'superagent-no-cache';
 
 import { flattenNestedObject } from './flattenNestedObject';
+import { parseResponseJson } from './utils';
 
 const Loader = {
     getJson: function (url, queryParams, dispatch, callback) {
@@ -201,7 +202,7 @@ const Loader = {
                     dispatch(errorCallback(error));
                 }
             } else if (res) {
-                let json = JSON.parse(res.text);
+                const json = parseResponseJson(res, url);
                 // Check HTTP status code - 4xx and 5xx are errors
                 if (res.status >= 400) {
                     console.error(
