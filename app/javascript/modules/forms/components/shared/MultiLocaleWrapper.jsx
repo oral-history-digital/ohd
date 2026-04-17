@@ -57,7 +57,7 @@ export default function MultiLocaleWrapper(props) {
             (t) => t.locale === `${locale}-public`
         );
 
-        if (data.type !== 'Segment') {
+        if (data?.type !== 'Segment') {
             return originalTranslation;
         }
 
