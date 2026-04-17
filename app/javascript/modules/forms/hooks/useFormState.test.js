@@ -725,5 +725,42 @@ describe('useFormState', () => {
                 helpText: 'edit.form.fix_validation_errors',
             });
         });
+
+        it('keeps submit enabled for touched valid multi-locale descriptor', () => {
+            render({
+                initialValues: {
+                    translations_attributes: [
+                        {
+                            descriptor: 'ad',
+                            locale: 'de',
+                        },
+                    ],
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'descriptor',
+                        multiLocale: true,
+                        validate: (value) => value && value.length > 1,
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('descriptor');
+            });
+            wrapper.update();
+
+            expect(hook.submitButtonState).toEqual({
+                disabled: false,
+                helpText: null,
+            });
+        });
     });
 });
