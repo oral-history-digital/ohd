@@ -347,45 +347,9 @@ a.small {
 
 .wrapper-content.register,
 .wrapper-content.interviews,
-.wrapper-content.home-content,
 .wrapper-content.project-index,
 .wrapper-content.map {
   margin-top: 0px !important;
-}
-
-.wrapper-content.home-content {
-  padding: 0;
-
-  .ProjectHome--hero {
-    padding: $base-unit 0;
-
-    &.ProjectHome--hero--hasLogo {
-      display: flex;
-      flex-direction: row-reverse;
-
-      .ProjectHome--heroText {
-        width: 67%;
-      }
-    }
-
-    .ProjectHome--heroText {
-      h1 {
-        margin-top: 0;
-      }
-    }
-
-    .ProjectLogo {
-      margin-left: $base-unit;
-      width: 33%;
-      height: fit-content;
-      // Ensure the logo image scales properly within its container
-      img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-    }
-  }
 }
 
 .home-content-logos {

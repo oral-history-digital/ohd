@@ -19,34 +19,22 @@ export default function ProjectHome() {
         lite: true,
     });
     const { locale } = useI18n();
-
     useTrackPageView();
 
     if (!project || loading) return null;
+
     const showProjectLogo = project && project?.display_ohd_link === true;
-
     const hasLogo = Boolean(getProjectLogoSrc(project, locale));
-
-    function showStartPageVideo() {
-        return currentPage.params.projectShortname === 'mog';
-    }
-
-    function showFeaturedInterviews() {
-        if (
-            currentPage.params.projectShortname === 'mog' ||
-            currentPage.params.projectShortname === 'campscapes'
-        ) {
-            return false;
-        }
-
-        return true;
-    }
+    const showStartPageVideo = currentPage.params.projectShortname === 'mog';
+    const showFeaturedInterviews = !['mog', 'campscapes'].includes(
+        currentPage.params.projectShortname
+    );
 
     return (
         <ScrollToTop>
-            <div className="wrapper-content home-content">
+            <div className="wrapper-content ProjectHome">
                 <RedirectOnLogin path="/searches/archive" />
-                {showStartPageVideo() ? <StartPageVideo /> : null}
+                {showStartPageVideo && <StartPageVideo />}
                 <div
                     className={classNames('ProjectHome--hero', {
                         'ProjectHome--hero--hasLogo':
@@ -91,11 +79,7 @@ export default function ProjectHome() {
                         />
                     </div>
                 )}
-                {showFeaturedInterviews() && (
-                    <div className="Container u-mt u-mb-large">
-                        <FeaturedInterviews />
-                    </div>
-                )}
+                {showFeaturedInterviews && <FeaturedInterviews />}
             </div>
         </ScrollToTop>
     );

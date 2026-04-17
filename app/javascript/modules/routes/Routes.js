@@ -6,7 +6,7 @@ import {
     WrappedInstitutionsContainer,
 } from 'modules/admin';
 import { Homepage } from 'modules/homepage';
-import { ProjectHome } from 'modules/startpage';
+import { ProjectHome } from 'modules/project-home';
 import PropTypes from 'prop-types';
 import { Route, Routes } from 'react-router-dom';
 

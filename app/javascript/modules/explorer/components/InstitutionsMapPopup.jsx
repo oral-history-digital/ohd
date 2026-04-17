@@ -1,4 +1,4 @@
-import { useI18n } from 'modules/i18n';
+import { pluralizeKey, useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -23,7 +23,14 @@ export function InstitutionsMapPopup({ title, marker }) {
             {children.length > 0 && (
                 <>
                     <h4 className="MapPopup-subHeading">
-                        {t('explorer.sub_institutions')}:
+                        {t(
+                            pluralizeKey(
+                                'explorer.sub_institutions',
+                                children.length,
+                                locale
+                            )
+                        )}
+                        :
                     </h4>
                     <ul className="MapPopup-list">
                         {children.map((child) => (

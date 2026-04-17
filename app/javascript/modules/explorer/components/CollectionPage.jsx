@@ -113,9 +113,6 @@ export function CollectionPage() {
                         <Institutions institutions={project.institutions} />
                         <RichtextDetail richtext={collectionNotes} />
                         <Website url={collectionHomepage} />
-                        <PublicationDate
-                            publicationDate={collection.publication_date}
-                        />
                         <InterviewStats counts={collection.interviews} />
                         <MediaTypes mediaTypes={collection?.media_types} />
                         <YearRange
@@ -134,6 +131,9 @@ export function CollectionPage() {
                         />
                         <Subjects subjects={collection.subjects} />
                         <Responsibles responsibles={collectionResponsibles} />
+                        <PublicationDate
+                            publicationDate={collection.publication_date}
+                        />
                         <Citation
                             type="collection"
                             institutions={project.institutions}

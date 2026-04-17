@@ -110,7 +110,7 @@ InstitutionsList.propTypes = {
     interviewMax: PropTypes.number,
     instArchiveMin: PropTypes.number,
     instArchiveMax: PropTypes.number,
-    institutionLevel: PropTypes.oneOf(['all', 'with_children', 'with_parent']),
+    institutionLevel: PropTypes.oneOf(['all', 'top_level', 'with_parent']),
 };
 
 export default InstitutionsList;

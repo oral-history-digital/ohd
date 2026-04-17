@@ -16,9 +16,7 @@ const MAP_ZOOM = 5;
 const MAP_MAX_ZOOM = 16;
 const COMPACT_MAP_HEIGHT = 260;
 const EXPANDED_MAP_HEIGHT = 400;
-
-const calcMarkerRadius = (interviews) =>
-    Math.max(6, Math.min(20, Math.sqrt(interviews) * 2));
+const MARKER_RADIUS = 5;
 
 function InstitutionMarker({ marker }) {
     const map = useMap();
@@ -43,10 +41,14 @@ function InstitutionMarker({ marker }) {
         <CircleMarker
             ref={markerRef}
             center={[marker.lat, marker.lng]}
-            radius={calcMarkerRadius(marker.interviews)}
-            fillColor="var(--primary-color, #8f201c)"
-            fillOpacity={0.6}
-            stroke={false}
+            radius={MARKER_RADIUS}
+            pathOptions={{
+                stroke: true,
+                color: '#fff',
+                weight: 1,
+                fillColor: 'var(--primary-color, #8f201c)',
+                fillOpacity: 0.8,
+            }}
             eventHandlers={{
                 click: handleMarkerClick,
             }}

@@ -94,9 +94,6 @@ export function ArchivePage() {
                                 <ProjectDomain
                                     domain={project.archive_domain}
                                 />
-                                <PublicationDate
-                                    publicationDate={project.publication_date}
-                                />
                                 <InterviewStats counts={project.interviews} />
                                 <MediaTypes mediaTypes={project?.media_types} />
                                 <YearRange
@@ -125,6 +122,9 @@ export function ArchivePage() {
                                     pseudoFunderNames={
                                         project.pseudo_funder_names
                                     }
+                                />
+                                <PublicationDate
+                                    publicationDate={project.publication_date}
                                 />
                                 <Citation
                                     type="project"

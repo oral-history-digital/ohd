@@ -1,8 +1,8 @@
-import { useI18n } from 'modules/i18n';
+import { pluralizeKey, useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export function Institutions({ institutions, labelKey }) {
+export function Institutions({ institutions, labelKey, pluralizeLabel }) {
     const { t, locale } = useI18n();
 
     const normalizedInstitutions = Array.isArray(institutions)
@@ -29,7 +29,11 @@ export function Institutions({ institutions, labelKey }) {
     if (validInstitutions.length === 0) return null;
 
     const institutionLabel = labelKey
-        ? t(labelKey)
+        ? t(
+              pluralizeLabel
+                  ? pluralizeKey(labelKey, validInstitutions.length, locale)
+                  : labelKey
+          )
         : t(
               `activerecord.models.institution.${
                   validInstitutions.length === 1 ? 'one' : 'other'
@@ -78,6 +82,7 @@ Institutions.propTypes = {
         ),
     ]),
     labelKey: PropTypes.string,
+    pluralizeLabel: PropTypes.bool,
 };
 
 export default Institutions;

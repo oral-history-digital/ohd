@@ -10,13 +10,13 @@ class AddExportFormatTranslations < ActiveRecord::Migration[8.0]
         ar: 'تنسيقات التصدير (النصوص)',
     },
     'explorer.export_formats.description': {
-        de: 'PDF, CSV (auf Anfrage), TEI-XML (auf Anfrage)',
-        en: 'PDF, CSV (on request), TEI-XML (on request)',
-        el: 'PDF, CSV (κατόπιν αιτήματος), TEI-XML (κατόπιν αιτήματος)',
-        es: 'PDF, CSV (a solicitud), TEI-XML (a solicitud)',
-        ru: 'PDF, CSV (по запросу), TEI-XML (по запросу)',
-        uk: 'PDF, CSV (на запит), TEI-XML (на запит)',
-        ar: 'PDF، CSV (عند الطلب)، TEI-XML (عند الطلب)',
+        de: 'PDF, VTT, CSV (auf Anfrage), TEI-XML (auf Anfrage)',
+        en: 'PDF, VTT, CSV (on request), TEI-XML (on request)',
+        el: 'PDF, VTT, CSV (κατόπιν αιτήματος), TEI-XML (κατόπιν αιτήματος)',
+        es: 'PDF, VTT, CSV (a solicitud), TEI-XML (a solicitud)',
+        ru: 'PDF, VTT, CSV (по запросу), TEI-XML (по запросу)',
+        uk: 'PDF, VTT, CSV (на запит), TEI-XML (на запит)',
+        ar: 'PDF، VTT، CSV (عند الطلب)، TEI-XML (عند الطلب)',
     },
   }.freeze
 

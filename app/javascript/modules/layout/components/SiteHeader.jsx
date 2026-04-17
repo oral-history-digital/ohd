@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Breadcrumbs } from 'modules/breadcrumbs';
+import { ProjectLogo } from 'modules/project-home';
 import { useCurrentPage, useProject } from 'modules/routes';
-import { ProjectLogo } from 'modules/startpage';
 
 import SiteLogo from './SiteLogo';
 
