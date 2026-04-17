@@ -38,6 +38,7 @@ gem 'rack-cors'
 gem 'sprockets-rails'
 gem 'rexml', '~> 3.2.8'
 gem 'base64', '~> 0.2.0'
+gem 'clamby', '~> 1.6.11'
 
 # Gems specific to public archive app:
 gem 'unicode'
