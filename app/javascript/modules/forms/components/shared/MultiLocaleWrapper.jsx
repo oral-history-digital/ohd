@@ -2,7 +2,7 @@ import { createElement, useRef } from 'react';
 
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
 import { getProjectLocales } from 'modules/data';
-import { getMergedTranslations } from 'modules/forms/utils';
+import { findTranslationForLocale } from 'modules/forms/utils';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -44,46 +44,7 @@ export default function MultiLocaleWrapper(props) {
     };
 
     const findTranslation = (locale) => {
-        const translationsArray = getMergedTranslations(data, formValues);
-
-        if (translationsArray.length === 0) {
-            return null;
-        }
-
-        const originalTranslation = translationsArray.find(
-            (t) => t.locale === locale
-        );
-        const publicTranslation = translationsArray.find(
-            (t) => t.locale === `${locale}-public`
-        );
-
-        if (data.type !== 'Segment') {
-            return originalTranslation;
-        }
-
-        // From here only for segments.
-        let translation;
-        if (originalTranslation) {
-            // Make clone because it will get mutated.
-            translation = {
-                ...originalTranslation,
-            };
-
-            // Copy over values from xx-public to xx if values in xx are empty.
-            if (!translation.text || translation.text === '') {
-                translation.text = publicTranslation?.text;
-            }
-            if (!translation.mainheading || translation.mainheading === '') {
-                translation.mainheading = publicTranslation?.mainheading;
-            }
-            if (!translation.subheading || translation.subheading === '') {
-                translation.subheading = publicTranslation?.subheading;
-            }
-        } else {
-            // in zwar there has not been an initial original version
-            translation = publicTranslation;
-        }
-        return translation;
+        return findTranslationForLocale(data, formValues, locale);
     };
 
     const getLiveTranslationValue = (localeKey) => {
