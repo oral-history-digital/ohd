@@ -286,6 +286,7 @@ export function useFormState(
     }
 
     const hasMissingRequired = hasMissingRequiredValues(elements, values, data);
+    const dirtyState = getDirtyStateForValues();
 
     /**
      * Computes the current submit button disabled state and help text.
@@ -418,8 +419,6 @@ export function useFormState(
     function markCurrentValuesAsClean(nextValues = values) {
         setInitialFormValues({ ...nextValues });
     }
-
-    const dirtyState = getDirtyStateForValues();
 
     return {
         values,
