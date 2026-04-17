@@ -281,12 +281,7 @@ export function useFormState(
                 return Boolean(errors[attribute]);
             }
 
-            const currentValue =
-                values[attribute] !== undefined
-                    ? values[attribute]
-                    : (element.value ?? data?.[attribute]);
-
-            return !element.validate(currentValue);
+            return hasError(element);
         });
     }
 
