@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useI18n } from 'modules/i18n';
+import { pluralizeKey, useI18n } from 'modules/i18n';
 
 import { buildListCountMeta } from '../utils';
 
@@ -19,7 +19,7 @@ export function useExplorerListCountLabel({
     totalItems,
     showTotals = true,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     return useMemo(() => {
         const { count, total, hasActiveFilter } = buildListCountMeta(
@@ -28,11 +28,12 @@ export function useExplorerListCountLabel({
         );
 
         const keyBase = `explorer.${scope}_list`;
-        const key =
+        const keyBaseWithCountMode =
             hasActiveFilter && showTotals
                 ? `${keyBase}.count_with_total`
                 : `${keyBase}.count`;
+        const key = pluralizeKey(keyBaseWithCountMode, count, locale);
 
         return t(key, { count, total });
-    }, [displayedItems, scope, t, totalItems, showTotals]);
+    }, [displayedItems, scope, t, totalItems, showTotals, locale]);
 }

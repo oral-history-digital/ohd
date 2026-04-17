@@ -216,8 +216,17 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Відкрити сторінку установи',
       ar: 'عرض صفحة المؤسسة',
     },
-    'explorer.sub_institutions': {
-      de: 'Einrichtungen',
+    'explorer.sub_institutions.one': {
+      de: 'Untereinrichtung',
+      en: 'Sub-institution',
+      el: 'Υπο-ίδρυμα',
+      es: 'Sub-institución',
+      ru: 'Дочернее учреждение',
+      uk: 'Підустанова',
+      ar: 'المؤسسة الفرعية',
+    },
+    'explorer.sub_institutions.other': {
+      de: 'Untereinrichtungen',
       en: 'Sub-institutions',
       el: 'Υπο-ιδρύματα',
       es: 'Sub-instituciones',
@@ -414,7 +423,16 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: 'Установи',
       ar: 'المؤسسات',
     },
-    'explorer.archives_list.count': {
+    'explorer.archives_list.count.one': {
+      de: '%{count} Archiv',
+      en: '%{count} Archive',
+      el: '%{count} αρχείο',
+      es: '%{count} Archivo',
+      ru: '%{count} архив',
+      uk: '%{count} архів',
+      ar: '%{count} أرشيف',
+    },
+    'explorer.archives_list.count.other': {
       de: '%{count} Archive',
       en: '%{count} Archives',
       el: '%{count} αρχεία',
@@ -423,7 +441,16 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: '%{count} архівів',
       ar: '%{count} أرشيفات',
     },
-    'explorer.archives_list.count_with_total': {
+    'explorer.archives_list.count_with_total.one': {
+      de: '%{count} Archiv (von %{total})',
+      en: '%{count} Archive (of %{total})',
+      el: '%{count} αρχείο (από %{total})',
+      es: '%{count} Archivo (de %{total})',
+      ru: '%{count} архив (из %{total})',
+      uk: '%{count} архів (із %{total})',
+      ar: '%{count} أرشيف (من أصل %{total})',
+    },
+    'explorer.archives_list.count_with_total.other': {
       de: '%{count} Archive (von %{total})',
       en: '%{count} Archives (of %{total})',
       el: '%{count} αρχεία (από %{total})',
@@ -432,7 +459,16 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: '%{count} архівів (із %{total})',
       ar: '%{count} أرشيفات (من أصل %{total})',
     },
-    'explorer.institutions_list.count': {
+    'explorer.institutions_list.count.one': {
+      de: '%{count} Institution',
+      en: '%{count} Institution',
+      el: '%{count} ίδρυμα',
+      es: '%{count} Institución',
+      ru: '%{count} учреждение',
+      uk: '%{count} установа',
+      ar: '%{count} مؤسسة',
+    },
+    'explorer.institutions_list.count.other': {
       de: '%{count} Institutionen',
       en: '%{count} Institutions',
       el: '%{count} ιδρύματα',
@@ -441,7 +477,16 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       uk: '%{count} установ',
       ar: '%{count} مؤسسات',
     },
-    'explorer.institutions_list.count_with_total': {
+    'explorer.institutions_list.count_with_total.one': {
+      de: '%{count} Institution (von %{total})',
+      en: '%{count} Institution (of %{total})',
+      el: '%{count} ίδρυμα (από %{total})',
+      es: '%{count} Institución (de %{total})',
+      ru: '%{count} учреждение (из %{total})',
+      uk: '%{count} установа (із %{total})',
+      ar: '%{count} مؤسسة (من أصل %{total})',
+    },
+    'explorer.institutions_list.count_with_total.other': {
       de: '%{count} Institutionen (von %{total})',
       en: '%{count} Institutions (of %{total})',
       el: '%{count} ιδρύματα (από %{total})',

@@ -81,7 +81,13 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                         {hasChildren && (
                             <span className="InstitutionCard-metaItem">
                                 {institution.children.length}{' '}
-                                {t('explorer.sub_institutions')}
+                                {t(
+                                    pluralizeKey(
+                                        'explorer.sub_institutions',
+                                        institution.children.length,
+                                        locale
+                                    )
+                                )}
                             </span>
                         )}
                         {countArchives > 0 && (
@@ -118,6 +124,7 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                     <Institutions
                         institutions={institution.children}
                         labelKey="explorer.sub_institutions"
+                        pluralizeLabel
                     />
 
                     <InterviewStats counts={institution.interviews} />

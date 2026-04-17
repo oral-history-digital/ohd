@@ -26,13 +26,13 @@ export function ExplorerInstitutionLevelFilter({ value, onChange }) {
                     <input
                         type="radio"
                         name="explorer-institution-level"
-                        value="with_children"
-                        checked={value === 'with_children'}
+                        value="top_level"
+                        checked={value === 'top_level'}
                         onChange={onChange}
                     />
                     <span>
                         {t(
-                            'explorer.institution_level_filter.option.with_children'
+                            'explorer.institution_level_filter.option.top_level'
                         )}
                     </span>
                 </label>
@@ -56,7 +56,7 @@ export function ExplorerInstitutionLevelFilter({ value, onChange }) {
 }
 
 ExplorerInstitutionLevelFilter.propTypes = {
-    value: PropTypes.oneOf(['all', 'with_children', 'with_parent']).isRequired,
+    value: PropTypes.oneOf(['all', 'top_level', 'with_parent']).isRequired,
     onChange: PropTypes.func.isRequired,
 };
 

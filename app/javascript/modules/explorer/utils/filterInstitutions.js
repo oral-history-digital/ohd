@@ -17,10 +17,7 @@ export const filterInstitutions = (
     institutionLevel = 'all'
 ) =>
     institutions.filter((i) => {
-        if (
-            institutionLevel === 'with_children' &&
-            (i.children?.length ?? 0) === 0
-        ) {
+        if (institutionLevel === 'top_level' && i.parent?.id) {
             return false;
         }
 

@@ -48,6 +48,7 @@ export function InstitutionPage() {
                         <Institutions
                             institutions={institution?.children}
                             labelKey="explorer.sub_institutions"
+                            pluralizeLabel
                         />
 
                         <RichtextDetail
