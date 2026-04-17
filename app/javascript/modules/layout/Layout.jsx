@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
+import { getProjectId } from 'modules/archive';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
@@ -50,6 +51,7 @@ export default function Layout({ children }) {
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const bannerActive = useSelector(getBannerActive);
     const projectsStatus = useSelector(getProjectsStatus);
+    const routeProjectId = useSelector(getProjectId);
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
@@ -76,17 +78,22 @@ export default function Layout({ children }) {
             }
         }
 
-        if (!project?.id) {
+        // Temporary compatibility bridge during SWR/Redux transition:
+        // prefer resolved Redux project id, fallback to route project shortname
+        // so we can hydrate Redux even before `useProject()` resolves.
+        const effectiveProjectId = project?.id || routeProjectId;
+
+        if (!effectiveProjectId) {
             removeAccessTokenParam();
             return;
         }
 
-        if (!projectsStatus[project.id]) {
+        if (!projectsStatus[effectiveProjectId]) {
             dispatch(
                 fetchData(
                     { locale: 'de', project: ohd },
                     'projects',
-                    project.id
+                    effectiveProjectId
                 )
             );
         }
@@ -94,6 +101,7 @@ export default function Layout({ children }) {
     }, [
         dispatch,
         project,
+        routeProjectId,
         projectsStatus,
         ohdDomain,
         searchParams,
