@@ -8,6 +8,16 @@ const project = {
     },
 };
 
+test('returns direct logo url for lite payload', () => {
+    const liteProject = {
+        logo: { id: 10, url: '/rails/active_storage/blobs/lite-logo.png' },
+    };
+
+    expect(getProjectLogoSrc(liteProject, 'en')).toEqual(
+        '/rails/active_storage/blobs/lite-logo.png'
+    );
+});
+
 test('returns locale logo when available', () => {
     expect(getProjectLogoSrc(project, 'en')).toEqual('/logos/en.svg');
 });

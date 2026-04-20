@@ -9,8 +9,12 @@
  */
 
 export function getProjectLogoSrc(project, locale) {
-    const logos = project?.logos;
+    // Handle "lite" payload structure where logo URL is directly available.
+    const directLogoSrc = project?.logo?.url || project?.logo?.src;
+    if (directLogoSrc) return directLogoSrc;
 
+    // Handle standard payload structure with multiple logos by locale.
+    const logos = project?.logos;
     if (!logos || Object.keys(logos).length === 0) return null;
 
     const logoArray = Object.values(logos).filter((logo) => logo?.src);
