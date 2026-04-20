@@ -184,4 +184,35 @@ namespace :storage do
 
   end
 
+  desc "Export paths for UploadedFile blobs (STI types)"
+  task export_uploaded_files: :environment do
+    types = ENV["TYPES"]&.split(",") || %w[Logo SponsorLogo]
+    output_path = ENV["OUTPUT"] || Rails.root.join("tmp", "uploaded_files_list.txt")
+
+    # Ensure directory exists
+    FileUtils.mkdir_p(File.dirname(output_path))
+
+    # Silence noisy SQL logs during export
+    original_logger = ActiveRecord::Base.logger
+    ActiveRecord::Base.logger = nil
+
+    begin
+      keys = UploadedFile
+        .where(type: types)
+        .joins(file_attachment: :blob)
+        .distinct
+        .pluck("active_storage_blobs.key")
+
+      File.open(output_path, "w") do |f|
+        keys.each do |key|
+          # Reconstruct on-disk path (first two chars, then chars 3 and 4, then full key)
+          f.puts File.join("storage", key[0..1], key[2..3], key)
+        end
+      end
+
+      puts "Exported #{keys.size} file paths to #{output_path}"
+    ensure
+      ActiveRecord::Base.logger = original_logger
+    end
+  end
 end
