@@ -17,6 +17,10 @@
   }
 }
 
+.is-interview-page .Layout-page {
+  padding: 0;
+}
+
 .Layout:not(.sidebar-is-visible):not(.is-interview-page.is-logged-in)
   > .Layout-page {
   @include screen-xl {
@@ -34,7 +38,7 @@
 }
 
 .wrapper-content {
-  padding: ($base-unit * 2) 0;
+  padding: ($base-unit * 2);
 }
 
 .Layout-sidebar {
