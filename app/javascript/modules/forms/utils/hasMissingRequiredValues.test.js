@@ -159,6 +159,34 @@ describe('hasMissingRequiredValues', () => {
         expect(hasMissingRequiredValues(elements, {}, data)).toBe(false);
     });
 
+    it('uses persisted data fallback for untouched required field on edit forms', () => {
+        const elements = [
+            {
+                attribute: 'code',
+                validate: requiredValidate,
+            },
+        ];
+
+        const values = { project_id: 123 };
+        const data = { code: 'ABC123' };
+
+        expect(hasMissingRequiredValues(elements, values, data)).toBe(false);
+    });
+
+    it('keeps explicit empty form value as missing even when persisted data exists', () => {
+        const elements = [
+            {
+                attribute: 'code',
+                validate: requiredValidate,
+            },
+        ];
+
+        const values = { code: '' };
+        const data = { code: 'ABC123' };
+
+        expect(hasMissingRequiredValues(elements, values, data)).toBe(true);
+    });
+
     it('returns true for multi-locale required field when no translation passes validation', () => {
         const elements = [
             {

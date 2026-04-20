@@ -38,10 +38,19 @@ export function hasMissingRequiredValues(elements, values, data) {
             return !translationValues.some((value) => element.validate(value));
         }
 
-        const currentValue =
-            values[element.attribute] !== undefined
-                ? values[element.attribute]
-                : element.value;
+        const hasExplicitFormValue = Object.prototype.hasOwnProperty.call(
+            values || {},
+            element.attribute
+        );
+        const hasPersistedValue =
+            data &&
+            Object.prototype.hasOwnProperty.call(data, element.attribute);
+
+        const currentValue = hasExplicitFormValue
+            ? values[element.attribute]
+            : hasPersistedValue
+              ? data[element.attribute]
+              : element.value;
 
         if (Array.isArray(currentValue)) {
             return currentValue.length === 0;
