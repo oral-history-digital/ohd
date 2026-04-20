@@ -15,6 +15,7 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :workflow_state,
     :languages_ui,
     :languages_interviews,
+    :display_ohd_link,
     :has_map,
     :is_catalog,
     :has_newsletter,
