@@ -22,7 +22,12 @@ import { FaEllipsisH, FaTimes } from 'react-icons/fa';
  * AdminMenu can only have AdminMenu.Item components as children.
  */
 
-export default function AdminMenu({ className, disabled = false, children }) {
+export default function AdminMenu({
+    className,
+    disabled = false,
+    children,
+    testIdPrefix,
+}) {
     const { t } = useI18n();
     const [openDialog, setOpenDialog] = useState(null);
     const closeDialog = () => setOpenDialog(null);
@@ -40,6 +45,11 @@ export default function AdminMenu({ className, disabled = false, children }) {
                 <MenuButton
                     className="Button Button--transparent Button--icon Button--editorial"
                     disabled={disabled}
+                    data-testid={
+                        testIdPrefix
+                            ? `${testIdPrefix}-actions-button`
+                            : undefined
+                    }
                 >
                     <VisuallyHidden>
                         {t('modules.ui.admin_menu.actions')}
@@ -52,6 +62,11 @@ export default function AdminMenu({ className, disabled = false, children }) {
                             key={child.props.name}
                             className="ReachMenuItem"
                             onSelect={() => setOpenDialog(child.props.name)}
+                            data-testid={
+                                testIdPrefix
+                                    ? `${testIdPrefix}-action-${child.props.name}`
+                                    : undefined
+                            }
                         >
                             {child.props.label}
                         </MenuItem>
@@ -73,6 +88,7 @@ export default function AdminMenu({ className, disabled = false, children }) {
 AdminMenu.propTypes = {
     className: PropTypes.string,
     disabled: PropTypes.bool,
+    testIdPrefix: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
