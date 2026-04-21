@@ -51,7 +51,7 @@ export function CollectionPage() {
 
     const { url, isExternalUrl } = getProjectUrl(project, locale);
     const projectUrl = isExternalUrl ? `${url}/${locale}` : url; // Ensure we have the locale in the URL for external links
-    const collectionPageUrl = `${projectUrl}/searches/archive?collection_id[]=${collection.id}`;
+    const collectionPageUrl = `${projectUrl}/searches/archive?collection_id[]=${collection?.id}`;
 
     const toCollectionButton = (
         <LinkButton
