@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import { getXmlLinks } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { FaExternalLinkAlt, FaRegQuestionCircle } from 'react-icons/fa';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 export function XmlLinks({ projectShortname, collectionId }) {
@@ -17,10 +17,6 @@ export function XmlLinks({ projectShortname, collectionId }) {
         <div className="DescriptionList-group DescriptionList-group--xml-links">
             <dt className="DescriptionList-term">
                 {t('explorer.details.xml_links.label')}{' '}
-                <FaRegQuestionCircle
-                    className="HelpText-icon"
-                    title={t('explorer.details.xml_links.description')}
-                />
             </dt>
             <dd className="DescriptionList-description">
                 {xmlLinks.map((link) => (

@@ -31,16 +31,18 @@ export default function FeaturedInterviews() {
     const { t } = useI18n();
     const { interviews, isLoading } = useFeaturedInterviews();
 
-    if (!interviews && !isLoading) return null;
+    if (!isLoading && (!interviews || interviews.length === 0)) return null;
 
     return (
         <div className="FeaturedInterviews u-mv-large">
-            <h3
-                className="FeaturedInterviews-heading u-mv"
-                data-testid="projecthome-featured-interviews-heading"
-            >
-                {t('modules.project_home.sample_interviews')}
-            </h3>
+            {!isLoading && interviews && interviews.length > 0 && (
+                <h3
+                    className="FeaturedInterviews-heading u-mv"
+                    data-testid="projecthome-featured-interviews-heading"
+                >
+                    {t('modules.project_home.sample_interviews')}
+                </h3>
+            )}
             <div className="FeaturedInterviews-interview-grid Grid">
                 {isLoading
                     ? // Show 6 skeleton cards while loading

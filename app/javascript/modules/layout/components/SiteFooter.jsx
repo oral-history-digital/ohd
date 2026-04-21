@@ -39,9 +39,9 @@ export function SiteFooter() {
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
                             target="_blank"
                             rel="noreferrer"
-                            title={`${t('conditions')} (OHD)`}
+                            title={`${t('conditions')} (oh.d)`} // TODO: Replace hardcoded string with umbrella project shortname
                         >
-                            {`${t('conditions')} (OHD)`}
+                            {`${t('conditions')} (oh.d)`}
                         </a>
                     </li>
                 }

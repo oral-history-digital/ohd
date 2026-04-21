@@ -316,7 +316,7 @@ describe('useBreadcrumbModel', () => {
             },
             translations: {
                 home: 'Start',
-                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'modules.catalog.breadcrumb_title': 'Archive und Sammlungen',
                 'activerecord.models.project.other': 'Archive',
             },
         });
@@ -324,7 +324,7 @@ describe('useBreadcrumbModel', () => {
         expect(result.items).toEqual([
             {
                 key: 'catalog',
-                label: 'Archive & Sammlungen',
+                label: 'Archive und Sammlungen',
                 to: '/de/catalog',
                 isCurrent: false,
             },
@@ -378,14 +378,14 @@ describe('useBreadcrumbModel', () => {
             },
             translations: {
                 home: 'Start',
-                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'modules.catalog.breadcrumb_title': 'Archive und Sammlungen',
             },
         });
 
         expect(result.items).toEqual([
             {
                 key: 'catalog',
-                label: 'Archive & Sammlungen',
+                label: 'Archive und Sammlungen',
                 to: '/de/catalog',
                 isCurrent: false,
             },
@@ -438,14 +438,14 @@ describe('useBreadcrumbModel', () => {
             projects: {},
             translations: {
                 home: 'Start',
-                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'modules.catalog.breadcrumb_title': 'Archive und Sammlungen',
             },
         });
 
         expect(result.items).toEqual([
             {
                 key: 'catalog',
-                label: 'Archive & Sammlungen',
+                label: 'Archive und Sammlungen',
                 to: '/de/catalog',
                 isCurrent: false,
             },
@@ -610,7 +610,7 @@ describe('useBreadcrumbModel', () => {
             projects: {},
             translations: {
                 home: 'Start',
-                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'modules.catalog.breadcrumb_title': 'Archive und Sammlungen',
                 'activerecord.models.institution.other': 'Institutionen',
             },
         });
@@ -655,7 +655,7 @@ describe('useBreadcrumbModel', () => {
             projects: {},
             translations: {
                 home: 'Start',
-                'modules.catalog.breadcrumb_title': 'Archive & Sammlungen',
+                'modules.catalog.breadcrumb_title': 'Archive und Sammlungen',
                 'activerecord.models.institution.other': 'Institutionen',
             },
         });

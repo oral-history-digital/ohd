@@ -105,7 +105,7 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal 3, @project.texts.count
   end
 
-  test 'creates Erschliessung-role' do
+  test 'creates Erschließung-role' do
     erschliessung_role = @project.roles.where(name: 'Erschließung').first
     assert erschliessung_role.present?
     assert_equal 48, erschliessung_role.permissions.count

@@ -2,12 +2,13 @@ import { useTrackPageView } from 'modules/analytics';
 import { useGetCollection, useGetProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { LinkOrA } from 'modules/routes';
+import { LinkButton } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
+import { getProjectUrl } from '../utils';
 import {
     Citation,
     GenericDetail,
@@ -47,6 +48,21 @@ export function CollectionPage() {
     const collectionNotes = localizedValue(collection?.notes);
     const collectionHomepage = localizedValue(collection?.homepage);
     const collectionResponsibles = localizedValue(collection?.responsibles);
+
+    const { url, isExternalUrl } = getProjectUrl(project, locale);
+    const projectUrl = isExternalUrl ? `${url}/${locale}` : url; // Ensure we have the locale in the URL for external links
+    const collectionPageUrl = `${projectUrl}/searches/archive?collection_id[]=${collection.id}`;
+
+    const toCollectionButton = (
+        <LinkButton
+            buttonText={t('explorer.view_collection_page')}
+            variant="contained"
+            to={collectionPageUrl}
+            isExternal={isExternalUrl}
+            target={isExternalUrl ? '_blank' : '_self'}
+            endIcon={<FaArrowRight />}
+        />
+    );
 
     if (error && !collection) {
         return (
@@ -91,19 +107,7 @@ export function CollectionPage() {
                         {collectionName}
                     </h1>
 
-                    {collection?.is_linkable && (
-                        <p className="Paragraph u-mb">
-                            <LinkOrA
-                                project={project}
-                                to={'searches/archive'}
-                                params={`collection_id[]=${collection?.id}`}
-                                className="ProminentLink"
-                            >
-                                <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
-                                {t('modules.catalog.go_to_collection')}
-                            </LinkOrA>
-                        </p>
-                    )}
+                    {collection?.is_linkable && toCollectionButton}
 
                     <dl className="DescriptionList">
                         <ProjectLink
@@ -148,6 +152,11 @@ export function CollectionPage() {
                             />
                         )}
                         <XmlLinks collectionId={collection.id} />
+                        {collection?.is_linkable && (
+                            <div className="u-mv-large">
+                                {toCollectionButton}
+                            </div>
+                        )}
                     </dl>
                 </div>
             </ErrorBoundary>

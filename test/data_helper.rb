@@ -19,7 +19,7 @@ module DataHelper
           code: "level_of_indexing_ohd",
           children_only: false,
           use_in_transcript: false,
-          name: "Erschliessungsgrad (oh.d)"
+          name: "Erschließungsgrad (oh.d)"
         ),
         RegistryReferenceType.create(
           code: "subjects_ohd",

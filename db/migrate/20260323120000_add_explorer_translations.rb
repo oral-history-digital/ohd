@@ -406,12 +406,12 @@ class AddExplorerTranslations < ActiveRecord::Migration[8.0]
       ar: 'المجموعات',
     },
     'explorer.tab.archives_and_collections': {
-      de: 'Archive & Sammlungen',
-      en: 'Archives & Collections',
-      el: 'Αρχεία & Συλλογές',
+      de: 'Archive und Sammlungen',
+      en: 'Archives and Collections',
+      el: 'Αρχεία και Συλλογές',
       es: 'Archivos y Colecciones',
-      ru: 'Архивы и коллекции',
-      uk: 'Архіви та колекції',
+      ru: 'Архивы и Коллекции',
+      uk: 'Архіви і Колекції',
       ar: 'الأرشيفات والمجموعات',
     },
     'explorer.tab.institutions': {

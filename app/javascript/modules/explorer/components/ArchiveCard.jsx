@@ -16,7 +16,7 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
     const { t, locale } = useI18n();
     const institutionNames = archive.institutions
         ?.map((inst) => inst.name)
-        .join(', ');
+        .join(' / ');
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
 

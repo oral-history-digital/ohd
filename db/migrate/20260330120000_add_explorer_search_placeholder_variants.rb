@@ -1,9 +1,9 @@
 class AddExplorerSearchPlaceholderVariants < ActiveRecord::Migration[8.0]
   TRANSLATIONS = {
     'explorer.search_placeholder.archives': {
-      de: 'Archive & Sammlungen durchsuchen…',
-      en: 'Search archives & collections…',
-      el: 'Αναζήτηση αρχείων & συλλογών…',
+      de: 'Archive und Sammlungen durchsuchen…',
+      en: 'Search archives and collections…',
+      el: 'Αναζήτηση αρχείων και συλλογών…',
       es: 'Buscar archivos y colecciones…',
       ru: 'Поиск архивов и коллекций…',
       uk: 'Пошук архівів і колекцій…',

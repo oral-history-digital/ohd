@@ -2,13 +2,13 @@ import { useTrackPageView } from 'modules/analytics';
 import { useGetProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { LinkOrA } from 'modules/routes';
-import { SmartImage } from 'modules/ui';
+import { LinkButton, SmartImage } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
+import { getProjectUrl } from '../utils';
 import CollectionList from './CollectionList';
 import {
     Citation,
@@ -32,7 +32,7 @@ import {
 } from './details';
 
 export function ArchivePage() {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const id = Number(useParams().id);
     const { project } = useGetProject({ id, lite: true });
     useTrackPageView();
@@ -49,6 +49,20 @@ export function ArchivePage() {
 
     const title = project.display_name || project.name || '';
 
+    const { url: projectUrl, isExternalUrl: isExternalProjectLink } =
+        getProjectUrl(project, locale);
+
+    const toProjectButton = (
+        <LinkButton
+            buttonText={t('explorer.view_archive_page')}
+            variant="contained"
+            to={projectUrl}
+            isExternal={isExternalProjectLink}
+            target={isExternalProjectLink ? '_blank' : '_self'}
+            endIcon={<FaArrowRight />}
+        />
+    );
+
     return (
         <ScrollToTop>
             <Helmet>
@@ -62,13 +76,7 @@ export function ArchivePage() {
                     <div className="ProjectDetails-layout">
                         <div className="ProjectDetails-main">
                             <div className="ProjectDetails-actions">
-                                <LinkOrA
-                                    project={project}
-                                    className="ProminentLink"
-                                >
-                                    <FaChevronRight className="ProminentLink-icon u-mr-tiny" />
-                                    {t('explorer.view_archive_page')}
-                                </LinkOrA>
+                                {toProjectButton}
 
                                 {project.logo?.url && (
                                     <SmartImage
@@ -143,6 +151,9 @@ export function ArchivePage() {
                                 <XmlLinks
                                     projectShortname={project.shortname}
                                 />
+                                <div className="u-mv-large">
+                                    {toProjectButton}
+                                </div>
                             </dl>
                         </div>
 

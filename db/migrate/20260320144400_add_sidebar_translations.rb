@@ -1,12 +1,12 @@
 class AddSidebarTranslations < ActiveRecord::Migration[8.0]
   TRANSLATIONS = {
     'modules.sidebar.catalog': {
-      de: 'Archive & Sammlungen',
-      en: 'Archives & Collections',
-      el: 'Αρχεία & Συλλογές',
-      es: 'Archivos & Colecciones',
-      ru: 'Архивы & Коллекции',
-      uk: 'Архіви & Колекції',
+      de: 'Archive und Sammlungen',
+      en: 'Archives and Collections',
+      el: 'Αρχεία και Συλλογές',
+      es: 'Archivos y Colecciones',
+      ru: 'Архивы и Коллекции',
+      uk: 'Архіви і Колекції',
       ar: 'الأرشيفات والمجموعات',
     },
     'modules.sidebar.search': {
