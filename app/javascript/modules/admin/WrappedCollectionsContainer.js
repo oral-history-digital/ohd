@@ -14,11 +14,17 @@ import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
+    const collectionsQuery = getCollectionsQuery(state);
+
     return {
         data: getCollectionsForCurrentProject(state),
         dataStatus: getCollectionsStatus(state),
         resultPagesCount: getCollectionsStatus(state).resultPagesCount,
-        query: getCollectionsQuery(state),
+        query: {
+            ...collectionsQuery,
+            // Always fetch collections scoped to the current project in admin.
+            for_projects: project.id,
+        },
         outerScope: 'project',
         outerScopeId: project.id,
         scope: 'collection',

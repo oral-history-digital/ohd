@@ -13,7 +13,10 @@ class CollectionsController < ApplicationController
         if params[:lite].present?
           render json: lite_collection_json(@collection)
         else
-          render json: data_json(@collection)
+          render json: data_json(
+            @collection,
+            cache_key_suffix: collection_cache_key_suffix(@collection)
+          )
         end
       end
     end
@@ -52,6 +55,7 @@ class CollectionsController < ApplicationController
       extra_params = "all"
     elsif params[:for_projects]
       collections = policy_scope(Collection).
+        where(project_id: current_project.id).
         includes(:translations, :institution).
         order("collection_translations.name ASC")
       data_type = "projects"
@@ -74,9 +78,24 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.shortname}-collections-#{extra_params}-#{Collection.count}-#{Collection.maximum(:updated_at)}" do
+        cache_key = [
+          current_project.shortname,
+          'collections',
+          extra_params,
+          Collection.count,
+          Collection.maximum(:updated_at),
+          collection_linkability_cache_key(current_project.id)
+        ].join('-')
+
+        json = Rails.cache.fetch cache_key do
           {
-            data: collections.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: collections.inject({}) do |mem, s|
+              mem[s.id] = cache_single(
+                s,
+                cache_key_suffix: collection_cache_key_suffix(s)
+              )
+              mem
+            end,
             data_type: data_type,
             nested_data_type: nested_data_type,
             id: id,
@@ -131,6 +150,7 @@ class CollectionsController < ApplicationController
       project.id,
       extra_params,
       projects_cache_scope_key,
+      collection_linkability_cache_key(project.id),
       normalized_workflow_states&.join(','),
       I18n.locale,
       Project.maximum(:updated_at),
@@ -183,7 +203,7 @@ class CollectionsController < ApplicationController
         interview_year_range: payload[:interview_year_range],
         birth_year_range: payload[:birth_year_range],
         languages_interviews: payload[:languages_interviews],
-        cache_key_suffix: payload[:cache_key_suffix]
+        cache_key_suffix: collection_cache_key_suffix(collection, payload[:cache_key_suffix])
       )
     }
   end
@@ -236,7 +256,10 @@ class CollectionsController < ApplicationController
       format.json do
         render json: {
           nested_id: collection.id,
-          data: cache_single(collection),
+          data: cache_single(
+            collection,
+            cache_key_suffix: collection_cache_key_suffix(collection)
+          ),
           nested_data_type: "collections",
           data_type: 'projects',
           id: current_project.id,
@@ -273,5 +296,20 @@ class CollectionsController < ApplicationController
     filtered_states = states & allowed_states
 
     @normalized_workflow_states = filtered_states.presence
+  end
+
+  def collection_cache_key_suffix(collection, base_suffix = nil)
+    parts = [base_suffix, "linkability:#{collection_linkability_cache_key(collection.project_id)}"]
+    parts.compact.join('-')
+  end
+
+  # Cache key for collection linkability depends on whether the project has a 
+  #collection_id facet and when it was last updated.
+  def collection_linkability_cache_key(project_id)
+    return 'no-project' if project_id.blank?
+
+    relation = MetadataField.where(project_id: project_id, name: 'collection_id')
+    max_updated_at = relation.maximum(:updated_at)&.to_i || 0
+    "#{relation.count}-#{max_updated_at}"
   end
 end
