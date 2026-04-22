@@ -9,11 +9,11 @@ export const SORT_OPTIONS = [
 
 export const DEFAULT_SORT = 'name_asc';
 
-export const sortArchives = (archives, sort) => {
+export const sortProjects = (projects, sort) => {
     const [field, dir] = (sort || DEFAULT_SORT).split('_');
     const asc = dir === 'asc';
 
-    return [...archives].sort((a, b) => {
+    return [...projects].sort((a, b) => {
         let av, bv;
         if (field === 'name') {
             const aName = (a.display_name || a.name || '').toLowerCase();

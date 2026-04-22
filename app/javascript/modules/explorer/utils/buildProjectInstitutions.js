@@ -1,14 +1,14 @@
 /**
- * Extracts a deduplicated, sorted list of institutions from all archives.
+ * Extracts a deduplicated, sorted list of institutions from all projects.
  *
- * @param {Array} archives
+ * @param {Array} projects
  * @returns {Array<{ id: number, name: string }>}
  */
-export const buildArchiveInstitutions = (archives) => {
+export const buildProjectInstitutions = (projects) => {
     const seen = new Map();
 
-    archives.forEach((archive) => {
-        archive.institutions?.forEach((inst) => {
+    projects.forEach((project) => {
+        project.institutions?.forEach((inst) => {
             if (inst.id && !seen.has(inst.id)) {
                 seen.set(inst.id, inst.name);
             }

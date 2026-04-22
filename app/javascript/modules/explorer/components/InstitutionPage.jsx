@@ -5,7 +5,7 @@ import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 
-import { ArchivesList } from './ArchivesList';
+import { ProjectList } from './ProjectList';
 import {
     Address,
     GenericDetail,
@@ -22,8 +22,8 @@ export function InstitutionPage() {
 
     const title = institution?.name;
 
-    // Get IDs for institution & children to show archives list
-    const idsForArchivesList = [
+    // Get IDs for institution & children to show projects list
+    const idsForProjectList = [
         ...(institution?.id ? [institution.id] : []),
         ...(institution?.children?.map((child) => child.id) || []),
     ];
@@ -79,9 +79,9 @@ export function InstitutionPage() {
                         />
                     </dl>
 
-                    {idsForArchivesList && institution?.archives.length > 0 && (
-                        <ArchivesList
-                            institutionIds={idsForArchivesList}
+                    {idsForProjectList && institution?.archives.length > 0 && (
+                        <ProjectList
+                            institutionIds={idsForProjectList}
                             showTotals={false}
                             hideifEmpty={true}
                         />

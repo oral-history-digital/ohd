@@ -1,71 +1,71 @@
-import { sortArchives } from './sortArchives';
+import { sortProjects } from './sortProjects';
 
-describe('sortArchives', () => {
+describe('sortProjects', () => {
     test('sorts by name ascending while ignoring leading punctuation/quotes', () => {
-        const archives = [
+        const projects = [
             { name: 'Beta' },
             { name: '„Name“' },
             { name: '“Apple”' },
-            { name: '(Archive)' },
+            { name: '(Project)' },
             { name: 'Alpha' },
         ];
 
-        const actual = sortArchives(archives, 'name_asc').map(
-            (archive) => archive.name
+        const actual = sortProjects(projects, 'name_asc').map(
+            (project) => project.name
         );
 
         expect(actual).toEqual([
             'Alpha',
             '“Apple”',
-            '(Archive)',
             'Beta',
             '„Name“',
+            '(Project)',
         ]);
     });
 
     test('sorts by name descending while ignoring leading punctuation/quotes', () => {
-        const archives = [
+        const projects = [
             { name: 'Beta' },
             { name: '„Name“' },
             { name: '“Apple”' },
-            { name: '(Archive)' },
+            { name: '(Project)' },
             { name: 'Alpha' },
         ];
 
-        const actual = sortArchives(archives, 'name_desc').map(
-            (archive) => archive.name
+        const actual = sortProjects(projects, 'name_desc').map(
+            (project) => project.name
         );
 
         expect(actual).toEqual([
+            '(Project)',
             '„Name“',
             'Beta',
-            '(Archive)',
             '“Apple”',
             'Alpha',
         ]);
     });
 
     test('sorts by name ascending by default', () => {
-        const archives = [
+        const projects = [
             { name: 'A', interviews: { total: 1 } },
             { name: 'B', interviews: { total: 5 } },
             { name: 'C' },
         ];
 
-        const actual = sortArchives(archives).map((archive) => archive.name);
+        const actual = sortProjects(projects).map((project) => project.name);
 
         expect(actual).toEqual(['A', 'B', 'C']);
     });
 
     test('sorts by collections ascending and treats missing totals as zero', () => {
-        const archives = [
+        const projects = [
             { name: 'A', collections: { total: 2 } },
             { name: 'B' },
             { name: 'C', collections: { total: 1 } },
         ];
 
-        const actual = sortArchives(archives, 'collections_asc').map(
-            (archive) => archive.name
+        const actual = sortProjects(projects, 'collections_asc').map(
+            (project) => project.name
         );
 
         expect(actual).toEqual(['B', 'C', 'A']);

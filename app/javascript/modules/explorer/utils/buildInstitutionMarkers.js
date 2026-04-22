@@ -18,9 +18,9 @@ export const buildInstitutionMarkers = (institutions) =>
                 id: child.id,
                 name: child.name,
             })),
-            archives: (i.archives || []).map((archive) => ({
-                id: archive.id,
-                name: archive.name,
-                interviews_count: archive.interviews_count || 0,
+            projects: (i.archives || []).map((project) => ({
+                id: project.id,
+                name: project.name,
+                interviews_count: project.interviews_count || 0,
             })),
         }));

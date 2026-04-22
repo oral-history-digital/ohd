@@ -1,15 +1,15 @@
 /**
- * Filters archives by text query and/or interview count range.
+ * Filters projects by text query and/or interview count range.
  *
- * @param {Array}       archives
+ * @param {Array}       projects
  * @param {string}      query        - Text to match against name / institutions
  * @param {number|null} interviewMin - Inclusive minimum interview count (null = no limit)
  * @param {number|null} interviewMax - Inclusive maximum interview count (null = no limit)
  * @param {number[]}    institutionIds - Filter by institution ids (empty = all)
- * @returns {Array} Filtered archives
+ * @returns {Array} Filtered projects
  */
-export const filterArchives = (
-    archives,
+export const filterProjects = (
+    projects,
     query,
     interviewMin,
     interviewMax,
@@ -17,7 +17,7 @@ export const filterArchives = (
     collectionMax,
     institutionIds
 ) =>
-    archives.filter((a) => {
+    projects.filter((a) => {
         if (query) {
             const lower = query.toLowerCase();
             const matchesText =

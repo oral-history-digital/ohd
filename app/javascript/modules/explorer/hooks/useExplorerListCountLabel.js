@@ -8,7 +8,7 @@ import { buildListCountMeta } from '../utils';
  * Returns a translated list count label, with total in parentheses when filtered.
  *
  * @param {Object} params
- * @param {'archives'|'institutions'} params.scope
+ * @param {'project'|'institutions'} params.scope
  * @param {Array|number|null|undefined} params.displayedItems
  * @param {Array|number|null|undefined} params.totalItems
  * @returns {string}

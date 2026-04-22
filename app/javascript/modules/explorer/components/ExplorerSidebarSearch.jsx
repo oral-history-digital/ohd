@@ -4,9 +4,9 @@ import { useCurrentPage } from 'modules/routes';
 import { useSearchParams } from 'react-router-dom';
 
 import {
-    useArchivesAndCollectionsRange,
-    useExplorerArchiveInstitutions,
     useExplorerInterviewRange,
+    useExplorerProjectInstitutions,
+    useProjectsAndCollectionsRange,
 } from '../hooks';
 import {
     FILTER_PARAMS,
@@ -27,7 +27,7 @@ export function ExplorerSidebarSearch() {
     const { t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { projects: archives } = useGetProjects({
+    const { projects } = useGetProjects({
         all: true,
         workflowState: 'public',
     });
@@ -46,14 +46,16 @@ export function ExplorerSidebarSearch() {
 
     const isInstitutionsTab =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
-    const isArchivesTab = !isInstitutionsTab;
+    const isProjectsTab = !isInstitutionsTab;
 
-    const archiveInstitutions = useExplorerArchiveInstitutions({ archives });
+    const projectInstitutions = useExplorerProjectInstitutions({
+        projects: projects,
+    });
     const { globalMin, globalMax } = useExplorerInterviewRange({
-        items: isArchivesTab ? archives : (institutionsList ?? []),
+        items: isProjectsTab ? projects : (institutionsList ?? []),
     });
     const { globalCollectionMin, globalCollectionMax } =
-        useArchivesAndCollectionsRange({ items: archives });
+        useProjectsAndCollectionsRange({ items: projects });
 
     const query = searchParams.get('explorer_q') || '';
     const interviewMin = searchParams.has('explorer_interviews_min')
@@ -137,8 +139,8 @@ export function ExplorerSidebarSearch() {
         );
 
     const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
-    const searchPlaceholderKey = isArchivesTab
-        ? 'explorer.search_placeholder.archives'
+    const searchPlaceholderKey = isProjectsTab
+        ? 'explorer.search_placeholder.projects'
         : 'explorer.search_placeholder.institutions';
 
     const handleResetAll = () =>
@@ -166,7 +168,7 @@ export function ExplorerSidebarSearch() {
                 onChange={handleInterviewRangeChange}
             />
 
-            {isArchivesTab && (
+            {isProjectsTab && (
                 <ExplorerRangeFilter
                     label={t('explorer.filter.collections')}
                     globalMin={globalCollectionMin}
@@ -176,16 +178,16 @@ export function ExplorerSidebarSearch() {
                 />
             )}
 
-            {isArchivesTab && (
+            {isProjectsTab && (
                 <ExplorerInstitutionFilter
-                    institutions={archiveInstitutions}
+                    institutions={projectInstitutions}
                     values={institutionIds}
                     onChange={handleInstitutionChange}
                     onClearAll={handleInstitutionClearAll}
                 />
             )}
 
-            {!isArchivesTab && (
+            {!isProjectsTab && (
                 <ExplorerInstitutionLevelFilter
                     value={institutionLevel}
                     onChange={handleInstitutionLevelChange}

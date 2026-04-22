@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 import {
     useAccordion,
-    useArchivesAndCollectionsRange,
-    useArchivesSort,
     useExplorerListCountLabel,
+    useProjectsAndCollectionsRange,
+    useProjectsSort,
 } from '../hooks';
-import { filterArchives, sortArchives } from '../utils';
-import { ArchiveCard } from './ArchiveCard';
-import { ArchivesSortControl } from './ArchivesSortControl';
+import { filterProjects, sortProjects } from '../utils';
+import { ProjectCard } from './ProjectCard';
+import { ProjectSortControl } from './ProjectSortControl';
 
-export function ArchivesList({
+export function ProjectList({
     query,
     interviewMin,
     interviewMax,
@@ -24,20 +24,16 @@ export function ArchivesList({
 }) {
     const { t } = useI18n();
     const { expandedId, toggle } = useAccordion();
-    const { sort, setSort } = useArchivesSort();
-    const {
-        projects: archives,
-        isLoading,
-        error,
-    } = useGetProjects({
+    const { sort, setSort } = useProjectsSort();
+    const { projects, isLoading, error } = useGetProjects({
         all: true,
         workflowState: 'public',
     });
     const { globalCollectionMin, globalCollectionMax } =
-        useArchivesAndCollectionsRange({ items: archives });
+        useProjectsAndCollectionsRange({ items: projects });
 
-    const filtered = filterArchives(
-        archives,
+    const filtered = filterProjects(
+        projects,
         query,
         interviewMin,
         interviewMax,
@@ -45,26 +41,26 @@ export function ArchivesList({
         collectionMax ?? globalCollectionMax,
         institutionIds
     );
-    const archivesCountLabel = useExplorerListCountLabel({
-        scope: 'archives',
+    const projectCountLabel = useExplorerListCountLabel({
+        scope: 'project',
         displayedItems: filtered,
-        totalItems: archives,
+        totalItems: projects,
         showTotals,
     });
 
     if (isLoading) {
         return (
-            <div className="ArchivesList--loading">
-                {t('explorer.archives_list.loading')}
+            <div className="ProjectList--loading">
+                {t('explorer.project_list.loading')}
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="ArchivesList">
-                <div className="ArchivesList--error">
-                    {t('explorer.archives_list.error')}
+            <div className="ProjectList">
+                <div className="ProjectList--error">
+                    {t('explorer.project_list.error')}
                 </div>
             </div>
         );
@@ -76,40 +72,40 @@ export function ArchivesList({
         }
 
         return (
-            <div className="ArchivesList ArchivesList--empty">
+            <div className="ProjectList ProjectList--empty">
                 <p>
                     {query
-                        ? t('explorer.archives_list.no_results_query', {
+                        ? t('explorer.project_list.no_results_query', {
                               query,
                           })
-                        : t('explorer.archives_list.no_results')}
+                        : t('explorer.project_list.no_results')}
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="ArchivesList">
-            <div className="ArchivesList--filtersInfo">
-                <p className="ArchivesList--countLabel">{archivesCountLabel}</p>
-                <ArchivesSortControl value={sort} onChange={setSort} />
+        <div className="ProjectList">
+            <div className="ProjectList--filtersInfo">
+                <p className="ProjectList--countLabel">{projectCountLabel}</p>
+                <ProjectSortControl value={sort} onChange={setSort} />
             </div>
-            {sortArchives(filtered, sort).map((archive) => (
-                <ArchiveCard
-                    key={archive.id}
-                    archive={archive}
+            {sortProjects(filtered, sort).map((project) => (
+                <ProjectCard
+                    key={project.id}
+                    project={project}
                     query={query}
-                    expanded={expandedId === archive.id}
-                    onToggle={() => toggle(archive.id)}
+                    expanded={expandedId === project.id}
+                    onToggle={() => toggle(project.id)}
                 />
             ))}
         </div>
     );
 }
 
-export default ArchivesList;
+export default ProjectList;
 
-ArchivesList.propTypes = {
+ProjectList.propTypes = {
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,

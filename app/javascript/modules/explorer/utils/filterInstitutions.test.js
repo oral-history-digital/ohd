@@ -8,7 +8,7 @@ describe('filterInstitutions', () => {
             parent: { id: null, name: null },
             children: [{ id: 2, name: 'Child One' }],
             interviews: { total: 10 },
-            archives: [{ id: 1, name: 'Archive A' }],
+            projects: [{ id: 1, name: 'Project A' }],
         },
         {
             id: 2,
@@ -16,7 +16,7 @@ describe('filterInstitutions', () => {
             parent: { id: 1, name: 'Top One' },
             children: [],
             interviews: { total: 4 },
-            archives: [{ id: 2, name: 'Archive B' }],
+            projects: [{ id: 2, name: 'Project B' }],
         },
         {
             id: 3,
@@ -24,7 +24,7 @@ describe('filterInstitutions', () => {
             parent: { id: null, name: null },
             children: [],
             interviews: { total: 2 },
-            archives: [{ id: 3, name: 'Archive C' }],
+            projects: [{ id: 3, name: 'Project C' }],
         },
     ];
 

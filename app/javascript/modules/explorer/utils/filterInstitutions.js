@@ -2,7 +2,7 @@
  * Filters institutions by text query and/or interview count range.
  *
  * @param {Array}       institutions
- * @param {string}      query        - Text to match against name / description / archive names
+ * @param {string}      query        - Text to match against name / description / project names
  * @param {number|null} interviewMin - Inclusive minimum interview count (null = no limit)
  * @param {number|null} interviewMax - Inclusive maximum interview count (null = no limit)
  * @returns {Array} Filtered institutions
@@ -12,8 +12,8 @@ export const filterInstitutions = (
     query,
     interviewMin,
     interviewMax,
-    instArchiveMin,
-    instArchiveMax,
+    instProjectMin,
+    instProjectMax,
     institutionLevel = 'all'
 ) =>
     institutions.filter((i) => {
@@ -40,10 +40,10 @@ export const filterInstitutions = (
             if (interviewMax !== null && total > interviewMax) return false;
         }
 
-        if (instArchiveMin !== null || instArchiveMax !== null) {
+        if (instProjectMin !== null || instProjectMax !== null) {
             const count = i.archives?.length ?? 0;
-            if (instArchiveMin !== null && count < instArchiveMin) return false;
-            if (instArchiveMax !== null && count > instArchiveMax) return false;
+            if (instProjectMin !== null && count < instProjectMin) return false;
+            if (instProjectMax !== null && count > instProjectMax) return false;
         }
 
         return true;

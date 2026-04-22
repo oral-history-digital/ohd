@@ -3,8 +3,8 @@ import { normalizeNameForSort } from 'modules/utils';
 export const INST_SORT_OPTIONS = [
     { value: 'name_asc', labelKey: 'explorer.sort.name_asc' },
     { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
-    { value: 'archives_desc', labelKey: 'explorer.sort.archives_desc' },
-    { value: 'archives_asc', labelKey: 'explorer.sort.archives_asc' },
+    { value: 'projects_desc', labelKey: 'explorer.sort.projects_desc' },
+    { value: 'projects_asc', labelKey: 'explorer.sort.projects_asc' },
     { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
     { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
 ];
@@ -32,7 +32,7 @@ export const sortInstitutions = (institutions, sort) => {
         }
 
         let av, bv;
-        if (field === 'archives') {
+        if (field === 'projects') {
             av = a.archives?.length ?? 0;
             bv = b.archives?.length ?? 0;
         } else if (field === 'collections') {

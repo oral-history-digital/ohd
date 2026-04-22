@@ -6,7 +6,7 @@ describe('sortInstitutions', () => {
             { name: 'Beta' },
             { name: '„Name“' },
             { name: '“Apple”' },
-            { name: '(Archive)' },
+            { name: '(Project)' },
             { name: 'Alpha' },
         ];
 
@@ -17,9 +17,9 @@ describe('sortInstitutions', () => {
         expect(actual).toEqual([
             'Alpha',
             '“Apple”',
-            '(Archive)',
             'Beta',
             '„Name“',
+            '(Project)',
         ]);
     });
 
@@ -28,7 +28,7 @@ describe('sortInstitutions', () => {
             { name: 'Beta' },
             { name: '„Name“' },
             { name: '“Apple”' },
-            { name: '(Archive)' },
+            { name: '(Project)' },
             { name: 'Alpha' },
         ];
 
@@ -37,22 +37,22 @@ describe('sortInstitutions', () => {
         );
 
         expect(actual).toEqual([
+            '(Project)',
             '„Name“',
             'Beta',
-            '(Archive)',
             '“Apple”',
             'Alpha',
         ]);
     });
 
-    test('sorts by archives ascending and treats missing archives as zero', () => {
+    test('sorts by projects ascending and treats missing projects as zero', () => {
         const institutions = [
             { name: 'A', archives: [{ id: 1 }, { id: 2 }] },
             { name: 'B' },
             { name: 'C', archives: [{ id: 3 }] },
         ];
 
-        const actual = sortInstitutions(institutions, 'archives_asc').map(
+        const actual = sortInstitutions(institutions, 'projects_asc').map(
             (institution) => institution.name
         );
 

@@ -9,7 +9,7 @@ export function InstitutionsMapPopup({ title, marker }) {
     const pathBase = usePathBase();
 
     const children = marker.children || [];
-    const archives = (marker.archives || []).slice(0, 2); // Show up to 2 archives
+    const projects = (marker.projects || []).slice(0, 2); // Show up to 2 projects
     const institutionUrl = `${pathBase}/catalog/institutions/${marker.id}`;
 
     const formatNum = (num) => formatNumber(num, 0, locale);
@@ -42,37 +42,37 @@ export function InstitutionsMapPopup({ title, marker }) {
                 </>
             )}
 
-            {archives.length > 0 && (
+            {projects.length > 0 && (
                 <>
                     <h4 className="MapPopup-subHeading">
-                        {t('explorer.archives')} (
-                        {formatNum(marker.archives.length)}):
+                        {t('explorer.projects')} (
+                        {formatNum(marker.projects.length)}):
                     </h4>
                     <ul className="MapPopup-list">
-                        {archives.map((archive) => (
-                            <li key={archive.id} className="MapPopup-text">
+                        {projects.map((project) => (
+                            <li key={project.id} className="MapPopup-text">
                                 <Link
-                                    to={`${pathBase}/catalog/archives/${archive.id}`}
+                                    to={`${pathBase}/catalog/archives/${projects.id}`}
                                 >
-                                    {archive.name}
+                                    {projects.name}
                                 </Link>
-                                {archive.interviews_count > 0 && (
+                                {projects.interviews_count > 0 && (
                                     <span className="MapPopup-interviewCount">
                                         {' '}
                                         ({formatNum(
-                                            archive.interviews_count
+                                            projects.interviews_count
                                         )}{' '}
                                         {t('explorer.interviews')})
                                     </span>
                                 )}
                             </li>
                         ))}
-                        {marker.archives.length > 2 && (
+                        {marker.projects.length > 2 && (
                             <li className="MapPopup-text">
                                 <Link to={institutionUrl}>
                                     {t('explorer.institutions_map.and_more', {
                                         count: formatNum(
-                                            marker.archives.length - 2
+                                            marker.projects.length - 2
                                         ),
                                     })}
                                 </Link>
@@ -95,7 +95,7 @@ InstitutionsMapPopup.propTypes = {
                 name: PropTypes.string.isRequired,
             })
         ),
-        archives: PropTypes.arrayOf(
+        projects: PropTypes.arrayOf(
             PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 name: PropTypes.string.isRequired,

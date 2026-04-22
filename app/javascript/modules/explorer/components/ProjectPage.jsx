@@ -31,7 +31,7 @@ import {
     YearRange,
 } from './details';
 
-export function ArchivePage() {
+export function ProjectPage() {
     const { t, locale } = useI18n();
     const id = Number(useParams().id);
     const { project } = useGetProject({ id, lite: true });
@@ -54,7 +54,7 @@ export function ArchivePage() {
 
     const toProjectButton = (
         <LinkButton
-            buttonText={t('explorer.view_archive_page')}
+            buttonText={t('explorer.view_project_page')}
             variant="contained"
             to={projectUrl}
             isExternal={isExternalProjectLink}
@@ -168,11 +168,11 @@ export function ArchivePage() {
                         )}
                     </div>
 
-                    <CollectionList archive={project} />
+                    <CollectionList project={project} />
                 </div>
             </ErrorBoundary>
         </ScrollToTop>
     );
 }
 
-export default ArchivePage;
+export default ProjectPage;

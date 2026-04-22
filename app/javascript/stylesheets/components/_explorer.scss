@@ -23,7 +23,7 @@
   margin-bottom: $base-unit;
 }
 
-.ArchivesList--filtersInfo,
+.ProjectList--filtersInfo,
 .InstitutionsList--filtersInfo,
 .CollectionList--filtersInfo {
   display: flex;
@@ -34,18 +34,18 @@
   margin-bottom: $base-unit * 0.5;
 }
 
-.InstitutionsList .ArchivesList--filtersInfo,
+.InstitutionsList .ProjectList--filtersInfo,
 .CollectionList--filtersInfo {
   margin-top: $base-unit * 2;
 }
 
-.ArchivesList--filtersInfo .SortControl,
+.ProjectList--filtersInfo .SortControl,
 .InstitutionsList--filtersInfo .SortControl,
 .CollectionList--filtersInfo .SortControl {
   margin-left: auto;
 }
 
-.ArchivesList--countLabel,
+.ProjectList--countLabel,
 .InstitutionsList--countLabel,
 .CollectionList--countLabel {
   margin: 0;
@@ -96,22 +96,22 @@
   min-height: 400px;
 }
 
-// ArchivesList
+// ProjectList
 // --------------------------------------------------
 
-.ArchivesList {
+.ProjectList {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.ArchivesList--empty {
+.ProjectList--empty {
   padding: $base-unit * 2;
   text-align: center;
   color: $gray-dark;
 }
 
-.ArchivesList--loading {
+.ProjectList--loading {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,7 +138,7 @@
   }
 }
 
-.ArchivesList--error {
+.ProjectList--error {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,10 +164,10 @@
   }
 }
 
-// ArchiveCard
+// ProjectCard
 // --------------------------------------------------
 
-.ArchiveCard {
+.ProjectCard {
   border: 1px solid $gray-lighter;
   border-radius: 6px;
   background: #fff;
@@ -178,11 +178,11 @@
   }
 }
 
-.ArchiveCard--expanded {
+.ProjectCard--expanded {
   border-color: $gray-light;
 }
 
-.ArchiveCard-header {
+.ProjectCard-header {
   display: flex;
   align-items: center;
   gap: $base-unit * 0.5;
@@ -196,7 +196,7 @@
   color: inherit;
 }
 
-.ArchiveCard-chevron {
+.ProjectCard-chevron {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -204,12 +204,12 @@
   font-size: $base-unit * 0.5;
 }
 
-.ArchiveCard-headerContent {
+.ProjectCard-headerContent {
   flex: 1;
   min-width: 0;
 }
 
-.ArchiveCard-title {
+.ProjectCard-title {
   margin: 0;
   font-size: $font-size-large;
   font-weight: 600;
@@ -217,31 +217,31 @@
   line-height: 1.3;
 }
 
-.ArchiveCard-meta {
+.ProjectCard-meta {
   display: block;
   margin-top: 0.25rem;
   line-height: $line-height-small;
 }
 
-.ArchiveCard-metaItem {
+.ProjectCard-metaItem {
   display: inline;
   white-space: normal;
   font-size: $font-size-medium;
   color: $gray-dark;
 }
 
-.ArchiveCard-metaItem + .ArchiveCard-metaItem {
+.ProjectCard-metaItem + .ProjectCard-metaItem {
   margin-left: 1rem;
 }
 
-.ArchiveCard-body {
+.ProjectCard-body {
   display: flex;
   flex-direction: column;
   padding: $base-unit;
   border-top: 1px solid $gray-lightest;
 }
 
-.ArchiveCard-description,
+.ProjectCard-description,
 .InstitutionCard-description {
   font-family: inherit;
   font-weight: 400;
@@ -252,7 +252,7 @@
   }
 }
 
-.ArchiveCard-label,
+.ProjectCard-label,
 .InstitutionCard-label,
 .CollectionCard-label {
   font-weight: bold;
@@ -262,7 +262,7 @@
   margin: 0;
 }
 
-.ArchiveCard-description {
+.ProjectCard-description {
   a {
     color: var(--primary-color, #c0392b);
     text-decoration: underline;
@@ -273,19 +273,19 @@
   }
 }
 
-.ArchiveCard-details {
+.ProjectCard-details {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
   margin-top: $base-unit * 0.5;
 }
 
-.ArchiveCard-detailItem {
+.ProjectCard-detailItem {
   font-size: $font-size-medium;
   color: $gray-dark;
 }
 
-.ArchiveCard .ArchiveCard-pageButton,
+.ProjectCard .ProjectCard-pageButton,
 .CollectionCard .CollectionCard-pageButton,
 .InstitutionCard .InstitutionCard-pageButton {
   display: flex;
@@ -642,7 +642,7 @@ h4.CollectionList-collectionsTitle {
 
 // Remove top spacing from first child element, moving down
 // through nested first-child selectors
-.ArchiveCard-body > :first-child,
+.ProjectCard-body > :first-child,
 .CollectionCard-body > :first-child,
 .InstitutionCard-body > :first-child {
   padding-top: 0;

@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { DEFAULT_SORT } from '../utils';
 
-export function useArchivesSort() {
+export function useProjectsSort() {
     const [searchParams, setSearchParams] = useSearchParams();
     const sort = searchParams.get('explorer_sort') || DEFAULT_SORT;
 

@@ -16,8 +16,8 @@ export function InstitutionsList({
     query,
     interviewMin,
     interviewMax,
-    instArchiveMin,
-    instArchiveMax,
+    instProjectMin,
+    instProjectMax,
     institutionLevel,
 }) {
     const { t } = useI18n();
@@ -33,8 +33,8 @@ export function InstitutionsList({
         query,
         interviewMin,
         interviewMax,
-        instArchiveMin,
-        instArchiveMax,
+        instProjectMin,
+        instProjectMax,
         institutionLevel
     );
     const institutionsCountLabel = useExplorerListCountLabel({
@@ -108,8 +108,8 @@ InstitutionsList.propTypes = {
     query: PropTypes.string,
     interviewMin: PropTypes.number,
     interviewMax: PropTypes.number,
-    instArchiveMin: PropTypes.number,
-    instArchiveMax: PropTypes.number,
+    instProjectMin: PropTypes.number,
+    instProjectMax: PropTypes.number,
     institutionLevel: PropTypes.oneOf(['all', 'top_level', 'with_parent']),
 };
 

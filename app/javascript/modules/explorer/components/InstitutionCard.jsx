@@ -7,8 +7,8 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
-import { ArchivesList } from './ArchivesList';
 import { HighlightText } from './HighlightText';
+import { ProjectList } from './ProjectList';
 import { Institutions, InterviewStats, RichtextDetail } from './details';
 
 export function InstitutionCard({ institution, query, expanded, onToggle }) {
@@ -18,10 +18,12 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const hasChildren = institution.children?.length > 0;
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
+    console.log('InstitutionCard render', { institution });
 
-    const countArchives =
+    const countProjects =
         institution.archives?.filter(
-            (archive) => archive.workflow_state === 'public'
+            // Backend uses "archives" for projects in this case
+            (project) => project.workflow_state === 'public'
         ).length || 0;
     const countCollections =
         (institution.collections?.public || 0) +
@@ -29,12 +31,12 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const countInterviews = institution.interviews?.total || 0;
 
     const formatNum = (num) => formatNumber(num, 0, locale);
-    const numArchives = formatNum(countArchives);
+    const numProjects = formatNum(countProjects);
     const numCollections = formatNum(countCollections);
     const numInterviews = formatNum(countInterviews);
 
-    const archivesLabel = t(
-        pluralizeKey('activerecord.models.project', countArchives, locale)
+    const projectsLabel = t(
+        pluralizeKey('activerecord.models.project', countProjects, locale)
     );
     const collectionsLabel = t(
         pluralizeKey('activerecord.models.collection', countCollections, locale)
@@ -43,8 +45,8 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
         pluralizeKey('activerecord.models.interview', countInterviews, locale)
     );
 
-    // Get IDs for institution & children to show archives list
-    const idsForArchivesList = [
+    // Get IDs for institution & children to show projects list
+    const idsForProjectList = [
         ...(institution?.id ? [institution.id] : []),
         ...(institution?.children?.map((child) => child.id) || []),
     ];
@@ -90,9 +92,9 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                                 )}
                             </span>
                         )}
-                        {countArchives > 0 && (
+                        {countProjects > 0 && (
                             <span className="InstitutionCard-metaItem">
-                                {numArchives} {archivesLabel}
+                                {numProjects} {projectsLabel}
                             </span>
                         )}
                         {countCollections > 0 && (
@@ -141,9 +143,9 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
                         />
                     </div>
 
-                    {idsForArchivesList && institution?.archives.length > 0 && (
-                        <ArchivesList
-                            institutionIds={idsForArchivesList}
+                    {idsForProjectList && institution?.archives.length > 0 && (
+                        <ProjectList
+                            institutionIds={idsForProjectList}
                             showTotals={false}
                             hideifEmpty={true}
                         />

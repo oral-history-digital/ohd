@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 const defaultGetCount = (item) => item.collections?.total ?? 0;
 
-export function useArchivesAndCollectionsRange({
+export function useProjectsAndCollectionsRange({
     items,
     getCount = defaultGetCount,
 }) {

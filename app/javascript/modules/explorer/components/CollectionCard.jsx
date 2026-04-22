@@ -12,13 +12,13 @@ import { getProjectUrl } from '../utils';
 import { HighlightText } from './HighlightText';
 import { InterviewLanguages, InterviewStats, RichtextDetail } from './details';
 
-export function CollectionCard({ collection, archive, query }) {
+export function CollectionCard({ collection, project, query }) {
     const { t } = useI18n();
     const [expanded, setExpanded] = useState(false);
     const match = useMatch('/:locale/*');
     const locale = match?.params?.locale || 'de';
 
-    const { url, isExternalUrl } = getProjectUrl(archive, locale);
+    const { url, isExternalUrl } = getProjectUrl(project, locale);
     const projectUrl = isExternalUrl ? `${url}/${locale}` : url; // Ensure we have the locale in the URL for external links
 
     const collectionDetailsUrl = `/${locale}/catalog/collections/${collection.id}`;
@@ -111,6 +111,6 @@ export default CollectionCard;
 
 CollectionCard.propTypes = {
     collection: PropTypes.object.isRequired,
-    archive: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     query: PropTypes.string,
 };

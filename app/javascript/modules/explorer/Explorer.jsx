@@ -1,7 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
-import { ArchivesList, InstitutionsList } from './components';
+import { InstitutionsList, ProjectList } from './components';
 import { useExplorerParams } from './hooks';
 
 export function Explorer() {
@@ -13,16 +13,16 @@ export function Explorer() {
         interviewMax,
         collectionMin,
         collectionMax,
-        instArchiveMin,
-        instArchiveMax,
+        instProjectMin,
+        instProjectMax,
         institutionIds,
         institutionLevel,
     } = useExplorerParams();
-    const archivesTabLabel = t('explorer.tab.archives_and_collections');
+    const projectsTabLabel = t('explorer.tab.projects_and_collections');
     const institutionsTabLabel = t('explorer.tab.institutions');
     const explorerTitle = isInstitutionsTab
         ? institutionsTabLabel
-        : archivesTabLabel;
+        : projectsTabLabel;
 
     return (
         <>
@@ -39,14 +39,14 @@ export function Explorer() {
                             query={query}
                             interviewMin={interviewMin}
                             interviewMax={interviewMax}
-                            instArchiveMin={instArchiveMin}
-                            instArchiveMax={instArchiveMax}
+                            instProjectMin={instProjectMin}
+                            instProjectMax={instProjectMax}
                             institutionLevel={institutionLevel}
                         />
                     </div>
                 ) : (
                     <div className="Explorer-tabPanel">
-                        <ArchivesList
+                        <ProjectList
                             query={query}
                             interviewMin={interviewMin}
                             interviewMax={interviewMax}

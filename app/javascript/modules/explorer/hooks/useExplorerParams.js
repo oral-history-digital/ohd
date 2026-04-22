@@ -35,11 +35,11 @@ export const useExplorerParams = () => {
         collectionMax: searchParams.has('explorer_collections_max')
             ? Number(searchParams.get('explorer_collections_max'))
             : null,
-        instArchiveMin: searchParams.has('explorer_inst_archives_min')
-            ? Number(searchParams.get('explorer_inst_archives_min'))
+        instProjectMin: searchParams.has('explorer_inst_projects_min')
+            ? Number(searchParams.get('explorer_inst_projects_min'))
             : null,
-        instArchiveMax: searchParams.has('explorer_inst_archives_max')
-            ? Number(searchParams.get('explorer_inst_archives_max'))
+        instProjectMax: searchParams.has('explorer_inst_projects_max')
+            ? Number(searchParams.get('explorer_inst_projects_max'))
             : null,
         institutionIds: searchParams.has('explorer_institution')
             ? searchParams

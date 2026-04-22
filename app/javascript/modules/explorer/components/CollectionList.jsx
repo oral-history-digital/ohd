@@ -11,9 +11,9 @@ import { CollectionSortControl } from './CollectionSortControl';
 
 const INITIAL_VISIBLE_COLLECTIONS = 10;
 
-export function CollectionList({ archive, query = '' }) {
+export function CollectionList({ project, query = '' }) {
     const { t } = useI18n();
-    const { collections } = useGetProjectCollections(archive.id, {
+    const { collections } = useGetProjectCollections(project.id, {
         all: true,
         workflowState: 'public',
     });
@@ -46,7 +46,7 @@ export function CollectionList({ archive, query = '' }) {
                 <CollectionCard
                     key={collection.id}
                     collection={collection}
-                    archive={archive}
+                    project={project}
                     query={query}
                 />
             ))}
@@ -67,6 +67,6 @@ export function CollectionList({ archive, query = '' }) {
 export default CollectionList;
 
 CollectionList.propTypes = {
-    archive: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     query: PropTypes.string,
 };
