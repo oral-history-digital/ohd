@@ -115,7 +115,8 @@ export function ArchiveCard({ archive, query, expanded, onToggle }) {
                         />
                     </div>
 
-                    <CollectionList archive={archive} query={query} />
+                    {/* Don't pass query. we want all related collections */}
+                    <CollectionList archive={archive} />
                 </div>
             )}
         </div>
