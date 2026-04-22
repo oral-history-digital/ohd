@@ -16,12 +16,12 @@ export const useExplorerParams = () => {
     )
         ? institutionLevelParam
         : 'all';
-    const isInstitutionsTab =
+    const isInstitutionsList =
         currentPage.pageType === 'catalog_page' &&
         currentPage.params.catalogType === 'institutions';
 
     return {
-        isInstitutionsTab,
+        isInstitutionsList,
         query: searchParams.get('explorer_q') || '',
         interviewMin: searchParams.has('explorer_interviews_min')
             ? Number(searchParams.get('explorer_interviews_min'))

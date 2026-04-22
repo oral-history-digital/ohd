@@ -44,9 +44,9 @@ export function ExplorerSidebarSearch() {
         !currentPage.params.id;
     const showSidebarFilters = isCatalogRoot || isInstitutionsIndex;
 
-    const isInstitutionsTab =
+    const isInstitutionsList =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
-    const isProjectsTab = !isInstitutionsTab;
+    const isProjectsTab = !isInstitutionsList;
 
     const projectInstitutions = useExplorerProjectInstitutions({
         projects: projects,

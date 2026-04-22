@@ -7,7 +7,7 @@ import { useExplorerParams } from './hooks';
 export function Explorer() {
     const { t } = useI18n();
     const {
-        isInstitutionsTab,
+        isInstitutionsList,
         query,
         interviewMin,
         interviewMax,
@@ -18,11 +18,10 @@ export function Explorer() {
         institutionIds,
         institutionLevel,
     } = useExplorerParams();
-    const projectsTabLabel = t('explorer.tab.projects_and_collections');
-    const institutionsTabLabel = t('explorer.tab.institutions');
-    const explorerTitle = isInstitutionsTab
-        ? institutionsTabLabel
-        : projectsTabLabel;
+
+    const explorerTitle = isInstitutionsList
+        ? t('explorer.tab.institutions')
+        : t('explorer.tab.projects_and_collections');
 
     return (
         <>
@@ -33,8 +32,8 @@ export function Explorer() {
                 <h1 className="Page-main-title Explorer--title">
                     {explorerTitle}
                 </h1>
-                {isInstitutionsTab ? (
-                    <div className="Explorer-tabPanel">
+                <div className="Explorer-tabPanel">
+                    {isInstitutionsList ? (
                         <InstitutionsList
                             query={query}
                             interviewMin={interviewMin}
@@ -43,9 +42,7 @@ export function Explorer() {
                             instProjectMax={instProjectMax}
                             institutionLevel={institutionLevel}
                         />
-                    </div>
-                ) : (
-                    <div className="Explorer-tabPanel">
+                    ) : (
                         <ProjectList
                             query={query}
                             interviewMin={interviewMin}
@@ -54,8 +51,8 @@ export function Explorer() {
                             collectionMax={collectionMax}
                             institutionIds={institutionIds}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </>
     );
