@@ -21,10 +21,6 @@ export const filterInstitutions = (
             return false;
         }
 
-        if (institutionLevel === 'with_parent' && !i.parent?.id) {
-            return false;
-        }
-
         if (query) {
             const lower = query.toLowerCase();
             const matchesQuery =

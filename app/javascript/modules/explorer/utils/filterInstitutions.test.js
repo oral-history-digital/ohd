@@ -55,20 +55,6 @@ describe('filterInstitutions', () => {
         expect(actual.map((i) => i.id)).toEqual([1, 3]);
     });
 
-    test('filters to child institutions', () => {
-        const actual = filterInstitutions(
-            institutions,
-            '',
-            null,
-            null,
-            null,
-            null,
-            'with_parent'
-        );
-
-        expect(actual.map((i) => i.id)).toEqual([2]);
-    });
-
     test('combines hierarchy with query filter', () => {
         const actual = filterInstitutions(
             institutions,
@@ -77,9 +63,9 @@ describe('filterInstitutions', () => {
             null,
             null,
             null,
-            'with_parent'
+            'top_level'
         );
 
-        expect(actual).toEqual([]);
+        expect(actual.map((i) => i.id)).toEqual([1, 3]);
     });
 });

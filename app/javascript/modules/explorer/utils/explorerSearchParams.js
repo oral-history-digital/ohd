@@ -136,17 +136,18 @@ export const applyInstitutionParam = (prev, institutionIds) => {
 
 /**
  * Sets or removes the `explorer_institution_level` search param.
- * Allowed values are `all`, `top_level`, and `with_parent`; `all` is omitted for a clean URL.
+ * Allowed values are `all` and `top_level`; `all` is omitted for a clean URL.
  *
  * @param {URLSearchParams} prev
- * @param {'all' | 'top_level' | 'with_parent'} level
+ * @param {'all' | 'top_level'} level
  * @returns {URLSearchParams}
  */
 export const applyInstitutionLevelParam = (prev, level) => {
+    const paramName = 'explorer_institution_level';
     if (level && level !== 'all') {
-        prev.set('explorer_institution_level', level);
+        prev.set(paramName, level);
     } else {
-        prev.delete('explorer_institution_level');
+        prev.delete(paramName);
     }
 
     return prev;

@@ -11,9 +11,7 @@ export const useExplorerParams = () => {
     const institutionLevelParam = searchParams.get(
         'explorer_institution_level'
     );
-    const institutionLevel = ['top_level', 'with_parent'].includes(
-        institutionLevelParam
-    )
+    const institutionLevel = ['top_level'].includes(institutionLevelParam)
         ? institutionLevelParam
         : 'all';
     const isInstitutionsList =
