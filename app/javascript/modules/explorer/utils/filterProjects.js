@@ -28,7 +28,8 @@ export const filterProjects = (
                     (i) =>
                         i.name?.toLowerCase().includes(lower) ||
                         i.parent?.name?.toLowerCase().includes(lower) // Include parent institution in text search
-                );
+                ) ||
+                a.shortname?.toLowerCase().includes(lower);
             if (!matchesText) return false;
         }
 

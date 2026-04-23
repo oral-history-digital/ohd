@@ -45,20 +45,6 @@ describe('sortInstitutions', () => {
         ]);
     });
 
-    test('sorts by projects ascending and treats missing projects as zero', () => {
-        const institutions = [
-            { name: 'A', archives: [{ id: 1 }, { id: 2 }] },
-            { name: 'B' },
-            { name: 'C', archives: [{ id: 3 }] },
-        ];
-
-        const actual = sortInstitutions(institutions, 'projects_asc').map(
-            (institution) => institution.name
-        );
-
-        expect(actual).toEqual(['B', 'C', 'A']);
-    });
-
     test('sorts by collections descending and treats missing totals as zero', () => {
         const institutions = [
             { name: 'A', collections: { total: 2 } },

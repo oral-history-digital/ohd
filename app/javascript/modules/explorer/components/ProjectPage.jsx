@@ -1,4 +1,5 @@
 import { useTrackPageView } from 'modules/analytics';
+import { useIsEditor } from 'modules/archive';
 import { useGetProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -35,6 +36,7 @@ export function ProjectPage() {
     const { t, locale } = useI18n();
     const id = Number(useParams().id);
     const { project } = useGetProject({ id, lite: true });
+    const isEditviewActive = useIsEditor();
     useTrackPageView();
 
     if (!project) {
@@ -134,6 +136,12 @@ export function ProjectPage() {
                                 <PublicationDate
                                     publicationDate={project.publication_date}
                                 />
+                                {isEditviewActive && (
+                                    <GenericDetail
+                                        labelKey="activerecord.attributes.project.shortname"
+                                        value={project.shortname}
+                                    />
+                                )}
                                 <Citation
                                     type="project"
                                     institutions={project.institutions}
