@@ -9,7 +9,6 @@ export * from './Dropdown';
 export * from './ExplorerInstitutionFilter';
 export * from './ExplorerInstitutionLevelFilter';
 export * from './ExplorerRangeFilter';
-export * from './ExplorerResetFilters';
 export * from './ExplorerSearchInput';
 export * from './ExplorerSidebarSearch';
 export * from './HighlightText';

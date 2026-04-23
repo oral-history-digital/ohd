@@ -46,6 +46,7 @@ $slick-font-path: '~slick-carousel/slick/fonts/';
 
 /* Components */
 @import 'components/admin-edit-instance';
+@import 'components/archive-search-form';
 @import 'components/aspect-ratio';
 @import 'components/back-to-top';
 @import 'components/banner';
@@ -115,6 +116,7 @@ $slick-font-path: '~slick-carousel/slick/fonts/';
 @import 'components/registry-entry';
 @import 'components/registry-reference';
 @import 'components/registry-references';
+@import 'components/reset-filters-button';
 @import 'components/rule';
 @import 'components/search-map';
 @import 'components/search-result';

@@ -1,6 +1,7 @@
 import { useGetInstitutionsList, useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useCurrentPage } from 'modules/routes';
+import { ResetFiltersButton } from 'modules/ui';
 import { useSearchParams } from 'react-router-dom';
 
 import {
@@ -20,7 +21,6 @@ import {
 import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
 import { ExplorerInstitutionLevelFilter } from './ExplorerInstitutionLevelFilter';
 import { ExplorerRangeFilter } from './ExplorerRangeFilter';
-import { ExplorerResetFilters } from './ExplorerResetFilters';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
 
 export function ExplorerSidebarSearch() {
@@ -149,7 +149,7 @@ export function ExplorerSidebarSearch() {
     return (
         <div className="ExplorerSidebarSearch">
             {hasActiveFilters && (
-                <ExplorerResetFilters onClick={handleResetAll} />
+                <ResetFiltersButton onClick={handleResetAll} />
             )}
             <ExplorerSearchInput
                 value={query}
