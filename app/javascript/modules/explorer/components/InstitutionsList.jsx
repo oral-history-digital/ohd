@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import classNames from 'classnames';
 import { useGetInstitutionsList } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
@@ -21,6 +24,7 @@ export function InstitutionsList({
     institutionLevel,
 }) {
     const { t } = useI18n();
+    const [isMapExpanded, setIsMapExpanded] = useState(false);
     const { expandedId, toggle } = useAccordion();
     const { sort, setSort } = useInstitutionsSort();
     const { institutions, loading, error } = useGetInstitutionsList({
@@ -71,7 +75,21 @@ export function InstitutionsList({
 
     return (
         <div className="InstitutionsList">
-            <InstitutionsMap institutions={filteredInstitutions} />
+            <div
+                className={classNames('InstitutionsList-header', {
+                    'InstitutionsList-header--mapExpanded': isMapExpanded,
+                })}
+            >
+                <p className="InstitutionsList-description">
+                    {t('explorer.institutions_list.description', {
+                        count: institutions.length,
+                    })}
+                </p>
+                <InstitutionsMap
+                    institutions={filteredInstitutions}
+                    onExpandedChange={setIsMapExpanded}
+                />
+            </div>
             <div className="InstitutionsList--filtersInfo">
                 <p className="InstitutionsList--countLabel">
                     {institutionsCountLabel}

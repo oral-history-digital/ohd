@@ -1,11 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 
 import 'leaflet/dist/leaflet.css';
+import { useI18n } from 'modules/i18n';
 import MapPopup from 'modules/map/components/MapPopup';
 import MapResizeHandler from 'modules/map/components/MapResizeHandler';
 import MapTooltip from 'modules/map/components/MapTooltip';
 import PropTypes from 'prop-types';
-import { FaArrowsAltV } from 'react-icons/fa';
+import { FaCompressAlt, FaExpandAlt } from 'react-icons/fa';
 import { CircleMarker, MapContainer, TileLayer, useMap } from 'react-leaflet';
 
 import { buildInstitutionMarkers } from '../utils';
@@ -80,13 +81,27 @@ InstitutionMarker.propTypes = {
     }).isRequired,
 };
 
-export function InstitutionsMap({ institutions }) {
+export function InstitutionsMap({ institutions, onExpandedChange }) {
+    const { t } = useI18n();
     const [isExpanded, setIsExpanded] = useState(false);
     const mapHeight = isExpanded ? EXPANDED_MAP_HEIGHT : COMPACT_MAP_HEIGHT;
     const markers = useMemo(
         () => buildInstitutionMarkers(institutions),
         [institutions]
     );
+
+    const handleExpandedChange = () => {
+        setIsExpanded((value) => {
+            const nextValue = !value;
+            if (typeof onExpandedChange === 'function') {
+                onExpandedChange(nextValue);
+            }
+            return nextValue;
+        });
+    };
+
+    const expandLabel = t('explorer.institutions_list.expand_map');
+    const collapseLabel = t('explorer.institutions_list.collapse_map');
 
     return (
         <div className="InstitutionsMap">
@@ -118,11 +133,15 @@ export function InstitutionsMap({ institutions }) {
             <button
                 type="button"
                 className="InstitutionsMap-sizeToggle"
-                onClick={() => setIsExpanded((value) => !value)}
-                aria-label={isExpanded ? 'Collapse map' : 'Expand map'}
-                title={isExpanded ? 'Collapse map' : 'Expand map'}
+                onClick={handleExpandedChange}
+                aria-label={isExpanded ? collapseLabel : expandLabel}
+                title={isExpanded ? collapseLabel : expandLabel}
             >
-                <FaArrowsAltV aria-hidden="true" />
+                {isExpanded ? (
+                    <FaCompressAlt aria-hidden="true" />
+                ) : (
+                    <FaExpandAlt aria-hidden="true" />
+                )}
             </button>
         </div>
     );
@@ -130,6 +149,7 @@ export function InstitutionsMap({ institutions }) {
 
 InstitutionsMap.propTypes = {
     institutions: PropTypes.array.isRequired,
+    onExpandedChange: PropTypes.func,
 };
 
 export default InstitutionsMap;

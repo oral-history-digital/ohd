@@ -437,6 +437,82 @@ h4.CollectionList-collectionsTitle {
   color: $gray-dark;
 }
 
+.InstitutionsList-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: $base-unit * 0.75;
+}
+
+.InstitutionsList-description {
+  flex: 1 1 calc(50% - #{$base-unit * 0.375});
+  max-width: calc(50% - #{$base-unit * 0.375});
+  min-width: 0;
+  margin: 0;
+  transition:
+    flex-basis 0.28s ease,
+    max-width 0.28s ease,
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.InstitutionsList-header .InstitutionsMap {
+  flex: 1 1 calc(50% - #{$base-unit * 0.375});
+  max-width: calc(50% - #{$base-unit * 0.375});
+  min-width: 0;
+  transition:
+    flex-basis 0.28s ease,
+    max-width 0.28s ease,
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.InstitutionsList-header--mapExpanded .InstitutionsList-description,
+.InstitutionsList-header--mapExpanded .InstitutionsMap {
+  flex: 0 0 100%;
+  max-width: 100%;
+  width: 100%;
+}
+
+.InstitutionsList-header--mapExpanded .InstitutionsList-description {
+  order: 1;
+}
+
+.InstitutionsList-header--mapExpanded .InstitutionsMap {
+  order: 2;
+}
+
+.InstitutionsList-header--mapExpanded .InstitutionsMap {
+  transform: translateY(0.125rem);
+}
+
+@include screen-m {
+  .InstitutionsList-header {
+    flex-wrap: nowrap;
+  }
+
+  .InstitutionsList-header.InstitutionsList-header--mapExpanded {
+    flex-wrap: wrap;
+  }
+
+  .InstitutionsList-header .InstitutionsMap {
+    min-width: 20rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .InstitutionsList-header {
+    flex-direction: column;
+  }
+
+  .InstitutionsList-header .InstitutionsMap,
+  .InstitutionsList-description {
+    flex-basis: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 .InstitutionsList-resizeHandle {
   display: flex;
   justify-content: center;
