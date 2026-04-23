@@ -1,10 +1,11 @@
+import classNames from 'classnames';
 import { pluralizeKey, useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export function InstitutionsMapPopup({ title, marker }) {
+export function InstitutionsMapPopup({ title, marker, variant }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
 
@@ -14,8 +15,16 @@ export function InstitutionsMapPopup({ title, marker }) {
 
     const formatNum = (num) => formatNumber(num, 0, locale);
 
+    const projectSubHeading = `${formatNum(marker.projects.length)} ${t(
+        pluralizeKey('activerecord.models.project', projects.length, locale)
+    )}`;
+
     return (
-        <div className="MapPopup MapPopup--wide">
+        <div
+            className={classNames('MapPopup', {
+                'MapPopup--wide': variant === 'expanded',
+            })}
+        >
             <Link to={institutionUrl}>
                 <h3 className="MapPopup-heading">{title}</h3>
             </Link>
@@ -44,41 +53,44 @@ export function InstitutionsMapPopup({ title, marker }) {
 
             {projects.length > 0 && (
                 <>
-                    <h4 className="MapPopup-subHeading">
-                        {t('explorer.projects')} (
-                        {formatNum(marker.projects.length)}):
-                    </h4>
-                    <ul className="MapPopup-list">
-                        {projects.map((project) => (
-                            <li key={project.id} className="MapPopup-text">
-                                <Link
-                                    to={`${pathBase}/catalog/archives/${projects.id}`}
-                                >
-                                    {projects.name}
-                                </Link>
-                                {projects.interviews_count > 0 && (
-                                    <span className="MapPopup-interviewCount">
-                                        {' '}
-                                        ({formatNum(
-                                            projects.interviews_count
-                                        )}{' '}
-                                        {t('explorer.interviews')})
-                                    </span>
-                                )}
-                            </li>
-                        ))}
-                        {marker.projects.length > 2 && (
-                            <li className="MapPopup-text">
-                                <Link to={institutionUrl}>
-                                    {t('explorer.institutions_map.and_more', {
-                                        count: formatNum(
-                                            marker.projects.length - 2
-                                        ),
-                                    })}
-                                </Link>
-                            </li>
-                        )}
-                    </ul>
+                    <h4 className="MapPopup-subHeading">{projectSubHeading}</h4>
+                    {variant === 'expanded' && (
+                        <ul className="MapPopup-list">
+                            {projects.map((project) => (
+                                <li key={project.id} className="MapPopup-text">
+                                    <Link
+                                        to={`${pathBase}/catalog/archives/${project.id}`}
+                                    >
+                                        {project.name}
+                                    </Link>
+                                    {project.interviews_count > 0 && (
+                                        <span className="MapPopup-interviewCount">
+                                            {' '}
+                                            (
+                                            {formatNum(
+                                                project.interviews_count
+                                            )}{' '}
+                                            {t('explorer.interviews')})
+                                        </span>
+                                    )}
+                                </li>
+                            ))}
+                            {marker.projects.length > 2 && (
+                                <li className="MapPopup-text">
+                                    <Link to={institutionUrl}>
+                                        {t(
+                                            'explorer.institutions_map.and_more',
+                                            {
+                                                count: formatNum(
+                                                    marker.projects.length - 2
+                                                ),
+                                            }
+                                        )}
+                                    </Link>
+                                </li>
+                            )}
+                        </ul>
+                    )}
                 </>
             )}
         </div>
@@ -103,6 +115,7 @@ InstitutionsMapPopup.propTypes = {
             })
         ),
     }).isRequired,
+    variant: PropTypes.oneOf(['compact', 'expanded']),
 };
 
 export default InstitutionsMapPopup;

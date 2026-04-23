@@ -1,85 +1,20 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import 'leaflet/dist/leaflet.css';
 import { useI18n } from 'modules/i18n';
-import MapPopup from 'modules/map/components/MapPopup';
 import MapResizeHandler from 'modules/map/components/MapResizeHandler';
-import MapTooltip from 'modules/map/components/MapTooltip';
 import PropTypes from 'prop-types';
 import { FaCompressAlt, FaExpandAlt } from 'react-icons/fa';
-import { CircleMarker, MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 
 import { buildInstitutionMarkers } from '../utils';
-import { InstitutionsMapPopup } from './InstitutionsMapPopup';
+import { InstitutionMarker } from './InstitutionsMapMarker';
 
 const MAP_CENTER = [51.1657, 10.4515]; // Germany center
 const MAP_ZOOM = 5;
 const MAP_MAX_ZOOM = 16;
 const COMPACT_MAP_HEIGHT = 260;
 const EXPANDED_MAP_HEIGHT = 400;
-const MARKER_RADIUS = 5;
-
-function InstitutionMarker({ marker }) {
-    const map = useMap();
-    const markerRef = useRef(null);
-
-    const handleMarkerClick = () => {
-        const leafletMarker = markerRef.current;
-        if (!leafletMarker) return;
-
-        const latLng = leafletMarker.getLatLng();
-        leafletMarker.openPopup();
-
-        map.panTo(latLng, { animate: true, duration: 0.25 });
-        map.panInside(latLng, {
-            paddingTopLeft: [220, 140],
-            paddingBottomRight: [120, 80],
-            animate: true,
-        });
-    };
-
-    return (
-        <CircleMarker
-            ref={markerRef}
-            center={[marker.lat, marker.lng]}
-            radius={MARKER_RADIUS}
-            pathOptions={{
-                stroke: true,
-                color: '#fff',
-                weight: 1,
-                fillColor: 'var(--primary-color, #8f201c)',
-                fillOpacity: 0.8,
-            }}
-            eventHandlers={{
-                click: handleMarkerClick,
-            }}
-        >
-            <MapTooltip
-                placeName={marker.name}
-                numInterviewRefs={0}
-                numSegmentRefs={0}
-                showNumRefs={false}
-            />
-            <MapPopup
-                title={marker.name}
-                registryEntryId={marker.id}
-                popupComponent={InstitutionsMapPopup}
-                marker={marker}
-                popupClassName="MapPopupContainer--wide"
-            />
-        </CircleMarker>
-    );
-}
-
-InstitutionMarker.propTypes = {
-    marker: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired,
-        interviews: PropTypes.number,
-    }).isRequired,
-};
 
 export function InstitutionsMap({ institutions, onExpandedChange }) {
     const { t } = useI18n();
@@ -125,7 +60,11 @@ export function InstitutionsMap({ institutions, onExpandedChange }) {
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
                     />
                     {markers.map((marker) => (
-                        <InstitutionMarker key={marker.id} marker={marker} />
+                        <InstitutionMarker
+                            key={marker.id}
+                            marker={marker}
+                            isExpanded={isExpanded}
+                        />
                     ))}
                 </MapContainer>
             </div>

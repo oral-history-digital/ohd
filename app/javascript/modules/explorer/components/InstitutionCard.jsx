@@ -18,7 +18,6 @@ export function InstitutionCard({ institution, query, expanded, onToggle }) {
     const hasChildren = institution.children?.length > 0;
     const { handleHeaderClick, handleHeaderKeyDown } =
         useSelectableHeaderToggle(onToggle);
-    console.log('InstitutionCard render', { institution });
 
     const countProjects =
         institution.archives?.filter(
