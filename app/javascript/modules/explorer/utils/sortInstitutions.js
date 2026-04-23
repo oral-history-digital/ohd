@@ -3,8 +3,6 @@ import { normalizeNameForSort } from 'modules/utils';
 export const INST_SORT_OPTIONS = [
     { value: 'name_asc', labelKey: 'explorer.sort.name_asc' },
     { value: 'name_desc', labelKey: 'explorer.sort.name_desc' },
-    { value: 'projects_desc', labelKey: 'explorer.sort.projects_desc' },
-    { value: 'projects_asc', labelKey: 'explorer.sort.projects_asc' },
     { value: 'interviews_desc', labelKey: 'explorer.sort.interviews_desc' },
     { value: 'interviews_asc', labelKey: 'explorer.sort.interviews_asc' },
 ];
@@ -19,10 +17,10 @@ export const sortInstitutions = (institutions, sort) => {
         if (field === 'name') {
             const aName = (a.name || '').toLowerCase();
             const bName = (b.name || '').toLowerCase();
-            const av = normalizeNameForSort(aName);
-            const bv = normalizeNameForSort(bName);
+            const aSortValue = normalizeNameForSort(aName);
+            const bSortValue = normalizeNameForSort(bName);
 
-            const normalizedComparison = av.localeCompare(bv);
+            const normalizedComparison = aSortValue.localeCompare(bSortValue);
             if (normalizedComparison !== 0) {
                 return asc ? normalizedComparison : -normalizedComparison;
             }
@@ -31,17 +29,14 @@ export const sortInstitutions = (institutions, sort) => {
             return asc ? originalComparison : -originalComparison;
         }
 
-        let av, bv;
-        if (field === 'projects') {
-            av = a.archives?.length ?? 0;
-            bv = b.archives?.length ?? 0;
-        } else if (field === 'collections') {
-            av = a.collections?.total ?? 0;
-            bv = b.collections?.total ?? 0;
+        let aSortValue, bSortValue;
+        if (field === 'collections') {
+            aSortValue = a.collections?.total ?? 0;
+            bSortValue = b.collections?.total ?? 0;
         } else {
-            av = a.interviews?.total ?? 0;
-            bv = b.interviews?.total ?? 0;
+            aSortValue = a.interviews?.total ?? 0;
+            bSortValue = b.interviews?.total ?? 0;
         }
-        return asc ? av - bv : bv - av;
+        return asc ? aSortValue - bSortValue : bSortValue - aSortValue;
     });
 };
