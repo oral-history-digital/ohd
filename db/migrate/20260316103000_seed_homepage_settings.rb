@@ -16,8 +16,8 @@ class SeedHomepageSettings < ActiveRecord::Migration[8.0]
     'panel_register' => {
       heading: 'Zugang zu den Interviews',
       text: 'Um die Persönlichkeitsrechte der Interviewten zu schützen, verlangen die meisten Archive eine Anmeldung. Bitte registrieren Sie sich im Portal und beantragen Sie dann eine Freischaltung für einzelne Archive.',
-      button_primary_label: 'Registrierung',
-      button_secondary_label: 'Login',
+      button_primary_label: 'Registrieren',
+      button_secondary_label: 'Anmelden',
       image_alt: 'Bild von der oh.d-Registrierung'
     }
   }.freeze
@@ -39,8 +39,8 @@ class SeedHomepageSettings < ActiveRecord::Migration[8.0]
     'panel_register' => {
       heading: 'Access to Interviews',
       text: 'To protect the personal rights of interview partners, most archives require registration. Please register with Oral-History.Digital and request access to individual archives to view complete interviews.',
-      button_primary_label: 'Registration',
-      button_secondary_label: "Login",
+      button_primary_label: 'Register',
+      button_secondary_label: "Log in",
       image_alt: 'Image of the oh.d registration page'
     }
   }.freeze
