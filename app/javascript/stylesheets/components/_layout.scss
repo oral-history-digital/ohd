@@ -2,7 +2,7 @@
   // Main content grows fluidly and stops at this width.
   --layout-main-max-width: 1280px;
   // Sidebar width from tablet to desktop (below XL).
-  --layout-sidebar-width-fluid: clamp(320px, 42vw, 460px);
+  --layout-sidebar-width-fluid: clamp(360px, 42vw, 460px);
   // XL sidebar: 384px at 1280px viewport, then grows with viewport up to 768px.
   --layout-sidebar-width-xl: clamp(384px, 30vw, 768px);
 }

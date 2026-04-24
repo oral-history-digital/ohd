@@ -2,7 +2,7 @@
   box-sizing: border-box;
   counter-reset: item;
   display: flex;
-  line-height: $base-unit;
+  line-height: $line-height-medium;
   list-style: none;
   margin-block: 0;
   padding-left: 0;
@@ -20,11 +20,13 @@
   clip-path: polygon(0 0, 75% 0, 100% 50%, 75% 100%, 0 100%);
   color: white;
   content: counter(item);
+  display: flex;
   font-size: 1.25rem;
   font-weight: bold;
+  justify-content: center;
   padding-block: 0.5 * $base-unit;
-  padding-inline: $base-unit;
-  width: 4rem;
+  padding-inline: $base-unit * 0.5;
+  width: clamp(2.5rem, 3.5vw, 3.5rem);
 }
 
 .Flow-item--active:before {

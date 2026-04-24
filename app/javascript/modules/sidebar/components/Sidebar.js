@@ -25,9 +25,11 @@ export default function Sidebar({ className }) {
                 <SessionButtons className="u-ml" />
             </header>
 
-            <div className="u-mb u-ml">
-                {showToggleEditViewButton && <ToggleEditView />}
-            </div>
+            {showToggleEditViewButton && (
+                <div className="u-mb u-ml">
+                    <ToggleEditView />
+                </div>
+            )}
 
             <ActivationFlow className="u-mr u-mb u-ml" />
 
