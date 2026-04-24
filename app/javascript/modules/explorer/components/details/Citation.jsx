@@ -29,6 +29,7 @@ export function Citation({
                   origin,
                   doi,
                   doiUrl,
+                  t,
               })
             : formatProjectCitation({
                   institutions,
