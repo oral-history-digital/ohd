@@ -27,8 +27,8 @@ export function ProjectTile({ project }) {
             : lockSolid;
     const lockLabel =
         projectAccessStatus === PROJECT_ACCESS_REQUESTED
-            ? t('modules.site_startpage.access_requested')
-            : t('modules.site_startpage.no_access');
+            ? t('modules.homepage.access_requested')
+            : t('modules.homepage.no_access');
 
     const numInterviews = formatNumber(
         project.interviews?.total || 0,

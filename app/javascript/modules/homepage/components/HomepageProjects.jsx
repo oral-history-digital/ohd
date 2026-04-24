@@ -118,7 +118,7 @@ export function HomepageProjects({ className }) {
                     className="Homepage-heading u-mt-none u-mb-none"
                     data-testid="homepage-projects-heading"
                 >
-                    {t('modules.site_startpage.sample_archives')}
+                    {t('modules.homepage.sample_archives')}
                 </h3>
 
                 <div
@@ -130,8 +130,8 @@ export function HomepageProjects({ className }) {
                         className="HomepageProjects-navBtn"
                         onClick={() => handleButtonClick(-1)}
                         disabled={!canScrollLeft}
-                        title={t('modules.site_startpage.previous')}
-                        aria-label={t('modules.site_startpage.previous')}
+                        title={t('modules.homepage.previous')}
+                        aria-label={t('modules.homepage.previous')}
                         data-testid="homepage-projects-nav-prev"
                     >
                         <span className="HomepageProjects-navIcon">
@@ -143,8 +143,8 @@ export function HomepageProjects({ className }) {
                         className="HomepageProjects-navBtn"
                         onClick={() => handleButtonClick(1)}
                         disabled={!canScrollRight}
-                        title={t('modules.site_startpage.next')}
-                        aria-label={t('modules.site_startpage.next')}
+                        title={t('modules.homepage.next')}
+                        aria-label={t('modules.homepage.next')}
                         data-testid="homepage-projects-nav-next"
                     >
                         <span className="HomepageProjects-navIcon">
