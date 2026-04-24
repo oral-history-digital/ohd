@@ -59,10 +59,11 @@ describe('formatCollectionCitation', () => {
             locale: 'de',
             origin: 'https://portal.oral-history.digital',
             doi: '10.17169/collection.90408866',
+            t: jest.fn().mockReturnValue('Collection'),
         });
 
         expect(result).toBe(
-            'Institut fur Geschichte und Biographie der FernUniversitat in Hagen: Interview-Archiv "Archiv "Deutsches Gedachtnis"", Sammlung "Berliner Jugend", https://portal.oral-history.digital/de/catalog/collections/90408866, DOI: https://doi.org/10.17169/collection.90408866'
+            'Institut fur Geschichte und Biographie der FernUniversitat in Hagen: Interview-Archiv "Archiv "Deutsches Gedachtnis"", Collection: Sammlung "Berliner Jugend", https://portal.oral-history.digital/de/catalog/collections/90408866, DOI: https://doi.org/10.17169/collection.90408866'
         );
     });
 });

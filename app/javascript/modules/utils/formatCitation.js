@@ -76,10 +76,14 @@ export function formatCollectionCitation({
     doiUrl,
     t,
 }) {
+    const collectionLabel =
+        (typeof t === 'function' && t('activerecord.models.collection.one')) ||
+        'Collection';
+
     const citation = joinParts([
         institutionNames(institutions, locale),
         localizedText(projectName, locale),
-        `${t('activerecord.models.collection.one')}: ${localizedText(collectionName, locale)}`,
+        `${collectionLabel}: ${localizedText(collectionName, locale)}`,
         catalogLink('collections', collectionId, locale, origin),
     ]);
 
