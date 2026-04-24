@@ -105,6 +105,7 @@ For more detailed information about the Dev Container setup, see [.devcontainer/
 - Node.js >=18
 - yarn
 - Java Runtime Environment (Version 8)
+- ClamAV antimalware software
 - optional: LuaTeX for PDF generation including FreeFont and Noto fonts.
 
 ### Application Setup
@@ -117,6 +118,7 @@ on Linux.
     ```bash
     sudo apt install temurin-8-jdk-amd64
     sudo update-java-alternatives --set temurin-8-jdk-amd64
+    sudo apt install clamav clamav-daemon
     sudo apt install texlive-base texlive-xetex texlive-lang-all fonts-freefont-ttf fonts-noto
     ```
 
@@ -401,3 +403,31 @@ Settings can be changed in `app/javascript/modules/constants/index.js`.
 - ❌ Translation strings from `t()` helper (already safe, but sanitizing adds defense-in-depth)
 
 See `app/javascript/modules/utils/sanitizeHtml.js` for implementation details and `sanitizeHtml.test.js` for comprehensive test coverage.
+
+## Sync files (prod → staging)
+
+In most cases, you don’t need the entire storage volume (which can be many GB). For staging or local development, a subset — e.g. project logos or sponsor logos — is sufficient. Active Storage stores files under a hashed path structure like `storage/ab/12/<key>`, so paths must be derived from the database.
+
+First, generate the list of relevant files on production server:
+
+```bash
+bin/rake storage:export_uploaded_files
+```
+
+Then sync only those files on:
+
+```bash
+rsync -av \
+  --files-from=/app/tmp/uploaded_files_list.txt \
+  /mnt/app/storage_root/ \
+  user@local-machine:./storage/
+```
+
+Dry run:
+
+```bash
+rsync -av --dry-run \
+  --files-from=/app/tmp/uploaded_files_list.txt \
+  /mnt/app/storage_root/ \
+  user@local-machine:./storage/
+```

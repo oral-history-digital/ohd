@@ -28,7 +28,7 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import AdminActionsContainer from './AdminActionsContainer';
+import AdminActions from './AdminActions';
 import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
 import SubTab from './SubTab';
@@ -56,9 +56,13 @@ export default function InterviewTabPanel({
         return null;
     }
 
-    const hasPhotos =
-        interview.photos && Object.values(interview.photos).length > 0;
-    const showGallerySection = hasPhotos || isEditor;
+    const hasPublicPhotos =
+        interview.photos &&
+        Object.values(interview.photos).length > 0 &&
+        Object.values(interview.photos).some(
+            (photo) => photo.workflow_state === 'public'
+        );
+    const showGallerySection = hasPublicPhotos || isEditor;
 
     const hasMaterials =
         interview.material_count && interview.material_count > 0;
@@ -146,13 +150,16 @@ export default function InterviewTabPanel({
                                     <InterviewInfoContainer />
                                     <InterviewContributorsContainer />
                                     <InterviewTextMaterialsContainer />
-                                    <SingleValueWithForm
-                                        obj={interview}
-                                        value={interview?.links}
-                                        attribute="pseudo_links"
-                                        hideEmpty
-                                        linkUrls
-                                    />
+                                    {(isEditor ||
+                                        interview?.links.length > 0) && (
+                                        <SingleValueWithForm
+                                            obj={interview}
+                                            value={interview?.links}
+                                            attribute="pseudo_links"
+                                            hideEmpty
+                                            linkUrls
+                                        />
+                                    )}
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
@@ -265,9 +272,7 @@ export default function InterviewTabPanel({
 
                         <AuthorizedContent object={interview} action="update">
                             <SubTab title={t('admin_actions')}>
-                                <AdminActionsContainer
-                                    archiveIds={[archiveId]}
-                                />
+                                <AdminActions archiveIds={[archiveId]} />
                             </SubTab>
                         </AuthorizedContent>
                     </AuthShowContainer>

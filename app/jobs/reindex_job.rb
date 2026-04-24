@@ -3,6 +3,7 @@ class ReindexJob < ApplicationJob
 
   def perform(conditions = {})
     Sunspot.index! Interview.where(conditions) 
+    Sunspot.index! Interview.where(conditions).segments
   end
 
 end

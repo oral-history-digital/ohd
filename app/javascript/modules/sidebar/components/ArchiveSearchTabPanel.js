@@ -7,7 +7,7 @@ import { useProject } from 'modules/routes';
 import { ArchiveSearchFormContainer } from 'modules/search';
 import { useSelector } from 'react-redux';
 
-import AdminActionsContainer from './AdminActionsContainer';
+import AdminActions from './AdminActions';
 import SubTab from './SubTab';
 
 export default function ArchiveSearchTabPanel() {
@@ -30,9 +30,7 @@ export default function ArchiveSearchTabPanel() {
             <div className="flyout-sub-tabs-container flyout-video">
                 <AuthorizedContent object={{ type: 'General' }} action="edit">
                     <SubTab title={t('admin_actions')}>
-                        <AdminActionsContainer
-                            archiveIds={selectedArchiveIds}
-                        />
+                        <AdminActions archiveIds={selectedArchiveIds} />
                     </SubTab>
                 </AuthorizedContent>
             </div>

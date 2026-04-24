@@ -104,15 +104,35 @@ export function submitSelectedArchiveIds(
 ) {
     return (dispatch) => {
         if (filename) {
-            const link = document.createElement('a');
-            const params = archiveIds
-                .map((aid) => `archive_ids[]=${aid}`)
-                .join('&');
-            link.href = `${pathBase}/interviews/${action}.${format}?${params}`;
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
+            // Dynamically create and submit a form to trigger file download with POST parameters
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `${pathBase}/interviews/${action}.${format}`;
+            form.style.display = 'none';
+
+            archiveIds.forEach((archiveId) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'archive_ids[]';
+                input.value = archiveId;
+                form.appendChild(input);
+            });
+
+            // Include CSRF token for Rails authenticity protection
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute('content');
+            if (csrfToken) {
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'authenticity_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            form.parentNode.removeChild(form);
         } else {
             request
                 .post(`${pathBase}/interviews/${action}`)

@@ -205,6 +205,18 @@ class SearchesController < ApplicationController
         render :template => "/react/app"
       end
       format.json do
+        if ActiveModel::Type::Boolean.new.cast(params[:ids_only])
+          # Use a very high limit to ensure we get all results, since pagination is disabled when ids_only is true
+          search = Interview.archive_search(current_user, current_project, locale, params, 999_999)
+
+          render json: {
+            results_count: search.total,
+            archive_ids: search.hits.map { |hit| hit.stored(:archive_id) }
+          }
+
+          next
+        end
+
         search = Interview.archive_search(current_user, current_project, locale, params)
         public_description = current_project.is_ohd? ? false : current_project.public_description?
         search_results_metadata_fields = current_project.search_results_metadata_fields
