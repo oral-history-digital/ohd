@@ -7,7 +7,8 @@ If you are in the intermediate migration phase (legacy + Docker deploy in parall
 ## Scope
 
 - Runtime uses Puma in the `app` container.
-- Host-level Nginx reverse proxy is used in production.
+- Docker Compose includes an `nginx` reverse proxy container.
+- Docker Compose uses `certbot` by default for Let's Encrypt certificate automation.
 - Configuration is environment-first (`.env` / runtime env vars).
 - `config/credentials.yml.enc` can remain as compatibility fallback.
 
@@ -289,6 +290,8 @@ Compose should pass env vars as overrides, not duplicate app defaults.
 
 - `REDIS_URL`
 - `SOLR_URL`
+- `LETSENCRYPT_DOMAIN`
+- `LETSENCRYPT_EMAIL`
 
 ### Optional
 
@@ -326,32 +329,79 @@ SECRET_KEY_BASE=<generate with `rails secret`>
 ## Production Deploy
 
 1. Ensure compose files and linked config mounts exist on host.
-2. Pull and start runtime services:
+2. Configure TLS values in `.env`:
 
 ```bash
-docker compose -f docker-compose.yml pull app worker
-docker compose -f docker-compose.yml up -d app worker
+LETSENCRYPT_DOMAIN=portal.example.org
+LETSENCRYPT_EMAIL=ops@example.org
 ```
 
-3. Run migrations:
+3. Pull and start runtime services:
+
+```bash
+docker compose -f docker-compose.yml pull app worker nginx certbot
+docker compose -f docker-compose.yml up -d app worker nginx certbot
+```
+
+4. Run migrations:
 
 ```bash
 docker compose -f docker-compose.yml exec app bundle exec rails db:migrate
 ```
 
-4. Verify:
+5. Verify:
 
 ```bash
 docker compose -f docker-compose.yml ps
 docker compose -f docker-compose.yml logs --tail=200 app
+docker compose -f docker-compose.yml logs --tail=200 nginx
+docker compose -f docker-compose.yml logs --tail=200 certbot
 ```
 
-5. Post-deploy checks:
+6. Post-deploy checks:
 
 - Domain routing works
 - OIDC issuer/signing key match instance URL
 - Worker processes jobs
 - Solr ping/search works
+
+## TLS and Certificates
+
+### Default: Let's Encrypt (recommended)
+
+`docker-compose.yml` includes `certbot` by default.
+
+- Nginx serves ACME challenges on port 80.
+- Certbot requests/renews certificates for `LETSENCRYPT_DOMAIN`.
+- Active cert files are synced to:
+    - `docker/nginx/certs/fullchain.pem`
+    - `docker/nginx/certs/privkey.pem`
+
+Keep ports `80/tcp` and `443/tcp` open.
+
+### Custom certificates (no Let's Encrypt)
+
+If you use certificates from your own CA/provider:
+
+1. Copy certificate chain and key to:
+
+```bash
+docker/nginx/certs/fullchain.pem
+docker/nginx/certs/privkey.pem
+```
+
+2. Restrict key permissions:
+
+```bash
+chmod 600 docker/nginx/certs/privkey.pem
+chmod 644 docker/nginx/certs/fullchain.pem
+```
+
+3. Start stack without certbot:
+
+```bash
+docker compose -f docker-compose.yml up -d --scale certbot=0 nginx app worker redis solr
+```
 
 ## Host Setup (Production)
 
@@ -359,49 +409,11 @@ docker compose -f docker-compose.yml logs --tail=200 app
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg lsb-release nginx certbot python3-certbot-nginx
+sudo apt-get install -y ca-certificates curl gnupg lsb-release
 ```
 
 - Install Docker Engine and Compose plugin (official Docker docs for your distro).
 - Open ports `22/tcp`, `80/tcp`, `443/tcp`.
-
-### Nginx reverse proxy example
-
-`/etc/nginx/sites-available/ohd.conf`:
-
-```nginx
-server {
-	listen 80;
-	server_name portal.example.org;
-
-	location / {
-		proxy_pass http://127.0.0.1:3000;
-		proxy_http_version 1.1;
-		proxy_set_header Host $host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme;
-		proxy_set_header Upgrade $http_upgrade;
-		proxy_set_header Connection "upgrade";
-		proxy_read_timeout 300;
-		proxy_send_timeout 300;
-	}
-}
-```
-
-Enable and validate:
-
-```bash
-sudo ln -s /etc/nginx/sites-available/ohd.conf /etc/nginx/sites-enabled/ohd.conf
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-Issue certificate:
-
-```bash
-sudo certbot --nginx -d portal.example.org
-```
 
 ## Config Mapping Reference
 

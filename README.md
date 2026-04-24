@@ -53,6 +53,8 @@ Use cases:
 
 Runtime architecture:
 
+- `nginx`: reverse proxy (HTTP/HTTPS)
+- `certbot`: default TLS automation (Let's Encrypt)
 - `app`: Rails/Puma web process
 - `worker`: Delayed Job background worker
 - `solr`: search index
@@ -67,6 +69,13 @@ Docker image structure:
 - `Dockerfile`: multi-stage runtime image
 
 Detailed setup/deploy runbook: [doc/docker_instance_setup.md](doc/docker_instance_setup.md)
+
+TLS defaults for Docker Compose:
+
+- By default, this stack is configured for Let's Encrypt via the `certbot` service.
+- Set `LETSENCRYPT_DOMAIN` and `LETSENCRYPT_EMAIL` in `.env`.
+- Keep ports `80` and `443` open for ACME HTTP-01 validation and HTTPS traffic.
+- For custom certificates, place files at `docker/nginx/certs/fullchain.pem` and `docker/nginx/certs/privkey.pem` (details in the runbook).
 
 ### Option 3: Manual Setup (legacy)
 
