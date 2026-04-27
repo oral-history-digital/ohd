@@ -95,7 +95,7 @@ LoadedCheerio {
           class="Form-footer-buttons"
         >
           <button
-            class="GenericButton GenericButton--contained GenericButton--primary GenericButton--md"
+            class="GenericButton GenericButton--contained GenericButton--primary GenericButton--md GenericButton--disabled"
             data-testid="submit-button"
             disabled=""
             type="submit"
