@@ -30,6 +30,14 @@
   }
 }
 
+.Layout.is-wide-layout:not(.sidebar-is-visible) > .Layout-page {
+  @include screen-xl {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 .Layout-contentTabs {
   background-color: $gray-lighter;
   height: var(--content-tabs-height);

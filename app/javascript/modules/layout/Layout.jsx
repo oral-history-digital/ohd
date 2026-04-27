@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
-import { getProjectId } from 'modules/archive';
+import { getProjectId, getViewMode } from 'modules/archive';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
@@ -10,7 +10,7 @@ import {
     getBannerActive,
     hideBanner,
 } from 'modules/banner';
-import { OHD_DOMAINS } from 'modules/constants';
+import { OHD_DOMAINS, VIEWMODE_WORKFLOW } from 'modules/constants';
 import { fetchData, getProjectsStatus } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -52,6 +52,7 @@ export default function Layout({ children }) {
     const bannerActive = useSelector(getBannerActive);
     const projectsStatus = useSelector(getProjectsStatus);
     const routeProjectId = useSelector(getProjectId);
+    const currentViewMode = useSelector(getViewMode);
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
@@ -61,6 +62,13 @@ export default function Layout({ children }) {
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
     const isInterviewPage = currentPage.pageType === 'interview_detail';
+    const isPeopleAdminPage =
+        currentPage.pageType === 'project_admin_page' &&
+        currentPage.pathname.endsWith('/people');
+    const isWideLayout =
+        (currentPage.pageType === 'search_archive' &&
+            currentViewMode === VIEWMODE_WORKFLOW) ||
+        isPeopleAdminPage;
 
     useCheckLocaleAgainstProject();
     useFetchAccount();
@@ -131,6 +139,7 @@ export default function Layout({ children }) {
                     'is-logged-in': isLoggedIn,
                     'sidebar-is-visible': sidebarVisible,
                     'is-interview-page': isInterviewPage,
+                    'is-wide-layout': isWideLayout,
                     'is-sticky':
                         isInterviewPage && scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
