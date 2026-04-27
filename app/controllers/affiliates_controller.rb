@@ -69,6 +69,6 @@ class AffiliatesController < ApplicationController
     end
 
     def affiliate_params
-      params.expect(affiliate: [:type, :name_type, :name, :url, :project_id])
+      params.expect(affiliate: [:type, :name_type, :name, :first_name, :last_name, :project_id])
     end
 end

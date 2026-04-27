@@ -85,6 +85,7 @@ export default function DataList({
                 data,
                 values: initialFormValues,
                 onSubmit,
+                scope,
             });
         } else {
             return (
@@ -164,7 +165,7 @@ export default function DataList({
 
 DataList.propTypes = {
     data: PropTypes.object,
-    form: PropTypes.object,
+    form: PropTypes.function,
     initialFormValues: PropTypes.object,
     scope: PropTypes.string,
     task: PropTypes.object,

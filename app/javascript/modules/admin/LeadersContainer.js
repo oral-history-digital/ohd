@@ -7,6 +7,8 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import AffiliateForm from './AffiliateForm';
+import AffiliateShow from './AffiliateShow';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => {
@@ -17,25 +19,13 @@ const mapStateToProps = (state) => {
         outerScope: 'project',
         outerScopeId: project.id,
         scope: 'leader',
-        detailsAttributes: ['name', 'url'],
+        detailsAttributes: ['name', 'first_name', 'last_name'],
         initialFormValues: {
             project_id: project.id,
             type: 'Leader',
         },
-        formElements: [
-            {
-                attribute: 'name',
-            },
-            {
-                attribute: 'url',
-            },
-            {
-                attribute: 'name_type',
-                elementType: 'select',
-                values: ['Organizational', 'Personal'],
-                withEmpty: true,
-            },
-        ],
+        form: AffiliateForm,
+        showComponent: AffiliateShow,
     };
 };
 

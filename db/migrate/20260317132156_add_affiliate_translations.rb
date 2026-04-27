@@ -12,32 +12,32 @@ class AddAffiliateTranslations < ActiveRecord::Migration[8.0]
     })
     TranslationValue.create_or_update_for_key('edit.leader.admin', {
       en: 'Edit leader',
-      de: 'Leiter bearbeiten',
+      de: 'Projektleitung bearbeiten',
       ru: 'Руководитель редактировать',
     })
     TranslationValue.create_or_update_for_key('edit.leader.new', {
       en: 'Add leader',
-      de: 'Leiter hinzufügen',
+      de: 'Projektleitung hinzufügen',
       ru: 'Руководитель добавить',
     })
     TranslationValue.create_or_update_for_key('edit.manager.admin', {
       en: 'Edit manager',
-      de: 'Manager bearbeiten',
+      de: 'Ansprechpartner*in bearbeiten',
       ru: 'Менеджер редактировать',
     })
     TranslationValue.create_or_update_for_key('edit.manager.new', {
       en: 'Add manager',
-      de: 'Manager hinzufügen',
+      de: 'Ansprechpartner*in hinzufügen',
       ru: 'Менеджер добавить',
     })
     TranslationValue.create_or_update_for_key('edit.funder.admin', {
       en: 'Edit funder',
-      de: 'Förderer bearbeiten',
+      de: 'Förderung bearbeiten',
       ru: 'Спонсор редактировать',
     })
     TranslationValue.create_or_update_for_key('edit.funder.new', {
       en: 'Add funder',
-      de: 'Förderer hinzufügen',
+      de: 'Förderung hinzufügen',
       ru: 'Спонсор добавить',
     })
     TranslationValue.where("translation_values.key": 'activerecord.attributes.project.pseudo_funder_names').update(
