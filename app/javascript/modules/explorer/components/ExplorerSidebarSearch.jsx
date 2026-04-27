@@ -46,13 +46,13 @@ export function ExplorerSidebarSearch() {
 
     const isInstitutionsList =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
-    const isProjectsTab = !isInstitutionsList;
+    const isProjectsList = !isInstitutionsList;
 
     const projectInstitutions = useExplorerProjectInstitutions({
         projects: projects,
     });
     const { globalMin, globalMax } = useExplorerInterviewRange({
-        items: isProjectsTab ? projects : (institutionsList ?? []),
+        items: isProjectsList ? projects : (institutionsList ?? []),
     });
     const { globalCollectionMin, globalCollectionMax } =
         useProjectsAndCollectionsRange({ items: projects });
@@ -83,6 +83,10 @@ export function ExplorerSidebarSearch() {
     const institutionLevel = ['top_level'].includes(institutionLevelParam)
         ? institutionLevelParam
         : 'all';
+
+    const titleLabel = isProjectsList
+        ? 'modules.sidebar.catalog'
+        : 'activerecord.models.institution.other';
 
     if (!showSidebarFilters) return null;
 
@@ -137,7 +141,7 @@ export function ExplorerSidebarSearch() {
         );
 
     const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
-    const searchPlaceholderKey = isProjectsTab
+    const searchPlaceholderKey = isProjectsList
         ? 'explorer.search_placeholder.projects'
         : 'explorer.search_placeholder.institutions';
 
@@ -147,51 +151,54 @@ export function ExplorerSidebarSearch() {
         });
 
     return (
-        <div className="ExplorerSidebarSearch">
-            {hasActiveFilters && (
-                <ResetFiltersButton onClick={handleResetAll} />
-            )}
-            <ExplorerSearchInput
-                value={query}
-                onChange={handleQueryChange}
-                onClear={handleClear}
-                placeholderKey={searchPlaceholderKey}
-            />
+        <>
+            <h3 className="SidebarTabs-title">{t(titleLabel)}</h3>
+            <div className="ExplorerSidebarSearch">
+                {hasActiveFilters && (
+                    <ResetFiltersButton onClick={handleResetAll} />
+                )}
+                <ExplorerSearchInput
+                    value={query}
+                    onChange={handleQueryChange}
+                    onClear={handleClear}
+                    placeholderKey={searchPlaceholderKey}
+                />
 
-            <ExplorerRangeFilter
-                label={t('explorer.filter.interviews')}
-                globalMin={globalMin}
-                globalMax={globalMax}
-                value={[interviewMin, interviewMax]}
-                onChange={handleInterviewRangeChange}
-            />
-
-            {isProjectsTab && (
                 <ExplorerRangeFilter
-                    label={t('explorer.filter.collections')}
-                    globalMin={globalCollectionMin}
-                    globalMax={globalCollectionMax}
-                    value={[collectionMin, collectionMax]}
-                    onChange={handleCollectionRangeChange}
+                    label={t('explorer.filter.interviews')}
+                    globalMin={globalMin}
+                    globalMax={globalMax}
+                    value={[interviewMin, interviewMax]}
+                    onChange={handleInterviewRangeChange}
                 />
-            )}
 
-            {isProjectsTab && (
-                <ExplorerInstitutionFilter
-                    institutions={projectInstitutions}
-                    values={institutionIds}
-                    onChange={handleInstitutionChange}
-                    onClearAll={handleInstitutionClearAll}
-                />
-            )}
+                {isProjectsList && (
+                    <ExplorerRangeFilter
+                        label={t('explorer.filter.collections')}
+                        globalMin={globalCollectionMin}
+                        globalMax={globalCollectionMax}
+                        value={[collectionMin, collectionMax]}
+                        onChange={handleCollectionRangeChange}
+                    />
+                )}
 
-            {!isProjectsTab && (
-                <ExplorerInstitutionLevelFilter
-                    value={institutionLevel}
-                    onChange={handleInstitutionLevelChange}
-                />
-            )}
-        </div>
+                {isProjectsList && (
+                    <ExplorerInstitutionFilter
+                        institutions={projectInstitutions}
+                        values={institutionIds}
+                        onChange={handleInstitutionChange}
+                        onClearAll={handleInstitutionClearAll}
+                    />
+                )}
+
+                {!isProjectsList && (
+                    <ExplorerInstitutionLevelFilter
+                        value={institutionLevel}
+                        onChange={handleInstitutionLevelChange}
+                    />
+                )}
+            </div>
+        </>
     );
 }
 
